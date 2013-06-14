@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Cqrs.Commands;
+using Cqrs.Events;
+using Cqrs.Infrastructure;
+using Cqrs.Messages;
+
+namespace Cqrs.Bus
+{
+	public class InProcessBus : ICommandSender, IEventPublisher, IHandlerRegistrar
+	{
+		private Dictionary<Type, List<Action<IMessage>>> Routes { get; set; }
+
+		public InProcessBus()
+		{
+			Routes = new Dictionary<Type, List<Action<IMessage>>>();
+		}
+
+		public void RegisterHandler<TMessage>(Action<TMessage> handler)
+			where TMessage : IMessage
+		{
+			List<Action<IMessage>> handlers;
+			if(!Routes.TryGetValue(typeof(TMessage), out handlers))
+			{
+				handlers = new List<Action<IMessage>>();
+				Routes.Add(typeof(TMessage), handlers);
+			}
+			handlers.Add(DelegateAdjuster.CastArgument<IMessage, TMessage>(x => handler(x)));
+		}
+
+		public void Send<TCommand>(TCommand command)
+			where TCommand : ICommand
+		{
+			List<Action<IMessage>> handlers; 
+			if (Routes.TryGetValue(typeof(TCommand), out handlers))
+			{
+				if (handlers.Count != 1)
+					throw new InvalidOperationException("Cannot send to more than one handler");
+				handlers.Single()(command);
+			}
+			else
+			{
+				throw new InvalidOperationException("No handler registered");
+			}
+		}
+
+		public void Publish<TEvent>(TEvent @event)
+			where TEvent : IEvent
+		{
+			List<Action<IMessage>> handlers; 
+			if (!Routes.TryGetValue(@event.GetType(), out handlers)) return;
+			foreach(Action<IMessage> handler in handlers)
+				handler(@event);
+			
+		}
+	}
+}

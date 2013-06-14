@@ -1,0 +1,12 @@
+﻿@model IEnumerable<CQRSCode.ReadModel.Dtos.UserListDto>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>All D.T.O. items:</h2>
+<ul>@foreach (var inventoryItemListDto in Model)
+    {<li>
+        @Html.ActionLink("Name: " + inventoryItemListDto.Name, "Details", new { Id = inventoryItemListDto.Id })
+    </li>
+}</ul>
+@Html.ActionLink("Add","DtoAdd")
