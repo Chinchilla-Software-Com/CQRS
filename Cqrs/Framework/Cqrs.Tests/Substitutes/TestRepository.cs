@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Cqrs.Domain;
+using Cqrs.Events;
 
 namespace Cqrs.Tests.Substitutes
 {
@@ -17,7 +19,7 @@ namespace Cqrs.Tests.Substitutes
 
 		public IAggregateRoot Saved { get; private set; }
 
-		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId)
+		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent> events = null)
 			where TAggregateRoot : IAggregateRoot
 		{
 			var obj = (TAggregateRoot) Activator.CreateInstance(typeof (TAggregateRoot), true);

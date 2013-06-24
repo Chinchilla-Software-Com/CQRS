@@ -41,22 +41,22 @@ namespace Cqrs.Domain
 			aggregate.MarkChangesAsCommitted();
 		}
 
-		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId)
+		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent> events = null)
 			where TAggregateRoot : IAggregateRoot
 		{
-			return LoadAggregate<TAggregateRoot>(aggregateId);
+			return LoadAggregate<TAggregateRoot>(aggregateId, events);
 		}
 
-		private TAggregateRoot LoadAggregate<TAggregateRoot>(Guid id)
+		private TAggregateRoot LoadAggregate<TAggregateRoot>(Guid id, IList<IEvent> events = null)
 			where TAggregateRoot : IAggregateRoot
 		{
 			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>();
 
-			IList<IEvent> events = EventStore.Get(id, -1).ToList();
-			if (!events.Any())
+			IList<IEvent> theseEvents = events ?? EventStore.Get(id, -1).ToList();
+			if (!theseEvents.Any())
 				throw new AggregateNotFoundException(id);
 
-			aggregate.LoadFromHistory(events);
+			aggregate.LoadFromHistory(theseEvents);
 			return aggregate;
 		}
 	}

@@ -57,31 +57,32 @@ namespace Cqrs.Cache
 			}
 		}
 
-		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId)
+		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent> events = null)
 			where TAggregateRoot : IAggregateRoot
 		{
 			string idstring = aggregateId.ToString();
 			try
 			{
+				IList<IEvent> theseEvents = null;
 				lock (Locks.GetOrAdd(idstring, _ => new object()))
 				{
 					TAggregateRoot aggregate;
 					if (IsTracked(aggregateId))
 					{
 						aggregate = (TAggregateRoot)Cache.Get(idstring);
-						IList<IEvent> events = EventStore.Get(aggregateId, aggregate.Version).ToList();
-						if (events.Any() && events.First().Version != aggregate.Version + 1)
+						theseEvents = events ?? EventStore.Get(aggregateId, aggregate.Version).ToList();
+						if (theseEvents.Any() && theseEvents.First().Version != aggregate.Version + 1)
 						{
 							Cache.Remove(idstring);
 						}
 						else
 						{
-							aggregate.LoadFromHistory(events);
+							aggregate.LoadFromHistory(theseEvents);
 							return aggregate;
 						}
 					}
 
-					aggregate = Repository.Get<TAggregateRoot>(aggregateId);
+					aggregate = Repository.Get<TAggregateRoot>(aggregateId, theseEvents);
 					Cache.Add(aggregateId.ToString(), aggregate, PolicyFactory.Invoke());
 					return aggregate;
 				}

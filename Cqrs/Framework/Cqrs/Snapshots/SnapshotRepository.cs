@@ -32,17 +32,17 @@ namespace Cqrs.Snapshots
 			Repository.Save(aggregate, exectedVersion);
 		}
 
-		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId)
+		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent> events = null)
 			where TAggregateRoot : IAggregateRoot
 		{
 			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>();
 			int snapshotVersion = TryRestoreAggregateFromSnapshot(aggregateId, aggregate);
-			if(snapshotVersion == -1)
+			if (snapshotVersion == -1)
 			{
 				return Repository.Get<TAggregateRoot>(aggregateId);
 			}
-			IEnumerable<IEvent> events = EventStore.Get(aggregateId, snapshotVersion).Where(desc => desc.Version > snapshotVersion);
-			aggregate.LoadFromHistory(events);
+			IEnumerable<IEvent> theseEvents = events ?? EventStore.Get(aggregateId, snapshotVersion).Where(desc => desc.Version > snapshotVersion);
+			aggregate.LoadFromHistory(theseEvents);
 
 			return aggregate;
 		}
