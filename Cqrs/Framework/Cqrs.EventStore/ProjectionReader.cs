@@ -27,10 +27,19 @@ namespace Cqrs.EventStore
 			}
 			var jsonSerialiserSettings = EventDeserialiser.GetSerialisationSettings();
 			var encoder = new UTF8Encoding();
-			return ((IEnumerable<dynamic>)eventCollection.Events
-				.Select(e => JsonConvert.DeserializeObject(((dynamic)encoder.GetString(e.Event.Data)), jsonSerialiserSettings))
-				.Single()
-				).Select(x => x.Value);
+			return
+			(
+				(
+					(IEnumerable<dynamic>)eventCollection.Events
+					.Select(e => JsonConvert.DeserializeObject(((dynamic)encoder.GetString(e.Event.Data)), jsonSerialiserSettings))
+					.SingleOrDefault()
+				)
+					??
+				(
+					Enumerable.Empty<dynamic>()
+				)
+			)
+			.Select(x => x.Value);
 		}
 
 		protected IEnumerable<TData> GetDataByStreamName<TData>(string streamName)
