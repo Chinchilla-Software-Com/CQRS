@@ -10,7 +10,9 @@ namespace Cqrs.EventStore
 		#region Implementation of IEvent
 
 		public Guid Id { get; set; }
+
 		public int Version { get; set; }
+
 		public DateTimeOffset TimeStamp { get; set; }
 
 		#endregion

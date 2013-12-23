@@ -53,21 +53,21 @@ namespace Cqrs.EventStore
 
 		protected virtual void ListenForNotificationsOnConnection(EventStoreConnection connection)
 		{
-			//connection.SubscribeToAll(true, DisplayNotificationArrival, DisplaySubscriptionDropped);
+			connection.SubscribeToAll(true, DisplayNotificationArrival, DisplaySubscriptionDropped);
 		}
-		/*
-		void DisplayNotificationArrival(EventStoreSubscription subscription, ResolvedEvent notification)
+
+		private void DisplayNotificationArrival(EventStoreSubscription subscription, ResolvedEvent notification)
 		{
 			RecordedEvent @event = notification.Event;
-			const string chatClientEventTypePrefix = "ChatClient ";
-			if (string.Format("{0}{1}", chatClientEventTypePrefix, ProcessName) == @event.EventType || !@event.EventType.StartsWith(chatClientEventTypePrefix))
+			const string chatClientEventTypePrefix = "Cqrs EventStore Client ";
+			if (/*string.Format("{0}{1}", chatClientEventTypePrefix, ProcessName) == @event.EventType ||*/ !@event.EventType.StartsWith(chatClientEventTypePrefix))
 				return;
-			Console.WriteLine("{0} : {1}", @event.EventType.Substring(chatClientEventTypePrefix.Length), new SimpleEvent(@event).Message);
+			Console.WriteLine("{0} : {1}", @event.EventType.Substring(chatClientEventTypePrefix.Length), @event.EventType);
 		}
-		void DisplaySubscriptionDropped(EventStoreSubscription subscription, string someString, Exception exception)
+
+		private void DisplaySubscriptionDropped(EventStoreSubscription subscription, string someString, Exception exception)
 		{
 			Console.WriteLine("Opps");
 		}
-		*/
 	}
 }

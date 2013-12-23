@@ -17,7 +17,7 @@ namespace Cqrs.EventStore
 
 		public virtual EventStoreConnection GetEventStoreConnection()
 		{
-			EventStoreConnection connection = EventStoreConnection.Create(/*"EventStore"*/);
+			EventStoreConnection connection = EventStoreConnection.Create(/*"Cqrs.EventStore"*/);
 			IPEndPoint endPoint = GetEventStoreIpEndPoint();
 			connection.Connect(endPoint);
 
@@ -29,18 +29,18 @@ namespace Cqrs.EventStore
 
 		protected virtual string GetEventStoreClientName()
 		{
-			return ConfigurationManager.AppSettings["EventStoreClientName"] ?? "Default Client";
+			return ConfigurationManager.AppSettings["Cqrs.EventStoreClientName"] ?? "Cqrs Default Client";
 		}
 
 		protected virtual string GetEventStoreConnectionLogStreamName()
 		{
-			return ConfigurationManager.AppSettings["EventStoreConnectionLogStreamName"] ?? "EventStore Connection Log Stream";
+			return ConfigurationManager.AppSettings["Cqrs.EventStoreConnectionLogStreamName"] ?? "EventStore Connection Log Stream";
 		}
 
 		protected virtual IPEndPoint GetEventStoreIpEndPoint()
 		{
-			List<byte> eventStoreIp = (ConfigurationManager.AppSettings["EventStoreIp"] ?? "127.0.0.1").Split(new[] { '.' }).Select(ipPart => (byte)int.Parse(ipPart)).ToList();
-			string eventStorePortValue = ConfigurationManager.AppSettings["EventStorePort"];
+			List<byte> eventStoreIp = (ConfigurationManager.AppSettings["Cqrs.EventStoreIp"] ?? "127.0.0.1").Split(new[] { '.' }).Select(ipPart => (byte)int.Parse(ipPart)).ToList();
+			string eventStorePortValue = ConfigurationManager.AppSettings["Cqrs.EventStorePort"];
 			int eventStorePort = 1113;
 			if (!string.IsNullOrWhiteSpace(eventStorePortValue))
 				eventStorePort = int.Parse(eventStorePortValue);
