@@ -21,7 +21,7 @@ namespace Cqrs.EventStore
 		protected IEnumerable<dynamic> GetDataByStreamName(string streamName)
 		{
 			StreamEventsSlice eventCollection;
-			using (EventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
+			using (IEventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
 			{
 				eventCollection = connection.ReadStreamEventsBackward(streamName, StreamPosition.End, 1, false);
 			}

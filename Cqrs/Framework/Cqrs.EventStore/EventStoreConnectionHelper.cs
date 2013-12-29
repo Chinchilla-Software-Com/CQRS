@@ -15,11 +15,12 @@ namespace Cqrs.EventStore
 			EventBuilder = eventBuilder;
 		}
 
-		public virtual EventStoreConnection GetEventStoreConnection()
+		public virtual IEventStoreConnection GetEventStoreConnection()
 		{
-			EventStoreConnection connection = EventStoreConnection.Create(/*"Cqrs.EventStore"*/);
+			ConnectionSettings settings = ConnectionSettings.Create();
 			IPEndPoint endPoint = GetEventStoreIpEndPoint();
-			connection.Connect(endPoint);
+			IEventStoreConnection connection = EventStoreConnection.Create(settings, endPoint);
+			connection.Connect();
 
 			EventData connectionEvent = EventBuilder.CreateClientConnectedEvent(GetEventStoreClientName());
 			connection.AppendToStream(GetEventStoreConnectionLogStreamName(), ExpectedVersion.Any, new[] { connectionEvent });

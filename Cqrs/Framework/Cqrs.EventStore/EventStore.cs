@@ -26,23 +26,23 @@ namespace Cqrs.EventStore
 		public void Save(IEvent @event)
 		{
 			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
-			using (EventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
+			using (IEventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
 			{
 				connection.AppendToStream(string.Format("cqrs stream: {0}", @event.Id), ExpectedVersion.Any, new[] { eventData });
 			}
 		}
 
 		/// <remarks>
-		/// The value of <paramref name="fromVersion"/> is zero based but the internals indexing of the EventStore is offset by <see cref="StreamPosition.FirstClientEvent"/>.
-		/// Adjust the value of <paramref name="fromVersion"/> by <see cref="StreamPosition.FirstClientEvent"/>
+		/// The value of <paramref name="fromVersion"/> is zero based but the internals indexing of the EventStore is offset by <see cref="StreamPosition.Start"/>.
+		/// Adjust the value of <paramref name="fromVersion"/> by <see cref="StreamPosition.Start"/>
 		/// </remarks>
 		public IEnumerable<IEvent> Get(Guid aggregateId, int fromVersion = -1)
 		{
 			StreamEventsSlice eventCollection;
-			int startPosition = StreamPosition.FirstClientEvent;
+			int startPosition = StreamPosition.Start;
 			if (fromVersion > -1)
-				startPosition = fromVersion + StreamPosition.FirstClientEvent;
-			using (EventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
+				startPosition = fromVersion + StreamPosition.Start;
+			using (IEventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
 			{
 				eventCollection = connection.ReadStreamEventsForward(string.Format("cqrs stream: {0}", aggregateId), startPosition, 200, false);
 			}
@@ -51,7 +51,7 @@ namespace Cqrs.EventStore
 
 		#endregion
 
-		protected virtual void ListenForNotificationsOnConnection(EventStoreConnection connection)
+		protected virtual void ListenForNotificationsOnConnection(IEventStoreConnection connection)
 		{
 			connection.SubscribeToAll(true, DisplayNotificationArrival, DisplaySubscriptionDropped);
 		}
@@ -65,7 +65,7 @@ namespace Cqrs.EventStore
 			Console.WriteLine("{0} : {1}", @event.EventType.Substring(chatClientEventTypePrefix.Length), @event.EventType);
 		}
 
-		private void DisplaySubscriptionDropped(EventStoreSubscription subscription, string someString, Exception exception)
+		private void DisplaySubscriptionDropped(EventStoreSubscription subscription, SubscriptionDropReason reasonDropped, Exception exception)
 		{
 			Console.WriteLine("Opps");
 		}

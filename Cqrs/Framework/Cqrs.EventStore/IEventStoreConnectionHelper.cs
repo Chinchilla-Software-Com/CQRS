@@ -4,6 +4,6 @@ namespace Cqrs.EventStore
 {
 	public interface IEventStoreConnectionHelper
 	{
-		EventStoreConnection GetEventStoreConnection();
+		IEventStoreConnection GetEventStoreConnection();
 	}
 }
