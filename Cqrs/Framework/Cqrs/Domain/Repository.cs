@@ -23,8 +23,12 @@ namespace Cqrs.Domain
 		public void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
 			where TAggregateRoot : IAggregateRoot
 		{
-			if (expectedVersion != null && EventStore.Get(aggregate.Id, expectedVersion.Value).Any())
-				throw new ConcurrencyException(aggregate.Id);
+			if (expectedVersion != null)
+			{
+				IEnumerable<IEvent> eventStoreResults = EventStore.Get(aggregate.Id, expectedVersion.Value);
+				if (eventStoreResults.Any())
+					throw new ConcurrencyException(aggregate.Id);
+			}
 			int i = 0;
 			foreach (IEvent @event in aggregate.GetUncommittedChanges())
 			{
