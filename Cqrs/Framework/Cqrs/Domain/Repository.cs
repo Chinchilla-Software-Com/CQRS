@@ -34,6 +34,8 @@ namespace Cqrs.Domain
 					throw new ConcurrencyException(aggregate.Id);
 			}
 
+			var eventsToPublish = new List<IEvent>();
+
 			int i = 0;
 			foreach (IEvent @event in uncommittedChanges)
 			{
@@ -45,9 +47,11 @@ namespace Cqrs.Domain
 				@event.Version = aggregate.Version + i;
 				@event.TimeStamp = DateTimeOffset.UtcNow;
 				EventStore.Save(@event);
-				Publisher.Publish(@event);
+				eventsToPublish.Add(@event);
 			}
 			aggregate.MarkChangesAsCommitted();
+			foreach (var @event in eventsToPublish)
+				Publisher.Publish(@event);
 		}
 
 		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent> events = null)
