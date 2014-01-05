@@ -1,5 +1,6 @@
 using System;
 using System.Dynamic;
+using System.Linq;
 
 namespace Cqrs.Infrastructure
 {
@@ -32,19 +33,20 @@ namespace Cqrs.Infrastructure
 		{
 			try
 			{
-				// Try to invoke the method
-				return type.InvokeMember(name, System.Reflection.BindingFlags.InvokeMethod | BindingFlags, null, target, args);
+				if (type.GetMember(name).Any())
+					return type.InvokeMember(name, System.Reflection.BindingFlags.InvokeMethod | BindingFlags, null, target, args);
+				// If we couldn't find the method, try on the base class
+				if (type.BaseType != null)
+					return InvokeMemberOnType(type.BaseType, target, name, args);
 			}
 			catch (MissingMethodException)
 			{
 				// If we couldn't find the method, try on the base class
 				if (type.BaseType != null)
-				{
 					return InvokeMemberOnType(type.BaseType, target, name, args);
-				}
-				// Don't care if the method don't exist.
-				return null;
 			}
+				// Don't care if the method don't exist.
+			return null;
 		}
 	}
 }
