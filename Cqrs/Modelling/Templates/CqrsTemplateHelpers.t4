@@ -1,0 +1,264 @@
+<#+
+	private string TemplateHelperToolName
+	{
+		get { return "CQRS UML Code Generator"; }
+	}
+
+	private string TemplateHelperVersionNumber
+	{
+		get { return "1.0.0.1"; }
+	}
+	
+	private string WebsiteURL
+	{
+		get { return "http://.co.nz"; }
+	}
+
+	private string DataContractVersionNumber
+	{
+		get { return "1000"; }
+	}
+
+	private static List<string> GetNamespaces(IClassifier classifier, params string[] extraNamespaces)
+	{
+		List<string> namespaces = new List<string>();
+		namespaces.AddRange(extraNamespaces);
+		namespaces.AddRange(RequiredNamespaces(classifier));
+		namespaces = namespaces.OrderByDescending(p => p.StartsWith("System")).ThenBy(p => p).Distinct().ToList();
+		return namespaces;
+	}
+
+	private string GetDataContractAttribute(IClassifier classifier)
+	{
+		string urlNamespace = "/";
+		string classNamespace = GetNamespace(classifier.Namespace);
+		if (!string.IsNullOrEmpty(classNamespace))
+		{
+			var nsSplit = classNamespace.Split('.');
+			nsSplit.Skip(1).ToList().ForEach(p => urlNamespace += p + "/");
+		}
+
+		return string.Format("[DataContract(Namespace=\"{0}{1}{2}/\")]", WebsiteURL, urlNamespace, DataContractVersionNumber);
+	}
+
+	private string GetGeneratedCodeAttribute()
+	{
+		return string.Format("[GeneratedCode(\"{0}\", \"{1}\")]", TemplateHelperToolName, TemplateHelperVersionNumber);
+	}
+
+	private string GetDisplayType(ITypedElement typedElement)
+	{
+		string typeName;
+
+		if (typedElement == null)
+			return string.Empty;
+		else if (typedElement.Type == null)
+			return "object";
+		else if (typedElement is IClassifier)
+			typeName = ClassifierName((IClassifier)typedElement.Type);
+		else
+			typeName = CSharpTranslation(typedElement.Type.Name);
+
+		if (typeName.StartsWith("Root::"))
+		{
+			typeName = typeName.Substring(6).Replace("::", ".");
+		}
+
+		return typeName;
+	}
+
+	private string GetBaseClass(IClassifier element)
+	{
+		// It should only ever have one base class
+		return
+			element.Generalizations.Count() <= 0
+			? string.Empty
+			: element.Generalizations.First().General.Name;
+	}
+
+	private string GetAbstract(IClass element)
+	{
+		return element.IsAbstract ? " abstract" : string.Empty;
+	}
+
+	private string GetFullDisplayType(IMultiplicityElement property)
+	{
+		return this.GetFullDisplayType(property, true);
+	}
+	
+	private string GetFullDisplayType(IMultiplicityElement property, bool onlyStructAsNullable)
+	{
+		var typedProperty = property as ITypedElement;
+
+		string typeName = string.Empty;
+		bool canBeEmpty = false;
+		bool isUnique = false;
+		bool canBeMultiple = false;
+		bool isStruct = false;
+		bool isEnum = false;
+
+		typeName = ElementType(typedProperty);
+		if (typeName.StartsWith("Root::"))
+		{
+			typeName = typeName.Substring(6).Replace("::", ".");
+		}
+		canBeEmpty = property.LowerValue != null ? property.LowerValue.ToString() == "0" : false;
+		isUnique = property.IsUnique;
+		canBeMultiple = property.UpperValue != null ? property.UpperValue.ToString() == "*" : false;
+		isStruct = typedProperty != null && typedProperty.Type != null && typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Struct", StringComparison.InvariantCultureIgnoreCase));
+		isEnum = (typedProperty.Type as IEnumeration) != null;
+
+		return string.Format("{0}{1}{2}{3}"
+			, canBeMultiple && isUnique ? "ICollection<" : canBeMultiple ? "IEnumerable<" : string.Empty
+			, typeName
+			, canBeMultiple ? ">" : string.Empty
+			, !canBeMultiple && canBeEmpty && (!onlyStructAsNullable || isStruct || isEnum) ? "?" : string.Empty);
+	}
+
+	private string GetMethodParameterList(IOperation operation)
+	{
+		var methodParameterList = string.Empty;
+		
+		var parameters = operation.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);
+		for (int i = 0; i < parameters.Count(); i++)
+		{
+			IParameter parameter = parameters.ElementAt(i);
+			if (i > 0) methodParameterList += ", ";
+			{
+				methodParameterList += (GetFullDisplayType(parameter, false) + " " + parameter.Name);
+			}
+		}
+		
+		return methodParameterList;
+	}
+
+	private List<IOperation> GetMethodList(IClass classElement)
+	{
+		var operations = new List<IOperation>();
+		operations.AddRange(classElement.OwnedOperations);
+		return operations;
+	}
+
+	private string GetMethodVisibility(IOperation operation)
+	{
+		switch (operation.Visibility)
+		{
+			case (Microsoft.VisualStudio.Uml.Classes.VisibilityKind.Public):
+				return "public";
+			case (Microsoft.VisualStudio.Uml.Classes.VisibilityKind.Private):
+				return "private";
+			case (Microsoft.VisualStudio.Uml.Classes.VisibilityKind.Protected):
+				return "protected";
+			case (Microsoft.VisualStudio.Uml.Classes.VisibilityKind.Package):
+				return "internal";
+			default:
+				return "public";
+		}
+	}
+
+	private List<IProperty> GetPropertyList(IClass classElement)
+	{
+		var properties = new List<IProperty>();
+		properties.AddRange(classElement.OwnedAttributes);
+		properties.AddRange(GetNavigableOwnedEnds(classElement, classElement.OwnedAttributes));
+		return properties;
+	}
+
+	private string GetPropertyVisibility(IProperty property)
+	{
+		switch (property.Visibility)
+		{
+			case (Microsoft.VisualStudio.Uml.Classes.VisibilityKind.Public):
+				return "public";
+			case (Microsoft.VisualStudio.Uml.Classes.VisibilityKind.Private):
+				return "private";
+			case (Microsoft.VisualStudio.Uml.Classes.VisibilityKind.Protected):
+				return "protected";
+			case (Microsoft.VisualStudio.Uml.Classes.VisibilityKind.Package):
+				return "internal";
+			default:
+				return "public";
+		}
+	}
+
+	private bool IsInheritingInModel(IClass classElement)
+	{
+		return classElement.Generalizations.Count() > 0;
+	}
+
+	private static bool ShouldGenerateCodeForElement(IElement element)
+	{
+		var currentElement = element;
+		while (currentElement != null)
+		{
+			if (currentElement.AppliedStereotypes.Any(p => p.Name.Equals("Proposed", StringComparison.OrdinalIgnoreCase)))
+			{
+				return false;
+			}
+
+			currentElement = currentElement.Owner;
+		}
+
+		return true;
+	}
+
+	private static IElement FindDomainElement(IElement t)
+	{
+		var domainStereoType = t.AppliedStereotypes.FirstOrDefault(s => s.Name == "Domain");
+		if (domainStereoType != null)
+		{
+			return (t as INamedElement);
+		}
+		else if (t.Owner != null) 
+		{
+			return FindDomainElement(t.Owner);
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	private INamedElement GetRoot(IElement t)
+	{
+		var result = t;
+		if (result.Owner != null)
+		{
+			do
+			{
+				result = result.Owner;
+			} 
+			while (result.Owner != null);
+		}
+
+		return result as INamedElement;
+	}
+
+	private INamedElement GetElementByFullName(IElement elt, string elementName)
+	{
+		var currentElement = GetRoot(elt);
+
+		var pathElements = elementName.Split(new string[] {"::"}, StringSplitOptions.None);
+
+		if (pathElements.Length < 2) return null;
+
+		// The first path element will be "Root" so start searching for the second one within its owned elements
+		for (var i = 1; i < pathElements.Length; i++)
+		{
+			if (currentElement == null || currentElement.OwnedElements == null) return null;
+			currentElement = 
+				currentElement.OwnedElements
+				.FirstOrDefault(e => e is INamedElement && ((INamedElement)e).Name.Equals(pathElements[i], StringComparison.InvariantCultureIgnoreCase)) as INamedElement;
+		}
+
+		return currentElement;
+	}
+
+	private string GetLowercaseFirstCharacter(string str)
+	{
+		if (string.IsNullOrWhiteSpace(str))
+			return str;
+		else
+			return Char.ToLowerInvariant(str[0]) + str.Substring(1);
+	}
+#>
