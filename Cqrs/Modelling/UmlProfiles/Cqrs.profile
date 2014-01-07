@@ -49,6 +49,18 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IProperty" />
       </metaclasses>
     </stereotype>
+
+    <stereotype name="Command" displayName="Command">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
+      </metaclasses>
+    </stereotype>
+    <stereotype name="Event" displayName="Event">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
+      </metaclasses>
+    </stereotype>
+
   </stereotypes>
 
   <metaclasses>
