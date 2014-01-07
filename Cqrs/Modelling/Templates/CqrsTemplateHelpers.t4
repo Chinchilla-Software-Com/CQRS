@@ -11,7 +11,7 @@
 	
 	private string WebsiteURL
 	{
-		get { return "http://.co.nz"; }
+		get { return "http://www.cdmdotnet.com"; }
 	}
 
 	private string DataContractVersionNumber
@@ -123,10 +123,25 @@
 		for (int i = 0; i < parameters.Count(); i++)
 		{
 			IParameter parameter = parameters.ElementAt(i);
-			if (i > 0) methodParameterList += ", ";
-			{
-				methodParameterList += (GetFullDisplayType(parameter, false) + " " + parameter.Name);
-			}
+			if (i > 0)
+				methodParameterList += ", ";
+			methodParameterList += (GetFullDisplayType(parameter, false) + " " + parameter.Name);
+		}
+		
+		return methodParameterList;
+	}
+
+	private string GetMethodParameterNameList(IOperation operation)
+	{
+		var methodParameterList = string.Empty;
+		
+		var parameters = operation.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);
+		for (int i = 0; i < parameters.Count(); i++)
+		{
+			IParameter parameter = parameters.ElementAt(i);
+			if (i > 0)
+				methodParameterList += ", ";
+			methodParameterList += parameter.Name;
 		}
 		
 		return methodParameterList;
