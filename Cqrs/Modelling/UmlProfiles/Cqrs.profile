@@ -33,6 +33,23 @@
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
+      <properties>
+        <property name="BuildCreateEvent" displayName="BuildCreateEvent: Automatically adds a Create method, event and command" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="BuildUpdateEvent" displayName="BuildUpdateEvent: Automatically adds a Update method, event and command" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="BuildDeleteEvent" displayName="BuildDeleteEvent: Automatically adds a Delete method, event and command" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+      </properties>
     </stereotype>
     <stereotype name="Entity" displayName="Entity">
       <metaclasses>

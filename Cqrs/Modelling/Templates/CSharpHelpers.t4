@@ -207,7 +207,7 @@
 	private static List<string> GetUnboundClassifierName(IClassifier classifier, Assemble assemble)
 	{
 		string classifierName = GetName(classifier);
-		var templateParameterNames = TemplateParameterNames(classifier);     
+		var templateParameterNames = TemplateParameterNames(classifier);
 		return assemble(classifierName, templateParameterNames);
 	}
 
@@ -372,7 +372,7 @@
 	/// <param name="classifier">The classifier</param>
 	/// <returns>The constraint of the classifier</returns>
 	private void WriteClassifierConstraintOption(IClassifier classifier)
-	{        
+	{
 		var templateParameters = ClassifierTemplateParameters(classifier);
 		foreach (var templateParameter in templateParameters)
 		{
@@ -895,6 +895,18 @@
 		{
 			return Enumerable.Union(NamespaceHierarchy(namespaceElement.Namespace) , new []{ namespaceElement });
 		}
+	}
+
+	/// <summary>
+	/// Get the namespace string of the parent for the given classifier.
+	/// Note: we assume root model stands for the global namespace therefore
+	///       we won't show root model in the namespace.
+	/// </summary>
+	/// <param name="classifier">The classifier</param>
+	/// <returns>The name of the classifier</returns>
+	private static string GetParentNamespace(IClassifier classifier)
+	{
+		return GetNamespace(classifier.OwningPackage.Namespace);
 	}
 
 	#endregion GetNamespace

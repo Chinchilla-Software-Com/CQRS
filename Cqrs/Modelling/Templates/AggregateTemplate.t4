@@ -26,6 +26,7 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using Cqrs.Domain;
+using <#= GetParentNamespace(this.Element) #>.Events;
 
 namespace <#= classNamespace #>
 {
@@ -87,6 +88,87 @@ namespace <#= classNamespace #>
 		}
 
 		partial void On<#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>);
+<#
+		}
+#>
+<#
+		// Auto Create Method
+		bool buildCreatedEvent = steroTypeProperties.PropertyInstances
+			.Single(property => property.Name == "BuildCreateEvent")
+			.Value == "true";
+
+		if (buildCreatedEvent)
+		{
+#>
+
+		public void Create<#= className #>(<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+		}
+#>)
+		{
+			ApplyChange(new <#= className #>Created(Rsn<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#>, <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+		}
+#>));
+		}
+<#
+		}
+#>
+<#
+		// Auto Update Method
+		bool buildUpdatedEvent = steroTypeProperties.PropertyInstances
+			.Single(property => property.Name == "BuildUpdateEvent")
+			.Value == "true";
+
+		if (buildUpdatedEvent)
+		{
+#>
+
+		public void Update<#= className #>(<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+		}
+#>)
+		{
+			ApplyChange(new <#= className #>Updated(Rsn<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#>, <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+		}
+#>));
+		}
+<#
+		}
+#>
+<#
+		// Auto Delete Method
+		bool buildDeletedEvent = steroTypeProperties.PropertyInstances
+			.Single(property => property.Name == "BuildDeleteEvent")
+			.Value == "true";
+
+		if (buildDeletedEvent)
+		{
+#>
+
+		public void Delete<#= className #>(<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+		}
+#>)
+		{
+			ApplyChange(new <#= className #>Deleted(Rsn));
+		}
 <#
 		}
 #>
