@@ -44,12 +44,26 @@ namespace <#= classNamespace #>.Commands.Handlers
 
 		public void Handle(Delete<#= className #> command)
 		{
-			<#= className #> item = UnitOfWork.Get<<#= className #>>(command.Rsn);
+			<#= className #> item = null;
+			OnDelete<#= className #>(command, ref item);
+			if (item == null)
+				item = UnitOfWork.Get<<#= className #>>(command.Rsn);
 			item.Delete<#= className #>();
+			OnDeleted<#= className #>(command, item);
+			OnCommit(command, item);
 			UnitOfWork.Commit();
+			OnCommited(command, item);
 		}
 
 		#endregion
+
+		partial void OnDelete<#= className #>(Delete<#= className #> command, ref <#= className #> item);
+
+		partial void OnDeleted<#= className #>(Delete<#= className #> command, <#= className #> item);
+
+		partial void OnCommit(Delete<#= className #> command, <#= className #> item);
+
+		partial void OnCommited(Delete<#= className #> command, <#= className #> item);
 	}
 }
 <#+

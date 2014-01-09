@@ -36,7 +36,6 @@ namespace <#= classNamespace #>
 	<#= GetGeneratedCodeAttribute() #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #> : <#= baseClass #>
 	{
-
 		public Guid Rsn
 		{
 			get { return Id; }
@@ -49,6 +48,7 @@ namespace <#= classNamespace #>
 		foreach(var collectionProperty in collectionProperties)
 		{
 #>
+<# WriteSummaryComment(collectionProperty.Description); #>
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; private set; }
 
 <#
@@ -101,6 +101,9 @@ namespace <#= classNamespace #>
 		{
 #>
 
+		/// <summary>
+		/// Create a new instance of the <see cref="<#= className #>"/>
+		/// </summary>
 		public void Create<#= className #>(<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
@@ -109,6 +112,13 @@ namespace <#= classNamespace #>
 		}
 #>)
 		{
+			OnCreate<#= className #>(<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+		}
+#>);
 			ApplyChange(new <#= className #>Created(Rsn<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
@@ -116,7 +126,30 @@ namespace <#= classNamespace #>
 			#>, <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>));
+			OnCreated<#= className #>(<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
+#>);
+		}
+
+		partial void OnCreate<#= className #>(<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+		}
+#>);
+
+		partial void OnCreated<#= className #>(<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+		}
+#>);
 <#
 		}
 #>
@@ -130,6 +163,9 @@ namespace <#= classNamespace #>
 		{
 #>
 
+		/// <summary>
+		/// Update an existing instance of the <see cref="<#= className #>"/>
+		/// </summary>
 		public void Update<#= className #>(<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
@@ -138,6 +174,13 @@ namespace <#= classNamespace #>
 		}
 #>)
 		{
+			OnUpdate<#= className #>(<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+		}
+#>);
 			ApplyChange(new <#= className #>Updated(Rsn<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
@@ -145,7 +188,30 @@ namespace <#= classNamespace #>
 			#>, <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>));
+			OnUpdated<#= className #>(<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
+#>);
+		}
+
+		partial void OnUpdate<#= className #>(<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+		}
+#>);
+
+		partial void OnUpdated<#= className #>(<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+		}
+#>);
 <#
 		}
 #>
@@ -159,10 +225,19 @@ namespace <#= classNamespace #>
 		{
 #>
 
+		/// <summary>
+		/// Logically delete an existing instance of the <see cref="<#= className #>"/>
+		/// </summary>
 		public void Delete<#= className #>()
 		{
+			OnDelete<#= className #>();
 			ApplyChange(new <#= className #>Deleted(Rsn));
+			OnDeleted<#= className #>();
 		}
+
+		partial void OnDelete<#= className #>();
+
+		partial void OnDeleted<#= className #>();
 <#
 		}
 #>

@@ -44,7 +44,10 @@ namespace <#= classNamespace #>.Commands.Handlers
 
 		public void Handle(Create<#= className #> command)
 		{
-			var item = new <#= className #>(Guid.NewGuid());
+			<#= className #> item = null;
+			OnCreate<#= className #>(command, ref item);
+			if (item == null)
+				item = new <#= className #>(Guid.NewGuid());
 			item.Create<#= className #>(<#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
 		for (int i = 0; i < collectionProperties.Count; i++)
@@ -53,11 +56,28 @@ namespace <#= classNamespace #>.Commands.Handlers
 			#><#= (i == 0) ? string.Empty : ", " #>command.<#= collectionProperty.Name #><#
 		}
 #>);
+			OnCreated<#= className #>(command, item);
+			OnAddToUnitOfWork(command, item);
 			UnitOfWork.Add(item);
+			OnAddedToUnitOfWork(command, item);
+			OnCommit(command, item);
 			UnitOfWork.Commit();
+			OnCommited(command, item);
 		}
 
 		#endregion
+
+		partial void OnCreate<#= className #>(Create<#= className #> command, ref <#= className #> item);
+
+		partial void OnCreated<#= className #>(Create<#= className #> command, <#= className #> item);
+
+		partial void OnAddToUnitOfWork(Create<#= className #> command, <#= className #> item);
+
+		partial void OnAddedToUnitOfWork(Create<#= className #> command, <#= className #> item);
+
+		partial void OnCommit(Create<#= className #> command, <#= className #> item);
+
+		partial void OnCommited(Create<#= className #> command, <#= className #> item);
 	}
 }
 <#+
