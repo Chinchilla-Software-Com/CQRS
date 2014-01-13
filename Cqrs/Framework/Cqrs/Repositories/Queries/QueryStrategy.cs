@@ -12,7 +12,7 @@ namespace Cqrs.Repositories.Queries
 
 		#endregion
 
-		internal virtual QueryPredicate IsNotLogicallyDeleted()
+		public virtual QueryPredicate IsNotLogicallyDeleted()
 		{
 			return BuildQueryPredicate(IsNotLogicallyDeleted);
 		}
