@@ -2,7 +2,7 @@
 
 namespace Cqrs.Mongo.Factories
 {
-	internal class MongoDataStoreConnectionStringFactory : IMongoDataStoreConnectionStringFactory
+	public class MongoDataStoreConnectionStringFactory : IMongoDataStoreConnectionStringFactory
 	{
 		private const string MongoDbConnectionStringKey = "CqrsMongoDb";
 
