@@ -34,17 +34,47 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
       <properties>
-        <property name="BuildCreateEvent" displayName="BuildCreateEvent: Automatically adds a Create method, event and command" defaultValue="true">
+        <property name="BuildCreateCommand" displayName="BuildCreateEvent: Automatically adds a Create event, command, event handler and command handler" defaultValue="true">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
-        <property name="BuildUpdateEvent" displayName="BuildUpdateEvent: Automatically adds a Update method, event and command" defaultValue="true">
+        <property name="BuildUpdateCommand" displayName="BuildUpdateEvent: Automatically adds a Update event, command, event handler and command handler" defaultValue="true">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
-        <property name="BuildDeleteEvent" displayName="BuildDeleteEvent: Automatically adds a Delete method, event and command" defaultValue="true">
+        <property name="BuildDeleteCommand" displayName="BuildDeleteEvent: Automatically adds a Delete event, command, event handler and command handler" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="BuildCreateServiceMethod" displayName="BuildCreateEvent: Automatically adds a Create method to the aggregate service" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="BuildUpdateServiceMethod" displayName="BuildUpdateEvent: Automatically adds a Update method to the aggregate service" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="BuildDeleteServiceMethod" displayName="BuildDeleteEvent: Automatically adds a Delete method to the aggregate service" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="BuildCreateControllerMethod" displayName="BuildCreateEvent: Automatically adds a Create method to the aggregate MVC controller" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="BuildUpdateControllerMethod" displayName="BuildUpdateEvent: Automatically adds a Update method to the aggregate MVC controller" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="BuildDeleteControllerMethod" displayName="BuildDeleteEvent: Automatically adds a Delete method to the aggregate MVC controller" defaultValue="true">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
