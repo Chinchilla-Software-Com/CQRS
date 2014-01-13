@@ -129,6 +129,13 @@
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
+      <properties>
+        <property name="AggregateRootName" displayName="AggregateRootName: The name of the aggregate root this service is focused on." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+      </properties>
     </stereotype>
 
   </stereotypes>
