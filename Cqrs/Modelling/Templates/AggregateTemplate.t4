@@ -82,7 +82,7 @@ namespace <#= classNamespace #>
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
 #>
-		public void <#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>)
+		public virtual void <#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>)
 		{
 			On<#= collectionMethod.Name #>(<#= GetMethodParameterNameList(collectionMethod) #>);
 		}
@@ -104,7 +104,7 @@ namespace <#= classNamespace #>
 		/// <summary>
 		/// Create a new instance of the <see cref="<#= className #>"/>
 		/// </summary>
-		public void Create<#= className #>(<#
+		public virtual void Create<#= className #>(<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
@@ -166,7 +166,7 @@ namespace <#= classNamespace #>
 		/// <summary>
 		/// Update an existing instance of the <see cref="<#= className #>"/>
 		/// </summary>
-		public void Update<#= className #>(<#
+		public virtual void Update<#= className #>(<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
@@ -228,7 +228,7 @@ namespace <#= classNamespace #>
 		/// <summary>
 		/// Logically delete an existing instance of the <see cref="<#= className #>"/>
 		/// </summary>
-		public void Delete<#= className #>()
+		public virtual void Delete<#= className #>()
 		{
 			OnDelete<#= className #>();
 			ApplyChange(new <#= className #>Deleted(Rsn));

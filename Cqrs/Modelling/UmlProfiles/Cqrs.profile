@@ -5,6 +5,13 @@
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IPackage" />
       </metaclasses>
+      <properties>
+        <property name="AuthenticationTokenType" displayName="AuthenticationTokenType: The type of authentication token" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+      </properties>
     </stereotype>
     <stereotype name="Module" displayName="Module">
       <metaclasses>
@@ -81,9 +88,19 @@
         </property>
       </properties>
     </stereotype>
+    <stereotype name="AggregateProperty" displayName="Aggregate Property">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IProperty" />
+      </metaclasses>
+    </stereotype>
     <stereotype name="Entity" displayName="Entity">
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
+      </metaclasses>
+    </stereotype>
+    <stereotype name="EntityProperty" displayName="Entity Property">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IProperty" />
       </metaclasses>
     </stereotype>
     <stereotype name="ValueObject" displayName="Value Object">
@@ -103,6 +120,12 @@
       </metaclasses>
     </stereotype>
     <stereotype name="Event" displayName="Event">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
+      </metaclasses>
+    </stereotype>
+
+    <stereotype name="Service" displayName="Service">
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
