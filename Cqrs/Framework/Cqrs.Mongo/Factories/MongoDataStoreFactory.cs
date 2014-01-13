@@ -5,7 +5,7 @@ namespace Cqrs.Mongo.Factories
 	/// <summary>
 	/// A factory for obtaining DataStore collections from Mongo
 	/// </summary>
-	internal class MongoDataStoreFactory
+	public class MongoDataStoreFactory
 	{
 		protected IMongoDataStoreConnectionStringFactory MongoDataStoreConnectionStringFactory { get; private set; }
 
