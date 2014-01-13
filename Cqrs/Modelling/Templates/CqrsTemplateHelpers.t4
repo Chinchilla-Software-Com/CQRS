@@ -59,11 +59,6 @@
 		else
 			typeName = CSharpTranslation(typedElement.Type.Name);
 
-		if (typeName.StartsWith("Root::"))
-		{
-			typeName = typeName.Substring(6).Replace("::", ".");
-		}
-
 		return typeName;
 	}
 
@@ -265,6 +260,36 @@
 				currentElement.OwnedElements
 				.FirstOrDefault(e => e is INamedElement && ((INamedElement)e).Name.Equals(pathElements[i], StringComparison.InvariantCultureIgnoreCase)) as INamedElement;
 		}
+
+		return currentElement;
+	}
+
+	private INamedElement GetAggregateRootByFullName(IElement elt, string elementName)
+	{
+		INamedElement currentElement = GetRoot(elt);
+
+		string[] pathElements = elementName.Split(new string[] {"::"}, StringSplitOptions.None);
+
+		// The first path element will be the domain element so start searching for the second one within its owned elements
+		for (int i = 0; i < pathElements.Length; i++)
+		{
+			if (currentElement == null || currentElement.OwnedElements == null)
+				return null;
+			currentElement = 
+				currentElement.OwnedElements
+				.FirstOrDefault
+				(e =>
+					e is INamedElement
+						&&
+					((INamedElement)e).Name.Equals(pathElements[i], StringComparison.InvariantCultureIgnoreCase)
+				) as INamedElement;
+		}
+
+		if (currentElement == null)
+			return null;
+
+		if (!currentElement.AppliedStereotypes.Any(property => property.Name == "AggregateRoot"))
+			return null;
 
 		return currentElement;
 	}

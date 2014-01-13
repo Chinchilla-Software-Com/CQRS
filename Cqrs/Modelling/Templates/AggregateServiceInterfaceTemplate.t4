@@ -3,6 +3,7 @@
 <#@ Import Namespace="Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml" #>
 <#@ Import Namespace="Microsoft.VisualStudio.Uml.AuxiliaryConstructs" #>
 <#@ import namespace="Microsoft.VisualStudio.Uml.Classes" #>
+<#@ import namespace="System.Linq" #>
 <#@ Include File="CSharpCommentHelpers.t4" #>
 <#@ Include File="CSharpHelpers.t4" #>
 <#@ Include File="CqrsTemplateHelpers.t4" #>
@@ -25,9 +26,10 @@ if (!string.IsNullOrWhiteSpace(baseClass))
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 
-namespace <#= classNamespace #>
+namespace <#= classNamespace #>.Services
 {
 <#
 	// Class and Attributes
@@ -39,7 +41,7 @@ namespace <#= classNamespace #>
 <#
 		// Auto Create Method
 		bool buildCreatedEvent = steroTypeProperties.PropertyInstances
-			.Single(property => property.Name == "BuildCreateCommand")
+			.Single(property => property.Name == "BuildCreateServiceMethod")
 			.Value == "true";
 
 		if (buildCreatedEvent)
@@ -57,7 +59,7 @@ namespace <#= classNamespace #>
 <#
 		// Auto Update Method
 		bool buildUpdatedEvent = steroTypeProperties.PropertyInstances
-			.Single(property => property.Name == "BuildUpdateCommand")
+			.Single(property => property.Name == "BuildUpdateServiceMethod")
 			.Value == "true";
 
 		if (buildUpdatedEvent)
@@ -67,6 +69,7 @@ namespace <#= classNamespace #>
 		/// <summary>
 		/// Update an existing instance of the <see cref="Entities.<#= className #>"/>
 		/// </summary>
+		[OperationContract]
 		IServiceResponseWithResultData<Entities.<#= className #>> Update<#= className #>(IServiceRequest<string, Entities.<#= className #>> serviceRequest);
 <#
 		}
@@ -74,7 +77,7 @@ namespace <#= classNamespace #>
 <#
 		// Auto Delete Method
 		bool buildDeletedEvent = steroTypeProperties.PropertyInstances
-			.Single(property => property.Name == "BuildDeleteCommand")
+			.Single(property => property.Name == "BuildDeleteServiceMethod")
 			.Value == "true";
 
 		if (buildDeletedEvent)
@@ -84,7 +87,8 @@ namespace <#= classNamespace #>
 		/// <summary>
 		/// Logically delete an existing instance of the <see cref="Entities.<#= className #>"/>
 		/// </summary>
-		IServiceResponseWithResultData<Entities.<#= className #>> Delete<#= className #>(IServiceRequest<string, Entities.<#= className #>> serviceRequest);
+		[OperationContract]
+		IServiceResponse Delete<#= className #>(IServiceRequest<string, Entities.<#= className #>> serviceRequest);
 <#
 		}
 #>
