@@ -138,6 +138,12 @@
       </properties>
     </stereotype>
 
+    <stereotype name="InternalCSharpNamespace" displayName="Internal C# Namespace" >
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IPackage" />
+      </metaclasses>
+    </stereotype>
+
   </stereotypes>
 
   <metaclasses>
