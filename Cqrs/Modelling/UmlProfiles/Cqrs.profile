@@ -6,7 +6,7 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IPackage" />
       </metaclasses>
       <properties>
-        <property name="AuthenticationTokenType" displayName="AuthenticationTokenType: The type of authentication token" defaultValue="true">
+        <property name="AuthenticationTokenType" displayName="AuthenticationTokenType: The type of authentication token">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
@@ -147,6 +147,31 @@
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IPackage" />
       </metaclasses>
+    </stereotype>
+
+    <stereotype name="QueryStrategy" displayName="Query Strategy">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
+      </metaclasses>
+      <properties>
+        <property name="AggregateRootName" displayName="AggregateRootName: The name of the aggregate root this service is focused on." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+      </properties>
+    </stereotype>
+    <stereotype name="QueryStrategyMethod" displayName="Query Strategy Method">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IOperation" />
+      </metaclasses>
+      <properties>
+        <property name="IsNotLogicallyDeleted" displayName="IsNotLogicallyDeleted: Returned values must not be logically deleted." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+      </properties>
     </stereotype>
 
   </stereotypes>
