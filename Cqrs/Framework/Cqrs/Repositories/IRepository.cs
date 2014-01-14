@@ -4,7 +4,7 @@ using Cqrs.Repositories.Queries;
 
 namespace Cqrs.Repositories
 {
-	internal interface IRepository<TQueryStrategy, TData>
+	public interface IRepository<TQueryStrategy, TData>
 		where TQueryStrategy : IQueryStrategy, new()
 	{
 		void Create(TData data);

@@ -86,6 +86,11 @@
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
+        <property name="BuildRepository" displayName="BuildRepository: Automatically adds a respository for the aggregate" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
     <stereotype name="AggregateProperty" displayName="Aggregate Property">
