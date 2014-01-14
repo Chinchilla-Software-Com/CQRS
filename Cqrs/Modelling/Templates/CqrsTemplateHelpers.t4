@@ -16,7 +16,7 @@
 
 	private string DataContractVersionNumber
 	{
-		get { return "1000"; }
+		get { return "1001"; }
 	}
 
 	private static List<string> GetNamespaces(IClassifier classifier, params string[] extraNamespaces)
@@ -39,6 +39,19 @@
 		}
 
 		return string.Format("[DataContract(Namespace=\"{0}{1}{2}/\")]", WebsiteURL, urlNamespace, DataContractVersionNumber);
+	}
+
+	private string GetServiceContractAttribute(IClassifier classifier)
+	{
+		string urlNamespace = "/";
+		string classNamespace = GetNamespace(classifier.Namespace);
+		if (!string.IsNullOrEmpty(classNamespace))
+		{
+			var nsSplit = classNamespace.Split('.');
+			nsSplit.Skip(1).ToList().ForEach(p => urlNamespace += p + "/");
+		}
+
+		return string.Format("[ServiceContract(Namespace=\"{0}{1}{2}/\")]", WebsiteURL, urlNamespace, DataContractVersionNumber);
 	}
 
 	private string GetGeneratedCodeAttribute()
