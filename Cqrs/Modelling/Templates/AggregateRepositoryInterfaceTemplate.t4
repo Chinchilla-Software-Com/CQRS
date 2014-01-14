@@ -29,14 +29,16 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using Cqrs.Repositories;
+using uSure.Domain.Factories;
+using <#= classNamespace #>.Repositories.Queries.Strategies;
 
-namespace <#= classNamespace #>.Services
+namespace <#= classNamespace #>.Repositories
 {
 <#
 	// Class and Attributes
 #>
 	<#= GetGeneratedCodeAttribute() #>
-	public partial interface I<#= className #>Repository : <#= baseClass #>IRepository<<#= className #>QueryStrategy, Entities.<#= className #>>
+	public partial interface I<#= className #>Repository : <#= baseClass #>IRepository<I<#= className #>QueryStrategy, Entities.<#= className #>>
 	{
 	}
 }

@@ -26,16 +26,18 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using Cqrs.Repositories;
+using uSure.Domain.Factories;
+using <#= classNamespace #>.Repositories.Queries.Strategies;
 
-namespace <#= classNamespace #>.Services
+namespace <#= classNamespace #>.Repositories
 {
 <#
 	// Class and Attributes
 #>
 	<#= GetGeneratedCodeAttribute() #>
-	public partial class <#= className #>Repository : Repository<<#= className #>QueryStrategy, Entities.<#= className #>>, I<#= className #>Repository<<#= className #>QueryStrategy, Entities.<#= className #>>
+	public partial class <#= className #>Repository : Repository<<#= className #>QueryStrategy, <#= className #>QueryStrategyBuilder, Entities.<#= className #>>, I<#= className #>Repository
 	{
-		public <#= className #>Repository(IDataStoreFactory dataStoreFactory, <#= className #>QueryBuilder <#= GetLowercaseFirstCharacter(className) #>QueryBuilder)
+		public <#= className #>Repository(IDataStoreFactory dataStoreFactory, <#= className #>QueryStrategyBuilder <#= GetLowercaseFirstCharacter(className) #>QueryBuilder)
 			: base(dataStoreFactory.Get<#= className #>DataStore(), <#= GetLowercaseFirstCharacter(className) #>QueryBuilder)
 		{
 		}
