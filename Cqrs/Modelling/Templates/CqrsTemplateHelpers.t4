@@ -258,6 +258,23 @@
 		}
 	}
 
+	private static IElement FindModuleElement(IElement t)
+	{
+		var domainStereoType = t.AppliedStereotypes.FirstOrDefault(s => s.Name == "Module");
+		if (domainStereoType != null)
+		{
+			return (t as INamedElement);
+		}
+		else if (t.Owner != null) 
+		{
+			return FindModuleElement(t.Owner);
+		}
+		else
+		{
+			return null;
+		}
+	}
+
 	private INamedElement GetRoot(IElement t)
 	{
 		var result = t;

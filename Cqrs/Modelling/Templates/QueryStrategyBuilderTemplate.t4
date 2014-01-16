@@ -39,7 +39,7 @@ namespace <#= classNamespace #>
 	<#= GetGeneratedCodeAttribute() #>
 	public partial class <#= className #>Builder : QueryBuilder<<#= className #>, Entities.<#= aggregateRootName #>>, I<#= className #>Builder
 	{
-		public <#= className #>Builder(IDataStoreFactory dataStoreFactory)
+		public <#= className #>Builder(IDomainDataStoreFactory dataStoreFactory)
 			: base(dataStoreFactory.Get<#= aggregateRootName #>DataStore())
 		{
 		}
@@ -54,15 +54,27 @@ namespace <#= classNamespace #>
 			IQueryable<Entities.<#= aggregateRootName #>> resultingQueryable;
 <#
 		IList<IOperation> collectionMethods = GetMethodList(this.Element);
+
 		// If statements from Methods
+		var methodNameList = new List<string>();
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
-#>
-			if (queryPredicate.Name == GetFunctionName<<#= GetMethodParameterTypeList(collectionMethod) #>>(queryStrategy.<#= collectionMethod.Name #>))
+			string partialMethodName = collectionMethod.Name;
+			int i = 1;
+			while (methodNameList.Contains(partialMethodName))
 			{
-				OnGeneratePredicate<#= className #>(queryPredicate, leftHandQueryable, parameters, ref resultingQueryable);
-				GeneratePredicate<#= className #>(parameters, leftHandQueryable, ref resultingQueryable);
-				OnGeneratePredicated<#= className #>(queryPredicate, leftHandQueryable, parameters, ref resultingQueryable);
+				partialMethodName = string.Format("{0}{1}", partialMethodName, i++);
+			}
+			methodNameList.Add(partialMethodName);
+			string methodParameters = GetMethodParameterTypeList(collectionMethod);
+			if (!string.IsNullOrWhiteSpace(methodParameters))
+				methodParameters = "<" + methodParameters + ">";
+#>
+			if (queryPredicate.Name == GetFunctionName<#= methodParameters #>(queryStrategy.<#= collectionMethod.Name #>))
+			{
+				OnGeneratePredicate<#= partialMethodName #>(queryPredicate, leftHandQueryable, parameters, ref resultingQueryable);
+				GeneratePredicate<#= partialMethodName #>(parameters, leftHandQueryable, ref resultingQueryable);
+				OnGeneratePredicated<#= partialMethodName #>(queryPredicate, leftHandQueryable, parameters, ref resultingQueryable);
 			}
 <#
 		}
@@ -74,15 +86,23 @@ namespace <#= classNamespace #>
 		#endregion
 <#
 		// Partial methods from Methods
+		methodNameList = new List<string>();
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
+			string partialMethodName = collectionMethod.Name;
+			int i = 1;
+			while (methodNameList.Contains(partialMethodName))
+			{
+				partialMethodName = string.Format("{0}{1}", partialMethodName, i++);
+			}
+			methodNameList.Add(partialMethodName);
 #>
 
-		partial void OnGeneratePredicate<#= className #>(QueryPredicate queryPredicate, IQueryable<Entities.<#= aggregateRootName #>> leftHandQueryable, SortedSet<QueryParameter> parameters, ref IQueryable<Entities.<#= aggregateRootName #>> resultingQueryable);
+		partial void OnGeneratePredicate<#= partialMethodName #>(QueryPredicate queryPredicate, IQueryable<Entities.<#= aggregateRootName #>> leftHandQueryable, SortedSet<QueryParameter> parameters, ref IQueryable<Entities.<#= aggregateRootName #>> resultingQueryable);
 
-		partial void GeneratePredicate<#= className #>(SortedSet<QueryParameter> parameters, IQueryable<Entities.<#= aggregateRootName #>> leftHandQueryable, ref IQueryable<Entities.<#= aggregateRootName #>> resultingQueryable);
+		partial void GeneratePredicate<#= partialMethodName #>(SortedSet<QueryParameter> parameters, IQueryable<Entities.<#= aggregateRootName #>> leftHandQueryable, ref IQueryable<Entities.<#= aggregateRootName #>> resultingQueryable);
 
-		partial void OnGeneratePredicated<#= className #>(QueryPredicate queryPredicate, IQueryable<Entities.<#= aggregateRootName #>> leftHandQueryable, SortedSet<QueryParameter> parameters, ref IQueryable<Entities.<#= aggregateRootName #>> resultingQueryable);
+		partial void OnGeneratePredicated<#= partialMethodName #>(QueryPredicate queryPredicate, IQueryable<Entities.<#= aggregateRootName #>> leftHandQueryable, SortedSet<QueryParameter> parameters, ref IQueryable<Entities.<#= aggregateRootName #>> resultingQueryable);
 <#
 		}
 #>

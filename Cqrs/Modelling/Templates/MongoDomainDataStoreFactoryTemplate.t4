@@ -35,9 +35,9 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 	/// <summary>
 	/// A factory for obtaining <see cref="IDataStore{TData}"/> instances from Mongo
 	/// </summary>
-	public partial class Mongo<#= className #>DataStoreFactory : Cqrs.Mongo.Factories.MongoDataStoreFactory, I<#= className #>DataStoreFactory
+	public partial class <#= className #>MongoDataStoreFactory : Cqrs.Mongo.Factories.MongoDataStoreFactory, I<#= className #>DataStoreFactory
 	{
-		public Mongo<#= className #>DataStoreFactory(IMongoDataStoreConnectionStringFactory mongoDataStoreConnectionStringFactory)
+		public <#= className #>MongoDataStoreFactory(IMongoDataStoreConnectionStringFactory mongoDataStoreConnectionStringFactory)
 			: base(mongoDataStoreConnectionStringFactory)
 		{
 		}
@@ -47,15 +47,16 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 <#
 		foreach (var element in AllElements(this.Element, "AggregateRoot").OfType<INamedElement>().OrderBy(e => e.Name))
 		{
-			var elementName = element.Name;
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
 #>
-		public virtual IDataStore<<#= elementName #>> Get<#= elementName #>DataStore()
+		public virtual IDataStore<<#= moduleName #>.Entities.<#= elementName #>> Get<#= elementName #>DataStore()
 		{
 			OnObtain<#= elementName #>Collection();
-			MongoCollection<<#= elementName #>> collection = GetCollection<<#= elementName #>>();
+			MongoCollection<<#= moduleName #>.Entities.<#= elementName #>> collection = GetCollection<<#= moduleName #>.Entities.<#= elementName #>>();
 			OnObtained<#= elementName #>Collection(ref collection);
 			VerifyIndexes(collection);
-			return new MongoDataStore<<#= elementName #>>(collection);
+			return new MongoDataStore<<#= moduleName #>.Entities.<#= elementName #>>(collection);
 		}
 
 <#
@@ -66,13 +67,14 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 <#
 		foreach (var element in AllElements(this.Element, "AggregateRoot").OfType<INamedElement>().OrderBy(e => e.Name))
 		{
-			var elementName = element.Name;
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
 #>
 		partial void OnObtain<#= elementName #>Collection();
 
-		partial void OnObtained<#= elementName #>Collection(ref MongoCollection<<#= elementName #>> collection);
+		partial void OnObtained<#= elementName #>Collection(ref MongoCollection<<#= moduleName #>.Entities.<#= elementName #>> collection);
 
-		partial void VerifyIndexes(MongoCollection<<#= elementName #>> collection);
+		partial void VerifyIndexes(MongoCollection<<#= moduleName #>.Entities.<#= elementName #>> collection);
 
 <#
 		}

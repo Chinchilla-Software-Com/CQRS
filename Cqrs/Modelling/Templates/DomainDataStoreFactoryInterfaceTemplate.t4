@@ -37,9 +37,10 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 <#
 		foreach (var element in AllElements(this.Element, "AggregateRoot").OfType<INamedElement>().OrderBy(e => e.Name))
 		{
-			var elementName = element.Name;
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
 #>
-		IDataStore<<#= elementName #>> Get<#= elementName #>DataStore();
+		IDataStore<<#= moduleName #>.Entities.<#= elementName #>> Get<#= elementName #>DataStore();
 
 <#
 		}

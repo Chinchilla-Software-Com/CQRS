@@ -21,6 +21,7 @@ string className = ClassifierName(this.Element);
 // using statements
 #>
 
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using Cqrs.Repositories.Queries;
@@ -52,9 +53,14 @@ namespace <#= classNamespace #>
 <#
 			}
 		}
-
+		if (methodSteroTypeProperties.PropertyInstances.Any(property => property.Name == "IncludeBody" && property.Value == "true"))
+		{
 #>
 			QueryPredicate = And(BuildQueryPredicate(<#= collectionMethod.Name #>, <#= GetMethodParameterNameList(collectionMethod) #>));
+<#
+		}
+
+#>
 			On<#= collectionMethod.Name #>(<#= GetMethodParameterNameList(collectionMethod) #>);
 
 			return this;
