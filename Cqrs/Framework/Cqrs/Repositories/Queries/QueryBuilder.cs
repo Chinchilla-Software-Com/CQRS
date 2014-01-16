@@ -80,6 +80,26 @@ namespace Cqrs.Repositories.Queries
 			return expression.Method.Name;
 		}
 
+		protected virtual string GetFunctionName<TParameter1, TParameter2>(Func<TParameter1, TParameter2, TQueryStrategy> expression)
+		{
+			return expression.Method.Name;
+		}
+
+		protected virtual string GetFunctionName<TParameter1, TParameter2, TParameter3>(Func<TParameter1, TParameter2, TParameter3, TQueryStrategy> expression)
+		{
+			return expression.Method.Name;
+		}
+
+		protected virtual string GetFunctionName<TParameter1, TParameter2, TParameter3, TParameter4>(Func<TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy> expression)
+		{
+			return expression.Method.Name;
+		}
+
+		protected virtual string GetFunctionName<TParameter1, TParameter2, TParameter3, TParameter4, TParameter5>(Func<TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy> expression)
+		{
+			return expression.Method.Name;
+		}
+
 		protected virtual TQueryStrategy GetNullQueryStrategy()
 		{
 			return new TQueryStrategy();

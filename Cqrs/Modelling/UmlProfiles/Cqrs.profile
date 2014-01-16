@@ -166,7 +166,12 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IOperation" />
       </metaclasses>
       <properties>
-        <property name="IsNotLogicallyDeleted" displayName="IsNotLogicallyDeleted: Returned values must not be logically deleted." defaultValue="">
+        <property name="IsNotLogicallyDeleted" displayName="IsNotLogicallyDeleted: Returned values must not be logically deleted." defaultValue="True">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="IncludeBody" displayName="IncludeBody: Nothing is done to the QueryPredicate." defaultValue="True">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
