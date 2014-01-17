@@ -1,11 +1,20 @@
-﻿namespace Cqrs.Repositories.Queries
+﻿using Cqrs.Config;
+
+namespace Cqrs.Repositories.Queries
 {
 	public class QueryFactory : IQueryFactory
 	{
-		public ISingleResultQuery<TUserQueryStrategy, TData> CreateNewSingleResultQuery<TUserQueryStrategy, TData>()
-			where TUserQueryStrategy : IQueryStrategy, new()
+		protected IServiceLocator DependencyResolver { get; private set; }
+
+		protected QueryFactory(IServiceLocator dependencyResolver)
 		{
-			var queryStrategy = new TUserQueryStrategy();
+			DependencyResolver = dependencyResolver;
+		}
+
+		public ISingleResultQuery<TUserQueryStrategy, TData> CreateNewSingleResultQuery<TUserQueryStrategy, TData>()
+			where TUserQueryStrategy : IQueryStrategy
+		{
+			var queryStrategy = DependencyResolver.GetService<TUserQueryStrategy>();
 			return new SingleResultQuery<TUserQueryStrategy, TData>
 			{
 				QueryStrategy = queryStrategy
@@ -13,9 +22,9 @@
 		}
 
 		public ICollectionResultQuery<TUserQueryStrategy, TData> CreateNewCollectionResultQuery<TUserQueryStrategy, TData>()
-		where TUserQueryStrategy : IQueryStrategy, new()
+		where TUserQueryStrategy : IQueryStrategy
 		{
-			var queryStrategy = new TUserQueryStrategy();
+			var queryStrategy = DependencyResolver.GetService<TUserQueryStrategy>();
 			return new CollectionResultQuery<TUserQueryStrategy, TData>
 			{
 				QueryStrategy = queryStrategy

@@ -14,37 +14,27 @@ namespace Cqrs.Repositories.Queries
 
 		public virtual IQueryPredicate IsNotLogicallyDeleted()
 		{
-			if (QueryPredicate != null)
-				return BuildQueryPredicate(IsNotLogicallyDeleted);
-			return And(BuildQueryPredicate(IsNotLogicallyDeleted));
+			return BuildQueryPredicate(IsNotLogicallyDeleted);
 		}
 
 		public virtual IQueryPredicate WithPermissionScopeAny<TPermissionScope>(TPermissionScope permissionScope)
 		{
-			if (QueryPredicate != null)
-				return BuildQueryPredicate(WithPermissionScopeAny, permissionScope);
-			return And(BuildQueryPredicate(WithPermissionScopeUser, permissionScope));
+			return BuildQueryPredicate(WithPermissionScopeAny, permissionScope);
 		}
 
 		public virtual IQueryPredicate WithPermissionScopeUser<TPermissionScope>(TPermissionScope permissionScope)
 		{
-			if (QueryPredicate != null)
-				return BuildQueryPredicate(WithPermissionScopeUser, permissionScope);
-			return And(BuildQueryPredicate(WithPermissionScopeUser, permissionScope));
+			return BuildQueryPredicate(WithPermissionScopeUser, permissionScope);
 		}
 
 		public virtual IQueryPredicate WithPermissionScopeCompany<TPermissionScope>(TPermissionScope permissionScope)
 		{
-			if (QueryPredicate != null)
-				return BuildQueryPredicate(WithPermissionScopeCompany, permissionScope);
-			return And(BuildQueryPredicate(WithPermissionScopeUser, permissionScope));
+			return BuildQueryPredicate(WithPermissionScopeCompany, permissionScope);
 		}
 
 		public virtual IQueryPredicate WithPermissionScopeCompanyAndUser<TPermissionScope>(TPermissionScope permissionScope)
 		{
-			if (QueryPredicate != null)
-				return BuildQueryPredicate(WithPermissionScopeCompanyAndUser, permissionScope);
-			return And(BuildQueryPredicate(WithPermissionScopeUser, permissionScope));
+			return BuildQueryPredicate(WithPermissionScopeCompanyAndUser, permissionScope);
 		}
 
 		protected virtual IQueryPredicate BuildQueryPredicate<TData>(Func<TData> func)
