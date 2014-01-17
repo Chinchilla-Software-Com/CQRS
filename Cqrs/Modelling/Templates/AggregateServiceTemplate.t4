@@ -19,7 +19,7 @@ string classNamespace = GetNamespace(this.Element.Namespace);
 string className = ClassifierName(this.Element);
 string baseClass = GetBaseClass(this.Element);
 if (!string.IsNullOrWhiteSpace(baseClass))
-	baseClass = ": " + baseClass;
+	baseClass = baseClass + ", ";
 
 // using statements
 #>
@@ -41,7 +41,7 @@ namespace <#= classNamespace #>.Services
 #>
 	<#= GetGeneratedCodeAttribute() #>
 	<#= GetDataContractAttribute(this.Element) #>
-	public partial class <#= className #>Service <#= baseClass #>
+	public partial class <#= className #>Service : <#= baseClass #>I<#= className #>Service
 	{
 		protected ICommandSender CommandSender { get; private set; }
 
@@ -72,7 +72,7 @@ namespace <#= classNamespace #>.Services
 		/// Create a new instance of the <see cref="Entities.<#= className #>"/>
 		/// </summary>
 		[OperationContract]
-		public IServiceResponseWithResultData<Entities.<#= className #>> Create<#= className #>(IServiceRequest<string, Entities.<#= className #>> serviceRequest)
+		public IServiceResponseWithResultData<Entities.<#= className #>> Create<#= className #>(IServiceRequestWithData<string, Entities.<#= className #>> serviceRequest)
 		{
 			UnitOfWorkService.SetCommitter(this);
 			Entities.<#= className #> item = serviceRequest.Data;
@@ -95,9 +95,9 @@ namespace <#= classNamespace #>.Services
 			return new ServiceResponseWithResultData<Entities.<#= className #>>(item);
 		}
 
-		partial void OnCreate<#= className #>(IServiceRequest<string, Entities.<#= className #>> serviceRequest, Create<#= className #> command);
+		partial void OnCreate<#= className #>(IServiceRequestWithData<string, Entities.<#= className #>> serviceRequest, Create<#= className #> command);
 
-		partial void OnCreated<#= className #>(IServiceRequest<string, Entities.<#= className #>> serviceRequest, Create<#= className #> command);
+		partial void OnCreated<#= className #>(IServiceRequestWithData<string, Entities.<#= className #>> serviceRequest, Create<#= className #> command);
 
 <#
 		}
@@ -115,13 +115,14 @@ namespace <#= classNamespace #>.Services
 		/// Update an existing instance of the <see cref="Entities.<#= className #>"/>
 		/// </summary>
 		[OperationContract]
-		public IServiceResponseWithResultData<Entities.<#= className #>> Update<#= className #>(IServiceRequest<string, Entities.<#= className #>> serviceRequest)
+		public IServiceResponseWithResultData<Entities.<#= className #>> Update<#= className #>(IServiceRequestWithData<string, Entities.<#= className #>> serviceRequest)
 		{
 			UnitOfWorkService.SetCommitter(this);
 			Entities.<#= className #> item = serviceRequest.Data;
+
 			var locatedItem = <#= className #>Repository.Load(item.Rsn);
-			//if (locatedItem.Room.User.Rsn != userRsn)
-			//	return new ServiceResponseWithResultData<uSure.Entities.Inventory> { State = ServiceResponseStateType.FailedAuthentication };
+			if (locatedItem == null)
+				return new ServiceResponseWithResultData<Entities.<#= className #>> { State = ServiceResponseStateType.FailedValidation };
 
 			var command = new Update<#= className #>(item.Rsn<#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
@@ -132,17 +133,23 @@ namespace <#= classNamespace #>.Services
 #>, item.<#= collectionProperty.Name #><#
 		}
 #>);
-			OnUpdate<#= className #>(serviceRequest, command);
+			ServiceResponseStateType? serviceResponseStateType = null;
+			OnUpdate<#= className #>(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
+			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
+				return new ServiceResponseWithResultData<Entities.<#= className #>> { State = serviceResponseStateType.Value };
+
 			CommandSender.Send(command);
-			OnUpdated<#= className #>(serviceRequest, command);
+			OnUpdated<#= className #>(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
+			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
+				return new ServiceResponseWithResultData<Entities.<#= className #>> { State = serviceResponseStateType.Value };
 
 			UnitOfWorkService.Commit(this);
 			return new ServiceResponseWithResultData<Entities.<#= className #>>(item);
 		}
 
-		partial void OnUpdate<#= className #>(IServiceRequest<string, Entities.<#= className #>> serviceRequest, Update<#= className #> command);
+		partial void OnUpdate<#= className #>(IServiceRequestWithData<string, Entities.<#= className #>> serviceRequest, ref Update<#= className #> command, Entities.<#= className #> locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
 
-		partial void OnUpdated<#= className #>(IServiceRequest<string, Entities.<#= className #>> serviceRequest, Update<#= className #> command);
+		partial void OnUpdated<#= className #>(IServiceRequestWithData<string, Entities.<#= className #>> serviceRequest, ref Update<#= className #> command, Entities.<#= className #> locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
 
 <#
 		}
@@ -160,30 +167,36 @@ namespace <#= classNamespace #>.Services
 		/// Logically delete an existing instance of the <see cref="Entities.<#= className #>"/>
 		/// </summary>
 		[OperationContract]
-		public IServiceResponse Delete<#= className #>(IServiceRequest<string, Entities.<#= className #>> serviceRequest)
+		public IServiceResponse Delete<#= className #>(IServiceRequestWithData<string, Entities.<#= className #>> serviceRequest)
 		{
 			UnitOfWorkService.SetCommitter(this);
 			Entities.<#= className #> item = serviceRequest.Data;
+
 			var locatedItem = <#= className #>Repository.Load(item.Rsn, false);
 			if (locatedItem == null)
 				return new ServiceResponseWithResultData<Entities.<#= className #>> { State = ServiceResponseStateType.FailedValidation };
-			//if (locatedItem.Room.User.Rsn != userRsn)
-			//	return new ServiceResponseWithResultData<Entities.<#= className #>> { State = ServiceResponseStateType.FailedAuthentication };
+
 			if (locatedItem.IsLogicallyDeleted)
 				return new ServiceResponseWithResultData<Entities.<#= className #>> { State = ServiceResponseStateType.FailedValidation };
 
 			var command = new Delete<#= className #>(item.Rsn);
-			OnDelete<#= className #>(serviceRequest, command);
+			ServiceResponseStateType? serviceResponseStateType = null;
+			OnDelete<#= className #>(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
+			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
+				return new ServiceResponseWithResultData<Entities.<#= className #>> { State = serviceResponseStateType.Value };
+
 			CommandSender.Send(command);
-			OnDeleted<#= className #>(serviceRequest, command);
+			OnDeleted<#= className #>(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
+			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
+				return new ServiceResponseWithResultData<Entities.<#= className #>> { State = serviceResponseStateType.Value };
 
 			UnitOfWorkService.Commit(this);
 			return new ServiceResponse();
 		}
 
-		partial void OnDelete<#= className #>(IServiceRequest<string, Entities.<#= className #>> serviceRequest, Delete<#= className #> command);
+		partial void OnDelete<#= className #>(IServiceRequestWithData<string, Entities.<#= className #>> serviceRequest, ref Delete<#= className #> command, Entities.<#= className #> locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
 
-		partial void OnDeleted<#= className #>(IServiceRequest<string, Entities.<#= className #>> serviceRequest, Delete<#= className #> command);
+		partial void OnDeleted<#= className #>(IServiceRequestWithData<string, Entities.<#= className #>> serviceRequest, ref Delete<#= className #> command, Entities.<#= className #> locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
 <#
 		}
 #>

@@ -37,17 +37,6 @@ namespace <#= classNamespace #>
 	string aggregateRootName = steroTypeProperties.PropertyInstances
 		.Single(property => property.Name == "AggregateRootName")
 		.Value;
-	INamedElement aggregateRoot = GetAggregateRootByFullName(this.Element, aggregateRootName);
-	var aggregateRootSteeroTypeProperties = aggregateRoot.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
-	bool addAttributes = !aggregateRootSteeroTypeProperties.PropertyInstances
-		.Any(property => property.Value == "true" && new []{"BuildCreateServiceMethod", "BuildUpdateServiceMethod", "BuildDeleteServiceMethod"}.Contains(property.Name));
-	if (addAttributes)
-	{
-#>
-	<#= GetDataContractAttribute(this.Element) #>
-	<#= GetGeneratedCodeAttribute() #>
-<#
-	}
 #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #> <#= baseClass #>
 	{
@@ -59,15 +48,31 @@ namespace <#= classNamespace #>
 			string methodTypeName = MethodType(collectionMethod).Replace("<", "<Entities.");
 			if (!methodTypeName.Contains("<"))
 				methodTypeName = "Entities." + methodTypeName;
+
+			string methodParameterList = GetMethodParameterList(collectionMethod);
+			if (!string.IsNullOrWhiteSpace(methodParameterList))
+				methodParameterList = methodParameterList + ", ";
+
+			string methodParameterNameList = GetMethodParameterNameList(collectionMethod);
+			if (!string.IsNullOrWhiteSpace(methodParameterNameList))
+				methodParameterNameList = methodParameterNameList + ", ";
+
+		var methodSignatureParameter = string.Empty;
+		
+		var parameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction != ParameterDirectionKind.Return);
+		if (parameter != null)
+			methodSignatureParameter = string.Format("IServiceRequestWithData<string, {0}> serviceRequest", GetFullDisplayType(parameter, false));
+		else
+			methodSignatureParameter = "IServiceRequest<string> serviceRequest";
 #>
-		public virtual IServiceResponseWithResultData<<#= methodTypeName #>> <#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>)
+		public virtual IServiceResponseWithResultData<<#= methodTypeName #>> <#= collectionMethod.Name #>(<#= methodSignatureParameter #>)
 		{
 			IServiceResponseWithResultData<<#= methodTypeName #>> results = null;
-			On<#= collectionMethod.Name #>(<#= GetMethodParameterNameList(collectionMethod) #>, ref results);
+			On<#= collectionMethod.Name #>(serviceRequest, ref results);
 			return results;
 		}
 
-		partial void On<#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>, ref IServiceResponseWithResultData<<#= methodTypeName #>> results);
+		partial void On<#= collectionMethod.Name #>(<#= methodSignatureParameter #>, ref IServiceResponseWithResultData<<#= methodTypeName #>> results);
 
 <#
 		}

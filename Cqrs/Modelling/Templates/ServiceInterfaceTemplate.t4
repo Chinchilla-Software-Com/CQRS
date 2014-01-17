@@ -35,17 +35,6 @@ namespace <#= classNamespace #>
 	string aggregateRootName = steroTypeProperties.PropertyInstances
 		.Single(property => property.Name == "AggregateRootName")
 		.Value;
-	INamedElement aggregateRoot = GetAggregateRootByFullName(this.Element, aggregateRootName);
-	var aggregateRootSteeroTypeProperties = aggregateRoot.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
-	bool addAttributes = !aggregateRootSteeroTypeProperties.PropertyInstances
-		.Any(property => property.Value == "true" && new []{"BuildCreateServiceMethod", "BuildUpdateServiceMethod", "BuildDeleteServiceMethod"}.Contains(property.Name));
-	if (addAttributes)
-	{
-#>
-	<#= GetServiceContractAttribute(this.Element) #>
-	<#= GetGeneratedCodeAttribute() #>
-<#
-	}
 #>
 	public partial interface I<#= className #> <#= baseClass #>
 	{
@@ -57,9 +46,17 @@ namespace <#= classNamespace #>
 			string methodTypeName = MethodType(collectionMethod).Replace("<", "<Entities.");
 			if (!methodTypeName.Contains("<"))
 				methodTypeName = "Entities." + methodTypeName;
+
+		string methodSignatureParameter = string.Empty;
+		
+		var parameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction != ParameterDirectionKind.Return);
+		if (parameter != null)
+			methodSignatureParameter = string.Format("IServiceRequestWithData<string, {0}> serviceRequest", GetFullDisplayType(parameter, false));
+		else
+			methodSignatureParameter = "IServiceRequest<string> serviceRequest";
 #>
 		[OperationContract]
-		IServiceResponseWithResultData<<#= methodTypeName #>> <#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>);
+		IServiceResponseWithResultData<<#= methodTypeName #>> <#= collectionMethod.Name #>(<#= methodSignatureParameter #>);
 
 <#
 		}
