@@ -72,7 +72,84 @@ namespace Cqrs.Repositories.Queries
 			);
 		}
 
+		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeAny<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		{
+			var queryStrategy = GetNullQueryStrategy() as QueryStrategy;
+
+			if (queryStrategy == null)
+				return null;
+
+			if (queryPredicate.Name != GetFunctionNameOfType<TPermissionScope>(queryStrategy.WithPermissionScopeAny))
+				return null;
+
+			IQueryable<TData> resultingQueryable = null;
+			OnGeneratePredicateWithPermissionScopeAny<TPermissionScope>(queryPredicate, leftHandQueryable, ref resultingQueryable);
+
+			return resultingQueryable;
+		}
+
+		protected abstract void OnGeneratePredicateWithPermissionScopeAny<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable, ref IQueryable<TData> resultingQueryable);
+
+		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		{
+			var queryStrategy = GetNullQueryStrategy() as QueryStrategy;
+
+			if (queryStrategy == null)
+				return null;
+
+			if (queryPredicate.Name != GetFunctionNameOfType<TPermissionScope>(queryStrategy.WithPermissionScopeUser))
+				return null;
+
+			IQueryable<TData> resultingQueryable = null;
+			OnGeneratePredicateWithPermissionScopeUser<TPermissionScope>(queryPredicate, leftHandQueryable, ref resultingQueryable);
+
+			return resultingQueryable;
+		}
+
+		protected abstract void OnGeneratePredicateWithPermissionScopeUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable, ref IQueryable<TData> resultingQueryable);
+
+		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompany<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		{
+			var queryStrategy = GetNullQueryStrategy() as QueryStrategy;
+
+			if (queryStrategy == null)
+				return null;
+
+			if (queryPredicate.Name != GetFunctionNameOfType<TPermissionScope>(queryStrategy.WithPermissionScopeCompany))
+				return null;
+
+			IQueryable<TData> resultingQueryable = null;
+			OnGeneratePredicateWithPermissionScopeCompany<TPermissionScope>(queryPredicate, leftHandQueryable, ref resultingQueryable);
+
+			return resultingQueryable;
+		}
+
+		protected abstract void OnGeneratePredicateWithPermissionScopeCompany<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable, ref IQueryable<TData> resultingQueryable);
+
+		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		{
+			var queryStrategy = GetNullQueryStrategy() as QueryStrategy;
+
+			if (queryStrategy == null)
+				return null;
+
+			if (queryPredicate.Name != GetFunctionNameOfType<TPermissionScope>(queryStrategy.WithPermissionScopeCompanyAndUser))
+				return null;
+
+			IQueryable<TData> resultingQueryable = null;
+			OnGeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionScope>(queryPredicate, leftHandQueryable, ref resultingQueryable);
+
+			return resultingQueryable;
+		}
+
+		protected abstract void OnGeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable, ref IQueryable<TData> resultingQueryable);
+
 		protected abstract IQueryable<TData> GeneratePredicate(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null);
+
+		protected virtual string GetFunctionNameOfType<TParameter1>(Func<TParameter1, IQueryPredicate> expression)
+		{
+			return expression.Method.Name;
+		}
 
 		protected virtual string GetFunctionName<T>(Func<T> expression)
 		{
