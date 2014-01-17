@@ -82,13 +82,10 @@ namespace Cqrs.Repositories.Queries
 			if (queryPredicate.Name != GetFunctionNameOfType<TPermissionScope>(queryStrategy.WithPermissionScopeAny))
 				return null;
 
-			IQueryable<TData> resultingQueryable = null;
-			OnGeneratePredicateWithPermissionScopeAny<TPermissionScope>(queryPredicate, leftHandQueryable, ref resultingQueryable);
-
-			return resultingQueryable;
+			return OnGeneratePredicateWithPermissionScopeAny<TPermissionScope>(queryPredicate, leftHandQueryable);
 		}
 
-		protected abstract void OnGeneratePredicateWithPermissionScopeAny<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable, ref IQueryable<TData> resultingQueryable);
+		protected abstract IQueryable<TData> OnGeneratePredicateWithPermissionScopeAny<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable);
 
 		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
@@ -100,13 +97,10 @@ namespace Cqrs.Repositories.Queries
 			if (queryPredicate.Name != GetFunctionNameOfType<TPermissionScope>(queryStrategy.WithPermissionScopeUser))
 				return null;
 
-			IQueryable<TData> resultingQueryable = null;
-			OnGeneratePredicateWithPermissionScopeUser<TPermissionScope>(queryPredicate, leftHandQueryable, ref resultingQueryable);
-
-			return resultingQueryable;
+			return OnGeneratePredicateWithPermissionScopeUser<TPermissionScope>(queryPredicate, leftHandQueryable);
 		}
 
-		protected abstract void OnGeneratePredicateWithPermissionScopeUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable, ref IQueryable<TData> resultingQueryable);
+		protected abstract IQueryable<TData> OnGeneratePredicateWithPermissionScopeUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable);
 
 		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompany<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
@@ -118,13 +112,10 @@ namespace Cqrs.Repositories.Queries
 			if (queryPredicate.Name != GetFunctionNameOfType<TPermissionScope>(queryStrategy.WithPermissionScopeCompany))
 				return null;
 
-			IQueryable<TData> resultingQueryable = null;
-			OnGeneratePredicateWithPermissionScopeCompany<TPermissionScope>(queryPredicate, leftHandQueryable, ref resultingQueryable);
-
-			return resultingQueryable;
+			return OnGeneratePredicateWithPermissionScopeCompany<TPermissionScope>(queryPredicate, leftHandQueryable);
 		}
 
-		protected abstract void OnGeneratePredicateWithPermissionScopeCompany<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable, ref IQueryable<TData> resultingQueryable);
+		protected abstract IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompany<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable);
 
 		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
@@ -136,13 +127,10 @@ namespace Cqrs.Repositories.Queries
 			if (queryPredicate.Name != GetFunctionNameOfType<TPermissionScope>(queryStrategy.WithPermissionScopeCompanyAndUser))
 				return null;
 
-			IQueryable<TData> resultingQueryable = null;
-			OnGeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionScope>(queryPredicate, leftHandQueryable, ref resultingQueryable);
-
-			return resultingQueryable;
+			return OnGeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionScope>(queryPredicate, leftHandQueryable);
 		}
 
-		protected abstract void OnGeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable, ref IQueryable<TData> resultingQueryable);
+		protected abstract IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable);
 
 		protected abstract IQueryable<TData> GeneratePredicate(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null);
 
