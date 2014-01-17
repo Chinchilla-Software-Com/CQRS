@@ -51,7 +51,7 @@ namespace <#= classNamespace #>
 			<#= className #> queryStrategy = GetNullQueryStrategy();
 			SortedSet<QueryParameter> parameters = queryPredicate.Parameters;
 
-			IQueryable<Entities.<#= aggregateRootName #>> resultingQueryable;
+			IQueryable<Entities.<#= aggregateRootName #>> resultingQueryable = null;
 <#
 		IList<IOperation> collectionMethods = GetMethodList(this.Element);
 
@@ -60,12 +60,17 @@ namespace <#= classNamespace #>
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
 			string partialMethodName = collectionMethod.Name;
+			// This overrides the while statement below which I'm only keeping in case i change my mind.
+			if (methodNameList.Contains(partialMethodName))
+				continue;
+
 			int i = 1;
 			while (methodNameList.Contains(partialMethodName))
 			{
 				partialMethodName = string.Format("{0}{1}", partialMethodName, i++);
 			}
 			methodNameList.Add(partialMethodName);
+
 			string methodParameters = GetMethodParameterTypeList(collectionMethod);
 			if (!string.IsNullOrWhiteSpace(methodParameters))
 				methodParameters = "<" + methodParameters + ">";
@@ -75,12 +80,13 @@ namespace <#= classNamespace #>
 				OnGeneratePredicate<#= partialMethodName #>(queryPredicate, leftHandQueryable, parameters, ref resultingQueryable);
 				GeneratePredicate<#= partialMethodName #>(parameters, leftHandQueryable, ref resultingQueryable);
 				OnGeneratePredicated<#= partialMethodName #>(queryPredicate, leftHandQueryable, parameters, ref resultingQueryable);
+				return resultingQueryable;
 			}
 <#
 		}
 #>
 
-			throw new Exception();
+			throw new InvalidOperationException("No known predicate could be generated.");
 		}
 
 		#endregion

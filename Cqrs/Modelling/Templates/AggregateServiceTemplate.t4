@@ -51,15 +51,12 @@ namespace <#= classNamespace #>.Services
 
 		protected IQueryFactory QueryFactory { get; private set; }
 
-		protected IVersionService VersionService { get; private set; }
-
-		public <#= className #>Service(ICommandSender commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, <#= className #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository, IVersionService versionService)
+		public <#= className #>Service(ICommandSender commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, <#= className #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository)
 		{
 			CommandSender = commandSender;
 			UnitOfWorkService = unitOfWorkService;
 			<#= className #>Repository = <#= GetLowercaseFirstCharacter(className) #>Repository;
 			QueryFactory = queryFactory;
-			VersionService = versionService;
 		}
 
 <#
