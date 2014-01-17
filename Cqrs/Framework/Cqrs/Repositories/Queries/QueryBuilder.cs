@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Linq;
+using Cqrs.Config;
 using Cqrs.Entities;
 using Cqrs.DataStores;
 
 namespace Cqrs.Repositories.Queries
 {
 	public abstract class QueryBuilder<TQueryStrategy, TData> : IQueryBuilder<TQueryStrategy, TData>
-		where TQueryStrategy : IQueryStrategy, new()
+		where TQueryStrategy : IQueryStrategy
 		where TData : Entity
 	{
 		protected IDataStore<TData> DataStore { get; private set; }
 
-		protected QueryBuilder(IDataStore<TData> dataStore)
+		protected IServiceLocator DependencyResolver { get; private set; }
+
+		protected QueryBuilder(IDataStore<TData> dataStore, IServiceLocator dependencyResolver)
 		{
 			DataStore = dataStore;
+			DependencyResolver = dependencyResolver;
 		}
 
 		#region Implementation of IQueryBuilder<UserQueryStrategy,User>
@@ -102,7 +106,7 @@ namespace Cqrs.Repositories.Queries
 
 		protected virtual TQueryStrategy GetNullQueryStrategy()
 		{
-			return new TQueryStrategy();
+			return DependencyResolver.GetService<TQueryStrategy>();
 		}
 	}
 }
