@@ -12,12 +12,42 @@ namespace Cqrs.Repositories.Queries
 
 		#endregion
 
-		public virtual QueryPredicate IsNotLogicallyDeleted()
+		public virtual IQueryPredicate IsNotLogicallyDeleted()
 		{
-			return BuildQueryPredicate(IsNotLogicallyDeleted);
+			if (QueryPredicate != null)
+				return BuildQueryPredicate(IsNotLogicallyDeleted);
+			return And(BuildQueryPredicate(IsNotLogicallyDeleted));
 		}
 
-		protected virtual QueryPredicate BuildQueryPredicate<TData>(Func<TData> func)
+		public virtual IQueryPredicate WithPermissionScopeAny<TPermissionScope>(TPermissionScope permissionScope)
+		{
+			if (QueryPredicate != null)
+				return BuildQueryPredicate(WithPermissionScopeAny, permissionScope);
+			return And(BuildQueryPredicate(WithPermissionScopeUser, permissionScope));
+		}
+
+		public virtual IQueryPredicate WithPermissionScopeUser<TPermissionScope>(TPermissionScope permissionScope)
+		{
+			if (QueryPredicate != null)
+				return BuildQueryPredicate(WithPermissionScopeUser, permissionScope);
+			return And(BuildQueryPredicate(WithPermissionScopeUser, permissionScope));
+		}
+
+		public virtual IQueryPredicate WithPermissionScopeCompany<TPermissionScope>(TPermissionScope permissionScope)
+		{
+			if (QueryPredicate != null)
+				return BuildQueryPredicate(WithPermissionScopeCompany, permissionScope);
+			return And(BuildQueryPredicate(WithPermissionScopeUser, permissionScope));
+		}
+
+		public virtual IQueryPredicate WithPermissionScopeCompanyAndUser<TPermissionScope>(TPermissionScope permissionScope)
+		{
+			if (QueryPredicate != null)
+				return BuildQueryPredicate(WithPermissionScopeCompanyAndUser, permissionScope);
+			return And(BuildQueryPredicate(WithPermissionScopeUser, permissionScope));
+		}
+
+		protected virtual IQueryPredicate BuildQueryPredicate<TData>(Func<TData> func)
 		{
 			var queryPredicate = new QueryPredicate
 			{
@@ -28,7 +58,7 @@ namespace Cqrs.Repositories.Queries
 			return queryPredicate;
 		}
 
-		protected virtual QueryPredicate BuildQueryPredicate<TParameter1, TData>(Func<TParameter1, TData> func, TParameter1 parameter1)
+		protected virtual IQueryPredicate BuildQueryPredicate<TParameter1, TData>(Func<TParameter1, TData> func, TParameter1 parameter1)
 		{
 			var queryPredicate = new QueryPredicate
 			{
@@ -44,7 +74,7 @@ namespace Cqrs.Repositories.Queries
 			return queryPredicate;
 		}
 
-		protected virtual QueryPredicate BuildQueryPredicate<TParameter1, TParameter2, TData>(Func<TParameter1, TParameter2, TData> func, TParameter1 parameter1, TParameter2 parameter2)
+		protected virtual IQueryPredicate BuildQueryPredicate<TParameter1, TParameter2, TData>(Func<TParameter1, TParameter2, TData> func, TParameter1 parameter1, TParameter2 parameter2)
 		{
 			var queryPredicate = new QueryPredicate
 			{
