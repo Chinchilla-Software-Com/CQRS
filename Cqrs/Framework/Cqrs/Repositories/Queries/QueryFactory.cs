@@ -6,7 +6,7 @@ namespace Cqrs.Repositories.Queries
 	{
 		protected IServiceLocator DependencyResolver { get; private set; }
 
-		protected QueryFactory(IServiceLocator dependencyResolver)
+		public QueryFactory(IServiceLocator dependencyResolver)
 		{
 			DependencyResolver = dependencyResolver;
 		}
