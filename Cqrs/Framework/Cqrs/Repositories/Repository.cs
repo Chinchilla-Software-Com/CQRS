@@ -9,7 +9,7 @@ using Cqrs.Repositories.Queries;
 namespace Cqrs.Repositories
 {
 	public abstract class Repository<TQueryStrategy, TQueryBuilder, TData> : IRepository<TQueryStrategy, TData>
-		where TQueryStrategy : IQueryStrategy, new()
+		where TQueryStrategy : IQueryStrategy
 		where TQueryBuilder : QueryBuilder<TQueryStrategy, TData>
 		where TData : Entity
 	{
