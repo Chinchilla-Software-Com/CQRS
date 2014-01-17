@@ -6,7 +6,7 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IPackage" />
       </metaclasses>
       <properties>
-        <property name="AuthenticationTokenType" displayName="AuthenticationTokenType: The type of authentication token">
+        <property name="AuthenticationTokenType" displayName="AuthenticationTokenType: The data type of the authentication token">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
@@ -135,9 +135,26 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
       <properties>
-        <property name="AggregateRootName" displayName="AggregateRootName: The name of the aggregate root this service is focused on." defaultValue="">
+        <property name="AggregateRootName" displayName="Aggregate Root Name: The name of the aggregate root this service is focused on." defaultValue="">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+        <property name="PermissionScope" displayName="Permission Scope: To what level is permission required for this service as a whole. If This service has a mix of permissions scopes on the methods, then set this to [Any]." defaultValue="Any">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/PermissionScope"/>
+          </propertyType>
+        </property>
+      </properties>
+    </stereotype>
+    <stereotype name="ServiceMethod" displayName="Service Method">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IOperation" />
+      </metaclasses>
+      <properties>
+        <property name="PermissionScope" displayName="Permission Scope: To what level is permission required for this service method." defaultValue="User">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/PermissionScope"/>
           </propertyType>
         </property>
       </properties>
@@ -166,6 +183,11 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IOperation" />
       </metaclasses>
       <properties>
+        <property name="PermissionScope" displayName="Permission Scope: To what level is permission required the the data return. This simplifies the model by not passing a user token around through all level just for permision scoping on returned objects." defaultValue="User">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/PermissionScope"/>
+          </propertyType>
+        </property>
         <property name="IsNotLogicallyDeleted" displayName="IsNotLogicallyDeleted: Returned values must not be logically deleted." defaultValue="True">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
@@ -201,6 +223,8 @@
 
     <enumerationType name="PermissionScope">
       <enumerationLiterals>
+        <enumerationLiteral name="CompanyAndUser" displayName="CompanyAndUser" />
+        <enumerationLiteral name="Company" displayName="Company" />
         <enumerationLiteral name="User" displayName="User" />
         <enumerationLiteral name="Any" displayName="Any" />
       </enumerationLiterals>
