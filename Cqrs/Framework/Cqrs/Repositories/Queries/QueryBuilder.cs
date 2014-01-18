@@ -85,7 +85,10 @@ namespace Cqrs.Repositories.Queries
 			return OnGeneratePredicateWithPermissionScopeAny<TPermissionScope>(queryPredicate, leftHandQueryable);
 		}
 
-		protected abstract IQueryable<TData> OnGeneratePredicateWithPermissionScopeAny<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable);
+		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeAny<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		{
+			return (leftHandQueryable ?? DataStore);
+		}
 
 		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
@@ -100,7 +103,10 @@ namespace Cqrs.Repositories.Queries
 			return OnGeneratePredicateWithPermissionScopeUser<TPermissionScope>(queryPredicate, leftHandQueryable);
 		}
 
-		protected abstract IQueryable<TData> OnGeneratePredicateWithPermissionScopeUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable);
+		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		{
+			return (leftHandQueryable ?? DataStore);
+		}
 
 		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompany<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
@@ -115,7 +121,10 @@ namespace Cqrs.Repositories.Queries
 			return OnGeneratePredicateWithPermissionScopeCompany<TPermissionScope>(queryPredicate, leftHandQueryable);
 		}
 
-		protected abstract IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompany<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable);
+		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompany<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		{
+			return (leftHandQueryable ?? DataStore);
+		}
 
 		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
@@ -130,7 +139,10 @@ namespace Cqrs.Repositories.Queries
 			return OnGeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionScope>(queryPredicate, leftHandQueryable);
 		}
 
-		protected abstract IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable);
+		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionScope>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		{
+			return (leftHandQueryable ?? DataStore);
+		}
 
 		protected abstract IQueryable<TData> GeneratePredicate(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null);
 
