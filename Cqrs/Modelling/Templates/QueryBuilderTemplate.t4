@@ -28,6 +28,8 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
+using Cqrs.Config;
+using Cqrs.Repositories.Authentication;
 using Cqrs.Repositories.Queries;
 using uSure.Domain.Factories;
 
@@ -39,8 +41,8 @@ namespace <#= classNamespace #>
 	<#= GetGeneratedCodeAttribute() #>
 	public partial class <#= className #>Builder : QueryBuilder<<#= className #>, Entities.<#= aggregateRootName #>>, I<#= className #>Builder
 	{
-		public <#= className #>Builder(IDomainDataStoreFactory dataStoreFactory)
-			: base(dataStoreFactory.Get<#= aggregateRootName #>DataStore())
+		public <#= className #>Builder(IDomainDataStoreFactory dataStoreFactory, IServiceLocator dependencyResolver)
+			: base(dataStoreFactory.Get<#= aggregateRootName #>DataStore(), dependencyResolver)
 		{
 		}
 
@@ -85,6 +87,15 @@ namespace <#= classNamespace #>
 <#
 		}
 #>
+
+			resultingQueryable
+				= GeneratePredicateWithPermissionScopeAny<ISingleSignOnToken>(queryPredicate, leftHandQueryable)
+				?? GeneratePredicateWithPermissionScopeUser<ISingleSignOnToken>(queryPredicate, leftHandQueryable)
+				?? GeneratePredicateWithPermissionScopeCompany<ISingleSignOnToken>(queryPredicate, leftHandQueryable)
+				?? GeneratePredicateWithPermissionScopeCompanyAndUser<ISingleSignOnToken>(queryPredicate, leftHandQueryable);
+
+			if (resultingQueryable != null)
+				return resultingQueryable;
 
 			throw new InvalidOperationException("No known predicate could be generated.");
 		}
