@@ -4,11 +4,11 @@ using Newtonsoft.Json;
 
 namespace Cqrs.EventStore
 {
-	public interface IEventDeserialiser<TPermissionScope>
+	public interface IEventDeserialiser<TPermissionToken>
 	{
-		IEvent<TPermissionScope> Deserialise(RecordedEvent eventData);
+		IEvent<TPermissionToken> Deserialise(RecordedEvent eventData);
 
-		IEvent<TPermissionScope> Deserialise(ResolvedEvent notification);
+		IEvent<TPermissionToken> Deserialise(ResolvedEvent notification);
 
 		JsonSerializerSettings GetSerialisationSettings();
 	}

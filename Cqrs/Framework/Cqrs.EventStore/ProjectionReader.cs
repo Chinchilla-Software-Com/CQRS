@@ -6,13 +6,13 @@ using Newtonsoft.Json;
 
 namespace Cqrs.EventStore
 {
-	public abstract class ProjectionReader<TPermissionScope>
+	public abstract class ProjectionReader<TPermissionToken>
 	{
 		protected IEventStoreConnectionHelper EventStoreConnectionHelper { get; set; }
 
-		protected IEventDeserialiser<TPermissionScope> EventDeserialiser { get; set; }
+		protected IEventDeserialiser<TPermissionToken> EventDeserialiser { get; set; }
 
-		protected ProjectionReader(IEventStoreConnectionHelper eventStoreConnectionHelper, IEventDeserialiser<TPermissionScope> eventDeserialiser)
+		protected ProjectionReader(IEventStoreConnectionHelper eventStoreConnectionHelper, IEventDeserialiser<TPermissionToken> eventDeserialiser)
 		{
 			EventStoreConnectionHelper = eventStoreConnectionHelper;
 			EventDeserialiser = eventDeserialiser;

@@ -7,30 +7,30 @@ namespace Cqrs.Domain
 	/// <summary>
 	/// This is a Unit of Work
 	/// </summary>
-	public class UnitOfWork<TPermissionScope> : IUnitOfWork<TPermissionScope>
+	public class UnitOfWork<TPermissionToken> : IUnitOfWork<TPermissionToken>
 	{
-		private IRepository<TPermissionScope> Repository { get; set; }
+		private IRepository<TPermissionToken> Repository { get; set; }
 
-		private Dictionary<Guid, AggregateDescriptor<TPermissionScope>> TrackedAggregates { get; set; }
+		private Dictionary<Guid, AggregateDescriptor<TPermissionToken>> TrackedAggregates { get; set; }
 
-		public UnitOfWork(IRepository<TPermissionScope> repository)
+		public UnitOfWork(IRepository<TPermissionToken> repository)
 		{
 			if(repository == null)
 				throw new ArgumentNullException("repository");
 
 			Repository = repository;
-			TrackedAggregates = new Dictionary<Guid, AggregateDescriptor<TPermissionScope>>();
+			TrackedAggregates = new Dictionary<Guid, AggregateDescriptor<TPermissionToken>>();
 		}
 
 		/// <summary>
 		/// Add an item into the <see cref="IUnitOfWork"/> ready to be committed.
 		/// </summary>
 		public void Add<TAggregateRoot>(TAggregateRoot aggregate)
-			where TAggregateRoot : IAggregateRoot<TPermissionScope>
+			where TAggregateRoot : IAggregateRoot<TPermissionToken>
 		{
 			if (!IsTracked(aggregate.Id))
-				TrackedAggregates.Add(aggregate.Id, new AggregateDescriptor<TPermissionScope> { Aggregate = aggregate, Version = aggregate.Version });
-			else if (TrackedAggregates[aggregate.Id].Aggregate != (IAggregateRoot<TPermissionScope>)aggregate)
+				TrackedAggregates.Add(aggregate.Id, new AggregateDescriptor<TPermissionToken> { Aggregate = aggregate, Version = aggregate.Version });
+			else if (TrackedAggregates[aggregate.Id].Aggregate != (IAggregateRoot<TPermissionToken>)aggregate)
 				throw new ConcurrencyException(aggregate.Id);
 		}
 
@@ -38,7 +38,7 @@ namespace Cqrs.Domain
 		/// Get an item from the <see cref="IUnitOfWork"/> if it has already been loaded or get it from the <see cref="IRepository"/>.
 		/// </summary>
 		public TAggregateRoot Get<TAggregateRoot>(Guid id, int? expectedVersion = null)
-			where TAggregateRoot : IAggregateRoot<TPermissionScope>
+			where TAggregateRoot : IAggregateRoot<TPermissionToken>
 		{
 			if(IsTracked(id))
 			{
@@ -67,7 +67,7 @@ namespace Cqrs.Domain
 		/// </summary>
 		public void Commit()
 		{
-			foreach (AggregateDescriptor<TPermissionScope> descriptor in TrackedAggregates.Values)
+			foreach (AggregateDescriptor<TPermissionToken> descriptor in TrackedAggregates.Values)
 			{
 				Repository.Save(descriptor.Aggregate, descriptor.Version);
 			}

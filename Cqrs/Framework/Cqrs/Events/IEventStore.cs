@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Cqrs.Events
 {
-	public interface IEventStore<TPermissionScope>
+	public interface IEventStore<TPermissionToken>
 	{
-		void Save(IEvent<TPermissionScope> @event);
+		void Save(IEvent<TPermissionToken> @event);
 
-		IEnumerable<IEvent<TPermissionScope>> Get(Guid aggregateId, int fromVersion);
+		IEnumerable<IEvent<TPermissionToken>> Get(Guid aggregateId, int fromVersion);
 	}
 }

@@ -2,21 +2,21 @@
 
 namespace Cqrs.Commands
 {
-	public class DtoCommandHandler<TPermissionScope, TDto> : ICommandHandler<TPermissionScope, DtoCommand<TPermissionScope, TDto>>
+	public class DtoCommandHandler<TPermissionToken, TDto> : ICommandHandler<TPermissionToken, DtoCommand<TPermissionToken, TDto>>
 		where TDto : IDto
 	{
-		private IUnitOfWork<TPermissionScope> UnitOfWork { get; set; }
+		private IUnitOfWork<TPermissionToken> UnitOfWork { get; set; }
 
-		public DtoCommandHandler(IUnitOfWork<TPermissionScope> unitOfWork)
+		public DtoCommandHandler(IUnitOfWork<TPermissionToken> unitOfWork)
 		{
 			UnitOfWork = unitOfWork;
 		}
 
 		#region Implementation of IHandler<in DtoCommand<UserDto>>
 
-		public void Handle(DtoCommand<TPermissionScope, TDto> message)
+		public void Handle(DtoCommand<TPermissionToken, TDto> message)
 		{
-			var item = new DtoAggregateRoot<TPermissionScope, TDto>(message.Id, message.Original, message.New);
+			var item = new DtoAggregateRoot<TPermissionToken, TDto>(message.Id, message.Original, message.New);
 			UnitOfWork.Add(item);
 			UnitOfWork.Commit();
 		}

@@ -17,5 +17,11 @@ namespace CQRSCode.WriteModel.Commands
 		public Guid Id { get; set; }
 
 		public int ExpectedVersion { get; set; }
+
+		#region Implementation of IMessageWithPermissionToken<ISingleSignOnToken>
+
+		public ISingleSignOnToken PermissionToken { get; set; }
+
+		#endregion
 	}
 }

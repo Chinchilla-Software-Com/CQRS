@@ -2,8 +2,8 @@ using Cqrs.Messages;
 
 namespace Cqrs.Commands
 {
-	public interface ICommandHandler<TPermissionScope, in TCommand> : IHandler<TCommand>
-		where TCommand : ICommand<TPermissionScope>
+	public interface ICommandHandler<TPermissionToken, in TCommand> : IHandler<TCommand>
+		where TCommand : ICommand<TPermissionToken>
 	{
 	}
 }

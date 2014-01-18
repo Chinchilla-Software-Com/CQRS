@@ -11,6 +11,12 @@ namespace Cqrs.Tests.Substitutes
 		public int Version { get; set; }
 
 		public DateTimeOffset TimeStamp { get; set; }
+
+		#region Implementation of IMessageWithPermissionToken<ISingleSignOnToken>
+
+		public ISingleSignOnToken PermissionToken { get; set; }
+
+		#endregion
 	}
 
 	public class TestAggregateDidSomeethingElse : IEvent<ISingleSignOnToken>
@@ -20,6 +26,12 @@ namespace Cqrs.Tests.Substitutes
 		public int Version { get; set; }
 
 		public DateTimeOffset TimeStamp { get; set; }
+
+		#region Implementation of IMessageWithPermissionToken<ISingleSignOnToken>
+
+		public ISingleSignOnToken PermissionToken { get; set; }
+
+		#endregion
 	}
 
 	public class TestAggregateDidSomethingHandler : IEventHandler<ISingleSignOnToken, TestAggregateDidSomething>

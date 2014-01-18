@@ -1,8 +1,8 @@
 ﻿namespace Cqrs.Commands
 {
-	public interface ICommandSender<TPermissionScope>
+	public interface ICommandSender<TPermissionToken>
 	{
 		void Send<TCommand>(TCommand command)
-			where TCommand : ICommand<TPermissionScope>;
+			where TCommand : ICommand<TPermissionToken>;
 	}
 }

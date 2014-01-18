@@ -8,7 +8,7 @@ using Cqrs.Messages;
 
 namespace Cqrs.Bus
 {
-	public class InProcessBus<TPermissionScope> : ICommandSender<TPermissionScope>, IEventPublisher<TPermissionScope>, IHandlerRegistrar
+	public class InProcessBus<TPermissionToken> : ICommandSender<TPermissionToken>, IEventPublisher<TPermissionToken>, IHandlerRegistrar
 	{
 		private Dictionary<Type, List<Action<IMessage>>> Routes { get; set; }
 
@@ -30,7 +30,7 @@ namespace Cqrs.Bus
 		}
 
 		public void Send<TCommand>(TCommand command)
-			where TCommand : ICommand<TPermissionScope>
+			where TCommand : ICommand<TPermissionToken>
 		{
 			List<Action<IMessage>> handlers; 
 			if (Routes.TryGetValue(typeof(TCommand), out handlers))
@@ -46,7 +46,7 @@ namespace Cqrs.Bus
 		}
 
 		public void Publish<TEvent>(TEvent @event)
-			where TEvent : IEvent<TPermissionScope>
+			where TEvent : IEvent<TPermissionToken>
 		{
 			List<Action<IMessage>> handlers; 
 			if (!Routes.TryGetValue(@event.GetType(), out handlers)) return;

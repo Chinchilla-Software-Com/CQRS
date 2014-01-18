@@ -3,7 +3,7 @@ using Cqrs.Messages;
 
 namespace Cqrs.Events
 {
-	public interface IEvent<TPermissionScope> : IMessageWithPermissionScope<TPermissionScope>
+	public interface IEvent<TPermissionToken> : IMessageWithPermissionToken<TPermissionToken>
 	{
 		Guid Id { get; set; }
 

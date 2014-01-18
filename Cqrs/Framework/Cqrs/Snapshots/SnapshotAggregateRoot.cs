@@ -2,7 +2,7 @@
 
 namespace Cqrs.Snapshots
 {
-	public abstract class SnapshotAggregateRoot<TPermissionScope, TSnapshot> : AggregateRoot<TPermissionScope>
+	public abstract class SnapshotAggregateRoot<TPermissionToken, TSnapshot> : AggregateRoot<TPermissionToken>
 		where TSnapshot : Snapshot
 	{
 		public TSnapshot GetSnapshot()

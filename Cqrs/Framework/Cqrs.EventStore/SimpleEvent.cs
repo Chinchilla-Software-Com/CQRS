@@ -3,7 +3,7 @@ using Cqrs.Events;
 
 namespace Cqrs.EventStore
 {
-	public class SimpleEvent<TPermissionScope> : IEvent<TPermissionScope>
+	public class SimpleEvent<TPermissionToken> : IEvent<TPermissionToken>
 	{
 		public string Message { get; set; }
 
@@ -14,6 +14,12 @@ namespace Cqrs.EventStore
 		public int Version { get; set; }
 
 		public DateTimeOffset TimeStamp { get; set; }
+
+		#endregion
+
+		#region Implementation of IMessageWithPermissionToken<TPermissionToken>
+
+		public TPermissionToken PermissionToken { get; set; }
 
 		#endregion
 	}

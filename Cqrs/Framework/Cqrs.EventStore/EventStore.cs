@@ -6,15 +6,15 @@ using EventStore.ClientAPI;
 
 namespace Cqrs.EventStore
 {
-	public class EventStore<TPermissionScope> : IEventStore<TPermissionScope>
+	public class EventStore<TPermissionToken> : IEventStore<TPermissionToken>
 	{
-		protected IEventBuilder<TPermissionScope> EventBuilder { get; set; }
+		protected IEventBuilder<TPermissionToken> EventBuilder { get; set; }
 
-		protected IEventDeserialiser<TPermissionScope> EventDeserialiser { get; set; }
+		protected IEventDeserialiser<TPermissionToken> EventDeserialiser { get; set; }
 
 		protected IEventStoreConnectionHelper EventStoreConnectionHelper { get; set; }
 
-		public EventStore(IEventBuilder<TPermissionScope> eventBuilder, IEventDeserialiser<TPermissionScope> eventDeserialiser, IEventStoreConnectionHelper eventStoreConnectionHelper)
+		public EventStore(IEventBuilder<TPermissionToken> eventBuilder, IEventDeserialiser<TPermissionToken> eventDeserialiser, IEventStoreConnectionHelper eventStoreConnectionHelper)
 		{
 			EventBuilder = eventBuilder;
 			EventDeserialiser = eventDeserialiser;
@@ -23,7 +23,7 @@ namespace Cqrs.EventStore
 
 		#region Implementation of IEventStore
 
-		public void Save(IEvent<TPermissionScope> @event)
+		public void Save(IEvent<TPermissionToken> @event)
 		{
 			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
 			using (IEventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
@@ -36,7 +36,7 @@ namespace Cqrs.EventStore
 		/// The value of <paramref name="fromVersion"/> is zero based but the internals indexing of the EventStore is offset by <see cref="StreamPosition.Start"/>.
 		/// Adjust the value of <paramref name="fromVersion"/> by <see cref="StreamPosition.Start"/>
 		/// </remarks>
-		public IEnumerable<IEvent<TPermissionScope>> Get(Guid aggregateId, int fromVersion = -1)
+		public IEnumerable<IEvent<TPermissionToken>> Get(Guid aggregateId, int fromVersion = -1)
 		{
 			StreamEventsSlice eventCollection;
 			int startPosition = StreamPosition.Start;

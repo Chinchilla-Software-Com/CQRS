@@ -8,11 +8,11 @@ using Cqrs.Events;
 
 namespace Cqrs.Cache
 {
-	public class CacheRepository<TPermissionScope> : IRepository<TPermissionScope>
+	public class CacheRepository<TPermissionToken> : IRepository<TPermissionToken>
 	{
-		private IRepository<TPermissionScope> Repository { get; set; }
+		private IRepository<TPermissionToken> Repository { get; set; }
 
-		private IEventStore<TPermissionScope> EventStore { get; set; }
+		private IEventStore<TPermissionToken> EventStore { get; set; }
 
 		private MemoryCache Cache { get; set; }
 
@@ -20,7 +20,7 @@ namespace Cqrs.Cache
 
 		private static readonly ConcurrentDictionary<string, object> Locks = new ConcurrentDictionary<string, object>();
 
-		public CacheRepository(IRepository<TPermissionScope> repository, IEventStore<TPermissionScope> eventStore)
+		public CacheRepository(IRepository<TPermissionToken> repository, IEventStore<TPermissionToken> eventStore)
 		{
 			if(repository == null)
 				throw new ArgumentNullException("repository");
@@ -42,7 +42,7 @@ namespace Cqrs.Cache
 		}
 
 		public void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
-			where TAggregateRoot : IAggregateRoot<TPermissionScope>
+			where TAggregateRoot : IAggregateRoot<TPermissionToken>
 		{
 			var idstring = aggregate.Id.ToString();
 			try
@@ -61,13 +61,13 @@ namespace Cqrs.Cache
 			}
 		}
 
-		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TPermissionScope>> events = null)
-			where TAggregateRoot : IAggregateRoot<TPermissionScope>
+		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TPermissionToken>> events = null)
+			where TAggregateRoot : IAggregateRoot<TPermissionToken>
 		{
 			string idstring = aggregateId.ToString();
 			try
 			{
-				IList<IEvent<TPermissionScope>> theseEvents = null;
+				IList<IEvent<TPermissionToken>> theseEvents = null;
 				lock (Locks.GetOrAdd(idstring, _ => new object()))
 				{
 					TAggregateRoot aggregate;

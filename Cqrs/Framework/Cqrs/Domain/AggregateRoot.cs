@@ -7,11 +7,11 @@ using Cqrs.Infrastructure;
 
 namespace Cqrs.Domain
 {
-	public abstract class AggregateRoot<TPermissionScope> : IAggregateRoot<TPermissionScope>
+	public abstract class AggregateRoot<TPermissionToken> : IAggregateRoot<TPermissionToken>
 	{
 		private ReaderWriterLockSlim Lock { get; set; }
 
-		private IList<IEvent<TPermissionScope>> Changes { get; set; }
+		private IList<IEvent<TPermissionToken>> Changes { get; set; }
 
 		public Guid Id { get; protected set; }
 
@@ -20,10 +20,10 @@ namespace Cqrs.Domain
 		protected AggregateRoot()
 		{
 			Lock = new ReaderWriterLockSlim();
-			Changes = new List<IEvent<TPermissionScope>>();
+			Changes = new List<IEvent<TPermissionToken>>();
 		}
 
-		public IEnumerable<IEvent<TPermissionScope>> GetUncommittedChanges()
+		public IEnumerable<IEvent<TPermissionToken>> GetUncommittedChanges()
 		{
 			Lock.EnterReadLock();
 			try
@@ -50,9 +50,9 @@ namespace Cqrs.Domain
 			}
 		}
 
-		public void LoadFromHistory(IEnumerable<IEvent<TPermissionScope>> history)
+		public void LoadFromHistory(IEnumerable<IEvent<TPermissionToken>> history)
 		{
-			foreach (IEvent<TPermissionScope> @event in history)
+			foreach (IEvent<TPermissionToken> @event in history)
 			{
 				if (@event.Version != Version + 1)
 					throw new EventsOutOfOrderException(@event.Id);
@@ -60,12 +60,12 @@ namespace Cqrs.Domain
 			}
 		}
 
-		protected void ApplyChange(IEvent<TPermissionScope> @event)
+		protected void ApplyChange(IEvent<TPermissionToken> @event)
 		{
 			ApplyChange(@event, true);
 		}
 
-		private void ApplyChange(IEvent<TPermissionScope> @event, bool isNew)
+		private void ApplyChange(IEvent<TPermissionToken> @event, bool isNew)
 		{
 			Lock.EnterWriteLock();
 			try

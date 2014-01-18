@@ -4,7 +4,7 @@ using Cqrs.Domain;
 
 namespace Cqrs.Snapshots
 {
-	public class DefaultSnapshotStrategy<TPermissionScope> : ISnapshotStrategy<TPermissionScope>
+	public class DefaultSnapshotStrategy<TPermissionToken> : ISnapshotStrategy<TPermissionToken>
 	{
 		private const int SnapshotInterval = 15;
 		public bool IsSnapshotable(Type aggregateType)
@@ -16,7 +16,7 @@ namespace Cqrs.Snapshots
 			return IsSnapshotable(aggregateType.BaseType);
 		}
 
-		public bool ShouldMakeSnapShot(IAggregateRoot<TPermissionScope> aggregate)
+		public bool ShouldMakeSnapShot(IAggregateRoot<TPermissionToken> aggregate)
 		{
 			if (!IsSnapshotable(aggregate.GetType())) return false;
 			int i = aggregate.Version;
