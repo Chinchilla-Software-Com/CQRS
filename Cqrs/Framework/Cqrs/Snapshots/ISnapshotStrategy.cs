@@ -3,9 +3,9 @@ using Cqrs.Domain;
 
 namespace Cqrs.Snapshots
 {
-	public interface ISnapshotStrategy<TPermissionToken>
+	public interface ISnapshotStrategy<TAuthenticationToken>
 	{
-		bool ShouldMakeSnapShot(IAggregateRoot<TPermissionToken> aggregate);
+		bool ShouldMakeSnapShot(IAggregateRoot<TAuthenticationToken> aggregate);
 
 		bool IsSnapshotable(Type aggregateType);
 	}

@@ -1,8 +1,8 @@
 ﻿namespace Cqrs.Events
 {
-	public interface IEventPublisher<TPermissionToken>
+	public interface IEventPublisher<TAuthenticationToken>
 	{
 		void Publish<TEvent>(TEvent @event)
-			where TEvent : IEvent<TPermissionToken>;
+			where TEvent : IEvent<TAuthenticationToken>;
 	}
 }

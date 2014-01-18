@@ -20,9 +20,9 @@ namespace CQRSCode.ReadModel.Events
 
 		public DateTimeOffset TimeStamp { get; set; }
 
-		#region Implementation of IMessageWithPermissionToken<ISingleSignOnToken>
+		#region Implementation of IMessageWithAuthenticationToken<ISingleSignOnToken>
 
-		public ISingleSignOnToken PermissionToken { get; set; }
+		public ISingleSignOnToken AuthenticationToken { get; set; }
 
 		#endregion
 	}

@@ -2,7 +2,7 @@
 
 namespace Cqrs.Commands
 {
-	public interface ICommand<TPermissionToken> : IMessageWithPermissionToken<TPermissionToken>
+	public interface ICommand<TAuthenticationToken> : IMessageWithAuthenticationToken<TAuthenticationToken>
 	{
 		int ExpectedVersion { get; set; }
 	}

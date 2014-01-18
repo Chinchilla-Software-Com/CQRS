@@ -2,18 +2,18 @@
 
 namespace Cqrs.Repositories.Authentication
 {
-	public class SingleSignOnTokenValueHelper : IPermissionTokenHelper<ISingleSignOnToken>
+	public class SingleSignOnTokenValueHelper : IAuthenticationTokenHelper<ISingleSignOnToken>
 	{
 		private const string CallContextPermissoinScopeValueKey = "SingleSignOnTokenValue";
 
-		#region Implementation of IPermissionTokenHelper<out ISingleSignOnToken>
+		#region Implementation of IAuthenticationTokenHelper<out ISingleSignOnToken>
 
-		public ISingleSignOnToken GetPermissionToken()
+		public ISingleSignOnToken GetAuthenticationToken()
 		{
 			return (ISingleSignOnToken)CallContext.GetData(CallContextPermissoinScopeValueKey);
 		}
 
-		public ISingleSignOnToken SetPermissionToken(ISingleSignOnToken value)
+		public ISingleSignOnToken SetAuthenticationToken(ISingleSignOnToken value)
 		{
 			CallContext.SetData(CallContextPermissoinScopeValueKey, value);
 			return value;

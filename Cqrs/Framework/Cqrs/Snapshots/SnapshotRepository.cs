@@ -8,19 +8,19 @@ using Cqrs.Infrastructure;
 
 namespace Cqrs.Snapshots
 {
-	public class SnapshotRepository<TPermissionToken> : IRepository<TPermissionToken>
+	public class SnapshotRepository<TAuthenticationToken> : IRepository<TAuthenticationToken>
 	{
 		private ISnapshotStore SnapshotStore { get; set; }
 
-		private ISnapshotStrategy<TPermissionToken> SnapshotStrategy { get; set; }
+		private ISnapshotStrategy<TAuthenticationToken> SnapshotStrategy { get; set; }
 
-		private IRepository<TPermissionToken> Repository { get; set; }
+		private IRepository<TAuthenticationToken> Repository { get; set; }
 
-		private IEventStore<TPermissionToken> EventStore { get; set; }
+		private IEventStore<TAuthenticationToken> EventStore { get; set; }
 
 		private IAggregateFactory AggregateFactory { get; set; }
 
-		public SnapshotRepository(ISnapshotStore snapshotStore, ISnapshotStrategy<TPermissionToken> snapshotStrategy, IRepository<TPermissionToken> repository, IEventStore<TPermissionToken> eventStore, IAggregateFactory aggregateFactory)
+		public SnapshotRepository(ISnapshotStore snapshotStore, ISnapshotStrategy<TAuthenticationToken> snapshotStrategy, IRepository<TAuthenticationToken> repository, IEventStore<TAuthenticationToken> eventStore, IAggregateFactory aggregateFactory)
 		{
 			SnapshotStore = snapshotStore;
 			SnapshotStrategy = snapshotStrategy;
@@ -30,14 +30,14 @@ namespace Cqrs.Snapshots
 		}
 
 		public void Save<TAggregateRoot>(TAggregateRoot aggregate, int? exectedVersion = null)
-			where TAggregateRoot : IAggregateRoot<TPermissionToken>
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			TryMakeSnapshot(aggregate);
 			Repository.Save(aggregate, exectedVersion);
 		}
 
-		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TPermissionToken>> events = null)
-			where TAggregateRoot : IAggregateRoot<TPermissionToken>
+		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>();
 			int snapshotVersion = TryRestoreAggregateFromSnapshot(aggregateId, aggregate);
@@ -45,7 +45,7 @@ namespace Cqrs.Snapshots
 			{
 				return Repository.Get<TAggregateRoot>(aggregateId);
 			}
-			IEnumerable<IEvent<TPermissionToken>> theseEvents = events ?? EventStore.Get(aggregateId, snapshotVersion).Where(desc => desc.Version > snapshotVersion);
+			IEnumerable<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get(aggregateId, snapshotVersion).Where(desc => desc.Version > snapshotVersion);
 			aggregate.LoadFromHistory(theseEvents);
 
 			return aggregate;
@@ -66,7 +66,7 @@ namespace Cqrs.Snapshots
 			return version;
 		}
 
-		private void TryMakeSnapshot(IAggregateRoot<TPermissionToken> aggregate)
+		private void TryMakeSnapshot(IAggregateRoot<TAuthenticationToken> aggregate)
 		{
 			if (!SnapshotStrategy.ShouldMakeSnapShot(aggregate))
 				return;

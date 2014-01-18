@@ -6,7 +6,7 @@ namespace Cqrs.Commands
 	/// <summary>
 	/// A <see cref="ICommand{TPermissionToken}"/> for <see cref="IDto"/> objects
 	/// </summary>
-	public class DtoCommand<TPermissionToken, TDto> : ICommand<TPermissionToken>
+	public class DtoCommand<TAuthenticationToken, TDto> : ICommand<TAuthenticationToken>
 		where TDto : IDto
 	{
 		public TDto Original { get; set; }
@@ -24,9 +24,9 @@ namespace Cqrs.Commands
 
 		public int ExpectedVersion { get; set; }
 
-		#region Implementation of IMessageWithPermissionToken<TPermissionToken>
+		#region Implementation of IMessageWithAuthenticationToken<TAuthenticationToken>
 
-		public TPermissionToken PermissionToken { get; set; }
+		public TAuthenticationToken AuthenticationToken { get; set; }
 
 		#endregion
 	}

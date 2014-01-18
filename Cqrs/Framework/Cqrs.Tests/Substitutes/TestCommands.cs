@@ -10,9 +10,9 @@ namespace Cqrs.Tests.Substitutes
 
 		public int ExpectedVersion { get; set; }
 
-		#region Implementation of IMessageWithPermissionToken<ISingleSignOnToken>
+		#region Implementation of IMessageWithAuthenticationToken<ISingleSignOnToken>
 
-		public ISingleSignOnToken PermissionToken { get; set; }
+		public ISingleSignOnToken AuthenticationToken { get; set; }
 
 		#endregion
 	}

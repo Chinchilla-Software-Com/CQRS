@@ -7,15 +7,15 @@ using Cqrs.Events;
 
 namespace Cqrs.Domain
 {
-	public class Repository<TPermissionToken> : IRepository<TPermissionToken>
+	public class Repository<TAuthenticationToken> : IRepository<TAuthenticationToken>
 	{
-		private IEventStore<TPermissionToken> EventStore { get; set; }
+		private IEventStore<TAuthenticationToken> EventStore { get; set; }
 
-		private IEventPublisher<TPermissionToken> Publisher { get; set; }
+		private IEventPublisher<TAuthenticationToken> Publisher { get; set; }
 
 		private IAggregateFactory AggregateFactory { get; set; }
 
-		public Repository(IAggregateFactory aggregateFactory, IEventStore<TPermissionToken> eventStore, IEventPublisher<TPermissionToken> publisher)
+		public Repository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher)
 		{
 			EventStore = eventStore;
 			Publisher = publisher;
@@ -23,23 +23,23 @@ namespace Cqrs.Domain
 		}
 
 		public void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
-			where TAggregateRoot : IAggregateRoot<TPermissionToken>
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			IList<IEvent<TPermissionToken>> uncommittedChanges = aggregate.GetUncommittedChanges().ToList();
+			IList<IEvent<TAuthenticationToken>> uncommittedChanges = aggregate.GetUncommittedChanges().ToList();
 			if (!uncommittedChanges.Any())
 				return;
 
 			if (expectedVersion != null)
 			{
-				IEnumerable<IEvent<TPermissionToken>> eventStoreResults = EventStore.Get(aggregate.Id, expectedVersion.Value);
+				IEnumerable<IEvent<TAuthenticationToken>> eventStoreResults = EventStore.Get(aggregate.Id, expectedVersion.Value);
 				if (eventStoreResults.Any())
 					throw new ConcurrencyException(aggregate.Id);
 			}
 
-			var eventsToPublish = new List<IEvent<TPermissionToken>>();
+			var eventsToPublish = new List<IEvent<TAuthenticationToken>>();
 
 			int i = 0;
-			foreach (IEvent<TPermissionToken> @event in uncommittedChanges)
+			foreach (IEvent<TAuthenticationToken> @event in uncommittedChanges)
 			{
 				if (@event.Id == Guid.Empty) 
 					@event.Id = aggregate.Id;
@@ -55,22 +55,22 @@ namespace Cqrs.Domain
 			}
 
 			aggregate.MarkChangesAsCommitted();
-			foreach (IEvent<TPermissionToken> @event in eventsToPublish)
+			foreach (IEvent<TAuthenticationToken> @event in eventsToPublish)
 				Publisher.Publish(@event);
 		}
 
-		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TPermissionToken>> events = null)
-			where TAggregateRoot : IAggregateRoot<TPermissionToken>
+		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			return LoadAggregate<TAggregateRoot>(aggregateId, events);
 		}
 
-		private TAggregateRoot LoadAggregate<TAggregateRoot>(Guid id, IList<IEvent<TPermissionToken>> events = null)
-			where TAggregateRoot : IAggregateRoot<TPermissionToken>
+		private TAggregateRoot LoadAggregate<TAggregateRoot>(Guid id, IList<IEvent<TAuthenticationToken>> events = null)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>();
 
-			IList<IEvent<TPermissionToken>> theseEvents = events ?? EventStore.Get(id, -1).ToList();
+			IList<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get(id, -1).ToList();
 			if (!theseEvents.Any())
 				throw new AggregateNotFoundException(id);
 

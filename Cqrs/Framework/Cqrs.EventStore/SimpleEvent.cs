@@ -3,7 +3,7 @@ using Cqrs.Events;
 
 namespace Cqrs.EventStore
 {
-	public class SimpleEvent<TPermissionToken> : IEvent<TPermissionToken>
+	public class SimpleEvent<TAuthenticationToken> : IEvent<TAuthenticationToken>
 	{
 		public string Message { get; set; }
 
@@ -17,9 +17,9 @@ namespace Cqrs.EventStore
 
 		#endregion
 
-		#region Implementation of IMessageWithPermissionToken<TPermissionToken>
+		#region Implementation of IMessageWithAuthenticationToken<TAuthenticationToken>
 
-		public TPermissionToken PermissionToken { get; set; }
+		public TAuthenticationToken AuthenticationToken { get; set; }
 
 		#endregion
 	}

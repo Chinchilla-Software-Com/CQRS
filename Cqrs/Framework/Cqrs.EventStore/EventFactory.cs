@@ -8,24 +8,24 @@ using Newtonsoft.Json.Converters;
 
 namespace Cqrs.EventStore
 {
-	public class EventFactory<TPermissionToken> : IEventBuilder<TPermissionToken>, IEventDeserialiser<TPermissionToken>
+	public class EventFactory<TAuthenticationToken> : IEventBuilder<TAuthenticationToken>, IEventDeserialiser<TAuthenticationToken>
 	{
 		#region Implementation of IEventDeserialiser
 
-		public IEvent<TPermissionToken> Deserialise(RecordedEvent eventData)
+		public IEvent<TAuthenticationToken> Deserialise(RecordedEvent eventData)
 		{
 			var jsonSerialiserSettings = GetSerialisationSettings();
 
 			switch (eventData.EventType)
 			{
 				case "Client Connected":
-					return JsonConvert.DeserializeObject<SimpleEvent<TPermissionToken>>(new UTF8Encoding().GetString(eventData.Data), jsonSerialiserSettings);
+					return JsonConvert.DeserializeObject<SimpleEvent<TAuthenticationToken>>(new UTF8Encoding().GetString(eventData.Data), jsonSerialiserSettings);
 				default:
-					return (IEvent<TPermissionToken>)JsonConvert.DeserializeObject(new UTF8Encoding().GetString(eventData.Data), Type.GetType(eventData.EventType));
+					return (IEvent<TAuthenticationToken>)JsonConvert.DeserializeObject(new UTF8Encoding().GetString(eventData.Data), Type.GetType(eventData.EventType));
 			}
 		}
 
-		public IEvent<TPermissionToken> Deserialise(ResolvedEvent notification)
+		public IEvent<TAuthenticationToken> Deserialise(ResolvedEvent notification)
 		{
 			return Deserialise(notification.Event);
 		}
@@ -46,7 +46,7 @@ namespace Cqrs.EventStore
 
 		#region Implementation of IEventBuilder
 
-		public EventData CreateFrameworkEvent(string type, IEvent<TPermissionToken> eventData)
+		public EventData CreateFrameworkEvent(string type, IEvent<TAuthenticationToken> eventData)
 		{
 			var jsonSerialiserSettings = GetSerialisationSettings();
 
@@ -60,7 +60,7 @@ namespace Cqrs.EventStore
 			);
 		}
 
-		public EventData CreateFrameworkEvent(IEvent<TPermissionToken> eventData)
+		public EventData CreateFrameworkEvent(IEvent<TAuthenticationToken> eventData)
 		{
 			var jsonSerialiserSettings = GetSerialisationSettings();
 
@@ -78,7 +78,7 @@ namespace Cqrs.EventStore
 		{
 			return CreateFrameworkEvent
 			(
-				new SimpleEvent<TPermissionToken> { Id = Guid.NewGuid(), Message = eventDataBody, TimeStamp = DateTimeOffset.Now, Version = 1 }
+				new SimpleEvent<TAuthenticationToken> { Id = Guid.NewGuid(), Message = eventDataBody, TimeStamp = DateTimeOffset.Now, Version = 1 }
 			);
 		}
 
@@ -87,7 +87,7 @@ namespace Cqrs.EventStore
 			return CreateFrameworkEvent
 			(
 				type,
-				new SimpleEvent<TPermissionToken> { Id = Guid.NewGuid(), Message = eventDataBody, TimeStamp = DateTimeOffset.Now, Version = 1 }
+				new SimpleEvent<TAuthenticationToken> { Id = Guid.NewGuid(), Message = eventDataBody, TimeStamp = DateTimeOffset.Now, Version = 1 }
 			);
 		}
 

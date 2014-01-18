@@ -1,8 +1,8 @@
 ﻿namespace Cqrs.Domain
 {
-	internal class AggregateDescriptor<TPermissionToken>
+	internal class AggregateDescriptor<TAuthenticationToken>
 	{
-		public IAggregateRoot<TPermissionToken> Aggregate { get; set; }
+		public IAggregateRoot<TAuthenticationToken> Aggregate { get; set; }
 
 		public int Version { get; set; }
 	}

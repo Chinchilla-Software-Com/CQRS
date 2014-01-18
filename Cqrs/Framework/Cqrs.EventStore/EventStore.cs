@@ -6,15 +6,15 @@ using EventStore.ClientAPI;
 
 namespace Cqrs.EventStore
 {
-	public class EventStore<TPermissionToken> : IEventStore<TPermissionToken>
+	public class EventStore<TAuthenticationToken> : IEventStore<TAuthenticationToken>
 	{
-		protected IEventBuilder<TPermissionToken> EventBuilder { get; set; }
+		protected IEventBuilder<TAuthenticationToken> EventBuilder { get; set; }
 
-		protected IEventDeserialiser<TPermissionToken> EventDeserialiser { get; set; }
+		protected IEventDeserialiser<TAuthenticationToken> EventDeserialiser { get; set; }
 
 		protected IEventStoreConnectionHelper EventStoreConnectionHelper { get; set; }
 
-		public EventStore(IEventBuilder<TPermissionToken> eventBuilder, IEventDeserialiser<TPermissionToken> eventDeserialiser, IEventStoreConnectionHelper eventStoreConnectionHelper)
+		public EventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, IEventStoreConnectionHelper eventStoreConnectionHelper)
 		{
 			EventBuilder = eventBuilder;
 			EventDeserialiser = eventDeserialiser;
@@ -23,7 +23,7 @@ namespace Cqrs.EventStore
 
 		#region Implementation of IEventStore
 
-		public void Save(IEvent<TPermissionToken> @event)
+		public void Save(IEvent<TAuthenticationToken> @event)
 		{
 			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
 			using (IEventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
@@ -36,7 +36,7 @@ namespace Cqrs.EventStore
 		/// The value of <paramref name="fromVersion"/> is zero based but the internals indexing of the EventStore is offset by <see cref="StreamPosition.Start"/>.
 		/// Adjust the value of <paramref name="fromVersion"/> by <see cref="StreamPosition.Start"/>
 		/// </remarks>
-		public IEnumerable<IEvent<TPermissionToken>> Get(Guid aggregateId, int fromVersion = -1)
+		public IEnumerable<IEvent<TAuthenticationToken>> Get(Guid aggregateId, int fromVersion = -1)
 		{
 			StreamEventsSlice eventCollection;
 			int startPosition = StreamPosition.Start;

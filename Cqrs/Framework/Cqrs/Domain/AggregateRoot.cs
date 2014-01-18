@@ -7,11 +7,11 @@ using Cqrs.Infrastructure;
 
 namespace Cqrs.Domain
 {
-	public abstract class AggregateRoot<TPermissionToken> : IAggregateRoot<TPermissionToken>
+	public abstract class AggregateRoot<TAuthenticationToken> : IAggregateRoot<TAuthenticationToken>
 	{
 		private ReaderWriterLockSlim Lock { get; set; }
 
-		private IList<IEvent<TPermissionToken>> Changes { get; set; }
+		private IList<IEvent<TAuthenticationToken>> Changes { get; set; }
 
 		public Guid Id { get; protected set; }
 
@@ -20,10 +20,10 @@ namespace Cqrs.Domain
 		protected AggregateRoot()
 		{
 			Lock = new ReaderWriterLockSlim();
-			Changes = new List<IEvent<TPermissionToken>>();
+			Changes = new List<IEvent<TAuthenticationToken>>();
 		}
 
-		public IEnumerable<IEvent<TPermissionToken>> GetUncommittedChanges()
+		public IEnumerable<IEvent<TAuthenticationToken>> GetUncommittedChanges()
 		{
 			Lock.EnterReadLock();
 			try
@@ -50,9 +50,9 @@ namespace Cqrs.Domain
 			}
 		}
 
-		public void LoadFromHistory(IEnumerable<IEvent<TPermissionToken>> history)
+		public void LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>> history)
 		{
-			foreach (IEvent<TPermissionToken> @event in history)
+			foreach (IEvent<TAuthenticationToken> @event in history)
 			{
 				if (@event.Version != Version + 1)
 					throw new EventsOutOfOrderException(@event.Id);
@@ -60,12 +60,12 @@ namespace Cqrs.Domain
 			}
 		}
 
-		protected void ApplyChange(IEvent<TPermissionToken> @event)
+		protected void ApplyChange(IEvent<TAuthenticationToken> @event)
 		{
 			ApplyChange(@event, true);
 		}
 
-		private void ApplyChange(IEvent<TPermissionToken> @event, bool isNew)
+		private void ApplyChange(IEvent<TAuthenticationToken> @event, bool isNew)
 		{
 			Lock.EnterWriteLock();
 			try

@@ -17,24 +17,24 @@ namespace Cqrs.Repositories.Queries
 			return BuildQueryPredicate(IsNotLogicallyDeleted);
 		}
 
-		public virtual IQueryPredicate WithPermissionScopeAny<TPermissionToken>(TPermissionToken permissionToken)
+		public virtual IQueryPredicate WithPermissionScopeAny<TAuthenticationToken>(TAuthenticationToken authenticationToken)
 		{
-			return BuildQueryPredicate(WithPermissionScopeAny, permissionToken);
+			return BuildQueryPredicate(WithPermissionScopeAny, authenticationToken);
 		}
 
-		public virtual IQueryPredicate WithPermissionScopeUser<TPermissionToken>(TPermissionToken permissionToken)
+		public virtual IQueryPredicate WithPermissionScopeUser<TAuthenticationToken>(TAuthenticationToken authenticationToken)
 		{
-			return BuildQueryPredicate(WithPermissionScopeUser, permissionToken);
+			return BuildQueryPredicate(WithPermissionScopeUser, authenticationToken);
 		}
 
-		public virtual IQueryPredicate WithPermissionScopeCompany<TPermissionToken>(TPermissionToken permissionToken)
+		public virtual IQueryPredicate WithPermissionScopeCompany<TAuthenticationToken>(TAuthenticationToken authenticationToken)
 		{
-			return BuildQueryPredicate(WithPermissionScopeCompany, permissionToken);
+			return BuildQueryPredicate(WithPermissionScopeCompany, authenticationToken);
 		}
 
-		public virtual IQueryPredicate WithPermissionScopeCompanyAndUser<TPermissionToken>(TPermissionToken permissionToken)
+		public virtual IQueryPredicate WithPermissionScopeCompanyAndUser<TAuthenticationToken>(TAuthenticationToken authenticationToken)
 		{
-			return BuildQueryPredicate(WithPermissionScopeCompanyAndUser, permissionToken);
+			return BuildQueryPredicate(WithPermissionScopeCompanyAndUser, authenticationToken);
 		}
 
 		protected virtual IQueryPredicate BuildQueryPredicate<TData>(Func<TData> func)

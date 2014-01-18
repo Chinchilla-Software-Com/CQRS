@@ -4,16 +4,16 @@ using Cqrs.Events;
 
 namespace Cqrs.Domain
 {
-	public interface IAggregateRoot<TPermissionToken>
+	public interface IAggregateRoot<TAuthenticationToken>
 	{
 		Guid Id { get; }
 
 		int Version { get; }
 
-		IEnumerable<IEvent<TPermissionToken>> GetUncommittedChanges();
+		IEnumerable<IEvent<TAuthenticationToken>> GetUncommittedChanges();
 
 		void MarkChangesAsCommitted();
 
-		void LoadFromHistory(IEnumerable<IEvent<TPermissionToken>> history);
+		void LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>> history);
 	}
 }

@@ -22,7 +22,7 @@ namespace CQRSCode.ReadModel.Events
 
 		#region Implementation of IMessageWithPermissionToken<ISingleSignOnToken>
 
-		public ISingleSignOnToken PermissionToken { get; set; }
+		public ISingleSignOnToken AuthenticationToken { get; set; }
 
 		#endregion
 	}

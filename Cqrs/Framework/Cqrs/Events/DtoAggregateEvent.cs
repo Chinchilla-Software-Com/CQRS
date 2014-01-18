@@ -3,7 +3,7 @@ using Cqrs.Domain;
 
 namespace Cqrs.Events
 {
-	public class DtoAggregateEvent<TPermissionToken, TDto> : IEvent<TPermissionToken>
+	public class DtoAggregateEvent<TAuthenticationToken, TDto> : IEvent<TAuthenticationToken>
 		where TDto : IDto
 	{
 		public TDto Original { get; private set; }
@@ -34,9 +34,9 @@ namespace Cqrs.Events
 			return DtoAggregateEventType.Unknown;
 		}
 
-		#region Implementation of IMessageWithPermissionToken<TPermissionToken>
+		#region Implementation of IMessageWithAuthenticationToken<TAuthenticationToken>
 
-		public TPermissionToken PermissionToken { get; set; }
+		public TAuthenticationToken AuthenticationToken { get; set; }
 
 		#endregion
 	}

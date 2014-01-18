@@ -72,74 +72,74 @@ namespace Cqrs.Repositories.Queries
 			);
 		}
 
-		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeAny<TPermissionToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeAny<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
 			var queryStrategy = GetNullQueryStrategy() as QueryStrategy;
 
 			if (queryStrategy == null)
 				return null;
 
-			if (queryPredicate.Name != GetFunctionNameOfType<TPermissionToken>(queryStrategy.WithPermissionScopeAny))
+			if (queryPredicate.Name != GetFunctionNameOfType<TAuthenticationToken>(queryStrategy.WithPermissionScopeAny))
 				return null;
 
-			return OnGeneratePredicateWithPermissionScopeAny<TPermissionToken>(queryPredicate, leftHandQueryable);
+			return OnGeneratePredicateWithPermissionScopeAny<TAuthenticationToken>(queryPredicate, leftHandQueryable);
 		}
 
-		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeAny<TPermissionToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeAny<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
 			return (leftHandQueryable ?? DataStore);
 		}
 
-		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeUser<TPermissionToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeUser<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
 			var queryStrategy = GetNullQueryStrategy() as QueryStrategy;
 
 			if (queryStrategy == null)
 				return null;
 
-			if (queryPredicate.Name != GetFunctionNameOfType<TPermissionToken>(queryStrategy.WithPermissionScopeUser))
+			if (queryPredicate.Name != GetFunctionNameOfType<TAuthenticationToken>(queryStrategy.WithPermissionScopeUser))
 				return null;
 
-			return OnGeneratePredicateWithPermissionScopeUser<TPermissionToken>(queryPredicate, leftHandQueryable);
+			return OnGeneratePredicateWithPermissionScopeUser<TAuthenticationToken>(queryPredicate, leftHandQueryable);
 		}
 
-		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeUser<TPermissionToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeUser<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
 			return (leftHandQueryable ?? DataStore);
 		}
 
-		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompany<TPermissionToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompany<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
 			var queryStrategy = GetNullQueryStrategy() as QueryStrategy;
 
 			if (queryStrategy == null)
 				return null;
 
-			if (queryPredicate.Name != GetFunctionNameOfType<TPermissionToken>(queryStrategy.WithPermissionScopeCompany))
+			if (queryPredicate.Name != GetFunctionNameOfType<TAuthenticationToken>(queryStrategy.WithPermissionScopeCompany))
 				return null;
 
-			return OnGeneratePredicateWithPermissionScopeCompany<TPermissionToken>(queryPredicate, leftHandQueryable);
+			return OnGeneratePredicateWithPermissionScopeCompany<TAuthenticationToken>(queryPredicate, leftHandQueryable);
 		}
 
-		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompany<TPermissionToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompany<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
 			return (leftHandQueryable ?? DataStore);
 		}
 
-		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompanyAndUser<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
 			var queryStrategy = GetNullQueryStrategy() as QueryStrategy;
 
 			if (queryStrategy == null)
 				return null;
 
-			if (queryPredicate.Name != GetFunctionNameOfType<TPermissionToken>(queryStrategy.WithPermissionScopeCompanyAndUser))
+			if (queryPredicate.Name != GetFunctionNameOfType<TAuthenticationToken>(queryStrategy.WithPermissionScopeCompanyAndUser))
 				return null;
 
-			return OnGeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionToken>(queryPredicate, leftHandQueryable);
+			return OnGeneratePredicateWithPermissionScopeCompanyAndUser<TAuthenticationToken>(queryPredicate, leftHandQueryable);
 		}
 
-		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompanyAndUser<TPermissionToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompanyAndUser<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
 			return (leftHandQueryable ?? DataStore);
 		}
