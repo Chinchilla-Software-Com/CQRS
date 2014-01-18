@@ -258,6 +258,13 @@
 		}
 	}
 
+	private static string GetDomainAuthenticationTokenType(IElement t)
+	{
+		IElement domainElement = FindDomainElement(t);
+		var domainStereoTypeProperties = domainElement.AppliedStereotypes.Single(property => property.Name == "Domain");
+		return domainStereoTypeProperties.PropertyInstances.Single(property => property.Name == "AuthenticationTokenType").Value;
+	}
+
 	private static IElement FindModuleElement(IElement t)
 	{
 		var domainStereoType = t.AppliedStereotypes.FirstOrDefault(s => s.Name == "Module");
