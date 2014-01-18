@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using Cqrs.Mongo.Entities;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 
 namespace Cqrs.Mongo.Repositories.Authentication
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using Cqrs.Commands;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 
 namespace CQRSCode.WriteModel.Commands
 {

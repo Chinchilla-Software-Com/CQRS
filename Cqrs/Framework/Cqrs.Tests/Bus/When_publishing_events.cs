@@ -1,5 +1,5 @@
 using Cqrs.Bus;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
 
@@ -13,7 +13,7 @@ namespace Cqrs.Tests.Bus
 		[SetUp]
 		public void Setup()
 		{
-			_bus = new InProcessBus<ISingleSignOnToken>();
+			_bus = new InProcessBus<ISingleSignOnToken>(new SingleSignOnTokenValueHelper());
 		}
 
 		[Test]

@@ -1,7 +1,7 @@
 ﻿using System;
 using CQRSCode.ReadModel.Events;
 using Cqrs.Domain;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 
 namespace CQRSCode.WriteModel.Domain
 {

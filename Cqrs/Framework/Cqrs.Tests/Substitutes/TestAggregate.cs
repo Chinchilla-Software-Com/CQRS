@@ -1,6 +1,6 @@
 ﻿using System;
 using Cqrs.Domain;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 
 namespace Cqrs.Tests.Substitutes
 {

@@ -1,4 +1,4 @@
-﻿namespace Cqrs.Repositories.Authentication
+﻿namespace Cqrs.Authentication
 {
 	public interface IAuthenticationTokenHelper<TAuthenticationToken>
 	{

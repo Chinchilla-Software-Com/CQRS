@@ -4,7 +4,7 @@ using CQRSCode.ReadModel;
 using CQRSCode.WriteModel.Commands;
 using CQRSCode.WriteModel.Domain;
 using Cqrs.Commands;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 
 namespace CQRSWeb.Controllers
 {

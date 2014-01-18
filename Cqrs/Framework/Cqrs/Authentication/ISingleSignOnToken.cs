@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace Cqrs.Repositories.Authentication
+namespace Cqrs.Authentication
 {
 	public interface ISingleSignOnToken
 	{

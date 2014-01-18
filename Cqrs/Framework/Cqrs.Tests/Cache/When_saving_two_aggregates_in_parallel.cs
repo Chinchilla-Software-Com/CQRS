@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Cqrs.Cache;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
 

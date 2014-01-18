@@ -1,6 +1,6 @@
 ﻿using System;
 using Cqrs.Cache;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
 

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Remoting.Messaging;
 
-namespace Cqrs.Repositories.Authentication
+namespace Cqrs.Authentication
 {
 	public class SingleSignOnTokenValueHelper : IAuthenticationTokenHelper<ISingleSignOnToken>
 	{

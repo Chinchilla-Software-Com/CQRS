@@ -6,7 +6,7 @@ using Cqrs.Commands;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 using StructureMap;
 using StructureMap.Graph;
 

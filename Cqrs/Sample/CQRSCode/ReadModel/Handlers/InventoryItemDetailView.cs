@@ -3,7 +3,7 @@ using CQRSCode.ReadModel.Dtos;
 using CQRSCode.ReadModel.Events;
 using CQRSCode.ReadModel.Infrastructure;
 using Cqrs.Events;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 
 namespace CQRSCode.ReadModel.Handlers
 {

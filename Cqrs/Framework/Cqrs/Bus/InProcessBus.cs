@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
@@ -12,8 +13,11 @@ namespace Cqrs.Bus
 	{
 		private Dictionary<Type, List<Action<IMessage>>> Routes { get; set; }
 
-		public InProcessBus()
+		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
+
+		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
 		{
+			AuthenticationTokenHelper = authenticationTokenHelper;
 			Routes = new Dictionary<Type, List<Action<IMessage>>>();
 		}
 
@@ -32,6 +36,8 @@ namespace Cqrs.Bus
 		public void Send<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
+			command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+
 			List<Action<IMessage>> handlers; 
 			if (Routes.TryGetValue(typeof(TCommand), out handlers))
 			{
@@ -48,6 +54,8 @@ namespace Cqrs.Bus
 		public void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
+			@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+
 			List<Action<IMessage>> handlers; 
 			if (!Routes.TryGetValue(@event.GetType(), out handlers)) return;
 			foreach(Action<IMessage> handler in handlers)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cqrs.Events;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 
 namespace Cqrs.Tests.Substitutes
 {

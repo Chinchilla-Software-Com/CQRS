@@ -1,5 +1,5 @@
 ﻿using System;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 using Cqrs.Snapshots;
 
 namespace Cqrs.Tests.Substitutes

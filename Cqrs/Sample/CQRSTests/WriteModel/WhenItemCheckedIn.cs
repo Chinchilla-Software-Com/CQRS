@@ -6,7 +6,7 @@ using CQRSCode.WriteModel.Commands;
 using CQRSCode.WriteModel.Domain;
 using CQRSCode.WriteModel.Handlers;
 using Cqrs.Events;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 using Cqrs.Tests.Extensions.TestHelpers;
 using NUnit.Framework;
 

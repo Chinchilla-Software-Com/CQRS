@@ -2,7 +2,7 @@
 using CQRSCode.WriteModel.Domain;
 using Cqrs.Commands;
 using Cqrs.Domain;
-using Cqrs.Repositories.Authentication;
+using Cqrs.Authentication;
 
 namespace CQRSCode.WriteModel.Handlers
 {
