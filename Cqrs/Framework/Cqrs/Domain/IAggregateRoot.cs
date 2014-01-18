@@ -4,12 +4,16 @@ using Cqrs.Events;
 
 namespace Cqrs.Domain
 {
-	public interface IAggregateRoot
+	public interface IAggregateRoot<TPermissionScope>
 	{
 		Guid Id { get; }
+
 		int Version { get; }
-		IEnumerable<IEvent> GetUncommittedChanges();
+
+		IEnumerable<IEvent<TPermissionScope>> GetUncommittedChanges();
+
 		void MarkChangesAsCommitted();
-		void LoadFromHistory(IEnumerable<IEvent> history);
+
+		void LoadFromHistory(IEnumerable<IEvent<TPermissionScope>> history);
 	}
 }

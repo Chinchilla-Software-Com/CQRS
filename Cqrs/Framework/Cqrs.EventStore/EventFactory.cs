@@ -8,24 +8,24 @@ using Newtonsoft.Json.Converters;
 
 namespace Cqrs.EventStore
 {
-	public class EventFactory : IEventBuilder, IEventDeserialiser
+	public class EventFactory<TPermissionScope> : IEventBuilder<TPermissionScope>, IEventDeserialiser<TPermissionScope>
 	{
 		#region Implementation of IEventDeserialiser
 
-		public IEvent Deserialise(RecordedEvent eventData)
+		public IEvent<TPermissionScope> Deserialise(RecordedEvent eventData)
 		{
 			var jsonSerialiserSettings = GetSerialisationSettings();
 
 			switch (eventData.EventType)
 			{
 				case "Client Connected":
-					return JsonConvert.DeserializeObject<SimpleEvent>(new UTF8Encoding().GetString(eventData.Data), jsonSerialiserSettings);
+					return JsonConvert.DeserializeObject<SimpleEvent<TPermissionScope>>(new UTF8Encoding().GetString(eventData.Data), jsonSerialiserSettings);
 				default:
-					return (IEvent)JsonConvert.DeserializeObject(new UTF8Encoding().GetString(eventData.Data), Type.GetType(eventData.EventType));
+					return (IEvent<TPermissionScope>)JsonConvert.DeserializeObject(new UTF8Encoding().GetString(eventData.Data), Type.GetType(eventData.EventType));
 			}
 		}
 
-		public IEvent Deserialise(ResolvedEvent notification)
+		public IEvent<TPermissionScope> Deserialise(ResolvedEvent notification)
 		{
 			return Deserialise(notification.Event);
 		}
@@ -34,7 +34,7 @@ namespace Cqrs.EventStore
 		{
 			return new JsonSerializerSettings
 			{
-				Formatting = Newtonsoft.Json.Formatting.None,
+				Formatting = Formatting.None,
 				MissingMemberHandling = MissingMemberHandling.Ignore,
 				DateParseHandling = DateParseHandling.DateTimeOffset,
 				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
@@ -46,7 +46,7 @@ namespace Cqrs.EventStore
 
 		#region Implementation of IEventBuilder
 
-		public EventData CreateFrameworkEvent(string type, IEvent eventData)
+		public EventData CreateFrameworkEvent(string type, IEvent<TPermissionScope> eventData)
 		{
 			var jsonSerialiserSettings = GetSerialisationSettings();
 
@@ -60,7 +60,7 @@ namespace Cqrs.EventStore
 			);
 		}
 
-		public EventData CreateFrameworkEvent(IEvent eventData)
+		public EventData CreateFrameworkEvent(IEvent<TPermissionScope> eventData)
 		{
 			var jsonSerialiserSettings = GetSerialisationSettings();
 
@@ -78,7 +78,7 @@ namespace Cqrs.EventStore
 		{
 			return CreateFrameworkEvent
 			(
-				new SimpleEvent { Id = Guid.NewGuid(), Message = eventDataBody, TimeStamp = DateTimeOffset.Now, Version = 1 }
+				new SimpleEvent<TPermissionScope> { Id = Guid.NewGuid(), Message = eventDataBody, TimeStamp = DateTimeOffset.Now, Version = 1 }
 			);
 		}
 
@@ -87,7 +87,7 @@ namespace Cqrs.EventStore
 			return CreateFrameworkEvent
 			(
 				type,
-				new SimpleEvent { Id = Guid.NewGuid(), Message = eventDataBody, TimeStamp = DateTimeOffset.Now, Version = 1}
+				new SimpleEvent<TPermissionScope> { Id = Guid.NewGuid(), Message = eventDataBody, TimeStamp = DateTimeOffset.Now, Version = 1 }
 			);
 		}
 

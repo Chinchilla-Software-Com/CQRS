@@ -36,7 +36,7 @@ namespace Cqrs.Config
 					foreach (Type @interface in executorType.Interfaces)
 					{
 						Type safeExecutorType = executorType.Type;
-						if (typesFromAssemblyContainingMessage.IsGenericType && typesFromAssemblyContainingMessage.Name == typeof(DtoCommandHandler<>).Name)
+						if (typesFromAssemblyContainingMessage.IsGenericType && typesFromAssemblyContainingMessage.Name == typeof(DtoCommandHandler<,>).Name)
 						{
 							Type genericType = typesFromAssemblyContainingMessage.GetGenericArguments().Single();
 							safeExecutorType = safeExecutorType.MakeGenericType(genericType);
@@ -55,10 +55,10 @@ namespace Cqrs.Config
 		{
 			Type commandType = @interface.GetGenericArguments().First();
 			Type safeCommandType = commandType;
-			if (safeCommandType.IsGenericType && safeCommandType.Name == typeof(DtoCommand<>).Name && executorType.IsGenericType && executorType.Name == typeof(DtoCommandHandler<>).Name)
+			if (safeCommandType.IsGenericType && safeCommandType.Name == typeof(DtoCommand<,>).Name && executorType.IsGenericType && executorType.Name == typeof(DtoCommandHandler<,>).Name)
 			{
 				Type genericType = executorType.GetGenericArguments().Single();
-				safeCommandType = typeof(DtoCommand<>).MakeGenericType(genericType);
+				safeCommandType = typeof(DtoCommand<,>).MakeGenericType(genericType);
 			}
 
 			MethodInfo registerExecutorMethod = bus
@@ -89,8 +89,16 @@ namespace Cqrs.Config
 		{
 			return type
 				.GetInterfaces()
-				.Where(@interface => @interface.IsGenericType && ((@interface.GetGenericTypeDefinition() == typeof(ICommandHandler<>))
-												 || @interface.GetGenericTypeDefinition() == typeof(IEventHandler<>)));
+				.Where
+				(
+					@interface =>
+						@interface.IsGenericType &&
+						(
+							@interface.GetGenericTypeDefinition() == typeof(ICommandHandler<,>)
+								||
+							@interface.GetGenericTypeDefinition() == typeof(IEventHandler<,>)
+						)
+				);
 		}
 
 	}

@@ -8,15 +8,19 @@ using Cqrs.Events;
 
 namespace Cqrs.Cache
 {
-	public class CacheRepository : IRepository
+	public class CacheRepository<TPermissionScope> : IRepository<TPermissionScope>
 	{
-		private IRepository Repository { get; set; }
-		private IEventStore EventStore { get; set; }
+		private IRepository<TPermissionScope> Repository { get; set; }
+
+		private IEventStore<TPermissionScope> EventStore { get; set; }
+
 		private MemoryCache Cache { get; set; }
+
 		private Func<CacheItemPolicy> PolicyFactory { get; set; }
+
 		private static readonly ConcurrentDictionary<string, object> Locks = new ConcurrentDictionary<string, object>();
 
-		public CacheRepository(IRepository repository, IEventStore eventStore)
+		public CacheRepository(IRepository<TPermissionScope> repository, IEventStore<TPermissionScope> eventStore)
 		{
 			if(repository == null)
 				throw new ArgumentNullException("repository");
@@ -27,18 +31,18 @@ namespace Cqrs.Cache
 			EventStore = eventStore;
 			Cache = MemoryCache.Default;
 			PolicyFactory = () => new CacheItemPolicy
-									   {
-										   SlidingExpiration = new TimeSpan(0,0,15,0),
-										   RemovedCallback = x =>
-																 {
-																	 object o;
-																	 Locks.TryRemove(x.CacheItem.Key, out o);
-																 }
-									   };
+				{
+					SlidingExpiration = new TimeSpan(0,0,15,0),
+					RemovedCallback = x =>
+					{
+						object o;
+						Locks.TryRemove(x.CacheItem.Key, out o);
+					}
+				};
 		}
 
 		public void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
-			where TAggregateRoot : IAggregateRoot
+			where TAggregateRoot : IAggregateRoot<TPermissionScope>
 		{
 			var idstring = aggregate.Id.ToString();
 			try
@@ -57,13 +61,13 @@ namespace Cqrs.Cache
 			}
 		}
 
-		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent> events = null)
-			where TAggregateRoot : IAggregateRoot
+		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TPermissionScope>> events = null)
+			where TAggregateRoot : IAggregateRoot<TPermissionScope>
 		{
 			string idstring = aggregateId.ToString();
 			try
 			{
-				IList<IEvent> theseEvents = null;
+				IList<IEvent<TPermissionScope>> theseEvents = null;
 				lock (Locks.GetOrAdd(idstring, _ => new object()))
 				{
 					TAggregateRoot aggregate;

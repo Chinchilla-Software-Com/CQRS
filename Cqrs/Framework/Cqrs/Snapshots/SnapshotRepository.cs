@@ -8,15 +8,19 @@ using Cqrs.Infrastructure;
 
 namespace Cqrs.Snapshots
 {
-	public class SnapshotRepository : IRepository
+	public class SnapshotRepository<TPermissionScope> : IRepository<TPermissionScope>
 	{
 		private ISnapshotStore SnapshotStore { get; set; }
-		private ISnapshotStrategy SnapshotStrategy { get; set; }
-		private IRepository Repository { get; set; }
-		private IEventStore EventStore { get; set; }
+
+		private ISnapshotStrategy<TPermissionScope> SnapshotStrategy { get; set; }
+
+		private IRepository<TPermissionScope> Repository { get; set; }
+
+		private IEventStore<TPermissionScope> EventStore { get; set; }
+
 		private IAggregateFactory AggregateFactory { get; set; }
 
-		public SnapshotRepository(ISnapshotStore snapshotStore, ISnapshotStrategy snapshotStrategy, IRepository repository, IEventStore eventStore, IAggregateFactory aggregateFactory)
+		public SnapshotRepository(ISnapshotStore snapshotStore, ISnapshotStrategy<TPermissionScope> snapshotStrategy, IRepository<TPermissionScope> repository, IEventStore<TPermissionScope> eventStore, IAggregateFactory aggregateFactory)
 		{
 			SnapshotStore = snapshotStore;
 			SnapshotStrategy = snapshotStrategy;
@@ -26,14 +30,14 @@ namespace Cqrs.Snapshots
 		}
 
 		public void Save<TAggregateRoot>(TAggregateRoot aggregate, int? exectedVersion = null)
-			where TAggregateRoot : IAggregateRoot
+			where TAggregateRoot : IAggregateRoot<TPermissionScope>
 		{
 			TryMakeSnapshot(aggregate);
 			Repository.Save(aggregate, exectedVersion);
 		}
 
-		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent> events = null)
-			where TAggregateRoot : IAggregateRoot
+		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TPermissionScope>> events = null)
+			where TAggregateRoot : IAggregateRoot<TPermissionScope>
 		{
 			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>();
 			int snapshotVersion = TryRestoreAggregateFromSnapshot(aggregateId, aggregate);
@@ -41,7 +45,7 @@ namespace Cqrs.Snapshots
 			{
 				return Repository.Get<TAggregateRoot>(aggregateId);
 			}
-			IEnumerable<IEvent> theseEvents = events ?? EventStore.Get(aggregateId, snapshotVersion).Where(desc => desc.Version > snapshotVersion);
+			IEnumerable<IEvent<TPermissionScope>> theseEvents = events ?? EventStore.Get(aggregateId, snapshotVersion).Where(desc => desc.Version > snapshotVersion);
 			aggregate.LoadFromHistory(theseEvents);
 
 			return aggregate;
@@ -62,7 +66,7 @@ namespace Cqrs.Snapshots
 			return version;
 		}
 
-		private void TryMakeSnapshot(IAggregateRoot aggregate)
+		private void TryMakeSnapshot(IAggregateRoot<TPermissionScope> aggregate)
 		{
 			if (!SnapshotStrategy.ShouldMakeSnapShot(aggregate))
 				return;

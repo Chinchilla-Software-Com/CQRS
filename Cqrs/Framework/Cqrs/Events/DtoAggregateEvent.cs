@@ -3,11 +3,13 @@ using Cqrs.Domain;
 
 namespace Cqrs.Events
 {
-	public class DtoAggregateEvent<TDto> : IEvent
+	public class DtoAggregateEvent<TPermissionScope, TDto> : IEvent<TPermissionScope>
 		where TDto : IDto
 	{
 		public TDto Original { get; private set; }
+
 		public TDto New { get; private set; }
+
 		public DtoAggregateEvent(Guid id, TDto original, TDto @new)
 		{
 			Id = id;
@@ -16,7 +18,9 @@ namespace Cqrs.Events
 		}
 
 		public Guid Id { get; set; }
+
 		public int Version { get; set; }
+
 		public DateTimeOffset TimeStamp { get; set; }
 
 		public DtoAggregateEventType GetEventType()

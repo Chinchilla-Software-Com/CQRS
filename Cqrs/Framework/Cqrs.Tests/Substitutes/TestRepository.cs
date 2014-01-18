@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using Cqrs.Domain;
 using Cqrs.Events;
+using Cqrs.Repositories.Authentication;
 
 namespace Cqrs.Tests.Substitutes
 {
-	public class TestRepository : IRepository
+	public class TestRepository : IRepository<ISingleSignOnToken>
 	{
 		public void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
-			where TAggregateRoot : IAggregateRoot
+			where TAggregateRoot : IAggregateRoot<ISingleSignOnToken>
 		{
 			Saved = aggregate;
 			if (expectedVersion == 100)
@@ -17,10 +18,10 @@ namespace Cqrs.Tests.Substitutes
 			}
 		}
 
-		public IAggregateRoot Saved { get; private set; }
+		public IAggregateRoot<ISingleSignOnToken> Saved { get; private set; }
 
-		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent> events = null)
-			where TAggregateRoot : IAggregateRoot
+		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<ISingleSignOnToken>> events = null)
+			where TAggregateRoot : IAggregateRoot<ISingleSignOnToken>
 		{
 			var obj = (TAggregateRoot) Activator.CreateInstance(typeof (TAggregateRoot), true);
 			obj.LoadFromHistory(new[] {new TestAggregateDidSomething {Id = aggregateId, Version = 1}});

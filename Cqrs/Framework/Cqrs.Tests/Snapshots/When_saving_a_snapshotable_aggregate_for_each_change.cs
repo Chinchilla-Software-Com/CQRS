@@ -1,6 +1,7 @@
 ﻿using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
+using Cqrs.Repositories.Authentication;
 using Cqrs.Snapshots;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
@@ -11,19 +12,19 @@ namespace Cqrs.Tests.Snapshots
 	public class When_saving_a_snapshotable_aggregate_for_each_change
 	{
 		private TestInMemorySnapshotStore _snapshotStore;
-		private IUnitOfWork _unitOfWork;
+		private IUnitOfWork<ISingleSignOnToken> _unitOfWork;
 		private TestSnapshotAggregate _aggregate;
 
 		[SetUp]
-		public void Setup()        
+		public void Setup()
 		{
-			IEventStore eventStore = new TestInMemoryEventStore();
+			IEventStore<ISingleSignOnToken> eventStore = new TestInMemoryEventStore();
 			var eventPublisher = new TestEventPublisher();
 			_snapshotStore = new TestInMemorySnapshotStore();
-			var snapshotStrategy = new DefaultSnapshotStrategy();
+			var snapshotStrategy = new DefaultSnapshotStrategy<ISingleSignOnToken>();
 			var aggregateFactory = new AggregateFactory();
-			var repository = new SnapshotRepository(_snapshotStore, snapshotStrategy, new Repository(aggregateFactory, eventStore, eventPublisher), eventStore, aggregateFactory);
-			_unitOfWork = new UnitOfWork(repository);
+			var repository = new SnapshotRepository<ISingleSignOnToken>(_snapshotStore, snapshotStrategy, new Repository<ISingleSignOnToken>(aggregateFactory, eventStore, eventPublisher), eventStore, aggregateFactory);
+			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(repository);
 			_aggregate = new TestSnapshotAggregate();
 
 			for (var i = 0; i < 20; i++)

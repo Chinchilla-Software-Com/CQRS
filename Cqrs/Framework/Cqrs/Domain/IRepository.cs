@@ -4,11 +4,12 @@ using Cqrs.Events;
 
 namespace Cqrs.Domain
 {
-	public interface IRepository
+	public interface IRepository<TPermissionScope>
 	{
 		void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
-			where TAggregateRoot : IAggregateRoot;
-		TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent> events = null)
-			where TAggregateRoot : IAggregateRoot;
+			where TAggregateRoot : IAggregateRoot<TPermissionScope>;
+
+		TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TPermissionScope>> events = null)
+			where TAggregateRoot : IAggregateRoot<TPermissionScope>;
 	}
 }

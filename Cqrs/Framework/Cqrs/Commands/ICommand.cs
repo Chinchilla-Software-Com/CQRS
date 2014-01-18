@@ -2,8 +2,8 @@
 
 namespace Cqrs.Commands
 {
-    public interface ICommand : IMessage
-    {
-        int ExpectedVersion { get; set; }
-    }
+	public interface ICommand<TPermissionScope> : IMessageWithPermissionScope<TPermissionScope>
+	{
+		int ExpectedVersion { get; set; }
+	}
 }

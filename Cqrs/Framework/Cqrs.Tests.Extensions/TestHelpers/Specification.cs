@@ -5,27 +5,28 @@ using Cqrs.Commands;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
+using Cqrs.Repositories.Authentication;
 using Cqrs.Snapshots;
 using NUnit.Framework;
 
 namespace Cqrs.Tests.Extensions.TestHelpers
 {
 	[TestFixture]
-	public abstract class Specification<TAggregate, THandler, TCommand> 
-		where TAggregate: AggregateRoot
-		where THandler : class, ICommandHandler<TCommand>
-		where TCommand : ICommand
+	public abstract class Specification<TAggregate, THandler, TCommand>
+		where TAggregate : AggregateRoot<ISingleSignOnToken>
+		where THandler : class, ICommandHandler<ISingleSignOnToken, TCommand>
+		where TCommand : ICommand<ISingleSignOnToken>
 	{
 
 		protected TAggregate Aggregate { get; set; }
-		protected IUnitOfWork UnitOfWork { get; set; }
-		protected abstract IEnumerable<IEvent> Given();
+		protected IUnitOfWork<ISingleSignOnToken> UnitOfWork { get; set; }
+		protected abstract IEnumerable<IEvent<ISingleSignOnToken>> Given();
 		protected abstract TCommand When();
 		protected abstract THandler BuildHandler();
 
 		protected Snapshot Snapshot { get; set; }
-		protected IList<IEvent> EventDescriptors { get; set; }
-		protected IList<IEvent> PublishedEvents { get; set; }
+		protected IList<IEvent<ISingleSignOnToken>> EventDescriptors { get; set; }
+		protected IList<IEvent<ISingleSignOnToken>> PublishedEvents { get; set; }
 		
 		[SetUp]
 		public void Run()
@@ -35,9 +36,9 @@ namespace Cqrs.Tests.Extensions.TestHelpers
 			var eventpublisher = new SpecEventPublisher();
 			var aggregateFactory = new AggregateFactory();
 
-			var snapshotStrategy = new DefaultSnapshotStrategy();
-			var repository = new SnapshotRepository(snapshotstorage, snapshotStrategy, new Repository(aggregateFactory, eventstorage, eventpublisher), eventstorage, aggregateFactory);
-			UnitOfWork = new UnitOfWork(repository);
+			var snapshotStrategy = new DefaultSnapshotStrategy<ISingleSignOnToken>();
+			var repository = new SnapshotRepository<ISingleSignOnToken>(snapshotstorage, snapshotStrategy, new Repository<ISingleSignOnToken>(aggregateFactory, eventstorage, eventpublisher), eventstorage, aggregateFactory);
+			UnitOfWork = new UnitOfWork<ISingleSignOnToken>(repository);
 
 			Aggregate = UnitOfWork.Get<TAggregate>(Guid.Empty);
 
@@ -50,7 +51,8 @@ namespace Cqrs.Tests.Extensions.TestHelpers
 		}
 	}
 
-	internal class SpecSnapShotStorage : ISnapshotStore {
+	internal class SpecSnapShotStorage : ISnapshotStore
+	{
 		public SpecSnapShotStorage(Snapshot snapshot)
 		{
 			Snapshot = snapshot;
@@ -69,34 +71,36 @@ namespace Cqrs.Tests.Extensions.TestHelpers
 		}
 	}
 
-	internal class SpecEventPublisher : IEventPublisher {
+	internal class SpecEventPublisher : IEventPublisher<ISingleSignOnToken>
+	{
 		public SpecEventPublisher()
 		{
-			PublishedEvents = new List<IEvent>();
+			PublishedEvents = new List<IEvent<ISingleSignOnToken>>();
 		}
 
-		public void Publish<T>(T @event) where T : IEvent
+		public void Publish<T>(T @event) where T : IEvent<ISingleSignOnToken>
 		{
 			PublishedEvents.Add(@event);
 		}
 
-		public IList<IEvent> PublishedEvents { get; set; }
+		public IList<IEvent<ISingleSignOnToken>> PublishedEvents { get; set; }
 	}
 
-	internal class SpecEventStorage : IEventStore {
-		public SpecEventStorage(IList<IEvent> events)
+	internal class SpecEventStorage : IEventStore<ISingleSignOnToken>
+	{
+		public SpecEventStorage(IList<IEvent<ISingleSignOnToken>> events)
 		{
 			Events = events;
 		}
 
-		public IList<IEvent> Events { get; set; }
+		public IList<IEvent<ISingleSignOnToken>> Events { get; set; }
 
-		public void Save(IEvent @event)
+		public void Save(IEvent<ISingleSignOnToken> @event)
 		{
 			Events.Add(@event);
 		}
 
-		public IEnumerable<IEvent> Get(Guid aggregateId, int fromVersion)
+		public IEnumerable<IEvent<ISingleSignOnToken>> Get(Guid aggregateId, int fromVersion)
 		{
 			return Events.Where(x => x.Version > fromVersion);
 		}

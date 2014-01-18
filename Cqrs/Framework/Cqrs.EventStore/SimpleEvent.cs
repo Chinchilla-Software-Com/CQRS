@@ -3,7 +3,7 @@ using Cqrs.Events;
 
 namespace Cqrs.EventStore
 {
-	public class SimpleEvent : IEvent
+	public class SimpleEvent<TPermissionScope> : IEvent<TPermissionScope>
 	{
 		public string Message { get; set; }
 

@@ -6,11 +6,11 @@ using EventStore.ClientAPI;
 
 namespace Cqrs.EventStore
 {
-	public class EventStoreConnectionHelper : IEventStoreConnectionHelper
+	public class EventStoreConnectionHelper<TPermissionScope> : IEventStoreConnectionHelper
 	{
-		protected IEventBuilder EventBuilder { get; set; }
+		protected IEventBuilder<TPermissionScope> EventBuilder { get; set; }
 
-		public EventStoreConnectionHelper(IEventBuilder eventBuilder)
+		public EventStoreConnectionHelper(IEventBuilder<TPermissionScope> eventBuilder)
 		{
 			EventBuilder = eventBuilder;
 		}

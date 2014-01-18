@@ -3,6 +3,7 @@ using System.Linq;
 using Cqrs.Domain;
 using Cqrs.Domain.Exception;
 using Cqrs.Domain.Factories;
+using Cqrs.Repositories.Authentication;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
 
@@ -14,8 +15,8 @@ namespace Cqrs.Tests.Domain
 		private TestInMemoryEventStore _eventStore;
 		private TestAggregateNoParameterLessConstructor _aggregate;
 		private TestEventPublisher _eventPublisher;
-		private IUnitOfWork _unitOfWork;
-		private Repository _rep;
+		private IUnitOfWork<ISingleSignOnToken> _unitOfWork;
+		private Repository<ISingleSignOnToken> _rep;
 
 		[SetUp]
 		public void Setup()
@@ -23,8 +24,8 @@ namespace Cqrs.Tests.Domain
 			var aggregateFactory = new AggregateFactory();
 			_eventStore = new TestInMemoryEventStore();
 			_eventPublisher = new TestEventPublisher();
-			_rep = new Repository(aggregateFactory, _eventStore, _eventPublisher);
-			_unitOfWork = new UnitOfWork(_rep);
+			_rep = new Repository<ISingleSignOnToken>(aggregateFactory, _eventStore, _eventPublisher);
+			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(_rep);
 
 			_aggregate = new TestAggregateNoParameterLessConstructor(2);
 

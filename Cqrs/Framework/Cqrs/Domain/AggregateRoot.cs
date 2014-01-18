@@ -7,21 +7,23 @@ using Cqrs.Infrastructure;
 
 namespace Cqrs.Domain
 {
-	public abstract class AggregateRoot : IAggregateRoot
+	public abstract class AggregateRoot<TPermissionScope> : IAggregateRoot<TPermissionScope>
 	{
 		private ReaderWriterLockSlim Lock { get; set; }
-		private IList<IEvent> Changes { get; set; }
+
+		private IList<IEvent<TPermissionScope>> Changes { get; set; }
 
 		public Guid Id { get; protected set; }
+
 		public int Version { get; protected set; }
 
 		protected AggregateRoot()
 		{
 			Lock = new ReaderWriterLockSlim();
-			Changes = new List<IEvent>();
+			Changes = new List<IEvent<TPermissionScope>>();
 		}
 
-		public IEnumerable<IEvent> GetUncommittedChanges()
+		public IEnumerable<IEvent<TPermissionScope>> GetUncommittedChanges()
 		{
 			Lock.EnterReadLock();
 			try
@@ -48,9 +50,9 @@ namespace Cqrs.Domain
 			}
 		}
 
-		public void LoadFromHistory(IEnumerable<IEvent> history)
+		public void LoadFromHistory(IEnumerable<IEvent<TPermissionScope>> history)
 		{
-			foreach (IEvent @event in history)
+			foreach (IEvent<TPermissionScope> @event in history)
 			{
 				if (@event.Version != Version + 1)
 					throw new EventsOutOfOrderException(@event.Id);
@@ -58,12 +60,12 @@ namespace Cqrs.Domain
 			}
 		}
 
-		protected void ApplyChange(IEvent @event)
+		protected void ApplyChange(IEvent<TPermissionScope> @event)
 		{
 			ApplyChange(@event, true);
 		}
 
-		private void ApplyChange(IEvent @event, bool isNew)
+		private void ApplyChange(IEvent<TPermissionScope> @event, bool isNew)
 		{
 			Lock.EnterWriteLock();
 			try

@@ -2,7 +2,7 @@
 
 namespace Cqrs.Snapshots
 {
-	public abstract class SnapshotAggregateRoot<TSnapshot> : AggregateRoot
+	public abstract class SnapshotAggregateRoot<TPermissionScope, TSnapshot> : AggregateRoot<TPermissionScope>
 		where TSnapshot : Snapshot
 	{
 		public TSnapshot GetSnapshot()
@@ -20,6 +20,7 @@ namespace Cqrs.Snapshots
 		}
 
 		protected abstract TSnapshot CreateSnapshot();
+
 		protected abstract void RestoreFromSnapshot(TSnapshot snapshot);
 	}
 

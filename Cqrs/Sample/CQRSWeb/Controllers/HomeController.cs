@@ -4,15 +4,16 @@ using CQRSCode.ReadModel;
 using CQRSCode.WriteModel.Commands;
 using CQRSCode.WriteModel.Domain;
 using Cqrs.Commands;
+using Cqrs.Repositories.Authentication;
 
 namespace CQRSWeb.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly ICommandSender _commandSender;
+		private readonly ICommandSender<ISingleSignOnToken> _commandSender;
 		private readonly IReadModelFacade _readmodel;
 
-		public HomeController(ICommandSender commandSender, IReadModelFacade readmodel)
+		public HomeController(ICommandSender<ISingleSignOnToken> commandSender, IReadModelFacade readmodel)
 		{
 			_readmodel = readmodel;
 			_commandSender = commandSender;
@@ -39,7 +40,7 @@ namespace CQRSWeb.Controllers
 		public ActionResult DtoAdd(string name)
 		{
 			var id = Guid.NewGuid();
-			_commandSender.Send(new DtoCommand<UserDto>(id, null, new UserDto {Id = id, Name = name}));
+			_commandSender.Send(new DtoCommand<ISingleSignOnToken, UserDto>(id, null, new UserDto {Id = id, Name = name}));
 			return RedirectToAction("DtoIndex");
 		}
 

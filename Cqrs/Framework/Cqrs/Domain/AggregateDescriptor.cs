@@ -1,8 +1,9 @@
 ﻿namespace Cqrs.Domain
 {
-	internal class AggregateDescriptor
+	internal class AggregateDescriptor<TPermissionScope>
 	{
-		public IAggregateRoot Aggregate { get; set; }
+		public IAggregateRoot<TPermissionScope> Aggregate { get; set; }
+
 		public int Version { get; set; }
 	}
 }

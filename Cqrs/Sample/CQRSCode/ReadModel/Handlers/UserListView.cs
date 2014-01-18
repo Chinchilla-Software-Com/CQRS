@@ -4,14 +4,15 @@ using CQRSCode.ReadModel.Dtos;
 using CQRSCode.ReadModel.Infrastructure;
 using CQRSCode.WriteModel.Domain;
 using Cqrs.Events;
+using Cqrs.Repositories.Authentication;
 
 namespace CQRSCode.ReadModel.Handlers
 {
-	public class UserListView : IEventHandler<DtoAggregateEvent<UserDto>>
+	public class UserListView : IEventHandler<ISingleSignOnToken, DtoAggregateEvent<ISingleSignOnToken, UserDto>>
 	{
 		#region Implementation of IHandler<in DtoAggregateEvent<UserDto>>
 
-		public void Handle(DtoAggregateEvent<UserDto> message)
+		public void Handle(DtoAggregateEvent<ISingleSignOnToken, UserDto> message)
 		{
 			UserListDto existingUser;
 			switch (message.GetEventType())

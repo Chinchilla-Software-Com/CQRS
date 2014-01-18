@@ -4,6 +4,7 @@ using CQRSCode.WriteModel.Domain;
 using CQRSCode.WriteModel.Handlers;
 using Cqrs.Commands;
 using Cqrs.Config;
+using Cqrs.Repositories.Authentication;
 
 namespace CQRSWeb
 {	
@@ -39,7 +40,7 @@ namespace CQRSWeb
 		private void RegisterHandlers(IServiceLocator serviceLocator)
 		{
 			var registrar = new BusRegistrar(serviceLocator);
-			registrar.Register(typeof(InventoryCommandHandlers), typeof(DtoCommandHandler<UserDto>));
+			registrar.Register(typeof(InventoryCommandHandlers), typeof(DtoCommandHandler<ISingleSignOnToken, UserDto>));
 		}
 	}
 }

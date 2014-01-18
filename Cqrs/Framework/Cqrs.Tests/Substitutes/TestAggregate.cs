@@ -1,33 +1,35 @@
 ﻿using System;
 using Cqrs.Domain;
+using Cqrs.Repositories.Authentication;
 
 namespace Cqrs.Tests.Substitutes
 {
-    public class TestAggregate : AggregateRoot
-    {
-        private TestAggregate() { }
-        public TestAggregate(Guid id)
-        {
-            Id = id;
-            ApplyChange(new TestAggregateCreated());
-        }
+	public class TestAggregate : AggregateRoot<ISingleSignOnToken>
+	{
+		private TestAggregate() { }
 
-        public int DidSomethingCount;
+		public TestAggregate(Guid id)
+		{
+			Id = id;
+			ApplyChange(new TestAggregateCreated());
+		}
 
-        public void DoSomething()
-        {
-            ApplyChange(new TestAggregateDidSomething());
-        }
+		public int DidSomethingCount;
 
-        public void DoSomethingElse()
-        {
-            ApplyChange(new TestAggregateDidSomeethingElse());
-        }
+		public void DoSomething()
+		{
+			ApplyChange(new TestAggregateDidSomething());
+		}
 
-        public void Apply(TestAggregateDidSomething e)
-        {
-            DidSomethingCount++;
-        }
+		public void DoSomethingElse()
+		{
+			ApplyChange(new TestAggregateDidSomeethingElse());
+		}
 
-    }
+		public void Apply(TestAggregateDidSomething e)
+		{
+			DidSomethingCount++;
+		}
+
+	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
+using Cqrs.Repositories.Authentication;
 using Cqrs.Snapshots;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
@@ -18,10 +19,10 @@ namespace Cqrs.Tests.Snapshots
 			var eventStore = new TestInMemoryEventStore();
 			var eventPublisher = new TestEventPublisher();
 			var snapshotStore = new TestSnapshotStore();
-			var snapshotStrategy = new DefaultSnapshotStrategy();
+			var snapshotStrategy = new DefaultSnapshotStrategy<ISingleSignOnToken>();
 			var aggregateFactory = new AggregateFactory();
-			var snapshotRepository = new SnapshotRepository(snapshotStore, snapshotStrategy, new Repository(aggregateFactory, eventStore, eventPublisher), eventStore, aggregateFactory);
-			var session = new UnitOfWork(snapshotRepository);
+			var snapshotRepository = new SnapshotRepository<ISingleSignOnToken>(snapshotStore, snapshotStrategy, new Repository<ISingleSignOnToken>(aggregateFactory, eventStore, eventPublisher), eventStore, aggregateFactory);
+			var session = new UnitOfWork<ISingleSignOnToken>(snapshotRepository);
 
 			_aggregate = session.Get<TestSnapshotAggregate>(Guid.NewGuid());
 		}

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Cqrs.Cache;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
+using Cqrs.Repositories.Authentication;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
 
@@ -12,7 +13,7 @@ namespace Cqrs.Tests.Cache
 {
 	public class When_saving_two_aggregates_in_parallel
 	{
-		private CacheRepository _rep1;
+		private CacheRepository<ISingleSignOnToken> _rep1;
 		private TestAggregate _aggregate1;
 		private TestInMemoryEventStore _testStore;
 		private TestAggregate _aggregate2;
@@ -27,7 +28,7 @@ namespace Cqrs.Tests.Cache
 
 			_testStore = new TestInMemoryEventStore();
 			var aggregateFactory = new AggregateFactory();
-			_rep1 = new CacheRepository(new Repository(aggregateFactory, _testStore, new TestEventPublisher()), _testStore);
+			_rep1 = new CacheRepository<ISingleSignOnToken>(new Repository<ISingleSignOnToken>(aggregateFactory, _testStore, new TestEventPublisher()), _testStore);
 
 			_aggregate1 = new TestAggregate(Guid.NewGuid());
 			_aggregate2 = new TestAggregate(Guid.NewGuid());

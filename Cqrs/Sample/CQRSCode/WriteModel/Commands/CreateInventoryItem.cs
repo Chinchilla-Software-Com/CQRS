@@ -1,9 +1,10 @@
 ﻿using System;
 using Cqrs.Commands;
+using Cqrs.Repositories.Authentication;
 
 namespace CQRSCode.WriteModel.Commands
 {
-	public class CreateInventoryItem : ICommand 
+	public class CreateInventoryItem : ICommand<ISingleSignOnToken>
 	{
 		public readonly string Name;
 		
@@ -14,6 +15,7 @@ namespace CQRSCode.WriteModel.Commands
 		}
 
 		public Guid Id { get; set; }
+
 		public int ExpectedVersion { get; set; }
 	}
 }

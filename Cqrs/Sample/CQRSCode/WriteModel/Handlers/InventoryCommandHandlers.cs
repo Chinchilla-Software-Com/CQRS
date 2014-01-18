@@ -2,18 +2,19 @@
 using CQRSCode.WriteModel.Domain;
 using Cqrs.Commands;
 using Cqrs.Domain;
+using Cqrs.Repositories.Authentication;
 
 namespace CQRSCode.WriteModel.Handlers
 {
-	public class InventoryCommandHandlers : ICommandHandler<CreateInventoryItem>,
-											ICommandHandler<DeactivateInventoryItem>,
-											ICommandHandler<RemoveItemsFromInventory>,
-											ICommandHandler<CheckInItemsToInventory>,
-											ICommandHandler<RenameInventoryItem>
+	public class InventoryCommandHandlers : ICommandHandler<ISingleSignOnToken, CreateInventoryItem>,
+											ICommandHandler<ISingleSignOnToken, DeactivateInventoryItem>,
+											ICommandHandler<ISingleSignOnToken, RemoveItemsFromInventory>,
+											ICommandHandler<ISingleSignOnToken, CheckInItemsToInventory>,
+											ICommandHandler<ISingleSignOnToken, RenameInventoryItem>
 	{
-		private readonly IUnitOfWork _unitOfWork;
+		private readonly IUnitOfWork<ISingleSignOnToken> _unitOfWork;
 
-		public InventoryCommandHandlers(IUnitOfWork unitOfWork)
+		public InventoryCommandHandlers(IUnitOfWork<ISingleSignOnToken> unitOfWork)
 		{
 			_unitOfWork = unitOfWork;
 		}

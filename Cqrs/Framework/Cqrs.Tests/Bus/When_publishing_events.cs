@@ -1,4 +1,5 @@
 using Cqrs.Bus;
+using Cqrs.Repositories.Authentication;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
 
@@ -7,12 +8,12 @@ namespace Cqrs.Tests.Bus
 	[TestFixture]
 	public class When_publishing_events
 	{
-		private InProcessBus _bus;
+		private InProcessBus<ISingleSignOnToken> _bus;
 
 		[SetUp]
 		public void Setup()
 		{
-			_bus = new InProcessBus();
+			_bus = new InProcessBus<ISingleSignOnToken>();
 		}
 
 		[Test]

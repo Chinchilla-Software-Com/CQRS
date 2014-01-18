@@ -3,13 +3,13 @@ using Cqrs.Events;
 
 namespace Cqrs.Domain
 {
-	public class DtoAggregateRoot<TDto> : AggregateRoot
+	public class DtoAggregateRoot<TPermissionScope, TDto> : AggregateRoot<TPermissionScope>
 		where TDto : IDto
 	{
 		public DtoAggregateRoot(Guid id, TDto original, TDto @new)
 		{
 			Id = id;
-			ApplyChange(new DtoAggregateEvent<TDto>(id, original, @new));
+			ApplyChange(new DtoAggregateEvent<TPermissionScope, TDto>(id, original, @new));
 		}
 	}
 }
