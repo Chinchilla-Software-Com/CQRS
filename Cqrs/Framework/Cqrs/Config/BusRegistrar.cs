@@ -64,25 +64,25 @@ namespace Cqrs.Config
 				.Where(mi => mi.GetGenericArguments().Count() == 1)
 				.Single(mi => mi.GetParameters().Count() == 1);
 
-			try
+			IList<Type> interfaceGenericArguments = @interface.GetGenericArguments().ToList();
+			if (interfaceGenericArguments.Count == 2)
 			{
-				IList<Type> interfaceGenericArguments = @interface.GetGenericArguments().ToList();
-				if (interfaceGenericArguments.Count == 2)
+				Type commandType = interfaceGenericArguments[1];
+				registerExecutorMethod = BuildExecutorMethod(originalRegisterExecutorMethod, executorType, commandType);
+			}
+			else
+			{
+				foreach (Type commandType in interfaceGenericArguments)
 				{
-					Type commandType = interfaceGenericArguments[1];
-					registerExecutorMethod = BuildExecutorMethod(originalRegisterExecutorMethod, executorType, commandType);
-				}
-				else
-				{
-					foreach (Type commandType in interfaceGenericArguments)
+					try
 					{
 						registerExecutorMethod = BuildExecutorMethod(originalRegisterExecutorMethod, executorType, commandType);
 						break;
 					}
+					catch (VerificationException)
+					{
+					}
 				}
-			}
-			catch (VerificationException)
-			{
 			}
 
 			if (registerExecutorMethod == null)
