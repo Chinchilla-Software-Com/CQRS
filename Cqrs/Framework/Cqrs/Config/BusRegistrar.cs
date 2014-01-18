@@ -82,6 +82,9 @@ namespace Cqrs.Config
 					catch (VerificationException)
 					{
 					}
+					catch (ArgumentException)
+					{
+					}
 				}
 			}
 
