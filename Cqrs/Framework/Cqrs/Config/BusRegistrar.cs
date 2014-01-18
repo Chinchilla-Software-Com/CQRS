@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Events;
@@ -53,7 +54,52 @@ namespace Cqrs.Config
 		/// </summary>
 		private void InvokeHandler(Type @interface, IHandlerRegistrar bus, Type executorType)
 		{
-			Type commandType = @interface.GetGenericArguments().First();
+			MethodInfo registerExecutorMethod = null;
+
+			MethodInfo originalRegisterExecutorMethod = bus
+				.GetType()
+				.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+				.Where(mi => mi.Name == "RegisterHandler")
+				.Where(mi => mi.IsGenericMethod)
+				.Where(mi => mi.GetGenericArguments().Count() == 1)
+				.Single(mi => mi.GetParameters().Count() == 1);
+
+			try
+			{
+				IList<Type> interfaceGenericArguments = @interface.GetGenericArguments().ToList();
+				if (interfaceGenericArguments.Count == 2)
+				{
+					Type commandType = interfaceGenericArguments[1];
+					registerExecutorMethod = BuildExecutorMethod(originalRegisterExecutorMethod, executorType, commandType);
+				}
+				else
+				{
+					foreach (Type commandType in interfaceGenericArguments)
+					{
+						registerExecutorMethod = BuildExecutorMethod(originalRegisterExecutorMethod, executorType, commandType);
+						break;
+					}
+				}
+			}
+			catch (VerificationException)
+			{
+			}
+
+			if (registerExecutorMethod == null)
+				throw new InvalidOperationException("No executor method could be compiled for " + @interface.FullName);
+
+			var del = new Action<dynamic>(x =>
+				{
+					dynamic handler = ServiceLocator.GetService(executorType);
+					handler.Handle(x);
+				}
+			);
+			
+			registerExecutorMethod.Invoke(bus, new object[] { del });
+		}
+
+		private MethodInfo BuildExecutorMethod(MethodInfo originalRegisterExecutorMethod, Type executorType, Type commandType)
+		{
 			Type safeCommandType = commandType;
 			if (safeCommandType.IsGenericType && safeCommandType.Name == typeof(DtoCommand<,>).Name && executorType.IsGenericType && executorType.Name == typeof(DtoCommandHandler<,>).Name)
 			{
@@ -61,28 +107,7 @@ namespace Cqrs.Config
 				safeCommandType = typeof(DtoCommand<,>).MakeGenericType(genericType);
 			}
 
-			MethodInfo registerExecutorMethod = bus
-				.GetType()
-				.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-				.Where(mi => mi.Name == "RegisterHandler")
-				.Where(mi => mi.IsGenericMethod)
-				.Where(mi => mi.GetGenericArguments().Count() == 1)
-				.Single(mi => mi.GetParameters().Count() == 1)
-				.MakeGenericMethod(safeCommandType);
-
-			var del = new Action<dynamic>(x =>
-			                              {
-											  /*
-											  MethodInfo method = executorType
-												  .GetMethods(BindingFlags.Instance | BindingFlags.Public)
-												  .Single(mi => mi.Name == "Handle" && mi.GetParameters().All(param => param.ParameterType == x.GetType()));
-											  method.Invoke(Activator.CreateInstance(executorType), new object[] { x });
-											  */
-												  dynamic handler = ServiceLocator.GetService(executorType);
-												  handler.Handle(x);
-											  });
-			
-			registerExecutorMethod.Invoke(bus, new object[] { del });
+			return originalRegisterExecutorMethod.MakeGenericMethod(safeCommandType);
 		}
 
 		private IEnumerable<Type> ResolveMessageHandlerInterface(Type type)
