@@ -22,14 +22,10 @@ string domainName = ((INamedElement)FindDomainElement(this.Element)).Name;
 
 
 // using statements
+WriteUsingStatements(this.Element);
 #>
-using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.ServiceModel;
 using Cqrs.Repositories;
-using uSure.Domain.Factories;
+using <#= GetNamespace(((INamedElement)FindModuleElement(this.Element)).Namespace) #>.Factories;
 using <#= classNamespace #>.Repositories.Queries.Strategies;
 
 namespace <#= classNamespace #>.Repositories
