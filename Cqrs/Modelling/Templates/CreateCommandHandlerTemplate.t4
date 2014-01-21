@@ -48,7 +48,7 @@ namespace <#= classNamespace #>.Commands.Handlers
 			<#= className #> item = null;
 			OnCreate<#= className #>(command, ref item);
 			if (item == null)
-				item = new <#= className #>(Guid.NewGuid());
+				item = new <#= className #>(command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
 			item.Create<#= className #>(<#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
 		for (int i = 0; i < collectionProperties.Count; i++)

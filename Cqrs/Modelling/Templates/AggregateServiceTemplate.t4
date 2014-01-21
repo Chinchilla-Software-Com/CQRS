@@ -84,13 +84,13 @@ namespace <#= classNamespace #>.Services
 			Entities.<#= className #> item = serviceRequest.Data;
 			item.Rsn = Guid.NewGuid();
 
-			var command = new Create<#= className #>(<#
+			var command = new Create<#= className #>(Guid rsn<#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
 		// Properties
 		for(int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties[i];
-#><#= i == 0 ? string.Empty : ", " #>item.<#= collectionProperty.Name #><#
+#>, item.<#= collectionProperty.Name #><#
 		}
 #>);
 			OnCreate<#= className #>(serviceRequest, command);

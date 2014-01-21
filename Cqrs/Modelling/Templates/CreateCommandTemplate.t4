@@ -57,14 +57,15 @@ namespace <#= classNamespace #>.Commands
 		}
 #>
 
-		public Create<#= className #>(<#
+		public Create<#= className #>(Guid rsn<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			#>, <#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>)
 		{
+			Rsn = rsn;
 <#
 		foreach(IProperty collectionProperty in collectionProperties)
 		{
