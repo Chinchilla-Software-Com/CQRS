@@ -12,6 +12,11 @@ namespace Cqrs.Tests.Substitutes
 
 		public void Save<T>(IEvent<ISingleSignOnToken> @event)
 		{
+			Save(@event, typeof(T));
+		}
+
+		public void Save(IEvent<ISingleSignOnToken> @event, Type aggregateRootType)
+		{
 			lock(Events)
 			{
 				Events.Add(@event);

@@ -100,6 +100,11 @@ namespace Cqrs.Tests.Extensions.TestHelpers
 			Events.Add(@event);
 		}
 
+		public void Save(IEvent<ISingleSignOnToken> @event, Type aggregateRootType)
+		{
+			Events.Add(@event);
+		}
+
 		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, int fromVersion)
 		{
 			return Events.Where(x => x.Version > fromVersion);

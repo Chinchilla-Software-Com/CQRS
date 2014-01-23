@@ -16,6 +16,11 @@ namespace Cqrs.Tests.Substitutes
 
 		public Guid EmptyGuid { get; private set; }
 
+		public void Save(IEvent<ISingleSignOnToken> @event, Type aggregateRootType)
+		{
+			SavedEvents.Add(@event);
+		}
+
 		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, int version)
 		{
 			if (aggregateId == EmptyGuid || aggregateId == Guid.Empty)

@@ -50,7 +50,7 @@ namespace Cqrs.Domain
 
 				@event.Version = aggregate.Version + i;
 				@event.TimeStamp = DateTimeOffset.UtcNow;
-				EventStore.Save<TAggregateRoot>(@event);
+				EventStore.Save(@event, aggregate.GetType());
 				eventsToPublish.Add(@event);
 			}
 

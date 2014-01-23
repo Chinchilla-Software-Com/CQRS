@@ -27,8 +27,13 @@ namespace Cqrs.EventStore
 
 		public void Save<T>(IEvent<TAuthenticationToken> @event)
 		{
+			Save(@event, typeof (T));
+		}
+
+		public void Save(IEvent<TAuthenticationToken> @event, Type aggregateRootType)
+		{
 			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
-			EventStoreConnection.AppendToStream(string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, @event.Id), ExpectedVersion.Any, new[] { eventData });
+			EventStoreConnection.AppendToStream(string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id), ExpectedVersion.Any, new[] { eventData });
 		}
 
 		/// <remarks>

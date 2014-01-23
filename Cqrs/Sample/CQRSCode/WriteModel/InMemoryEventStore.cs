@@ -10,6 +10,18 @@ namespace CQRSCode.WriteModel
 	{
 		private readonly Dictionary<Guid, List<IEvent<ISingleSignOnToken>>> _inMemoryDB = new Dictionary<Guid, List<IEvent<ISingleSignOnToken>>>();
 
+		public void Save(IEvent<ISingleSignOnToken> @event, Type aggregateRootType)
+		{
+			List<IEvent<ISingleSignOnToken>> list;
+			_inMemoryDB.TryGetValue(@event.Id, out list);
+			if (list == null)
+			{
+				list = new List<IEvent<ISingleSignOnToken>>();
+				_inMemoryDB.Add(@event.Id, list);
+			}
+			list.Add(@event);
+		}
+
 		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, int fromVersion)
 		{
 			List<IEvent<ISingleSignOnToken>> events;
@@ -19,14 +31,7 @@ namespace CQRSCode.WriteModel
 
 		public void Save<T>(IEvent<ISingleSignOnToken> @event)
 		{
-			List<IEvent<ISingleSignOnToken>> list;
-			_inMemoryDB.TryGetValue(@event.Id, out list);
-			if(list == null)
-			{
-				list = new List<IEvent<ISingleSignOnToken>>();
-				_inMemoryDB.Add(@event.Id, list);
-			}
-			list.Add(@event);
+			Save(@event, typeof(T));
 		}
 	}
 }
