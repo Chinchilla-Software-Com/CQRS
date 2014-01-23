@@ -62,7 +62,7 @@ namespace Cqrs.EventStore
 
 		public EventData CreateFrameworkEvent(IEvent<TAuthenticationToken> eventData)
 		{
-			var jsonSerialiserSettings = GetSerialisationSettings();
+			JsonSerializerSettings jsonSerialiserSettings = GetSerialisationSettings();
 
 			return new EventData
 			(

@@ -14,13 +14,13 @@ namespace Cqrs.EventStore
 
 		protected IEventDeserialiser<TAuthenticationToken> EventDeserialiser { get; set; }
 
-		protected IEventStoreConnectionHelper EventStoreConnectionHelper { get; set; }
+		protected IEventStoreConnection EventStoreConnection { get; set; }
 
 		public EventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, IEventStoreConnectionHelper eventStoreConnectionHelper)
 		{
 			EventBuilder = eventBuilder;
 			EventDeserialiser = eventDeserialiser;
-			EventStoreConnectionHelper = eventStoreConnectionHelper;
+			EventStoreConnection = eventStoreConnectionHelper.GetEventStoreConnection();
 		}
 
 		#region Implementation of IEventStore
@@ -28,10 +28,7 @@ namespace Cqrs.EventStore
 		public void Save<T>(IEvent<TAuthenticationToken> @event)
 		{
 			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
-			using (IEventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
-			{
-				connection.AppendToStream(string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, @event.Id), ExpectedVersion.Any, new[] { eventData });
-			}
+			EventStoreConnection.AppendToStream(string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, @event.Id), ExpectedVersion.Any, new[] { eventData });
 		}
 
 		/// <remarks>
@@ -40,14 +37,10 @@ namespace Cqrs.EventStore
 		/// </remarks>
 		public IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, int fromVersion = -1)
 		{
-			StreamEventsSlice eventCollection;
 			int startPosition = StreamPosition.Start;
 			if (fromVersion > -1)
 				startPosition = fromVersion + StreamPosition.Start;
-			using (IEventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
-			{
-				eventCollection = connection.ReadStreamEventsForward(string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, aggregateId), startPosition, 200, false);
-			}
+			StreamEventsSlice eventCollection = EventStoreConnection.ReadStreamEventsForward(string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, aggregateId), startPosition, 200, false);
 			return eventCollection.Events.Select(EventDeserialiser.Deserialise);
 		}
 
@@ -61,10 +54,10 @@ namespace Cqrs.EventStore
 		private void DisplayNotificationArrival(EventStoreSubscription subscription, ResolvedEvent notification)
 		{
 			RecordedEvent @event = notification.Event;
-			const string chatClientEventTypePrefix = "Cqrs EventStore Client ";
-			if (/*string.Format("{0}{1}", chatClientEventTypePrefix, ProcessName) == @event.EventType ||*/ !@event.EventType.StartsWith(chatClientEventTypePrefix))
+			string eventTypePrefix = @event.Data.GetType().AssemblyQualifiedName;
+			if (string.IsNullOrWhiteSpace(@event.EventType) || @event.EventType != eventTypePrefix)
 				return;
-			Console.WriteLine("{0} : {1}", @event.EventType.Substring(chatClientEventTypePrefix.Length), @event.EventType);
+			Console.WriteLine("{0} : {1}", eventTypePrefix, @event.EventType);
 		}
 
 		private void DisplaySubscriptionDropped(EventStoreSubscription subscription, SubscriptionDropReason reasonDropped, Exception exception)
