@@ -8,6 +8,8 @@ namespace Cqrs.EventStore
 {
 	public class EventStore<TAuthenticationToken> : IEventStore<TAuthenticationToken>
 	{
+		private const string CqrsEventStoreStreamNamePattern = "{0}/{1}";
+
 		protected IEventBuilder<TAuthenticationToken> EventBuilder { get; set; }
 
 		protected IEventDeserialiser<TAuthenticationToken> EventDeserialiser { get; set; }
@@ -23,12 +25,12 @@ namespace Cqrs.EventStore
 
 		#region Implementation of IEventStore
 
-		public void Save(IEvent<TAuthenticationToken> @event)
+		public void Save<T>(IEvent<TAuthenticationToken> @event)
 		{
 			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
 			using (IEventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
 			{
-				connection.AppendToStream(string.Format("cqrs stream: {0}", @event.Id), ExpectedVersion.Any, new[] { eventData });
+				connection.AppendToStream(string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, @event.Id), ExpectedVersion.Any, new[] { eventData });
 			}
 		}
 
@@ -36,7 +38,7 @@ namespace Cqrs.EventStore
 		/// The value of <paramref name="fromVersion"/> is zero based but the internals indexing of the EventStore is offset by <see cref="StreamPosition.Start"/>.
 		/// Adjust the value of <paramref name="fromVersion"/> by <see cref="StreamPosition.Start"/>
 		/// </remarks>
-		public IEnumerable<IEvent<TAuthenticationToken>> Get(Guid aggregateId, int fromVersion = -1)
+		public IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, int fromVersion = -1)
 		{
 			StreamEventsSlice eventCollection;
 			int startPosition = StreamPosition.Start;
@@ -44,7 +46,7 @@ namespace Cqrs.EventStore
 				startPosition = fromVersion + StreamPosition.Start;
 			using (IEventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
 			{
-				eventCollection = connection.ReadStreamEventsForward(string.Format("cqrs stream: {0}", aggregateId), startPosition, 200, false);
+				eventCollection = connection.ReadStreamEventsForward(string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, aggregateId), startPosition, 200, false);
 			}
 			return eventCollection.Events.Select(EventDeserialiser.Deserialise);
 		}

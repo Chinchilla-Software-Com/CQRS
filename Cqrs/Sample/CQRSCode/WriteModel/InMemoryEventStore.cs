@@ -10,14 +10,14 @@ namespace CQRSCode.WriteModel
 	{
 		private readonly Dictionary<Guid, List<IEvent<ISingleSignOnToken>>> _inMemoryDB = new Dictionary<Guid, List<IEvent<ISingleSignOnToken>>>();
 
-		public IEnumerable<IEvent<ISingleSignOnToken>> Get(Guid aggregateId, int fromVersion)
+		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, int fromVersion)
 		{
 			List<IEvent<ISingleSignOnToken>> events;
 			_inMemoryDB.TryGetValue(aggregateId, out events);
 			return events != null ? events.Where(x => x.Version > fromVersion) : new List<IEvent<ISingleSignOnToken>>();
 		}
 
-		public void Save(IEvent<ISingleSignOnToken> @event)
+		public void Save<T>(IEvent<ISingleSignOnToken> @event)
 		{
 			List<IEvent<ISingleSignOnToken>> list;
 			_inMemoryDB.TryGetValue(@event.Id, out list);

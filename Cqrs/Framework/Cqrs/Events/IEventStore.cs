@@ -5,8 +5,8 @@ namespace Cqrs.Events
 {
 	public interface IEventStore<TAuthenticationToken>
 	{
-		void Save(IEvent<TAuthenticationToken> @event);
+		void Save<T>(IEvent<TAuthenticationToken> @event);
 
-		IEnumerable<IEvent<TAuthenticationToken>> Get(Guid aggregateId, int fromVersion);
+		IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, int fromVersion);
 	}
 }

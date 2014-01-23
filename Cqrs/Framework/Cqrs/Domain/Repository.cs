@@ -31,7 +31,7 @@ namespace Cqrs.Domain
 
 			if (expectedVersion != null)
 			{
-				IEnumerable<IEvent<TAuthenticationToken>> eventStoreResults = EventStore.Get(aggregate.Id, expectedVersion.Value);
+				IEnumerable<IEvent<TAuthenticationToken>> eventStoreResults = EventStore.Get<TAggregateRoot>(aggregate.Id, expectedVersion.Value);
 				if (eventStoreResults.Any())
 					throw new ConcurrencyException(aggregate.Id);
 			}
@@ -50,7 +50,7 @@ namespace Cqrs.Domain
 
 				@event.Version = aggregate.Version + i;
 				@event.TimeStamp = DateTimeOffset.UtcNow;
-				EventStore.Save(@event);
+				EventStore.Save<TAggregateRoot>(@event);
 				eventsToPublish.Add(@event);
 			}
 
@@ -70,7 +70,7 @@ namespace Cqrs.Domain
 		{
 			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>();
 
-			IList<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get(id, -1).ToList();
+			IList<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get<TAggregateRoot>(id, -1).ToList();
 			if (!theseEvents.Any())
 				throw new AggregateNotFoundException(id);
 

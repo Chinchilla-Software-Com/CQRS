@@ -10,7 +10,7 @@ namespace Cqrs.Tests.Substitutes
 	{
 		public readonly List<IEvent<ISingleSignOnToken>> Events = new List<IEvent<ISingleSignOnToken>>();
 
-		public void Save(IEvent<ISingleSignOnToken> @event)
+		public void Save<T>(IEvent<ISingleSignOnToken> @event)
 		{
 			lock(Events)
 			{
@@ -18,7 +18,7 @@ namespace Cqrs.Tests.Substitutes
 			}
 		}
 
-		public IEnumerable<IEvent<ISingleSignOnToken>> Get(Guid aggregateId, int fromVersion)
+		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, int fromVersion)
 		{
 			lock(Events)
 			{

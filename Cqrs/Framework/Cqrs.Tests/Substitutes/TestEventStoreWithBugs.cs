@@ -7,7 +7,7 @@ namespace Cqrs.Tests.Substitutes
 {
 	public class TestEventStoreWithBugs : IEventStore<ISingleSignOnToken>
 	{
-		public IEnumerable<IEvent<ISingleSignOnToken>> Get(Guid aggregateId, int version)
+		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, int version)
 		{
 			if (aggregateId == Guid.Empty)
 			{
@@ -23,9 +23,8 @@ namespace Cqrs.Tests.Substitutes
 
 		}
 
-		public void Save(IEvent<ISingleSignOnToken> eventDescriptor)
+		public void Save<T>(IEvent<ISingleSignOnToken> eventDescriptor)
 		{
 		}
-
 	}
 }

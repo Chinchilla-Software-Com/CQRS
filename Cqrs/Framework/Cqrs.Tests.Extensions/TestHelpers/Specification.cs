@@ -95,12 +95,12 @@ namespace Cqrs.Tests.Extensions.TestHelpers
 
 		public IList<IEvent<ISingleSignOnToken>> Events { get; set; }
 
-		public void Save(IEvent<ISingleSignOnToken> @event)
+		public void Save<T>(IEvent<ISingleSignOnToken> @event)
 		{
 			Events.Add(@event);
 		}
 
-		public IEnumerable<IEvent<ISingleSignOnToken>> Get(Guid aggregateId, int fromVersion)
+		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, int fromVersion)
 		{
 			return Events.Where(x => x.Version > fromVersion);
 		}
