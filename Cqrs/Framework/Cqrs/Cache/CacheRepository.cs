@@ -74,7 +74,7 @@ namespace Cqrs.Cache
 					if (IsTracked(aggregateId))
 					{
 						aggregate = (TAggregateRoot)Cache.Get(idstring);
-						theseEvents = events ?? EventStore.Get<TAggregateRoot>(aggregateId, aggregate.Version).ToList();
+						theseEvents = events ?? EventStore.Get<TAggregateRoot>(aggregateId, false, aggregate.Version).ToList();
 						if (theseEvents.Any() && theseEvents.First().Version != aggregate.Version + 1)
 						{
 							Cache.Remove(idstring);

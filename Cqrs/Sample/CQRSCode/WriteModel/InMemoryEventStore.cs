@@ -22,7 +22,7 @@ namespace CQRSCode.WriteModel
 			list.Add(@event);
 		}
 
-		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, int fromVersion)
+		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			List<IEvent<ISingleSignOnToken>> events;
 			_inMemoryDB.TryGetValue(aggregateId, out events);

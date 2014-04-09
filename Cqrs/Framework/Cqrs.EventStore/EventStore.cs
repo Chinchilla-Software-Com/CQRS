@@ -33,19 +33,29 @@ namespace Cqrs.EventStore
 		public void Save(IEvent<TAuthenticationToken> @event, Type aggregateRootType)
 		{
 			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
-			EventStoreConnection.AppendToStream(string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id), ExpectedVersion.Any, new[] { eventData });
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id);
+			using (var transaction = EventStoreConnection.StartTransaction(streamName, ExpectedVersion.Any))
+			{
+				EventStoreConnection.AppendToStream(streamName, ExpectedVersion.Any, new[] {eventData});
+				transaction.Commit();
+			}
 		}
 
 		/// <remarks>
 		/// The value of <paramref name="fromVersion"/> is zero based but the internals indexing of the EventStore is offset by <see cref="StreamPosition.Start"/>.
 		/// Adjust the value of <paramref name="fromVersion"/> by <see cref="StreamPosition.Start"/>
 		/// </remarks>
-		public IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, int fromVersion = -1)
+		public IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			int startPosition = StreamPosition.Start;
 			if (fromVersion > -1)
 				startPosition = fromVersion + StreamPosition.Start;
-			StreamEventsSlice eventCollection = EventStoreConnection.ReadStreamEventsForward(string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, aggregateId), startPosition, 200, false);
+			StreamEventsSlice eventCollection;
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, aggregateId);
+			if (useLastEventOnly)
+				eventCollection = EventStoreConnection.ReadStreamEventsBackward(streamName, startPosition, 1, false);
+			else
+				eventCollection = EventStoreConnection.ReadStreamEventsForward(streamName, startPosition, 200, false);
 			return eventCollection.Events.Select(EventDeserialiser.Deserialise);
 		}
 

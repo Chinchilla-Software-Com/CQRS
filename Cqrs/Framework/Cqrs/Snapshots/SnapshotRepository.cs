@@ -45,7 +45,7 @@ namespace Cqrs.Snapshots
 			{
 				return Repository.Get<TAggregateRoot>(aggregateId);
 			}
-			IEnumerable<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get<TAggregateRoot>(aggregateId, snapshotVersion).Where(desc => desc.Version > snapshotVersion);
+			IEnumerable<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get<TAggregateRoot>(aggregateId, false, snapshotVersion).Where(desc => desc.Version > snapshotVersion);
 			aggregate.LoadFromHistory(theseEvents);
 
 			return aggregate;

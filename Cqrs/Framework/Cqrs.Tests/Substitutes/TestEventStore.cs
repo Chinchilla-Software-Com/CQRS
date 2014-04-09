@@ -21,7 +21,7 @@ namespace Cqrs.Tests.Substitutes
 			SavedEvents.Add(@event);
 		}
 
-		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, int version)
+		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			if (aggregateId == EmptyGuid || aggregateId == Guid.Empty)
 			{
@@ -33,7 +33,7 @@ namespace Cqrs.Tests.Substitutes
 					new TestAggregateDidSomething {Id = aggregateId, Version = 1},
 					new TestAggregateDidSomeethingElse {Id = aggregateId, Version = 2},
 					new TestAggregateDidSomething {Id = aggregateId, Version = 3},
-				}.Where(x => x.Version > version);
+				}.Where(x => x.Version > fromVersion);
 
 		}
 

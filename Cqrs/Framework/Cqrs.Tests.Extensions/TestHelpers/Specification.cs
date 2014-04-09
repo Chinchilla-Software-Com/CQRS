@@ -105,7 +105,7 @@ namespace Cqrs.Tests.Extensions.TestHelpers
 			Events.Add(@event);
 		}
 
-		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, int fromVersion)
+		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			return Events.Where(x => x.Version > fromVersion);
 		}

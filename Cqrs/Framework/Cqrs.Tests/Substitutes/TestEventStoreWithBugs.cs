@@ -11,7 +11,7 @@ namespace Cqrs.Tests.Substitutes
 		{
 		}
 
-		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, int version)
+		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			if (aggregateId == Guid.Empty)
 			{

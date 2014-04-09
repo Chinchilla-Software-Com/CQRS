@@ -9,6 +9,6 @@ namespace Cqrs.Events
 
 		void Save(IEvent<TAuthenticationToken> @event, Type aggregateRootType);
 
-		IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, int fromVersion);
+		IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1);
 	}
 }
