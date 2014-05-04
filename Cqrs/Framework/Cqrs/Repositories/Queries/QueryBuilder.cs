@@ -25,14 +25,14 @@ namespace Cqrs.Repositories.Queries
 		public IQueryable<TData> CreateQueryable(ISingleResultQuery<TQueryStrategy, TData> singleResultQuery)
 		{
 			IQueryable<TData> queryable = GeneratePredicate(singleResultQuery.QueryStrategy.QueryPredicate);
-			ApplySorting(ref queryable);
+			ApplySorting(singleResultQuery.QueryStrategy, ref queryable);
 			return queryable;
 		}
 
 		public IQueryable<TData> CreateQueryable(ICollectionResultQuery<TQueryStrategy, TData> collectionResultQuery)
 		{
 			IQueryable<TData> queryable = GeneratePredicate(collectionResultQuery.QueryStrategy.QueryPredicate);
-			ApplySorting(ref queryable);
+			ApplySorting(collectionResultQuery.QueryStrategy, ref queryable);
 			return queryable;
 		}
 
@@ -190,7 +190,7 @@ namespace Cqrs.Repositories.Queries
 			return DependencyResolver.GetService<TQueryStrategy>();
 		}
 
-		protected virtual void ApplySorting(ref IQueryable<TData> queryable)
+		protected virtual void ApplySorting(TQueryStrategy strategy, ref IQueryable<TData> queryable)
 		{
 		}
 	}
