@@ -54,6 +54,7 @@ namespace <#= classNamespace #>
 		IList<IOperation> collectionMethods = GetMethodList(this.Element);
 
 		// If statements from Methods
+		var applyMethodBody = new System.Text.StringBuilder();
 		var methodNameList = new List<string>();
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
@@ -116,9 +117,36 @@ namespace <#= classNamespace #>
 		partial void GeneratePredicate<#= partialMethodName #>(SortedSet<QueryParameter> parameters, IQueryable<Entities.<#= aggregateRootName #>> leftHandQueryable, ref IQueryable<Entities.<#= aggregateRootName #>> resultingQueryable);
 
 		partial void OnGeneratePredicated<#= partialMethodName #>(QueryPredicate queryPredicate, IQueryable<Entities.<#= aggregateRootName #>> leftHandQueryable, SortedSet<QueryParameter> parameters, ref IQueryable<Entities.<#= aggregateRootName #>> resultingQueryable);
+
+<#
+			var queryStrategyOrderMethodProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "QueryStrategyOrderMethod");
+			if (queryStrategyOrderMethodProperties != null)
+			{
+				applyMethodBody.AppendLine("\t\t\t\tif (sortingMethod.Method.Name == GetFunctionName<int>(queryStrategy." + partialMethodName + "))");
+				applyMethodBody.AppendLine("\t\t\t\t{");
+				applyMethodBody.AppendLine("\t\t\t\t\tApply" + partialMethodName + "(ref orderQueryable);");
+				applyMethodBody.AppendLine("\t\t\t\t}");
+#>
+
+		partial void Apply<#= partialMethodName #>(ref IOrderedQueryable<Entities.<#= aggregateRootName #>> queryable);
+<#
+			}
+#>
 <#
 		}
 #>
+
+		protected override void ApplySorting(<#= className #> queryStrategy, ref IQueryable<Entities.<#= aggregateRootName #>> queryable)
+		{
+			IOrderedQueryable<Entities.<#= aggregateRootName #>> orderQueryable = queryable.OrderBy(item => item);
+
+			foreach (Func<int, <#= className #>> sortingMethod in queryStrategy.SortingList)
+			{
+<#= applyMethodBody #>
+			}
+			queryable = orderQueryable;
+		}
+
 	}
 }
 <#+

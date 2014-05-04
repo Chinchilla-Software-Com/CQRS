@@ -127,13 +127,15 @@
 	{
 		var methodParameterList = string.Empty;
 		
-		var parameters = operation.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);
+		var parameters = operation.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return).ToList();
 		for (int i = 0; i < parameters.Count(); i++)
 		{
 			IParameter parameter = parameters.ElementAt(i);
 			if (i > 0)
 				methodParameterList += ", ";
 			methodParameterList += (GetFullDisplayType(parameter, false) + " " + parameter.Name);
+			if (parameter.DefaultValue != null && !string.IsNullOrWhiteSpace(parameter.DefaultValue.ToString()))
+				methodParameterList += " = " + parameter.DefaultValue;
 		}
 		
 		return methodParameterList;

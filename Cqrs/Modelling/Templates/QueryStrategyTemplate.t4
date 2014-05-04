@@ -38,9 +38,12 @@ namespace <#= classNamespace #>
 	{
 		protected IAuthenticationTokenHelper<<#= authenticationTokenType #>> AuthenticationTokenHelper { get; private set; }
 
+		internal IList<Func<int, InventoryItemQueryStrategy>> SortingList { get; set; }
+
 		public <#= className #>(IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
+			SortingList = new List<Func<int, InventoryItemQueryStrategy>>();
 		}
 
 <#
@@ -78,23 +81,36 @@ namespace <#= classNamespace #>
 <#
 				}
 			}
-		}
-		if (methodSteroTypeProperties.PropertyInstances.Any(property => property.Name == "IncludeBody" && property.Value == "true"))
-		{
-			string methodParameterNameList = GetMethodParameterNameList(collectionMethod);
-			if (!string.IsNullOrWhiteSpace(methodParameterNameList))
-				methodParameterNameList = ", " + methodParameterNameList;
-#>
+			if (methodSteroTypeProperties.PropertyInstances.Any(property => property.Name == "IncludeBody" && property.Value == "true"))
+			{
+				string methodParameterNameList = GetMethodParameterNameList(collectionMethod);
+				if (!string.IsNullOrWhiteSpace(methodParameterNameList))
+					methodParameterNameList = ", " + methodParameterNameList;
+	#>
 			QueryPredicate = And(BuildQueryPredicate(<#= collectionMethod.Name #><#= methodParameterNameList #>));
+	<#
+			}
+		}
+
+		var queryStrategyOrderMethodProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "QueryStrategyOrderMethod");
+		if (queryStrategyOrderMethodProperties != null)
+		{
+#>
+			if (priority < 0)
+				SortingList.Add(<#= collectionMethod.Name #>);
+			else
+				SortingList.Insert(priority, <#= collectionMethod.Name #>);
 <#
 		}
 #>
+
 			On<#= collectionMethod.Name #>(<#= GetMethodParameterNameList(collectionMethod) #>);
 
 			return this;
 		}
 
 		partial void On<#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>);
+
 <#
 		}
 #>
