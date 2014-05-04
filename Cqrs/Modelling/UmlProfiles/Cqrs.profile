@@ -200,6 +200,11 @@
         </property>
       </properties>
     </stereotype>
+    <stereotype name="QueryStrategyOrderMethod" displayName="Query Strategy Order Method">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IOperation" />
+      </metaclasses>
+    </stereotype>
 
   </stereotypes>
 

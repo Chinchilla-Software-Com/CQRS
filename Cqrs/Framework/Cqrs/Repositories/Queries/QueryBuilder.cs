@@ -190,7 +190,7 @@ namespace Cqrs.Repositories.Queries
 			return DependencyResolver.GetService<TQueryStrategy>();
 		}
 
-		protected virtual void ApplySorting(ref IQueryable<TData> query)
+		protected virtual void ApplySorting(ref IQueryable<TData> queryable)
 		{
 		}
 	}
