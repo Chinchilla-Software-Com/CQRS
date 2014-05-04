@@ -24,12 +24,16 @@ namespace Cqrs.Repositories.Queries
 
 		public IQueryable<TData> CreateQueryable(ISingleResultQuery<TQueryStrategy, TData> singleResultQuery)
 		{
-			return GeneratePredicate(singleResultQuery.QueryStrategy.QueryPredicate);
+			IQueryable<TData> queryable = GeneratePredicate(singleResultQuery.QueryStrategy.QueryPredicate);
+			ApplySorting(ref queryable);
+			return queryable;
 		}
 
 		public IQueryable<TData> CreateQueryable(ICollectionResultQuery<TQueryStrategy, TData> collectionResultQuery)
 		{
-			return GeneratePredicate(collectionResultQuery.QueryStrategy.QueryPredicate);
+			IQueryable<TData> queryable = GeneratePredicate(collectionResultQuery.QueryStrategy.QueryPredicate);
+			ApplySorting(ref queryable);
+			return queryable;
 		}
 
 		#endregion
@@ -184,6 +188,10 @@ namespace Cqrs.Repositories.Queries
 		protected virtual TQueryStrategy GetNullQueryStrategy()
 		{
 			return DependencyResolver.GetService<TQueryStrategy>();
+		}
+
+		protected virtual void ApplySorting(ref IQueryable<TData> query)
+		{
 		}
 	}
 }
