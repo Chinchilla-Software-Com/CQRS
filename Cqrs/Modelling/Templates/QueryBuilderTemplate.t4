@@ -124,11 +124,11 @@ namespace <#= classNamespace #>
 			{
 				applyMethodBody.AppendLine("\t\t\t\tif (sortingMethod.Method.Name == GetFunctionName<int>(queryStrategy." + partialMethodName + "))");
 				applyMethodBody.AppendLine("\t\t\t\t{");
-				applyMethodBody.AppendLine("\t\t\t\t\tApply" + partialMethodName + "(ref orderQueryable);");
+				applyMethodBody.AppendLine("\t\t\t\t\tApply" + partialMethodName + "(ref orderQueryable, index++);");
 				applyMethodBody.AppendLine("\t\t\t\t}");
 #>
 
-		partial void Apply<#= partialMethodName #>(ref IOrderedQueryable<Entities.<#= aggregateRootName #>> queryable);
+		partial void Apply<#= partialMethodName #>(ref IOrderedQueryable<Entities.<#= aggregateRootName #>> queryable, int index);
 <#
 			}
 #>
@@ -138,8 +138,9 @@ namespace <#= classNamespace #>
 
 		protected override void ApplySorting(<#= className #> queryStrategy, ref IQueryable<Entities.<#= aggregateRootName #>> queryable)
 		{
-			IOrderedQueryable<Entities.<#= aggregateRootName #>> orderQueryable = queryable.OrderBy(item => item);
+			var orderQueryable = (IOrderedQueryable<Entities.<#= aggregateRootName #>>)queryable;
 
+			int index = 0;
 			foreach (Func<int, <#= className #>> sortingMethod in queryStrategy.SortingList)
 			{
 <#= applyMethodBody #>
