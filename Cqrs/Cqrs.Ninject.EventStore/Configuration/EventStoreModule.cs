@@ -1,6 +1,7 @@
 ﻿using Cqrs.Authentication;
 using Cqrs.EventStore;
 using Cqrs.EventStore.Bus;
+using Cqrs.Events;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Configuration
@@ -12,6 +13,21 @@ namespace Cqrs.Ninject.Configuration
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 	{
 		/// <summary>
+		/// Register the all factories
+		/// </summary>
+		public override void RegisterFactories()
+		{
+			base.RegisterFactories();
+
+			Bind<IEventBuilder<TAuthenticationToken>>()
+				.To<EventFactory<TAuthenticationToken>>()
+				.InSingletonScope();
+			Bind<IEventDeserialiser<TAuthenticationToken>>()
+				.To<EventFactory<TAuthenticationToken>>()
+				.InSingletonScope();
+		}
+
+		/// <summary>
 		/// Register the all Cqrs command handlers
 		/// </summary>
 		public override void RegisterCqrsRequirements()
@@ -22,14 +38,12 @@ namespace Cqrs.Ninject.Configuration
 				.To<FileBasedLastEventProcessedStore>()
 				.InSingletonScope();
 
-			Bind<IEventBuilder<TAuthenticationToken>>()
-				.To<EventFactory<TAuthenticationToken>>()
-				.InSingletonScope();
-			Bind<IEventDeserialiser<TAuthenticationToken>>()
-				.To<EventFactory<TAuthenticationToken>>()
-				.InSingletonScope();
 			Bind<IEventStoreConnectionHelper>()
 				.To<EventStoreConnectionHelper<TAuthenticationToken>>()
+				.InSingletonScope();
+
+			Bind<IEventStore<TAuthenticationToken>>()
+				.To<EventStore<TAuthenticationToken>>()
 				.InSingletonScope();
 		}
 	}
