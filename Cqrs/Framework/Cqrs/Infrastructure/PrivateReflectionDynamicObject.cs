@@ -1,6 +1,7 @@
 using System;
 using System.Dynamic;
 using System.Linq;
+using System.Reflection;
 
 namespace Cqrs.Infrastructure
 {
@@ -33,7 +34,7 @@ namespace Cqrs.Infrastructure
 		{
 			try
 			{
-				if (type.GetMember(name).Any())
+				if (type.GetMember(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public).Any())
 					return type.InvokeMember(name, System.Reflection.BindingFlags.InvokeMethod | BindingFlags, null, target, args);
 				// If we couldn't find the method, try on the base class
 				if (type.BaseType != null)

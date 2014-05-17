@@ -23,8 +23,8 @@ namespace Cqrs.Ninject.Configuration
 				.InSingletonScope();
 
 			Bind<IEventBuilder<TAuthenticationToken>>()
-			.To<EventFactory<TAuthenticationToken>>()
-			.InSingletonScope();
+				.To<EventFactory<TAuthenticationToken>>()
+				.InSingletonScope();
 			Bind<IEventDeserialiser<TAuthenticationToken>>()
 				.To<EventFactory<TAuthenticationToken>>()
 				.InSingletonScope();
