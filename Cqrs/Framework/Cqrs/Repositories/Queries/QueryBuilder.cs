@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Cqrs.Config;
+using Cqrs.Configuration;
 using Cqrs.Entities;
 using Cqrs.DataStores;
 

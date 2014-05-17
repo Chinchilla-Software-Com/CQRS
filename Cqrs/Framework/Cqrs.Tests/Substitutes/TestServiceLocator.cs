@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cqrs.Bus;
-using Cqrs.Config;
+using Cqrs.Configuration;
 
 namespace Cqrs.Tests.Substitutes
 {

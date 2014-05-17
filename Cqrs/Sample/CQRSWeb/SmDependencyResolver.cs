@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Cqrs.Config;
+using Cqrs.Configuration;
 using StructureMap;
 
 namespace CQRSWeb

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cqrs.Config
+namespace Cqrs.Configuration
 {
 	public interface IServiceLocator 
 	{

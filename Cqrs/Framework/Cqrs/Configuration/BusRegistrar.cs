@@ -7,7 +7,7 @@ using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Events;
 
-namespace Cqrs.Config
+namespace Cqrs.Configuration
 {
 	public class BusRegistrar
 	{

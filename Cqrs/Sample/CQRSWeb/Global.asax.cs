@@ -3,8 +3,8 @@ using System.Web.Routing;
 using CQRSCode.WriteModel.Domain;
 using CQRSCode.WriteModel.Handlers;
 using Cqrs.Commands;
-using Cqrs.Config;
 using Cqrs.Authentication;
+using Cqrs.Configuration;
 
 namespace CQRSWeb
 {	

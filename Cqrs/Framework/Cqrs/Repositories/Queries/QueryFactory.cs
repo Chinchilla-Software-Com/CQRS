@@ -1,4 +1,4 @@
-﻿using Cqrs.Config;
+﻿using Cqrs.Configuration;
 
 namespace Cqrs.Repositories.Queries
 {
