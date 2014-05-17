@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Cqrs.Ninject.EventStore")]
+[assembly: AssemblyTitle("Cqrs.Ninject.Mongo")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Cqrs.Ninject.EventStore")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyCompany("cdmdotnet Limited")]
+[assembly: AssemblyProduct("Cqrs.Ninject.Mongo")]
+[assembly: AssemblyCopyright("Copyright © cdmdotnet Limited 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a9f625a4-855a-4c96-ad07-85dda8626ee3")]
+[assembly: Guid("012a9ce6-b52e-42b4-8a13-6e9c58b08330")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -5,14 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D75F8EF9-012B-4AA3-9675-3E367E54B352}</ProjectGuid>
+    <ProjectGuid>{0955D57A-5B86-4145-92A6-84CEFFA8EC2C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cqrs.Ninject</RootNamespace>
-    <AssemblyName>Cqrs.Ninject.EventStore</AssemblyName>
+    <RootNamespace>Cqrs.Ninject.Mongo</RootNamespace>
+    <AssemblyName>Cqrs.Ninject.Mongo</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -33,36 +33,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EventStore.ClientAPI">
-      <HintPath>..\packages\EventStore.Client.2.0.2\lib\net40\EventStore.ClientAPI.dll</HintPath>
-    </Reference>
     <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.3.2.2.0\lib\net40\Ninject.dll</HintPath>
+      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net40\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\EventStoreModule.cs" />
+    <Compile Include="Configuration\MongoModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cqrs.Ninject\Cqrs.Ninject.csproj">
-      <Project>{359BDD3F-785D-4A4A-861F-4951E6E71321}</Project>
-      <Name>Cqrs.Ninject</Name>
+    <ProjectReference Include="..\Cqrs.Mongo\Cqrs.Mongo.csproj">
+      <Project>{82A23F49-C3B6-4CC6-B7BC-C929FD932744}</Project>
+      <Name>Cqrs.Mongo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Framework\Cqrs.EventStore\Cqrs.EventStore.csproj">
-      <Project>{99423D39-2537-4C59-844D-6FDA5E3307BA}</Project>
-      <Name>Cqrs.EventStore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Framework\Cqrs\Cqrs.csproj">
+    <ProjectReference Include="..\Cqrs\Cqrs.csproj">
       <Project>{DAFD2A8A-D6B0-4433-8DDF-B98460C64EC6}</Project>
       <Name>Cqrs</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Cqrs.Ninject.EventStore.nuspec">
+    <None Include="Cqrs.Ninject.Mongo.nuspec">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
