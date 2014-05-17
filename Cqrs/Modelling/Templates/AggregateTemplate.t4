@@ -24,6 +24,7 @@ if (string.IsNullOrWhiteSpace(baseClass))
 // using statements
 WriteUsingStatements(this.Element);
 #>
+using Cqrs.Configuration;
 using <#= classNamespace #>.Events;
 
 namespace <#= classNamespace #>
@@ -45,6 +46,8 @@ namespace <#= classNamespace #>
 		public <#= authenticationTokenType #> AuthenticationToken { get; set; }
 
 		#endregion
+
+		protected IServiceLocator ServiceLocator { get; private set; }
 
 <#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
@@ -75,8 +78,9 @@ namespace <#= classNamespace #>
 		}
 // ReSharper restore UnusedMember.Local
 
-		public <#= className #>(Guid rsn)
+		public <#= className #>(IServiceLocator serviceLocator, Guid rsn)
 		{
+			ServiceLocator = serviceLocator;
 			Rsn = rsn;
 		}
 
