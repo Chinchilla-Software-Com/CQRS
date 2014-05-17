@@ -39,6 +39,7 @@ namespace Cqrs.EventStore
 				DateParseHandling = DateParseHandling.DateTimeOffset,
 				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
 				Converters = new List<JsonConverter> { new StringEnumConverter() },
+				TypeNameHandling = TypeNameHandling.Auto
 			};
 		}
 
