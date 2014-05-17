@@ -35,6 +35,7 @@ namespace Cqrs.Tests.Domain
 		[Test]
 		public void Should_throw_concurrency_exception_from_repository()
 		{
+			_aggregate.DoSomething();
 			Assert.Throws<ConcurrencyException>(() => _rep.Save(_aggregate, 0));
 		}
 
