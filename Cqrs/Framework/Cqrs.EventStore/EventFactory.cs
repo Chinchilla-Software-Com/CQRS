@@ -14,7 +14,7 @@ namespace Cqrs.EventStore
 
 		public IEvent<TAuthenticationToken> Deserialise(RecordedEvent eventData)
 		{
-			var jsonSerialiserSettings = GetSerialisationSettings();
+			JsonSerializerSettings jsonSerialiserSettings = GetSerialisationSettings();
 
 			switch (eventData.EventType)
 			{
@@ -39,7 +39,7 @@ namespace Cqrs.EventStore
 				DateParseHandling = DateParseHandling.DateTimeOffset,
 				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
 				Converters = new List<JsonConverter> { new StringEnumConverter() },
-				TypeNameHandling = TypeNameHandling.Auto
+				TypeNameHandling = TypeNameHandling.All
 			};
 		}
 
@@ -49,7 +49,7 @@ namespace Cqrs.EventStore
 
 		public EventData CreateFrameworkEvent(string type, IEvent<TAuthenticationToken> eventData)
 		{
-			var jsonSerialiserSettings = GetSerialisationSettings();
+			JsonSerializerSettings jsonSerialiserSettings = GetSerialisationSettings();
 
 			return new EventData
 			(
