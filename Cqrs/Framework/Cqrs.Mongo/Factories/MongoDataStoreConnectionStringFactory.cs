@@ -5,9 +5,9 @@ namespace Cqrs.Mongo.Factories
 {
 	public class MongoDataStoreConnectionStringFactory : IMongoDataStoreConnectionStringFactory
 	{
-		private const string MongoDbConnectionStringKey = "CqrsMongoDb";
+		public static string MongoDbConnectionStringKey = "CqrsMongoDb";
 
-		private const string DatabaseName = "Cqrs";
+		public static string MongoDbtabaseNameKey = "CqrsMongoDbDatabaseName";
 
 		public string GetMongoConnectionString()
 		{
@@ -23,7 +23,7 @@ namespace Cqrs.Mongo.Factories
 
 		public string GetMongoDatabaseName()
 		{
-			return DatabaseName;
+			return ConfigurationManager.AppSettings[MongoDbtabaseNameKey];
 		}
 	}
 }
