@@ -28,7 +28,7 @@ namespace Cqrs.Mongo.Factories
 			IndexTypesByEntityType = new Dictionary<Type, IList<object>>();
 			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
 			{
-				foreach (Type mongoIndexType in assembly.GetTypes().Where(type => typeof(MongoIndex<>).IsAssignableFrom(type)))
+				foreach (Type mongoIndexType in assembly.GetTypes().Where(type => typeof(MongoIndex<>).IsAssignableFrom(type) && !type.IsAbstract))
 				{
 					IList<object> indexTypes;
 					if (!IndexTypesByEntityType.TryGetValue(mongoIndexType, out indexTypes))
