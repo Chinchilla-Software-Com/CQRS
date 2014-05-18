@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Cqrs.Mongo.DataStores;
@@ -13,11 +14,28 @@ namespace Cqrs.Mongo.Factories
 	/// </summary>
 	public class MongoDataStoreFactory
 	{
+		private static IDictionary<Type, IList<object>> IndexTypesByEntityType { get; set; }
+
 		protected IMongoDataStoreConnectionStringFactory MongoDataStoreConnectionStringFactory { get; private set; }
 
 		public MongoDataStoreFactory(IMongoDataStoreConnectionStringFactory mongoDataStoreConnectionStringFactory)
 		{
 			MongoDataStoreConnectionStringFactory = mongoDataStoreConnectionStringFactory;
+		}
+
+		static MongoDataStoreFactory()
+		{
+			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+			{
+				foreach (Type mongoIndexType in assembly.GetTypes().Where(type => typeof(MongoIndex<>).IsAssignableFrom(type)))
+				{
+					IList<object> indexTypes;
+					if (!IndexTypesByEntityType.TryGetValue(mongoIndexType, out indexTypes))
+						IndexTypesByEntityType.Add(mongoIndexType, indexTypes = new List<object>());
+					object mongoIndex = Activator.CreateInstance(mongoIndexType, true);
+					indexTypes.Add(mongoIndex);
+				}
+			}
 		}
 
 		protected virtual MongoCollection<TEntity> GetCollection<TEntity>()
@@ -31,11 +49,11 @@ namespace Cqrs.Mongo.Factories
 
 		protected virtual void VerifyIndexes<TEntity>(MongoCollection<TEntity> collection)
 		{
-			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+			foreach (IList<object> untypedIndexTypes in IndexTypesByEntityType[typeof(MongoIndex<TEntity>)])
 			{
-				foreach (Type mongoIndexType in assembly.GetTypes().Where(type => typeof(MongoIndex<TEntity>).IsAssignableFrom(type)))
+				foreach (object untypedIndexType in untypedIndexTypes)
 				{
-					var mongoIndex = (MongoIndex<TEntity>) Activator.CreateInstance(mongoIndexType, true);
+					var mongoIndex = (MongoIndex<TEntity>) untypedIndexType;
 
 					var indexKeysBuilder = new IndexKeysBuilder();
 					if (mongoIndex.IsAcending)
