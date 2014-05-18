@@ -6,7 +6,7 @@ namespace Cqrs.DataStores
 	/// <summary>
 	/// A data store capable of being queried and modified
 	/// </summary>
-	public interface IDataStore<TData> : IQueryable<TData>
+	public interface IDataStore<TData> : IOrderedQueryable<TData>
 	{
 		void Add(TData data);
 
