@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Cqrs.Mongo.DataStores;
 using Cqrs.Mongo.DataStores.Indexes;
+using Cqrs.Mongo.Serialisers;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 
@@ -25,6 +25,10 @@ namespace Cqrs.Mongo.Factories
 
 		static MongoDataStoreFactory()
 		{
+			var typeSerializer = new TypeSerialiser();
+			MongoDB.Bson.Serialization.BsonSerializer.RegisterSerializer(typeof(Type), typeSerializer);
+			MongoDB.Bson.Serialization.BsonSerializer.RegisterSerializer(Type.GetType("System.RuntimeType"), typeSerializer);
+
 			IndexTypesByEntityType = new Dictionary<Type, IList<object>>();
 			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
 			{
