@@ -17,6 +17,8 @@ string className = ClassifierName(this.Element);
 // using statements
 #>
 using System;
+using Cqrs.Entities;
+using <#= classNamespace #>.Repositories;
 
 namespace <#= classNamespace #>.Events.Handlers
 {
@@ -25,9 +27,21 @@ namespace <#= classNamespace #>.Events.Handlers
 #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #>CreatedEventHandler
 	{
+		protected IAutomapHelper AutomapHelper { get; private set; }
+
+		protected <#= className #>Repository <#= className #>Repository { get; private set; }
+
+		public <#= className #>CreatedEventHandler(IAutomapHelper automapHelper, <#= className #>Repository repository)
+		{
+			AutomapHelper = automapHelper;
+			<#= className #>Repository = repository;
+		}
+
 		partial void OnHandle(<#= className #>Created @event)
 		{
-			throw new NotImplementedException();
+			Entities.<#= className #> entity = AutomapHelper.Automap<<#= className #>Created, Entities.<#= className #>>(@event);
+
+			<#= className #>Repository.Create(entity);
 		}
 	}
 }

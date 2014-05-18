@@ -17,6 +17,7 @@ string className = ClassifierName(this.Element);
 // using statements
 #>
 using System;
+using Cqrs.Entities;
 
 namespace <#= classNamespace #>.Handlers
 {
@@ -25,6 +26,13 @@ namespace <#= classNamespace #>.Handlers
 #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #>EventHandler
 	{
+		protected IAutomapHelper AutomapHelper { get; private set; }
+
+		public <#= className #>EventHandler(IAutomapHelper automapHelper)
+		{
+			AutomapHelper = automapHelper;
+		}
+
 		partial void OnHandle(<#= className #> @event)
 		{
 			throw new NotImplementedException();

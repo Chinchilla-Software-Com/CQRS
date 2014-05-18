@@ -55,6 +55,7 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			OnObtain<#= elementName #>Collection();
 			MongoCollection<<#= moduleName #>.Entities.<#= elementName #>> collection = GetCollection<<#= moduleName #>.Entities.<#= elementName #>>();
 			OnObtained<#= elementName #>Collection(ref collection);
+			VerifyIndexes<<#= moduleName #>.Entities.<#= elementName #>>(collection);
 			VerifyIndexes(collection);
 			return new MongoDataStore<<#= moduleName #>.Entities.<#= elementName #>>(collection);
 		}
