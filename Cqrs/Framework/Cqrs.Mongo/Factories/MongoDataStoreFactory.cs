@@ -25,6 +25,7 @@ namespace Cqrs.Mongo.Factories
 
 		static MongoDataStoreFactory()
 		{
+			IndexTypesByEntityType = new Dictionary<Type, IList<object>>();
 			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
 			{
 				foreach (Type mongoIndexType in assembly.GetTypes().Where(type => typeof(MongoIndex<>).IsAssignableFrom(type)))
