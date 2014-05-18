@@ -3,10 +3,10 @@ using System.Linq.Expressions;
 
 namespace Cqrs.Mongo.DataStores.Indexes
 {
-	public class ByRsnAndIsLogicallyDeletedMongoIndex<TEntity> : MongoIndex<TEntity>
+	public abstract class ByRsnAndIsLogicallyDeletedMongoIndex<TEntity> : MongoIndex<TEntity>
 		where TEntity : Entities.MongoEntity
 	{
-		public ByRsnAndIsLogicallyDeletedMongoIndex()
+		protected ByRsnAndIsLogicallyDeletedMongoIndex()
 		{
 			Selectors = new Expression<Func<TEntity, object>>[]
 			{
