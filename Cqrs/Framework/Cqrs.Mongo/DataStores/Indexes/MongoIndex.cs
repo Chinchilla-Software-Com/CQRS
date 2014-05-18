@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Cqrs.Mongo.DataStores
+namespace Cqrs.Mongo.DataStores.Indexes
 {
 	public abstract class MongoIndex<TEntity>
 	{
