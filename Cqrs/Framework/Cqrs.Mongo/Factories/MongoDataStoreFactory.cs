@@ -28,11 +28,60 @@ namespace Cqrs.Mongo.Factories
 			IndexTypesByEntityType = new Dictionary<Type, IList<object>>();
 			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
 			{
-				foreach (Type mongoIndexType in assembly.GetTypes().Where(type => typeof(MongoIndex<>).IsAssignableFrom(type) && !type.IsAbstract))
+				var mongoIndexTypes = assembly
+					.GetTypes()
+					.Where
+					(
+						type =>
+							(
+								// base is NOT an abstract index
+								(
+									type.BaseType != null &&
+									type.BaseType.IsGenericType &&
+									typeof(MongoIndex<>).IsAssignableFrom(type.BaseType.GetGenericTypeDefinition())
+								)
+								||
+								// base is an abstract index
+								(
+									type.BaseType != null &&
+									type.BaseType.BaseType != null &&
+									type.BaseType.BaseType.IsGenericType &&
+									typeof(MongoIndex<>).IsAssignableFrom(type.BaseType.BaseType.GetGenericTypeDefinition())
+								)
+								||
+								// a deeper inheritance model
+								(
+									type.BaseType != null &&
+									type.BaseType.BaseType != null &&
+									type.BaseType.BaseType.BaseType != null &&
+									type.BaseType.BaseType.BaseType.IsGenericType &&
+									typeof(MongoIndex<>).IsAssignableFrom(type.BaseType.BaseType.BaseType.GetGenericTypeDefinition())
+								)
+								||
+								// an even deeper inheritance model
+								(
+									type.BaseType != null &&
+									type.BaseType.BaseType != null &&
+									type.BaseType.BaseType.BaseType != null &&
+									type.BaseType.BaseType.BaseType.BaseType != null &&
+									type.BaseType.BaseType.BaseType.BaseType.IsGenericType &&
+									typeof(MongoIndex<>).IsAssignableFrom(type.BaseType.BaseType.BaseType.BaseType.GetGenericTypeDefinition())
+								)
+							)
+							&& !type.IsAbstract
+					);
+				foreach (Type mongoIndexType in mongoIndexTypes)
 				{
+					Type genericType = mongoIndexType;
+					while (genericType != null && !genericType.IsGenericType)
+					{
+						genericType = genericType.BaseType;
+					}
+					genericType = genericType.GetGenericArguments().Single();
+
 					IList<object> indexTypes;
-					if (!IndexTypesByEntityType.TryGetValue(mongoIndexType, out indexTypes))
-						IndexTypesByEntityType.Add(mongoIndexType, indexTypes = new List<object>());
+					if (!IndexTypesByEntityType.TryGetValue(genericType, out indexTypes))
+						IndexTypesByEntityType.Add(genericType, indexTypes = new List<object>());
 					object mongoIndex = Activator.CreateInstance(mongoIndexType, true);
 					indexTypes.Add(mongoIndex);
 				}
@@ -50,7 +99,7 @@ namespace Cqrs.Mongo.Factories
 
 		protected virtual void VerifyIndexes<TEntity>(MongoCollection<TEntity> collection)
 		{
-			foreach (IList<object> untypedIndexTypes in IndexTypesByEntityType[typeof(MongoIndex<TEntity>)])
+			foreach (IList<object> untypedIndexTypes in IndexTypesByEntityType[typeof(TEntity)])
 			{
 				foreach (object untypedIndexType in untypedIndexTypes)
 				{
