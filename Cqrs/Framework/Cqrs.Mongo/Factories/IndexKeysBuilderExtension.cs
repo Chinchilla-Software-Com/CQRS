@@ -29,6 +29,27 @@ namespace Cqrs.Mongo.Factories
 			return mongoIndexKeys.Ascending(properties.ToArray());
 		}
 
+		public static IndexKeysBuilder Descending<T>(this IndexKeysBuilder mongoIndexKeys, params Expression<Func<T, object>>[] selectors)
+		{
+			var properties = new List<string>();
+			foreach (Expression<Func<T, object>> selector in selectors)
+			{
+				var selectorUnaryExpression = selector.Body as UnaryExpression;
+				MemberExpression selectorMemberExpression;
+				if (selectorUnaryExpression != null)
+				{
+					selectorMemberExpression = (MemberExpression)selectorUnaryExpression.Operand;
+				}
+				else
+				{
+					selectorMemberExpression = (MemberExpression) selector.Body;
+				}
+				string memberName = CheckForChildProperty(selectorMemberExpression);
+				properties.Add(memberName);
+			}
+			return mongoIndexKeys.Descending(properties.ToArray());
+		}
+
 		public static string CheckForChildProperty(MemberExpression selectorMemberExpression)
 		{
 			string memberName = selectorMemberExpression.Member.Name;
