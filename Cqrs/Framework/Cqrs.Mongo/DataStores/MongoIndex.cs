@@ -28,8 +28,8 @@ namespace Cqrs.Mongo.DataStores
 			IsAcending = true;
 			Name = GetType()
 				.Name
-				.Replace("Index", string.Empty)
-				.Replace("MongoIndex", string.Empty);
+				.Replace("MongoIndex", string.Empty)
+				.Replace("Index", string.Empty);
 		}
 	}
 }
