@@ -60,7 +60,6 @@ namespace Cqrs.Bus
 			if (!Routes.TryGetValue(@event.GetType(), out handlers)) return;
 			foreach(Action<IMessage> handler in handlers)
 				handler(@event);
-			
 		}
 	}
 }

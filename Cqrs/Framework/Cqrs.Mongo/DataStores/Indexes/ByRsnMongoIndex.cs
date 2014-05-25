@@ -12,6 +12,8 @@ namespace Cqrs.Mongo.DataStores.Indexes
 			{
 				entity => entity.Rsn
 			};
+
+			IsUnique = true;
 		}
 	}
 }

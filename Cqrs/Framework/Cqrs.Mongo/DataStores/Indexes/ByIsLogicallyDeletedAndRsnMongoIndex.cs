@@ -13,6 +13,8 @@ namespace Cqrs.Mongo.DataStores.Indexes
 				entity => entity.IsLogicallyDeleted,
 				entity => entity.Rsn
 			};
+
+			IsUnique = true;
 		}
 	}
 }

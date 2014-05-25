@@ -24,7 +24,7 @@ namespace Cqrs.Mongo.DataStores.Indexes
 
 		protected MongoIndex()
 		{
-			IsUnique = true;
+			IsUnique = false;
 			IsAcending = true;
 			Name = GetType()
 				.Name
