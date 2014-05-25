@@ -6,7 +6,7 @@ namespace Cqrs.Mongo.DataStores.Indexes
 	public abstract class MongoIndex<TEntity>
 	{
 		/// <summary>
-		/// Indicates if the index enforces unique values. Defaults to true.
+		/// Indicates if the index enforces unique values. Defaults to false.
 		/// </summary>
 		public bool IsUnique { get; protected set; }
 
