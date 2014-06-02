@@ -20,6 +20,10 @@ namespace Cqrs.Ninject.Configuration
 		public NinjectDependencyResolver(IKernel kernel)
 		{
 			Kernel = kernel;
+
+			Kernel.Bind<IServiceLocator>()
+				.ToConstant(this)
+				.InSingletonScope();
 		}
 
 		/// <summary>
