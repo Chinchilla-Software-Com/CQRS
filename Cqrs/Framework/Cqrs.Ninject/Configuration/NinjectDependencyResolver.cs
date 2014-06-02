@@ -10,11 +10,6 @@ namespace Cqrs.Ninject.Configuration
 	{
 		public static IServiceLocator Current { get; protected set; }
 
-		static NinjectDependencyResolver()
-		{
-			Current = new NinjectDependencyResolver(new StandardKernel());
-		}
-
 		protected IKernel Kernel { get; private set; }
 
 		public NinjectDependencyResolver(IKernel kernel)
