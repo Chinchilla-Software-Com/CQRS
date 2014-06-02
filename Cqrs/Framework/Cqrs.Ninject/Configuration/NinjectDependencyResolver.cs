@@ -8,11 +8,28 @@ namespace Cqrs.Ninject.Configuration
 {
 	public class NinjectDependencyResolver : IServiceLocator
 	{
+		public static IServiceLocator Current { get; private set; }
+
+		static NinjectDependencyResolver()
+		{
+			Current = new NinjectDependencyResolver(new StandardKernel());
+		}
+
 		protected IKernel Kernel { get; private set; }
 
 		public NinjectDependencyResolver(IKernel kernel)
 		{
 			Kernel = kernel;
+		}
+
+		/// <summary>
+		/// Starts the <see cref="NinjectDependencyResolver"/>
+		/// </summary>
+		/// <remarks>
+		/// this exists to the static constructor can be triggered.
+		/// </remarks>
+		public static void Start()
+		{
 		}
 
 		public T GetService<T>()

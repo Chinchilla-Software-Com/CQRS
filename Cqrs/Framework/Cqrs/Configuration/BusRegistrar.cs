@@ -25,7 +25,7 @@ namespace Cqrs.Configuration
 		{
 			var bus = ServiceLocator.GetService<IHandlerRegistrar>();
 			
-			foreach (var typesFromAssemblyContainingMessage in typesFromAssemblyContainingMessages)
+			foreach (Type typesFromAssemblyContainingMessage in typesFromAssemblyContainingMessages)
 			{
 				Assembly executorsAssembly = typesFromAssemblyContainingMessage.Assembly;
 				var executorTypes = executorsAssembly
