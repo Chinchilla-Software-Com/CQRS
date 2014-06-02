@@ -76,9 +76,6 @@ namespace Cqrs.Ninject.Configuration
 		/// </summary>
 		public virtual void RegisterCqrsRequirements()
 		{
-			Bind<IServiceLocator>()
-				.To<NinjectDependencyResolver>()
-				.InSingletonScope();
 			Bind<IUnitOfWork<TAuthenticationToken>>()
 				.To<UnitOfWork<TAuthenticationToken>>()
 				.InTransientScope();
