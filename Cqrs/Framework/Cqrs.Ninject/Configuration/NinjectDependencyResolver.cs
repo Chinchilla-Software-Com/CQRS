@@ -8,7 +8,7 @@ namespace Cqrs.Ninject.Configuration
 {
 	public class NinjectDependencyResolver : IServiceLocator
 	{
-		public static IServiceLocator Current { get; private set; }
+		public static IServiceLocator Current { get; protected set; }
 
 		static NinjectDependencyResolver()
 		{
