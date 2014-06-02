@@ -32,8 +32,9 @@ namespace Cqrs.Ninject.Configuration
 		/// <remarks>
 		/// this exists to the static constructor can be triggered.
 		/// </remarks>
-		public static void Start()
+		public static void Start(IKernel kernel = null)
 		{
+			Current = new NinjectDependencyResolver(kernel ?? new StandardKernel());
 		}
 
 		public T GetService<T>()
