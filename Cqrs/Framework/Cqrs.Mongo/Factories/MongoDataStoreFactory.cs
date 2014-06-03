@@ -103,23 +103,27 @@ namespace Cqrs.Mongo.Factories
 
 		protected virtual void VerifyIndexes<TEntity>(MongoCollection<TEntity> collection)
 		{
-			foreach (object untypedIndexType in IndexTypesByEntityType[typeof(TEntity)])
+			Type entityType = typeof (TEntity);
+			if (IndexTypesByEntityType.ContainsKey(entityType))
 			{
-				var mongoIndex = (MongoIndex<TEntity>) untypedIndexType;
+				foreach (object untypedIndexType in IndexTypesByEntityType[entityType])
+				{
+					var mongoIndex = (MongoIndex<TEntity>)untypedIndexType;
 
-				var indexKeysBuilder = new IndexKeysBuilder();
-				if (mongoIndex.IsAcending)
-					indexKeysBuilder = indexKeysBuilder.Ascending(mongoIndex.Selectors.ToArray());
-				else
-					indexKeysBuilder = indexKeysBuilder.Descending(mongoIndex.Selectors.ToArray());
+					var indexKeysBuilder = new IndexKeysBuilder();
+					if (mongoIndex.IsAcending)
+						indexKeysBuilder = indexKeysBuilder.Ascending(mongoIndex.Selectors.ToArray());
+					else
+						indexKeysBuilder = indexKeysBuilder.Descending(mongoIndex.Selectors.ToArray());
 
-				collection.EnsureIndex
-				(
-					indexKeysBuilder,
-					IndexOptions
-						.SetUnique(mongoIndex.IsUnique)
-						.SetName(mongoIndex.Name)
-				);
+					collection.EnsureIndex
+					(
+						indexKeysBuilder,
+						IndexOptions
+							.SetUnique(mongoIndex.IsUnique)
+							.SetName(mongoIndex.Name)
+					);
+				}
 			}
 		}
 	}
