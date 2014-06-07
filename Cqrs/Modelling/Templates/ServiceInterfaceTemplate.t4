@@ -22,12 +22,8 @@ if (!string.IsNullOrWhiteSpace(baseClass))
 	baseClass = ": " + baseClass;
 
 // using statements
+WriteUsingStatements(this.Element);
 #>
-using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.ServiceModel;
 using Cqrs.Authentication;
 using Cqrs.Services;
 
@@ -52,9 +48,9 @@ namespace <#= classNamespace #>
 
 		string methodSignatureParameter = string.Empty;
 
-		var parameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction != ParameterDirectionKind.Return);
+		var parameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction == ParameterDirectionKind.Return);
 		if (parameter != null)
-			methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}> serviceRequest", authenticationTokenType, GetFullDisplayType(parameter, false));
+			methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, collectionMethod.Name);
 		else
 			methodSignatureParameter = string.Format("IServiceRequest<{0}> serviceRequest", authenticationTokenType);
 #>
@@ -65,6 +61,35 @@ namespace <#= classNamespace #>
 		}
 #>
 	}
+<#
+	// Methods
+	foreach(IOperation collectionMethod in collectionMethods)
+	{
+#>
+
+	/// <summary>
+	/// The parameters for the <see cref="I<#= className #>.<#= collectionMethod.Name #>" /> method.
+	/// </summary>
+	public class <#= className #><#= collectionMethod.Name #>Parameters
+	{
+<#
+			var methodParameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);
+			// Properties
+			for (int i = 0; i < methodParameters.Count(); i++)
+			{
+				IParameter methodParameter = methodParameters.ElementAt(i);
+#>
+<# WriteSummaryComment(methodParameter.Description); #>
+		public <#= GetFullDisplayType(methodParameter) #> <#= methodParameter.Name #> { get; private set; }
+
+<#
+			}
+#>
+	}
+<#
+	}
+#>
+
 }
 <#+
 	protected override bool AppliesToElement()

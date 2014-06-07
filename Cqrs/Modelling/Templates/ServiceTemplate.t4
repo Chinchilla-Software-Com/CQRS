@@ -22,11 +22,8 @@ if (!string.IsNullOrWhiteSpace(baseClass))
 	baseClass = ": " + baseClass;
 
 // using statements
+WriteUsingStatements(this.Element);
 #>
-using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using Cqrs.Authentication;
 using Cqrs.Services;
 
@@ -60,14 +57,15 @@ namespace <#= classNamespace #>
 			if (!string.IsNullOrWhiteSpace(methodParameterNameList))
 				methodParameterNameList = methodParameterNameList + ", ";
 
-		var methodSignatureParameter = string.Empty;
+			var methodSignatureParameter = string.Empty;
 		
-		var parameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction != ParameterDirectionKind.Return);
-		if (parameter != null)
-			methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}> serviceRequest", authenticationTokenType, GetFullDisplayType(parameter, false));
-		else
-			methodSignatureParameter = string.Format("IServiceRequest<{0}> serviceRequest", authenticationTokenType);
+			var parameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction == ParameterDirectionKind.Return);
+			if (parameter != null)
+			methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, collectionMethod.Name);
+			else
+				methodSignatureParameter = string.Format("IServiceRequest<{0}> serviceRequest", authenticationTokenType);
 #>
+
 		public virtual IServiceResponseWithResultData<<#= methodTypeName #>> <#= collectionMethod.Name #>(<#= methodSignatureParameter #>)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);

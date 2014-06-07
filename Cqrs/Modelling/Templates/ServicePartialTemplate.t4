@@ -23,12 +23,8 @@ if (!string.IsNullOrWhiteSpace(baseClass))
 	baseClass = ": " + baseClass;
 
 // using statements
+WriteUsingStatements(this.Element);
 #>
-using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.ServiceModel;
 using Cqrs.Commands;
 using Cqrs.Authentication;
 using Cqrs.Repositories.Queries;
@@ -44,7 +40,7 @@ namespace <#= classNamespace #>
 	{
 		protected IVersionService VersionService { get; private set; }
 
-		public <#= className #>(ICommandSender commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> AuthenticationTokenHelper, <#= className.Substring(0, className.Length - 7) #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository, IVersionService versionService)
+		public <#= className #>(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> AuthenticationTokenHelper, <#= className.Substring(0, className.Length - 7) #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository, IVersionService versionService)
 			: this (commandSender, unitOfWorkService, queryFactory, AuthenticationTokenHelper, <#= GetLowercaseFirstCharacter(className) #>Repository)
 		{
 			VersionService = versionService;
@@ -64,9 +60,9 @@ namespace <#= classNamespace #>
 
 		var methodSignatureParameter = string.Empty;
 		
-		var parameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction != ParameterDirectionKind.Return);
+		var parameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction == ParameterDirectionKind.Return);
 		if (parameter != null)
-			methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}> serviceRequest", authenticationTokenType, GetFullDisplayType(parameter, false));
+			methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, collectionMethod.Name);
 		else
 			methodSignatureParameter = string.Format("IServiceRequest<{0}> serviceRequest", authenticationTokenType);
 #>

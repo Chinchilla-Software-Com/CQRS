@@ -50,14 +50,14 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			string elementName = element.Name;
 			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
 #>
-		public virtual IDataStore<<#= moduleName #>.Entities.<#= elementName #>> Get<#= elementName #>DataStore()
+		public virtual IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> Get<#= elementName #>DataStore()
 		{
 			OnObtain<#= elementName #>Collection();
-			MongoCollection<<#= moduleName #>.Entities.<#= elementName #>> collection = GetCollection<<#= moduleName #>.Entities.<#= elementName #>>();
+			MongoCollection<<#= moduleName #>.Entities.<#= elementName #>Entity> collection = GetCollection<<#= moduleName #>.Entities.<#= elementName #>Entity>();
 			OnObtained<#= elementName #>Collection(ref collection);
-			VerifyIndexes<<#= moduleName #>.Entities.<#= elementName #>>(collection);
+			VerifyIndexes<<#= moduleName #>.Entities.<#= elementName #>Entity>(collection);
 			VerifyIndexes(collection);
-			return new MongoDataStore<<#= moduleName #>.Entities.<#= elementName #>>(collection);
+			return new MongoDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity>(collection);
 		}
 
 <#
@@ -73,9 +73,9 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 #>
 		partial void OnObtain<#= elementName #>Collection();
 
-		partial void OnObtained<#= elementName #>Collection(ref MongoCollection<<#= moduleName #>.Entities.<#= elementName #>> collection);
+		partial void OnObtained<#= elementName #>Collection(ref MongoCollection<<#= moduleName #>.Entities.<#= elementName #>Entity> collection);
 
-		partial void VerifyIndexes(MongoCollection<<#= moduleName #>.Entities.<#= elementName #>> collection);
+		partial void VerifyIndexes(MongoCollection<<#= moduleName #>.Entities.<#= elementName #>Entity> collection);
 
 <#
 		}
