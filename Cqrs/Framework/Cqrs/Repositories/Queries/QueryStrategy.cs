@@ -96,6 +96,9 @@ namespace Cqrs.Repositories.Queries
 
 		protected virtual IQueryPredicate And(IQueryPredicate queryPredicate)
 		{
+			if (QueryPredicate == null)
+				return queryPredicate;
+
 			return new AndQueryPredicate
 			{
 				LeftQueryPredicate = QueryPredicate,
