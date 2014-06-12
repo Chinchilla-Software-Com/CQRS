@@ -78,7 +78,7 @@ namespace <#= classNamespace #>
 			{
 				OnGeneratePredicate<#= partialMethodName #>(queryPredicate, leftHandQueryable, parameters, ref resultingQueryable);
 				GeneratePredicate<#= partialMethodName #>(parameters, leftHandQueryable, ref resultingQueryable);
-				OnGeneratePredicated<#= partialMethodName #>(queryPredicate, leftHandQueryable, parameters, ref resultingQueryable);
+				OnGeneratedPredicate<#= partialMethodName #>(queryPredicate, leftHandQueryable, parameters, ref resultingQueryable);
 				return resultingQueryable;
 			}
 <#
@@ -116,7 +116,7 @@ namespace <#= classNamespace #>
 
 		partial void GeneratePredicate<#= partialMethodName #>(SortedSet<QueryParameter> parameters, IQueryable<Entities.<#= aggregateRootName #>Entity> leftHandQueryable, ref IQueryable<Entities.<#= aggregateRootName #>Entity> resultingQueryable);
 
-		partial void OnGeneratePredicated<#= partialMethodName #>(QueryPredicate queryPredicate, IQueryable<Entities.<#= aggregateRootName #>Entity> leftHandQueryable, SortedSet<QueryParameter> parameters, ref IQueryable<Entities.<#= aggregateRootName #>Entity> resultingQueryable);
+		partial void OnGeneratedPredicate<#= partialMethodName #>(QueryPredicate queryPredicate, IQueryable<Entities.<#= aggregateRootName #>Entity> leftHandQueryable, SortedSet<QueryParameter> parameters, ref IQueryable<Entities.<#= aggregateRootName #>Entity> resultingQueryable);
 
 <#
 			var queryStrategyOrderMethodProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "QueryStrategyOrderMethod");
