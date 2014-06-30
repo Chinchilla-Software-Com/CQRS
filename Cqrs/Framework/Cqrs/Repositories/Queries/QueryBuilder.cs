@@ -57,7 +57,7 @@ namespace Cqrs.Repositories.Queries
 			{
 				return GeneratePredicateIsNotLogicallyDeleted(realQueryPredicate, leftHandQueryable) ?? GeneratePredicate(realQueryPredicate, leftHandQueryable);
 			}
-			throw new Exception();
+			throw new InvalidOperationException(string.Format("The query predicate '{0}' is unable to be processed.", queryPredicate == null ? typeof(void) : queryPredicate.GetType()));
 		}
 
 		protected virtual IQueryable<TData> GeneratePredicateIsNotLogicallyDeleted(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null)
