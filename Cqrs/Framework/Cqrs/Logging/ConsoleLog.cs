@@ -8,32 +8,27 @@ namespace Cqrs.Logging
 
 		public void LogInfo(string message, string container = null, Exception exception = null)
 		{
-			Console.ForegroundColor = ConsoleColor.Gray;
 			Log("Info", ConsoleColor.Gray, message, container, exception);
 		}
 
 		public void LogDebug(string message, string container = null, Exception exception = null)
 		{
-			Console.ForegroundColor = ConsoleColor.Blue;
-			Log("Debug", ConsoleColor.Gray, message, container, exception);
+			Log("Debug", ConsoleColor.Blue, message, container, exception);
 		}
 
 		public void LogWarning(string message, string container = null, Exception exception = null)
 		{
-			Console.ForegroundColor = ConsoleColor.DarkYellow;
-			Log("Warning", ConsoleColor.Gray, message, container, exception);
+			Log("Warning", ConsoleColor.DarkYellow, message, container, exception);
 		}
 
 		public void LogError(string message, string container = null, Exception exception = null)
 		{
-			Console.ForegroundColor = ConsoleColor.DarkRed;
-			Log("Error", ConsoleColor.Gray, message, container, exception);
+			Log("Error", ConsoleColor.DarkRed, message, container, exception);
 		}
 
 		public void LogFatalError(string message, string container = null, Exception exception = null)
 		{
-			Console.ForegroundColor = ConsoleColor.Red;
-			Log("Fatal", ConsoleColor.Gray, message, container, exception);
+			Log("Fatal", ConsoleColor.Red, message, container, exception);
 		}
 
 		#endregion
