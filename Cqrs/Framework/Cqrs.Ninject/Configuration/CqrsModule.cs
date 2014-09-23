@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
+using cdmdotnet.AutoMapper;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;
-using Cqrs.Configuration;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
-using Cqrs.Entities;
 using Cqrs.Events;
 using Cqrs.Repositories.Queries;
 using Ninject.Modules;
