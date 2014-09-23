@@ -1,0 +1,34 @@
+﻿using System;
+using System.Text;
+
+namespace Cqrs.Events
+{
+	public abstract class EventBuilder<TAuthenticationToken> : IEventBuilder<TAuthenticationToken>
+	{
+		#region Implementation of IEventBuilder
+
+		public EventData CreateFrameworkEvent(string type, IEvent<TAuthenticationToken> eventData)
+		{
+			return new EventData
+			{
+				EventId = Guid.NewGuid(),
+				EventType = type,
+				Data = SerialiseEventData(eventData)
+			};
+		}
+
+		public EventData CreateFrameworkEvent(IEvent<TAuthenticationToken> eventData)
+		{
+			return CreateFrameworkEvent(eventData.GetType().AssemblyQualifiedName, eventData);
+		}
+
+		#endregion
+
+		protected virtual byte[] SerialiseEventData(IEvent<TAuthenticationToken> eventData)
+		{
+			return new UTF8Encoding().GetBytes(SerialiseEventDataToString(eventData));
+		}
+
+		protected abstract string SerialiseEventDataToString(IEvent<TAuthenticationToken> eventData);
+	}
+}

@@ -1,5 +1,5 @@
 ﻿using Cqrs.Events;
-using EventStore.ClientAPI;
+using EventData = EventStore.ClientAPI.EventData;
 
 namespace Cqrs.EventStore
 {
