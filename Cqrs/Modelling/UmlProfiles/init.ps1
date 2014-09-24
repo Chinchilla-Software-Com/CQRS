@@ -24,3 +24,6 @@ function global:Update-ModelingTemplates()
 }
 
 Update-ModelingTemplates
+
+CD .\VisualStudioAddOns
+START .\Cqrs.Modelling.UmlProfiles.vsix

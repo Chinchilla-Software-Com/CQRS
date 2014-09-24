@@ -5,6 +5,7 @@ using Cqrs.Events;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using EventData=EventStore.ClientAPI.EventData;
 
 namespace Cqrs.EventStore
 {

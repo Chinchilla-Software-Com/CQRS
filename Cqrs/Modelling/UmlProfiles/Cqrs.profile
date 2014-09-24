@@ -1,4 +1,4 @@
-﻿bl@nk00<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <profile dslVersion="1.0.0.0" name="CqrsProfile" displayName="Cqrs Profile" xmlns="http://schemas.microsoft.com/UML2.1.2/ProfileDefinition">
   <stereotypes>
     <stereotype name="Domain" displayName="Domain">

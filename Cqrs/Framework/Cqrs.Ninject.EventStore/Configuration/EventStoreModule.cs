@@ -29,10 +29,10 @@ namespace Cqrs.Ninject.Configuration
 		/// </summary>
 		public virtual void RegisterFactories()
 		{
-			Bind<IEventBuilder<TAuthenticationToken>>()
+			Bind<EventStore.IEventBuilder<TAuthenticationToken>>()
 				.To<EventFactory<TAuthenticationToken>>()
 				.InSingletonScope();
-			Bind<IEventDeserialiser<TAuthenticationToken>>()
+			Bind<EventStore.IEventDeserialiser<TAuthenticationToken>>()
 				.To<EventFactory<TAuthenticationToken>>()
 				.InSingletonScope();
 		}
@@ -58,7 +58,7 @@ namespace Cqrs.Ninject.Configuration
 				.InSingletonScope();
 
 			Bind<IEventStore<TAuthenticationToken>>()
-				.To<EventStore<TAuthenticationToken>>()
+				.To<EventStore.EventStore<TAuthenticationToken>>()
 				.InSingletonScope();
 		}
 	}
