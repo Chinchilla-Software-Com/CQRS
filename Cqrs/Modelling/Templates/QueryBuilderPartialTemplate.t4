@@ -19,6 +19,7 @@ string className = ClassifierName(this.Element);
 string aggregateRootName = steroTypeProperties.PropertyInstances
 	.Single(property => property.Name == "AggregateRootName")
 	.Value;
+string entityPersistenceTechnology = GetEntityPersistenceTechnology(this.Element);
 
 // using statements
 #>
@@ -27,7 +28,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cqrs.Repositories.Queries;
+<# if (entityPersistenceTechnology == "MongoDb") { #>
 using MongoDB.Driver.Linq;
+<# } #>
 
 namespace <#= classNamespace #>
 {
