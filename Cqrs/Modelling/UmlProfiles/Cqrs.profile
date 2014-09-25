@@ -11,6 +11,16 @@
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
         </property>
+        <property name="EntityPersistenceTechnology" displayName="Entity Persistence Technology: What technology are you using for persisting entities." defaultValue="MongoDb">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/EntityPersistenceTechnology"/>
+          </propertyType>
+        </property>
+        <property name="EventStorePersistenceTechnology" displayName="Event Store Persistence Technology: What technology are you using for persisting events and event sourcing." defaultValue="GYEventStore">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/EntityPersistenceTechnology"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
     <stereotype name="Module" displayName="Module">
@@ -188,12 +198,12 @@
             <enumerationTypeMoniker name="/CqrsProfile/PermissionScope"/>
           </propertyType>
         </property>
-        <property name="IsNotLogicallyDeleted" displayName="IsNotLogicallyDeleted: Returned values must not be logically deleted." defaultValue="True">
+        <property name="IsNotLogicallyDeleted" displayName="IsNotLogicallyDeleted: Returned values must not be logically deleted." defaultValue="true">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
-        <property name="IncludeBody" displayName="IncludeBody: Nothing is done to the QueryPredicate." defaultValue="True">
+        <property name="IncludeBody" displayName="IncludeBody: Nothing is done to the QueryPredicate." defaultValue="true">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
@@ -232,6 +242,20 @@
         <enumerationLiteral name="Company" displayName="Company" />
         <enumerationLiteral name="User" displayName="User" />
         <enumerationLiteral name="Any" displayName="Any" />
+      </enumerationLiterals>
+    </enumerationType>
+
+    <enumerationType name="EntityPersistenceTechnology">
+      <enumerationLiterals>
+        <enumerationLiteral name="MongoDb" displayName="MongoDB" />
+        <enumerationLiteral name="AzureDocumentDb" displayName="Azure Document Db" />
+      </enumerationLiterals>
+    </enumerationType>
+
+    <enumerationType name="EventStorePersistenceTechnology">
+      <enumerationLiterals>
+        <enumerationLiteral name="GYEventStore" displayName="Greg Youngs EventStore" />
+        <enumerationLiteral name="AzureDocumentDb" displayName="Azure Document Db" />
       </enumerationLiterals>
     </enumerationType>
   </propertyTypes>
