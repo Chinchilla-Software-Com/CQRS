@@ -18,7 +18,7 @@
         </property>
         <property name="EventStorePersistenceTechnology" displayName="Event Store Persistence Technology: What technology are you using for persisting events and event sourcing." defaultValue="GYEventStore">
           <propertyType>
-            <enumerationTypeMoniker name="/CqrsProfile/EntityPersistenceTechnology"/>
+            <enumerationTypeMoniker name="/CqrsProfile/EventStorePersistenceTechnology"/>
           </propertyType>
         </property>
       </properties>
