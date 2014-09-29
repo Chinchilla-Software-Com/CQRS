@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using Cqrs.Repositories;
+using Cqrs.Repositories.Queries;
 using <#= GetNamespace(((INamedElement)FindModuleElement(this.Element)).Namespace) #>.Factories;
 using <#= classNamespace #>.Repositories.Queries.Strategies;
 
@@ -39,6 +40,13 @@ namespace <#= classNamespace #>.Repositories
 #>
 	<#= GetGeneratedCodeAttribute() #>
 	public partial interface I<#= className #>Repository : <#= baseClass #>IRepository<<#= className #>QueryStrategy, Entities.<#= className #>Entity>
+	{
+	}
+}
+
+namespace <#= classNamespace #>.Repositories.Queries.Strategies
+{
+	public partial class <#= className #>QueryStrategy : QueryStrategy
 	{
 	}
 }
