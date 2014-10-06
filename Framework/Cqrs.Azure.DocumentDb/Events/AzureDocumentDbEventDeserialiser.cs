@@ -13,7 +13,7 @@ using Cqrs.Events;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Cqrs.Azure.DocumentDb
+namespace Cqrs.Azure.DocumentDb.Events
 {
 	public class AzureDocumentDbEventDeserialiser<TAuthenticationToken> : IEventDeserialiser<TAuthenticationToken>
 	{

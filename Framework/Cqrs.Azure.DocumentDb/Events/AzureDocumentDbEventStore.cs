@@ -15,7 +15,7 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 
-namespace Cqrs.Azure.DocumentDb
+namespace Cqrs.Azure.DocumentDb.Events
 {
 	public class AzureDocumentDbEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken>
 	{
@@ -42,7 +42,7 @@ namespace Cqrs.Azure.DocumentDb
 				var collection = new DocumentCollection { Id = "CqrsEventStore" };
 				collection = await client.CreateDocumentCollectionAsync(database.SelfLink, collection);
 
-				var query = client.CreateDocumentQuery<EventData>(collection.SelfLink);
+				IOrderedQueryable<EventData> query = client.CreateDocumentQuery<EventData>(collection.SelfLink);
 				string streamName = string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, aggregateId);
 
 				IOrderedQueryable<EventData> results = query.Where(x => x.AggregateId == streamName)

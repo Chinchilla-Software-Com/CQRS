@@ -2,13 +2,13 @@
 using Microsoft.Azure.Documents.Client;
 using Microsoft.WindowsAzure;
 
-namespace Cqrs.Azure.DocumentDb
+namespace Cqrs.Azure.DocumentDb.Events
 {
 	public class EventStoreConnectionHelper : IEventStoreConnectionHelper
 	{
 		public virtual DocumentClient GetEventStoreConnection()
 		{
-			return new DocumentClient(GetEventStoreConnectionUrl(), GetAuthorisationKey());
+			return new DocumentClient(GetEventStoreConnectionUrl(), GetEventStoreConnectionAuthorisationKey());
 		}
 
 		public virtual string GetEventStoreConnectionLogStreamName()
@@ -21,7 +21,7 @@ namespace Cqrs.Azure.DocumentDb
 			return new Uri(CloudConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.Url"));
 		}
 
-		protected virtual string GetAuthorisationKey()
+		protected virtual string GetEventStoreConnectionAuthorisationKey()
 		{
 			return CloudConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.AuthorisationKey");
 		}
