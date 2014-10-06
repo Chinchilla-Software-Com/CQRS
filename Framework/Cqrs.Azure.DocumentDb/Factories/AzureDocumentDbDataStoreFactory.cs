@@ -26,25 +26,44 @@ namespace Cqrs.Azure.DocumentDb.Factories
 			AzureDocumentDbDataStoreConnectionStringFactory = azureDocumentDbDataStoreConnectionStringFactory;
 		}
 
-		protected virtual IOrderedQueryable<TEntity> GetCollection<TEntity>()
+		protected virtual DocumentClient GetClient()
 		{
-			return GetCollectionAsync<TEntity>().Result;
+			return GetClientAsync().Result;
 		}
 
-		protected async Task<IOrderedQueryable<TEntity>> GetCollectionAsync<TEntity>()
+		protected virtual IOrderedQueryable<TEntity> GetCollection<TEntity>(DocumentClient client, Database database)
 		{
-			using (DocumentClient client = AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbConnectionString())
-			{
-				var database = new Database { Id = AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbDatabaseName() };
-				database = await client.CreateDatabaseAsync(database);
+			return GetCollectionAsync<TEntity>(client, database).Result;
+		}
 
-				var collection = new DocumentCollection { Id = typeof(TEntity).FullName };
-				collection = await client.CreateDocumentCollectionAsync(database.SelfLink, collection);
+		protected virtual Database GetDatabase(DocumentClient client)
+		{
+			return GetDatabaseAsync(client).Result;
+		}
 
-				IOrderedQueryable<TEntity> query = client.CreateDocumentQuery<TEntity>(collection.SelfLink);
+		protected async Task<DocumentClient> GetClientAsync()
+		{
+			DocumentClient client = AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbConnectionString();
 
-				return query;
-			}
+			return client;
+		}
+
+		protected async Task<Database> GetDatabaseAsync(DocumentClient client)
+		{
+			var database = new Database { Id = AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbDatabaseName() };
+			database = await client.CreateDatabaseAsync(database);
+
+			return database;
+		}
+
+		protected async Task<IOrderedQueryable<TEntity>> GetCollectionAsync<TEntity>(DocumentClient client, Database database)
+		{
+			var collection = new DocumentCollection { Id = typeof(TEntity).FullName };
+			collection = await client.CreateDocumentCollectionAsync(database.SelfLink, collection);
+
+			IOrderedQueryable<TEntity> query = client.CreateDocumentQuery<TEntity>(collection.SelfLink);
+
+			return query;
 		}
 	}
 }
