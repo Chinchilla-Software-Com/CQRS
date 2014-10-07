@@ -104,6 +104,7 @@
 		bool canBeMultiple = false;
 		bool isStruct = false;
 		bool isEnum = false;
+		bool isEntity = false;
 
 		typeName = ElementType(typedProperty);
 		if (typeName.StartsWith("Root::"))
@@ -115,10 +116,12 @@
 		canBeMultiple = property.UpperValue != null ? property.UpperValue.ToString() == "*" : false;
 		isStruct = typedProperty != null && typedProperty.Type != null && typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Struct", StringComparison.InvariantCultureIgnoreCase));
 		isEnum = (typedProperty.Type as IEnumeration) != null;
+		isEntity = typedProperty != null && typedProperty.Type != null && typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Entity", StringComparison.InvariantCultureIgnoreCase));
 
-		return string.Format("{0}{1}{2}{3}"
+		return string.Format("{0}{1}{2}{3}{4}"
 			, canBeMultiple && isUnique ? "ICollection<" : canBeMultiple ? "IEnumerable<" : string.Empty
 			, typeName
+			, isEntity ? "Entity" : string.Empty
 			, canBeMultiple ? ">" : string.Empty
 			, !canBeMultiple && canBeEmpty && (!onlyStructAsNullable || isStruct || isEnum) ? "?" : string.Empty);
 	}

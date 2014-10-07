@@ -25,6 +25,7 @@ if (string.IsNullOrWhiteSpace(baseClass))
 WriteUsingStatements(this.Element);
 #>
 using Cqrs.Configuration;
+using Cqrs.Logging;
 using <#= classNamespace #>.Events;
 
 namespace <#= classNamespace #>
@@ -48,6 +49,8 @@ namespace <#= classNamespace #>
 		#endregion
 
 		protected IServiceLocator ServiceLocator { get; private set; }
+
+		protected ILog Log { get; private set; }
 
 <#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
@@ -78,9 +81,10 @@ namespace <#= classNamespace #>
 		}
 // ReSharper restore UnusedMember.Local
 
-		public <#= className #>(IServiceLocator serviceLocator, Guid rsn)
+		public <#= className #>(IServiceLocator serviceLocator, ILog log, Guid rsn)
 		{
 			ServiceLocator = serviceLocator;
+			Log = log;
 			Rsn = rsn;
 		}
 
@@ -92,10 +96,12 @@ namespace <#= classNamespace #>
 #>
 		public virtual void <#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>)
 		{
+			Log.LogDebug("Entered", "<#= className #>/<#= collectionMethod.Name #>");
 			On<#= collectionMethod.Name #>(<#= GetMethodParameterNameList(collectionMethod) #>);
+			Log.LogDebug("Exited", "<#= className #>/<#= collectionMethod.Name #>");
 		}
-
 		partial void On<#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>);
+
 <#
 		}
 #>
@@ -120,6 +126,8 @@ namespace <#= classNamespace #>
 		}
 #>)
 		{
+			Log.LogDebug("Entered", "<#= className #>/Create<#= className #>");
+			Log.LogDebug("Pre", "<#= className #>/OnCreate<#= className #>");
 			OnCreate<#= className #>(<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
@@ -127,6 +135,8 @@ namespace <#= classNamespace #>
 			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
+			Log.LogDebug("Post", "<#= className #>/OnCreate<#= className #>");
+			Log.LogDebug("Pre", "<#= className #>/ApplyChange/Create");
 			ApplyChange(new <#= className #>Created(Rsn<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
@@ -134,6 +144,8 @@ namespace <#= classNamespace #>
 			#>, <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>));
+			Log.LogDebug("Post", "<#= className #>/ApplyChange");
+			Log.LogDebug("Pre", "<#= className #>/OnCreated<#= className #>");
 			OnCreated<#= className #>(<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
@@ -141,6 +153,8 @@ namespace <#= classNamespace #>
 			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
+			Log.LogDebug("Post", "<#= className #>/OnCreated<#= className #>");
+			Log.LogDebug("Exited", "<#= className #>/Create<#= className #>");
 		}
 
 		partial void OnCreate<#= className #>(<#
@@ -182,6 +196,8 @@ namespace <#= classNamespace #>
 		}
 #>)
 		{
+			Log.LogDebug("Entered", "<#= className #>/Update<#= className #>");
+			Log.LogDebug("Pre", "<#= className #>/OnUpdate<#= className #>");
 			OnUpdate<#= className #>(<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
@@ -189,6 +205,8 @@ namespace <#= classNamespace #>
 			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
+			Log.LogDebug("Post", "<#= className #>/OnUpdate<#= className #>");
+			Log.LogDebug("Pre", "<#= className #>/ApplyChange/Update");
 			ApplyChange(new <#= className #>Updated(Rsn<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
@@ -196,6 +214,8 @@ namespace <#= classNamespace #>
 			#>, <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>));
+			Log.LogDebug("Post", "<#= className #>/ApplyChange");
+			Log.LogDebug("Pre", "<#= className #>/OnUpdated<#= className #>");
 			OnUpdated<#= className #>(<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
@@ -203,6 +223,8 @@ namespace <#= classNamespace #>
 			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
+			Log.LogDebug("Post", "<#= className #>/OnUpdated<#= className #>");
+			Log.LogDebug("Exited", "<#= className #>/Update<#= className #>");
 		}
 
 		partial void OnUpdate<#= className #>(<#
@@ -238,9 +260,17 @@ namespace <#= classNamespace #>
 		/// </summary>
 		public virtual void Delete<#= className #>()
 		{
+			Log.LogDebug("Entered", "<#= className #>/Delete<#= className #>");
+			Log.LogDebug("Pre", "<#= className #>/OnDelete<#= className #>");
 			OnDelete<#= className #>();
+			Log.LogDebug("Post", "<#= className #>/OnDelete<#= className #>");
+			Log.LogDebug("Pre", "<#= className #>/ApplyChange/Delete");
 			ApplyChange(new <#= className #>Deleted(Rsn));
+			Log.LogDebug("Post", "<#= className #>/ApplyChange");
+			Log.LogDebug("Pre", "<#= className #>/OnDeleted<#= className #>");
 			OnDeleted<#= className #>();
+			Log.LogDebug("Post", "<#= className #>/OnDeleted<#= className #>");
+			Log.LogDebug("Exited", "<#= className #>/Delete<#= className #>");
 		}
 
 		partial void OnDelete<#= className #>();
