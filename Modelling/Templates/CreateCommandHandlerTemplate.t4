@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Domain;
+using Cqrs.Logging;
 
 namespace <#= classNamespace #>.Commands.Handlers
 {
@@ -39,10 +40,13 @@ namespace <#= classNamespace #>.Commands.Handlers
 
 		protected IServiceLocator ServiceLocator { get; private set; }
 
-		public Create<#= className #>CommandHandler(IUnitOfWork<<#= authenticationTokenType #>> unitOfWork, IServiceLocator serviceLocator)
+		protected ILog Log { get; private set; }
+
+		public Create<#= className #>CommandHandler(IUnitOfWork<<#= authenticationTokenType #>> unitOfWork, IServiceLocator serviceLocator, ILog log)
 		{
 			UnitOfWork = unitOfWork;
 			ServiceLocator = serviceLocator;
+			Log = log;
 		}
 
 		#region Implementation of ICommandHandler<in Create<#= className #>>
@@ -52,7 +56,7 @@ namespace <#= classNamespace #>.Commands.Handlers
 			<#= className #> item = null;
 			OnCreate<#= className #>(command, ref item);
 			if (item == null)
-				item = new <#= className #>(ServiceLocator, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
+				item = new <#= className #>(ServiceLocator, Log, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
 			item.Create<#= className #>(<#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
 		for (int i = 0; i < collectionProperties.Count; i++)
