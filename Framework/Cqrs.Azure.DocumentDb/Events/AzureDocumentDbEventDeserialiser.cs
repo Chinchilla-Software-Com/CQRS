@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Cqrs.Events;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -19,7 +18,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 	{
 		public IEvent<TAuthenticationToken> Deserialise(EventData eventData)
 		{
-			return (IEvent<TAuthenticationToken>)JsonConvert.DeserializeObject(new UTF8Encoding().GetString(eventData.Data), Type.GetType(eventData.EventType));
+			return (IEvent<TAuthenticationToken>)JsonConvert.DeserializeObject((string)eventData.Data, Type.GetType(eventData.EventType));
 		}
 
 		protected virtual JsonSerializerSettings GetSerialisationSettings()

@@ -4,7 +4,7 @@ namespace Cqrs.Events
 {
 	public class EventData
 	{
-		public byte[] Data { get; set; }
+		public object Data { get; set; }
 
 		public Guid EventId { get; set; }
 

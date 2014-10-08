@@ -36,19 +36,18 @@ namespace Cqrs.Azure.DocumentDb.Events
 		{
 			using (DocumentClient client = EventStoreConnectionHelper.GetEventStoreConnection())
 			{
-				var database = new Database { Id = EventStoreConnectionHelper.GetEventStoreConnectionLogStreamName() };
-				database = await client.CreateDatabaseAsync(database);
-
-				var collection = new DocumentCollection { Id = "CqrsEventStore" };
-				collection = await client.CreateDocumentCollectionAsync(database.SelfLink, collection);
+				Database database = CreateOrReadDatabase(client, EventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()).Result;
+				DocumentCollection collection = CreateOrReadCollection(client, database, "CqrsEventStore").Result;
 
 				IOrderedQueryable<EventData> query = client.CreateDocumentQuery<EventData>(collection.SelfLink);
 				string streamName = string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, aggregateId);
 
-				IOrderedQueryable<EventData> results = query.Where(x => x.AggregateId == streamName)
-					.OrderByDescending(x => x.EventId);
+				IEnumerable<EventData> results = query.Where(x => x.AggregateId == streamName);
 
-				return results.Select(EventDeserialiser.Deserialise);
+				return results
+					.ToList()
+					.OrderByDescending(x => x.EventId)
+					.Select(EventDeserialiser.Deserialise);
 			}
 		}
 
@@ -56,14 +55,29 @@ namespace Cqrs.Azure.DocumentDb.Events
 		{
 			using (DocumentClient client = EventStoreConnectionHelper.GetEventStoreConnection())
 			{
-				var database = new Database {Id = EventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()};
-				database = await client.CreateDatabaseAsync(database);
-
-				var collection = new DocumentCollection {Id =  "CqrsEventStore"};
-				collection = await client.CreateDocumentCollectionAsync(database.SelfLink, collection);
+				Database database = CreateOrReadDatabase(client, EventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()).Result;
+				DocumentCollection collection = CreateOrReadCollection(client, database, "CqrsEventStore").Result;
 
 				await client.CreateDocumentAsync(collection.SelfLink, eventData);
 			}
+		}
+
+		protected async Task<Database> CreateOrReadDatabase(DocumentClient client, string databaseName)
+		{
+			IEnumerable<Database> query = client.CreateDatabaseQuery()
+				.Where(database => database.Id == databaseName)
+				.AsEnumerable();
+			Database result = query.SingleOrDefault();
+			return result ?? await client.CreateDatabaseAsync(new Database { Id = databaseName });
+		}
+
+		protected async Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName)
+		{
+			IEnumerable<DocumentCollection> query = client.CreateDocumentCollectionQuery(database.SelfLink)
+				.Where(documentCollection => documentCollection.Id == collectionName)
+				.AsEnumerable();
+			DocumentCollection result = query.SingleOrDefault();
+			return result ?? await client.CreateDocumentCollectionAsync(database.SelfLink, new DocumentCollection { Id = collectionName });
 		}
 	}
 }

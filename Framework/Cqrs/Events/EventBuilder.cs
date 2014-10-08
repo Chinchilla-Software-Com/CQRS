@@ -13,7 +13,7 @@ namespace Cqrs.Events
 			{
 				EventId = Guid.NewGuid(),
 				EventType = type,
-				Data = SerialiseEventData(eventData)
+				Data = SerialiseEventDataToString(eventData)
 			};
 		}
 
