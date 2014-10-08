@@ -34,7 +34,7 @@ namespace <#= classNamespace #>.Commands.Handlers
 	// Class and Attributes
 #>
 	<#= GetGeneratedCodeAttribute() #>
-	public <#= GetAbstract(this.Element) #> partial class Create<#= className #>CommandHandler : ICommandHandler<<#= authenticationTokenType #>, Create<#= className #>>
+	public <#= GetAbstract(this.Element) #> partial class Create<#= className #>CommandHandler : ICommandHandler<<#= authenticationTokenType #>, Create<#= className #>Command>
 	{
 		protected IUnitOfWork<<#= authenticationTokenType #>> UnitOfWork { get; private set; }
 
@@ -51,7 +51,7 @@ namespace <#= classNamespace #>.Commands.Handlers
 
 		#region Implementation of ICommandHandler<in Create<#= className #>>
 
-		public void Handle(Create<#= className #> command)
+		public void Handle(Create<#= className #>Command command)
 		{
 			<#= className #> item = null;
 			OnCreate<#= className #>(command, ref item);
@@ -76,17 +76,17 @@ namespace <#= classNamespace #>.Commands.Handlers
 
 		#endregion
 
-		partial void OnCreate<#= className #>(Create<#= className #> command, ref <#= className #> item);
+		partial void OnCreate<#= className #>(Create<#= className #>Command command, ref <#= className #> item);
 
-		partial void OnCreated<#= className #>(Create<#= className #> command, <#= className #> item);
+		partial void OnCreated<#= className #>(Create<#= className #>Command command, <#= className #> item);
 
-		partial void OnAddToUnitOfWork(Create<#= className #> command, <#= className #> item);
+		partial void OnAddToUnitOfWork(Create<#= className #>Command command, <#= className #> item);
 
-		partial void OnAddedToUnitOfWork(Create<#= className #> command, <#= className #> item);
+		partial void OnAddedToUnitOfWork(Create<#= className #>Command command, <#= className #> item);
 
-		partial void OnCommit(Create<#= className #> command, <#= className #> item);
+		partial void OnCommit(Create<#= className #>Command command, <#= className #> item);
 
-		partial void OnCommited(Create<#= className #> command, <#= className #> item);
+		partial void OnCommited(Create<#= className #>Command command, <#= className #> item);
 	}
 }
 <#+
