@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
@@ -28,42 +29,41 @@ namespace Cqrs.Azure.DocumentDb.Factories
 
 		protected virtual DocumentClient GetClient()
 		{
-			return GetClientAsync().Result;
-		}
-
-		protected virtual IOrderedQueryable<TEntity> GetCollection<TEntity>(DocumentClient client, Database database)
-		{
-			return GetCollectionAsync<TEntity>(client, database).Result;
-		}
-
-		protected virtual Database GetDatabase(DocumentClient client)
-		{
-			return GetDatabaseAsync(client).Result;
-		}
-
-		protected async Task<DocumentClient> GetClientAsync()
-		{
 			DocumentClient client = AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbConnectionString();
 
 			return client;
 		}
 
-		protected async Task<Database> GetDatabaseAsync(DocumentClient client)
+		protected virtual IOrderedQueryable<TEntity> GetCollection<TEntity>(DocumentClient client, Database database)
 		{
-			var database = new Database { Id = AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbDatabaseName() };
-			database = await client.CreateDatabaseAsync(database);
-
-			return database;
-		}
-
-		protected async Task<IOrderedQueryable<TEntity>> GetCollectionAsync<TEntity>(DocumentClient client, Database database)
-		{
-			var collection = new DocumentCollection { Id = typeof(TEntity).FullName };
-			collection = await client.CreateDocumentCollectionAsync(database.SelfLink, collection);
-
+			var collection = CreateOrReadCollection(client, database, typeof(TEntity).FullName).Result;
 			IOrderedQueryable<TEntity> query = client.CreateDocumentQuery<TEntity>(collection.SelfLink);
 
 			return query;
 		}
+
+		protected virtual Database GetDatabase(DocumentClient client)
+		{
+			return CreateOrReadDatabase(client, AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbDatabaseName()).Result;
+		}
+
+		protected async Task<Database> CreateOrReadDatabase(DocumentClient client, string databaseName)
+		{
+			IEnumerable<Database> query = client.CreateDatabaseQuery()
+				.Where(database => database.Id == databaseName)
+				.AsEnumerable();
+			Database result = query.SingleOrDefault();
+			return result ?? await client.CreateDatabaseAsync(new Database { Id = databaseName });
+		}
+
+		protected async Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName)
+		{
+			IEnumerable<DocumentCollection> query = client.CreateDocumentCollectionQuery(database.SelfLink)
+				.Where(documentCollection => documentCollection.Id == collectionName)
+				.AsEnumerable();
+			DocumentCollection result = query.SingleOrDefault();
+			return result ?? await client.CreateDocumentCollectionAsync(database.SelfLink, new DocumentCollection { Id = collectionName });
+		}
+
 	}
 }
