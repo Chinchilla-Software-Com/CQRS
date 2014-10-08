@@ -32,7 +32,7 @@ namespace <#= classNamespace #>.Commands.Handlers
 	// Class and Attributes
 #>
 	<#= GetGeneratedCodeAttribute() #>
-	public <#= GetAbstract(this.Element) #> partial class Delete<#= className #>CommandHandler : ICommandHandler<<#= authenticationTokenType #>, Delete<#= className #>>
+	public <#= GetAbstract(this.Element) #> partial class Delete<#= className #>CommandHandler : ICommandHandler<<#= authenticationTokenType #>, Delete<#= className #>Command>
 	{
 		protected IUnitOfWork<<#= authenticationTokenType #>> UnitOfWork { get; private set; }
 
@@ -41,9 +41,9 @@ namespace <#= classNamespace #>.Commands.Handlers
 			UnitOfWork = unitOfWork;
 		}
 
-		#region Implementation of ICommandHandler<in Delete<#= className #>>
+		#region Implementation of ICommandHandler<in Delete<#= className #>Command>
 
-		public void Handle(Delete<#= className #> command)
+		public void Handle(Delete<#= className #>Command command)
 		{
 			<#= className #> item = null;
 			OnDelete<#= className #>(command, ref item);
@@ -58,13 +58,13 @@ namespace <#= classNamespace #>.Commands.Handlers
 
 		#endregion
 
-		partial void OnDelete<#= className #>(Delete<#= className #> command, ref <#= className #> item);
+		partial void OnDelete<#= className #>(Delete<#= className #>Command command, ref <#= className #> item);
 
-		partial void OnDeleted<#= className #>(Delete<#= className #> command, <#= className #> item);
+		partial void OnDeleted<#= className #>(Delete<#= className #>Command command, <#= className #> item);
 
-		partial void OnCommit(Delete<#= className #> command, <#= className #> item);
+		partial void OnCommit(Delete<#= className #>Command command, <#= className #> item);
 
-		partial void OnCommited(Delete<#= className #> command, <#= className #> item);
+		partial void OnCommited(Delete<#= className #>Command command, <#= className #> item);
 	}
 }
 <#+

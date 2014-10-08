@@ -32,7 +32,7 @@ namespace <#= classNamespace #>.Commands.Handlers
 	// Class and Attributes
 #>
 	<#= GetGeneratedCodeAttribute() #>
-	public <#= GetAbstract(this.Element) #> partial class Update<#= className #>CommandHandler : ICommandHandler<<#= authenticationTokenType #>, Update<#= className #>>
+	public <#= GetAbstract(this.Element) #> partial class Update<#= className #>CommandHandler : ICommandHandler<<#= authenticationTokenType #>, Update<#= className #>Command>
 	{
 		protected IUnitOfWork<<#= authenticationTokenType #>> UnitOfWork { get; private set; }
 
@@ -41,9 +41,9 @@ namespace <#= classNamespace #>.Commands.Handlers
 			UnitOfWork = unitOfWork;
 		}
 
-		#region Implementation of ICommandHandler<in Update<#= className #>>
+		#region Implementation of ICommandHandler<in Update<#= className #>Command>
 
-		public void Handle(Update<#= className #> command)
+		public void Handle(Update<#= className #>Command command)
 		{
 			<#= className #> item = null;
 			OnUpdate<#= className #>(command, ref item);
@@ -65,13 +65,13 @@ namespace <#= classNamespace #>.Commands.Handlers
 
 		#endregion
 
-		partial void OnUpdate<#= className #>(Update<#= className #> command, ref <#= className #> item);
+		partial void OnUpdate<#= className #>(Update<#= className #>Command command, ref <#= className #> item);
 
-		partial void OnUpdated<#= className #>(Update<#= className #> command, <#= className #> item);
+		partial void OnUpdated<#= className #>(Update<#= className #>Command command, <#= className #> item);
 
-		partial void OnCommit(Update<#= className #> command, <#= className #> item);
+		partial void OnCommit(Update<#= className #>Command command, <#= className #> item);
 
-		partial void OnCommited(Update<#= className #> command, <#= className #> item);
+		partial void OnCommited(Update<#= className #>Command command, <#= className #> item);
 	}
 }
 <#+
