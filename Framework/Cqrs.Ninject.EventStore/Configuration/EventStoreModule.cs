@@ -49,10 +49,6 @@ namespace Cqrs.Ninject.Configuration
 		/// </summary>
 		public virtual void RegisterCqrsRequirements()
 		{
-			Bind<IStoreLastEventProcessed>()
-				.To<FileBasedLastEventProcessedStore>()
-				.InSingletonScope();
-
 			Bind<IEventStoreConnectionHelper>()
 				.To<EventStoreConnectionHelper<TAuthenticationToken>>()
 				.InSingletonScope();

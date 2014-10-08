@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cqrs.Configuration;
 using Ninject;
+using Ninject.Modules;
 using Ninject.Parameters;
 
 namespace Cqrs.Ninject.Configuration
@@ -11,6 +13,8 @@ namespace Cqrs.Ninject.Configuration
 		public static IServiceLocator Current { get; protected set; }
 
 		protected IKernel Kernel { get; private set; }
+
+		public static IList<INinjectModule> ModulesToLoad = new List<INinjectModule>();
 
 		public NinjectDependencyResolver(IKernel kernel)
 		{
@@ -27,9 +31,26 @@ namespace Cqrs.Ninject.Configuration
 		/// <remarks>
 		/// this exists to the static constructor can be triggered.
 		/// </remarks>
-		public static void Start(IKernel kernel = null)
+		public static void Start(IKernel kernel = null, bool prepareProvidedKernel = false)
 		{
-			Current = new NinjectDependencyResolver(kernel ?? new StandardKernel());
+			if (kernel == null)
+			{
+				kernel = new StandardKernel();
+				PrepareKernel(kernel);
+			}
+
+			if (prepareProvidedKernel)
+				PrepareKernel(kernel);
+
+			Current = new NinjectDependencyResolver(kernel);
+		}
+
+		public static void PrepareKernel(IKernel kernel)
+		{
+			kernel.Load
+			(
+				ModulesToLoad
+			);
 		}
 
 		public T GetService<T>()

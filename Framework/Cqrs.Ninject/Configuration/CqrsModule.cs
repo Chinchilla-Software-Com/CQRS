@@ -104,6 +104,10 @@ namespace Cqrs.Ninject.Configuration
 				.To<EventStoreEventPublisher<ISingleSignOnWithUserRsnToken>>()
 				.InSingletonScope();
 			*/
+
+			Bind<IStoreLastEventProcessed>()
+				.To<FileBasedLastEventProcessedStore>()
+				.InSingletonScope();
 		}
 
 		protected T Resolve<T>()
