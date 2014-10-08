@@ -20,7 +20,7 @@ string className = ClassifierName(this.Element);
 string baseClass = GetBaseClass(this.Element);
 if (!string.IsNullOrWhiteSpace(baseClass))
 	baseClass = baseClass + ", ";
-baseClass = baseClass + "ICommandHandler<" + authenticationTokenType + ", " + className + ">";
+baseClass = baseClass + "ICommandHandler<" + authenticationTokenType + ", " + className + "Command>";
 
 // using statements
 #>
@@ -28,7 +28,9 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using Cqrs.Commands;
+using Cqrs.Configuration;
 using Cqrs.Domain;
+using Cqrs.Logging;
 
 namespace <#= classNamespace #>.Handlers
 {
@@ -65,14 +67,14 @@ namespace <#= classNamespace #>.Handlers
 
 		#region Implementation of ICommandHandler<in <#= className #>>
 
-		public void Handle(<#= className #> command)
+		public void Handle(<#= className #>Command command)
 		{
 			OnHandle(command);
 		}
 
 		#endregion
 
-		partial void OnHandle(<#= className #> command);
+		partial void OnHandle(<#= className #>Command command);
 
 <#
 		IList<IOperation> collectionMethods = GetMethodList(this.Element);
