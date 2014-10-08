@@ -84,7 +84,7 @@ namespace <#= classNamespace #>.Services
 			Entities.<#= className #>Entity item = serviceRequest.Data;
 			item.Rsn = Guid.NewGuid();
 
-			var command = new Create<#= className #>(item.Rsn<#
+			var command = new Create<#= className #>Command(item.Rsn<#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
 		// Properties
 		for(int i = 0; i < collectionProperties.Count; i++)
@@ -101,9 +101,9 @@ namespace <#= classNamespace #>.Services
 			return new ServiceResponseWithResultData<Entities.<#= className #>Entity>(item);
 		}
 
-		partial void OnCreate<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, Create<#= className #> command);
+		partial void OnCreate<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, Create<#= className #>Command command);
 
-		partial void OnCreated<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, Create<#= className #> command);
+		partial void OnCreated<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, Create<#= className #>Command command);
 
 <#
 		}
@@ -131,7 +131,7 @@ namespace <#= classNamespace #>.Services
 			if (locatedItem == null)
 				return new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = ServiceResponseStateType.FailedValidation };
 
-			var command = new Update<#= className #>(item.Rsn<#
+			var command = new Update<#= className #>Command(item.Rsn<#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
 		// Properties
 		for(int i = 0; i < collectionProperties.Count; i++)
@@ -154,9 +154,9 @@ namespace <#= classNamespace #>.Services
 			return new ServiceResponseWithResultData<Entities.<#= className #>Entity>(item);
 		}
 
-		partial void OnUpdate<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, ref Update<#= className #> command, Entities.<#= className #>Entity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
+		partial void OnUpdate<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, ref Update<#= className #>Command command, Entities.<#= className #>Entity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
 
-		partial void OnUpdated<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, ref Update<#= className #> command, Entities.<#= className #>Entity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
+		partial void OnUpdated<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, ref Update<#= className #>Command command, Entities.<#= className #>Entity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
 
 <#
 		}
@@ -187,7 +187,7 @@ namespace <#= classNamespace #>.Services
 			if (locatedItem.IsLogicallyDeleted)
 				return new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = ServiceResponseStateType.FailedValidation };
 
-			var command = new Delete<#= className #>(item.Rsn);
+			var command = new Delete<#= className #>Command(item.Rsn);
 			ServiceResponseStateType? serviceResponseStateType = null;
 			OnDelete<#= className #>(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
 			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
@@ -202,9 +202,9 @@ namespace <#= classNamespace #>.Services
 			return new ServiceResponse();
 		}
 
-		partial void OnDelete<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, ref Delete<#= className #> command, Entities.<#= className #>Entity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
+		partial void OnDelete<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, ref Delete<#= className #>Command command, Entities.<#= className #>Entity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
 
-		partial void OnDeleted<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, ref Delete<#= className #> command, Entities.<#= className #>Entity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
+		partial void OnDeleted<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, ref Delete<#= className #>Command command, Entities.<#= className #>Entity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
 <#
 		}
 #>
