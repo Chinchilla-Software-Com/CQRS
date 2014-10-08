@@ -15,7 +15,7 @@ namespace Cqrs.Azure.DocumentDb.Repositories.Authentication
 {
 	[Serializable]
 	[DataContract]
-	public class SingleSignOnToken : ISingleSignOnToken
+	public class SingleSignOnToken : Entities.Entity, ISingleSignOnToken
 	{
 		[Required]
 		[DataMember]
