@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cqrs.Bus;
 using Cqrs.Events;
 using Cqrs.Messages;
 using EventStore.ClientAPI;

@@ -1,4 +1,5 @@
 ﻿using System;
+using Cqrs.Bus;
 using EventStore.ClientAPI;
 
 namespace Cqrs.EventStore.Bus
