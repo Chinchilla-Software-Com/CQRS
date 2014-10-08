@@ -36,13 +36,13 @@ namespace Cqrs.Ninject.Configuration
 			if (kernel == null)
 			{
 				kernel = new StandardKernel();
-				PrepareKernel(kernel);
+				prepareProvidedKernel = true;
 			}
+
+			Current = new NinjectDependencyResolver(kernel);
 
 			if (prepareProvidedKernel)
 				PrepareKernel(kernel);
-
-			Current = new NinjectDependencyResolver(kernel);
 		}
 
 		public static void PrepareKernel(IKernel kernel)
