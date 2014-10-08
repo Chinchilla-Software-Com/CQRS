@@ -40,9 +40,15 @@ namespace <#= classNamespace #>.Handlers
 	{
 		protected IUnitOfWork<<#= authenticationTokenType #>> UnitOfWork { get; private set; }
 
-		public <#= className #>CommandHandler(IUnitOfWork<<#= authenticationTokenType #>> unitOfWork)
+		protected IServiceLocator ServiceLocator { get; private set; }
+
+		protected ILog Log { get; private set; }
+
+		public <#= className #>CommandHandler(IUnitOfWork<<#= authenticationTokenType #>> unitOfWork, IServiceLocator serviceLocator, ILog log)
 		{
 			UnitOfWork = unitOfWork;
+			ServiceLocator = serviceLocator;
+			Log = log;
 		}
 
 <#
