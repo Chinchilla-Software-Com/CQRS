@@ -1,20 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C4A16144-2266-49FF-BE2A-35C49B659E1D}</ProjectGuid>
+    <ProjectGuid>{FDB4BFE8-4B7F-430D-9D6B-52B0C20D75C5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cqrs.Azure.DocumentDb</RootNamespace>
-    <AssemblyName>Cqrs.Azure.DocumentDb</AssemblyName>
+    <RootNamespace>Cqrs.Ninject.Azure.DocumentDb</RootNamespace>
+    <AssemblyName>Cqrs.Ninject.Azure.DocumentDb</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,7 +22,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,44 +30,36 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Azure.Documents.Client">
-      <HintPath>..\..\packages\Microsoft.Azure.Documents.Client.0.9.0-preview\lib\net40\Microsoft.Azure.Documents.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.2.0.3\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.5.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Ninject">
+      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStores\AzureDocumentDbDataStore.cs" />
-    <Compile Include="Events\AzureDocumentDbEventDeserialiser.cs" />
-    <Compile Include="Events\AzureDocumentDbEventStore.cs" />
-    <Compile Include="Events\AzureDocumentDbEventBuilder.cs" />
-    <Compile Include="Events\AzureDocumentDbEventStoreConnectionHelper.cs" />
-    <Compile Include="Events\IAzureDocumentDbEventStoreConnectionHelper.cs" />
-    <Compile Include="Factories\AzureDocumentDbDataStoreFactory.cs" />
-    <Compile Include="Factories\AzureDocumentDbDataStoreConnectionStringFactory.cs" />
-    <Compile Include="Factories\IAzureDocumentDbDataStoreConnectionStringFactory.cs" />
+    <Compile Include="Configuration\AzureDocumentDbEventStoreModule.cs" />
+    <Compile Include="Configuration\AzureDocumentDbModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cqrs.Azure.DocumentDb\Cqrs.Azure.DocumentDb.csproj">
+      <Project>{c4a16144-2266-49ff-be2a-35c49b659e1d}</Project>
+      <Name>Cqrs.Azure.DocumentDb</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cqrs\Cqrs.csproj">
-      <Project>{DAFD2A8A-D6B0-4433-8DDF-B98460C64EC6}</Project>
+      <Project>{dafd2a8a-d6b0-4433-8ddf-b98460c64ec6}</Project>
       <Name>Cqrs</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Cqrs.Azure.DocumentDb.nuspec.preview">
+    <None Include="Cqrs.Ninject.Azure.DocumentDb.preview">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />

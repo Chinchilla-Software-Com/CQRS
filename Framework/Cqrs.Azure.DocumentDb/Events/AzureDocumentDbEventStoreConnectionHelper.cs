@@ -4,7 +4,7 @@ using Microsoft.WindowsAzure;
 
 namespace Cqrs.Azure.DocumentDb.Events
 {
-	public class EventStoreConnectionHelper : IEventStoreConnectionHelper
+	public class AzureDocumentDbEventStoreConnectionHelper : IAzureDocumentDbEventStoreConnectionHelper
 	{
 		public virtual DocumentClient GetEventStoreConnection()
 		{

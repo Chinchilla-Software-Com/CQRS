@@ -57,7 +57,8 @@ namespace Cqrs.Bus
 			@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 
 			List<Action<IMessage>> handlers; 
-			if (!Routes.TryGetValue(@event.GetType(), out handlers)) return;
+			if (!Routes.TryGetValue(@event.GetType(), out handlers))
+				return;
 			foreach(Action<IMessage> handler in handlers)
 				handler(@event);
 		}

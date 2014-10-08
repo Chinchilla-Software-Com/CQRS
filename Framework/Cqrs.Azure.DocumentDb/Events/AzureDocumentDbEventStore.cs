@@ -19,12 +19,12 @@ namespace Cqrs.Azure.DocumentDb.Events
 {
 	public class AzureDocumentDbEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken>
 	{
-		protected IEventStoreConnectionHelper EventStoreConnectionHelper { get; set; }
+		protected IAzureDocumentDbEventStoreConnectionHelper AzureDocumentDbEventStoreConnectionHelper { get; set; }
 
-		public AzureDocumentDbEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, IEventStoreConnectionHelper eventStoreConnectionHelper)
+		public AzureDocumentDbEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, IAzureDocumentDbEventStoreConnectionHelper azureDocumentDbEventStoreConnectionHelper)
 			: base(eventBuilder, eventDeserialiser)
 		{
-			EventStoreConnectionHelper = eventStoreConnectionHelper;
+			AzureDocumentDbEventStoreConnectionHelper = azureDocumentDbEventStoreConnectionHelper;
 		}
 
 		public override IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
@@ -34,9 +34,9 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 		protected async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
-			using (DocumentClient client = EventStoreConnectionHelper.GetEventStoreConnection())
+			using (DocumentClient client = AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnection())
 			{
-				Database database = CreateOrReadDatabase(client, EventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()).Result;
+				Database database = CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()).Result;
 				DocumentCollection collection = CreateOrReadCollection(client, database, "CqrsEventStore").Result;
 
 				IOrderedQueryable<EventData> query = client.CreateDocumentQuery<EventData>(collection.SelfLink);
@@ -53,9 +53,9 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 		protected override async void PersitEvent(EventData eventData)
 		{
-			using (DocumentClient client = EventStoreConnectionHelper.GetEventStoreConnection())
+			using (DocumentClient client = AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnection())
 			{
-				Database database = CreateOrReadDatabase(client, EventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()).Result;
+				Database database = CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()).Result;
 				DocumentCollection collection = CreateOrReadCollection(client, database, "CqrsEventStore").Result;
 
 				await client.CreateDocumentAsync(collection.SelfLink, eventData);
