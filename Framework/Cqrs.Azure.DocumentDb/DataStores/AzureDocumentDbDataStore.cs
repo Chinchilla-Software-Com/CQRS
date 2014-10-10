@@ -25,13 +25,16 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		protected Database AzureDocumentDbDatabase { get; private set; }
 
-		protected IOrderedQueryable<TData> AzureDocumentDbCollection { get; private set; }
+		protected DocumentCollection AzureDocumentDbCollection { get; private set; }
 
-		public AzureDocumentDbDataStore(DocumentClient azureDocumentDbClient, Database azureDocumentDbDatabase, IOrderedQueryable<TData> azureDocumentDbCollection)
+		protected IOrderedQueryable<TData> AzureDocumentDbQuery { get; private set; }
+
+		public AzureDocumentDbDataStore(DocumentClient azureDocumentDbClient, Database azureDocumentDbDatabase, DocumentCollection azureDocumentDbCollection, IOrderedQueryable<TData> azureDocumentDbQuery)
 		{
 			AzureDocumentDbClient = azureDocumentDbClient;
 			AzureDocumentDbDatabase = azureDocumentDbDatabase;
 			AzureDocumentDbCollection = azureDocumentDbCollection;
+			AzureDocumentDbQuery = azureDocumentDbQuery;
 		}
 
 		#region Implementation of IEnumerable
@@ -45,7 +48,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// <filterpriority>1</filterpriority>
 		public IEnumerator<TData> GetEnumerator()
 		{
-			return AzureDocumentDbCollection.GetEnumerator();
+			return AzureDocumentDbQuery.GetEnumerator();
 		}
 
 		/// <summary>
@@ -72,7 +75,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// </returns>
 		public Expression Expression
 		{
-			get { return AzureDocumentDbCollection.AsQueryable().Expression; }
+			get { return AzureDocumentDbQuery.AsQueryable().Expression; }
 		}
 
 		/// <summary>
@@ -83,7 +86,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// </returns>
 		public Type ElementType
 		{
-			get { return AzureDocumentDbCollection.AsQueryable().ElementType; }
+			get { return AzureDocumentDbQuery.AsQueryable().ElementType; }
 		}
 
 		/// <summary>
@@ -94,7 +97,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// </returns>
 		public IQueryProvider Provider
 		{
-			get { return AzureDocumentDbCollection.AsQueryable().Provider; }
+			get { return AzureDocumentDbQuery.AsQueryable().Provider; }
 		}
 
 		#endregion
@@ -103,7 +106,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		public void Add(TData data)
 		{
-			AzureDocumentDbClient.CreateDocumentAsync(AzureDocumentDbDatabase.SelfLink, data);
+			ResourceResponse<Document> result = AzureDocumentDbClient.CreateDocumentAsync((AzureDocumentDbCollection).SelfLink, data).Result;
 		}
 
 		public void Add(IEnumerable<TData> data)
@@ -122,11 +125,12 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		public void RemoveAll()
 		{
-			AzureDocumentDbClient.DeleteDocumentCollectionAsync(AzureDocumentDbDatabase.SelfLink, new RequestOptions());
+			ResourceResponse<DocumentCollection> result = AzureDocumentDbClient.DeleteDocumentCollectionAsync(AzureDocumentDbCollection.SelfLink, new RequestOptions()).Result;
 		}
 
 		public void Update(TData data)
 		{
+			ResourceResponse<Document> result = AzureDocumentDbClient.ReplaceDocumentAsync(AzureDocumentDbCollection.SelfLink, data).Result;
 		}
 
 		#endregion

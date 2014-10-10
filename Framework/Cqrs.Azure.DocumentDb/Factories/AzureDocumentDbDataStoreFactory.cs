@@ -34,9 +34,15 @@ namespace Cqrs.Azure.DocumentDb.Factories
 			return client;
 		}
 
-		protected virtual IOrderedQueryable<TEntity> GetCollection<TEntity>(DocumentClient client, Database database)
+		protected virtual DocumentCollection GetCollection<TEntity>(DocumentClient client, Database database)
 		{
-			var collection = CreateOrReadCollection(client, database, typeof(TEntity).FullName).Result;
+			DocumentCollection collection = CreateOrReadCollection(client, database, typeof(TEntity).FullName).Result;
+
+			return collection;
+		}
+
+		protected virtual IOrderedQueryable<TEntity> GetQuery<TEntity>(DocumentClient client, DocumentCollection collection)
+		{
 			IOrderedQueryable<TEntity> query = client.CreateDocumentQuery<TEntity>(collection.SelfLink);
 
 			return query;

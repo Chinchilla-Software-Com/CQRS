@@ -58,11 +58,12 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 
 			DocumentClient client = GetClient();
 			Database database = GetDatabase(client);
-			IOrderedQueryable<<#= moduleName #>.Entities.<#= elementName #>Entity> collection = GetCollection<<#= moduleName #>.Entities.<#= elementName #>Entity>(client, database);
+			DocumentCollection collection = GetCollection<<#= moduleName #>.Entities.<#= elementName #>Entity>(client, database);
+			IOrderedQueryable<<#= moduleName #>.Entities.<#= elementName #>Entity> query = GetQuery<<#= moduleName #>.Entities.<#= elementName #>Entity>(client, collection);
 
-			OnObtained<#= elementName #>Collection(ref client, ref database, ref collection);
-			VerifyIndexes(client, database, collection);
-			return new AzureDocumentDbDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity>(client, database, collection);
+			OnObtained<#= elementName #>Collection(ref client, ref database, ref collection, ref query);
+			VerifyIndexes(client, database, collection, query);
+			return new AzureDocumentDbDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity>(client, database, collection, query);
 		}
 
 <#
@@ -78,9 +79,9 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 #>
 		partial void OnObtain<#= elementName #>Collection();
 
-		partial void OnObtained<#= elementName #>Collection(ref DocumentClient client, ref Database database, ref IOrderedQueryable<<#= moduleName #>.Entities.<#= elementName #>Entity> collection);
+		partial void OnObtained<#= elementName #>Collection(ref DocumentClient client, ref Database database, ref DocumentCollection collection, ref IOrderedQueryable<<#= moduleName #>.Entities.<#= elementName #>Entity> query);
 
-		partial void VerifyIndexes(DocumentClient client, Database database, IOrderedQueryable<<#= moduleName #>.Entities.<#= elementName #>Entity> collection);
+		partial void VerifyIndexes(DocumentClient client, Database database, DocumentCollection collection, IOrderedQueryable<<#= moduleName #>.Entities.<#= elementName #>Entity> query);
 
 <#
 		}
