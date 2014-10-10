@@ -72,7 +72,7 @@ namespace Cqrs.Repositories.Queries
 
 			return (leftHandQueryable ?? DataStore).Where
 			(
-				entity => entity.IsLogicallyDeleted == false
+				entity => !entity.IsLogicallyDeleted
 			);
 		}
 
