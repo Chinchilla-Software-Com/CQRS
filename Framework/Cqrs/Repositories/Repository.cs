@@ -37,7 +37,9 @@ namespace Cqrs.Repositories
 
 		public virtual ISingleResultQuery<TQueryStrategy, TData> Retrieve(ISingleResultQuery<TQueryStrategy, TData> singleResultQuery, bool throwExceptionWhenNoQueryResults = true)
 		{
-			IQueryable<TData> result = QueryBuilder.CreateQueryable(singleResultQuery);
+			IQueryable<TData> query = QueryBuilder.CreateQueryable(singleResultQuery);
+
+			IEnumerable<TData> result = query.AsEnumerable();
 
 			return new SingleResultQuery<TQueryStrategy, TData>
 			{
