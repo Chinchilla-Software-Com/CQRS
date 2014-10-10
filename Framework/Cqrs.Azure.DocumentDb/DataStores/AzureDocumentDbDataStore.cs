@@ -15,6 +15,7 @@ using Cqrs.DataStores;
 using Cqrs.Entities;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
 
 namespace Cqrs.Azure.DocumentDb.DataStores
 {
@@ -130,7 +131,11 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		public void Update(TData data)
 		{
-			ResourceResponse<Document> result = AzureDocumentDbClient.ReplaceDocumentAsync(AzureDocumentDbCollection.SelfLink, data).Result;
+			Document documentToUpdate = AzureDocumentDbClient.CreateDocumentQuery(AzureDocumentDbCollection.DocumentsLink)
+					.Where(d => d.Id == data.Rsn.ToString())
+					.AsEnumerable()
+					.Single();
+			ResourceResponse<Document> result = AzureDocumentDbClient.ReplaceDocumentAsync(documentToUpdate.SelfLink, data).Result;
 		}
 
 		#endregion
