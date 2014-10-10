@@ -38,6 +38,8 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 <# if (entityPersistenceTechnology == "MongoDb") { #>
 using Cqrs.Mongo.Entities;
+<# } else if (entityPersistenceTechnology == "AzureDocumentDb") { #>
+using Cqrs.Azure.DocumentDb.Entities;
 <# } #>
 
 namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
