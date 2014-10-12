@@ -7,6 +7,7 @@ using Cqrs.Commands;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
+using Cqrs.Logging;
 using Cqrs.Repositories.Queries;
 using Ninject.Modules;
 using Ninject.Parameters;
@@ -31,10 +32,8 @@ namespace Cqrs.Ninject.Configuration
 			RegisterQueryBuilders();
 			RegisterServices();
 			RegisterCqrsRequirements();
-
-			Bind<IAutomapHelper>()
-				.To<AutomapHelper>()
-				.InSingletonScope();
+			RegisterAutomapperComponents();
+			RegisterLoggerComponents();
 		}
 
 		#endregion
@@ -46,6 +45,26 @@ namespace Cqrs.Ninject.Configuration
 		{
 			Bind<IQueryFactory>()
 				.To<QueryFactory>()
+				.InSingletonScope();
+		}
+
+		/// <summary>
+		/// Register the all components for the <see cref="ILog"/>
+		/// </summary>
+		public virtual void RegisterLoggerComponents()
+		{
+			Bind<ICorrolationIdHelper>()
+				.To<NullCorrolationIdHelper>()
+				.InSingletonScope();
+		}
+
+		/// <summary>
+		/// Register the all <see cref="IAutomapHelper"/>
+		/// </summary>
+		public virtual void RegisterAutomapperComponents()
+		{
+			Bind<IAutomapHelper>()
+				.To<AutomapHelper>()
 				.InSingletonScope();
 		}
 

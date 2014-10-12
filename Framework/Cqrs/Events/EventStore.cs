@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using Cqrs.Logging;
 
 namespace Cqrs.Events
 {
@@ -19,10 +20,13 @@ namespace Cqrs.Events
 
 		protected IEventDeserialiser<TAuthenticationToken> EventDeserialiser { get; set; }
 
-		public EventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser)
+		protected ILog Logger { get; private set; }
+
+		protected EventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILog logger)
 		{
 			EventBuilder = eventBuilder;
 			EventDeserialiser = eventDeserialiser;
+			Logger = logger;
 		}
 
 		public virtual void Save<T>(IEvent<TAuthenticationToken> @event)
@@ -32,10 +36,18 @@ namespace Cqrs.Events
 
 		public virtual void Save(IEvent<TAuthenticationToken> @event, Type aggregateRootType)
 		{
-			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
-			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id);
-			eventData.AggregateId = streamName;
-			PersitEvent(eventData);
+			Logger.LogDebug("Saving aggregate root event", string.Format("{0}\\Save", GetType().Name));
+			try
+			{
+				EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
+				string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id);
+				eventData.AggregateId = streamName;
+				PersitEvent(eventData);
+			}
+			finally
+			{
+				Logger.LogDebug("Saving aggregate root event... done", string.Format("{0}\\Save", GetType().Name));
+			}
 		}
 
 		public abstract IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1);

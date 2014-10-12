@@ -6,9 +6,8 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cqrs.Logging;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
@@ -22,54 +21,49 @@ namespace Cqrs.Azure.DocumentDb.Factories
 	{
 		protected IAzureDocumentDbDataStoreConnectionStringFactory AzureDocumentDbDataStoreConnectionStringFactory { get; private set; }
 
-		public AzureDocumentDbDataStoreFactory(IAzureDocumentDbDataStoreConnectionStringFactory azureDocumentDbDataStoreConnectionStringFactory)
+		protected IAzureDocumentDbHelper AzureDocumentDbHelper { get; private set; }
+
+		protected ILog Logger { get; private set; }
+
+		public AzureDocumentDbDataStoreFactory(IAzureDocumentDbDataStoreConnectionStringFactory azureDocumentDbDataStoreConnectionStringFactory, IAzureDocumentDbHelper azureDocumentDbHelper, ILog logger)
 		{
 			AzureDocumentDbDataStoreConnectionStringFactory = azureDocumentDbDataStoreConnectionStringFactory;
+			AzureDocumentDbHelper = azureDocumentDbHelper;
+			Logger = logger;
 		}
 
 		protected virtual DocumentClient GetClient()
 		{
-			DocumentClient client = AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbConnectionString();
+			DocumentClient client = AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbConnectionClient();
 
 			return client;
 		}
 
 		protected virtual DocumentCollection GetCollection<TEntity>(DocumentClient client, Database database)
 		{
-			DocumentCollection collection = CreateOrReadCollection(client, database, typeof(TEntity).FullName).Result;
+			DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, typeof(TEntity).FullName).Result;
 
 			return collection;
 		}
 
 		protected virtual IOrderedQueryable<TEntity> GetQuery<TEntity>(DocumentClient client, DocumentCollection collection)
 		{
-			IOrderedQueryable<TEntity> query = client.CreateDocumentQuery<TEntity>(collection.SelfLink);
+			Logger.LogDebug("Getting Azure query", "AzureDocumentDbDataStoreFactory\\GetQuery");
+			try
+			{
+				IOrderedQueryable<TEntity> query = client.CreateDocumentQuery<TEntity>(collection.SelfLink);
 
-			return query;
+				return query;
+			}
+			finally
+			{
+				Logger.LogDebug("Getting Azure query... Done", "AzureDocumentDbDataStoreFactory\\GetQuery");
+			}
 		}
 
 		protected virtual Database GetDatabase(DocumentClient client)
 		{
-			return CreateOrReadDatabase(client, AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbDatabaseName()).Result;
+			return AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbDatabaseName()).Result;
 		}
-
-		protected async Task<Database> CreateOrReadDatabase(DocumentClient client, string databaseName)
-		{
-			IEnumerable<Database> query = client.CreateDatabaseQuery()
-				.Where(database => database.Id == databaseName)
-				.AsEnumerable();
-			Database result = query.SingleOrDefault();
-			return result ?? await client.CreateDatabaseAsync(new Database { Id = databaseName });
-		}
-
-		protected async Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName)
-		{
-			IEnumerable<DocumentCollection> query = client.CreateDocumentCollectionQuery(database.SelfLink)
-				.Where(documentCollection => documentCollection.Id == collectionName)
-				.AsEnumerable();
-			DocumentCollection result = query.SingleOrDefault();
-			return result ?? await client.CreateDocumentCollectionAsync(database.SelfLink, new DocumentCollection { Id = collectionName });
-		}
-
 	}
 }

@@ -6,14 +6,16 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System.Threading.Tasks;
+using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 
-namespace Cqrs.Azure.DocumentDb.Factories
+namespace Cqrs.Azure.DocumentDb
 {
-	public interface IAzureDocumentDbDataStoreConnectionStringFactory
+	public interface IAzureDocumentDbHelper
 	{
-		DocumentClient GetAzureDocumentDbConnectionClient();
+		Task<Database> CreateOrReadDatabase(DocumentClient client, string databaseName);
 
-		string GetAzureDocumentDbDatabaseName();
+		Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName);
 	}
 }

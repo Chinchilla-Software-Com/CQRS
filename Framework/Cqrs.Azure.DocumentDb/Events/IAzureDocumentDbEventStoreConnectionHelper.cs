@@ -4,7 +4,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 {
 	public interface IAzureDocumentDbEventStoreConnectionHelper
 	{
-		DocumentClient GetEventStoreConnection();
+		DocumentClient GetEventStoreConnectionClient();
 
 		string GetEventStoreConnectionLogStreamName();
 	}

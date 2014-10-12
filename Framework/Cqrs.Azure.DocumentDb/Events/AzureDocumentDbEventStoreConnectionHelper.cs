@@ -1,4 +1,5 @@
 ﻿using System;
+using Cqrs.Logging;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.WindowsAzure;
 
@@ -6,9 +7,24 @@ namespace Cqrs.Azure.DocumentDb.Events
 {
 	public class AzureDocumentDbEventStoreConnectionHelper : IAzureDocumentDbEventStoreConnectionHelper
 	{
-		public virtual DocumentClient GetEventStoreConnection()
+		protected ILog Logger { get; private set; }
+
+		public AzureDocumentDbEventStoreConnectionHelper(ILog logger)
 		{
-			return new DocumentClient(GetEventStoreConnectionUrl(), GetEventStoreConnectionAuthorisationKey());
+			Logger = logger;
+		}
+
+		public virtual DocumentClient GetEventStoreConnectionClient()
+		{
+			Logger.LogDebug("Getting Azure document client", "AzureDocumentDbEventStoreConnectionHelper\\GetEventStoreConnectionClient");
+			try
+			{
+				return new DocumentClient(GetEventStoreConnectionUrl(), GetEventStoreConnectionAuthorisationKey());
+			}
+			finally
+			{
+				Logger.LogDebug("Getting Azure document client... Done", "AzureDocumentDbEventStoreConnectionHelper\\GetEventStoreConnectionClient");
+			}
 		}
 
 		public virtual string GetEventStoreConnectionLogStreamName()

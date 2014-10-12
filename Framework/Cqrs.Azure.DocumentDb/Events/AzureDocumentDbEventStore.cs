@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cqrs.Events;
+using Cqrs.Logging;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
@@ -19,11 +20,14 @@ namespace Cqrs.Azure.DocumentDb.Events
 {
 	public class AzureDocumentDbEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken>
 	{
-		protected IAzureDocumentDbEventStoreConnectionHelper AzureDocumentDbEventStoreConnectionHelper { get; set; }
+		protected IAzureDocumentDbEventStoreConnectionHelper AzureDocumentDbEventStoreConnectionHelper { get; private set; }
 
-		public AzureDocumentDbEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, IAzureDocumentDbEventStoreConnectionHelper azureDocumentDbEventStoreConnectionHelper)
-			: base(eventBuilder, eventDeserialiser)
+		protected IAzureDocumentDbHelper AzureDocumentDbHelper { get; private set; }
+
+		public AzureDocumentDbEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILog logger, IAzureDocumentDbHelper azureDocumentDbHelper, IAzureDocumentDbEventStoreConnectionHelper azureDocumentDbEventStoreConnectionHelper)
+			: base(eventBuilder, eventDeserialiser, logger)
 		{
+			AzureDocumentDbHelper = azureDocumentDbHelper;
 			AzureDocumentDbEventStoreConnectionHelper = azureDocumentDbEventStoreConnectionHelper;
 		}
 
@@ -34,10 +38,10 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 		protected async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
-			using (DocumentClient client = AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnection())
+			using (DocumentClient client = AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionClient())
 			{
-				Database database = CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()).Result;
-				DocumentCollection collection = CreateOrReadCollection(client, database, "CqrsEventStore").Result;
+				Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()).Result;
+				DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, "CqrsEventStore").Result;
 
 				IOrderedQueryable<EventData> query = client.CreateDocumentQuery<EventData>(collection.SelfLink);
 				string streamName = string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, aggregateId);
@@ -53,31 +57,22 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 		protected override async void PersitEvent(EventData eventData)
 		{
-			using (DocumentClient client = AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnection())
+			Logger.LogDebug("Persisting aggregate root event", string.Format("{0}\\PersitEvent", GetType().Name));
+			try
 			{
-				Database database = CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()).Result;
-				DocumentCollection collection = CreateOrReadCollection(client, database, "CqrsEventStore").Result;
+				using (DocumentClient client = AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionClient())
+				{
+					Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()).Result;
+					DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, "CqrsEventStore").Result;
 
-				await client.CreateDocumentAsync(collection.SelfLink, eventData);
+					Logger.LogDebug("Creating document for event asyncronously", string.Format("{0}\\PersitEvent", GetType().Name));
+					await client.CreateDocumentAsync(collection.SelfLink, eventData);
+				}
 			}
-		}
-
-		protected async Task<Database> CreateOrReadDatabase(DocumentClient client, string databaseName)
-		{
-			IEnumerable<Database> query = client.CreateDatabaseQuery()
-				.Where(database => database.Id == databaseName)
-				.AsEnumerable();
-			Database result = query.SingleOrDefault();
-			return result ?? await client.CreateDatabaseAsync(new Database { Id = databaseName });
-		}
-
-		protected async Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName)
-		{
-			IEnumerable<DocumentCollection> query = client.CreateDocumentCollectionQuery(database.SelfLink)
-				.Where(documentCollection => documentCollection.Id == collectionName)
-				.AsEnumerable();
-			DocumentCollection result = query.SingleOrDefault();
-			return result ?? await client.CreateDocumentCollectionAsync(database.SelfLink, new DocumentCollection { Id = collectionName });
+			finally
+			{
+				Logger.LogDebug("Persisting aggregate root event... Done", string.Format("{0}\\PersitEvent", GetType().Name));
+			}
 		}
 	}
 }

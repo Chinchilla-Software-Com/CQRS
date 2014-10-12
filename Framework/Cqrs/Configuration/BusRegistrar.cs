@@ -128,6 +128,5 @@ namespace Cqrs.Configuration
 						)
 				);
 		}
-
 	}
 }

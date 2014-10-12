@@ -13,6 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Cqrs.DataStores;
 using Cqrs.Entities;
+using Cqrs.Logging;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
@@ -30,8 +31,11 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		protected IOrderedQueryable<TData> AzureDocumentDbQuery { get; private set; }
 
-		public AzureDocumentDbDataStore(DocumentClient azureDocumentDbClient, Database azureDocumentDbDatabase, DocumentCollection azureDocumentDbCollection, IOrderedQueryable<TData> azureDocumentDbQuery)
+		protected ILog Logger { get; private set; }
+
+		public AzureDocumentDbDataStore(ILog logger, DocumentClient azureDocumentDbClient, Database azureDocumentDbDatabase, DocumentCollection azureDocumentDbCollection, IOrderedQueryable<TData> azureDocumentDbQuery)
 		{
+			Logger = logger;
 			AzureDocumentDbClient = azureDocumentDbClient;
 			AzureDocumentDbDatabase = azureDocumentDbDatabase;
 			AzureDocumentDbCollection = azureDocumentDbCollection;
@@ -107,7 +111,16 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		public void Add(TData data)
 		{
-			ResourceResponse<Document> result = AzureDocumentDbClient.CreateDocumentAsync((AzureDocumentDbCollection).SelfLink, data).Result;
+			Logger.LogDebug("Adding data to the Azure database", "AzureDocumentDbDataStore\\Add");
+			try
+			{
+				ResourceResponse<Document> result = AzureDocumentDbClient.CreateDocumentAsync((AzureDocumentDbCollection).SelfLink, data).Result;
+				Logger.LogDebug(string.Format("Cost of adding data in the Azure database:r\n{0}", result), "AzureDocumentDbDataStore\\Add");
+			}
+			finally
+			{
+				Logger.LogDebug("Adding data to the Azure database... Done", "AzureDocumentDbDataStore\\Add");
+			}
 		}
 
 		public void Add(IEnumerable<TData> data)
@@ -131,11 +144,22 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		public void Update(TData data)
 		{
-			Document documentToUpdate = AzureDocumentDbClient.CreateDocumentQuery(AzureDocumentDbCollection.DocumentsLink)
-					.Where(d => d.Id == data.Rsn.ToString())
-					.AsEnumerable()
-					.Single();
-			ResourceResponse<Document> result = AzureDocumentDbClient.ReplaceDocumentAsync(documentToUpdate.SelfLink, data).Result;
+			Logger.LogDebug("Updating data in the Azure database", "AzureDocumentDbDataStore\\Update");
+			try
+			{
+				Logger.LogDebug("Getting existing document from the Azure database", "AzureDocumentDbDataStore\\Update");
+				Document documentToUpdate = AzureDocumentDbClient.CreateDocumentQuery(AzureDocumentDbCollection.DocumentsLink)
+						.Where(d => d.Id == data.Rsn.ToString())
+						.AsEnumerable()
+						.Single();
+				Logger.LogDebug("Replacing existing document in the Azure database", "AzureDocumentDbDataStore\\Update");
+				ResourceResponse<Document> result = AzureDocumentDbClient.ReplaceDocumentAsync(documentToUpdate.SelfLink, data).Result;
+				Logger.LogDebug(string.Format("Cost of replacing existing document in the Azure database:r\n{0}", result), "AzureDocumentDbDataStore\\Update");
+			}
+			finally
+			{
+				Logger.LogDebug("Updating data in the Azure database... Done", "AzureDocumentDbDataStore\\Update");
+			}
 		}
 
 		#endregion

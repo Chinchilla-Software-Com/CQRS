@@ -1,4 +1,5 @@
 ﻿using System;
+using Cqrs.Logging;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.WindowsAzure;
 
@@ -6,9 +7,24 @@ namespace Cqrs.Azure.DocumentDb.Factories
 {
 	public class AzureDocumentDbDataStoreConnectionStringFactory : IAzureDocumentDbDataStoreConnectionStringFactory
 	{
-		public virtual DocumentClient GetAzureDocumentDbConnectionString()
+		protected ILog Logger { get; private set; }
+
+		public AzureDocumentDbDataStoreConnectionStringFactory(ILog logger)
 		{
-			return new DocumentClient(GetAzureDocumentDbConnectionUrl(), GetAzureDocumentDbAuthorisationKey());
+			Logger = logger;
+		}
+
+		public virtual DocumentClient GetAzureDocumentDbConnectionClient()
+		{
+			Logger.LogDebug("Getting Azure document client", "AzureDocumentDbDataStoreConnectionStringFactory\\GetAzureDocumentDbConnectionClient");
+			try
+			{
+				return new DocumentClient(GetAzureDocumentDbConnectionUrl(), GetAzureDocumentDbAuthorisationKey());
+			}
+			finally
+			{
+				Logger.LogDebug("Getting Azure document client... Done", "AzureDocumentDbDataStoreConnectionStringFactory\\GetAzureDocumentDbConnectionClient");
+			}
 		}
 
 		public virtual string GetAzureDocumentDbDatabaseName()

@@ -6,14 +6,10 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using Microsoft.Azure.Documents.Client;
-
-namespace Cqrs.Azure.DocumentDb.Factories
+namespace Cqrs.Logging
 {
-	public interface IAzureDocumentDbDataStoreConnectionStringFactory
+	public interface ICorrolationIdHelper
 	{
-		DocumentClient GetAzureDocumentDbConnectionClient();
-
-		string GetAzureDocumentDbDatabaseName();
+		string GetCorrolationId();
 	}
 }

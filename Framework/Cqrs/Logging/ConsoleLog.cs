@@ -4,6 +4,13 @@ namespace Cqrs.Logging
 {
 	public class ConsoleLog : ILog
 	{
+		protected ICorrolationIdHelper CorrolationIdHelper { get; private set; }
+
+		public ConsoleLog(ICorrolationIdHelper corrolationIdHelper)
+		{
+			CorrolationIdHelper = corrolationIdHelper;
+		}
+
 		#region Implementation of ILog
 
 		public void LogInfo(string message, string container = null, Exception exception = null)
@@ -37,13 +44,26 @@ namespace Cqrs.Logging
 		{
 			ConsoleColor originalColour = Console.ForegroundColor;
 			Console.ForegroundColor = foregroundColor;
+			string corrolationId = CorrolationIdHelper.GetCorrolationId();
 
-			string pattern = "[{0}] {1:r}: {2}";
+			string pattern = "[{0}] {1:r}:";
+			if (!string.IsNullOrWhiteSpace(corrolationId))
+				pattern = "[{0}] [{7}] {1:r}:";
 			if (!string.IsNullOrWhiteSpace(container))
-				pattern = "[{0}] {1}: {3}:: {2}";
+				pattern = pattern + " {3}::";
+			pattern = pattern + " {2}";
 			if (exception != null)
-				pattern = pattern + "\r\n{4}";
-			string messageToLog = string.Format(pattern, level, DateTime.Now, message, container, exception, exception == null ? null : exception.Message, exception == null ? null : exception.StackTrace);
+				pattern = pattern + "\r\n{5}\r\n{6}\r\n{4}";
+			string messageToLog = string.Format(pattern, 
+				level, // 0
+				DateTime.Now, // 1
+				message, // 2
+				container, // 3
+				exception, // 4
+				exception == null ? null : exception.Message, // 5
+				exception == null ? null : exception.StackTrace, // 6
+				corrolationId // 7
+			);
 			Console.WriteLine(messageToLog);
 
 			Console.ForegroundColor = originalColour;

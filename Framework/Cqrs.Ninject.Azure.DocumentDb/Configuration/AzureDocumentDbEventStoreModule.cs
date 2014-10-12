@@ -6,6 +6,8 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System.Linq;
+using Cqrs.Azure.DocumentDb;
 using Cqrs.Azure.DocumentDb.Events;
 using Cqrs.Events;
 using Ninject.Modules;
@@ -27,6 +29,7 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 			RegisterFactories();
 			RegisterServices();
 			RegisterCqrsRequirements();
+			RegisterAzureHelpers();
 		}
 
 		#endregion
@@ -49,6 +52,16 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 		/// </summary>
 		public virtual void RegisterServices()
 		{
+		}
+
+		public virtual void RegisterAzureHelpers()
+		{
+			if (!Kernel.GetBindings(typeof(IAzureDocumentDbHelper)).Any())
+			{
+				Bind<IAzureDocumentDbHelper>()
+					.To<AzureDocumentDbHelper>()
+					.InSingletonScope();
+			}
 		}
 
 		/// <summary>
