@@ -112,7 +112,7 @@ namespace Cqrs.Azure.DocumentDb
 					Logger.LogDebug(string.Format("Returning the existing document collection took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadCollection");
 					try
 					{
-						AzureDocumentDbConnectionCache.SetDocumentCollection(documentCollectionCacheKey, result);
+						// AzureDocumentDbConnectionCache.SetDocumentCollection(documentCollectionCacheKey, result);
 						return result;
 					}
 					finally
@@ -124,7 +124,7 @@ namespace Cqrs.Azure.DocumentDb
 				start = DateTime.Now;
 				result = client.CreateDocumentCollectionAsync(database.SelfLink, new DocumentCollection { Id = collectionName }).Result;
 				Logger.LogDebug(string.Format("Getting Azure document collection took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadCollection");
-				AzureDocumentDbConnectionCache.SetDocumentCollection(documentCollectionCacheKey, result);
+				// AzureDocumentDbConnectionCache.SetDocumentCollection(documentCollectionCacheKey, result);
 				return result;
 			}
 			finally
