@@ -25,6 +25,7 @@ using System.Linq;
 using Cqrs.Azure.DocumentDb.DataStores;
 using Cqrs.Azure.DocumentDb.Factories;
 using Cqrs.DataStores;
+using Cqrs.Logging;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 
@@ -39,8 +40,8 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 	/// </summary>
 	public partial class <#= className #>AzureDocumentDbDataStoreFactory : AzureDocumentDbDataStoreFactory, I<#= className #>DataStoreFactory
 	{
-		public <#= className #>AzureDocumentDbDataStoreFactory(IAzureDocumentDbDataStoreConnectionStringFactory azureDocumentDbDataStoreConnectionStringFactory)
-			: base(azureDocumentDbDataStoreConnectionStringFactory)
+		public <#= className #>AzureDocumentDbDataStoreFactory(IAzureDocumentDbDataStoreConnectionStringFactory azureDocumentDbDataStoreConnectionStringFactory, IAzureDocumentDbHelper azureDocumentDbHelper, ILog logger)
+			: base(azureDocumentDbDataStoreConnectionStringFactory, azureDocumentDbHelper, logger)
 		{
 		}
 
@@ -63,7 +64,7 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 
 			OnObtained<#= elementName #>Collection(ref client, ref database, ref collection, ref query);
 			VerifyIndexes(client, database, collection, query);
-			return new AzureDocumentDbDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity>(client, database, collection, query);
+			return new AzureDocumentDbDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity>(Logger, client, database, collection, query);
 		}
 
 <#
