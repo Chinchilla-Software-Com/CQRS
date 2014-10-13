@@ -53,7 +53,19 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// <filterpriority>1</filterpriority>
 		public IEnumerator<TData> GetEnumerator()
 		{
-			return AzureDocumentDbQuery.GetEnumerator();
+			Logger.LogDebug("Getting the enumerator for an Azure database query", "AzureDocumentDbDataStore\\GetEnumerator");
+			try
+			{
+				DateTime start = DateTime.Now;
+				IEnumerator<TData> result = AzureDocumentDbQuery.GetEnumerator();
+				DateTime end = DateTime.Now;
+				Logger.LogDebug(string.Format("Getting the enumerator for an Azure database query took {0}", end - start), "AzureDocumentDbDataStore\\GetEnumerator");
+				return result;
+			}
+			finally
+			{
+				Logger.LogDebug("Getting the enumerator for an Azure database query... Done", "AzureDocumentDbDataStore\\GetEnumerator");
+			}
 		}
 
 		/// <summary>
@@ -114,8 +126,10 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			Logger.LogDebug("Adding data to the Azure database", "AzureDocumentDbDataStore\\Add");
 			try
 			{
+				DateTime start = DateTime.Now;
 				ResourceResponse<Document> result = AzureDocumentDbClient.CreateDocumentAsync((AzureDocumentDbCollection).SelfLink, data).Result;
-				Logger.LogDebug(string.Format("Cost of adding data in the Azure database:r\n{0}", result), "AzureDocumentDbDataStore\\Add");
+				DateTime end = DateTime.Now;
+				Logger.LogDebug(string.Format("Adding data in the Azure database took {0} and cost:r\n{1}", end - start, result), "AzureDocumentDbDataStore\\Add");
 			}
 			finally
 			{
@@ -148,13 +162,17 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			try
 			{
 				Logger.LogDebug("Getting existing document from the Azure database", "AzureDocumentDbDataStore\\Update");
+				DateTime start = DateTime.Now;
 				Document documentToUpdate = AzureDocumentDbClient.CreateDocumentQuery(AzureDocumentDbCollection.DocumentsLink)
 						.Where(d => d.Id == data.Rsn.ToString())
 						.AsEnumerable()
 						.Single();
+				DateTime mid = DateTime.Now;
+				Logger.LogDebug(string.Format("Getting existing document from the Azure database took {0}", mid - start), "AzureDocumentDbDataStore\\Update");
 				Logger.LogDebug("Replacing existing document in the Azure database", "AzureDocumentDbDataStore\\Update");
 				ResourceResponse<Document> result = AzureDocumentDbClient.ReplaceDocumentAsync(documentToUpdate.SelfLink, data).Result;
-				Logger.LogDebug(string.Format("Cost of replacing existing document in the Azure database:r\n{0}", result), "AzureDocumentDbDataStore\\Update");
+				DateTime end = DateTime.Now;
+				Logger.LogDebug(string.Format("Replacing existing document in the Azure database took {0} and cost:r\n{1}", end - mid, result), "AzureDocumentDbDataStore\\Update");
 			}
 			finally
 			{
