@@ -19,8 +19,11 @@ namespace Cqrs.Azure.DocumentDb
 			try
 			{
 				var results = CallContext.GetData(key) as DocumentClient;
-				client = results;
-				return true;
+				if (results != null)
+				{
+					client = results;
+					return true;
+				}
 			}
 			catch
 			{
@@ -39,8 +42,11 @@ namespace Cqrs.Azure.DocumentDb
 			try
 			{
 				var results = CallContext.GetData(key) as Database;
-				database = results;
-				return true;
+				if (results != null)
+				{
+					database = results;
+					return true;
+				}
 			}
 			catch
 			{

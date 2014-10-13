@@ -37,14 +37,14 @@ namespace Cqrs.Azure.DocumentDb
 			string databaseCacheKey = string.Format("AzureDocumentDbDatabase::{0}", databaseName);
 			if (AzureDocumentDbConnectionCache.TryGetDatabase(databaseCacheKey, out result))
 			{
-				Logger.LogDebug(string.Format("Returning cached database tool {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadDatabase");
+				Logger.LogDebug(string.Format("Returning cached database took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadDatabase");
 				try
 				{
 					return result;
 				}
 				finally
 				{
-					Logger.LogDebug(string.Format("Returning cached database tool... Done"), "AzureDocumentDbHelper\\CreateOrReadDatabase");
+					Logger.LogDebug(string.Format("Returning cached database took... Done"), "AzureDocumentDbHelper\\CreateOrReadDatabase");
 				}
 			}
 			try
