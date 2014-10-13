@@ -60,6 +60,7 @@ namespace Cqrs.Azure.DocumentDb
 					Logger.LogDebug(string.Format("Returning the existing database took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadDatabase");
 					try
 					{
+						AzureDocumentDbConnectionCache.SetDatabase(databaseCacheKey, result);
 						return result;
 					}
 					finally
