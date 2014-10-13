@@ -20,5 +20,9 @@ namespace Cqrs.Azure.DocumentDb
 		bool TryGetDatabase(string key, out Database database);
 
 		void SetDatabase(string key, Database database);
+
+		bool TryGetDocumentCollection(string key, out DocumentCollection documentCollection);
+
+		void SetDocumentCollection(string key, DocumentCollection documentCollection);
 	}
 }

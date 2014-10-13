@@ -62,5 +62,26 @@ namespace Cqrs.Azure.DocumentDb
 		{
 			Cache[key] = database;
 		}
+
+		public bool TryGetDocumentCollection(string key, out DocumentCollection documentCollection)
+		{
+			try
+			{
+				object cacheResult;
+				bool result = Cache.TryGetValue(key, out cacheResult);
+				documentCollection = cacheResult as DocumentCollection;
+				return result && documentCollection != null;
+			}
+			catch
+			{
+			}
+			documentCollection = null;
+			return false;
+		}
+
+		public void SetDocumentCollection(string key, DocumentCollection documentCollection)
+		{
+			Cache[key] = documentCollection;
+		}
 	}
 }

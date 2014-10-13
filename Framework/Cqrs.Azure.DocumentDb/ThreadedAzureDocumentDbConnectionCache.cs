@@ -59,5 +59,28 @@ namespace Cqrs.Azure.DocumentDb
 		{
 			CallContext.SetData(key, database);
 		}
+
+		public bool TryGetDocumentCollection(string key, out DocumentCollection documentCollection)
+		{
+			try
+			{
+				var results = CallContext.GetData(key) as DocumentCollection;
+				if (results != null)
+				{
+					documentCollection = results;
+					return true;
+				}
+			}
+			catch
+			{
+			}
+			documentCollection = null;
+			return false;
+		}
+
+		public void SetDocumentCollection(string key, DocumentCollection documentCollection)
+		{
+			CallContext.SetData(key, documentCollection);
+		}
 	}
 }
