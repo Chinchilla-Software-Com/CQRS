@@ -20,10 +20,10 @@ namespace Cqrs.EventStore
 			ConnectionSettings settings = ConnectionSettings.Create();
 			IPEndPoint endPoint = GetEventStoreIpEndPoint();
 			IEventStoreConnection connection = EventStoreConnection.Create(settings, endPoint);
-			connection.Connect();
+			connection.ConnectAsync().RunSynchronously();
 
 			EventData connectionEvent = EventBuilder.CreateClientConnectedEvent(GetEventStoreClientName());
-			connection.AppendToStream(GetEventStoreConnectionLogStreamName(), ExpectedVersion.Any, new[] { connectionEvent });
+			connection.AppendToStreamAsync(GetEventStoreConnectionLogStreamName(), ExpectedVersion.Any, new[] { connectionEvent }).RunSynchronously();
 
 			return connection;
 		}

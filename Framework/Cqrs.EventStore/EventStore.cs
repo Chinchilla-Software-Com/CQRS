@@ -35,10 +35,10 @@ namespace Cqrs.EventStore
 		{
 			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id);
-			using (var transaction = EventStoreConnection.StartTransaction(streamName, ExpectedVersion.Any))
+			using (EventStoreTransaction transaction = EventStoreConnection.StartTransactionAsync(streamName, ExpectedVersion.Any).Result)
 			{
-				EventStoreConnection.AppendToStream(streamName, ExpectedVersion.Any, new[] {eventData});
-				transaction.Commit();
+				EventStoreConnection.AppendToStreamAsync(streamName, ExpectedVersion.Any, new[] {eventData}).RunSynchronously();
+				transaction.CommitAsync();
 			}
 		}
 
@@ -54,9 +54,9 @@ namespace Cqrs.EventStore
 			StreamEventsSlice eventCollection;
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, aggregateId);
 			if (useLastEventOnly)
-				eventCollection = EventStoreConnection.ReadStreamEventsBackward(streamName, startPosition, 1, false);
+				eventCollection = EventStoreConnection.ReadStreamEventsBackwardAsync(streamName, startPosition, 1, false).Result;
 			else
-				eventCollection = EventStoreConnection.ReadStreamEventsForward(streamName, startPosition, 200, false);
+				eventCollection = EventStoreConnection.ReadStreamEventsForwardAsync(streamName, startPosition, 200, false).Result;
 			return eventCollection.Events.Select(EventDeserialiser.Deserialise);
 		}
 
@@ -64,7 +64,7 @@ namespace Cqrs.EventStore
 
 		protected virtual void ListenForNotificationsOnConnection(IEventStoreConnection connection)
 		{
-			connection.SubscribeToAll(true, DisplayNotificationArrival, DisplaySubscriptionDropped);
+			connection.SubscribeToAllAsync(true, DisplayNotificationArrival, DisplaySubscriptionDropped).RunSynchronously();
 		}
 
 		private void DisplayNotificationArrival(EventStoreSubscription subscription, ResolvedEvent notification)

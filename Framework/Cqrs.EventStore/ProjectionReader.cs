@@ -23,7 +23,7 @@ namespace Cqrs.EventStore
 			StreamEventsSlice eventCollection;
 			using (IEventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
 			{
-				eventCollection = connection.ReadStreamEventsBackward(streamName, StreamPosition.End, 1, false);
+				eventCollection = connection.ReadStreamEventsBackwardAsync(streamName, StreamPosition.End, 1, false).Result;
 			}
 			var jsonSerialiserSettings = EventDeserialiser.GetSerialisationSettings();
 			var encoder = new UTF8Encoding();

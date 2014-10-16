@@ -26,7 +26,7 @@ namespace Cqrs.EventStore.Bus
 		{
 			get
 			{
-				StreamEventsSlice slice = EventStoreConnection.ReadStreamEventsBackward(EventsProcessedStreamName, StreamPosition.End, 1, false);
+				StreamEventsSlice slice = EventStoreConnection.ReadStreamEventsBackwardAsync(EventsProcessedStreamName, StreamPosition.End, 1, false).Result;
 				if (slice.Events.Length > 0)
 				{
 					return EventStoreUtilities.ByteArrayToString(slice.Events[0].Event.Data);
@@ -37,7 +37,7 @@ namespace Cqrs.EventStore.Bus
 			set
 			{
 				var eventData = new EventData(Guid.NewGuid(), EventType, false, EventStoreUtilities.StringToByteArray(value), null);
-				EventStoreConnection.AppendToStream(EventsProcessedStreamName, ExpectedVersion.Any, new [] { eventData });
+				EventStoreConnection.AppendToStreamAsync(EventsProcessedStreamName, ExpectedVersion.Any, new [] { eventData }).RunSynchronously();
 			}
 		}
 	}
