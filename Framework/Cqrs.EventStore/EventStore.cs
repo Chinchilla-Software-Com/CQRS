@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Cqrs.Events;
 using EventStore.ClientAPI;
 using EventData = EventStore.ClientAPI.EventData;
@@ -37,8 +38,8 @@ namespace Cqrs.EventStore
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id);
 			using (EventStoreTransaction transaction = EventStoreConnection.StartTransactionAsync(streamName, ExpectedVersion.Any).Result)
 			{
-				EventStoreConnection.AppendToStreamAsync(streamName, ExpectedVersion.Any, new[] {eventData}).RunSynchronously();
-				transaction.CommitAsync();
+				WriteResult saveResult = EventStoreConnection.AppendToStreamAsync(streamName, ExpectedVersion.Any, new[] {eventData}).Result;
+				WriteResult commitResult = transaction.CommitAsync().Result;
 			}
 		}
 

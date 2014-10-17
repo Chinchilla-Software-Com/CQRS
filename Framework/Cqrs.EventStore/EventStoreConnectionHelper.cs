@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using EventStore.ClientAPI;
 
 namespace Cqrs.EventStore
@@ -20,10 +21,12 @@ namespace Cqrs.EventStore
 			ConnectionSettings settings = ConnectionSettings.Create();
 			IPEndPoint endPoint = GetEventStoreIpEndPoint();
 			IEventStoreConnection connection = EventStoreConnection.Create(settings, endPoint);
-			connection.ConnectAsync().RunSynchronously();
+			Task connecting = connection.ConnectAsync();
+			connecting.Wait();
 
 			EventData connectionEvent = EventBuilder.CreateClientConnectedEvent(GetEventStoreClientName());
-			connection.AppendToStreamAsync(GetEventStoreConnectionLogStreamName(), ExpectedVersion.Any, new[] { connectionEvent }).RunSynchronously();
+			Task notify = connection.AppendToStreamAsync(GetEventStoreConnectionLogStreamName(), ExpectedVersion.Any, new[] { connectionEvent });
+			notify.Wait();
 
 			return connection;
 		}
