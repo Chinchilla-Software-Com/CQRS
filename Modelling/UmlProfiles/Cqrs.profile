@@ -174,6 +174,11 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
     </stereotype>
+    <stereotype name="EventHandler" displayName="Event Handler">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
+      </metaclasses>
+    </stereotype>
 
     <stereotype name="Service" displayName="Service">
       <metaclasses>
