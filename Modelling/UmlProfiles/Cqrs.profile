@@ -118,7 +118,7 @@
             <enumerationTypeMoniker name="/CqrsProfile/AggregateRootMethodType"/>
           </propertyType>
         </property>
-        <property name="EventName" displayName="EventName: The simple pass through event, is method type is Simple." defaultValue="">
+        <property name="EventName" displayName="EventName: The simple pass through event, if the method type is Simple." defaultValue="">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
@@ -151,6 +151,18 @@
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
+      <properties>
+        <property name="CommandType" displayName="Command Type: What type of command is this." defaultValue="Simple">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/CommandType"/>
+          </propertyType>
+        </property>
+        <property name="AggregateRoot" displayName="AggregateRoot: The name of the aggregate root this command targets, if the command type is Simple." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+      </properties>
     </stereotype>
     <stereotype name="Event" displayName="Event">
       <metaclasses>
@@ -281,6 +293,13 @@
       <enumerationLiterals>
         <enumerationLiteral name="Simple" displayName="Simple pass through event method" />
         <enumerationLiteral name="Complex" displayName="A more complex method." />
+      </enumerationLiterals>
+    </enumerationType>
+
+    <enumerationType name="CommandType">
+      <enumerationLiterals>
+        <enumerationLiteral name="Simple" displayName="Simple pass through command targeting one aggregate root" />
+        <enumerationLiteral name="Complex" displayName="A more complex command." />
       </enumerationLiterals>
     </enumerationType>
   </propertyTypes>
