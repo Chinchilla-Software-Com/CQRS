@@ -157,9 +157,14 @@
             <enumerationTypeMoniker name="/CqrsProfile/CommandType"/>
           </propertyType>
         </property>
-        <property name="AggregateRoot" displayName="AggregateRoot: The name of the aggregate root this command targets, if the command type is Simple." defaultValue="">
+        <property name="AggregateRoot" displayName="Aggregate Root: The name of the aggregate root this command targets, if the command type is Simple." defaultValue="">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+        <property name="CreatesNewInstance" displayName="Creates New Instance: If true, this command creates a new instance, it loads an existing instance otherwise, all if the command type is Simple." defaultValue="false">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
       </properties>

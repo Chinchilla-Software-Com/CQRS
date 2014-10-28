@@ -69,12 +69,63 @@ namespace <#= classNamespace #>.Handlers
 
 		public void Handle(<#= className #>Command command)
 		{
+<#
+	string aggregateRootName = null;
+	bool isSimple = steroTypeProperties.PropertyInstances.Any(property => property.Name == "CommandType" && property.Value == "Simple");
+	bool createsNewInstance = steroTypeProperties.PropertyInstances.Any(property => property.Name == "CreatesNewInstance" && property.Value == "true");
+	if (isSimple)
+		aggregateRootName = methodStereoTypeProperties.PropertyInstances.Single(property => property.Name == "AggregateRoot").Value;
+	if (isSimple && !string.IsNullOrWhiteSpace(aggregateRootName))
+	{
+#>
+			<#= aggregateRootName #> item = null;
+			On<#= className #>(command, ref item);
+			if (item == null)
+<#
+		if (createsNewInstance)
+		{
+#>
+				item = new <#= aggregateRootName #>(ServiceLocator, Log, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
+<#
+		}
+		else
+		{
+#>
+				item = UnitOfWork.Get<<#= aggregateRootName #>>(command.Rsn);
+<#
+		}
+#>
+			item.<#= className #>();
+			On<#= className #>Done(command, item);
+			OnCommit(command, item);
+			UnitOfWork.Commit();
+			OnCommited(command, item);
+<#
+	}
+	else
+	{
+#>
 			OnHandle(command);
+<#
+	}
+#>
 		}
 
 		#endregion
+<#
+	if (isSimple && !string.IsNullOrWhiteSpace(aggregateRootName))
+	{
+#>
+		partial void <#= className #>(<#= className #>Command command, ref Task item);
 
-		partial void OnHandle(<#= className #>Command command);
+		partial void <#= className #>Done(<#= className #>Command command, Task item);
+
+		partial void OnCommit(<#= className #>Command command, Task item);
+
+		partial void OnCommited(<#= className #>Command command, Task item);
+<#
+	}
+#>
 
 <#
 		IList<IOperation> collectionMethods = GetMethodList(this.Element);
