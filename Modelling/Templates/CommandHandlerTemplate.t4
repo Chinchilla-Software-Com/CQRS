@@ -74,7 +74,7 @@ namespace <#= classNamespace #>.Handlers
 	bool isSimple = steroTypeProperties.PropertyInstances.Any(property => property.Name == "CommandType" && property.Value == "Simple");
 	bool createsNewInstance = steroTypeProperties.PropertyInstances.Any(property => property.Name == "CreatesNewInstance" && property.Value == "true");
 	if (isSimple)
-		aggregateRootName = methodStereoTypeProperties.PropertyInstances.Single(property => property.Name == "AggregateRoot").Value;
+		aggregateRootName = steroTypeProperties.PropertyInstances.Single(property => property.Name == "AggregateRoot").Value;
 	if (isSimple && !string.IsNullOrWhiteSpace(aggregateRootName))
 	{
 #>
