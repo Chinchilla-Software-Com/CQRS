@@ -25,5 +25,5 @@ function global:Update-ModelingTemplates()
 
 Update-ModelingTemplates
 
-CD .\VisualStudioAddOns
-START .\Cqrs.Modelling.UmlProfiles.vsix
+$visxPath = resolve-path "$toolsPath\..\VisualStudioAddOns\Cqrs.Modelling.UmlProfiles.vsix";
+START $visxPath
