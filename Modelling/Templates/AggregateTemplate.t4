@@ -93,14 +93,51 @@ namespace <#= classNamespace #>
 		// Methods
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
+			bool IsSimple = false;
+			string eventName = null;
+			var methodStereoTypeProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "AggregateRootMethod");
+			if (methodStereoTypeProperties != null)
+			{
+				bool IsSimple = methodStereoTypeProperties.PropertyInstances.Any(property => property.Name == "AggregateRootMethodType" && property.Value == "Simple");
+				if (IsSimple)
+					eventName = methodStereoTypeProperties.PropertyInstances.Single(property => property.Name == "EventName").Value;
+			}
 #>
 		public virtual void <#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>)
 		{
 			Log.LogDebug("Entered", "<#= className #>/<#= collectionMethod.Name #>");
+			<#
+			if (IsSimple && !string.IsNullOrWhiteSpace(eventName))
+			{
+			#>
+			Log.LogDebug("Applying event", "<#= className #>/<#= collectionMethod.Name #>/<#= eventName #>");
+			ApplyChange(new <#= eventName #>(Rsn, <#= GetMethodParameterNameList(collectionMethod) #>));
+			<#
+			}
+			else
+			{
+			#>
 			On<#= collectionMethod.Name #>(<#= GetMethodParameterNameList(collectionMethod) #>);
+			<#
+			}
+			#>
 			Log.LogDebug("Exited", "<#= className #>/<#= collectionMethod.Name #>");
 		}
+			<#
+			string eventName = null;
+			if (IsSimple && !string.IsNullOrWhiteSpace(eventName))
+			{
+			#>
+		partial void OnApply(<#= eventName #> @event);
+			<#
+			}
+			else
+			{
+			#>
 		partial void On<#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>);
+			<#
+			}
+			#>
 
 <#
 		}

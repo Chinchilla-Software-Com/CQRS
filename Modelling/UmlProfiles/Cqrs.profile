@@ -108,6 +108,24 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IProperty" />
       </metaclasses>
     </stereotype>
+    <stereotype name="AggregateRootMethod" displayName="Service Method">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IOperation" />
+      </metaclasses>
+      <properties>
+        <property name="AggregateRootMethodType" displayName="Method Type: What type of method is this." defaultValue="Complex">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/AggregateRootMethodType"/>
+          </propertyType>
+        </property>
+        <property name="EventName" displayName="EventName: The simple pass through event, is method type is Simple." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+      </properties>
+    </stereotype>
+
     <stereotype name="Entity" displayName="Entity">
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
@@ -256,6 +274,13 @@
       <enumerationLiterals>
         <enumerationLiteral name="GYEventStore" displayName="Greg Youngs EventStore" />
         <enumerationLiteral name="AzureDocumentDb" displayName="Azure Document Db" />
+      </enumerationLiterals>
+    </enumerationType>
+
+    <enumerationType name="AggregateRootMethodType">
+      <enumerationLiterals>
+        <enumerationLiteral name="Simple" displayName="Simple pass through event method" />
+        <enumerationLiteral name="Complex" displayName="A more complex method." />
       </enumerationLiterals>
     </enumerationType>
   </propertyTypes>
