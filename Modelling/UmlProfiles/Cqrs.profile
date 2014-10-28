@@ -108,7 +108,7 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IProperty" />
       </metaclasses>
     </stereotype>
-    <stereotype name="AggregateRootMethod" displayName="Service Method">
+    <stereotype name="AggregateRootMethod" displayName="Aggregate Root Method">
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IOperation" />
       </metaclasses>
