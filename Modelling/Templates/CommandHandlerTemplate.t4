@@ -116,13 +116,13 @@ namespace <#= classNamespace #>.Handlers
 	if (isSimple && !string.IsNullOrWhiteSpace(aggregateRootName))
 	{
 #>
-		partial void <#= className #>(<#= className #>Command command, ref Task item);
+		partial void On<#= className #>(<#= className #>Command command, ref <#= aggregateRootName #> item);
 
-		partial void <#= className #>Done(<#= className #>Command command, Task item);
+		partial void On<#= className #>Done(<#= className #>Command command, <#= aggregateRootName #> item);
 
-		partial void OnCommit(<#= className #>Command command, Task item);
+		partial void OnCommit(<#= className #>Command command, <#= aggregateRootName #> item);
 
-		partial void OnCommited(<#= className #>Command command, Task item);
+		partial void OnCommited(<#= className #>Command command, <#= aggregateRootName #> item);
 <#
 	}
 	else
