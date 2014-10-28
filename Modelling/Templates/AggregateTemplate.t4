@@ -109,9 +109,12 @@ namespace <#= classNamespace #>
 <#
 			if (isSimple && !string.IsNullOrWhiteSpace(eventName))
 			{
+				string applyEventParameters = GetMethodParameterNameList(collectionMethod);
+				if (!string.IsNullOrWhiteSpace(applyEventParameters))
+					applyEventParameters = string.Format(", {0}", applyEventParameters);
 #>
 			Log.LogDebug("Applying event", "<#= className #>/<#= collectionMethod.Name #>/<#= eventName #>");
-			ApplyChange(new <#= eventName #>(Rsn, <#= GetMethodParameterNameList(collectionMethod) #>));
+			ApplyChange(new <#= eventName #>(Rsn<#= applyEventParameters #>));
 <#
 			}
 			else
