@@ -108,22 +108,6 @@ namespace Cqrs.Ninject.Configuration
 				.To<TAuthenticationTokenHelper>()
 				.InSingletonScope();
 
-			var inProcessBus = new InProcessBus<TAuthenticationToken>(Resolve<IAuthenticationTokenHelper<TAuthenticationToken>>());
-			Bind<ICommandSender<TAuthenticationToken>>()
-				.ToConstant(inProcessBus)
-				.InSingletonScope();
-			Bind<IHandlerRegistrar>()
-				.ToConstant(inProcessBus)
-				.InSingletonScope();
-			Bind<IEventPublisher<TAuthenticationToken>>()
-				.ToConstant(inProcessBus)
-				.InSingletonScope();
-			/*
-			Bind<IEventPublisher<ISingleSignOnWithUserRsnToken>>()
-				.To<EventStoreEventPublisher<ISingleSignOnWithUserRsnToken>>()
-				.InSingletonScope();
-			*/
-
 			Bind<IStoreLastEventProcessed>()
 				.To<FileBasedLastEventProcessedStore>()
 				.InSingletonScope();
