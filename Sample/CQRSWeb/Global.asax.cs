@@ -38,9 +38,9 @@ namespace CQRSWeb
 			RegisterHandlers((IDependencyResolver)DependencyResolver.Current);
 		}
 
-		private void RegisterHandlers(IDependencyResolver serviceLocator)
+		private void RegisterHandlers(IDependencyResolver DependencyResolver)
 		{
-			var registrar = new BusRegistrar(serviceLocator);
+			var registrar = new BusRegistrar(DependencyResolver);
 			registrar.Register(typeof(InventoryCommandHandlers), typeof(DtoCommandHandler<ISingleSignOnToken, UserDto>));
 		}
 	}

@@ -48,7 +48,7 @@ namespace <#= classNamespace #>
 
 		#endregion
 
-		protected IServiceLocator ServiceLocator { get; private set; }
+		protected IDependencyResolver DependencyResolver { get; private set; }
 
 		protected ILog Log { get; private set; }
 
@@ -81,9 +81,9 @@ namespace <#= classNamespace #>
 		}
 // ReSharper restore UnusedMember.Local
 
-		public <#= className #>(IServiceLocator serviceLocator, ILog log, Guid rsn)
+		public <#= className #>(IDependencyResolver dependencyResolver, ILog log, Guid rsn)
 		{
-			ServiceLocator = serviceLocator;
+			DependencyResolver = dependencyResolver;
 			Log = log;
 			Rsn = rsn;
 		}

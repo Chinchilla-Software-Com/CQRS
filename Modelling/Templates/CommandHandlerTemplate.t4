@@ -42,14 +42,14 @@ namespace <#= classNamespace #>.Handlers
 	{
 		protected IUnitOfWork<<#= authenticationTokenType #>> UnitOfWork { get; private set; }
 
-		protected IServiceLocator ServiceLocator { get; private set; }
+		protected IDependencyResolver DependencyResolver { get; private set; }
 
 		protected ILog Log { get; private set; }
 
-		public <#= className #>CommandHandler(IUnitOfWork<<#= authenticationTokenType #>> unitOfWork, IServiceLocator serviceLocator, ILog log)
+		public <#= className #>CommandHandler(IUnitOfWork<<#= authenticationTokenType #>> unitOfWork, IDependencyResolver dependencyResolver, ILog log)
 		{
 			UnitOfWork = unitOfWork;
-			ServiceLocator = serviceLocator;
+			DependencyResolver = dependencyResolver;
 			Log = log;
 		}
 
@@ -85,7 +85,7 @@ namespace <#= classNamespace #>.Handlers
 		if (createsNewInstance)
 		{
 #>
-				item = new <#= aggregateRootName #>(ServiceLocator, Log, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
+				item = new <#= aggregateRootName #>(DependencyResolver, Log, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
 <#
 		}
 		else
