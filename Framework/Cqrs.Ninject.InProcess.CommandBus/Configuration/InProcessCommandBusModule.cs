@@ -53,6 +53,8 @@ namespace Cqrs.Ninject.InProcess.CommandBus.Configuration
 					.ToConstant(inProcessBus)
 					.InSingletonScope();
 			}
+			else
+				inProcessBus = Kernel.Get<InProcessBus<TAuthenticationToken>>();
 
 			Bind<ICommandSender<TAuthenticationToken>>()
 				.ToConstant(inProcessBus)

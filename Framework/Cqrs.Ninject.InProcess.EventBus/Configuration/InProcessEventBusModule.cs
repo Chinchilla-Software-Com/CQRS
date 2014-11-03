@@ -55,6 +55,8 @@ namespace Cqrs.Ninject.InProcess.EventBus.Configuration
 					.ToConstant(inProcessBus)
 					.InSingletonScope();
 			}
+			else
+				inProcessBus = Kernel.Get<InProcessBus<TAuthenticationToken>>();
 
 			Bind<IEventPublisher<TAuthenticationToken>>()
 				.ToConstant(inProcessBus)
