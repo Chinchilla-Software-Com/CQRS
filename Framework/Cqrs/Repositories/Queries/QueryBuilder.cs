@@ -12,9 +12,9 @@ namespace Cqrs.Repositories.Queries
 	{
 		protected IDataStore<TData> DataStore { get; private set; }
 
-		protected IServiceLocator DependencyResolver { get; private set; }
+		protected IDependencyResolver DependencyResolver { get; private set; }
 
-		protected QueryBuilder(IDataStore<TData> dataStore, IServiceLocator dependencyResolver)
+		protected QueryBuilder(IDataStore<TData> dataStore, IDependencyResolver dependencyResolver)
 		{
 			DataStore = dataStore;
 			DependencyResolver = dependencyResolver;
@@ -187,7 +187,7 @@ namespace Cqrs.Repositories.Queries
 
 		protected virtual TQueryStrategy GetNullQueryStrategy()
 		{
-			return DependencyResolver.GetService<TQueryStrategy>();
+			return DependencyResolver.Resolve<TQueryStrategy>();
 		}
 
 		protected virtual void ApplySorting(TQueryStrategy queryStrategy, ref IQueryable<TData> queryable)

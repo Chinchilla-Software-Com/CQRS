@@ -11,19 +11,19 @@ namespace Cqrs.Configuration
 {
 	public class BusRegistrar
 	{
-		private IServiceLocator ServiceLocator { get; set; }
+		private IDependencyResolver DependencyResolver { get; set; }
 
-		public BusRegistrar(IServiceLocator serviceLocator)
+		public BusRegistrar(IDependencyResolver dependencyResolver)
 		{
-			if(serviceLocator == null)
-				throw new ArgumentNullException("serviceLocator");
+			if(dependencyResolver == null)
+				throw new ArgumentNullException("dependencyResolver");
 
-			ServiceLocator = serviceLocator;
+			DependencyResolver = dependencyResolver;
 		}
 
 		public void Register(params Type[] typesFromAssemblyContainingMessages)
 		{
-			var bus = ServiceLocator.GetService<IHandlerRegistrar>();
+			var bus = DependencyResolver.Resolve<IHandlerRegistrar>();
 			
 			foreach (Type typesFromAssemblyContainingMessage in typesFromAssemblyContainingMessages)
 			{
@@ -93,7 +93,7 @@ namespace Cqrs.Configuration
 
 			var del = new Action<dynamic>(x =>
 				{
-					dynamic handler = ServiceLocator.GetService(executorType);
+					dynamic handler = DependencyResolver.Resolve(executorType);
 					handler.Handle(x);
 				}
 			);

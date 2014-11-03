@@ -8,9 +8,9 @@ using Ninject.Parameters;
 
 namespace Cqrs.Ninject.Configuration
 {
-	public class NinjectDependencyResolver : IServiceLocator
+	public class NinjectDependencyResolver : IDependencyResolver
 	{
-		public static IServiceLocator Current { get; protected set; }
+		public static IDependencyResolver Current { get; protected set; }
 
 		protected IKernel Kernel { get; private set; }
 
@@ -20,7 +20,7 @@ namespace Cqrs.Ninject.Configuration
 		{
 			Kernel = kernel;
 
-			Kernel.Bind<IServiceLocator>()
+			Kernel.Bind<IDependencyResolver>()
 				.ToConstant(this)
 				.InSingletonScope();
 		}
@@ -53,22 +53,12 @@ namespace Cqrs.Ninject.Configuration
 			);
 		}
 
-		public T GetService<T>()
-		{
-			return Resolve<T>();
-		}
-
-		public object GetService(Type type)
-		{
-			return Resolve(type);
-		}
-
-		protected T Resolve<T>()
+		public T Resolve<T>()
 		{
 			return (T)Resolve(typeof(T));
 		}
 
-		protected object Resolve(Type serviceType)
+		public object Resolve(Type serviceType)
 		{
 			return Kernel.Resolve(Kernel.CreateRequest(serviceType, null, new Parameter[0], true, true)).SingleOrDefault();
 		}
