@@ -44,7 +44,7 @@ namespace Cqrs.Ninject.InProcess.CommandBus.Configuration
 		/// </summary>
 		public virtual void RegisterCqrsRequirements()
 		{
-			bool isInProcessBusBound = !Kernel.GetBindings(typeof(InProcessBus<TAuthenticationToken>)).Any();
+			bool isInProcessBusBound = Kernel.GetBindings(typeof(InProcessBus<TAuthenticationToken>)).Any();
 			InProcessBus<TAuthenticationToken> inProcessBus = null;
 			if (!isInProcessBusBound)
 			{
@@ -58,7 +58,7 @@ namespace Cqrs.Ninject.InProcess.CommandBus.Configuration
 				.ToConstant(inProcessBus)
 				.InSingletonScope();
 
-			bool isHandlerRegistrationBound = !Kernel.GetBindings(typeof(IHandlerRegistrar)).Any();
+			bool isHandlerRegistrationBound = Kernel.GetBindings(typeof(IHandlerRegistrar)).Any();
 			if (!isHandlerRegistrationBound)
 			{
 				Bind<IHandlerRegistrar>()
