@@ -1,7 +1,6 @@
-﻿using Cqrs.Authentication;
+﻿using System.Linq;
 using Cqrs.Bus;
 using Cqrs.Commands;
-using Cqrs.Events;
 using Ninject;
 using Ninject.Modules;
 
@@ -45,10 +44,11 @@ namespace Cqrs.Ninject.InProcess.CommandBus.Configuration
 		/// </summary>
 		public virtual void RegisterCqrsRequirements()
 		{
-			var inProcessBus = Kernel.TryGet<InProcessBus<TAuthenticationToken>>();
-			if (inProcessBus == null)
+			bool isInProcessBusBound = !Kernel.GetBindings(typeof(InProcessBus<TAuthenticationToken>)).Any();
+			InProcessBus<TAuthenticationToken> inProcessBus = null;
+			if (!isInProcessBusBound)
 			{
-				inProcessBus = new InProcessBus<TAuthenticationToken>(Kernel.Get<IAuthenticationTokenHelper<TAuthenticationToken>>());
+				inProcessBus = Kernel.Get<InProcessBus<TAuthenticationToken>>();
 				Bind<InProcessBus<TAuthenticationToken>>()
 					.ToConstant(inProcessBus)
 					.InSingletonScope();
@@ -58,8 +58,8 @@ namespace Cqrs.Ninject.InProcess.CommandBus.Configuration
 				.ToConstant(inProcessBus)
 				.InSingletonScope();
 
-			var handlerRegistration = Kernel.TryGet<IHandlerRegistrar>();
-			if (handlerRegistration == null)
+			bool isHandlerRegistrationBound = !Kernel.GetBindings(typeof(IHandlerRegistrar)).Any();
+			if (!isHandlerRegistrationBound)
 			{
 				Bind<IHandlerRegistrar>()
 					.ToConstant(inProcessBus)
