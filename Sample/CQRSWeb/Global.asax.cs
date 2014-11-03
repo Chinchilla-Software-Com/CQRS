@@ -5,6 +5,7 @@ using CQRSCode.WriteModel.Handlers;
 using Cqrs.Commands;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
+using IDependencyResolver = Cqrs.Configuration.IDependencyResolver;
 
 namespace CQRSWeb
 {	
@@ -34,10 +35,10 @@ namespace CQRSWeb
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
 			RegisterRoutes(RouteTable.Routes);
-			RegisterHandlers((IServiceLocator)DependencyResolver.Current);
+			RegisterHandlers((IDependencyResolver)DependencyResolver.Current);
 		}
 
-		private void RegisterHandlers(IServiceLocator serviceLocator)
+		private void RegisterHandlers(IDependencyResolver serviceLocator)
 		{
 			var registrar = new BusRegistrar(serviceLocator);
 			registrar.Register(typeof(InventoryCommandHandlers), typeof(DtoCommandHandler<ISingleSignOnToken, UserDto>));
