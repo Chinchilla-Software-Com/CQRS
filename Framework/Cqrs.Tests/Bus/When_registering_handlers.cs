@@ -9,12 +9,12 @@ namespace Cqrs.Tests.Bus
 	public class When_registering_handlers
 	{
 		private BusRegistrar _register;
-		private TestServiceLocator _locator;
+		private TestDependencyResolver _locator;
 
 		[SetUp]
 		public void Setup()
 		{
-			_locator = new TestServiceLocator();
+			_locator = new TestDependencyResolver();
 			_register = new BusRegistrar(_locator);
 			if (TestHandleRegistrar.HandlerList.Count == 0)
 				_register.Register(GetType());
