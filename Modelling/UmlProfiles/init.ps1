@@ -3,7 +3,7 @@
 $parentFolder = resolve-path "$package\..";
 $templatesFolder = resolve-path "$toolsPath\..\Templates";
 
-$global:solutionScriptsContainer = Join-Path $parentFolder "ModelingTemplates"
+$global:solutionScriptsContainer = Join-Path $parentFolder "ModelingTemplates";
 
 function global:Update-ModelingTemplates()
 {		
@@ -18,17 +18,19 @@ function global:Update-ModelingTemplates()
 	{	
 		if ($file.extension -eq ".t4")
 		{
-			copy $file.fullname $solutionScriptsContainer
+			copy $file.fullname $solutionScriptsContainer;
 		}
 	}
 
-	$files = Get-ChildItem Join-Path $templatesFolder "Basic"
+	$basicTemplatesFolder = Join-Path $templatesFolder "Basic";
+	$solutionBasicScriptsContainer = Join-Path $solutionScriptsContainer "Basic";
+	$files = Get-ChildItem $basicTemplatesFolder
 
 	foreach ($file in $files)
 	{	
 		if ($file.extension -eq ".t4")
 		{
-			copy $file.fullname Join-Path $solutionScriptsContainer "Basic"
+			copy $file.fullname $solutionBasicScriptsContainer;
 		}
 	}
 }
