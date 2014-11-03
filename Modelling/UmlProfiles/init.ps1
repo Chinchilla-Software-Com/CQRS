@@ -6,7 +6,7 @@ $templatesFolder = resolve-path "$toolsPath\..\Templates";
 $global:solutionScriptsContainer = Join-Path $parentFolder "ModelingTemplates";
 
 function global:Update-ModelingTemplates()
-{		
+{
 	if(!(test-path $solutionScriptsContainer -pathtype container)) 
 	{
 		new-item $solutionScriptsContainer -type directory
@@ -24,6 +24,12 @@ function global:Update-ModelingTemplates()
 
 	$basicTemplatesFolder = Join-Path $templatesFolder "Basic";
 	$solutionBasicScriptsContainer = Join-Path $solutionScriptsContainer "Basic";
+
+	if(!(test-path $solutionBasicScriptsContainer -pathtype container)) 
+	{
+		new-item $solutionBasicScriptsContainer -type directory
+	}
+
 	$files = Get-ChildItem $basicTemplatesFolder
 
 	foreach ($file in $files)
