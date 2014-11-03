@@ -1,13 +1,16 @@
-﻿using Cqrs.EventStore;
+﻿using Cqrs.Authentication;
+using Cqrs.Bus;
+using Cqrs.Commands;
 using Cqrs.Events;
+using Ninject;
 using Ninject.Modules;
 
-namespace Cqrs.Ninject.Configuration
+namespace Cqrs.Ninject.InProcess.Configuration
 {
 	/// <summary>
 	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
 	/// </summary>
-	public class EventStoreModule<TAuthenticationToken> : NinjectModule
+	public class InProcessModule<TAuthenticationToken> : NinjectModule
 	{
 		#region Overrides of NinjectModule
 
@@ -28,12 +31,6 @@ namespace Cqrs.Ninject.Configuration
 		/// </summary>
 		public virtual void RegisterFactories()
 		{
-			Bind<EventStore.IEventBuilder<TAuthenticationToken>>()
-				.To<EventFactory<TAuthenticationToken>>()
-				.InSingletonScope();
-			Bind<EventStore.IEventDeserialiser<TAuthenticationToken>>()
-				.To<EventFactory<TAuthenticationToken>>()
-				.InSingletonScope();
 		}
 
 		/// <summary>
@@ -48,12 +45,18 @@ namespace Cqrs.Ninject.Configuration
 		/// </summary>
 		public virtual void RegisterCqrsRequirements()
 		{
-			Bind<IEventStoreConnectionHelper>()
-				.To<EventStoreConnectionHelper<TAuthenticationToken>>()
+			var inProcessBus = new InProcessBus<TAuthenticationToken>(Kernel.Get<IAuthenticationTokenHelper<TAuthenticationToken>>());
+
+			Bind<ICommandSender<TAuthenticationToken>>()
+				.ToConstant(inProcessBus)
 				.InSingletonScope();
 
-			Bind<IEventStore<TAuthenticationToken>>()
-				.To<EventStore.EventStore<TAuthenticationToken>>()
+			Bind<IEventPublisher<TAuthenticationToken>>()
+				.ToConstant(inProcessBus)
+				.InSingletonScope();
+
+			Bind<IHandlerRegistrar>()
+				.ToConstant(inProcessBus)
 				.InSingletonScope();
 		}
 	}
