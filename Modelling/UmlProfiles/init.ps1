@@ -21,6 +21,16 @@ function global:Update-ModelingTemplates()
 			copy $file.fullname $solutionScriptsContainer
 		}
 	}
+
+	$files = Get-ChildItem Join-Path $templatesFolder "Basic"
+
+	foreach ($file in $files)
+	{	
+		if ($file.extension -eq ".t4")
+		{
+			copy $file.fullname Join-Path $solutionScriptsContainer "Basic"
+		}
+	}
 }
 
 Update-ModelingTemplates
