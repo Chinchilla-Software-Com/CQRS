@@ -139,21 +139,45 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		public void Add(IEnumerable<TData> data)
 		{
-			foreach (TData model in data)
+			Logger.LogDebug("Adding data collection to the Azure database", "AzureDocumentDbDataStore\\Add");
+			try
 			{
-				Add(model);
+				foreach (TData model in data)
+				{
+					Add(model);
+				}
+			}
+			finally
+			{
+				Logger.LogDebug("Adding data collection to the Azure database... Done", "AzureDocumentDbDataStore\\Add");
 			}
 		}
 
 		public void Remove(TData data)
 		{
-			data.IsLogicallyDeleted = true;
-			Update(data);
+			Logger.LogDebug("Removing data from the Azure database", "AzureDocumentDbDataStore\\Remove");
+			try
+			{
+				data.IsLogicallyDeleted = true;
+				Update(data);
+			}
+			finally
+			{
+				Logger.LogDebug("Removing data from the Azure database... Done", "AzureDocumentDbDataStore\\Remove");
+			}
 		}
 
 		public void RemoveAll()
 		{
-			ResourceResponse<DocumentCollection> result = AzureDocumentDbClient.DeleteDocumentCollectionAsync(AzureDocumentDbCollection.SelfLink, new RequestOptions()).Result;
+			Logger.LogDebug("Removing all from the Azure database", "AzureDocumentDbDataStore\\RemoveAll");
+			try
+			{
+				ResourceResponse<DocumentCollection> result = AzureDocumentDbClient.DeleteDocumentCollectionAsync(AzureDocumentDbCollection.SelfLink, new RequestOptions()).Result;
+			}
+			finally
+			{
+				Logger.LogDebug("Removing all from the Azure database... Done", "AzureDocumentDbDataStore\\RemoveAll");
+			}
 		}
 
 		public void Update(TData data)
@@ -178,6 +202,18 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			{
 				Logger.LogDebug("Updating data in the Azure database... Done", "AzureDocumentDbDataStore\\Update");
 			}
+		}
+
+		#endregion
+
+		#region Implementation of IDisposable
+
+		/// <summary>
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
+		public void Dispose()
+		{
+			AzureDocumentDbClient.Dispose();
 		}
 
 		#endregion
