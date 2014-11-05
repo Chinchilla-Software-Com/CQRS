@@ -22,6 +22,7 @@ string className = this.Element.Name;
 #>
 using System.CodeDom.Compiler;
 using Cqrs.DataStores;
+using Cqrs.Logging;
 using Cqrs.Mongo.DataStores;
 using Cqrs.Mongo.Factories;
 using MongoDB.Driver;
@@ -37,8 +38,8 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 	/// </summary>
 	public partial class <#= className #>MongoDataStoreFactory : Cqrs.Mongo.Factories.MongoDataStoreFactory, I<#= className #>DataStoreFactory
 	{
-		public <#= className #>MongoDataStoreFactory(IMongoDataStoreConnectionStringFactory mongoDataStoreConnectionStringFactory)
-			: base(mongoDataStoreConnectionStringFactory)
+		public <#= className #>MongoDataStoreFactory(ILog logger, IMongoDataStoreConnectionStringFactory mongoDataStoreConnectionStringFactory)
+			: base(logger, mongoDataStoreConnectionStringFactory)
 		{
 		}
 

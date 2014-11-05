@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Cqrs.Logging;
 using Cqrs.Mongo.DataStores.Indexes;
 using Cqrs.Mongo.Serialisers;
 using MongoDB.Driver;
@@ -16,10 +17,13 @@ namespace Cqrs.Mongo.Factories
 	{
 		private static IDictionary<Type, IList<object>> IndexTypesByEntityType { get; set; }
 
+		protected ILog Logger { get; private set; }
+
 		protected IMongoDataStoreConnectionStringFactory MongoDataStoreConnectionStringFactory { get; private set; }
 
-		public MongoDataStoreFactory(IMongoDataStoreConnectionStringFactory mongoDataStoreConnectionStringFactory)
+		public MongoDataStoreFactory(ILog logger, IMongoDataStoreConnectionStringFactory mongoDataStoreConnectionStringFactory)
 		{
+			Logger = logger;
 			MongoDataStoreConnectionStringFactory = mongoDataStoreConnectionStringFactory;
 		}
 
@@ -116,7 +120,7 @@ namespace Cqrs.Mongo.Factories
 					else
 						indexKeysBuilder = indexKeysBuilder.Descending(mongoIndex.Selectors.ToArray());
 
-					collection.EnsureIndex
+					collection.CreateIndex
 					(
 						indexKeysBuilder,
 						IndexOptions

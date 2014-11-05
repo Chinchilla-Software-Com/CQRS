@@ -215,6 +215,18 @@ namespace <#= classNamespace #>
 			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
+
+		private void Apply(<#= className #>Created @event)
+		{
+<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+#>			<#= collectionProperty.Name #> = <#= GetLowercaseFirstCharacter(collectionProperty.Name) #>;
+			<#
+		}
+#>
+		}
 <#
 		}
 #>
@@ -285,6 +297,18 @@ namespace <#= classNamespace #>
 			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
+
+		private void Apply(<#= className #>Created @event)
+		{
+<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+#>			<#= collectionProperty.Name #> = <#= GetLowercaseFirstCharacter(collectionProperty.Name) #>;
+			<#
+		}
+#>
+		}
 <#
 		}
 #>
@@ -319,6 +343,11 @@ namespace <#= classNamespace #>
 		partial void OnDelete<#= className #>();
 
 		partial void OnDeleted<#= className #>();
+
+		private void Apply(<#= className #>Created @event)
+		{
+			IsLogicallyDeleted = true;
+		}
 <#
 		}
 #>
