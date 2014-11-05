@@ -18,6 +18,7 @@ namespace Cqrs.Mongo.DataStores
 		public MongoDataStore(MongoCollection<TData> mongoCollection)
 		{
 			MongoCollection = mongoCollection;
+			MongoCollection.Database.RequestStart();
 		}
 
 		#region Implementation of IEnumerable
@@ -87,30 +88,42 @@ namespace Cqrs.Mongo.DataStores
 
 		#region Implementation of IDataStore<TData>
 
-		public void Add(TData data)
+		public virtual void Add(TData data)
 		{
 			MongoCollection.Insert(data);
 		}
 
-		public void Add(IEnumerable<TData> data)
+		public virtual void Add(IEnumerable<TData> data)
 		{
 			MongoCollection.InsertBatch(data);
 		}
 
-		public void Remove(TData data)
+		public virtual void Remove(TData data)
 		{
 			data.IsLogicallyDeleted = true;
 			Update(data);
 		}
 
-		public void RemoveAll()
+		public virtual void RemoveAll()
 		{
 			MongoCollection.RemoveAll();
 		}
 
-		public void Update(TData data)
+		public virtual void Update(TData data)
 		{
 			MongoCollection.Save(data);
+		}
+
+		#endregion
+
+		#region Implementation of IDisposable
+
+		/// <summary>
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
+		public virtual void Dispose()
+		{
+			MongoCollection.Database.RequestDone();
 		}
 
 		#endregion

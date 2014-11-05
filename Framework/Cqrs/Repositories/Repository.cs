@@ -13,26 +13,28 @@ namespace Cqrs.Repositories
 		where TQueryBuilder : QueryBuilder<TQueryStrategy, TData>
 		where TData : Entity
 	{
-		protected IDataStore<TData> DataStore { get; private set; }
+		protected Func<IDataStore<TData>> CreateDataStoreFunction { get; private set; }
 
 		protected TQueryBuilder QueryBuilder { get; private set; }
 
-		protected Repository(IDataStore<TData> dataStore, TQueryBuilder queryBuilder)
+		protected Repository(Func<IDataStore<TData>> createDataStoreFunction, TQueryBuilder queryBuilder)
 		{
-			DataStore = dataStore;
+			CreateDataStoreFunction = createDataStoreFunction;
 			QueryBuilder = queryBuilder;
 		}
 
 		#region Implementation of IRepository<TData>
 
-		public void Create(TData data)
+		public virtual void Create(TData data)
 		{
-			DataStore.Add(data);
+			using (var dataStore = CreateDataStoreFunction())
+				dataStore.Add(data);
 		}
 
-		public void Create(IEnumerable<TData> data)
+		public virtual void Create(IEnumerable<TData> data)
 		{
-			DataStore.Add(data);
+			using (var dataStore = CreateDataStoreFunction())
+				dataStore.Add(data);
 		}
 
 		public virtual ISingleResultQuery<TQueryStrategy, TData> Retrieve(ISingleResultQuery<TQueryStrategy, TData> singleResultQuery, bool throwExceptionWhenNoQueryResults = true)
@@ -41,54 +43,77 @@ namespace Cqrs.Repositories
 
 			IEnumerable<TData> result = query.AsEnumerable();
 
-			return new SingleResultQuery<TQueryStrategy, TData>
+			try
 			{
-				QueryStrategy = singleResultQuery.QueryStrategy,
-				Result = throwExceptionWhenNoQueryResults
-					? result.Single()
-					: result.SingleOrDefault()
-			};
+				return new SingleResultQuery<TQueryStrategy, TData>
+				{
+					QueryStrategy = singleResultQuery.QueryStrategy,
+					Result = throwExceptionWhenNoQueryResults
+						? result.Single()
+						: result.SingleOrDefault()
+				};
+			}
+			finally
+			{
+				var disposable = result as IDisposable;
+				if (disposable != null)
+					disposable.Dispose();
+			}
 		}
 
 		public virtual ICollectionResultQuery<TQueryStrategy, TData> Retrieve(ICollectionResultQuery<TQueryStrategy, TData> resultQuery)
 		{
 			IQueryable<TData> result = QueryBuilder.CreateQueryable(resultQuery);
 
-			return new CollectionResultQuery<TQueryStrategy, TData>
+			try
 			{
-				QueryStrategy = resultQuery.QueryStrategy,
-				Result = result.ToList()
-			};
+				return new CollectionResultQuery<TQueryStrategy, TData>
+				{
+					QueryStrategy = resultQuery.QueryStrategy,
+					Result = result.ToList()
+				};
+			}
+			finally
+			{
+				var disposable = result as IDisposable;
+				if (disposable != null)
+					disposable.Dispose();
+			}
 		}
 
-		public void Update(TData data)
+		public virtual void Update(TData data)
 		{
-			DataStore.Update(data);
+			using (var dataStore = CreateDataStoreFunction())
+				dataStore.Update(data);
 		}
 
-		public void Delete(TData data)
+		public virtual void Delete(TData data)
 		{
-			DataStore.Remove(data);
+			using (var dataStore = CreateDataStoreFunction())
+				dataStore.Remove(data);
 		}
 
-		public void DeleteAll()
+		public virtual void DeleteAll()
 		{
-			DataStore.RemoveAll();
+			using (var dataStore = CreateDataStoreFunction())
+				dataStore.RemoveAll();
 		}
 
-		public TData Load(Guid rsn, bool throwExceptionOnMissingEntity = true)
+		public virtual TData Load(Guid rsn, bool throwExceptionOnMissingEntity = true)
 		{
-			if (throwExceptionOnMissingEntity)
-				return DataStore.Single(entity => entity.Rsn == rsn);
-			return DataStore.SingleOrDefault(entity => entity.Rsn == rsn);
+			using (var dataStore = CreateDataStoreFunction())
+			{
+				if (throwExceptionOnMissingEntity)
+					return dataStore.Single(entity => entity.Rsn == rsn);
+				return dataStore.SingleOrDefault(entity => entity.Rsn == rsn);
+			}
 		}
 
 		#endregion
 
-		protected IQueryable<TData> CreateQueryable(Expression<Func<TData, bool>> predicate)
+		protected virtual IQueryable<TData> CreateQueryable(Expression<Func<TData, bool>> predicate)
 		{
-			return DataStore.Where(predicate);
+			return CreateDataStoreFunction().Where(predicate);
 		}
-
 	}
 }

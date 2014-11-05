@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cqrs.DataStores
@@ -6,7 +7,7 @@ namespace Cqrs.DataStores
 	/// <summary>
 	/// A data store capable of being queried and modified
 	/// </summary>
-	public interface IDataStore<TData> : IOrderedQueryable<TData>
+	public interface IDataStore<TData> : IOrderedQueryable<TData>, IDisposable
 	{
 		void Add(TData data);
 
