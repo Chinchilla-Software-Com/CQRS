@@ -15,6 +15,7 @@ namespace CQRSWeb {
 		public static IContainer Initialize() {
 			ObjectFactory.Initialize(x =>
 						{
+							x.For<IAuthenticationTokenHelper<ISingleSignOnToken>>().Singleton().Use<SingleSignOnTokenValueHelper>();
 							x.For<InProcessBus<ISingleSignOnToken>>().Singleton().Use<InProcessBus<ISingleSignOnToken>>();
 							x.For<IAggregateFactory>().Singleton().Use<AggregateFactory>();
 							x.For<ICommandSender<ISingleSignOnToken>>().Use(y => y.GetInstance<InProcessBus<ISingleSignOnToken>>());

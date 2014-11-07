@@ -6,7 +6,8 @@ using StructureMap;
 
 namespace CQRSWeb
 {
-	public class SmDependencyResolver : IDependencyResolver
+	public class SmDependencyResolver : IDependencyResolver,
+		System.Web.Mvc.IDependencyResolver
 	{
 		private readonly IContainer _container;
 
@@ -34,6 +35,11 @@ namespace CQRSWeb
 
 				return null;
 			}
+		}
+
+		public object GetService(Type serviceType)
+		{
+			return Resolve(serviceType);
 		}
 
 		public IEnumerable<object> GetServices(Type serviceType)
