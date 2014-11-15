@@ -39,7 +39,7 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 		{
 			string elementName = element.Name;
 			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
-			var aggregateRootStereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
 			if (shouldBuild)
