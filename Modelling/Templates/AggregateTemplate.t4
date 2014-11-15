@@ -42,6 +42,8 @@ namespace <#= classNamespace #>
 			private set { Id = value; }
 		}
 
+		public bool IsLogicallyDeleted {get; set;}
+
 		#region Implementation of IMessageWithAuthenticationToken<<#= authenticationTokenType #>>
 
 		public <#= authenticationTokenType #> AuthenticationToken { get; set; }
@@ -222,8 +224,8 @@ namespace <#= classNamespace #>
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-#>			<#= collectionProperty.Name #> = <#= GetLowercaseFirstCharacter(collectionProperty.Name) #>;
-			<#
+#>			<#= collectionProperty.Name #> = @event.<#= collectionProperty.Name #>;
+<#
 		}
 #>
 		}
@@ -298,14 +300,14 @@ namespace <#= classNamespace #>
 		}
 #>);
 
-		private void Apply(<#= className #>Created @event)
+		private void Apply(<#= className #>Updated @event)
 		{
 <#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-#>			<#= collectionProperty.Name #> = <#= GetLowercaseFirstCharacter(collectionProperty.Name) #>;
-			<#
+#>			<#= collectionProperty.Name #> = @event.<#= collectionProperty.Name #>;
+<#
 		}
 #>
 		}
@@ -344,7 +346,7 @@ namespace <#= classNamespace #>
 
 		partial void OnDeleted<#= className #>();
 
-		private void Apply(<#= className #>Created @event)
+		private void Apply(<#= className #>Deleted @event)
 		{
 			IsLogicallyDeleted = true;
 		}

@@ -28,6 +28,9 @@ namespace <#= classNamespace #>.Commands
 <#
 	// Class and Attributes
 #>
+	/// <summary>
+	/// A <see cref="ICommand{TAuthenticationToken}"/> that logically deletes an instance of a <see cref="<#= className #>"/> aggregate
+	/// </summary>
 	<#= GetGeneratedCodeAttribute() #>
 	public <#= GetAbstract(this.Element) #> partial class Delete<#= className #>Command : ICommand<<#= authenticationTokenType #>>
 	{
@@ -45,17 +48,9 @@ namespace <#= classNamespace #>.Commands
 
 		public Guid Rsn { get; set; }
 
-<#
-		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
-		// Properties
-		foreach(IProperty collectionProperty in collectionProperties)
+		public Delete<#= className #>Command()
 		{
-#>
-		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; private set; }
-
-<#
 		}
-#>
 
 		public Delete<#= className #>Command(Guid rsn)
 		{

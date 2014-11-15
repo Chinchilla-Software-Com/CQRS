@@ -50,6 +50,11 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 		{
 			string elementName = element.Name;
 			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
+				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
+			if (shouldBuild)
+			{
 #>
 		public virtual IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> Get<#= elementName #>DataStore()
 		{
@@ -58,10 +63,11 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			OnObtained<#= elementName #>Collection(ref collection);
 			VerifyIndexes<<#= moduleName #>.Entities.<#= elementName #>Entity>(collection);
 			VerifyIndexes(collection);
-			return new MongoDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity>(collection);
+			return new MongoDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity>(Logger, collection);
 		}
 
 <#
+			}
 		}
 #>
 		#endregion
@@ -71,6 +77,11 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 		{
 			string elementName = element.Name;
 			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
+				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
+			if (shouldBuild)
+			{
 #>
 		partial void OnObtain<#= elementName #>Collection();
 
@@ -79,6 +90,7 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 		partial void VerifyIndexes(MongoCollection<<#= moduleName #>.Entities.<#= elementName #>Entity> collection);
 
 <#
+			}
 		}
 #>
 	}

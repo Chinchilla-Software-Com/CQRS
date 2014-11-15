@@ -95,7 +95,17 @@ namespace <#= classNamespace #>.Handlers
 <#
 		}
 #>
-			item.<#= className #>();
+			item.<#= className #>(<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			if (i > 0)
+			{
+			#>, <#
+			}
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			#>command.<#= collectionProperty.Name #><#
+		}
+#>);
 			On<#= className #>Done(command, item);
 			OnCommit(command, item);
 			UnitOfWork.Commit();
