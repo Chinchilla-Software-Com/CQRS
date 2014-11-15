@@ -9,7 +9,7 @@
 <#@ Include File="ModelHelper.t4" #>
 <#@ Output Extension=".cs" #>
 <#
-var steroTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "Command");
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "Command");
 string authenticationTokenType = GetDomainAuthenticationTokenType(this.Element);
 
 // Header
@@ -71,10 +71,10 @@ namespace <#= classNamespace #>.Handlers
 		{
 <#
 	string aggregateRootName = null;
-	bool isSimple = steroTypeProperties.PropertyInstances.Any(property => property.Name == "CommandType" && property.Value == "Simple");
-	bool createsNewInstance = steroTypeProperties.PropertyInstances.Any(property => property.Name == "CreatesNewInstance" && property.Value == "true");
+	bool isSimple = stereoTypeProperties.PropertyInstances.Any(property => property.Name == "CommandType" && property.Value == "Simple");
+	bool createsNewInstance = stereoTypeProperties.PropertyInstances.Any(property => property.Name == "CreatesNewInstance" && property.Value == "true");
 	if (isSimple)
-		aggregateRootName = steroTypeProperties.PropertyInstances.Single(property => property.Name == "AggregateRoot").Value;
+		aggregateRootName = stereoTypeProperties.PropertyInstances.Single(property => property.Name == "AggregateRoot").Value;
 	if (isSimple && !string.IsNullOrWhiteSpace(aggregateRootName))
 	{
 #>

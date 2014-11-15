@@ -9,7 +9,7 @@
 <#@ Include File="ModelHelper.t4" #>
 <#@ Output Extension=".cs" #>
 <#
-var steroTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
 
 string classNamespace = GetNamespace(this.Element.Namespace);
 string className = ClassifierName(this.Element);
@@ -50,8 +50,8 @@ namespace <#= classNamespace #>.Events.Handlers
 <#+
 	protected override bool AppliesToElement()
 	{
-		var steroTypeProperties = this.Element.AppliedStereotypes.Where(property => property.Name == "AggregateRoot");
-		return ShouldGenerateCodeForElement(this.Element) && steroTypeProperties.Any() && steroTypeProperties.Single().PropertyInstances
+		var stereoTypeProperties = this.Element.AppliedStereotypes.Where(property => property.Name == "AggregateRoot");
+		return ShouldGenerateCodeForElement(this.Element) && stereoTypeProperties.Any() && stereoTypeProperties.Single().PropertyInstances
 			.Single(property => property.Name == "BuildUpdateCommand")
 			.Value == "true";
 	}

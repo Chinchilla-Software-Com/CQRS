@@ -10,7 +10,7 @@
 <#@ Include File="ModelHelper.t4" #>
 <#@ Output Extension=".cs" #>
 <#
-var steroTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
 string authenticationTokenType = GetDomainAuthenticationTokenType(this.Element);
 
 // Header
@@ -66,7 +66,7 @@ namespace <#= classNamespace #>.Services
 
 <#
 		// Auto Create Method
-		bool buildCreatedEvent = steroTypeProperties.PropertyInstances
+		bool buildCreatedEvent = stereoTypeProperties.PropertyInstances
 			.Single(property => property.Name == "BuildCreateServiceMethod")
 			.Value == "true";
 
@@ -110,7 +110,7 @@ namespace <#= classNamespace #>.Services
 #>
 <#
 		// Auto Update Method
-		bool buildUpdatedEvent = steroTypeProperties.PropertyInstances
+		bool buildUpdatedEvent = stereoTypeProperties.PropertyInstances
 			.Single(property => property.Name == "BuildUpdateServiceMethod")
 			.Value == "true";
 
@@ -163,7 +163,7 @@ namespace <#= classNamespace #>.Services
 #>
 <#
 		// Auto Delete Method
-		bool buildDeletedEvent = steroTypeProperties.PropertyInstances
+		bool buildDeletedEvent = stereoTypeProperties.PropertyInstances
 			.Single(property => property.Name == "BuildDeleteServiceMethod")
 			.Value == "true";
 
@@ -213,6 +213,12 @@ namespace <#= classNamespace #>.Services
 <#+
 	protected override bool AppliesToElement()
 	{
-		return ShouldGenerateCodeForElement(this.Element) && this.Element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
+		bool shouldGenerateCodeForElement = ShouldGenerateCodeForElement(this.Element) && this.Element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
+		if (!shouldGenerateCodeForElement)
+		return false;
+
+		var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+		return stereoTypeProperties.PropertyInstances
+			.Any(property => property.Name == "BuildService" && property.Value == "true");
 	}
 #>

@@ -9,7 +9,7 @@
 <#@ Include File="ModelHelper.t4" #>
 <#@ Output Extension=".cs" #>
 <#
-var steroTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "Entity");
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "Entity");
 var isAggregateTo = this.Element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
 
 // Header
@@ -58,7 +58,7 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 #>
 <# WriteSummaryComment(collectionProperty.Description); #>
 		[DataMember]
-		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; set; }
+		<#= GetPropertyVisibility(collectionProperty) #> virtual <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; set; }
 
 <#
 		}

@@ -9,7 +9,7 @@
 <#@ Include File="ModelHelper.t4" #>
 <#@ Output Extension=".cs" #>
 <#
-var steroTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "Service");
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "Service");
 string authenticationTokenType = GetDomainAuthenticationTokenType(this.Element);
 
 // Header
@@ -34,7 +34,7 @@ namespace <#= classNamespace #>
 #>
 <#
 	// Class and Attributes
-	string aggregateRootName = steroTypeProperties.PropertyInstances
+	string aggregateRootName = stereoTypeProperties.PropertyInstances
 		.Single(property => property.Name == "AggregateRootName")
 		.Value;
 #>

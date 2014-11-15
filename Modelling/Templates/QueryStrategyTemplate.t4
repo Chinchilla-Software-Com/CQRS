@@ -10,7 +10,7 @@
 <#@ Include File="ModelHelper.t4" #>
 <#@ Output Extension=".cs" #>
 <#
-var steroTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "QueryStrategy");
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "QueryStrategy");
 string authenticationTokenType = GetDomainAuthenticationTokenType(this.Element);
 
 // Header
@@ -52,17 +52,17 @@ namespace <#= classNamespace #>
 		public virtual <#= className #> <#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>)
 		{
 <#
-		var methodSteroTypeProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "QueryStrategyMethod");
-		if (methodSteroTypeProperties != null)
+		var methodstereoTypeProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "QueryStrategyMethod");
+		if (methodstereoTypeProperties != null)
 		{
-			bool IsNotLogicallyDeleted = methodSteroTypeProperties.PropertyInstances.Any(property => property.Name == "IsNotLogicallyDeleted" && property.Value == "true");
+			bool IsNotLogicallyDeleted = methodstereoTypeProperties.PropertyInstances.Any(property => property.Name == "IsNotLogicallyDeleted" && property.Value == "true");
 			if (IsNotLogicallyDeleted)
 			{
 #>
 			QueryPredicate = And(IsNotLogicallyDeleted());
 <#
 			}
-			string permissionScope = methodSteroTypeProperties.PropertyInstances.Single(property => property.Name == "PermissionScope").Value;
+			string permissionScope = methodstereoTypeProperties.PropertyInstances.Single(property => property.Name == "PermissionScope").Value;
 			if (permissionScope != "Any")
 			{
 				if (!IsNotLogicallyDeleted)
@@ -78,7 +78,7 @@ namespace <#= classNamespace #>
 <#
 				}
 			}
-			if (methodSteroTypeProperties.PropertyInstances.Any(property => property.Name == "IncludeBody" && property.Value == "true"))
+			if (methodstereoTypeProperties.PropertyInstances.Any(property => property.Name == "IncludeBody" && property.Value == "true"))
 			{
 				string methodParameterNameList = GetMethodParameterNameList(collectionMethod);
 				if (!string.IsNullOrWhiteSpace(methodParameterNameList))

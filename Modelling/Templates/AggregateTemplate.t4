@@ -9,7 +9,7 @@
 <#@ Include File="ModelHelper.t4" #>
 <#@ Output Extension=".cs" #>
 <#
-var steroTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
 string authenticationTokenType = GetDomainAuthenticationTokenType(this.Element);
 
 // Header
@@ -150,7 +150,7 @@ namespace <#= classNamespace #>
 #>
 <#
 		// Auto Create Method
-		bool buildCreatedEvent = steroTypeProperties.PropertyInstances
+		bool buildCreatedEvent = stereoTypeProperties.PropertyInstances
 			.Single(property => property.Name == "BuildCreateCommand")
 			.Value == "true";
 
@@ -232,7 +232,7 @@ namespace <#= classNamespace #>
 #>
 <#
 		// Auto Update Method
-		bool buildUpdatedEvent = steroTypeProperties.PropertyInstances
+		bool buildUpdatedEvent = stereoTypeProperties.PropertyInstances
 			.Single(property => property.Name == "BuildUpdateCommand")
 			.Value == "true";
 
@@ -314,7 +314,7 @@ namespace <#= classNamespace #>
 #>
 <#
 		// Auto Delete Method
-		bool buildDeletedEvent = steroTypeProperties.PropertyInstances
+		bool buildDeletedEvent = stereoTypeProperties.PropertyInstances
 			.Single(property => property.Name == "BuildDeleteCommand")
 			.Value == "true";
 

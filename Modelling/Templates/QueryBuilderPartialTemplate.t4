@@ -10,13 +10,13 @@
 <#@ Include File="ModelHelper.t4" #>
 <#@ Output Extension=".cs" #>
 <#
-var steroTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "QueryStrategy");
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "QueryStrategy");
 
 // Header
 
 string classNamespace = GetNamespace(this.Element.Namespace);
 string className = ClassifierName(this.Element);
-string aggregateRootName = steroTypeProperties.PropertyInstances
+string aggregateRootName = stereoTypeProperties.PropertyInstances
 	.Single(property => property.Name == "AggregateRootName")
 	.Value;
 string entityPersistenceTechnology = GetEntityPersistenceTechnology(this.Element);

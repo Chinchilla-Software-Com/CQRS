@@ -27,6 +27,8 @@
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IPackage" />
       </metaclasses>
+      <properties>
+      </properties>
     </stereotype>
 
     <stereotype name="Html" displayName="Html">
@@ -97,6 +99,16 @@
           </propertyType>
         </property>
         <property name="BuildRepository" displayName="BuildRepository: Automatically adds a respository for the aggregate" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="BuildService" displayName="BuildService: Automatically adds a service for the aggregate" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="BuildDataStore" displayName="BuildDataStore: Automatically adds a data store" defaultValue="true">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
