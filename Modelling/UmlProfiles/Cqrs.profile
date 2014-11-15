@@ -301,6 +301,8 @@
       <enumerationLiterals>
         <enumerationLiteral name="MongoDb" displayName="MongoDB" />
         <enumerationLiteral name="AzureDocumentDb" displayName="Azure Document Db" />
+        <enumerationLiteral name="SqlServer" displayName="SqlServer" />
+        <enumerationLiteral name="MySqlServer" displayName="MySql Server" />
       </enumerationLiterals>
     </enumerationType>
 
@@ -308,6 +310,8 @@
       <enumerationLiterals>
         <enumerationLiteral name="GYEventStore" displayName="Greg Youngs EventStore" />
         <enumerationLiteral name="AzureDocumentDb" displayName="Azure Document Db" />
+        <enumerationLiteral name="SqlServer" displayName="SqlServer" />
+        <enumerationLiteral name="MySqlServer" displayName="MySql Server" />
       </enumerationLiterals>
     </enumerationType>
 
