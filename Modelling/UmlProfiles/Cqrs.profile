@@ -312,6 +312,7 @@
         <enumerationLiteral name="AzureDocumentDb" displayName="Azure Document Db" />
         <enumerationLiteral name="SqlServer" displayName="SqlServer" />
         <enumerationLiteral name="MySqlServer" displayName="MySql Server" />
+        <enumerationLiteral name="InProcessOnly" displayName="In Process Only" />
       </enumerationLiterals>
     </enumerationType>
 
