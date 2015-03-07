@@ -9,17 +9,17 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	public class AzureMessageBusReceiver<TAuthenticationToken> : AzureMessageBus<TAuthenticationToken>, IHandlerRegistrar
+	public class AzureEventBusReceiver<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IHandlerRegistrar
 	{
 		protected static IDictionary<Type, List<Action<IMessage>>> Routes { get; private set; }
 
-		static AzureMessageBusReceiver()
+		static AzureEventBusReceiver()
 		{
 			Routes = new Dictionary<Type, List<Action<IMessage>>>();
 		}
 
-		public AzureMessageBusReceiver(IConfigurationManager configurationManager, IEventSerialiser<TAuthenticationToken> eventSerialiser)
-			: base(configurationManager, eventSerialiser)
+		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser)
+			: base(configurationManager, messageSerialiser)
 		{
 			// Configure the callback options
 			OnMessageOptions options = new OnMessageOptions
@@ -29,7 +29,7 @@ namespace Cqrs.Azure.ServiceBus
 			};
 
 			// Callback to handle received messages
-			ServiceBusClient.OnMessage(ReceiveEvents, options);
+			ServiceBusClient.OnMessage(ReceiveEvent, options);
 		}
 
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler)
@@ -44,12 +44,12 @@ namespace Cqrs.Azure.ServiceBus
 			handlers.Add(DelegateAdjuster.CastArgument<IMessage, TMessage>(x => handler(x)));
 		}
 
-		protected virtual void ReceiveEvents(BrokeredMessage message)
+		protected virtual void ReceiveEvent(BrokeredMessage message)
 		{
 			try
 			{
 				Console.WriteLine("MessageID: " + message.MessageId);
-				IEvent<TAuthenticationToken> @event = EventSerialiser.DeserialisEvent(message.GetBody<string>());
+				IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(message.GetBody<string>());
 
 				List<Action<IMessage>> handlers;
 				if (!Routes.TryGetValue(@event.GetType(), out handlers))

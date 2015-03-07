@@ -6,16 +6,17 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using Cqrs.Commands;
 using Cqrs.Events;
 using Newtonsoft.Json;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	public class EventSerialiser<TAuthenticationToken> : IEventSerialiser<TAuthenticationToken>
+	public class MessageSerialiser<TAuthenticationToken> : IMessageSerialiser<TAuthenticationToken>
 	{
 		public static JsonSerializerSettings DefaultSettings { get; private set; }
 
-		static EventSerialiser()
+		static MessageSerialiser()
 		{
 			DefaultSettings = new JsonSerializerSettings
 			{
@@ -31,15 +32,25 @@ namespace Cqrs.Azure.ServiceBus
 			};
 		}
 
-		public string SerialisEvent<TEvent>(TEvent @event)
+		public string SerialiseEvent<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
 			return JsonConvert.SerializeObject(@event, DefaultSettings);
 		}
 
-		public IEvent<TAuthenticationToken> DeserialisEvent(string @event)
+		public string SerialiseCommand<TCommand>(TCommand command) where TCommand : ICommand<TAuthenticationToken>
+		{
+			return JsonConvert.SerializeObject(command, DefaultSettings);
+		}
+
+		public IEvent<TAuthenticationToken> DeserialiseEvent(string @event)
 		{
 			return JsonConvert.DeserializeObject<IEvent<TAuthenticationToken>>(@event, DefaultSettings);
+		}
+
+		public ICommand<TAuthenticationToken> DeserialiseCommand(string @event)
+		{
+			return JsonConvert.DeserializeObject<ICommand<TAuthenticationToken>>(@event, DefaultSettings);
 		}
 	}
 }
