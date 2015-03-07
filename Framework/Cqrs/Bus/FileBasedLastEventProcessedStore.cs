@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Specialized;
-using System.Configuration;
 using System.IO;
+using Cqrs.Configuration;
 
 namespace Cqrs.Bus
 {
@@ -13,10 +12,9 @@ namespace Cqrs.Bus
 
 		protected string FileName { get; private set; }
 
-		public FileBasedLastEventProcessedStore()
+		public FileBasedLastEventProcessedStore(IConfigurationManager configurationManager)
 		{
-			NameValueCollection appSettings = ConfigurationManager.AppSettings;
-			string location = appSettings[AppSettingsKey];
+			string location = configurationManager.GetSetting(AppSettingsKey);
 			if (string.IsNullOrEmpty(location))
 			{
 				location = AppSettingsDefaultValue;

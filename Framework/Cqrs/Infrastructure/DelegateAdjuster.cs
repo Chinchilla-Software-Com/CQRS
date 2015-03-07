@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Cqrs.Infrastructure
 {
-	internal static class DelegateAdjuster
+	public static class DelegateAdjuster
 	{
 		public static Action<TBase> CastArgument<TBase, TDerived>(Expression<Action<TDerived>> source)
 			where TDerived : TBase

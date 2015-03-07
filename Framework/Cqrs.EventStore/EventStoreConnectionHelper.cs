@@ -1,19 +1,22 @@
 ﻿using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Cqrs.Configuration;
 using EventStore.ClientAPI;
 
 namespace Cqrs.EventStore
 {
 	public class EventStoreConnectionHelper<TAuthenticationToken> : IEventStoreConnectionHelper
 	{
-		protected IEventBuilder<TAuthenticationToken> EventBuilder { get; set; }
+		protected IEventBuilder<TAuthenticationToken> EventBuilder { get; private set; }
 
-		public EventStoreConnectionHelper(IEventBuilder<TAuthenticationToken> eventBuilder)
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
+		public EventStoreConnectionHelper(IEventBuilder<TAuthenticationToken> eventBuilder, IConfigurationManager configurationManager)
 		{
 			EventBuilder = eventBuilder;
+			ConfigurationManager = configurationManager;
 		}
 
 		public virtual IEventStoreConnection GetEventStoreConnection()
@@ -25,7 +28,7 @@ namespace Cqrs.EventStore
 			connecting.Wait();
 
 			EventData connectionEvent = EventBuilder.CreateClientConnectedEvent(GetEventStoreClientName());
-			Task notify = connection.AppendToStreamAsync(GetEventStoreConnectionLogStreamName(), ExpectedVersion.Any, new[] { connectionEvent });
+			Task notify = connection.AppendToStreamAsync(GetEventStoreConnectionLogStreamName(), ExpectedVersion.Any, connectionEvent);
 			notify.Wait();
 
 			return connection;
@@ -33,18 +36,18 @@ namespace Cqrs.EventStore
 
 		protected virtual string GetEventStoreClientName()
 		{
-			return ConfigurationManager.AppSettings["Cqrs.EventStoreClientName"] ?? "Cqrs Default Client";
+			return ConfigurationManager.GetSetting("Cqrs.EventStoreClientName") ?? "Cqrs Default Client";
 		}
 
 		protected virtual string GetEventStoreConnectionLogStreamName()
 		{
-			return ConfigurationManager.AppSettings["Cqrs.EventStoreConnectionLogStreamName"] ?? "EventStore Connection Log Stream";
+			return ConfigurationManager.GetSetting("Cqrs.EventStoreConnectionLogStreamName") ?? "EventStore Connection Log Stream";
 		}
 
 		protected virtual IPEndPoint GetEventStoreIpEndPoint()
 		{
-			List<byte> eventStoreIp = (ConfigurationManager.AppSettings["Cqrs.EventStoreIp"] ?? "127.0.0.1").Split(new[] { '.' }).Select(ipPart => (byte)int.Parse(ipPart)).ToList();
-			string eventStorePortValue = ConfigurationManager.AppSettings["Cqrs.EventStorePort"];
+			List<byte> eventStoreIp = (ConfigurationManager.GetSetting("Cqrs.EventStoreIp") ?? "127.0.0.1").Split('.').Select(ipPart => (byte)int.Parse(ipPart)).ToList();
+			string eventStorePortValue = ConfigurationManager.GetSetting("Cqrs.EventStorePort");
 			int eventStorePort = 1113;
 			if (!string.IsNullOrWhiteSpace(eventStorePortValue))
 				eventStorePort = int.Parse(eventStorePortValue);

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Configuration;
+using Cqrs.Configuration;
 
 namespace Cqrs.Mongo.Factories
 {
@@ -9,11 +9,18 @@ namespace Cqrs.Mongo.Factories
 
 		public static string MongoDbtabaseNameKey = "CqrsMongoDbDatabaseName";
 
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
+		public MongoDataStoreConnectionStringFactory(IConfigurationManager configurationManager)
+		{
+			ConfigurationManager = configurationManager;
+		}
+
 		public string GetMongoConnectionString()
 		{
 			try
 			{
-				return ConfigurationManager.ConnectionStrings[MongoDbConnectionStringKey].ConnectionString;
+				return ConfigurationManager.GetSetting(MongoDbConnectionStringKey) ?? System.Configuration.ConfigurationManager.ConnectionStrings[MongoDbConnectionStringKey].ConnectionString;
 			}
 			catch (NullReferenceException exception)
 			{
@@ -23,7 +30,7 @@ namespace Cqrs.Mongo.Factories
 
 		public string GetMongoDatabaseName()
 		{
-			return ConfigurationManager.AppSettings[MongoDbtabaseNameKey];
+			return ConfigurationManager.GetSetting(MongoDbtabaseNameKey);
 		}
 	}
 }
