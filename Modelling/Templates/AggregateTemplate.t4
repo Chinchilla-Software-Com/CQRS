@@ -81,6 +81,23 @@ namespace <#= classNamespace #>
 			}
 #>
 		}
+
+		/// <summary>
+		/// A constructor for the <see cref="Cqrs.Domain.Factories.IAggregateFactory"/>
+		/// </summary>
+		private <#= className #>(IDependencyResolver dependencyResolver, ILog log)
+		{
+			DependencyResolver = dependencyResolver;
+			Log = log;
+<#
+			foreach(IProperty collectionProperty in collectionProperties.Where(property => property.UpperValue != null && property.UpperValue.ToString() == "*").ToList())
+			{
+#>
+			<#= collectionProperty.Name #> = new List<<#= GetDisplayType(collectionProperty) #>>();
+<#
+			}
+#>
+		}
 // ReSharper restore UnusedMember.Local
 
 		public <#= className #>(IDependencyResolver dependencyResolver, ILog log, Guid rsn)
