@@ -48,7 +48,7 @@ namespace Cqrs.Azure.DocumentDb.Factories
 
 		protected virtual IOrderedQueryable<TEntity> GetQuery<TEntity>(DocumentClient client, DocumentCollection collection)
 		{
-			Logger.LogDebug("Getting Azure query", "AzureDocumentDbDataStoreFactory\\GetQuery");
+			Logger.LogInfo("Getting Azure query", "AzureDocumentDbDataStoreFactory\\GetQuery");
 			try
 			{
 				IOrderedQueryable<TEntity> query = client.CreateDocumentQuery<TEntity>(collection.SelfLink);
@@ -57,7 +57,7 @@ namespace Cqrs.Azure.DocumentDb.Factories
 			}
 			finally
 			{
-				Logger.LogDebug("Getting Azure query... Done", "AzureDocumentDbDataStoreFactory\\GetQuery");
+				Logger.LogInfo("Getting Azure query... Done", "AzureDocumentDbDataStoreFactory\\GetQuery");
 			}
 		}
 

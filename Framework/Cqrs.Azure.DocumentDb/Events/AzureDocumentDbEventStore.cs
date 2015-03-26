@@ -57,7 +57,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 		protected override async void PersitEvent(EventData eventData)
 		{
-			Logger.LogDebug("Persisting aggregate root event", string.Format("{0}\\PersitEvent", GetType().Name));
+			Logger.LogInfo("Persisting aggregate root event", string.Format("{0}\\PersitEvent", GetType().Name));
 			try
 			{
 				using (DocumentClient client = AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionClient())
@@ -65,13 +65,13 @@ namespace Cqrs.Azure.DocumentDb.Events
 					Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()).Result;
 					DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, "CqrsEventStore").Result;
 
-					Logger.LogDebug("Creating document for event asyncronously", string.Format("{0}\\PersitEvent", GetType().Name));
+					Logger.LogInfo("Creating document for event asyncronously", string.Format("{0}\\PersitEvent", GetType().Name));
 					await client.CreateDocumentAsync(collection.SelfLink, eventData);
 				}
 			}
 			finally
 			{
-				Logger.LogDebug("Persisting aggregate root event... Done", string.Format("{0}\\PersitEvent", GetType().Name));
+				Logger.LogInfo("Persisting aggregate root event... Done", string.Format("{0}\\PersitEvent", GetType().Name));
 			}
 		}
 	}

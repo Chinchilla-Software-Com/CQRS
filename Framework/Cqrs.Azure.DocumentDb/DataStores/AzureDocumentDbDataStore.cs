@@ -53,18 +53,18 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// <filterpriority>1</filterpriority>
 		public IEnumerator<TData> GetEnumerator()
 		{
-			Logger.LogDebug("Getting the enumerator for an Azure database query", "AzureDocumentDbDataStore\\GetEnumerator");
+			Logger.LogInfo("Getting the enumerator for an Azure database query", "AzureDocumentDbDataStore\\GetEnumerator");
 			try
 			{
 				DateTime start = DateTime.Now;
 				IEnumerator<TData> result = AzureDocumentDbQuery.GetEnumerator();
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Getting the enumerator for an Azure database query took {0}", end - start), "AzureDocumentDbDataStore\\GetEnumerator");
+				Logger.LogInfo(string.Format("Getting the enumerator for an Azure database query took {0}", end - start), "AzureDocumentDbDataStore\\GetEnumerator");
 				return result;
 			}
 			finally
 			{
-				Logger.LogDebug("Getting the enumerator for an Azure database query... Done", "AzureDocumentDbDataStore\\GetEnumerator");
+				Logger.LogInfo("Getting the enumerator for an Azure database query... Done", "AzureDocumentDbDataStore\\GetEnumerator");
 			}
 		}
 
@@ -123,23 +123,23 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		public void Add(TData data)
 		{
-			Logger.LogDebug("Adding data to the Azure database", "AzureDocumentDbDataStore\\Add");
+			Logger.LogInfo("Adding data to the Azure database", "AzureDocumentDbDataStore\\Add");
 			try
 			{
 				DateTime start = DateTime.Now;
 				ResourceResponse<Document> result = AzureDocumentDbClient.CreateDocumentAsync((AzureDocumentDbCollection).SelfLink, data).Result;
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Adding data in the Azure database took {0} and cost:r\n{1}", end - start, result), "AzureDocumentDbDataStore\\Add");
+				Logger.LogInfo(string.Format("Adding data in the Azure database took {0} and cost:r\n{1}", end - start, result), "AzureDocumentDbDataStore\\Add");
 			}
 			finally
 			{
-				Logger.LogDebug("Adding data to the Azure database... Done", "AzureDocumentDbDataStore\\Add");
+				Logger.LogInfo("Adding data to the Azure database... Done", "AzureDocumentDbDataStore\\Add");
 			}
 		}
 
 		public void Add(IEnumerable<TData> data)
 		{
-			Logger.LogDebug("Adding data collection to the Azure database", "AzureDocumentDbDataStore\\Add");
+			Logger.LogInfo("Adding data collection to the Azure database", "AzureDocumentDbDataStore\\Add");
 			try
 			{
 				foreach (TData model in data)
@@ -149,13 +149,13 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			}
 			finally
 			{
-				Logger.LogDebug("Adding data collection to the Azure database... Done", "AzureDocumentDbDataStore\\Add");
+				Logger.LogInfo("Adding data collection to the Azure database... Done", "AzureDocumentDbDataStore\\Add");
 			}
 		}
 
 		public void Remove(TData data)
 		{
-			Logger.LogDebug("Removing data from the Azure database", "AzureDocumentDbDataStore\\Remove");
+			Logger.LogInfo("Removing data from the Azure database", "AzureDocumentDbDataStore\\Remove");
 			try
 			{
 				data.IsLogicallyDeleted = true;
@@ -163,44 +163,44 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			}
 			finally
 			{
-				Logger.LogDebug("Removing data from the Azure database... Done", "AzureDocumentDbDataStore\\Remove");
+				Logger.LogInfo("Removing data from the Azure database... Done", "AzureDocumentDbDataStore\\Remove");
 			}
 		}
 
 		public void RemoveAll()
 		{
-			Logger.LogDebug("Removing all from the Azure database", "AzureDocumentDbDataStore\\RemoveAll");
+			Logger.LogInfo("Removing all from the Azure database", "AzureDocumentDbDataStore\\RemoveAll");
 			try
 			{
 				ResourceResponse<DocumentCollection> result = AzureDocumentDbClient.DeleteDocumentCollectionAsync(AzureDocumentDbCollection.SelfLink, new RequestOptions()).Result;
 			}
 			finally
 			{
-				Logger.LogDebug("Removing all from the Azure database... Done", "AzureDocumentDbDataStore\\RemoveAll");
+				Logger.LogInfo("Removing all from the Azure database... Done", "AzureDocumentDbDataStore\\RemoveAll");
 			}
 		}
 
 		public void Update(TData data)
 		{
-			Logger.LogDebug("Updating data in the Azure database", "AzureDocumentDbDataStore\\Update");
+			Logger.LogInfo("Updating data in the Azure database", "AzureDocumentDbDataStore\\Update");
 			try
 			{
-				Logger.LogDebug("Getting existing document from the Azure database", "AzureDocumentDbDataStore\\Update");
+				Logger.LogInfo("Getting existing document from the Azure database", "AzureDocumentDbDataStore\\Update");
 				DateTime start = DateTime.Now;
 				Document documentToUpdate = AzureDocumentDbClient.CreateDocumentQuery(AzureDocumentDbCollection.DocumentsLink)
 						.Where(d => d.Id == data.Rsn.ToString())
 						.AsEnumerable()
 						.Single();
 				DateTime mid = DateTime.Now;
-				Logger.LogDebug(string.Format("Getting existing document from the Azure database took {0}", mid - start), "AzureDocumentDbDataStore\\Update");
-				Logger.LogDebug("Replacing existing document in the Azure database", "AzureDocumentDbDataStore\\Update");
+				Logger.LogInfo(string.Format("Getting existing document from the Azure database took {0}", mid - start), "AzureDocumentDbDataStore\\Update");
+				Logger.LogInfo("Replacing existing document in the Azure database", "AzureDocumentDbDataStore\\Update");
 				ResourceResponse<Document> result = AzureDocumentDbClient.ReplaceDocumentAsync(documentToUpdate.SelfLink, data).Result;
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Replacing existing document in the Azure database took {0} and cost:r\n{1}", end - mid, result), "AzureDocumentDbDataStore\\Update");
+				Logger.LogInfo(string.Format("Replacing existing document in the Azure database took {0} and cost:r\n{1}", end - mid, result), "AzureDocumentDbDataStore\\Update");
 			}
 			finally
 			{
-				Logger.LogDebug("Updating data in the Azure database... Done", "AzureDocumentDbDataStore\\Update");
+				Logger.LogInfo("Updating data in the Azure database... Done", "AzureDocumentDbDataStore\\Update");
 			}
 		}
 

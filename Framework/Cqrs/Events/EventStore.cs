@@ -36,7 +36,7 @@ namespace Cqrs.Events
 
 		public virtual void Save(IEvent<TAuthenticationToken> @event, Type aggregateRootType)
 		{
-			Logger.LogDebug("Saving aggregate root event", string.Format("{0}\\Save", GetType().Name));
+			Logger.LogInfo("Saving aggregate root event", string.Format("{0}\\Save", GetType().Name));
 			try
 			{
 				EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
@@ -46,7 +46,7 @@ namespace Cqrs.Events
 			}
 			finally
 			{
-				Logger.LogDebug("Saving aggregate root event... done", string.Format("{0}\\Save", GetType().Name));
+				Logger.LogInfo("Saving aggregate root event... done", string.Format("{0}\\Save", GetType().Name));
 			}
 		}
 
