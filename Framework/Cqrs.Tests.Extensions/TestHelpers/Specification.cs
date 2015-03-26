@@ -34,7 +34,7 @@ namespace Cqrs.Tests.Extensions.TestHelpers
 			var eventstorage = new SpecEventStorage(Given().ToList());
 			var snapshotstorage = new SpecSnapShotStorage(Snapshot);
 			var eventpublisher = new SpecEventPublisher();
-			var aggregateFactory = new AggregateFactory();
+			var aggregateFactory = new AggregateFactory(null);
 
 			var snapshotStrategy = new DefaultSnapshotStrategy<ISingleSignOnToken>();
 			var repository = new SnapshotRepository<ISingleSignOnToken>(snapshotstorage, snapshotStrategy, new Repository<ISingleSignOnToken>(aggregateFactory, eventstorage, eventpublisher), eventstorage, aggregateFactory);

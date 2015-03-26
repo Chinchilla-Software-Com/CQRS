@@ -27,7 +27,7 @@ namespace Cqrs.Tests.Cache
 				MemoryCache.Default.Remove(cacheKey);
 
 			_testStore = new TestInMemoryEventStore();
-			var aggregateFactory = new AggregateFactory();
+			var aggregateFactory = new AggregateFactory(null);
 			_rep1 = new CacheRepository<ISingleSignOnToken>(new Repository<ISingleSignOnToken>(aggregateFactory, _testStore, new TestEventPublisher()), _testStore);
 
 			_aggregate1 = new TestAggregate(Guid.NewGuid());
