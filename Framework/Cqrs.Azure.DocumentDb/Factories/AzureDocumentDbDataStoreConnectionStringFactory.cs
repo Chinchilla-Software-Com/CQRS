@@ -1,7 +1,7 @@
 ﻿using System;
 using Cqrs.Logging;
+using Microsoft.Azure;
 using Microsoft.Azure.Documents.Client;
-using Microsoft.WindowsAzure;
 
 namespace Cqrs.Azure.DocumentDb.Factories
 {
