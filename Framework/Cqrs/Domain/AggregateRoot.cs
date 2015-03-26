@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Cqrs.Domain.Exception;
 using Cqrs.Events;
@@ -52,7 +53,7 @@ namespace Cqrs.Domain
 
 		public void LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>> history)
 		{
-			foreach (IEvent<TAuthenticationToken> @event in history)
+			foreach (IEvent<TAuthenticationToken> @event in history.OrderBy(e =>e.Version))
 			{
 				if (@event.Version != Version + 1)
 					throw new EventsOutOfOrderException(@event.Id);
