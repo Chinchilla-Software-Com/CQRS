@@ -19,7 +19,7 @@ namespace Cqrs.Domain.Factories
 		{
 			try
 			{
-				DependencyResolver.Resolve<TAggregate>();
+				return DependencyResolver.Resolve<TAggregate>();
 			}
 			catch (System.Exception dependencyResolverException)
 			{
