@@ -11,8 +11,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Cqrs.Azure.DocumentDb.Entities;
 using Cqrs.DataStores;
-using Cqrs.Entities;
 using Cqrs.Logging;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
@@ -21,7 +21,7 @@ using Microsoft.Azure.Documents.Linq;
 namespace Cqrs.Azure.DocumentDb.DataStores
 {
 	public class AzureDocumentDbDataStore<TData> : IDataStore<TData>
-		where TData : Entity
+		where TData : AzureDocumentDbEntity
 	{
 		protected DocumentClient AzureDocumentDbClient { get; private set; }
 
@@ -188,7 +188,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 				Logger.LogInfo("Getting existing document from the Azure database", "AzureDocumentDbDataStore\\Update");
 				DateTime start = DateTime.Now;
 				Document documentToUpdate = AzureDocumentDbClient.CreateDocumentQuery(AzureDocumentDbCollection.DocumentsLink)
-						.Where(d => d.Id == data.Rsn.ToString())
+						.Where(d => d.Id == data.id)
 						.AsEnumerable()
 						.Single();
 				DateTime mid = DateTime.Now;
