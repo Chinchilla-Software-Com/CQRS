@@ -14,10 +14,21 @@ namespace Cqrs.Azure.DocumentDb.Entities
 
 		[Required]
 		[DataMember]
-		public virtual Guid id
+		public virtual string id
 		{
-			get { return Rsn; }
-			set { Rsn = value; }
+			get { return string.Format("{0}/{1:N}", GetType().FullName, Rsn); }
+			set
+			{
+				Rsn = new Guid(value.Split('/')[1]);
+			}
+		}
+
+		[Required]
+		[DataMember]
+		public virtual string type
+		{
+			get { return GetType().FullName; }
+			set{ }
 		}
 
 		[DataMember]

@@ -65,7 +65,7 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 
 			DocumentClient client = GetClient();
 			Database database = GetDatabase(client);
-			DocumentCollection collection = GetCollection<<#= moduleName #>.Entities.<#= elementName #>Entity>(client, database);
+			DocumentCollection collection = GetCollection(client, database);
 			IOrderedQueryable<<#= moduleName #>.Entities.<#= elementName #>Entity> query = GetQuery<<#= moduleName #>.Entities.<#= elementName #>Entity>(client, collection);
 
 			OnObtained<#= elementName #>Collection(ref client, ref database, ref collection, ref query);
