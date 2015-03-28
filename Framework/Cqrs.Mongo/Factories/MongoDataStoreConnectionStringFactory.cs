@@ -1,5 +1,6 @@
 ﻿using System;
 using Cqrs.Configuration;
+using Cqrs.Logging;
 
 namespace Cqrs.Mongo.Factories
 {
@@ -11,20 +12,28 @@ namespace Cqrs.Mongo.Factories
 
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
-		public MongoDataStoreConnectionStringFactory(IConfigurationManager configurationManager)
+		protected ILog Logger { get; private set; }
+
+		public MongoDataStoreConnectionStringFactory(IConfigurationManager configurationManager, ILog logger)
 		{
 			ConfigurationManager = configurationManager;
+			Logger = logger;
 		}
 
 		public string GetMongoConnectionString()
 		{
+			Logger.LogInfo("Getting MongoDB connection string", "MongoDataStoreConnectionStringFactory\\GetMongoConnectionString");
 			try
 			{
 				return ConfigurationManager.GetSetting(MongoDbConnectionStringKey) ?? System.Configuration.ConfigurationManager.ConnectionStrings[MongoDbConnectionStringKey].ConnectionString;
 			}
 			catch (NullReferenceException exception)
 			{
-				throw new NullReferenceException("No connection string named 'CqrsMongoDb' in the configuration file.", exception);
+				throw new NullReferenceException(string.Format("No connection string named '{0}' in the configuration file.", MongoDbConnectionStringKey), exception);
+			}
+			finally
+			{
+				Logger.LogInfo("Getting MongoDB connection string... Done", "MongoDataStoreConnectionStringFactory\\GetMongoConnectionString");
 			}
 		}
 
