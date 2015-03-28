@@ -45,9 +45,19 @@ namespace <#= classNamespace #>
 		// Methods
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
+		string methodResponseTypeName = "IServiceResponseWithResultData<";
 			string methodTypeName = MethodType(collectionMethod).Replace("<", "<Entities.");
-			if (!methodTypeName.Contains("<"))
-				methodTypeName = "Entities." + methodTypeName;
+			if (methodTypeName == "void")
+			{
+				methodResponseTypeName = "IServiceResponse";
+				methodTypeName = string.Empty;
+			}
+			else
+			{
+				if (!methodTypeName.Contains("<"))
+					methodTypeName = "Entities." + methodTypeName;
+				methodTypeName = methodTypeName + ">";
+			}
 
 			string methodParameterList = GetMethodParameterList(collectionMethod);
 			if (!string.IsNullOrWhiteSpace(methodParameterList))
@@ -66,15 +76,15 @@ namespace <#= classNamespace #>
 				methodSignatureParameter = string.Format("IServiceRequest<{0}> serviceRequest", authenticationTokenType);
 #>
 
-		public virtual IServiceResponseWithResultData<<#= methodTypeName #>> <#= collectionMethod.Name #>(<#= methodSignatureParameter #>)
+		public virtual <#= methodResponseTypeName #><#= methodTypeName #> <#= collectionMethod.Name #>(<#= methodSignatureParameter #>)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
-			IServiceResponseWithResultData<<#= methodTypeName #>> results = null;
+			<#= methodResponseTypeName #><#= methodTypeName #> results = null;
 			On<#= collectionMethod.Name #>(serviceRequest, ref results);
 			return results;
 		}
 
-		partial void On<#= collectionMethod.Name #>(<#= methodSignatureParameter #>, ref IServiceResponseWithResultData<<#= methodTypeName #>> results);
+		partial void On<#= collectionMethod.Name #>(<#= methodSignatureParameter #>, ref <#= methodResponseTypeName #><#= methodTypeName #> results);
 
 <#
 		}

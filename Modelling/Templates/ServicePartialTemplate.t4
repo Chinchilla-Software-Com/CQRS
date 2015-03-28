@@ -51,8 +51,17 @@ namespace <#= classNamespace #>
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
 			string methodTypeName = MethodType(collectionMethod).Replace("<", "<Entities.");
-			if (!methodTypeName.Contains("<"))
-				methodTypeName = "Entities." + methodTypeName;
+			if (methodTypeName == "void")
+			{
+				methodResponseTypeName = "IServiceResponse";
+				methodTypeName = string.Empty;
+			}
+			else
+			{
+				if (!methodTypeName.Contains("<"))
+					methodTypeName = "Entities." + methodTypeName;
+				methodTypeName = methodTypeName + ">";
+			}
 
 			string methodParameterList = GetMethodParameterList(collectionMethod);
 			if (!string.IsNullOrWhiteSpace(methodParameterList))
@@ -67,7 +76,7 @@ namespace <#= classNamespace #>
 			methodSignatureParameter = string.Format("IServiceRequest<{0}> serviceRequest", authenticationTokenType);
 #>
 
-		partial void On<#= collectionMethod.Name #>(<#= methodSignatureParameter #>, ref IServiceResponseWithResultData<<#= methodTypeName #>> results)
+		partial void On<#= collectionMethod.Name #>(<#= methodSignatureParameter #>, ref <#= methodResponseTypeName #><#= methodTypeName #> results)
 		{
 			throw new NotImplementedException();
 		}
