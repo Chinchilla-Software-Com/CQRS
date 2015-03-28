@@ -42,9 +42,19 @@ namespace <#= classNamespace #>
 		// Methods
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
+			string methodResponseTypeName = "IServiceResponseWithResultData<";
 			string methodTypeName = MethodType(collectionMethod).Replace("<", "<Entities.");
-			if (!methodTypeName.Contains("<"))
-				methodTypeName = "Entities." + methodTypeName;
+			if (methodTypeName == "void")
+			{
+				methodResponseTypeName = "IServiceResponse";
+				methodTypeName = string.Empty;
+			}
+			else
+			{
+				if (!methodTypeName.Contains("<"))
+					methodTypeName = "Entities." + methodTypeName;
+				methodTypeName = methodTypeName + ">";
+			}
 
 		string methodSignatureParameter = string.Empty;
 
@@ -55,7 +65,7 @@ namespace <#= classNamespace #>
 			methodSignatureParameter = string.Format("IServiceRequest<{0}> serviceRequest", authenticationTokenType);
 #>
 		[OperationContract]
-		IServiceResponseWithResultData<<#= methodTypeName #>> <#= collectionMethod.Name #>(<#= methodSignatureParameter #>);
+		<#= methodResponseTypeName #><#= methodTypeName #> <#= collectionMethod.Name #>(<#= methodSignatureParameter #>);
 
 <#
 		}
