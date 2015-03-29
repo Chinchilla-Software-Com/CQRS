@@ -21,24 +21,14 @@ namespace Cqrs.Bus
 			Routes = new Dictionary<Type, List<Action<IMessage>>>();
 		}
 
-		public void RegisterHandler<TMessage>(Action<TMessage> handler)
-			where TMessage : IMessage
-		{
-			List<Action<IMessage>> handlers;
-			if(!Routes.TryGetValue(typeof(TMessage), out handlers))
-			{
-				handlers = new List<Action<IMessage>>();
-				Routes.Add(typeof(TMessage), handlers);
-			}
-			handlers.Add(DelegateAdjuster.CastArgument<IMessage, TMessage>(x => handler(x)));
-		}
+		#region Implementation of ICommandSender<TAuthenticationToken>
 
-		public void Send<TCommand>(TCommand command)
+		public virtual void Send<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 
-			List<Action<IMessage>> handlers; 
+			List<Action<IMessage>> handlers;
 			if (Routes.TryGetValue(typeof(TCommand), out handlers))
 			{
 				if (handlers.Count != 1)
@@ -51,16 +41,41 @@ namespace Cqrs.Bus
 			}
 		}
 
-		public void Publish<TEvent>(TEvent @event)
+		#endregion
+
+		#region Implementation of IEventPublisher<TAuthenticationToken>
+
+		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
 			@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 
-			List<Action<IMessage>> handlers; 
+			List<Action<IMessage>> handlers;
 			if (!Routes.TryGetValue(@event.GetType(), out handlers))
 				return;
-			foreach(Action<IMessage> handler in handlers)
+			foreach (Action<IMessage> handler in handlers)
 				handler(@event);
 		}
+
+		#endregion
+
+		#region Implementation of IHandlerRegistrar
+
+		/// <summary>
+		/// Register an event or command handler that will listen and respond to events or commands.
+		/// </summary>
+		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler)
+			where TMessage : IMessage
+		{
+			List<Action<IMessage>> handlers;
+			if (!Routes.TryGetValue(typeof(TMessage), out handlers))
+			{
+				handlers = new List<Action<IMessage>>();
+				Routes.Add(typeof(TMessage), handlers);
+			}
+			handlers.Add(DelegateAdjuster.CastArgument<IMessage, TMessage>(x => handler(x)));
+		}
+
+		#endregion
 	}
 }
