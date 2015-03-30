@@ -47,7 +47,7 @@ namespace Cqrs.Ninject.InProcess.EventBus.Configuration
 		public virtual void RegisterCqrsRequirements()
 		{
 			bool isInProcessBusBound = Kernel.GetBindings(typeof (InProcessBus<TAuthenticationToken>)).Any();
-			InProcessBus<TAuthenticationToken> inProcessBus = null;
+			InProcessBus<TAuthenticationToken> inProcessBus;
 			if (!isInProcessBusBound)
 			{
 				inProcessBus = Kernel.Get<InProcessBus<TAuthenticationToken>>();
