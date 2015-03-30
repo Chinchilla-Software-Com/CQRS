@@ -65,6 +65,8 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected virtual void ReceiveEvent(IEvent<TAuthenticationToken> @event)
 		{
+			AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
+
 			List<Action<IMessage>> handlers;
 			if (!Routes.TryGetValue(@event.GetType(), out handlers))
 				return;

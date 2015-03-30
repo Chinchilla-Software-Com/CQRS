@@ -66,6 +66,8 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected virtual void ReceiveCommand(ICommand<TAuthenticationToken> command)
 		{
+			AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
+
 			List<Action<IMessage>> handlers;
 			if (Routes.TryGetValue(command.GetType(), out handlers))
 			{

@@ -1,4 +1,5 @@
 ﻿using System;
+using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
@@ -27,9 +28,12 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected abstract string DefaultPublicQueueName { get; }
 
-		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser)
+		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
+
+		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
 		{
 			MessageSerialiser = messageSerialiser;
+			AuthenticationTokenHelper = authenticationTokenHelper;
 			// Create the queue if it does not exist already
 			ConnectionString = configurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
 
