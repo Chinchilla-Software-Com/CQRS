@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
@@ -18,8 +19,8 @@ namespace Cqrs.Azure.ServiceBus
 			Routes = new Dictionary<Type, List<Action<IMessage>>>();
 		}
 
-		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser)
-			: base(configurationManager, messageSerialiser)
+		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper)
 		{
 			// Configure the callback options
 			OnMessageOptions options = new OnMessageOptions

@@ -1,4 +1,5 @@
-﻿using Cqrs.Commands;
+﻿using Cqrs.Authentication;
+using Cqrs.Commands;
 using Cqrs.Configuration;
 using Microsoft.ServiceBus.Messaging;
 
@@ -6,8 +7,8 @@ namespace Cqrs.Azure.ServiceBus
 {
 	public class AzureCommandBusPublisher<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, ICommandSender<TAuthenticationToken>
 	{
-		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser)
-			: base(configurationManager, messageSerialiser)
+		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper)
 		{
 		}
 

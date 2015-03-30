@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Cqrs.Authentication;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
 using Cqrs.Configuration;
 using Cqrs.Messages;
@@ -16,6 +17,23 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 	[TestClass]
 	public class RoundTripTests
 	{
+		public class GuidSingleSignOnTokenValueHelper : IAuthenticationTokenHelper<Guid>
+		{
+			#region IAuthenticationTokenHelper<Guid> Members
+
+			public Guid GetAuthenticationToken()
+			{
+				return Guid.Empty;
+			}
+
+			public Guid SetAuthenticationToken(Guid permissionScope)
+			{
+				return Guid.Empty;
+			}
+
+			#endregion
+		}
+
 		[TestMethod]
 		public void Publish_TestEvent_NoExceptions()
 		{
@@ -26,10 +44,10 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			testResponse.Add(processId, new Tuple<bool, Exception>(false, null));
 			var @event = new TestEvent{Id = processId};
 
-			var azureEventBusReceiver = new AzureEventBusReceiver<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>());
+			var azureEventBusReceiver = new AzureEventBusReceiver<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper());
 			azureEventBusReceiver.RegisterHandler<TestEvent>(new TestEventSuccessHandler(testResponse).Handle);
 
-			var azureEventBusPublisher = new AzureEventBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>());
+			var azureEventBusPublisher = new AzureEventBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper());
 
 			// Act
 			azureEventBusPublisher.Publish(@event);
@@ -49,10 +67,10 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			testResponse.Add(processId, new Tuple<bool, Exception>(false, null));
 			var command = new TestCommand { Id = processId };
 
-			var azureCommandBusReceiver = new AzureCommandBusReceiver<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>());
+			var azureCommandBusReceiver = new AzureCommandBusReceiver<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper());
 			azureCommandBusReceiver.RegisterHandler<TestCommand>(new TestCommandSuccessHandler(testResponse).Handle);
 
-			var azureCommandBusPublisher = new AzureCommandBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>());
+			var azureCommandBusPublisher = new AzureCommandBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper());
 
 			// Act
 			azureCommandBusPublisher.Send(command);
