@@ -51,11 +51,7 @@ namespace Cqrs.Azure.ServiceBus
 				Console.WriteLine("MessageID: " + message.MessageId);
 				IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(message.GetBody<string>());
 
-				List<Action<IMessage>> handlers;
-				if (!Routes.TryGetValue(@event.GetType(), out handlers))
-					return;
-				foreach (Action<IMessage> handler in handlers)
-					handler(@event);
+				ReceiveEvent(@event);
 
 				// Remove message from queue
 				message.Complete();
@@ -65,6 +61,15 @@ namespace Cqrs.Azure.ServiceBus
 				// Indicates a problem, unlock message in queue
 				message.Abandon();
 			}
+		}
+
+		protected virtual void ReceiveEvent(IEvent<TAuthenticationToken> @event)
+		{
+			List<Action<IMessage>> handlers;
+			if (!Routes.TryGetValue(@event.GetType(), out handlers))
+				return;
+			foreach (Action<IMessage> handler in handlers)
+				handler(@event);
 		}
 	}
 }

@@ -52,17 +52,7 @@ namespace Cqrs.Azure.ServiceBus
 				Console.WriteLine("MessageID: " + message.MessageId);
 				ICommand<TAuthenticationToken> command = MessageSerialiser.DeserialiseCommand(message.GetBody<string>());
 
-				List<Action<IMessage>> handlers;
-				if (Routes.TryGetValue(command.GetType(), out handlers))
-				{
-					if (handlers.Count != 1)
-						throw new InvalidOperationException("Cannot send to more than one handler");
-					handlers.Single()(command);
-				}
-				else
-				{
-					throw new InvalidOperationException("No handler registered");
-				}
+				ReceiveCommand(command);
 
 				// Remove message from queue
 				message.Complete();
@@ -71,6 +61,21 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				// Indicates a problem, unlock message in queue
 				message.Abandon();
+			}
+		}
+
+		protected virtual void ReceiveCommand(ICommand<TAuthenticationToken> command)
+		{
+			List<Action<IMessage>> handlers;
+			if (Routes.TryGetValue(command.GetType(), out handlers))
+			{
+				if (handlers.Count != 1)
+					throw new InvalidOperationException("Cannot send to more than one handler");
+				handlers.Single()(command);
+			}
+			else
+			{
+				throw new InvalidOperationException("No handler registered");
 			}
 		}
 	}
