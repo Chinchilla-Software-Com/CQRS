@@ -9,7 +9,7 @@ using Cqrs.Messages;
 
 namespace Cqrs.Bus
 {
-	public class InProcessBus<TAuthenticationToken> : ICommandSender<TAuthenticationToken>, IEventPublisher<TAuthenticationToken>, IHandlerRegistrar
+	public class InProcessBus<TAuthenticationToken> : ICommandSender<TAuthenticationToken>, IEventPublisher<TAuthenticationToken>, IEventHandlerRegistrar, ICommandHandlerRegistrar
 	{
 		private Dictionary<Type, List<Action<IMessage>>> Routes { get; set; }
 

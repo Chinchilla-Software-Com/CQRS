@@ -10,7 +10,7 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	public class AzureCommandBusReceiver<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, IHandlerRegistrar
+	public class AzureCommandBusReceiver<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, ICommandHandlerRegistrar
 	{
 		protected static IDictionary<Type, List<Action<IMessage>>> Routes { get; private set; }
 

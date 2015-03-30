@@ -23,14 +23,21 @@ namespace Cqrs.Configuration
 
 		public void Register(params Type[] typesFromAssemblyContainingMessages)
 		{
-			var bus = DependencyResolver.Resolve<IHandlerRegistrar>();
-			
+			var eventHandlerRegistrar = DependencyResolver.Resolve<IEventHandlerRegistrar>();
+			Register(eventHandlerRegistrar, ResolveEventHandlerInterface, typesFromAssemblyContainingMessages);
+
+			var commandHandlerRegistrar = DependencyResolver.Resolve<ICommandHandlerRegistrar>();
+			Register(commandHandlerRegistrar, ResolveCommandHandlerInterface, typesFromAssemblyContainingMessages);
+		}
+
+		public void Register(IHandlerRegistrar handlerRegistrar, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, params Type[] typesFromAssemblyContainingMessages)
+		{
 			foreach (Type typesFromAssemblyContainingMessage in typesFromAssemblyContainingMessages)
 			{
 				Assembly executorsAssembly = typesFromAssemblyContainingMessage.Assembly;
 				var executorTypes = executorsAssembly
 					.GetTypes()
-					.Select(type => new { Type = type, Interfaces = ResolveMessageHandlerInterface(type) })
+					.Select(type => new { Type = type, Interfaces = resolveMessageHandlerInterface(type) })
 					.Where(type => type.Interfaces != null && type.Interfaces.Any());
 
 				foreach (var executorType in executorTypes)
@@ -43,7 +50,7 @@ namespace Cqrs.Configuration
 							Type[] genericArguments = typesFromAssemblyContainingMessage.GetGenericArguments().Take(2).ToArray();
 							safeExecutorType = safeExecutorType.MakeGenericType(genericArguments.Take(2).ToArray());
 						}
-						InvokeHandler(@interface, bus, safeExecutorType);
+						InvokeHandler(@interface, handlerRegistrar, safeExecutorType);
 					}
 				}
 			}
@@ -115,7 +122,21 @@ namespace Cqrs.Configuration
 			return originalRegisterExecutorMethod.MakeGenericMethod(safeCommandType);
 		}
 
-		private IEnumerable<Type> ResolveMessageHandlerInterface(Type type)
+		private IEnumerable<Type> ResolveEventHandlerInterface(Type type)
+		{
+			return type
+				.GetInterfaces()
+				.Where
+				(
+					@interface =>
+						@interface.IsGenericType &&
+						(
+							@interface.GetGenericTypeDefinition() == typeof(IEventHandler<,>)
+						)
+				);
+		}
+
+		private IEnumerable<Type> ResolveCommandHandlerInterface(Type type)
 		{
 			return type
 				.GetInterfaces()
@@ -125,8 +146,6 @@ namespace Cqrs.Configuration
 						@interface.IsGenericType &&
 						(
 							@interface.GetGenericTypeDefinition() == typeof(ICommandHandler<,>)
-								||
-							@interface.GetGenericTypeDefinition() == typeof(IEventHandler<,>)
 						)
 				);
 		}
