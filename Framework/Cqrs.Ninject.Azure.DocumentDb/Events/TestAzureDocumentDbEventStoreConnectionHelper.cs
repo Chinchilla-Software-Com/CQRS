@@ -35,7 +35,7 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Events
 
 		#region Implementation of IAzureDocumentDbDataStoreConnectionStringFactory
 
-		public override string GetEventStoreConnectionLogStreamName()
+		public override string GetEventStoreConnectionDatabaseName()
 		{
 			return DatabaseName;
 		}
