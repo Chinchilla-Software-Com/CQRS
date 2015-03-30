@@ -15,5 +15,7 @@ namespace Cqrs.Azure.DocumentDb.Factories
 		DocumentClient GetAzureDocumentDbConnectionClient();
 
 		string GetAzureDocumentDbDatabaseName();
+
+		string GetAzureDocumentDbCollectionName();
 	}
 }

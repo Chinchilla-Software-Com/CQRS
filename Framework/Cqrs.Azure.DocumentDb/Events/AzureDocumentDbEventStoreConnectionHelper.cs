@@ -27,9 +27,14 @@ namespace Cqrs.Azure.DocumentDb.Events
 			}
 		}
 
-		public virtual string GetEventStoreConnectionLogStreamName()
+		public virtual string GetEventStoreConnectionDatabaseName()
 		{
-			return CloudConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.LogStreamName") ?? "CqrsEventStore";
+			return CloudConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.DatabaseName") ?? CloudConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.LogStreamName") ?? "CqrsEventStore";
+		}
+
+		public string GetEventStoreConnectionCollectionName()
+		{
+			return CloudConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.CollectionName") ?? "CqrsEventStore";
 		}
 
 		protected virtual Uri GetEventStoreConnectionUrl()

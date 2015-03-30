@@ -40,8 +40,8 @@ namespace Cqrs.Azure.DocumentDb.Events
 		{
 			using (DocumentClient client = AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionClient())
 			{
-				Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()).Result;
-				DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, "CqrsEventStore").Result;
+				Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionDatabaseName()).Result;
+				DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionCollectionName()).Result;
 
 				IOrderedQueryable<EventData> query = client.CreateDocumentQuery<EventData>(collection.SelfLink);
 				string streamName = string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, aggregateId);
@@ -62,8 +62,8 @@ namespace Cqrs.Azure.DocumentDb.Events
 			{
 				using (DocumentClient client = AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionClient())
 				{
-					Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionLogStreamName()).Result;
-					DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, "CqrsEventStore").Result;
+					Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionDatabaseName()).Result;
+					DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionCollectionName()).Result;
 
 					Logger.LogInfo("Creating document for event asyncronously", string.Format("{0}\\PersitEvent", GetType().Name));
 					client.CreateDocumentAsync(collection.SelfLink, eventData).Wait();

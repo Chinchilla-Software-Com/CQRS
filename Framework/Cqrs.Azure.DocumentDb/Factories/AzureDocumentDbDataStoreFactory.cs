@@ -41,7 +41,7 @@ namespace Cqrs.Azure.DocumentDb.Factories
 
 		protected virtual DocumentCollection GetCollection(DocumentClient client, Database database)
 		{
-			DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, "CqrsDataStore").Result;
+			DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbCollectionName()).Result;
 
 			return collection;
 		}
