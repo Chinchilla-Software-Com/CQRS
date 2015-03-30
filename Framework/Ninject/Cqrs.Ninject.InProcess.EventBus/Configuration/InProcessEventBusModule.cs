@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using Cqrs.Authentication;
 using Cqrs.Bus;
-using Cqrs.Commands;
 using Cqrs.Events;
 using Ninject;
 using Ninject.Modules;
@@ -62,10 +60,10 @@ namespace Cqrs.Ninject.InProcess.EventBus.Configuration
 				.ToConstant(inProcessBus)
 				.InSingletonScope();
 
-			bool isHandlerRegistrationBound = Kernel.GetBindings(typeof(IHandlerRegistrar)).Any();
+			bool isHandlerRegistrationBound = Kernel.GetBindings(typeof(IEventHandlerRegistrar)).Any();
 			if (!isHandlerRegistrationBound)
 			{
-				Bind<IHandlerRegistrar>()
+				Bind<IEventHandlerRegistrar>()
 					.ToConstant(inProcessBus)
 					.InSingletonScope();
 			}
