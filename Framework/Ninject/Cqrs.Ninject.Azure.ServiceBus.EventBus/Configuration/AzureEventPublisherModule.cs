@@ -1,4 +1,5 @@
-﻿using Cqrs.Azure.ServiceBus;
+﻿using System.Linq;
+using Cqrs.Azure.ServiceBus;
 using Cqrs.Events;
 using Ninject.Modules;
 
@@ -17,6 +18,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 		public override void Load()
 		{
 			RegisterEventPublisher();
+			RegisterEventMessageSerialiser();
 		}
 
 		#endregion
@@ -29,6 +31,20 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 			Bind<IEventPublisher<TAuthenticationToken>>()
 				.To<AzureEventBusPublisher<TAuthenticationToken>>()
 				.InSingletonScope();
+		}
+
+		/// <summary>
+		/// Register the Cqrs event handler message serialiser
+		/// </summary>
+		public virtual void RegisterEventMessageSerialiser()
+		{
+			bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IMessageSerialiser<TAuthenticationToken>)).Any();
+			if (!isMessageSerialiserBound)
+			{
+				Bind<IMessageSerialiser<TAuthenticationToken>>()
+					.To<MessageSerialiser<TAuthenticationToken>>()
+					.InSingletonScope();
+			}
 		}
 	}
 }

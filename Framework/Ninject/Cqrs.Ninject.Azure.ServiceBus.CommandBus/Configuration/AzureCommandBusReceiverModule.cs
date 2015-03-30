@@ -1,5 +1,7 @@
-﻿using Cqrs.Azure.ServiceBus;
+﻿using System.Linq;
+using Cqrs.Azure.ServiceBus;
 using Cqrs.Bus;
+using Ninject;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
@@ -17,6 +19,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		public override void Load()
 		{
 			RegisterCommandHandlerRegistrar();
+			RegisterCommandMessageSerialiser();
 		}
 
 		#endregion
@@ -29,6 +32,20 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 			Bind<ICommandHandlerRegistrar>()
 				.To<AzureCommandBusReceiver<TAuthenticationToken>>()
 				.InSingletonScope();
+		}
+
+		/// <summary>
+		/// Register the Cqrs command handler message serialiser
+		/// </summary>
+		public virtual void RegisterCommandMessageSerialiser()
+		{
+			bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IMessageSerialiser<TAuthenticationToken>)).Any();
+			if (!isMessageSerialiserBound)
+			{
+				Bind<IMessageSerialiser<TAuthenticationToken>>()
+					.To<MessageSerialiser<TAuthenticationToken>>()
+					.InSingletonScope();
+			}
 		}
 	}
 }
