@@ -8,7 +8,7 @@ namespace Cqrs.Azure.ConfigurationManager
 
 		public string GetSetting(string key)
 		{
-			return Microsoft.WindowsAzure.CloudConfigurationManager.GetSetting(key);
+			return Microsoft.Azure.CloudConfigurationManager.GetSetting(key);
 		}
 
 		#endregion
