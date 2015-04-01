@@ -1,7 +1,9 @@
+using System;
+
 namespace Cqrs.Messages
 {
 	public interface IMessage
 	{
-		string CorrolationId { get; set; }
+		Guid CorrolationId { get; set; }
 	}
 }

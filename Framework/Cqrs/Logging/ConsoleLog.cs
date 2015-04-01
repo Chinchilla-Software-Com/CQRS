@@ -44,11 +44,11 @@ namespace Cqrs.Logging
 		{
 			ConsoleColor originalColour = Console.ForegroundColor;
 			Console.ForegroundColor = foregroundColor;
-			string corrolationId = CorrolationIdHelper.GetCorrolationId();
+			Guid corrolationId = CorrolationIdHelper.GetCorrolationId();
 
 			string pattern = "[{0}] {1:r}:";
-			if (!string.IsNullOrWhiteSpace(corrolationId))
-				pattern = "[{0}] [{7}] {1:r}:";
+			if (corrolationId != Guid.Empty)
+				pattern = "[{0}] [{7:N}] {1:r}:";
 			if (!string.IsNullOrWhiteSpace(container))
 				pattern = pattern + " {3}::";
 			pattern = pattern + " {2}";

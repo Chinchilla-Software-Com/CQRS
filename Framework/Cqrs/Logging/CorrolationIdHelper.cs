@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using System.Runtime.Remoting.Messaging;
 
 namespace Cqrs.Logging
@@ -16,12 +17,12 @@ namespace Cqrs.Logging
 
 		#region Implementation of ICorrolationIdHelper
 
-		public string GetCorrolationId()
+		public Guid GetCorrolationId()
 		{
-			return (string)CallContext.GetData(CallContextPermissoinScopeValueKey);
+			return (Guid)CallContext.GetData(CallContextPermissoinScopeValueKey);
 		}
 
-		public string SetCorrolationId(string corrolationId)
+		public Guid SetCorrolationId(Guid corrolationId)
 		{
 			CallContext.SetData(CallContextPermissoinScopeValueKey, corrolationId);
 			return corrolationId;

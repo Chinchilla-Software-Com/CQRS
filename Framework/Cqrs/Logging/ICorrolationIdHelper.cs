@@ -6,12 +6,14 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
+
 namespace Cqrs.Logging
 {
 	public interface ICorrolationIdHelper
 	{
-		string GetCorrolationId();
+		Guid GetCorrolationId();
 
-		string SetCorrolationId(string corrolationId);
+		Guid SetCorrolationId(Guid corrolationId);
 	}
 }

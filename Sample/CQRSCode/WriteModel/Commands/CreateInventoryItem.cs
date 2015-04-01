@@ -26,7 +26,7 @@ namespace CQRSCode.WriteModel.Commands
 
 		#region Implementation of IMessage
 
-		public string CorrolationId { get; set; }
+		public Guid CorrolationId { get; set; }
 
 		#endregion
 	}

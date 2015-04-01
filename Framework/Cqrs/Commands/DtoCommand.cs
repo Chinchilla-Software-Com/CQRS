@@ -39,7 +39,7 @@ namespace Cqrs.Commands
 		#region Implementation of IMessage
 
 		[DataMember]
-		public string CorrolationId { get; set; }
+		public Guid CorrolationId { get; set; }
 
 		#endregion
 	}

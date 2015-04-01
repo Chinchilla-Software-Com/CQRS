@@ -31,6 +31,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using Cqrs.Commands;
 using Cqrs.Authentication;
+using Cqrs.Logging;
 using Cqrs.Repositories.Queries;
 using Cqrs.Services;
 using <#= classNamespace #>.Commands;
@@ -55,12 +56,15 @@ namespace <#= classNamespace #>.Services
 
 		protected IAuthenticationTokenHelper<<#= authenticationTokenType #>> AuthenticationTokenHelper { get; set; }
 
-		public <#= className #>Service(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, I<#= className #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository)
+		protected ICorrolationIdHelper CorrolationIdHelper { get; set; }
+
+		public <#= className #>Service(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper, I<#= className #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository)
 		{
 			CommandSender = commandSender;
 			UnitOfWorkService = unitOfWorkService;
 			QueryFactory = queryFactory;
 			AuthenticationTokenHelper = authenticationTokenHelper;
+			CorrolationIdHelper = corrolationIdHelper;
 			<#= className #>Repository = <#= GetLowercaseFirstCharacter(className) #>Repository;
 		}
 
@@ -98,7 +102,7 @@ namespace <#= classNamespace #>.Services
 			OnCreated<#= className #>(serviceRequest, command);
 
 			UnitOfWorkService.Commit(this);
-			return new ServiceResponseWithResultData<Entities.<#= className #>Entity>(item);
+			return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity>(item));
 		}
 
 		partial void OnCreate<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, Create<#= className #>Command command);
@@ -129,7 +133,7 @@ namespace <#= classNamespace #>.Services
 
 			var locatedItem = <#= className #>Repository.Load(item.Rsn);
 			if (locatedItem == null)
-				return new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = ServiceResponseStateType.FailedValidation };
+				return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = ServiceResponseStateType.FailedValidation });
 
 			var command = new Update<#= className #>Command(item.Rsn<#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
@@ -143,15 +147,15 @@ namespace <#= classNamespace #>.Services
 			ServiceResponseStateType? serviceResponseStateType = null;
 			OnUpdate<#= className #>(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
 			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
-				return new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = serviceResponseStateType.Value };
+				return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = serviceResponseStateType.Value });
 
 			CommandSender.Send(command);
 			OnUpdated<#= className #>(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
 			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
-				return new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = serviceResponseStateType.Value };
+				return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = serviceResponseStateType.Value });
 
 			UnitOfWorkService.Commit(this);
-			return new ServiceResponseWithResultData<Entities.<#= className #>Entity>(item);
+			return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity>(item));
 		}
 
 		partial void OnUpdate<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, ref Update<#= className #>Command command, Entities.<#= className #>Entity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
@@ -182,24 +186,24 @@ namespace <#= classNamespace #>.Services
 
 			var locatedItem = <#= className #>Repository.Load(item.Rsn, false);
 			if (locatedItem == null)
-				return new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = ServiceResponseStateType.FailedValidation };
+				return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = ServiceResponseStateType.FailedValidation });
 
 			if (locatedItem.IsLogicallyDeleted)
-				return new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = ServiceResponseStateType.FailedValidation };
+				return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = ServiceResponseStateType.FailedValidation });
 
 			var command = new Delete<#= className #>Command(item.Rsn);
 			ServiceResponseStateType? serviceResponseStateType = null;
 			OnDelete<#= className #>(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
 			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
-				return new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = serviceResponseStateType.Value };
+				return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = serviceResponseStateType.Value });
 
 			CommandSender.Send(command);
 			OnDeleted<#= className #>(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
 			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
-				return new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = serviceResponseStateType.Value };
+				return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = serviceResponseStateType.Value });
 
 			UnitOfWorkService.Commit(this);
-			return new ServiceResponse();
+			return CompleteResponse(new ServiceResponse());
 		}
 
 		partial void OnDelete<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest, ref Delete<#= className #>Command command, Entities.<#= className #>Entity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
@@ -208,6 +212,13 @@ namespace <#= classNamespace #>.Services
 <#
 		}
 #>
+
+		protected virtual TServiceResponse CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
+			where TServiceResponse : IServiceResponse
+		{
+			serviceResponse.CorrolationId = CorrolationIdHelper.GetCorrolationId();
+			return serviceResponse;
+		}
 	}
 }
 <#+

@@ -6,21 +6,23 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
+
 namespace Cqrs.Logging
 {
 	/// <summary>
-	/// Always returns null
+	/// Always returns <see cref="Guid.Empty"/>
 	/// </summary>
 	public class NullCorrolationIdHelper : ICorrolationIdHelper
 	{
-		public string GetCorrolationId()
+		public Guid GetCorrolationId()
 		{
-			return null;
+			return Guid.Empty;
 		}
 
-		public string SetCorrolationId(string corrolationId)
+		public Guid SetCorrolationId(Guid corrolationId)
 		{
-			return null;
+			return Guid.Empty;
 		}
 	}
 }
