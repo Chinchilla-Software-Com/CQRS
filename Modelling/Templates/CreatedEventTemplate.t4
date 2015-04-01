@@ -33,6 +33,7 @@ namespace <#= classNamespace #>.Events
 	{
 		#region Implementation of IEvent
 
+		[DataMember]
 		public Guid Id
 		{
 			get
@@ -45,8 +46,10 @@ namespace <#= classNamespace #>.Events
 			}
 		}
 
+		[DataMember]
 		public int Version { get; set; }
 
+		[DataMember]
 		public DateTimeOffset TimeStamp { get; set; }
 
 		#endregion
@@ -57,6 +60,14 @@ namespace <#= classNamespace #>.Events
 
 		#endregion
 
+		#region Implementation of IMessage
+
+		[DataMember]
+		public string CorrolationId { get; set; }
+
+		#endregion
+
+		[DataMember]
 		public Guid Rsn { get; set; }
 
 <#
@@ -65,6 +76,7 @@ namespace <#= classNamespace #>.Events
 		foreach(IProperty collectionProperty in collectionProperties)
 		{
 #>
+		[DataMember]
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; private set; }
 
 <#

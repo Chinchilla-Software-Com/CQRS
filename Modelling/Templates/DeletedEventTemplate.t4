@@ -33,6 +33,7 @@ namespace <#= classNamespace #>.Events
 	{
 		#region Implementation of IEvent
 
+		[DataMember]
 		public Guid Id
 		{
 			get
@@ -45,18 +46,29 @@ namespace <#= classNamespace #>.Events
 			}
 		}
 
+		[DataMember]
 		public int Version { get; set; }
 
+		[DataMember]
 		public DateTimeOffset TimeStamp { get; set; }
 
 		#endregion
 
 		#region Implementation of IMessageWithAuthenticationToken<<#= authenticationTokenType #>>
 
+		[DataMember]
 		public <#= authenticationTokenType #> AuthenticationToken { get; set; }
 
 		#endregion
 
+		#region Implementation of IMessage
+
+		[DataMember]
+		public string CorrolationId { get; set; }
+
+		#endregion
+
+		[DataMember]
 		public Guid Rsn { get; set; }
 
 		public <#= className #>Deleted(Guid rsn)

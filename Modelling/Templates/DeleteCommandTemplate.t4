@@ -36,16 +36,26 @@ namespace <#= classNamespace #>.Commands
 	{
 		#region Implementation of ICommand
 
+		[DataMember]
 		public int ExpectedVersion { get; set; }
 
 		#endregion
 
 		#region Implementation of IMessageWithAuthenticationToken<<#= authenticationTokenType #>>
 
+		[DataMember]
 		public <#= authenticationTokenType #> AuthenticationToken { get; set; }
 
 		#endregion
 
+		#region Implementation of IMessage
+
+		[DataMember]
+		public string CorrolationId { get; set; }
+
+		#endregion
+
+		[DataMember]
 		public Guid Rsn { get; set; }
 
 		public Delete<#= className #>Command()
