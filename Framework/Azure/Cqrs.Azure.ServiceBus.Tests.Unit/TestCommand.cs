@@ -26,5 +26,11 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		#endregion
 
 		public Guid Id { get; set; }
+
+		#region Implementation of IMessage
+
+		public string CorrolationId { get; set; }
+
+		#endregion
 	}
 }

@@ -3,8 +3,7 @@ using Cqrs.Events;
 
 namespace Cqrs.Azure.ServiceBus.Tests.Unit
 {
-	public class TestEvent
-		: IEvent<Guid>
+	public class TestEvent : IEvent<Guid>
 	{
 		#region Implementation of IMessageWithAuthenticationToken<Guid>
 
@@ -19,6 +18,12 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		public int Version { get; set; }
 
 		public DateTimeOffset TimeStamp { get; set; }
+
+		#endregion
+
+		#region Implementation of IMessage
+
+		public string CorrolationId { get; set; }
 
 		#endregion
 	}

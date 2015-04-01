@@ -3,10 +3,8 @@ using System.Linq;
 using cdmdotnet.AutoMapper;
 using Cqrs.Authentication;
 using Cqrs.Bus;
-using Cqrs.Commands;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
-using Cqrs.Events;
 using Cqrs.Logging;
 using Cqrs.Repositories.Queries;
 using Ninject.Modules;
@@ -54,7 +52,7 @@ namespace Cqrs.Ninject.Configuration
 		public virtual void RegisterLoggerComponents()
 		{
 			Bind<ICorrolationIdHelper>()
-				.To<NullCorrolationIdHelper>()
+				.To<CorrolationIdHelper>()
 				.InSingletonScope();
 		}
 

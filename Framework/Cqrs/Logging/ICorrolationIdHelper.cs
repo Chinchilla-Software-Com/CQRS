@@ -11,5 +11,7 @@ namespace Cqrs.Logging
 	public interface ICorrolationIdHelper
 	{
 		string GetCorrolationId();
+
+		string SetCorrolationId(string corrolationId);
 	}
 }

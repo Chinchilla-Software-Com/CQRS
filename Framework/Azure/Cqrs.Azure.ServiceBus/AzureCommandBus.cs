@@ -1,5 +1,6 @@
 ﻿using Cqrs.Authentication;
 using Cqrs.Configuration;
+using Cqrs.Logging;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -30,8 +31,8 @@ namespace Cqrs.Azure.ServiceBus
 			get { return "Cqrs.CommandBus"; }
 		}
 
-		protected AzureCommandBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper)
+		protected AzureCommandBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, corrolationIdHelper)
 		{
 		}
 	}

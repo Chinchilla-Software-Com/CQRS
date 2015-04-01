@@ -5,6 +5,7 @@ using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
+using Cqrs.Logging;
 using Cqrs.Messages;
 using Microsoft.ServiceBus.Messaging;
 
@@ -19,8 +20,8 @@ namespace Cqrs.Azure.ServiceBus
 			Routes = new Dictionary<Type, List<Action<IMessage>>>();
 		}
 
-		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper)
+		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, corrolationIdHelper)
 		{
 			// Configure the callback options
 			OnMessageOptions options = new OnMessageOptions

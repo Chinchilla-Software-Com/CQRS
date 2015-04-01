@@ -5,6 +5,7 @@ using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
+using Cqrs.Logging;
 using Cqrs.Messages;
 
 namespace Cqrs.Bus
@@ -15,9 +16,12 @@ namespace Cqrs.Bus
 
 		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
 
-		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
+		protected ICorrolationIdHelper CorrolationIdHelper { get; private set; }
+
+		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
+			CorrolationIdHelper = corrolationIdHelper;
 			Routes = new Dictionary<Type, List<Action<IMessage>>>();
 		}
 
@@ -27,6 +31,7 @@ namespace Cqrs.Bus
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+			command.CorrolationId = CorrolationIdHelper.GetCorrolationId();
 
 			List<Action<IMessage>> handlers;
 			if (Routes.TryGetValue(typeof(TCommand), out handlers))
@@ -49,6 +54,7 @@ namespace Cqrs.Bus
 			where TEvent : IEvent<TAuthenticationToken>
 		{
 			@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+			@event.CorrolationId = CorrolationIdHelper.GetCorrolationId();
 
 			List<Action<IMessage>> handlers;
 			if (!Routes.TryGetValue(@event.GetType(), out handlers))

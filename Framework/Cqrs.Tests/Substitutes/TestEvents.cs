@@ -17,6 +17,12 @@ namespace Cqrs.Tests.Substitutes
 		public ISingleSignOnToken AuthenticationToken { get; set; }
 
 		#endregion
+
+		#region Implementation of IMessage
+
+		public string CorrolationId { get; set; }
+
+		#endregion
 	}
 
 	public class TestAggregateDidSomeethingElse : IEvent<ISingleSignOnToken>
@@ -30,6 +36,12 @@ namespace Cqrs.Tests.Substitutes
 		#region Implementation of IMessageWithAuthenticationToken<ISingleSignOnToken>
 
 		public ISingleSignOnToken AuthenticationToken { get; set; }
+
+		#endregion
+
+		#region Implementation of IMessage
+
+		public string CorrolationId { get; set; }
 
 		#endregion
 	}

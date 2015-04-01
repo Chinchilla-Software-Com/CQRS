@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using Cqrs.Domain;
 
 namespace Cqrs.Events
@@ -6,8 +7,10 @@ namespace Cqrs.Events
 	public class DtoAggregateEvent<TAuthenticationToken, TDto> : IEvent<TAuthenticationToken>
 		where TDto : IDto
 	{
+		[DataMember]
 		public TDto Original { get; private set; }
 
+		[DataMember]
 		public TDto New { get; private set; }
 
 		public DtoAggregateEvent(Guid id, TDto original, TDto @new)
@@ -17,10 +20,13 @@ namespace Cqrs.Events
 			New = @new;
 		}
 
+		[DataMember]
 		public Guid Id { get; set; }
 
+		[DataMember]
 		public int Version { get; set; }
 
+		[DataMember]
 		public DateTimeOffset TimeStamp { get; set; }
 
 		public DtoAggregateEventType GetEventType()
@@ -37,6 +43,13 @@ namespace Cqrs.Events
 		#region Implementation of IMessageWithAuthenticationToken<TAuthenticationToken>
 
 		public TAuthenticationToken AuthenticationToken { get; set; }
+
+		#endregion
+
+		#region Implementation of IMessage
+
+		[DataMember]
+		public string CorrolationId { get; set; }
 
 		#endregion
 	}

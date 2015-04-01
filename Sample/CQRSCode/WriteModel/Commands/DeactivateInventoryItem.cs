@@ -21,5 +21,11 @@ namespace CQRSCode.WriteModel.Commands
 		public ISingleSignOnToken AuthenticationToken { get; set; }
 
 		#endregion
+
+		#region Implementation of IMessage
+
+		public string CorrolationId { get; set; }
+
+		#endregion
 	}
 }

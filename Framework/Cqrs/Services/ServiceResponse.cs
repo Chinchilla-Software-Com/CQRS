@@ -23,5 +23,8 @@ namespace Cqrs.Services
 				return State == ServiceResponseStateType.Succeeded;
 			}
 		}
+
+		[DataMember]
+		public Guid CorrolationId { get; set; }
 	}
 }

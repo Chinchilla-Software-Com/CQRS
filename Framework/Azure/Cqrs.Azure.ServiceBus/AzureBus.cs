@@ -1,6 +1,7 @@
 ﻿using System;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
+using Cqrs.Logging;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 
@@ -30,10 +31,13 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
 
-		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
+		protected ICorrolationIdHelper CorrolationIdHelper { get; private set; }
+
+		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper)
 		{
 			MessageSerialiser = messageSerialiser;
 			AuthenticationTokenHelper = authenticationTokenHelper;
+			CorrolationIdHelper = corrolationIdHelper;
 			// Create the queue if it does not exist already
 			ConnectionString = configurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
 

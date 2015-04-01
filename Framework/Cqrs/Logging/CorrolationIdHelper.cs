@@ -6,21 +6,27 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System.Runtime.Remoting.Messaging;
+
 namespace Cqrs.Logging
 {
-	/// <summary>
-	/// Always returns null
-	/// </summary>
-	public class NullCorrolationIdHelper : ICorrolationIdHelper
+	public class CorrolationIdHelper : ICorrolationIdHelper
 	{
+		private const string CallContextPermissoinScopeValueKey = "CorrolationIdValue";
+
+		#region Implementation of ICorrolationIdHelper
+
 		public string GetCorrolationId()
 		{
-			return null;
+			return (string)CallContext.GetData(CallContextPermissoinScopeValueKey);
 		}
 
 		public string SetCorrolationId(string corrolationId)
 		{
-			return null;
+			CallContext.SetData(CallContextPermissoinScopeValueKey, corrolationId);
+			return corrolationId;
 		}
+
+		#endregion
 	}
 }

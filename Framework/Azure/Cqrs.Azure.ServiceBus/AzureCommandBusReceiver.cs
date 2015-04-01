@@ -6,6 +6,7 @@ using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Infrastructure;
+using Cqrs.Logging;
 using Cqrs.Messages;
 using Microsoft.ServiceBus.Messaging;
 
@@ -20,8 +21,8 @@ namespace Cqrs.Azure.ServiceBus
 			Routes = new Dictionary<Type, List<Action<IMessage>>>();
 		}
 
-		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper)
+		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, corrolationIdHelper)
 		{
 			// Configure the callback options
 			OnMessageOptions options = new OnMessageOptions
