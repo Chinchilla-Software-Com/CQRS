@@ -27,9 +27,6 @@ namespace MyCompany.MyProject.Domain.Inventory.Entities
 	public  partial interface IInventoryItemEntity
 	{
 		[DataMember]
-		Guid Rsn { get; set; }
-
-		[DataMember]
 		string Name { get; set; }
 
 		[DataMember]

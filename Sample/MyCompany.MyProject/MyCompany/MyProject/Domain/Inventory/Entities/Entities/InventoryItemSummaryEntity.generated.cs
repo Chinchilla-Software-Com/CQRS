@@ -32,8 +32,5 @@ namespace MyCompany.MyProject.Domain.Inventory.Entities
 		[DataMember]
 		public virtual string Name { get; set; }
 
-		[DataMember]
-		public virtual Guid Rsn { get; set; }
-
 	}
 }

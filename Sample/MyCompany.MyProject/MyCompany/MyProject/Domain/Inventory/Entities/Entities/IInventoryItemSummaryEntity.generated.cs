@@ -29,8 +29,5 @@ namespace MyCompany.MyProject.Domain.Inventory.Entities
 		[DataMember]
 		string Name { get; set; }
 
-		[DataMember]
-		Guid Rsn { get; set; }
-
 	}
 }

@@ -30,9 +30,6 @@ namespace MyCompany.MyProject.Domain.Inventory.Entities
 	public  partial class InventoryItemEntity : Entity, IInventoryItemEntity
 	{
 		[DataMember]
-		public virtual Guid Rsn { get; set; }
-
-		[DataMember]
 		public virtual string Name { get; set; }
 
 		[DataMember]
