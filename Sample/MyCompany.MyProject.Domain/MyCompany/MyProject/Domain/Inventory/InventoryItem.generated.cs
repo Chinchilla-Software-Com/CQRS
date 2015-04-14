@@ -47,6 +47,8 @@ namespace MyCompany.MyProject.Domain.Inventory
 
 		protected ILog Log { get; private set; }
 
+		public bool Activated { get; private set; }
+
 // ReSharper disable UnusedMember.Local
 		/// <summary>
 		/// A constructor for the <see cref="Cqrs.Domain.Factories.IAggregateFactory"/>
@@ -72,29 +74,29 @@ namespace MyCompany.MyProject.Domain.Inventory
 			Rsn = rsn;
 		}
 
-		public virtual void ChangeName()
+		public virtual void ChangeName(string newName)
 		{
 			Log.LogDebug("Entered", "InventoryItem/ChangeName");
-			OnChangeName();
+			OnChangeName(newName);
 			Log.LogDebug("Exited", "InventoryItem/ChangeName");
 		}
-		partial void OnChangeName();
+		partial void OnChangeName(string newName);
 
-		public virtual void Remove()
+		public virtual void Remove(long count)
 		{
 			Log.LogDebug("Entered", "InventoryItem/Remove");
-			OnRemove();
+			OnRemove(count);
 			Log.LogDebug("Exited", "InventoryItem/Remove");
 		}
-		partial void OnRemove();
+		partial void OnRemove(long count);
 
-		public virtual void CheckIn()
+		public virtual void CheckIn(long count)
 		{
 			Log.LogDebug("Entered", "InventoryItem/CheckIn");
-			OnCheckIn();
+			OnCheckIn(count);
 			Log.LogDebug("Exited", "InventoryItem/CheckIn");
 		}
-		partial void OnCheckIn();
+		partial void OnCheckIn(long count);
 
 		public virtual void Deactivate()
 		{

@@ -1,12 +1,12 @@
-﻿using System;
-
-namespace MyCompany.MyProject.Domain.Inventory.Commands.Handlers
+﻿namespace MyCompany.MyProject.Domain.Inventory.Commands.Handlers
 {
-	public  partial class DeactivateInventoryItemCommandHandler
+	public partial class DeactivateInventoryItemCommandHandler
 	{
 		partial void OnHandle(DeactivateInventoryItemCommand command)
 		{
-			throw new NotImplementedException();
+			InventoryItem item = UnitOfWork.Get<InventoryItem>(command.Rsn);
+			item.Deactivate();
+			UnitOfWork.Commit();
 		}
 	}
 }

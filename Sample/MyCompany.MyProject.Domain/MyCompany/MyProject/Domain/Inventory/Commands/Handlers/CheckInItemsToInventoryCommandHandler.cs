@@ -1,12 +1,12 @@
-﻿using System;
-
-namespace MyCompany.MyProject.Domain.Inventory.Commands.Handlers
+﻿namespace MyCompany.MyProject.Domain.Inventory.Commands.Handlers
 {
-	public  partial class CheckInItemsToInventoryCommandHandler
+	public partial class CheckInItemsToInventoryCommandHandler
 	{
 		partial void OnHandle(CheckInItemsToInventoryCommand command)
 		{
-			throw new NotImplementedException();
+			InventoryItem item = UnitOfWork.Get<InventoryItem>(command.Rsn);
+			item.CheckIn(command.Count);
+			UnitOfWork.Commit();
 		}
 	}
 }

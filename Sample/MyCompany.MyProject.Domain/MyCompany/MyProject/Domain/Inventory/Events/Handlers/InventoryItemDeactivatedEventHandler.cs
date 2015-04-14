@@ -1,21 +1,42 @@
 ﻿using System;
 using cdmdotnet.AutoMapper;
-using Cqrs.Entities;
+using Cqrs.Repositories.Queries;
+using MyCompany.MyProject.Domain.Inventory.Entities;
+using MyCompany.MyProject.Domain.Inventory.Repositories;
+using MyCompany.MyProject.Domain.Inventory.Repositories.Queries.Strategies;
 
 namespace MyCompany.MyProject.Domain.Inventory.Events.Handlers
 {
-	public  partial class InventoryItemDeactivatedEventHandler
+	public partial class InventoryItemDeactivatedEventHandler
 	{
 		protected IAutomapHelper AutomapHelper { get; private set; }
 
-		public InventoryItemDeactivatedEventHandler(IAutomapHelper automapHelper)
+		protected IQueryFactory QueryFactory { get; private set; }
+
+		protected IInventoryItemRepository InventoryItemRepository { get; private set; }
+
+		public InventoryItemDeactivatedEventHandler(IAutomapHelper automapHelper, IQueryFactory queryFactory, IInventoryItemRepository inventoryItemRepository)
 		{
 			AutomapHelper = automapHelper;
+			QueryFactory = queryFactory;
+			InventoryItemRepository = inventoryItemRepository;
 		}
 
 		partial void OnHandle(InventoryItemDeactivated @event)
 		{
-			throw new NotImplementedException();
+			// Define Query
+			ISingleResultQuery<InventoryItemQueryStrategy, InventoryItemEntity> query = QueryFactory.CreateNewSingleResultQuery<InventoryItemQueryStrategy, InventoryItemEntity>();
+			query.QueryStrategy.WithRsn(@event.Rsn);
+
+			// Retrieve Data, but remember if no items exist, the value is null
+			query = InventoryItemRepository.Retrieve(query, false);
+			InventoryItemEntity inventoryItem = query.Result;
+
+			// As a previous event will have created this instance we should throw an exception if it is not found.
+			if (inventoryItem == null)
+				throw new NullReferenceException(string.Format("No entity was found by the id '{0}'", @event.Rsn));
+
+			InventoryItemRepository.Delete(inventoryItem);
 		}
 	}
 }
