@@ -1,4 +1,5 @@
-﻿using CQRSCode.ReadModel.Dtos;
+﻿using System.Linq;
+using CQRSCode.ReadModel.Dtos;
 using CQRSCode.ReadModel.Events;
 using CQRSCode.ReadModel.Infrastructure;
 using Cqrs.Events;
@@ -17,13 +18,14 @@ namespace CQRSCode.ReadModel.Handlers
 
 		public void Handle(InventoryItemRenamed message)
 		{
-			var item = InMemoryDatabase.List.Find(x => x.Id == message.Id);
+			InventoryItemListDto item = InMemoryDatabase.List.SingleOrDefault(x => x.Id == message.Id);
 			item.Name = message.NewName;
 		}
 
 		public void Handle(InventoryItemDeactivated message)
 		{
-			InMemoryDatabase.List.RemoveAll(x => x.Id == message.Id);
+			InventoryItemListDto item = InMemoryDatabase.List.SingleOrDefault(x => x.Id == message.Id);
+			InMemoryDatabase.List.Remove(item);
 		}
 	}
 }

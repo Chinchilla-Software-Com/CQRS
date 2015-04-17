@@ -44,6 +44,16 @@ namespace <#= classNamespace #>
 		{
 			string methodResponseTypeName = "IServiceResponseWithResultData<";
 			string methodTypeName = MethodType(collectionMethod).Replace("<", "<Entities.");
+			if (IsMethodTypeEntity(collectionMethod))
+			{
+				string methodTypeNameSuffix = string.Empty;
+				while (methodTypeName.EndsWith(">"))
+				{
+					methodTypeNameSuffix = string.Concat(methodTypeNameSuffix, methodTypeName.Substring(methodTypeName.Length - 1));
+					methodTypeName = methodTypeName.Substring(0, methodTypeName.Length - 1);
+				}
+				methodTypeName = string.Format("{0}Entity{1}", methodTypeName, methodTypeNameSuffix);
+			}
 			if (methodTypeName == "void")
 			{
 				methodResponseTypeName = "IServiceResponse";

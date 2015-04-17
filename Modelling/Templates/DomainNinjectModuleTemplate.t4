@@ -26,8 +26,10 @@ using System.Linq;
 using Cqrs.Configuration;
 using Cqrs.DataStores;
 using Cqrs.Logging;
+<# if (GetEntityPersistenceTechnology(this.Element) == "MongoDB"){ #>
 using Cqrs.Mongo.DataStores;
 using Cqrs.Mongo.Factories;
+<# } #>
 using Cqrs.Services;
 using Ninject.Modules;
 using Ninject.Parameters;
@@ -182,7 +184,11 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 			// This will load all the handlers from the domain assembly by reading all command handlers AND event handlers in the same assembly as the provided type
 <#
 		if (string.IsNullOrWhiteSpace(commandName))
-			commandName = AllElements(this.Element, "Command").OfType<INamedElement>().First().Name;
+		{
+			INamedElement commandElement = AllElements(this.Element, "Command").OfType<INamedElement>().First();
+			string commandNamespace = GetNamespace(commandElement.Namespace);
+			commandName = commandNamespace + ".Handlers." + commandElement.Name;
+		}
 #>
 			registrar.Register(typeof(<#= commandName #>CommandHandler));
 		}

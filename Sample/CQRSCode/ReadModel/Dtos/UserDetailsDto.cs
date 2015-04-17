@@ -1,10 +1,15 @@
 ﻿using System;
+using Cqrs.Entities;
 
 namespace CQRSCode.ReadModel.Dtos
 {
-	public class UserDetailsDto
+	public class UserDetailsDto : Entity
 	{
-		public Guid Id;
+		public Guid Id
+		{
+			get { return Rsn; }
+			set { Rsn = value; }
+		}
 		public string Name;
 		public int Version;
 

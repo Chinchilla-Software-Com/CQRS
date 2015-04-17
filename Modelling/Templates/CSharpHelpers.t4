@@ -101,6 +101,21 @@
 		return text;
 	}
 
+	private static bool IsMethodTypeEntity(IOperation operation)
+	{
+		IType type = operation.Type;
+		if (type == null)
+			return false;
+		if(type is IClassifier)
+		{
+			return ((IClassifier)type).AppliedStereotypes.Any(property => property.Name == "Entity");
+		}
+		else 
+		{
+			return false;
+		}
+	}
+
 	/// <summary>
 	/// Gets the name of the classifier including the template bindings or template parameters
 	/// if the classifier is a templatable classifier.
