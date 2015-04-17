@@ -52,6 +52,8 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 		{
 			IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> result = null;
 			OnGet<#= elementName #>DataStore(ref result);
+			if (result == null)
+				IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> result = new InProcessDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity>();
 			return result;
 		}
 
