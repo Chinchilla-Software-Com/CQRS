@@ -23,7 +23,7 @@ using System.Text;
 
 namespace MyCompany.MyProject.Domain.Inventory.Entities
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	public  partial interface IInventoryItemEntity
 	{
 		[DataMember]

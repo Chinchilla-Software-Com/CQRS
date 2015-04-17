@@ -22,7 +22,7 @@ using Cqrs.Logging;
 
 namespace MyCompany.MyProject.Domain.Authentication.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	public  partial class CreateUserCommandHandler : ICommandHandler<System.Guid, CreateUserCommand>
 	{
 		protected IUnitOfWork<System.Guid> UnitOfWork { get; private set; }
@@ -46,7 +46,7 @@ namespace MyCompany.MyProject.Domain.Authentication.Commands.Handlers
 			OnCreateUser(command, ref item);
 			if (item == null)
 				item = new User(DependencyResolver, Log, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
-			item.CreateUser();
+			item.CreateUser(command.Name);
 			OnCreatedUser(command, item);
 			OnAddToUnitOfWork(command, item);
 			UnitOfWork.Add(item);

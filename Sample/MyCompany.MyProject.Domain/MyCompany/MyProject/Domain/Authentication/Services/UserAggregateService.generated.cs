@@ -27,7 +27,7 @@ using MyCompany.MyProject.Domain.Authentication.Repositories;
 
 namespace MyCompany.MyProject.Domain.Authentication.Services
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	[DataContract(Namespace="http://www.cdmdotnet.com/MyProject/Domain/Authentication/1001/")]
 	public partial class UserService : IUserService
 	{
@@ -64,7 +64,7 @@ namespace MyCompany.MyProject.Domain.Authentication.Services
 			Entities.UserEntity item = serviceRequest.Data;
 			item.Rsn = Guid.NewGuid();
 
-			var command = new CreateUserCommand(item.Rsn);
+			var command = new CreateUserCommand(item.Rsn, item.Name);
 			OnCreateUser(serviceRequest, command);
 			CommandSender.Send(command);
 			OnCreatedUser(serviceRequest, command);
@@ -91,7 +91,7 @@ namespace MyCompany.MyProject.Domain.Authentication.Services
 			if (locatedItem == null)
 				return CompleteResponse(new ServiceResponseWithResultData<Entities.UserEntity> { State = ServiceResponseStateType.FailedValidation });
 
-			var command = new UpdateUserCommand(item.Rsn);
+			var command = new UpdateUserCommand(item.Rsn, item.Name);
 			ServiceResponseStateType? serviceResponseStateType = null;
 			OnUpdateUser(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
 			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)

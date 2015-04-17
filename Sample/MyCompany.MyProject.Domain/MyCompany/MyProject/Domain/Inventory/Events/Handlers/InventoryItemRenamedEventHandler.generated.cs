@@ -20,7 +20,7 @@ using Cqrs.Domain;
 
 namespace MyCompany.MyProject.Domain.Inventory.Events.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	public  partial class InventoryItemRenamedEventHandler : IEventHandler<System.Guid, InventoryItemRenamed>
 	{
 		#region Implementation of IEventHandler<in InventoryItemRenamed>

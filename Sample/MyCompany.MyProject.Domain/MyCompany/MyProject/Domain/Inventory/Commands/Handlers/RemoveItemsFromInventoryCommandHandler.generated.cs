@@ -22,7 +22,7 @@ using Cqrs.Logging;
 
 namespace MyCompany.MyProject.Domain.Inventory.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	public  partial class RemoveItemsFromInventoryCommandHandler : ICommandHandler<System.Guid, RemoveItemsFromInventoryCommand>
 	{
 		protected IUnitOfWork<System.Guid> UnitOfWork { get; private set; }

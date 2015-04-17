@@ -20,7 +20,7 @@ using Cqrs.Domain;
 
 namespace MyCompany.MyProject.Domain.Authentication.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	public  partial class UpdateUserCommandHandler : ICommandHandler<System.Guid, UpdateUserCommand>
 	{
 		protected IUnitOfWork<System.Guid> UnitOfWork { get; private set; }
@@ -38,7 +38,7 @@ namespace MyCompany.MyProject.Domain.Authentication.Commands.Handlers
 			OnUpdateUser(command, ref item);
 			if (item == null)
 				item = UnitOfWork.Get<User>(command.Rsn);
-			item.UpdateUser();
+			item.UpdateUser(command.Name);
 			OnUpdatedUser(command, item);
 			OnCommit(command, item);
 			UnitOfWork.Commit();

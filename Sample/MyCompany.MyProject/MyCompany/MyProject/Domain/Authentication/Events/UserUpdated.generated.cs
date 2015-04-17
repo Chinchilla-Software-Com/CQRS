@@ -24,7 +24,7 @@ using Cqrs.Events;
 
 namespace MyCompany.MyProject.Domain.Authentication
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	public  partial class UserUpdated : IEvent<System.Guid>
 	{
 		#region Implementation of IEvent
@@ -67,10 +67,14 @@ namespace MyCompany.MyProject.Domain.Authentication
 		[DataMember]
 		public Guid Rsn { get; set; }
 
+		[DataMember]
+		public string Name { get; private set; }
 
-		public UserUpdated(Guid rsn)
+
+		public UserUpdated(Guid rsn, string name)
 		{
 			Rsn = rsn;
+			Name = name;
 		}
 	}
 }

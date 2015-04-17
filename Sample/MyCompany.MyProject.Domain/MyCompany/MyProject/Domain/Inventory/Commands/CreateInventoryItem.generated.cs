@@ -20,7 +20,7 @@ using Cqrs.Commands;
 
 namespace MyCompany.MyProject.Domain.Inventory.Commands
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	public  partial class CreateInventoryItemCommand : ICommand<System.Guid>
 	{
 		#region Implementation of ICommand

@@ -26,7 +26,7 @@ using MyCompany.MyProject.Domain.Authentication.Events;
 
 namespace MyCompany.MyProject.Domain.Authentication
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	public  partial class User : AggregateRoot<System.Guid>
 	{
 		public Guid Rsn
@@ -46,6 +46,8 @@ namespace MyCompany.MyProject.Domain.Authentication
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
 		protected ILog Log { get; private set; }
+
+		public string Name { get; private set; }
 
 // ReSharper disable UnusedMember.Local
 		/// <summary>
@@ -76,53 +78,55 @@ namespace MyCompany.MyProject.Domain.Authentication
 		/// <summary>
 		/// Create a new instance of the <see cref="User"/>
 		/// </summary>
-		public virtual void CreateUser()
+		public virtual void CreateUser(string name)
 		{
 			Log.LogDebug("Entered", "User/CreateUser");
 			Log.LogDebug("Pre", "User/OnCreateUser");
-			OnCreateUser();
+			OnCreateUser(name);
 			Log.LogDebug("Post", "User/OnCreateUser");
 			Log.LogDebug("Pre", "User/ApplyChange/Create");
-			ApplyChange(new UserCreated(Rsn));
+			ApplyChange(new UserCreated(Rsn, name));
 			Log.LogDebug("Post", "User/ApplyChange");
 			Log.LogDebug("Pre", "User/OnCreatedUser");
-			OnCreatedUser();
+			OnCreatedUser(name);
 			Log.LogDebug("Post", "User/OnCreatedUser");
 			Log.LogDebug("Exited", "User/CreateUser");
 		}
 
-		partial void OnCreateUser();
+		partial void OnCreateUser(string name);
 
-		partial void OnCreatedUser();
+		partial void OnCreatedUser(string name);
 
 		private void Apply(UserCreated @event)
 		{
+			Name = @event.Name;
 		}
 
 		/// <summary>
 		/// Update an existing instance of the <see cref="User"/>
 		/// </summary>
-		public virtual void UpdateUser()
+		public virtual void UpdateUser(string name)
 		{
 			Log.LogDebug("Entered", "User/UpdateUser");
 			Log.LogDebug("Pre", "User/OnUpdateUser");
-			OnUpdateUser();
+			OnUpdateUser(name);
 			Log.LogDebug("Post", "User/OnUpdateUser");
 			Log.LogDebug("Pre", "User/ApplyChange/Update");
-			ApplyChange(new UserUpdated(Rsn));
+			ApplyChange(new UserUpdated(Rsn, name));
 			Log.LogDebug("Post", "User/ApplyChange");
 			Log.LogDebug("Pre", "User/OnUpdatedUser");
-			OnUpdatedUser();
+			OnUpdatedUser(name);
 			Log.LogDebug("Post", "User/OnUpdatedUser");
 			Log.LogDebug("Exited", "User/UpdateUser");
 		}
 
-		partial void OnUpdateUser();
+		partial void OnUpdateUser(string name);
 
-		partial void OnUpdatedUser();
+		partial void OnUpdatedUser(string name);
 
 		private void Apply(UserUpdated @event)
 		{
+			Name = @event.Name;
 		}
 
 		/// <summary>

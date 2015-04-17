@@ -20,7 +20,7 @@ using Cqrs.Domain;
 
 namespace MyCompany.MyProject.Domain.Authentication.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	public  partial class DeleteUserCommandHandler : ICommandHandler<System.Guid, DeleteUserCommand>
 	{
 		protected IUnitOfWork<System.Guid> UnitOfWork { get; private set; }

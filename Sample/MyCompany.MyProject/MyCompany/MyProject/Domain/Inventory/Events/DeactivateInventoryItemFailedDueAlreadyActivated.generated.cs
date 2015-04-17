@@ -24,7 +24,7 @@ using Cqrs.Events;
 
 namespace MyCompany.MyProject.Domain.Inventory.Events
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	public  partial class DeactivateInventoryItemFailedDueAlreadyActivated : IEvent<System.Guid>
 	{
 		#region Implementation of IEvent
