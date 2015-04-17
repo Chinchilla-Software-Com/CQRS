@@ -20,7 +20,7 @@ namespace Cqrs.Sql.DataStores
 	public class SqlDataStore<TEntity, TDbEntity> : IDataStore<TEntity>
 		where TDbEntity : class, new()
 	{
-		internal LinqToSqlDataContext DataContext { get; private set; }
+		internal DataContext DataContext { get; private set; }
 
 		internal Table<TDbEntity> DataTable { get; private set; }
 
@@ -30,7 +30,7 @@ namespace Cqrs.Sql.DataStores
 
 		internal IExpressionTreeConverter ExpressionConverter { get; set; }
 
-		public SqlDataStore(IExpressionTreeConverter expressionConverter, LinqToSqlDataContext dataContext)
+		public SqlDataStore(IExpressionTreeConverter expressionConverter, DataContext dataContext)
 		{
 			ExpressionConverter = expressionConverter;
 
@@ -49,7 +49,7 @@ namespace Cqrs.Sql.DataStores
 			}
 		}
 
-		internal SqlDataStore(LinqToSqlDataContext dataContext, Table<TDbEntity> dataTable, IQueryable<TDbEntity> dbEntityQuery, IQueryable<TEntity> entityQuery)
+		internal SqlDataStore(DataContext dataContext, Table<TDbEntity> dataTable, IQueryable<TDbEntity> dbEntityQuery, IQueryable<TEntity> entityQuery)
 		{
 			DataContext = dataContext;
 			DataTable = dataTable;
