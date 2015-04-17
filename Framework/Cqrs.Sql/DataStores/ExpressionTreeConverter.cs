@@ -8,8 +8,6 @@ namespace Cqrs.Sql.DataStores
 {
 	public abstract class ExpressionTreeConverter<TA, TB> : ExpressionVisitor, IExpressionTreeConverter
 	{
-		public abstract Dictionary<MemberInfo, LambdaExpression> GetMappings();
-
 		private readonly Dictionary<ParameterExpression, ParameterExpression> _parameters = new Dictionary<ParameterExpression, ParameterExpression>();
 
 		private readonly Dictionary<MemberInfo, LambdaExpression> _mappings;
@@ -18,6 +16,13 @@ namespace Cqrs.Sql.DataStores
 		{
 			_mappings = mappings;
 		}
+
+		protected ExpressionTreeConverter()
+		{
+			_mappings = GetMappings();
+		}
+
+		public abstract Dictionary<MemberInfo, LambdaExpression> GetMappings();
 
 		protected override Expression VisitParameter(ParameterExpression node)
 		{
