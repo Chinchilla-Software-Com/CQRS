@@ -13,7 +13,6 @@
 // -----------------------------------------------------------------------
 #endregion
 using Cqrs.Domain;
-using MyCompany.MyProject.Domain.Inventory;
 using MyCompany.MyProject.Domain.Inventory.Entities;
 using System;
 using System.CodeDom.Compiler;

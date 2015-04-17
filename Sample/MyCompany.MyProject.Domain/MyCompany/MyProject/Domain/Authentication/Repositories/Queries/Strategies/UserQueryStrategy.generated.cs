@@ -25,7 +25,7 @@ using Cqrs.Repositories.Queries;
 
 namespace MyCompany.MyProject.Domain.Authentication.Repositories.Queries.Strategies
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	public partial class UserQueryStrategy : QueryStrategy, IUserQueryStrategy
 	{
 		protected IAuthenticationTokenHelper<System.Guid> AuthenticationTokenHelper { get; private set; }
@@ -37,6 +37,19 @@ namespace MyCompany.MyProject.Domain.Authentication.Repositories.Queries.Strateg
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			SortingList = new List<Func<int, UserQueryStrategy>>();
 		}
+
+		public virtual UserQueryStrategy WithRsn(Guid rsn)
+		{
+			QueryPredicate = And(IsNotLogicallyDeleted());
+			QueryPredicate = And(WithPermissionScopeUser(AuthenticationTokenHelper.GetAuthenticationToken()));
+			QueryPredicate = And(BuildQueryPredicate(WithRsn, rsn));
+	
+			OnWithRsn(rsn);
+
+			return this;
+		}
+
+		partial void OnWithRsn(Guid rsn);
 
 	}
 }

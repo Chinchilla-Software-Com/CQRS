@@ -27,7 +27,7 @@ using MyCompany.MyProject.Domain.Factories;
 
 namespace MyCompany.MyProject.Domain.Authentication.Repositories.Queries.Strategies
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	public partial class UserQueryStrategyBuilder : QueryBuilder<UserQueryStrategy, Entities.UserEntity>, IUserQueryStrategyBuilder
 	{
 		public UserQueryStrategyBuilder(IDomainDataStoreFactory dataStoreFactory, IDependencyResolver dependencyResolver)
@@ -43,6 +43,13 @@ namespace MyCompany.MyProject.Domain.Authentication.Repositories.Queries.Strateg
 			SortedSet<QueryParameter> parameters = queryPredicate.Parameters;
 
 			IQueryable<Entities.UserEntity> resultingQueryable = null;
+			if (queryPredicate.Name == GetFunctionName<Guid>(queryStrategy.WithRsn))
+			{
+				OnGeneratePredicateWithRsn(queryPredicate, leftHandQueryable, parameters, ref resultingQueryable);
+				GeneratePredicateWithRsn(parameters, leftHandQueryable, ref resultingQueryable);
+				OnGeneratedPredicateWithRsn(queryPredicate, leftHandQueryable, parameters, ref resultingQueryable);
+				return resultingQueryable;
+			}
 
 			resultingQueryable
 				= GeneratePredicateWithPermissionScopeAny<ISingleSignOnToken>(queryPredicate, leftHandQueryable)
@@ -57,6 +64,13 @@ namespace MyCompany.MyProject.Domain.Authentication.Repositories.Queries.Strateg
 		}
 
 		#endregion
+
+		partial void OnGeneratePredicateWithRsn(QueryPredicate queryPredicate, IQueryable<Entities.UserEntity> leftHandQueryable, SortedSet<QueryParameter> parameters, ref IQueryable<Entities.UserEntity> resultingQueryable);
+
+		partial void GeneratePredicateWithRsn(SortedSet<QueryParameter> parameters, IQueryable<Entities.UserEntity> leftHandQueryable, ref IQueryable<Entities.UserEntity> resultingQueryable);
+
+		partial void OnGeneratedPredicateWithRsn(QueryPredicate queryPredicate, IQueryable<Entities.UserEntity> leftHandQueryable, SortedSet<QueryParameter> parameters, ref IQueryable<Entities.UserEntity> resultingQueryable);
+
 
 		protected override void ApplySorting(UserQueryStrategy queryStrategy, ref IQueryable<Entities.UserEntity> queryable)
 		{

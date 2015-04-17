@@ -21,10 +21,13 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 
-namespace MyCompany.MyProject.Domain.Authentication.Entities
+namespace MyCompany.MyProject.Domain.Authentication
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	public  partial interface IUserEntity
 	{
+		[DataMember]
+		string Name { get; set; }
+
 	}
 }

@@ -22,7 +22,7 @@ using Cqrs.Services;
 
 namespace MyCompany.MyProject.Domain.Authentication.Services
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.480.367")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	[ServiceContract(Namespace="http://www.cdmdotnet.com/MyProject/Domain/Authentication/1001/")]
 	public partial interface IUserService 
 	{

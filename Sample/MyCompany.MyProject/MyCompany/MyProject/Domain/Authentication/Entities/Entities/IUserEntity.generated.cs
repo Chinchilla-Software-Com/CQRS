@@ -20,17 +20,14 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
-using Cqrs.Entities;
 
-namespace MyCompany.MyProject.Domain.Authentication
+namespace MyCompany.MyProject.Domain.Authentication.Entities
 {
 	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
-	[Serializable]
-	[DataContract]
-	public  partial class UserEntity : Entity, IUserEntity
+	public  partial interface IUserEntity
 	{
 		[DataMember]
-		public virtual string Name { get; set; }
+		string Name { get; set; }
 
 	}
 }

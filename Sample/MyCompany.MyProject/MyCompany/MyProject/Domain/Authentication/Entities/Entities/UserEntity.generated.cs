@@ -22,7 +22,7 @@ using System.ServiceModel;
 using System.Text;
 using Cqrs.Entities;
 
-namespace MyCompany.MyProject.Domain.Authentication
+namespace MyCompany.MyProject.Domain.Authentication.Entities
 {
 	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
 	[Serializable]
