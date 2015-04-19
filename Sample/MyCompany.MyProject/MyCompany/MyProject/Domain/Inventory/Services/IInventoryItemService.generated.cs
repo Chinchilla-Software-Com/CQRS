@@ -29,25 +29,25 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 	public partial interface IInventoryItemService 
 	{
 		[OperationContract]
-		IServiceResponseWithResultData<IEnumerable<Entities.InventoryItemSummaryEntity>> GetAll(IServiceRequestWithData<System.Guid, InventoryItemServiceGetAllParameters> serviceRequest);
+		IServiceResponseWithResultData<IEnumerable<Entities.InventoryItemSummaryEntity>> GetAll(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceGetAllParameters> serviceRequest);
 
 		[OperationContract]
-		IServiceResponseWithResultData<Entities.InventoryItemEntity> GetByRsn(IServiceRequestWithData<System.Guid, InventoryItemServiceGetByRsnParameters> serviceRequest);
+		IServiceResponseWithResultData<Entities.InventoryItemEntity> GetByRsn(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceGetByRsnParameters> serviceRequest);
 
 		[OperationContract]
-		IServiceResponse ChangeName(IServiceRequestWithData<System.Guid, InventoryItemServiceChangeNameParameters> serviceRequest);
+		IServiceResponse ChangeName(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceChangeNameParameters> serviceRequest);
 
 		[OperationContract]
-		IServiceResponse CheckIn(IServiceRequestWithData<System.Guid, InventoryItemServiceCheckInParameters> serviceRequest);
+		IServiceResponse CheckIn(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceCheckInParameters> serviceRequest);
 
 		[OperationContract]
-		IServiceResponse Create(IServiceRequestWithData<System.Guid, InventoryItemServiceCreateParameters> serviceRequest);
+		IServiceResponse Create(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceCreateParameters> serviceRequest);
 
 		[OperationContract]
-		IServiceResponse Deactivate(IServiceRequestWithData<System.Guid, InventoryItemServiceDeactivateParameters> serviceRequest);
+		IServiceResponse Deactivate(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceDeactivateParameters> serviceRequest);
 
 		[OperationContract]
-		IServiceResponse Remove(IServiceRequestWithData<System.Guid, InventoryItemServiceRemoveParameters> serviceRequest);
+		IServiceResponse Remove(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceRemoveParameters> serviceRequest);
 
 	}
 

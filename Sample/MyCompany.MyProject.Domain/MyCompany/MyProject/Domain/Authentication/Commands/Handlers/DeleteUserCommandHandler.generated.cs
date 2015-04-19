@@ -20,12 +20,12 @@ using Cqrs.Domain;
 
 namespace MyCompany.MyProject.Domain.Authentication.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
-	public  partial class DeleteUserCommandHandler : ICommandHandler<System.Guid, DeleteUserCommand>
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	public  partial class DeleteUserCommandHandler : ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, DeleteUserCommand>
 	{
-		protected IUnitOfWork<System.Guid> UnitOfWork { get; private set; }
+		protected IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> UnitOfWork { get; private set; }
 
-		public DeleteUserCommandHandler(IUnitOfWork<System.Guid> unitOfWork)
+		public DeleteUserCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork)
 		{
 			UnitOfWork = unitOfWork;
 		}

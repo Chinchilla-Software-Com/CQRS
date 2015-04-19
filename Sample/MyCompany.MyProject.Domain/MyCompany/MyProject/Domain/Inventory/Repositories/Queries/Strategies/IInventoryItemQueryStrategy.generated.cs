@@ -24,7 +24,7 @@ using Cqrs.Repositories.Queries;
 
 namespace MyCompany.MyProject.Domain.Inventory.Repositories.Queries.Strategies
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
 	public partial interface IInventoryItemQueryStrategy : IQueryStrategy
 	{
 		InventoryItemQueryStrategy WithRsn(Guid rsn);

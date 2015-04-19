@@ -29,7 +29,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 	public  partial class InventoryItemService 
 	{
 
-		public virtual IServiceResponseWithResultData<IEnumerable<Entities.InventoryItemSummaryEntity>> GetAll(IServiceRequestWithData<System.Guid, InventoryItemServiceGetAllParameters> serviceRequest)
+		public virtual IServiceResponseWithResultData<IEnumerable<Entities.InventoryItemSummaryEntity>> GetAll(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceGetAllParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
 			IServiceResponseWithResultData<IEnumerable<Entities.InventoryItemSummaryEntity>> results = null;
@@ -37,10 +37,10 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			return CompleteResponse(results);
 		}
 
-		partial void OnGetAll(IServiceRequestWithData<System.Guid, InventoryItemServiceGetAllParameters> serviceRequest, ref IServiceResponseWithResultData<IEnumerable<Entities.InventoryItemSummaryEntity>> results);
+		partial void OnGetAll(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceGetAllParameters> serviceRequest, ref IServiceResponseWithResultData<IEnumerable<Entities.InventoryItemSummaryEntity>> results);
 
 
-		public virtual IServiceResponseWithResultData<Entities.InventoryItemEntity> GetByRsn(IServiceRequestWithData<System.Guid, InventoryItemServiceGetByRsnParameters> serviceRequest)
+		public virtual IServiceResponseWithResultData<Entities.InventoryItemEntity> GetByRsn(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceGetByRsnParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
 			IServiceResponseWithResultData<Entities.InventoryItemEntity> results = null;
@@ -48,10 +48,10 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			return CompleteResponse(results);
 		}
 
-		partial void OnGetByRsn(IServiceRequestWithData<System.Guid, InventoryItemServiceGetByRsnParameters> serviceRequest, ref IServiceResponseWithResultData<Entities.InventoryItemEntity> results);
+		partial void OnGetByRsn(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceGetByRsnParameters> serviceRequest, ref IServiceResponseWithResultData<Entities.InventoryItemEntity> results);
 
 
-		public virtual IServiceResponse ChangeName(IServiceRequestWithData<System.Guid, InventoryItemServiceChangeNameParameters> serviceRequest)
+		public virtual IServiceResponse ChangeName(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceChangeNameParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
 			IServiceResponse results = null;
@@ -59,10 +59,10 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			return CompleteResponse(results);
 		}
 
-		partial void OnChangeName(IServiceRequestWithData<System.Guid, InventoryItemServiceChangeNameParameters> serviceRequest, ref IServiceResponse results);
+		partial void OnChangeName(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceChangeNameParameters> serviceRequest, ref IServiceResponse results);
 
 
-		public virtual IServiceResponse CheckIn(IServiceRequestWithData<System.Guid, InventoryItemServiceCheckInParameters> serviceRequest)
+		public virtual IServiceResponse CheckIn(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceCheckInParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
 			IServiceResponse results = null;
@@ -70,10 +70,10 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			return CompleteResponse(results);
 		}
 
-		partial void OnCheckIn(IServiceRequestWithData<System.Guid, InventoryItemServiceCheckInParameters> serviceRequest, ref IServiceResponse results);
+		partial void OnCheckIn(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceCheckInParameters> serviceRequest, ref IServiceResponse results);
 
 
-		public virtual IServiceResponse Create(IServiceRequestWithData<System.Guid, InventoryItemServiceCreateParameters> serviceRequest)
+		public virtual IServiceResponse Create(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceCreateParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
 			IServiceResponse results = null;
@@ -81,10 +81,10 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			return CompleteResponse(results);
 		}
 
-		partial void OnCreate(IServiceRequestWithData<System.Guid, InventoryItemServiceCreateParameters> serviceRequest, ref IServiceResponse results);
+		partial void OnCreate(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceCreateParameters> serviceRequest, ref IServiceResponse results);
 
 
-		public virtual IServiceResponse Deactivate(IServiceRequestWithData<System.Guid, InventoryItemServiceDeactivateParameters> serviceRequest)
+		public virtual IServiceResponse Deactivate(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceDeactivateParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
 			IServiceResponse results = null;
@@ -92,10 +92,10 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			return CompleteResponse(results);
 		}
 
-		partial void OnDeactivate(IServiceRequestWithData<System.Guid, InventoryItemServiceDeactivateParameters> serviceRequest, ref IServiceResponse results);
+		partial void OnDeactivate(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceDeactivateParameters> serviceRequest, ref IServiceResponse results);
 
 
-		public virtual IServiceResponse Remove(IServiceRequestWithData<System.Guid, InventoryItemServiceRemoveParameters> serviceRequest)
+		public virtual IServiceResponse Remove(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceRemoveParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
 			IServiceResponse results = null;
@@ -103,7 +103,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			return CompleteResponse(results);
 		}
 
-		partial void OnRemove(IServiceRequestWithData<System.Guid, InventoryItemServiceRemoveParameters> serviceRequest, ref IServiceResponse results);
+		partial void OnRemove(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceRemoveParameters> serviceRequest, ref IServiceResponse results);
 
 	}
 }

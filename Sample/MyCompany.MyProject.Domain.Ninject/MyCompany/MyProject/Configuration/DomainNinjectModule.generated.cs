@@ -24,7 +24,7 @@ using Ninject.Parameters;
 
 namespace MyCompany.MyProject.Domain.Configuration
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
 	public partial class DomainNinjectModule : NinjectModule
 	{
 		#region Overrides of NinjectModule
@@ -62,6 +62,10 @@ namespace MyCompany.MyProject.Domain.Configuration
 			Bind<Factories.IDomainDataStoreFactory>()
 				.To<Factories.DomainInProcessDataStoreFactory>()
 				.InSingletonScope();
+
+			Bind<Cqrs.Authentication.ISingleSignOnTokenFactory>()
+				.To<Cqrs.Authentication.SingleSignOnTokenFactory>()
+				.InSingletonScope();
 		}
 
 		/// <summary>
@@ -70,7 +74,7 @@ namespace MyCompany.MyProject.Domain.Configuration
 		public virtual void RegisterServices()
 		{
 			Bind<IUnitOfWorkService>()
-				.To<UnitOfWorkService<System.Guid>>()
+				.To<UnitOfWorkService<Cqrs.Authentication.ISingleSignOnToken>>()
 				.InThreadScope();
 
 			Bind<Inventory.Services.IInventoryItemService>()

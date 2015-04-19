@@ -27,11 +27,11 @@ using MyCompany.MyProject.Domain.Inventory.Repositories;
 
 namespace MyCompany.MyProject.Domain.Inventory.Services
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
 	[DataContract(Namespace="http://www.cdmdotnet.com/MyProject/Domain/Inventory/1001/")]
 	public partial class InventoryItemService : IInventoryItemService
 	{
-		protected ICommandSender<System.Guid> CommandSender { get; private set; }
+		protected ICommandSender<Cqrs.Authentication.ISingleSignOnToken> CommandSender { get; private set; }
 
 		protected IUnitOfWorkService UnitOfWorkService { get; private set; }
 
@@ -39,11 +39,11 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 
 		protected IQueryFactory QueryFactory { get; private set; }
 
-		protected IAuthenticationTokenHelper<System.Guid> AuthenticationTokenHelper { get; set; }
+		protected IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> AuthenticationTokenHelper { get; set; }
 
 		protected ICorrolationIdHelper CorrolationIdHelper { get; set; }
 
-		public InventoryItemService(ICommandSender<System.Guid> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<System.Guid> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper, IInventoryItemRepository inventoryItemRepository)
+		public InventoryItemService(ICommandSender<Cqrs.Authentication.ISingleSignOnToken> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper, IInventoryItemRepository inventoryItemRepository)
 		{
 			CommandSender = commandSender;
 			UnitOfWorkService = unitOfWorkService;

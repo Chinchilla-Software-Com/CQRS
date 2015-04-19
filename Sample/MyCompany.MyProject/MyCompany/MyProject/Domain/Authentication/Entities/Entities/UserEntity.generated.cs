@@ -24,7 +24,7 @@ using Cqrs.Entities;
 
 namespace MyCompany.MyProject.Domain.Authentication.Entities
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
 	[Serializable]
 	[DataContract]
 	public  partial class UserEntity : Entity, IUserEntity

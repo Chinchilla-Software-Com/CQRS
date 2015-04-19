@@ -26,8 +26,8 @@ using MyCompany.MyProject.Domain.Inventory.Events;
 
 namespace MyCompany.MyProject.Domain.Inventory
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
-	public  partial class InventoryItem : AggregateRoot<System.Guid>
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	public  partial class InventoryItem : AggregateRoot<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		public Guid Rsn
 		{
@@ -37,9 +37,9 @@ namespace MyCompany.MyProject.Domain.Inventory
 
 		public bool IsLogicallyDeleted {get; set;}
 
-		#region Implementation of IMessageWithAuthenticationToken<System.Guid>
+		#region Implementation of IMessageWithAuthenticationToken<Cqrs.Authentication.ISingleSignOnToken>
 
-		public System.Guid AuthenticationToken { get; set; }
+		public Cqrs.Authentication.ISingleSignOnToken AuthenticationToken { get; set; }
 
 		#endregion
 

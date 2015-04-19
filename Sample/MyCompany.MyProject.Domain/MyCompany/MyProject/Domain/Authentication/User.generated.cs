@@ -26,8 +26,8 @@ using MyCompany.MyProject.Domain.Authentication.Events;
 
 namespace MyCompany.MyProject.Domain.Authentication
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
-	public  partial class User : AggregateRoot<System.Guid>
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	public  partial class User : AggregateRoot<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		public Guid Rsn
 		{
@@ -37,9 +37,9 @@ namespace MyCompany.MyProject.Domain.Authentication
 
 		public bool IsLogicallyDeleted {get; set;}
 
-		#region Implementation of IMessageWithAuthenticationToken<System.Guid>
+		#region Implementation of IMessageWithAuthenticationToken<Cqrs.Authentication.ISingleSignOnToken>
 
-		public System.Guid AuthenticationToken { get; set; }
+		public Cqrs.Authentication.ISingleSignOnToken AuthenticationToken { get; set; }
 
 		#endregion
 

@@ -27,11 +27,11 @@ using MyCompany.MyProject.Domain.Authentication.Repositories;
 
 namespace MyCompany.MyProject.Domain.Authentication.Services
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
 	[DataContract(Namespace="http://www.cdmdotnet.com/MyProject/Domain/Authentication/1001/")]
 	public partial class UserService : IUserService
 	{
-		protected ICommandSender<System.Guid> CommandSender { get; private set; }
+		protected ICommandSender<Cqrs.Authentication.ISingleSignOnToken> CommandSender { get; private set; }
 
 		protected IUnitOfWorkService UnitOfWorkService { get; private set; }
 
@@ -39,11 +39,11 @@ namespace MyCompany.MyProject.Domain.Authentication.Services
 
 		protected IQueryFactory QueryFactory { get; private set; }
 
-		protected IAuthenticationTokenHelper<System.Guid> AuthenticationTokenHelper { get; set; }
+		protected IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> AuthenticationTokenHelper { get; set; }
 
 		protected ICorrolationIdHelper CorrolationIdHelper { get; set; }
 
-		public UserService(ICommandSender<System.Guid> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<System.Guid> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper, IUserRepository userRepository)
+		public UserService(ICommandSender<Cqrs.Authentication.ISingleSignOnToken> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper, IUserRepository userRepository)
 		{
 			CommandSender = commandSender;
 			UnitOfWorkService = unitOfWorkService;
@@ -57,7 +57,7 @@ namespace MyCompany.MyProject.Domain.Authentication.Services
 		/// Create a new instance of the <see cref="Entities.UserEntity"/>
 		/// </summary>
 		[OperationContract]
-		public IServiceResponseWithResultData<Entities.UserEntity> CreateUser(IServiceRequestWithData<System.Guid, Entities.UserEntity> serviceRequest)
+		public IServiceResponseWithResultData<Entities.UserEntity> CreateUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
 			UnitOfWorkService.SetCommitter(this);
@@ -73,15 +73,15 @@ namespace MyCompany.MyProject.Domain.Authentication.Services
 			return CompleteResponse(new ServiceResponseWithResultData<Entities.UserEntity>(item));
 		}
 
-		partial void OnCreateUser(IServiceRequestWithData<System.Guid, Entities.UserEntity> serviceRequest, CreateUserCommand command);
+		partial void OnCreateUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest, CreateUserCommand command);
 
-		partial void OnCreatedUser(IServiceRequestWithData<System.Guid, Entities.UserEntity> serviceRequest, CreateUserCommand command);
+		partial void OnCreatedUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest, CreateUserCommand command);
 
 		/// <summary>
 		/// Update an existing instance of the <see cref="Entities.UserEntity"/>
 		/// </summary>
 		[OperationContract]
-		public IServiceResponseWithResultData<Entities.UserEntity> UpdateUser(IServiceRequestWithData<System.Guid, Entities.UserEntity> serviceRequest)
+		public IServiceResponseWithResultData<Entities.UserEntity> UpdateUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
 			UnitOfWorkService.SetCommitter(this);
@@ -106,15 +106,15 @@ namespace MyCompany.MyProject.Domain.Authentication.Services
 			return CompleteResponse(new ServiceResponseWithResultData<Entities.UserEntity>(item));
 		}
 
-		partial void OnUpdateUser(IServiceRequestWithData<System.Guid, Entities.UserEntity> serviceRequest, ref UpdateUserCommand command, Entities.UserEntity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
+		partial void OnUpdateUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest, ref UpdateUserCommand command, Entities.UserEntity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
 
-		partial void OnUpdatedUser(IServiceRequestWithData<System.Guid, Entities.UserEntity> serviceRequest, ref UpdateUserCommand command, Entities.UserEntity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
+		partial void OnUpdatedUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest, ref UpdateUserCommand command, Entities.UserEntity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
 
 		/// <summary>
 		/// Logically delete an existing instance of the <see cref="Entities.UserEntity"/>
 		/// </summary>
 		[OperationContract]
-		public IServiceResponse DeleteUser(IServiceRequestWithData<System.Guid, Entities.UserEntity> serviceRequest)
+		public IServiceResponse DeleteUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
 			UnitOfWorkService.SetCommitter(this);
@@ -142,9 +142,9 @@ namespace MyCompany.MyProject.Domain.Authentication.Services
 			return CompleteResponse(new ServiceResponse());
 		}
 
-		partial void OnDeleteUser(IServiceRequestWithData<System.Guid, Entities.UserEntity> serviceRequest, ref DeleteUserCommand command, Entities.UserEntity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
+		partial void OnDeleteUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest, ref DeleteUserCommand command, Entities.UserEntity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
 
-		partial void OnDeletedUser(IServiceRequestWithData<System.Guid, Entities.UserEntity> serviceRequest, ref DeleteUserCommand command, Entities.UserEntity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
+		partial void OnDeletedUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest, ref DeleteUserCommand command, Entities.UserEntity locatedItem, ref ServiceResponseStateType? serviceResponseStateType);
 
 		protected virtual TServiceResponse CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
 			where TServiceResponse : IServiceResponse

@@ -22,16 +22,16 @@ using Cqrs.Logging;
 
 namespace MyCompany.MyProject.Domain.Inventory.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
-	public  partial class RenameInventoryItemCommandHandler : ICommandHandler<System.Guid, RenameInventoryItemCommand>
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	public  partial class RenameInventoryItemCommandHandler : ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, RenameInventoryItemCommand>
 	{
-		protected IUnitOfWork<System.Guid> UnitOfWork { get; private set; }
+		protected IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> UnitOfWork { get; private set; }
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
 		protected ILog Log { get; private set; }
 
-		public RenameInventoryItemCommandHandler(IUnitOfWork<System.Guid> unitOfWork, IDependencyResolver dependencyResolver, ILog log)
+		public RenameInventoryItemCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork, IDependencyResolver dependencyResolver, ILog log)
 		{
 			UnitOfWork = unitOfWork;
 			DependencyResolver = dependencyResolver;

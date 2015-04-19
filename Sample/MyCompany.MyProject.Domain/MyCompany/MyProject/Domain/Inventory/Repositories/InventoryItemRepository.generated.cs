@@ -26,7 +26,7 @@ using MyCompany.MyProject.Domain.Inventory.Repositories.Queries.Strategies;
 
 namespace MyCompany.MyProject.Domain.Inventory.Repositories
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
 	public partial class InventoryItemRepository : Repository<InventoryItemQueryStrategy, InventoryItemQueryStrategyBuilder, Entities.InventoryItemEntity>, IInventoryItemRepository
 	{
 		public InventoryItemRepository(IDomainDataStoreFactory dataStoreFactory, InventoryItemQueryStrategyBuilder inventoryItemQueryBuilder)

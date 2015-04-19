@@ -20,8 +20,8 @@ using Cqrs.Domain;
 
 namespace MyCompany.MyProject.Domain.Inventory.Events.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
-	public  partial class InventoryItemRenamedEventHandler : IEventHandler<System.Guid, InventoryItemRenamed>
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	public  partial class InventoryItemRenamedEventHandler : IEventHandler<Cqrs.Authentication.ISingleSignOnToken, InventoryItemRenamed>
 	{
 		#region Implementation of IEventHandler<in InventoryItemRenamed>
 

@@ -20,8 +20,8 @@ using Cqrs.Domain;
 
 namespace MyCompany.MyProject.Domain.Inventory.Events.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
-	public  partial class CheckInItemsToInventoryFailedDueNegativeCountEventHandler : IEventHandler<System.Guid, CheckInItemsToInventoryFailedDueNegativeCount>
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	public  partial class CheckInItemsToInventoryFailedDueNegativeCountEventHandler : IEventHandler<Cqrs.Authentication.ISingleSignOnToken, CheckInItemsToInventoryFailedDueNegativeCount>
 	{
 		#region Implementation of IEventHandler<in CheckInItemsToInventoryFailedDueNegativeCount>
 

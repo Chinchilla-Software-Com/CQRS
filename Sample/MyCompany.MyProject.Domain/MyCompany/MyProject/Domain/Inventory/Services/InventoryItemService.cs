@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using Cqrs.Authentication;
 using Cqrs.Repositories.Queries;
 using Cqrs.Services;
 using MyCompany.MyProject.Domain.Inventory.Commands;
@@ -26,7 +27,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			InventoryItemSummaryRepository = inventoryItemSummaryRepository;
 		}
 
-		partial void OnGetAll(IServiceRequestWithData<Guid, InventoryItemServiceGetAllParameters> serviceRequest, ref IServiceResponseWithResultData<IEnumerable<InventoryItemSummaryEntity>> results)
+		partial void OnGetAll(IServiceRequestWithData<ISingleSignOnToken, InventoryItemServiceGetAllParameters> serviceRequest, ref IServiceResponseWithResultData<IEnumerable<InventoryItemSummaryEntity>> results)
 		{
 			// Define Query
 			ICollectionResultQuery<InventoryItemSummaryQueryStrategy, InventoryItemSummaryEntity> query = QueryFactory.CreateNewCollectionResultQuery<InventoryItemSummaryQueryStrategy, InventoryItemSummaryEntity>();
@@ -38,7 +39,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			results = new ServiceResponseWithResultData<IEnumerable<InventoryItemSummaryEntity>>(inventoryItems);
 		}
 
-		partial void OnGetByRsn(IServiceRequestWithData<Guid, InventoryItemServiceGetByRsnParameters> serviceRequest, ref IServiceResponseWithResultData<InventoryItemEntity> results)
+		partial void OnGetByRsn(IServiceRequestWithData<ISingleSignOnToken, InventoryItemServiceGetByRsnParameters> serviceRequest, ref IServiceResponseWithResultData<InventoryItemEntity> results)
 		{
 			// Define Query
 			ISingleResultQuery<InventoryItemQueryStrategy, InventoryItemEntity> query = QueryFactory.CreateNewSingleResultQuery<InventoryItemQueryStrategy, InventoryItemEntity>();
@@ -51,7 +52,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			results = new ServiceResponseWithResultData<InventoryItemEntity>(inventoryItem);
 		}
 
-		partial void OnChangeName(IServiceRequestWithData<Guid, InventoryItemServiceChangeNameParameters> serviceRequest, ref IServiceResponse results)
+		partial void OnChangeName(IServiceRequestWithData<ISingleSignOnToken, InventoryItemServiceChangeNameParameters> serviceRequest, ref IServiceResponse results)
 		{
 			UnitOfWorkService.SetCommitter(this);
 			InventoryItemServiceChangeNameParameters item = serviceRequest.Data;
@@ -64,7 +65,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			results = new ServiceResponse();
 		}
 
-		partial void OnCheckIn(IServiceRequestWithData<Guid, InventoryItemServiceCheckInParameters> serviceRequest, ref IServiceResponse results)
+		partial void OnCheckIn(IServiceRequestWithData<ISingleSignOnToken, InventoryItemServiceCheckInParameters> serviceRequest, ref IServiceResponse results)
 		{
 			UnitOfWorkService.SetCommitter(this);
 			InventoryItemServiceCheckInParameters item = serviceRequest.Data;
@@ -77,7 +78,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			results = new ServiceResponse();
 		}
 
-		partial void OnCreate(IServiceRequestWithData<Guid, InventoryItemServiceCreateParameters> serviceRequest, ref IServiceResponse results)
+		partial void OnCreate(IServiceRequestWithData<ISingleSignOnToken, InventoryItemServiceCreateParameters> serviceRequest, ref IServiceResponse results)
 		{
 			UnitOfWorkService.SetCommitter(this);
 			InventoryItemServiceCreateParameters item = serviceRequest.Data;
@@ -90,7 +91,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			results = new ServiceResponse();
 		}
 
-		partial void OnDeactivate(IServiceRequestWithData<Guid, InventoryItemServiceDeactivateParameters> serviceRequest, ref IServiceResponse results)
+		partial void OnDeactivate(IServiceRequestWithData<ISingleSignOnToken, InventoryItemServiceDeactivateParameters> serviceRequest, ref IServiceResponse results)
 		{
 			UnitOfWorkService.SetCommitter(this);
 			InventoryItemServiceDeactivateParameters item = serviceRequest.Data;
@@ -103,7 +104,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 			results = new ServiceResponse();
 		}
 
-		partial void OnRemove(IServiceRequestWithData<Guid, InventoryItemServiceRemoveParameters> serviceRequest, ref IServiceResponse results)
+		partial void OnRemove(IServiceRequestWithData<ISingleSignOnToken, InventoryItemServiceRemoveParameters> serviceRequest, ref IServiceResponse results)
 		{
 			UnitOfWorkService.SetCommitter(this);
 			InventoryItemServiceRemoveParameters item = serviceRequest.Data;

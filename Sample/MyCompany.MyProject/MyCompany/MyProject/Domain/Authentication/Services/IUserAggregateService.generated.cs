@@ -22,7 +22,7 @@ using Cqrs.Services;
 
 namespace MyCompany.MyProject.Domain.Authentication.Services
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
 	[ServiceContract(Namespace="http://www.cdmdotnet.com/MyProject/Domain/Authentication/1001/")]
 	public partial interface IUserService 
 	{
@@ -31,18 +31,18 @@ namespace MyCompany.MyProject.Domain.Authentication.Services
 		/// Create a new instance of the <see cref="Entities.UserEntity"/>
 		/// </summary>
 		[OperationContract]
-		IServiceResponseWithResultData<Entities.UserEntity> CreateUser(IServiceRequestWithData<System.Guid, Entities.UserEntity> serviceRequest);
+		IServiceResponseWithResultData<Entities.UserEntity> CreateUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest);
 
 		/// <summary>
 		/// Update an existing instance of the <see cref="Entities.UserEntity"/>
 		/// </summary>
 		[OperationContract]
-		IServiceResponseWithResultData<Entities.UserEntity> UpdateUser(IServiceRequestWithData<System.Guid, Entities.UserEntity> serviceRequest);
+		IServiceResponseWithResultData<Entities.UserEntity> UpdateUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest);
 
 		/// <summary>
 		/// Logically delete an existing instance of the <see cref="Entities.UserEntity"/>
 		/// </summary>
 		[OperationContract]
-		IServiceResponse DeleteUser(IServiceRequestWithData<System.Guid, Entities.UserEntity> serviceRequest);
+		IServiceResponse DeleteUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest);
 	}
 }

@@ -24,8 +24,8 @@ using Cqrs.Events;
 
 namespace MyCompany.MyProject.Domain.Authentication.Events
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
-	public  partial class UserCreated : IEvent<System.Guid>
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	public  partial class UserCreated : IEvent<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		#region Implementation of IEvent
 
@@ -50,9 +50,9 @@ namespace MyCompany.MyProject.Domain.Authentication.Events
 
 		#endregion
 
-		#region Implementation of IMessageWithAuthenticationToken<System.Guid>
+		#region Implementation of IMessageWithAuthenticationToken<Cqrs.Authentication.ISingleSignOnToken>
 
-		public System.Guid AuthenticationToken { get; set; }
+		public Cqrs.Authentication.ISingleSignOnToken AuthenticationToken { get; set; }
 
 		#endregion
 

@@ -20,12 +20,12 @@ using Cqrs.Domain;
 
 namespace MyCompany.MyProject.Domain.Authentication.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
-	public  partial class UpdateUserCommandHandler : ICommandHandler<System.Guid, UpdateUserCommand>
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	public  partial class UpdateUserCommandHandler : ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, UpdateUserCommand>
 	{
-		protected IUnitOfWork<System.Guid> UnitOfWork { get; private set; }
+		protected IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> UnitOfWork { get; private set; }
 
-		public UpdateUserCommandHandler(IUnitOfWork<System.Guid> unitOfWork)
+		public UpdateUserCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork)
 		{
 			UnitOfWork = unitOfWork;
 		}

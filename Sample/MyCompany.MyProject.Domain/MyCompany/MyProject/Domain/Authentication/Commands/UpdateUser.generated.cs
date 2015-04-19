@@ -24,8 +24,8 @@ using Cqrs.Commands;
 
 namespace MyCompany.MyProject.Domain.Authentication.Commands
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
-	public  partial class UpdateUserCommand : ICommand<System.Guid>
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	public  partial class UpdateUserCommand : ICommand<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		#region Implementation of ICommand
 
@@ -34,10 +34,10 @@ namespace MyCompany.MyProject.Domain.Authentication.Commands
 
 		#endregion
 
-		#region Implementation of IMessageWithAuthenticationToken<System.Guid>
+		#region Implementation of IMessageWithAuthenticationToken<Cqrs.Authentication.ISingleSignOnToken>
 
 		[DataMember]
-		public System.Guid AuthenticationToken { get; set; }
+		public Cqrs.Authentication.ISingleSignOnToken AuthenticationToken { get; set; }
 
 		#endregion
 

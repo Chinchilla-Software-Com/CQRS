@@ -25,14 +25,14 @@ using Cqrs.Repositories.Queries;
 
 namespace MyCompany.MyProject.Domain.Authentication.Repositories.Queries.Strategies
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
 	public partial class UserQueryStrategy : QueryStrategy, IUserQueryStrategy
 	{
-		protected IAuthenticationTokenHelper<System.Guid> AuthenticationTokenHelper { get; private set; }
+		protected IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> AuthenticationTokenHelper { get; private set; }
 
 		internal IList<Func<int, UserQueryStrategy>> SortingList { get; set; }
 
-		public UserQueryStrategy(IAuthenticationTokenHelper<System.Guid> authenticationTokenHelper)
+		public UserQueryStrategy(IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> authenticationTokenHelper)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			SortingList = new List<Func<int, UserQueryStrategy>>();

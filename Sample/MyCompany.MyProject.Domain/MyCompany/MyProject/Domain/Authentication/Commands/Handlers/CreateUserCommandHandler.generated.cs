@@ -22,16 +22,16 @@ using Cqrs.Logging;
 
 namespace MyCompany.MyProject.Domain.Authentication.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
-	public  partial class CreateUserCommandHandler : ICommandHandler<System.Guid, CreateUserCommand>
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	public  partial class CreateUserCommandHandler : ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, CreateUserCommand>
 	{
-		protected IUnitOfWork<System.Guid> UnitOfWork { get; private set; }
+		protected IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> UnitOfWork { get; private set; }
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
 		protected ILog Log { get; private set; }
 
-		public CreateUserCommandHandler(IUnitOfWork<System.Guid> unitOfWork, IDependencyResolver dependencyResolver, ILog log)
+		public CreateUserCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork, IDependencyResolver dependencyResolver, ILog log)
 		{
 			UnitOfWork = unitOfWork;
 			DependencyResolver = dependencyResolver;
@@ -45,7 +45,10 @@ namespace MyCompany.MyProject.Domain.Authentication.Commands.Handlers
 			User item = null;
 			OnCreateUser(command, ref item);
 			if (item == null)
+			{
 				item = new User(DependencyResolver, Log, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
+				UnitOfWork.Add(item);
+			}
 			item.CreateUser(command.Name);
 			OnCreatedUser(command, item);
 			OnAddToUnitOfWork(command, item);

@@ -18,7 +18,7 @@ using Cqrs.Logging;
 
 namespace MyCompany.MyProject.Domain.Factories
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.497.383")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
 	/// <summary>
 	/// A factory for obtaining <see cref="IDataStore{TData}"/> instances using an InProcess only approach
 	/// </summary>
