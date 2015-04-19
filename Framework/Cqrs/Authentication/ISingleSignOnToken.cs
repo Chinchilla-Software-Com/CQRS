@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using System.ServiceModel;
 
 namespace Cqrs.Authentication
 {
+	[ServiceContract(Namespace = "http://cqrs.co.nz/SingleSignOn/Token")]
 	public interface ISingleSignOnToken
 	{
 		[Required]

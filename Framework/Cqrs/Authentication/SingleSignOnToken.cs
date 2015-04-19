@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
-using Cqrs.Authentication;
 
-namespace Cqrs.Repositories.Authentication
+namespace Cqrs.Authentication
 {
 	[Serializable]
 	[DataContract]
