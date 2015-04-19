@@ -107,6 +107,12 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 			}
 #>
 				.InSingletonScope();
+<# if (GetDomainAuthenticationTokenType(this.Element) == "Cqrs.Authentication.ISingleSignOnToken") { #>
+
+			Bind<Cqrs.Authentication.ISingleSignOnTokenFactory>()
+				.To<Cqrs.Authentication.SingleSignOnTokenFactory>()
+				.InSingletonScope();
+<# } #>
 		}
 
 		/// <summary>
