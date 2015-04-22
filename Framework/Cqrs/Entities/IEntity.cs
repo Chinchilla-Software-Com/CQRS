@@ -2,20 +2,19 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace Cqrs.Authentication
+namespace Cqrs.Entities
 {
-	public interface ISingleSignOnToken
+	public interface IEntity
 	{
 		[Required]
 		[DataMember]
-		string Token { get; set; }
+		Guid Rsn { get; set; }
+
+		[DataMember]
+		int SortingOrder { get; set; }
 
 		[Required]
 		[DataMember]
-		DateTime TimeOfExpiry { get; set; }
-
-		[Required]
-		[DataMember]
-		DateTime DateIssued { get; set; }
+		bool IsLogicallyDeleted { get; set; }
 	}
 }
