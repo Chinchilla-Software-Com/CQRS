@@ -6,7 +6,7 @@ namespace Cqrs.Entities
 {
 	[Serializable]
 	[DataContract]
-	public abstract class Entity
+	public abstract class Entity : IEntity
 	{
 		[Required]
 		[DataMember]
