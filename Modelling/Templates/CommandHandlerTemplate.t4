@@ -85,7 +85,10 @@ namespace <#= classNamespace #>.Handlers
 		if (createsNewInstance)
 		{
 #>
+			{
 				item = new <#= aggregateRootName #>(DependencyResolver, Log, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
+				UnitOfWork.Add(item);
+			}
 <#
 		}
 		else
