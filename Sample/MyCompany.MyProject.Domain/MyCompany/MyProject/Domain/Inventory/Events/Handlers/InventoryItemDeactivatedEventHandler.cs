@@ -15,14 +15,23 @@ namespace MyCompany.MyProject.Domain.Inventory.Events.Handlers
 
 		protected IInventoryItemRepository InventoryItemRepository { get; private set; }
 
-		public InventoryItemDeactivatedEventHandler(IAutomapHelper automapHelper, IQueryFactory queryFactory, IInventoryItemRepository inventoryItemRepository)
+		protected IInventoryItemSummaryRepository InventoryItemSummaryRepository { get; private set; }
+
+		public InventoryItemDeactivatedEventHandler(IAutomapHelper automapHelper, IQueryFactory queryFactory, IInventoryItemRepository inventoryItemRepository, IInventoryItemSummaryRepository inventoryItemSummaryRepository)
 		{
 			AutomapHelper = automapHelper;
 			QueryFactory = queryFactory;
 			InventoryItemRepository = inventoryItemRepository;
+			InventoryItemSummaryRepository = inventoryItemSummaryRepository;
 		}
 
 		partial void OnHandle(InventoryItemDeactivated @event)
+		{
+			DeleteDetailedItem(@event);
+			DeleteSummaryItem(@event);
+		}
+
+		private void DeleteDetailedItem(InventoryItemDeactivated @event)
 		{
 			// Define Query
 			ISingleResultQuery<InventoryItemQueryStrategy, InventoryItemEntity> query = QueryFactory.CreateNewSingleResultQuery<InventoryItemQueryStrategy, InventoryItemEntity>();
@@ -37,6 +46,23 @@ namespace MyCompany.MyProject.Domain.Inventory.Events.Handlers
 				throw new NullReferenceException(string.Format("No entity was found by the id '{0}'", @event.Rsn));
 
 			InventoryItemRepository.Delete(inventoryItem);
+		}
+
+		private void DeleteSummaryItem(InventoryItemDeactivated @event)
+		{
+			// Define Query
+			ISingleResultQuery<InventoryItemSummaryQueryStrategy, InventoryItemSummaryEntity> query = QueryFactory.CreateNewSingleResultQuery<InventoryItemSummaryQueryStrategy, InventoryItemSummaryEntity>();
+			query.QueryStrategy.WithRsn(@event.Rsn);
+
+			// Retrieve Data, but remember if no items exist, the value is null
+			query = InventoryItemSummaryRepository.Retrieve(query, false);
+			InventoryItemSummaryEntity inventoryItem = query.Result;
+
+			// As a previous event will have created this instance we should throw an exception if it is not found.
+			if (inventoryItem == null)
+				throw new NullReferenceException(string.Format("No entity was found by the id '{0}'", @event.Rsn));
+
+			InventoryItemSummaryRepository.Delete(inventoryItem);
 		}
 	}
 }

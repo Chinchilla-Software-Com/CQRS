@@ -32,5 +32,8 @@ namespace MyCompany.MyProject.Domain.Inventory.Entities
 		[DataMember]
 		long CurrentCount { get; set; }
 
+		[DataMember]
+		Guid Rsn { get; set; }
+
 	}
 }

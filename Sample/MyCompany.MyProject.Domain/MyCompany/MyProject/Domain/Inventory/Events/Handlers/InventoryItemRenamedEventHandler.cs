@@ -45,7 +45,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Events.Handlers
 			if (inventoryItem == null)
 				throw new NullReferenceException(string.Format("No entity was found by the id '{0}'", @event.Rsn));
 
-			inventoryItem.Name += @event.NewName;
+			inventoryItem.Name = @event.NewName;
 
 			// Again, this MUST be an update as commented above.
 			InventoryItemRepository.Update(inventoryItem);
@@ -65,7 +65,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Events.Handlers
 			if (inventoryItem == null)
 				throw new NullReferenceException(string.Format("No entity was found by the id '{0}'", @event.Rsn));
 
-			inventoryItem.Name += @event.NewName;
+			inventoryItem.Name = @event.NewName;
 
 			// Again, this MUST be an update as commented above.
 			InventoryItemSummaryRepository.Update(inventoryItem);

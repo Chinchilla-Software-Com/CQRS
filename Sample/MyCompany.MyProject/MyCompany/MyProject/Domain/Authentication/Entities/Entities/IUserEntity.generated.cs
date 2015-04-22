@@ -29,5 +29,8 @@ namespace MyCompany.MyProject.Domain.Authentication.Entities
 		[DataMember]
 		string Name { get; set; }
 
+		[DataMember]
+		Guid Rsn { get; set; }
+
 	}
 }

@@ -35,5 +35,11 @@ namespace MyCompany.MyProject.Domain.Inventory
 			else
 				ApplyChange(new InventoryItemDeactivated(Id));
 		}
+
+		partial void OnApply(InventoryItemCreated @event)
+		{
+			Activated = true;
+		}
+
 	}
 }

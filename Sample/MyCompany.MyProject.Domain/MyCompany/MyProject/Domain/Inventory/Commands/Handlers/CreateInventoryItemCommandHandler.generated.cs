@@ -48,7 +48,10 @@ namespace MyCompany.MyProject.Domain.Inventory.Commands.Handlers
 			InventoryItem item = null;
 			OnCreateInventoryItem(command, ref item);
 			if (item == null)
+			{
 				item = new InventoryItem(DependencyResolver, Log, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
+				UnitOfWork.Add(item);
+			}
 			item.CreateInventoryItem(command.Name);
 			OnCreateInventoryItemDone(command, item);
 			OnCommit(command, item);
