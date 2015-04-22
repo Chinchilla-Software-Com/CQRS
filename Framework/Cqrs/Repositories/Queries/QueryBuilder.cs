@@ -24,21 +24,21 @@ namespace Cqrs.Repositories.Queries
 
 		public virtual IQueryable<TData> CreateQueryable(ISingleResultQuery<TQueryStrategy, TData> singleResultQuery)
 		{
-			IQueryable<TData> queryable = GeneratePredicate(singleResultQuery.QueryStrategy.QueryPredicate ?? GetEmptyQueryPredicate());
+			IQueryable<TData> queryable = singleResultQuery.QueryStrategy.QueryPredicate == null ?  GetEmptyQueryPredicate() : GeneratePredicate(singleResultQuery.QueryStrategy.QueryPredicate);
 			ApplySorting(singleResultQuery.QueryStrategy, ref queryable);
 			return queryable;
 		}
 
 		public virtual IQueryable<TData> CreateQueryable(ICollectionResultQuery<TQueryStrategy, TData> collectionResultQuery)
 		{
-			IQueryable<TData> queryable = GeneratePredicate(collectionResultQuery.QueryStrategy.QueryPredicate ?? GetEmptyQueryPredicate());
+			IQueryable<TData> queryable = collectionResultQuery.QueryStrategy.QueryPredicate == null ? GetEmptyQueryPredicate() : GeneratePredicate(collectionResultQuery.QueryStrategy.QueryPredicate);
 			ApplySorting(collectionResultQuery.QueryStrategy, ref queryable);
 			return queryable;
 		}
 
 		#endregion
 
-		protected abstract IQueryPredicate GetEmptyQueryPredicate();
+		protected abstract IQueryable<TData> GetEmptyQueryPredicate();
 
 		protected virtual IQueryable<TData> GeneratePredicate(IQueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null)
 		{
