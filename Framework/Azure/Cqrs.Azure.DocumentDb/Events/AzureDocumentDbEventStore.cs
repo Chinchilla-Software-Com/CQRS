@@ -63,7 +63,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 				using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
 				{
 					Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
-					DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName()).Result;
+					DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format("{0}_{1}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), eventData.EventType)).Result;
 
 					Logger.LogInfo("Creating document for event asyncronously", string.Format("{0}\\PersitEvent", GetType().Name));
 					client.CreateDocumentAsync(collection.SelfLink, eventData).Wait();
