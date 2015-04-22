@@ -17,7 +17,7 @@ using Cqrs.DataStores;
 
 namespace MyCompany.MyProject.Domain.Factories
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
 	/// <summary>
 	/// A factory for obtaining <see cref="IDataStore{TData}"/> instances
 	/// </summary>

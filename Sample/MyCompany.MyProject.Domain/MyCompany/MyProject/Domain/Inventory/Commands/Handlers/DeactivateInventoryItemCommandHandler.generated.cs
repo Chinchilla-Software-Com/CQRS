@@ -22,7 +22,7 @@ using Cqrs.Logging;
 
 namespace MyCompany.MyProject.Domain.Inventory.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
 	public  partial class DeactivateInventoryItemCommandHandler : ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, DeactivateInventoryItemCommand>
 	{
 		protected IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> UnitOfWork { get; private set; }

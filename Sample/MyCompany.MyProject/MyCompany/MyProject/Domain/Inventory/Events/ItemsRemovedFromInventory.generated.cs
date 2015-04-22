@@ -24,7 +24,7 @@ using Cqrs.Events;
 
 namespace MyCompany.MyProject.Domain.Inventory.Events
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
 	public  partial class ItemsRemovedFromInventory : IEvent<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		#region Implementation of IEvent

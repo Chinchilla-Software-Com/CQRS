@@ -24,7 +24,7 @@ using Cqrs.Repositories.Queries;
 
 namespace MyCompany.MyProject.Domain.Authentication.Repositories.Queries.Strategies
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
 	public partial interface IUserQueryStrategy : IQueryStrategy
 	{
 		UserQueryStrategy WithRsn(Guid rsn);

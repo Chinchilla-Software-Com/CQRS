@@ -24,7 +24,7 @@ using Cqrs.Commands;
 
 namespace MyCompany.MyProject.Domain.Authentication.Commands
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
 	public  partial class CreateUserCommand : ICommand<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		#region Implementation of ICommand

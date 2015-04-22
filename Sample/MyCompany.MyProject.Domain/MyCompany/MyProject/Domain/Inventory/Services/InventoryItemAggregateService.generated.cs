@@ -27,7 +27,7 @@ using MyCompany.MyProject.Domain.Inventory.Repositories;
 
 namespace MyCompany.MyProject.Domain.Inventory.Services
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
 	[DataContract(Namespace="http://www.cdmdotnet.com/MyProject/Domain/Inventory/1001/")]
 	public partial class InventoryItemService : IInventoryItemService
 	{

@@ -20,7 +20,7 @@ using Cqrs.Commands;
 
 namespace MyCompany.MyProject.Domain.Inventory.Commands
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
 	public  partial class RenameInventoryItemCommand : ICommand<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		#region Implementation of ICommand

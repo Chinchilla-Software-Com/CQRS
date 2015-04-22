@@ -26,7 +26,7 @@ using MyCompany.MyProject.Domain.Authentication.Repositories.Queries.Strategies;
 
 namespace MyCompany.MyProject.Domain.Authentication.Repositories
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
 	public partial class UserRepository : Repository<UserQueryStrategy, UserQueryStrategyBuilder, Entities.UserEntity>, IUserRepository
 	{
 		public UserRepository(IDomainDataStoreFactory dataStoreFactory, UserQueryStrategyBuilder userQueryBuilder)

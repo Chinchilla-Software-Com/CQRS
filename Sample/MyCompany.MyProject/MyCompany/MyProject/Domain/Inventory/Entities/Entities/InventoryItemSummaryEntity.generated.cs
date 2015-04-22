@@ -24,7 +24,7 @@ using Cqrs.Entities;
 
 namespace MyCompany.MyProject.Domain.Inventory.Entities
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
 	[Serializable]
 	[DataContract]
 	public  partial class InventoryItemSummaryEntity : Entity, IInventoryItemSummaryEntity

@@ -24,7 +24,7 @@ using Ninject.Parameters;
 
 namespace MyCompany.MyProject.Domain.Configuration
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
 	public partial class DomainNinjectModule : NinjectModule
 	{
 		#region Overrides of NinjectModule

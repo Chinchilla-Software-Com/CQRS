@@ -20,20 +20,18 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using Cqrs.Entities;
 
 namespace MyCompany.MyProject.Domain.Inventory.Entities
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.508.396")]
-	public  partial interface IInventoryItemEntity
+	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
+	public  partial interface IInventoryItemEntity : IEntity
 	{
 		[DataMember]
 		string Name { get; set; }
 
 		[DataMember]
 		long CurrentCount { get; set; }
-
-		[DataMember]
-		Guid Rsn { get; set; }
 
 	}
 }
