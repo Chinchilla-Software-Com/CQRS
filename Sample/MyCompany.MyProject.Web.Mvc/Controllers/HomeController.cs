@@ -13,9 +13,10 @@ namespace MyCompany.MyProject.Web.Mvc.Controllers
 
 		protected IUserService UserService { get; private set; }
 
-		public HomeController(IInventoryItemService inventoryItemService)
+		public HomeController(IInventoryItemService inventoryItemService, IUserService userService)
 		{
 			InventoryItemService = inventoryItemService;
+			UserService = userService;
 		}
 
 		protected virtual ISingleSignOnToken GetAuthenticationToken()

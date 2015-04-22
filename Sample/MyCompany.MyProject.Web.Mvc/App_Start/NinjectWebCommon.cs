@@ -20,11 +20,11 @@ using Ninject;
 using Ninject.Web.Common;
 using NinjectDependencyResolver = Ninject.Web.Mvc.NinjectDependencyResolver;
 
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(MyCompany.MyProject.Web.Mvc.NinjectWebCommon), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(MyCompany.MyProject.Web.Mvc.NinjectWebCommon), "Stop")]
+
 namespace MyCompany.MyProject.Web.Mvc
 {
-	[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(MyCompany.MyProject.Web.Mvc.NinjectWebCommon), "Start")]
-	[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(MyCompany.MyProject.Web.Mvc.NinjectWebCommon), "Stop")]
-
 	public static class NinjectWebCommon 
 	{
 		private static readonly Bootstrapper Bootstrapper = new Bootstrapper();

@@ -9,6 +9,8 @@
 using System;
 using System.Collections.Generic;
 using Cqrs.Authentication;
+using Cqrs.Commands;
+using Cqrs.Logging;
 using Cqrs.Repositories.Queries;
 using Cqrs.Services;
 using MyCompany.MyProject.Domain.Inventory.Commands;
@@ -22,8 +24,14 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 	{
 		protected IInventoryItemSummaryRepository InventoryItemSummaryRepository { get; private set; }
 
-		public InventoryItemService(IInventoryItemSummaryRepository inventoryItemSummaryRepository)
+		public InventoryItemService(ICommandSender<ISingleSignOnToken> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<ISingleSignOnToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper, IInventoryItemRepository inventoryItemRepository, IInventoryItemSummaryRepository inventoryItemSummaryRepository)
 		{
+			CommandSender = commandSender;
+			UnitOfWorkService = unitOfWorkService;
+			QueryFactory = queryFactory;
+			AuthenticationTokenHelper = authenticationTokenHelper;
+			CorrolationIdHelper = corrolationIdHelper;
+			InventoryItemRepository = inventoryItemRepository;
 			InventoryItemSummaryRepository = inventoryItemSummaryRepository;
 		}
 

@@ -12,9 +12,9 @@ using Cqrs.Logging;
 
 namespace Cqrs.Ninject.Azure.DocumentDb.Events
 {
-	public class TestAzureDocumentDbEventStoreConnectionHelper : AzureDocumentDbEventStoreConnectionHelper
+	public class TestAzureDocumentDbEventStoreConnectionStringFactory : AzureDocumentDbEventStoreConnectionStringFactory
 	{
-		private const string CallContextDatabaseNameKey = "AzureDocumentDbEventStoreConnectionHelper¿DatabaseName";
+		private const string CallContextDatabaseNameKey = "AzureDocumentDbEventStoreConnectionStringFactory¿DatabaseName";
 
 		public static string DatabaseName
 		{
@@ -28,7 +28,7 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Events
 			}
 		}
 
-		public TestAzureDocumentDbEventStoreConnectionHelper(ILog logger)
+		public TestAzureDocumentDbEventStoreConnectionStringFactory(ILog logger)
 			: base(logger)
 		{
 		}

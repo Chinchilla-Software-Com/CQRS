@@ -70,8 +70,8 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 		/// </summary>
 		public virtual void RegisterCqrsRequirements()
 		{
-			Bind<IAzureDocumentDbEventStoreConnectionHelper>()
-				.To<TestAzureDocumentDbEventStoreConnectionHelper>()
+			Bind<IAzureDocumentDbEventStoreConnectionStringFactory>()
+				.To<TestAzureDocumentDbEventStoreConnectionStringFactory>()
 				.InSingletonScope();
 
 			Bind<IEventStore<TAuthenticationToken>>()

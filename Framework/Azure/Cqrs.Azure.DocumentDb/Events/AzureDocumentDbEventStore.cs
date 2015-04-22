@@ -20,15 +20,15 @@ namespace Cqrs.Azure.DocumentDb.Events
 {
 	public class AzureDocumentDbEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken>
 	{
-		protected IAzureDocumentDbEventStoreConnectionHelper AzureDocumentDbEventStoreConnectionHelper { get; private set; }
+		protected IAzureDocumentDbEventStoreConnectionStringFactory AzureDocumentDbEventStoreConnectionStringFactory { get; private set; }
 
 		protected IAzureDocumentDbHelper AzureDocumentDbHelper { get; private set; }
 
-		public AzureDocumentDbEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILog logger, IAzureDocumentDbHelper azureDocumentDbHelper, IAzureDocumentDbEventStoreConnectionHelper azureDocumentDbEventStoreConnectionHelper)
+		public AzureDocumentDbEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILog logger, IAzureDocumentDbHelper azureDocumentDbHelper, IAzureDocumentDbEventStoreConnectionStringFactory azureDocumentDbEventStoreConnectionStringFactory)
 			: base(eventBuilder, eventDeserialiser, logger)
 		{
 			AzureDocumentDbHelper = azureDocumentDbHelper;
-			AzureDocumentDbEventStoreConnectionHelper = azureDocumentDbEventStoreConnectionHelper;
+			AzureDocumentDbEventStoreConnectionStringFactory = azureDocumentDbEventStoreConnectionStringFactory;
 		}
 
 		public override IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
@@ -38,10 +38,10 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 		protected async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
-			using (DocumentClient client = AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionClient())
+			using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
 			{
-				Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionDatabaseName()).Result;
-				DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionCollectionName()).Result;
+				Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
+				DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format("{0}_{1}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), typeof(T).FullName)).Result;
 
 				IOrderedQueryable<EventData> query = client.CreateDocumentQuery<EventData>(collection.SelfLink);
 				string streamName = string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, aggregateId);
@@ -60,10 +60,10 @@ namespace Cqrs.Azure.DocumentDb.Events
 			Logger.LogInfo("Persisting aggregate root event", string.Format("{0}\\PersitEvent", GetType().Name));
 			try
 			{
-				using (DocumentClient client = AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionClient())
+				using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
 				{
-					Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionDatabaseName()).Result;
-					DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, AzureDocumentDbEventStoreConnectionHelper.GetEventStoreConnectionCollectionName()).Result;
+					Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
+					DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName()).Result;
 
 					Logger.LogInfo("Creating document for event asyncronously", string.Format("{0}\\PersitEvent", GetType().Name));
 					client.CreateDocumentAsync(collection.SelfLink, eventData).Wait();

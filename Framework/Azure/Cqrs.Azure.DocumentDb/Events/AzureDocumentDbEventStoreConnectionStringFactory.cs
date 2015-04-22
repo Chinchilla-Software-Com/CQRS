@@ -5,25 +5,25 @@ using Microsoft.Azure.Documents.Client;
 
 namespace Cqrs.Azure.DocumentDb.Events
 {
-	public class AzureDocumentDbEventStoreConnectionHelper : IAzureDocumentDbEventStoreConnectionHelper
+	public class AzureDocumentDbEventStoreConnectionStringFactory : IAzureDocumentDbEventStoreConnectionStringFactory
 	{
 		protected ILog Logger { get; private set; }
 
-		public AzureDocumentDbEventStoreConnectionHelper(ILog logger)
+		public AzureDocumentDbEventStoreConnectionStringFactory(ILog logger)
 		{
 			Logger = logger;
 		}
 
 		public virtual DocumentClient GetEventStoreConnectionClient()
 		{
-			Logger.LogInfo("Getting Azure document client", "AzureDocumentDbEventStoreConnectionHelper\\GetEventStoreConnectionClient");
+			Logger.LogInfo("Getting Azure document client", "AzureDocumentDbEventStoreConnectionStringFactory\\GetEventStoreConnectionClient");
 			try
 			{
 				return new DocumentClient(GetEventStoreConnectionUrl(), GetEventStoreConnectionAuthorisationKey());
 			}
 			finally
 			{
-				Logger.LogInfo("Getting Azure document client... Done", "AzureDocumentDbEventStoreConnectionHelper\\GetEventStoreConnectionClient");
+				Logger.LogInfo("Getting Azure document client... Done", "AzureDocumentDbEventStoreConnectionStringFactory\\GetEventStoreConnectionClient");
 			}
 		}
 
