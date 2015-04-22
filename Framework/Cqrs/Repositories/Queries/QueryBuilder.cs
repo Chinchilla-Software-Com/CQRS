@@ -22,23 +22,25 @@ namespace Cqrs.Repositories.Queries
 
 		#region Implementation of IQueryBuilder<UserQueryStrategy,User>
 
-		public IQueryable<TData> CreateQueryable(ISingleResultQuery<TQueryStrategy, TData> singleResultQuery)
+		public virtual IQueryable<TData> CreateQueryable(ISingleResultQuery<TQueryStrategy, TData> singleResultQuery)
 		{
-			IQueryable<TData> queryable = GeneratePredicate(singleResultQuery.QueryStrategy.QueryPredicate);
+			IQueryable<TData> queryable = GeneratePredicate(singleResultQuery.QueryStrategy.QueryPredicate ?? GetEmptyQueryPredicate());
 			ApplySorting(singleResultQuery.QueryStrategy, ref queryable);
 			return queryable;
 		}
 
-		public IQueryable<TData> CreateQueryable(ICollectionResultQuery<TQueryStrategy, TData> collectionResultQuery)
+		public virtual IQueryable<TData> CreateQueryable(ICollectionResultQuery<TQueryStrategy, TData> collectionResultQuery)
 		{
-			IQueryable<TData> queryable = GeneratePredicate(collectionResultQuery.QueryStrategy.QueryPredicate);
+			IQueryable<TData> queryable = GeneratePredicate(collectionResultQuery.QueryStrategy.QueryPredicate ?? GetEmptyQueryPredicate());
 			ApplySorting(collectionResultQuery.QueryStrategy, ref queryable);
 			return queryable;
 		}
 
 		#endregion
 
-		protected IQueryable<TData> GeneratePredicate(IQueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null)
+		protected abstract IQueryPredicate GetEmptyQueryPredicate();
+
+		protected virtual IQueryable<TData> GeneratePredicate(IQueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null)
 		{
 			var andQueryPredicate = queryPredicate as IAndQueryPredicate;
 			if (andQueryPredicate != null)
