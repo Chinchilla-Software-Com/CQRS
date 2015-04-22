@@ -38,7 +38,10 @@ namespace Cqrs.Repositories.Queries
 
 		#endregion
 
-		protected abstract IQueryable<TData> GetEmptyQueryPredicate();
+		protected virtual IQueryable<TData> GetEmptyQueryPredicate()
+		{
+			return DataStore;
+		}
 
 		protected virtual IQueryable<TData> GeneratePredicate(IQueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null)
 		{
