@@ -49,10 +49,12 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 				IEnumerable<EventData> results = query.Where(x => x.AggregateId == streamName);
 
-				return results
-					.ToList()
-					.OrderByDescending(x => x.EventId)
-					.Select(EventDeserialiser.Deserialise);
+				return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
+					results
+						.ToList()
+						.OrderByDescending(x => x.EventId)
+						.Select(EventDeserialiser.Deserialise)
+				);
 			}
 		}
 
@@ -68,7 +70,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 					DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName()).Result;
 
 					Logger.LogInfo("Creating document for event asyncronously", string.Format("{0}\\PersitEvent", GetType().Name));
-					client.CreateDocumentAsync(collection.SelfLink, eventData).Wait();
+					AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() => client.CreateDocumentAsync(collection.SelfLink, eventData).Wait());
 				}
 			}
 			finally

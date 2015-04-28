@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Cqrs.Logging;
 using Microsoft.Azure.Documents;
@@ -70,7 +71,9 @@ namespace Cqrs.Azure.DocumentDb
 				}
 				Logger.LogInfo("Creating and returning a new database", "AzureDocumentDbHelper\\CreateOrReadDatabase");
 				start = DateTime.Now;
-				result = client.CreateDatabaseAsync(new Database { Id = databaseName }).Result;
+
+				result = ExecuteFaultTollerantFunction(() => client.CreateDatabaseAsync(new Database { Id = databaseName }).Result);
+
 				Logger.LogInfo(string.Format("Getting Azure database took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadDatabase");
 				AzureDocumentDbConnectionCache.SetDatabase(databaseCacheKey, result);
 				return result;
@@ -122,7 +125,7 @@ namespace Cqrs.Azure.DocumentDb
 				}
 				Logger.LogInfo("Creating and returning a new collection", "AzureDocumentDbHelper\\CreateOrReadCollection");
 				start = DateTime.Now;
-				result = client.CreateDocumentCollectionAsync(database.SelfLink, new DocumentCollection { Id = collectionName }).Result;
+				result = ExecuteFaultTollerantFunction(() => client.CreateDocumentCollectionAsync(database.SelfLink, new DocumentCollection { Id = collectionName }).Result);
 				Logger.LogInfo(string.Format("Getting Azure document collection took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadCollection");
 				// AzureDocumentDbConnectionCache.SetDocumentCollection(documentCollectionCacheKey, result);
 				return result;
@@ -130,6 +133,67 @@ namespace Cqrs.Azure.DocumentDb
 			finally
 			{
 				Logger.LogInfo("Getting Azure collection... Done", "AzureDocumentDbHelper\\CreateOrReadCollection");
+			}
+		}
+
+		protected virtual void ProcessFaultTollerantExceptions(DocumentClientException documentClientException)
+		{
+			var statusCode = (int)documentClientException.StatusCode;
+			if (statusCode == 429 || statusCode == 503)
+				Thread.Sleep(documentClientException.RetryAfter);
+			else
+			{
+				Logger.LogInfo("Non-fault tollerant exception raised via DocumentClientException.", "AzureDocumentDbDataStore\\ProcessFaultTollerantExceptions");
+				throw new Exception("Non-fault tollerant exception raised.", documentClientException);
+			}
+		}
+
+		public virtual T ExecuteFaultTollerantFunction<T>(Func<T> func)
+		{
+			while (true)
+			{
+				try
+				{
+					return func();
+				}
+				catch (DocumentClientException documentClientException)
+				{
+					Logger.LogInfo("DocumentClientException thrown.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction");
+					ProcessFaultTollerantExceptions(documentClientException);
+				}
+				catch (AggregateException aggregateException)
+				{
+					var documentClientException = aggregateException.InnerException as DocumentClientException;
+					if (documentClientException != null)
+					{
+						Logger.LogInfo("DocumentClientException thrown via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction");
+						ProcessFaultTollerantExceptions(documentClientException);
+					}
+					else
+						Logger.LogInfo("Non DocumentClientException raised via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction");
+				}
+			}
+		}
+
+		public virtual void ExecuteFaultTollerantFunction(Action func)
+		{
+			while (true)
+			{
+				try
+				{
+					func();
+					return;
+				}
+				catch (DocumentClientException documentClientException)
+				{
+					ProcessFaultTollerantExceptions(documentClientException);
+				}
+				catch (AggregateException aggregateException)
+				{
+					var documentClientException = aggregateException.InnerException as DocumentClientException;
+					if (documentClientException != null)
+						ProcessFaultTollerantExceptions(documentClientException);
+				}
 			}
 		}
 	}

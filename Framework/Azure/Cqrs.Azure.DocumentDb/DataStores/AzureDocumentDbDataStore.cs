@@ -31,15 +31,18 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		protected IOrderedQueryable<TData> AzureDocumentDbQuery { get; private set; }
 
+		protected IAzureDocumentDbHelper AzureDocumentDbHelper { get; private set; }
+
 		protected ILog Logger { get; private set; }
 
-		public AzureDocumentDbDataStore(ILog logger, DocumentClient azureDocumentDbClient, Database azureDocumentDbDatabase, DocumentCollection azureDocumentDbCollection, IOrderedQueryable<TData> azureDocumentDbQuery)
+		public AzureDocumentDbDataStore(ILog logger, DocumentClient azureDocumentDbClient, Database azureDocumentDbDatabase, DocumentCollection azureDocumentDbCollection, IOrderedQueryable<TData> azureDocumentDbQuery, IAzureDocumentDbHelper azureDocumentDbHelper)
 		{
 			Logger = logger;
 			AzureDocumentDbClient = azureDocumentDbClient;
 			AzureDocumentDbDatabase = azureDocumentDbDatabase;
 			AzureDocumentDbCollection = azureDocumentDbCollection;
 			AzureDocumentDbQuery = azureDocumentDbQuery;
+			AzureDocumentDbHelper = azureDocumentDbHelper;
 		}
 
 		#region Implementation of IEnumerable
@@ -57,7 +60,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			try
 			{
 				DateTime start = DateTime.Now;
-				IEnumerator<TData> result = AzureDocumentDbQuery.GetEnumerator();
+				IEnumerator<TData> result = AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() => AzureDocumentDbQuery.GetEnumerator());
 				DateTime end = DateTime.Now;
 				Logger.LogInfo(string.Format("Getting the enumerator for an Azure database query took {0}", end - start), "AzureDocumentDbDataStore\\GetEnumerator");
 				return result;
@@ -127,7 +130,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			try
 			{
 				DateTime start = DateTime.Now;
-				ResourceResponse<Document> result = AzureDocumentDbClient.CreateDocumentAsync((AzureDocumentDbCollection).SelfLink, data).Result;
+				ResourceResponse<Document> result = AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() => AzureDocumentDbClient.CreateDocumentAsync((AzureDocumentDbCollection).SelfLink, data).Result);
 				DateTime end = DateTime.Now;
 				Logger.LogInfo(string.Format("Adding data in the Azure database took {0} and cost:r\n{1}", end - start, result), "AzureDocumentDbDataStore\\Add");
 			}
@@ -172,7 +175,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			Logger.LogInfo("Removing all from the Azure database", "AzureDocumentDbDataStore\\RemoveAll");
 			try
 			{
-				ResourceResponse<DocumentCollection> result = AzureDocumentDbClient.DeleteDocumentCollectionAsync(AzureDocumentDbCollection.SelfLink, new RequestOptions()).Result;
+				ResourceResponse<DocumentCollection> result = AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() => AzureDocumentDbClient.DeleteDocumentCollectionAsync(AzureDocumentDbCollection.SelfLink, new RequestOptions()).Result);
 			}
 			finally
 			{
@@ -194,7 +197,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 				DateTime mid = DateTime.Now;
 				Logger.LogInfo(string.Format("Getting existing document from the Azure database took {0}", mid - start), "AzureDocumentDbDataStore\\Update");
 				Logger.LogInfo("Replacing existing document in the Azure database", "AzureDocumentDbDataStore\\Update");
-				ResourceResponse<Document> result = AzureDocumentDbClient.ReplaceDocumentAsync(documentToUpdate.SelfLink, data).Result;
+				ResourceResponse<Document> result = AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() => AzureDocumentDbClient.ReplaceDocumentAsync(documentToUpdate.SelfLink, data).Result);
 				DateTime end = DateTime.Now;
 				Logger.LogInfo(string.Format("Replacing existing document in the Azure database took {0} and cost:r\n{1}", end - mid, result), "AzureDocumentDbDataStore\\Update");
 			}
