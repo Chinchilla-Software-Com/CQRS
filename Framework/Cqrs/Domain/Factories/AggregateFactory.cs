@@ -21,9 +21,9 @@ namespace Cqrs.Domain.Factories
 			{
 				return DependencyResolver.Resolve<TAggregate>();
 			}
-			catch (System.Exception dependencyResolverException)
+			catch (System.Exception)
 			{
-				DependencyResolver.Resolve<ILog>().LogDebug("Using the dependency resolver to create an instance of the aggregate failed.", "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate", dependencyResolverException);
+				DependencyResolver.Resolve<ILog>().LogInfo("Using the dependency resolver to create an instance of the aggregate failed.", "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate");
 				try
 				{
 					return (TAggregate)Activator.CreateInstance(typeof(TAggregate), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { DependencyResolver, DependencyResolver.Resolve<ILog>() }, null);
