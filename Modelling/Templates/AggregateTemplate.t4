@@ -24,7 +24,7 @@ if (string.IsNullOrWhiteSpace(baseClass))
 		.Single(property => property.Name == "IsSnapshotable")
 		.Value == "true";
 	if (isSnapshotable)
-		baseClass = string.Format("SnapshotAggregateRoot<" + authenticationTokenType + ", {0}Snapshot>", className);
+		baseClass = string.Format("SnapshotAggregateRoot<" + authenticationTokenType + ", {0}.{0}Snapshot>", className);
 }
 if (string.IsNullOrWhiteSpace(baseClass))
 	baseClass = "AggregateRoot<" + authenticationTokenType + ">";
