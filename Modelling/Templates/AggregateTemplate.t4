@@ -19,6 +19,14 @@ string classNamespace = GetNamespace(this.Element.Namespace);
 string className = ClassifierName(this.Element);
 string baseClass = GetBaseClass(this.Element);
 if (string.IsNullOrWhiteSpace(baseClass))
+{
+	bool isSnapshotable = stereoTypeProperties.PropertyInstances
+		.Single(property => property.Name == "IsSnapshotable")
+		.Value == "true";
+	if (isSnapshotable)
+		baseClass = string.Format("SnapshotAggregateRoot<" + authenticationTokenType + ", {0}Snapshot>", className);
+}
+if (string.IsNullOrWhiteSpace(baseClass))
 	baseClass = "AggregateRoot<" + authenticationTokenType + ">";
 
 // using statements
@@ -370,6 +378,23 @@ namespace <#= classNamespace #>
 <#
 		}
 #>
+
+		public class <#= className #>Snapshot : Snapshot
+		{
+			public bool IsLogicallyDeleted {get; set;}
+<#
+		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
+		// Properties
+		foreach(var collectionProperty in collectionProperties)
+		{
+#>
+
+<# WriteSummaryComment(collectionProperty.Description); #>
+			<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; private set; }
+<#
+		}
+#>
+		}
 	}
 }
 <#+

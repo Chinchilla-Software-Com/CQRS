@@ -113,6 +113,11 @@
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
+        <property name="IsSnapshotable" displayName="IsSnapshotable: Indicates if the aggregate root supports snapshots." defaultValue="false">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
     <stereotype name="AggregateProperty" displayName="Aggregate Property">

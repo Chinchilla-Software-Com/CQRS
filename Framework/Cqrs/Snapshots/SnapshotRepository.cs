@@ -53,10 +53,10 @@ namespace Cqrs.Snapshots
 
 		private int TryRestoreAggregateFromSnapshot<TAggregateRoot>(Guid id, TAggregateRoot aggregate)
 		{
-			var version = -1;
+			int version = -1;
 			if (SnapshotStrategy.IsSnapshotable(typeof(TAggregateRoot)))
 			{
-				var snapshot = SnapshotStore.Get(id);
+				Snapshot snapshot = SnapshotStore.Get(id);
 				if (snapshot != null)
 				{
 					aggregate.AsDynamic().Restore(snapshot);
@@ -70,7 +70,7 @@ namespace Cqrs.Snapshots
 		{
 			if (!SnapshotStrategy.ShouldMakeSnapShot(aggregate))
 				return;
-			var snapshot = aggregate.AsDynamic().GetSnapshot().RealObject;
+			dynamic snapshot = aggregate.AsDynamic().GetSnapshot().RealObject;
 			snapshot.Version = aggregate.Version + aggregate.GetUncommittedChanges().Count();
 			SnapshotStore.Save(snapshot);
 		}

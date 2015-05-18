@@ -7,7 +7,7 @@ namespace Cqrs.Snapshots
 	{
 		public TSnapshot GetSnapshot()
 		{
-			var snapshot = CreateSnapshot();
+			TSnapshot snapshot = CreateSnapshot();
 			snapshot.Id = Id;
 			return snapshot;
 		}
@@ -23,5 +23,4 @@ namespace Cqrs.Snapshots
 
 		protected abstract void RestoreFromSnapshot(TSnapshot snapshot);
 	}
-
 }
