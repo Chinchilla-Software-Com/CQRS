@@ -55,9 +55,12 @@ namespace Cqrs.Repositories
 			}
 			finally
 			{
+				// This is disabled until I can figure out a better way to handle disposing these... as it will most likely dispose the data store... and that's not cool.
+				/*
 				var disposable = result as IDisposable;
 				if (disposable != null)
 					disposable.Dispose();
+				*/
 			}
 		}
 
