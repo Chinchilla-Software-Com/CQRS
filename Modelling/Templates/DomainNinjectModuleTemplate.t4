@@ -113,7 +113,11 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 				.To<Cqrs.Authentication.SingleSignOnTokenFactory>()
 				.InSingletonScope();
 <# } #>
+
+			OnFactoriesRegistered();
 		}
+
+		partial void OnFactoriesRegistered();
 
 		/// <summary>
 		/// Register the all services
@@ -149,7 +153,11 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 			}
 		}
 #>
+
+			OnServicesRegistered();
 		}
+
+		partial void OnServicesRegistered();
 
 		/// <summary>
 		/// Register the all repositories
@@ -175,7 +183,11 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 			}
 		}
 #>
+
+			OnRepositoriesRegistered();
 		}
+
+		partial void OnRepositoriesRegistered();
 
 		/// <summary>
 		/// Register the all Cqrs command handlers
@@ -202,7 +214,11 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 		}
 #>
 			registrar.Register(typeof(<#= commandName #>CommandHandler));
+
+			OnCqrsCommandHandlersRegistered();
 		}
+
+		partial void OnCqrsCommandHandlersRegistered();
 
 		protected T Resolve<T>()
 		{
