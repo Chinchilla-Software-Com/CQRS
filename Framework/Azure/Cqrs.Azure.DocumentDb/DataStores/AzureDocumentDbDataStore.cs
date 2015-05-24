@@ -228,7 +228,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// <exception cref="InvalidOperationException">The sequence contains more than one element, or the sequence is empty.</exception>
 		public TData Single()
 		{
-			return AzureDocumentDbQuery.Single();
+			return AzureDocumentDbQuery.AsEnumerable().ToList().Single();
 		}
 
 		/// <summary>
@@ -237,11 +237,76 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// <param name="predicate">A function to test an element for a condition.</param>
 		/// <returns>The single element of the sequence.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
-		/// <exception cref="InvalidOperationException">The sequence contains more than one element, or the sequence is empty.</exception>
+		/// <exception cref="InvalidOperationException">The sequence is empty.</exception>
 		public TData Single(Func<TData, bool> predicate)
 		{
-			IList<TData> result = AzureDocumentDbQuery.Where(predicate).ToList();
+			IList<TData> result = AzureDocumentDbQuery.AsEnumerable().Where(predicate).ToList();
 			return result.Single();
+		}
+
+		/// <summary>
+		/// Returns the only element of the sequence, or a default value if the sequence is empty; this method throws an exception if there is more than one element in the sequence.
+		/// </summary>
+		/// <returns>The single element of the sequence.</returns>
+		public TData SingleOrDefault()
+		{
+			return AzureDocumentDbQuery.AsEnumerable().ToList().SingleOrDefault();
+		}
+
+		/// <summary>
+		/// Returns the only element of the sequence that satisfies a specified condition or a default value if no such element exists; this method throws an exception if more than one element satisfies the condition.
+		/// </summary>
+		/// <param name="predicate">A function to test an element for a condition.</param>
+		/// <returns>The single element of the sequence.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
+		public TData SingleOrDefault(Func<TData, bool> predicate)
+		{
+			IList<TData> result = AzureDocumentDbQuery.AsEnumerable().Where(predicate).ToList();
+			return result.SingleOrDefault();
+		}
+
+		/// <summary>
+		/// Returns the first element of the sequence.
+		/// </summary>
+		/// <returns>The first element of the sequence.</returns>
+		/// <exception cref="InvalidOperationException">The sequence contains more than one element, or the sequence is empty.</exception>
+		public TData First()
+		{
+			return AzureDocumentDbQuery.AsEnumerable().ToList().First();
+		}
+
+		/// <summary>
+		/// Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.
+		/// </summary>
+		/// <param name="predicate">A function to test an element for a condition.</param>
+		/// <returns>The first element of the sequence.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
+		/// <exception cref="InvalidOperationException">The sequence is empty.</exception>
+		public TData First(Func<TData, bool> predicate)
+		{
+			IList<TData> result = AzureDocumentDbQuery.AsEnumerable().Where(predicate).ToList();
+			return result.First();
+		}
+
+		/// <summary>
+		/// Returns the first element of the sequence that satisfies a condition or a default value if no such element is found.
+		/// </summary>
+		/// <returns>The first element of the sequence.</returns>
+		public TData FirstOrDefault()
+		{
+			return AzureDocumentDbQuery.AsEnumerable().ToList().FirstOrDefault();
+		}
+
+		/// <summary>
+		/// Returns the first element of a sequence, or a default value if the sequence contains no elements.
+		/// </summary>
+		/// <param name="predicate">A function to test an element for a condition.</param>
+		/// <returns>The first element of the sequence.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
+		public TData FirstOrDefault(Func<TData, bool> predicate)
+		{
+			IList<TData> result = AzureDocumentDbQuery.AsEnumerable().Where(predicate).ToList();
+			return result.FirstOrDefault();
 		}
 	}
 }
