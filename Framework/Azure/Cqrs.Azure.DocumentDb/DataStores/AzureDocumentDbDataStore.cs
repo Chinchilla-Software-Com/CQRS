@@ -95,7 +95,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// </returns>
 		public Expression Expression
 		{
-			get { return AzureDocumentDbQuery.AsQueryable().Expression; }
+			get { return AzureDocumentDbQuery.Expression; }
 		}
 
 		/// <summary>
@@ -106,7 +106,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// </returns>
 		public Type ElementType
 		{
-			get { return AzureDocumentDbQuery.AsQueryable().ElementType; }
+			get { return AzureDocumentDbQuery.ElementType; }
 		}
 
 		/// <summary>
@@ -117,7 +117,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// </returns>
 		public IQueryProvider Provider
 		{
-			get { return AzureDocumentDbQuery.AsQueryable().Provider; }
+			get { return AzureDocumentDbQuery.Provider; }
 		}
 
 		#endregion
@@ -220,5 +220,28 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Returns the only element of the sequence, and throws an exception if there is not exactly one element in the sequence.
+		/// </summary>
+		/// <returns>The single element of the sequence.</returns>
+		/// <exception cref="InvalidOperationException">The sequence contains more than one element, or the sequence is empty.</exception>
+		public TData Single()
+		{
+			return AzureDocumentDbQuery.Single();
+		}
+
+		/// <summary>
+		/// Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.
+		/// </summary>
+		/// <param name="predicate">A function to test an element for a condition.</param>
+		/// <returns>The single element of the sequence.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
+		/// <exception cref="InvalidOperationException">The sequence contains more than one element, or the sequence is empty.</exception>
+		public TData Single(Func<TData, bool> predicate)
+		{
+			IList<TData> result = AzureDocumentDbQuery.Where(predicate).ToList();
+			return result.Single();
+		}
 	}
 }
