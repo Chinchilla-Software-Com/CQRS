@@ -107,7 +107,7 @@ namespace Cqrs.Repositories
 
 		public virtual TData Load(Guid rsn, bool throwExceptionOnMissingEntity = true)
 		{
-			using (var dataStore = CreateDataStoreFunction())
+			using (IDataStore<TData> dataStore = CreateDataStoreFunction())
 			{
 				if (throwExceptionOnMissingEntity)
 					return dataStore.Single(entity => entity.Rsn == rsn);
