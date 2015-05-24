@@ -60,7 +60,8 @@ namespace Cqrs.Repositories.Queries
 			var realQueryPredicate = queryPredicate as QueryPredicate;
 			if (realQueryPredicate != null)
 			{
-				return GeneratePredicateIsNotLogicallyDeleted(realQueryPredicate, leftHandQueryable) ?? GeneratePredicate(realQueryPredicate, leftHandQueryable);
+				IQueryable<TData> result = GeneratePredicateIsNotLogicallyDeleted(realQueryPredicate, leftHandQueryable);
+				return result ?? GeneratePredicate(realQueryPredicate, leftHandQueryable);
 			}
 			throw new InvalidOperationException(string.Format("The query predicate '{0}' is unable to be processed.", queryPredicate == null ? typeof(void) : queryPredicate.GetType()));
 		}
