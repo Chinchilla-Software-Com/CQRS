@@ -240,7 +240,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// <exception cref="InvalidOperationException">The sequence is empty.</exception>
 		public TData Single(Func<TData, bool> predicate)
 		{
-			IList<TData> result = AzureDocumentDbQuery.AsEnumerable().Where(predicate).ToList();
+			IList<TData> result = AzureDocumentDbQuery.Where(predicate).AsEnumerable().ToList();
 			return result.Single();
 		}
 
@@ -261,7 +261,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
 		public TData SingleOrDefault(Func<TData, bool> predicate)
 		{
-			IList<TData> result = AzureDocumentDbQuery.AsEnumerable().Where(predicate).ToList();
+			IList<TData> result = AzureDocumentDbQuery.Where(predicate).AsEnumerable().ToList();
 			return result.SingleOrDefault();
 		}
 
@@ -284,7 +284,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// <exception cref="InvalidOperationException">The sequence is empty.</exception>
 		public TData First(Func<TData, bool> predicate)
 		{
-			IList<TData> result = AzureDocumentDbQuery.AsEnumerable().Where(predicate).ToList();
+			IList<TData> result = AzureDocumentDbQuery.Where(predicate).AsEnumerable().ToList();
 			return result.First();
 		}
 
@@ -305,7 +305,7 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		/// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
 		public TData FirstOrDefault(Func<TData, bool> predicate)
 		{
-			IList<TData> result = AzureDocumentDbQuery.AsEnumerable().Where(predicate).ToList();
+			IList<TData> result = AzureDocumentDbQuery.Where(predicate).AsEnumerable().ToList();
 			return result.FirstOrDefault();
 		}
 	}
