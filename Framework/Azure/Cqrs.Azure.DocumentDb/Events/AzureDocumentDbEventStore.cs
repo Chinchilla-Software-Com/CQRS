@@ -42,7 +42,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 			{
 				Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
 				//DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format("{0}_{1}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), typeof(T).FullName)).Result;
-				DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName()).Result;
+				DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format("{0}::{1}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), typeof(T).FullName)).Result;
 
 				IOrderedQueryable<EventData> query = client.CreateDocumentQuery<EventData>(collection.SelfLink);
 				string streamName = string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, aggregateId);
@@ -67,7 +67,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 				{
 					Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
 					//DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format("{0}_{1}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), eventData.EventType)).Result;
-					DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName()).Result;
+					DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format("{0}::{1}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), eventData.AggregateId.Substring(0, eventData.AggregateId.IndexOf("/", StringComparison.Ordinal)))).Result;
 
 					Logger.LogInfo("Creating document for event asyncronously", string.Format("{0}\\PersitEvent", GetType().Name));
 					AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() => client.CreateDocumentAsync(collection.SelfLink, eventData).Wait());
