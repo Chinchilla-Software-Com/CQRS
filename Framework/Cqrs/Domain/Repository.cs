@@ -74,6 +74,13 @@ namespace Cqrs.Domain
 			if (!theseEvents.Any())
 				throw new AggregateNotFoundException(id);
 
+			var duplicatedEvents =
+				theseEvents.GroupBy(x => x.Version)
+					.Select(x => new {Version = x.Key, Total = x.Count()})
+					.FirstOrDefault(x => x.Total > 1);
+			if (duplicatedEvents != null)
+				throw new DuplicateEventException(id, duplicatedEvents.Version);
+
 			aggregate.LoadFromHistory(theseEvents);
 			return aggregate;
 		}
