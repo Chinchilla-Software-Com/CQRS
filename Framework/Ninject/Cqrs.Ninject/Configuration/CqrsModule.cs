@@ -5,7 +5,7 @@ using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Cqrs.Repositories.Queries;
 using Ninject.Modules;
 using Ninject.Parameters;
@@ -47,7 +47,7 @@ namespace Cqrs.Ninject.Configuration
 		}
 
 		/// <summary>
-		/// Register the all components for the <see cref="ILog"/>
+		/// Register the all components for the <see cref="ILogger"/>
 		/// </summary>
 		public virtual void RegisterLoggerComponents()
 		{

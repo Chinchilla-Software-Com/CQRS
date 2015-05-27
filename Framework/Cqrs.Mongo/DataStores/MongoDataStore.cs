@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Cqrs.DataStores;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Cqrs.Entities;
@@ -16,9 +16,9 @@ namespace Cqrs.Mongo.DataStores
 	{
 		protected MongoCollection<TData> MongoCollection { get; private set; }
 
-		protected ILog Logger { get; private set; }
+		protected ILogger Logger { get; private set; }
 
-		public MongoDataStore(ILog logger, MongoCollection<TData> mongoCollection)
+		public MongoDataStore(ILogger logger, MongoCollection<TData> mongoCollection)
 		{
 			Logger = logger;
 			MongoCollection = mongoCollection;

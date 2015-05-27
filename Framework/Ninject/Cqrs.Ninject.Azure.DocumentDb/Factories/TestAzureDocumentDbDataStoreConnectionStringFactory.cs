@@ -8,7 +8,7 @@
 
 using System.Runtime.Remoting.Messaging;
 using Cqrs.Azure.DocumentDb.Factories;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 
 namespace Cqrs.Ninject.Azure.DocumentDb.Factories
 {
@@ -28,7 +28,7 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Factories
 			}
 		}
 
-		public TestAzureDocumentDbDataStoreConnectionStringFactory(ILog logger)
+		public TestAzureDocumentDbDataStoreConnectionStringFactory(ILogger logger)
 			: base(logger)
 		{
 		}

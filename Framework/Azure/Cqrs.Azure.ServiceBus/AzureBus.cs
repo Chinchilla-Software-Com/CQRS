@@ -1,7 +1,7 @@
 ﻿using System;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 

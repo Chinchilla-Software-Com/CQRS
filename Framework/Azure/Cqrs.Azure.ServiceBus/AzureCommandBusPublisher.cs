@@ -1,7 +1,7 @@
 ﻿using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus

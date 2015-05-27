@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
@@ -20,11 +20,11 @@ namespace Cqrs.Azure.DocumentDb
 {
 	public class AzureDocumentDbHelper : IAzureDocumentDbHelper
 	{
-		protected ILog Logger { get; private set; }
+		protected ILogger Logger { get; private set; }
 
 		protected IAzureDocumentDbConnectionCache AzureDocumentDbConnectionCache { get; private set; }
 
-		public AzureDocumentDbHelper(ILog logger, IAzureDocumentDbConnectionCache azureDocumentDbConnectionCache)
+		public AzureDocumentDbHelper(ILogger logger, IAzureDocumentDbConnectionCache azureDocumentDbConnectionCache)
 		{
 			Logger = logger;
 			AzureDocumentDbConnectionCache = azureDocumentDbConnectionCache;

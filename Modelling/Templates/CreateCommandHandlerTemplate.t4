@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Domain;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 
 namespace <#= classNamespace #>.Commands.Handlers
 {
@@ -40,9 +40,9 @@ namespace <#= classNamespace #>.Commands.Handlers
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
-		protected ILog Log { get; private set; }
+		protected ILogger Log { get; private set; }
 
-		public Create<#= className #>CommandHandler(IUnitOfWork<<#= authenticationTokenType #>> unitOfWork, IDependencyResolver dependencyResolver, ILog log)
+		public Create<#= className #>CommandHandler(IUnitOfWork<<#= authenticationTokenType #>> unitOfWork, IDependencyResolver dependencyResolver, ILogger log)
 		{
 			UnitOfWork = unitOfWork;
 			DependencyResolver = dependencyResolver;

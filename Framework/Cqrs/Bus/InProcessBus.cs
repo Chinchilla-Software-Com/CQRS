@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
-using Cqrs.Logging;
 using Cqrs.Messages;
 
 namespace Cqrs.Bus

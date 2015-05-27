@@ -1,6 +1,6 @@
 ﻿using System;
 using Cqrs.Configuration;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 
 namespace Cqrs.Mongo.Factories
 {
@@ -12,9 +12,9 @@ namespace Cqrs.Mongo.Factories
 
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
-		protected ILog Logger { get; private set; }
+		protected ILogger Logger { get; private set; }
 
-		public MongoDataStoreConnectionStringFactory(IConfigurationManager configurationManager, ILog logger)
+		public MongoDataStoreConnectionStringFactory(IConfigurationManager configurationManager, ILogger logger)
 		{
 			ConfigurationManager = configurationManager;
 			Logger = logger;

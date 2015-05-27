@@ -1,7 +1,7 @@
 using System;
 using Cqrs.Bus;
 using Cqrs.Authentication;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
 

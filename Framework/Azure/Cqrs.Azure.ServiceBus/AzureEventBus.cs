@@ -1,6 +1,6 @@
 ﻿using Cqrs.Authentication;
 using Cqrs.Configuration;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 
 namespace Cqrs.Azure.ServiceBus
 {

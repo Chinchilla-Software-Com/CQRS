@@ -1,5 +1,5 @@
 ﻿using System;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Microsoft.Azure;
 using Microsoft.Azure.Documents.Client;
 
@@ -7,9 +7,9 @@ namespace Cqrs.Azure.DocumentDb.Events
 {
 	public class AzureDocumentDbEventStoreConnectionStringFactory : IAzureDocumentDbEventStoreConnectionStringFactory
 	{
-		protected ILog Logger { get; private set; }
+		protected ILogger Logger { get; private set; }
 
-		public AzureDocumentDbEventStoreConnectionStringFactory(ILog logger)
+		public AzureDocumentDbEventStoreConnectionStringFactory(ILogger logger)
 		{
 			Logger = logger;
 		}

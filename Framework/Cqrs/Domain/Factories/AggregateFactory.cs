@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using cdmdotnet.Logging;
 using Cqrs.Configuration;
 using Cqrs.Domain.Exception;
-using Cqrs.Logging;
 
 namespace Cqrs.Domain.Factories
 {
@@ -23,14 +23,14 @@ namespace Cqrs.Domain.Factories
 			}
 			catch (System.Exception)
 			{
-				DependencyResolver.Resolve<ILog>().LogInfo("Using the dependency resolver to create an instance of the aggregate failed.", "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate");
+				DependencyResolver.Resolve<ILogger>().LogInfo("Using the dependency resolver to create an instance of the aggregate failed.", "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate");
 				try
 				{
-					return (TAggregate)Activator.CreateInstance(typeof(TAggregate), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { DependencyResolver, DependencyResolver.Resolve<ILog>() }, null);
+					return (TAggregate)Activator.CreateInstance(typeof(TAggregate), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { DependencyResolver, DependencyResolver.Resolve<ILogger>() }, null);
 				}
 				catch (MissingMethodException exception)
 				{
-					DependencyResolver.Resolve<ILog>().LogDebug("Looking for a private constructor with a dependency resolver and logger, to create an instance of the aggregate failed.", "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate", exception);
+					DependencyResolver.Resolve<ILogger>().LogDebug("Looking for a private constructor with a dependency resolver and logger, to create an instance of the aggregate failed.", "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate", exception);
 					try
 					{
 						return (TAggregate)Activator.CreateInstance(typeof(TAggregate), true);

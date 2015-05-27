@@ -13,7 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Cqrs.Azure.DocumentDb.Entities;
 using Cqrs.DataStores;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
@@ -33,9 +33,9 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		protected IAzureDocumentDbHelper AzureDocumentDbHelper { get; private set; }
 
-		protected ILog Logger { get; private set; }
+		protected ILogger Logger { get; private set; }
 
-		public AzureDocumentDbDataStore(ILog logger, DocumentClient azureDocumentDbClient, Database azureDocumentDbDatabase, DocumentCollection azureDocumentDbCollection, IOrderedQueryable<TData> azureDocumentDbQuery, IAzureDocumentDbHelper azureDocumentDbHelper)
+		public AzureDocumentDbDataStore(ILogger logger, DocumentClient azureDocumentDbClient, Database azureDocumentDbDatabase, DocumentCollection azureDocumentDbCollection, IOrderedQueryable<TData> azureDocumentDbQuery, IAzureDocumentDbHelper azureDocumentDbHelper)
 		{
 			Logger = logger;
 			AzureDocumentDbClient = azureDocumentDbClient;

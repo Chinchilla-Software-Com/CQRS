@@ -8,7 +8,7 @@
 
 using System.Runtime.Remoting.Messaging;
 using Cqrs.Azure.DocumentDb.Events;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 
 namespace Cqrs.Ninject.Azure.DocumentDb.Events
 {
@@ -28,7 +28,7 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Events
 			}
 		}
 
-		public TestAzureDocumentDbEventStoreConnectionStringFactory(ILog logger)
+		public TestAzureDocumentDbEventStoreConnectionStringFactory(ILogger logger)
 			: base(logger)
 		{
 		}

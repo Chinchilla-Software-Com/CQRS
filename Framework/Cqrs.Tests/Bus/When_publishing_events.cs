@@ -1,6 +1,6 @@
+using cdmdotnet.Logging;
 using Cqrs.Bus;
 using Cqrs.Authentication;
-using Cqrs.Logging;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
 

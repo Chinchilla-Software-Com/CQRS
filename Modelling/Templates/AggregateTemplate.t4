@@ -33,7 +33,7 @@ if (string.IsNullOrWhiteSpace(baseClass))
 WriteUsingStatements(this.Element);
 #>
 using Cqrs.Configuration;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Cqrs.Snapshots;
 using <#= classNamespace #>.Events;
 
@@ -61,7 +61,7 @@ namespace <#= classNamespace #>
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
-		protected ILog Log { get; private set; }
+		protected ILogger Log { get; private set; }
 
 <#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
@@ -94,7 +94,7 @@ namespace <#= classNamespace #>
 		/// <summary>
 		/// A constructor for the <see cref="Cqrs.Domain.Factories.IAggregateFactory"/>
 		/// </summary>
-		private <#= className #>(IDependencyResolver dependencyResolver, ILog log)
+		private <#= className #>(IDependencyResolver dependencyResolver, ILogger log)
 		{
 			DependencyResolver = dependencyResolver;
 			Log = log;
@@ -109,7 +109,7 @@ namespace <#= classNamespace #>
 		}
 // ReSharper restore UnusedMember.Local
 
-		public <#= className #>(IDependencyResolver dependencyResolver, ILog log, Guid rsn)
+		public <#= className #>(IDependencyResolver dependencyResolver, ILogger log, Guid rsn)
 		{
 			DependencyResolver = dependencyResolver;
 			Log = log;

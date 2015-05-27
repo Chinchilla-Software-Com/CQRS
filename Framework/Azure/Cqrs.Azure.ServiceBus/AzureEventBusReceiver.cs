@@ -5,7 +5,7 @@ using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Cqrs.Messages;
 using Microsoft.ServiceBus.Messaging;
 

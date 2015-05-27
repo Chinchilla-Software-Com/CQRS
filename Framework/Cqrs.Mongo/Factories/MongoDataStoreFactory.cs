@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Cqrs.Mongo.DataStores.Indexes;
 using Cqrs.Mongo.Serialisers;
 using MongoDB.Driver;
@@ -17,11 +17,11 @@ namespace Cqrs.Mongo.Factories
 	{
 		private static IDictionary<Type, IList<object>> IndexTypesByEntityType { get; set; }
 
-		protected ILog Logger { get; private set; }
+		protected ILogger Logger { get; private set; }
 
 		protected IMongoDataStoreConnectionStringFactory MongoDataStoreConnectionStringFactory { get; private set; }
 
-		public MongoDataStoreFactory(ILog logger, IMongoDataStoreConnectionStringFactory mongoDataStoreConnectionStringFactory)
+		public MongoDataStoreFactory(ILogger logger, IMongoDataStoreConnectionStringFactory mongoDataStoreConnectionStringFactory)
 		{
 			Logger = logger;
 			MongoDataStoreConnectionStringFactory = mongoDataStoreConnectionStringFactory;

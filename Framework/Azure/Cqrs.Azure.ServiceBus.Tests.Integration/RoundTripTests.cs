@@ -4,7 +4,7 @@ using System.Threading;
 using Cqrs.Authentication;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
 using Cqrs.Configuration;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Cqrs.Messages;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;

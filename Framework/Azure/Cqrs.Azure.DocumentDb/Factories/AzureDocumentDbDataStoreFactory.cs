@@ -7,7 +7,7 @@
 #endregion
 
 using System.Linq;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
@@ -23,9 +23,9 @@ namespace Cqrs.Azure.DocumentDb.Factories
 
 		protected IAzureDocumentDbHelper AzureDocumentDbHelper { get; private set; }
 
-		protected ILog Logger { get; private set; }
+		protected ILogger Logger { get; private set; }
 
-		public AzureDocumentDbDataStoreFactory(IAzureDocumentDbDataStoreConnectionStringFactory azureDocumentDbDataStoreConnectionStringFactory, IAzureDocumentDbHelper azureDocumentDbHelper, ILog logger)
+		public AzureDocumentDbDataStoreFactory(IAzureDocumentDbDataStoreConnectionStringFactory azureDocumentDbDataStoreConnectionStringFactory, IAzureDocumentDbHelper azureDocumentDbHelper, ILogger logger)
 		{
 			AzureDocumentDbDataStoreConnectionStringFactory = azureDocumentDbDataStoreConnectionStringFactory;
 			AzureDocumentDbHelper = azureDocumentDbHelper;

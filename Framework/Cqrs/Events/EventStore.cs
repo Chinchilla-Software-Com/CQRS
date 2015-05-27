@@ -8,7 +8,7 @@
 
 using System;
 using System.Collections.Generic;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 
 namespace Cqrs.Events
 {
@@ -20,9 +20,9 @@ namespace Cqrs.Events
 
 		protected IEventDeserialiser<TAuthenticationToken> EventDeserialiser { get; set; }
 
-		protected ILog Logger { get; private set; }
+		protected ILogger Logger { get; private set; }
 
-		protected EventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILog logger)
+		protected EventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger)
 		{
 			EventBuilder = eventBuilder;
 			EventDeserialiser = eventDeserialiser;
