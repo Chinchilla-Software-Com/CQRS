@@ -29,7 +29,7 @@ namespace Cqrs.Azure.DocumentDb.Factories
 
 		public virtual string GetAzureDocumentDbDatabaseName()
 		{
-			return CloudConfigurationManager.GetSetting("Cqrs.Azure.DocumentDb.DabaseName") ?? "CqrsStore";
+			return CloudConfigurationManager.GetSetting("Cqrs.Azure.DocumentDb.DatabaseName") ?? "CqrsStore";
 		}
 
 		public string GetAzureDocumentDbCollectionName()
