@@ -13,11 +13,18 @@ namespace Cqrs.Services
 {
 	public class WcfDataContractResolverConfiguration
 	{
+		public static WcfDataContractResolverConfiguration Current { get; protected set; }
+
 		protected IDictionary<Type, IList<Tuple<string, string>>> DataContracts { get; private set; }
 
 		public WcfDataContractResolverConfiguration()
 		{
 			DataContracts = new Dictionary<Type, IList<Tuple<string, string>>>();
+		}
+
+		static WcfDataContractResolverConfiguration()
+		{
+			Current = new WcfDataContractResolverConfiguration();
 		}
 
 		public void RegisterDataContract<TService, TDataContract>()
