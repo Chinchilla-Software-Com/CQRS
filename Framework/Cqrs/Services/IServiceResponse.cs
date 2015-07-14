@@ -6,8 +6,6 @@ namespace Cqrs.Services
 	{
 		ServiceResponseStateType State { get; set; }
 
-		bool Success { get; }
-
 		Guid CorrolationId { get; set; }
 	}
 }

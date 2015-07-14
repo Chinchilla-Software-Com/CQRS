@@ -16,15 +16,6 @@ namespace Cqrs.Services
 		public ServiceResponseStateType State { get; set; }
 
 		[DataMember]
-		public bool Success
-		{
-			get
-			{
-				return State == ServiceResponseStateType.Succeeded;
-			}
-		}
-
-		[DataMember]
 		public Guid CorrolationId { get; set; }
 	}
 }
