@@ -14,6 +14,7 @@ namespace Cqrs.Services
 		public ServiceChannelFactory(string endpointConfigurationName)
 			: base(endpointConfigurationName)
 		{
+		    RegisterDataContracts();
 			AttachDataContractResolver(Endpoint);
 		}
 

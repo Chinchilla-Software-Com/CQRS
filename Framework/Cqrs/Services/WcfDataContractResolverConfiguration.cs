@@ -7,7 +7,6 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Cqrs.Services
@@ -28,7 +27,7 @@ namespace Cqrs.Services
 			Current = new WcfDataContractResolverConfiguration();
 		}
 
-		public void RegisterDataContract<TService, TDataContract>(string operationName)
+		public virtual void RegisterDataContract<TService, TDataContract>(string operationName, RegistraionHandling registraionHandling = RegistraionHandling.Replace)
 			where TDataContract : new ()
 		{
 			Type serviceType = typeof (TService);
@@ -44,10 +43,24 @@ namespace Cqrs.Services
 					}
 				}
 			}
+			if (dataContracts.ContainsKey(operationName))
+			{
+				switch (registraionHandling)
+				{
+					case RegistraionHandling.ThrowExceptionOnDuplicate:
+						dataContracts.Add(operationName, typeof(TDataContract));
+						break;
+					case RegistraionHandling.Replace:
+						dataContracts[operationName] = typeof(TDataContract);
+						break;
+					case RegistraionHandling.Nothing:
+						return;
+				}
+			}
 			dataContracts.Add(operationName, typeof(TDataContract));
 		}
 
-		public Type GetDataContracts<TService>(string operationName)
+		public virtual Type GetDataContracts<TService>(string operationName)
 		{
 			Type serviceType = typeof (TService);
 			IDictionary<string, Type> dataContracts;
@@ -68,5 +81,14 @@ namespace Cqrs.Services
 				return dataContractType;
 			return null;
 		}
+
+	    public enum RegistraionHandling
+	    {
+	        Replace = 0,
+
+            ThrowExceptionOnDuplicate = 1,
+
+            Nothing = 2
+	    }
 	}
 }
