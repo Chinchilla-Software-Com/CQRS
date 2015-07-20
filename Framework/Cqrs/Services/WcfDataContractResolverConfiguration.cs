@@ -57,7 +57,8 @@ namespace Cqrs.Services
 						return;
 				}
 			}
-			dataContracts.Add(operationName, typeof(TDataContract));
+			else
+				dataContracts.Add(operationName, typeof(TDataContract));
 		}
 
 		public virtual Type GetDataContracts<TService>(string operationName)
