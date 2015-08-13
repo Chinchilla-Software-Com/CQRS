@@ -27,7 +27,7 @@ namespace Cqrs.Services
 			Current = new WcfDataContractResolverConfiguration();
 		}
 
-		public virtual void RegisterDataContract<TService, TDataContract>(string operationName, RegistraionHandling registraionHandling = RegistraionHandling.Replace)
+		public virtual void RegisterDataContract<TService, TDataContract>(string operationName, RegistrationHandling registraionHandling = RegistrationHandling.Replace)
 			where TDataContract : new ()
 		{
 			Type serviceType = typeof (TService);
@@ -47,13 +47,13 @@ namespace Cqrs.Services
 			{
 				switch (registraionHandling)
 				{
-					case RegistraionHandling.ThrowExceptionOnDuplicate:
+					case RegistrationHandling.ThrowExceptionOnDuplicate:
 						dataContracts.Add(operationName, typeof(TDataContract));
 						break;
-					case RegistraionHandling.Replace:
+					case RegistrationHandling.Replace:
 						dataContracts[operationName] = typeof(TDataContract);
 						break;
-					case RegistraionHandling.Nothing:
+					case RegistrationHandling.Nothing:
 						return;
 				}
 			}
@@ -83,13 +83,13 @@ namespace Cqrs.Services
 			return null;
 		}
 
-	    public enum RegistraionHandling
-	    {
-	        Replace = 0,
+		public enum RegistrationHandling
+		{
+			Replace = 0,
 
-            ThrowExceptionOnDuplicate = 1,
+			ThrowExceptionOnDuplicate = 1,
 
-            Nothing = 2
-	    }
+			Nothing = 2
+		}
 	}
 }

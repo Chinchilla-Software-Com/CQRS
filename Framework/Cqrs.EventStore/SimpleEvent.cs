@@ -32,7 +32,15 @@ namespace Cqrs.EventStore
 		#region Implementation of IMessage
 
 		[DataMember]
-		public Guid CorrolationId { get; set; }
+		public Guid CorrelationId { get; set; }
+
+		[Obsolete("Use CorrelationId")]
+		[DataMember]
+		public Guid CorrolationId
+		{
+			get { return CorrelationId; }
+			set { CorrelationId = value; }
+		}
 
 		#endregion
 	}

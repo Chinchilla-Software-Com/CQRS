@@ -25,7 +25,14 @@ namespace CQRSCode.ReadModel.Events
 
 		#region Implementation of IMessage
 
-		public Guid CorrolationId { get; set; }
+		public Guid CorrelationId { get; set; }
+
+		[Obsolete("Use CorrelationId")]
+		public Guid CorrolationId
+		{
+			get { return CorrelationId; }
+			set { CorrelationId = value; }
+		}
 
 		#endregion
 	}
