@@ -18,8 +18,9 @@ namespace Cqrs.Azure.ServiceBus
 		public void Send<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-			command.CorrolationId = CorrolationIdHelper.GetCorrolationId();
+			if (command.AuthenticationToken == null)
+				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+			command.CorrelationId = CorrolationIdHelper.GetCorrolationId();
 
 			ServiceBusClient.Send(new BrokeredMessage(MessageSerialiser.SerialiseCommand(command)));
 		}

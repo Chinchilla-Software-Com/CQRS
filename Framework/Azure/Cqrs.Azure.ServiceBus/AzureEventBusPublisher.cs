@@ -18,8 +18,9 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
-			@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-			@event.CorrolationId = CorrolationIdHelper.GetCorrolationId();
+			if (@event.AuthenticationToken == null)
+				@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+			@event.CorrelationId = CorrolationIdHelper.GetCorrolationId();
 
 			ServiceBusClient.Send(new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event)));
 		}

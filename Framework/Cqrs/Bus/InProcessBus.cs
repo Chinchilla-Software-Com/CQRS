@@ -30,8 +30,9 @@ namespace Cqrs.Bus
 		public virtual void Send<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-			command.CorrolationId = CorrolationIdHelper.GetCorrolationId();
+			if (command.AuthenticationToken == null)
+				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+			command.CorrelationId = CorrolationIdHelper.GetCorrolationId();
 
 			List<Action<IMessage>> handlers;
 			if (Routes.TryGetValue(typeof(TCommand), out handlers))
@@ -53,8 +54,9 @@ namespace Cqrs.Bus
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
-			@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-			@event.CorrolationId = CorrolationIdHelper.GetCorrolationId();
+			if (@event.AuthenticationToken == null)
+				@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+			@event.CorrelationId = CorrolationIdHelper.GetCorrolationId();
 
 			List<Action<IMessage>> handlers;
 			if (!Routes.TryGetValue(@event.GetType(), out handlers))
