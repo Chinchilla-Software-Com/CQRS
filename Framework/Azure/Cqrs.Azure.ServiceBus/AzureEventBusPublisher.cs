@@ -1,4 +1,5 @@
-﻿using Cqrs.Authentication;
+﻿using System;
+using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using cdmdotnet.Logging;
@@ -21,6 +22,7 @@ namespace Cqrs.Azure.ServiceBus
 			if (@event.AuthenticationToken == null)
 				@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			@event.CorrelationId = CorrolationIdHelper.GetCorrolationId();
+			@event.TimeStamp = DateTimeOffset.UtcNow;
 
 			ServiceBusClient.Send(new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event)));
 		}

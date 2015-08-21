@@ -57,6 +57,7 @@ namespace Cqrs.Bus
 			if (@event.AuthenticationToken == null)
 				@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			@event.CorrelationId = CorrolationIdHelper.GetCorrolationId();
+			@event.TimeStamp = DateTimeOffset.UtcNow;
 
 			List<Action<IMessage>> handlers;
 			if (!Routes.TryGetValue(@event.GetType(), out handlers))
