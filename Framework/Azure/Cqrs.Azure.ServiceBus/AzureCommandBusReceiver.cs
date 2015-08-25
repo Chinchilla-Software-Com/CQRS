@@ -52,7 +52,8 @@ namespace Cqrs.Azure.ServiceBus
 			try
 			{
 				Console.WriteLine("MessageID: " + message.MessageId);
-				ICommand<TAuthenticationToken> command = MessageSerialiser.DeserialiseCommand(message.GetBody<string>());
+				string messageBody = message.GetBody<string>();
+				ICommand<TAuthenticationToken> command = MessageSerialiser.DeserialiseCommand(messageBody);
 
 				ReceiveCommand(command);
 

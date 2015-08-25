@@ -51,7 +51,8 @@ namespace Cqrs.Azure.ServiceBus
 			try
 			{
 				Console.WriteLine("MessageID: " + message.MessageId);
-				IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(message.GetBody<string>());
+				string messageBody = message.GetBody<string>();
+				IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(messageBody);
 
 				ReceiveEvent(@event);
 
