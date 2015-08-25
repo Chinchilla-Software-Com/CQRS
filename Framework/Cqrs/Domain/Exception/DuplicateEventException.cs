@@ -2,6 +2,7 @@
 
 namespace Cqrs.Domain.Exception
 {
+	[Serializable]
 	public class DuplicateEventException : System.Exception
 	{
 		public DuplicateEventException(Guid id, int version)
