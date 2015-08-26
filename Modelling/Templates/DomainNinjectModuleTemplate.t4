@@ -49,12 +49,12 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 		/// </summary>
 		public override void Load()
 		{
+			RegisterLogger();
+
 			RegisterFactories();
 			RegisterServices();
 			RegisterRepositories();
 			RegisterCqrsCommandHandlers();
-
-			RegisterLogger();
 		}
 
 		#endregion
@@ -64,9 +64,13 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 		/// </summary>
 		protected virtual void RegisterLogger()
 		{
-			Bind<ILogger>()
-				.To<ConsoleLogger>()
-				.InSingletonScope();
+			bool isLoggerBound = Kernel.GetBindings(typeof(ILogger)).Any();
+			if (!isLoggerBound)
+			{
+				Bind<ILogger>()
+					.To<ConsoleLogger>()
+					.InSingletonScope();
+			}
 		}
 
 		/// <summary>

@@ -51,8 +51,8 @@ namespace Cqrs.Ninject.Configuration
 		/// </summary>
 		public virtual void RegisterLoggerComponents()
 		{
-			Bind<ICorrolationIdHelper>()
-				.To<CorrolationIdHelper>()
+			Bind<ICorrelationIdHelper>()
+				.To<CorrelationIdHelper>()
 				.InSingletonScope();
 		}
 

@@ -9,8 +9,8 @@ namespace Cqrs.Azure.ServiceBus
 {
 	public class AzureEventBusPublisher<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IEventPublisher<TAuthenticationToken>
 	{
-		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, corrolationIdHelper)
+		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper CorrelationIdHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, CorrelationIdHelper)
 		{
 		}
 
@@ -21,7 +21,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			if (@event.AuthenticationToken == null)
 				@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-			@event.CorrelationId = CorrolationIdHelper.GetCorrolationId();
+			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 			@event.TimeStamp = DateTimeOffset.UtcNow;
 
 			ServiceBusClient.Send(new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event)));

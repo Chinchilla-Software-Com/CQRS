@@ -31,8 +31,8 @@ namespace Cqrs.Azure.ServiceBus
 			get { return "Cqrs.EventBus"; }
 		}
 
-		protected AzureEventBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, corrolationIdHelper)
+		protected AzureEventBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper CorrelationIdHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, CorrelationIdHelper)
 		{
 		}
 	}

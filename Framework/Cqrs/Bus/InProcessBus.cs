@@ -16,12 +16,12 @@ namespace Cqrs.Bus
 
 		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
 
-		protected ICorrolationIdHelper CorrolationIdHelper { get; private set; }
+		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
-		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper)
+		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper CorrelationIdHelper)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
-			CorrolationIdHelper = corrolationIdHelper;
+			CorrelationIdHelper = CorrelationIdHelper;
 			Routes = new Dictionary<Type, List<Action<IMessage>>>();
 		}
 
@@ -32,7 +32,7 @@ namespace Cqrs.Bus
 		{
 			if (command.AuthenticationToken == null)
 				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-			command.CorrelationId = CorrolationIdHelper.GetCorrolationId();
+			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
 			List<Action<IMessage>> handlers;
 			if (Routes.TryGetValue(typeof(TCommand), out handlers))
@@ -56,7 +56,7 @@ namespace Cqrs.Bus
 		{
 			if (@event.AuthenticationToken == null)
 				@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-			@event.CorrelationId = CorrolationIdHelper.GetCorrolationId();
+			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 			@event.TimeStamp = DateTimeOffset.UtcNow;
 
 			List<Action<IMessage>> handlers;

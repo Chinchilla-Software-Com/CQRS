@@ -16,6 +16,6 @@ namespace Cqrs.Services
 		public ServiceResponseStateType State { get; set; }
 
 		[DataMember]
-		public Guid CorrolationId { get; set; }
+		public Guid CorrelationId { get; set; }
 	}
 }

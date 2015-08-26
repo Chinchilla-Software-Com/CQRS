@@ -8,8 +8,8 @@ namespace Cqrs.Azure.ServiceBus
 {
 	public class AzureCommandBusPublisher<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, ICommandSender<TAuthenticationToken>
 	{
-		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, corrolationIdHelper)
+		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper CorrelationIdHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, CorrelationIdHelper)
 		{
 		}
 
@@ -20,7 +20,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			if (command.AuthenticationToken == null)
 				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-			command.CorrelationId = CorrolationIdHelper.GetCorrolationId();
+			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
 			ServiceBusClient.Send(new BrokeredMessage(MessageSerialiser.SerialiseCommand(command)));
 		}

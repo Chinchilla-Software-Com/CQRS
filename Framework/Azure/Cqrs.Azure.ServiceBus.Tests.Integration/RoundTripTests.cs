@@ -45,10 +45,10 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			testResponse.Add(processId, new Tuple<bool, Exception>(false, null));
 			var @event = new TestEvent{Id = processId};
 
-			var azureEventBusReceiver = new AzureEventBusReceiver<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper(), new NullCorrolationIdHelper());
+			var azureEventBusReceiver = new AzureEventBusReceiver<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper(), new NullCorrelationIdHelper());
 			azureEventBusReceiver.RegisterHandler<TestEvent>(new TestEventSuccessHandler(testResponse).Handle);
 
-			var azureEventBusPublisher = new AzureEventBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper(), new NullCorrolationIdHelper());
+			var azureEventBusPublisher = new AzureEventBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper(), new NullCorrelationIdHelper());
 
 			// Act
 			azureEventBusPublisher.Publish(@event);
@@ -68,10 +68,10 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			testResponse.Add(processId, new Tuple<bool, Exception>(false, null));
 			var command = new TestCommand { Id = processId };
 
-			var azureCommandBusReceiver = new AzureCommandBusReceiver<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper(), new NullCorrolationIdHelper());
+			var azureCommandBusReceiver = new AzureCommandBusReceiver<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper(), new NullCorrelationIdHelper());
 			azureCommandBusReceiver.RegisterHandler<TestCommand>(new TestCommandSuccessHandler(testResponse).Handle);
 
-			var azureCommandBusPublisher = new AzureCommandBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper(), new NullCorrolationIdHelper());
+			var azureCommandBusPublisher = new AzureCommandBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper(), new NullCorrelationIdHelper());
 
 			// Act
 			azureCommandBusPublisher.Send(command);
