@@ -86,7 +86,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected virtual void CheckPublicTopicExists(IConfigurationManager configurationManager, NamespaceManager namespaceManager)
 		{
-			CheckTopicExists(namespaceManager,PrivateTopicName = configurationManager.GetSetting(PublicTopicNameConfigurationKey) ?? DefaultPublicTopicName, PublicTopicSubscriptionName = configurationManager.GetSetting(PublicTopicSubscriptionNameConfigurationKey) ?? DefaultPublicTopicSubscriptionName);
+			CheckTopicExists(namespaceManager, PublicTopicName = configurationManager.GetSetting(PublicTopicNameConfigurationKey) ?? DefaultPublicTopicName, PublicTopicSubscriptionName = configurationManager.GetSetting(PublicTopicSubscriptionNameConfigurationKey) ?? DefaultPublicTopicSubscriptionName);
 		}
 
 		protected virtual void CheckTopicExists(NamespaceManager namespaceManager, string eventTopicName, string eventSubscriptionNames)
