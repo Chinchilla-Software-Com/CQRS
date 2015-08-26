@@ -54,6 +54,8 @@ namespace Cqrs.Azure.ServiceBus
 				string messageBody = message.GetBody<string>();
 				IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(messageBody);
 
+				CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
+
 				ReceiveEvent(@event);
 
 				// Remove message from queue
@@ -68,6 +70,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected virtual void ReceiveEvent(IEvent<TAuthenticationToken> @event)
 		{
+			CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
 			AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
 
 			List<Action<IMessage>> handlers;

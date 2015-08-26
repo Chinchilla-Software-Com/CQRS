@@ -33,11 +33,11 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
-		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper CorrelationIdHelper)
+		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper)
 		{
 			MessageSerialiser = messageSerialiser;
 			AuthenticationTokenHelper = authenticationTokenHelper;
-			CorrelationIdHelper = CorrelationIdHelper;
+			CorrelationIdHelper = correlationIdHelper;
 			// Create the queue if it does not exist already
 			ConnectionString = configurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
 
