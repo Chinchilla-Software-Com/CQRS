@@ -92,6 +92,7 @@ namespace <#= classNamespace #>
 		public virtual <#= methodResponseTypeName #><#= methodTypeName #> <#= collectionMethod.Name #>(<#= methodSignatureParameter #>)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			<#= methodResponseTypeName #><#= methodTypeName #> results = null;
 			On<#= collectionMethod.Name #>(serviceRequest, ref results);
 			return CompleteResponse(results);

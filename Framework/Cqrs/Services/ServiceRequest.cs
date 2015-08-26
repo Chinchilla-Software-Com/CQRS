@@ -9,5 +9,8 @@ namespace Cqrs.Services
 	{
 		[DataMember]
 		public TAuthenticationToken AuthenticationToken { get; set; }
+
+		[DataMember]
+		public Guid CorrelationId { get; set; }
 	}
 }

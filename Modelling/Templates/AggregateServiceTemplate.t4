@@ -83,6 +83,7 @@ namespace <#= classNamespace #>.Services
 		public IServiceResponseWithResultData<Entities.<#= className #>Entity> Create<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			UnitOfWorkService.SetCommitter(this);
 			Entities.<#= className #>Entity item = serviceRequest.Data;
 			item.Rsn = Guid.NewGuid();
@@ -126,6 +127,7 @@ namespace <#= classNamespace #>.Services
 		public IServiceResponseWithResultData<Entities.<#= className #>Entity> Update<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			UnitOfWorkService.SetCommitter(this);
 			Entities.<#= className #>Entity item = serviceRequest.Data;
 
@@ -178,6 +180,7 @@ namespace <#= classNamespace #>.Services
 		public IServiceResponse Delete<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			UnitOfWorkService.SetCommitter(this);
 			Entities.<#= className #>Entity item = serviceRequest.Data;
 
