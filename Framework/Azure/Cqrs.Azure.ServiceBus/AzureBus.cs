@@ -4,6 +4,10 @@ using Cqrs.Configuration;
 using cdmdotnet.Logging;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+using Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling;
+using Microsoft.Practices.TransientFaultHandling;
+using RetryPolicy = Microsoft.Practices.TransientFaultHandling.RetryPolicy;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -47,11 +51,14 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
-		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, bool isAPublisher, bool IsAReceiver)
+		protected ILogger Logger { get; private set; }
+
+		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, bool isAPublisher, bool IsAReceiver, ILogger logger)
 		{
 			MessageSerialiser = messageSerialiser;
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
+			Logger = logger;
 			ConnectionString = configurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
 
 			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
@@ -103,6 +110,24 @@ namespace Cqrs.Azure.ServiceBus
 
 			if (!namespaceManager.SubscriptionExists(eventTopicDescription.Path, eventSubscriptionNames))
 				namespaceManager.CreateSubscription(eventTopicDescription.Path, eventSubscriptionNames);
+		}
+
+		/// <summary>
+		/// Gets the default retry policy dedicated to handling transient conditions with Windows Azure Service Bus.
+		/// </summary>
+		protected virtual RetryPolicy AzureServiceBusRetryPolicy
+		{
+			get
+			{
+				RetryManager retryManager = EnterpriseLibraryContainer.Current.GetInstance<RetryManager>();
+				RetryPolicy retryPolicy = retryManager.GetDefaultAzureServiceBusRetryPolicy();
+				retryPolicy.Retrying += (sender, args) =>
+				{
+					var message = string.Format("Retrying action - Count:{0}, Delay:{1}", args.CurrentRetryCount, args.Delay);
+					Logger.LogWarning(message, "AzureServiceBusRetryPolicy", args.LastException);
+				};
+				return retryPolicy;
+			}
 		}
 	}
 }
