@@ -58,13 +58,13 @@ namespace <#= classNamespace #>.Services
 
 		protected ICorrelationIdHelper CorrelationIdHelper { get; set; }
 
-		public <#= className #>Service(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper CorrelationIdHelper, I<#= className #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository)
+		public <#= className #>Service(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, I<#= className #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository)
 		{
 			CommandSender = commandSender;
 			UnitOfWorkService = unitOfWorkService;
 			QueryFactory = queryFactory;
 			AuthenticationTokenHelper = authenticationTokenHelper;
-			CorrelationIdHelper = CorrelationIdHelper;
+			CorrelationIdHelper = correlationIdHelper;
 			<#= className #>Repository = <#= GetLowercaseFirstCharacter(className) #>Repository;
 		}
 
