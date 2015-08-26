@@ -53,7 +53,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected ILogger Logger { get; private set; }
 
-		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, bool isAPublisher, bool IsAReceiver, ILogger logger)
+		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher, bool IsAReceiver)
 		{
 			MessageSerialiser = messageSerialiser;
 			AuthenticationTokenHelper = authenticationTokenHelper;

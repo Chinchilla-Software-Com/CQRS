@@ -21,8 +21,8 @@ namespace Cqrs.Azure.ServiceBus
 			Routes = new Dictionary<Type, List<Action<IMessage>>>();
 		}
 
-		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper CorrelationIdHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, CorrelationIdHelper, false, true)
+		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, false, true)
 		{
 			// Configure the callback options
 			OnMessageOptions options = new OnMessageOptions
