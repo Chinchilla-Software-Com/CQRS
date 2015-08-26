@@ -12,4 +12,3 @@ namespace Cqrs.Events
 		DateTimeOffset TimeStamp { get; set; }
 	}
 }
-
