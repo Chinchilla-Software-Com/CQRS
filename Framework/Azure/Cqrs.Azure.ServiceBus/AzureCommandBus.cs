@@ -11,28 +11,38 @@ namespace Cqrs.Azure.ServiceBus
 			get { return "Cqrs.Azure.CommandBus.ConnectionString"; }
 		}
 
-		protected override string PrivateQueueNameConfigurationKey
+		protected override string PrivateTopicNameConfigurationKey
 		{
-			get { return "Cqrs.Azure.CommandBus.PrivateEvent.QueueName"; }
+			get { return "Cqrs.Azure.CommandBus.PrivateEvent.TopicName"; }
 		}
 
-		protected override string PublicQueueNameConfigurationKey
+		protected override string PublicTopicNameConfigurationKey
 		{
-			get { return "Cqrs.Azure.CommandBus.PublicEvent.QueueName"; }
+			get { return "Cqrs.Azure.CommandBus.PublicEvent.TopicName"; }
 		}
 
-		protected override string DefaultPrivateQueueName
+		protected override string PrivateTopicSubscriptionNameConfigurationKey
+		{
+			get { return "Cqrs.Azure.CommandBus.PrivateEvent.TopicName.SubscriptionName"; }
+		}
+
+		protected override string PublicTopicSubscriptionNameConfigurationKey
+		{
+			get { return "Cqrs.Azure.CommandBus.PublicEvent.TopicName.SubscriptionName"; }
+		}
+
+		protected override string DefaultPrivateTopicName
 		{
 			get { return "Cqrs.CommandBus.Private"; }
 		}
 
-		protected override string DefaultPublicQueueName
+		protected override string DefaultPublicTopicName
 		{
 			get { return "Cqrs.CommandBus"; }
 		}
 
 		protected AzureCommandBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper CorrelationIdHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, CorrelationIdHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, CorrelationIdHelper, true, false)
 		{
 		}
 	}

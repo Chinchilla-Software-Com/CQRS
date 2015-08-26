@@ -32,7 +32,7 @@ namespace Cqrs.Azure.ServiceBus
 			};
 
 			// Callback to handle received messages
-			ServiceBusClient.OnMessage(ReceiveCommand, options);
+			ServiceBusReceiver.OnMessage(ReceiveCommand, options);
 		}
 
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler)

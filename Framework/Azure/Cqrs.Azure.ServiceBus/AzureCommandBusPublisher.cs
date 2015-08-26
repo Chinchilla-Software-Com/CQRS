@@ -22,7 +22,7 @@ namespace Cqrs.Azure.ServiceBus
 				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
-			ServiceBusClient.Send(new BrokeredMessage(MessageSerialiser.SerialiseCommand(command)));
+			ServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseCommand(command)));
 		}
 
 		#endregion

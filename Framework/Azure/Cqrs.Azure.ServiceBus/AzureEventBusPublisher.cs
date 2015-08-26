@@ -24,7 +24,7 @@ namespace Cqrs.Azure.ServiceBus
 			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 			@event.TimeStamp = DateTimeOffset.UtcNow;
 
-			ServiceBusClient.Send(new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event)));
+			ServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event)));
 		}
 
 		#endregion
