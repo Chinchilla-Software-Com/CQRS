@@ -41,8 +41,8 @@ namespace Cqrs.Azure.ServiceBus
 			get { return "Cqrs.CommandBus"; }
 		}
 
-		protected AzureCommandBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper CorrelationIdHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, CorrelationIdHelper, true, false)
+		protected AzureCommandBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, bool isAPublisher, bool IsAReceiver)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, isAPublisher, IsAReceiver)
 		{
 		}
 	}

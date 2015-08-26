@@ -9,7 +9,7 @@ namespace Cqrs.Azure.ServiceBus
 	public class AzureCommandBusPublisher<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, ICommandSender<TAuthenticationToken>
 	{
 		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper CorrelationIdHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, CorrelationIdHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, CorrelationIdHelper, true, false)
 		{
 		}
 

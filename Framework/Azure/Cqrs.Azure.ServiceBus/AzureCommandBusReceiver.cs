@@ -22,7 +22,7 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper CorrelationIdHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, CorrelationIdHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, CorrelationIdHelper, false, true)
 		{
 			// Configure the callback options
 			OnMessageOptions options = new OnMessageOptions
