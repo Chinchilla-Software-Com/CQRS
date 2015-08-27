@@ -83,7 +83,7 @@ namespace Cqrs.Azure.ServiceBus
 			CheckPrivateEventTopicExists(configurationManager, namespaceManager);
 			CheckPublicTopicExists(configurationManager, namespaceManager);
 
-			ServiceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, PublicTopicName, PrivateTopicSubscriptionName);
+			ServiceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, PublicTopicName, PublicTopicSubscriptionName);
 		}
 
 		protected virtual void CheckPrivateEventTopicExists(IConfigurationManager configurationManager, NamespaceManager namespaceManager)
