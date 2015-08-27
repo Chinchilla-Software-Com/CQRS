@@ -166,11 +166,11 @@ namespace Cqrs.Azure.DocumentDb
 					var documentClientException = aggregateException.InnerException as DocumentClientException;
 					if (documentClientException != null)
 					{
-						Logger.LogInfo("DocumentClientException thrown via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction");
+						Logger.LogInfo("DocumentClientException thrown via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction", documentClientException);
 						ProcessFaultTollerantExceptions(documentClientException);
 					}
 					else
-						Logger.LogInfo("Non DocumentClientException raised via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction");
+						Logger.LogInfo("Non DocumentClientException raised via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction", aggregateException);
 				}
 			}
 		}
@@ -192,7 +192,12 @@ namespace Cqrs.Azure.DocumentDb
 				{
 					var documentClientException = aggregateException.InnerException as DocumentClientException;
 					if (documentClientException != null)
+					{
+						Logger.LogInfo("DocumentClientException thrown via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction", documentClientException);
 						ProcessFaultTollerantExceptions(documentClientException);
+					}
+					else
+						Logger.LogInfo("Non DocumentClientException raised via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction", aggregateException);
 				}
 			}
 		}
