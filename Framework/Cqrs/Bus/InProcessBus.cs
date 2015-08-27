@@ -18,10 +18,10 @@ namespace Cqrs.Bus
 
 		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
-		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper CorrelationIdHelper)
+		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
-			CorrelationIdHelper = CorrelationIdHelper;
+			CorrelationIdHelper = correlationIdHelper;
 			Routes = new Dictionary<Type, List<Action<IMessage>>>();
 		}
 
