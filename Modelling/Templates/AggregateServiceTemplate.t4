@@ -89,7 +89,8 @@ namespace <#= classNamespace #>.Services
 			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			UnitOfWorkService.SetCommitter(this);
 			Entities.<#= className #>Entity item = serviceRequest.Data;
-			item.Rsn = Guid.NewGuid();
+			if (item.Rsn == Guid.Empty)
+				item.Rsn = Guid.NewGuid();
 
 			var command = new Create<#= className #>Command(item.Rsn<#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
