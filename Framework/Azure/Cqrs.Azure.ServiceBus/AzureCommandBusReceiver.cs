@@ -12,7 +12,7 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	public class AzureCommandBusReceiver<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, ICommandHandlerRegistrar
+	public class AzureCommandBusReceiver<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, ICommandHandlerRegistrar, ICommandReceiver<TAuthenticationToken>
 	{
 		protected static IDictionary<Type, List<Action<IMessage>>> Routes { get; private set; }
 
@@ -69,7 +69,7 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
-		protected virtual void ReceiveCommand(ICommand<TAuthenticationToken> command)
+		public virtual void ReceiveCommand(ICommand<TAuthenticationToken> command)
 		{
 			CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
 			AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);

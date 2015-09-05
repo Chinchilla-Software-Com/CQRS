@@ -6,7 +6,6 @@ using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling;
-using Microsoft.Practices.TransientFaultHandling;
 using RetryPolicy = Microsoft.Practices.TransientFaultHandling.RetryPolicy;
 
 namespace Cqrs.Azure.ServiceBus
@@ -53,7 +52,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected ILogger Logger { get; private set; }
 
-		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher, bool IsAReceiver)
+		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher, bool isAReceiver)
 		{
 			MessageSerialiser = messageSerialiser;
 			AuthenticationTokenHelper = authenticationTokenHelper;
@@ -66,7 +65,7 @@ namespace Cqrs.Azure.ServiceBus
 			if (isAPublisher)
 				InstantiatePublishing(configurationManager, namespaceManager);
 
-			if (IsAReceiver)
+			if (isAReceiver)
 				InstantiateReceiving(configurationManager, namespaceManager);
 		}
 
