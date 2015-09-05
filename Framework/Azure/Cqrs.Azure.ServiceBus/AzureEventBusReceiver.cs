@@ -50,7 +50,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			try
 			{
-				Console.WriteLine("MessageID: " + message.MessageId);
+				Logger.LogDebug(string.Format("Message arrived witht he id '{0}'", message.MessageId));
 				string messageBody = message.GetBody<string>();
 				IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(messageBody);
 
