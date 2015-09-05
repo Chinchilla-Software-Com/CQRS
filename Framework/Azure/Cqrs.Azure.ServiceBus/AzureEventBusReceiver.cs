@@ -50,7 +50,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			try
 			{
-				Logger.LogDebug(string.Format("Message arrived witht he id '{0}'", message.MessageId));
+				Logger.LogDebug(string.Format("Message arrived with the id '{0}'.", message.MessageId));
 				string messageBody = message.GetBody<string>();
 				IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(messageBody);
 
@@ -60,10 +60,12 @@ namespace Cqrs.Azure.ServiceBus
 
 				// Remove message from queue
 				message.Complete();
+				Logger.LogDebug(string.Format("Message processed with the id '{0}'.", message.MessageId));
 			}
-			catch (Exception)
+			catch (Exception exception)
 			{
 				// Indicates a problem, unlock message in queue
+				Logger.LogError(string.Format("Message  with the id '{0}' failed to be process.", message.MessageId), exception: exception);
 				message.Abandon();
 			}
 		}
