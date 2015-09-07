@@ -32,20 +32,20 @@ namespace Cqrs.Azure.DocumentDb
 
 		public async Task<Database> CreateOrReadDatabase(DocumentClient client, string databaseName)
 		{
-			Logger.LogInfo("Getting Azure database", "AzureDocumentDbHelper\\CreateOrReadDatabase");
+			Logger.LogDebug("Getting Azure database", "AzureDocumentDbHelper\\CreateOrReadDatabase");
 			DateTime start = DateTime.Now;
 			Database result;
 			string databaseCacheKey = string.Format("AzureDocumentDbDatabase::{0}", databaseName);
 			if (AzureDocumentDbConnectionCache.TryGetDatabase(databaseCacheKey, out result))
 			{
-				Logger.LogInfo(string.Format("Returning cached database took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadDatabase");
+				Logger.LogDebug(string.Format("Returning cached database took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadDatabase");
 				try
 				{
 					return result;
 				}
 				finally
 				{
-					Logger.LogInfo(string.Format("Returning cached database took... Done"), "AzureDocumentDbHelper\\CreateOrReadDatabase");
+					Logger.LogDebug(string.Format("Returning cached database took... Done"), "AzureDocumentDbHelper\\CreateOrReadDatabase");
 				}
 			}
 			try
@@ -53,12 +53,12 @@ namespace Cqrs.Azure.DocumentDb
 				IEnumerable<Database> query = client.CreateDatabaseQuery()
 					.Where(database => database.Id == databaseName)
 					.AsEnumerable();
-				Logger.LogInfo("Checking if the database exists", "AzureDocumentDbHelper\\CreateOrReadDatabase");
+				Logger.LogDebug("Checking if the database exists", "AzureDocumentDbHelper\\CreateOrReadDatabase");
 				start = DateTime.Now;
 				result = query.SingleOrDefault();
 				if (result != null)
 				{
-					Logger.LogInfo(string.Format("Returning the existing database took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadDatabase");
+					Logger.LogDebug(string.Format("Returning the existing database took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadDatabase");
 					try
 					{
 						AzureDocumentDbConnectionCache.SetDatabase(databaseCacheKey, result);
@@ -66,40 +66,40 @@ namespace Cqrs.Azure.DocumentDb
 					}
 					finally
 					{
-						Logger.LogInfo(string.Format("Returning the existing database... Done"), "AzureDocumentDbHelper\\CreateOrReadDatabase");
+						Logger.LogDebug(string.Format("Returning the existing database... Done"), "AzureDocumentDbHelper\\CreateOrReadDatabase");
 					}
 				}
-				Logger.LogInfo("Creating and returning a new database", "AzureDocumentDbHelper\\CreateOrReadDatabase");
+				Logger.LogDebug("Creating and returning a new database", "AzureDocumentDbHelper\\CreateOrReadDatabase");
 				start = DateTime.Now;
 
 				result = ExecuteFaultTollerantFunction(() => client.CreateDatabaseAsync(new Database { Id = databaseName }).Result);
 
-				Logger.LogInfo(string.Format("Getting Azure database took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadDatabase");
+				Logger.LogDebug(string.Format("Getting Azure database took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadDatabase");
 				AzureDocumentDbConnectionCache.SetDatabase(databaseCacheKey, result);
 				return result;
 			}
 			finally
 			{
-				Logger.LogInfo("Getting Azure database... Done", "AzureDocumentDbHelper\\CreateOrReadDatabase");
+				Logger.LogDebug("Getting Azure database... Done", "AzureDocumentDbHelper\\CreateOrReadDatabase");
 			}
 		}
 
 		public async Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName)
 		{
-			Logger.LogInfo("Getting Azure collection", "AzureDocumentDbHelper\\CreateOrReadCollection");
+			Logger.LogDebug("Getting Azure collection", "AzureDocumentDbHelper\\CreateOrReadCollection");
 			DateTime start = DateTime.Now;
 			DocumentCollection result;
 			string documentCollectionCacheKey = string.Format("AzureDocumentDbDocumentCollection::{0}", collectionName);
 			if (AzureDocumentDbConnectionCache.TryGetDocumentCollection(documentCollectionCacheKey, out result))
 			{
-				Logger.LogInfo(string.Format("Returning cached collection took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadCollection");
+				Logger.LogDebug(string.Format("Returning cached collection took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadCollection");
 				try
 				{
 					return result;
 				}
 				finally
 				{
-					Logger.LogInfo(string.Format("Returning cached collection took... Done"), "AzureDocumentDbHelper\\CreateOrReadCollection");
+					Logger.LogDebug(string.Format("Returning cached collection took... Done"), "AzureDocumentDbHelper\\CreateOrReadCollection");
 				}
 			}
 			try
@@ -107,12 +107,12 @@ namespace Cqrs.Azure.DocumentDb
 				IEnumerable<DocumentCollection> query = client.CreateDocumentCollectionQuery(database.SelfLink)
 					.Where(documentCollection => documentCollection.Id == collectionName)
 					.AsEnumerable();
-				Logger.LogInfo("Checking if the collection exists", "AzureDocumentDbHelper\\CreateOrReadCollection");
+				Logger.LogDebug("Checking if the collection exists", "AzureDocumentDbHelper\\CreateOrReadCollection");
 				start = DateTime.Now;
 				result = query.SingleOrDefault();
 				if (result != null)
 				{
-					Logger.LogInfo(string.Format("Returning the existing document collection took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadCollection");
+					Logger.LogDebug(string.Format("Returning the existing document collection took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadCollection");
 					try
 					{
 						// AzureDocumentDbConnectionCache.SetDocumentCollection(documentCollectionCacheKey, result);
@@ -120,19 +120,19 @@ namespace Cqrs.Azure.DocumentDb
 					}
 					finally
 					{
-						Logger.LogInfo(string.Format("Returning the existing document collection... Done"), "AzureDocumentDbHelper\\CreateOrReadCollection");
+						Logger.LogDebug(string.Format("Returning the existing document collection... Done"), "AzureDocumentDbHelper\\CreateOrReadCollection");
 					}
 				}
-				Logger.LogInfo("Creating and returning a new collection", "AzureDocumentDbHelper\\CreateOrReadCollection");
+				Logger.LogDebug("Creating and returning a new collection", "AzureDocumentDbHelper\\CreateOrReadCollection");
 				start = DateTime.Now;
 				result = ExecuteFaultTollerantFunction(() => client.CreateDocumentCollectionAsync(database.SelfLink, new DocumentCollection { Id = collectionName }).Result);
-				Logger.LogInfo(string.Format("Getting Azure document collection took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadCollection");
+				Logger.LogDebug(string.Format("Getting Azure document collection took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadCollection");
 				// AzureDocumentDbConnectionCache.SetDocumentCollection(documentCollectionCacheKey, result);
 				return result;
 			}
 			finally
 			{
-				Logger.LogInfo("Getting Azure collection... Done", "AzureDocumentDbHelper\\CreateOrReadCollection");
+				Logger.LogDebug("Getting Azure collection... Done", "AzureDocumentDbHelper\\CreateOrReadCollection");
 			}
 		}
 
@@ -143,8 +143,8 @@ namespace Cqrs.Azure.DocumentDb
 				Thread.Sleep(documentClientException.RetryAfter);
 			else
 			{
-				Logger.LogInfo("Non-fault tollerant exception raised via DocumentClientException.", "AzureDocumentDbDataStore\\ProcessFaultTollerantExceptions");
-				throw new Exception("Non-fault tollerant exception raised.", documentClientException);
+				Logger.LogWarning("Non-fault tolerant exception raised via DocumentClientException.", "AzureDocumentDbDataStore\\ProcessFaultTollerantExceptions");
+				throw new Exception("Non-fault tolerant exception raised.", documentClientException);
 			}
 		}
 
@@ -158,7 +158,7 @@ namespace Cqrs.Azure.DocumentDb
 				}
 				catch (DocumentClientException documentClientException)
 				{
-					Logger.LogInfo("DocumentClientException thrown.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction");
+					Logger.LogWarning("DocumentClientException thrown.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction");
 					ProcessFaultTollerantExceptions(documentClientException);
 				}
 				catch (AggregateException aggregateException)
@@ -166,11 +166,11 @@ namespace Cqrs.Azure.DocumentDb
 					var documentClientException = aggregateException.InnerException as DocumentClientException;
 					if (documentClientException != null)
 					{
-						Logger.LogInfo("DocumentClientException thrown via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction", documentClientException);
+						Logger.LogWarning("DocumentClientException thrown via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction", documentClientException);
 						ProcessFaultTollerantExceptions(documentClientException);
 					}
 					else
-						Logger.LogInfo("Non DocumentClientException raised via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction", aggregateException);
+						Logger.LogWarning("Non DocumentClientException raised via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction", aggregateException);
 				}
 			}
 		}
@@ -193,11 +193,11 @@ namespace Cqrs.Azure.DocumentDb
 					var documentClientException = aggregateException.InnerException as DocumentClientException;
 					if (documentClientException != null)
 					{
-						Logger.LogInfo("DocumentClientException thrown via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction", documentClientException);
+						Logger.LogWarning("DocumentClientException thrown via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction", documentClientException);
 						ProcessFaultTollerantExceptions(documentClientException);
 					}
 					else
-						Logger.LogInfo("Non DocumentClientException raised via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction", aggregateException);
+						Logger.LogWarning("Non DocumentClientException raised via AggregateException.", "AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction", aggregateException);
 				}
 			}
 		}

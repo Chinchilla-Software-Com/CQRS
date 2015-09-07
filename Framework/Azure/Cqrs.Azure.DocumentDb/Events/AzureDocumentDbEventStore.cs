@@ -60,7 +60,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 		protected override void PersitEvent(EventData eventData)
 		{
-			Logger.LogInfo("Persisting aggregate root event", string.Format("{0}\\PersitEvent", GetType().Name));
+			Logger.LogDebug("Persisting aggregate root event", string.Format("{0}\\PersitEvent", GetType().Name));
 			try
 			{
 				using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
@@ -69,13 +69,13 @@ namespace Cqrs.Azure.DocumentDb.Events
 					//DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format("{0}_{1}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), eventData.EventType)).Result;
 					DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format("{0}::{1}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), eventData.AggregateId.Substring(0, eventData.AggregateId.IndexOf("/", StringComparison.Ordinal)))).Result;
 
-					Logger.LogInfo("Creating document for event asyncronously", string.Format("{0}\\PersitEvent", GetType().Name));
+					Logger.LogDebug("Creating document for event asynchronously", string.Format("{0}\\PersitEvent", GetType().Name));
 					AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() => client.CreateDocumentAsync(collection.SelfLink, eventData).Wait());
 				}
 			}
 			finally
 			{
-				Logger.LogInfo("Persisting aggregate root event... Done", string.Format("{0}\\PersitEvent", GetType().Name));
+				Logger.LogWarning("Persisting aggregate root event... Done", string.Format("{0}\\PersitEvent", GetType().Name));
 			}
 		}
 	}

@@ -51,20 +51,23 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			try
 			{
-				Console.WriteLine("MessageID: " + message.MessageId);
+				Logger.LogDebug(string.Format("A command message arrived with the id '{0}'.", message.MessageId));
 				string messageBody = message.GetBody<string>();
 				ICommand<TAuthenticationToken> command = MessageSerialiser.DeserialiseCommand(messageBody);
 
 				CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
+				Logger.LogDebug(string.Format("A command with the id '{0}' was of type {1}.", message.MessageId, command.GetType().FullName));
 
 				ReceiveCommand(command);
 
 				// Remove message from queue
 				message.Complete();
+				Logger.LogDebug(string.Format("A command message was processed with the id '{0}'.", message.MessageId));
 			}
-			catch (Exception)
+			catch (Exception exception)
 			{
 				// Indicates a problem, unlock message in queue
+				Logger.LogError(string.Format("A command message with the id '{0}' failed to be process.", message.MessageId), exception: exception);
 				message.Abandon();
 			}
 		}

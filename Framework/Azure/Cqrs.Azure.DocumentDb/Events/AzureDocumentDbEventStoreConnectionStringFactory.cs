@@ -16,14 +16,14 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 		public virtual DocumentClient GetEventStoreConnectionClient()
 		{
-			Logger.LogInfo("Getting Azure document client", "AzureDocumentDbEventStoreConnectionStringFactory\\GetEventStoreConnectionClient");
+			Logger.LogDebug("Getting Azure document client", "AzureDocumentDbEventStoreConnectionStringFactory\\GetEventStoreConnectionClient");
 			try
 			{
 				return new DocumentClient(GetEventStoreConnectionUrl(), GetEventStoreConnectionAuthorisationKey());
 			}
 			finally
 			{
-				Logger.LogInfo("Getting Azure document client... Done", "AzureDocumentDbEventStoreConnectionStringFactory\\GetEventStoreConnectionClient");
+				Logger.LogDebug("Getting Azure document client... Done", "AzureDocumentDbEventStoreConnectionStringFactory\\GetEventStoreConnectionClient");
 			}
 		}
 

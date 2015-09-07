@@ -16,14 +16,14 @@ namespace Cqrs.Azure.DocumentDb.Factories
 
 		public virtual DocumentClient GetAzureDocumentDbConnectionClient()
 		{
-			Logger.LogInfo("Getting Azure document client", "AzureDocumentDbDataStoreConnectionStringFactory\\GetAzureDocumentDbConnectionClient");
+			Logger.LogDebug("Getting Azure document client", "AzureDocumentDbDataStoreConnectionStringFactory\\GetAzureDocumentDbConnectionClient");
 			try
 			{
 				return new DocumentClient(GetAzureDocumentDbConnectionUrl(), GetAzureDocumentDbAuthorisationKey());
 			}
 			finally
 			{
-				Logger.LogInfo("Getting Azure document client... Done", "AzureDocumentDbDataStoreConnectionStringFactory\\GetAzureDocumentDbConnectionClient");
+				Logger.LogDebug("Getting Azure document client... Done", "AzureDocumentDbDataStoreConnectionStringFactory\\GetAzureDocumentDbConnectionClient");
 			}
 		}
 
