@@ -75,7 +75,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 			}
 			finally
 			{
-				Logger.LogWarning("Persisting aggregate root event... Done", string.Format("{0}\\PersitEvent", GetType().Name));
+				Logger.LogDebug("Persisting aggregate root event... Done", string.Format("{0}\\PersitEvent", GetType().Name));
 			}
 		}
 	}
