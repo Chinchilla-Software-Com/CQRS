@@ -23,14 +23,14 @@ namespace Cqrs.Domain.Factories
 			}
 			catch (System.Exception)
 			{
-				DependencyResolver.Resolve<ILogger>().LogInfo("Using the dependency resolver to create an instance of the aggregate failed.", "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate");
+				DependencyResolver.Resolve<ILogger>().LogDebug(string.Format("Using the dependency resolver to create an instance of the aggregate typed '{0}' failed.", typeof(TAggregate).FullName), "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate");
 				try
 				{
 					return (TAggregate)Activator.CreateInstance(typeof(TAggregate), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { DependencyResolver, DependencyResolver.Resolve<ILogger>() }, null);
 				}
 				catch (MissingMethodException exception)
 				{
-					DependencyResolver.Resolve<ILogger>().LogDebug("Looking for a private constructor with a dependency resolver and logger, to create an instance of the aggregate failed.", "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate", exception);
+					DependencyResolver.Resolve<ILogger>().LogDebug(string.Format("Looking for a private constructor with a dependency resolver and logger, to create an instance of the aggregate typed '{0}' failed.", typeof(TAggregate).FullName), "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate", exception);
 					try
 					{
 						return (TAggregate)Activator.CreateInstance(typeof(TAggregate), true);

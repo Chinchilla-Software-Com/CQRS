@@ -36,19 +36,13 @@ namespace Cqrs.Events
 
 		public virtual void Save(IEvent<TAuthenticationToken> @event, Type aggregateRootType)
 		{
-			Logger.LogInfo("Saving aggregate root event", string.Format("{0}\\Save", GetType().Name));
-			try
-			{
-				EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
-				string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id);
-				eventData.AggregateId = streamName;
-				eventData.Version = @event.Version;
-				PersitEvent(eventData);
-			}
-			finally
-			{
-				Logger.LogInfo("Saving aggregate root event... done", string.Format("{0}\\Save", GetType().Name));
-			}
+			Logger.LogDebug(string.Format("Saving aggregate root event type '{0}'", @event.GetType().FullName), string.Format("{0}\\Save", GetType().Name));
+			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id);
+			eventData.AggregateId = streamName;
+			eventData.Version = @event.Version;
+			PersitEvent(eventData);
+			Logger.LogInfo(string.Format("Saving aggregate root event type '{0}'... done", @event.GetType().FullName), string.Format("{0}\\Save", GetType().Name));
 		}
 
 		public abstract IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1);
