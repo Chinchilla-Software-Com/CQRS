@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
@@ -84,7 +85,7 @@ namespace Cqrs.Azure.DocumentDb
 			}
 		}
 
-		public async Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName)
+		public async Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName, string[] uniqiueIndexPropertyNames = null)
 		{
 			Logger.LogDebug("Getting Azure collection", "AzureDocumentDbHelper\\CreateOrReadCollection");
 			DateTime start = DateTime.Now;
@@ -126,6 +127,125 @@ namespace Cqrs.Azure.DocumentDb
 				Logger.LogDebug("Creating and returning a new collection", "AzureDocumentDbHelper\\CreateOrReadCollection");
 				start = DateTime.Now;
 				result = ExecuteFaultTollerantFunction(() => client.CreateDocumentCollectionAsync(database.SelfLink, new DocumentCollection { Id = collectionName }).Result);
+				if (uniqiueIndexPropertyNames != null)
+				{
+					StringBuilder body = new StringBuilder(@"
+function()
+{
+	var context = getContext();
+	var collection = context.getCollection();
+	var request = context.getRequest();
+
+	// document to be created in the current operation
+	var documentToCreate = request.getBody();
+
+	function lookForDuplicates(propertyNames, propertyValues, continuation)
+	{
+		var queryString = 'SELECT * FROM c WHERE ';
+		var queryParameters = [];
+		for (index = 0; index < propertyNames.length; index++)
+		{
+			if (index > 0)
+				queryString = queryString + ' AND';
+			queryString = queryString + ' c.' + propertyNames[index] + ' = @property' + index;
+			queryParameters.push({ name: '@property' + index, value: propertyValues[index] });
+		}
+		var query =
+		{
+			query: queryString,
+			parameters: queryParameters
+		};
+		var requestOptions =
+		{
+			continuation: continuation
+		};
+
+		var isAccepted = collection.queryDocuments(collection.getSelfLink(), query, requestOptions,
+			function(err, results, responseOptions)
+			{
+				if (err)
+				{
+					throw new Error('Error querying for documents with duplicate: ' + err.message);
+				}
+				if (results.length > 0)
+				{
+					// At least one document with property exists.
+					throw new Error('Document with the property: ' + JSON.stringify(propertyNames) + ' and value: ' + JSON.stringify(propertyValues) + ', already exists: ' + JSON.stringify(results[0]));
+				}
+				else if (responseOptions.continuation)
+				{
+					// Else if the query came back empty, but with a continuation token; repeat the query w/ the token.
+					// This is highly unlikely; but is included to serve as an example for larger queries.
+					lookForDuplicates(propertyNames, propertyValues, responseOptions.continuation);
+				}
+				else
+				{
+					// Success, no duplicates found! Do nothing.
+				}
+			}
+		);
+
+		// If we hit execution bounds - throw an exception.
+		// This is highly unlikely; but is included to serve as an example for more complex operations.
+		if (!isAccepted)
+		{
+			throw new Error('Timeout querying for document with duplicates.');
+		}
+	}
+
+");
+					string propertyNames = uniqiueIndexPropertyNames.Aggregate("", (current, uniqiueIndexPropertyName) => string.Format("{0}{1}\"{2}\"", current, string.IsNullOrWhiteSpace(current) ? string.Empty : ", ", uniqiueIndexPropertyName));
+					string propertyValues = uniqiueIndexPropertyNames.Aggregate("", (current, uniqiueIndexPropertyName) => string.Format("{0}{1}documentToCreate[\"{2}\"]", current, string.IsNullOrWhiteSpace(current) ? string.Empty : ", ", uniqiueIndexPropertyName));
+					foreach (string uniqiueIndexPropertyName in uniqiueIndexPropertyNames)
+					{
+						/*
+						if (uniqiueIndexPropertyName.Contains("::"))
+						{
+							string[] values = uniqiueIndexPropertyName.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+							string preFilter = null;
+							string propertyName = values[0];
+							string subPropertyName = values[1];
+							if (values.Length == 3)
+							{
+								preFilter = values[0];
+								propertyName = values[1];
+								subPropertyName = values[2];
+							}
+							body.Append(@"
+	if (!(""" + propertyName + @""" in documentToCreate)) {
+		throw new Error('Document must include a """ + propertyName + @""" property.');
+	}
+	// get property
+	var propertyData = documentToCreate[""" + propertyName + @"""];
+	var property = JSON.parse(propertyData);
+");
+						}
+						else
+						{
+							body.Append(@"
+	if (!(""" + uniqiueIndexPropertyName + @""" in documentToCreate)) {
+		throw new Error('Document must include a """ + uniqiueIndexPropertyName + @""" property.');
+	lookForDuplicates(""" + uniqiueIndexPropertyName + @""", documentToCreate[""" + uniqiueIndexPropertyName + @"""]);");
+						}
+						*/
+							body.Append(@"
+	if (!(""" + uniqiueIndexPropertyName + @""" in documentToCreate))
+		throw new Error('Document must include a """ + uniqiueIndexPropertyName + @""" property.');");
+					}
+
+					body.Append(@"
+	lookForDuplicates([" + propertyNames + @"], [" + propertyValues + @"]);
+}");
+
+					var trigger = new Trigger
+					{
+						Id = "ValidateUniqueConstraints",
+						Body = body.ToString(),
+						TriggerOperation = TriggerOperation.Create,
+						TriggerType = TriggerType.Pre
+					};
+					ExecuteFaultTollerantFunction(() => client.CreateTriggerAsync(result.SelfLink, trigger).Result);
+				}
 				Logger.LogDebug(string.Format("Getting Azure document collection took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadCollection");
 				// AzureDocumentDbConnectionCache.SetDocumentCollection(documentCollectionCacheKey, result);
 				return result;

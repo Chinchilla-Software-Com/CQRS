@@ -42,6 +42,7 @@ namespace Cqrs.Events
 				EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
 				string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id);
 				eventData.AggregateId = streamName;
+				eventData.Version = @event.Version;
 				PersitEvent(eventData);
 			}
 			finally

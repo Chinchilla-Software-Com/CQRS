@@ -12,6 +12,8 @@ namespace Cqrs.Events
 
 		public string AggregateId { get; set; }
 
+		public long Version { get; set; }
+
 		public DateTime Timestamp { get; set; }
 
 		public EventData()

@@ -17,7 +17,7 @@ namespace Cqrs.Azure.DocumentDb
 	{
 		Task<Database> CreateOrReadDatabase(DocumentClient client, string databaseName);
 
-		Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName);
+		Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName, string[] uniqiueIndexPropertyNames = null);
 
 		T ExecuteFaultTollerantFunction<T>(Func<T> func);
 
