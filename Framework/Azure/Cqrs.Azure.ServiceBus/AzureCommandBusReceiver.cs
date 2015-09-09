@@ -81,12 +81,12 @@ namespace Cqrs.Azure.ServiceBus
 			if (Routes.TryGetValue(command.GetType(), out handlers))
 			{
 				if (handlers.Count != 1)
-					throw new InvalidOperationException("Cannot send to more than one handler");
+					throw new MultipleCommandHandlersRegisteredException(command.GetType());
 				handlers.Single()(command);
 			}
 			else
 			{
-				throw new InvalidOperationException("No handler registered");
+				throw new NoCommandHandlerRegisteredException(command.GetType());
 			}
 		}
 	}
