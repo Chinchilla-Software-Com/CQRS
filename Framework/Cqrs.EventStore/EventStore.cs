@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Cqrs.Events;
 using EventStore.ClientAPI;
 using EventData = EventStore.ClientAPI.EventData;
@@ -29,10 +28,10 @@ namespace Cqrs.EventStore
 
 		public void Save<T>(IEvent<TAuthenticationToken> @event)
 		{
-			Save(@event, typeof (T));
+			Save(typeof (T), @event);
 		}
 
-		public void Save(IEvent<TAuthenticationToken> @event, Type aggregateRootType)
+		public void Save(Type aggregateRootType, IEvent<TAuthenticationToken> @event)
 		{
 			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id);
@@ -49,11 +48,16 @@ namespace Cqrs.EventStore
 		/// </remarks>
 		public IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
+			return Get(typeof (T), aggregateId, useLastEventOnly, fromVersion);
+		}
+
+		public IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+		{
 			int startPosition = StreamPosition.Start;
 			if (fromVersion > -1)
 				startPosition = fromVersion + StreamPosition.Start;
 			StreamEventsSlice eventCollection;
-			string streamName = string.Format(CqrsEventStoreStreamNamePattern, typeof(T).FullName, aggregateId);
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateType.FullName, aggregateId);
 			if (useLastEventOnly)
 				eventCollection = EventStoreConnection.ReadStreamEventsBackwardAsync(streamName, startPosition, 1, false).Result;
 			else

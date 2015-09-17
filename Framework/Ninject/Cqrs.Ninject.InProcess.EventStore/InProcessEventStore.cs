@@ -14,7 +14,7 @@ namespace Cqrs.Ninject.InProcess.EventStore
 			InMemoryDb = new Dictionary<Guid, IList<IEvent<TAuthenticationToken>>>();
 		}
 
-		public void Save(IEvent<TAuthenticationToken> @event, Type aggregateRootType)
+		public void Save(Type aggregateRootType, IEvent<TAuthenticationToken> @event)
 		{
 			IList<IEvent<TAuthenticationToken>> list;
 			InMemoryDb.TryGetValue(@event.Id, out list);
@@ -28,6 +28,11 @@ namespace Cqrs.Ninject.InProcess.EventStore
 
 		public IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
+			return Get(typeof(T), aggregateId, useLastEventOnly, fromVersion);
+		}
+
+		public IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+		{
 			IList<IEvent<TAuthenticationToken>> events;
 			InMemoryDb.TryGetValue(aggregateId, out events);
 			return events != null
@@ -37,7 +42,7 @@ namespace Cqrs.Ninject.InProcess.EventStore
 
 		public void Save<T>(IEvent<TAuthenticationToken> @event)
 		{
-			Save(@event, typeof(T));
+			Save(typeof(T), @event);
 		}
 	}
 }

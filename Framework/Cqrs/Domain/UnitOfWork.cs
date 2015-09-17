@@ -11,7 +11,7 @@ namespace Cqrs.Domain
 	{
 		private IRepository<TAuthenticationToken> Repository { get; set; }
 
-		private Dictionary<Guid, AggregateDescriptor<TAuthenticationToken>> TrackedAggregates { get; set; }
+		private Dictionary<Guid, IAggregateDescriptor<TAuthenticationToken>> TrackedAggregates { get; set; }
 
 		public UnitOfWork(IRepository<TAuthenticationToken> repository)
 		{
@@ -19,23 +19,30 @@ namespace Cqrs.Domain
 				throw new ArgumentNullException("repository");
 
 			Repository = repository;
-			TrackedAggregates = new Dictionary<Guid, AggregateDescriptor<TAuthenticationToken>>();
+			TrackedAggregates = new Dictionary<Guid, IAggregateDescriptor<TAuthenticationToken>>();
 		}
 
 		/// <summary>
-		/// Add an item into the <see cref="IUnitOfWork"/> ready to be committed.
+		/// Add an item into the <see cref="IUnitOfWork{TAuthenticationToken}"/> ready to be committed.
 		/// </summary>
 		public void Add<TAggregateRoot>(TAggregateRoot aggregate)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			if (!IsTracked(aggregate.Id))
-				TrackedAggregates.Add(aggregate.Id, new AggregateDescriptor<TAuthenticationToken> { Aggregate = aggregate, Version = aggregate.Version });
-			else if (TrackedAggregates[aggregate.Id].Aggregate != (IAggregateRoot<TAuthenticationToken>)aggregate)
+			{
+				var aggregateDescriptor = new AggregateDescriptor<TAggregateRoot, TAuthenticationToken>
+				{
+					Aggregate = aggregate,
+					Version = aggregate.Version
+				};
+				TrackedAggregates.Add(aggregate.Id, aggregateDescriptor);
+			}
+			else if (((TrackedAggregates[aggregate.Id]).Aggregate) != (IAggregateRoot<TAuthenticationToken>)aggregate)
 				throw new ConcurrencyException(aggregate.Id);
 		}
 
 		/// <summary>
-		/// Get an item from the <see cref="IUnitOfWork"/> if it has already been loaded or get it from the <see cref="IRepository"/>.
+		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> if it has already been loaded or get it from the <see cref="IRepository{TAuthenticationToken}"/>.
 		/// </summary>
 		public TAggregateRoot Get<TAggregateRoot>(Guid id, int? expectedVersion = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
@@ -62,12 +69,12 @@ namespace Cqrs.Domain
 		}
 
 		/// <summary>
-		/// Commit any changed <see cref="AggregateRoot"/> added to this <see cref="IUnitOfWork"/> via <see cref="Add{T}"/>
-		/// into the <see cref="IRepository"/>
+		/// Commit any changed <see cref="AggregateRoot{TAuthenticationToken}"/> added to this <see cref="IUnitOfWork{TAuthenticationToken}"/> via <see cref="Add{T}"/>
+		/// into the <see cref="IRepository{TAuthenticationToken}"/>
 		/// </summary>
 		public void Commit()
 		{
-			foreach (AggregateDescriptor<TAuthenticationToken> descriptor in TrackedAggregates.Values)
+			foreach (IAggregateDescriptor<TAuthenticationToken> descriptor in TrackedAggregates.Values)
 			{
 				Repository.Save(descriptor.Aggregate, descriptor.Version);
 			}

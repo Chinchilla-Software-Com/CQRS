@@ -31,10 +31,10 @@ namespace Cqrs.Events
 
 		public virtual void Save<T>(IEvent<TAuthenticationToken> @event)
 		{
-			Save(@event, typeof(T));
+			Save(typeof(T), @event);
 		}
 
-		public virtual void Save(IEvent<TAuthenticationToken> @event, Type aggregateRootType)
+		public virtual void Save(Type aggregateRootType, IEvent<TAuthenticationToken> @event)
 		{
 			Logger.LogDebug(string.Format("Saving aggregate root event type '{0}'", @event.GetType().FullName), string.Format("{0}\\Save", GetType().Name));
 			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
@@ -45,7 +45,12 @@ namespace Cqrs.Events
 			Logger.LogInfo(string.Format("Saving aggregate root event type '{0}'... done", @event.GetType().FullName), string.Format("{0}\\Save", GetType().Name));
 		}
 
-		public abstract IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1);
+		public virtual IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+		{
+			return Get(typeof (T), aggregateId, useLastEventOnly, fromVersion);
+		}
+
+		public abstract IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1);
 
 		protected abstract void PersitEvent(EventData eventData);
 	}

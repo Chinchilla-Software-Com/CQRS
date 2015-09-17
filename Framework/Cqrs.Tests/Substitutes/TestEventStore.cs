@@ -16,12 +16,17 @@ namespace Cqrs.Tests.Substitutes
 
 		public Guid EmptyGuid { get; private set; }
 
-		public void Save(IEvent<ISingleSignOnToken> @event, Type aggregateRootType)
+		public void Save(Type aggregateRootType, IEvent<ISingleSignOnToken> @event)
 		{
 			SavedEvents.Add(@event);
 		}
 
 		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+		{
+			return Get(typeof(T),aggregateId, useLastEventOnly, fromVersion);
+		}
+
+		public IEnumerable<IEvent<ISingleSignOnToken>> Get(Type aggregateType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			if (aggregateId == EmptyGuid || aggregateId == Guid.Empty)
 			{
@@ -29,17 +34,17 @@ namespace Cqrs.Tests.Substitutes
 			}
 
 			return new List<IEvent<ISingleSignOnToken>>
-				{
-					new TestAggregateDidSomething {Id = aggregateId, Version = 1},
-					new TestAggregateDidSomeethingElse {Id = aggregateId, Version = 2},
-					new TestAggregateDidSomething {Id = aggregateId, Version = 3},
-				}.Where(x => x.Version > fromVersion);
-
+			{
+				new TestAggregateDidSomething {Id = aggregateId, Version = 1},
+				new TestAggregateDidSomeethingElse {Id = aggregateId, Version = 2},
+				new TestAggregateDidSomething {Id = aggregateId, Version = 3},
+			}
+			.Where(x => x.Version > fromVersion);
 		}
 
 		public void Save<T>(IEvent<ISingleSignOnToken> @event)
 		{
-			SavedEvents.Add(@event);
+			Save(typeof(T), @event);
 		}
 
 		private List<IEvent<ISingleSignOnToken>> SavedEvents { get; set; }

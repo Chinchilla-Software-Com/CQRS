@@ -12,10 +12,10 @@ namespace Cqrs.Tests.Substitutes
 
 		public void Save<T>(IEvent<ISingleSignOnToken> @event)
 		{
-			Save(@event, typeof(T));
+			Save(typeof(T), @event);
 		}
 
-		public void Save(IEvent<ISingleSignOnToken> @event, Type aggregateRootType)
+		public void Save(Type aggregateRootType, IEvent<ISingleSignOnToken> @event)
 		{
 			lock(Events)
 			{
@@ -25,7 +25,12 @@ namespace Cqrs.Tests.Substitutes
 
 		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
-			lock(Events)
+			return Get(typeof (T), aggregateId, useLastEventOnly, fromVersion);
+		}
+
+		public IEnumerable<IEvent<ISingleSignOnToken>> Get(Type aggregateType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+		{
+			lock (Events)
 			{
 				return Events.Where(x => x.Version > fromVersion && x.Id == aggregateId).OrderBy(x => x.Version).ToList();
 			}

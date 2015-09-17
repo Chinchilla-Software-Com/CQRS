@@ -7,8 +7,10 @@ namespace Cqrs.Events
 	{
 		void Save<T>(IEvent<TAuthenticationToken> @event);
 
-		void Save(IEvent<TAuthenticationToken> @event, Type aggregateRootType);
+		void Save(Type aggregateRootType, IEvent<TAuthenticationToken> @event);
 
 		IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1);
+
+		IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1);
 	}
 }
