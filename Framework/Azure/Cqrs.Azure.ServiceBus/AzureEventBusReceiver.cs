@@ -55,7 +55,7 @@ namespace Cqrs.Azure.ServiceBus
 				IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(messageBody);
 
 				CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
-				Logger.LogDebug(string.Format("An event with the id '{0}' was of type {1}.", message.MessageId, @event.GetType().FullName));
+				Logger.LogInfo(string.Format("An event with the id '{0}' was of type {1}.", message.MessageId, @event.GetType().FullName));
 
 				ReceiveEvent(@event);
 

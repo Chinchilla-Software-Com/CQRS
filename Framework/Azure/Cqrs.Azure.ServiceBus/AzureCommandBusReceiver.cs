@@ -56,7 +56,7 @@ namespace Cqrs.Azure.ServiceBus
 				ICommand<TAuthenticationToken> command = MessageSerialiser.DeserialiseCommand(messageBody);
 
 				CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
-				Logger.LogDebug(string.Format("A command with the id '{0}' was of type {1}.", message.MessageId, command.GetType().FullName));
+				Logger.LogInfo(string.Format("A command with the id '{0}' was of type {1}.", message.MessageId, command.GetType().FullName));
 
 				ReceiveCommand(command);
 
