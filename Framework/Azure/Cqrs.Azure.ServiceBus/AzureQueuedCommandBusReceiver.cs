@@ -25,28 +25,46 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected override void ReceiveCommand(BrokeredMessage message)
 		{
-			// get message Type,
-			ICommand<TAuthenticationToken> command = MessageSerialiser.DeserialiseCommand(message.GetBody<string>());
-			Type commandType = command.GetType();
-
-			string targetQueueName = commandType.FullName;
-
 			try
 			{
-				object rsn = commandType.GetProperty("Rsn").GetValue(command, null);
-				targetQueueName = string.Format("{0}.{1}", targetQueueName, rsn);
+				Logger.LogDebug(string.Format("A command message arrived with the id '{0}'.", message.MessageId));
+				string messageBody = message.GetBody<string>();
+				ICommand<TAuthenticationToken> command = MessageSerialiser.DeserialiseCommand(messageBody);
+
+				CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
+				Logger.LogInfo(string.Format("A command message arrived with the id '{0}' was of type {1}.", message.MessageId, command.GetType().FullName));
+
+				Type commandType = command.GetType();
+
+				string targetQueueName = commandType.FullName;
+
+				try
+				{
+					object rsn = commandType.GetProperty("Rsn").GetValue(command, null);
+					targetQueueName = string.Format("{0}.{1}", targetQueueName, rsn);
+				}
+				catch
+				{
+					Logger.LogDebug(string.Format("A command message arrived with the id '{0}' was of type {1} but with no Rsn property.", message.MessageId, commandType));
+					// Do nothing if there is no rsn. Just use command type name
+				}
+
+				CreateQueueAndAttachListenerIfNotExist(targetQueueName);
+				EnqueueCommand(targetQueueName, command);
+
+				// remove the original message from the incoming queue
+				message.Complete();
+
+				// Remove message from queue
+				message.Complete();
+				Logger.LogDebug(string.Format("A command message arrived and was processed with the id '{0}'.", message.MessageId));
 			}
-			catch
+			catch (Exception exception)
 			{
-				Logger.LogDebug(string.Format("Received a command of type '{0}' with no Rsn property.", commandType));
-				// Do nothing if there is no rsn. Just use command type name
+				// Indicates a problem, unlock message in queue
+				Logger.LogError(string.Format("A command message arrived with the id '{0}' but failed to be process.", message.MessageId), exception: exception);
+				message.Abandon();
 			}
-
-			CreateQueueAndAttachListenerIfNotExist(targetQueueName);
-			EnqueueCommand(targetQueueName, command);
-
-			// remove the original message from the incoming queue
-			message.Complete();
 		}
 
 		private void EnqueueCommand(string targetQueueName, ICommand<TAuthenticationToken> command)

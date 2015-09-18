@@ -25,6 +25,7 @@ namespace Cqrs.Azure.ServiceBus
 			@event.TimeStamp = DateTimeOffset.UtcNow;
 
 			ServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event)));
+			Logger.LogInfo(string.Format("An event was published with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
 		}
 
 		#endregion

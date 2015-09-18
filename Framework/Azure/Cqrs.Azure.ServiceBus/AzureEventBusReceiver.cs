@@ -55,18 +55,18 @@ namespace Cqrs.Azure.ServiceBus
 				IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(messageBody);
 
 				CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
-				Logger.LogInfo(string.Format("An event with the id '{0}' was of type {1}.", message.MessageId, @event.GetType().FullName));
+				Logger.LogInfo(string.Format("An event message arrived with the id '{0}' was of type {1}.", message.MessageId, @event.GetType().FullName));
 
 				ReceiveEvent(@event);
 
 				// Remove message from queue
 				message.Complete();
-				Logger.LogDebug(string.Format("An event message was processed with the id '{0}'.", message.MessageId));
+				Logger.LogDebug(string.Format("An event message arrived and was processed with the id '{0}'.", message.MessageId));
 			}
 			catch (Exception exception)
 			{
 				// Indicates a problem, unlock message in queue
-				Logger.LogError(string.Format("An event message with the id '{0}' failed to be process.", message.MessageId), exception: exception);
+				Logger.LogError(string.Format("An event message arrived with the id '{0}' but failed to be process.", message.MessageId), exception: exception);
 				message.Abandon();
 			}
 		}

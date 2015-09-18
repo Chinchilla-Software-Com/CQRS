@@ -23,6 +23,7 @@ namespace Cqrs.Azure.ServiceBus
 			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
 			ServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseCommand(command)));
+			Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
 		}
 
 		#endregion
