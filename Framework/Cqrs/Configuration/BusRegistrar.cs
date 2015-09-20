@@ -24,10 +24,12 @@ namespace Cqrs.Configuration
 		public void Register(params Type[] typesFromAssemblyContainingMessages)
 		{
 			var eventHandlerRegistrar = DependencyResolver.Resolve<IEventHandlerRegistrar>();
-			Register(eventHandlerRegistrar, ResolveEventHandlerInterface, typesFromAssemblyContainingMessages);
+			if (eventHandlerRegistrar != null)
+				Register(eventHandlerRegistrar, ResolveEventHandlerInterface, typesFromAssemblyContainingMessages);
 
 			var commandHandlerRegistrar = DependencyResolver.Resolve<ICommandHandlerRegistrar>();
-			Register(commandHandlerRegistrar, ResolveCommandHandlerInterface, typesFromAssemblyContainingMessages);
+			if (commandHandlerRegistrar != null)
+				Register(commandHandlerRegistrar, ResolveCommandHandlerInterface, typesFromAssemblyContainingMessages);
 		}
 
 		public void Register(IHandlerRegistrar handlerRegistrar, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, params Type[] typesFromAssemblyContainingMessages)
