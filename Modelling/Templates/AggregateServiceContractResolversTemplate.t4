@@ -53,6 +53,17 @@ namespace <#= classNamespace #>.Services
 		{
 		}
 
+<#
+string authenticationTokenTypeResolver = authenticationTokenType;
+int index = authenticationTokenTypeResolver.LastIndexOf(".");
+if (index > 0)
+	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
+#>
+		public <#= className #>ServiceCreate<#= className #>ParametersResolver()
+			: base(new <#= authenticationTokenTypeResolver #>())
+		{
+		}
+
 		public override bool TryResolveType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace)
 		{
 			if (dataContractType == typeof(ServiceRequestWithData<<#= authenticationTokenType #>, <#= className #>Entity>))
@@ -141,6 +152,17 @@ namespace <#= classNamespace #>.Services
 		{
 		}
 
+<#
+string authenticationTokenTypeResolver = authenticationTokenType;
+int index = authenticationTokenTypeResolver.LastIndexOf(".");
+if (index > 0)
+	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
+#>
+		public <#= className #>ServiceUpdate<#= className #>ParametersResolver()
+			: base(new <#= authenticationTokenTypeResolver #>())
+		{
+		}
+
 		public override bool TryResolveType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace)
 		{
 			if (dataContractType == typeof(ServiceRequestWithData<<#= authenticationTokenType #>, <#= className #>Entity>))
@@ -226,6 +248,16 @@ namespace <#= classNamespace #>.Services
 	{
 		public <#= className #>ServiceDelete<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver)
 			: base(singleSignOnTokenResolver)
+		{
+		}
+<#
+string authenticationTokenTypeResolver = authenticationTokenType;
+int index = authenticationTokenTypeResolver.LastIndexOf(".");
+if (index > 0)
+	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
+#>
+		public <#= className #>ServiceDelete<#= className #>ParametersResolver()
+			: base(new <#= authenticationTokenTypeResolver #>())
 		{
 		}
 
