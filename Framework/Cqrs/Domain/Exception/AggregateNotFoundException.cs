@@ -3,10 +3,11 @@
 namespace Cqrs.Domain.Exception
 {
 	[Serializable]
-	public class AggregateNotFoundException : System.Exception
+	public class AggregateNotFoundException<TAggregateRoot, TAuthenticationToken> : System.Exception
+		where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 	{
 		public AggregateNotFoundException(Guid id)
-			: base(string.Format("Aggregate {0} was not found", id))
+			: base(string.Format("Aggregate '{0}' of type '{1}' was not found", id, typeof(TAggregateRoot).FullName))
 		{
 		}
 	}

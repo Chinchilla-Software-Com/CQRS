@@ -111,7 +111,7 @@ namespace Cqrs.Tests.Domain
 			_unitOfWork.Commit();
 			_eventStore.Events.Clear();
 
-			Assert.Throws<AggregateNotFoundException>(() => _unitOfWork.Get<TestAggregate>(agg.Id));
+			Assert.Throws<AggregateNotFoundException<TestAggregate, ISingleSignOnToken>>(() => _unitOfWork.Get<TestAggregate>(agg.Id));
 		}
 	}
 }

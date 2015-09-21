@@ -72,14 +72,14 @@ namespace Cqrs.Domain
 
 			IList<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get<TAggregateRoot>(id).ToList();
 			if (!theseEvents.Any())
-				throw new AggregateNotFoundException(id);
+				throw new AggregateNotFoundException<TAggregateRoot, TAuthenticationToken>(id);
 
 			var duplicatedEvents =
 				theseEvents.GroupBy(x => x.Version)
 					.Select(x => new {Version = x.Key, Total = x.Count()})
 					.FirstOrDefault(x => x.Total > 1);
 			if (duplicatedEvents != null)
-				throw new DuplicateEventException(id, duplicatedEvents.Version);
+				throw new DuplicateEventException<TAggregateRoot, TAuthenticationToken>(id, duplicatedEvents.Version);
 
 			aggregate.LoadFromHistory(theseEvents);
 			return aggregate;

@@ -39,7 +39,7 @@ namespace Cqrs.Tests.Domain
 		[Test]
 		public void Should_fail_if_aggregate_do_not_exist()
 		{
-			Assert.Throws<AggregateNotFoundException>(() => _unitOfWork.Get<TestAggregate>(Guid.Empty));
+			Assert.Throws<AggregateNotFoundException<TestAggregate, ISingleSignOnToken>>(() => _unitOfWork.Get<TestAggregate>(Guid.Empty));
 		}
 
 		[Test]
