@@ -31,12 +31,18 @@ namespace <#= classNamespace #>
 {
 <#
 	// Class and Attributes
-#>
-<#
-	// Class and Attributes
 	string aggregateRootName = stereoTypeProperties.PropertyInstances
 		.Single(property => property.Name == "AggregateRootName")
 		.Value;
+
+	if (GetElementByFullName(this.Element, aggregateRootName) == null)
+	{
+		if (!string.IsNullOrWhiteSpace(baseClass))
+			baseClass = baseClass + ", ";
+		else
+			baseClass = ": ";
+		baseClass = baseClass + "I" + className;
+	}
 #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #> <#= baseClass #>
 	{
