@@ -311,16 +311,28 @@
 
 	private INamedElement GetElementByFullName(IElement elt, string elementName)
 	{
-		var currentElement = GetRoot(elt);
+		INamedElement currentElement;
+		if (elementName.Contains("::"))
+			currentElement = GetRoot(elt);
+		else
+		{
+			currentElement = FindModuleElement(elt) as INamedElement;
+			currentElement = 
+				currentElement.OwnedElements
+				.FirstOrDefault(e => e is INamedElement && ((INamedElement)e).Name.Equals(elementName, StringComparison.InvariantCultureIgnoreCase)) as INamedElement;
+
+			return currentElement;
+		}
 
 		var pathElements = elementName.Split(new string[] {"::"}, StringSplitOptions.None);
 
-		if (pathElements.Length < 2) return null;
+		if (pathElements.Length < 2)
+			return null;
 
-		// The first path element will be "Root" so start searching for the second one within its owned elements
-		for (var i = 1; i < pathElements.Length; i++)
+		for (var i = 0; i < pathElements.Length; i++)
 		{
-			if (currentElement == null || currentElement.OwnedElements == null) return null;
+			if (currentElement == null || currentElement.OwnedElements == null)
+				return null;
 			currentElement = 
 				currentElement.OwnedElements
 				.FirstOrDefault(e => e is INamedElement && ((INamedElement)e).Name.Equals(pathElements[i], StringComparison.InvariantCultureIgnoreCase)) as INamedElement;

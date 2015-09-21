@@ -86,6 +86,17 @@ namespace <#= classNamespace #>
 		{
 		}
 
+<#
+string authenticationTokenTypeResolver = authenticationTokenType;
+int index = authenticationTokenTypeResolver.LastIndexOf(".");
+if (index > 0)
+	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
+#>
+		public <#= className #><#= collectionMethod.Name #>Resolver()
+			: base(new <#= authenticationTokenTypeResolver #>())
+		{
+		}
+
 		public override bool TryResolveType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace)
 		{
 			if (dataContractType == typeof(<#= methodSignatureParameter #>))

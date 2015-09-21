@@ -158,6 +158,35 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 		}
 #>
 
+<#
+		foreach (var element in AllElements(this.Element, "Service").OfType<INamedElement>().OrderBy(e => e.Name))
+		{
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+			string aggregateRootName = element.AppliedStereotypes
+				.Single(property => property.Name == "Service")
+				.PropertyInstances
+				.Single(property => property.Name == "AggregateRootName")
+				.Value;
+			bool shouldBuild = GetElementByFullName(element, aggregateRootName) == null;
+
+			if (shouldBuild)
+			{
+#>
+			Bind<<#= moduleName #>.Services.I<#= elementName #>>()
+				.To<<#= moduleName #>.Services.<#= elementName #>>()
+				.InSingletonScope();
+<#
+			}
+			else
+			{
+#>
+			// <#= elementName #> does not need a binding
+<#
+			}
+		}
+#>
+
 			OnServicesRegistered();
 		}
 
