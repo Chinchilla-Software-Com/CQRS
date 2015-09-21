@@ -24,7 +24,10 @@ if (!string.IsNullOrWhiteSpace(baseClass))
 // using statements
 WriteUsingStatements(this.Element);
 #>
+using cdmdotnet.Logging;
 using Cqrs.Authentication;
+using Cqrs.Commands;
+using Cqrs.Repositories.Queries;
 using Cqrs.Services;
 
 namespace <#= classNamespace #>
@@ -63,7 +66,7 @@ namespace <#= classNamespace #>
 
 		protected ILogger Logger { get; private set; }
 
-		public <#= className #>Service(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
+		public <#= className #>(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
 		{
 			CommandSender = commandSender;
 			UnitOfWorkService = unitOfWorkService;
