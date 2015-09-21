@@ -55,8 +55,6 @@ namespace Cqrs.Azure.ServiceBus
 				// remove the original message from the incoming queue
 				message.Complete();
 
-				// Remove message from queue
-				message.Complete();
 				Logger.LogDebug(string.Format("A command message arrived and was processed with the id '{0}'.", message.MessageId));
 			}
 			catch (Exception exception)
