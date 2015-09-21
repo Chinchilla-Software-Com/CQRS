@@ -35,7 +35,8 @@ namespace <#= classNamespace #>
 		.Single(property => property.Name == "AggregateRootName")
 		.Value;
 
-	if (GetElementByFullName(this.Element, aggregateRootName) == null)
+	bool hasNoAggregateRootService = GetElementByFullName(this.Element, aggregateRootName) == null;
+	if (hasNoAggregateRootService)
 	{
 		if (!string.IsNullOrWhiteSpace(baseClass))
 			baseClass = baseClass + ", ";
@@ -46,6 +47,42 @@ namespace <#= classNamespace #>
 #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #> <#= baseClass #>
 	{
+<#
+	if (hasNoAggregateRootService)
+	{
+#>
+		protected ICommandSender<<#= authenticationTokenType #>> CommandSender { get; private set; }
+
+		protected IUnitOfWorkService UnitOfWorkService { get; private set; }
+
+		protected IQueryFactory QueryFactory { get; private set; }
+
+		protected IAuthenticationTokenHelper<<#= authenticationTokenType #>> AuthenticationTokenHelper { get; set; }
+
+		protected ICorrelationIdHelper CorrelationIdHelper { get; set; }
+
+		protected ILogger Logger { get; private set; }
+
+		public <#= className #>Service(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
+		{
+			CommandSender = commandSender;
+			UnitOfWorkService = unitOfWorkService;
+			QueryFactory = queryFactory;
+			AuthenticationTokenHelper = authenticationTokenHelper;
+			CorrelationIdHelper = correlationIdHelper;
+			Logger = logger;
+		}
+
+		protected virtual TServiceResponse CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
+			where TServiceResponse : IServiceResponse
+		{
+			serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+			return serviceResponse;
+		}
+
+<#
+	}
+#>
 <#
 		IList<IOperation> collectionMethods = GetMethodList(this.Element);
 		// Methods
