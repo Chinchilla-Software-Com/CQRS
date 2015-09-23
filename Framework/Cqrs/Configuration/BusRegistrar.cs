@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security;
+using cdmdotnet.Logging;
 using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Events;
@@ -105,7 +106,15 @@ namespace Cqrs.Configuration
 			var del = new Action<dynamic>(x =>
 				{
 					dynamic handler = DependencyResolver.Resolve(executorType);
-					handler.Handle(x);
+					try
+					{
+						handler.Handle(x);
+					}
+					catch (NotImplementedException exception)
+					{
+						var logger = DependencyResolver.Resolve<ILogger>();
+						logger.LogInfo(string.Format("An event message arrived of the type '{0}' went to a handler of type '{1}' but was not implemented.", x.GetType().FullName, handler.GetType().FullName), exception: exception);
+					}
 				}
 			);
 			
