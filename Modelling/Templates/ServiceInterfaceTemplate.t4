@@ -34,6 +34,15 @@ namespace <#= classNamespace #>
 	string aggregateRootName = stereoTypeProperties.PropertyInstances
 		.Single(property => property.Name == "AggregateRootName")
 		.Value;
+
+	bool hasNoAggregateRootService = GetElementByFullName(this.Element, aggregateRootName) == null;
+	if (hasNoAggregateRootService)
+	{
+#>
+	<#= GetGeneratedCodeAttribute() #>
+	<#= GetServiceContractAttribute(this.Element) #>
+<#
+	}
 #>
 	public partial interface I<#= className #> <#= baseClass #>
 	{
