@@ -114,18 +114,18 @@ namespace Cqrs.Configuration
 		protected virtual Action<dynamic> BuildDelegateAction(Type executorType)
 		{
 			return (x =>
-			{
-				dynamic handler = DependencyResolver.Resolve(executorType);
-				try
 				{
-					handler.Handle(x);
+					dynamic handler = DependencyResolver.Resolve(executorType);
+					try
+					{
+						handler.Handle(x);
+					}
+					catch (NotImplementedException exception)
+					{
+						var logger = DependencyResolver.Resolve<ILogger>();
+						logger.LogInfo(string.Format("An event message arrived of the type '{0}' went to a handler of type '{1}' but was not implemented.", x.GetType().FullName, handler.GetType().FullName), exception: exception);
+					}
 				}
-				catch (NotImplementedException exception)
-				{
-					var logger = DependencyResolver.Resolve<ILogger>();
-					logger.LogInfo(string.Format("An event message arrived of the type '{0}' went to a handler of type '{1}' but was not implemented.", x.GetType().FullName, handler.GetType().FullName), exception: exception);
-				}
-			}
 			);
 		}
 
