@@ -30,6 +30,21 @@ namespace <#= classNamespace #>.Handlers
 		protected IAutomapHelper AutomapHelper { get; private set; }
 
 		public <#= className #>EventHandler(IAutomapHelper automapHelper)
+<#
+string eventHandlerTechnology = GetEventHandlerTechnology(this.Element);
+switch(eventHandlerTechnology)
+{
+	case "Akka":
+		baseClass = "ReceiveActor";
+#>
+			: this()
+<#
+		break;
+	default:
+		// for now do nothing
+		break;
+}
+#>
 		{
 			AutomapHelper = automapHelper;
 		}
