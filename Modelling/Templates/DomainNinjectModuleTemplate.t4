@@ -228,7 +228,18 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 		public virtual void RegisterCqrsCommandHandlers()
 		{
 			var dependencyResolver = Resolve<IDependencyResolver>();
-			var registrar = new BusRegistrar(dependencyResolver);
+			var registrar = new <#
+string eventHandlerTechnology = GetEventHandlerTechnology(this.Element);
+switch(eventHandlerTechnology)
+{
+	case "Akka":
+		#>Cqrs.Akka.Configuration.AkkaBusRegistrar<#
+		break;
+	default:
+		#>BusRegistrar<#
+		break;
+}
+#>(dependencyResolver);
 			RegisterCqrsCommandHandlers(registrar);
 		}
 

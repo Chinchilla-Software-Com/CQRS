@@ -10,9 +10,12 @@ using Cqrs.Events;
 
 namespace Cqrs.Configuration
 {
+	/// <summary>
+	/// Triggers the <see cref="IEventHandlerRegistrar"/> and <see cref="ICommandHandlerRegistrar"/> if they are registered in the <see cref="IDependencyResolver"/>.
+	/// </summary>
 	public class BusRegistrar
 	{
-		private IDependencyResolver DependencyResolver { get; set; }
+		protected IDependencyResolver DependencyResolver { get; private set; }
 
 		public BusRegistrar(IDependencyResolver dependencyResolver)
 		{
@@ -22,7 +25,7 @@ namespace Cqrs.Configuration
 			DependencyResolver = dependencyResolver;
 		}
 
-		public void Register(params Type[] typesFromAssemblyContainingMessages)
+		public virtual void Register(params Type[] typesFromAssemblyContainingMessages)
 		{
 			var eventHandlerRegistrar = DependencyResolver.Resolve<IEventHandlerRegistrar>();
 			if (eventHandlerRegistrar != null)
@@ -33,7 +36,7 @@ namespace Cqrs.Configuration
 				Register(commandHandlerRegistrar, ResolveCommandHandlerInterface, typesFromAssemblyContainingMessages);
 		}
 
-		public void Register(IHandlerRegistrar handlerRegistrar, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, params Type[] typesFromAssemblyContainingMessages)
+		public virtual void Register(IHandlerRegistrar handlerRegistrar, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, params Type[] typesFromAssemblyContainingMessages)
 		{
 			foreach (Type typesFromAssemblyContainingMessage in typesFromAssemblyContainingMessages)
 			{
@@ -64,7 +67,7 @@ namespace Cqrs.Configuration
 		/// Created an <see cref="Action"/> around the provided <paramref name="executorType"/>
 		/// Then register the created <see cref="Action"/> using the extracted <see cref="IHandlerRegistrar.RegisterHandler{TMessage}"/> method
 		/// </summary>
-		private void InvokeHandler(Type @interface, IHandlerRegistrar bus, Type executorType)
+		protected virtual void InvokeHandler(Type @interface, IHandlerRegistrar bus, Type executorType)
 		{
 			MethodInfo registerExecutorMethod = null;
 
@@ -103,25 +106,30 @@ namespace Cqrs.Configuration
 			if (registerExecutorMethod == null)
 				throw new InvalidOperationException("No executor method could be compiled for " + @interface.FullName);
 
-			var del = new Action<dynamic>(x =>
-				{
-					dynamic handler = DependencyResolver.Resolve(executorType);
-					try
-					{
-						handler.Handle(x);
-					}
-					catch (NotImplementedException exception)
-					{
-						var logger = DependencyResolver.Resolve<ILogger>();
-						logger.LogInfo(string.Format("An event message arrived of the type '{0}' went to a handler of type '{1}' but was not implemented.", x.GetType().FullName, handler.GetType().FullName), exception: exception);
-					}
-				}
-			);
+			Action<dynamic> del = BuildDelegateAction(executorType);
 			
 			registerExecutorMethod.Invoke(bus, new object[] { del });
 		}
 
-		private MethodInfo BuildExecutorMethod(MethodInfo originalRegisterExecutorMethod, Type executorType, Type commandType)
+		protected virtual Action<dynamic> BuildDelegateAction(Type executorType)
+		{
+			return (x =>
+			{
+				dynamic handler = DependencyResolver.Resolve(executorType);
+				try
+				{
+					handler.Handle(x);
+				}
+				catch (NotImplementedException exception)
+				{
+					var logger = DependencyResolver.Resolve<ILogger>();
+					logger.LogInfo(string.Format("An event message arrived of the type '{0}' went to a handler of type '{1}' but was not implemented.", x.GetType().FullName, handler.GetType().FullName), exception: exception);
+				}
+			}
+			);
+		}
+
+		protected virtual MethodInfo BuildExecutorMethod(MethodInfo originalRegisterExecutorMethod, Type executorType, Type commandType)
 		{
 			Type safeCommandType = commandType;
 			if (safeCommandType.IsGenericType && safeCommandType.Name == typeof(DtoCommand<,>).Name && executorType.IsGenericType && executorType.Name == typeof(DtoCommandHandler<,>).Name)
@@ -133,7 +141,7 @@ namespace Cqrs.Configuration
 			return originalRegisterExecutorMethod.MakeGenericMethod(safeCommandType);
 		}
 
-		private IEnumerable<Type> ResolveEventHandlerInterface(Type type)
+		protected virtual IEnumerable<Type> ResolveEventHandlerInterface(Type type)
 		{
 			return type
 				.GetInterfaces()
@@ -147,7 +155,7 @@ namespace Cqrs.Configuration
 				);
 		}
 
-		private IEnumerable<Type> ResolveCommandHandlerInterface(Type type)
+		protected virtual IEnumerable<Type> ResolveCommandHandlerInterface(Type type)
 		{
 			return type
 				.GetInterfaces()

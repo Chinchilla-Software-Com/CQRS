@@ -16,6 +16,8 @@ namespace Cqrs.Ninject.Configuration
 
 		public static IList<INinjectModule> ModulesToLoad = new List<INinjectModule>();
 
+		public static Func<IKernel, NinjectDependencyResolver> DependencyResolverCreator { get; set; }
+
 		public NinjectDependencyResolver(IKernel kernel)
 		{
 			Kernel = kernel;
@@ -39,7 +41,10 @@ namespace Cqrs.Ninject.Configuration
 				prepareProvidedKernel = true;
 			}
 
-			Current = new NinjectDependencyResolver(kernel);
+			if (DependencyResolverCreator != null)
+				Current = DependencyResolverCreator(kernel);
+			else
+				Current = new NinjectDependencyResolver(kernel);
 
 			if (prepareProvidedKernel)
 				PrepareKernel(kernel);
@@ -53,12 +58,12 @@ namespace Cqrs.Ninject.Configuration
 			);
 		}
 
-		public T Resolve<T>()
+		public virtual T Resolve<T>()
 		{
 			return (T)Resolve(typeof(T));
 		}
 
-		public object Resolve(Type serviceType)
+		public virtual object Resolve(Type serviceType)
 		{
 			return Kernel.Resolve(Kernel.CreateRequest(serviceType, null, new Parameter[0], true, true)).SingleOrDefault();
 		}
