@@ -36,11 +36,12 @@ string className = this.Element.Name;
 
 			if (shouldBuild)
 			{
+				string elementClassNamespace = GetNamespace(element.Namespace);
 #>
 		<add
-			factory="<#= classNamespace #>.<#= className #>.<#= moduleName #>.ServiceHost.Ninject.ServiceHostFactories.<#= elementName #>ServiceHostFactory"
-			relativeAddress="<#= moduleName #>_<#= elementName #>.svc"
-			service="<#= classNamespace #>.<#= className #>.<#= moduleName #>.Services.<#= elementName #>Service"
+			factory="<#= elementClassNamespace #>.Services.ServiceHost.Ninject.ServiceHostFactories.<#= elementName #>ServiceHostFactory"
+			relativeAddress="<#= moduleName #>_<#= elementName #>Service.svc"
+			service="<#= elementClassNamespace #>.Services.<#= elementName #>Service"
 		/>
 <#
 			}
@@ -61,11 +62,12 @@ string className = this.Element.Name;
 
 			if (shouldBuild)
 			{
+				string elementClassNamespace = GetNamespace(element.Namespace);
 #>
 		<add
-			factory="<#= classNamespace #>.<#= className #>.<#= moduleName #>.ServiceHost.Ninject.ServiceHostFactories.<#= elementName #>ServiceHostFactory"
+			factory="<#= elementClassNamespace #>.ServiceHost.Ninject.ServiceHostFactories.<#= elementName #>HostFactory"
 			relativeAddress="<#= moduleName #>_<#= elementName #>.svc"
-			service="<#= classNamespace #>.<#= className #>.<#= moduleName #>.Services.<#= elementName #>Service"
+			service="<#= elementClassNamespace #>.Services.<#= elementName #>"
 		/>
 <#
 			}
