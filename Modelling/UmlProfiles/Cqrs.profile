@@ -16,6 +16,16 @@
             <enumerationTypeMoniker name="/CqrsProfile/EntityPersistenceTechnology"/>
           </propertyType>
         </property>
+        <property name="CommandHandlerTechnology" displayName="Command Handler Technology: What technology are you using for handling commands." defaultValue="BuiltIn">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/CommandHandlerTechnology"/>
+          </propertyType>
+        </property>
+        <property name="EventHandlerTechnology" displayName="Event Handler Technology: What technology are you using for handling events." defaultValue="BuiltIn">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/EventHandlerTechnology"/>
+          </propertyType>
+        </property>
         <property name="EventStorePersistenceTechnology" displayName="Event Store Persistence Technology: What technology are you using for persisting events and event sourcing." defaultValue="GYEventStore">
           <propertyType>
             <enumerationTypeMoniker name="/CqrsProfile/EventStorePersistenceTechnology"/>
@@ -309,6 +319,20 @@
         <enumerationLiteral name="SqlServer" displayName="SqlServer" />
         <enumerationLiteral name="MySqlServer" displayName="MySql Server" />
         <enumerationLiteral name="InProcessOnly" displayName="In Process Only" />
+      </enumerationLiterals>
+    </enumerationType>
+
+    <enumerationType name="CommandHandlerTechnology">
+      <enumerationLiterals>
+        <enumerationLiteral name="BuiltIn" displayName="Built In" />
+        <enumerationLiteral name="Akka" displayName="AKKA.Net" />
+      </enumerationLiterals>
+    </enumerationType>
+
+    <enumerationType name="EventHandlerTechnology">
+      <enumerationLiterals>
+        <enumerationLiteral name="BuiltIn" displayName="Built In" />
+        <enumerationLiteral name="Akka" displayName="AKKA.Net" />
       </enumerationLiterals>
     </enumerationType>
 
