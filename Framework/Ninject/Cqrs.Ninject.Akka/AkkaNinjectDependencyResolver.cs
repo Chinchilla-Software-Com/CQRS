@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Akka.Actor;
+using Akka.DI.Core;
 using Cqrs.Ninject.Configuration;
 using Ninject;
 
@@ -9,10 +12,15 @@ namespace Cqrs.Ninject.Akka
 	{
 		protected global::Akka.DI.Ninject.NinjectDependencyResolver RawAkkaNinjectDependencyResolver { get; set; }
 
+		protected ActorSystem AkkaSystem { get; set; }
+
+		protected IDictionary<Type, IActorRef> AkkaActors { get; set; }
+
 		public AkkaNinjectDependencyResolver(IKernel kernel, ActorSystem system)
 			: base(kernel)
 		{
-			RawAkkaNinjectDependencyResolver = new global::Akka.DI.Ninject.NinjectDependencyResolver(kernel, system);
+			RawAkkaNinjectDependencyResolver = new global::Akka.DI.Ninject.NinjectDependencyResolver(kernel, AkkaSystem = system);
+			AkkaActors = new ConcurrentDictionary<Type, IActorRef>();
 		}
 
 		/// <summary>
@@ -21,25 +29,31 @@ namespace Cqrs.Ninject.Akka
 		/// <remarks>
 		/// this exists to the static constructor can be triggered.
 		/// </remarks>
-		public static void Start(IKernel kernel = null, bool prepareProvidedKernel = false)
+		public new static void Start(IKernel kernel = null, bool prepareProvidedKernel = false)
 		{
 			// Create the ActorSystem and Dependency Resolver
 			ActorSystem system = ActorSystem.Create("Cqrs");
 
 			DependencyResolverCreator = container => new AkkaNinjectDependencyResolver(container, system);
+			NinjectDependencyResolver.Start(kernel, prepareProvidedKernel);
 		}
 
 		#region Overrides of NinjectDependencyResolver
 
 		public override object Resolve(Type serviceType)
 		{
+			IActorRef actorReference;
 			try
 			{
-				return RawAkkaNinjectDependencyResolver.CreateActorFactory(serviceType)();
-			}
-			catch
-			{
+				if (AkkaActors.TryGetValue(serviceType, out actorReference))
+					return actorReference;
 				return base.Resolve(serviceType);
+			}
+			catch(ActorInitializationException)
+			{
+				actorReference = AkkaSystem.ActorOf(AkkaSystem.GetExtension<DIExt>().Props(serviceType), serviceType.FullName);
+				AkkaActors.Add(serviceType, actorReference);
+				return actorReference;
 			}
 		}
 

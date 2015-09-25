@@ -26,19 +26,16 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 <#
 string eventHandlerTechnology = GetEventHandlerTechnology(this.Element);
-if (string.IsNullOrWhiteSpace(baseClass))
+switch(eventHandlerTechnology)
 {
-	switch(eventHandlerTechnology)
-	{
-		case "Akka":
-			baseClass = "ReceiveActor";
+	case "Akka":
+		baseClass = "ReceiveActor";
 #>using Akka.Actor;
 <#
-			break;
-		default:
-			// for now do nothing
-			break;
-	}
+		break;
+	default:
+		// for now do nothing
+		break;
 }
 #>
 using Cqrs.Events;
@@ -62,6 +59,28 @@ namespace <#= classNamespace #>.Handlers
 		<#= baseClass #>
 		<#= eventHandlerTechnologyBaseClass #>
 	{
+<#
+switch(eventHandlerTechnology)
+{
+	case "Akka":
+		baseClass = "ReceiveActor";
+#>
+		/// <summary>
+		/// Instantiates the <see cref="<#= className #>EventHandler"/> class registering any <see cref="ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
+		/// </summary>
+		public <#= className #>EventHandler()
+			: this()
+		{
+			Receive<<#= className #>>(@event => Handle(@event));
+		}
+<#
+		break;
+	default:
+		// for now do nothing
+		break;
+}
+#>
+
 		#region Implementation of IEventHandler<in <#= className #>>
 
 		public void Handle(<#= className #> @event)
