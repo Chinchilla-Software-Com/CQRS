@@ -26,7 +26,7 @@ namespace Cqrs.Tests.Substitutes
 			return new List<IEvent<ISingleSignOnToken>>
 			{
 				new TestAggregateDidSomething {Id = aggregateId, Version = 3},
-				new TestAggregateDidSomething {Id = aggregateId, Version = 2},
+				new TestAggregateDidSomething {Id = aggregateId, Version = 4},
 				new TestAggregateDidSomeethingElse {Id = aggregateId, Version = 1},
 			};
 		}

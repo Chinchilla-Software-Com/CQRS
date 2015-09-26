@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using Cqrs.Commands;
 using Cqrs.Authentication;
+using Cqrs.Messages;
 
 namespace CQRSCode.WriteModel.Commands
 {
@@ -32,6 +34,9 @@ namespace CQRSCode.WriteModel.Commands
 			get { return CorrelationId; }
 			set { CorrelationId = value; }
 		}
+
+		[DataMember]
+		public FrameworkType Framework { get; set; }
 
 		#endregion
 	}

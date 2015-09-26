@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using Cqrs.Domain;
+using Cqrs.Messages;
 
 namespace Cqrs.Events
 {
@@ -50,6 +51,9 @@ namespace Cqrs.Events
 
 		[DataMember]
 		public Guid CorrelationId { get; set; }
+
+		[DataMember]
+		public FrameworkType Framework { get; set; }
 
 		[Obsolete("Use CorrelationId")]
 		[DataMember]

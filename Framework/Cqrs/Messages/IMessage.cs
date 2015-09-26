@@ -8,5 +8,7 @@ namespace Cqrs.Messages
 		Guid CorrolationId { get; set; }
 
 		Guid CorrelationId { get; set; }
+
+		FrameworkType Framework { get; set; }
 	}
 }

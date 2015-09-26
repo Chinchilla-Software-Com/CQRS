@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using Cqrs.Events;
 using Cqrs.Authentication;
+using Cqrs.Messages;
 
 namespace Cqrs.Tests.Substitutes
 {
@@ -29,6 +31,9 @@ namespace Cqrs.Tests.Substitutes
 			set { CorrelationId = value; }
 		}
 
+		[DataMember]
+		public FrameworkType Framework { get; set; }
+
 		#endregion
 	}
 
@@ -56,6 +61,9 @@ namespace Cqrs.Tests.Substitutes
 			get { return CorrelationId; }
 			set { CorrelationId = value; }
 		}
+
+		[DataMember]
+		public FrameworkType Framework { get; set; }
 
 		#endregion
 	}

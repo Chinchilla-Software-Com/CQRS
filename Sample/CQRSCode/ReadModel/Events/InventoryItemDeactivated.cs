@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using Cqrs.Events;
 using Cqrs.Authentication;
+using Cqrs.Messages;
 
 namespace CQRSCode.ReadModel.Events
 {
@@ -33,6 +35,9 @@ namespace CQRSCode.ReadModel.Events
 			get { return CorrelationId; }
 			set { CorrelationId = value; }
 		}
+
+		[DataMember]
+		public FrameworkType Framework { get; set; }
 
 		#endregion
 	}

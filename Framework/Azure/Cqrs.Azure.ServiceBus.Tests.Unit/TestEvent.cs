@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using Cqrs.Events;
+using Cqrs.Messages;
 
 namespace Cqrs.Azure.ServiceBus.Tests.Unit
 {
@@ -38,6 +39,9 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 			get { return CorrelationId; }
 			set { CorrelationId = value; }
 		}
+
+		[DataMember]
+		public FrameworkType Framework { get; set; }
 
 		#endregion
 	}

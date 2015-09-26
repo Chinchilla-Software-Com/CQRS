@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using Cqrs.Events;
+using Cqrs.Messages;
 
 namespace Cqrs.EventStore
 {
@@ -41,6 +42,9 @@ namespace Cqrs.EventStore
 			get { return CorrelationId; }
 			set { CorrelationId = value; }
 		}
+
+		[DataMember]
+		public FrameworkType Framework { get; set; }
 
 		#endregion
 	}

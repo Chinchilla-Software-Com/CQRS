@@ -5,7 +5,7 @@ using Cqrs.Messages;
 
 namespace Cqrs.Tests.Substitutes
 {
-	public class TestHandleRegistrar : IHandlerRegistrar
+	public class TestHandleRegistrar : IEventHandlerRegistrar, ICommandHandlerRegistrar
 	{
 		public static readonly IList<TestHandlerListItem> HandlerList = new List<TestHandlerListItem>();
 

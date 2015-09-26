@@ -22,7 +22,7 @@ namespace Cqrs.Tests.Domain
 		{
 			_eventStore = new TestInMemoryEventStore();
 			_eventPublisher = new TestEventPublisher();
-			var aggregateFactory = new AggregateFactory(null);
+			var aggregateFactory = new AggregateFactory(new TestDependencyResolver());
 			_rep = new Repository<ISingleSignOnToken>(aggregateFactory, _eventStore, _eventPublisher);
 			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(_rep);
 
@@ -44,7 +44,7 @@ namespace Cqrs.Tests.Domain
 		{
 			_unitOfWork.Add(_aggregate);
 			_aggregate.DoSomething();
-			_rep.Save(_aggregate);
+			_eventStore.Events.Add(new TestAggregateDidSomething { Id = _aggregate.Id, Version = 3 });
 			Assert.Throws<ConcurrencyException>(() => _unitOfWork.Commit());
 		}
 	}
