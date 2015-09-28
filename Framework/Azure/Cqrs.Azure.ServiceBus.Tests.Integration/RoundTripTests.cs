@@ -83,7 +83,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 		}
 	}
 
-	public class TestEventSuccessHandler : IHandler<TestEvent>
+	public class TestEventSuccessHandler : IMessageHandler<TestEvent>
 	{
 		public TestEventSuccessHandler(IDictionary<Guid, Tuple<bool, Exception>> testResponse)
 		{
@@ -102,7 +102,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 		#endregion
 	}
 
-	public class TestCommandSuccessHandler : IHandler<TestCommand>
+	public class TestCommandSuccessHandler : IMessageHandler<TestCommand>
 	{
 		public TestCommandSuccessHandler(IDictionary<Guid, Tuple<bool, Exception>> testResponse)
 		{
