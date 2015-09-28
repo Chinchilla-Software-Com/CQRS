@@ -10,7 +10,11 @@ using Cqrs.Messages;
 
 namespace Cqrs.Bus
 {
-	public class InProcessBus<TAuthenticationToken> : ICommandSender<TAuthenticationToken>, IEventPublisher<TAuthenticationToken>, IEventHandlerRegistrar, ICommandHandlerRegistrar
+	public class InProcessBus<TAuthenticationToken>
+		: ICommandSender<TAuthenticationToken>
+		, IEventPublisher<TAuthenticationToken>
+		, IEventHandlerRegistrar
+		, ICommandHandlerRegistrar
 	{
 		private Dictionary<Type, List<Action<IMessage>>> Routes { get; set; }
 
@@ -18,10 +22,13 @@ namespace Cqrs.Bus
 
 		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
-		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper)
+		protected ILogger Logger { get; private set; }
+
+		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
+			Logger = logger;
 			Routes = new Dictionary<Type, List<Action<IMessage>>>();
 		}
 
@@ -30,6 +37,13 @@ namespace Cqrs.Bus
 		public virtual void Send<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
+			switch (command.Framework)
+			{
+				case FrameworkType.Akka:
+					Logger.LogInfo(string.Format("A command arrived of the type '{0}' but was marked as coming from the '{1}' framework, so it was dropped.", command.GetType().FullName, command.Framework));
+					return;
+			}
+
 			if (command.AuthenticationToken == null)
 				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
@@ -54,6 +68,13 @@ namespace Cqrs.Bus
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
+			switch (@event.Framework)
+			{
+				case FrameworkType.Akka:
+					Logger.LogInfo(string.Format("An event arrived of the type '{0}' but was marked as coming from the '{1}' framework, so it was dropped.", @event.GetType().FullName, @event.Framework));
+					return;
+			}
+
 			if (@event.AuthenticationToken == null)
 				@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
