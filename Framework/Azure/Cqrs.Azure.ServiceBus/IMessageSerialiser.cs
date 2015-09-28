@@ -1,4 +1,12 @@
-﻿using Cqrs.Commands;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="cdmdotnet Limited">
+// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using Cqrs.Commands;
 using Cqrs.Events;
 
 namespace Cqrs.Azure.ServiceBus

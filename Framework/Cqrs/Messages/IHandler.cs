@@ -1,8 +1,6 @@
 ﻿namespace Cqrs.Messages
 {
-	public interface IHandler<in TMessage>
-		where TMessage: IMessage
+	public interface IHandler
 	{
-		void Handle(TMessage message);
 	}
 }

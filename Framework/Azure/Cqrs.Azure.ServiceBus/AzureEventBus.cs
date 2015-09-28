@@ -1,4 +1,12 @@
-﻿using Cqrs.Authentication;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="cdmdotnet Limited">
+// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using Cqrs.Authentication;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
 

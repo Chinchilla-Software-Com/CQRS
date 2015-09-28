@@ -12,7 +12,7 @@ namespace Cqrs.Commands
 			UnitOfWork = unitOfWork;
 		}
 
-		#region Implementation of IHandler<in DtoCommand<UserDto>>
+		#region Implementation of IMessageHandler<in DtoCommand<UserDto>>
 
 		public void Handle(DtoCommand<TAuthenticationToken, TDto> message)
 		{

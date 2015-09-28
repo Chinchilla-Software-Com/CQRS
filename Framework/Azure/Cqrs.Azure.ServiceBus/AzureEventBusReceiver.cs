@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="cdmdotnet Limited">
+// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using Cqrs.Authentication;
 using Cqrs.Bus;
@@ -73,6 +81,13 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected virtual void ReceiveEvent(IEvent<TAuthenticationToken> @event)
 		{
+			switch (@event.Framework)
+			{
+				case FrameworkType.Akka:
+					Logger.LogInfo(string.Format("An event arrived of the type '{0}' but was marked as coming from the '{1}' framework, so it was dropped.", @event.GetType().FullName, @event.Framework));
+					return;
+			}
+
 			CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
 			AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
 
