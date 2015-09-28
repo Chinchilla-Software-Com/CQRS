@@ -22,6 +22,7 @@ string className = ClassifierName(this.Element);
 WriteUsingStatements(this.Element);
 #>
 using Cqrs.Events;
+using Cqrs.Messages;
 
 namespace <#= classNamespace #>.Events
 {
@@ -72,6 +73,9 @@ namespace <#= classNamespace #>.Events
 			get { return CorrelationId; }
 			set { CorrelationId = value; }
 		}
+
+		[DataMember]
+		public FrameworkType Framework { get; set; }
 
 		#endregion
 
