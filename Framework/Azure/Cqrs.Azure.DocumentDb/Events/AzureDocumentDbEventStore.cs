@@ -66,7 +66,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 			}
 		}
 
-		protected override void PersitEvent(EventData eventData)
+		protected override void PersistEvent(EventData eventData)
 		{
 			Logger.LogDebug("Persisting aggregate root event", string.Format("{0}\\PersitEvent", GetType().Name));
 			try
