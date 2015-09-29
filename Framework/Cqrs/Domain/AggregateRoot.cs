@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using Cqrs.Domain.Exception;
@@ -12,7 +13,7 @@ namespace Cqrs.Domain
 	{
 		private ReaderWriterLockSlim Lock { get; set; }
 
-		private IList<IEvent<TAuthenticationToken>> Changes { get; set; }
+		private ICollection<IEvent<TAuthenticationToken>> Changes { get; set; }
 
 		public Guid Id { get; protected set; }
 
@@ -21,29 +22,21 @@ namespace Cqrs.Domain
 		protected AggregateRoot()
 		{
 			Lock = new ReaderWriterLockSlim();
-			Changes = new List<IEvent<TAuthenticationToken>>();
+			Changes = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(new List<IEvent<TAuthenticationToken>>());
 		}
 
 		public IEnumerable<IEvent<TAuthenticationToken>> GetUncommittedChanges()
 		{
-			Lock.EnterReadLock();
-			try
-			{
-				return Changes;
-			}
-			finally
-			{
-				Lock.ExitReadLock();
-			}
+			return Changes;
 		}
 
-		public void MarkChangesAsCommitted()
+		public virtual void MarkChangesAsCommitted()
 		{
 			Lock.EnterWriteLock();
 			try
 			{
 				Version = Version + Changes.Count;
-				Changes.Clear();
+				Changes = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(new List<IEvent<TAuthenticationToken>>());
 			}
 			finally
 			{
@@ -51,7 +44,7 @@ namespace Cqrs.Domain
 			}
 		}
 
-		public void LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>> history)
+		public virtual void LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>> history)
 		{
 			foreach (IEvent<TAuthenticationToken> @event in history.OrderBy(e =>e.Version))
 			{
@@ -74,7 +67,7 @@ namespace Cqrs.Domain
 				this.AsDynamic().Apply(@event);
 				if (isNew)
 				{
-					Changes.Add(@event);
+					Changes = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(new []{@event}.Concat(Changes).ToList());
 				}
 				else
 				{

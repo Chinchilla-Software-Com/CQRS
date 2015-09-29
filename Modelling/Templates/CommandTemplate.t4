@@ -27,6 +27,7 @@ WriteUsingStatements(this.Element);
 #>
 using System.Runtime.Serialization;
 using Cqrs.Commands;
+using Cqrs.Messages;
 
 namespace <#= classNamespace #>
 {
@@ -62,6 +63,9 @@ namespace <#= classNamespace #>
 			get { return CorrelationId; }
 			set { CorrelationId = value; }
 		}
+
+		[DataMember]
+		public FrameworkType Framework { get; set; }
 
 		#endregion
 
