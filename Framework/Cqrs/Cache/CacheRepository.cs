@@ -47,7 +47,7 @@ namespace Cqrs.Cache
 			var idstring = aggregate.Id.ToString();
 			try
 			{
-				lock (Locks.GetOrAdd(idstring, _ => new object()))
+				lock (Locks.GetOrAdd(idstring, x => new object()))
 				{
 					if (aggregate.Id != Guid.Empty && !IsTracked(aggregate.Id))
 						Cache.Add(idstring, aggregate, PolicyFactory.Invoke());
