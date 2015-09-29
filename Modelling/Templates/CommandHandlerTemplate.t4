@@ -61,7 +61,7 @@ namespace <#= classNamespace #>.Handlers
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
-		protected ILogger Log { get; private set; }
+		protected ILogger Logger { get; private set; }
 <#
 switch(commandHandlerTechnology)
 {
@@ -83,7 +83,7 @@ switch(commandHandlerTechnology)
 }
 #>
 
-		public <#= className #>CommandHandler(IUnitOfWork<<#= authenticationTokenType #>> unitOfWork, IDependencyResolver dependencyResolver, ILogger log)
+		public <#= className #>CommandHandler(IUnitOfWork<<#= authenticationTokenType #>> unitOfWork, IDependencyResolver dependencyResolver, ILogger logger)
 <#
 switch(commandHandlerTechnology)
 {
@@ -101,7 +101,7 @@ switch(commandHandlerTechnology)
 		{
 			UnitOfWork = unitOfWork;
 			DependencyResolver = dependencyResolver;
-			Log = log;
+			Logger = logger;
 		}
 
 <#
@@ -119,6 +119,21 @@ switch(commandHandlerTechnology)
 
 		public void Handle(<#= className #>Command command)
 		{
+			ICommandValidator<<#= authenticationTokenType #>, <#= className #>Command> commandValidator = null;
+			try
+			{
+				commandValidator = DependencyResolver.Resolve<ICommandValidator<<#= authenticationTokenType #>, <#= className #>Command>>();
+			}
+			catch (Exception exception)
+			{
+				Logger.LogDebug("Locating an ICommandValidator failed.", "<#= className #>CommandHandler\\Handle(<#= className #>Command)", exception);
+			}
+
+			if (commandValidator != null && !commandValidator.IsCommandValid(command))
+			{
+				Logger.LogInfo("The provided command is not valid.", "<#= className #>CommandHandler\\Handle(<#= className #>Command)");
+			}
+
 <#
 	string aggregateRootName = null;
 	bool isSimple = stereoTypeProperties.PropertyInstances.Any(property => property.Name == "CommandType" && property.Value == "Simple");
