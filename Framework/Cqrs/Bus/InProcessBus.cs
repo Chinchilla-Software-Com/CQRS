@@ -4,6 +4,7 @@ using System.Linq;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
+using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
 using Cqrs.Messages;
@@ -22,12 +23,15 @@ namespace Cqrs.Bus
 
 		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
+		protected IDependencyResolver DependencyResolver { get; private set; }
+
 		protected ILogger Logger { get; private set; }
 
-		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
+		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
+			DependencyResolver = dependencyResolver;
 			Logger = logger;
 			Routes = new Dictionary<Type, List<Action<IMessage>>>();
 		}
@@ -42,6 +46,22 @@ namespace Cqrs.Bus
 				case FrameworkType.Akka:
 					Logger.LogInfo(string.Format("A command arrived of the type '{0}' but was marked as coming from the '{1}' framework, so it was dropped.", command.GetType().FullName, command.Framework));
 					return;
+			}
+
+			ICommandValidator<TAuthenticationToken, TCommand> commandValidator = null;
+			try
+			{
+				commandValidator = DependencyResolver.Resolve<ICommandValidator<TAuthenticationToken, TCommand>>();
+			}
+			catch (Exception exception)
+			{
+				Logger.LogDebug("Locating an ICommandValidator failed.", string.Format("{0}\\Handle({1})", GetType().FullName, command.GetType().FullName), exception);
+			}
+
+			if (commandValidator != null && !commandValidator.IsCommandValid(command))
+			{
+				Logger.LogInfo("The provided command is not valid.", string.Format("{0}\\Handle({1})", GetType().FullName, command.GetType().FullName));
+				return;
 			}
 
 			if (command.AuthenticationToken == null)
