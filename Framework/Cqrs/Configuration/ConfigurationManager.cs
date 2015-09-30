@@ -5,6 +5,7 @@
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
+
 namespace Cqrs.Configuration
 {
 	public class ConfigurationManager : IConfigurationManager

@@ -1,3 +1,11 @@
+#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="cdmdotnet Limited">
+// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
 using System;
 using System.Dynamic;
 using System.Linq;
@@ -8,7 +16,7 @@ namespace Cqrs.Infrastructure
 	internal class PrivateReflectionDynamicObject : DynamicObject
 	{
 		public object RealObject { get; set; }
-		private const System.Reflection.BindingFlags BindingFlags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
+		private const BindingFlags BindingFlags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
 
 		internal static object WrapObjectIfNeeded(object @object)
 		{
@@ -34,8 +42,8 @@ namespace Cqrs.Infrastructure
 		{
 			try
 			{
-				if (type.GetMember(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public).Any())
-					return type.InvokeMember(name, System.Reflection.BindingFlags.InvokeMethod | BindingFlags, null, target, args);
+				if (type.GetMember(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Any())
+					return type.InvokeMember(name, BindingFlags.InvokeMethod | BindingFlags, null, target, args);
 				// If we couldn't find the method, try on the base class
 				if (type.BaseType != null)
 					return InvokeMemberOnType(type.BaseType, target, name, args);

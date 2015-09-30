@@ -1,4 +1,12 @@
-﻿namespace Cqrs.Domain
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="cdmdotnet Limited">
+// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+namespace Cqrs.Domain
 {
 	internal class AggregateDescriptor<TAggregateRoot, TAuthenticationToken> : IAggregateDescriptor<TAuthenticationToken>
 		where TAggregateRoot : IAggregateRoot<TAuthenticationToken>

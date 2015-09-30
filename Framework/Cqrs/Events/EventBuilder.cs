@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="cdmdotnet Limited">
+// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Text;
 
 namespace Cqrs.Events

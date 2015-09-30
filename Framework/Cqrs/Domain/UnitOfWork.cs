@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="cdmdotnet Limited">
+// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using Cqrs.Domain.Exception;
 
