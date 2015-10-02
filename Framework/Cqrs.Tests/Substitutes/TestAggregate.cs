@@ -6,7 +6,11 @@ namespace Cqrs.Tests.Substitutes
 {
 	public class TestAggregate : AggregateRoot<ISingleSignOnToken>
 	{
-		private TestAggregate() { }
+		private TestAggregate()
+		{
+			ApplyChange(new TestAggregateCreated());
+			Version++;
+		}
 
 		public TestAggregate(Guid id)
 		{

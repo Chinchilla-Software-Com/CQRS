@@ -33,7 +33,7 @@ namespace Cqrs.Tests.Domain
 		public void Should_apply_events()
 		{
 			var aggregate = _unitOfWork.Get<TestAggregate>(Guid.NewGuid());
-			Assert.AreEqual(2,aggregate.DidSomethingCount);
+			Assert.AreEqual(2, aggregate.DidSomethingCount);
 		}
 
 		[Test]
@@ -76,7 +76,7 @@ namespace Cqrs.Tests.Domain
 			var id = Guid.NewGuid();
 			var aggregate = _unitOfWork.Get<TestAggregate>(id);
 
-			Assert.AreEqual(3,aggregate.Version);
+			Assert.AreEqual(4, aggregate.Version);
 		}
 
 		[Test]

@@ -36,7 +36,7 @@ namespace Cqrs.Tests.Cache
 		public void Should_update_if_version_changed_in_event_store()
 		{
 			var aggregate = _rep.Get<TestAggregate>(_aggregate.Id);
-			Assert.That(aggregate.Version, Is.EqualTo(3));
+			Assert.That(aggregate.Version, Is.EqualTo(4));
 		}
 
 		[Test]
