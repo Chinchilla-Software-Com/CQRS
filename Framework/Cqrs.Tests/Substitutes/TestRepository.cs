@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Cqrs.Domain;
 using Cqrs.Events;
 using Cqrs.Authentication;
@@ -23,8 +24,11 @@ namespace Cqrs.Tests.Substitutes
 		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<ISingleSignOnToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<ISingleSignOnToken>
 		{
-			var obj = (TAggregateRoot) Activator.CreateInstance(typeof (TAggregateRoot), true);
-			obj.LoadFromHistory(new[] {new TestAggregateDidSomething {Id = aggregateId, Version = 1}});
+			var obj = (TAggregateRoot)Activator.CreateInstance(typeof(TAggregateRoot), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { aggregateId }, null);
+			var testAggregate = obj as TestAggregate;
+			if (testAggregate != null)
+				testAggregate.SetId(aggregateId);
+			obj.LoadFromHistory(new[] { new TestAggregateDidSomething { Id = aggregateId, Version = 2 } });
 			return obj;
 		}
 	}

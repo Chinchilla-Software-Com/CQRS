@@ -14,6 +14,11 @@ namespace Cqrs.Tests.Substitutes
 			ApplyChange(new TestAggregateCreated());
 		}
 
+		public void SetId(Guid id)
+		{
+			Id = id;
+		}
+
 		public int DidSomethingCount;
 
 		public void DoSomething()
@@ -30,6 +35,5 @@ namespace Cqrs.Tests.Substitutes
 		{
 			DidSomethingCount++;
 		}
-
 	}
 }
