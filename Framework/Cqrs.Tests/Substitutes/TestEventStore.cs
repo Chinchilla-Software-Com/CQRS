@@ -16,17 +16,17 @@ namespace Cqrs.Tests.Substitutes
 
 		public Guid EmptyGuid { get; private set; }
 
-		public void Save(Type aggregateRootType, IEvent<ISingleSignOnToken> @event)
+		public virtual void Save(Type aggregateRootType, IEvent<ISingleSignOnToken> @event)
 		{
 			SavedEvents.Add(@event);
 		}
 
-		public IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+		public virtual IEnumerable<IEvent<ISingleSignOnToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			return Get(typeof(T),aggregateId, useLastEventOnly, fromVersion);
 		}
 
-		public IEnumerable<IEvent<ISingleSignOnToken>> Get(Type aggregateType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+		public virtual IEnumerable<IEvent<ISingleSignOnToken>> Get(Type aggregateType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			if (aggregateId == EmptyGuid || aggregateId == Guid.Empty)
 			{
@@ -42,7 +42,7 @@ namespace Cqrs.Tests.Substitutes
 			.Where(x => x.Version > fromVersion);
 		}
 
-		public void Save<T>(IEvent<ISingleSignOnToken> @event)
+		public virtual void Save<T>(IEvent<ISingleSignOnToken> @event)
 		{
 			Save(typeof(T), @event);
 		}

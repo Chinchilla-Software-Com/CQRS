@@ -16,7 +16,7 @@ namespace Cqrs.Tests.Snapshots
 		[SetUp]
 		public void Setup()
 		{
-			var eventStore = new TestEventStore();
+			var eventStore = new TestSnapshotEventStore();
 			var eventPublisher = new TestEventPublisher();
 			var snapshotStore = new NullSnapshotStore();
 			var snapshotStrategy = new DefaultSnapshotStrategy<ISingleSignOnToken>();
