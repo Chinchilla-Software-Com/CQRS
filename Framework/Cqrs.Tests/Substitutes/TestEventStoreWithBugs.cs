@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cqrs.Events;
 using Cqrs.Authentication;
 
@@ -27,8 +28,9 @@ namespace Cqrs.Tests.Substitutes
 			{
 				new TestAggregateDidSomething {Id = aggregateId, Version = 3},
 				new TestAggregateDidSomething {Id = aggregateId, Version = 4},
-				new TestAggregateDidSomeethingElse {Id = aggregateId, Version = 1},
-			};
+				new TestAggregateDidSomeethingElse {Id = aggregateId, Version = 2}
+			}
+			.Where(x => x.Version > fromVersion);
 		}
 
 		public void Save<T>(IEvent<ISingleSignOnToken> eventDescriptor)

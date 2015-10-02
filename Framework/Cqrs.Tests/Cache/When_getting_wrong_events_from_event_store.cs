@@ -32,7 +32,7 @@ namespace Cqrs.Tests.Cache
 		public void Should_get_events_from_start()
 		{
 			var aggregate =_rep.Get<TestAggregate>(_aggregate.Id);
-			Assert.That(aggregate.Version, Is.EqualTo(1));
+			Assert.That(aggregate.Version, Is.EqualTo(4));
 		}
 	}
 }
