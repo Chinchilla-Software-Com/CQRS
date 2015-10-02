@@ -44,7 +44,7 @@ namespace Cqrs.Tests.Domain
 		{
 			_unitOfWork.Add(_aggregate);
 			_aggregate.DoSomething();
-			_eventStore.Events.Add(new TestAggregateDidSomething { Id = _aggregate.Id, Version = 3 });
+			_eventStore.Events.Add(new TestAggregateDidSomething { Id = _aggregate.Id, Version = 4 });
 			Assert.Throws<ConcurrencyException>(() => _unitOfWork.Commit());
 		}
 	}

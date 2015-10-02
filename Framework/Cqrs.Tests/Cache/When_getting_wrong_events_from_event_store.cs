@@ -21,14 +21,6 @@ namespace Cqrs.Tests.Cache
 		}
 
 		[Test]
-		public void Should_evict_old_object_from_cache()
-		{
-			_rep.Get<TestAggregate>(_aggregate.Id);
-			var aggregate = MemoryCache.Default.Get(_aggregate.Id.ToString());
-			Assert.That(aggregate, Is.Not.EqualTo(_aggregate));
-		}
-
-		[Test]
 		public void Should_get_events_from_start()
 		{
 			var aggregate =_rep.Get<TestAggregate>(_aggregate.Id);
