@@ -54,26 +54,27 @@ namespace Cqrs.Domain
 
 		public virtual void LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>> history)
 		{
-			foreach (IEvent<TAuthenticationToken> @event in history.OrderBy(e =>e.Version))
+			Type aggregateType = GetType();
+			foreach (IEvent<TAuthenticationToken> @event in history.OrderBy(e => e.Version))
 			{
 				if (@event.Version != Version + 1)
-					throw new EventsOutOfOrderException(@event.Id, GetType(), Version + 1, @event.Version);
-				ApplyChange(@event, false);
+					throw new EventsOutOfOrderException(@event.Id, aggregateType, Version + 1, @event.Version);
+				ApplyChange(@event, true);
 			}
 		}
 
-		protected void ApplyChange(IEvent<TAuthenticationToken> @event)
+		protected virtual void ApplyChange(IEvent<TAuthenticationToken> @event)
 		{
-			ApplyChange(@event, true);
+			ApplyChange(@event, false);
 		}
 
-		private void ApplyChange(IEvent<TAuthenticationToken> @event, bool isNew)
+		private void ApplyChange(IEvent<TAuthenticationToken> @event, bool isEventReplay)
 		{
 			Lock.EnterWriteLock();
 			try
 			{
 				this.AsDynamic().Apply(@event);
-				if (isNew)
+				if (isEventReplay)
 				{
 					Changes = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(new []{@event}.Concat(Changes).ToList());
 				}
