@@ -12,11 +12,7 @@ namespace Cqrs.Tests.Substitutes
 		{
 			Id = id;
 			ApplyChange(new TestAggregateCreated());
-		}
-
-		public void SetId(Guid id)
-		{
-			Id = id;
+			Version++;
 		}
 
 		public int DidSomethingCount;

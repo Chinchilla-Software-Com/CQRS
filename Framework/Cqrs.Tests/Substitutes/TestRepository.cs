@@ -25,9 +25,6 @@ namespace Cqrs.Tests.Substitutes
 			where TAggregateRoot : IAggregateRoot<ISingleSignOnToken>
 		{
 			var obj = (TAggregateRoot)Activator.CreateInstance(typeof(TAggregateRoot), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { aggregateId }, null);
-			var testAggregate = obj as TestAggregate;
-			if (testAggregate != null)
-				testAggregate.SetId(aggregateId);
 			obj.LoadFromHistory(new[] { new TestAggregateDidSomething { Id = aggregateId, Version = 2 } });
 			return obj;
 		}
