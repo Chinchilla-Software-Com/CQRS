@@ -9,7 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cqrs.Domain.Exception;
+using Cqrs.Domain.Exceptions;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
 

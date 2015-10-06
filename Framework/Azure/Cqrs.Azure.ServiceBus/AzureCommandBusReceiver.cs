@@ -30,7 +30,7 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, false, true)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, false)
 		{
 			// Configure the callback options
 			OnMessageOptions options = new OnMessageOptions
@@ -104,5 +104,14 @@ namespace Cqrs.Azure.ServiceBus
 				throw new NoCommandHandlerRegisteredException(command.GetType());
 			}
 		}
+
+		#region Implementation of ICommandReceiver
+
+		public void Start()
+		{
+			InstantiateReceiving();
+		}
+
+		#endregion
 	}
 }

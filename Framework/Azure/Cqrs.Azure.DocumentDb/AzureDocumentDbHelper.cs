@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
+using Cqrs.Domain.Exceptions;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
@@ -264,7 +265,9 @@ function()
 			else
 			{
 				Logger.LogWarning("Non-fault tolerant exception raised via DocumentClientException.", "AzureDocumentDbDataStore\\ProcessFaultTollerantExceptions");
-				throw new Exception("Non-fault tolerant exception raised.", documentClientException);
+				if (documentClientException.Error.Message == "Resource with specified id or name already exists.")
+					throw new DuplicateCreateCommandException(documentClientException);
+				throw new DocumentDbException("Non-fault tolerant exception raised.", documentClientException);
 			}
 		}
 

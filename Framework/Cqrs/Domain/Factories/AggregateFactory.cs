@@ -2,7 +2,7 @@
 using System.Reflection;
 using cdmdotnet.Logging;
 using Cqrs.Configuration;
-using Cqrs.Domain.Exception;
+using Cqrs.Domain.Exceptions;
 
 namespace Cqrs.Domain.Factories
 {

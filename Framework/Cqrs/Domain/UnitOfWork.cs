@@ -8,7 +8,7 @@
 
 using System;
 using System.Collections.Generic;
-using Cqrs.Domain.Exception;
+using Cqrs.Domain.Exceptions;
 
 namespace Cqrs.Domain
 {

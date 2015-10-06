@@ -18,7 +18,7 @@ namespace Cqrs.Azure.ServiceBus
 	public class AzureEventBusPublisher<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IEventPublisher<TAuthenticationToken>
 	{
 		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, true, false)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, true)
 		{
 		}
 

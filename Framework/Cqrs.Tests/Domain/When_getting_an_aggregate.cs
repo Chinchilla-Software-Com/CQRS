@@ -1,6 +1,6 @@
 ﻿using System;
 using Cqrs.Domain;
-using Cqrs.Domain.Exception;
+using Cqrs.Domain.Exceptions;
 using Cqrs.Domain.Factories;
 using Cqrs.Authentication;
 using Cqrs.Tests.Substitutes;

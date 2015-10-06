@@ -52,47 +52,49 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected ILogger Logger { get; private set; }
 
-		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher, bool isAReceiver)
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
+		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
 		{
 			MessageSerialiser = messageSerialiser;
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
 			Logger = logger;
-			ConnectionString = configurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
+			ConfigurationManager = configurationManager;
+			ConnectionString = ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
 
 			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
 
 			if (isAPublisher)
-				InstantiatePublishing(configurationManager, namespaceManager);
-
-			if (isAReceiver)
-				InstantiateReceiving(configurationManager, namespaceManager);
+				InstantiatePublishing(namespaceManager);
 		}
 
-		protected void InstantiatePublishing(IConfigurationManager configurationManager, NamespaceManager namespaceManager)
+		protected void InstantiatePublishing(NamespaceManager namespaceManager)
 		{
-			CheckPrivateEventTopicExists(configurationManager, namespaceManager);
-			CheckPublicTopicExists(configurationManager, namespaceManager);
+			CheckPrivateEventTopicExists(namespaceManager);
+			CheckPublicTopicExists(namespaceManager);
 
 			ServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PublicTopicName);
 		}
 
-		protected void InstantiateReceiving(IConfigurationManager configurationManager, NamespaceManager namespaceManager)
+		protected void InstantiateReceiving()
 		{
-			CheckPrivateEventTopicExists(configurationManager, namespaceManager);
-			CheckPublicTopicExists(configurationManager, namespaceManager);
+			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
+
+			CheckPrivateEventTopicExists(namespaceManager);
+			CheckPublicTopicExists(namespaceManager);
 
 			ServiceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, PublicTopicName, PublicTopicSubscriptionName);
 		}
 
-		protected virtual void CheckPrivateEventTopicExists(IConfigurationManager configurationManager, NamespaceManager namespaceManager)
+		protected virtual void CheckPrivateEventTopicExists(NamespaceManager namespaceManager)
 		{
-			CheckTopicExists(namespaceManager, PrivateTopicName = configurationManager.GetSetting(PrivateTopicNameConfigurationKey) ?? DefaultPrivateTopicName, PrivateTopicSubscriptionName = configurationManager.GetSetting(PrivateTopicSubscriptionNameConfigurationKey) ?? DefaultPrivateTopicSubscriptionName);
+			CheckTopicExists(namespaceManager, PrivateTopicName = ConfigurationManager.GetSetting(PrivateTopicNameConfigurationKey) ?? DefaultPrivateTopicName, PrivateTopicSubscriptionName = ConfigurationManager.GetSetting(PrivateTopicSubscriptionNameConfigurationKey) ?? DefaultPrivateTopicSubscriptionName);
 		}
 
-		protected virtual void CheckPublicTopicExists(IConfigurationManager configurationManager, NamespaceManager namespaceManager)
+		protected virtual void CheckPublicTopicExists(NamespaceManager namespaceManager)
 		{
-			CheckTopicExists(namespaceManager, PublicTopicName = configurationManager.GetSetting(PublicTopicNameConfigurationKey) ?? DefaultPublicTopicName, PublicTopicSubscriptionName = configurationManager.GetSetting(PublicTopicSubscriptionNameConfigurationKey) ?? DefaultPublicTopicSubscriptionName);
+			CheckTopicExists(namespaceManager, PublicTopicName = ConfigurationManager.GetSetting(PublicTopicNameConfigurationKey) ?? DefaultPublicTopicName, PublicTopicSubscriptionName = ConfigurationManager.GetSetting(PublicTopicSubscriptionNameConfigurationKey) ?? DefaultPublicTopicSubscriptionName);
 		}
 
 		protected virtual void CheckTopicExists(NamespaceManager namespaceManager, string eventTopicName, string eventSubscriptionNames)

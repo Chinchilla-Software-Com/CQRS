@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
-using Cqrs.Domain.Exception;
+using Cqrs.Domain.Exceptions;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
 

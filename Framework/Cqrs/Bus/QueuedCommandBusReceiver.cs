@@ -179,5 +179,11 @@ namespace Cqrs.Bus
 				throw new InvalidOperationException("No handler registered");
 			}
 		}
+
+		#region Implementation of ICommandReceiver
+
+		public abstract void Start();
+
+		#endregion
 	}
 }

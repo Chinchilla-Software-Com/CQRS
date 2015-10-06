@@ -12,7 +12,7 @@ namespace Cqrs.Azure.ServiceBus
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
 		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IDependencyResolver dependencyResolver)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, true, false)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, true)
 		{
 			DependencyResolver = dependencyResolver;
 		}

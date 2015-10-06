@@ -19,7 +19,7 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	public class AzureEventBusReceiver<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IEventHandlerRegistrar
+	public class AzureEventBusReceiver<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IEventHandlerRegistrar, IEventReceiver
 	{
 		protected static IDictionary<Type, List<Action<IMessage>>> Routes { get; private set; }
 
@@ -29,7 +29,7 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, false, true)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, false)
 		{
 			// Configure the callback options
 			OnMessageOptions options = new OnMessageOptions
@@ -41,6 +41,12 @@ namespace Cqrs.Azure.ServiceBus
 			// Callback to handle received messages
 			ServiceBusReceiver.OnMessage(ReceiveEvent, options);
 		}
+
+		public void Start()
+		{
+			InstantiateReceiving();
+		}
+
 
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler)
 			where TMessage : IMessage

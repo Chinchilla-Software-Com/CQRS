@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Akka.Actor;
 using Cqrs.Domain;
-using Cqrs.Domain.Exception;
+using Cqrs.Domain.Exceptions;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
 
