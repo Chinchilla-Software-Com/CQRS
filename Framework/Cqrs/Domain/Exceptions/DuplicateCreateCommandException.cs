@@ -18,7 +18,12 @@ namespace Cqrs.Domain.Exceptions
 		}
 
 		public DuplicateCreateCommandException(Exception exception)
-			: base("The operation resulted in a duplicate ", exception)
+			: base("The operation resulted in a duplicate.", exception)
+		{
+		}
+
+		public DuplicateCreateCommandException(Type commandType, Guid commandRsn, Exception exception)
+			: base(string.Format("The operation resulted in a duplicate for a command of type '{0}' with Rsn '{1}'", commandType.FullName, commandRsn), exception)
 		{
 		}
 	}
