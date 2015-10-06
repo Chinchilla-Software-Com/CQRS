@@ -32,15 +32,6 @@ namespace Cqrs.Azure.ServiceBus
 		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, false)
 		{
-			// Configure the callback options
-			OnMessageOptions options = new OnMessageOptions
-			{
-				AutoComplete = false,
-				AutoRenewTimeout = TimeSpan.FromMinutes(1)
-			};
-
-			// Callback to handle received messages
-			ServiceBusReceiver.OnMessage(ReceiveCommand, options);
 		}
 
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler)
@@ -110,6 +101,16 @@ namespace Cqrs.Azure.ServiceBus
 		public void Start()
 		{
 			InstantiateReceiving();
+
+			// Configure the callback options
+			OnMessageOptions options = new OnMessageOptions
+			{
+				AutoComplete = false,
+				AutoRenewTimeout = TimeSpan.FromMinutes(1)
+			};
+
+			// Callback to handle received messages
+			ServiceBusReceiver.OnMessage(ReceiveCommand, options);
 		}
 
 		#endregion

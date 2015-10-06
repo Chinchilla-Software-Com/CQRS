@@ -31,6 +31,12 @@ namespace Cqrs.Azure.ServiceBus
 		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, false)
 		{
+		}
+
+		public void Start()
+		{
+			InstantiateReceiving();
+
 			// Configure the callback options
 			OnMessageOptions options = new OnMessageOptions
 			{
@@ -40,11 +46,6 @@ namespace Cqrs.Azure.ServiceBus
 
 			// Callback to handle received messages
 			ServiceBusReceiver.OnMessage(ReceiveEvent, options);
-		}
-
-		public void Start()
-		{
-			InstantiateReceiving();
 		}
 
 
