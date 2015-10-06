@@ -122,15 +122,6 @@ switch(commandHandlerTechnology)
 		// Methods
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
-			bool isSimple = false;
-			string eventName = null;
-			var methodStereoTypeProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "AggregateRootMethod");
-			if (methodStereoTypeProperties != null)
-			{
-				isSimple = methodStereoTypeProperties.PropertyInstances.Any(property => property.Name == "AggregateRootMethodType" && property.Value == "Simple");
-				if (isSimple)
-					eventName = methodStereoTypeProperties.PropertyInstances.Single(property => property.Name == "EventName").Value;
-			}
 #>
 			// Receive<<#= collectionMethod.Name #>Parameters>(parameters => <#= collectionMethod.Name #>(parameters));
 <#
