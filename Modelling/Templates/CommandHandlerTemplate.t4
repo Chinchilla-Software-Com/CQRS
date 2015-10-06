@@ -37,6 +37,8 @@ switch(commandHandlerTechnology)
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Domain;
+using Cqrs.Domain.Exceptions;
+using Cqrs.Events;
 using cdmdotnet.Logging;
 
 namespace <#= classNamespace #>.Handlers
@@ -177,7 +179,30 @@ switch(commandHandlerTechnology)
 #>);
 			On<#= className #>Done(command, item);
 			OnCommit(command, item);
-			UnitOfWork.Commit();
+			try
+			{
+				UnitOfWork.Commit();
+			}
+			catch (ConcurrencyException exception)
+			{
+				Logger.LogDebug(string.Format("Committing the Unit Of Work for command of type '{0}' with Rsn '{1}' failed.", command.GetType().FullName, command.Rsn), "Handle/<#= className #>Command", exception: new DuplicateCreateCommandException(command.GetType(), command.Rsn, exception));
+<#
+		if (createsNewInstance)
+		{
+#>
+				var eventPublisher = DependencyResolver.Resolve<IEventPublisher<<#= authenticationTokenType #>>>();
+
+				var duplicateCreateCommandEvent = new DuplicateCreateCommandEvent<<#= authenticationTokenType #>>
+				{
+					Id = Guid.NewGuid(),
+					AggregateRsn = command.Rsn,
+					AggregateType = typeof(<#= aggregateRootName #>)
+				};
+				eventPublisher.Publish(duplicateCreateCommandEvent);
+<#
+		}
+#>
+			}
 			OnCommited(command, item);
 <#
 	}
