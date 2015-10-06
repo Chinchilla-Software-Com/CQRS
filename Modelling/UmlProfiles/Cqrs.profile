@@ -26,6 +26,11 @@
             <enumerationTypeMoniker name="/CqrsProfile/EventHandlerTechnology"/>
           </propertyType>
         </property>
+        <property name="AggregateTechnology" displayName="Aggregate Technology: What technology are you using for aggregate processing." defaultValue="BuiltIn">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/AggregateTechnology"/>
+          </propertyType>
+        </property>
         <property name="EventStorePersistenceTechnology" displayName="Event Store Persistence Technology: What technology are you using for persisting events and event sourcing." defaultValue="GYEventStore">
           <propertyType>
             <enumerationTypeMoniker name="/CqrsProfile/EventStorePersistenceTechnology"/>
@@ -330,6 +335,13 @@
     </enumerationType>
 
     <enumerationType name="EventHandlerTechnology">
+      <enumerationLiterals>
+        <enumerationLiteral name="BuiltIn" displayName="Built In" />
+        <enumerationLiteral name="Akka" displayName="AKKA.Net" />
+      </enumerationLiterals>
+    </enumerationType>
+
+    <enumerationType name="AggregateTechnology">
       <enumerationLiterals>
         <enumerationLiteral name="BuiltIn" displayName="Built In" />
         <enumerationLiteral name="Akka" displayName="AKKA.Net" />

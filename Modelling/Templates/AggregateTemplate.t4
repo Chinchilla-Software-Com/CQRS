@@ -26,11 +26,24 @@ if (string.IsNullOrWhiteSpace(baseClass))
 	if (isSnapshotable)
 		baseClass = string.Format("SnapshotAggregateRoot<" + authenticationTokenType + ", {0}.{0}Snapshot>", className);
 }
-if (string.IsNullOrWhiteSpace(baseClass))
-	baseClass = "AggregateRoot<" + authenticationTokenType + ">";
 
 // using statements
 WriteUsingStatements(this.Element);
+string commandHandlerTechnology = GetCommandHandlerTechnology(this.Element);
+switch(commandHandlerTechnology)
+{
+	case "Akka":
+		if (string.IsNullOrWhiteSpace(baseClass))
+			baseClass = "AkkaAggregateRoot<" + authenticationTokenType + ">";
+#>using Akka.Actor;
+using Cqrs.Akka.Domain;
+<#
+		break;
+	default:
+		if (string.IsNullOrWhiteSpace(baseClass))
+			baseClass = "AggregateRoot<" + authenticationTokenType + ">";
+		break;
+}
 #>
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
@@ -80,6 +93,20 @@ namespace <#= classNamespace #>
 		/// A constructor for the <see cref="Cqrs.Domain.Factories.IAggregateFactory"/>
 		/// </summary>
 		private <#= className #>()
+<#
+switch(commandHandlerTechnology)
+{
+	case "Akka":
+		baseClass = "ReceiveActor";
+#>
+			: base()
+<#
+		break;
+	default:
+		// for now do nothing
+		break;
+}
+#>
 		{
 <#
 			foreach(IProperty collectionProperty in collectionProperties.Where(property => property.UpperValue != null && property.UpperValue.ToString() == "*").ToList())
@@ -89,12 +116,46 @@ namespace <#= classNamespace #>
 <#
 			}
 #>
+
+<#
+		IList<IOperation> collectionMethods = GetMethodList(this.Element);
+		// Methods
+		foreach(IOperation collectionMethod in collectionMethods)
+		{
+			bool isSimple = false;
+			string eventName = null;
+			var methodStereoTypeProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "AggregateRootMethod");
+			if (methodStereoTypeProperties != null)
+			{
+				isSimple = methodStereoTypeProperties.PropertyInstances.Any(property => property.Name == "AggregateRootMethodType" && property.Value == "Simple");
+				if (isSimple)
+					eventName = methodStereoTypeProperties.PropertyInstances.Single(property => property.Name == "EventName").Value;
+			}
+#>
+			// Receive<<#= collectionMethod.Name #>Parameters>(parameters => <#= collectionMethod.Name #>(parameters));
+<#
+}
+#>
 		}
 
 		/// <summary>
 		/// A constructor for the <see cref="Cqrs.Domain.Factories.IAggregateFactory"/>
 		/// </summary>
 		private <#= className #>(IDependencyResolver dependencyResolver, ILogger log)
+<#
+switch(commandHandlerTechnology)
+{
+	case "Akka":
+		baseClass = "ReceiveActor";
+#>
+			: this()
+<#
+		break;
+	default:
+		// for now do nothing
+		break;
+}
+#>
 		{
 			DependencyResolver = dependencyResolver;
 			Log = log;
@@ -110,6 +171,20 @@ namespace <#= classNamespace #>
 // ReSharper restore UnusedMember.Local
 
 		public <#= className #>(IDependencyResolver dependencyResolver, ILogger log, Guid rsn)
+<#
+switch(commandHandlerTechnology)
+{
+	case "Akka":
+		baseClass = "ReceiveActor";
+#>
+			: this()
+<#
+		break;
+	default:
+		// for now do nothing
+		break;
+}
+#>
 		{
 			DependencyResolver = dependencyResolver;
 			Log = log;
@@ -117,7 +192,6 @@ namespace <#= classNamespace #>
 		}
 
 <#
-		IList<IOperation> collectionMethods = GetMethodList(this.Element);
 		// Methods
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
