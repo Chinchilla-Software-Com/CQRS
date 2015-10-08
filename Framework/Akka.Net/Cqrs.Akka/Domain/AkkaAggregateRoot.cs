@@ -63,7 +63,7 @@ namespace Cqrs.Akka.Domain
 		private void ApplyChange(IEvent<TAuthenticationToken> @event, bool isEventReplay)
 		{
 			this.AsDynamic().Apply(@event);
-			if (isEventReplay)
+			if (!isEventReplay)
 			{
 				Changes = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(new []{@event}.Concat(Changes).ToList());
 			}

@@ -29,8 +29,8 @@ if (string.IsNullOrWhiteSpace(baseClass))
 
 // using statements
 WriteUsingStatements(this.Element);
-string commandHandlerTechnology = GetCommandHandlerTechnology(this.Element);
-switch(commandHandlerTechnology)
+string aggregateTechnology = GetAggregateTechnology(this.Element);
+switch(aggregateTechnology)
 {
 	case "Akka":
 		if (string.IsNullOrWhiteSpace(baseClass))
@@ -94,7 +94,7 @@ namespace <#= classNamespace #>
 		/// </summary>
 		private <#= className #>()
 <#
-switch(commandHandlerTechnology)
+switch(aggregateTechnology)
 {
 	case "Akka":
 		baseClass = "ReceiveActor";
@@ -123,7 +123,7 @@ switch(commandHandlerTechnology)
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
 #>
-			// Receive<<#= collectionMethod.Name #>Parameters>(parameters => <#= collectionMethod.Name #>(parameters));
+			Receive<<#= collectionMethod.Name #>Parameters>(parameters => <#= collectionMethod.Name #>(parameters));
 <#
 }
 #>
@@ -134,7 +134,7 @@ switch(commandHandlerTechnology)
 		/// </summary>
 		private <#= className #>(IDependencyResolver dependencyResolver, ILogger log)
 <#
-switch(commandHandlerTechnology)
+switch(aggregateTechnology)
 {
 	case "Akka":
 		baseClass = "ReceiveActor";
@@ -163,7 +163,7 @@ switch(commandHandlerTechnology)
 
 		public <#= className #>(IDependencyResolver dependencyResolver, ILogger log, Guid rsn)
 <#
-switch(commandHandlerTechnology)
+switch(aggregateTechnology)
 {
 	case "Akka":
 		baseClass = "ReceiveActor";
@@ -181,7 +181,6 @@ switch(commandHandlerTechnology)
 			Log = log;
 			Rsn = rsn;
 		}
-
 <#
 		// Methods
 		foreach(IOperation collectionMethod in collectionMethods)
@@ -196,6 +195,30 @@ switch(commandHandlerTechnology)
 					eventName = methodStereoTypeProperties.PropertyInstances.Single(property => property.Name == "EventName").Value;
 			}
 #>
+<#
+		if (aggregateTechnology == "Akka")
+		{
+#>
+		public virtual void <#= collectionMethod.Name #>(<#= collectionMethod.Name #>Parameters parameter)
+		{
+			<#= collectionMethod.Name #>(<#
+				var parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return).ToList();
+				var methodBody = new System.Text.StringBuilder();
+				int akkaIndex = 0;
+				foreach (IParameter collectionProperty in parameters)
+				{
+					if (akkaIndex > 0)
+						methodBody.Append(", ");
+					akkaIndex++;
+					methodBody.Append("parameter.");
+					methodBody.Append(collectionProperty.Name);
+				}
+#><#= methodBody.ToString() #>);
+		}
+<#
+		}
+#>
+
 		public virtual void <#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>)
 		{
 			Log.LogDebug("Entered", "<#= className #>/<#= collectionMethod.Name #>");
@@ -461,6 +484,31 @@ switch(commandHandlerTechnology)
 #>
 		}
 	}
+<#
+		if (aggregateTechnology == "Akka")
+		{
+			// Methods
+			foreach(IOperation collectionMethod in collectionMethods)
+			{
+#>
+
+	public class <#= collectionMethod.Name #>Parameters
+	{
+<#
+				var parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return).ToList();
+				foreach (IParameter collectionProperty in parameters)
+				{
+#>
+
+		public <#= GetFullDisplayType(collectionProperty, false) #> <#= collectionProperty.Name #> { get; set; }
+<#
+				}
+#>
+	}
+<#
+			}
+		}
+#>
 }
 <#+
 	protected override bool AppliesToElement()

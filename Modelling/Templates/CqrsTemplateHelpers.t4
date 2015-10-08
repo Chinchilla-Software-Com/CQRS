@@ -284,6 +284,13 @@
 		return domainStereoTypeProperties.PropertyInstances.Single(property => property.Name == "EventHandlerTechnology").Value;
 	}
 
+	private static string GetAggregateTechnology(IElement t)
+	{
+		IElement domainElement = FindDomainElement(t);
+		var domainStereoTypeProperties = domainElement.AppliedStereotypes.Single(property => property.Name == "Domain");
+		return domainStereoTypeProperties.PropertyInstances.Single(property => property.Name == "AggregateTechnology").Value;
+	}
+
 	private static string GetDomainAuthenticationTokenType(IElement t)
 	{
 		IElement domainElement = FindDomainElement(t);
