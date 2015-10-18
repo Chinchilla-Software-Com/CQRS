@@ -1,6 +1,6 @@
 ﻿using System;
 using cdmdotnet.Logging;
-using Microsoft.Azure;
+using Cqrs.Configuration;
 using Microsoft.Azure.Documents.Client;
 
 namespace Cqrs.Azure.DocumentDb.Events
@@ -9,9 +9,12 @@ namespace Cqrs.Azure.DocumentDb.Events
 	{
 		protected ILogger Logger { get; private set; }
 
-		public AzureDocumentDbEventStoreConnectionStringFactory(ILogger logger)
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
+		public AzureDocumentDbEventStoreConnectionStringFactory(ILogger logger, IConfigurationManager configurationManager)
 		{
 			Logger = logger;
+			ConfigurationManager = configurationManager;
 		}
 
 		public virtual DocumentClient GetEventStoreConnectionClient()
@@ -29,22 +32,22 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 		public virtual string GetEventStoreConnectionDatabaseName()
 		{
-			return CloudConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.DatabaseName") ?? CloudConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.LogStreamName") ?? "CqrsEventStore";
+			return ConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.DatabaseName") ?? ConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.LogStreamName") ?? "CqrsEventStore";
 		}
 
 		public string GetEventStoreConnectionCollectionName()
 		{
-			return CloudConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.CollectionName") ?? "CqrsEventStore";
+			return ConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.CollectionName") ?? "CqrsEventStore";
 		}
 
 		protected virtual Uri GetEventStoreConnectionUrl()
 		{
-			return new Uri(CloudConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.Url"));
+			return new Uri(ConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.Url"));
 		}
 
 		protected virtual string GetEventStoreConnectionAuthorisationKey()
 		{
-			return CloudConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.AuthorisationKey");
+			return ConfigurationManager.GetSetting("Cqrs.EventStore.Azure.DocumentDb.AuthorisationKey");
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using cdmdotnet.Logging;
-using Microsoft.Azure;
+using Cqrs.Configuration;
 using Microsoft.Azure.Documents.Client;
 
 namespace Cqrs.Azure.DocumentDb.Factories
@@ -9,9 +9,12 @@ namespace Cqrs.Azure.DocumentDb.Factories
 	{
 		protected ILogger Logger { get; private set; }
 
-		public AzureDocumentDbDataStoreConnectionStringFactory(ILogger logger)
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
+		public AzureDocumentDbDataStoreConnectionStringFactory(ILogger logger, IConfigurationManager configurationManager)
 		{
 			Logger = logger;
+			ConfigurationManager = configurationManager;
 		}
 
 		public virtual DocumentClient GetAzureDocumentDbConnectionClient()
@@ -29,22 +32,22 @@ namespace Cqrs.Azure.DocumentDb.Factories
 
 		public virtual string GetAzureDocumentDbDatabaseName()
 		{
-			return CloudConfigurationManager.GetSetting("Cqrs.Azure.DocumentDb.DatabaseName") ?? "CqrsStore";
+			return ConfigurationManager.GetSetting("Cqrs.Azure.DocumentDb.DatabaseName") ?? "CqrsStore";
 		}
 
 		public string GetAzureDocumentDbCollectionName()
 		{
-			return CloudConfigurationManager.GetSetting("Cqrs.Azure.DocumentDb.CollectionName") ?? "CqrsDataStore";
+			return ConfigurationManager.GetSetting("Cqrs.Azure.DocumentDb.CollectionName") ?? "CqrsDataStore";
 		}
 
 		protected virtual Uri GetAzureDocumentDbConnectionUrl()
 		{
-			return new Uri(CloudConfigurationManager.GetSetting("Cqrs.Azure.DocumentDb.Url"));
+			return new Uri(ConfigurationManager.GetSetting("Cqrs.Azure.DocumentDb.Url"));
 		}
 
 		protected virtual string GetAzureDocumentDbAuthorisationKey()
 		{
-			return CloudConfigurationManager.GetSetting("Cqrs.Azure.DocumentDb.AuthorisationKey");
+			return ConfigurationManager.GetSetting("Cqrs.Azure.DocumentDb.AuthorisationKey");
 		}
 	}
 }
