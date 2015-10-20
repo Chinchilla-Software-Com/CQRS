@@ -8,7 +8,7 @@ A lightweight framework to help write CQRS and Eventsourcing applications in C#.
 CQRS has been made designed with modularity in mind... just look at the number of packages below you can chose from. Every package and design choice I've ade should be interchangeable with custom code if needed.
 
 ## Commerical Support
-Commercial support will be available from October 2015. Details to come.
+Commercial support will be available from November 2015. Details to come.
 
 ##Getting started
 Two sample projects are located within the code (soon), these show two approaches/common usage scenarios of the framework. One sample is the original sample from CQRSlite, just ported to use CQRS, the other is Modelled in UML and uses T4 template generation.
