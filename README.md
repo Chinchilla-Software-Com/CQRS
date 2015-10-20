@@ -1,6 +1,13 @@
-# CQRS
+# CSC CQRS
 #### https://www.nuget.org/packages/Cqrs
-## Documentation and sample projects are a work in progress.
+
+## Documentation
+
+Documentation is starting off for now in the wiki section of this project. We strongly invite people to post questions and issues which we'll answer and work on.
+
+## Sample projects.
+
+We have a very simple example which, for now, is too CRUD like for us. We are looking at building a much better sample project which we'll complement with articles in the wiki, trying our documentation to actual code.
 
 ## The framework
 A lightweight framework to help write CQRS and Eventsourcing applications in C#. Currently published as nuget packages @ http://www.nuget.org. It is written in C# and targets .NET 4.0, with the exception of some Azure packages which target .NET 4.5. CQRS borrows heavily from CQRSlite (https://github.com/gautema/cqrslite), from some point in 2013.
