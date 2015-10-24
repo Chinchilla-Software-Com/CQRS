@@ -47,7 +47,7 @@ namespace Cqrs.Ninject.Akka
 
 		public override object Resolve(Type serviceType)
 		{
-			return Resolve(serviceType, null);
+			return Resolve(serviceType, serviceType, null);
 		}
 
 		#endregion
@@ -56,23 +56,24 @@ namespace Cqrs.Ninject.Akka
 
 		public virtual IActorRef Resolve<TAggregate>(Guid rsn)
 		{
-			return (IActorRef)Resolve(typeof(TAggregate), rsn);
+			return (IActorRef)Resolve(typeof(TAggregate), typeof(TAggregate), rsn);
 		}
 
 		#endregion
 
-		public virtual object Resolve(Type serviceType, object rsn)
+		public virtual object Resolve(Type serviceType, Type targetedType, object rsn)
 		{
 			IActorRef actorReference;
 			try
 			{
 				if (AkkaActors.TryGetValue(serviceType, out actorReference))
 					return actorReference;
+
 				return base.Resolve(serviceType);
 			}
 			catch (ActorInitializationException)
 			{
-				actorReference = AkkaSystem.ActorOf(AkkaSystem.GetExtension<DIExt>().Props(serviceType), string.Format(rsn == null ? "{0}" : "{0}-{1}", serviceType.FullName, rsn));
+				actorReference = AkkaSystem.ActorOf(AkkaSystem.GetExtension<DIExt>().Props(serviceType), string.Format(rsn == null ? "{0}" : "{0}-{1}", (targetedType  ?? serviceType).FullName, rsn));
 				AkkaActors.Add(serviceType, actorReference);
 				return actorReference;
 			}

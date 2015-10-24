@@ -114,27 +114,33 @@ namespace Cqrs.Configuration
 			if (registerExecutorMethod == null)
 				throw new InvalidOperationException("No executor method could be compiled for " + @interface.FullName);
 
-			Action<dynamic> del = BuildDelegateAction(executorType);
+			HandlerDelegate handlerDelegate = BuildDelegateAction(executorType);
 			
-			registerExecutorMethod.Invoke(bus, new object[] { del });
+			InvokeHandlerDelegate(registerExecutorMethod, bus, handlerDelegate);
 		}
 
-		protected virtual Action<dynamic> BuildDelegateAction(Type executorType)
+		protected virtual void InvokeHandlerDelegate(MethodInfo registerExecutorMethod, IHandlerRegistrar bus, HandlerDelegate handlerDelegate)
 		{
-			return (x =>
+			registerExecutorMethod.Invoke(bus, new object[] { handlerDelegate.Delegate, handlerDelegate.TargetedType });
+		}
+
+		protected virtual HandlerDelegate BuildDelegateAction(Type executorType)
+		{
+			Action<dynamic> handlerDelegate = x =>
+			{
+				dynamic handler = DependencyResolver.Resolve(executorType);
+				try
 				{
-					dynamic handler = DependencyResolver.Resolve(executorType);
-					try
-					{
-						handler.Handle(x);
-					}
-					catch (NotImplementedException exception)
-					{
-						var logger = DependencyResolver.Resolve<ILogger>();
-						logger.LogInfo(string.Format("An event message arrived of the type '{0}' went to a handler of type '{1}' but was not implemented.", x.GetType().FullName, handler.GetType().FullName), exception: exception);
-					}
+					handler.Handle(x);
 				}
-			);
+				catch (NotImplementedException exception)
+				{
+					var logger = DependencyResolver.Resolve<ILogger>();
+					logger.LogInfo(string.Format("An event message arrived of the type '{0}' went to a handler of type '{1}' but was not implemented.", x.GetType().FullName, handler.GetType().FullName), exception: exception);
+				}
+			};
+
+			return new HandlerDelegate { Delegate = handlerDelegate, TargetedType = executorType };
 		}
 
 		protected virtual MethodInfo BuildExecutorMethod(MethodInfo originalRegisterExecutorMethod, Type executorType, Type commandType)

@@ -23,7 +23,7 @@ namespace Cqrs.Tests.Bus
 		public void Should_run_handler()
 		{
 			var handler = new TestAggregateDoSomethingHandler();
-			_bus.RegisterHandler<TestAggregateDoSomething>(handler.Handle);
+			_bus.RegisterHandler<TestAggregateDoSomething>(handler.Handle, handler.GetType());
 			_bus.Send(new TestAggregateDoSomething());
 
 			Assert.AreEqual(1,handler.TimesRun);
@@ -33,8 +33,8 @@ namespace Cqrs.Tests.Bus
 		public void Should_throw_if_more_handlers()
 		{
 			var x = new TestAggregateDoSomethingHandler();
-			_bus.RegisterHandler<TestAggregateDoSomething>(x.Handle);
-			_bus.RegisterHandler<TestAggregateDoSomething>(x.Handle);
+			_bus.RegisterHandler<TestAggregateDoSomething>(x.Handle, x.GetType());
+			_bus.RegisterHandler<TestAggregateDoSomething>(x.Handle, x.GetType());
 
 			Assert.Throws<InvalidOperationException>(() => _bus.Send(new TestAggregateDoSomething()));
 		}

@@ -22,7 +22,7 @@ namespace Cqrs.Bus
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
 		[OperationContract]
-		void RegisterHandler<TMessage>(Action<TMessage> handler)
+		void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType)
 			where TMessage : IMessage;
 	}
 }

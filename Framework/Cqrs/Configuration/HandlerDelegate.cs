@@ -8,10 +8,12 @@
 
 using System;
 
-namespace Cqrs.Akka.Configuration
+namespace Cqrs.Configuration
 {
-	public interface IHandlerResolver
+	public class HandlerDelegate
 	{
-		object Resolve(Type handerType, Type targetedType, object rsn);
+		public Action<dynamic> Delegate { get; set; }
+
+		public Type TargetedType { get; set; }
 	}
 }

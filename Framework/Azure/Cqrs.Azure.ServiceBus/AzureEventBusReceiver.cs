@@ -8,11 +8,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
-using Cqrs.Infrastructure;
 using cdmdotnet.Logging;
 using Cqrs.Messages;
 using Microsoft.ServiceBus.Messaging;
@@ -21,11 +21,11 @@ namespace Cqrs.Azure.ServiceBus
 {
 	public class AzureEventBusReceiver<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IEventHandlerRegistrar, IEventReceiver<TAuthenticationToken>
 	{
-		protected static IDictionary<Type, List<Action<IMessage>>> Routes { get; private set; }
+		protected static RouteManager Routes { get; private set; }
 
 		static AzureEventBusReceiver()
 		{
-			Routes = new Dictionary<Type, List<Action<IMessage>>>();
+			Routes = new RouteManager();
 		}
 
 		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
@@ -48,17 +48,13 @@ namespace Cqrs.Azure.ServiceBus
 			ServiceBusReceiver.OnMessage(ReceiveEvent, options);
 		}
 
-
-		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler)
+		/// <summary>
+		/// Register an event or command handler that will listen and respond to events or commands.
+		/// </summary>
+		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType)
 			where TMessage : IMessage
 		{
-			List<Action<IMessage>> handlers;
-			if (!Routes.TryGetValue(typeof(TMessage), out handlers))
-			{
-				handlers = new List<Action<IMessage>>();
-				Routes.Add(typeof(TMessage), handlers);
-			}
-			handlers.Add(DelegateAdjuster.CastArgument<IMessage, TMessage>(x => handler(x)));
+			Routes.RegisterHandler(handler, targetedType);
 		}
 
 		protected virtual void ReceiveEvent(BrokeredMessage message)
@@ -98,9 +94,7 @@ namespace Cqrs.Azure.ServiceBus
 			CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
 			AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
 
-			List<Action<IMessage>> handlers;
-			if (!Routes.TryGetValue(@event.GetType(), out handlers))
-				return;
+			IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event).Select(x => x.Delegate);
 			foreach (Action<IMessage> handler in handlers)
 				handler(@event);
 		}

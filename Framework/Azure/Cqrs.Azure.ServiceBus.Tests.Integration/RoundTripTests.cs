@@ -47,7 +47,8 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			var @event = new TestEvent{Id = processId};
 
 			var azureEventBusReceiver = new AzureEventBusReceiver<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()));
-			azureEventBusReceiver.RegisterHandler<TestEvent>(new TestEventSuccessHandler(testResponse).Handle);
+			var handler = new TestEventSuccessHandler(testResponse);
+			azureEventBusReceiver.RegisterHandler<TestEvent>(handler.Handle, handler.GetType());
 
 			var azureEventBusPublisher = new AzureEventBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()));
 
@@ -70,7 +71,8 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			var command = new TestCommand { Id = processId };
 
 			var azureCommandBusReceiver = new AzureCommandBusReceiver<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()));
-			azureCommandBusReceiver.RegisterHandler<TestCommand>(new TestCommandSuccessHandler(testResponse).Handle);
+			var handler = new TestCommandSuccessHandler(testResponse);
+			azureCommandBusReceiver.RegisterHandler<TestCommand>(handler.Handle, handler.GetType());
 
 			var azureCommandBusPublisher = new AzureCommandBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidSingleSignOnTokenValueHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), null);
 

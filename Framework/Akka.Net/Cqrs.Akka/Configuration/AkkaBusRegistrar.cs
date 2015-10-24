@@ -7,8 +7,12 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using Akka.Actor;
 using cdmdotnet.Logging;
+using Cqrs.Akka.Events;
+using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
@@ -18,7 +22,7 @@ namespace Cqrs.Akka.Configuration
 	/// <summary>
 	/// Triggers the <see cref="BusRegistrar"/> instantiates instances of <see cref="IEventHandler{TAuthenticationToken, TEvent}"/> and <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/> classes that inherit the akka.net <see cref="ReceiveActor"/> via the <see cref="IDependencyResolver"/> so their message registration kicks in.
 	/// </summary>
-	public class AkkaBusRegistrar : BusRegistrar
+	public class AkkaBusRegistrar<TAuthenticationToken> : BusRegistrar
 	{
 		protected IHandlerResolver HandlerResolver { get; private set; }
 
@@ -30,16 +34,20 @@ namespace Cqrs.Akka.Configuration
 
 		#region Overrides of BusRegistrar
 
-		protected override Action<dynamic> BuildDelegateAction(Type executorType)
+		protected override HandlerDelegate BuildDelegateAction(Type executorType)
 		{
-			Action<dynamic> del = x =>
+			Type targetedType = executorType;
+			if (executorType.GenericTypeArguments.Length > 2)
+				targetedType = executorType.GenericTypeArguments[1];
+
+			Action<dynamic> handlerDelegate = x =>
 			{
 				dynamic handler;
 				try
 				{
 					Type messageType = ((object)x).GetType();
 					object rsn = messageType.GetProperty("Rsn").GetValue(x, null);
-					handler = HandlerResolver.Resolve(executorType, rsn);
+					handler = HandlerResolver.Resolve(executorType, executorType, rsn);
 				}
 				catch (Exception)
 				{
@@ -63,7 +71,13 @@ namespace Cqrs.Akka.Configuration
 			// Instantiate an instance so it triggers the constructor with it's registrations
 			DependencyResolver.Resolve(executorType);
 
-			return del;
+			return new HandlerDelegate { Delegate = handlerDelegate, TargetedType = targetedType };
+		}
+
+		protected override void InvokeHandlerDelegate(MethodInfo registerExecutorMethod, IHandlerRegistrar bus, HandlerDelegate handlerDelegate)
+		{
+			base.InvokeHandlerDelegate(registerExecutorMethod, bus, handlerDelegate);
+			registerExecutorMethod.Invoke(DependencyResolver.Resolve<IAkkaEventBus<TAuthenticationToken>>(), new object[] { handlerDelegate.Delegate, handlerDelegate.TargetedType });
 		}
 
 		#endregion

@@ -16,7 +16,8 @@ namespace Cqrs.Akka.Events
 	/// An <see cref="IEventPublisher{TAuthenticationToken}"/> that proxies <see cref="IEvent{TAuthenticationToken}"/> back onto the <see cref="IActorRef"/> and then publishes the <see cref="IEvent{TAuthenticationToken}"/> on the public event bus.
 	/// </summary>
 	public class AkkaEventBus<TAuthenticationToken>
-		: IAkkaEventBus<TAuthenticationToken>
+		: ReceiveActor
+		, IAkkaEventBus<TAuthenticationToken>
 	{
 		protected IActorRef ActorReference { get; private set; }
 
@@ -24,7 +25,7 @@ namespace Cqrs.Akka.Events
 
 		protected IEventReceiver<TAuthenticationToken> EventReceiver { get; private set; }
 
-		internal AkkaEventBus(IActorRef actorReference, IEventPublisher<TAuthenticationToken> eventPublisher, IEventReceiver<TAuthenticationToken> eventReceiver)
+		public AkkaEventBus(IActorRef actorReference, IEventPublisher<TAuthenticationToken> eventPublisher, IEventReceiver<TAuthenticationToken> eventReceiver)
 		{
 			ActorReference = actorReference;
 			EventPublisher = eventPublisher;

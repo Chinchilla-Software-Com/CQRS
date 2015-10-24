@@ -14,7 +14,6 @@ using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
-using Cqrs.Infrastructure;
 using Cqrs.Messages;
 
 namespace Cqrs.Bus
@@ -25,7 +24,7 @@ namespace Cqrs.Bus
 		, IEventHandlerRegistrar
 		, ICommandHandlerRegistrar
 	{
-		private Dictionary<Type, IList<Action<IMessage>>> Routes { get; set; }
+		private static RouteManager Routes { get; set; }
 
 		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
 
@@ -35,13 +34,17 @@ namespace Cqrs.Bus
 
 		protected ILogger Logger { get; private set; }
 
+		static InProcessBus()
+		{
+			Routes = new RouteManager();
+		}
+
 		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
 			DependencyResolver = dependencyResolver;
 			Logger = logger;
-			Routes = new Dictionary<Type, IList<Action<IMessage>>>();
 		}
 
 		#region Implementation of ICommandSender<TAuthenticationToken>
@@ -76,17 +79,8 @@ namespace Cqrs.Bus
 				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
-			IList<Action<IMessage>> handlers;
-			if (Routes.TryGetValue(typeof(TCommand), out handlers))
-			{
-				if (handlers.Count != 1)
-					throw new InvalidOperationException("Cannot send to more than one handler");
-				handlers.Single()(command);
-			}
-			else
-			{
-				throw new InvalidOperationException("No handler registered");
-			}
+			Action<IMessage> handler = Routes.GetSingleHandler(command).Delegate;
+			handler(command);
 		}
 
 		#endregion
@@ -108,10 +102,8 @@ namespace Cqrs.Bus
 			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 			@event.TimeStamp = DateTimeOffset.UtcNow;
 
-			IList<Action<IMessage>> handlers;
-			if (!Routes.TryGetValue(@event.GetType(), out handlers))
-				return;
-			foreach (Action<IMessage> handler in handlers)
+			IEnumerable<RouteHandlerDelegate> handlers = Routes.GetHandlers(@event);
+			foreach (Action<IMessage> handler in handlers.Select(x => x.Delegate))
 				handler(@event);
 		}
 
@@ -122,16 +114,10 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
-		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler)
+		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType)
 			where TMessage : IMessage
 		{
-			IList<Action<IMessage>> handlers;
-			if (!Routes.TryGetValue(typeof(TMessage), out handlers))
-			{
-				handlers = new List<Action<IMessage>>();
-				Routes.Add(typeof(TMessage), handlers);
-			}
-			handlers.Add(DelegateAdjuster.CastArgument<IMessage, TMessage>(x => handler(x)));
+			Routes.RegisterHandler(handler, targetedType);
 		}
 
 		#endregion

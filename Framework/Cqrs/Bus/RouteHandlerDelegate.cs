@@ -7,11 +7,14 @@
 #endregion
 
 using System;
+using Cqrs.Messages;
 
-namespace Cqrs.Akka.Configuration
+namespace Cqrs.Bus
 {
-	public interface IHandlerResolver
+	public class RouteHandlerDelegate
 	{
-		object Resolve(Type handerType, Type targetedType, object rsn);
+		public Action<IMessage> Delegate { get; set; }
+
+		public Type TargetedType { get; set; }
 	}
 }

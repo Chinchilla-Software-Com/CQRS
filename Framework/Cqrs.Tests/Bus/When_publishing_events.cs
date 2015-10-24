@@ -22,8 +22,8 @@ namespace Cqrs.Tests.Bus
 		public void Should_publish_to_all_handlers()
 		{
 			var handler = new TestAggregateDidSomethingHandler();
-			_bus.RegisterHandler<TestAggregateDidSomething>(handler.Handle);
-			_bus.RegisterHandler<TestAggregateDidSomething>(handler.Handle);
+			_bus.RegisterHandler<TestAggregateDidSomething>(handler.Handle, handler.GetType());
+			_bus.RegisterHandler<TestAggregateDidSomething>(handler.Handle, handler.GetType());
 			_bus.Publish(new TestAggregateDidSomething());
 			Assert.AreEqual(2, handler.TimesRun);
 		}

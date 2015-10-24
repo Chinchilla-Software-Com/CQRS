@@ -7,13 +7,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Configuration;
-using Cqrs.Infrastructure;
 using cdmdotnet.Logging;
 using Cqrs.Messages;
 using Microsoft.ServiceBus.Messaging;
@@ -22,11 +19,11 @@ namespace Cqrs.Azure.ServiceBus
 {
 	public class AzureCommandBusReceiver<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, ICommandHandlerRegistrar, ICommandReceiver<TAuthenticationToken>
 	{
-		protected static IDictionary<Type, IList<Action<IMessage>>> Routes { get; private set; }
+		private static RouteManager Routes { get; set; }
 
 		static AzureCommandBusReceiver()
 		{
-			Routes = new Dictionary<Type, IList<Action<IMessage>>>();
+			Routes = new RouteManager();
 		}
 
 		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
@@ -34,16 +31,10 @@ namespace Cqrs.Azure.ServiceBus
 		{
 		}
 
-		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler)
+		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType)
 			where TMessage : IMessage
 		{
-			IList<Action<IMessage>> handlers;
-			if (!Routes.TryGetValue(typeof(TMessage), out handlers))
-			{
-				handlers = new List<Action<IMessage>>();
-				Routes.Add(typeof(TMessage), handlers);
-			}
-			handlers.Add(DelegateAdjuster.CastArgument<IMessage, TMessage>(x => handler(x)));
+			Routes.RegisterHandler(handler, targetedType);
 		}
 
 		protected virtual void ReceiveCommand(BrokeredMessage message)
@@ -83,17 +74,8 @@ namespace Cqrs.Azure.ServiceBus
 			CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
 			AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
 
-			IList<Action<IMessage>> handlers;
-			if (Routes.TryGetValue(command.GetType(), out handlers))
-			{
-				if (handlers.Count != 1)
-					throw new MultipleCommandHandlersRegisteredException(command.GetType());
-				handlers.Single()(command);
-			}
-			else
-			{
-				throw new NoCommandHandlerRegisteredException(command.GetType());
-			}
+			Action<IMessage> handler = Routes.GetSingleHandler(command).Delegate;
+			handler(command);
 		}
 
 		#region Implementation of ICommandReceiver

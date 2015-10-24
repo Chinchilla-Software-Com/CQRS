@@ -6,12 +6,10 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System;
-
-namespace Cqrs.Akka.Configuration
+namespace Cqrs.Akka.Commands
 {
-	public interface IHandlerResolver
+	public interface IConcurrentAkkaCommandSender<TAuthenticationToken, TTarget>
+		: IAkkaCommandSender<TAuthenticationToken>
 	{
-		object Resolve(Type handerType, Type targetedType, object rsn);
 	}
 }

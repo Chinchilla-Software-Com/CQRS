@@ -6,7 +6,10 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using Akka.Actor;
+using Cqrs.Akka.Configuration;
+using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Messages;
 
@@ -17,14 +20,29 @@ namespace Cqrs.Akka.Commands
 	/// </summary>
 	public class AkkaCommandBus<TAuthenticationToken>
 		: IAkkaCommandSender<TAuthenticationToken>
+		, ICommandHandlerRegistrar
 	{
+		protected static RouteManager Routes { get; private set; }
+
+		protected IHandlerResolver ConcurrentEventBusProxy { get; private set; }
+
+		static AkkaCommandBus()
+		{
+			Routes = new RouteManager();
+		}
+
+		public AkkaCommandBus(IHandlerResolver concurrentEventBusProxy)
+		{
+			ConcurrentEventBusProxy = concurrentEventBusProxy;
+		}
+
 		protected IActorRef ActorReference { get; private set; }
 
 		protected ICommandSender<TAuthenticationToken> CommandSender { get; private set; }
 
 		protected ICommandReceiver<TAuthenticationToken> CommandReceiver { get; private set; }
 
-		internal AkkaCommandBus(IActorRef actorReference, ICommandSender<TAuthenticationToken> commandSender, ICommandReceiver<TAuthenticationToken> commandReceiver)
+		public AkkaCommandBus(IActorRef actorReference, ICommandSender<TAuthenticationToken> commandSender, ICommandReceiver<TAuthenticationToken> commandReceiver)
 		{
 			ActorReference = actorReference;
 			CommandSender = commandSender;
@@ -36,11 +54,26 @@ namespace Cqrs.Akka.Commands
 		public void Send<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			// This will trigger the Akka cycle back publishing... It looks weird, but trust it
-			CommandReceiver.ReceiveCommand(command);
+			RouteHandlerDelegate commandHandler = Routes.GetSingleHandler(command);
+			Type senderType = typeof (IConcurrentAkkaCommandSender<,>).MakeGenericType(typeof(TAuthenticationToken), commandHandler.TargetedType);
+			var proxy = (IActorRef)ConcurrentEventBusProxy.Resolve(senderType, senderType, command.Id);
+			proxy.Tell(command);
 
 			command.Framework = FrameworkType.Akka;
 			CommandSender.Send(command);
+		}
+
+		#endregion
+
+		#region Implementation of IHandlerRegistrar
+
+		/// <summary>
+		/// Register an event or command handler that will listen and respond to events or commands.
+		/// </summary>
+		public void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType)
+			where TMessage : IMessage
+		{
+			Routes.RegisterHandler(handler, targetedType);
 		}
 
 		#endregion

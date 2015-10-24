@@ -6,12 +6,12 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System;
+using System.Collections.Generic;
 
-namespace Cqrs.Akka.Configuration
+namespace Cqrs.Bus
 {
-	public interface IHandlerResolver
+	public class Route
 	{
-		object Resolve(Type handerType, Type targetedType, object rsn);
+		public IList<RouteHandlerDelegate> Handlers { get; set; }
 	}
 }
