@@ -25,7 +25,7 @@ namespace Cqrs.Bus
 		, IEventHandlerRegistrar
 		, ICommandHandlerRegistrar
 	{
-		private Dictionary<Type, List<Action<IMessage>>> Routes { get; set; }
+		private Dictionary<Type, IList<Action<IMessage>>> Routes { get; set; }
 
 		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
 
@@ -41,7 +41,7 @@ namespace Cqrs.Bus
 			CorrelationIdHelper = correlationIdHelper;
 			DependencyResolver = dependencyResolver;
 			Logger = logger;
-			Routes = new Dictionary<Type, List<Action<IMessage>>>();
+			Routes = new Dictionary<Type, IList<Action<IMessage>>>();
 		}
 
 		#region Implementation of ICommandSender<TAuthenticationToken>
@@ -76,7 +76,7 @@ namespace Cqrs.Bus
 				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
-			List<Action<IMessage>> handlers;
+			IList<Action<IMessage>> handlers;
 			if (Routes.TryGetValue(typeof(TCommand), out handlers))
 			{
 				if (handlers.Count != 1)
@@ -108,7 +108,7 @@ namespace Cqrs.Bus
 			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 			@event.TimeStamp = DateTimeOffset.UtcNow;
 
-			List<Action<IMessage>> handlers;
+			IList<Action<IMessage>> handlers;
 			if (!Routes.TryGetValue(@event.GetType(), out handlers))
 				return;
 			foreach (Action<IMessage> handler in handlers)
@@ -125,7 +125,7 @@ namespace Cqrs.Bus
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler)
 			where TMessage : IMessage
 		{
-			List<Action<IMessage>> handlers;
+			IList<Action<IMessage>> handlers;
 			if (!Routes.TryGetValue(typeof(TMessage), out handlers))
 			{
 				handlers = new List<Action<IMessage>>();

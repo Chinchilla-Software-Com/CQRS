@@ -6,16 +6,13 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-namespace Cqrs.Events
-{
-	public interface IEventReceiver
-	{
-		void Start();
-	}
+using System;
+using Akka.Actor;
 
-	public interface IEventReceiver<TAuthenticationToken>
-		: IEventReceiver
+namespace Cqrs.Akka.Domain
+{
+	public interface IAkkaAggregateResolver
 	{
-		void ReceiveEvent(IEvent<TAuthenticationToken> @event);
+		IActorRef Resolve<TAggregate>(Guid rsn);
 	}
 }

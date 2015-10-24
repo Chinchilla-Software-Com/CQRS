@@ -5,17 +5,9 @@
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
-
-namespace Cqrs.Events
+namespace Cqrs.Akka.Domain.Commands
 {
-	public interface IEventReceiver
+	public class GetAkkaAggregateRootId
 	{
-		void Start();
-	}
-
-	public interface IEventReceiver<TAuthenticationToken>
-		: IEventReceiver
-	{
-		void ReceiveEvent(IEvent<TAuthenticationToken> @event);
 	}
 }

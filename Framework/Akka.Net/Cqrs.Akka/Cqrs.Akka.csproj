@@ -51,6 +51,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,9 +60,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AkkaCommandBus.cs" />
+    <Compile Include="Commands\IAkkaCommandSender.cs" />
     <Compile Include="Configuration\AkkaBusRegistrar.cs" />
+    <Compile Include="Configuration\IHandlerResolver.cs" />
     <Compile Include="Domain\AkkaAggregateRoot.cs" />
+    <Compile Include="Domain\AkkaAggregateRootProxy.cs" />
+    <Compile Include="Domain\AkkaRepository.cs" />
+    <Compile Include="Domain\Commands\GetAkkaAggregateRootVersion.cs" />
+    <Compile Include="Domain\Commands\GetAkkaAggregateRootId.cs" />
+    <Compile Include="Domain\Factories\AkkaAggregateFactory.cs" />
+    <Compile Include="Domain\IAkkaAggregateRootProxy.cs" />
     <Compile Include="Events\AkkaEventBus.cs" />
+    <Compile Include="Domain\IAkkaAggregateResolver.cs" />
+    <Compile Include="Events\IAkkaEventBus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +87,7 @@
       <Name>Cqrs</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

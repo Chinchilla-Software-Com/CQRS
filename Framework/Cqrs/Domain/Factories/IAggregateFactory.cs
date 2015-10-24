@@ -1,7 +1,9 @@
-﻿namespace Cqrs.Domain.Factories
+﻿using System;
+
+namespace Cqrs.Domain.Factories
 {
 	public interface IAggregateFactory
 	{
-		TAggregate CreateAggregate<TAggregate>();
+		TAggregate CreateAggregate<TAggregate>(Guid? rsn = null);
 	}
 }

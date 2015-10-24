@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using Cqrs.Domain;
 using Cqrs.Events;
 using Cqrs.Messages;
@@ -66,6 +67,8 @@ namespace Cqrs.Commands
 	/// </remarks>
 	public interface ICommand<TAuthenticationToken> : IMessageWithAuthenticationToken<TAuthenticationToken>
 	{
+		Guid Id { get; set; }
+
 		int ExpectedVersion { get; set; }
 	}
 }

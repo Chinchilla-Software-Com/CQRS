@@ -8,13 +8,13 @@
 
 namespace Cqrs.Commands
 {
-	public interface ICommandReceiver<TAuthenticationToken> : ICommandReceiver
-	{
-		void ReceiveCommand(ICommand<TAuthenticationToken> command);
-	}
-
 	public interface ICommandReceiver
 	{
 		void Start();
+	}
+
+	public interface ICommandReceiver<TAuthenticationToken> : ICommandReceiver
+	{
+		void ReceiveCommand(ICommand<TAuthenticationToken> command);
 	}
 }

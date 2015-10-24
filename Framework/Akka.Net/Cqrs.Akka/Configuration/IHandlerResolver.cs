@@ -6,16 +6,12 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-namespace Cqrs.Events
-{
-	public interface IEventReceiver
-	{
-		void Start();
-	}
+using System;
 
-	public interface IEventReceiver<TAuthenticationToken>
-		: IEventReceiver
+namespace Cqrs.Akka.Configuration
+{
+	public interface IHandlerResolver
 	{
-		void ReceiveEvent(IEvent<TAuthenticationToken> @event);
+		object Resolve(Type serviceType, object rsn);
 	}
 }

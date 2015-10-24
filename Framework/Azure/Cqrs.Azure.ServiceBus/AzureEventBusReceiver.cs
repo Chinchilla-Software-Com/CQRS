@@ -19,7 +19,7 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	public class AzureEventBusReceiver<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IEventHandlerRegistrar, IEventReceiver
+	public class AzureEventBusReceiver<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IEventHandlerRegistrar, IEventReceiver<TAuthenticationToken>
 	{
 		protected static IDictionary<Type, List<Action<IMessage>>> Routes { get; private set; }
 
@@ -86,7 +86,7 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
-		protected virtual void ReceiveEvent(IEvent<TAuthenticationToken> @event)
+		public virtual void ReceiveEvent(IEvent<TAuthenticationToken> @event)
 		{
 			switch (@event.Framework)
 			{

@@ -17,11 +17,11 @@ namespace Cqrs.Domain
 {
 	public class Repository<TAuthenticationToken> : IRepository<TAuthenticationToken>
 	{
-		private IEventStore<TAuthenticationToken> EventStore { get; set; }
+		protected IEventStore<TAuthenticationToken> EventStore { get; private set; }
 
-		private IEventPublisher<TAuthenticationToken> Publisher { get; set; }
+		protected IEventPublisher<TAuthenticationToken> Publisher { get; private set; }
 
-		private IAggregateFactory AggregateFactory { get; set; }
+		protected IAggregateFactory AggregateFactory { get; private set; }
 
 		public Repository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher)
 		{
@@ -30,7 +30,7 @@ namespace Cqrs.Domain
 			AggregateFactory = aggregateFactory;
 		}
 
-		public void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
+		public virtual void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			IList<IEvent<TAuthenticationToken>> uncommittedChanges = aggregate.GetUncommittedChanges().ToList();
@@ -67,13 +67,13 @@ namespace Cqrs.Domain
 				Publisher.Publish(@event);
 		}
 
-		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)
+		public virtual TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			return LoadAggregate<TAggregateRoot>(aggregateId, events);
 		}
 
-		private TAggregateRoot LoadAggregate<TAggregateRoot>(Guid id, IList<IEvent<TAuthenticationToken>> events = null)
+		protected virtual TAggregateRoot LoadAggregate<TAggregateRoot>(Guid id, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>();

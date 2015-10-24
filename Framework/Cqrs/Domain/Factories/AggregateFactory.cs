@@ -15,18 +15,18 @@ namespace Cqrs.Domain.Factories
 			DependencyResolver = dependencyResolver;
 		}
 
-		public TAggregate CreateAggregate<TAggregate>()
+		public virtual TAggregate CreateAggregate<TAggregate>(Guid? rsn = null)
 		{
 			try
 			{
 				return DependencyResolver.Resolve<TAggregate>();
 			}
-			catch (System.Exception)
+			catch (Exception)
 			{
 				DependencyResolver.Resolve<ILogger>().LogDebug(string.Format("Using the dependency resolver to create an instance of the aggregate typed '{0}' failed.", typeof(TAggregate).FullName), "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate");
 				try
 				{
-					return (TAggregate)Activator.CreateInstance(typeof(TAggregate), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { DependencyResolver, DependencyResolver.Resolve<ILogger>() }, null);
+					return (TAggregate)Activator.CreateInstance(typeof(TAggregate), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { DependencyResolver, DependencyResolver.Resolve<ILogger>(), rsn }, null);
 				}
 				catch (MissingMethodException exception)
 				{

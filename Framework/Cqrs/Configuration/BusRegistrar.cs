@@ -72,7 +72,7 @@ namespace Cqrs.Configuration
 
 		/// <summary>
 		/// Extract the <see cref="IHandlerRegistrar.RegisterHandler{TMessage}"/> method from the provided <paramref name="bus"/>
-		/// Created an <see cref="Action"/> around the provided <paramref name="executorType"/>
+		/// Create an <see cref="Action"/> around the provided <paramref name="executorType"/>
 		/// Then register the created <see cref="Action"/> using the extracted <see cref="IHandlerRegistrar.RegisterHandler{TMessage}"/> method
 		/// </summary>
 		protected virtual void InvokeHandler(Type @interface, IHandlerRegistrar bus, Type executorType)

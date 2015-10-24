@@ -22,11 +22,11 @@ namespace Cqrs.Azure.ServiceBus
 {
 	public class AzureCommandBusReceiver<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, ICommandHandlerRegistrar, ICommandReceiver<TAuthenticationToken>
 	{
-		protected static IDictionary<Type, List<Action<IMessage>>> Routes { get; private set; }
+		protected static IDictionary<Type, IList<Action<IMessage>>> Routes { get; private set; }
 
 		static AzureCommandBusReceiver()
 		{
-			Routes = new Dictionary<Type, List<Action<IMessage>>>();
+			Routes = new Dictionary<Type, IList<Action<IMessage>>>();
 		}
 
 		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
@@ -37,7 +37,7 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler)
 			where TMessage : IMessage
 		{
-			List<Action<IMessage>> handlers;
+			IList<Action<IMessage>> handlers;
 			if (!Routes.TryGetValue(typeof(TMessage), out handlers))
 			{
 				handlers = new List<Action<IMessage>>();
@@ -83,7 +83,7 @@ namespace Cqrs.Azure.ServiceBus
 			CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
 			AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
 
-			List<Action<IMessage>> handlers;
+			IList<Action<IMessage>> handlers;
 			if (Routes.TryGetValue(command.GetType(), out handlers))
 			{
 				if (handlers.Count != 1)
