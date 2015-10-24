@@ -85,7 +85,7 @@ namespace Cqrs.Configuration
 				.Where(mi => mi.Name == "RegisterHandler")
 				.Where(mi => mi.IsGenericMethod)
 				.Where(mi => mi.GetGenericArguments().Count() == 1)
-				.Single(mi => mi.GetParameters().Count() == 1);
+				.Single(mi => mi.GetParameters().Count() == 2);
 
 			IList<Type> interfaceGenericArguments = @interface.GetGenericArguments().ToList();
 			if (interfaceGenericArguments.Count == 2)
