@@ -64,7 +64,7 @@ namespace Cqrs.Configuration
 							Type[] genericArguments = typesFromAssemblyContainingMessage.GetGenericArguments().Take(2).ToArray();
 							safeExecutorType = safeExecutorType.MakeGenericType(genericArguments.Take(2).ToArray());
 						}
-						InvokeHandler(@interface, handlerRegistrar, safeExecutorType);
+						InvokeHandler(@interface, handlerRegistrar, resolveMessageHandlerInterface, safeExecutorType);
 					}
 				}
 			}
@@ -75,7 +75,7 @@ namespace Cqrs.Configuration
 		/// Create an <see cref="Action"/> around the provided <paramref name="executorType"/>
 		/// Then register the created <see cref="Action"/> using the extracted <see cref="IHandlerRegistrar.RegisterHandler{TMessage}"/> method
 		/// </summary>
-		protected virtual void InvokeHandler(Type @interface, IHandlerRegistrar bus, Type executorType)
+		protected virtual void InvokeHandler(Type @interface, IHandlerRegistrar bus, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, Type executorType)
 		{
 			MethodInfo registerExecutorMethod = null;
 
@@ -114,7 +114,7 @@ namespace Cqrs.Configuration
 			if (registerExecutorMethod == null)
 				throw new InvalidOperationException("No executor method could be compiled for " + @interface.FullName);
 
-			HandlerDelegate handlerDelegate = BuildDelegateAction(executorType);
+			HandlerDelegate handlerDelegate = BuildDelegateAction(executorType, resolveMessageHandlerInterface);
 			
 			InvokeHandlerDelegate(registerExecutorMethod, bus, handlerDelegate);
 		}
@@ -124,7 +124,7 @@ namespace Cqrs.Configuration
 			registerExecutorMethod.Invoke(bus, new object[] { handlerDelegate.Delegate, handlerDelegate.TargetedType });
 		}
 
-		protected virtual HandlerDelegate BuildDelegateAction(Type executorType)
+		protected virtual HandlerDelegate BuildDelegateAction(Type executorType, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface)
 		{
 			Action<dynamic> handlerDelegate = x =>
 			{

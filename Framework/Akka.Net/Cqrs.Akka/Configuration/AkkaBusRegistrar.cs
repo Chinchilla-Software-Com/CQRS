@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Akka.Actor;
 using cdmdotnet.Logging;
@@ -34,10 +35,11 @@ namespace Cqrs.Akka.Configuration
 
 		#region Overrides of BusRegistrar
 
-		protected override HandlerDelegate BuildDelegateAction(Type executorType)
+		protected override HandlerDelegate BuildDelegateAction(Type executorType, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface)
 		{
 			Type targetedType = executorType;
-			if (executorType.GenericTypeArguments.Length > 2)
+			Type @interface = resolveMessageHandlerInterface(executorType).FirstOrDefault();
+			if (@interface != null && @interface.GenericTypeArguments.Length > 2)
 				targetedType = executorType.GenericTypeArguments[1];
 
 			Action<dynamic> handlerDelegate = x =>

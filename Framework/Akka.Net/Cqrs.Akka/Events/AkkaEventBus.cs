@@ -25,9 +25,9 @@ namespace Cqrs.Akka.Events
 
 		protected IEventReceiver<TAuthenticationToken> EventReceiver { get; private set; }
 
-		public AkkaEventBus(IActorRef actorReference, IEventPublisher<TAuthenticationToken> eventPublisher, IEventReceiver<TAuthenticationToken> eventReceiver)
+		public AkkaEventBus(IEventPublisher<TAuthenticationToken> eventPublisher, IEventReceiver<TAuthenticationToken> eventReceiver)
 		{
-			ActorReference = actorReference;
+			ActorReference = null;
 			EventPublisher = eventPublisher;
 			EventReceiver = eventReceiver;
 		}
