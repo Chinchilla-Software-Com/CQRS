@@ -114,7 +114,7 @@ switch(commandHandlerTechnology)
 			OnCreate<#= className #>(command, ref item);
 			if (item == null)
 			{
-				item = new <#= className #>(DependencyResolver, Log, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
+				item = new <#= className #>(DependencyResolver, Logger, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
 				UnitOfWork.Add(item);
 			}
 			item.Create<#= className #>(<#
