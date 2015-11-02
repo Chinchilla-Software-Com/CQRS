@@ -228,18 +228,19 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 		public virtual void RegisterCqrsCommandHandlers()
 		{
 			var dependencyResolver = Resolve<IDependencyResolver>();
+			var handlerResolver = Resolve<IHandlerResolver>();
 			var registrar = new <#
 string eventHandlerTechnology = GetEventHandlerTechnology(this.Element);
 switch(eventHandlerTechnology)
 {
 	case "Akka":
-		#>Cqrs.Akka.Configuration.AkkaBusRegistrar<#
+		#>Cqrs.Akka.Configuration.AkkaBusRegistrar<<#= stereoTypeProperties.PropertyInstances.Single(property => property.Name == "AuthenticationTokenType").Value #>>(dependencyResolver, handlerResolver)<#
 		break;
 	default:
-		#>BusRegistrar<#
+		#>BusRegistrar(dependencyResolver)<#
 		break;
 }
-#>(dependencyResolver);
+#>;
 			RegisterCqrsCommandHandlers(registrar);
 		}
 
