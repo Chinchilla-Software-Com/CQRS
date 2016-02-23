@@ -1,0 +1,64 @@
+<#@ Assembly Name="Microsoft.VisualStudio.ArchitectureTools.Extensibility.dll" #>
+<#@ Import Namespace="Microsoft.VisualStudio.Uml.AuxiliaryConstructs" #>
+<#@ Import Namespace="Microsoft.VisualStudio.Uml.Classes" #>
+<#@ Import Namespace="Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml" #>
+<#@ Import Namespace="System" #>
+<#+
+	///<summary>
+	/// Gets the collection of <cref="System.ComponentModel.DataAnnotations.ValidationAttribute" /> objects that will 
+	/// be applied during validation. For example, <cref="RequiredAttribute"/> is returned as the string "[Required]".
+	///</summary>
+	///<remarks>
+	/// When <cref="System.ComponentModel.DataAnnotations.RequiredAttribute"/> is applied to <cref="System.DateTime"/>
+	/// or <cref="System.Guid"/> values it will always interpret these as valid, even if they are only set to the default
+	/// value for that type. This is not the behaviour that we intend in most cases, therefore the "Required" stereotype
+	/// also generates a <cref="System.ComponentModel.DataAnnotations.RegularExpressionAttribute"/> which checks for these
+	/// cases.
+	///</remarks>
+	/// <param name="property">The C# property (UML attribute) which the validation attributes will be applied to </param>
+	/// <returns>A list of formatted strings that can be added before the property declaration. If no attributes are
+	/// applied then returns an empty list.</returns>
+	
+	private static List<string> GetValidationAttributesForProperty(IProperty property)
+	{
+		var attributes = new List<string>();
+
+		foreach(var attributeStereotype in property.AppliedStereotypes)
+		{
+			if(attributeStereotype.Name == "Required")
+			{
+				if(property.Type.Name == "Guid")
+				{
+					attributes.Add("[RegularExpression(ValidationExpressions.NonemptyGuid)]");
+				}
+				else if(property.Type.Name == "DateTime")
+				{
+					attributes.Add("[RegularExpression(ValidationExpressions.NonemptyDateTime)]");
+				}
+				else
+				{
+					attributes.Add("[Required]");
+				}
+			}
+			else if(attributeStereotype.Name == "StringLength")
+			{
+				var minLength = attributeStereotype.PropertyInstances.FirstOrDefault(x => x.Name == "MinLength");
+				var maxLength = attributeStereotype.PropertyInstances.FirstOrDefault(x => x.Name == "MaxLength");
+
+				if(minLength != null && maxLength != null)
+				{
+					var minLengthValue = int.Parse(minLength.Value);
+					var maxLengthValue = int.Parse(maxLength.Value);
+					attributes.Add(string.Format("[StringLength(MinimumLength = {0}, MaximumLength = {1})]", minLengthValue, maxLengthValue));
+				}
+			}
+			else if(attributeStereotype.Name == "RegularExpression")
+			{
+				var expression = attributeStereotype.PropertyInstances.First(x => x.Name == "Expression");
+				attributes.Add(string.Format("[RegularExpression(@\"{0}\")]", expression.Value));
+			}
+		}
+
+		return attributes;
+	}
+#>

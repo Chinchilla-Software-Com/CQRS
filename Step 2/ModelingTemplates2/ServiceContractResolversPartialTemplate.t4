@@ -1,0 +1,78 @@
+<#@ Include File="TemplateHeader.t4" #>
+<#@ Modeling ElementType="Microsoft.VisualStudio.Uml.Classes.IClass" Processor="ModelingProcessor" ApplyStereotypes="CSharp" #>
+<#@ Import Namespace="Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml" #>
+<#@ Import Namespace="Microsoft.VisualStudio.Uml.AuxiliaryConstructs" #>
+<#@ import namespace="Microsoft.VisualStudio.Uml.Classes" #>
+<#@ import namespace="System.Linq" #>
+<#@ Include File="CSharpCommentHelpers.t4" #>
+<#@ Include File="CSharpHelpers.t4" #>
+<#@ Include File="CqrsTemplateHelpers.t4" #>
+<#@ Include File="ModelHelper.t4" #>
+<#@ Output Extension=".cs" #>
+<#
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "Service");
+string authenticationTokenType = GetDomainAuthenticationTokenType(this.Element);
+
+string classNamespace = GetNamespace(this.Element.Namespace);
+string className = ClassifierName(this.Element);
+string baseClass = GetBaseClass(this.Element);
+if (!string.IsNullOrWhiteSpace(baseClass))
+	baseClass = ": " + baseClass;
+
+// using statements
+WriteUsingStatements(this.Element);
+#>
+using Cqrs.Services;
+
+namespace <#= classNamespace #>
+{
+<#
+		IList<IOperation> collectionMethods = GetMethodList(this.Element);
+		// Methods
+		foreach(IOperation collectionMethod in collectionMethods)
+		{
+			string methodTypeName = MethodType(collectionMethod).Replace("<", "<Entities.");
+			if (methodTypeName == "void")
+			{
+				methodTypeName = string.Empty;
+			}
+			else
+			{
+				if (!methodTypeName.Contains("<"))
+					methodTypeName = "Entities." + methodTypeName;
+				methodTypeName = methodTypeName + ">";
+			}
+
+			string methodParameterList = GetMethodParameterList(collectionMethod);
+			if (!string.IsNullOrWhiteSpace(methodParameterList))
+				methodParameterList = methodParameterList + ", ";
+
+			var methodSignatureParameter = string.Empty;
+
+			var returnParameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction == ParameterDirectionKind.Return);
+			var parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);
+			if (returnParameter == null && parameters.Any())
+				methodSignatureParameter = string.Format("ServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, collectionMethod.Name);
+			else if (returnParameter != null)
+				methodSignatureParameter = string.Format("ServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, collectionMethod.Name);
+			else
+				methodSignatureParameter = string.Format("ServiceRequest<{0}> serviceRequest", authenticationTokenType);
+#>
+
+	/// <summary>
+	/// A <see cref="DataContractResolver"/> for using <see cref="I<#= className #>.<#= collectionMethod.Name #>"/> via WCF
+	/// </summary>
+	public partial class <#= className #><#= collectionMethod.Name #>Resolver
+	{
+	}
+
+<#
+		}
+#>
+}
+<#+
+	protected override bool AppliesToElement()
+	{
+		return ShouldGenerateCodeForElement(this.Element) && this.Element.AppliedStereotypes.Any(property => property.Name == "Service");
+	}
+#>
