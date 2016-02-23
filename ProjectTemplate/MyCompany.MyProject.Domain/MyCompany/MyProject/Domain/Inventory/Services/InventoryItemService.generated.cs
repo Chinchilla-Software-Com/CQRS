@@ -21,7 +21,10 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using cdmdotnet.Logging;
 using Cqrs.Authentication;
+using Cqrs.Commands;
+using Cqrs.Repositories.Queries;
 using Cqrs.Services;
 
 namespace MyCompany.MyProject.Domain.Inventory.Services
@@ -32,6 +35,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 		public virtual IServiceResponseWithResultData<IEnumerable<Entities.InventoryItemSummaryEntity>> GetAll(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceGetAllParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			IServiceResponseWithResultData<IEnumerable<Entities.InventoryItemSummaryEntity>> results = null;
 			OnGetAll(serviceRequest, ref results);
 			return CompleteResponse(results);
@@ -43,6 +47,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 		public virtual IServiceResponseWithResultData<Entities.InventoryItemEntity> GetByRsn(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceGetByRsnParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			IServiceResponseWithResultData<Entities.InventoryItemEntity> results = null;
 			OnGetByRsn(serviceRequest, ref results);
 			return CompleteResponse(results);
@@ -54,6 +59,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 		public virtual IServiceResponse ChangeName(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceChangeNameParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			IServiceResponse results = null;
 			OnChangeName(serviceRequest, ref results);
 			return CompleteResponse(results);
@@ -65,6 +71,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 		public virtual IServiceResponse CheckIn(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceCheckInParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			IServiceResponse results = null;
 			OnCheckIn(serviceRequest, ref results);
 			return CompleteResponse(results);
@@ -76,6 +83,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 		public virtual IServiceResponse Create(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceCreateParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			IServiceResponse results = null;
 			OnCreate(serviceRequest, ref results);
 			return CompleteResponse(results);
@@ -87,6 +95,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 		public virtual IServiceResponse Deactivate(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceDeactivateParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			IServiceResponse results = null;
 			OnDeactivate(serviceRequest, ref results);
 			return CompleteResponse(results);
@@ -98,6 +107,7 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 		public virtual IServiceResponse Remove(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, InventoryItemServiceRemoveParameters> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			IServiceResponse results = null;
 			OnRemove(serviceRequest, ref results);
 			return CompleteResponse(results);

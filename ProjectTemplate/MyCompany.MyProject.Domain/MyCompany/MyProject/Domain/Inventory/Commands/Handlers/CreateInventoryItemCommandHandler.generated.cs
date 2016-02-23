@@ -12,39 +12,63 @@
 // </copyright>
 // -----------------------------------------------------------------------
 #endregion
+using Cqrs.Domain;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Domain;
-using Cqrs.Logging;
+using Cqrs.Domain.Exceptions;
+using Cqrs.Events;
+using cdmdotnet.Logging;
 
 namespace MyCompany.MyProject.Domain.Inventory.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
-	public  partial class CreateInventoryItemCommandHandler : ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, CreateInventoryItemCommand>
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
+	public  partial class CreateInventoryItemCommandHandler
+		
+		: ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, CreateInventoryItemCommand>
 	{
 		protected IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> UnitOfWork { get; private set; }
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
-		protected ILog Log { get; private set; }
+		protected ILogger Logger { get; private set; }
 
-		public CreateInventoryItemCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork, IDependencyResolver dependencyResolver, ILog log)
+		public CreateInventoryItemCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork, IDependencyResolver dependencyResolver, ILogger logger)
 		{
 			UnitOfWork = unitOfWork;
 			DependencyResolver = dependencyResolver;
-			Log = log;
+			Logger = logger;
 		}
 
 		public string Name { get; set; }
-
 
 		#region Implementation of ICommandHandler<in CreateInventoryItem>
 
 		public void Handle(CreateInventoryItemCommand command)
 		{
+			ICommandValidator<Cqrs.Authentication.ISingleSignOnToken, CreateInventoryItemCommand> commandValidator = null;
+			try
+			{
+				commandValidator = DependencyResolver.Resolve<ICommandValidator<Cqrs.Authentication.ISingleSignOnToken, CreateInventoryItemCommand>>();
+			}
+			catch (Exception exception)
+			{
+				Logger.LogDebug("Locating an ICommandValidator failed.", "CreateInventoryItemCommandHandler\\Handle(CreateInventoryItemCommand)", exception);
+			}
+
+			if (commandValidator != null && !commandValidator.IsCommandValid(command))
+			{
+				Logger.LogInfo("The provided command is not valid.", "CreateInventoryItemCommandHandler\\Handle(CreateInventoryItemCommand)");
+				return;
+			}
+
 			InventoryItem item = null;
 			OnCreateInventoryItem(command, ref item);
 			if (item == null)
@@ -52,14 +76,35 @@ namespace MyCompany.MyProject.Domain.Inventory.Commands.Handlers
 				item = new InventoryItem(DependencyResolver, Log, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
 				UnitOfWork.Add(item);
 			}
-			item.CreateInventoryItem(command.Name);
+			var actor = item as IActorRef;
+			if (actor != null)
+				actor.Tell(new CreateInventoryItemParameters{name: command.Name});
+			else
+				item.CreateInventoryItem(name = command.Name);
 			OnCreateInventoryItemDone(command, item);
 			OnCommit(command, item);
-			UnitOfWork.Commit();
+			try
+			{
+				UnitOfWork.Commit();
+			}
+			catch (ConcurrencyException exception)
+			{
+				Logger.LogDebug(string.Format("Committing the Unit Of Work for command of type '{0}' with Rsn '{1}' failed.", command.GetType().FullName, command.Rsn), "Handle/CreateInventoryItemCommand", exception: new DuplicateCreateCommandException(command.GetType(), command.Rsn, exception));
+				var eventPublisher = DependencyResolver.Resolve<IEventPublisher<Cqrs.Authentication.ISingleSignOnToken>>();
+
+				var duplicateCreateCommandEvent = new DuplicateCreateCommandEvent<Cqrs.Authentication.ISingleSignOnToken>
+				{
+					Id = Guid.NewGuid(),
+					AggregateRsn = command.Rsn,
+					AggregateType = typeof(InventoryItem)
+				};
+				eventPublisher.Publish(duplicateCreateCommandEvent);
+			}
 			OnCommited(command, item);
 		}
 
 		#endregion
+
 		partial void OnCreateInventoryItem(CreateInventoryItemCommand command, ref InventoryItem item);
 
 		partial void OnCreateInventoryItemDone(CreateInventoryItemCommand command, InventoryItem item);

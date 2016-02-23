@@ -19,7 +19,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using Cqrs.Commands;
 using Cqrs.Authentication;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Cqrs.Repositories.Queries;
 using Cqrs.Services;
 using MyCompany.MyProject.Domain.Authentication.Commands;
@@ -27,8 +27,8 @@ using MyCompany.MyProject.Domain.Authentication.Repositories;
 
 namespace MyCompany.MyProject.Domain.Authentication.Services
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
-	[DataContract(Namespace="http://www.cdmdotnet.com/MyProject/Domain/Authentication/1001/")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
+	[DataContract(Namespace="https://cqrs/MyProject/Domain/Authentication/1001/")]
 	public partial class UserService : IUserService
 	{
 		protected ICommandSender<Cqrs.Authentication.ISingleSignOnToken> CommandSender { get; private set; }
@@ -41,30 +41,34 @@ namespace MyCompany.MyProject.Domain.Authentication.Services
 
 		protected IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> AuthenticationTokenHelper { get; set; }
 
-		protected ICorrolationIdHelper CorrolationIdHelper { get; set; }
+		protected ICorrelationIdHelper CorrelationIdHelper { get; set; }
 
-		public UserService(ICommandSender<Cqrs.Authentication.ISingleSignOnToken> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper, IUserRepository userRepository)
+		protected ILogger Logger { get; private set; }
+
+		public UserService(ICommandSender<Cqrs.Authentication.ISingleSignOnToken> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IUserRepository userRepository, ILogger logger)
 		{
 			CommandSender = commandSender;
 			UnitOfWorkService = unitOfWorkService;
 			QueryFactory = queryFactory;
 			AuthenticationTokenHelper = authenticationTokenHelper;
-			CorrolationIdHelper = corrolationIdHelper;
+			CorrelationIdHelper = correlationIdHelper;
 			UserRepository = userRepository;
+			Logger = logger;
 		}
 
 		/// <summary>
 		/// Create a new instance of the <see cref="Entities.UserEntity"/>
 		/// </summary>
-		[OperationContract]
 		public IServiceResponseWithResultData<Entities.UserEntity> CreateUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			UnitOfWorkService.SetCommitter(this);
 			Entities.UserEntity item = serviceRequest.Data;
-			item.Rsn = Guid.NewGuid();
+			if (item.Rsn == Guid.Empty)
+				item.Rsn = Guid.NewGuid();
 
-			var command = new CreateUserCommand(item.Rsn, item.Name);
+			var command = new CreateUserCommand(item.Rsn);
 			OnCreateUser(serviceRequest, command);
 			CommandSender.Send(command);
 			OnCreatedUser(serviceRequest, command);
@@ -80,10 +84,10 @@ namespace MyCompany.MyProject.Domain.Authentication.Services
 		/// <summary>
 		/// Update an existing instance of the <see cref="Entities.UserEntity"/>
 		/// </summary>
-		[OperationContract]
 		public IServiceResponseWithResultData<Entities.UserEntity> UpdateUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			UnitOfWorkService.SetCommitter(this);
 			Entities.UserEntity item = serviceRequest.Data;
 
@@ -91,7 +95,7 @@ namespace MyCompany.MyProject.Domain.Authentication.Services
 			if (locatedItem == null)
 				return CompleteResponse(new ServiceResponseWithResultData<Entities.UserEntity> { State = ServiceResponseStateType.FailedValidation });
 
-			var command = new UpdateUserCommand(item.Rsn, item.Name);
+			var command = new UpdateUserCommand(item.Rsn);
 			ServiceResponseStateType? serviceResponseStateType = null;
 			OnUpdateUser(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
 			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
@@ -113,10 +117,10 @@ namespace MyCompany.MyProject.Domain.Authentication.Services
 		/// <summary>
 		/// Logically delete an existing instance of the <see cref="Entities.UserEntity"/>
 		/// </summary>
-		[OperationContract]
 		public IServiceResponse DeleteUser(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, Entities.UserEntity> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 			UnitOfWorkService.SetCommitter(this);
 			Entities.UserEntity item = serviceRequest.Data;
 
@@ -149,7 +153,7 @@ namespace MyCompany.MyProject.Domain.Authentication.Services
 		protected virtual TServiceResponse CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
 			where TServiceResponse : IServiceResponse
 		{
-			serviceResponse.CorrolationId = CorrolationIdHelper.GetCorrolationId();
+			serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 			return serviceResponse;
 		}
 	}

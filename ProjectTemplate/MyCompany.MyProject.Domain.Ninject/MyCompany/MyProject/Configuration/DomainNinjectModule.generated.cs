@@ -17,14 +17,14 @@ using System.CodeDom.Compiler;
 using System.Linq;
 using Cqrs.Configuration;
 using Cqrs.DataStores;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Cqrs.Services;
 using Ninject.Modules;
 using Ninject.Parameters;
 
 namespace MyCompany.MyProject.Domain.Configuration
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
 	public partial class DomainNinjectModule : NinjectModule
 	{
 		#region Overrides of NinjectModule
@@ -34,24 +34,28 @@ namespace MyCompany.MyProject.Domain.Configuration
 		/// </summary>
 		public override void Load()
 		{
+			RegisterLogger();
+
 			RegisterFactories();
 			RegisterServices();
 			RegisterRepositories();
 			RegisterCqrsCommandHandlers();
-
-			RegisterLogger();
 		}
 
 		#endregion
 
 		/// <summary>
-		/// Register the <see cref="ILog"/>
+		/// Register the <see cref="ILogger"/>
 		/// </summary>
 		protected virtual void RegisterLogger()
 		{
-			Bind<ILog>()
-				.To<ConsoleLog>()
-				.InSingletonScope();
+			bool isLoggerBound = Kernel.GetBindings(typeof(ILogger)).Any();
+			if (!isLoggerBound)
+			{
+				Bind<ILogger>()
+					.To<ConsoleLogger>()
+					.InSingletonScope();
+			}
 		}
 
 		/// <summary>
@@ -66,7 +70,11 @@ namespace MyCompany.MyProject.Domain.Configuration
 			Bind<Cqrs.Authentication.ISingleSignOnTokenFactory>()
 				.To<Cqrs.Authentication.SingleSignOnTokenFactory>()
 				.InSingletonScope();
+
+			OnFactoriesRegistered();
 		}
+
+		partial void OnFactoriesRegistered();
 
 		/// <summary>
 		/// Register the all services
@@ -83,7 +91,14 @@ namespace MyCompany.MyProject.Domain.Configuration
 			Bind<Authentication.Services.IUserService>()
 				.To<Authentication.Services.UserService>()
 				.InSingletonScope();
+
+			// InventoryItemService does not need a binding
+			// UserService does not need a binding
+
+			OnServicesRegistered();
 		}
+
+		partial void OnServicesRegistered();
 
 		/// <summary>
 		/// Register the all repositories
@@ -96,7 +111,11 @@ namespace MyCompany.MyProject.Domain.Configuration
 			Bind<Authentication.Repositories.IUserRepository>()
 				.To<Authentication.Repositories.UserRepository>()
 				.InSingletonScope();
+
+			OnRepositoriesRegistered();
 		}
+
+		partial void OnRepositoriesRegistered();
 
 		/// <summary>
 		/// Register the all Cqrs command handlers
@@ -104,6 +123,7 @@ namespace MyCompany.MyProject.Domain.Configuration
 		public virtual void RegisterCqrsCommandHandlers()
 		{
 			var dependencyResolver = Resolve<IDependencyResolver>();
+			var handlerResolver = Resolve<IHandlerResolver>();
 			var registrar = new BusRegistrar(dependencyResolver);
 			RegisterCqrsCommandHandlers(registrar);
 		}
@@ -115,7 +135,11 @@ namespace MyCompany.MyProject.Domain.Configuration
 		{
 			// This will load all the handlers from the domain assembly by reading all command handlers AND event handlers in the same assembly as the provided type
 			registrar.Register(typeof(Authentication.Commands.Handlers.CreateUserCommandHandler));
+
+			OnCqrsCommandHandlersRegistered();
 		}
+
+		partial void OnCqrsCommandHandlersRegistered();
 
 		protected T Resolve<T>()
 		{

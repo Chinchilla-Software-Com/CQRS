@@ -12,26 +12,34 @@
 // </copyright>
 // -----------------------------------------------------------------------
 #endregion
+using Cqrs.Domain;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Domain;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 
 namespace MyCompany.MyProject.Domain.Authentication.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
-	public  partial class CreateUserCommandHandler : ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, CreateUserCommand>
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
+	public  partial class CreateUserCommandHandler
+		
+		: ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, CreateUserCommand>
 	{
 		protected IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> UnitOfWork { get; private set; }
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
-		protected ILog Log { get; private set; }
+		protected ILogger Log { get; private set; }
 
-		public CreateUserCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork, IDependencyResolver dependencyResolver, ILog log)
+
+		public CreateUserCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork, IDependencyResolver dependencyResolver, ILogger log)
 		{
 			UnitOfWork = unitOfWork;
 			DependencyResolver = dependencyResolver;
@@ -46,10 +54,10 @@ namespace MyCompany.MyProject.Domain.Authentication.Commands.Handlers
 			OnCreateUser(command, ref item);
 			if (item == null)
 			{
-				item = new User(DependencyResolver, Log, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
+				item = new User(DependencyResolver, Logger, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
 				UnitOfWork.Add(item);
 			}
-			item.CreateUser(command.Name);
+			item.CreateUser();
 			OnCreatedUser(command, item);
 			OnAddToUnitOfWork(command, item);
 			UnitOfWork.Add(item);

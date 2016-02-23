@@ -20,9 +20,12 @@ using Cqrs.Domain;
 
 namespace MyCompany.MyProject.Domain.Inventory.Events.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
-	public  partial class DeactivateInventoryItemFailedDueAlreadyActivatedEventHandler : IEventHandler<Cqrs.Authentication.ISingleSignOnToken, DeactivateInventoryItemFailedDueAlreadyActivated>
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
+	public  partial class DeactivateInventoryItemFailedDueAlreadyActivatedEventHandler
+		
+		: IEventHandler<Cqrs.Authentication.ISingleSignOnToken, DeactivateInventoryItemFailedDueAlreadyActivated>
 	{
+
 		#region Implementation of IEventHandler<in DeactivateInventoryItemFailedDueAlreadyActivated>
 
 		public void Handle(DeactivateInventoryItemFailedDueAlreadyActivated @event)

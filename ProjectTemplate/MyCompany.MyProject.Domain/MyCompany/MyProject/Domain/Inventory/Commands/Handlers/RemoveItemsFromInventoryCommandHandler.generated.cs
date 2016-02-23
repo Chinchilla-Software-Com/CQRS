@@ -12,39 +12,63 @@
 // </copyright>
 // -----------------------------------------------------------------------
 #endregion
+using Cqrs.Domain;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Domain;
-using Cqrs.Logging;
+using Cqrs.Domain.Exceptions;
+using Cqrs.Events;
+using cdmdotnet.Logging;
 
 namespace MyCompany.MyProject.Domain.Inventory.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
-	public  partial class RemoveItemsFromInventoryCommandHandler : ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, RemoveItemsFromInventoryCommand>
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
+	public  partial class RemoveItemsFromInventoryCommandHandler
+		
+		: ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, RemoveItemsFromInventoryCommand>
 	{
 		protected IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> UnitOfWork { get; private set; }
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
-		protected ILog Log { get; private set; }
+		protected ILogger Logger { get; private set; }
 
-		public RemoveItemsFromInventoryCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork, IDependencyResolver dependencyResolver, ILog log)
+		public RemoveItemsFromInventoryCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork, IDependencyResolver dependencyResolver, ILogger logger)
 		{
 			UnitOfWork = unitOfWork;
 			DependencyResolver = dependencyResolver;
-			Log = log;
+			Logger = logger;
 		}
 
 		public long Count { get; set; }
-
 
 		#region Implementation of ICommandHandler<in RemoveItemsFromInventory>
 
 		public void Handle(RemoveItemsFromInventoryCommand command)
 		{
+			ICommandValidator<Cqrs.Authentication.ISingleSignOnToken, RemoveItemsFromInventoryCommand> commandValidator = null;
+			try
+			{
+				commandValidator = DependencyResolver.Resolve<ICommandValidator<Cqrs.Authentication.ISingleSignOnToken, RemoveItemsFromInventoryCommand>>();
+			}
+			catch (Exception exception)
+			{
+				Logger.LogDebug("Locating an ICommandValidator failed.", "RemoveItemsFromInventoryCommandHandler\\Handle(RemoveItemsFromInventoryCommand)", exception);
+			}
+
+			if (commandValidator != null && !commandValidator.IsCommandValid(command))
+			{
+				Logger.LogInfo("The provided command is not valid.", "RemoveItemsFromInventoryCommandHandler\\Handle(RemoveItemsFromInventoryCommand)");
+				return;
+			}
+
 			OnHandle(command);
 		}
 

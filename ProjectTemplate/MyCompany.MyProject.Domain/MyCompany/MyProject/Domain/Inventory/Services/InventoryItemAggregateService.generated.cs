@@ -19,7 +19,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using Cqrs.Commands;
 using Cqrs.Authentication;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 using Cqrs.Repositories.Queries;
 using Cqrs.Services;
 using MyCompany.MyProject.Domain.Inventory.Commands;
@@ -27,8 +27,8 @@ using MyCompany.MyProject.Domain.Inventory.Repositories;
 
 namespace MyCompany.MyProject.Domain.Inventory.Services
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
-	[DataContract(Namespace="http://www.cdmdotnet.com/MyProject/Domain/Inventory/1001/")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
+	[DataContract(Namespace="https://cqrs/MyProject/Domain/Inventory/1001/")]
 	public partial class InventoryItemService : IInventoryItemService
 	{
 		protected ICommandSender<Cqrs.Authentication.ISingleSignOnToken> CommandSender { get; private set; }
@@ -41,23 +41,26 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 
 		protected IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> AuthenticationTokenHelper { get; set; }
 
-		protected ICorrolationIdHelper CorrolationIdHelper { get; set; }
+		protected ICorrelationIdHelper CorrelationIdHelper { get; set; }
 
-		public InventoryItemService(ICommandSender<Cqrs.Authentication.ISingleSignOnToken> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper, IInventoryItemRepository inventoryItemRepository)
+		protected ILogger Logger { get; private set; }
+
+		public InventoryItemService(ICommandSender<Cqrs.Authentication.ISingleSignOnToken> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IInventoryItemRepository inventoryItemRepository, ILogger logger)
 		{
 			CommandSender = commandSender;
 			UnitOfWorkService = unitOfWorkService;
 			QueryFactory = queryFactory;
 			AuthenticationTokenHelper = authenticationTokenHelper;
-			CorrolationIdHelper = corrolationIdHelper;
+			CorrelationIdHelper = correlationIdHelper;
 			InventoryItemRepository = inventoryItemRepository;
+			Logger = logger;
 		}
 
 
 		protected virtual TServiceResponse CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
 			where TServiceResponse : IServiceResponse
 		{
-			serviceResponse.CorrolationId = CorrolationIdHelper.GetCorrolationId();
+			serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 			return serviceResponse;
 		}
 	}

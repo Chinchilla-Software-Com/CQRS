@@ -12,18 +12,26 @@
 // </copyright>
 // -----------------------------------------------------------------------
 #endregion
+using Cqrs.Domain;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
 using Cqrs.Commands;
 using Cqrs.Domain;
 
 namespace MyCompany.MyProject.Domain.Authentication.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
-	public  partial class DeleteUserCommandHandler : ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, DeleteUserCommand>
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
+	public  partial class DeleteUserCommandHandler
+		
+		: ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, DeleteUserCommand>
 	{
 		protected IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> UnitOfWork { get; private set; }
+
 
 		public DeleteUserCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork)
 		{

@@ -25,7 +25,7 @@ using Cqrs.Repositories.Queries;
 
 namespace MyCompany.MyProject.Domain.Inventory.Repositories.Queries.Strategies
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
 	public partial class InventoryItemQueryStrategy : QueryStrategy, IInventoryItemQueryStrategy
 	{
 		protected IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> AuthenticationTokenHelper { get; private set; }

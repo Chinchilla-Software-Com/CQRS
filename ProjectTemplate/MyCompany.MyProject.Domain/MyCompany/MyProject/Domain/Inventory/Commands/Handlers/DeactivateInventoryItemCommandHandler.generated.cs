@@ -12,37 +12,61 @@
 // </copyright>
 // -----------------------------------------------------------------------
 #endregion
+using Cqrs.Domain;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Domain;
-using Cqrs.Logging;
+using Cqrs.Domain.Exceptions;
+using Cqrs.Events;
+using cdmdotnet.Logging;
 
 namespace MyCompany.MyProject.Domain.Inventory.Commands.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
-	public  partial class DeactivateInventoryItemCommandHandler : ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, DeactivateInventoryItemCommand>
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
+	public  partial class DeactivateInventoryItemCommandHandler
+		
+		: ICommandHandler<Cqrs.Authentication.ISingleSignOnToken, DeactivateInventoryItemCommand>
 	{
 		protected IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> UnitOfWork { get; private set; }
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
-		protected ILog Log { get; private set; }
+		protected ILogger Logger { get; private set; }
 
-		public DeactivateInventoryItemCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork, IDependencyResolver dependencyResolver, ILog log)
+		public DeactivateInventoryItemCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork, IDependencyResolver dependencyResolver, ILogger logger)
 		{
 			UnitOfWork = unitOfWork;
 			DependencyResolver = dependencyResolver;
-			Log = log;
+			Logger = logger;
 		}
-
 
 		#region Implementation of ICommandHandler<in DeactivateInventoryItem>
 
 		public void Handle(DeactivateInventoryItemCommand command)
 		{
+			ICommandValidator<Cqrs.Authentication.ISingleSignOnToken, DeactivateInventoryItemCommand> commandValidator = null;
+			try
+			{
+				commandValidator = DependencyResolver.Resolve<ICommandValidator<Cqrs.Authentication.ISingleSignOnToken, DeactivateInventoryItemCommand>>();
+			}
+			catch (Exception exception)
+			{
+				Logger.LogDebug("Locating an ICommandValidator failed.", "DeactivateInventoryItemCommandHandler\\Handle(DeactivateInventoryItemCommand)", exception);
+			}
+
+			if (commandValidator != null && !commandValidator.IsCommandValid(command))
+			{
+				Logger.LogInfo("The provided command is not valid.", "DeactivateInventoryItemCommandHandler\\Handle(DeactivateInventoryItemCommand)");
+				return;
+			}
+
 			OnHandle(command);
 		}
 

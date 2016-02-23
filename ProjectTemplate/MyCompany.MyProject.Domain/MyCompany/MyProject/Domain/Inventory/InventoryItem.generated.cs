@@ -21,12 +21,13 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using Cqrs.Configuration;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
+using Cqrs.Snapshots;
 using MyCompany.MyProject.Domain.Inventory.Events;
 
 namespace MyCompany.MyProject.Domain.Inventory
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
 	public  partial class InventoryItem : AggregateRoot<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		public Guid Rsn
@@ -45,7 +46,7 @@ namespace MyCompany.MyProject.Domain.Inventory
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
-		protected ILog Log { get; private set; }
+		protected ILogger Log { get; private set; }
 
 		public bool Activated { get; private set; }
 
@@ -55,19 +56,25 @@ namespace MyCompany.MyProject.Domain.Inventory
 		/// </summary>
 		private InventoryItem()
 		{
+
+			Receive<ChangeNameParameters>(parameters => ChangeName(parameters));
+			Receive<RemoveParameters>(parameters => Remove(parameters));
+			Receive<CheckInParameters>(parameters => CheckIn(parameters));
+			Receive<DeactivateParameters>(parameters => Deactivate(parameters));
+			Receive<CreateInventoryItemParameters>(parameters => CreateInventoryItem(parameters));
 		}
 
 		/// <summary>
 		/// A constructor for the <see cref="Cqrs.Domain.Factories.IAggregateFactory"/>
 		/// </summary>
-		private InventoryItem(IDependencyResolver dependencyResolver, ILog log)
+		private InventoryItem(IDependencyResolver dependencyResolver, ILogger log)
 		{
 			DependencyResolver = dependencyResolver;
 			Log = log;
 		}
 // ReSharper restore UnusedMember.Local
 
-		public InventoryItem(IDependencyResolver dependencyResolver, ILog log, Guid rsn)
+		public InventoryItem(IDependencyResolver dependencyResolver, ILogger log, Guid rsn)
 		{
 			DependencyResolver = dependencyResolver;
 			Log = log;
@@ -82,6 +89,7 @@ namespace MyCompany.MyProject.Domain.Inventory
 		}
 		partial void OnChangeName(string newName);
 
+
 		public virtual void Remove(long count)
 		{
 			Log.LogDebug("Entered", "InventoryItem/Remove");
@@ -89,6 +97,7 @@ namespace MyCompany.MyProject.Domain.Inventory
 			Log.LogDebug("Exited", "InventoryItem/Remove");
 		}
 		partial void OnRemove(long count);
+
 
 		public virtual void CheckIn(long count)
 		{
@@ -98,6 +107,7 @@ namespace MyCompany.MyProject.Domain.Inventory
 		}
 		partial void OnCheckIn(long count);
 
+
 		public virtual void Deactivate()
 		{
 			Log.LogDebug("Entered", "InventoryItem/Deactivate");
@@ -105,6 +115,7 @@ namespace MyCompany.MyProject.Domain.Inventory
 			Log.LogDebug("Exited", "InventoryItem/Deactivate");
 		}
 		partial void OnDeactivate();
+
 
 		public virtual void CreateInventoryItem(string name)
 		{
@@ -119,5 +130,12 @@ namespace MyCompany.MyProject.Domain.Inventory
 		}
 		partial void OnApply(InventoryItemCreated @event);
 
+
+		public class InventoryItemSnapshot : Snapshot
+		{
+			public bool IsLogicallyDeleted {get; set;}
+
+			public bool Activated { get; private set; }
+		}
 	}
 }

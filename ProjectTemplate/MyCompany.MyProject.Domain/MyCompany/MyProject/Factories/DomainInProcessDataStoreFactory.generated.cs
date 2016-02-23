@@ -14,11 +14,11 @@
 #endregion
 using System.CodeDom.Compiler;
 using Cqrs.DataStores;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
 
 namespace MyCompany.MyProject.Domain.Factories
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
 	/// <summary>
 	/// A factory for obtaining <see cref="IDataStore{TData}"/> instances using an InProcess only approach
 	/// </summary>

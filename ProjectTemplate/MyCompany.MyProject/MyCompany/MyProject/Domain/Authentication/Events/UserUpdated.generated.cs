@@ -21,10 +21,11 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using Cqrs.Events;
+using Cqrs.Messages;
 
 namespace MyCompany.MyProject.Domain.Authentication
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
 	public  partial class UserUpdated : IEvent<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		#region Implementation of IEvent
@@ -60,21 +61,28 @@ namespace MyCompany.MyProject.Domain.Authentication
 		#region Implementation of IMessage
 
 		[DataMember]
-		public Guid CorrolationId { get; set; }
+		public Guid CorrelationId { get; set; }
+
+		[Obsolete("Use CorrelationId")]
+		[DataMember]
+		public Guid CorrolationId
+		{
+			get { return CorrelationId; }
+			set { CorrelationId = value; }
+		}
+
+		[DataMember]
+		public FrameworkType Framework { get; set; }
 
 		#endregion
 
 		[DataMember]
 		public Guid Rsn { get; set; }
 
-		[DataMember]
-		public string Name { get; private set; }
 
-
-		public UserUpdated(Guid rsn, string name)
+		public UserUpdated(Guid rsn)
 		{
 			Rsn = rsn;
-			Name = name;
 		}
 	}
 }

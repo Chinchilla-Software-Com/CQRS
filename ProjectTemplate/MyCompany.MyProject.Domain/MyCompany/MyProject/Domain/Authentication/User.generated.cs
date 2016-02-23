@@ -21,12 +21,13 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using Cqrs.Configuration;
-using Cqrs.Logging;
+using cdmdotnet.Logging;
+using Cqrs.Snapshots;
 using MyCompany.MyProject.Domain.Authentication.Events;
 
 namespace MyCompany.MyProject.Domain.Authentication
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
 	public  partial class User : AggregateRoot<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		public Guid Rsn
@@ -45,9 +46,7 @@ namespace MyCompany.MyProject.Domain.Authentication
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
-		protected ILog Log { get; private set; }
-
-		public string Name { get; private set; }
+		protected ILogger Log { get; private set; }
 
 // ReSharper disable UnusedMember.Local
 		/// <summary>
@@ -55,78 +54,76 @@ namespace MyCompany.MyProject.Domain.Authentication
 		/// </summary>
 		private User()
 		{
+
 		}
 
 		/// <summary>
 		/// A constructor for the <see cref="Cqrs.Domain.Factories.IAggregateFactory"/>
 		/// </summary>
-		private User(IDependencyResolver dependencyResolver, ILog log)
+		private User(IDependencyResolver dependencyResolver, ILogger log)
 		{
 			DependencyResolver = dependencyResolver;
 			Log = log;
 		}
 // ReSharper restore UnusedMember.Local
 
-		public User(IDependencyResolver dependencyResolver, ILog log, Guid rsn)
+		public User(IDependencyResolver dependencyResolver, ILogger log, Guid rsn)
 		{
 			DependencyResolver = dependencyResolver;
 			Log = log;
 			Rsn = rsn;
 		}
 
-
 		/// <summary>
 		/// Create a new instance of the <see cref="User"/>
 		/// </summary>
-		public virtual void CreateUser(string name)
+		public virtual void CreateUser()
 		{
 			Log.LogDebug("Entered", "User/CreateUser");
 			Log.LogDebug("Pre", "User/OnCreateUser");
-			OnCreateUser(name);
+			OnCreateUser();
 			Log.LogDebug("Post", "User/OnCreateUser");
 			Log.LogDebug("Pre", "User/ApplyChange/Create");
-			ApplyChange(new UserCreated(Rsn, name));
+			ApplyChange(new UserCreated(Rsn));
 			Log.LogDebug("Post", "User/ApplyChange");
 			Log.LogDebug("Pre", "User/OnCreatedUser");
-			OnCreatedUser(name);
+			OnCreatedUser();
 			Log.LogDebug("Post", "User/OnCreatedUser");
 			Log.LogDebug("Exited", "User/CreateUser");
 		}
 
-		partial void OnCreateUser(string name);
+		partial void OnCreateUser();
 
-		partial void OnCreatedUser(string name);
+		partial void OnCreatedUser();
 
 		private void Apply(UserCreated @event)
 		{
-			Name = @event.Name;
 		}
 
 		/// <summary>
 		/// Update an existing instance of the <see cref="User"/>
 		/// </summary>
-		public virtual void UpdateUser(string name)
+		public virtual void UpdateUser()
 		{
 			Log.LogDebug("Entered", "User/UpdateUser");
 			Log.LogDebug("Pre", "User/OnUpdateUser");
-			OnUpdateUser(name);
+			OnUpdateUser();
 			Log.LogDebug("Post", "User/OnUpdateUser");
 			Log.LogDebug("Pre", "User/ApplyChange/Update");
-			ApplyChange(new UserUpdated(Rsn, name));
+			ApplyChange(new UserUpdated(Rsn));
 			Log.LogDebug("Post", "User/ApplyChange");
 			Log.LogDebug("Pre", "User/OnUpdatedUser");
-			OnUpdatedUser(name);
+			OnUpdatedUser();
 			Log.LogDebug("Post", "User/OnUpdatedUser");
 			Log.LogDebug("Exited", "User/UpdateUser");
 		}
 
-		partial void OnUpdateUser(string name);
+		partial void OnUpdateUser();
 
-		partial void OnUpdatedUser(string name);
+		partial void OnUpdatedUser();
 
 		private void Apply(UserUpdated @event)
 		{
-			Name = @event.Name;
 		}
 
 		/// <summary>
@@ -154,6 +151,11 @@ namespace MyCompany.MyProject.Domain.Authentication
 		private void Apply(UserDeleted @event)
 		{
 			IsLogicallyDeleted = true;
+		}
+
+		public class UserSnapshot : Snapshot
+		{
+			public bool IsLogicallyDeleted {get; set;}
 		}
 	}
 }

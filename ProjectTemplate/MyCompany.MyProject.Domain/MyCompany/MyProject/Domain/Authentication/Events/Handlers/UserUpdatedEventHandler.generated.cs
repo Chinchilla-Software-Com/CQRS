@@ -20,7 +20,7 @@ using Cqrs.Domain;
 
 namespace MyCompany.MyProject.Domain.Authentication.Events.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
 	public  partial class UserUpdatedEventHandler : IEventHandler<Cqrs.Authentication.ISingleSignOnToken, UserUpdated>
 	{
 		#region Implementation of IEventHandler<in UserUpdated>

@@ -12,18 +12,31 @@
 // </copyright>
 // -----------------------------------------------------------------------
 #endregion
+using Cqrs.Domain;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
 using System.Runtime.Serialization;
 using Cqrs.Commands;
+using Cqrs.Messages;
 
 namespace MyCompany.MyProject.Domain.Inventory.Commands
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.523.412")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
 	public  partial class DeactivateInventoryItemCommand : ICommand<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		#region Implementation of ICommand
+
+		[DataMember]
+		public Guid Id
+		{
+			get { return Rsn; }
+			set { Rsn = value; }
+		}
 
 		[DataMember]
 		public int ExpectedVersion { get; set; }
@@ -40,7 +53,18 @@ namespace MyCompany.MyProject.Domain.Inventory.Commands
 		#region Implementation of IMessage
 
 		[DataMember]
-		public Guid CorrolationId { get; set; }
+		public Guid CorrelationId { get; set; }
+
+		[Obsolete("Use CorrelationId")]
+		[DataMember]
+		public Guid CorrolationId
+		{
+			get { return CorrelationId; }
+			set { CorrelationId = value; }
+		}
+
+		[DataMember]
+		public FrameworkType Framework { get; set; }
 
 		#endregion
 
