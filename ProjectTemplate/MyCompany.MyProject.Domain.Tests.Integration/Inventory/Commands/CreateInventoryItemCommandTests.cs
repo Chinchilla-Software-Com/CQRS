@@ -78,7 +78,7 @@ namespace MyCompany.MyProject.Domain.Tests.Integration.Inventory.Commands
 			Console.WriteLine("Operation took: {0}", end - start);
 		}
 
-		[TestMethod, ExpectedException(typeof(Cqrs.Domain.Exception.ConcurrencyException))]
+		[TestMethod, ExpectedException(typeof(Cqrs.Domain.Exceptions.ConcurrencyException))]
 		public void CommandBusSend_SendCommandTwice_ConcurrencyExceptionIsRaised()
 		{
 			// Arrange

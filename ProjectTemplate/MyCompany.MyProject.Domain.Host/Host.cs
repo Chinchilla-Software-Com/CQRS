@@ -2,10 +2,7 @@
 using System.Diagnostics;
 using cdmdotnet.Logging;
 using Cqrs.Ninject.Configuration;
-using MyCompany.MyProject.Domain.Common.Services;
 using MyCompany.MyProject.Domain.Host.Configuration;
-using MyCompany.MyProject.Domain.Meetings.Services;
-using MyCompany.MyProject.Domain.Notifications.Services;
 using Ninject.Modules;
 
 namespace MyCompany.MyProject.Domain.Host
@@ -21,21 +18,6 @@ namespace MyCompany.MyProject.Domain.Host
 			new ServicePointManagerConfiguration().Start();
 
 			Trace.TraceInformation("Data contracts configuring...");
-
-			// Move to a Configuration class, just like above
-			AnnouncementServiceGetEffectiveAnnouncementsResolver.RegisterDataContracts();
-			AnnouncementServiceGetUnreadEffectiveAnnouncementsResolver.RegisterDataContracts();
-			AnnouncementServiceReadAnnouncementResolver.RegisterDataContracts();
-			AnnouncementServiceCreateAnnouncementParametersResolver.RegisterDataContracts();
-			AnnouncementServiceUpdateAnnouncementParametersResolver.RegisterDataContracts();
-			AnnouncementServiceDeleteAnnouncementParametersResolver.RegisterDataContracts();
-
-			MeetingInstanceServiceAttendeeViewAgendaResolver.RegisterDataContracts();
-			MeetingInstanceServiceAttachFileToCommentResolver.RegisterDataContracts();
-			MeetingInstanceServiceAttachFileToCommentReplyResolver.RegisterDataContracts();
-			MeetingInstanceServiceGetAllFileAttachmentsByMeetingInstanceRsnResolver.RegisterDataContracts();
-
-			CurrencyServiceGetAllCurrenciesResolver.RegisterDataContracts();
 
 			Trace.TraceInformation("Data contracts configured.");
 		}
