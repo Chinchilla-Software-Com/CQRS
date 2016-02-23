@@ -15,7 +15,6 @@ using Cqrs.Ninject.InProcess.CommandBus.Configuration;
 using Cqrs.Ninject.InProcess.EventBus.Configuration;
 using Cqrs.Ninject.InProcess.EventStore.Configuration;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-using MyCompany.MyProject.Domain.Configuration;
 using Ninject;
 using Ninject.Web.Common;
 using NinjectDependencyResolver = Ninject.Web.Mvc.NinjectDependencyResolver;
@@ -77,16 +76,6 @@ namespace MyCompany.MyProject.Web.Mvc
 		{
 			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Clear();
 
-			// Core Module
-			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new CqrsModule<ISingleSignOnToken, SingleSignOnTokenValueHelper>());
-			// Event Store Module
-			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventStoreModule<ISingleSignOnToken>());
-			// Command Bus Module
-			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new InProcessCommandBusModule<ISingleSignOnToken>());
-			// Event Bus Module
-			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule<ISingleSignOnToken>());
-			// Domain Core Module
-			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new DomainCoreModule());
 			Cqrs.Ninject.Configuration.NinjectDependencyResolver.Start(kernel, true);
 
 			// Tell ASP.NET MVC 3 to use our Ninject DI Container 
