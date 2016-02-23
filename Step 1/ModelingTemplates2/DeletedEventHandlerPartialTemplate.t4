@@ -1,0 +1,58 @@
+<#@ Include File="TemplateHeader.t4" #>
+<#@ Modeling ElementType="Microsoft.VisualStudio.Uml.Classes.IClass" Processor="ModelingProcessor" ApplyStereotypes="CSharp" #>
+<#@ Import Namespace="Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml" #>
+<#@ Import Namespace="Microsoft.VisualStudio.Uml.AuxiliaryConstructs" #>
+<#@ import namespace="Microsoft.VisualStudio.Uml.Classes" #>
+<#@ Include File="CSharpCommentHelpers.t4" #>
+<#@ Include File="CSharpHelpers.t4" #>
+<#@ Include File="CqrsTemplateHelpers.t4" #>
+<#@ Include File="ModelHelper.t4" #>
+<#@ Output Extension=".cs" #>
+<#
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+
+string classNamespace = GetNamespace(this.Element.Namespace);
+string className = ClassifierName(this.Element);
+
+// using statements
+#>
+using System;
+using cdmdotnet.AutoMapper;
+using Cqrs.Entities;
+using <#= classNamespace #>.Repositories;
+
+namespace <#= classNamespace #>.Events.Handlers
+{
+<#
+	// Class and Attributes
+#>
+	public <#= GetAbstract(this.Element) #> partial class <#= className #>DeletedEventHandler
+	{
+		protected IAutomapHelper AutomapHelper { get; private set; }
+
+		protected I<#= className #>Repository <#= className #>Repository { get; private set; }
+
+		public <#= className #>DeletedEventHandler(IAutomapHelper automapHelper, I<#= className #>Repository repository)
+		{
+			AutomapHelper = automapHelper;
+			<#= className #>Repository = repository;
+		}
+
+		partial void OnHandle(<#= className #>Deleted @event)
+		{
+			Entities.<#= className #>Entity entity = <#= className #>Repository.Load(@event.Rsn);
+			entity.IsLogicallyDeleted = true;
+
+			<#= className #>Repository.Update(entity);
+		}
+	}
+}
+<#+
+	protected override bool AppliesToElement()
+	{
+		var stereoTypeProperties = this.Element.AppliedStereotypes.Where(property => property.Name == "AggregateRoot");
+		return ShouldGenerateCodeForElement(this.Element) && stereoTypeProperties.Any() && stereoTypeProperties.Single().PropertyInstances
+			.Single(property => property.Name == "BuildDeleteCommand")
+			.Value == "true";
+	}
+#>

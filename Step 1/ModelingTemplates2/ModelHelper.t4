@@ -1,0 +1,81 @@
+<#+
+	private static IEnumerable<IElement> AllElements(IElement t)
+	{
+		if (!ShouldGenerateCodeForElement(t))
+		{
+			yield break;
+		}
+
+		yield return t;
+	
+		if (t.OwnedElements != null && t.OwnedElements.Any())
+		{
+			foreach (var elem in t.OwnedElements)
+			{								
+				foreach (var child in AllElements(elem))
+				{
+					yield return child;
+				}
+			}
+		}
+	}
+	
+	private static IEnumerable<IElement> AllElements(IElement t, params string[] stereotypes)
+	{
+		if (!ShouldGenerateCodeForElement(t))
+		{
+			yield break;
+		}
+
+		var elementStereotypes = t.AppliedStereotypes.Select(s => s.Name);		
+		if (elementStereotypes != null && elementStereotypes.Intersect(stereotypes).Any())
+		{
+			yield return t;
+		}
+		
+		if (t.OwnedElements != null && t.OwnedElements.Any())
+		{
+			foreach (var elem in t.OwnedElements)
+			{
+				foreach (var child in AllElements(elem, stereotypes))
+				{
+					yield return child;
+				}
+			}
+		}
+	}
+
+	private static string FindDomainName(IElement t)
+	{
+		var domain = FindDomain(t) as INamedElement;
+
+		return domain == null ? string.Empty : domain.Name;
+	}
+
+	private static IElement FindDomain(IElement t)
+	{
+		var domainStereoType = t.AppliedStereotypes.FirstOrDefault(s => s.Name == "Domain");
+		if (domainStereoType != null)
+		{
+			return (t as INamedElement);
+		}
+		else if (t.Owner != null) 
+		{
+			return FindDomain(t.Owner);
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	private static string GetStereotypeValue(IElement element, string stereotypeName, string parameterName)
+	{
+		var property = element.AppliedStereotypes
+			.Single(p => p.Name.Equals("Command", StringComparison.InvariantCultureIgnoreCase))
+			.PropertyInstances
+			.Single(p => p.Name.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase));
+
+		return property.Value;
+	}
+#>

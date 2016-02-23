@@ -1,0 +1,81 @@
+<#@ Include File="TemplateHeader.t4" #>
+<#@ Modeling ElementType="Microsoft.VisualStudio.Uml.Classes.IClass" Processor="ModelingProcessor" ApplyStereotypes="CSharp" #>
+<#@ Import Namespace="Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml" #>
+<#@ Import Namespace="Microsoft.VisualStudio.Uml.AuxiliaryConstructs" #>
+<#@ import namespace="Microsoft.VisualStudio.Uml.Classes" #>
+<#@ import namespace="System.Linq" #>
+<#@ Include File="CSharpCommentHelpers.t4" #>
+<#@ Include File="CSharpHelpers.t4" #>
+<#@ Include File="CqrsTemplateHelpers.t4" #>
+<#@ Include File="ModelHelper.t4" #>
+<#@ Output Extension=".cs" #>
+<#
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "QueryStrategy");
+
+// Header
+
+string classNamespace = GetNamespace(this.Element.Namespace);
+string className = ClassifierName(this.Element);
+string aggregateRootName = stereoTypeProperties.PropertyInstances
+	.Single(property => property.Name == "AggregateRootName")
+	.Value;
+string entityPersistenceTechnology = GetEntityPersistenceTechnology(this.Element);
+
+// using statements
+#>
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Cqrs.Repositories.Queries;
+<# if (entityPersistenceTechnology == "MongoDb") { #>
+using MongoDB.Driver.Linq;
+<# } #>
+
+namespace <#= classNamespace #>
+{
+<#
+	// Class and Attributes
+#>
+	public partial class <#= className #>Builder
+	{
+<#
+		// Partial methods from Methods
+		IList<IOperation> collectionMethods = GetMethodList(this.Element);
+		var methodNameList = new List<string>();
+		foreach(IOperation collectionMethod in collectionMethods)
+		{
+			string partialMethodName = collectionMethod.Name;
+
+			// This overrides the while statement below which I'm only keeping in case i change my mind.
+			if (methodNameList.Contains(partialMethodName))
+				continue;
+
+			string baseCallMethodName = null;
+			int i = 1;
+			while (methodNameList.Contains(partialMethodName))
+			{
+				if (string.IsNullOrWhiteSpace(baseCallMethodName))
+					baseCallMethodName = string.Format("GeneratePredicate{0}(parameters, leftHandQueryable, ref resultingQueryable);", partialMethodName);
+				partialMethodName = string.Format("{0}{1}", partialMethodName, i++);
+			}
+			methodNameList.Add(partialMethodName);
+			if (string.IsNullOrWhiteSpace(baseCallMethodName))
+				baseCallMethodName = "throw new NotImplementedException();";
+#>
+
+		partial void GeneratePredicate<#= partialMethodName #>(SortedSet<QueryParameter> parameters, IQueryable<Entities.<#= aggregateRootName #>Entity> leftHandQueryable, ref IQueryable<Entities.<#= aggregateRootName #>Entity> resultingQueryable)
+		{
+			<#= baseCallMethodName #>
+		}
+<#
+		}
+#>
+	}
+}
+<#+
+	protected override bool AppliesToElement()
+	{
+		return ShouldGenerateCodeForElement(this.Element) && this.Element.AppliedStereotypes.Any(property => property.Name == "QueryStrategy");
+	}
+#>
