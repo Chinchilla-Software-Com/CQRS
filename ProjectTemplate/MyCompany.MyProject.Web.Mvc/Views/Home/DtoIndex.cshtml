@@ -1,0 +1,12 @@
+﻿@model IEnumerable<MyCompany.MyProject.Domain.Authentication.Entities.IUserEntity>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>All D.T.O. items:</h2>
+<ul>@foreach (var inventoryItemListDto in Model)
+    {<li>
+        Name: @Html.ActionLink(inventoryItemListDto.Name, "DtoDetails", new { Id = inventoryItemListDto.Rsn })
+    </li>
+}</ul>
+@Html.ActionLink("Add","DtoAdd")
