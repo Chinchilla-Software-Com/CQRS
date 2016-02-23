@@ -228,9 +228,18 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 		public virtual void RegisterCqrsCommandHandlers()
 		{
 			var dependencyResolver = Resolve<IDependencyResolver>();
-			var handlerResolver = Resolve<IHandlerResolver>();
-			var registrar = new <#
+<#
 string eventHandlerTechnology = GetEventHandlerTechnology(this.Element);
+switch(eventHandlerTechnology)
+{
+	case "Akka":
+#>
+			var handlerResolver = Resolve<IHandlerResolver>();
+<#
+		break;
+}
+#>
+			var registrar = new <#
 switch(eventHandlerTechnology)
 {
 	case "Akka":
@@ -253,13 +262,20 @@ switch(eventHandlerTechnology)
 <#
 		if (string.IsNullOrWhiteSpace(commandName))
 		{
-			INamedElement commandElement = AllElements(this.Element, "Command").OfType<INamedElement>().First();
-			string commandNamespace = GetNamespace(commandElement.Namespace);
-			commandName = commandNamespace + ".Handlers." + commandElement.Name;
+			INamedElement commandElement = AllElements(this.Element, "Command").OfType<INamedElement>().FirstOrDefault();
+			if (commandElement != null)
+			{
+				string commandNamespace = GetNamespace(commandElement.Namespace);
+				commandName = commandNamespace + ".Handlers." + commandElement.Name;
+			}
 		}
+		if (!string.IsNullOrWhiteSpace(commandName))
+		{
 #>
 			registrar.Register(typeof(<#= commandName #>CommandHandler));
-
+<#
+		}
+#>
 			OnCqrsCommandHandlersRegistered();
 		}
 

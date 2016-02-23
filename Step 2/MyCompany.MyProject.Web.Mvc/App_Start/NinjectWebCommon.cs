@@ -15,29 +15,31 @@ using Cqrs.Ninject.InProcess.CommandBus.Configuration;
 using Cqrs.Ninject.InProcess.EventBus.Configuration;
 using Cqrs.Ninject.InProcess.EventStore.Configuration;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+using MyCompany.MyProject.Domain.Configuration;
 using Ninject;
 using Ninject.Web.Common;
 using NinjectDependencyResolver = Ninject.Web.Mvc.NinjectDependencyResolver;
+using MyCompany.MyProject.Configuration;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(MyCompany.MyProject.Web.Mvc.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(MyCompany.MyProject.Web.Mvc.NinjectWebCommon), "Stop")]
 
 namespace MyCompany.MyProject.Web.Mvc
 {
-	public static class NinjectWebCommon 
+	public static class NinjectWebCommon
 	{
 		private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
 
 		/// <summary>
 		/// Starts the application
 		/// </summary>
-		public static void Start() 
+		public static void Start()
 		{
 			DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
 			DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
 			Bootstrapper.Initialize(CreateKernel);
 		}
-		
+
 		/// <summary>
 		/// Stops the application.
 		/// </summary>
@@ -45,7 +47,7 @@ namespace MyCompany.MyProject.Web.Mvc
 		{
 			Bootstrapper.ShutDown();
 		}
-		
+
 		/// <summary>
 		/// Creates the kernel that will manage your application.
 		/// </summary>
@@ -76,6 +78,19 @@ namespace MyCompany.MyProject.Web.Mvc
 		{
 			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Clear();
 
+			// Base Module
+			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new BaseModule());
+
+			// Core Module
+			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new CqrsModule<ISingleSignOnToken, SingleSignOnTokenValueHelper>());
+			// Event Store Module
+			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventStoreModule<ISingleSignOnToken>());
+			// Command Bus Module
+			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new InProcessCommandBusModule<ISingleSignOnToken>());
+			// Event Bus Module
+			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule<ISingleSignOnToken>());
+			// Domain Core Module
+			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new DomainNinjectModule());
 			Cqrs.Ninject.Configuration.NinjectDependencyResolver.Start(kernel, true);
 
 			// Tell ASP.NET MVC 3 to use our Ninject DI Container 
