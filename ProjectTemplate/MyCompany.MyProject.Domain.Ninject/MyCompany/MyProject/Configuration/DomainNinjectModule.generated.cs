@@ -123,7 +123,6 @@ namespace MyCompany.MyProject.Domain.Configuration
 		public virtual void RegisterCqrsCommandHandlers()
 		{
 			var dependencyResolver = Resolve<IDependencyResolver>();
-			var handlerResolver = Resolve<IHandlerResolver>();
 			var registrar = new BusRegistrar(dependencyResolver);
 			RegisterCqrsCommandHandlers(registrar);
 		}

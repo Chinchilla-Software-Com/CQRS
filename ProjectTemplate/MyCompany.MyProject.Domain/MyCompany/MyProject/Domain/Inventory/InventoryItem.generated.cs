@@ -56,12 +56,6 @@ namespace MyCompany.MyProject.Domain.Inventory
 		/// </summary>
 		private InventoryItem()
 		{
-
-			Receive<ChangeNameParameters>(parameters => ChangeName(parameters));
-			Receive<RemoveParameters>(parameters => Remove(parameters));
-			Receive<CheckInParameters>(parameters => CheckIn(parameters));
-			Receive<DeactivateParameters>(parameters => Deactivate(parameters));
-			Receive<CreateInventoryItemParameters>(parameters => CreateInventoryItem(parameters));
 		}
 
 		/// <summary>

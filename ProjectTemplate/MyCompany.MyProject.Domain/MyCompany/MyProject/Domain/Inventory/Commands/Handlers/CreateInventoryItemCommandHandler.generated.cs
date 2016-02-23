@@ -73,14 +73,10 @@ namespace MyCompany.MyProject.Domain.Inventory.Commands.Handlers
 			OnCreateInventoryItem(command, ref item);
 			if (item == null)
 			{
-				item = new InventoryItem(DependencyResolver, Log, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
+				item = new InventoryItem(DependencyResolver, Logger, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
 				UnitOfWork.Add(item);
 			}
-			var actor = item as IActorRef;
-			if (actor != null)
-				actor.Tell(new CreateInventoryItemParameters{name: command.Name});
-			else
-				item.CreateInventoryItem(name = command.Name);
+			item.CreateInventoryItem(command.Name);
 			OnCreateInventoryItemDone(command, item);
 			OnCommit(command, item);
 			try

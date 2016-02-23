@@ -7,8 +7,8 @@
 #endregion
 
 using System;
+using cdmdotnet.Logging;
 using Cqrs.Authentication;
-using Cqrs.Logging;
 using Cqrs.Ninject.Configuration;
 using Cqrs.Ninject.InProcess.CommandBus.Configuration;
 using Cqrs.Ninject.InProcess.EventBus.Configuration;

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.DataStores;
-using Cqrs.Logging;
 using Cqrs.Ninject.Configuration;
 using Cqrs.Ninject.InProcess.CommandBus.Configuration;
 using Cqrs.Ninject.InProcess.EventBus.Configuration;

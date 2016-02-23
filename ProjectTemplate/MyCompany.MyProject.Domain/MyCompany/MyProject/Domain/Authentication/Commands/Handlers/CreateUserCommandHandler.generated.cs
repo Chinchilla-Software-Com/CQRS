@@ -36,14 +36,14 @@ namespace MyCompany.MyProject.Domain.Authentication.Commands.Handlers
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
-		protected ILogger Log { get; private set; }
+		protected ILogger Logger { get; private set; }
 
 
-		public CreateUserCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork, IDependencyResolver dependencyResolver, ILogger log)
+		public CreateUserCommandHandler(IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken> unitOfWork, IDependencyResolver dependencyResolver, ILogger logger)
 		{
 			UnitOfWork = unitOfWork;
 			DependencyResolver = dependencyResolver;
-			Log = log;
+			Logger = logger;
 		}
 
 		#region Implementation of ICommandHandler<in CreateUser>

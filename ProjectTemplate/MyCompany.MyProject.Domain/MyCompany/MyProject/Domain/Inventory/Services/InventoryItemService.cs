@@ -8,9 +8,9 @@
 
 using System;
 using System.Collections.Generic;
+using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
-using Cqrs.Logging;
 using Cqrs.Repositories.Queries;
 using Cqrs.Services;
 using MyCompany.MyProject.Domain.Inventory.Commands;
@@ -24,13 +24,13 @@ namespace MyCompany.MyProject.Domain.Inventory.Services
 	{
 		protected IInventoryItemSummaryRepository InventoryItemSummaryRepository { get; private set; }
 
-		public InventoryItemService(ICommandSender<ISingleSignOnToken> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<ISingleSignOnToken> authenticationTokenHelper, ICorrolationIdHelper corrolationIdHelper, IInventoryItemRepository inventoryItemRepository, IInventoryItemSummaryRepository inventoryItemSummaryRepository)
+		public InventoryItemService(ICommandSender<ISingleSignOnToken> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<ISingleSignOnToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IInventoryItemRepository inventoryItemRepository, IInventoryItemSummaryRepository inventoryItemSummaryRepository)
 		{
 			CommandSender = commandSender;
 			UnitOfWorkService = unitOfWorkService;
 			QueryFactory = queryFactory;
 			AuthenticationTokenHelper = authenticationTokenHelper;
-			CorrolationIdHelper = corrolationIdHelper;
+			CorrelationIdHelper = correlationIdHelper;
 			InventoryItemRepository = inventoryItemRepository;
 			InventoryItemSummaryRepository = inventoryItemSummaryRepository;
 		}
