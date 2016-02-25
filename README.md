@@ -1,6 +1,9 @@
 # CS CQRS
 #### https://www.nuget.org/packages/Cqrs
 
+## Continual improvements
+This project is actively developed, however we sometimes have specific feature requests that are outside of our roadmap and plan. We're always open to new ideas and requests for new modules and technology connectors that you need. Right now we've got an unplanned request to have better [akka.net](http://getakka.net) modules. To help out this we've got a [kickstarter project](https://www.kickstarter.com/projects/chinchilla-software/cqrs-for-akk.net) running to help get the funding to bring this work forward.
+
 ## Documentation
 Documentation is starting off for now in the [wiki section](https://github.com/Chinchilla-Software-Com/CQRS/wiki) of this project. We strongly invite people to post questions and issues which we'll answer and work on.
 
