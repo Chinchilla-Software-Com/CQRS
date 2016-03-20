@@ -1,6 +1,9 @@
 # CS CQRS
 #### https://www.nuget.org/packages/Cqrs
 
+## Continual improvements
+This project is actively developed, however we sometimes have specific feature requests that are outside of our roadmap and plan. We're always open to new ideas and requests for new modules and technology connectors that you need. Right now we've got an unplanned request to have better [akka.net](http://getakka.net) modules. To help out this we've got a [kickstarter project](https://www.kickstarter.com/projects/chinchilla-software/cqrs-for-akknet) running to help get the funding to bring this work forward.
+
 ## Documentation
 Documentation is starting off for now in the [wiki section](https://github.com/Chinchilla-Software-Com/CQRS/wiki) of this project. We strongly invite people to post questions and issues which we'll answer and work on.
 
@@ -16,7 +19,7 @@ A lightweight framework to help write CQRS and Eventsourcing applications in C#.
 CQRS has been made designed with modularity in mind... just look at the number of packages below you can chose from. Every package and design choice I've ade should be interchangeable with custom code if needed.
 
 ## Commerical Support
-Commercial support will be available in 2016. Details to come, but in the meantime message us to register your interest in comercial support.
+Commercial support is now available through our partner company [Chinchilla Software](http://www.chinchillasoftware.com).
 
 ## Getting started
 Two sample projects are located within the code (soon), these show two approaches/common usage scenarios of the framework. One sample is the original sample from CQRSlite, just ported to use CQRS, the other is Modelled in UML and uses T4 template generation.
