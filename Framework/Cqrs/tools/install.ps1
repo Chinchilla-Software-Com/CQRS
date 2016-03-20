@@ -1,18 +1,18 @@
 param($installPath, $toolsPath, $package, $project)
 
-# open json.net splash page on package install
-# don't open if json.net is installed as a dependency
+# open CS-CQRS splash page on package install
+# don't open if the package is installed as a dependency
 
 try
 {
-  $url = "http://www.newtonsoft.com/json/install?version=" + $package.Version
+  $url = "https://www.chinchillasoftware.com/nuget/" + $package.id + "/install/" + $package.Version + "/" + $project.Name
   $dte2 = Get-Interface $dte ([EnvDTE80.DTE2])
 
   if ($dte2.ActiveWindow.Caption -eq "Package Manager Console")
   {
     # user is installing from VS NuGet console
     # get reference to the window, the console host and the input history
-    # show webpage if "install-package newtonsoft.json" was last input
+    # show webpage if "install-package " + $package.id was last input
 
     $consoleWindow = $(Get-VSComponentModel).GetService([NuGetConsole.IPowerConsoleWindow])
 
@@ -32,7 +32,7 @@ try
     if ($lastCommand)
     {
       $lastCommand = $lastCommand.Trim().ToLower()
-      if ($lastCommand.StartsWith("install-package") -and $lastCommand.Contains("newtonsoft.json"))
+      if ($lastCommand.StartsWith("install-package") -and $lastCommand.Contains($package.id))
       {
         $dte2.ItemOperations.Navigate($url) | Out-Null
       }
@@ -42,7 +42,7 @@ try
   {
     # user is installing from VS NuGet dialog
     # get reference to the window, then smart output console provider
-    # show webpage if messages in buffered console contains "installing...newtonsoft.json" in last operation
+    # show webpage if messages in buffered console contains "installing..." + $package.id in last operation
 
     $instanceField = [NuGet.Dialog.PackageManagerWindow].GetField("CurrentInstance", [System.Reflection.BindingFlags]::Static -bor `
       [System.Reflection.BindingFlags]::NonPublic)
@@ -78,7 +78,7 @@ try
 
       $lines = $lastOperation -split "`r`n"
 
-      $installMatch = $lines | ? { $_.StartsWith("------- installing...newtonsoft.json ") } | select -first 1
+      $installMatch = $lines | ? { $_.StartsWith("------- installing..." + $package.id + " ") } | select -first 1
 
       if ($installMatch)
       {
@@ -97,7 +97,7 @@ catch
     $selection.StartOfDocument($false)
     $selection.EndOfDocument($true)
 
-    if ($selection.Text.StartsWith("Attempting to gather dependencies information for package 'Newtonsoft.Json." + $package.Version + "'"))
+    if ($selection.Text.StartsWith("Attempting to gather dependencies information for package '" + $package.id + "." + $package.Version + "'"))
     {
       $dte2.ItemOperations.Navigate($url) | Out-Null
     }
