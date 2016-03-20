@@ -5,14 +5,14 @@ param($installPath, $toolsPath, $package, $project)
 
 try
 {
-  $url = "https://www.chinchillasoftware.com/nuget/" + $package.id + "/install/" + $package.Version + "/" + $project.Name
+  $url = "https://www.chinchillasoftware.com/nuget/" + $package.Id + "/install/" + $package.Version + "/" + $project.Name
   $dte2 = Get-Interface $dte ([EnvDTE80.DTE2])
 
   if ($dte2.ActiveWindow.Caption -eq "Package Manager Console")
   {
     # user is installing from VS NuGet console
     # get reference to the window, the console host and the input history
-    # show webpage if "install-package " + $package.id was last input
+    # show webpage if "install-package " + $package.Id was last input
 
     $consoleWindow = $(Get-VSComponentModel).GetService([NuGetConsole.IPowerConsoleWindow])
 
@@ -32,7 +32,7 @@ try
     if ($lastCommand)
     {
       $lastCommand = $lastCommand.Trim().ToLower()
-      if ($lastCommand.StartsWith("install-package") -and $lastCommand.Contains($package.id))
+      if ($lastCommand.StartsWith("install-package") -and $lastCommand.Contains($package.Id.ToLower()))
       {
         $dte2.ItemOperations.Navigate($url) | Out-Null
       }
@@ -42,7 +42,7 @@ try
   {
     # user is installing from VS NuGet dialog
     # get reference to the window, then smart output console provider
-    # show webpage if messages in buffered console contains "installing..." + $package.id in last operation
+    # show webpage if messages in buffered console contains "installing..." + $package.Id in last operation
 
     $instanceField = [NuGet.Dialog.PackageManagerWindow].GetField("CurrentInstance", [System.Reflection.BindingFlags]::Static -bor `
       [System.Reflection.BindingFlags]::NonPublic)
@@ -78,7 +78,7 @@ try
 
       $lines = $lastOperation -split "`r`n"
 
-      $installMatch = $lines | ? { $_.StartsWith("------- installing..." + $package.id + " ") } | select -first 1
+      $installMatch = $lines | ? { $_.StartsWith("------- installing..." + $package.Id.ToLower() + " ") } | select -first 1
 
       if ($installMatch)
       {
@@ -97,7 +97,7 @@ catch
     $selection.StartOfDocument($false)
     $selection.EndOfDocument($true)
 
-    if ($selection.Text.StartsWith("Attempting to gather dependencies information for package '" + $package.id + "." + $package.Version + "'"))
+    if ($selection.Text.StartsWith("Attempting to gather dependencies information for package '" + $package.Id.ToLower() + "." + $package.Version + "'"))
     {
       $dte2.ItemOperations.Navigate($url) | Out-Null
     }
