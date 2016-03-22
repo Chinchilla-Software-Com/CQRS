@@ -5,7 +5,7 @@ param($installPath, $toolsPath, $package, $project)
 
 try
 {
-  $url = "https://www.chinchillasoftware.com/nuget/" + $package.Id + "/install/" + $package.Version + "/" + $project.Name
+  $url = "https://www.chinchillasoftware.com/nuget/install/" + $package.Id + "/" + $package.Version + "/" + $project.Name
   $dte2 = Get-Interface $dte ([EnvDTE80.DTE2])
 
   if ($dte2.ActiveWindow.Caption -eq "Package Manager Console")
