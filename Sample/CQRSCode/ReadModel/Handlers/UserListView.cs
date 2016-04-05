@@ -14,24 +14,69 @@ namespace CQRSCode.ReadModel.Handlers
 
 		public void Handle(DtoAggregateEvent<ISingleSignOnToken, UserDto> message)
 		{
-			UserListDto existingUser;
+			UserListDto dto;
 			switch (message.GetEventType())
 			{
 				case DtoAggregateEventType.Created:
-					InMemoryDatabase.UserList.Add(new UserListDto(message.Id, message.New.Name));
+					dto = new UserListDto(message.Id, message.New.Name);
+					if (ReadModelFacade.UseSqlDatabase)
+					{
+						using (var datastore = new SqlDatabase())
+							datastore.UserListDtoStore.Add(dto);
+					}
+					else
+						InMemoryDatabase.UserList.Add(dto);
 					break;
 				case DtoAggregateEventType.Updated:
-					existingUser = InMemoryDatabase.UserList.SingleOrDefault(user => user.Id == message.Id);
-					if (existingUser == null)
+					if (ReadModelFacade.UseSqlDatabase)
+					{
+						using (var datastore = new SqlDatabase())
+						{
+							dto = datastore.UserList.SingleOrDefault(x => x.Id == message.Id);
+							if (dto != null)
+							{
+								dto.Name = message.New.Name;
+								datastore.UserListDtoStore.Update(dto);
+							}
+						}
+					}
+					else
+					{
+						dto = InMemoryDatabase.UserList.SingleOrDefault(x => x.Id == message.Id);
+						if (dto != null)
+						{
+							InMemoryDatabase.UserList.Remove(dto);
+							InMemoryDatabase.UserList.Add(new UserListDto(message.Id, message.New.Name));
+						}
+					}
+
+					if (dto == null)
 						throw new InvalidOperationException("Did not find the original item. This shouldn't happen.");
-					InMemoryDatabase.UserList.Remove(existingUser);
-					InMemoryDatabase.UserList.Add(new UserListDto(message.Id, message.New.Name));
 					break;
 				case DtoAggregateEventType.Deleted:
-					existingUser = InMemoryDatabase.UserList.SingleOrDefault(user => user.Id == message.Id);
-					if (existingUser == null)
+					if (ReadModelFacade.UseSqlDatabase)
+					{
+						using (var datastore = new SqlDatabase())
+						{
+							dto = datastore.UserList.SingleOrDefault(x => x.Id == message.Id);
+							if (dto != null)
+							{
+								dto.Name = message.New.Name;
+								datastore.UserListDtoStore.Remove(dto);
+							}
+						}
+					}
+					else
+					{
+						dto = InMemoryDatabase.UserList.SingleOrDefault(x => x.Id == message.Id);
+						if (dto != null)
+						{
+							InMemoryDatabase.UserList.Remove(dto);
+						}
+					}
+
+					if (dto == null)
 						throw new InvalidOperationException("Did not find the original item. This shouldn't happen.");
-					InMemoryDatabase.UserList.Remove(existingUser);
 					break;
 				default:
 					throw new InvalidOperationException("Unknown event. This shouldn't happen.");

@@ -13,19 +13,44 @@ namespace CQRSCode.ReadModel.Handlers
 	{
 		public void Handle(InventoryItemCreated message)
 		{
-			InMemoryDatabase.List.Add(new InventoryItemListDto(message.Id, message.Name));
+			var dto = new InventoryItemListDto(message.Id, message.Name);
+			if (ReadModelFacade.UseSqlDatabase)
+			{
+				using (var datastore = new SqlDatabase())
+					datastore.InventoryItemListDtoStore.Add(dto);
+			}
+			else
+				InMemoryDatabase.List.Add(dto);
 		}
 
 		public void Handle(InventoryItemRenamed message)
 		{
-			InventoryItemListDto item = InMemoryDatabase.List.SingleOrDefault(x => x.Id == message.Id);
-			item.Name = message.NewName;
+			InventoryItemListDto dto;
+			if (ReadModelFacade.UseSqlDatabase)
+			{
+				using (var datastore = new SqlDatabase())
+				{
+					dto = datastore.List.Single(x => x.Id == message.Id);
+					dto.Name = message.NewName;
+					datastore.InventoryItemListDtoStore.Update(dto);
+				}
+			}
+			else
+			{
+				dto = InMemoryDatabase.List.Single(x => x.Id == message.Id);
+				dto.Name = message.NewName;
+			}
 		}
 
 		public void Handle(InventoryItemDeactivated message)
 		{
-			InventoryItemListDto item = InMemoryDatabase.List.SingleOrDefault(x => x.Id == message.Id);
-			InMemoryDatabase.List.Remove(item);
+			if (ReadModelFacade.UseSqlDatabase)
+			{
+				using (var datastore = new SqlDatabase())
+					datastore.InventoryItemListDtoStore.Remove(datastore.List.Single(x => x.Id == message.Id));
+			}
+			else
+				InMemoryDatabase.List.Remove(InMemoryDatabase.List.Single(x => x.Id == message.Id));
 		}
 	}
 }

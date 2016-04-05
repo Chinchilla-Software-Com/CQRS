@@ -5,6 +5,7 @@ using CQRSCode.WriteModel.Handlers;
 using Cqrs.Commands;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
+using CQRSCode.ReadModel;
 using IDependencyResolver = Cqrs.Configuration.IDependencyResolver;
 
 namespace CQRSWeb
@@ -31,6 +32,8 @@ namespace CQRSWeb
 
 		protected void Application_Start()
 		{
+			ReadModelFacade.UseSqlDatabase = true;
+
 			AreaRegistration.RegisterAllAreas();
 
 			RegisterGlobalFilters(GlobalFilters.Filters);

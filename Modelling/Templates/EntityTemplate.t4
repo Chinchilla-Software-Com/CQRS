@@ -38,7 +38,10 @@ using Cqrs.Entities;
 using Cqrs.Mongo.Entities;
 <# } else if (entityPersistenceTechnology == "AzureDocumentDb") { #>
 using Cqrs.Azure.DocumentDb.Entities;
-<# } #>
+<# } #> 
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+using System.Runtime.Serialization;
 
 namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 {
@@ -48,8 +51,21 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 	<#= GetGeneratedCodeAttribute() #>
 	[Serializable]
 	[DataContract]
+	[Table(Name = "<#= className #>Entity")]
 	public <#= GetAbstract(this.Element) #> partial class <#= className #>Entity : <#= baseClass #>, I<#= className #>Entity
 	{
+		[DataMember]
+		[Column(IsPrimaryKey = true)]
+		public override Guid Rsn { get; set; }
+
+		[DataMember]
+		[Column]
+		public override int SortingOrder { get; set; }
+
+		[DataMember]
+		[Column]
+		public override bool IsLogicallyDeleted { get; set; }
+
 <#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
 		// Properties
@@ -58,6 +74,7 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 #>
 <# WriteSummaryComment(collectionProperty.Description); #>
 		[DataMember]
+		[Column(Storage="<#= collectionProperty.Name #>")]
 		<#= GetPropertyVisibility(collectionProperty) #> virtual <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; set; }
 
 <#

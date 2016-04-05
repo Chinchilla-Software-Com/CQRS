@@ -13,20 +13,51 @@ namespace CQRSCode.ReadModel.Handlers
 
 		public void Handle(DtoAggregateEvent<ISingleSignOnToken, UserDto> message)
 		{
+			UserDetailsDto dto = null;
 			switch (message.GetEventType())
 			{
 				case DtoAggregateEventType.Created:
-					InMemoryDatabase.UserDetails.Add(message.Id, new UserDetailsDto(message.Id, message.New.Name, message.Version));
+					dto = new UserDetailsDto(message.Id, message.New.Name, message.Version);
+					if (ReadModelFacade.UseSqlDatabase)
+					{
+						using (var datastore = new SqlDatabase())
+							datastore.UserDetailsDtoStore.Add(dto);
+					}
+					else
+						InMemoryDatabase.UserDetails.Add(message.Id, dto);
 					break;
 				case DtoAggregateEventType.Updated:
-					if (!InMemoryDatabase.UserDetails.ContainsKey(message.Id))
+					if (ReadModelFacade.UseSqlDatabase)
+					{
+						using (var datastore = new SqlDatabase())
+						{
+							if (datastore.UserDetails.TryGetValue(message.Id, out dto))
+							{
+								dto.Name = message.New.Name;
+								dto.Version = message.Version;
+								datastore.UserDetailsDtoStore.Update(dto);
+							}
+						}
+					}
+					else
+					{
+						if (InMemoryDatabase.UserDetails.TryGetValue(message.Id, out dto))
+							InMemoryDatabase.UserDetails[message.Id] = new UserDetailsDto(message.Id, message.New.Name, message.Version);
+					}
+
+					if (dto == null)
 						throw new InvalidOperationException("Did not find the original item. This shouldn't happen.");
-					InMemoryDatabase.UserDetails[message.Id] = new UserDetailsDto(message.Id, message.New.Name, message.Version);
 					break;
 				case DtoAggregateEventType.Deleted:
-					if (!InMemoryDatabase.UserDetails.ContainsKey(message.Id))
+					if (ReadModelFacade.UseSqlDatabase)
+						using (var datastore = new SqlDatabase())
+							if (datastore.UserDetails.TryGetValue(message.Id, out dto))
+								datastore.UserDetailsDtoStore.Remove(dto);
+					else if (InMemoryDatabase.UserDetails.TryGetValue(message.Id, out dto))
+						InMemoryDatabase.UserDetails.Remove(message.Id);
+
+					if (dto == null)
 						throw new InvalidOperationException("Did not find the original item. This shouldn't happen.");
-					InMemoryDatabase.UserDetails.Remove(message.Id);
 					break;
 				default:
 					throw new InvalidOperationException("Unknown event. This shouldn't happen.");

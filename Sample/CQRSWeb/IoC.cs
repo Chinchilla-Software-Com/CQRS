@@ -1,3 +1,5 @@
+using cdmdotnet.Logging;
+using cdmdotnet.Logging.Configuration;
 using CQRSCode.ReadModel;
 using CQRSCode.WriteModel;
 using Cqrs.Bus;
@@ -15,6 +17,9 @@ namespace CQRSWeb {
 		public static IContainer Initialize() {
 			ObjectFactory.Initialize(x =>
 						{
+							x.For<ICorrelationIdHelper>().Singleton().Use<NullCorrelationIdHelper>();
+							x.For<ILogger>().Singleton().Use<ConsoleLogger>();
+							x.For<ILoggerSettings>().Singleton().Use<LoggerSettingsConfigurationSection>();
 							x.For<IAuthenticationTokenHelper<ISingleSignOnToken>>().Singleton().Use<SingleSignOnTokenValueHelper>();
 							x.For<InProcessBus<ISingleSignOnToken>>().Singleton().Use<InProcessBus<ISingleSignOnToken>>();
 							x.For<IAggregateFactory>().Singleton().Use<AggregateFactory>();
@@ -23,6 +28,8 @@ namespace CQRSWeb {
 							x.For<IHandlerRegistrar>().Use(y => y.GetInstance<InProcessBus<ISingleSignOnToken>>());
 							x.For<IUnitOfWork<ISingleSignOnToken>>().HybridHttpOrThreadLocalScoped().Use<UnitOfWork<ISingleSignOnToken>>();
 							x.For<IEventStore<ISingleSignOnToken>>().Singleton().Use<InMemoryEventStore>();
+							x.For<ICommandHandlerRegistrar>().Singleton().Use<InProcessBus<ISingleSignOnToken>>();
+							x.For<IEventHandlerRegistrar>().Singleton().Use<InProcessBus<ISingleSignOnToken>>();
 							x.For<IRepository<ISingleSignOnToken>>().HybridHttpOrThreadLocalScoped().Use(y =>
 																					 new CacheRepository<ISingleSignOnToken>(
 																						 new Repository<ISingleSignOnToken>(y.GetInstance<IAggregateFactory>(), y.GetInstance<IEventStore<ISingleSignOnToken>>(), y.GetInstance<IEventPublisher<ISingleSignOnToken>>()),

@@ -37,14 +37,14 @@ namespace Cqrs.Configuration
 		{
 			var eventHandlerRegistrar = DependencyResolver.Resolve<IEventHandlerRegistrar>();
 			if (eventHandlerRegistrar != null)
-				Register(eventHandlerRegistrar, ResolveEventHandlerInterface, typesFromAssemblyContainingMessages);
+				Register(eventHandlerRegistrar, ResolveEventHandlerInterface, true, typesFromAssemblyContainingMessages);
 
 			var commandHandlerRegistrar = DependencyResolver.Resolve<ICommandHandlerRegistrar>();
 			if (commandHandlerRegistrar != null)
-				Register(commandHandlerRegistrar, ResolveCommandHandlerInterface, typesFromAssemblyContainingMessages);
+				Register(commandHandlerRegistrar, ResolveCommandHandlerInterface, false, typesFromAssemblyContainingMessages);
 		}
 
-		public virtual void Register(IHandlerRegistrar handlerRegistrar, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, params Type[] typesFromAssemblyContainingMessages)
+		public virtual void Register(IHandlerRegistrar handlerRegistrar, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, bool skipCommandHandlers, params Type[] typesFromAssemblyContainingMessages)
 		{
 			foreach (Type typesFromAssemblyContainingMessage in typesFromAssemblyContainingMessages)
 			{
@@ -61,6 +61,8 @@ namespace Cqrs.Configuration
 						Type safeExecutorType = executorType.Type;
 						if (typesFromAssemblyContainingMessage.IsGenericType && typesFromAssemblyContainingMessage.Name == typeof(DtoCommandHandler<,>).Name)
 						{
+							if (skipCommandHandlers)
+								continue;
 							Type[] genericArguments = typesFromAssemblyContainingMessage.GetGenericArguments().Take(2).ToArray();
 							safeExecutorType = safeExecutorType.MakeGenericType(genericArguments.Take(2).ToArray());
 						}

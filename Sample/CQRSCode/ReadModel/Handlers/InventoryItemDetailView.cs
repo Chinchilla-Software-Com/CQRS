@@ -1,5 +1,4 @@
-﻿using System;
-using CQRSCode.ReadModel.Dtos;
+﻿using CQRSCode.ReadModel.Dtos;
 using CQRSCode.ReadModel.Events;
 using CQRSCode.ReadModel.Infrastructure;
 using Cqrs.Events;
@@ -15,43 +14,100 @@ namespace CQRSCode.ReadModel.Handlers
 	{
 		public void Handle(InventoryItemCreated message)
 		{
-			InMemoryDatabase.Details.Add(message.Id, new InventoryItemDetailsDto(message.Id, message.Name, 0, message.Version));
+			var dto = new InventoryItemDetailsDto(message.Id, message.Name, 0, message.Version);
+			if (ReadModelFacade.UseSqlDatabase)
+			{
+				using (var datastore = new SqlDatabase())
+					datastore.InventoryItemDetailsDtoStore.Add(dto);
+			}
+			else
+				InMemoryDatabase.Details.Add(message.Id, dto);
 		}
 
 		public void Handle(InventoryItemRenamed message)
 		{
-			InventoryItemDetailsDto d = GetDetailsItem(message.Id);
-			d.Name = message.NewName;
-			d.Version = message.Version;
-		}
-
-		private InventoryItemDetailsDto GetDetailsItem(Guid id)
-		{
-			InventoryItemDetailsDto d;
-			if(!InMemoryDatabase.Details.TryGetValue(id, out d))
+			InventoryItemDetailsDto dto;
+			if (ReadModelFacade.UseSqlDatabase)
 			{
-				throw new InvalidOperationException("did not find the original inventory this shouldnt happen");
+				using (var datastore = new SqlDatabase())
+				{
+					if (datastore.Details.TryGetValue(message.Id, out dto))
+					{
+						dto.Name = message.NewName;
+						dto.Version = message.Version;
+						datastore.InventoryItemDetailsDtoStore.Update(dto);
+					}
+				}
 			}
-			return d;
+			else
+			{
+				if (InMemoryDatabase.Details.TryGetValue(message.Id, out dto))
+				{
+					dto.Name = message.NewName;
+					dto.Version = message.Version;
+				}
+			}
 		}
 
 		public void Handle(ItemsRemovedFromInventory message)
 		{
-			InventoryItemDetailsDto d = GetDetailsItem(message.Id);
-			d.CurrentCount -= message.Count;
-			d.Version = message.Version;
+			InventoryItemDetailsDto dto;
+			if (ReadModelFacade.UseSqlDatabase)
+			{
+				using (var datastore = new SqlDatabase())
+				{
+					if (datastore.Details.TryGetValue(message.Id, out dto))
+					{
+						dto.CurrentCount -= message.Count;
+						dto.Version = message.Version;
+						datastore.InventoryItemDetailsDtoStore.Update(dto);
+					}
+				}
+			}
+			else
+			{
+				if (InMemoryDatabase.Details.TryGetValue(message.Id, out dto))
+				{
+					dto.CurrentCount -= message.Count;
+					dto.Version = message.Version;
+				}
+			}
 		}
 
 		public void Handle(ItemsCheckedInToInventory message)
 		{
-			InventoryItemDetailsDto d = GetDetailsItem(message.Id);
-			d.CurrentCount += message.Count;
-			d.Version = message.Version;
+			InventoryItemDetailsDto dto;
+			if (ReadModelFacade.UseSqlDatabase)
+			{
+				using (var datastore = new SqlDatabase())
+				{
+					if (datastore.Details.TryGetValue(message.Id, out dto))
+					{
+						dto.CurrentCount += message.Count;
+						dto.Version = message.Version;
+						datastore.InventoryItemDetailsDtoStore.Update(dto);
+					}
+				}
+			}
+			else
+			{
+				if (InMemoryDatabase.Details.TryGetValue(message.Id, out dto))
+				{
+					dto.CurrentCount += message.Count;
+					dto.Version = message.Version;
+				}
+			}
 		}
 
 		public void Handle(InventoryItemDeactivated message)
 		{
-			InMemoryDatabase.Details.Remove(message.Id);
+			if (ReadModelFacade.UseSqlDatabase)
+			{
+				using (var datastore = new SqlDatabase())
+					datastore.InventoryItemDetailsDtoStore.Remove(datastore.Details[message.Id]);
+			}
+			else
+				InMemoryDatabase.Details.Remove(message.Id);
 		}
 	}
 }
