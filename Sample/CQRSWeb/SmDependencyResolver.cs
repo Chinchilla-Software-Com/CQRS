@@ -21,7 +21,17 @@ namespace CQRSWeb
 			return (T) Resolve(typeof (T));
 		}
 
-		public object Resolve(Type serviceType)
+		public object Resolve(Type type)
+		{
+			return Resolve(type, true);
+		}
+
+		T IDependencyResolver.Resolve<T>()
+		{
+			return (T) Resolve(typeof (T), false);
+		}
+
+		public object Resolve(Type serviceType, bool returnNullOnExpcetion = true)
 		{
 			if (serviceType == null) return null;
 			try
@@ -32,7 +42,8 @@ namespace CQRSWeb
 			}
 			catch
 			{
-
+				if (!returnNullOnExpcetion)
+					throw;
 				return null;
 			}
 		}

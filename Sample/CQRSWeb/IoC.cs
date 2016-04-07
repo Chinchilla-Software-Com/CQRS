@@ -9,6 +9,8 @@ using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
 using Cqrs.Authentication;
+using Cqrs.Configuration;
+using Cqrs.DataStores;
 using StructureMap;
 using StructureMap.Graph;
 
@@ -27,7 +29,12 @@ namespace CQRSWeb {
 							x.For<IEventPublisher<ISingleSignOnToken>>().Use(y => y.GetInstance<InProcessBus<ISingleSignOnToken>>());
 							x.For<IHandlerRegistrar>().Use(y => y.GetInstance<InProcessBus<ISingleSignOnToken>>());
 							x.For<IUnitOfWork<ISingleSignOnToken>>().HybridHttpOrThreadLocalScoped().Use<UnitOfWork<ISingleSignOnToken>>();
-							x.For<IEventStore<ISingleSignOnToken>>().Singleton().Use<InMemoryEventStore>();
+
+							x.For<IConfigurationManager>().Singleton().Use<ConfigurationManager>();
+							x.For<IEventBuilder<ISingleSignOnToken>>().Singleton().Use<SqlEventBuilder<ISingleSignOnToken>>();
+							x.For<IEventDeserialiser<ISingleSignOnToken>>().Singleton().Use<EventDeserialiser<ISingleSignOnToken>>();
+							x.For<IEventStore<ISingleSignOnToken>>().Singleton().Use<SqlEventStore<ISingleSignOnToken>>();
+
 							x.For<ICommandHandlerRegistrar>().Singleton().Use<InProcessBus<ISingleSignOnToken>>();
 							x.For<IEventHandlerRegistrar>().Singleton().Use<InProcessBus<ISingleSignOnToken>>();
 							x.For<IRepository<ISingleSignOnToken>>().HybridHttpOrThreadLocalScoped().Use(y =>

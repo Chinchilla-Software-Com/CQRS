@@ -21,11 +21,13 @@ namespace Cqrs.DataStores
 	public class SqlDataStore<TData> : IDataStore<TData>
 		where TData : Entity
 	{
+		internal const string SqlDataStoreDbFileOrServerOrConnectionApplicationKey = @"SqlDataStoreDbFileOrServerOrConnection";
+
 		public SqlDataStore(IConfigurationManager configurationManager, ILogger logger)
 		{
 			Logger = logger;
 			// Use a connection string.
-			DbDataContext = new DataContext(configurationManager.GetSetting(@"SqlDataStoreDbFileOrServerOrConnection"));
+			DbDataContext = new DataContext(configurationManager.GetSetting(SqlDataStoreDbFileOrServerOrConnectionApplicationKey));
 
 			// Get a typed table to run queries.
 			Table = DbDataContext.GetTable<TData>();
@@ -155,8 +157,11 @@ namespace Cqrs.DataStores
 			Logger.LogDebug("Removing data from the Sql database", "SqlDataStore\\Remove");
 			try
 			{
-				data.IsLogicallyDeleted = true;
-				Update(data);
+				DateTime start = DateTime.Now;
+				Table.DeleteOnSubmit(data);
+				DbDataContext.SubmitChanges();
+				DateTime end = DateTime.Now;
+				Logger.LogDebug(string.Format("Removing data from the Sql database took {0}.", end - start), "SqlDataStore\\Remove");
 			}
 			finally
 			{
