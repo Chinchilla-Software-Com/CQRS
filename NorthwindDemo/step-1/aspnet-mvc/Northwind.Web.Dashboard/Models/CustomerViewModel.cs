@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace KendoUI.Northwind.Dashboard.Models
+namespace Northwind.Web.Dashboard.Models
 {
-    public class CustomerViewModel
+	public class CustomerViewModel
     {
         [ScaffoldColumn(false)]
         public string CustomerID { get; set; }

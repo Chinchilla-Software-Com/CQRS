@@ -1,5 +1,4 @@
-﻿using KendoUI.Northwind.Dashboard.Models;
-using Northwind.Web.Dashboard.Models;
+﻿using Northwind.Web.Dashboard.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;

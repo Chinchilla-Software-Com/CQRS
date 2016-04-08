@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System;
 
 
-namespace KendoUI.Northwind.Dashboard.Models
+namespace Northwind.Web.Dashboard.Models
 {
-    public class ProductViewModel
+	public class ProductViewModel
     {
         [ScaffoldColumn(false)]
         public int ProductID

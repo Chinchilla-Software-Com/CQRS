@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace KendoUI.Northwind.Dashboard.Models
-{ 
-    public class OrderDetailViewModel
+namespace Northwind.Web.Dashboard.Models
+{
+	public class OrderDetailViewModel
     {
         public string OrderDetailID
         {
