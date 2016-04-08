@@ -1,15 +1,15 @@
-﻿using KendoUI.Northwind.Dashboard.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Kendo.Mvc.Extensions;
 using System.Web.Mvc;
 using Kendo.Mvc.UI;
+using Northwind.Web.Dashboard.Models;
 
-namespace KendoUI.Northwind.Dashboard.Controllers
+namespace Northwind.Web.Dashboard.Controllers
 {
-    public class ProductsController : Controller
+	public class ProductsController : Controller
     {
         public ActionResult Products_Read([DataSourceRequest] DataSourceRequest request)
         {

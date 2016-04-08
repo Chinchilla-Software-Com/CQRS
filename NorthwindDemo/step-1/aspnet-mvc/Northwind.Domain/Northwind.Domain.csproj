@@ -7,10 +7,12 @@
     <ProjectGuid>{0CF4AACE-176E-4F08-AFD9-577724E72E38}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Northwind.Domain</RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <AssemblyName>Northwind.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,8 +31,25 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="cdmdotnet.Logging, Version=1.0.24.24, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cdmdotnet.Logging.1.0.24.24\lib\net40\cdmdotnet.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="cdmdotnet.Performance, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cdmdotnet.Performance.1.0.5.8\lib\net40\cdmdotnet.Performance.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Cqrs, Version=1.601.836.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.1.601.836\lib\net40\Cqrs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,6 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Northwind\Factories\DomainSimplifiedSqlDataStoreFactory.generated.cs">
+      <SourceModelReference>modelbus://ModelStoreAdapter.1.0/Northwind.Models/Domain/Y:\cdmdotnet\cqrs\NorthwindDemo\step-1\aspnet-mvc\Northwind.Models\Northwind.Models.modelproj%252fd476d780-352c-4920-b47f-25d145793464</SourceModelReference>
+    </Compile>
+    <Compile Include="Northwind\Factories\IDomainDataStoreFactory.generated.cs">
+      <SourceModelReference>modelbus://ModelStoreAdapter.1.0/Northwind.Models/Domain/Y:\cdmdotnet\cqrs\NorthwindDemo\step-1\aspnet-mvc\Northwind.Models\Northwind.Models.modelproj%252fd476d780-352c-4920-b47f-25d145793464</SourceModelReference>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +73,12 @@
       <Project>{028dda41-12c1-4557-bc47-e57809217311}</Project>
       <Name>Northwind</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tools\EventStoreTable-SqlServer.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

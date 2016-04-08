@@ -1,16 +1,16 @@
 ﻿using Kendo.Mvc.UI;
-using KendoUI.Northwind.Dashboard.Models;
 using System.Collections.Generic;
 using System.Linq; 
 using System.Web.Mvc;
 using Kendo.Mvc;
 using Kendo.Mvc.Extensions;
 using System.Collections;
+using Northwind.Web.Dashboard.Models;
 
 
-namespace KendoUI.Northwind.Dashboard.Controllers
+namespace Northwind.Web.Dashboard.Controllers
 {
-    public class HomeController : Controller
+	public class HomeController : Controller
     {
         public ActionResult ProductsAndOrders()
         {

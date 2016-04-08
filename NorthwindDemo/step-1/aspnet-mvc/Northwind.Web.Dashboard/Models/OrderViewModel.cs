@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace KendoUI.Northwind.Dashboard.Models
+namespace Northwind.Web.Dashboard.Models
 {
-    public class OrderViewModel
+	public class OrderViewModel
     {
         [ScaffoldColumn(false)]
         public int OrderID { get; set; }

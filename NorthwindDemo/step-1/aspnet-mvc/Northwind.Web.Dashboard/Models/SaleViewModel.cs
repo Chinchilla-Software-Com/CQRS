@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using Kendo.Mvc.UI;
 
-namespace KendoUI.Northwind.Dashboard.Models
+namespace Northwind.Web.Dashboard.Models
 {
-    public class QuarterToDateSalesViewModel
+	public class QuarterToDateSalesViewModel
     {
         public int OrderID { get; set; }
         public DateTime OrderDate { get; set; }
