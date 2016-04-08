@@ -1,0 +1,374 @@
+﻿@using KendoUI.Northwind.Dashboard.Models;
+@using System.Configuration;
+<div id="main-section-header" class="row">
+    <h2 id="team-efficiency" class="col-xs-3">PRODUCTS & ORDERS</h2>
+    <div style="clear:both;"></div>
+</div>
+
+<div id="products-orders-main-content" class="main-section-content">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ProductsAndOrders").addClass("active");
+        });
+
+        $(window).on("resize", function () {
+            var containerWidth = $(".sparkline-container").parent().width();
+            var sparkLineWidth = (80 * containerWidth) / 100;
+            $(".k-sparkline").data("kendoSparkline").setOptions({ chartArea: { width: sparkLineWidth } });
+
+            resizeGrid();
+        });
+
+        function onOrderDetailsEdit(e) {
+            if (!e.model.isNew()) {
+                e.container.find("[name=ProductID]").data("kendoDropDownList").enable(false);
+            } else {
+                e.container.find("td.k-hierarchy-cell").css({ visibility: "hidden" });
+            }
+        } 
+
+        function onDataBound(e) {
+            var firstRow = this.tbody.find("tr.k-master-row").first();
+            var model = this.dataItem(firstRow);
+            if (!model.isNew()) {
+                this.expandRow(firstRow);
+            }
+        }
+
+        function onOrderDetailsDataBound(e) {
+            var sum = 0; 
+            for (var i = 0; i < this.dataSource.data().length ; i++) {
+                sum = sum + GetOrderItemPrice(this.dataSource.at(i));
+            }
+            this.table.find("span[name=sum]").html(kendo.toString(sum, "c"));
+
+            var firstRow = this.tbody.find("tr.k-master-row").first();
+            var model = this.dataItem(firstRow);
+            if (!model.isNew()) {
+                this.expandRow(firstRow);
+            }
+        }
+
+        function GetOrderItemPrice(data) { 
+            var sum = data.UnitPrice * data.Quantity;
+            sum = sum - (sum * data.Discount)
+            return sum;
+        }
+
+        function onError(e, gridName) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                var grid = $("#" + gridName).data("kendoGrid");
+                grid.one("dataBinding", function (e) {
+                    e.preventDefault();
+                })
+                alert(message);
+            }
+        }
+
+
+        (function ($, kendo) {
+            //Extending the build in validator
+            $.extend(true, kendo.ui.validator, {
+                rules: {
+                    OrderDate: function (input, params) {
+                        if (input.is("[name=OrderDate]")) {
+                            var OrderDate = input.data("kendoDatePicker").value();
+                            var ShippedDate = $('[name=ShippedDate]').data("kendoDatePicker").value();
+                            if (OrderDate > ShippedDate) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    },
+                    ShippedDate: function (input, params) {
+                        if (input.is("[name=ShippedDate]")) {
+                            var OrderDate = $('[name=OrderDate]').data("kendoDatePicker").value();
+                            var ShippedDate = input.data("kendoDatePicker").value();
+                            if (ShippedDate != null && OrderDate > ShippedDate) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                },
+                messages: {
+                    OrderDate: function (input) {
+                        return "OrderDate cannot be after ShippedDate";
+                    },
+                    ShippedDate: function (input) {
+                        return "ShippedDate cannot be prior the Order date";
+                    }
+                }
+            });
+        })
+
+        function resizeGrid() {
+            var gridElement = $("#orders"),
+                dataArea = gridElement.find(".k-grid-content"),
+                gridHeight = gridElement.innerHeight(),
+                otherElements = gridElement.children().not(".k-grid-content"),
+                otherElementsHeight = 0;
+                otherElements.each(function () {
+                    otherElementsHeight += $(this).outerHeight();
+                });
+                dataArea.height(gridHeight - otherElementsHeight);
+        }
+    </script>
+
+    @(Html.Kendo().Grid<OrderViewModel>()
+        .Name("orders")
+        .HtmlAttributes(new { style="height: 100%; border: 0;"})
+        .Scrollable()
+        .ToolBar(t =>
+        {
+            if (bool.Parse(ConfigurationManager.AppSettings["EditingEnabled"]))
+            {
+                t.Create().Text("Create new Order");
+            }
+        })
+        .Columns(columns =>
+        {
+            columns.Template(t => { })
+                .ClientTemplate("#=OrderID#")
+                .Title("ORDER ID")
+                .Width(120);
+            columns.Bound(f => f.OrderDate)
+               .Title("ORDER DATE")
+               .Format("{0:d}")
+               .Width(150);
+            columns.ForeignKey(f => f.CustomerID, (System.Collections.IEnumerable)ViewData["customers"], "CustomerID", "CompanyName")
+                .Title("CUSTOMER")
+                .Width(300);
+            columns.ForeignKey(f => f.EmployeeID, (System.Collections.IEnumerable)ViewData["employees"], "EmployeeID", "EmployeeName")
+                .Title("EMPLOYEE")
+                .Width(300);
+            columns.Bound(f => f.ShipCountry)
+                .Title("SHIP COUNTRY")
+                .ClientTemplate("<div class='country #=ShipCountry#'></div>#=ShipCountry#")
+                .Width(150);
+            columns.ForeignKey(f => f.ShipVia, (System.Collections.IEnumerable)ViewData["shippers"], "ShipperID", "CompanyName")
+               .Title("SHIP VIA");
+            if (bool.Parse(ConfigurationManager.AppSettings["EditingEnabled"]))
+            {
+                columns.Command(commands =>
+                {
+                    commands.Edit();
+                    commands.Destroy();
+                }).Width(200);
+            }
+        })
+        .Editable(e => e.Mode(GridEditMode.PopUp))
+        .Events(e => e
+            .DataBound("onDataBound")
+        )
+        .Pageable(pageable => pageable.Refresh(true))
+        .Sortable()
+        .Selectable()
+        .Navigatable()
+        .Filterable()
+        .ClientDetailTemplateId("Order_DetailTemplate")
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(20)
+            .Model(m =>
+            {
+                m.Id(f => f.OrderID);
+                m.Field(f => f.OrderID).Editable(false);
+                m.Field(f => f.OrderDate).DefaultValue(DateTime.Today);
+            })
+            .Events(e => e.Error(@<text>
+                function (e) {
+                    onError(e, "orders");
+                }
+            </text>))
+            .Sort(s => s.Add(f => f.OrderDate).Descending())
+            .Read("Orders_Read", "Orders")
+            .Create("Orders_Create", "Orders")
+            .Update("Orders_Update", "Orders")
+            .Destroy("Orders_Destroy", "Orders")
+        )
+    )
+
+@{
+    Func<object, object> errorEvent = @<text>
+        function(e) {
+            if (e.errors) {
+                onError(e, "order_details#=OrderID#");
+            }
+        }
+    </text>;
+}
+
+<script id="Order_DetailTemplate"  type="text/x-kendo-tmpl"> 
+    <h4>Details for order \\##=OrderID# </h4>
+    @(Html.Kendo().TabStrip()
+        .Name("order_details_tabstrip_#=OrderID#")
+        .Items(items => {
+            items.Add()
+                .Text("PRODUCTS")
+                .Selected(true)
+                .Content(@<text>
+                  @(Html.Kendo().Grid<OrderDetailViewModel>()
+                    .Name("order_details#=OrderID#")
+                    .ToolBar(t =>
+                    {
+                        if (bool.Parse(ConfigurationManager.AppSettings["EditingEnabled"]))
+                        {
+                            t.Create().Text("Add new product");
+                        }
+                    })
+                    .Columns(columns =>
+                    {
+                        columns.ForeignKey(f => f.ProductID, (System.Collections.IEnumerable)ViewData["products"], "ProductID", "ProductName")
+                            .Title("PRODUCT NAME")
+                            .EditorTemplateName("CustomGridForeignKey");
+                        columns.Bound(f => f.UnitPrice)
+                            .Format("{0:c}")
+                            .Title("UNIT PRICE")
+                            .Width(220);
+                        columns.Bound(f => f.Quantity)
+                            .Title("QUANTITY")
+                            .Width(220);
+                        columns.Bound(f => f.Discount)
+                            .Title("DISCOUNT")
+                            .Format("{0:p}")
+                            .ClientFooterTemplate("Grand total:")
+                            .Width(220);
+                        columns.Template(f => new { })
+                            .Title("TOTAL")
+                            .ClientTemplate("\\#=kendo.toString(GetOrderItemPrice(data), \"c\")\\#")
+                            .ClientFooterTemplate("<span name='sum'></span>").Width(120);
+                        if (bool.Parse(ConfigurationManager.AppSettings["EditingEnabled"]))
+                        {
+                            columns.Command(commands =>
+                            {
+                                commands.Edit();
+                                commands.Destroy();
+                            }).Width(200);
+                        }
+                    })
+                    .Events(e =>
+                    {
+                        e.DataBound("onOrderDetailsDataBound");
+                        e.DetailInit("onDetailInit");
+                        e.Edit("onOrderDetailsEdit");
+                    })
+                    .Selectable()
+                    .Pageable(pageable => pageable.Refresh(true))
+                    .Navigatable()
+                    .ClientDetailTemplateId("Product_DetailTemplate")
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .Model(model => {
+                            model.Id(detail => detail.OrderDetailID);
+                        })
+                        .Events(e => e.Error(errorEvent))
+                        .Read("OrderDetails_Read", "OrderDetails", new { OrderID = "#=OrderID#" })
+                        .Update("OrderDetails_Update", "OrderDetails")
+                        .Create("OrderDetails_Create", "OrderDetails", new { ParentID = "#=OrderID#" })
+                        .Destroy("OrderDetails_Destroy", "OrderDetails")
+                    ).ToClientTemplate()
+                )</text>);
+            items.Add()
+                .Text("SHIPPING DETAILS") 
+                .Content(@<text>
+                      <div class='shipping-details'>
+                            <ul>
+                                <li><label>Name:</label>#= ShipName #</li>
+                                <li><label>Country:</label>#= ShipCountry #</li>
+                                <li><label>City:</label>#= ShipCity #</li>
+                                <li><label>Address:</label>#= ShipAddress #</li>
+                                <li><label>Postal Code:</label>#= ShipPostalCode #</li>
+                            </ul>
+                        </div>
+                </text>);
+        })
+        .ToClientTemplate()
+    )
+</script>
+
+    <script type="text/javascript">
+
+        function onDetailInit(e) {
+            var model = e.data;
+            var detail = e.detailRow;
+            $.ajax({
+                url: '@Url.Action("Get_Product", "Products")',
+                    data: {ID: model.ProductID},
+                    success: function (receivedProduct) {
+                        detail.find(".product-name").text(receivedProduct.ProductName);
+                        detail.find(".product-category").text(receivedProduct.Category ? receivedProduct.Category.CategoryName : '');
+                        detail.find(".details-stock").text(receivedProduct.UnitsInStock);
+                        detail.find(".details-orders").text(receivedProduct.UnitsOnOrder);
+                        detail.find(".details-re-order").text(receivedProduct.ReorderLevel);
+                    }
+            })
+        }
+    </script>
+
+    <script id="Product_DetailTemplate" type="text/x-kendo-template">
+        <div id="product_detailtemplate_#=ProductID#" class="product-details-wrapper row">
+            <div class="product-details col-xs-3">
+                #if(ProductID) {#
+                    <img src="@Url.Content("~/Content/Products/")#=ProductID#.jpg" class="product-details-image">
+                #}#
+                <div class="product-name-cat">
+                    <div class="product-name"></div>
+                    <div class="product-category"></div>
+                </div>
+                </div>
+                <div class="product-details col-xs-3">
+                    <h5>Orders QTY.</h5>
+                    <div class="sparkline-container">
+                       @(Html.Kendo().Sparkline<ProductsSalesByMonth_Result>()
+                                .Name("chart_#=OrderDetailID#")
+                                .Theme("metro")
+                                .Series(series => series
+                                    .Column(column => column.Quantity).CategoryField("Date")
+                                    .Aggregate(ChartSeriesAggregate.Count)
+                                    .Gap(0.2))
+                                .CategoryAxis(axis => axis
+                                    .Date()
+                                    .Visible(true)
+                                    .Labels(labels => labels.Visible(false))
+                                    .MajorTicks(mTicks => mTicks.Visible(false))
+                                    .BaseUnit(ChartAxisBaseUnit.Months)
+                                    .Line(line => line.Visible(true).Color("black")))
+                                .ValueAxis(axis => axis
+                                    .Numeric()
+                                    .Line(line => line.Visible(true)))
+                                .DataSource(ds => ds.Read("ProductsSalesByMonth", "Products", new { ProductID = "#=ProductID#" }))
+                                .ToClientTemplate()
+                            )   
+                    </div>
+                    </div>
+                     <div class="product-details col-xs-1">
+                        <h5>In stock</h5>
+                        <span class="details-stock"></span>
+                    </div>
+                    <div class="product-details col-xs-1">
+                        <h5>In order</h5>
+                        <span class="details-orders"></span>
+                    </div>
+                    <div class="product-details col-xs-1">
+                        <h5>Reorder</h5>
+                        <span class="details-re-order"></span>
+                    </div>
+                    <div class="product-details col-xs-3">
+                        <h5>Qty. per unit</h5>
+                        <span class="details-re-order"></span><span class="product-metric">kg pkg.</span>
+                    </div>
+                </div>
+            </div>
+       </div>  
+    </script>
+</div>
+

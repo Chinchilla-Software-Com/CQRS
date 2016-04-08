@@ -1,0 +1,141 @@
+<!--open main column-->
+<div id="main-section-header" class="row">
+    <h2 id="team-efficiency" class="col-xs-3">Regional sales status</h2>
+    <div id="dateFilter" class="col-xs-9">
+        <div class="period-wrapper">
+            <label for="start-date" class="select-period">Stats from</label>
+            <input id="start-date" kendo-date-picker k-ng-model="regionalSales.startDate">
+            <span class="k-invalid-msg" data-for="start-date"></span>
+        </div>
+        <div class="period-wrapper">
+            <label for="end-date" class="select-period">To</label>
+            <input id="end-date" kendo-date-picker k-ng-model="regionalSales.endDate">
+            <span class="k-invalid-msg" data-for="end-date" ></span>
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+
+<div id="regional-sales" class="main-section-content row">
+    <div id="map-wrapper" class="row">
+        <div id="map-details" class="col-xs-2">
+            <h3 class="section-header">Pick a Country to view stats</h3>
+            <h3 class="section-header">COUNTRY</h3>
+            <h2 id="countryName">{{regionalSales.selectedCountry}}</h2>
+            <h3 class="section-header">CUSTOMERS</h3>
+            <div id="countryCustomers">
+                <span>{{regionalSales.currentCustomers.join(", ")}}</span>
+            </div>
+        </div>
+        <div id="map-container" class="col-xs-10">
+            <div id="map" kendo-map
+                k-layers="regionalSales.mapLayers"
+                k-center="[50.00, 0]"
+                k-zoom="2"
+                k-zoomable="false"
+                k-on-shape-created="regionalSales.shapeCreated(kendoEvent)"
+                k-on-shape-mouse-enter="regionalSales.shapeMouseEnter(kendoEvent)"
+                k-on-shape-mouse-leave="regionalSales.shapeMouseLeave(kendoEvent)"
+                k-on-shape-click="regionalSales.shapeClick(kendoEvent)"
+                ></div>
+        </div>
+    </div>
+
+    <div id="statsContainer" class="row">
+        <div id="marketShareContainer" class="col-xs-3 stats-graph">
+            <h3 class="section-header">Market share</h3>
+            <span id="market-share-label">{{ regionalSales.percentage }}</span>
+            <div class="sparkline-container">
+                <div id="market-share"
+                    style="height: 100px; visibility:{{ regionalSales.currentOrders.length > 0 ? 'visible': 'hidden' }}"
+                    kendo-chart
+                    k-theme="'metro'"
+                    k-legend="{visible:false}"
+                    k-data-source="regionalSales.marketDataSource"
+                    k-series-defaults="{type:'donut'}"
+                    k-series="[{field:'sales', categoryField:'country'}]"
+                    k-tooltip="{visible:true, template:'#= dataItem.country #: #= kendo.toString(dataItem.sales, \'c2\') #'}"
+                ></div>
+                <div id="market-share-no-data" class="overlay" ng-hide="regionalSales.currentOrders.length > 0">
+                    <div>No data available</div>
+                </div>
+            </div>
+        </div>
+        <div id="revenueContainer" class="col-xs-3 stats-graph">
+            <h3 class="section-header">Revenue</h3>
+            <span id="revenue-label">{{ regionalSales.revenue }}</span>
+            <div class="sparkline-container">
+                <div id="revenue"
+                    style="height: 100px; visibility:{{ regionalSales.currentOrders.length > 0 ? 'visible': 'hidden' }}"
+                    kendo-sparkline
+                    k-theme="'metro'"
+                    k-data-source="regionalSales.revenueDataSource"
+                    k-type="'column'"
+                    k-series="[{categoryField:'date',aggregate:'sum',color:'#1996e4',gap:0.2,field:'value'}]"
+                    k-category-axis="{type: 'date', baseUnit: 'months'}"
+                    k-tooltip="{template: '#=kendo.toString(value, \'c2\')#'}"
+                ></div>
+                <div id="revenue-no-data" class="overlay" ng-hide="regionalSales.currentOrders.length > 0">
+                    <div>No data available</div>
+                </div>
+            </div>
+        </div>
+        <div id="ordersContainer" class="col-xs-3 stats-graph">
+            <h3 class="section-header">Orders</h3>
+            <span id="orders-label">{{regionalSales.currentOrders.length}}</span>
+            <div class="sparkline-container">
+                <div id="orders" style="height:100px"
+                    style="height: 100px; visibility:{{ regionalSales.currentOrders.length > 0 ? 'visible': 'hidden' }}"
+                    kendo-sparkline
+                    k-theme="'metro'"
+                    k-data-source="regionalSales.ordersDataSource"
+                    k-type="'column'"
+                    k-series="[{categoryField:'date',aggregate:'sum',color:'#1996e4',gap:0.2,field:'value'}]"
+                    k-category-axis="{type: 'date', baseUnit: 'months'}"
+                ></div>
+                <div id="orders-no-data" class="overlay" ng-hide="regionalSales.currentOrders.length > 0">
+                    <div>No data available</div>
+                </div>
+            </div>
+        </div>
+        <div id="customersContainer" class="col-xs-3 stats-graph">
+            <h3 class="section-header">Customers</h3>
+            <span id="customers-label">{{regionalSales.currentCustomers.length}}</span>
+            <div class="sparkline-container">
+                <div id="customers"
+                    style="height: 100px; visibility:{{ regionalSales.currentCustomers.length > 0 ? 'visible': 'hidden' }}"
+                    kendo-sparkline
+                    k-theme="'metro'"
+                    k-data-source="regionalSales.customersDataSource"
+                    k-type="'column'"
+                    k-series="[{categoryField:'date',aggregate:'sum',color:'#1996e4',gap:0.2,field:'value'}]"
+                    k-category-axis="{type: 'date', baseUnit: 'months'}"
+                ></div>
+                <div id="customers-no-data" class="overlay" ng-hide="regionalSales.currentCustomers.length > 0">
+                    <div>No data available</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="topProductsContainer">
+        <h3 class="section-header">Top selling products</h3>
+        <div id="top-selling-products"
+             style="height: 260px; visibility:{{ regionalSales.currentTopSellingProducts.length > 0 ? 'visible': 'hidden' }}"
+             kendo-chart
+             k-theme="'metro'"
+             k-data-source="regionalSales.topSellingProductsDataSource"
+             k-legend="{visible:true, position:'top'}"
+             k-chart-area="{background:'#eeeeee'}"
+             k-series-defaults="{type: 'line',style: 'smooth'}"
+             k-series="[{field:'quantity',markers:{visible:false}}]"
+             k-category-axis="[{majorGridLines:{visible:false},line:{width:0},labels:{visible:false}}]"
+             k-value-axis="{majorUnit:50,majorTicks:{visible:false},majorGridLines:{visible:false},line:{visible:false},labels:{visible:false}}"
+             k-tooltip="{visible:true,template:'#=data.series.name.replace(data.series.field, data.value)#'}"
+        ></div>
+        <div id="products-no-data" class="overlay" ng-hide="regionalSales.currentTopSellingProducts.length > 0">
+            <div>No data available</div>
+        </div>
+    </div>
+</div>
+

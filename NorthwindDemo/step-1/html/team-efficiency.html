@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link href="http://cdn.kendostatic.com/2014.2.716/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+    <link href="http://cdn.kendostatic.com/2014.2.716/styles/kendo.metro.min.css" rel="stylesheet" type="text/css" />
+    <link href="http://cdn.kendostatic.com/2014.2.716/styles/kendo.dataviz.min.css" rel="stylesheet" type="text/css" />
+    <link href="http://cdn.kendostatic.com/2014.2.716/styles/kendo.dataviz.metro.min.css" rel="stylesheet" type="text/css" />
+    <script src="http://cdn.kendostatic.com/2014.2.716/js/jquery.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2014.2.716/js/kendo.all.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2014.2.716/js/kendo.aspnetmvc.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <link href="Content/Site.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!--open container-->
+        <div class="row row-offcanvas row-offcanvas-left">
+            <!--open row-->
+            <div id="nav-section" class="col-xs-12 column">
+                <!--open nav column-->
+                <div class="navbar-default">
+                    <button id="toggle-button" type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <h1 id="dash-logo" class="center-block">Northwind&#183;Dash</h1>
+                <div class="collapse navbar-collapse" id="sidebar-nav" role="navigation">
+                    <ul class="nav">
+                        <li id="regionalSalesStatus">
+                            <a href="index.html">
+                                <span class="icon icon-chart-column"></span>Regional Sales Status</a>
+                        </li>
+                        <li id="productsAndOrders">
+                            <a href="products-orders.html">
+                                <span class="icon icon-star-empty"></span>Products &amp; Orders</a>
+                        </li>
+                        <li id="teamEfficiency">
+                            <a href="team-efficiency.html">
+                                <span class="icon icon-faves"></span>Team Efficiency</a>
+                        </li>
+                        <li id="about">
+                            <a href="about.html">
+                                <span class="icon icon-info"></span>About</a>
+                        </li>
+                    </ul>
+                    <span id="rights">Copyright © 2002-2014 Telerik. All rights reserved.</span>
+                </div>
+            </div>
+            <!--close left column-->
+            <div id="main-section" class="col-xs-12 column">
+                <div id="main-section-header" class="row">
+                    <h2 id="team-efficiency" class="col-xs-3">Team efficiency</h2>
+                    <div id="dateFilter" class="col-xs-9">
+                        <div class="period-wrapper">
+                            <label for="StartDate" class="select-period">Stats from</label>
+                            <input id="start-date" />
+                            <span class="k-invalid-msg" data-for="StartDate"></span>
+                        </div>
+                        <div class="period-wrapper">
+                            <label for="EndDate" class="select-period">To</label>
+                            <input id="end-date" />
+                            <span class="k-invalid-msg" data-for="EndDate"></span>
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+
+                <div class="main-section-content row" style="">
+
+                    <div id="employee-list" class="col col-xs-2">
+                        <h3>TEAM MEMBERS</h3>
+                        <div id="employees-list"></div>
+                    </div>
+                    <div id="employee-details-wrapper" class="col col-xs-10">
+                        <div id="employee-details" class="row">
+                            <div id="employee-about" class="col-xs-12 placeholder">
+                                <div class="row">
+                                    <div id="employeeBio" class="col-xs-12 col-sm-4">
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <h3>Quarter to date sales</h3>
+                                        <span id="employee-quarter-sales-label"></span>
+                                        <div class="sparkline-container">
+                                            <div id="employee-quarter-sales" style="height:30px"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <h3>Monthly Average Sales</h3>
+                                        <span id="employee-average-sales-label"></span>
+                                        <div class="sparkline-container">
+                                            <div id="employee-average-sales" style="height:30px"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="employeeStats" class="col-xs-12">
+                                <div id="team-sales" style="height:200px"></div>
+                            </div>
+                            <div id="employeeSchedule" class="col-xs-12">
+                                <h3>Representative orders - schedule</h3>
+                                <div id="employee-sales"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--close main column-->
+        </div>
+        <!--close row-->
+    </div>
+    <!--close container-->
+
+    <script>
+        $(document).ready(function() {
+
+            var employeeAndTeamSales = [];
+            var employeeAverageSales = [];
+            var employeeQuarterSales = [];
+
+            $.when($.ajax({
+                url: "./Content/employee-and-team-sales.json",
+                dataType: "json",
+                type: "GET",
+                success: function(data) {
+                    employeeAndTeamSales = data;
+                }
+            }),
+             $.ajax({
+                url: "./Content/employee-average-sales.json",
+                dataType: "json",
+                type: "GET",
+                success: function(data) {
+                    employeeAverageSales = data;
+                }
+            }),
+            $.ajax({
+                url: "./Content/employee-quarter-sales.json",
+                dataType: "json",
+                type: "GET",
+                success: function(data) {
+                    employeeQuarterSales = data;
+                }
+            })).then(function(){
+              initWidgets();
+            })
+
+
+
+            $("[data-toggle=offcanvas]").click(function() {
+                $(".row-offcanvas").toggleClass("active");
+            });
+
+            function initWidgets(){
+              $("#start-date").kendoDatePicker({
+                  value: new Date(1996, 0, 1),
+                  change: onCriteriaChange
+              })
+
+              $("#end-date").kendoDatePicker({
+                  value: new Date(1998, 7, 1),
+                  change: onCriteriaChange
+              })
+
+              $("#employees-list").kendoListView({
+                  template: $('#employeeItemTemplate').html(),
+                  dataSource: {
+                      transport: {
+                          read: {
+                              url: './Content/employees-list.json',
+                          }
+                      },
+                      pageSize: 9
+                  },
+                  selectable: "single",
+                  dataBound: onListDataBound,
+                  change: onCriteriaChange
+              })
+
+              $("#employee-quarter-sales").kendoChart({
+                  theme: "metro",
+                  autoBind: false,
+                  tooltip: false,
+                  dataBound: onQuarterSalesDataBound,
+                  dataSource: {
+                      transport: {
+                          read: function(options){
+                              var result = $.grep(employeeQuarterSales, function(e){
+                                  return e.EmployeeID == options.data.EmployeeID;
+                              })[0];
+                              options.success(result.Sales)
+                          }
+                      }
+                  },
+                  series: [{
+                      type: "bullet",
+                      currentField: "Current",
+                      targetField: "Target"
+
+                  }],
+                  legend: {
+                      visible: false
+                  },
+                  categoryAxis: {
+                      labels: {
+                          visible: false
+                      },
+                      majorGridLines: {
+                          visible: false
+                      }
+                  },
+                  valueAxis: {
+                      type: "numeric",
+                      labels: {
+                          visible: false
+                      },
+                      majorTicks: {
+                          visible: false
+                      },
+                      majorGridLines: {
+                          visible: false
+                      }
+                  }
+
+              })
+
+              $("#employee-average-sales").kendoChart({
+                  theme: "metro",
+                  autoBind: false,
+                  dataBound: onAverageSalesDataBound,
+                  dataSource: {
+                      transport: {
+                          read: function(options){
+                              var result = $.grep(employeeAverageSales, function(e){
+                                  return e.EmployeeID == options.data.EmployeeID;
+                              });
+                              options.success(result);
+                          }
+                      },
+                      aggregate: [{
+                          field: "EmployeeSales",
+                          aggregate: "average"
+                      }]
+                  },
+                  series: [{
+                      type: "line",
+                      field: "EmployeeSales",
+                      width: 1.5,
+                      markers: {
+                          visible: false
+                      }
+                  }],
+                  categoryAxis: {
+                      type: "date",
+                      field: "Date",
+                      visible: false,
+                      majorGridLines: {
+                          visible: false
+                      },
+                      majorTicks: {
+                          visible: false
+                      }
+                  },
+                  legend: {
+                      visible: false
+                  },
+                  valueAxis: {
+                      type: "numeric",
+                      visible: false,
+                      labels: {
+                          visible: false
+                      },
+                      majorGridLines: {
+                          visible: false
+                      },
+                      majorTicks: {
+                          visible: false
+                      }
+                  }
+              });
+
+              $("#team-sales").kendoChart({
+                  theme: "metro",
+                  title: {
+                      text: "REPRESENTATIVE SALES VS. TOTAL SALES",
+                      align: "left",
+                      font: "11px",
+                      color: "#35373d"
+                  },
+                  autoBind: false,
+                  dataSource: {
+                      transport : {
+                          read: function(options){
+                              var result;
+                              var startDate = options.data.startDate;
+                              var endDate = options.data.endDate;
+                              var employee = $.grep(employeeAndTeamSales, function(e){
+                                  return e.EmployeeID == options.data.EmployeeID;
+                              })[0];
+                              options.success(employee.Sales);
+                          }
+                      }
+                  },
+                  legend: {
+                      position: "bottom"
+                  },
+                  series: [{
+                      field: "EmployeeSales",
+                      categoryField: "Date",
+                      name: "Employee Sales",
+                      aggregate: "sum"
+                  },{
+                      field: "TotalSales",
+                      categoryField: "Date",
+                      name: "Team Sales",
+                      aggregate: "sum"
+                  }],
+                  categoryAxis: {
+                      type: "date",
+                      baseUnit: "months",
+                      majorGridLines:{
+                          visible: false
+                      }
+                  },
+                  valueAxis: {
+                      labels: {
+                          format: "{0:c2}",
+                          visible: false
+                      },
+                      majorUnit: 25000,
+                      line: {
+                          visible: false
+                      },
+                      majorGridLines: {
+                          visible : false
+                      }
+                  },
+                  tooltip: {
+                      visible: true,
+                      format: "{0:c2}"
+                  }
+              })
+
+              $("#employee-sales").kendoScheduler({
+                  autoBind:false,
+                  date: new Date("1996, 7, 1"),
+                  views: ["month"],
+                  editable:false,
+                  timezone: "Etc/UTC",
+                  dataSource:{
+                      transport:{
+                          read: {
+                              url: "./Content/employee-sales.json"
+                          }
+                      },
+                          schema: {
+                             model: {
+                                  fields: {
+                                      SaleID: {
+                                          type :  "number"
+                                      },
+                                      title: {
+                                          from : "Title",
+                                          type :  "string"
+                                      },
+                                      description: {
+                                          from : "Description",
+                                          type :  "string"
+                                      },
+                                      start: {
+                                          from : "Start",
+                                          type :  "date"
+                                      },
+                                      startTimezone: {
+                                          from : "StartTimezone",
+                                          type :  "string"
+                                      },
+                                      end: {
+                                          from : "End",
+                                          type :  "date"
+                                      },
+                                      endTimezone: {
+                                          from : "EndTimezone",
+                                          type :  "string"
+                                      },
+                                      recurrenceRule: {
+                                          from : "RecurrenceRule",
+                                          type :  "string"
+                                      },
+                                      RecurrenceID: {
+                                          type :  "number",
+                                          defaultValue: null
+                                      },
+                                      recurrenceException: {
+                                          from : "RecurrenceException",
+                                          type :  "string"
+                                      },
+                                      isAllDay: {
+                                          from : "IsAllDay",
+                                          type :  "boolean"
+                                      },
+                                      EmployeeID: {
+                                          type :  "number",
+                                          defaultValue: null
+                                      }
+                                  }
+                              }
+                          }
+                  },
+                  resources: [{
+                      field: "EmployeeID",
+                      title: "Employee",
+                      dataTextField: "EmployeeName",
+                      dataValueField: "EmployeeID",
+                      dataSource: {
+                          transport: {
+                              read: {
+                                  url : "./Content/employees-list.json"
+                              }
+                          }
+                      }
+                  }]
+              })
+
+              $('#employeeBio').kendoTooltip({
+                  filter: "a",
+                  content: function(e){
+                      return e.target.find("span").text();
+                  }
+              })
+            }
+
+        function onListDataBound(e) {
+            this.select($(".employee:first"));
+        }
+
+        function onCriteriaChange() {
+            var employeeList = $("#employees-list").data("kendoListView"),
+                employee = employeeList.dataSource.getByUid(employeeList.select().attr("data-uid")),
+                employeeQuarterSales = $("#employee-quarter-sales").data("kendoChart"),
+                employeeAverageSales = $("#employee-average-sales").data("kendoChart"),
+                teamSales = $("#team-sales").data("kendoChart"),
+                employeeSales = $("#employee-sales").data("kendoScheduler"),
+                startDate = $("#start-date").data("kendoDatePicker"),
+                endDate = $("#end-date").data("kendoDatePicker"),
+                filter = {
+                    EmployeeID: employee.EmployeeID,
+                    startDate: kendo.format("{0:MM/dd/yyyy hh:mm:ss}", startDate.value()),
+                    endDate: kendo.format("{0:MM/dd/yyyy hh:mm:ss}", endDate.value())
+                },
+                template = kendo.template($("#employeeBioTemplate").html());
+
+            $("#employeeBio").html(template(employee));
+
+            employeeSales.dataSource.filter({
+                field: "EmployeeID",
+                operator: "eq",
+                value: employee.EmployeeID
+            });
+
+            teamSales.dataSource.read(filter);
+            employeeQuarterSales.dataSource.read(filter);
+            employeeAverageSales.dataSource.read(filter);
+        }
+
+        function onQuarterSalesDataBound(e) {
+            var data = this.dataSource.at(0);
+            $("#employee-quarter-sales-label").text(kendo.toString(data.Current, "c2"));
+        }
+
+        function onAverageSalesDataBound(e) {
+            var data = this.dataSource.aggregates()
+            if (data.EmployeeSales) {
+                $("#employee-average-sales-label").text(kendo.toString(data.EmployeeSales.average, "c2"));
+            } else {
+                $("#employee-average-sales-label").text(kendo.toString(0, "c2"));
+            }
+        }
+      });
+    </script>
+     <script type="text/x-kendo-tmpl" id="employeeItemTemplate">
+        <div class="employee">
+            <div class="employee-wrapper">
+                <img src="./Content/Employees/#:EmployeeID#-t.png" class="img-responsive employee-list-image"/>
+                    <dl class="employee-list-details">
+                        <dt class="name">#:FirstName# #:LastName# </dt>
+                        <dd class="title">#:Title# </dd>
+                   </dl>
+               </div>
+            </div>
+    </script>
+    <script type="text/x-kendo-tmpl" id="employeeBioTemplate">
+        <div>
+            <h3>ABOUT</h3>
+            <img src="./Content/Employees/#:EmployeeID#.png" class="img-responsive employee-details-image" />
+            <dl class="employee-bio-details">
+                <dt class="name">#:FirstName# #:LastName#</dt>
+                    <dd class="title">#:Title#</dd>
+                    <dd class="phone"><span class="icon icon-mobile"></span>#:HomePhone#</dd>
+                    <dd><a href='\\#' class='bioTooltip'> >>FULL BIO <span style='display:none;'>#:Notes#</span></a></dd>
+           </dl>
+        </div>
+    </script>
+
+</body>
+
+</html>
