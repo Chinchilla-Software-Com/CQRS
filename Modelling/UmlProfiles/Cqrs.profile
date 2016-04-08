@@ -11,7 +11,7 @@
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
         </property>
-        <property name="EntityPersistenceTechnology" displayName="Entity Persistence Technology: What technology are you using for persisting entities." defaultValue="MongoDb">
+        <property name="EntityPersistenceTechnology" displayName="Entity Persistence Technology: What technology are you using for persisting entities." defaultValue="SimplifiedSql">
           <propertyType>
             <enumerationTypeMoniker name="/CqrsProfile/EntityPersistenceTechnology"/>
           </propertyType>
@@ -31,7 +31,7 @@
             <enumerationTypeMoniker name="/CqrsProfile/AggregateTechnology"/>
           </propertyType>
         </property>
-        <property name="EventStorePersistenceTechnology" displayName="Event Store Persistence Technology: What technology are you using for persisting events and event sourcing." defaultValue="GYEventStore">
+        <property name="EventStorePersistenceTechnology" displayName="Event Store Persistence Technology: What technology are you using for persisting events and event sourcing." defaultValue="SimplifiedSql">
           <propertyType>
             <enumerationTypeMoniker name="/CqrsProfile/EventStorePersistenceTechnology"/>
           </propertyType>
@@ -321,6 +321,7 @@
       <enumerationLiterals>
         <enumerationLiteral name="MongoDb" displayName="MongoDB" />
         <enumerationLiteral name="AzureDocumentDb" displayName="Azure Document Db" />
+        <enumerationLiteral name="SimplifiedSql" displayName="Simplified Sql" />
         <enumerationLiteral name="SqlServer" displayName="SqlServer" />
         <enumerationLiteral name="MySqlServer" displayName="MySql Server" />
         <enumerationLiteral name="InProcessOnly" displayName="In Process Only" />
@@ -352,6 +353,7 @@
       <enumerationLiterals>
         <enumerationLiteral name="GYEventStore" displayName="Greg Youngs EventStore" />
         <enumerationLiteral name="AzureDocumentDb" displayName="Azure Document Db" />
+        <enumerationLiteral name="SimplifiedSql" displayName="Simplified Sql" />
         <enumerationLiteral name="SqlServer" displayName="SqlServer" />
         <enumerationLiteral name="MySqlServer" displayName="MySql Server" />
         <enumerationLiteral name="InProcessOnly" displayName="In Process Only" />
