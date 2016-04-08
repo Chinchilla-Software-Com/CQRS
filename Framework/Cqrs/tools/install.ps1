@@ -5,7 +5,23 @@ param($installPath, $toolsPath, $package, $project)
 
 try
 {
-  $url = "https://www.chinchillasoftware.com/nuget/install/" + $package.Id + "/" + $package.Version + "/" + $project.Name
+  $url = "https://www.chinchillasoftware.com/nuget/install/Unknown/Unknown/Unknown"
+  try
+  {
+    $url = "https://www.chinchillasoftware.com/nuget/install/" + $package.Id + "/Unknown/Unknown"
+  }
+  catch{}
+  try
+  {
+    $url = "https://www.chinchillasoftware.com/nuget/install/" + $package.Id + "/" + $package.Version + "/Unknown"
+  }
+  catch{}
+  try
+  {
+    $url = "https://www.chinchillasoftware.com/nuget/install/" + $package.Id + "/" + $package.Version + "/" + $project.Name
+  }
+  catch{}
+
   $dte2 = Get-Interface $dte ([EnvDTE80.DTE2])
 
   if ($dte2.ActiveWindow.Caption -eq "Package Manager Console")
