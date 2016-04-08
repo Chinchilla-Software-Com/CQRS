@@ -7,8 +7,9 @@ using System.Web.Mvc;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System.Data;
+using Northwind.Web.Dashboard.Models;
 
-namespace KendoUI.Northwind.Dashboard.Controllers
+namespace Northwind.Web.Dashboard.Controllers
 {
     public class CustomersController : Controller
     {

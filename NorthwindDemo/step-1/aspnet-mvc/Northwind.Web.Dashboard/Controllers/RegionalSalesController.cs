@@ -1,4 +1,5 @@
 ﻿using KendoUI.Northwind.Dashboard.Models;
+using Northwind.Web.Dashboard.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -6,9 +7,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace KendoUI.Northwind.Dashboard.Controllers
+namespace Northwind.Web.Dashboard.Controllers
 {
-    public class RegionalSalesController : Controller
+	public class RegionalSalesController : Controller
     {
         public ActionResult TopSellingProducts(string Country, DateTime FromDate, DateTime ToDate)
         {

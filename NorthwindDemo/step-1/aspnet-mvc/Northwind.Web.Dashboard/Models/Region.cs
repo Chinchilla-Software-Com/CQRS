@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace KendoUI.Northwind.Dashboard.Models
+namespace Northwind.Web.Dashboard.Models
 {
     using System;
     using System.Collections.Generic;

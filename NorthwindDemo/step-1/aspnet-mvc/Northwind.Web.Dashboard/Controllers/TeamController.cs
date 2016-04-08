@@ -1,5 +1,4 @@
-﻿using KendoUI.Northwind.Dashboard.Controllers;
-using KendoUI.Northwind.Dashboard.Models;
+﻿using KendoUI.Northwind.Dashboard.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +7,11 @@ using System.Web.Mvc;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System.Data.SqlClient;
+using Northwind.Web.Dashboard.Models;
 
-namespace KendoUI.Northwind.Dashboard.Controllers
+namespace Northwind.Web.Dashboard.Controllers
 {
-    public class TeamController : Controller
+	public class TeamController : Controller
     {
         public ActionResult TeamEfficiency()
         {
