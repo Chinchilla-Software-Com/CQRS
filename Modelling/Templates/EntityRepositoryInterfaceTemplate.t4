@@ -31,7 +31,13 @@ using System.ServiceModel;
 using Cqrs.Repositories;
 using Cqrs.Repositories.Queries;
 using <#= GetNamespace(((INamedElement)FindModuleElement(this.Element)).Namespace) #>.Factories;
-using <#= classNamespace #>.Repositories.Queries.Strategies;
+<#
+string standardisedClassNamespace = classNamespace;
+int lastDotIndex = standardisedClassNamespace.LastIndexOf('.');
+if (lastDotIndex > -1)
+  standardisedClassNamespace = classNamespace.Substring(0, lastDotIndex);
+#>
+using <#= standardisedClassNamespace #>.Repositories.Queries.Strategies;
 
 namespace <#= classNamespace #>.Repositories
 {
@@ -44,7 +50,7 @@ namespace <#= classNamespace #>.Repositories
 	}
 }
 
-namespace <#= classNamespace #>.Repositories.Queries.Strategies
+namespace <#= standardisedClassNamespace #>.Repositories.Queries.Strategies
 {
 	public partial class <#= className #>QueryStrategy : QueryStrategy
 	{

@@ -26,7 +26,13 @@ WriteUsingStatements(this.Element);
 #>
 using Cqrs.Repositories;
 using <#= GetNamespace(((INamedElement)FindModuleElement(this.Element)).Namespace) #>.Factories;
-using <#= classNamespace #>.Repositories.Queries.Strategies;
+<#
+string standardisedClassNamespace = classNamespace;
+int lastDotIndex = standardisedClassNamespace.LastIndexOf('.');
+if (lastDotIndex > -1)
+  standardisedClassNamespace = classNamespace.Substring(0, lastDotIndex);
+#>
+using <#= standardisedClassNamespace #>.Repositories.Queries.Strategies;
 
 namespace <#= classNamespace #>.Repositories
 {
