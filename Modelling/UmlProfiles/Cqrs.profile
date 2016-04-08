@@ -162,6 +162,23 @@
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
+      <properties>
+        <property name="BuildRepository" displayName="BuildRepository: Automatically adds a respository for the entity" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="BuildService" displayName="BuildService: Automatically adds a service for the entity" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="BuildDataStore" displayName="BuildDataStore: Automatically adds a data store for the entity" defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+      </properties>
     </stereotype>
     <stereotype name="EntityProperty" displayName="Entity Property">
       <metaclasses>
