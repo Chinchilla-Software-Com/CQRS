@@ -12,19 +12,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 #endregion
-using System.CodeDom.Compiler;
-using Cqrs.DataStores;
 
-namespace Northwind.Domain.Factories
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using Cqrs.Repositories.Queries;
+
+namespace Northwind.Domain.Orders.Repositories.Queries.Strategies
 {
 	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
-	/// <summary>
-	/// A factory for obtaining <see cref="IDataStore{TData}"/> instances
-	/// </summary>
-	public partial interface IDomainDataStoreFactory
+	public partial interface IInvoicesQueryStrategyBuilder : IQueryBuilder<InvoicesQueryStrategy, Entities.InvoicesEntity>
 	{
-
-		IDataStore<Orders.Entities.InvoicesEntity> GetInvoicesDataStore();
-
 	}
 }

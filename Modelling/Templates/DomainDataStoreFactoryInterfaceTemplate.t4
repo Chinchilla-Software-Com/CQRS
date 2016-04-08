@@ -51,6 +51,24 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			}
 		}
 #>
+
+<#
+		foreach (var element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
+		{
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "Entity");
+			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
+				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
+			if (shouldBuild)
+			{
+#>
+		IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> Get<#= elementName #>DataStore();
+
+<#
+			}
+		}
+#>
 	}
 }
 <#+
