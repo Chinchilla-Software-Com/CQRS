@@ -21,7 +21,7 @@ string baseClass = GetBaseClass(this.Element);
 string entityPersistenceTechnology = GetEntityPersistenceTechnology(this.Element);
 var tableNameProperty = stereoTypeProperties.PropertyInstances
 	.SingleOrDefault(property => property.Name == "TableName");
-string tableNameProperty != null && !string.IsNullOrWhiteSpace(tableNameProperty.Value) ? tableNameProperty.Value : className + "Entity";
+string tableName = tableNameProperty != null && !string.IsNullOrWhiteSpace(tableNameProperty.Value) ? tableNameProperty.Value : className + "Entity";
 
 if (string.IsNullOrWhiteSpace(baseClass))
 {
@@ -77,11 +77,11 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 			var propertyStereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "EntityProperty");
 			var columnNameProperty = propertyStereoTypeProperties.PropertyInstances
 				.SingleOrDefault(property => property.Name == "ColumnName");
-			string columnNameProperty != null && !string.IsNullOrWhiteSpace(columnNameProperty.Value) ? string.Format("Column(Name = \"{0}\")", columnNameProperty.Value) : "Column";
+			string columnName = columnNameProperty != null && !string.IsNullOrWhiteSpace(columnNameProperty.Value) ? string.Format("Column(Name = \"{0}\")", columnNameProperty.Value) : "Column";
 #>
 <# WriteSummaryComment(collectionProperty.Description); #>
 		[DataMember]
-		[<#= columnNameProperty #>]
+		[<#= columnName #>]
 		<#= GetPropertyVisibility(collectionProperty) #> virtual <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; set; }
 
 <#
