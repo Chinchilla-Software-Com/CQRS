@@ -17,12 +17,14 @@ using Cqrs.DataStores;
 
 namespace Northwind.Domain.Factories
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.864")]
 	/// <summary>
 	/// A factory for obtaining <see cref="IDataStore{TData}"/> instances
 	/// </summary>
 	public partial interface IDomainDataStoreFactory
 	{
+		IDataStore<Orders.Entities.OrderEntity> GetOrderDataStore();
+
 
 		IDataStore<Orders.Entities.InvoicesEntity> GetInvoicesDataStore();
 

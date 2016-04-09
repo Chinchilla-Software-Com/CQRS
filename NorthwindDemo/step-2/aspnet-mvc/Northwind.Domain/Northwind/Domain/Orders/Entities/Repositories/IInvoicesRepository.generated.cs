@@ -24,7 +24,7 @@ using Northwind.Domain.Orders.Repositories.Queries.Strategies;
 
 namespace Northwind.Domain.Orders.Entities.Repositories
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.864")]
 	public partial interface IInvoicesRepository : IRepository<InvoicesQueryStrategy, InvoicesEntity>
 	{
 	}

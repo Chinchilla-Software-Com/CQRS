@@ -25,7 +25,7 @@ using Cqrs.Repositories.Queries;
 
 namespace Northwind.Domain.Orders.Repositories.Queries.Strategies
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.864")]
 	public partial class InvoicesQueryStrategy : QueryStrategy, IInvoicesQueryStrategy
 	{
 		protected IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> AuthenticationTokenHelper { get; private set; }
