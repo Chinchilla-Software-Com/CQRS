@@ -74,7 +74,7 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 		// Properties
 		foreach(var collectionProperty in collectionProperties)
 		{
-			var propertyStereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "EntityProperty");
+			var propertyStereoTypeProperties = collectionProperty.AppliedStereotypes.Single(property => property.Name == "EntityProperty");
 			var columnNameProperty = propertyStereoTypeProperties.PropertyInstances
 				.SingleOrDefault(property => property.Name == "ColumnName");
 			string columnName = columnNameProperty != null && !string.IsNullOrWhiteSpace(columnNameProperty.Value) ? string.Format("Column(Name = \"{0}\")", columnNameProperty.Value) : "Column";
