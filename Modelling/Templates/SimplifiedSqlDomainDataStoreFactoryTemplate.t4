@@ -73,6 +73,9 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 <#
 		foreach (var element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
 		{
+			bool isAggregateTo = element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
+			if (isAggregateTo)
+				continue;
 			string elementName = element.Name;
 			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
 			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "Entity");
@@ -88,9 +91,6 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			return result;
 		}
 
-		partial void OnGet<#= elementName #>DataStore(ref IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> result);
-
-
 <#
 			}
 		}
@@ -104,6 +104,26 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			string elementName = element.Name;
 			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
 			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
+				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
+			if (shouldBuild)
+			{
+#>
+		partial void OnGet<#= elementName #>DataStore(ref IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> result);
+
+<#
+			}
+		}
+#>
+<#
+		foreach (var element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
+		{
+			bool isAggregateTo = element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
+			if (isAggregateTo)
+				continue;
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "Entity");
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
 			if (shouldBuild)
