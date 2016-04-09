@@ -1,0 +1,62 @@
+<#@ Include File="TemplateHeader.t4" #>
+<#@ Modeling ElementType="Microsoft.VisualStudio.Uml.Classes.IClass" Processor="ModelingProcessor" ApplyStereotypes="CSharp" #>
+<#@ Import Namespace="Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml" #>
+<#@ Import Namespace="Microsoft.VisualStudio.Uml.AuxiliaryConstructs" #>
+<#@ import namespace="Microsoft.VisualStudio.Uml.Classes" #>
+<#@ Include File="CSharpCommentHelpers.t4" #>
+<#@ Include File="CSharpHelpers.t4" #>
+<#@ Include File="CqrsTemplateHelpers.t4" #>
+<#@ Include File="ModelHelper.t4" #>
+<#@ Output Extension=".cs" #>
+<#
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "Event");
+
+string classNamespace = GetNamespace(this.Element.Namespace);
+string className = ClassifierName(this.Element);
+
+// using statements
+#>
+using System;
+using cdmdotnet.AutoMapper;
+using Cqrs.Entities;
+
+namespace <#= classNamespace #>.Handlers
+{
+<#
+	// Class and Attributes
+#>
+	public <#= GetAbstract(this.Element) #> partial class <#= className #>EventHandler
+	{
+		protected IAutomapHelper AutomapHelper { get; private set; }
+
+		public <#= className #>EventHandler(IAutomapHelper automapHelper)
+<#
+string eventHandlerTechnology = GetEventHandlerTechnology(this.Element);
+switch(eventHandlerTechnology)
+{
+	case "Akka":
+#>
+			: this()
+<#
+		break;
+	default:
+		// for now do nothing
+		break;
+}
+#>
+		{
+			AutomapHelper = automapHelper;
+		}
+
+		partial void OnHandle(<#= className #> @event)
+		{
+			throw new NotImplementedException();
+		}
+	}
+}
+<#+
+	protected override bool AppliesToElement()
+	{
+		return ShouldGenerateCodeForElement(this.Element) && this.Element.AppliedStereotypes.Any(property => property.Name == "Event");
+	}
+#>
