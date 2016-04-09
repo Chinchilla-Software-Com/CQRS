@@ -19,6 +19,9 @@ string classNamespace = GetNamespace(this.Element.Namespace);
 string className = ClassifierName(this.Element);
 string baseClass = GetBaseClass(this.Element);
 string entityPersistenceTechnology = GetEntityPersistenceTechnology(this.Element);
+var tableNameProperty = stereoTypeProperties.PropertyInstances
+	.SingleOrDefault(property => property.Name == "TableName");
+string tableNameProperty != null && !string.IsNullOrWhiteSpace(tableNameProperty.Value) ? tableNameProperty.Value : className + "Entity";
 
 if (string.IsNullOrWhiteSpace(baseClass))
 {
@@ -51,7 +54,7 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 	<#= GetGeneratedCodeAttribute() #>
 	[Serializable]
 	[DataContract]
-	[Table(Name = "<#= className #>Entity")]
+	[Table(Name = "<#= tableName #>")]
 	public <#= GetAbstract(this.Element) #> partial class <#= className #>Entity : <#= baseClass #>, I<#= className #>Entity
 	{
 		[DataMember]
@@ -71,10 +74,13 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 		// Properties
 		foreach(var collectionProperty in collectionProperties)
 		{
+			var columnNameProperty = stereoTypeProperties.PropertyInstances
+				.SingleOrDefault(property => property.Name == "ColumnName");
+			string columnNameProperty != null && !string.IsNullOrWhiteSpace(columnNameProperty.Value) ? string.Format("Column(Name = \"{0}\")", columnNameProperty.Value) : "Column";
 #>
 <# WriteSummaryComment(collectionProperty.Description); #>
 		[DataMember]
-		[Column]
+		[<#= columnNameProperty #>]
 		<#= GetPropertyVisibility(collectionProperty) #> virtual <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; set; }
 
 <#

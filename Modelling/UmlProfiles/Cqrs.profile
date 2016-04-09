@@ -163,6 +163,13 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
       <properties>
+      <properties>
+        <property name="TableName" displayName="TableName: The name of the table or view when using simplified SQL." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+      </properties>
         <property name="BuildRepository" displayName="BuildRepository: Automatically adds a respository for the entity" defaultValue="true">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
@@ -184,6 +191,13 @@
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IProperty" />
       </metaclasses>
+      <properties>
+        <property name="ColumnName" displayName="ColumnName: The name of the column when using simplified SQL." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+      </properties>
     </stereotype>
     <stereotype name="ValueObject" displayName="Value Object">
       <metaclasses>
@@ -227,6 +241,13 @@
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
+      <properties>
+        <property name="EntityName" displayName="EntityName: The name of the Entity this event handler targets." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+      </properties>
     </stereotype>
 
     <stereotype name="Service" displayName="Service">
