@@ -1,4 +1,4 @@
-# CS CQRS
+# CS-CQRS
 #### https://www.nuget.org/packages/Cqrs
 
 ## Continual improvements
@@ -11,7 +11,9 @@ Documentation is starting off for now in the [wiki section](https://github.com/C
 We have a very simple example which, for now, is too CRUD like for us. 
 
 ## Tutorials
-As we're not happy with the sample project, we are starting to build a tutorial around a bank teller and ATM sample project which you can follow in the [Getting Started](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Getting-Started) section of the wiki.
+For those wanting to take a plunge into using the CS-CQRS platform, we strongly you have a look at our basic [Northwind Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Tutorial-0:-Quick-Northwind-sample.).
+
+And for those looking for a more thorough tutorial we suggest you start with the [getting started](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Getting-Started) section in the [wiki](https://github.com/Chinchilla-Software-Com/CQRS/wiki)
 
 ## The framework
 A lightweight framework to help write CQRS and Eventsourcing applications in C#. Currently published as nuget packages @ http://www.nuget.org. It is written in C# and targets .NET 4.0, with the exception of some Azure packages which target .NET 4.5. CQRS borrows heavily from CQRSlite (https://github.com/gautema/cqrslite), from some point in 2013.
