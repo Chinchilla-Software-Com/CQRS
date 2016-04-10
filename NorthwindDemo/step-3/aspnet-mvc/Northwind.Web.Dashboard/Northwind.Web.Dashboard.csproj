@@ -57,20 +57,20 @@
       <HintPath>..\packages\cdmdotnet.Performance.1.0.5.8\lib\net40\cdmdotnet.Performance.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs, Version=1.601.862.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.1.601.862\lib\net40\Cqrs.dll</HintPath>
+    <Reference Include="Cqrs, Version=1.601.864.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.1.601.864\lib\net40\Cqrs.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.Ninject, Version=1.601.862.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.Ninject.1.601.862\lib\net40\Cqrs.Ninject.dll</HintPath>
+    <Reference Include="Cqrs.Ninject, Version=1.601.864.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.1.601.864\lib\net40\Cqrs.Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.Ninject.InProcess.CommandBus, Version=1.601.862.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.Ninject.InProcess.CommandBus.1.601.862\lib\net40\Cqrs.Ninject.InProcess.CommandBus.dll</HintPath>
+    <Reference Include="Cqrs.Ninject.InProcess.CommandBus, Version=1.601.864.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.InProcess.CommandBus.1.601.864\lib\net40\Cqrs.Ninject.InProcess.CommandBus.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.Ninject.InProcess.EventBus, Version=1.601.862.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.Ninject.InProcess.EventBus.1.601.862\lib\net40\Cqrs.Ninject.InProcess.EventBus.dll</HintPath>
+    <Reference Include="Cqrs.Ninject.InProcess.EventBus, Version=1.601.864.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.InProcess.EventBus.1.601.864\lib\net40\Cqrs.Ninject.InProcess.EventBus.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Kendo.Mvc, Version=2014.1.416.440, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
@@ -531,7 +531,6 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="tools\EventStoreTable-SqlServer.sql" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -570,6 +569,8 @@
     <Content Include="Views\Home\EditorTemplates\ShipCountry.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CustomGridForeignKey.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Float.cshtml" />
+    <Content Include="system.serviceModel.serviceHostingEnvironment.config" />
+    <Content Include="system.serviceModel.services.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Northwind.Domain.Ninject\Northwind.Domain.Ninject.csproj">
@@ -629,4 +630,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>COPY $(ProjectDir)..\Northwind.ServiceHost.Ninject\system.serviceModel.serviceHostingEnvironment.config $(ProjectDir)
+COPY $(ProjectDir)..\Northwind.ServiceHost.Ninject\system.serviceModel.services.config $(ProjectDir)</PostBuildEvent>
+  </PropertyGroup>
 </Project>
