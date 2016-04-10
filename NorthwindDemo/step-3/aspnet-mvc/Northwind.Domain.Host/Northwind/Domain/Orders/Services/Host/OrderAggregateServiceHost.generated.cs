@@ -32,17 +32,32 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 
-using Cqrs.Ninject.ServiceHost;
-using Northwind.Domain.Orders.Services;
 
-namespace Northwind.Domain.Orders.Services.ServiceHost.Ninject.ServiceHostFactories
+namespace Northwind.Domain.Orders.Services.Host
 {
-	/// <summary>
-	/// A <see cref="NinjectWcfServiceHostFactory{TServiceType}"/> for using  <see cref="IOrderService"/> via WCF
-	/// </summary>
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
-	public partial class OrderServiceHostFactory : NinjectWcfServiceHostFactory<IOrderService>
-	{
-	}
 
+	public partial class OrderServiceHost
+	{
+		public virtual void RegisterDataContracts()
+		{
+			RegisterAggregateServiceDataContracts();
+			RegisterServiceDataContracts();
+		}
+
+		partial void RegisterServiceDataContracts();
+		partial void RegisterAggregateServiceDataContracts();
+		partial void RegisterAggregateServiceDataContracts()
+		{
+	
+
+			OrderServiceCreateOrderParametersResolver.RegisterDataContracts();
+
+
+			OrderServiceUpdateOrderParametersResolver.RegisterDataContracts();
+
+
+			OrderServiceDeleteOrderParametersResolver.RegisterDataContracts();
+
+		}
+	}
 }

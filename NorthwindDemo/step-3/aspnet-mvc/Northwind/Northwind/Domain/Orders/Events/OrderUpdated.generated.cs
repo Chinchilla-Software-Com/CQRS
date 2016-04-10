@@ -83,25 +83,25 @@ namespace Northwind.Domain.Orders
 		public int OrderId { get; private set; }
 
 		[DataMember]
-		public int CustomerId { get; private set; }
+		public string CustomerId { get; private set; }
 
 		[DataMember]
-		public int EmployeeId { get; private set; }
+		public int? EmployeeId { get; private set; }
 
 		[DataMember]
-		public DateTime OrderDate { get; private set; }
+		public DateTime? OrderDate { get; private set; }
 
 		[DataMember]
-		public DateTime RequiredDate { get; private set; }
+		public DateTime? RequiredDate { get; private set; }
 
 		[DataMember]
-		public DateTime ShippedDate { get; private set; }
+		public DateTime? ShippedDate { get; private set; }
 
 		[DataMember]
-		public int ShipViaId { get; private set; }
+		public int? ShipViaId { get; private set; }
 
 		[DataMember]
-		public decimal Freight { get; private set; }
+		public decimal? Freight { get; private set; }
 
 		[DataMember]
 		public string ShipName { get; private set; }
@@ -122,7 +122,7 @@ namespace Northwind.Domain.Orders
 		public string ShipCountry { get; private set; }
 
 
-		public OrderUpdated(Guid rsn, int orderId, int customerId, int employeeId, DateTime orderDate, DateTime requiredDate, DateTime shippedDate, int shipViaId, decimal freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry)
+		public OrderUpdated(Guid rsn, int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry)
 		{
 			Rsn = rsn;
 			OrderId = orderId;

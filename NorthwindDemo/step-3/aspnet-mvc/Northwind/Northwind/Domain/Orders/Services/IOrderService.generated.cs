@@ -12,15 +12,32 @@
 // </copyright>
 // -----------------------------------------------------------------------
 #endregion
-
+using Cqrs.Domain;
+using Northwind.Domain.Orders;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using Cqrs.Repositories.Queries;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
+using Cqrs.Authentication;
+using Cqrs.Services;
 
-namespace Northwind.Domain.Orders.Repositories.Queries.Strategies
+namespace Northwind.Domain.Orders.Services
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.601.881")]
-	public partial interface IInvoicesQueryStrategyBuilder : IQueryBuilder<InvoicesQueryStrategy, Entities.InvoicesEntity>
+	public partial interface IOrderService 
+	{
+		[OperationContract]
+		IServiceResponseWithResultData<IEnumerable<Entities.OrderEntity>> GetAllOrders(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, OrderServiceGetAllOrdersParameters> serviceRequest);
+
+	}
+
+	/// <summary>
+	/// The parameters for the <see cref="IOrderService.GetAllOrders" /> method.
+	/// </summary>
+	public class OrderServiceGetAllOrdersParameters
 	{
 	}
+
 }

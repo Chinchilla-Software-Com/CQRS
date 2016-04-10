@@ -31,25 +31,25 @@ namespace Northwind.Domain.Orders.Entities
 		int OrderId { get; set; }
 
 		[DataMember]
-		int CustomerId { get; set; }
+		string CustomerId { get; set; }
 
 		[DataMember]
-		int EmployeeId { get; set; }
+		int? EmployeeId { get; set; }
 
 		[DataMember]
-		DateTime OrderDate { get; set; }
+		DateTime? OrderDate { get; set; }
 
 		[DataMember]
-		DateTime RequiredDate { get; set; }
+		DateTime? RequiredDate { get; set; }
 
 		[DataMember]
-		DateTime ShippedDate { get; set; }
+		DateTime? ShippedDate { get; set; }
 
 		[DataMember]
-		int ShipViaId { get; set; }
+		int? ShipViaId { get; set; }
 
 		[DataMember]
-		decimal Freight { get; set; }
+		decimal? Freight { get; set; }
 
 		[DataMember]
 		string ShipName { get; set; }

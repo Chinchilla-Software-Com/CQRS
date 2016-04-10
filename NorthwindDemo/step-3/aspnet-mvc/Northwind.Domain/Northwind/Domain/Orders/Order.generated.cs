@@ -50,19 +50,19 @@ namespace Northwind.Domain.Orders
 
 		public int OrderId { get; private set; }
 
-		public int CustomerId { get; private set; }
+		public string CustomerId { get; private set; }
 
-		public int EmployeeId { get; private set; }
+		public int? EmployeeId { get; private set; }
 
-		public DateTime OrderDate { get; private set; }
+		public DateTime? OrderDate { get; private set; }
 
-		public DateTime RequiredDate { get; private set; }
+		public DateTime? RequiredDate { get; private set; }
 
-		public DateTime ShippedDate { get; private set; }
+		public DateTime? ShippedDate { get; private set; }
 
-		public int ShipViaId { get; private set; }
+		public int? ShipViaId { get; private set; }
 
-		public decimal Freight { get; private set; }
+		public decimal? Freight { get; private set; }
 
 		public string ShipName { get; private set; }
 
@@ -105,7 +105,7 @@ namespace Northwind.Domain.Orders
 		/// <summary>
 		/// Create a new instance of the <see cref="Order"/>
 		/// </summary>
-		public virtual void CreateOrder(int orderId, int customerId, int employeeId, DateTime orderDate, DateTime requiredDate, DateTime shippedDate, int shipViaId, decimal freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry)
+		public virtual void CreateOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry)
 		{
 			Log.LogDebug("Entered", "Order/CreateOrder");
 			Log.LogDebug("Pre", "Order/OnCreateOrder");
@@ -120,9 +120,9 @@ namespace Northwind.Domain.Orders
 			Log.LogDebug("Exited", "Order/CreateOrder");
 		}
 
-		partial void OnCreateOrder(int orderId, int customerId, int employeeId, DateTime orderDate, DateTime requiredDate, DateTime shippedDate, int shipViaId, decimal freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry);
+		partial void OnCreateOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry);
 
-		partial void OnCreatedOrder(int orderId, int customerId, int employeeId, DateTime orderDate, DateTime requiredDate, DateTime shippedDate, int shipViaId, decimal freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry);
+		partial void OnCreatedOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry);
 
 		private void Apply(OrderCreated @event)
 		{
@@ -145,7 +145,7 @@ namespace Northwind.Domain.Orders
 		/// <summary>
 		/// Update an existing instance of the <see cref="Order"/>
 		/// </summary>
-		public virtual void UpdateOrder(int orderId, int customerId, int employeeId, DateTime orderDate, DateTime requiredDate, DateTime shippedDate, int shipViaId, decimal freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry)
+		public virtual void UpdateOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry)
 		{
 			Log.LogDebug("Entered", "Order/UpdateOrder");
 			Log.LogDebug("Pre", "Order/OnUpdateOrder");
@@ -160,9 +160,9 @@ namespace Northwind.Domain.Orders
 			Log.LogDebug("Exited", "Order/UpdateOrder");
 		}
 
-		partial void OnUpdateOrder(int orderId, int customerId, int employeeId, DateTime orderDate, DateTime requiredDate, DateTime shippedDate, int shipViaId, decimal freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry);
+		partial void OnUpdateOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry);
 
-		partial void OnUpdatedOrder(int orderId, int customerId, int employeeId, DateTime orderDate, DateTime requiredDate, DateTime shippedDate, int shipViaId, decimal freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry);
+		partial void OnUpdatedOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry);
 
 		private void Apply(OrderUpdated @event)
 		{
@@ -215,19 +215,19 @@ namespace Northwind.Domain.Orders
 
 			public int OrderId { get; private set; }
 
-			public int CustomerId { get; private set; }
+			public string CustomerId { get; private set; }
 
-			public int EmployeeId { get; private set; }
+			public int? EmployeeId { get; private set; }
 
-			public DateTime OrderDate { get; private set; }
+			public DateTime? OrderDate { get; private set; }
 
-			public DateTime RequiredDate { get; private set; }
+			public DateTime? RequiredDate { get; private set; }
 
-			public DateTime ShippedDate { get; private set; }
+			public DateTime? ShippedDate { get; private set; }
 
-			public int ShipViaId { get; private set; }
+			public int? ShipViaId { get; private set; }
 
-			public decimal Freight { get; private set; }
+			public decimal? Freight { get; private set; }
 
 			public string ShipName { get; private set; }
 

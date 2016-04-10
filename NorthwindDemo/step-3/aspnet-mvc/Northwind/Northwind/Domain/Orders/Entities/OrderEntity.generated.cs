@@ -52,31 +52,31 @@ namespace Northwind.Domain.Orders.Entities
 
 		[DataMember]
 		[Column(Name = "CustomerID")]
-		public virtual int CustomerId { get; set; }
+		public virtual string CustomerId { get; set; }
 
 		[DataMember]
 		[Column(Name = "EmployeeID")]
-		public virtual int EmployeeId { get; set; }
+		public virtual int? EmployeeId { get; set; }
 
 		[DataMember]
 		[Column]
-		public virtual DateTime OrderDate { get; set; }
+		public virtual DateTime? OrderDate { get; set; }
 
 		[DataMember]
 		[Column]
-		public virtual DateTime RequiredDate { get; set; }
+		public virtual DateTime? RequiredDate { get; set; }
 
 		[DataMember]
 		[Column]
-		public virtual DateTime ShippedDate { get; set; }
+		public virtual DateTime? ShippedDate { get; set; }
 
 		[DataMember]
 		[Column(Name = "ShipVia")]
-		public virtual int ShipViaId { get; set; }
+		public virtual int? ShipViaId { get; set; }
 
 		[DataMember]
 		[Column]
-		public virtual decimal Freight { get; set; }
+		public virtual decimal? Freight { get; set; }
 
 		[DataMember]
 		[Column]

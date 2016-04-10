@@ -57,20 +57,20 @@
       <HintPath>..\packages\cdmdotnet.Performance.1.0.5.8\lib\net40\cdmdotnet.Performance.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs, Version=1.601.864.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.1.601.864\lib\net40\Cqrs.dll</HintPath>
+    <Reference Include="Cqrs, Version=1.601.882.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.1.601.882\lib\net40\Cqrs.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.Ninject, Version=1.601.864.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.Ninject.1.601.864\lib\net40\Cqrs.Ninject.dll</HintPath>
+    <Reference Include="Cqrs.Ninject, Version=1.601.882.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.1.601.882\lib\net40\Cqrs.Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.Ninject.InProcess.CommandBus, Version=1.601.864.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.Ninject.InProcess.CommandBus.1.601.864\lib\net40\Cqrs.Ninject.InProcess.CommandBus.dll</HintPath>
+    <Reference Include="Cqrs.Ninject.InProcess.CommandBus, Version=1.601.882.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.InProcess.CommandBus.1.601.882\lib\net40\Cqrs.Ninject.InProcess.CommandBus.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.Ninject.InProcess.EventBus, Version=1.601.864.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.Ninject.InProcess.EventBus.1.601.864\lib\net40\Cqrs.Ninject.InProcess.EventBus.dll</HintPath>
+    <Reference Include="Cqrs.Ninject.InProcess.EventBus, Version=1.601.882.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.InProcess.EventBus.1.601.882\lib\net40\Cqrs.Ninject.InProcess.EventBus.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Kendo.Mvc, Version=2014.1.416.440, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
@@ -105,6 +105,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -236,7 +237,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\RegionalSalesController.cs" />
@@ -573,13 +573,9 @@
     <Content Include="system.serviceModel.services.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Northwind.Domain.Ninject\Northwind.Domain.Ninject.csproj">
-      <Project>{2f881306-8aa1-4526-9a51-2520ab4f4330}</Project>
-      <Name>Northwind.Domain.Ninject</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Northwind.Domain\Northwind.Domain.csproj">
-      <Project>{0cf4aace-176e-4f08-afd9-577724e72e38}</Project>
-      <Name>Northwind.Domain</Name>
+    <ProjectReference Include="..\Northwind.ServiceHost.Ninject\Northwind.ServiceHost.Ninject.csproj">
+      <Project>{69aca7b4-9c3b-4d9c-8dd9-6188e8854eff}</Project>
+      <Name>Northwind.ServiceHost.Ninject</Name>
     </ProjectReference>
     <ProjectReference Include="..\Northwind\Northwind.csproj">
       <Project>{028dda41-12c1-4557-bc47-e57809217311}</Project>
@@ -593,6 +589,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Start\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

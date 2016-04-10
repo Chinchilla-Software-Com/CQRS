@@ -24,7 +24,7 @@ using Ninject.Parameters;
 
 namespace Northwind.Domain.Configuration
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.881")]
 	public partial class DomainNinjectModule : NinjectModule
 	{
 		#region Overrides of NinjectModule
@@ -89,6 +89,7 @@ namespace Northwind.Domain.Configuration
 				.To<Orders.Services.OrderService>()
 				.InSingletonScope();
 
+			// OrderService does not need a binding
 
 			OnServicesRegistered();
 		}

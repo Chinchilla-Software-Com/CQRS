@@ -24,6 +24,7 @@
 // -----------------------------------------------------------------------
 #endregion
 using Cqrs.Domain;
+using Northwind.Domain.Orders;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -32,17 +33,22 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 
-using Cqrs.Ninject.ServiceHost;
-using Northwind.Domain.Orders.Services;
+using Cqrs.Services;
 
-namespace Northwind.Domain.Orders.Services.ServiceHost.Ninject.ServiceHostFactories
+namespace Northwind.Domain.Orders.Services.ServiceHost.Ninject.ServiceChannelFactories
 {
 	/// <summary>
-	/// A <see cref="NinjectWcfServiceHostFactory{TServiceType}"/> for using  <see cref="IOrderService"/> via WCF
+	/// A <see cref="ServiceChannelFactory{TService}"/> for using  <see cref="IOrderService"/> via WCF
 	/// </summary>
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
-	public partial class OrderServiceHostFactory : NinjectWcfServiceHostFactory<IOrderService>
+	[GeneratedCode("CQRS UML Code Generator", "1.601.881")]
+	public partial class HttpOrderServiceChannelFactory : ServiceChannelFactory<IOrderService>
 	{
-	}
 
+		partial void RegisterServiceDataContracts()
+		{
+
+			OrderServiceGetAllOrdersResolver.RegisterDataContracts();
+
+		}
+	}
 }

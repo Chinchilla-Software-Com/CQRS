@@ -81,6 +81,8 @@ namespace Northwind.Domain.Host.Web
 
 		protected void Session_Start(object sender, EventArgs e)
 		{
+			// This is required otherwise the first call per new session will fail due to a WCF issue. This forces the SessionID to be created now, not after the response has been flushed on the pipeline.
+			string sessionId = Session.SessionID;
 		}
 
 		protected void Session_End(object sender, EventArgs e)
