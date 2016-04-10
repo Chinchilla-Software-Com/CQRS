@@ -40,7 +40,7 @@ namespace <#= classNamespace #>.<#= className #>
 		public virtual void Configure()
 		{
 			Trace.TraceInformation("Starting configurations...");
-			new DomainConfiguration<THostModule>().Start();
+			GetDomainConfiguration().Start();
 			Trace.TraceInformation("Setting service point configurations...");
 			new ServicePointManagerConfiguration().Start();
 
@@ -65,6 +65,10 @@ namespace <#= classNamespace #>.<#= className #>
 			Trace.TraceInformation("Data contracts configured.");
 		}
 
+		protected virtual DomainConfiguration<THostModule> GetDomainConfiguration()
+		{
+			return new DomainConfiguration<THostModule>();
+		}
 		public virtual void Start()
 		{
 			LogApplicationStarted();
