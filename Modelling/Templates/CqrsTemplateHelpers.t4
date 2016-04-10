@@ -114,7 +114,7 @@
 		canBeEmpty = property.LowerValue != null ? property.LowerValue.ToString() == "0" : false;
 		isUnique = property.IsUnique;
 		canBeMultiple = property.UpperValue != null ? property.UpperValue.ToString() == "*" : false;
-		isStruct = typedProperty != null && typedProperty.Type != null && typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Struct", StringComparison.InvariantCultureIgnoreCase));
+		isStruct = typedProperty != null && typedProperty.Type != null && (typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Struct", StringComparison.InvariantCultureIgnoreCase)) || typeName == "int");
 		isEnum = (typedProperty.Type as IEnumeration) != null;
 		isEntity = typedProperty != null && typedProperty.Type != null && typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Entity", StringComparison.InvariantCultureIgnoreCase));
 
