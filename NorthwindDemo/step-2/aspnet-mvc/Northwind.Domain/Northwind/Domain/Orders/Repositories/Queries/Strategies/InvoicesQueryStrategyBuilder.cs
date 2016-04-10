@@ -11,7 +11,14 @@ namespace Northwind.Domain.Orders.Repositories.Queries.Strategies
 
 		partial void GeneratePredicateWithRsn(SortedSet<QueryParameter> parameters, IQueryable<Entities.InvoicesEntity> leftHandQueryable, ref IQueryable<Entities.InvoicesEntity> resultingQueryable)
 		{
-			throw new NotImplementedException();
+			var rsn = parameters.GetValue<Guid>(0);
+
+			var query = (resultingQueryable ?? leftHandQueryable ?? GetEmptyQueryPredicate());
+
+			resultingQueryable = query.Where
+			(
+				invoice => invoice.Rsn == rsn
+			);
 		}
 	}
 }

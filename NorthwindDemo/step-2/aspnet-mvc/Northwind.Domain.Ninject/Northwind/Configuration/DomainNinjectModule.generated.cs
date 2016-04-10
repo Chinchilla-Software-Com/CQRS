@@ -24,7 +24,7 @@ using Ninject.Parameters;
 
 namespace Northwind.Domain.Configuration
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.864")]
 	public partial class DomainNinjectModule : NinjectModule
 	{
 		#region Overrides of NinjectModule
@@ -85,6 +85,9 @@ namespace Northwind.Domain.Configuration
 				.To<UnitOfWorkService<Cqrs.Authentication.ISingleSignOnToken>>()
 				.InThreadScope();
 
+			Bind<Orders.Services.IOrderService>()
+				.To<Orders.Services.OrderService>()
+				.InSingletonScope();
 
 
 			OnServicesRegistered();
@@ -97,6 +100,9 @@ namespace Northwind.Domain.Configuration
 		/// </summary>
 		public virtual void RegisterRepositories()
 		{
+			Bind<Orders.Repositories.IOrderRepository>()
+				.To<Orders.Repositories.OrderRepository>()
+				.InSingletonScope();
 
 			OnRepositoriesRegistered();
 		}
@@ -119,6 +125,7 @@ namespace Northwind.Domain.Configuration
 		protected virtual void RegisterCqrsCommandHandlers(BusRegistrar registrar)
 		{
 			// This will load all the handlers from the domain assembly by reading all command handlers AND event handlers in the same assembly as the provided type
+			registrar.Register(typeof(Orders.Commands.Handlers.CreateOrderCommandHandler));
 			OnCqrsCommandHandlersRegistered();
 		}
 

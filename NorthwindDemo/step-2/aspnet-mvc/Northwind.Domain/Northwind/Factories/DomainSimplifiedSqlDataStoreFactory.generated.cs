@@ -19,7 +19,7 @@ using Cqrs.DataStores;
 
 namespace Northwind.Domain.Factories
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.601.786")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.864")]
 	/// <summary>
 	/// A factory for obtaining <see cref="IDataStore{TData}"/> instances using the built-in simplified Sql
 	/// </summary>
@@ -37,6 +37,13 @@ namespace Northwind.Domain.Factories
 
 		#region Implementation of IDomainDataStoreFactory
 
+		public virtual IDataStore<Orders.Entities.OrderEntity> GetOrderDataStore()
+		{
+			IDataStore<Orders.Entities.OrderEntity> result = new SqlDataStore<Orders.Entities.OrderEntity>(ConfigurationManager, Logger);
+			OnGetOrderDataStore(ref result);
+			return result;
+		}
+
 		public virtual IDataStore<Orders.Entities.InvoicesEntity> GetInvoicesDataStore()
 		{
 			IDataStore<Orders.Entities.InvoicesEntity> result = new SqlDataStore<Orders.Entities.InvoicesEntity>(ConfigurationManager, Logger);
@@ -44,11 +51,12 @@ namespace Northwind.Domain.Factories
 			return result;
 		}
 
-		partial void OnGetInvoicesDataStore(ref IDataStore<Orders.Entities.InvoicesEntity> result);
-
-
 
 		#endregion
+
+		partial void OnGetOrderDataStore(ref IDataStore<Orders.Entities.OrderEntity> result);
+
+		partial void OnGetInvoicesDataStore(ref IDataStore<Orders.Entities.InvoicesEntity> result);
 
 	}
 }
