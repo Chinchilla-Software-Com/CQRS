@@ -19,7 +19,7 @@ using Cqrs.Infrastructure;
 namespace Cqrs.Akka.Domain
 {
 	public abstract class AkkaAggregateRoot<TAuthenticationToken>
-		: ReceiveActor
+		: PersistentActor 
 		, IAggregateRoot<TAuthenticationToken>
 	{
 		private ICollection<IEvent<TAuthenticationToken>> Changes { get; set; }
