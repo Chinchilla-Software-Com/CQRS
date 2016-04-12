@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Web;
 using EnvDTE;
 using Microsoft.VisualStudio;
@@ -79,7 +80,10 @@ namespace Cqrs.Modelling.UmlProfiles
 						request.Method = "GET";
 						try
 						{
-							using (request.GetResponse()) { }
+							new TaskFactory().StartNew(() =>
+							{
+								using (request.GetResponse()) {}
+							});
 						}
 						catch
 						{
