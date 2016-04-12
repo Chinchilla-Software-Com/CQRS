@@ -74,7 +74,7 @@ namespace Cqrs.Modelling.UmlProfiles
 						.Where(assembly => assembly.Name.StartsWith("Cqrs"));
 					foreach (AssemblyName assemblyName in references)
 					{
-						string urlPath = string.Format("/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}", HttpUtility.UrlPathEncode(dte.Version), HttpUtility.UrlPathEncode(dte.Edition), HttpUtility.UrlPathEncode(solutionName), HttpUtility.UrlPathEncode(project.Name), HttpUtility.UrlPathEncode(project.Kind), HttpUtility.UrlPathEncode(project.UniqueName), HttpUtility.UrlPathEncode(assemblyName.Name), HttpUtility.UrlPathEncode(assemblyName.Version.ToString()));
+						string urlPath = string.Format("/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}", HttpUtility.UrlPathEncode(dte.Version), HttpUtility.UrlPathEncode(dte.Edition), HttpUtility.UrlPathEncode(solutionName), HttpUtility.UrlPathEncode(project.Name), HttpUtility.UrlPathEncode(project.Kind), HttpUtility.UrlPathEncode(project.UniqueName.Replace('\\', '¿')), HttpUtility.UrlPathEncode(assemblyName.Name), HttpUtility.UrlPathEncode(assemblyName.Version.ToString()));
 
 						HttpWebRequest request = WebRequest.Create(string.Format("https://www.chinchillasoftware.com/VisualStudio{0}", urlPath)) as HttpWebRequest;
 						request.Method = "GET";
