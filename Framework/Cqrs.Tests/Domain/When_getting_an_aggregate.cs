@@ -1,4 +1,5 @@
 ﻿using System;
+using cdmdotnet.Logging;
 using Cqrs.Domain;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Domain.Factories;
@@ -19,7 +20,7 @@ namespace Cqrs.Tests.Domain
 			var aggregateFactory = new AggregateFactory(new TestDependencyResolver());
 			var eventStore = new TestEventStore();
 			var testEventPublisher = new TestEventPublisher();
-			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(new Repository<ISingleSignOnToken>(aggregateFactory, eventStore, testEventPublisher));
+			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(new Repository<ISingleSignOnToken>(aggregateFactory, eventStore, testEventPublisher, new NullCorrelationIdHelper()));
 		}
 
 		[Test]

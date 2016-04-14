@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
+using cdmdotnet.Logging;
 using Cqrs.Cache;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
@@ -31,8 +32,8 @@ namespace Cqrs.Tests.Cache
 
 			var aggregateFactory = new AggregateFactory(null);
 			_testStore = new TestInMemoryEventStore();
-			_rep1 = new CacheRepository<ISingleSignOnToken>(new Repository<ISingleSignOnToken>(aggregateFactory, _testStore, new TestEventPublisher()), _testStore);
-			_rep2 = new CacheRepository<ISingleSignOnToken>(new Repository<ISingleSignOnToken>(aggregateFactory, _testStore, new TestEventPublisher()), _testStore);
+			_rep1 = new CacheRepository<ISingleSignOnToken>(new Repository<ISingleSignOnToken>(aggregateFactory, _testStore, new TestEventPublisher(), new NullCorrelationIdHelper()), _testStore);
+			_rep2 = new CacheRepository<ISingleSignOnToken>(new Repository<ISingleSignOnToken>(aggregateFactory, _testStore, new TestEventPublisher(), new NullCorrelationIdHelper()), _testStore);
 
 			_aggregate = new TestAggregate(Guid.NewGuid());
 			_rep1.Save(_aggregate);

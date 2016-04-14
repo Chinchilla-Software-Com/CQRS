@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using cdmdotnet.Logging;
 using Cqrs.Commands;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
@@ -37,7 +38,7 @@ namespace Cqrs.Tests.Extensions.TestHelpers
 			var aggregateFactory = new AggregateFactory(null);
 
 			var snapshotStrategy = new DefaultSnapshotStrategy<ISingleSignOnToken>();
-			var repository = new SnapshotRepository<ISingleSignOnToken>(snapshotstorage, snapshotStrategy, new Repository<ISingleSignOnToken>(aggregateFactory, eventstorage, eventpublisher), eventstorage, aggregateFactory);
+			var repository = new SnapshotRepository<ISingleSignOnToken>(snapshotstorage, snapshotStrategy, new Repository<ISingleSignOnToken>(aggregateFactory, eventstorage, eventpublisher, new NullCorrelationIdHelper()), eventstorage, aggregateFactory);
 			UnitOfWork = new UnitOfWork<ISingleSignOnToken>(repository);
 
 			Aggregate = UnitOfWork.Get<TAggregate>(Guid.Empty);

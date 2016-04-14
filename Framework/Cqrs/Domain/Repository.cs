@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using cdmdotnet.Logging;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
@@ -23,10 +24,13 @@ namespace Cqrs.Domain
 
 		protected IAggregateFactory AggregateFactory { get; private set; }
 
-		public Repository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher)
+		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+
+		public Repository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICorrelationIdHelper correlationIdHelper)
 		{
 			EventStore = eventStore;
 			Publisher = publisher;
+			CorrelationIdHelper = correlationIdHelper;
 			AggregateFactory = aggregateFactory;
 		}
 
@@ -58,6 +62,7 @@ namespace Cqrs.Domain
 
 				@event.Version = aggregate.Version + i;
 				@event.TimeStamp = DateTimeOffset.UtcNow;
+				@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 				EventStore.Save(aggregate.GetType(), @event);
 				eventsToPublish.Add(@event);
 			}

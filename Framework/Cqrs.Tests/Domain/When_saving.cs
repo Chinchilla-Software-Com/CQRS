@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using cdmdotnet.Logging;
 using Cqrs.Domain;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Domain.Factories;
@@ -24,7 +25,7 @@ namespace Cqrs.Tests.Domain
 			var aggregateFactory = new AggregateFactory(new TestDependencyResolver());
 			_eventStore = new TestInMemoryEventStore();
 			_eventPublisher = new TestEventPublisher();
-			_rep = new Repository<ISingleSignOnToken>(aggregateFactory, _eventStore, _eventPublisher);
+			_rep = new Repository<ISingleSignOnToken>(aggregateFactory, _eventStore, _eventPublisher, new NullCorrelationIdHelper());
 			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(_rep);
 
 			_aggregate = new TestAggregateNoParameterLessConstructor(2);
