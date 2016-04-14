@@ -27,7 +27,6 @@ namespace Northwind.Web.Dashboard.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-
 				var orderServiceFactory = new HttpOrderServiceChannelFactory();
 
 				IOrderService service = orderServiceFactory.CreateChannel();
@@ -63,7 +62,8 @@ namespace Northwind.Web.Dashboard.Controllers
 
 				IEnumerable<EventData> result;
 				int loopCount = 0;
-				// Act
+
+				// We're using an in-process bus so this isn't actually necassary, but it demonstrates how to wait for the command and event bus to complete their processes
 				do
 				{
 					// Wait 0.5 of a second and ask again
