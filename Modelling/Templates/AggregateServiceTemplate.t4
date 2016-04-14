@@ -58,7 +58,8 @@ namespace <#= classNamespace #>.Services
 
 		protected ILogger Logger { get; private set; }
 
-		public <#= className #>Service(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, I<#= className #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository, ILogger logger)
+		public <#= className #>Service(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, I<#= className #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository, ILogger logger, IEventStore<<#= authenticationTokenType #>> eventStore)
+			: base(eventStore, logger, correlationIdHelper, authenticationTokenHelper)
 		{
 			CommandSender = commandSender;
 			UnitOfWorkService = unitOfWorkService;
