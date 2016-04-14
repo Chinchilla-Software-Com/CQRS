@@ -49,8 +49,8 @@ namespace <#= classNamespace #>.Services
 	<#= GetGeneratedCodeAttribute() #>
 	public partial class <#= className #>ServiceCreate<#= className #>ParametersResolver : ServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
 	{
-		public <#= className #>ServiceCreate<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver)
-			: base(singleSignOnTokenResolver)
+		public <#= className #>ServiceCreate<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
+			: base(singleSignOnTokenResolver, eventDataResolver)
 		{
 		}
 
@@ -149,8 +149,8 @@ if (index > 0)
 	<#= GetGeneratedCodeAttribute() #>
 	public partial class <#= className #>ServiceUpdate<#= className #>ParametersResolver : ServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
 	{
-		public <#= className #>ServiceUpdate<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver)
-			: base(singleSignOnTokenResolver)
+		public <#= className #>ServiceUpdate<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
+			: base(singleSignOnTokenResolver, eventDataResolver)
 		{
 		}
 
@@ -249,10 +249,11 @@ if (index > 0)
 	<#= GetGeneratedCodeAttribute() #>
 	public partial class <#= className #>ServiceDelete<#= className #>ParametersResolver : ServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
 	{
-		public <#= className #>ServiceDelete<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver)
-			: base(singleSignOnTokenResolver)
+		public <#= className #>ServiceDelete<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
+			: base(singleSignOnTokenResolver, eventDataResolver)
 		{
 		}
+
 <#
 string authenticationTokenTypeResolver = authenticationTokenType;
 int index = authenticationTokenTypeResolver.LastIndexOf(".");

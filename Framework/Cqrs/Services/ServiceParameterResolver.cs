@@ -19,13 +19,16 @@ namespace Cqrs.Services
 	public abstract class ServiceParameterResolver<TServiceParameter, TSingleSignOnTokenResolver> : DataContractResolver, IServiceParameterResolver
 		where TSingleSignOnTokenResolver : ISingleSignOnToken
 	{
-		protected ServiceParameterResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver)
+		protected ServiceParameterResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
 		{
 			SingleSignOnTokenResolver = singleSignOnTokenResolver;
-			ServiceNamespace = string.Format("http://tempuri.com/{0}", typeof(TServiceParameter).FullName);
+			EventDataResolver = eventDataResolver;
+			ServiceNamespace = string.Format("http://cqrs.co.nz/{0}", typeof(TServiceParameter).FullName);
 		}
 
 		protected ISingleSignOnTokenResolver SingleSignOnTokenResolver { get; private set; }
+
+		protected IEventDataResolver EventDataResolver { get; private set; }
 
 		protected string ServiceNamespace { get; private set; }
 
@@ -48,6 +51,10 @@ namespace Cqrs.Services
 			}
 
 			bool result = SingleSignOnTokenResolver.TryResolveType(dataContractType, declaredType, knownTypeResolver, out typeName, out typeNamespace);
+			if (result)
+				return true;
+
+			result = EventDataResolver.TryResolveType(dataContractType, declaredType, knownTypeResolver, out typeName, out typeNamespace);
 			if (result)
 				return true;
 
