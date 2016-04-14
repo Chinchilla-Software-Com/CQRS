@@ -40,7 +40,7 @@ namespace Northwind.Domain.Orders.Services.ServiceHost.Ninject.ServiceChannelFac
 	/// <summary>
 	/// A <see cref="ServiceChannelFactory{TService}"/> for using  <see cref="IOrderService"/> via WCF
 	/// </summary>
-	[GeneratedCode("CQRS UML Code Generator", "1.601.881")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public partial class HttpOrderServiceChannelFactory : ServiceChannelFactory<IOrderService>
 	{
 

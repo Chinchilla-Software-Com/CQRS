@@ -24,7 +24,7 @@ using Cqrs.Entities;
 
 namespace Northwind.Domain.Orders.Entities
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.601.881")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public  partial interface IInvoicesEntity : IEntity
 	{
 		[DataMember]

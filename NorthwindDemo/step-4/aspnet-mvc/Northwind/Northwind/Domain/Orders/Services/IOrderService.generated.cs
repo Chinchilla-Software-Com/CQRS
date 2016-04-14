@@ -26,7 +26,7 @@ using Cqrs.Services;
 
 namespace Northwind.Domain.Orders.Services
 {
-	public partial interface IOrderService 
+	public partial interface IOrderService : IEventService<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		[OperationContract]
 		IServiceResponseWithResultData<IEnumerable<Entities.OrderEntity>> GetAllOrders(IServiceRequestWithData<Cqrs.Authentication.ISingleSignOnToken, OrderServiceGetAllOrdersParameters> serviceRequest);

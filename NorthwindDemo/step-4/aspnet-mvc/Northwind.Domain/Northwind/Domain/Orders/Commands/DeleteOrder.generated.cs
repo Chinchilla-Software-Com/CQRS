@@ -28,7 +28,7 @@ namespace Northwind.Domain.Orders.Commands
 	/// <summary>
 	/// A <see cref="ICommand{TAuthenticationToken}"/> that logically deletes an instance of a <see cref="Order"/> aggregate
 	/// </summary>
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public  partial class DeleteOrderCommand : ICommand<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		#region Implementation of ICommand

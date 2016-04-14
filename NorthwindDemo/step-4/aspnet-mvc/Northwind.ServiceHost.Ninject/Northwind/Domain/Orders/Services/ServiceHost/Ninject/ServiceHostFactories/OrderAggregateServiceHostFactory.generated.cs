@@ -40,7 +40,7 @@ namespace Northwind.Domain.Orders.Services.ServiceHost.Ninject.ServiceHostFactor
 	/// <summary>
 	/// A <see cref="NinjectWcfServiceHostFactory{TServiceType}"/> for using  <see cref="IOrderService"/> via WCF
 	/// </summary>
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public partial class OrderServiceHostFactory : NinjectWcfServiceHostFactory<IOrderService>
 	{
 	}

@@ -22,6 +22,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using System.Xml;
+using Cqrs.Events;
 using Cqrs.Services;
 
 namespace Northwind.Domain.Orders.Services
@@ -30,16 +31,16 @@ namespace Northwind.Domain.Orders.Services
 	/// <summary>
 	/// A <see cref="DataContractResolver"/> for using <see cref="IOrderService.GetAllOrders"/> via WCF
 	/// </summary>
-	[GeneratedCode("CQRS UML Code Generator", "1.601.881")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public partial class OrderServiceGetAllOrdersResolver : ServiceParameterResolver<IOrderService, Cqrs.Authentication.ISingleSignOnToken>
 	{
-		public OrderServiceGetAllOrdersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver)
-			: base(singleSignOnTokenResolver)
+		public OrderServiceGetAllOrdersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
+			: base(singleSignOnTokenResolver, eventDataResolver)
 		{
 		}
 
 		public OrderServiceGetAllOrdersResolver()
-			: base(new Cqrs.Authentication.SingleSignOnTokenResolver())
+			: base(new Cqrs.Authentication.SingleSignOnTokenResolver(), new EventDataResolver<Cqrs.Authentication.ISingleSignOnToken>())
 		{
 		}
 

@@ -24,7 +24,7 @@ using Cqrs.Repositories.Queries;
 
 namespace Northwind.Domain.Orders.Repositories.Queries.Strategies
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.601.881")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public partial interface IOrderQueryStrategy : IQueryStrategy
 	{
 		OrderQueryStrategy WithRsn(Guid rsn);

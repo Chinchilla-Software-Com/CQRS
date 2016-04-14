@@ -17,7 +17,7 @@ using Cqrs.DataStores;
 
 namespace Northwind.Domain.Factories
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.601.881")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
 	/// <summary>
 	/// A factory for obtaining <see cref="IDataStore{TData}"/> instances
 	/// </summary>

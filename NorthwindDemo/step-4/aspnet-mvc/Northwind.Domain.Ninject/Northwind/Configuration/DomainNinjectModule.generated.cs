@@ -24,7 +24,7 @@ using Ninject.Parameters;
 
 namespace Northwind.Domain.Configuration
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.601.881")]
+	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
 	public partial class DomainNinjectModule : NinjectModule
 	{
 		#region Overrides of NinjectModule

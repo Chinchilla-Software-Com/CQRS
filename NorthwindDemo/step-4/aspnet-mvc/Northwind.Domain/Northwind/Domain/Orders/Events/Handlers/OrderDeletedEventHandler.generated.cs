@@ -20,7 +20,7 @@ using Cqrs.Domain;
 
 namespace Northwind.Domain.Orders.Events.Handlers
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public  partial class OrderDeletedEventHandler : IEventHandler<Cqrs.Authentication.ISingleSignOnToken, OrderDeleted>
 	{
 		#region Implementation of IEventHandler<in OrderDeleted>

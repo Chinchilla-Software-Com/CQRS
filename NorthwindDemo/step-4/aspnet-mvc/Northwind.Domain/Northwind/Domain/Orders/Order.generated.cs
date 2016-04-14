@@ -27,7 +27,7 @@ using Northwind.Domain.Orders.Events;
 
 namespace Northwind.Domain.Orders
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public  partial class Order : AggregateRoot<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		public Guid Rsn

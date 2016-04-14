@@ -40,7 +40,7 @@ using Northwind.Domain.Orders.Repositories.Queries.Strategies;
 namespace Northwind.Domain.Orders.Entities.Repositories
 {
 
-	[GeneratedCode("CQRS UML Code Generator", "1.601.881")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public partial class InvoicesRepository : Repository<InvoicesQueryStrategy, InvoicesQueryStrategyBuilder, Entities.InvoicesEntity>, IInvoicesRepository
 	{
 		public InvoicesRepository(IDomainDataStoreFactory dataStoreFactory, InvoicesQueryStrategyBuilder invoicesQueryBuilder)

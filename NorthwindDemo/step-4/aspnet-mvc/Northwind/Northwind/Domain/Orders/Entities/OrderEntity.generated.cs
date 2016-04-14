@@ -28,7 +28,7 @@ using System.Runtime.Serialization;
 
 namespace Northwind.Domain.Orders.Entities
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	[Serializable]
 	[DataContract]
 	[Table(Name = "Orders")]

@@ -25,7 +25,7 @@ using Cqrs.Messages;
 
 namespace Northwind.Domain.Orders
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public  partial class OrderUpdated : IEvent<Cqrs.Authentication.ISingleSignOnToken>
 	{
 		#region Implementation of IEvent

@@ -22,9 +22,9 @@ using Cqrs.Services;
 
 namespace Northwind.Domain.Orders.Services
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
-	[ServiceContract(Namespace="https://cqrs/Domain/Orders/1001/")]
-	public partial interface IOrderService 
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
+	[ServiceContract(Namespace="https://cqrs.co.nz/Domain/Orders/1001/")]
+	public partial interface IOrderService : IEventService<Cqrs.Authentication.ISingleSignOnToken>
 	{
 
 		/// <summary>

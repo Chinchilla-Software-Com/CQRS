@@ -21,6 +21,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using System.Xml;
+using Cqrs.Events;
 using Cqrs.Services;
 using Northwind.Domain.Orders.Entities;
 
@@ -29,16 +30,16 @@ namespace Northwind.Domain.Orders.Services
 	/// <summary>
 	/// A <see cref="DataContractResolver"/> for using  <see cref="IOrderService.CreateOrder"/> via WCF
 	/// </summary>
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public partial class OrderServiceCreateOrderParametersResolver : ServiceParameterResolver<IOrderService, Cqrs.Authentication.ISingleSignOnToken>
 	{
-		public OrderServiceCreateOrderParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver)
-			: base(singleSignOnTokenResolver)
+		public OrderServiceCreateOrderParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
+			: base(singleSignOnTokenResolver, eventDataResolver)
 		{
 		}
 
 		public OrderServiceCreateOrderParametersResolver()
-			: base(new Cqrs.Authentication.SingleSignOnTokenResolver())
+			: base(new Cqrs.Authentication.SingleSignOnTokenResolver(), new EventDataResolver<Cqrs.Authentication.ISingleSignOnToken>())
 		{
 		}
 
@@ -111,16 +112,16 @@ namespace Northwind.Domain.Orders.Services
 	/// <summary>
 	/// A <see cref="DataContractResolver"/> for using  <see cref="IOrderService.UpdateOrder"/> via WCF
 	/// </summary>
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public partial class OrderServiceUpdateOrderParametersResolver : ServiceParameterResolver<IOrderService, Cqrs.Authentication.ISingleSignOnToken>
 	{
-		public OrderServiceUpdateOrderParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver)
-			: base(singleSignOnTokenResolver)
+		public OrderServiceUpdateOrderParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
+			: base(singleSignOnTokenResolver, eventDataResolver)
 		{
 		}
 
 		public OrderServiceUpdateOrderParametersResolver()
-			: base(new Cqrs.Authentication.SingleSignOnTokenResolver())
+			: base(new Cqrs.Authentication.SingleSignOnTokenResolver(), new EventDataResolver<Cqrs.Authentication.ISingleSignOnToken>())
 		{
 		}
 
@@ -193,15 +194,16 @@ namespace Northwind.Domain.Orders.Services
 	/// <summary>
 	/// A <see cref="DataContractResolver"/> for using  <see cref="IOrderService.DeleteOrder"/> via WCF
 	/// </summary>
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public partial class OrderServiceDeleteOrderParametersResolver : ServiceParameterResolver<IOrderService, Cqrs.Authentication.ISingleSignOnToken>
 	{
-		public OrderServiceDeleteOrderParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver)
-			: base(singleSignOnTokenResolver)
+		public OrderServiceDeleteOrderParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
+			: base(singleSignOnTokenResolver, eventDataResolver)
 		{
 		}
+
 		public OrderServiceDeleteOrderParametersResolver()
-			: base(new Cqrs.Authentication.SingleSignOnTokenResolver())
+			: base(new Cqrs.Authentication.SingleSignOnTokenResolver(), new EventDataResolver<Cqrs.Authentication.ISingleSignOnToken>())
 		{
 		}
 

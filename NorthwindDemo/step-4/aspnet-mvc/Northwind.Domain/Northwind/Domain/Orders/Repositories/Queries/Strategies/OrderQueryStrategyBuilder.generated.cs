@@ -27,7 +27,7 @@ using Northwind.Domain.Factories;
 
 namespace Northwind.Domain.Orders.Repositories.Queries.Strategies
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.601.881")]
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
 	public partial class OrderQueryStrategyBuilder : QueryBuilder<OrderQueryStrategy, Entities.OrderEntity>, IOrderQueryStrategyBuilder
 	{
 		public OrderQueryStrategyBuilder(IDomainDataStoreFactory dataStoreFactory, IDependencyResolver dependencyResolver)

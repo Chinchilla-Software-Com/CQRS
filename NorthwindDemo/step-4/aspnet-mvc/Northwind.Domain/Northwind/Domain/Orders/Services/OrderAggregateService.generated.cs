@@ -20,6 +20,7 @@ using System.ServiceModel;
 using Cqrs.Commands;
 using Cqrs.Authentication;
 using cdmdotnet.Logging;
+using Cqrs.Events;
 using Cqrs.Repositories.Queries;
 using Cqrs.Services;
 using Northwind.Domain.Orders.Commands;
@@ -27,9 +28,9 @@ using Northwind.Domain.Orders.Repositories;
 
 namespace Northwind.Domain.Orders.Services
 {
-	[GeneratedCode("CQRS UML Code Generator", "1.500.0.1")]
-	[DataContract(Namespace="https://cqrs/Domain/Orders/1001/")]
-	public partial class OrderService : IOrderService
+	[GeneratedCode("CQRS UML Code Generator", "1.601.909")]
+	[DataContract(Namespace="https://cqrs.co.nz/Domain/Orders/1001/")]
+	public partial class OrderService : EventService<Cqrs.Authentication.ISingleSignOnToken>, IOrderService
 	{
 		protected ICommandSender<Cqrs.Authentication.ISingleSignOnToken> CommandSender { get; private set; }
 
@@ -45,7 +46,8 @@ namespace Northwind.Domain.Orders.Services
 
 		protected ILogger Logger { get; private set; }
 
-		public OrderService(ICommandSender<Cqrs.Authentication.ISingleSignOnToken> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IOrderRepository orderRepository, ILogger logger)
+		public OrderService(ICommandSender<Cqrs.Authentication.ISingleSignOnToken> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IOrderRepository orderRepository, ILogger logger, IEventStore<Cqrs.Authentication.ISingleSignOnToken> eventStore)
+			: base(eventStore, logger, correlationIdHelper, authenticationTokenHelper)
 		{
 			CommandSender = commandSender;
 			UnitOfWorkService = unitOfWorkService;

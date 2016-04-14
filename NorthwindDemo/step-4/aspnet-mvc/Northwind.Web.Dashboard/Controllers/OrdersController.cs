@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System.Data;
 using Cqrs.Authentication;
+using Cqrs.Events;
 using Cqrs.Services;
 using Northwind.Domain.Orders.Entities;
+using Northwind.Domain.Orders.Events;
 using Northwind.Domain.Orders.Services;
 using Northwind.Domain.Orders.Services.ServiceHost.Ninject.ServiceChannelFactories;
 using Northwind.Web.Dashboard.Models;
@@ -24,25 +27,54 @@ namespace Northwind.Web.Dashboard.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				using (var northwind = new NorthwindEntities())
+
+				var orderServiceFactory = new HttpOrderServiceChannelFactory();
+
+				IOrderService service = orderServiceFactory.CreateChannel();
+				var request2 = new ServiceRequestWithData<ISingleSignOnToken, OrderEntity>
 				{
-					var entity = new Order
+					AuthenticationToken = new SingleSignOnToken(),
+					CorrelationId = Guid.NewGuid(),
+					Data = new OrderEntity
 					{
-						CustomerID = order.CustomerID,
-						EmployeeID = order.EmployeeID,
+						OrderId = new Random().Next(),
+						CustomerId = order.CustomerID,
+						EmployeeId = order.EmployeeID,
 						OrderDate = order.OrderDate,
 						ShipCountry = order.ShipCountry,
-						ShipVia = order.ShipVia,
+						ShipViaId = order.ShipVia,
 						ShippedDate = order.ShippedDate,
 						ShipName = order.ShipName,
 						ShipAddress = order.ShipAddress,
 						ShipCity = order.ShipCity,
 						ShipPostalCode = order.ShipPostalCode
-					};
-					northwind.Orders.Add(entity);
-					northwind.SaveChanges();
-					order.OrderID = entity.OrderID;
-				}
+					}
+				};
+
+				// Act
+				IServiceResponseWithResultData<OrderEntity> response2 = service.CreateOrder(request2);
+				Guid correlationId = response2.CorrelationId;
+
+				var request3 = new ServiceRequestWithData<ISingleSignOnToken, Guid>
+				{
+					AuthenticationToken = new SingleSignOnToken(),
+					Data = correlationId
+				};
+
+				IEnumerable<EventData> result;
+				int loopCount = 0;
+				// Act
+				do
+				{
+					// Wait 0.5 of a second and ask again
+					if (loopCount > 0)
+						System.Threading.Thread.Sleep(500);
+
+					IServiceResponseWithResultData<IEnumerable<EventData>> response3 = service.GetEventData(request3);
+					result = response3.ResultData;
+					result = result.Where(x => x.EventType == typeof (OrderCreated).AssemblyQualifiedName);
+				} while (!result.Any() && loopCount++ < 10);
+
 			}
 			return Json(new[] { order }.ToDataSourceResult(request, ModelState));
 		}
@@ -134,6 +166,7 @@ namespace Northwind.Web.Dashboard.Controllers
 			var request2 = new ServiceRequestWithData<ISingleSignOnToken, OrderServiceGetAllOrdersParameters>
 			{
 				AuthenticationToken = new SingleSignOnToken(),
+				CorrelationId = Guid.NewGuid(),
 				Data = new OrderServiceGetAllOrdersParameters()
 			};
 

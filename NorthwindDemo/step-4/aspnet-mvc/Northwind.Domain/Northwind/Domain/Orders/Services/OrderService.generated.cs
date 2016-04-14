@@ -24,6 +24,7 @@ using System.Text;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
+using Cqrs.Events;
 using Cqrs.Repositories.Queries;
 using Cqrs.Services;
 
