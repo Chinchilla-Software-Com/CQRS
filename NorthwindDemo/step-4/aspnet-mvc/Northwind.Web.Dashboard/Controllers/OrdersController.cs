@@ -27,7 +27,7 @@ namespace Northwind.Web.Dashboard.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				order.OrderID = new Random().Next();
+				order.OrderID = new Random(Guid.NewGuid().GetHashCode()).Next();
 				var orderServiceFactory = new HttpOrderServiceChannelFactory();
 
 				IOrderService service = orderServiceFactory.CreateChannel();
