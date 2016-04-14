@@ -26,6 +26,7 @@ if (!string.IsNullOrWhiteSpace(baseClass))
 WriteUsingStatements(this.Element);
 #>
 using System.Xml;
+using Cqrs.Events;
 using Cqrs.Services;
 
 namespace <#= classNamespace #>
@@ -93,7 +94,7 @@ if (index > 0)
 	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
 #>
 		public <#= className #><#= collectionMethod.Name #>Resolver()
-			: base(new <#= authenticationTokenTypeResolver #>())
+			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver())
 		{
 		}
 

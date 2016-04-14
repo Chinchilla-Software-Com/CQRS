@@ -26,6 +26,7 @@ if (!string.IsNullOrWhiteSpace(baseClass))
 WriteUsingStatements(this.Element);
 #>
 using System.Xml;
+using Cqrs.Events;
 using Cqrs.Services;
 using <#= classNamespace #>.Entities;
 
@@ -61,7 +62,7 @@ if (index > 0)
 	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
 #>
 		public <#= className #>ServiceCreate<#= className #>ParametersResolver()
-			: base(new <#= authenticationTokenTypeResolver #>())
+			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver())
 		{
 		}
 
@@ -161,7 +162,7 @@ if (index > 0)
 	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
 #>
 		public <#= className #>ServiceUpdate<#= className #>ParametersResolver()
-			: base(new <#= authenticationTokenTypeResolver #>())
+			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver())
 		{
 		}
 
@@ -261,7 +262,7 @@ if (index > 0)
 	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
 #>
 		public <#= className #>ServiceDelete<#= className #>ParametersResolver()
-			: base(new <#= authenticationTokenTypeResolver #>())
+			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver())
 		{
 		}
 
