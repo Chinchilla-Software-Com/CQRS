@@ -7,13 +7,14 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml;
 using Cqrs.Services;
 
 namespace Cqrs.Events
 {
-	public class EventDataResolver : IEventDataResolver
+	public class EventDataResolver<TAuthenticationToken> : IEventDataResolver
 	{
 		#region Implementation of IServiceParameterResolver
 
@@ -27,6 +28,22 @@ namespace Cqrs.Events
 				return true;
 			}
 
+			if (dataContractType == typeof(ServiceRequestWithData<TAuthenticationToken, Guid>))
+			{
+				XmlDictionary dictionary = new XmlDictionary();
+				typeName = dictionary.Add("EventDataGetRequest");
+				typeNamespace = dictionary.Add("http://cqrs.co.nz");
+				return true;
+			}
+
+			if (dataContractType == typeof(ServiceResponseWithResultData<IEnumerable<Guid>>))
+			{
+				XmlDictionary dictionary = new XmlDictionary();
+				typeName = dictionary.Add("EventDataGetResponse");
+				typeNamespace = dictionary.Add("http://cqrs.co.nz");
+				return true;
+			}
+
 			typeName = null;
 			typeNamespace = null;
 			return false;
@@ -36,6 +53,12 @@ namespace Cqrs.Events
 		{
 			if (typeName == "EventData" && typeNamespace == "http://cqrs.co.nz")
 				return typeof(EventData);
+
+			if (typeName == "EventDataGetRequest" && typeNamespace == "http://cqrs.co.nz")
+				return typeof(ServiceRequestWithData<TAuthenticationToken, Guid>);
+
+			if (typeName == "EventDataGetResponse" && typeNamespace == "http://cqrs.co.nz")
+				return typeof(ServiceResponseWithResultData<IEnumerable<Guid>>);
 
 			return null;
 		}
