@@ -8,9 +8,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using cdmdotnet.Logging;
 using Cqrs.Domain;
-using Cqrs.Domain.Exceptions;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
 
@@ -18,8 +17,8 @@ namespace Cqrs.Akka.Domain
 {
 	public class AkkaRepository<TAuthenticationToken> : Repository<TAuthenticationToken>
 	{
-		public AkkaRepository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher)
-			: base(aggregateFactory, eventStore, publisher)
+		public AkkaRepository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICorrelationIdHelper correlationIdHelper)
+			: base(aggregateFactory, eventStore, publisher, correlationIdHelper)
 		{
 		}
 
