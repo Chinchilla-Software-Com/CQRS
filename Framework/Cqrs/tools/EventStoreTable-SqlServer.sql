@@ -1,5 +1,4 @@
-﻿/****** Object:  Table [dbo].[EventStore]    Script Date: 7-Apr-2016 2:21:45 PM ******/
-SET ANSI_NULLS ON
+﻿SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
@@ -12,7 +11,8 @@ CREATE TABLE [dbo].[EventStore](
 	[AggregateId] [nvarchar](445) NOT NULL,
 	[Version] [bigint] NOT NULL,
 	[Timestamp] [datetime] NOT NULL,
- CONSTRAINT [PK_EventStore] PRIMARY KEY CLUSTERED 
+	[CorrelationId] [uniqueidentifier] NOT NULL,
+CONSTRAINT [PK_EventStore] PRIMARY KEY CLUSTERED 
 (
 	[EventId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON),
@@ -25,4 +25,9 @@ CREATE TABLE [dbo].[EventStore](
 
 GO
 
+CREATE NONCLUSTERED INDEX [IX_CorrelationId] ON [dbo].[EventStore]
+(
+	[CorrelationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+GO
 

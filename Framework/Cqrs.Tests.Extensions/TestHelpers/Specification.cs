@@ -114,5 +114,10 @@ namespace Cqrs.Tests.Extensions.TestHelpers
 		{
 			return Events.Where(x => x.Version > fromVersion);
 		}
+
+		public IEnumerable<EventData> Get(Guid correlationId)
+		{
+			return Enumerable.Empty<EventData>();
+		}
 	}
 }

@@ -32,6 +32,9 @@ namespace Cqrs.Events
 		[Column(CanBeNull = false)]
 		public DateTime Timestamp { get; set; }
 
+		[Column(CanBeNull = false)]
+		public Guid CorrelationId { get; set; }
+
 		public EventData()
 		{
 			Timestamp = DateTime.UtcNow;

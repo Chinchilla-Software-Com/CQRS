@@ -49,6 +49,19 @@ namespace Cqrs.Events
 			}
 		}
 
+		public override IEnumerable<EventData> Get(Guid correlationId)
+		{
+			using (DataContext dbDataContext = CreateDbDataContext())
+			{
+				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
+					.AsQueryable()
+					.Where(eventData => eventData.CorrelationId == correlationId)
+					.OrderBy(eventData => eventData.Timestamp);
+
+				return query.ToList();
+			}
+		}
+
 		protected override void PersistEvent(EventData eventData)
 		{
 			using (DataContext dbDataContext = CreateDbDataContext())

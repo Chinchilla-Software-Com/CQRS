@@ -40,6 +40,11 @@ namespace Cqrs.Ninject.InProcess.EventStore
 				: new List<IEvent<TAuthenticationToken>>();
 		}
 
+		public IEnumerable<EventData> Get(Guid correlationId)
+		{
+			return Enumerable.Empty<EventData>();
+		}
+
 		public void Save<T>(IEvent<TAuthenticationToken> @event)
 		{
 			Save(typeof(T), @event);

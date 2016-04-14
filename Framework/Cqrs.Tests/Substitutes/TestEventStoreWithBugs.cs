@@ -33,6 +33,11 @@ namespace Cqrs.Tests.Substitutes
 			.Where(x => x.Version > fromVersion);
 		}
 
+		public IEnumerable<EventData> Get(Guid correlationId)
+		{
+			return Enumerable.Empty<EventData>();
+		}
+
 		public void Save<T>(IEvent<ISingleSignOnToken> eventDescriptor)
 		{
 		}

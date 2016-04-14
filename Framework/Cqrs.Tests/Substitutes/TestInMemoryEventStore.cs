@@ -35,5 +35,10 @@ namespace Cqrs.Tests.Substitutes
 				return Events.Where(x => x.Version > fromVersion && x.Id == aggregateId).OrderBy(x => x.Version).ToList();
 			}
 		}
+
+		public IEnumerable<EventData> Get(Guid correlationId)
+		{
+			return Enumerable.Empty<EventData>();
+		}
 	}
 }

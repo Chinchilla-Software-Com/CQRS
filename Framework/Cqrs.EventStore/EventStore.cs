@@ -65,6 +65,11 @@ namespace Cqrs.EventStore
 			return eventCollection.Events.Select(EventDeserialiser.Deserialise);
 		}
 
+		public IEnumerable<Events.EventData> Get(Guid correlationId)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 
 		protected virtual void ListenForNotificationsOnConnection(IEventStoreConnection connection)

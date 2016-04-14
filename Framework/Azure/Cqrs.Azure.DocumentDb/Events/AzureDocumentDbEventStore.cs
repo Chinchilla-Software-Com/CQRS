@@ -38,6 +38,11 @@ namespace Cqrs.Azure.DocumentDb.Events
 			return GetAsync(aggregateRootType, aggregateId, useLastEventOnly, fromVersion).Result;
 		}
 
+		public override IEnumerable<EventData> Get(Guid correlationId)
+		{
+			return GetAsync(correlationId).Result;
+		}
+
 		protected async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			return Get(typeof(T), aggregateId, useLastEventOnly, fromVersion);
@@ -49,7 +54,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 			{
 				Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
 				//DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format("{0}_{1}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), typeof(T).FullName)).Result;
-				string collectionName = string.Format("{0}::{1}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), aggregateRootType.FullName);
+				string collectionName = string.Format("{0}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName());
 				DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName, UniqueIndexProperties).Result;
 
 				IOrderedQueryable<EventData> query = client.CreateDocumentQuery<EventData>(collection.SelfLink);
@@ -62,6 +67,27 @@ namespace Cqrs.Azure.DocumentDb.Events
 						.ToList()
 						.OrderByDescending(x => x.EventId)
 						.Select(EventDeserialiser.Deserialise)
+				);
+			}
+		}
+
+		protected async Task<IEnumerable<EventData>> GetAsync(Guid correlationId)
+		{
+			using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
+			{
+				Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
+				//DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format("{0}_{1}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), typeof(T).FullName)).Result;
+				string collectionName = string.Format("{0}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName());
+				DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName, UniqueIndexProperties).Result;
+
+				IOrderedQueryable<EventData> query = client.CreateDocumentQuery<EventData>(collection.SelfLink);
+
+				IEnumerable<EventData> results = query.Where(x => x.CorrelationId == correlationId);
+
+				return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
+					results
+						.ToList()
+						.OrderBy(x => x.Timestamp)
 				);
 			}
 		}

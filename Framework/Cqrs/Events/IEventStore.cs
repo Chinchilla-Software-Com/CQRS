@@ -20,5 +20,7 @@ namespace Cqrs.Events
 		IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1);
 
 		IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1);
+
+		IEnumerable<EventData> Get(Guid correlationId);
 	}
 }

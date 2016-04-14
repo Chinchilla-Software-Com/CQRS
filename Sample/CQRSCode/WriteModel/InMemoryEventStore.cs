@@ -34,6 +34,11 @@ namespace CQRSCode.WriteModel
 			return events != null ? events.Where(x => x.Version > fromVersion) : new List<IEvent<ISingleSignOnToken>>();
 		}
 
+		public IEnumerable<EventData> Get(Guid correlationId)
+		{
+			return Enumerable.Empty<EventData>();
+		}
+
 		public void Save<T>(IEvent<ISingleSignOnToken> @event)
 		{
 			Save(typeof(T), @event);
