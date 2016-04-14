@@ -58,7 +58,7 @@ namespace Cqrs.Events
 				return typeof(ServiceRequestWithData<TAuthenticationToken, Guid>);
 
 			if (typeName == "EventDataGetResponse" && typeNamespace == "http://cqrs.co.nz")
-				return typeof(ServiceResponseWithResultData<IEnumerable<Guid>>);
+				return typeof(ServiceResponseWithResultData<IEnumerable<EventData>>);
 
 			return null;
 		}

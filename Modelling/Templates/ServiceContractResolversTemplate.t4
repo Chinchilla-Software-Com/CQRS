@@ -94,7 +94,7 @@ if (index > 0)
 	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
 #>
 		public <#= className #><#= collectionMethod.Name #>Resolver()
-			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver())
+			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
 		{
 		}
 

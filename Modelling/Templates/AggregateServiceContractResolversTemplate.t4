@@ -62,7 +62,7 @@ if (index > 0)
 	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
 #>
 		public <#= className #>ServiceCreate<#= className #>ParametersResolver()
-			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver())
+			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
 		{
 		}
 
@@ -162,7 +162,7 @@ if (index > 0)
 	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
 #>
 		public <#= className #>ServiceUpdate<#= className #>ParametersResolver()
-			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver())
+			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
 		{
 		}
 
@@ -262,7 +262,7 @@ if (index > 0)
 	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
 #>
 		public <#= className #>ServiceDelete<#= className #>ParametersResolver()
-			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver())
+			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
 		{
 		}
 

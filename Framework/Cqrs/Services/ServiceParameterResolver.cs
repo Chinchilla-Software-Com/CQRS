@@ -94,6 +94,10 @@ namespace Cqrs.Services
 			if (result != null)
 				return result;
 
+			result = EventDataResolver.ResolveName(typeName, typeNamespace, declaredType, knownTypeResolver);
+			if (result != null)
+				return result;
+
 			result = ResolveUnResolvedName(typeName, typeNamespace, declaredType, knownTypeResolver);
 			if (result != null)
 				return result;
