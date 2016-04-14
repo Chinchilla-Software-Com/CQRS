@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{79E12BF3-E759-411F-B41A-561476C4AA02}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Northwind.Domain.Host</RootNamespace>
+    <AssemblyName>Northwind.Domain.Host</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="cdmdotnet.AutoMapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cdmdotnet.AutoMapper.1.0.10.8\lib\net40\cdmdotnet.AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="cdmdotnet.Logging, Version=1.0.24.24, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cdmdotnet.Logging.1.0.24.24\lib\net40\cdmdotnet.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="cdmdotnet.Performance, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cdmdotnet.Performance.1.0.5.8\lib\net40\cdmdotnet.Performance.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Cqrs, Version=1.601.882.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.1.601.882\lib\net40\Cqrs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Cqrs.Ninject, Version=1.601.882.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.1.601.882\lib\net40\Cqrs.Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Cqrs.Ninject.InProcess.CommandBus, Version=1.601.882.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.InProcess.CommandBus.1.601.882\lib\net40\Cqrs.Ninject.InProcess.CommandBus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Cqrs.Ninject.InProcess.EventBus, Version=1.601.882.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.InProcess.EventBus.1.601.882\lib\net40\Cqrs.Ninject.InProcess.EventBus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Omu.ValueInjecter, Version=2.3.3.0, Culture=neutral, PublicKeyToken=c7694541b0ac80e4, processorArchitecture=MSIL">
+      <HintPath>..\packages\valueinjecter.2.3.3\lib\net35\Omu.ValueInjecter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\DomainConfiguration.cs" />
+    <Compile Include="Configuration\ServicePointManagerConfiguration.cs" />
+    <Compile Include="Northwind\DomainHost.generated.cs">
+      <SourceModelReference>modelbus://ModelStoreAdapter.1.0/Northwind.Models/Domain/Y:\results.com\git\cqrs\NorthwindDemo\step-3\aspnet-mvc\Northwind.Models\Northwind.Models.modelproj%252fd476d780-352c-4920-b47f-25d145793464</SourceModelReference>
+    </Compile>
+    <Compile Include="Northwind\Domain\Orders\Services\Host\OrderAggregateServiceHost.generated.cs">
+      <SourceModelReference>modelbus://ModelStoreAdapter.1.0/Northwind.Models/Order/Y:\results.com\git\cqrs\NorthwindDemo\step-3\aspnet-mvc\Northwind.Models\Northwind.Models.modelproj%252f7bbf79d8-8e04-42af-812c-4e10176310ec</SourceModelReference>
+    </Compile>
+    <Compile Include="Northwind\Domain\Orders\Services\Host\OrderServiceHost.generated.cs">
+      <SourceModelReference>modelbus://ModelStoreAdapter.1.0/Northwind.Models/OrderService/Y:\results.com\git\cqrs\NorthwindDemo\step-3\aspnet-mvc\Northwind.Models\Northwind.Models.modelproj%252f8a9ccfa3-e422-499a-bed6-c630bf2e3a5f</SourceModelReference>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Northwind.Domain.Ninject\Northwind.Domain.Ninject.csproj">
+      <Project>{2f881306-8aa1-4526-9a51-2520ab4f4330}</Project>
+      <Name>Northwind.Domain.Ninject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Northwind.Domain\Northwind.Domain.csproj">
+      <Project>{0cf4aace-176e-4f08-afd9-577724e72e38}</Project>
+      <Name>Northwind.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Northwind\Northwind.csproj">
+      <Project>{028dda41-12c1-4557-bc47-e57809217311}</Project>
+      <Name>Northwind</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

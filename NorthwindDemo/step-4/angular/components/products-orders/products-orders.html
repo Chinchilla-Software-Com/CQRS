@@ -1,0 +1,88 @@
+<!--open main column-->
+<div id="main-section-header" class="row">
+    <h2 id="team-efficiency" class="col-xs-3">PRODUCTS & ORDERS</h2>
+    <div style="clear:both;"></div>
+</div>
+<div id="orders"
+    kendo-grid
+    k-data-source="productsOrders.ordersDataSource"
+    k-columns="productsOrders.ordersColumns"
+    k-sortable="true"
+    k-pageable="true"
+    k-navigatable="true"
+    k-filterable="true"
+    k-selectable="'column'"
+>
+<div k-detail-template>
+    <h4>Details for order {{ dataItem.OrderID }} </h4>
+    <div class="tabstrip" kendo-tab-strip>
+        <ul>
+            <li class="k-state-active">
+                PRODUCTS
+            </li>
+            <li>
+                SHIPPING DETAILS
+            </li>
+        </ul>
+        <div class="details-grid"
+            style="height: 200px"
+            kendo-grid
+            k-columns="productsOrders.productsColumns"
+            k-data-source="productsOrders.productDataSource(dataItem.OrderID)">
+            <div k-detail-template>
+                <div class="product-details-wrapper row">
+                    <div class="product-details col-xs-3">
+                        <img src="./Content/Products/{{dataItem.ProductID}}.jpg" class="product-details-image">
+                        <div class="product-name-cat">
+                            <div class="product-name">{{productsOrders.product(dataItem.ProductID).ProductName}}</div>
+                            <div class="product-category">{{productsOrders.product(dataItem.ProductID).Category}}</div>
+                        </div>
+                    </div>
+                    <div class="product-details col-xs-3">
+                        <h5>Orders QTY.</h5>
+                        <div class="sparkline-container">
+                            <!-- escape template to prevent the grid from executing it -->
+                            <div class="details-sparkline"
+                                kendo-sparkline
+                                k-theme="'metro'"
+                                k-type="'column'"
+                                k-data-source="productsOrders.productSalesDataSource(dataItem.ProductID)"
+                                k-series="[{categoryField:'Date',aggregate:'count',gap:0.2,field:'Quantity',tooltip:{template:'QUANTITY: \\\\#= value \\\\#'}}]"
+                                k-category-axis="{type:'date',visible:true,labels:{visible:false},majorTicks:{visible:false},baseUnit:'months',line:{visible:true,color:'black'}}"
+                                k-value-axis="{line:{visible:true}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-details col-xs-1">
+                        <h5>In stock</h5>
+                        <span class="details-stock">{{productsOrders.product(dataItem.ProductID).UnitsInStock}}</span>
+                    </div>
+                    <div class="product-details col-xs-1">
+                        <h5>In order</h5>
+                        <span class="details-orders">{{productsOrders.product(dataItem.ProductID).UnitsOnOrder}}</span>
+                    </div>
+                    <div class="product-details col-xs-1">
+                        <h5>Reorder</h5>
+                        <span class="details-re-order">{{productsOrders.product(dataItem.ProductID).ReorderLevel}}</span>
+                    </div>
+                    <div class="product-details col-xs-3">
+                        <h5>Qty. per unit</h5>
+                        <span class="details-re-order">{{productsOrders.product(dataItem.ProductID).ReorderLevel}}</span><span class="product-metric">kg pkg.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+             <div class='shipping-details'>
+                 <ul>
+                     <li><label>Name:</label>{{dataItem.ShipName}}</li>
+                     <li><label>Country:</label>{{dataItem.ShipCountry}}</li>
+                     <li><label>City:</label>{{dataItem.ShipCity}}</li>
+                     <li><label>Address:</label>{{dataItem.ShipAddress}}</li>
+                     <li><label>Postal Code:</label>{{dataItem.ShipPostalCode}}</li>
+                 </ul>
+             </div>
+        </div>
+    </div>
+</div>
+</div>
