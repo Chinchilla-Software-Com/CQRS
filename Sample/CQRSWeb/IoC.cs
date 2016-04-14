@@ -39,7 +39,7 @@ namespace CQRSWeb {
 							x.For<IEventHandlerRegistrar>().Singleton().Use<InProcessBus<ISingleSignOnToken>>();
 							x.For<IRepository<ISingleSignOnToken>>().HybridHttpOrThreadLocalScoped().Use(y =>
 																					 new CacheRepository<ISingleSignOnToken>(
-																						 new Repository<ISingleSignOnToken>(y.GetInstance<IAggregateFactory>(), y.GetInstance<IEventStore<ISingleSignOnToken>>(), y.GetInstance<IEventPublisher<ISingleSignOnToken>>()),
+																						 new Repository<ISingleSignOnToken>(y.GetInstance<IAggregateFactory>(), y.GetInstance<IEventStore<ISingleSignOnToken>>(), y.GetInstance<IEventPublisher<ISingleSignOnToken>>(), y.GetInstance<ICorrelationIdHelper>()),
 																						 y.GetInstance<IEventStore<ISingleSignOnToken>>()));
 
 							// Scan the assembly the ReadModelFacade class is in and then configure using the pattern

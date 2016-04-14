@@ -23,7 +23,7 @@ namespace Cqrs.Authentication
 			{
 				XmlDictionary dictionary = new XmlDictionary();
 				typeName = dictionary.Add("SingleSignOnToken");
-				typeNamespace = dictionary.Add("http://tempuri.com");
+				typeNamespace = dictionary.Add("http://cqrs.co.nz");
 				return true;
 			}
 
@@ -34,7 +34,7 @@ namespace Cqrs.Authentication
 
 		public virtual Type ResolveName(string typeName, string typeNamespace, Type declaredType, DataContractResolver knownTypeResolver)
 		{
-			if (typeName == "SingleSignOnToken" && typeNamespace == "http://tempuri.com")
+			if (typeName == "SingleSignOnToken" && typeNamespace == "http://cqrs.co.nz")
 				return typeof(SingleSignOnToken);
 
 			return null;

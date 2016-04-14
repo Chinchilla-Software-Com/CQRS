@@ -1,4 +1,5 @@
-﻿using Cqrs.Domain;
+﻿using cdmdotnet.Logging;
+using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
 using Cqrs.Authentication;
@@ -23,7 +24,7 @@ namespace Cqrs.Tests.Snapshots
 			_snapshotStore = new TestInMemorySnapshotStore();
 			var snapshotStrategy = new DefaultSnapshotStrategy<ISingleSignOnToken>();
 			var aggregateFactory = new AggregateFactory(new TestDependencyResolver());
-			var repository = new SnapshotRepository<ISingleSignOnToken>(_snapshotStore, snapshotStrategy, new Repository<ISingleSignOnToken>(aggregateFactory, eventStore, eventPublisher), eventStore, aggregateFactory);
+			var repository = new SnapshotRepository<ISingleSignOnToken>(_snapshotStore, snapshotStrategy, new Repository<ISingleSignOnToken>(aggregateFactory, eventStore, eventPublisher, new NullCorrelationIdHelper()), eventStore, aggregateFactory);
 			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(repository);
 			_aggregate = new TestSnapshotAggregate();
 

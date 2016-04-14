@@ -27,6 +27,7 @@ WriteUsingStatements(this.Element);
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
+using Cqrs.Events;
 using Cqrs.Repositories.Queries;
 using Cqrs.Services;
 
@@ -41,11 +42,7 @@ namespace <#= classNamespace #>
 	bool hasNoAggregateRootService = GetElementByFullName(this.Element, aggregateRootName) == null;
 	if (hasNoAggregateRootService)
 	{
-		if (!string.IsNullOrWhiteSpace(baseClass))
-			baseClass = baseClass + ", ";
-		else
-			baseClass = ": ";
-		baseClass = baseClass + "I" + className;
+		baseClass = ": EventService<" + authenticationTokenType + ">, I" + className;
 	}
 #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #> <#= baseClass #>
@@ -66,7 +63,8 @@ namespace <#= classNamespace #>
 
 		protected ILogger Logger { get; private set; }
 
-		public <#= className #>(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
+		public <#= className #>(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IEventStore<<#= authenticationTokenType #>> eventStore)
+			: base(eventStore, logger, correlationIdHelper, authenticationTokenHelper)
 		{
 			CommandSender = commandSender;
 			UnitOfWorkService = unitOfWorkService;
