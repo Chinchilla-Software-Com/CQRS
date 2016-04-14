@@ -27,6 +27,7 @@ namespace Northwind.Web.Dashboard.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				order.OrderID = new Random().Next();
 				var orderServiceFactory = new HttpOrderServiceChannelFactory();
 
 				IOrderService service = orderServiceFactory.CreateChannel();
@@ -36,7 +37,7 @@ namespace Northwind.Web.Dashboard.Controllers
 					CorrelationId = Guid.NewGuid(),
 					Data = new OrderEntity
 					{
-						OrderId = new Random().Next(),
+						OrderId = order.OrderID,
 						CustomerId = order.CustomerID,
 						EmployeeId = order.EmployeeID,
 						OrderDate = order.OrderDate,
