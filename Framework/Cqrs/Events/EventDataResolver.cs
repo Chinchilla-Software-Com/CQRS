@@ -36,7 +36,7 @@ namespace Cqrs.Events
 				return true;
 			}
 
-			if (dataContractType == typeof(ServiceResponseWithResultData<IEnumerable<Guid>>))
+			if (dataContractType == typeof(ServiceResponseWithResultData<IEnumerable<EventData>>))
 			{
 				XmlDictionary dictionary = new XmlDictionary();
 				typeName = dictionary.Add("EventDataGetResponse");

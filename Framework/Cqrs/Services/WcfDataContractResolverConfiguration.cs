@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cqrs.Services
 {
@@ -80,6 +81,8 @@ namespace Cqrs.Services
 			Type dataContractType;
 			if (dataContracts.TryGetValue(operationName, out dataContractType))
 				return dataContractType;
+			if (operationName == "GetEventData")
+				return dataContracts.Values.FirstOrDefault();
 			return null;
 		}
 
