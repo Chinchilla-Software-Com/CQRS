@@ -6,12 +6,7 @@ A lightweight enterprise framework to help write CQRS and Eventsourcing applicat
 
 CS-CQRS has been designed with modularity in mind... see the number of technology packages below you can chose from. Every package and design choice made should be interchangeable with custom code if needed.
 
-## Getting started
-Several sample projects are located within the code, these show two approaches/common usage scenarios of the framework. One sample is the original sample from CQRSlite, ported to use CS-CQRS, the other is Modelled in UML and uses T4 template generation to heavily reduce the amount of code written.
-
-The project should compile without any setup in .NET 4.0. The Azure project should compile without any setup in .NET 4.5.2. I'm guessing Mono 3.10.0 should work too.
-
-## Tutorials
+## Tutorials and getting started
 For those wanting to take a plunge into using the CS-CQRS platform, we strongly suggest you have a look at our basic [Northwind Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Tutorial-0:-Quick-Northwind-sample.).
 
 And for those looking for a more thorough tutorial we suggest you start with the [getting started](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Getting-Started) section in the [wiki](https://github.com/Chinchilla-Software-Com/CQRS/wiki)
@@ -20,7 +15,9 @@ And for those looking for a more thorough tutorial we suggest you start with the
 Documentation is starting off for now in the [wiki section](https://github.com/Chinchilla-Software-Com/CQRS/wiki) of this project. We strongly invite people to post questions and issues which we'll answer and work on.
 
 ## Sample projects.
-We have a very simple example which, for now, is too CRUD like for us. 
+Several sample projects are located within the code, these show two approaches/common usage scenarios of the framework. One sample is the original sample from CQRSlite, ported to use CS-CQRS, the other is Modelled in UML and uses T4 template generation to heavily reduce the amount of code written.
+
+The project should compile without any setup in .NET 4.0. The Azure project should compile without any setup in .NET 4.5.2. I'm guessing Mono 3.10.0 should work too.
 
 ## Commerical Support
 Commercial support is now available through our partner company [Chinchilla Software](http://www.chinchillasoftware.com).
