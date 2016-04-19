@@ -32,7 +32,7 @@ namespace Cqrs.Modelling.UmlProfiles
 	// in the Help/About dialog of Visual Studio.
 	[InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
 	[Guid(GuidList.guidvsp1PkgString)]
-	[ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string)]
+	[ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string)]
 	public sealed class vsp1Package : Package
 	{
 		/// <summary>
@@ -70,8 +70,17 @@ namespace Cqrs.Modelling.UmlProfiles
 				solutionName = solutionName.Substring(solutionName.LastIndexOf('\\') + 1);
 				foreach (Project project in projects)
 				{
-					IEnumerable<AssemblyName> references = CollectSettings(project)
-						.Where(assembly => assembly.Name.StartsWith("Cqrs"));
+					IEnumerable<AssemblyName> references;
+					try
+					{
+						references = CollectSettings(project)
+							.Where(assembly => assembly.Name.StartsWith("Cqrs"))
+							.ToList();
+					}
+					catch (NullReferenceException)
+					{
+						continue;
+					}
 					foreach (AssemblyName assemblyName in references)
 					{
 						string urlPath = string.Format("/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}", HttpUtility.UrlPathEncode(dte.Version), HttpUtility.UrlPathEncode(dte.Edition), HttpUtility.UrlPathEncode(solutionName), HttpUtility.UrlPathEncode(project.Name), HttpUtility.UrlPathEncode(project.Kind), HttpUtility.UrlPathEncode(project.UniqueName.Replace('\\', '¿')), HttpUtility.UrlPathEncode(assemblyName.Name), HttpUtility.UrlPathEncode(assemblyName.Version.ToString()));
