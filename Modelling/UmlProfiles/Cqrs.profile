@@ -248,6 +248,24 @@
         </property>
       </properties>
     </stereotype>
+    <stereotype name="EventToCommandConverter" displayName="Event To Command Converter">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IAssociation" />
+      </metaclasses>
+    </stereotype>
+    <stereotype name="CommandHandler" displayName="Command Handler">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IAssociation" />
+      </metaclasses>
+      <properties>
+        <property name="AggregateRootMethod" displayName="Aggregate Root Method: The name of the method on the aggregate root this command Handler calls." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+      </properties>
+    </stereotype>
 
     <stereotype name="Service" displayName="Service">
       <metaclasses>
