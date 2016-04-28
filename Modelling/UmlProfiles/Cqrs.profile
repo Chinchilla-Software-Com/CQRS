@@ -238,6 +238,7 @@
     <stereotype name="EventHandler" displayName="Event Handler">
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IAssociation" />
       </metaclasses>
       <properties>
         <property name="EntityName" displayName="EntityName: The name of the Entity this event handler targets." defaultValue="">
