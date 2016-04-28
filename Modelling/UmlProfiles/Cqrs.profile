@@ -336,6 +336,7 @@
     <metaclass name="Microsoft.VisualStudio.Uml.Classes.IPackage" />
     <metaclass name="Microsoft.VisualStudio.Uml.Classes.IPackageImport" />
     <metaclass name="Microsoft.VisualStudio.Uml.Classes.IProperty" />
+    <metaclass name="Microsoft.VisualStudio.Uml.Classes.IAssociation" />
   </metaclasses>
 
   <propertyTypes>
