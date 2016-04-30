@@ -1,0 +1,164 @@
+<#@ Include File="TemplateHeader.t4" #>
+<#@ Modeling ElementType="Microsoft.VisualStudio.Uml.Classes.IClass" Processor="ModelingProcessor" ApplyStereotypes="CSharp" #>
+<#@ Import Namespace="Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml" #>
+<#@ Import Namespace="Microsoft.VisualStudio.Uml.AuxiliaryConstructs" #>
+<#@ import namespace="Microsoft.VisualStudio.Uml.Classes" #>
+<#@ import namespace="Microsoft.VisualStudio.Uml" #>
+<#@ Assembly Name="System.Core, Version=4.0.0.0, Culture=neutral" #>
+<#@ Assembly Name="Microsoft.CSharp, Version=4.0.0.0, Culture=neutral" #>
+<#@ Include File="CSharpCommentHelpers.t4" #>
+<#@ Include File="CSharpHelpers.t4" #>
+<#@ Include File="CqrsTemplateHelpers.t4" #>
+<#@ Include File="ModelHelper.t4" #>
+<#@ Output Extension=".classdiagram" #>
+<#
+IStereotypeInstance stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+string authenticationTokenType = GetDomainAuthenticationTokenType(this.Element);
+
+string classNamespace = GetNamespace(this.Element.Namespace);
+string className = ClassifierName(this.Element);
+string baseClass = GetBaseClass(this.Element);
+
+int baseHashCode = (classNamespace + "." + className).GetHashCode();
+#><?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="<#= new Guid(baseHashCode, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>" linkedPackageId="<#= new Guid(baseHashCode, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0) #>" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="<#= new Guid(baseHashCode, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <appliedStereotypesInternal>
+<#
+int index = 0;
+foreach(IStereotypeInstance stereotypeInstance in this.Element.AppliedStereotypes)
+{
+#>
+          <stereotypeInstance Id="<#= new Guid(baseHashCode, (short)index, 2, 1, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= stereotypeInstance.Name #>" profile="<#= stereotypeInstance.Profile #>">
+            <elementDefinition Id="<#= stereotypeInstance.GetId() #>" />
+            <propertyInstances>
+<#
+	dynamic obj2 = stereotypeInstance;
+	var obj5 = Microsoft.VisualStudio.Uml.StereotypeInstanceHasPropertyInstances.GetLinksToPropertyInstances(obj2);
+	int propertyIndex = 0;
+	foreach(var obj6 in obj5)
+	{
+		IStereotypePropertyInstance stereoTypeProperty = stereotypeInstance.PropertyInstances[propertyIndex];
+#>
+              <stereotypeInstanceHasPropertyInstances Id="<#= new Guid(baseHashCode, (short)index, 3, 1, 0, 0, 0, 0, 0, 0, (byte)propertyIndex) #>">
+                <propertyInstance Id="<#= new Guid(baseHashCode, (short)index, 3, 2, 0, 0, 0, 0, 0, 0, (byte)propertyIndex) #>" name="<#= stereoTypeProperty.Name #>" value="<#= stereoTypeProperty.Value #>">
+                  <elementDefinition Id="<#= stereoTypeProperty.GetId() #>" />
+                </propertyInstance>
+                <elementDefinition Id="<#= obj6.Id #>" />
+              </stereotypeInstanceHasPropertyInstances>
+<#
+		propertyIndex++;
+	}
+#>
+            </propertyInstances>
+          </stereotypeInstance>
+<#
+	index++;
+}
+#>
+        </appliedStereotypesInternal>
+        <elementDefinition Id="<#= this.Element.GetId() #>" />
+        <ownedAttributesInternal>
+<#
+IDictionary<string, Tuple<Guid, IType>> dataTypes = new Dictionary<string, Tuple<Guid, IType>>();
+IList<IProperty> collectionProperties = GetPropertyList(this.Element);
+// Properties
+index = 0;
+foreach(IProperty collectionProperty in collectionProperties)
+{
+	if (!dataTypes.ContainsKey(collectionProperty.Type.Name))
+	{
+		Guid typeKey = new Guid(baseHashCode, (short)9765, (short)(collectionProperty.Type.Name.GetHashCode() % short.MaxValue), 1, 0, 0, 0, 0, 0, 0, 0);
+		dataTypes.Add(collectionProperty.Type.Name, new Tuple<Guid, IType>(typeKey, collectionProperty.Type));
+	}
+#>
+          <property Id="<#= new Guid(baseHashCode, (short)index, 4, 1, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= collectionProperty.Name #>" isLeaf="<#= collectionProperty.IsLeaf.ToString().ToLowerInvariant() #>" isStatic="<#= collectionProperty.IsStatic.ToString().ToLowerInvariant() #>" isReadOnly="<#= collectionProperty.IsReadOnly.ToString().ToLowerInvariant() #>" isDerived="<#= collectionProperty.IsDerived.ToString().ToLowerInvariant() #>" isDerivedUnion="<#= collectionProperty.IsDerivedUnion.ToString().ToLowerInvariant() #>" aggregation="<#= collectionProperty.Aggregation.ToString() #>" isComposite="<#= collectionProperty.IsComposite.ToString().ToLowerInvariant() #>">
+            <appliedStereotypesInternal>
+<#
+	int subIndex = 0;
+	foreach(IStereotypeInstance collectionStereotypeInstance in collectionProperty.AppliedStereotypes)
+	{
+#>
+              <stereotypeInstance Id="<#= new Guid(baseHashCode, (short)index, 5, 1, 0, 0, 0, 0, 0, (byte)subIndex, 0) #>" name="<#= collectionStereotypeInstance.Name #>" profile="<#= collectionStereotypeInstance.Profile #>">
+                <elementDefinition Id="<#= collectionStereotypeInstance.GetId() #>" />
+<# if (collectionStereotypeInstance.PropertyInstances.Any()) { #>
+                <propertyInstances>
+<#
+		int propertyIndex = 0;
+		foreach(IStereotypePropertyInstance stereoTypeProperty in collectionStereotypeInstance.PropertyInstances)
+		{
+#>
+                  <stereotypeInstanceHasPropertyInstances Id="<#= new Guid(baseHashCode, (short)index, 6, 1, 0, 0, 0, 0, 0, (byte)subIndex, (byte)propertyIndex) #>">
+                    <propertyInstance Id="<#= new Guid(baseHashCode, (short)index, 6, 2, 0, 0, 0, 0, 0, (byte)subIndex, (byte)propertyIndex) #>" name="<#= stereoTypeProperty.Name #>"<# if (!string.IsNullOrWhiteSpace(stereoTypeProperty.Value)) { #> value="<#= stereoTypeProperty.Value #>"<# } #>>
+                      <elementDefinition Id="<#= stereoTypeProperty.GetId() #>" />
+                    </propertyInstance>
+                    <elementDefinition Id="<#= stereoTypeProperty.GetId() #>" />
+                  </stereotypeInstanceHasPropertyInstances>
+<#
+			propertyIndex++;
+		}
+#>
+                </propertyInstances>
+<# } #>
+              </stereotypeInstance>
+<#
+		subIndex++;
+	}
+#>
+            </appliedStereotypesInternal>
+<# if (collectionProperty.LowerValue != null) { #>
+            <lowerValueInternal>
+              <literalString Id="<#= new Guid(baseHashCode, (short)index, 7, 1, 0, 0, 0, 0, 0, 0, 0) #>" name="Lower" value="<#= collectionProperty.LowerValue.ToString() #>">
+                <elementDefinition Id="<#= collectionProperty.LowerValue.GetId() #>" />
+              </literalString>
+            </lowerValueInternal>
+<# } #>
+<# if (collectionProperty.UpperValue != null) { #>
+            <upperValueInternal>
+              <literalString Id="<#= new Guid(baseHashCode, (short)index, 8, 1, 0, 0, 0, 0, 0, 0, 0) #>" name="Upper" value="<#= collectionProperty.UpperValue.ToString() #>">
+                <elementDefinition Id="<#= collectionProperty.UpperValue.GetId() #>" />
+              </literalString>
+            </upperValueInternal>
+<# } #>
+            <elementDefinition Id="<#= collectionProperty.GetId() #>" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="<#= dataTypes[collectionProperty.Type.Name].Item1 #>" LastKnownName="<#= collectionProperty.Type.Name #>" />
+            </type_NamedElement>
+          </property>
+<#
+	index++;
+}
+#>
+        </ownedAttributesInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="9d000e1f-e04e-4f10-9648-896e7f508e82" name="Order2" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <ownedAttributesInternal>
+          <property Id="90b94f43-2431-4f3e-aabc-e46a296fd2e2" name="Order2Id" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+<#
+foreach(string typeKey in dataTypes.Keys)
+{
+	IType dataType = dataTypes[typeKey].Item2;
+#>
+    <packageHasNamedElement>
+      <referencedType Id="<#= dataTypes[typeKey].Item1 #>" name="<#= dataType.Name #>" isAbstract="false" isLeaf="false" cachedFullName="<#= string.Join("::", NamespaceHierarchy(dataType.Namespace).Select(ns => ns.Name)) + "::" + dataType.Name #>">
+        <elementDefinition Id="<#= dataType.GetId() #>" />
+      </referencedType>
+    </packageHasNamedElement>
+<#
+}
+#>
+  </packagedElements>
+</logicalClassDesignerModel><#+
+	protected override bool AppliesToElement()
+	{
+		return ShouldGenerateCodeForElement(this.Element) && this.Element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
+	}
+#>
