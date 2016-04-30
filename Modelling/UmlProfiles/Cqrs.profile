@@ -254,6 +254,12 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IAssociation" />
       </metaclasses>
     </stereotype>
+    <stereotype name="EventToCommandConverter" displayName="Event To Command Converter">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IAssociation" />
+      </metaclasses>
+    </stereotype>
     <stereotype name="CommandHandler" displayName="Command Handler">
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IAssociation" />
