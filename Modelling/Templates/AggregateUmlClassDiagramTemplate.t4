@@ -147,7 +147,7 @@ if (buildCreatedEvent)
     <logicalClassDesignerModelHasTypes>
       <class Id="<#= new Guid(baseHashCode, (short)index, 9, 1, 0, 0, 0, 0, 0, 0, 0) #>" name="Create<#= className #>Command" isAbstract="false" isLeaf="false" isActiveClass="false">
         <targetEnds>
-          <association Id="<#= new Guid(baseHashCode, (short)index, 9, 2, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="Create<#= className #>Command" targetEndRoleName="<#= className #>" isLeaf="false" name="Create<#= className #>CommandHandler" description="Receive the Create<#= className #>Command via the Create<#= className #>CommandHandler over the command bus and into the <#= className #> aggregate." isAbstract="false">
+          <association Id="<#= new Guid(baseHashCode, (short)index, 9, 2, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="Create<#= className #>Command" targetEndRoleName="<#= className #>" isLeaf="false" name="Create<#= className #>" description="Receive the Create<#= className #>Command via the Create<#= className #>CommandHandler over the command bus and into the Create<#= className #> operation of the <#= className #> aggregate." isAbstract="false">
             <classMoniker Id="<#= ElementClassRsn #>" LastKnownName="<#= className #>" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
@@ -234,17 +234,30 @@ foreach(IProperty collectionProperty in collectionProperties)
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <class Id="<#= new Guid(baseHashCode, (short)index, 9, 11, 0, 0, 0, 0, 0, 0, 0) #>" name="Create<#= className #>Event" isAbstract="false" isLeaf="false" isActiveClass="false">
+      <class Id="<#= new Guid(baseHashCode, (short)index, 9, 11, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>Created" isAbstract="false" isLeaf="false" isActiveClass="false">
         <targetEnds>
-          <association Id="<#= new Guid(baseHashCode, (short)index, 9, 12, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="<#= className #>" targetEndRoleName="Create<#= className #>Event" isLeaf="false" name="Create<#= className #>EventHandler" isAbstract="false">
+          <association Id="<#= new Guid(baseHashCode, (short)index, 9, 12, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="<#= className #>" targetEndRoleName="<#= className #>Created" isLeaf="false" name="Create<#= className #>" description="Publish the <#= className #>Created event over the event bus from the Create<#= className #> operation of the <#= className #> aggregate." isAbstract="false">
             <classMoniker Id="<#= ElementClassRsn #>" LastKnownName="<#= className #>" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
-                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 9, 14, 0, 0, 0, 0, 0, 0, 0) #>" name="Create<#= className #>Event" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 9, 14, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>Created" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
                 </memberEnd>
               </associationHasOwnedEnds>
               <associationHasOwnedEnds>
                 <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 9, 13, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association Id="<#= new Guid(baseHashCode, (short)index, 9, 16, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="<#= className #>Created" targetEndRoleName="<#= className #>CreatedEventHandler" isLeaf="false" name="<#= className #>Entity" description="Receive the <#= className #>Created event over the event bus into the <#= className #>CreatedEventHandler." isAbstract="false">
+            <classMoniker Id="<#= new Guid(baseHashCode, (short)index, 9, 15, 0, 0, 0, 0, 0, 0, 0) #>" LastKnownName="<#= className #>CreatedEventHandler" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 9, 17, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>Created" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 9, 18, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>CreatedEventHandler" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
                 </memberEnd>
               </associationHasOwnedEnds>
             </relationshipOwnedElementsInternal>
@@ -322,7 +335,10 @@ foreach(IProperty collectionProperty in collectionProperties)
         </ownedAttributesInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
-<#
+    <logicalClassDesignerModelHasTypes>
+      <class Id="<#= new Guid(baseHashCode, (short)index, 9, 15, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>CreatedEventHandler" isAbstract="false" isLeaf="false" isActiveClass="false">
+      </class>
+    </logicalClassDesignerModelHasTypes><#
 }
 #>
 <#
@@ -337,7 +353,7 @@ if (buildUpdatedEvent)
     <logicalClassDesignerModelHasTypes>
       <class Id="<#= new Guid(baseHashCode, (short)index, 10, 1, 0, 0, 0, 0, 0, 0, 0) #>" name="Update<#= className #>Command" isAbstract="false" isLeaf="false" isActiveClass="false">
         <targetEnds>
-          <association Id="<#= new Guid(baseHashCode, (short)index, 10, 2, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="Update<#= className #>Command" targetEndRoleName="<#= className #>" isLeaf="false" name="Update<#= className #>CommandHandler" description="Receive the Update<#= className #>Command via the Update<#= className #>CommandHandler over the command bus and into the <#= className #> aggregate." isAbstract="false">
+          <association Id="<#= new Guid(baseHashCode, (short)index, 10, 2, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="Update<#= className #>Command" targetEndRoleName="<#= className #>" isLeaf="false" name="Update<#= className #>" description="Receive the Update<#= className #>Command via the Update<#= className #>CommandHandler over the command bus and into the Update<#= className #> operation of the <#= className #> aggregate." isAbstract="false">
             <classMoniker Id="<#= ElementClassRsn #>" LastKnownName="<#= className #>" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
@@ -424,17 +440,30 @@ foreach(IProperty collectionProperty in collectionProperties)
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <class Id="<#= new Guid(baseHashCode, (short)index, 10, 11, 0, 0, 0, 0, 0, 0, 0) #>" name="Update<#= className #>Event" isAbstract="false" isLeaf="false" isActiveClass="false">
+      <class Id="<#= new Guid(baseHashCode, (short)index, 10, 11, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>Updated" isAbstract="false" isLeaf="false" isActiveClass="false">
         <targetEnds>
-          <association Id="<#= new Guid(baseHashCode, (short)index, 10, 12, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="<#= className #>" targetEndRoleName="Update<#= className #>Event" isLeaf="false" name="Update<#= className #>EventHandler" isAbstract="false">
+          <association Id="<#= new Guid(baseHashCode, (short)index, 10, 12, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="<#= className #>" targetEndRoleName="<#= className #>Updated" isLeaf="false" name="Update<#= className #>" description="Publish the <#= className #>Updated event over the event bus from the Update<#= className #> operation of the <#= className #> aggregate." isAbstract="false">
             <classMoniker Id="<#= ElementClassRsn #>" LastKnownName="<#= className #>" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
-                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 10, 14, 0, 0, 0, 0, 0, 0, 0) #>" name="Update<#= className #>Event" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 10, 14, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>Updated" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
                 </memberEnd>
               </associationHasOwnedEnds>
               <associationHasOwnedEnds>
                 <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 10, 13, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association Id="<#= new Guid(baseHashCode, (short)index, 10, 16, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="<#= className #>Updated" targetEndRoleName="<#= className #>UpdatedEventHandler" isLeaf="false" name="<#= className #>Entity" description="Receive the <#= className #>Updated event over the event bus into the <#= className #>UpdatedEventHandler." isAbstract="false">
+            <classMoniker Id="<#= new Guid(baseHashCode, (short)index, 10, 15, 0, 0, 0, 0, 0, 0, 0) #>" LastKnownName="<#= className #>UpdatedEventHandler" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 10, 17, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>Updated" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 10, 18, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>UpdatedEventHandler" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
                 </memberEnd>
               </associationHasOwnedEnds>
             </relationshipOwnedElementsInternal>
@@ -512,7 +541,10 @@ foreach(IProperty collectionProperty in collectionProperties)
         </ownedAttributesInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
-<#
+    <logicalClassDesignerModelHasTypes>
+      <class Id="<#= new Guid(baseHashCode, (short)index, 10, 15, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>UpdatedEventHandler" isAbstract="false" isLeaf="false" isActiveClass="false">
+      </class>
+    </logicalClassDesignerModelHasTypes><#
 }
 #>
 <#
@@ -527,7 +559,7 @@ if (buildDeletedEvent)
     <logicalClassDesignerModelHasTypes>
       <class Id="<#= new Guid(baseHashCode, (short)index, 11, 1, 0, 0, 0, 0, 0, 0, 0) #>" name="Delete<#= className #>Command" isAbstract="false" isLeaf="false" isActiveClass="false">
         <targetEnds>
-          <association Id="<#= new Guid(baseHashCode, (short)index, 11, 2, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="Delete<#= className #>Command" targetEndRoleName="<#= className #>" isLeaf="false" name="Delete<#= className #>CommandHandler" description="Receive the Delete<#= className #>Command via the Delete<#= className #>CommandHandler over the command bus and into the <#= className #> aggregate." isAbstract="false">
+          <association Id="<#= new Guid(baseHashCode, (short)index, 11, 2, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="Delete<#= className #>Command" targetEndRoleName="<#= className #>" isLeaf="false" name="Delete<#= className #>" description="Receive the Delete<#= className #>Command via the Delete<#= className #>CommandHandler over the command bus and into the Delete<#= className #> operation of the <#= className #> aggregate." isAbstract="false">
             <classMoniker Id="<#= ElementClassRsn #>" LastKnownName="<#= className #>" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
@@ -544,22 +576,39 @@ if (buildDeletedEvent)
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <class Id="<#= new Guid(baseHashCode, (short)index, 11, 11, 0, 0, 0, 0, 0, 0, 0) #>" name="Delete<#= className #>Event" isAbstract="false" isLeaf="false" isActiveClass="false">
+      <class Id="<#= new Guid(baseHashCode, (short)index, 11, 11, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>Deleted" isAbstract="false" isLeaf="false" isActiveClass="false">
         <targetEnds>
-          <association Id="<#= new Guid(baseHashCode, (short)index, 11, 12, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="<#= className #>" targetEndRoleName="Delete<#= className #>Event" isLeaf="false" name="Delete<#= className #>EventHandler" isAbstract="false">
+          <association Id="<#= new Guid(baseHashCode, (short)index, 11, 12, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="<#= className #>" targetEndRoleName="<#= className #>Deleted" isLeaf="false" name="Delete<#= className #>" description="Publish the <#= className #>Deleted event over the event bus from the Delete<#= className #> operation of the <#= className #> aggregate." isAbstract="false">
             <classMoniker Id="<#= ElementClassRsn #>" LastKnownName="<#= className #>" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
-                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 11, 14, 0, 0, 0, 0, 0, 0, 0) #>" name="Delete<#= className #>Event" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 11, 13, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>Deleted" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
                 </memberEnd>
               </associationHasOwnedEnds>
               <associationHasOwnedEnds>
-                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 11, 13, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 11, 14, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association Id="<#= new Guid(baseHashCode, (short)index, 11, 16, 0, 0, 0, 0, 0, 0, 0) #>" isDerived="false" sourceEndRoleName="<#= className #>Deleted" targetEndRoleName="<#= className #>DeletedEventHandler" isLeaf="false" name="<#= className #>Entity" description="Receive the <#= className #>Deleted event over the event bus into the <#= className #>DeletedEventHandler." isAbstract="false">
+            <classMoniker Id="<#= new Guid(baseHashCode, (short)index, 11, 15, 0, 0, 0, 0, 0, 0, 0) #>" LastKnownName="<#= className #>DeletedEventHandler" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 11, 17, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>Deleted" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="<#= new Guid(baseHashCode, (short)index, 11, 18, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>DeletedEventHandler" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
                 </memberEnd>
               </associationHasOwnedEnds>
             </relationshipOwnedElementsInternal>
           </association>
         </targetEnds>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="<#= new Guid(baseHashCode, (short)index, 11, 15, 0, 0, 0, 0, 0, 0, 0) #>" name="<#= className #>DeletedEventHandler" isAbstract="false" isLeaf="false" isActiveClass="false">
       </class>
     </logicalClassDesignerModelHasTypes>
 <#
