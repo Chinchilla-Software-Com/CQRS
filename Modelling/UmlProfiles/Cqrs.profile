@@ -234,6 +234,13 @@
       <metaclasses>
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
+      <properties>
+        <property name="BuildAutoHandler" displayName="Build Auto Handler: If true, an event handler will be automatically generated." defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+      </properties>
     </stereotype>
     <stereotype name="EventHandler" displayName="Event Handler">
       <metaclasses>
