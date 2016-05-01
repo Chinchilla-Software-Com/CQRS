@@ -74,6 +74,8 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 		// Properties
 		foreach(var collectionProperty in collectionProperties)
 		{
+			if (!collectionProperty.AppliedStereotypes.Any())
+				continue;
 			var propertyStereoTypeProperties = collectionProperty.AppliedStereotypes.Single(property => property.Name == "EntityProperty");
 			var columnNameProperty = propertyStereoTypeProperties.PropertyInstances
 				.SingleOrDefault(property => property.Name == "ColumnName");
