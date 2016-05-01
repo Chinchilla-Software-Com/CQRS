@@ -1,0 +1,110 @@
+<div id="main-section-header" class="row">
+    <h2 id="team-efficiency" class="col-xs-3">Team efficiency</h2>
+    <div id="dateFilter" class="col-xs-9">
+        <div class="period-wrapper">
+            <label for="StartDate" class="select-period">Stats from</label>
+            <input id="start-date" kendo-date-picker k-ng-model="teamEfficiency.startDate">
+        </div>
+        <div class="period-wrapper">
+            <label for="EndDate" class="select-period">To</label>
+            <input id="end-date" kendo-date-picker k-ng-model="teamEfficiency.endDate">
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+
+<div class="main-section-content row" style="">
+    <div id="employee-list" class="col col-xs-2">
+        <h3>TEAM MEMBERS</h3>
+        <div id="employees-list"
+            kendo-list-view
+            k-selectable="'single'"
+            k-data-source="teamEfficiency.employeeListDataSource"
+            k-on-change="teamEfficiency.changeCurrentEmployee(dataItem)"
+        >
+           <div class="employee" k-template>
+               <div class="employee-wrapper">
+                   <img ng-src="./Content/Employees/{{dataItem.EmployeeID}}-t.png" class="img-responsive employee-list-image"/>
+                   <dl class="employee-list-details">
+                       <dt class="name">{{dataItem.FirstName}} {{dataItem.LastName}}</dt>
+                       <dd class="title">{{dataItem.Title}}</dd>
+                   </dl>
+               </div>
+           </div>
+        </div>
+    </div>
+    <div id="employee-details-wrapper" class="col col-xs-10">
+        <div id="employee-details" class="row">
+            <div id="employee-about" class="col-xs-12 placeholder">
+                <div class="row">
+                    <div id="employeeBio" class="col-xs-12 col-sm-4">
+                        <div>
+                            <h3>ABOUT</h3>
+                            <img ng-src="./Content/Employees/{{teamEfficiency.currentEmployee.EmployeeID}}.png" class="img-responsive employee-details-image" />
+                            <dl class="employee-bio-details">
+                                <dt class="name">{{teamEfficiency.currentEmployee.FirstName}} {{teamEfficiency.currentEmployee.LastName}}</dt>
+                                <dd class="title">{{teamEfficiency.currentEmployee.Title}}</dd>
+                                <dd class="phone"><span class="icon icon-mobile"></span>{{teamEfficiency.currentEmployee.HomePhone}}</dd>
+                           </dl>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <h3>Quarter to date sales</h3>
+                        <span id="employee-quarter-sales-label">{{teamEfficiency.currentEmployeeQuarterSales | currency }}</span>
+                        <div class="sparkline-container">
+                            <div id="employee-quarter-sales" style="height:30px"
+                                kendo-chart
+                                k-theme="'metro'"
+                                k-tooltip="false"
+                                k-data-source="teamEfficiency.employeeQuarterSalesDataSource"
+                                k-series="[{type:'bullet',currentField:'Current',targetField:'Target'}]"
+                                k-legend="{visible:false}"
+                                k-category-axis="{labels:{visible:false},majorGridLines:{visible:false}}"
+                                k-value-axis="{type:'numeric',labels:{visible:false},majorTicks:{visible:false},majorGridLines:{visible:false}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <h3>Monthly Average Sales</h3>
+                        <span id="employee-average-sales-label">{{teamEfficiency.currentEmployeeAverageSalesNumber | currency }}</span>
+                        <div class="sparkline-container">
+                            <div id="employee-average-sales" style="height:30px"
+                                kendo-chart
+                                k-theme="'metro'"
+                                k-series="[{type:'line',field:'EmployeeSales',width:1.5,markers:{visible:false}}]"
+                                k-category-axis="{type:'date',field:'Date',visible:false,majorGridLines:{visible:false},majorTicks:{visible:false}}"
+                                k-legend="{visible:false}"
+                                k-data-source="teamEfficiency.employeeAverageSalesDataSource"
+                                k-value-axis="{type:'numeric',visible:false,labels:{visible:false},majorGridLines:{visible:false},majorTicks:{visible:false}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="employeeStats" class="col-xs-12">
+                <div id="team-sales" style="height:200px"
+                    kendo-chart
+                    k-theme="'metro'"
+                    k-title="{text:'REPRESENTATIVE SALES VS. TOTAL SALES',align:'left',font:'11px',color:'#35373d'}"
+                    k-data-source="teamEfficiency.employeeTeamSalesDataSource"
+                    k-legend="{position:'bottom'}"
+                    k-series="[{field:'EmployeeSales',categoryField:'Date',name:'Employee Sales',aggregate:'sum'},{field:'TotalSales',categoryField:'Date',name:'Team Sales',aggregate:'sum'}]"
+                    k-category-axis="{type:'date',baseUnit:'months',majorGridLines:{visible:false}}"
+                    k-value-axis="{labels:{format:'{0:c2}',visible:false},majorUnit:25000,line:{visible:false},majorGridLines:{visible:false}}"
+                    k-tooltip="{visible:true,format:'{0:c2}'}">
+                </div>
+            </div>
+            <div id="employeeSchedule" class="col-xs-12">
+                <h3>Representative orders - schedule</h3>
+                <div id="employee-sales"
+                    kendo-scheduler
+                    k-date="teamEfficiency.currentDate"
+                    k-views="['month']"
+                    k-editable="false"
+                    k-timezone="Etc/UTC"
+                    k-data-source="teamEfficiency.employeeSalesDataSource">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
