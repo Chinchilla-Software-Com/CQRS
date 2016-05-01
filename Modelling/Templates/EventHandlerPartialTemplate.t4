@@ -16,6 +16,9 @@ string className = ClassifierName(this.Element);
 string entityName = stereoTypeProperties.PropertyInstances
 	.Single(property => property.Name == "EntityName")
 	.Value;
+string eventName = stereoTypeProperties.PropertyInstances
+	.Single(property => property.Name == "EventName")
+	.Value;
 
 // using statements
 #>
@@ -28,11 +31,11 @@ namespace <#= classNamespace #>.Handlers
 <#
 	// Class and Attributes
 #>
-	public <#= GetAbstract(this.Element) #> partial class <#= entityName #>EventHandler
+	public <#= GetAbstract(this.Element) #> partial class <#= entityName ?? className #>EventHandler
 	{
 		protected IAutomapHelper AutomapHelper { get; private set; }
 
-		public <#= entityName #>EventHandler(IAutomapHelper automapHelper)
+		public <#= entityName ?? className #>EventHandler(IAutomapHelper automapHelper)
 <#
 string eventHandlerTechnology = GetEventHandlerTechnology(this.Element);
 switch(eventHandlerTechnology)
@@ -51,7 +54,7 @@ switch(eventHandlerTechnology)
 			AutomapHelper = automapHelper;
 		}
 
-		partial void OnHandle(<#= className #> @event)
+		partial void OnHandle(<#= eventName #> @event)
 		{
 			throw new NotImplementedException();
 		}

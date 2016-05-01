@@ -246,6 +246,11 @@
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
         </property>
+        <property name="EventName" displayName="EventName: The name of the Event this event handler responds to." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
     <stereotype name="EventToCommandConverter" displayName="Event To Command Converter">

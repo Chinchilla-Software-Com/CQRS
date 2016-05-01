@@ -21,6 +21,9 @@ string baseClass = GetBaseClass(this.Element);
 string entityName = stereoTypeProperties.PropertyInstances
 	.Single(property => property.Name == "EntityName")
 	.Value;
+string eventName = stereoTypeProperties.PropertyInstances
+	.Single(property => property.Name == "EventName")
+	.Value;
 
 // using statements
 #>
@@ -48,7 +51,7 @@ namespace <#= classNamespace #>.Handlers
 {
 <#
 	// Class and Attributes
-	string eventHandlerTechnologyBaseClass = "IEventHandler<" + authenticationTokenType + ", " + className + ">";
+	string eventHandlerTechnologyBaseClass = "IEventHandler<" + authenticationTokenType + ", " + eventName + ">";
 	if (!string.IsNullOrWhiteSpace(baseClass))
 	{
 		baseClass = ": " + baseClass;
@@ -58,7 +61,7 @@ namespace <#= classNamespace #>.Handlers
 		eventHandlerTechnologyBaseClass = ": " + eventHandlerTechnologyBaseClass;
 #>
 	<#= GetGeneratedCodeAttribute() #>
-	public <#= GetAbstract(this.Element) #> partial class <#= entityName #>EventHandler
+	public <#= GetAbstract(this.Element) #> partial class <#= entityName ?? className #>EventHandler
 		<#= baseClass #>
 		<#= eventHandlerTechnologyBaseClass #>
 	{
@@ -69,11 +72,11 @@ switch(eventHandlerTechnology)
 		baseClass = "ReceiveActor";
 #>
 		/// <summary>
-		/// Instantiates the <see cref="<#= entityName #>EventHandler"/> class registering any <see cref="ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
+		/// Instantiates the <see cref="<#= entityName ?? className #>EventHandler"/> class registering any <see cref="ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
 		/// </summary>
-		public <#= entityName #>EventHandler()
+		public <#= entityName ?? className #>EventHandler()
 		{
-			Receive<<#= className #>>(@event => Handle(@event));
+			Receive<<#= eventName #>>(@event => Handle(@event));
 		}
 <#
 		break;
@@ -83,16 +86,16 @@ switch(eventHandlerTechnology)
 }
 #>
 
-		#region Implementation of IEventHandler<in <#= className #>>
+		#region Implementation of IEventHandler<in <#= eventName #>>
 
-		public void Handle(<#= className #> @event)
+		public void Handle(<#= eventName #> @event)
 		{
 			OnHandle(@event);
 		}
 
 		#endregion
 
-		partial void OnHandle(<#= className #> @event);
+		partial void OnHandle(<#= eventName #> @event);
 	}
 }
 <#+
