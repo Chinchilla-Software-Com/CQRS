@@ -13,6 +13,7 @@
 // -----------------------------------------------------------------------
 #endregion
 using Cqrs.Domain;
+using Northwind.Domain.Orders.Events;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -57,7 +58,7 @@ namespace Northwind.Domain.Orders.Commands.Handlers
 				item = new Order(DependencyResolver, Logger, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
 				UnitOfWork.Add(item);
 			}
-			item.CreateOrder(command.OrderId, command.CustomerId, command.EmployeeId, command.OrderDate, command.RequiredDate, command.ShippedDate, command.ShipViaId, command.Freight, command.ShipName, command.ShipAddress, command.ShipCity, command.ShipRegion, command.ShipPostalCode, command.ShipCountry);
+			item.CreateOrder(command.OrderId, command.CustomerId, command.EmployeeId, command.OrderDate, command.RequiredDate, command.ShippedDate, command.ShipViaId, command.Freight, command.ShipName, command.ShipAddress, command.ShipCity, command.ShipRegion, command.ShipPostalCode, command.ShipCountry, command.ProductAddedToOrder);
 			OnCreatedOrder(command, item);
 			OnAddToUnitOfWork(command, item);
 			UnitOfWork.Add(item);

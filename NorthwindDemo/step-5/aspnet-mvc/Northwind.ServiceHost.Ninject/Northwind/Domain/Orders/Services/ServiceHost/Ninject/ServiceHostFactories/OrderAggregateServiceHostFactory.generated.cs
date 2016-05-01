@@ -24,6 +24,7 @@
 // -----------------------------------------------------------------------
 #endregion
 using Cqrs.Domain;
+using Northwind.Domain.Orders.Events;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;

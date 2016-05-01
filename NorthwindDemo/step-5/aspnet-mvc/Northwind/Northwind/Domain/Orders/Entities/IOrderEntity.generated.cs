@@ -13,6 +13,7 @@
 // -----------------------------------------------------------------------
 #endregion
 using Cqrs.Domain;
+using Northwind.Domain.Orders.Events;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -68,6 +69,9 @@ namespace Northwind.Domain.Orders.Entities
 
 		[DataMember]
 		string ShipCountry { get; set; }
+
+		[DataMember]
+		ProductAddedToOrder ProductAddedToOrder { get; set; }
 
 	}
 }

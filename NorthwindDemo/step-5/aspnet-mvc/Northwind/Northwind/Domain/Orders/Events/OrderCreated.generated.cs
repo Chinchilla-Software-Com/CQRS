@@ -13,6 +13,7 @@
 // -----------------------------------------------------------------------
 #endregion
 using Cqrs.Domain;
+using Northwind.Domain.Orders.Events;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -120,8 +121,11 @@ namespace Northwind.Domain.Orders.Events
 		[DataMember]
 		public string ShipCountry { get; private set; }
 
+		[DataMember]
+		public ProductAddedToOrder ProductAddedToOrder { get; private set; }
 
-		public OrderCreated(Guid rsn, int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry)
+
+		public OrderCreated(Guid rsn, int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry, ProductAddedToOrder productAddedToOrder)
 		{
 			Rsn = rsn;
 			OrderId = orderId;
@@ -138,6 +142,7 @@ namespace Northwind.Domain.Orders.Events
 			ShipRegion = shipRegion;
 			ShipPostalCode = shipPostalCode;
 			ShipCountry = shipCountry;
+			ProductAddedToOrder = productAddedToOrder;
 		}
 	}
 }
