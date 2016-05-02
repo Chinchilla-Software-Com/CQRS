@@ -91,8 +91,12 @@ namespace Cqrs.Modelling.UmlProfiles
 						{
 							new TaskFactory().StartNew(() =>
 							{
-								using (request.GetResponse()) {}
+								using (request.GetResponse())
+								{
+									Debug.WriteLine("Called '{0}'.", request.Address);
+								}
 							});
+							Debug.WriteLine("Calling '{0}'.", request.Address);
 						}
 						catch
 						{

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Uml;
 using Microsoft.VisualStudio.Uml.Classes;
 using Microsoft.VisualStudio.Uml.ModelStore;
 
@@ -34,8 +35,6 @@ namespace Cqrs.Modelling.UmlProfiles.Builders
 			if (!propertyInstance.IsElementDefinition())
 				return;
 
-			IClass modelClass = propertyInstance.StereotypeInstance.Owner as IClass;
-			string classNamespace = CSharpHelper.GetNamespace(modelClass.Namespace);
 			if (ShouldCreateModel(store, propertyInstance))
 				CreateModel(store, propertyInstance);
 			else if (ShouldDeleteModel(store, propertyInstance))
@@ -45,6 +44,10 @@ namespace Cqrs.Modelling.UmlProfiles.Builders
 		protected abstract bool ShouldCreateModel(Store store, PropertyInstance propertyInstance);
 
 		protected abstract bool ShouldDeleteModel(Store store, PropertyInstance propertyInstance);
+
+//		protected abstract bool ShouldRefreshCreateModel(Store store, PropertyInstance propertyInstance);
+
+//		protected abstract bool ShouldRefreshDeleteModel(Store store, PropertyInstance propertyInstance);
 
 		protected abstract void CreateModel(Store store, PropertyInstance propertyInstance);
 
@@ -73,7 +76,7 @@ namespace Cqrs.Modelling.UmlProfiles.Builders
 		{
 			Property property = targetElement.OwnedAttributes.SingleOrDefault(attribute => attribute.Name == ownedAttribute.Name) as Property;
 			if (property == null)
-				property = targetElement.CreateAttribute() as Property;
+				property = (Property)targetElement.CreateAttribute();
 			property.DefaultValue = ownedAttribute.DefaultValue as ValueSpecification;
 			property.Description = ownedAttribute.Description;
 			property.LowerValue = ownedAttribute.LowerValue as ValueSpecification;
@@ -84,15 +87,31 @@ namespace Cqrs.Modelling.UmlProfiles.Builders
 			return property;
 		}
 
-		protected virtual IOperation AddOperationIfMissingRefreshOtherwise(Class elementClass, string operationName)
+		protected virtual IOperation AddOperationIfMissingRefreshOtherwise(IClass targetElement, string operationName)
 		{
-			IOperation result = elementClass.OwnedOperations.SingleOrDefault(operation => operation.Name == operationName);
+			IOperation result = targetElement.OwnedOperations.SingleOrDefault(operation => operation.Name == operationName);
 			if (result != null)
 				return result;
 
-			result = elementClass.CreateOperation();
+			result = targetElement.CreateOperation();
 			result.Name = operationName;
 			return result;
+		}
+
+		protected virtual IProperty AddAssociationIfMissingRefreshOtherwise(Class targetElement, ModelElement sourceElement, string operationName)
+		{
+			IProperty association = targetElement.GetOutgoingAssociationEnds().SingleOrDefault(associationEnd => associationEnd.Association.Name == operationName && associationEnd.Association.SourceElement == targetElement && associationEnd.Association.TargetElement == sourceElement);
+			if (association == null)
+			{
+				ElementLink link = AssociationBuilder.Connect(targetElement, sourceElement);
+				((Association)link).Name = operationName;
+				association = targetElement.GetOutgoingAssociationEnds().Single(associationEnd => associationEnd.Association.Name == operationName && associationEnd.Association.SourceElement == targetElement && associationEnd.Association.TargetElement == sourceElement);
+			}
+
+			association.Type = sourceElement as IType;
+
+
+			return association;
 		}
 	}
 }

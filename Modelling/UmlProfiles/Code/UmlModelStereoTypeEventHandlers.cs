@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using Cqrs.Modelling.UmlProfiles.Builders;
 using Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
@@ -106,80 +107,14 @@ namespace Cqrs.Modelling.UmlProfiles
 		/// <param name="e"></param>
 		private void StereotypeInstancePropertyChanged(object sender, ElementPropertyChangedEventArgs e)
 		{
-			System.Diagnostics.Debug.WriteLine("StereotypeInstancePropertyChanged event 1");
+			ModelBuilder builder = new CreateCommandModelBuilder();
+			builder.CreateModel(store, e);
 
-			// Event handlers are called on any change, including those
-			// caused by Undo, Redo, transaction rollback, or loading from file.
-			// This makes them ideal for synchronizing changes inside the model
-			// with other objects or data outside the model. 
-			// However, you can ignore those cases if you want:
-			if (store.InUndoRedoOrRollback || store.InSerializationTransaction) return;
+			builder = new UpdateCommandModelBuilder();
+			builder.CreateModel(store, e);
 
-			// In an event handler, you can cast the implementation class members 
-			// to an appropriate UML API type such as IClass or IStereotype:
-			PropertyInstance propertyInstance = e.ModelElement as PropertyInstance;
-
-			if (propertyInstance == null)
-				return;
-
-			// The UML implementation uses one VMSDK model for each diagram,
-			// and another for the core model. 
-			// IsElementDefinition() is true if the element is in the core model.
-			// Event handlers will be called for changes to any models,
-			// but you should ignore changes in the diagram models:
-			if (!propertyInstance.IsElementDefinition())
-				return;
-
-			// Event handlers are called after the completion of the transaction
-			// in which the change occurred. 
-
-			//
-			// Add code here to respond to the change.
-			//
-			// For example, you could update an external database.
-
-			IClass modelClass = propertyInstance.StereotypeInstance.Owner as IClass;
-			string classNamespace = CSharpHelper.GetNamespace(modelClass.Namespace);
-
-			IModelStore modelstore = store.GetModelStore();
-
-			switch (propertyInstance.Name)
-			{
-				case "BuildCreateCommand":
-					break;
-				case "IsStatic":
-					if (propertyInstance.Value != "true")
-						break;
-					ElementFactory elementFactory = null;
-					foreach (Partition partition in store.Partitions.Values)
-					{
-						if (partition.ElementDirectory.ContainsElement(modelClass.GetId()))
-						{
-							elementFactory = partition.ElementFactory;
-							break;
-						}
-					}
-					// See https://msdn.microsoft.com/en-us/library/cc512845.aspx#elements for copy/paste
-					using (var transaction = store.TransactionManager.BeginTransaction())
-					{
-						try
-						{
-							var package = modelClass.Package as Package;
-							var clonedClass = package.CreateClass() as Class;
-							clonedClass.Name = "Bob";
-							clonedClass.ApplyStereotype(modelClass.ApplicableStereotypes.ToList()[8]);
-							transaction.Commit();
-						}
-						catch (Exception)
-						{
-							transaction.Rollback();
-						}
-					}
-					break;
-			}
-
-			// Only for exercising the code. Please replace with useful code:
-			System.Diagnostics.Debug.WriteLine("StereotypeInstancePropertyChanged event 2");
+			builder = new DeleteCommandModelBuilder();
+			builder.CreateModel(store, e);
 		}
 
 		/// <summary>
