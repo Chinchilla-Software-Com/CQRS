@@ -117,9 +117,9 @@ namespace Cqrs.Modelling.UmlProfiles
 
 			// In an event handler, you can cast the implementation class members 
 			// to an appropriate UML API type such as IClass or IStereotype:
-			PropertyInstance si = e.ModelElement as PropertyInstance;
+			PropertyInstance propertyInstance = e.ModelElement as PropertyInstance;
 
-			if (si == null)
+			if (propertyInstance == null)
 				return;
 
 			// The UML implementation uses one VMSDK model for each diagram,
@@ -127,7 +127,7 @@ namespace Cqrs.Modelling.UmlProfiles
 			// IsElementDefinition() is true if the element is in the core model.
 			// Event handlers will be called for changes to any models,
 			// but you should ignore changes in the diagram models:
-			if (!si.IsElementDefinition())
+			if (!propertyInstance.IsElementDefinition())
 				return;
 
 			// Event handlers are called after the completion of the transaction
@@ -138,17 +138,17 @@ namespace Cqrs.Modelling.UmlProfiles
 			//
 			// For example, you could update an external database.
 
-			IClass modelClass = si.StereotypeInstance.Owner as IClass;
+			IClass modelClass = propertyInstance.StereotypeInstance.Owner as IClass;
 			string classNamespace = CSharpHelper.GetNamespace(modelClass.Namespace);
 
 			IModelStore modelstore = store.GetModelStore();
 
-			switch (si.Name)
+			switch (propertyInstance.Name)
 			{
 				case "BuildCreateCommand":
 					break;
 				case "IsStatic":
-					if (si.Value != "true")
+					if (propertyInstance.Value != "true")
 						break;
 					ElementFactory elementFactory = null;
 					foreach (Partition partition in store.Partitions.Values)
