@@ -35,6 +35,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.ArchitectureTools.Extensibility, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\Microsoft.VisualStudio.Modeling.Sdk.12.0\v4.0_12.0.0.0__b03f5f7f11d50a3a\Microsoft.VisualStudio.Modeling.Sdk.12.0.dll</HintPath>
@@ -49,11 +51,15 @@
       <Private>false</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0" />
-    <Reference Include="Microsoft.VisualStudio.Uml, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\Microsoft.VisualStudio.Uml\v4.0_12.0.0.0__b03f5f7f11d50a3a\Microsoft.VisualStudio.Uml.dll</HintPath>
+    <Reference Include="Microsoft.VisualStudio.Uml, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Uml.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Uml.Interfaces, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
@@ -122,8 +128,11 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSharpHelper.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="UmlModelStereoTypeEventHandlers.cs" />
     <Compile Include="vsp1Package.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -241,8 +250,8 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" />
   <PropertyGroup>
     <PostBuildEvent>REM "$(TargetDir)$(TargetName).vsix"
-REM c:\code\Root-VSIX\Root-VSIX.exe 14 Exp "$(TargetDir)$(TargetName).vsix" uninstall
-REM c:\code\Root-VSIX\Root-VSIX.exe 14 Exp "$(TargetDir)$(TargetName).vsix"</PostBuildEvent>
+REM IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 10 Exp "$(TargetDir)$(TargetName).vsix" uninstall
+REM IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 10 Exp "$(TargetDir)$(TargetName).vsix"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
