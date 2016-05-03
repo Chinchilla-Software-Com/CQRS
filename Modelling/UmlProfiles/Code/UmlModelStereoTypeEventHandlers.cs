@@ -54,7 +54,7 @@ namespace Cqrs.Modelling.UmlProfiles
 		public void RegisterEventHandlers(ValidationContext vcontext, IModel model)
 		{
 			// This is the underlying DSL store, not the wrapping UML ModelStore:
-			store = (model as ModelElement).Store;
+			store = ((ModelElement)model).Store;
 
 			// To register an event, you must know the name of the implementation class 
 			// or relationship that you want to monitor. These classes are defined in 

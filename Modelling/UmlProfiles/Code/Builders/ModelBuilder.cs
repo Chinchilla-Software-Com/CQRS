@@ -110,7 +110,6 @@ namespace Cqrs.Modelling.UmlProfiles.Builders
 
 			association.Type = sourceElement as IType;
 
-
 			return association;
 		}
 	}
