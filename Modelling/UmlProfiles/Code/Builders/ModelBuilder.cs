@@ -108,8 +108,6 @@ namespace Cqrs.Modelling.UmlProfiles.Builders
 				association = targetElement.GetOutgoingAssociationEnds().Single(associationEnd => associationEnd.Association.Name == operationName && associationEnd.Association.SourceElement == targetElement && associationEnd.Association.TargetElement == sourceElement);
 			}
 
-			association.Type = sourceElement as IType;
-
 			return association;
 		}
 	}

@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
+using System.Diagnostics;
 using Cqrs.Modelling.UmlProfiles.Builders;
-using Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml;
+using Cqrs.Modelling.UmlProfiles.Builders.Commands;
+using Cqrs.Modelling.UmlProfiles.Builders.Entities;
+using Cqrs.Modelling.UmlProfiles.Builders.Events;
+using Cqrs.Modelling.UmlProfiles.Builders.Events.Handlers;
 using Microsoft.VisualStudio.Modeling;
-using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Validation;
 using Microsoft.VisualStudio.Uml.AuxiliaryConstructs;
 using Microsoft.VisualStudio.Uml.Classes;
-using Microsoft.VisualStudio.Uml.Profiles;
-using Microsoft.VisualStudio.Uml.UseCases;
-
-// In a private assembly - used for IsElementDefinition:
 using Microsoft.VisualStudio.Uml.ModelStore;
+// In a private assembly - used for IsElementDefinition:
 
 namespace Cqrs.Modelling.UmlProfiles
 {
@@ -49,7 +48,7 @@ namespace Cqrs.Modelling.UmlProfiles
 		/// </summary>
 		/// <param name="vcontext"></param>
 		/// <param name="model"></param>
-		[Export(typeof (System.Action<ValidationContext, object>))]
+		[Export(typeof (Action<ValidationContext, object>))]
 		[ValidationMethod(ValidationCategories.Open)]
 		public void RegisterEventHandlers(ValidationContext vcontext, IModel model)
 		{
@@ -107,14 +106,30 @@ namespace Cqrs.Modelling.UmlProfiles
 		/// <param name="e"></param>
 		private void StereotypeInstancePropertyChanged(object sender, ElementPropertyChangedEventArgs e)
 		{
-			ModelBuilder builder = new CreateCommandModelBuilder();
-			builder.CreateModel(store, e);
+			IEnumerable<System.Type> modelBuilderTypes = new List<System.Type>
+			{
+				typeof(CreateCommandModelBuilder),
+				typeof(UpdateCommandModelBuilder),
+				typeof(DeleteCommandModelBuilder),
 
-			builder = new UpdateCommandModelBuilder();
-			builder.CreateModel(store, e);
+				typeof(CreateEventModelBuilder),
+				typeof(UpdateEventModelBuilder),
+				typeof(DeleteEventModelBuilder),
 
-			builder = new DeleteCommandModelBuilder();
-			builder.CreateModel(store, e);
+				typeof(CreateEventHandlerModelBuilder),
+				typeof(UpdateEventHandlerModelBuilder),
+				typeof(DeleteEventHandlerModelBuilder),
+
+				typeof(CreateEntityModelBuilder),
+				typeof(UpdateEntityModelBuilder),
+				typeof(DeleteEntityModelBuilder),
+			};
+
+			foreach (System.Type modelBuilderType in modelBuilderTypes)
+			{
+				var modelBuilder = (ModelBuilder)Activator.CreateInstance(AppDomain.CurrentDomain, modelBuilderType.Assembly.FullName, modelBuilderType.FullName).Unwrap();
+				modelBuilder.CreateModel(store, e);
+			}
 		}
 
 		/// <summary>
@@ -152,7 +167,7 @@ namespace Cqrs.Modelling.UmlProfiles
 
 
 			// Only for exercising the code. Please replace with useful code:
-			System.Diagnostics.Debug.WriteLine("StereotypeInstanceAdded event");
+			Debug.WriteLine("StereotypeInstanceAdded event");
 		}
 
 		/// <summary>
@@ -186,7 +201,7 @@ namespace Cqrs.Modelling.UmlProfiles
 			// For example, you could update an external database.
 
 			// Only for exercising the code. Please replace with useful code:
-			System.Diagnostics.Debug.WriteLine("StereotypeInstanceDeleted event");
+			Debug.WriteLine("StereotypeInstanceDeleted event");
 		}
 
 		#endregion

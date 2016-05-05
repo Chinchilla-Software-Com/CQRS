@@ -1,4 +1,4 @@
-﻿namespace Cqrs.Modelling.UmlProfiles.Builders
+﻿namespace Cqrs.Modelling.UmlProfiles.Builders.Commands
 {
 	public class CreateCommandModelBuilder : CommandModelBuilder
 	{
