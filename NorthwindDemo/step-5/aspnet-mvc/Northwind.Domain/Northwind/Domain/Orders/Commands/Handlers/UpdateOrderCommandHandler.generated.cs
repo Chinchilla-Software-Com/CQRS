@@ -48,7 +48,7 @@ namespace Northwind.Domain.Orders.Commands.Handlers
 			OnUpdateOrder(command, ref item);
 			if (item == null)
 				item = UnitOfWork.Get<Order>(command.Rsn);
-			item.UpdateOrder(command.OrderId, command.CustomerId, command.EmployeeId, command.OrderDate, command.RequiredDate, command.ShippedDate, command.ShipViaId, command.Freight, command.ShipName, command.ShipAddress, command.ShipCity, command.ShipRegion, command.ShipPostalCode, command.ShipCountry, command.ProductAddedToOrder);
+			item.UpdateOrder(command.OrderId, command.CustomerId, command.EmployeeId, command.OrderDate, command.RequiredDate, command.ShippedDate, command.ShipViaId, command.Freight, command.ShipName, command.ShipAddress, command.ShipCity, command.ShipRegion, command.ShipPostalCode, command.ShipCountry);
 			OnUpdatedOrder(command, item);
 			OnCommit(command, item);
 			UnitOfWork.Commit();

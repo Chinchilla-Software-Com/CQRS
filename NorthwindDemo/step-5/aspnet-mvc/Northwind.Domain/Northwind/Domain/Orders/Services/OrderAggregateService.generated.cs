@@ -70,7 +70,7 @@ namespace Northwind.Domain.Orders.Services
 			if (item.Rsn == Guid.Empty)
 				item.Rsn = Guid.NewGuid();
 
-			var command = new CreateOrderCommand(item.Rsn, item.OrderId, item.CustomerId, item.EmployeeId, item.OrderDate, item.RequiredDate, item.ShippedDate, item.ShipViaId, item.Freight, item.ShipName, item.ShipAddress, item.ShipCity, item.ShipRegion, item.ShipPostalCode, item.ShipCountry, item.ProductAddedToOrder);
+			var command = new CreateOrderCommand(item.Rsn, item.OrderId, item.CustomerId, item.EmployeeId, item.OrderDate, item.RequiredDate, item.ShippedDate, item.ShipViaId, item.Freight, item.ShipName, item.ShipAddress, item.ShipCity, item.ShipRegion, item.ShipPostalCode, item.ShipCountry);
 			OnCreateOrder(serviceRequest, command);
 			CommandSender.Send(command);
 			OnCreatedOrder(serviceRequest, command);
@@ -97,7 +97,7 @@ namespace Northwind.Domain.Orders.Services
 			if (locatedItem == null)
 				return CompleteResponse(new ServiceResponseWithResultData<Entities.OrderEntity> { State = ServiceResponseStateType.FailedValidation });
 
-			var command = new UpdateOrderCommand(item.Rsn, item.OrderId, item.CustomerId, item.EmployeeId, item.OrderDate, item.RequiredDate, item.ShippedDate, item.ShipViaId, item.Freight, item.ShipName, item.ShipAddress, item.ShipCity, item.ShipRegion, item.ShipPostalCode, item.ShipCountry, item.ProductAddedToOrder);
+			var command = new UpdateOrderCommand(item.Rsn, item.OrderId, item.CustomerId, item.EmployeeId, item.OrderDate, item.RequiredDate, item.ShippedDate, item.ShipViaId, item.Freight, item.ShipName, item.ShipAddress, item.ShipCity, item.ShipRegion, item.ShipPostalCode, item.ShipCountry);
 			ServiceResponseStateType? serviceResponseStateType = null;
 			OnUpdateOrder(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
 			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)

@@ -24,6 +24,11 @@ namespace Cqrs.Modelling.UmlProfiles.Builders
 			// to an appropriate UML API type such as IClass or IStereotype:
 			PropertyInstance propertyInstance = e.ModelElement as PropertyInstance;
 
+			RefreshModel(store, propertyInstance);
+		}
+
+		public void RefreshModel(Store store, PropertyInstance propertyInstance)
+		{
 			if (propertyInstance == null)
 				return;
 
@@ -79,10 +84,20 @@ namespace Cqrs.Modelling.UmlProfiles.Builders
 				property = (Property)targetElement.CreateAttribute();
 			property.DefaultValue = ownedAttribute.DefaultValue as ValueSpecification;
 			property.Description = ownedAttribute.Description;
-			property.LowerValue = ownedAttribute.LowerValue as ValueSpecification;
+			var literalString = ownedAttribute.LowerValue as LiteralString;
+			if (literalString != null)
+			{
+				property.LowerValue = (ValueSpecification)literalString.Clone(property.Partition);
+				property.LowerValue.Name = literalString.Name;
+			}
 			property.Name = ownedAttribute.Name;
 			property.Type = property.Type;
-			property.UpperValue = ownedAttribute.UpperValue as ValueSpecification;
+			literalString = ownedAttribute.UpperValue as LiteralString;
+			if (literalString != null)
+			{
+				property.UpperValue = (ValueSpecification)literalString.Clone(property.Partition);
+				property.UpperValue.Name = literalString.Name;
+			}
 
 			return property;
 		}

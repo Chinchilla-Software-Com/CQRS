@@ -53,6 +53,8 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 		// Properties
 		foreach(var collectionProperty in collectionProperties)
 		{
+			if (!collectionProperty.AppliedStereotypes.Any())
+				continue;
 #>
 <# WriteSummaryComment(collectionProperty.Description); #>
 		[DataMember]

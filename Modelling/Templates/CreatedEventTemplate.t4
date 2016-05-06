@@ -87,6 +87,8 @@ namespace <#= classNamespace #>.Events
 		// Properties
 		foreach(IProperty collectionProperty in collectionProperties)
 		{
+			if (!collectionProperty.AppliedStereotypes.Any())
+				continue;
 #>
 		[DataMember]
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; private set; }
@@ -99,6 +101,8 @@ namespace <#= classNamespace #>.Events
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			if (!collectionProperty.AppliedStereotypes.Any())
+				continue;
 			#>, <#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>)
@@ -107,6 +111,8 @@ namespace <#= classNamespace #>.Events
 <#
 		foreach(IProperty collectionProperty in collectionProperties)
 		{
+			if (!collectionProperty.AppliedStereotypes.Any())
+				continue;
 #>
 			<#= collectionProperty.Name #> = <#= GetLowercaseFirstCharacter(collectionProperty.Name) #>;
 <#

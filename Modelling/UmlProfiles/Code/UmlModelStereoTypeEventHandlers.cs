@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
+using System.Linq;
 using Cqrs.Modelling.UmlProfiles.Builders;
 using Cqrs.Modelling.UmlProfiles.Builders.Commands;
 using Cqrs.Modelling.UmlProfiles.Builders.Entities;
@@ -32,10 +33,31 @@ namespace Cqrs.Modelling.UmlProfiles
 	/// http://msdn.microsoft.com/library/bb126250.aspx
 	/// 
 	/// </summary>
-	public partial class UmlModelStereoTypeEventHandlers
+	public class UmlModelStereoTypeEventHandlers
 	{
 		// This is the underlying DSL store, not the wrapping UML ModelStore:
-		private Store store;
+		private Store Store { get; set; }
+
+		IEnumerable<System.Type> _modelBuilderTypes = new List<System.Type>
+			{
+				typeof(CreateCommandModelBuilder),
+				typeof(UpdateCommandModelBuilder),
+				typeof(DeleteCommandModelBuilder),
+
+				typeof(CreateEventModelBuilder),
+				typeof(UpdateEventModelBuilder),
+				typeof(DeleteEventModelBuilder),
+
+				typeof(CreateEventHandlerModelBuilder),
+				typeof(UpdateEventHandlerModelBuilder),
+				typeof(DeleteEventHandlerModelBuilder),
+
+				typeof(CreateEntityModelBuilder),
+				typeof(UpdateEntityModelBuilder),
+				typeof(DeleteEntityModelBuilder),
+			};
+
+
 
 		#region Event handler registration.
 
@@ -53,7 +75,7 @@ namespace Cqrs.Modelling.UmlProfiles
 		public void RegisterEventHandlers(ValidationContext vcontext, IModel model)
 		{
 			// This is the underlying DSL store, not the wrapping UML ModelStore:
-			store = ((ModelElement)model).Store;
+			Store = ((ModelElement)model).Store;
 
 			// To register an event, you must know the name of the implementation class 
 			// or relationship that you want to monitor. These classes are defined in 
@@ -76,23 +98,64 @@ namespace Cqrs.Modelling.UmlProfiles
 
 			// In this example, we register an event for the implementation
 			// class that represents the application of a stereotype to a UML element:
-			DomainClassInfo siClass = store.DomainDataDirectory.FindDomainClass("Microsoft.VisualStudio.Uml.Classes.StereotypeInstance");
+			DomainClassInfo siClass = Store.DomainDataDirectory.FindDomainClass("Microsoft.VisualStudio.Uml.Classes.StereotypeInstance");
 
 
 			// This event is triggered whenever an element of the specified
 			// class is created:
-			store.EventManagerDirectory.ElementAdded.Add(siClass, new EventHandler<ElementAddedEventArgs>(StereotypeInstanceAdded));
+			Store.EventManagerDirectory.ElementAdded.Add(siClass, new EventHandler<ElementAddedEventArgs>(StereotypeInstanceAdded));
 
 			// For deletions, it is better to trigger on the deletion of the link
 			// between the old instance and the owning element. 
 			// That allows us to get both the deleted instance and the owner:
 
-			DomainRelationshipInfo linkToStereotypeClass = store.DomainDataDirectory.FindDomainRelationship("Microsoft.VisualStudio.Uml.Classes.ElementHasAppliedStereotypeInstances");
+			DomainRelationshipInfo linkToStereotypeClass = Store.DomainDataDirectory.FindDomainRelationship("Microsoft.VisualStudio.Uml.Classes.ElementHasAppliedStereotypeInstances");
 
-			store.EventManagerDirectory.ElementDeleted.Add(linkToStereotypeClass, new EventHandler<ElementDeletedEventArgs>(StereotypeInstanceDeleted));
+			Store.EventManagerDirectory.ElementDeleted.Add(linkToStereotypeClass, new EventHandler<ElementDeletedEventArgs>(StereotypeInstanceDeleted));
 
 			// Add here handlers for other events.
-			store.EventManagerDirectory.ElementPropertyChanged.Add(new EventHandler<ElementPropertyChangedEventArgs>(StereotypeInstancePropertyChanged));
+			Store.EventManagerDirectory.ElementPropertyChanged.Add(new EventHandler<ElementPropertyChangedEventArgs>(StereotypeInstancePropertyChanged));
+
+			Refresh();
+		}
+
+		/// <summary>
+		/// The Validation API is used to register the event handlers. 
+		/// The validation framework provides a convenient way to execute code 
+		/// when the model is opened. But the code does not actually perform validation, 
+		/// and the user does not have to invoke validation in order to perform updates.
+		/// See "Validation": http://msdn.microsoft.com/library/bb126413.aspx
+		/// </summary>
+		/// <param name="vcontext"></param>
+		/// <param name="model"></param>
+		[Export(typeof (Action<ValidationContext, object>))]
+		[ValidationMethod(ValidationCategories.Save)]
+		public void RefreshOnSave(ValidationContext vcontext, IModel model)
+		{
+			// This is the underlying DSL store, not the wrapping UML ModelStore:
+			Store = ((ModelElement)model).Store;
+
+			Refresh();
+		}
+
+		protected virtual void Refresh()
+		{
+			foreach (Partition partition in Store.Partitions.Values)
+			{
+				var allElements = partition.ElementDirectory.AllElements.ToList();
+				foreach (ModelElement modelElement in allElements)
+				{
+					var modelElementPropertyInstance = modelElement as PropertyInstance;
+					if (modelElementPropertyInstance != null)
+					{
+						foreach (System.Type modelBuilderType in _modelBuilderTypes)
+						{
+							var modelBuilder = (ModelBuilder)Activator.CreateInstance(AppDomain.CurrentDomain, modelBuilderType.Assembly.FullName, modelBuilderType.FullName).Unwrap();
+							modelBuilder.RefreshModel(Store, modelElementPropertyInstance);
+						}
+					}
+				}
+			}
 		}
 
 		#endregion
@@ -106,29 +169,10 @@ namespace Cqrs.Modelling.UmlProfiles
 		/// <param name="e"></param>
 		private void StereotypeInstancePropertyChanged(object sender, ElementPropertyChangedEventArgs e)
 		{
-			IEnumerable<System.Type> modelBuilderTypes = new List<System.Type>
-			{
-				typeof(CreateCommandModelBuilder),
-				typeof(UpdateCommandModelBuilder),
-				typeof(DeleteCommandModelBuilder),
-
-				typeof(CreateEventModelBuilder),
-				typeof(UpdateEventModelBuilder),
-				typeof(DeleteEventModelBuilder),
-
-				typeof(CreateEventHandlerModelBuilder),
-				typeof(UpdateEventHandlerModelBuilder),
-				typeof(DeleteEventHandlerModelBuilder),
-
-				typeof(CreateEntityModelBuilder),
-				typeof(UpdateEntityModelBuilder),
-				typeof(DeleteEntityModelBuilder),
-			};
-
-			foreach (System.Type modelBuilderType in modelBuilderTypes)
+			foreach (System.Type modelBuilderType in _modelBuilderTypes)
 			{
 				var modelBuilder = (ModelBuilder)Activator.CreateInstance(AppDomain.CurrentDomain, modelBuilderType.Assembly.FullName, modelBuilderType.FullName).Unwrap();
-				modelBuilder.CreateModel(store, e);
+				modelBuilder.CreateModel(Store, e);
 			}
 		}
 
@@ -144,7 +188,7 @@ namespace Cqrs.Modelling.UmlProfiles
 			// This makes them ideal for synchronizing changes inside the model
 			// with other objects or data outside the model. 
 			// However, you can ignore those cases if you want:
-			if (store.InUndoRedoOrRollback || store.InSerializationTransaction) return;
+			if (Store.InUndoRedoOrRollback || Store.InSerializationTransaction) return;
 
 			// In an event handler, you can cast the implementation class members 
 			// to an appropriate UML API type such as IClass or IStereotype:
@@ -180,20 +224,20 @@ namespace Cqrs.Modelling.UmlProfiles
 		private void StereotypeInstanceDeleted(object sender, ElementDeletedEventArgs e)
 		{
 			// This is the parent type for all kinds of link:
-			ElementLink elementToStereotypeLink = e.ModelElement as ElementLink;
+			ElementLink elementToStereotypeLink = (ElementLink)e.ModelElement;
 
 			// Work only with the core model, not the views:
 			if (!elementToStereotypeLink.IsElementDefinition()) return;
 
 			// Get both ends of the deleted link:
-			IElement owner = elementToStereotypeLink.LinkedElements[0] as IElement;
+			IElement owner = (IElement)elementToStereotypeLink.LinkedElements[0];
 			IStereotypeInstance deletedElement = elementToStereotypeLink.LinkedElements[1] as IStereotypeInstance;
 
 
 			// We're here either because an element is being deleted,
 			// but it might be that its owner is also being deleted.
 			// Ignore this event if the owner is being deleted:
-			if ((owner as ModelElement).IsDeleting) return;
+			if (((ModelElement)owner).IsDeleting) return;
 
 			//
 			// Add code here to respond to the change.

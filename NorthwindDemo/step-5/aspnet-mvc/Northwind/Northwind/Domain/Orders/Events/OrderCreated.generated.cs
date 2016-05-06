@@ -121,11 +121,8 @@ namespace Northwind.Domain.Orders.Events
 		[DataMember]
 		public string ShipCountry { get; private set; }
 
-		[DataMember]
-		public ProductAddedToOrder ProductAddedToOrder { get; private set; }
 
-
-		public OrderCreated(Guid rsn, int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry, ProductAddedToOrder productAddedToOrder)
+		public OrderCreated(Guid rsn, int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry)
 		{
 			Rsn = rsn;
 			OrderId = orderId;
@@ -142,7 +139,6 @@ namespace Northwind.Domain.Orders.Events
 			ShipRegion = shipRegion;
 			ShipPostalCode = shipPostalCode;
 			ShipCountry = shipCountry;
-			ProductAddedToOrder = productAddedToOrder;
 		}
 	}
 }

@@ -70,8 +70,5 @@ namespace Northwind.Domain.Orders.Entities
 		[DataMember]
 		string ShipCountry { get; set; }
 
-		[DataMember]
-		ProductAddedToOrder ProductAddedToOrder { get; set; }
-
 	}
 }

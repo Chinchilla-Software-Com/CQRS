@@ -58,7 +58,7 @@ namespace Northwind.Domain.Orders.Commands.Handlers
 				item = new Order(DependencyResolver, Logger, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
 				UnitOfWork.Add(item);
 			}
-			item.CreateOrder(command.OrderId, command.CustomerId, command.EmployeeId, command.OrderDate, command.RequiredDate, command.ShippedDate, command.ShipViaId, command.Freight, command.ShipName, command.ShipAddress, command.ShipCity, command.ShipRegion, command.ShipPostalCode, command.ShipCountry, command.ProductAddedToOrder);
+			item.CreateOrder(command.OrderId, command.CustomerId, command.EmployeeId, command.OrderDate, command.RequiredDate, command.ShippedDate, command.ShipViaId, command.Freight, command.ShipName, command.ShipAddress, command.ShipCity, command.ShipRegion, command.ShipPostalCode, command.ShipCountry);
 			OnCreatedOrder(command, item);
 			OnAddToUnitOfWork(command, item);
 			UnitOfWork.Add(item);

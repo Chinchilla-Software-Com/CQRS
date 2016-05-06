@@ -110,6 +110,8 @@ switch(commandHandlerTechnology)
 		// Properties
 		foreach(var collectionProperty in collectionProperties)
 		{
+			if (!collectionProperty.AppliedStereotypes.Any())
+				continue;
 #>
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; set; }
 

@@ -77,8 +77,6 @@ namespace Northwind.Domain.Orders
 
 		public string ShipCountry { get; private set; }
 
-		public ProductAddedToOrder ProductAddedToOrder { get; private set; }
-
 // ReSharper disable UnusedMember.Local
 		/// <summary>
 		/// A constructor for the <see cref="Cqrs.Domain.Factories.IAggregateFactory"/>
@@ -86,7 +84,6 @@ namespace Northwind.Domain.Orders
 		private Order()
 		{
 
-			Receive<RemoveProductParameters>(parameters => RemoveProduct(parameters));
 		}
 
 		/// <summary>
@@ -118,24 +115,24 @@ namespace Northwind.Domain.Orders
 		/// <summary>
 		/// Create a new instance of the <see cref="Order"/>
 		/// </summary>
-		public virtual void CreateOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry, ProductAddedToOrder productAddedToOrder)
+		public virtual void CreateOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry)
 		{
 			Log.LogDebug("Entered", "Order/CreateOrder");
 			Log.LogDebug("Pre", "Order/OnCreateOrder");
-			OnCreateOrder(orderId, customerId, employeeId, orderDate, requiredDate, shippedDate, shipViaId, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry, productAddedToOrder);
+			OnCreateOrder(orderId, customerId, employeeId, orderDate, requiredDate, shippedDate, shipViaId, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry);
 			Log.LogDebug("Post", "Order/OnCreateOrder");
 			Log.LogDebug("Pre", "Order/ApplyChange/Create");
-			ApplyChange(new OrderCreated(Rsn, orderId, customerId, employeeId, orderDate, requiredDate, shippedDate, shipViaId, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry, productAddedToOrder));
+			ApplyChange(new OrderCreated(Rsn, orderId, customerId, employeeId, orderDate, requiredDate, shippedDate, shipViaId, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry));
 			Log.LogDebug("Post", "Order/ApplyChange");
 			Log.LogDebug("Pre", "Order/OnCreatedOrder");
-			OnCreatedOrder(orderId, customerId, employeeId, orderDate, requiredDate, shippedDate, shipViaId, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry, productAddedToOrder);
+			OnCreatedOrder(orderId, customerId, employeeId, orderDate, requiredDate, shippedDate, shipViaId, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry);
 			Log.LogDebug("Post", "Order/OnCreatedOrder");
 			Log.LogDebug("Exited", "Order/CreateOrder");
 		}
 
-		partial void OnCreateOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry, ProductAddedToOrder productAddedToOrder);
+		partial void OnCreateOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry);
 
-		partial void OnCreatedOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry, ProductAddedToOrder productAddedToOrder);
+		partial void OnCreatedOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry);
 
 		private void Apply(OrderCreated @event)
 		{
@@ -153,30 +150,29 @@ namespace Northwind.Domain.Orders
 			ShipRegion = @event.ShipRegion;
 			ShipPostalCode = @event.ShipPostalCode;
 			ShipCountry = @event.ShipCountry;
-			ProductAddedToOrder = @event.ProductAddedToOrder;
 		}
 
 		/// <summary>
 		/// Update an existing instance of the <see cref="Order"/>
 		/// </summary>
-		public virtual void UpdateOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry, ProductAddedToOrder productAddedToOrder)
+		public virtual void UpdateOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry)
 		{
 			Log.LogDebug("Entered", "Order/UpdateOrder");
 			Log.LogDebug("Pre", "Order/OnUpdateOrder");
-			OnUpdateOrder(orderId, customerId, employeeId, orderDate, requiredDate, shippedDate, shipViaId, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry, productAddedToOrder);
+			OnUpdateOrder(orderId, customerId, employeeId, orderDate, requiredDate, shippedDate, shipViaId, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry);
 			Log.LogDebug("Post", "Order/OnUpdateOrder");
 			Log.LogDebug("Pre", "Order/ApplyChange/Update");
-			ApplyChange(new OrderUpdated(Rsn, orderId, customerId, employeeId, orderDate, requiredDate, shippedDate, shipViaId, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry, productAddedToOrder));
+			ApplyChange(new OrderUpdated(Rsn, orderId, customerId, employeeId, orderDate, requiredDate, shippedDate, shipViaId, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry));
 			Log.LogDebug("Post", "Order/ApplyChange");
 			Log.LogDebug("Pre", "Order/OnUpdatedOrder");
-			OnUpdatedOrder(orderId, customerId, employeeId, orderDate, requiredDate, shippedDate, shipViaId, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry, productAddedToOrder);
+			OnUpdatedOrder(orderId, customerId, employeeId, orderDate, requiredDate, shippedDate, shipViaId, freight, shipName, shipAddress, shipCity, shipRegion, shipPostalCode, shipCountry);
 			Log.LogDebug("Post", "Order/OnUpdatedOrder");
 			Log.LogDebug("Exited", "Order/UpdateOrder");
 		}
 
-		partial void OnUpdateOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry, ProductAddedToOrder productAddedToOrder);
+		partial void OnUpdateOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry);
 
-		partial void OnUpdatedOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry, ProductAddedToOrder productAddedToOrder);
+		partial void OnUpdatedOrder(int orderId, string customerId, int? employeeId, DateTime? orderDate, DateTime? requiredDate, DateTime? shippedDate, int? shipViaId, decimal? freight, string shipName, string shipAddress, string shipCity, string shipRegion, string shipPostalCode, string shipCountry);
 
 		private void Apply(OrderUpdated @event)
 		{
@@ -194,7 +190,6 @@ namespace Northwind.Domain.Orders
 			ShipRegion = @event.ShipRegion;
 			ShipPostalCode = @event.ShipPostalCode;
 			ShipCountry = @event.ShipCountry;
-			ProductAddedToOrder = @event.ProductAddedToOrder;
 		}
 
 		/// <summary>
@@ -255,8 +250,6 @@ namespace Northwind.Domain.Orders
 			public string ShipPostalCode { get; private set; }
 
 			public string ShipCountry { get; private set; }
-
-			public ProductAddedToOrder ProductAddedToOrder { get; private set; }
 		}
 	}
 }

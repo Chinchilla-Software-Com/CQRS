@@ -111,6 +111,8 @@ switch(commandHandlerTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			if (!collectionProperty.AppliedStereotypes.Any())
+				continue;
 			#><#= (i == 0) ? string.Empty : ", " #>command.<#= collectionProperty.Name #><#
 		}
 #>);
