@@ -8,6 +8,7 @@ using Cqrs.Modelling.UmlProfiles.Builders.Commands;
 using Cqrs.Modelling.UmlProfiles.Builders.Entities;
 using Cqrs.Modelling.UmlProfiles.Builders.Events;
 using Cqrs.Modelling.UmlProfiles.Builders.Events.Handlers;
+using Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Validation;
 using Microsoft.VisualStudio.Uml.AuxiliaryConstructs;
@@ -152,6 +153,46 @@ namespace Cqrs.Modelling.UmlProfiles
 						{
 							var modelBuilder = (ModelBuilder)Activator.CreateInstance(AppDomain.CurrentDomain, modelBuilderType.Assembly.FullName, modelBuilderType.FullName).Unwrap();
 							modelBuilder.RefreshModel(Store, modelElementPropertyInstance);
+						}
+					}
+					PopulateAggregatePropertyAttributes(modelElement);
+					PopulateEntityPropertyAttributes(modelElement);
+				}
+			}
+		}
+
+		protected virtual void PopulateAggregatePropertyAttributes(ModelElement modelElement)
+		{
+			PopulateAggregatePropertyAttributes(modelElement, "AggregateRoot", "AggregateProperty");
+		}
+
+		protected virtual void PopulateEntityPropertyAttributes(ModelElement modelElement)
+		{
+			PopulateAggregatePropertyAttributes(modelElement, "Entity", "EntityProperty");
+		}
+
+		protected virtual void PopulateAggregatePropertyAttributes(ModelElement modelElement, string appliedStereotypeName, string propertyStereotypeNameToApply)
+		{
+			var modelElementClass = modelElement as IClass;
+			if (modelElementClass != null)
+			{
+				var stereoTypeProperties = modelElementClass.AppliedStereotypes.SingleOrDefault(property => property.Name == appliedStereotypeName);
+				if (stereoTypeProperties != null)
+				{
+					bool autoGenerateAllProperties = stereoTypeProperties.PropertyInstances
+						.Single(property => property.Name == "AutoGenerateAllProperties")
+						.Value == "true";
+					if (autoGenerateAllProperties)
+					{
+						IList<IProperty> collectionProperties = CSharpHelper.GetPropertyList(modelElementClass);
+						// Properties
+						foreach (IProperty collectionProperty in collectionProperties)
+						{
+							var property = collectionProperty as Property;
+							if (property == null || !collectionProperty.AppliedStereotypes.Any())
+								continue;
+							ModelBuilder.AddStereotypeInstanceIfMissingRefreshOtherwise(collectionProperty, collectionProperty, "AggregateProperty");
+
 						}
 					}
 				}

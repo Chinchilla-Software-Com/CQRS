@@ -64,10 +64,9 @@ namespace Cqrs.Modelling.UmlProfiles.Builders.Commands
 					AddStereotypeInstanceIfMissingRefreshOtherwise(clonedClass, propertyInstanceModelClass, "Command");
 
 					// Copy Properties
-					foreach (IProperty ownedAttribute in propertyInstanceModelClass.OwnedAttributes)
-					{
-						AddAttributeIfMissingRefreshOtherwise(clonedClass, ownedAttribute);
-					}
+					if (CopyAttributes)
+						foreach (IProperty ownedAttribute in propertyInstanceModelClass.OwnedAttributes)
+							AddAttributeIfMissingRefreshOtherwise(clonedClass, ownedAttribute);
 
 					// Create Association
 					string operationName = string.Format("{0}{1}", OperationModeName, propertyInstanceModelClass.Name);

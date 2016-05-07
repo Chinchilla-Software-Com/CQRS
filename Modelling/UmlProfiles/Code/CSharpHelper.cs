@@ -2094,7 +2094,7 @@ namespace Cqrs.Modelling.UmlProfiles
 			}
 		}
 
-		private List<IProperty> GetPropertyList(IClass classElement)
+		internal static List<IProperty> GetPropertyList(IClass classElement)
 		{
 			var properties = new List<IProperty>();
 			properties.AddRange(classElement.OwnedAttributes);

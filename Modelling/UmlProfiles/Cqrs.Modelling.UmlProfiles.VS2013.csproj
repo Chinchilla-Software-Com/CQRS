@@ -138,23 +138,57 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\Builders\Commands\CommandModelBuilder.cs" />
-    <Compile Include="Code\Builders\Commands\CreateCommandModelBuilder.cs" />
-    <Compile Include="Code\Builders\Commands\DeleteCommandModelBuilder.cs" />
-    <Compile Include="Code\Builders\Commands\UpdateCommandModelBuilder.cs" />
-    <Compile Include="Code\Builders\Entities\CreateCommandModelBuilder.cs" />
-    <Compile Include="Code\Builders\Entities\DeleteCommandModelBuilder.cs" />
-    <Compile Include="Code\Builders\Entities\EntityModelBuilder.cs" />
-    <Compile Include="Code\Builders\Entities\UpdateCommandModelBuilder.cs" />
-    <Compile Include="Code\Builders\Events\CreateEventHandlerModelBuilder.cs" />
-    <Compile Include="Code\Builders\Events\DeleteEventHandlerModelBuilder.cs" />
-    <Compile Include="Code\Builders\Events\EventModelBuilder.cs" />
-    <Compile Include="Code\Builders\Events\Handlers\CreateEventModelBuilder.cs" />
-    <Compile Include="Code\Builders\Events\Handlers\DeleteEventModelBuilder.cs" />
-    <Compile Include="Code\Builders\Events\Handlers\EventHandlerModelBuilder.cs" />
-    <Compile Include="Code\Builders\Events\Handlers\UpdateEventModelBuilder.cs" />
-    <Compile Include="Code\Builders\Events\UpdateEventHandlerModelBuilder.cs" />
-    <Compile Include="Code\Builders\ModelBuilder.cs" />
+    <Compile Include="Code\Builders\Commands\CommandModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Commands\CreateCommandModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Commands\DeleteCommandModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Commands\UpdateCommandModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Entities\CreateEntityModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Entities\DeleteEntityModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Entities\EntityModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Entities\UpdateEntityModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Events\CreateEventModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Events\DeleteEventModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Events\EventModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Events\Handlers\CreateEventHandlerModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Events\Handlers\DeleteEventHandlerModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Events\Handlers\EventHandlerModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Events\Handlers\UpdateEventHandlerModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\Events\UpdateEventModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\Builders\ModelBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Code\CSharpHelper.cs" />
     <Compile Include="Code\Extensions.cs" />
     <Compile Include="Code\UmlModelStereoTypeEventHandlers.cs" />
@@ -302,8 +336,8 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" Condition="false" />
   <PropertyGroup>
     <PostBuildEvent>REM "$(TargetDir)$(TargetName).vsix"
-IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 12 Exp "$(TargetDir)$(TargetName).vsix" uninstall
-IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 12 Exp "$(TargetDir)$(TargetName).vsix"</PostBuildEvent>
+REM IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 12 Exp "$(TargetDir)$(TargetName).vsix" uninstall
+REM IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 12 Exp "$(TargetDir)$(TargetName).vsix"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>COPY /Y $(ProjectDir)source.extension.2013.vsixmanifest $(ProjectDir)source.extension.vsixmanifest</PreBuildEvent>

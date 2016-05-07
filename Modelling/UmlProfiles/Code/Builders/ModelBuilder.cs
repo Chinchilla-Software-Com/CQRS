@@ -71,7 +71,7 @@ namespace Cqrs.Modelling.UmlProfiles.Builders
 			return null;
 		}
 
-		protected virtual IStereotypeInstance AddStereotypeInstanceIfMissingRefreshOtherwise(IElement targetElement, IElement sourceElement, string stereotypeName)
+		internal static IStereotypeInstance AddStereotypeInstanceIfMissingRefreshOtherwise(IElement targetElement, IElement sourceElement, string stereotypeName)
 		{
 			IStereotypeInstance result = targetElement.AppliedStereotypes.SingleOrDefault(stereotype => stereotype.Name == stereotypeName);
 			return result ?? targetElement.ApplyStereotype(sourceElement.ApplicableStereotypes.Single(stereotype => stereotype.Name == stereotypeName));

@@ -79,10 +79,9 @@ namespace Cqrs.Modelling.UmlProfiles.Builders.Entities
 
 
 					// Copy Properties
-					foreach (IProperty ownedAttribute in propertyInstanceModelClass.OwnedAttributes)
-					{
-						var property = AddAttributeIfMissingRefreshOtherwise(clonedClass, ownedAttribute);
-					}
+					if (CopyAttributes)
+						foreach (IProperty ownedAttribute in propertyInstanceModelClass.OwnedAttributes)
+							AddAttributeIfMissingRefreshOtherwise(clonedClass, ownedAttribute);
 
 					var eventHandlerClass = eventHandlersPackage.OwnedElements
 						// This bit filters out the associations
