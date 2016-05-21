@@ -68,6 +68,8 @@
       <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Uml.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Uml.Interfaces, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -76,10 +78,12 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="VSLangProj, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="EnvDTE">
@@ -156,13 +160,28 @@
     <Compile Include="Code\Builders\Events\Handlers\UpdateEventHandlerModelBuilder.cs" />
     <Compile Include="Code\Builders\Events\UpdateEventModelBuilder.cs" />
     <Compile Include="Code\Builders\ModelBuilder.cs" />
+    <Compile Include="Code\CqrsSolutionOptionsControl.xaml.cs">
+      <DependentUpon>CqrsSolutionOptionsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Code\CqrsSolutionOptionsToolWindow.cs" />
     <Compile Include="Code\CSharpHelper.cs" />
     <Compile Include="Code\Extensions.cs" />
+    <Compile Include="Code\LicenseKeyHelper.cs" />
     <Compile Include="Code\UmlModelStereoTypeEventHandlers.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="UmlPackage.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VSPackage.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VSPackage.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cqrs.profile">
@@ -175,6 +194,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="VSPackage1.vsct" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -263,10 +283,16 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <ManifestResourceName>VSPackage</ManifestResourceName>
       <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>VSPackage.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -291,6 +317,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Page Include="Code\CqrsSolutionOptionsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>
@@ -303,8 +335,8 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" Condition="false" />
   <PropertyGroup>
     <PostBuildEvent>REM "$(TargetDir)$(TargetName).vsix"
-IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 11 Exp "$(TargetDir)$(TargetName).vsix" uninstall
-IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 11 Exp "$(TargetDir)$(TargetName).vsix"</PostBuildEvent>
+REM IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 11 Exp "$(TargetDir)$(TargetName).vsix" uninstall
+REM IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 11 Exp "$(TargetDir)$(TargetName).vsix"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>COPY /Y $(ProjectDir)source.extension.2012.vsixmanifest $(ProjectDir)source.extension.vsixmanifest</PreBuildEvent>
