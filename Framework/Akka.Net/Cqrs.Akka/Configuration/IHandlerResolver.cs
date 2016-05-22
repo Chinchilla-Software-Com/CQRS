@@ -12,6 +12,6 @@ namespace Cqrs.Akka.Configuration
 {
 	public interface IHandlerResolver
 	{
-		object Resolve(Type handerType, Type targetedType, object rsn);
+		object Resolve(Type handerType, object rsn);
 	}
 }

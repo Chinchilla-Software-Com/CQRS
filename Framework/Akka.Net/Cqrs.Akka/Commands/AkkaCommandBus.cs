@@ -56,7 +56,7 @@ namespace Cqrs.Akka.Commands
 		{
 			RouteHandlerDelegate commandHandler = Routes.GetSingleHandler(command);
 			Type senderType = typeof (IConcurrentAkkaCommandSender<,>).MakeGenericType(typeof(TAuthenticationToken), commandHandler.TargetedType);
-			var proxy = (IActorRef)ConcurrentEventBusProxy.Resolve(senderType, senderType, command.Id);
+			var proxy = (IActorRef)ConcurrentEventBusProxy.Resolve(senderType, command.Id);
 			proxy.Tell(command);
 
 			command.Framework = FrameworkType.Akka;
