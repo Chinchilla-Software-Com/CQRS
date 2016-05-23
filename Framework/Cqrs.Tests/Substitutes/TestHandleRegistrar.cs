@@ -14,6 +14,15 @@ namespace Cqrs.Tests.Substitutes
 		{
 			HandlerList.Add(new TestHandlerListItem {Type = typeof(T),Handler = handler});
 		}
+
+		/// <summary>
+		/// Register an event or command handler that will listen and respond to events or commands.
+		/// </summary>
+		public void RegisterHandler<TMessage>(Action<TMessage> handler)
+			where TMessage : IMessage
+		{
+			RegisterHandler(handler, null);
+		}
 	}
 
 	public class TestHandlerListItem
