@@ -77,6 +77,7 @@ namespace Cqrs.Configuration
 		/// Create an <see cref="Action"/> around the provided <paramref name="executorType"/>
 		/// Then register the created <see cref="Action"/> using the extracted <see cref="IHandlerRegistrar.RegisterHandler{TMessage}"/> method
 		/// </summary>
+		/// <param name="executorType">The <see cref="Type"/> of the event handler that will do the handling</param>
 		protected virtual void InvokeHandler(Type @interface, IHandlerRegistrar bus, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, Type executorType)
 		{
 			MethodInfo registerExecutorMethod = null;

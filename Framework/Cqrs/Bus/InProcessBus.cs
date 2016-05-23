@@ -120,6 +120,15 @@ namespace Cqrs.Bus
 			Routes.RegisterHandler(handler, targetedType);
 		}
 
+		/// <summary>
+		/// Register an event or command handler that will listen and respond to events or commands.
+		/// </summary>
+		public void RegisterHandler<TMessage>(Action<TMessage> handler)
+			where TMessage : IMessage
+		{
+			RegisterHandler(handler, null);
+		}
+
 		#endregion
 	}
 }

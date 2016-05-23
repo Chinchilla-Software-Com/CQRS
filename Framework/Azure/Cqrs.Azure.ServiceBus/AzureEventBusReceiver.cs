@@ -19,7 +19,10 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	public class AzureEventBusReceiver<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IEventHandlerRegistrar, IEventReceiver<TAuthenticationToken>
+	public class AzureEventBusReceiver<TAuthenticationToken>
+		: AzureEventBus<TAuthenticationToken>
+		, IEventHandlerRegistrar
+		, IEventReceiver<TAuthenticationToken>
 	{
 		protected static RouteManager Routes { get; private set; }
 
@@ -55,6 +58,15 @@ namespace Cqrs.Azure.ServiceBus
 			where TMessage : IMessage
 		{
 			Routes.RegisterHandler(handler, targetedType);
+		}
+
+		/// <summary>
+		/// Register an event or command handler that will listen and respond to events or commands.
+		/// </summary>
+		public void RegisterHandler<TMessage>(Action<TMessage> handler)
+			where TMessage : IMessage
+		{
+			RegisterHandler(handler, null);
 		}
 
 		protected virtual void ReceiveEvent(BrokeredMessage message)

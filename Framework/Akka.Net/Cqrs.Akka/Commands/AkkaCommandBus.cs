@@ -55,7 +55,9 @@ namespace Cqrs.Akka.Commands
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			RouteHandlerDelegate commandHandler = Routes.GetSingleHandler(command);
-			Type senderType = typeof (IConcurrentAkkaCommandSender<,>).MakeGenericType(typeof(TAuthenticationToken), commandHandler.TargetedType);
+			Type senderType = commandHandler.TargetedType == null
+				? typeof (IConcurrentAkkaCommandSender<>).MakeGenericType(typeof(TAuthenticationToken))
+				: typeof (IConcurrentAkkaCommandSender<,>).MakeGenericType(typeof(TAuthenticationToken), commandHandler.TargetedType);
 			var proxy = (IActorRef)ConcurrentEventBusProxy.Resolve(senderType, command.Id);
 			proxy.Tell(command);
 
@@ -74,6 +76,15 @@ namespace Cqrs.Akka.Commands
 			where TMessage : IMessage
 		{
 			Routes.RegisterHandler(handler, targetedType);
+		}
+
+		/// <summary>
+		/// Register an event or command handler that will listen and respond to events or commands.
+		/// </summary>
+		public void RegisterHandler<TMessage>(Action<TMessage> handler)
+			where TMessage : IMessage
+		{
+			RegisterHandler(handler, null);
 		}
 
 		#endregion
