@@ -2,6 +2,7 @@ using cdmdotnet.Logging;
 using cdmdotnet.Logging.Configuration;
 using Cqrs.Bus;
 using Cqrs.Authentication;
+using Cqrs.Configuration;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
 
@@ -15,7 +16,7 @@ namespace Cqrs.Tests.Bus
 		[SetUp]
 		public void Setup()
 		{
-			_bus = new InProcessBus<ISingleSignOnToken>(new SingleSignOnTokenValueHelper(), new NullCorrelationIdHelper(), new TestDependencyResolver(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()));
+			_bus = new InProcessBus<ISingleSignOnToken>(new SingleSignOnTokenValueHelper(), new NullCorrelationIdHelper(), new TestDependencyResolver(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new ConfigurationManager());
 		}
 
 		[Test]
