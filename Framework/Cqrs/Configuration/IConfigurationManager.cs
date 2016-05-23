@@ -14,6 +14,6 @@ namespace Cqrs.Configuration
 
 		bool TryGetSetting(string key, out string value);
 
-		bool TryGetSetting<TValue>(string key, out TValue value);
+		bool TryGetSetting(string key, out bool value);
 	}
 }

@@ -83,24 +83,18 @@ namespace Cqrs.Bus
 				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
-			RouteHandlerDelegate commandHandler;
-			try
+			bool isRequired;
+			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", commandType.FullName), out isRequired))
+				isRequired = true;
+
+			RouteHandlerDelegate commandHandler = Routes.GetSingleHandler(command, isRequired);
+			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
+			if (commandHandler == null)
 			{
-				commandHandler = Routes.GetSingleHandler(command);
+				Logger.LogDebug(string.Format("The command handler for '{0}' is not required.", commandType.FullName));
+				return;
 			}
-			catch (NoCommandHandlerRegisteredException exception)
-			{
-				bool isRequired;
-				if (ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", commandType.FullName), out isRequired))
-				{
-					if (!isRequired)
-					{
-						Logger.LogDebug(string.Format("The command handler for '{0}' is not required.", commandType.FullName), exception: exception);
-						return;
-					}
-				}
-				throw;
-			}
+
 			Action<IMessage> handler = commandHandler.Delegate;
 			handler(command);
 		}

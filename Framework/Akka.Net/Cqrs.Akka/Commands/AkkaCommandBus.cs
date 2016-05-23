@@ -72,12 +72,14 @@ namespace Cqrs.Akka.Commands
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 			if (commandHandler == null)
 				Logger.LogDebug(string.Format("The command handler for '{0}' is not required.", commandType.FullName));
-
-			Type senderType = commandHandler.TargetedType == null
-				? typeof (IConcurrentAkkaCommandSender<>).MakeGenericType(typeof(TAuthenticationToken))
-				: typeof (IConcurrentAkkaCommandSender<,>).MakeGenericType(typeof(TAuthenticationToken), commandHandler.TargetedType);
-			var proxy = (IActorRef)ConcurrentEventBusProxy.Resolve(senderType, command.Id);
-			proxy.Tell(command);
+			else
+			{
+				Type senderType = commandHandler.TargetedType == null
+					? typeof(IConcurrentAkkaCommandSender<>).MakeGenericType(typeof(TAuthenticationToken))
+					: typeof(IConcurrentAkkaCommandSender<,>).MakeGenericType(typeof(TAuthenticationToken), commandHandler.TargetedType);
+				var proxy = (IActorRef)ConcurrentEventBusProxy.Resolve(senderType, command.Id);
+				proxy.Tell(command);
+			}
 
 			command.Framework = FrameworkType.Akka;
 			CommandSender.Send(command);

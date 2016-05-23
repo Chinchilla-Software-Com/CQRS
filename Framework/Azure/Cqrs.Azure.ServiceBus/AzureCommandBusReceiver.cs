@@ -94,7 +94,10 @@ namespace Cqrs.Azure.ServiceBus
 			RouteHandlerDelegate commandHandler = Routes.GetSingleHandler(command, isRequired);
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 			if (commandHandler == null)
+			{
 				Logger.LogDebug(string.Format("The command handler for '{0}' is not required.", commandType.FullName));
+				return;
+			}
 
 			Action<IMessage> handler = commandHandler.Delegate;
 			handler(command);

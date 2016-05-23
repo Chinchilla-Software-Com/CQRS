@@ -1,12 +1,10 @@
-﻿using Cqrs.Configuration;
-
-namespace Cqrs.Azure.ConfigurationManager
+﻿namespace Cqrs.Azure.ConfigurationManager
 {
-	public class CloudConfigurationManager : IConfigurationManager
+	public class CloudConfigurationManager : Configuration.ConfigurationManager
 	{
 		#region Implementation of IConfigurationManager
 
-		public string GetSetting(string key)
+		public override string GetSetting(string key)
 		{
 			return Microsoft.Azure.CloudConfigurationManager.GetSetting(key);
 		}
