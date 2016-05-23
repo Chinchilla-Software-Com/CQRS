@@ -34,17 +34,20 @@ namespace Cqrs.Bus
 
 		protected ILogger Logger { get; private set; }
 
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
 		static InProcessBus()
 		{
 			Routes = new RouteManager();
 		}
 
-		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger)
+		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger, IConfigurationManager configurationManager)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
 			DependencyResolver = dependencyResolver;
 			Logger = logger;
+			ConfigurationManager = configurationManager;
 		}
 
 		#region Implementation of ICommandSender<TAuthenticationToken>
@@ -52,10 +55,11 @@ namespace Cqrs.Bus
 		public virtual void Send<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
+			Type commandType = command.GetType();
 			switch (command.Framework)
 			{
 				case FrameworkType.Akka:
-					Logger.LogInfo(string.Format("A command arrived of the type '{0}' but was marked as coming from the '{1}' framework, so it was dropped.", command.GetType().FullName, command.Framework));
+					Logger.LogInfo(string.Format("A command arrived of the type '{0}' but was marked as coming from the '{1}' framework, so it was dropped.", commandType.FullName, command.Framework));
 					return;
 			}
 
@@ -66,12 +70,12 @@ namespace Cqrs.Bus
 			}
 			catch (Exception exception)
 			{
-				Logger.LogDebug("Locating an ICommandValidator failed.", string.Format("{0}\\Handle({1})", GetType().FullName, command.GetType().FullName), exception);
+				Logger.LogDebug("Locating an ICommandValidator failed.", string.Format("{0}\\Handle({1})", GetType().FullName, commandType.FullName), exception);
 			}
 
 			if (commandValidator != null && !commandValidator.IsCommandValid(command))
 			{
-				Logger.LogInfo("The provided command is not valid.", string.Format("{0}\\Handle({1})", GetType().FullName, command.GetType().FullName));
+				Logger.LogInfo("The provided command is not valid.", string.Format("{0}\\Handle({1})", GetType().FullName, commandType.FullName));
 				return;
 			}
 
@@ -79,7 +83,25 @@ namespace Cqrs.Bus
 				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
-			Action<IMessage> handler = Routes.GetSingleHandler(command).Delegate;
+			RouteHandlerDelegate commandHandler;
+			try
+			{
+				commandHandler = Routes.GetSingleHandler(command);
+			}
+			catch (NoCommandHandlerRegisteredException exception)
+			{
+				bool isRequired;
+				if (ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", commandType.FullName), out isRequired))
+				{
+					if (!isRequired)
+					{
+						Logger.LogDebug(string.Format("The command handler for '{0}' is not required.", commandType.FullName), exception: exception);
+						return;
+					}
+				}
+				throw;
+			}
+			Action<IMessage> handler = commandHandler.Delegate;
 			handler(command);
 		}
 
@@ -102,8 +124,17 @@ namespace Cqrs.Bus
 			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 			@event.TimeStamp = DateTimeOffset.UtcNow;
 
-			IEnumerable<RouteHandlerDelegate> handlers = Routes.GetHandlers(@event);
-			foreach (Action<IMessage> handler in handlers.Select(x => x.Delegate))
+			Type eventType = @event.GetType();
+			bool isRequired;
+			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", eventType.FullName), out isRequired))
+				isRequired = true;
+
+			IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate);
+			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
+			if (!handlers.Any())
+				Logger.LogDebug(string.Format("The event handler for '{0}' is not required.", eventType.FullName));
+
+			foreach (Action<IMessage> handler in handlers)
 				handler(@event);
 		}
 

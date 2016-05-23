@@ -106,7 +106,16 @@ namespace Cqrs.Azure.ServiceBus
 			CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
 			AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
 
-			IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event).Select(x => x.Delegate);
+			Type eventType = @event.GetType();
+			bool isRequired;
+			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", eventType.FullName), out isRequired))
+				isRequired = true;
+
+			IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate);
+			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
+			if (!handlers.Any())
+				Logger.LogDebug(string.Format("The event handler for '{0}' is not required.", eventType.FullName));
+
 			foreach (Action<IMessage> handler in handlers)
 				handler(@event);
 		}

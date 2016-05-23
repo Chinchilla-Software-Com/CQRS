@@ -11,5 +11,9 @@ namespace Cqrs.Configuration
 	public interface IConfigurationManager
 	{
 		string GetSetting(string key);
+
+		bool TryGetSetting(string key, out string value);
+
+		bool TryGetSetting<TValue>(string key, out TValue value);
 	}
 }
