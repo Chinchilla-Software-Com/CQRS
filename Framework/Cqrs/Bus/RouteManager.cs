@@ -101,13 +101,17 @@ namespace Cqrs.Bus
 
 			if (Routes.TryGetValue(messageType, out route))
 			{
-				if (route.Handlers == null || route.Handlers.Count != 1)
+				if (route.Handlers != null)
 				{
-					if (isACommand)
-						throw new MultipleCommandHandlersRegisteredException(messageType);
-					throw new InvalidOperationException("Cannot send to more than one handler.");
+					if (route.Handlers.Count != 1)
+					{
+						if (isACommand)
+							throw new MultipleCommandHandlersRegisteredException(messageType);
+						throw new InvalidOperationException("Cannot send to more than one handler.");
+					}
+					if (route.Handlers.Count == 1)
+						return route.Handlers.Single();
 				}
-				return route.Handlers.Single();
 			}
 
 			if (throwExceptionOnNoRouteHandlers)

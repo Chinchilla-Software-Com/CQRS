@@ -14,6 +14,7 @@ using System.Threading;
 using Cqrs.Authentication;
 using Cqrs.Commands;
 using cdmdotnet.Logging;
+using Cqrs.Configuration;
 using Cqrs.Messages;
 
 namespace Cqrs.Bus
@@ -30,15 +31,18 @@ namespace Cqrs.Bus
 
 		protected ILogger Logger { get; private set; }
 
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
 		protected abstract IDictionary<Type, IList<Action<IMessage>>> Routes { get; }
 
-		protected QueuedCommandBusReceiver(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
+		protected QueuedCommandBusReceiver(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IConfigurationManager configurationManager)
 		{
 			QueueTracker = new ConcurrentDictionary<string, ConcurrentQueue<ICommand<TAuthenticationToken>>>();
 			QueueTrackerLock = new ReaderWriterLockSlim();
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
 			Logger = logger;
+			ConfigurationManager = configurationManager;
 		}
 
 		protected virtual void EnqueueCommand(string targetQueueName, ICommand<TAuthenticationToken> command)
@@ -167,17 +171,29 @@ namespace Cqrs.Bus
 			CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
 			AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
 
+			Type commandType = command.GetType();
+
+			bool isRequired;
+			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", commandType.FullName), out isRequired))
+				isRequired = true;
+
 			IList<Action<IMessage>> handlers;
-			if (Routes.TryGetValue(command.GetType(), out handlers))
+			if (Routes.TryGetValue(commandType, out handlers))
 			{
-				if (handlers.Count != 1)
-					throw new InvalidOperationException("Cannot send to more than one handler");
-				handlers.Single()(command);
+				if (handlers != null)
+				{
+					if (handlers.Count != 1)
+						throw new MultipleCommandHandlersRegisteredException(commandType);
+					if (handlers.Count == 1)
+						handlers.Single()(command);
+					else if (isRequired)
+						throw new NoCommandHandlerRegisteredException(commandType);
+				}
+				else if (isRequired)
+					throw new NoCommandHandlerRegisteredException(commandType);
 			}
-			else
-			{
-				throw new InvalidOperationException("No handler registered");
-			}
+			else if (isRequired)
+				throw new NoCommandHandlerRegisteredException(commandType);
 		}
 
 		#region Implementation of ICommandReceiver
