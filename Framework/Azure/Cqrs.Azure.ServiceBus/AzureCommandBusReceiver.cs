@@ -17,7 +17,10 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	public class AzureCommandBusReceiver<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, ICommandHandlerRegistrar, ICommandReceiver<TAuthenticationToken>
+	public class AzureCommandBusReceiver<TAuthenticationToken>
+		: AzureCommandBus<TAuthenticationToken>
+		, ICommandHandlerRegistrar
+		, ICommandReceiver<TAuthenticationToken>
 	{
 		private static RouteManager Routes { get; set; }
 
@@ -35,6 +38,15 @@ namespace Cqrs.Azure.ServiceBus
 			where TMessage : IMessage
 		{
 			Routes.RegisterHandler(handler, targetedType);
+		}
+
+		/// <summary>
+		/// Register an event or command handler that will listen and respond to events or commands.
+		/// </summary>
+		public void RegisterHandler<TMessage>(Action<TMessage> handler)
+			where TMessage : IMessage
+		{
+			RegisterHandler(handler, null);
 		}
 
 		protected virtual void ReceiveCommand(BrokeredMessage message)
@@ -64,17 +76,30 @@ namespace Cqrs.Azure.ServiceBus
 
 		public virtual void ReceiveCommand(ICommand<TAuthenticationToken> command)
 		{
+			Type commandType = command.GetType();
 			switch (command.Framework)
 			{
 				case FrameworkType.Akka:
-					Logger.LogInfo(string.Format("A command arrived of the type '{0}' but was marked as coming from the '{1}' framework, so it was dropped.", command.GetType().FullName, command.Framework));
+					Logger.LogInfo(string.Format("A command arrived of the type '{0}' but was marked as coming from the '{1}' framework, so it was dropped.", commandType.FullName, command.Framework));
 					return;
 			}
 
 			CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
 			AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
 
-			Action<IMessage> handler = Routes.GetSingleHandler(command).Delegate;
+			bool isRequired;
+			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", commandType.FullName), out isRequired))
+				isRequired = true;
+
+			RouteHandlerDelegate commandHandler = Routes.GetSingleHandler(command, isRequired);
+			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
+			if (commandHandler == null)
+			{
+				Logger.LogDebug(string.Format("The command handler for '{0}' is not required.", commandType.FullName));
+				return;
+			}
+
+			Action<IMessage> handler = commandHandler.Delegate;
 			handler(command);
 		}
 

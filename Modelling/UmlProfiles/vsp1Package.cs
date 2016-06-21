@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -10,13 +10,19 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Web;
+<<<<<<< HEAD:Modelling/UmlProfiles/UmlPackage.cs
 using System.Web.Script.Serialization;
 using Cqrs.Modelling.UmlProfiles.Code;
+=======
+>>>>>>> b236fc778d04b83953e471370d49a8a8224c20aa:Modelling/UmlProfiles/vsp1Package.cs
 using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
+<<<<<<< HEAD:Modelling/UmlProfiles/UmlPackage.cs
 using Microsoft.VisualStudio.Shell.Interop;
+=======
+>>>>>>> b236fc778d04b83953e471370d49a8a8224c20aa:Modelling/UmlProfiles/vsp1Package.cs
 using VSLangProj;
 
 namespace Cqrs.Modelling.UmlProfiles
@@ -38,14 +44,13 @@ namespace Cqrs.Modelling.UmlProfiles
 	// in the Help/About dialog of Visual Studio.
 	[InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
 	[Guid(GuidList.guidvsp1PkgString)]
-	// This attribute is needed to let the shell know that this package exposes some menus.
-	[ProvideMenuResource("Menus.ctmenu", 1)]
-	// This attribute registers a tool window exposed by this package.
-	// And make it tabbed to the "Solution Explorer" Window
-	[ProvideToolWindow(typeof(CqrsSolutionOptionsToolWindow), Style = VsDockStyle.Tabbed, Window = "3ae79031-e1bc-11d0-8f78-00a0c9110057")]
 	[ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string)]
+<<<<<<< HEAD:Modelling/UmlProfiles/UmlPackage.cs
 	[ProvideSolutionProperties(CqrsNetSettingsKey)]
 	public sealed class UmlPackage : Package, IVsPersistSolutionProps
+=======
+	public sealed class vsp1Package : Package
+>>>>>>> b236fc778d04b83953e471370d49a8a8224c20aa:Modelling/UmlProfiles/vsp1Package.cs
 	{
 		/// <summary>
 		/// Default constructor of the package.
@@ -54,13 +59,12 @@ namespace Cqrs.Modelling.UmlProfiles
 		/// not sited yet inside Visual Studio environment. The place to do all the other 
 		/// initialization is the Initialize method.
 		/// </summary>
-		public UmlPackage()
+		public vsp1Package()
 		{
 			Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
-			LicenseKeyHelper.IsRegistered = false;
 		}
 
-		internal static IList<Project> ProjectNames { get; private set; }
+
 
 		internal static IVsPersistSolutionProps Solution { get; private set; }
 
@@ -74,11 +78,11 @@ namespace Cqrs.Modelling.UmlProfiles
 
 		/// <summary>
 		/// Initialization of the package; this method is called right after the package is sited, so this is the place
-		/// where you can put all the initialization code that rely on services provided by VisualStudio.
+		/// where you can put all the initilaization code that rely on services provided by VisualStudio.
 		/// </summary>
 		protected override void Initialize()
 		{
-			Trace.TraceInformation(string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", GetType().FullName));
+			Trace.WriteLine (string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
 			base.Initialize();
 
 			try
@@ -86,6 +90,7 @@ namespace Cqrs.Modelling.UmlProfiles
 				ProjectNames = new List<Project>();
 
 				DTE dte = (DTE)GetService(typeof(DTE));
+<<<<<<< HEAD:Modelling/UmlProfiles/UmlPackage.cs
 
 				dte.Events.SolutionEvents.ProjectAdded += project => { ProjectNames.Add(project); };
 				dte.Events.SolutionEvents.ProjectRemoved += project => { if (ProjectNames.Contains(project)) { ProjectNames.Remove(project); } };
@@ -96,22 +101,45 @@ namespace Cqrs.Modelling.UmlProfiles
 				dte.Events.SolutionEvents.BeforeClosing += ProjectNames.Clear;
 
 				PopulateProjectNames(dte);
-			}
-			catch(Exception ex)
-			{
-				Trace.TraceError(ex.Message);
-			}
+=======
+				Projects projects = dte.Solution.Projects;
+				string solutionName = dte.Solution.FullName;
+				solutionName = solutionName.Substring(solutionName.LastIndexOf('\\') + 1);
+				foreach (Project project in projects)
+				{
+					IEnumerable<AssemblyName> references;
+					try
+					{
+						references = CollectSettings(project)
+							.Where(assembly => assembly.Name.StartsWith("Cqrs"))
+							.ToList();
+					}
+					catch (NullReferenceException)
+					{
+						continue;
+					}
+					foreach (AssemblyName assemblyName in references)
+					{
+						string urlPath = string.Format("/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}", HttpUtility.UrlPathEncode(dte.Version), HttpUtility.UrlPathEncode(dte.Edition), HttpUtility.UrlPathEncode(solutionName), HttpUtility.UrlPathEncode(project.Name), HttpUtility.UrlPathEncode(project.Kind), HttpUtility.UrlPathEncode(project.UniqueName.Replace('\\', '¿')), HttpUtility.UrlPathEncode(assemblyName.Name), HttpUtility.UrlPathEncode(assemblyName.Version.ToString()));
 
-			try
-			{
-				var licenseKeyHelper = new LicenseKeyHelper();
-				LicenseKeyHelper.IsRegistered = licenseKeyHelper.IsLicensed();
-				if (!LicenseKeyHelper.IsRegistered)
-					System.Windows.Forms.MessageBox.Show("The Cqrs.net visual designer is not licensed. Please contact chinchillasoftware.com to purchase an enterprise license.");
+						HttpWebRequest request = WebRequest.Create(string.Format("https://www.chinchillasoftware.com/VisualStudio{0}", urlPath)) as HttpWebRequest;
+						request.Method = "GET";
+						try
+						{
+							new TaskFactory().StartNew(() =>
+							{
+								using (request.GetResponse()) {}
+							});
+						}
+						catch
+						{
+						}
+					}
+				}
+>>>>>>> b236fc778d04b83953e471370d49a8a8224c20aa:Modelling/UmlProfiles/vsp1Package.cs
 			}
-			catch (Exception ex)
+			catch
 			{
-				Trace.TraceError(ex.Message);
 			}
 
 			try
@@ -191,48 +219,6 @@ namespace Cqrs.Modelling.UmlProfiles
 
 		#endregion
 
-		public static IEnumerable<AssemblyName> GetAssemblyReferences(Project project)
-		{
-			var vsproject = project.Object as VSProject;
-			// note: you could also try casting to VsWebSite.VSWebSite
-
-			foreach (Reference reference in vsproject.References)
-			{
-				if (reference.SourceProject == null)
-				{
-					// This is an assembly reference
-					var fullName = GetFullName(reference);
-					var assemblyName = new AssemblyName(fullName);
-					yield return assemblyName;
-				}
-				else
-				{
-					// This is a project reference
-				}
-			}
-		}
-
-		public static IEnumerable<AssemblyName> GetProjectReferences(Project project)
-		{
-			var vsproject = project.Object as VSProject;
-			// note: you could also try casting to VsWebSite.VSWebSite
-
-			foreach (Reference reference in vsproject.References)
-			{
-				if (reference.SourceProject == null)
-				{
-					// This is an assembly reference
-				}
-				else
-				{
-					// This is an assembly reference
-					var fullName = GetFullName(reference);
-					var assemblyName = new AssemblyName(fullName);
-					yield return assemblyName;
-				}
-			}
-		}
-
 		public static IEnumerable<AssemblyName> CollectSettings(Project project)
 		{
 			var vsproject = project.Object as VSProject;
@@ -262,6 +248,7 @@ namespace Cqrs.Modelling.UmlProfiles
 									reference.Culture.Or("neutral"),
 									reference.PublicKeyToken.Or("null"));
 		}
+<<<<<<< HEAD:Modelling/UmlProfiles/UmlPackage.cs
 
 		/// <summary>
 		/// This function is called when the user clicks the menu item that shows the 
@@ -554,6 +541,8 @@ namespace Cqrs.Modelling.UmlProfiles
 					bw.Write(s);
 			}
 		}
+=======
+>>>>>>> b236fc778d04b83953e471370d49a8a8224c20aa:Modelling/UmlProfiles/vsp1Package.cs
 	}
 
 	static class Extensions
@@ -563,6 +552,7 @@ namespace Cqrs.Modelling.UmlProfiles
 			return string.IsNullOrWhiteSpace(text) ? alternative : text;
 		}
 	}
+<<<<<<< HEAD:Modelling/UmlProfiles/UmlPackage.cs
 
 	internal class CqrsSettings
 	{
@@ -593,3 +583,6 @@ namespace Cqrs.Modelling.UmlProfiles
 		}
 	}
 }
+=======
+}
+>>>>>>> b236fc778d04b83953e471370d49a8a8224c20aa:Modelling/UmlProfiles/vsp1Package.cs

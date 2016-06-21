@@ -49,7 +49,7 @@ namespace Cqrs.Akka.Configuration
 				{
 					Type messageType = ((object)x).GetType();
 					object rsn = messageType.GetProperty("Rsn").GetValue(x, null);
-					handler = HandlerResolver.Resolve(executorType, executorType, rsn);
+					handler = HandlerResolver.Resolve(executorType, rsn);
 				}
 				catch (Exception)
 				{

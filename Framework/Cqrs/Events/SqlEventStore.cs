@@ -17,6 +17,9 @@ using Cqrs.Entities;
 
 namespace Cqrs.Events
 {
+	/// <summary>
+	/// A simplified SqlServer based <see cref="EventStore{TAuthenticationToken}"/> that uses LinqToSql and follows a rigid schema.
+	/// </summary>
 	public class SqlEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken> 
 	{
 		public IConfigurationManager ConfigurationManager { get; set; }

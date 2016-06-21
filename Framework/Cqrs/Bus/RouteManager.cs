@@ -9,6 +9,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cqrs.Commands;
+using Cqrs.Events;
 using Cqrs.Infrastructure;
 using Cqrs.Messages;
 
@@ -51,21 +53,41 @@ namespace Cqrs.Bus
 			);
 		}
 
+		/// <summary>
+		/// Register an event or command handler that will listen and respond to events or commands.
+		/// </summary>
+		public void RegisterHandler<TMessage>(Action<TMessage> handler)
+			where TMessage : IMessage
+		{
+			RegisterHandler(handler, null);
+		}
+
 		#endregion
 
 		public RouteHandlerDelegate GetSingleHandler<TMessage>(bool throwExceptionOnNoRouteHandlers = true)
 			where TMessage : IMessage
 		{
 			Route route;
+			Type messageType = typeof(TMessage);
+			bool isACommand = typeof(ICommand<>).IsAssignableFrom(messageType);
+
 			if (Routes.TryGetValue(typeof(TMessage), out route))
 			{
 				if (route.Handlers == null || route.Handlers.Count != 1)
+				{
+					if (isACommand)
+						throw new MultipleCommandHandlersRegisteredException(messageType);
 					throw new InvalidOperationException("Cannot send to more than one handler.");
+				}
 				return route.Handlers.Single();
 			}
 
 			if (throwExceptionOnNoRouteHandlers)
+			{
+				if (isACommand)
+					throw new NoCommandHandlerRegisteredException(messageType);
 				throw new InvalidOperationException("No handler registered.");
+			}
 
 			return null;
 		}
@@ -74,15 +96,30 @@ namespace Cqrs.Bus
 			where TMessage : IMessage
 		{
 			Route route;
-			if (Routes.TryGetValue(message.GetType(), out route))
+			Type messageType = message.GetType();
+			bool isACommand = typeof (ICommand<>).IsAssignableFrom(messageType);
+
+			if (Routes.TryGetValue(messageType, out route))
 			{
-				if (route.Handlers == null || route.Handlers.Count != 1)
-					throw new InvalidOperationException("Cannot send to more than one handler.");
-				return route.Handlers.Single();
+				if (route.Handlers != null)
+				{
+					if (route.Handlers.Count != 1)
+					{
+						if (isACommand)
+							throw new MultipleCommandHandlersRegisteredException(messageType);
+						throw new InvalidOperationException("Cannot send to more than one handler.");
+					}
+					if (route.Handlers.Count == 1)
+						return route.Handlers.Single();
+				}
 			}
 
 			if (throwExceptionOnNoRouteHandlers)
+			{
+				if (isACommand)
+					throw new NoCommandHandlerRegisteredException(messageType);
 				throw new InvalidOperationException("No handler registered.");
+			}
 
 			return null;
 		}
@@ -91,13 +128,23 @@ namespace Cqrs.Bus
 			where TMessage : IMessage
 		{
 			Route route;
-			if (Routes.TryGetValue(message.GetType(), out route))
+			Type messageType = message.GetType();
+			if (Routes.TryGetValue(messageType, out route))
 				return route.Handlers;
 
 			if (throwExceptionOnNoRouteHandlers)
-				throw new InvalidOperationException("No handlers registered.");
+			{
+				bool isACommand = typeof(ICommand<>).IsAssignableFrom(messageType);
+				bool isAnEvent = typeof(IEvent<>).IsAssignableFrom(messageType);
 
-			return null;
+				if (isACommand)
+					throw new NoCommandHandlerRegisteredException(messageType);
+				if (isAnEvent)
+					throw new NoEventHandlerRegisteredException(messageType);
+				throw new InvalidOperationException("No handler(s) registered.");
+			}
+
+			return Enumerable.Empty<RouteHandlerDelegate>();
 		}
 	}
 }

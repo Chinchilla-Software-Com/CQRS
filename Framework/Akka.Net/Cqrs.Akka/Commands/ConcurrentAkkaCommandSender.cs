@@ -7,10 +7,7 @@
 #endregion
 
 using Akka.Actor;
-using Cqrs.Akka.Configuration;
 using Cqrs.Commands;
-using Cqrs.Events;
-using Cqrs.Messages;
 
 namespace Cqrs.Akka.Commands
 {

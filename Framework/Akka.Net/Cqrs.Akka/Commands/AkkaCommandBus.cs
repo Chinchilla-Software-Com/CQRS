@@ -8,9 +8,11 @@
 
 using System;
 using Akka.Actor;
+using cdmdotnet.Logging;
 using Cqrs.Akka.Configuration;
 using Cqrs.Bus;
 using Cqrs.Commands;
+using Cqrs.Configuration;
 using Cqrs.Messages;
 
 namespace Cqrs.Akka.Commands
@@ -36,28 +38,48 @@ namespace Cqrs.Akka.Commands
 			ConcurrentEventBusProxy = concurrentEventBusProxy;
 		}
 
+		public AkkaCommandBus(IConfigurationManager configurationManager, ILogger logger, IActorRef actorReference, ICommandSender<TAuthenticationToken> commandSender, ICommandReceiver<TAuthenticationToken> commandReceiver)
+		{
+			ConfigurationManager = configurationManager;
+			Logger = logger;
+			ActorReference = actorReference;
+			CommandSender = commandSender;
+			CommandReceiver = commandReceiver;
+		}
+
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
+		protected ILogger Logger { get; private set; }
+
 		protected IActorRef ActorReference { get; private set; }
 
 		protected ICommandSender<TAuthenticationToken> CommandSender { get; private set; }
 
 		protected ICommandReceiver<TAuthenticationToken> CommandReceiver { get; private set; }
 
-		public AkkaCommandBus(IActorRef actorReference, ICommandSender<TAuthenticationToken> commandSender, ICommandReceiver<TAuthenticationToken> commandReceiver)
-		{
-			ActorReference = actorReference;
-			CommandSender = commandSender;
-			CommandReceiver = commandReceiver;
-		}
-
 		#region Implementation of ICommandSender<TAuthenticationToken>
 
 		public void Send<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			RouteHandlerDelegate commandHandler = Routes.GetSingleHandler(command);
-			Type senderType = typeof (IConcurrentAkkaCommandSender<,>).MakeGenericType(typeof(TAuthenticationToken), commandHandler.TargetedType);
-			var proxy = (IActorRef)ConcurrentEventBusProxy.Resolve(senderType, senderType, command.Id);
-			proxy.Tell(command);
+			Type commandType = typeof(TCommand);
+
+			bool isRequired;
+			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", commandType.FullName), out isRequired))
+				isRequired = true;
+
+			RouteHandlerDelegate commandHandler = Routes.GetSingleHandler(command, isRequired);
+			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
+			if (commandHandler == null)
+				Logger.LogDebug(string.Format("The command handler for '{0}' is not required.", commandType.FullName));
+			else
+			{
+				Type senderType = commandHandler.TargetedType == null
+					? typeof(IConcurrentAkkaCommandSender<>).MakeGenericType(typeof(TAuthenticationToken))
+					: typeof(IConcurrentAkkaCommandSender<,>).MakeGenericType(typeof(TAuthenticationToken), commandHandler.TargetedType);
+				var proxy = (IActorRef)ConcurrentEventBusProxy.Resolve(senderType, command.Id);
+				proxy.Tell(command);
+			}
 
 			command.Framework = FrameworkType.Akka;
 			CommandSender.Send(command);
@@ -74,6 +96,15 @@ namespace Cqrs.Akka.Commands
 			where TMessage : IMessage
 		{
 			Routes.RegisterHandler(handler, targetedType);
+		}
+
+		/// <summary>
+		/// Register an event or command handler that will listen and respond to events or commands.
+		/// </summary>
+		public void RegisterHandler<TMessage>(Action<TMessage> handler)
+			where TMessage : IMessage
+		{
+			RegisterHandler(handler, null);
 		}
 
 		#endregion

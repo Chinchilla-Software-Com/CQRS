@@ -8,10 +8,18 @@
 
 using System;
 
-namespace Cqrs.Akka.Configuration
+namespace Cqrs.Bus
 {
-	public interface IHandlerResolver
+	public abstract class NoHandlersRegisteredException : InvalidOperationException
 	{
-		object Resolve(Type handerType, object rsn);
+		protected NoHandlersRegisteredException(Type type)
+			: base(string.Format("No handlers are registered for type '{0}'.", type.FullName))
+		{
+		}
+
+		protected NoHandlersRegisteredException(string message)
+			: base(message)
+		{
+		}
 	}
 }
