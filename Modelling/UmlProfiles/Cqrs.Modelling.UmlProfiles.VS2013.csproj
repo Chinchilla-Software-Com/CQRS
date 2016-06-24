@@ -62,15 +62,14 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.ArchitectureTools.Extensibility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.ManagedInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop" />
     <Reference Include="Microsoft.VisualStudio.Uml, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(VS120COMNTOOLS)..\IDE\PrivateAssemblies\Microsoft.VisualStudio.Uml.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Uml.Interfaces, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Uml.Interfaces, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -205,8 +204,14 @@
       <Link>Code\CqrsSolutionOptionsControl.xaml.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CqrsSolutionOptionsControl.xaml</DependentUpon>
+      <DependentUpon>Code\CqrsSolutionOptionsControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ComStreamWrapper.cs" />
+    <Compile Include="Guids.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyBag.cs" />
+    <Compile Include="ProvideSolutionPropertiesAttribute.cs" />
     <Compile Include="..\..\Code\CqrsSolutionOptionsToolWindow.cs">
       <Link>Code\CqrsSolutionOptionsToolWindow.cs</Link>
     </Compile>
@@ -222,9 +227,6 @@
     <Compile Include="..\..\Code\UmlModelStereoTypeEventHandlers.cs">
       <Link>Code\UmlModelStereoTypeEventHandlers.cs</Link>
     </Compile>
-    <Compile Include="ComStreamWrapper.cs" />
-    <Compile Include="PropertyBag.cs" />
-    <Compile Include="ProvideSolutionPropertiesAttribute.cs" />
     <Compile Include="..\..\Code\UmlPackage.cs">
       <Link>Code\UmlPackage.cs</Link>
     </Compile>
@@ -233,9 +235,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Guids.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VSPackage.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -381,8 +380,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="..\..\Code\CqrsSolutionOptionsControl.xaml">
-      <Link>Code\CqrsSolutionOptionsControl.xaml.cs</Link>
+    <Page Include="Code\CqrsSolutionOptionsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -399,11 +397,12 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" Condition="false" />
   <PropertyGroup>
     <PostBuildEvent>REM "$(TargetDir)$(TargetName).vsix"
-REM IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 12 Exp "$(TargetDir)$(TargetName).vsix" uninstall
-REM IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 12 Exp "$(TargetDir)$(TargetName).vsix"</PostBuildEvent>
+REM IF "$(ConfigurationName)"=="Debug" "$(SolutionDir)..\Root-VSIX\Root-VSIX.exe" 12 Exp "$(TargetDir)$(TargetName).vsix" uninstall
+REM IF "$(ConfigurationName)"=="Debug" "$(SolutionDir)..\Root-VSIX\Root-VSIX.exe" 12 Exp "$(TargetDir)$(TargetName).vsix"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>COPY /Y $(ProjectDir)source.extension.2013.vsixmanifest $(ProjectDir)source.extension.vsixmanifest</PreBuildEvent>
+    <PreBuildEvent>COPY /Y $(ProjectDir)source.extension.2013.vsixmanifest $(ProjectDir)source.extension.vsixmanifest
+COPY /Y "$(ProjectDir)..\..\Code\CqrsSolutionOptionsControl.xaml" "$(ProjectDir)Code\CqrsSolutionOptionsControl.xaml"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

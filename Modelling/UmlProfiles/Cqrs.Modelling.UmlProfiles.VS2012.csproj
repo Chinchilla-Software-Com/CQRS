@@ -56,7 +56,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <DeployExtension>True</DeployExtension>
+    <DeployExtension>False</DeployExtension>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
@@ -203,7 +203,7 @@
       <Link>Code\CqrsSolutionOptionsControl.xaml.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CqrsSolutionOptionsControl.xaml</DependentUpon>
+      <DependentUpon>Code\CqrsSolutionOptionsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="..\..\Code\CqrsSolutionOptionsToolWindow.cs">
       <Link>Code\CqrsSolutionOptionsToolWindow.cs</Link>
@@ -379,8 +379,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="..\..\Code\CqrsSolutionOptionsControl.xaml">
-      <Link>Code\CqrsSolutionOptionsControl.xaml.cs</Link>
+    <Page Include="Code\CqrsSolutionOptionsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -397,11 +396,12 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" Condition="false" />
   <PropertyGroup>
     <PostBuildEvent>REM "$(TargetDir)$(TargetName).vsix"
-REM IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 11 Exp "$(TargetDir)$(TargetName).vsix" uninstall
-REM IF "$(ConfigurationName)"=="Debug" c:\code\Root-VSIX\Root-VSIX.exe 11 Exp "$(TargetDir)$(TargetName).vsix"</PostBuildEvent>
+REM IF "$(ConfigurationName)"=="Debug" "$(SolutionDir)..\Root-VSIX\Root-VSIX.exe" 11 Exp "$(TargetDir)$(TargetName).vsix" uninstall
+REM IF "$(ConfigurationName)"=="Debug" "$(SolutionDir)..\Root-VSIX\Root-VSIX.exe" 11 Exp "$(TargetDir)$(TargetName).vsix"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>COPY /Y $(ProjectDir)source.extension.2012.vsixmanifest $(ProjectDir)source.extension.vsixmanifest</PreBuildEvent>
+    <PreBuildEvent>COPY /Y $(ProjectDir)source.extension.2012.vsixmanifest $(ProjectDir)source.extension.vsixmanifest
+COPY /Y "$(ProjectDir)..\..\Code\CqrsSolutionOptionsControl.xaml" "$(ProjectDir)Code\CqrsSolutionOptionsControl.xaml"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
