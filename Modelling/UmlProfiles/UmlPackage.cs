@@ -10,19 +10,13 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Web;
-<<<<<<< HEAD:Modelling/UmlProfiles/UmlPackage.cs
 using System.Web.Script.Serialization;
 using Cqrs.Modelling.UmlProfiles.Code;
-=======
->>>>>>> b236fc778d04b83953e471370d49a8a8224c20aa:Modelling/UmlProfiles/vsp1Package.cs
 using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
-<<<<<<< HEAD:Modelling/UmlProfiles/UmlPackage.cs
 using Microsoft.VisualStudio.Shell.Interop;
-=======
->>>>>>> b236fc778d04b83953e471370d49a8a8224c20aa:Modelling/UmlProfiles/vsp1Package.cs
 using VSLangProj;
 
 namespace Cqrs.Modelling.UmlProfiles
@@ -45,12 +39,8 @@ namespace Cqrs.Modelling.UmlProfiles
 	[InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
 	[Guid(GuidList.guidvsp1PkgString)]
 	[ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string)]
-<<<<<<< HEAD:Modelling/UmlProfiles/UmlPackage.cs
 	[ProvideSolutionProperties(CqrsNetSettingsKey)]
 	public sealed class UmlPackage : Package, IVsPersistSolutionProps
-=======
-	public sealed class vsp1Package : Package
->>>>>>> b236fc778d04b83953e471370d49a8a8224c20aa:Modelling/UmlProfiles/vsp1Package.cs
 	{
 		/// <summary>
 		/// Default constructor of the package.
@@ -90,7 +80,6 @@ namespace Cqrs.Modelling.UmlProfiles
 				ProjectNames = new List<Project>();
 
 				DTE dte = (DTE)GetService(typeof(DTE));
-<<<<<<< HEAD:Modelling/UmlProfiles/UmlPackage.cs
 
 				dte.Events.SolutionEvents.ProjectAdded += project => { ProjectNames.Add(project); };
 				dte.Events.SolutionEvents.ProjectRemoved += project => { if (ProjectNames.Contains(project)) { ProjectNames.Remove(project); } };
@@ -101,7 +90,7 @@ namespace Cqrs.Modelling.UmlProfiles
 				dte.Events.SolutionEvents.BeforeClosing += ProjectNames.Clear;
 
 				PopulateProjectNames(dte);
-=======
+
 				Projects projects = dte.Solution.Projects;
 				string solutionName = dte.Solution.FullName;
 				solutionName = solutionName.Substring(solutionName.LastIndexOf('\\') + 1);
@@ -136,7 +125,6 @@ namespace Cqrs.Modelling.UmlProfiles
 						}
 					}
 				}
->>>>>>> b236fc778d04b83953e471370d49a8a8224c20aa:Modelling/UmlProfiles/vsp1Package.cs
 			}
 			catch
 			{
@@ -248,7 +236,6 @@ namespace Cqrs.Modelling.UmlProfiles
 									reference.Culture.Or("neutral"),
 									reference.PublicKeyToken.Or("null"));
 		}
-<<<<<<< HEAD:Modelling/UmlProfiles/UmlPackage.cs
 
 		/// <summary>
 		/// This function is called when the user clicks the menu item that shows the 
@@ -541,8 +528,6 @@ namespace Cqrs.Modelling.UmlProfiles
 					bw.Write(s);
 			}
 		}
-=======
->>>>>>> b236fc778d04b83953e471370d49a8a8224c20aa:Modelling/UmlProfiles/vsp1Package.cs
 	}
 
 	static class Extensions
@@ -552,7 +537,6 @@ namespace Cqrs.Modelling.UmlProfiles
 			return string.IsNullOrWhiteSpace(text) ? alternative : text;
 		}
 	}
-<<<<<<< HEAD:Modelling/UmlProfiles/UmlPackage.cs
 
 	internal class CqrsSettings
 	{
@@ -583,6 +567,3 @@ namespace Cqrs.Modelling.UmlProfiles
 		}
 	}
 }
-=======
-}
->>>>>>> b236fc778d04b83953e471370d49a8a8224c20aa:Modelling/UmlProfiles/vsp1Package.cs
