@@ -202,6 +202,9 @@
     <Compile Include="..\..\Code\UmlModelStereoTypeEventHandlers.cs">
       <Link>Code\UmlModelStereoTypeEventHandlers.cs</Link>
     </Compile>
+    <Compile Include="ComStreamWrapper.cs" />
+    <Compile Include="PropertyBag.cs" />
+    <Compile Include="ProvideSolutionPropertiesAttribute.cs" />
     <Compile Include="..\..\Code\UmlPackage.cs">
       <Link>Code\UmlPackage.cs</Link>
     </Compile>
@@ -225,12 +228,15 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Resources\Images.png" />
     <Content Include="Resources\Package.ico" />
     <Content Include="site-icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="UmlPackage.vsct" />
+    <VSCTCompile Include="UmlPackage.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+    </VSCTCompile>
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -317,6 +323,20 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VSPackage.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <ManifestResourceName>VSPackage</ManifestResourceName>
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>VSPackage.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
