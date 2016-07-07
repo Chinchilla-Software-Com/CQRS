@@ -81,8 +81,6 @@ namespace <#= classNamespace #>
 		// Properties
 		foreach(var collectionProperty in collectionProperties)
 		{
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 #>
 <# WriteSummaryComment(collectionProperty.Description); #>
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; private set; }
@@ -112,8 +110,6 @@ switch(aggregateTechnology)
 <#
 			foreach(IProperty collectionProperty in collectionProperties.Where(property => property.UpperValue != null && property.UpperValue.ToString() == "*").ToList())
 			{
-				if (!collectionProperty.AppliedStereotypes.Any())
-					continue;
 #>
 			<#= collectionProperty.Name #> = new List<<#= GetDisplayType(collectionProperty) #>>();
 <#
@@ -122,19 +118,12 @@ switch(aggregateTechnology)
 
 <#
 		IList<IOperation> collectionMethods = GetMethodList(this.Element);
-switch(aggregateTechnology)
-{
-	case "Akka":
 		// Methods
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
-			if (!ShouldGenerateCodeForElement(collectionMethod))
-				continue;
 #>
 			Receive<<#= collectionMethod.Name #>Parameters>(parameters => <#= collectionMethod.Name #>(parameters));
 <#
-		}
-		break;
 }
 #>
 		}
@@ -162,8 +151,6 @@ switch(aggregateTechnology)
 <#
 			foreach(IProperty collectionProperty in collectionProperties.Where(property => property.UpperValue != null && property.UpperValue.ToString() == "*").ToList())
 			{
-				if (!collectionProperty.AppliedStereotypes.Any())
-					continue;
 #>
 			<#= collectionProperty.Name #> = new List<<#= GetDisplayType(collectionProperty) #>>();
 <#
@@ -198,8 +185,6 @@ switch(aggregateTechnology)
 			bool isSimple = false;
 			string eventName = null;
 			var methodStereoTypeProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "AggregateRootMethod");
-			if (!ShouldGenerateCodeForElement(collectionMethod))
-				continue;
 			if (methodStereoTypeProperties != null)
 			{
 				isSimple = methodStereoTypeProperties.PropertyInstances.Any(property => property.Name == "AggregateRootMethodType" && property.Value == "Simple");
@@ -219,8 +204,6 @@ switch(aggregateTechnology)
 				int akkaIndex = 0;
 				foreach (IParameter collectionProperty in parameters)
 				{
-					if (!collectionProperty.AppliedStereotypes.Any())
-						continue;
 					if (akkaIndex > 0)
 						methodBody.Append(", ");
 					akkaIndex++;
@@ -295,8 +278,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>)
@@ -307,8 +288,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
@@ -318,8 +297,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 			#>, <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>));
@@ -329,8 +306,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
@@ -342,8 +317,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
@@ -352,8 +325,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
@@ -364,8 +335,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 #>			<#= collectionProperty.Name #> = @event.<#= collectionProperty.Name #>;
 <#
 		}
@@ -391,8 +360,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>)
@@ -403,8 +370,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
@@ -414,8 +379,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 			#>, <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>));
@@ -425,8 +388,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
@@ -438,8 +399,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
@@ -448,8 +407,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
@@ -460,8 +417,6 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 #>			<#= collectionProperty.Name #> = @event.<#= collectionProperty.Name #>;
 <#
 		}
@@ -508,6 +463,102 @@ switch(aggregateTechnology)
 		}
 <#
 		}
+
+		IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => !string.IsNullOrWhiteSpace(associationEnd.Name) && associationEnd.TargetElement == this.Element);
+
+		foreach(IAssociation relationship in relationships)
+		{
+			string targetElementName = ((INamedElement)relationship.TargetElement).Name;
+			IList<IProperty> relationshipProperties = GetPropertyList((IClass)relationship.SourceElement).Where(property=> property.Type != relationship.TargetElement && property.Type != relationship.SourceElement).ToList();
+			IEnumerable<IAssociation> eventRelationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.Name == relationship.Name && associationEnd.SourceElement == this.Element);
+#>
+
+		public void <#= relationship.Name #>(<#
+			for (int i = 0; i < relationshipProperties.Count; i++)
+			{
+				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
+				#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(relationshipProperty) #> <#= GetLowercaseFirstCharacter(relationshipProperty.Name) #><#
+			}
+#>)
+		{
+			Log.LogDebug("Entered", "<#= className #>/<#= relationship.Name #>");
+
+<#
+			string eventParameters = null;
+			string eventParametersWithType = null;
+			foreach(IAssociation eventRelationship in eventRelationships)
+			{
+				string eventTargetElementName = ((INamedElement)eventRelationship.TargetElement).Name;
+				if (string.IsNullOrWhiteSpace(eventParameters))
+				{
+					eventParameters = ", ref ";
+					eventParametersWithType = ", ref ";
+				}
+				else
+				{
+					eventParameters = string.Concat(eventParameters, ", ref ");
+					eventParametersWithType = string.Concat(eventParametersWithType, ", ref ");
+				}
+				eventParameters = string.Concat(eventParameters, GetLowercaseFirstCharacter(eventTargetElementName), "Event");
+				eventParametersWithType = string.Concat(eventParametersWithType, eventTargetElementName, " ", GetLowercaseFirstCharacter(eventTargetElementName), "Event");
+#>			<#= eventTargetElementName #> <#= GetLowercaseFirstCharacter(eventTargetElementName) #>Event = null;
+<#
+			}
+#>
+
+			On<#= relationship.Name #>(<#
+			for (int i = 0; i < relationshipProperties.Count; i++)
+			{
+				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
+				#><#= (i == 0) ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(relationshipProperty.Name) #><#
+			}
+#><#= eventParameters #>);
+<#
+			foreach(IAssociation eventRelationship in eventRelationships)
+			{
+				string eventTargetElementName = ((INamedElement)eventRelationship.TargetElement).Name;
+#>
+			if (<#= GetLowercaseFirstCharacter(eventTargetElementName) #>Event != null)
+			{
+				Log.LogDebug("Pre", "<#= className #>/<#= relationship.Name #>/ApplyChange/<#= eventTargetElementName #>");
+				ApplyChange(<#= GetLowercaseFirstCharacter(eventTargetElementName) #>Event);
+				Log.LogDebug("Post", "<#= className #>/<#= relationship.Name #>/ApplyChange/<#= eventTargetElementName #>");
+			}
+<#
+			}
+#>
+
+			Log.LogDebug("Pre", "<#= className #>/<#= relationship.Name #>/On<#= relationship.Name #>Handled");
+			On<#= relationship.Name #>Handled(<#
+			for (int i = 0; i < relationshipProperties.Count; i++)
+			{
+				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
+				#><#= (i == 0) ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(relationshipProperty.Name) #><#
+			}
+#>);
+			Log.LogDebug("Post", "<#= className #>/<#= relationship.Name #>/On<#= relationship.Name #>Handled");
+
+			Log.LogDebug("Exited", "<#= className #>/<#= relationship.Name #>");
+		}
+
+		partial void On<#= relationship.Name #>(<#
+			for (int i = 0; i < relationshipProperties.Count; i++)
+			{
+				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
+				#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(relationshipProperty) #> <#= GetLowercaseFirstCharacter(relationshipProperty.Name) #><#
+			}
+#><#= eventParametersWithType #>);
+
+		partial void On<#= relationship.Name #>Handled(<#
+			for (int i = 0; i < relationshipProperties.Count; i++)
+			{
+				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
+				#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(relationshipProperty) #> <#= GetLowercaseFirstCharacter(relationshipProperty.Name) #><#
+			}
+#>);
+
+<#
+		}
 #>
 
 		public class <#= className #>Snapshot : Snapshot
@@ -517,8 +568,6 @@ switch(aggregateTechnology)
 		// Properties
 		foreach(var collectionProperty in collectionProperties)
 		{
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
 #>
 
 <# WriteSummaryComment(collectionProperty.Description); #>
@@ -542,8 +591,6 @@ switch(aggregateTechnology)
 				var parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return).ToList();
 				foreach (IParameter collectionProperty in parameters)
 				{
-					if (!collectionProperty.AppliedStereotypes.Any())
-						continue;
 #>
 
 		public <#= GetFullDisplayType(collectionProperty, false) #> <#= collectionProperty.Name #> { get; set; }

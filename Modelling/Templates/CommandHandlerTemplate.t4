@@ -106,17 +106,20 @@ switch(commandHandlerTechnology)
 		}
 
 <#
-		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
-		// Properties
-		foreach(var collectionProperty in collectionProperties)
-		{
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
+IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => !string.IsNullOrWhiteSpace(associationEnd.Name) && associationEnd.SourceElement == this.Element);
+
+IList<IProperty> collectionProperties = GetPropertyList(this.Element).Where(property=> property.Type != this.Element).ToList();
+// Properties
+foreach(var collectionProperty in collectionProperties)
+{
 #>
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; set; }
 
 <#
-		}
+}
+
+if (!relationships.Any())
+{
 #>
 		#region Implementation of ICommandHandler<in <#= className #>>
 
@@ -251,6 +254,7 @@ switch(commandHandlerTechnology)
 		partial void OnHandle(<#= className #>Command command);
 <#
 	}
+}
 #>
 
 <#
@@ -265,6 +269,78 @@ switch(commandHandlerTechnology)
 		}
 
 		partial void On<#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>);
+<#
+		}
+
+		foreach(IAssociation relationship in relationships)
+		{
+			string targetElementName = ((INamedElement)relationship.TargetElement).Name;
+#>
+		#region Implementation of ICommandHandler<in <#= className #>>
+
+		public void Handle(<#= className #>Command command)
+		{
+			ICommandValidator<<#= authenticationTokenType #>, <#= className #>Command> commandValidator = null;
+			try
+			{
+				commandValidator = DependencyResolver.Resolve<ICommandValidator<<#= authenticationTokenType #>, <#= className #>Command>>();
+			}
+			catch (Exception exception)
+			{
+				Logger.LogDebug("Locating an ICommandValidator failed.", "<#= className #>CommandHandler\\Handle(<#= className #>Command)", exception);
+			}
+
+			if (commandValidator != null && !commandValidator.IsCommandValid(command))
+			{
+				Logger.LogInfo("The provided command is not valid.", "<#= className #>CommandHandler\\Handle(<#= className #>Command)");
+				return;
+			}
+
+			bool continueExecution = true;
+			OnHandle(command, ref continueExecution);
+			if (continueExecution)
+			{
+				<#= targetElementName #> item = null;
+				On<#= relationship.Name #>(command, ref item);
+				if (item == null)
+				{
+					item = new <#= targetElementName #>(DependencyResolver, Logger, command.Rsn);
+					UnitOfWork.Add(item);
+				}
+				item.<#= relationship.Name #>(<#
+		for (int i = 0; i < collectionProperties.Count; i++)
+		{
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			if (!collectionProperty.AppliedStereotypes.Any())
+				continue;
+			#><#= (i == 0) ? string.Empty : ", " #>command.<#= collectionProperty.Name #><#
+		}
+#>);
+				On<#= relationship.Name #>Handled(command, item);
+				OnAddToUnitOfWork(command, item);
+				UnitOfWork.Add(item);
+				OnAddedToUnitOfWork(command, item);
+				OnCommit(command, item);
+				UnitOfWork.Commit();
+				OnCommited(command, item);
+			}
+		}
+
+		#endregion
+
+		partial void OnHandle(<#= className #>Command command, ref bool continueExecution);
+
+		partial void On<#= relationship.Name #>(<#= className #>Command command, ref <#= targetElementName #> item);
+
+		partial void On<#= relationship.Name #>Handled(<#= className #>Command command, <#= targetElementName #> item);
+
+		partial void OnAddToUnitOfWork(<#= className #>Command command, <#= targetElementName #> item);
+
+		partial void OnAddedToUnitOfWork(<#= className #>Command command, <#= targetElementName #> item);
+
+		partial void OnCommit(<#= className #>Command command, <#= targetElementName #> item);
+
+		partial void OnCommited(<#= className #>Command command, <#= targetElementName #> item);
 <#
 		}
 #>
