@@ -81,6 +81,17 @@ namespace <#= classNamespace #>
 		// Properties
 		foreach(var collectionProperty in collectionProperties)
 		{
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 #>
 <# WriteSummaryComment(collectionProperty.Description); #>
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; private set; }
@@ -275,20 +286,46 @@ switch(aggregateTechnology)
 		/// Create a new instance of the <see cref="<#= className #>"/>
 		/// </summary>
 		public virtual void Create<#= className #>(<#
+		int propertyIndex= 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
+			#><#= (propertyIndex == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			propertyIndex++;
 		}
 #>)
 		{
 			Log.LogDebug("Entered", "<#= className #>/Create<#= className #>");
 			Log.LogDebug("Pre", "<#= className #>/OnCreate<#= className #>");
 			OnCreate<#= className #>(<#
+		propertyIndex= 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
+			#><#= propertyIndex == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			propertyIndex++;
 		}
 #>);
 			Log.LogDebug("Post", "<#= className #>/OnCreate<#= className #>");
@@ -297,16 +334,40 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 			#>, <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>));
 			Log.LogDebug("Post", "<#= className #>/ApplyChange");
 			Log.LogDebug("Pre", "<#= className #>/OnCreated<#= className #>");
 			OnCreated<#= className #>(<#
+		propertyIndex = 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
+			#><#= propertyIndex == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			propertyIndex++;
 		}
 #>);
 			Log.LogDebug("Post", "<#= className #>/OnCreated<#= className #>");
@@ -317,15 +378,39 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>);
 
 		partial void OnCreated<#= className #>(<#
+		propertyIndex = 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
+			#><#= (propertyIndex == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			propertyIndex++;
 		}
 #>);
 
@@ -335,6 +420,17 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 #>			<#= collectionProperty.Name #> = @event.<#= collectionProperty.Name #>;
 <#
 		}
@@ -357,20 +453,46 @@ switch(aggregateTechnology)
 		/// Update an existing instance of the <see cref="<#= className #>"/>
 		/// </summary>
 		public virtual void Update<#= className #>(<#
+		int propertyIndex = 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
+			#><#= (propertyIndex == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			propertyIndex++;
 		}
 #>)
 		{
 			Log.LogDebug("Entered", "<#= className #>/Update<#= className #>");
 			Log.LogDebug("Pre", "<#= className #>/OnUpdate<#= className #>");
 			OnUpdate<#= className #>(<#
+		propertyIndex = 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
+			#><#= propertyIndex == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			propertyIndex++;
 		}
 #>);
 			Log.LogDebug("Post", "<#= className #>/OnUpdate<#= className #>");
@@ -379,16 +501,40 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 			#>, <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>));
 			Log.LogDebug("Post", "<#= className #>/ApplyChange");
 			Log.LogDebug("Pre", "<#= className #>/OnUpdated<#= className #>");
 			OnUpdated<#= className #>(<#
+		propertyIndex = 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			#><#= i == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
+			#><#= propertyIndex == 0 ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			propertyIndex++;
 		}
 #>);
 			Log.LogDebug("Post", "<#= className #>/OnUpdated<#= className #>");
@@ -396,18 +542,44 @@ switch(aggregateTechnology)
 		}
 
 		partial void OnUpdate<#= className #>(<#
+		propertyIndex = 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
+			#><#= (propertyIndex == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			propertyIndex++;
 		}
 #>);
 
 		partial void OnUpdated<#= className #>(<#
+		propertyIndex = 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
+			#><#= (propertyIndex == 0) ? string.Empty : ", " #><#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
+			propertyIndex++;
 		}
 #>);
 
@@ -417,6 +589,17 @@ switch(aggregateTechnology)
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 #>			<#= collectionProperty.Name #> = @event.<#= collectionProperty.Name #>;
 <#
 		}
@@ -484,8 +667,8 @@ switch(aggregateTechnology)
 			Log.LogDebug("Entered", "<#= className #>/<#= relationship.Name #>");
 
 <#
-			string eventParameters = null;
-			string eventParametersWithType = null;
+			string eventParameters = "";
+			string eventParametersWithType = "";
 			foreach(IAssociation eventRelationship in eventRelationships)
 			{
 				string eventTargetElementName = ((INamedElement)eventRelationship.TargetElement).Name;
@@ -566,8 +749,19 @@ switch(aggregateTechnology)
 			public bool IsLogicallyDeleted {get; set;}
 <#
 		// Properties
-		foreach(var collectionProperty in collectionProperties)
+		foreach(IProperty collectionProperty in collectionProperties)
 		{
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 #>
 
 <# WriteSummaryComment(collectionProperty.Description); #>

@@ -92,6 +92,17 @@ namespace <#= classNamespace #>
 		// Properties
 		foreach(IProperty collectionProperty in collectionProperties)
 		{
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var eventToCommandConverterHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (eventToCommandConverterHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 #>
 		[DataMember]
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; private set; }
@@ -104,6 +115,17 @@ namespace <#= classNamespace #>
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var eventToCommandConverterHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (eventToCommandConverterHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 			#>, <#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>)
@@ -112,6 +134,17 @@ namespace <#= classNamespace #>
 <#
 		foreach(IProperty collectionProperty in collectionProperties)
 		{
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var eventToCommandConverterHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (eventToCommandConverterHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 #>
 			<#= collectionProperty.Name #> = <#= GetLowercaseFirstCharacter(collectionProperty.Name) #>;
 <#
@@ -120,6 +153,14 @@ namespace <#= classNamespace #>
 		}
 	}
 }
+
+<#
+if (classNamespace.EndsWith(".Events"))
+{ #>
+namespace <#= classNamespace.Substring(0, classNamespace.Length - 6) #>Commands
+{
+}
+<# } #>
 <#+
 	protected override bool AppliesToElement()
 	{
