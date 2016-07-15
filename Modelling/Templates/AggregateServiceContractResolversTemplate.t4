@@ -26,7 +26,6 @@ if (!string.IsNullOrWhiteSpace(baseClass))
 WriteUsingStatements(this.Element);
 #>
 using System.Xml;
-using Cqrs.Events;
 using Cqrs.Services;
 using <#= classNamespace #>.Entities;
 
@@ -50,8 +49,8 @@ namespace <#= classNamespace #>.Services
 	<#= GetGeneratedCodeAttribute() #>
 	public partial class <#= className #>ServiceCreate<#= className #>ParametersResolver : ServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
 	{
-		public <#= className #>ServiceCreate<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
-			: base(singleSignOnTokenResolver, eventDataResolver)
+		public <#= className #>ServiceCreate<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver)
+			: base(singleSignOnTokenResolver)
 		{
 		}
 
@@ -62,7 +61,7 @@ if (index > 0)
 	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
 #>
 		public <#= className #>ServiceCreate<#= className #>ParametersResolver()
-			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
+			: base(new <#= authenticationTokenTypeResolver #>())
 		{
 		}
 
@@ -150,8 +149,8 @@ if (index > 0)
 	<#= GetGeneratedCodeAttribute() #>
 	public partial class <#= className #>ServiceUpdate<#= className #>ParametersResolver : ServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
 	{
-		public <#= className #>ServiceUpdate<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
-			: base(singleSignOnTokenResolver, eventDataResolver)
+		public <#= className #>ServiceUpdate<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver)
+			: base(singleSignOnTokenResolver)
 		{
 		}
 
@@ -162,7 +161,7 @@ if (index > 0)
 	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
 #>
 		public <#= className #>ServiceUpdate<#= className #>ParametersResolver()
-			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
+			: base(new <#= authenticationTokenTypeResolver #>())
 		{
 		}
 
@@ -250,11 +249,10 @@ if (index > 0)
 	<#= GetGeneratedCodeAttribute() #>
 	public partial class <#= className #>ServiceDelete<#= className #>ParametersResolver : ServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
 	{
-		public <#= className #>ServiceDelete<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
-			: base(singleSignOnTokenResolver, eventDataResolver)
+		public <#= className #>ServiceDelete<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver)
+			: base(singleSignOnTokenResolver)
 		{
 		}
-
 <#
 string authenticationTokenTypeResolver = authenticationTokenType;
 int index = authenticationTokenTypeResolver.LastIndexOf(".");
@@ -262,7 +260,7 @@ if (index > 0)
 	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
 #>
 		public <#= className #>ServiceDelete<#= className #>ParametersResolver()
-			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
+			: base(new <#= authenticationTokenTypeResolver #>())
 		{
 		}
 
@@ -335,6 +333,10 @@ if (index > 0)
 <#
 		}
 #>
+}
+
+namespace <#= classNamespace #>.Entities
+{
 }
 <#+
 	protected override bool AppliesToElement()

@@ -13,6 +13,7 @@
 // -----------------------------------------------------------------------
 #endregion
 using Cqrs.Domain;
+using MyCompany.MyProject.Domain.Terminals.Events;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -48,6 +49,8 @@ namespace MyCompany.MyProject.Domain.Terminals
 
 		protected ILogger Log { get; private set; }
 
+		public double Balance { get; private set; }
+
 // ReSharper disable UnusedMember.Local
 		/// <summary>
 		/// A constructor for the <see cref="Cqrs.Domain.Factories.IAggregateFactory"/>
@@ -74,28 +77,44 @@ namespace MyCompany.MyProject.Domain.Terminals
 			Rsn = rsn;
 		}
 
-		public void WithDrawFunds(double amount)
+		public void WithdrawFunds(double amount)
 		{
-			Log.LogDebug("Entered", "Account/WithDrawFunds");
+			Log.LogDebug("Entered", "Account/WithdrawFunds");
 
+			WithdrawFailedDueInsufficientFunds withdrawFailedDueInsufficientFundsEvent = null;
+			WithdrawFundsFromAccountSucceeded withdrawFundsFromAccountSucceededEvent = null;
 
-			OnWithDrawFunds(amount);
+			OnWithdrawFunds(amount, ref withdrawFailedDueInsufficientFundsEvent, ref withdrawFundsFromAccountSucceededEvent);
+			if (withdrawFailedDueInsufficientFundsEvent != null)
+			{
+				Log.LogDebug("Pre", "Account/WithdrawFunds/ApplyChange/WithdrawFailedDueInsufficientFunds");
+				ApplyChange(withdrawFailedDueInsufficientFundsEvent);
+				Log.LogDebug("Post", "Account/WithdrawFunds/ApplyChange/WithdrawFailedDueInsufficientFunds");
+			}
+			if (withdrawFundsFromAccountSucceededEvent != null)
+			{
+				Log.LogDebug("Pre", "Account/WithdrawFunds/ApplyChange/WithdrawFundsFromAccountSucceeded");
+				ApplyChange(withdrawFundsFromAccountSucceededEvent);
+				Log.LogDebug("Post", "Account/WithdrawFunds/ApplyChange/WithdrawFundsFromAccountSucceeded");
+			}
 
-			Log.LogDebug("Pre", "Account/WithDrawFunds/OnWithDrawFundsHandled");
-			OnWithDrawFundsHandled(amount);
-			Log.LogDebug("Post", "Account/WithDrawFunds/OnWithDrawFundsHandled");
+			Log.LogDebug("Pre", "Account/WithdrawFunds/OnWithdrawFundsHandled");
+			OnWithdrawFundsHandled(amount);
+			Log.LogDebug("Post", "Account/WithdrawFunds/OnWithdrawFundsHandled");
 
-			Log.LogDebug("Exited", "Account/WithDrawFunds");
+			Log.LogDebug("Exited", "Account/WithdrawFunds");
 		}
 
-		partial void OnWithDrawFunds(double amount);
+		partial void OnWithdrawFunds(double amount, ref WithdrawFailedDueInsufficientFunds withdrawFailedDueInsufficientFundsEvent, ref WithdrawFundsFromAccountSucceeded withdrawFundsFromAccountSucceededEvent);
 
-		partial void OnWithDrawFundsHandled(double amount);
+		partial void OnWithdrawFundsHandled(double amount);
 
 
 		public class AccountSnapshot : Snapshot
 		{
 			public bool IsLogicallyDeleted {get; set;}
+
+			public double Balance { get; private set; }
 		}
 	}
 }

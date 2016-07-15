@@ -84,8 +84,16 @@ namespace <#= classNamespace #>
 		// Properties
 		foreach(var collectionProperty in collectionProperties)
 		{
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+			}
 #>
 		[DataMember]
+<# WriteSummaryComment(collectionProperty.Description); #>
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; set; }
 
 <#
@@ -95,6 +103,13 @@ namespace <#= classNamespace #>
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+			}
 			#>, <#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>)
@@ -103,6 +118,13 @@ namespace <#= classNamespace #>
 <#
 		foreach(IProperty collectionProperty in collectionProperties)
 		{
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+			}
 #>
 			<#= collectionProperty.Name #> = <#= GetLowercaseFirstCharacter(collectionProperty.Name) #>;
 <#

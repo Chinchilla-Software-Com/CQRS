@@ -23,7 +23,6 @@ using cdmdotnet.Logging;
 using Cqrs.Repositories.Queries;
 using Cqrs.Services;
 using MyCompany.MyProject.Domain.Terminals.Commands;
-using MyCompany.MyProject.Domain.Terminals.Repositories;
 
 namespace MyCompany.MyProject.Domain.Terminals.Services
 {
@@ -35,8 +34,6 @@ namespace MyCompany.MyProject.Domain.Terminals.Services
 
 		protected IUnitOfWorkService UnitOfWorkService { get; private set; }
 
-		protected IAtmRepository AtmRepository { get; private set; }
-
 		protected IQueryFactory QueryFactory { get; private set; }
 
 		protected IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> AuthenticationTokenHelper { get; set; }
@@ -45,14 +42,13 @@ namespace MyCompany.MyProject.Domain.Terminals.Services
 
 		protected ILogger Logger { get; private set; }
 
-		public AtmService(ICommandSender<Cqrs.Authentication.ISingleSignOnToken> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IAtmRepository atmRepository, ILogger logger)
+		public AtmService(ICommandSender<Cqrs.Authentication.ISingleSignOnToken> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<Cqrs.Authentication.ISingleSignOnToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
 		{
 			CommandSender = commandSender;
 			UnitOfWorkService = unitOfWorkService;
 			QueryFactory = queryFactory;
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
-			AtmRepository = atmRepository;
 			Logger = logger;
 		}
 

@@ -13,6 +13,7 @@
 // -----------------------------------------------------------------------
 #endregion
 using Cqrs.Domain;
+using MyCompany.MyProject.Domain.Terminals;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -47,8 +48,6 @@ namespace MyCompany.MyProject.Domain.Terminals.Commands.Handlers
 			Logger = logger;
 		}
 
-		public double Amount { get; set; }
-
 
 		#region Implementation of ICommandHandler<in WithdrawFundsFromAccount>
 
@@ -75,14 +74,14 @@ namespace MyCompany.MyProject.Domain.Terminals.Commands.Handlers
 			if (continueExecution)
 			{
 				Account item = null;
-				OnWithDrawFunds(command, ref item);
+				OnWithdrawFunds(command, ref item);
 				if (item == null)
 				{
 					item = new Account(DependencyResolver, Logger, command.Rsn);
 					UnitOfWork.Add(item);
 				}
-				item.WithDrawFunds(command.Amount);
-				OnWithDrawFundsHandled(command, item);
+				item.WithdrawFunds(command.Amount);
+				OnWithdrawFundsHandled(command, item);
 				OnAddToUnitOfWork(command, item);
 				UnitOfWork.Add(item);
 				OnAddedToUnitOfWork(command, item);
@@ -96,9 +95,9 @@ namespace MyCompany.MyProject.Domain.Terminals.Commands.Handlers
 
 		partial void OnHandle(WithdrawFundsFromAccountCommand command, ref bool continueExecution);
 
-		partial void OnWithDrawFunds(WithdrawFundsFromAccountCommand command, ref Account item);
+		partial void OnWithdrawFunds(WithdrawFundsFromAccountCommand command, ref Account item);
 
-		partial void OnWithDrawFundsHandled(WithdrawFundsFromAccountCommand command, Account item);
+		partial void OnWithdrawFundsHandled(WithdrawFundsFromAccountCommand command, Account item);
 
 		partial void OnAddToUnitOfWork(WithdrawFundsFromAccountCommand command, Account item);
 

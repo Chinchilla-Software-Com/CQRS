@@ -13,6 +13,7 @@
 // -----------------------------------------------------------------------
 #endregion
 using Cqrs.Domain;
+using MyCompany.MyProject.Domain.Terminals;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -46,8 +47,6 @@ namespace MyCompany.MyProject.Domain.Terminals.Commands.Handlers
 			DependencyResolver = dependencyResolver;
 			Logger = logger;
 		}
-
-		public double Amount { get; set; }
 
 
 		#region Implementation of ICommandHandler<in WithdrawFundsFromAtm>

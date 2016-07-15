@@ -13,6 +13,7 @@
 // -----------------------------------------------------------------------
 #endregion
 using Cqrs.Domain;
+using MyCompany.MyProject.Domain.Terminals.Commands;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -79,10 +80,18 @@ namespace MyCompany.MyProject.Domain.Terminals.Events
 		[DataMember]
 		public Guid Rsn { get; set; }
 
+		[DataMember]
+		public double Amount { get; private set; }
 
-		public WithdrawValidated(Guid rsn)
+
+		public WithdrawValidated(Guid rsn, double amount)
 		{
 			Rsn = rsn;
+			Amount = amount;
 		}
 	}
+}
+
+namespace MyCompany.MyProject.Domain.Terminals.Commands
+{
 }

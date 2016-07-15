@@ -79,10 +79,18 @@ namespace MyCompany.MyProject.Domain.Terminals.Events
 		[DataMember]
 		public Guid Rsn { get; set; }
 
+		[DataMember]
+		public double Amount { get; private set; }
 
-		public WithdrawFailedDueInsufficientFunds(Guid rsn)
+
+		public WithdrawFailedDueInsufficientFunds(Guid rsn, double amount)
 		{
 			Rsn = rsn;
+			Amount = amount;
 		}
 	}
+}
+
+namespace MyCompany.MyProject.Domain.Terminals.Commands
+{
 }

@@ -109,14 +109,6 @@ switch(commandHandlerTechnology)
 IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => !string.IsNullOrWhiteSpace(associationEnd.Name) && associationEnd.SourceElement == this.Element);
 
 IList<IProperty> collectionProperties = GetPropertyList(this.Element).Where(property=> property.Type != this.Element).ToList();
-// Properties
-foreach(var collectionProperty in collectionProperties)
-{
-#>
-		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; set; }
-
-<#
-}
 
 if (!relationships.Any())
 {
@@ -173,26 +165,44 @@ if (!relationships.Any())
 			var actor = item as IActorRef;
 			if (actor != null)
 				actor.Tell(new <#= className #>Parameters{<#
+		int processedProperties= 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
-			if (i > 0)
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+			}
+			if (processedProperties > 0)
 			{
 			#>, <#
 			}
-			IProperty collectionProperty = collectionProperties.ElementAt(i);
 			#><#= GetLowercaseFirstCharacter(collectionProperty.Name) #>: command.<#= collectionProperty.Name #><#
+			processedProperties++;
 		}
 #>});
 			else
 				item.<#= className #>(<#
+		processedProperties= 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
-			if (i > 0)
+			IProperty collectionProperty = collectionProperties.ElementAt(i);
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+			}
+			if (processedProperties > 0)
 			{
 			#>, <#
 			}
-			IProperty collectionProperty = collectionProperties.ElementAt(i);
 			#><#= GetLowercaseFirstCharacter(collectionProperty.Name) #> = command.<#= collectionProperty.Name #><#
+			processedProperties++;
 		}
 #>);
 			On<#= className #>Done(command, item);
@@ -308,13 +318,20 @@ if (!relationships.Any())
 					UnitOfWork.Add(item);
 				}
 				item.<#= relationship.Name #>(<#
-		for (int i = 0; i < collectionProperties.Count; i++)
-		{
-			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (!collectionProperty.AppliedStereotypes.Any())
-				continue;
-			#><#= (i == 0) ? string.Empty : ", " #>command.<#= collectionProperty.Name #><#
-		}
+			int processedProperties= 0;
+			for (int i = 0; i < collectionProperties.Count; i++)
+			{
+				IProperty collectionProperty = collectionProperties.ElementAt(i);
+				if (collectionProperty.OwningAssociation != null)
+				{
+					var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+					// If this is a command handler association, don't add a property for it as it's a command handler definition
+					if (commandHandler != null)
+						continue;
+				}
+			#><#= (processedProperties == 0) ? string.Empty : ", " #>command.<#= collectionProperty.Name #><#
+				processedProperties++;
+			}
 #>);
 				On<#= relationship.Name #>Handled(command, item);
 				OnAddToUnitOfWork(command, item);
