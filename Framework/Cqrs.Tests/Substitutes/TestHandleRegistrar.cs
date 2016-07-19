@@ -9,7 +9,7 @@ namespace Cqrs.Tests.Substitutes
 	{
 		public static readonly IList<TestHandlerListItem> HandlerList = new List<TestHandlerListItem>();
 
-		public void RegisterHandler<T>(Action<T> handler, Type targetedType)
+		public void RegisterHandler<T>(Action<T> handler, Type targetedType, bool holdMessageLock = true)
 			where T : IMessage
 		{
 			HandlerList.Add(new TestHandlerListItem {Type = typeof(T),Handler = handler});
@@ -18,10 +18,10 @@ namespace Cqrs.Tests.Substitutes
 		/// <summary>
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
-		public void RegisterHandler<TMessage>(Action<TMessage> handler)
+		public void RegisterHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			RegisterHandler(handler, null);
+			RegisterHandler(handler, null, holdMessageLock);
 		}
 	}
 
