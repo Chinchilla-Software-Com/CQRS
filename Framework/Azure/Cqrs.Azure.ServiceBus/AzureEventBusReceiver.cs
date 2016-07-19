@@ -121,7 +121,7 @@ namespace Cqrs.Azure.ServiceBus
 								if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", classType), out isRequired))
 									isRequired = true;
 
-								if (isRequired)
+								if (!isRequired)
 								{
 									// Remove message from queue
 									message.Complete();
