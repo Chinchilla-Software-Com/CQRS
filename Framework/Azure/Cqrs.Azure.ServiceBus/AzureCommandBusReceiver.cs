@@ -84,7 +84,10 @@ namespace Cqrs.Azure.ServiceBus
 					do
 					{
 						if (checkException.Message.StartsWith("Could not load assembly"))
+						{
 							safeToExit = true;
+							break;
+						}
 					} while ((checkException = checkException.InnerException as JsonSerializationException) != null);
 					if (safeToExit)
 					{
@@ -105,6 +108,7 @@ namespace Cqrs.Azure.ServiceBus
 									// Remove message from queue
 									message.Complete();
 									Logger.LogDebug(string.Format("A command message arrived with the id '{0}' but processing was skipped due to command settings.", message.MessageId));
+									return;
 								}
 							}
 						}
