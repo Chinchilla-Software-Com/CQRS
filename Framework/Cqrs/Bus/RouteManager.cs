@@ -31,7 +31,7 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
-		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType)
+		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
 			Route route;
@@ -56,10 +56,10 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
-		public void RegisterHandler<TMessage>(Action<TMessage> handler)
+		public void RegisterHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			RegisterHandler(handler, null);
+			RegisterHandler(handler, null, holdMessageLock);
 		}
 
 		#endregion

@@ -25,14 +25,14 @@ namespace Cqrs.Bus
 		/// In many cases the <paramref name="targetedType"/> will be the event handler class itself, what you actually want is the target of what is being updated
 		/// </remarks>
 		[OperationContract]
-		void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType)
+		void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage;
 
 		/// <summary>
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
 		[OperationContract]
-		void RegisterHandler<TMessage>(Action<TMessage> handler)
+		void RegisterHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
 			where TMessage : IMessage;
 	}
 }
