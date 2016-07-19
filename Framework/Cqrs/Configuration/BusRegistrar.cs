@@ -88,7 +88,7 @@ namespace Cqrs.Configuration
 				.Where(mi => mi.Name == "RegisterHandler")
 				.Where(mi => mi.IsGenericMethod)
 				.Where(mi => mi.GetGenericArguments().Count() == 1)
-				.Single(mi => mi.GetParameters().Count() == 2);
+				.Single(mi => mi.GetParameters().Count() == 3);
 
 			IList<Type> interfaceGenericArguments = @interface.GetGenericArguments().ToList();
 			if (interfaceGenericArguments.Count == 2)
@@ -124,7 +124,20 @@ namespace Cqrs.Configuration
 
 		protected virtual void InvokeHandlerDelegate(MethodInfo registerExecutorMethod, IHandlerRegistrar bus, HandlerDelegate handlerDelegate)
 		{
-			registerExecutorMethod.Invoke(bus, new object[] { handlerDelegate.Delegate, handlerDelegate.TargetedType });
+			bool holdMessageLock;
+			try
+			{
+				string messageType = registerExecutorMethod.GetParameters()[0].ParameterType.GetGenericArguments()[0].FullName;
+				string configuration = string.Format("{0}<{1}>.HoldMessageLock", handlerDelegate.TargetedType.FullName, messageType);
+				// If this cannot be parsed then assume the safe route that this must be required to hold the lock.
+				if (!bool.TryParse(DependencyResolver.Resolve<IConfigurationManager>().GetSetting(configuration), out holdMessageLock))
+					holdMessageLock = true;
+			}
+			catch
+			{
+				holdMessageLock = true;
+			}
+			registerExecutorMethod.Invoke(bus, new object[] { handlerDelegate.Delegate, handlerDelegate.TargetedType, holdMessageLock });
 		}
 
 		protected virtual HandlerDelegate BuildDelegateAction(Type executorType, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface)

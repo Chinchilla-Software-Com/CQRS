@@ -21,6 +21,8 @@ namespace Cqrs.Tests.Substitutes
 				return new TestHandleRegistrar();
 			if (type == typeof(ILogger))
 				return new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper());
+			if (type == typeof (IConfigurationManager))
+				return new ConfigurationManager();
 			if (type == typeof(TestAggregateDidSomethingHandler))
 			{
 				var handler = new TestAggregateDidSomethingHandler();
