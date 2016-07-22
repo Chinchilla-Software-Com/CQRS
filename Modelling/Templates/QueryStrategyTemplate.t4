@@ -44,12 +44,13 @@ namespace <#= classNamespace #>
 		}
 
 <#
-		IList<IOperation> collectionMethods = GetMethodList(this.Element);
-		// Methods
-		foreach(IOperation collectionMethod in collectionMethods)
-		{
+	IList<IOperation> collectionMethods = GetMethodList(this.Element);
+	// Methods
+	foreach(IOperation collectionMethod in collectionMethods)
+	{
+		var queryStrategyOrderMethodProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "QueryStrategyOrderMethod");
 #>
-		public virtual <#= className #> <#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>)
+		public virtual <#= className #> <#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #><#= (queryStrategyOrderMethodProperties != null) ? "int priority = -1" : string.Empty #>)
 		{
 <#
 		var methodstereoTypeProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "QueryStrategyMethod");
@@ -89,7 +90,6 @@ namespace <#= classNamespace #>
 			}
 		}
 
-		var queryStrategyOrderMethodProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "QueryStrategyOrderMethod");
 		if (queryStrategyOrderMethodProperties != null)
 		{
 #>
@@ -109,7 +109,7 @@ namespace <#= classNamespace #>
 		partial void On<#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>);
 
 <#
-		}
+	}
 #>
 	}
 }

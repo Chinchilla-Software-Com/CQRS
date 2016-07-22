@@ -32,15 +32,16 @@ namespace <#= classNamespace #>
 	public partial interface I<#= className #> : IQueryStrategy
 	{
 <#
-		IList<IOperation> collectionMethods = GetMethodList(this.Element);
-		// Methods
-		foreach(IOperation collectionMethod in collectionMethods)
-		{
+	IList<IOperation> collectionMethods = GetMethodList(this.Element);
+	// Methods
+	foreach(IOperation collectionMethod in collectionMethods)
+	{
+		var queryStrategyOrderMethodProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "QueryStrategyOrderMethod");
 #>
-		<#= className #> <#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>);
+		<#= className #> <#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #><#= (queryStrategyOrderMethodProperties != null) ? "int priority = -1" : string.Empty #>);
 
 <#
-		}
+	}
 #>
 	}
 }

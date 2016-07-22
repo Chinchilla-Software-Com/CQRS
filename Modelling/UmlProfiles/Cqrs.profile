@@ -343,7 +343,7 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
       <properties>
-        <property name="AggregateRootName" displayName="AggregateRootName: The name of the aggregate root this service is focused on." defaultValue="">
+        <property name="AggregateRootName" displayName="Entity Name: The name of the entity this query strategy is for." defaultValue="">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>

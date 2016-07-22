@@ -166,6 +166,12 @@ namespace Cqrs.Repositories.Queries
 			return expression.Method.Name;
 		}
 
+		// One for use with order methods
+		protected virtual string GetFunctionName(Func<int, TQueryStrategy> expression)
+		{
+			return expression.Method.Name;
+		}
+
 		protected virtual string GetFunctionName<TParameter1>(Func<TParameter1, TQueryStrategy> expression)
 		{
 			return expression.Method.Name;

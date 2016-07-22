@@ -98,6 +98,10 @@ namespace <#= classNamespace #>
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (eventToCommandConverterHandler != null)
 					continue;
+				var eventHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (eventHandler != null)
+					continue;
 				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
 				// If this is an event association, don't add a property for it as it's an event definition
 				if (eventLink != null)
@@ -121,6 +125,10 @@ namespace <#= classNamespace #>
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (eventToCommandConverterHandler != null)
 					continue;
+				var eventHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (eventHandler != null)
+					continue;
 				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
 				// If this is an event association, don't add a property for it as it's an event definition
 				if (eventLink != null)
@@ -139,6 +147,10 @@ namespace <#= classNamespace #>
 				var eventToCommandConverterHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (eventToCommandConverterHandler != null)
+					continue;
+				var eventHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (eventHandler != null)
 					continue;
 				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
 				// If this is an event association, don't add a property for it as it's an event definition

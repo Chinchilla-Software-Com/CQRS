@@ -35,41 +35,34 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 	public partial interface I<#= className #>DataStoreFactory
 	{
 <#
-		foreach (var element in AllElements(this.Element, "AggregateRoot").OfType<INamedElement>().OrderBy(e => e.Name))
+		IList<INamedElement> allDataStores = new List<INamedElement>();
+		foreach (INamedElement element in AllElements(this.Element, "AggregateRoot").OfType<INamedElement>().OrderBy(e => e.Name))
 		{
-			string elementName = element.Name;
-			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
 			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
 			if (shouldBuild)
-			{
-#>
-		IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> Get<#= elementName #>DataStore();
-
-<#
-			}
+				allDataStores.Add(element);
 		}
-#>
-
-<#
-		foreach (var element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
+		foreach (INamedElement element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
 		{
 			bool isAggregateTo = element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
 			if (isAggregateTo)
 				continue;
-			string elementName = element.Name;
-			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
 			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "Entity");
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
 			if (shouldBuild)
-			{
+				allDataStores.Add(element);
+		}
+		foreach (INamedElement element in allDataStores)
+		{
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
 #>
 		IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> Get<#= elementName #>DataStore();
 
 <#
-			}
 		}
 #>
 	}
