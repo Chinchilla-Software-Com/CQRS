@@ -71,6 +71,9 @@ namespace <#= classNamespace #>
 			methodNameList.Add(partialMethodName);
 
 			string methodParameters = GetMethodParameterTypeList(collectionMethod);
+			var queryStrategyOrderMethodProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "QueryStrategyOrderMethod");
+			if (queryStrategyOrderMethodProperties != null)
+				methodParameters = "int";
 			if (!string.IsNullOrWhiteSpace(methodParameters))
 				methodParameters = "<" + methodParameters + ">";
 #>
