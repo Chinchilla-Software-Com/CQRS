@@ -86,6 +86,13 @@ switch(eventHandlerTechnology)
 }
 #>
 
+		public <#= entityName ?? className #>EventHandler(ILogger logger)
+		{
+			Logger = logger;
+		}
+
+		protected ILogger Logger { get; private set; }
+
 		#region Implementation of IEventHandler<in <#= eventName #>>
 
 		public void Handle(<#= eventName #> @event)
