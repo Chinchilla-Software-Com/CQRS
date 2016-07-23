@@ -110,6 +110,7 @@ IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociat
 
 IList<IProperty> collectionProperties = GetPropertyList(this.Element).Where(property=> property.Type != this.Element).ToList();
 
+bool createsNewInstance = stereoTypeProperties.PropertyInstances.Any(property => property.Name == "CreatesNewInstance" && property.Value == "true");
 if (!relationships.Any())
 {
 #>
@@ -136,7 +137,6 @@ if (!relationships.Any())
 <#
 	string aggregateRootName = null;
 	bool isSimple = stereoTypeProperties.PropertyInstances.Any(property => property.Name == "CommandType" && property.Value == "Simple");
-	bool createsNewInstance = stereoTypeProperties.PropertyInstances.Any(property => property.Name == "CreatesNewInstance" && property.Value == "true");
 	if (isSimple)
 		aggregateRootName = stereoTypeProperties.PropertyInstances.Single(property => property.Name == "AggregateRoot").Value;
 	if (isSimple && !string.IsNullOrWhiteSpace(aggregateRootName))
@@ -150,7 +150,7 @@ if (!relationships.Any())
 		{
 #>
 			{
-				item = new <#= aggregateRootName #>(DependencyResolver, Log, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
+				item = new <#= aggregateRootName #>(DependencyResolver, Logger, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
 				UnitOfWork.Add(item);
 			}
 <#
@@ -313,10 +313,23 @@ if (!relationships.Any())
 				<#= targetElementName #> item = null;
 				On<#= relationship.Name #>(command, ref item);
 				if (item == null)
+<#
+		if (createsNewInstance)
+		{
+#>
 				{
-					item = new <#= targetElementName #>(DependencyResolver, Logger, command.Rsn);
+					item = new <#= targetElementName #>(DependencyResolver, Logger, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
 					UnitOfWork.Add(item);
 				}
+<#
+		}
+		else
+		{
+#>
+					item = UnitOfWork.Get<<#= targetElementName #>>(command.Rsn);
+<#
+		}
+#>
 				item.<#= relationship.Name #>(<#
 			int processedProperties= 0;
 			for (int i = 0; i < collectionProperties.Count; i++)
