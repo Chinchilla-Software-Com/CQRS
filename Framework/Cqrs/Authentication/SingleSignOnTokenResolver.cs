@@ -19,6 +19,30 @@ namespace Cqrs.Authentication
 
 		public virtual bool TryResolveType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace)
 		{
+			if (dataContractType == typeof(SingleSignOnTokenWithUserAndCompanyRsn))
+			{
+				XmlDictionary dictionary = new XmlDictionary();
+				typeName = dictionary.Add("SingleSignOnTokenWithUserAndCompanyRsn");
+				typeNamespace = dictionary.Add("http://cqrs.co.nz");
+				return true;
+			}
+
+			if (dataContractType == typeof(SingleSignOnTokenWithUserRsn))
+			{
+				XmlDictionary dictionary = new XmlDictionary();
+				typeName = dictionary.Add("SingleSignOnTokenWithUserRsn");
+				typeNamespace = dictionary.Add("http://cqrs.co.nz");
+				return true;
+			}
+
+			if (dataContractType == typeof(SingleSignOnTokenWithCompanyRsn))
+			{
+				XmlDictionary dictionary = new XmlDictionary();
+				typeName = dictionary.Add("SingleSignOnTokenWithCompanyRsn");
+				typeNamespace = dictionary.Add("http://cqrs.co.nz");
+				return true;
+			}
+
 			if (dataContractType == typeof(SingleSignOnToken))
 			{
 				XmlDictionary dictionary = new XmlDictionary();
@@ -34,8 +58,22 @@ namespace Cqrs.Authentication
 
 		public virtual Type ResolveName(string typeName, string typeNamespace, Type declaredType, DataContractResolver knownTypeResolver)
 		{
-			if (typeName == "SingleSignOnToken" && typeNamespace == "http://cqrs.co.nz")
-				return typeof(SingleSignOnToken);
+			switch (typeNamespace)
+			{
+				case "http://cqrs.co.nz":
+					switch (typeName)
+					{
+						case "SingleSignOnToken":
+							return typeof(SingleSignOnToken);
+						case "SingleSignOnTokenWithCompanyRsn":
+							return typeof(SingleSignOnTokenWithCompanyRsn);
+						case "SingleSignOnTokenWithUserRsn":
+							return typeof(SingleSignOnTokenWithUserRsn);
+						case "SingleSignOnTokenWithUserAndCompanyRsn":
+							return typeof(SingleSignOnTokenWithUserAndCompanyRsn);
+					}
+					break;
+			}
 
 			return null;
 		}

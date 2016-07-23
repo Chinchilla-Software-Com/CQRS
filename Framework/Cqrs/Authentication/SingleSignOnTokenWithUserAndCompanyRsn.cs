@@ -1,0 +1,36 @@
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="cdmdotnet Limited">
+// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+
+namespace Cqrs.Authentication
+{
+	/// <summary>
+	/// This is a <see cref="ISingleSignOnTokenWithCompanyRsn"/> and <see cref="ISingleSignOnTokenWithUserRsn"/>
+	/// </summary>
+	public class SingleSignOnTokenWithUserAndCompanyRsn : SingleSignOnToken, ISingleSignOnTokenWithCompanyRsn, ISingleSignOnTokenWithUserRsn
+	{
+		/// <summary>
+		/// The Rsn of the company the user doing the operation is operating on.
+		/// When used in a system where a single user can have access to multiple companies, this is not the company the user belongs to, but the company it is operating on.
+		/// When used by an external 3rd party this is the all in context of the person being impersonated, not the 3rd party system itself.
+		/// </summary>
+		[Required]
+		[DataMember]
+		public Guid CompanyRsn { get; set; }
+
+		/// <summary>
+		/// The Rsn of the user doing the operation. When used by an external 3rd party this is the person being impersonated, not the 3rd party system itself.
+		/// </summary>
+		[Required]
+		[DataMember]
+		public Guid UserRsn { get; set; }
+	}
+}

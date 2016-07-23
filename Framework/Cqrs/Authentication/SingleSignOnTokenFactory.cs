@@ -14,7 +14,13 @@ namespace Cqrs.Authentication
 	{
 		public ISingleSignOnToken CreateNew(int timeoutInMinutes = 360)
 		{
-			var token = new SingleSignOnToken
+			return CreateNew<SingleSignOnToken>();
+		}
+
+		public ISingleSignOnToken CreateNew<TSingleSignOnToken>(int timeoutInMinutes = 360)
+			where TSingleSignOnToken : ISingleSignOnToken, new()
+		{
+			var token = new TSingleSignOnToken
 			{
 				Token = Guid.NewGuid().ToString("N"),
 				DateIssued = DateTime.UtcNow,
