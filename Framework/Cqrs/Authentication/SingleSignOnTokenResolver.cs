@@ -19,7 +19,7 @@ namespace Cqrs.Authentication
 
 		public virtual bool TryResolveType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace)
 		{
-			if (dataContractType == typeof(SingleSignOnTokenWithUserAndCompanyRsn))
+			if (dataContractType == typeof(SingleSignOnTokenWithUserRsnAndCompanyRsn))
 			{
 				XmlDictionary dictionary = new XmlDictionary();
 				typeName = dictionary.Add("SingleSignOnTokenWithUserAndCompanyRsn");
@@ -70,7 +70,7 @@ namespace Cqrs.Authentication
 						case "SingleSignOnTokenWithUserRsn":
 							return typeof(SingleSignOnTokenWithUserRsn);
 						case "SingleSignOnTokenWithUserAndCompanyRsn":
-							return typeof(SingleSignOnTokenWithUserAndCompanyRsn);
+							return typeof(SingleSignOnTokenWithUserRsnAndCompanyRsn);
 					}
 					break;
 			}

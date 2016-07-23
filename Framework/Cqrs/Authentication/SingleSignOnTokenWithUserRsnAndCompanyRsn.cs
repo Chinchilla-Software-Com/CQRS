@@ -15,7 +15,7 @@ namespace Cqrs.Authentication
 	/// <summary>
 	/// This is a <see cref="ISingleSignOnTokenWithCompanyRsn"/> and <see cref="ISingleSignOnTokenWithUserRsn"/>
 	/// </summary>
-	public class SingleSignOnTokenWithUserAndCompanyRsn : SingleSignOnToken, ISingleSignOnTokenWithCompanyRsn, ISingleSignOnTokenWithUserRsn
+	public class SingleSignOnTokenWithUserRsnAndCompanyRsn : SingleSignOnToken, ISingleSignOnTokenWithUserRsnAndCompanyRsn
 	{
 		/// <summary>
 		/// The Rsn of the company the user doing the operation is operating on.
