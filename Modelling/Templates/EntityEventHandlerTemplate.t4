@@ -46,7 +46,7 @@ using Cqrs.Domain;
 namespace <#= classNamespace #>.Handlers
 {
 <#
-	IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.SourceElement == this.Element);
+	IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.TargetElement == this.Element);
 #>
 	<#= GetGeneratedCodeAttribute() #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #>EventHandler
@@ -127,7 +127,7 @@ foreach(IAssociation relationship in relationships)
 		var result = ShouldGenerateCodeForElement(this.Element) && this.Element.AppliedStereotypes.Any(property => property.Name == "Entity");
 		if (!result)
 			return false;
-		IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.SourceElement == this.Element);
+		IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.TargetElement == this.Element);
 		return relationships.Any();
 	}
 #>
