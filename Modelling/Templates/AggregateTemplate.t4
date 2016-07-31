@@ -128,13 +128,21 @@ switch(aggregateTechnology)
 #>
 
 <#
-		IList<IOperation> collectionMethods = GetMethodList(this.Element);
+IList<IOperation> collectionMethods = GetMethodList(this.Element);
+switch(aggregateTechnology)
+{
+	case "Akka":
 		// Methods
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
 #>
 			Receive<<#= collectionMethod.Name #>Parameters>(parameters => <#= collectionMethod.Name #>(parameters));
 <#
+		}
+		break;
+	default:
+		// for now do nothing
+		break;
 }
 #>
 		}
@@ -188,6 +196,14 @@ switch(aggregateTechnology)
 			DependencyResolver = dependencyResolver;
 			Log = log;
 			Rsn = rsn;
+<#
+			foreach(IProperty collectionProperty in collectionProperties.Where(property => property.UpperValue != null && property.UpperValue.ToString() == "*").ToList())
+			{
+#>
+			<#= collectionProperty.Name #> = new List<<#= GetDisplayType(collectionProperty) #>>();
+<#
+			}
+#>
 		}
 <#
 		// Methods
