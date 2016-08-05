@@ -26,18 +26,26 @@ namespace Cqrs.Domain.Factories
 				DependencyResolver.Resolve<ILogger>().LogDebug(string.Format("Using the dependency resolver to create an instance of the aggregate typed '{0}' failed.", typeof(TAggregate).FullName), "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate");
 				try
 				{
-					return (TAggregate)Activator.CreateInstance(typeof(TAggregate), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { DependencyResolver, DependencyResolver.Resolve<ILogger>(), rsn }, null);
+					return (TAggregate)Activator.CreateInstance(typeof(TAggregate), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { DependencyResolver, DependencyResolver.Resolve<ILogger>(), rsn }, null);
 				}
 				catch (MissingMethodException exception)
 				{
 					DependencyResolver.Resolve<ILogger>().LogDebug(string.Format("Looking for a private constructor with a dependency resolver and logger, to create an instance of the aggregate typed '{0}' failed.", typeof(TAggregate).FullName), "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate", exception);
 					try
 					{
-						return (TAggregate)Activator.CreateInstance(typeof(TAggregate), true);
+						return (TAggregate)Activator.CreateInstance(typeof(TAggregate), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { DependencyResolver, DependencyResolver.Resolve<ILogger>() }, null);
 					}
-					catch (MissingMethodException)
+					catch (MissingMethodException exception2)
 					{
-						throw new MissingParameterLessConstructorException(typeof(TAggregate));
+						DependencyResolver.Resolve<ILogger>().LogDebug(string.Format("Looking for a private constructor with a dependency resolver and logger, to create an instance of the aggregate typed '{0}' failed.", typeof(TAggregate).FullName), "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate", exception2);
+						try
+						{
+							return (TAggregate)Activator.CreateInstance(typeof(TAggregate), true);
+						}
+						catch (MissingMethodException)
+						{
+							throw new MissingParameterLessConstructorException(typeof(TAggregate));
+						}
 					}
 				}
 			}
