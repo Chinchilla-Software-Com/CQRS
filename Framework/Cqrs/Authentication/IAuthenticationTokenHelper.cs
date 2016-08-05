@@ -17,6 +17,6 @@ namespace Cqrs.Authentication
 		TAuthenticationToken GetAuthenticationToken();
 
 		[OperationContract]
-		TAuthenticationToken SetAuthenticationToken(TAuthenticationToken permissionScope);
+		TAuthenticationToken SetAuthenticationToken(TAuthenticationToken token);
 	}
 }

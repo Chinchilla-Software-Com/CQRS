@@ -10,7 +10,11 @@ using System.Web;
 
 namespace Cqrs.Authentication
 {
-	public class WebSingleSignOnTokenValueHelper : IAuthenticationTokenHelper<ISingleSignOnToken>
+	public class WebSingleSignOnTokenValueHelper
+		: IAuthenticationTokenHelper<ISingleSignOnToken>
+		, IAuthenticationTokenHelper<ISingleSignOnTokenWithUserRsn>
+		, IAuthenticationTokenHelper<ISingleSignOnTokenWithCompanyRsn>
+		, IAuthenticationTokenHelper<ISingleSignOnTokenWithUserRsnAndCompanyRsn>
 	{
 		private const string CallContextPermissionScopeValueKey = "SingleSignOnTokenValue";
 
@@ -21,12 +25,45 @@ namespace Cqrs.Authentication
 			return (ISingleSignOnToken)HttpContext.Current.Items[CallContextPermissionScopeValueKey];
 		}
 
-		public ISingleSignOnToken SetAuthenticationToken(ISingleSignOnToken value)
+		public ISingleSignOnTokenWithUserRsnAndCompanyRsn SetAuthenticationToken(ISingleSignOnTokenWithUserRsnAndCompanyRsn token)
 		{
-			HttpContext.Current.Items[CallContextPermissionScopeValueKey] = value;
-			return value;
+			SetAuthenticationToken((ISingleSignOnToken)token);
+			return token;
+		}
+
+		public ISingleSignOnTokenWithCompanyRsn SetAuthenticationToken(ISingleSignOnTokenWithCompanyRsn token)
+		{
+			SetAuthenticationToken((ISingleSignOnToken)token);
+			return token;
+		}
+
+		public ISingleSignOnTokenWithUserRsn SetAuthenticationToken(ISingleSignOnTokenWithUserRsn token)
+		{
+			SetAuthenticationToken((ISingleSignOnToken)token);
+			return token;
+		}
+
+		public ISingleSignOnToken SetAuthenticationToken(ISingleSignOnToken token)
+		{
+			HttpContext.Current.Items[CallContextPermissionScopeValueKey] = token;
+			return token;
 		}
 
 		#endregion
+
+		ISingleSignOnTokenWithUserRsn IAuthenticationTokenHelper<ISingleSignOnTokenWithUserRsn>.GetAuthenticationToken()
+		{
+			return (ISingleSignOnTokenWithUserRsn)HttpContext.Current.Items[CallContextPermissionScopeValueKey];
+		}
+
+		ISingleSignOnTokenWithCompanyRsn IAuthenticationTokenHelper<ISingleSignOnTokenWithCompanyRsn>.GetAuthenticationToken()
+		{
+			return (ISingleSignOnTokenWithCompanyRsn)HttpContext.Current.Items[CallContextPermissionScopeValueKey];
+		}
+
+		ISingleSignOnTokenWithUserRsnAndCompanyRsn IAuthenticationTokenHelper<ISingleSignOnTokenWithUserRsnAndCompanyRsn>.GetAuthenticationToken()
+		{
+			return (ISingleSignOnTokenWithUserRsnAndCompanyRsn)HttpContext.Current.Items[CallContextPermissionScopeValueKey];
+		}
 	}
 }
