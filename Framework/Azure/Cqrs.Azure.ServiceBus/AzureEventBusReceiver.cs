@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Cqrs.Authentication;
 using Cqrs.Bus;
@@ -88,6 +89,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected virtual void ReceiveEvent(BrokeredMessage message)
 		{
+			var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
 			try
 			{
 				Logger.LogDebug(string.Format("An event message arrived with the id '{0}'.", message.MessageId));
@@ -140,6 +142,28 @@ namespace Cqrs.Azure.ServiceBus
 				CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
 				Logger.LogInfo(string.Format("An event message arrived with the id '{0}' was of type {1}.", message.MessageId, @event.GetType().FullName));
 
+				bool canRefresh;
+				if (!ConfigurationManager.TryGetSetting(string.Format("{0}.ShouldRefresh", @event.GetType().FullName), out canRefresh))
+					canRefresh = false;
+
+				if (canRefresh)
+				{
+					Task.Factory.StartNew(() =>
+					{
+						while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
+						{
+							//Based on LockedUntilUtc property to determine if the lock expires soon
+							if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-10))
+							{
+								// If so, repeat the message
+								message.RenewLock();
+							}
+
+							Thread.Sleep(500);
+						}
+					}, brokeredMessageRenewCancellationTokenSource.Token);
+				}
+
 				ReceiveEvent(@event);
 
 				// Remove message from queue
@@ -151,6 +175,11 @@ namespace Cqrs.Azure.ServiceBus
 				// Indicates a problem, unlock message in queue
 				Logger.LogError(string.Format("An event message arrived with the id '{0}' but failed to be process.", message.MessageId), exception: exception);
 				message.Abandon();
+			}
+			finally
+			{
+				// Cancel the lock of renewing the task
+				brokeredMessageRenewCancellationTokenSource.Cancel();
 			}
 		}
 
@@ -171,7 +200,7 @@ namespace Cqrs.Azure.ServiceBus
 			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", eventType.FullName), out isRequired))
 				isRequired = true;
 
-			IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate);
+			IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 			if (!handlers.Any())
 				Logger.LogDebug(string.Format("The event handler for '{0}' is not required.", eventType.FullName));
