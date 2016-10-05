@@ -81,7 +81,7 @@ namespace Cqrs.Domain
 		protected virtual TAggregateRoot LoadAggregate<TAggregateRoot>(Guid id, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>();
+			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>(id);
 
 			IList<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get<TAggregateRoot>(id).ToList();
 			if (!theseEvents.Any())

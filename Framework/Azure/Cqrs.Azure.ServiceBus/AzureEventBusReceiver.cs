@@ -122,9 +122,7 @@ namespace Cqrs.Azure.ServiceBus
 							if (typeParts.Length == 2)
 							{
 								string classType = typeParts[0];
-								bool isRequired;
-								if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", classType), out isRequired))
-									isRequired = true;
+								bool isRequired = BusHelper.IsEventRequired(classType);
 
 								if (!isRequired)
 								{
@@ -196,9 +194,7 @@ namespace Cqrs.Azure.ServiceBus
 			AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
 
 			Type eventType = @event.GetType();
-			bool isRequired;
-			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", eventType.FullName), out isRequired))
-				isRequired = true;
+			bool isRequired = BusHelper.IsEventRequired(eventType);
 
 			IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.

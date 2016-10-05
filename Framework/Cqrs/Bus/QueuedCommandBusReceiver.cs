@@ -33,9 +33,11 @@ namespace Cqrs.Bus
 
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
+		protected IBusHelper BusHelper { get; private set; }
+
 		protected abstract IDictionary<Type, IList<Action<IMessage>>> Routes { get; }
 
-		protected QueuedCommandBusReceiver(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IConfigurationManager configurationManager)
+		protected QueuedCommandBusReceiver(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IConfigurationManager configurationManager, IBusHelper busHelper)
 		{
 			QueueTracker = new ConcurrentDictionary<string, ConcurrentQueue<ICommand<TAuthenticationToken>>>();
 			QueueTrackerLock = new ReaderWriterLockSlim();
@@ -43,6 +45,7 @@ namespace Cqrs.Bus
 			CorrelationIdHelper = correlationIdHelper;
 			Logger = logger;
 			ConfigurationManager = configurationManager;
+			BusHelper = busHelper;
 		}
 
 		protected virtual void EnqueueCommand(string targetQueueName, ICommand<TAuthenticationToken> command)
@@ -173,9 +176,7 @@ namespace Cqrs.Bus
 
 			Type commandType = command.GetType();
 
-			bool isRequired;
-			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", commandType.FullName), out isRequired))
-				isRequired = true;
+			bool isRequired = BusHelper.IsEventRequired(commandType);
 
 			IList<Action<IMessage>> handlers;
 			if (Routes.TryGetValue(commandType, out handlers))

@@ -2,6 +2,7 @@
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
+using Cqrs.Bus;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -54,12 +55,15 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
-		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
+		protected IBusHelper BusHelper { get; private set; }
+
+		protected AzureBus(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
 		{
 			MessageSerialiser = messageSerialiser;
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
 			Logger = logger;
+			BusHelper = busHelper;
 			ConfigurationManager = configurationManager;
 			ConnectionString = ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
 
