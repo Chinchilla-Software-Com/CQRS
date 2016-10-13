@@ -99,9 +99,7 @@ namespace Cqrs.Azure.ServiceBus
 							if (typeParts.Length == 2)
 							{
 								string classType = typeParts[0];
-								bool isRequired;
-								if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", classType), out isRequired))
-									isRequired = true;
+								bool isRequired = BusHelper.IsEventRequired(classType);
 
 								if (!isRequired)
 								{
@@ -146,9 +144,7 @@ namespace Cqrs.Azure.ServiceBus
 			CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
 			AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
 
-			bool isRequired;
-			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", commandType.FullName), out isRequired))
-				isRequired = true;
+			bool isRequired = BusHelper.IsEventRequired(commandType);
 
 			RouteHandlerDelegate commandHandler = Routes.GetSingleHandler(command, isRequired);
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.

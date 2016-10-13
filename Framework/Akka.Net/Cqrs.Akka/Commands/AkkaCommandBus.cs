@@ -33,21 +33,25 @@ namespace Cqrs.Akka.Commands
 			Routes = new RouteManager();
 		}
 
-		public AkkaCommandBus(IHandlerResolver concurrentEventBusProxy)
+		public AkkaCommandBus(IHandlerResolver concurrentEventBusProxy, IBusHelper busHelper)
 		{
 			ConcurrentEventBusProxy = concurrentEventBusProxy;
+			BusHelper = busHelper;
 		}
 
-		public AkkaCommandBus(IConfigurationManager configurationManager, ILogger logger, IActorRef actorReference, ICommandSender<TAuthenticationToken> commandSender, ICommandReceiver<TAuthenticationToken> commandReceiver)
+		public AkkaCommandBus(IConfigurationManager configurationManager, IBusHelper busHelper, ILogger logger, IActorRef actorReference, ICommandSender<TAuthenticationToken> commandSender, ICommandReceiver<TAuthenticationToken> commandReceiver)
 		{
 			ConfigurationManager = configurationManager;
 			Logger = logger;
 			ActorReference = actorReference;
 			CommandSender = commandSender;
 			CommandReceiver = commandReceiver;
+			BusHelper = busHelper;
 		}
 
 		protected IConfigurationManager ConfigurationManager { get; private set; }
+
+		protected IBusHelper BusHelper { get; private set; }
 
 		protected ILogger Logger { get; private set; }
 
@@ -64,9 +68,7 @@ namespace Cqrs.Akka.Commands
 		{
 			Type commandType = typeof(TCommand);
 
-			bool isRequired;
-			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", commandType.FullName), out isRequired))
-				isRequired = true;
+			bool isRequired = BusHelper.IsEventRequired(commandType);
 
 			RouteHandlerDelegate commandHandler = Routes.GetSingleHandler(command, isRequired);
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
