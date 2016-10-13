@@ -9,7 +9,7 @@ namespace Cqrs.EventStore
 {
 	public class EventStore<TAuthenticationToken> : IEventStore<TAuthenticationToken>
 	{
-		private const string CqrsEventStoreStreamNamePattern = "{0}/{1}";
+		protected const string CqrsEventStoreStreamNamePattern = "{0}/{1}";
 
 		protected IEventBuilder<TAuthenticationToken> EventBuilder { get; set; }
 

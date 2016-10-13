@@ -17,36 +17,10 @@ namespace Northwind.Domain.Host.Web
 	{
 		protected void Application_Start(object sender, EventArgs e)
 		{
-			var host = new WebHost();
-			host.Configure();
-			host.Start();
-
-			try
-			{
-				ILogger logger = NinjectDependencyResolver.Current.Resolve<ILogger>();
-
-				if (logger != null)
-				{
-					NinjectDependencyResolver.Current.Resolve<ICorrelationIdHelper>().SetCorrelationId(Guid.Empty);
-					logger.LogInfo("Application started.");
-				}
-			}
-			catch { }
 		}
 
 		protected void Application_End(object sender, EventArgs e)
 		{
-			try
-			{
-				ILogger logger = NinjectDependencyResolver.Current.Resolve<ILogger>();
-
-				if (logger != null)
-				{
-					NinjectDependencyResolver.Current.Resolve<ICorrelationIdHelper>().SetCorrelationId(Guid.Empty);
-					logger.LogInfo("Application stopped.");
-				}
-			}
-			catch { }
 		}
 
 		protected void Application_Error(object sender, EventArgs e)
@@ -73,7 +47,18 @@ namespace Northwind.Domain.Host.Web
 				correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			}
 			catch (NullReferenceException) { }
-		}
+
+            Context.Response.AddHeader("Access-Control-Allow-Origin", "*");
+
+            if (Context.Request.HttpMethod == "OPTIONS")
+            {
+                //These headers are handling the "pre-flight" OPTIONS call sent by the browser
+                Context.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+                Context.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+                Context.Response.AddHeader("Access-Control-Max-Age", "1728000");
+                Context.Response.End();
+            }
+        }
 
 		protected void Application_AuthenticateRequest(object sender, EventArgs e)
 		{
