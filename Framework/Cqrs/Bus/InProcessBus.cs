@@ -7,8 +7,10 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
@@ -36,23 +38,35 @@ namespace Cqrs.Bus
 
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
+		protected IBusHelper BusHelper { get; private set; }
+
+		protected IDictionary<Guid, IList<IEvent<TAuthenticationToken>>> EventWaits { get; private set; }
+
 		static InProcessBus()
 		{
 			Routes = new RouteManager();
 		}
 
-		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger, IConfigurationManager configurationManager)
+		public InProcessBus(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger, IConfigurationManager configurationManager, IBusHelper busHelper)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
 			DependencyResolver = dependencyResolver;
 			Logger = logger;
 			ConfigurationManager = configurationManager;
+			BusHelper = busHelper;
+			EventWaits = new ConcurrentDictionary<Guid, IList<IEvent<TAuthenticationToken>>>();
 		}
 
-		#region Implementation of ICommandSender<TAuthenticationToken>
+		protected virtual void PrepareCommand<TCommand>(TCommand command)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			if (command.AuthenticationToken == null)
+				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+		}
 
-		public virtual void Send<TCommand>(TCommand command)
+		protected virtual bool PrepareAndValidateCommand<TCommand>(TCommand command, out RouteHandlerDelegate commandHandler)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			Type commandType = command.GetType();
@@ -60,7 +74,8 @@ namespace Cqrs.Bus
 			{
 				case FrameworkType.Akka:
 					Logger.LogInfo(string.Format("A command arrived of the type '{0}' but was marked as coming from the '{1}' framework, so it was dropped.", commandType.FullName, command.Framework));
-					return;
+					commandHandler = null;
+					return false;
 			}
 
 			ICommandValidator<TAuthenticationToken, TCommand> commandValidator = null;
@@ -76,27 +91,136 @@ namespace Cqrs.Bus
 			if (commandValidator != null && !commandValidator.IsCommandValid(command))
 			{
 				Logger.LogInfo("The provided command is not valid.", string.Format("{0}\\Handle({1})", GetType().FullName, commandType.FullName));
-				return;
+				commandHandler = null;
+				return false;
 			}
 
-			if (command.AuthenticationToken == null)
-				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+			PrepareCommand(command);
 
-			bool isRequired;
-			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", commandType.FullName), out isRequired))
-				isRequired = true;
+			bool isRequired = BusHelper.IsEventRequired(commandType);
 
-			RouteHandlerDelegate commandHandler = Routes.GetSingleHandler(command, isRequired);
+			commandHandler = Routes.GetSingleHandler(command, isRequired);
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 			if (commandHandler == null)
 			{
 				Logger.LogDebug(string.Format("The command handler for '{0}' is not required.", commandType.FullName));
-				return;
+				return false;
 			}
+
+			return true;
+		}
+
+		#region Implementation of ICommandSender<TAuthenticationToken>
+
+		public virtual void Send<TCommand>(TCommand command)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			RouteHandlerDelegate commandHandler;
+			if (!PrepareAndValidateCommand(command, out commandHandler))
+				return;
 
 			Action<IMessage> handler = commandHandler.Delegate;
 			handler(command);
+		}
+
+		/// <summary>
+		/// Sends the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/>
+		/// </summary>
+		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
+		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			return SendAndWait<TCommand, TEvent>(command, -1, eventReceiver);
+		}
+
+		/// <summary>
+		/// Sends the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/> or exits if the specified timeout is expired.
+		/// </summary>
+		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
+		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
+		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
+		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			return SendAndWait(command, events => (TEvent)events.SingleOrDefault(@event => @events is TEvent), millisecondsTimeout, eventReceiver);
+		}
+
+		/// <summary>
+		/// Sends the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/> or exits if the specified timeout is expired.
+		/// </summary>
+		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
+		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
+		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
+		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			long num = (long)timeout.TotalMilliseconds;
+			if (num < -1L || num > int.MaxValue)
+				throw new ArgumentOutOfRangeException("timeout", timeout, "SpinWait_SpinUntil_TimeoutWrong");
+			return SendAndWait<TCommand, TEvent>(command, (int)timeout.TotalMilliseconds, eventReceiver);
+		}
+
+		/// <summary>
+		/// Sends the provided <paramref name="command"></paramref> and waits until the specified condition is satisfied an event of <typeparamref name="TEvent"/>
+		/// </summary>
+		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
+		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
+		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
+		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			return SendAndWait(command, condition, -1, eventReceiver);
+		}
+
+		/// <summary>
+		/// Sends the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/> or exits if the specified timeout is expired.
+		/// </summary>
+		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
+		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
+		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
+		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
+		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			if (eventReceiver != null)
+				throw new NotSupportedException("Specifying a different event receiver is not yet supported.");
+			RouteHandlerDelegate commandHandler;
+			if (!PrepareAndValidateCommand(command, out commandHandler))
+				return (TEvent)(object)null;
+
+			TEvent result = (TEvent)(object)null;
+			EventWaits.Add(command.CorrelationId, new List<IEvent<TAuthenticationToken>>());
+
+			Action<IMessage> handler = commandHandler.Delegate;
+			handler(command);
+
+			SpinWait.SpinUntil(() =>
+			{
+				IList<IEvent<TAuthenticationToken>> events = EventWaits[command.CorrelationId];
+
+				result = condition(events);
+
+				return result != null;
+			}, millisecondsTimeout);
+
+			return result;
+		}
+
+		/// <summary>
+		/// Sends the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/> or exits if the specified timeout is expired.
+		/// </summary>
+		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
+		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
+		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
+		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
+		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			long num = (long)timeout.TotalMilliseconds;
+			if (num < -1L || num > int.MaxValue)
+				throw new ArgumentOutOfRangeException("timeout", timeout, "SpinWait_SpinUntil_TimeoutWrong");
+			return SendAndWait(command, condition, (int)timeout.TotalMilliseconds, eventReceiver);
 		}
 
 		#endregion
@@ -123,13 +247,18 @@ namespace Cqrs.Bus
 			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", eventType.FullName), out isRequired))
 				isRequired = true;
 
-			IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate);
+			IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 			if (!handlers.Any())
 				Logger.LogDebug(string.Format("The event handler for '{0}' is not required.", eventType.FullName));
 
 			foreach (Action<IMessage> handler in handlers)
+			{
+				IList<IEvent<TAuthenticationToken>> events;
+				if (EventWaits.TryGetValue(@event.CorrelationId, out events))
+					events.Add(@event);
 				handler(@event);
+			}
 		}
 
 		#endregion

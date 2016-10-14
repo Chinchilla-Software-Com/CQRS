@@ -7,12 +7,15 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Cqrs.Domain;
 using Cqrs.Messages;
 
 namespace Cqrs.Events
 {
+	[Serializable]
+	[DataContract]
 	public class DtoAggregateEvent<TAuthenticationToken, TDto> : IEvent<TAuthenticationToken>
 		where TDto : IDto
 	{
@@ -51,6 +54,7 @@ namespace Cqrs.Events
 
 		#region Implementation of IMessageWithAuthenticationToken<TAuthenticationToken>
 
+		[DataMember]
 		public TAuthenticationToken AuthenticationToken { get; set; }
 
 		#endregion
@@ -61,7 +65,20 @@ namespace Cqrs.Events
 		public Guid CorrelationId { get; set; }
 
 		[DataMember]
+		[Obsolete("Use Frameworks, It's far more flexible and OriginatingFramework")]
 		public FrameworkType Framework { get; set; }
+
+		/// <summary>
+		/// The originating framework this message was sent from.
+		/// </summary>
+		[DataMember]
+		public string OriginatingFramework { get; set; }
+
+		/// <summary>
+		/// The frameworks this <see cref="IMessage"/> has been delivered to/sent via already.
+		/// </summary>
+		[DataMember]
+		public IEnumerable<string> Frameworks { get; set; }
 
 		[Obsolete("Use CorrelationId")]
 		[DataMember]

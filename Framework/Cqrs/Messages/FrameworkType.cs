@@ -6,8 +6,11 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
+
 namespace Cqrs.Messages
 {
+	[Obsolete]
 	public enum FrameworkType
 	{
 		Unknown = -2,

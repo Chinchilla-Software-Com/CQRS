@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Cqrs.Domain;
 using Cqrs.Messages;
@@ -16,6 +17,8 @@ namespace Cqrs.Commands
 	/// <summary>
 	/// A <see cref="ICommand{TPermissionToken}"/> for <see cref="IDto"/> objects
 	/// </summary>
+	[Serializable]
+	[DataContract]
 	public class DtoCommand<TAuthenticationToken, TDto> : ICommand<TAuthenticationToken>
 		where TDto : IDto
 	{
@@ -51,7 +54,20 @@ namespace Cqrs.Commands
 		public Guid CorrelationId { get; set; }
 
 		[DataMember]
+		[Obsolete("Use Frameworks, It's far more flexible and OriginatingFramework")]
 		public FrameworkType Framework { get; set; }
+
+		/// <summary>
+		/// The originating framework this message was sent from.
+		/// </summary>
+		[DataMember]
+		public string OriginatingFramework { get; set; }
+
+		/// <summary>
+		/// The frameworks this <see cref="IMessage"/> has been delivered to/sent via already.
+		/// </summary>
+		[DataMember]
+		public IEnumerable<string> Frameworks { get; set; }
 
 		[Obsolete("Use CorrelationId")]
 		[DataMember]

@@ -35,8 +35,8 @@ namespace Cqrs.Azure.ServiceBus
 			Routes = new RouteManager();
 		}
 
-		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, false)
+		public AzureEventBusReceiver(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
+			: base(configurationManager, busHelper, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, false)
 		{
 		}
 
@@ -167,6 +167,10 @@ namespace Cqrs.Azure.ServiceBus
 				// Remove message from queue
 				message.Complete();
 				Logger.LogDebug(string.Format("An event message arrived and was processed with the id '{0}'.", message.MessageId));
+
+				IList<IEvent<TAuthenticationToken>> events;
+				if (EventWaits.TryGetValue(@event.CorrelationId, out events))
+					events.Add(@event);
 			}
 			catch (Exception exception)
 			{

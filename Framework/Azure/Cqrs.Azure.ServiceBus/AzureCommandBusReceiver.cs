@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Cqrs.Authentication;
@@ -32,8 +33,8 @@ namespace Cqrs.Azure.ServiceBus
 			Routes = new RouteManager();
 		}
 
-		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, false)
+		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
+			: base(configurationManager, busHelper, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, false)
 		{
 		}
 
@@ -134,11 +135,11 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void ReceiveCommand(ICommand<TAuthenticationToken> command)
 		{
 			Type commandType = command.GetType();
-			switch (command.Framework)
+
+			if (command.Frameworks.Contains("Azure"))
 			{
-				case FrameworkType.Akka:
-					Logger.LogInfo(string.Format("A command arrived of the type '{0}' but was marked as coming from the '{1}' framework, so it was dropped.", commandType.FullName, command.Framework));
-					return;
+				Logger.LogInfo("The provided command has already been processed in Azure.", string.Format("{0}\\ReceiveCommand({1})", GetType().FullName, commandType.FullName));
+				return;
 			}
 
 			CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
