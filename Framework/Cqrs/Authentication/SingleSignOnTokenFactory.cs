@@ -10,15 +10,10 @@ using System;
 
 namespace Cqrs.Authentication
 {
-	public class SingleSignOnTokenFactory : ISingleSignOnTokenFactory
-	{
-		public ISingleSignOnToken CreateNew(int timeoutInMinutes = 360)
-		{
-			return CreateNew<SingleSignOnToken>();
-		}
-
-		public ISingleSignOnToken CreateNew<TSingleSignOnToken>(int timeoutInMinutes = 360)
+	public class SingleSignOnTokenFactory<TSingleSignOnToken> : ISingleSignOnTokenFactory<TSingleSignOnToken>
 			where TSingleSignOnToken : ISingleSignOnToken, new()
+	{
+		public virtual TSingleSignOnToken CreateNew(int timeoutInMinutes = 360)
 		{
 			var token = new TSingleSignOnToken
 			{
@@ -30,7 +25,7 @@ namespace Cqrs.Authentication
 			return RenewTokenExpiry(token, timeoutInMinutes);
 		}
 
-		public ISingleSignOnToken RenewTokenExpiry(ISingleSignOnToken token, int timeoutInMinutes = 360)
+		public virtual TSingleSignOnToken RenewTokenExpiry(TSingleSignOnToken token, int timeoutInMinutes = 360)
 		{
 			token.TimeOfExpiry = DateTime.UtcNow.AddMinutes(timeoutInMinutes);
 
