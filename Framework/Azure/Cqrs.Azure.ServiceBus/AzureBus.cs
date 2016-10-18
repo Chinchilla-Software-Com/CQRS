@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
@@ -62,6 +64,10 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected IDictionary<Guid, IList<IEvent<TAuthenticationToken>>> EventWaits { get; private set; }
 
+		protected Action<BrokeredMessage> ReceiverMessageHandler { get; private set; }
+
+		protected OnMessageOptions ReceiverMessageHandlerOptions { get; private set; }
+
 		protected AzureBus(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
 		{
 			EventWaits = new ConcurrentDictionary<Guid, IList<IEvent<TAuthenticationToken>>>();
@@ -74,18 +80,18 @@ namespace Cqrs.Azure.ServiceBus
 			ConfigurationManager = configurationManager;
 			ConnectionString = ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
 
-			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
-
 			if (isAPublisher)
-				InstantiatePublishing(namespaceManager);
+				InstantiatePublishing();
 		}
 
-		protected void InstantiatePublishing(NamespaceManager namespaceManager)
+		protected void InstantiatePublishing()
 		{
+			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
 			CheckPrivateEventTopicExists(namespaceManager);
 			CheckPublicTopicExists(namespaceManager);
 
 			ServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PublicTopicName);
+			TriggerConnectionSettingsChecking();
 		}
 
 		protected void InstantiateReceiving()
@@ -96,6 +102,12 @@ namespace Cqrs.Azure.ServiceBus
 			CheckPublicTopicExists(namespaceManager);
 
 			ServiceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, PublicTopicName, PublicTopicSubscriptionName);
+
+			// If this is also a publisher, then it will the check there will handle this
+			if (ServiceBusPublisher != null)
+				return;
+
+			TriggerConnectionSettingsChecking();
 		}
 
 		protected virtual void CheckPrivateEventTopicExists(NamespaceManager namespaceManager)
@@ -140,6 +152,63 @@ namespace Cqrs.Azure.ServiceBus
 				};
 				return retryPolicy;
 			}
+		}
+
+		protected virtual void TriggerConnectionSettingsChecking()
+		{
+			Task.Factory.StartNew(() =>
+			{
+				SpinWait.SpinUntil(() => ConnectionString != ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey));
+
+				Logger.LogInfo("Connecting string settings for the Azure Service Bus changed and will now refresh.");
+
+				// Update the connection string and trigger a restart;
+				ConnectionString = ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
+				Logger.LogDebug(string.Format("Updated connecting string settings set to {0}.", ConnectionString));
+
+				// Let's wrap up using this message bus and start the switch
+				if (ServiceBusPublisher != null)
+				{
+					ServiceBusPublisher.Close();
+					Logger.LogDebug("Publishing service bus closed.");
+				}
+				// Let's wrap up using this message bus and start the switch
+				if (ServiceBusReceiver != null)
+				{
+					ServiceBusReceiver.Close();
+					Logger.LogDebug("Receiving service bus closed.");
+				}
+				// Restart configuration, we order this intentionally with the receiver first as if this triggers the cancellation we know this isn't a publisher as well
+				if (ServiceBusReceiver != null)
+				{
+					Logger.LogDebug("Recursively calling into InstantiateReceiving.");
+					InstantiateReceiving();
+
+					// This will be the case of a connection setting change re-connection
+					if (ReceiverMessageHandler != null && ReceiverMessageHandlerOptions != null)
+					{
+						// Callback to handle received messages
+						Logger.LogDebug("Re-registering onMessage handler.");
+						ServiceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
+					}
+					else
+						Logger.LogWarning("No onMessage handler was found to re-bind.");
+				}
+				// Restart configuration, we order this intentionally with the publisher second as if this triggers the cancellation there's nothing else to process here
+				if (ServiceBusPublisher != null)
+				{
+					Logger.LogDebug("Recursively calling into InstantiatePublishing.");
+					InstantiatePublishing();
+				}
+			});
+		}
+
+		protected virtual void RegisterReceiverMessageHandler(Action<BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
+		{
+			ReceiverMessageHandler = receiverMessageHandler;
+			ReceiverMessageHandlerOptions = receiverMessageHandlerOptions;
+
+			ServiceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
 		}
 	}
 }

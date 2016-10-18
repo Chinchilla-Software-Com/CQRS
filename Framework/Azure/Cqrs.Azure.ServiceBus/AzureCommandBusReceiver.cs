@@ -173,7 +173,7 @@ namespace Cqrs.Azure.ServiceBus
 			};
 
 			// Callback to handle received messages
-			ServiceBusReceiver.OnMessage(ReceiveCommand, options);
+			RegisterReceiverMessageHandler(ReceiveCommand, options);
 		}
 
 		#endregion

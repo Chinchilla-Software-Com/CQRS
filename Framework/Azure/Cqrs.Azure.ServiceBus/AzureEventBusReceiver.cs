@@ -52,7 +52,7 @@ namespace Cqrs.Azure.ServiceBus
 			};
 
 			// Callback to handle received messages
-			ServiceBusReceiver.OnMessage(ReceiveEvent, options);
+			RegisterReceiverMessageHandler(ReceiveEvent, options);
 		}
 
 		/// <summary>
