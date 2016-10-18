@@ -122,7 +122,7 @@ namespace Cqrs.Azure.ServiceBus
 							if (typeParts.Length == 2)
 							{
 								string classType = typeParts[0];
-								bool isRequired = BusHelper.IsEventRequired(classType);
+								bool isRequired = BusHelper.IsEventRequired(string.Format("{0}.IsRequired", classType));
 
 								if (!isRequired)
 								{
