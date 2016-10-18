@@ -21,7 +21,7 @@ using Cqrs.Messages;
 namespace Cqrs.Bus
 {
 	public class InProcessBus<TAuthenticationToken>
-		: ICommandSender<TAuthenticationToken>
+		: ISendAndWaitCommandSender<TAuthenticationToken>
 		, IEventPublisher<TAuthenticationToken>
 		, IEventHandlerRegistrar
 		, ICommandHandlerRegistrar

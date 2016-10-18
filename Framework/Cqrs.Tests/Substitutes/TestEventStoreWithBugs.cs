@@ -28,7 +28,7 @@ namespace Cqrs.Tests.Substitutes
 			{
 				new TestAggregateDidSomething {Id = aggregateId, Version = 3},
 				new TestAggregateDidSomething {Id = aggregateId, Version = 4},
-				new TestAggregateDidSomeethingElse {Id = aggregateId, Version = 2}
+				new TestAggregateDidSomethingElse {Id = aggregateId, Version = 2}
 			}
 			.Where(x => x.Version > fromVersion);
 		}

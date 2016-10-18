@@ -18,7 +18,7 @@ namespace Cqrs.Tests.Substitutes
 			return new List<IEvent<ISingleSignOnToken>>
 			{
 				new TestAggregateDidSomething {Id = aggregateId, Version = 1},
-				new TestAggregateDidSomeethingElse {Id = aggregateId, Version = 2},
+				new TestAggregateDidSomethingElse {Id = aggregateId, Version = 2},
 				new TestAggregateDidSomething {Id = aggregateId, Version = 3}
 			}
 			.Where(x => x.Version > fromVersion);

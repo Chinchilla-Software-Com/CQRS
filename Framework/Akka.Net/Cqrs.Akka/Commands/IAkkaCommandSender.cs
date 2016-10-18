@@ -15,7 +15,7 @@ namespace Cqrs.Akka.Commands
 	/// A <see cref="ICommandSender{TAuthenticationToken}"/> that proxies <see cref="ICommand{TAuthenticationToken}"/> back onto the <see cref="IActorRef"/> and then publishes the <see cref="ICommand{TAuthenticationToken}"/> on the public command bus.
 	/// </summary>
 	public interface IAkkaCommandSender<TAuthenticationToken>
-		: ICommandSender<TAuthenticationToken>
+		: ISendAndWaitCommandSender<TAuthenticationToken>
 	{
 	}
 }

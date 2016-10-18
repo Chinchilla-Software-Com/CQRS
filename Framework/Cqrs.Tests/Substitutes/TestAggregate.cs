@@ -28,7 +28,7 @@ namespace Cqrs.Tests.Substitutes
 
 		public void DoSomethingElse()
 		{
-			ApplyChange(new TestAggregateDidSomeethingElse());
+			ApplyChange(new TestAggregateDidSomethingElse());
 		}
 
 		public void Apply(TestAggregateDidSomething e)

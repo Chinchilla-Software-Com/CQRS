@@ -31,6 +31,10 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 			Bind<ICommandSender<TAuthenticationToken>>()
 				.To<AzureCommandBusPublisher<TAuthenticationToken>>()
 				.InSingletonScope();
+
+			Bind<ISendAndWaitCommandSender<TAuthenticationToken>>()
+				.To<AzureCommandBusPublisher<TAuthenticationToken>>()
+				.InSingletonScope();
 		}
 
 		/// <summary>
