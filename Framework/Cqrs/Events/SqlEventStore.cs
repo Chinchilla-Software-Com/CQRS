@@ -22,6 +22,10 @@ namespace Cqrs.Events
 	/// </summary>
 	public class SqlEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken> 
 	{
+		internal const string SqlEventStoreDbFileOrServerOrConnectionApplicationKey = @"SqlEventStoreDbFileOrServerOrConnection";
+
+		internal const string SqlEventStoreGetByCorrelationIdCommandTimeout = @"SqlEventStoreGetByCorrelationIdCommandTimeout";
+
 		public IConfigurationManager ConfigurationManager { get; set; }
 
 		public SqlEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)
@@ -56,6 +60,12 @@ namespace Cqrs.Events
 		{
 			using (DataContext dbDataContext = CreateDbDataContext())
 			{
+				string commandTimeoutValue;
+				int commandTimeout;
+				if (ConfigurationManager.TryGetSetting(SqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue))
+					if (int.TryParse(commandTimeoutValue, out commandTimeout))
+						dbDataContext.CommandTimeout = commandTimeout;
+
 				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
 					.AsQueryable()
 					.Where(eventData => eventData.CorrelationId == correlationId)
@@ -77,8 +87,10 @@ namespace Cqrs.Events
 
 		protected virtual DataContext CreateDbDataContext()
 		{
-			// Use a connection string.
-			return new DataContext(ConfigurationManager.GetSetting(SqlDataStore<Entity>.SqlDataStoreDbFileOrServerOrConnectionApplicationKey));
+			string connectionStringKey;
+			if (!ConfigurationManager.TryGetSetting(SqlEventStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) && string.IsNullOrEmpty(connectionStringKey))
+				connectionStringKey = ConfigurationManager.GetSetting(SqlDataStore<Entity>.SqlDataStoreDbFileOrServerOrConnectionApplicationKey);
+			return new DataContext(connectionStringKey);
 		}
 
 		protected virtual Table<EventData> GetEventStoreTable(DataContext dbDataContext)
