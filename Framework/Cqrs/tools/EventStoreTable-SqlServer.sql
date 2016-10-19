@@ -37,3 +37,17 @@ CREATE NONCLUSTERED INDEX [IX_Timestamp] ON [dbo].[EventStore]
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 GO
 
+CREATE NONCLUSTERED INDEX [IX_Timestamp_EventId_CorrelationId] ON [dbo].[EventStore]
+(
+	[Timestamp] DESC,
+	[EventId] ASC,
+	[CorrelationId] ASC
+)
+INCLUDE ([EventType]) WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF)
+GO
+
+CREATE STATISTICS [ST_CorrelationId_Timestamp] ON [dbo].[EventStore]([CorrelationId], [Timestamp])
+GO
+
+CREATE STATISTICS [ST_EventId_CorrelationId_Timestamp] ON [dbo].[EventStore]([EventId], [CorrelationId], [Timestamp])
+GO
