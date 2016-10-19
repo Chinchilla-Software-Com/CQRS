@@ -35,6 +35,10 @@ namespace Cqrs.Events
 
 		[DataMember]
 		[Column(CanBeNull = false)]
+		public Guid AggregateRsn { get; set; }
+
+		[DataMember]
+		[Column(CanBeNull = false)]
 		public long Version { get; set; }
 
 		[DataMember]
