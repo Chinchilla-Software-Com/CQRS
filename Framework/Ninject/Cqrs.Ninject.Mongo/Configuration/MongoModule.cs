@@ -1,4 +1,12 @@
-﻿using Cqrs.Mongo.Factories;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="cdmdotnet Limited">
+// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using Cqrs.Mongo.Factories;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Mongo.Configuration

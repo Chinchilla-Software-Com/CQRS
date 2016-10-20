@@ -8,6 +8,7 @@ using cdmdotnet.Logging;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Cqrs.Entities;
+using MongoDB.Driver.Builders;
 
 namespace Cqrs.Mongo.DataStores
 {
@@ -132,6 +133,22 @@ namespace Cqrs.Mongo.DataStores
 			finally
 			{
 				Logger.LogDebug("Removing data from the Mongo database... Done", "MongoDataStore\\Remove");
+			}
+		}
+
+		public void Destroy(TData data)
+		{
+			Logger.LogDebug("Destroying data in the Mongo database", "MongoDataStore\\Destroy");
+			try
+			{
+				DateTime start = DateTime.Now;
+				MongoCollection.Remove(Query.EQ("Rsn", data.Rsn));
+				DateTime end = DateTime.Now;
+				Logger.LogDebug(string.Format("Destroying data in the Mongo database took {0}.", end - start), "MongoDataStore\\Destroy");
+			}
+			finally
+			{
+				Logger.LogDebug("Destroying data to the Mongo database... Done", "MongoDataStore\\Destroy");
 			}
 		}
 

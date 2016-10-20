@@ -21,7 +21,12 @@ namespace Cqrs.DataStores
 
 		void Add(IEnumerable<TData> data);
 
+		/// <summary>
+		/// Will mark the <paramref name="data"/> as logically (or soft).
+		/// </summary>
 		void Remove(TData data);
+
+		void Destroy(TData data);
 
 		void RemoveAll();
 

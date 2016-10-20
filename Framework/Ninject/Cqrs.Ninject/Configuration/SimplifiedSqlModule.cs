@@ -28,7 +28,7 @@ namespace Cqrs.Ninject.Configuration
 		public virtual void RegisterFactories()
 		{
 			Bind<IEventBuilder<TAuthenticationToken>>()
-				.To<SqlEventBuilder<TAuthenticationToken>>()
+				.To<DefaultEventBuilder<TAuthenticationToken>>()
 				.InSingletonScope();
 			Bind<IEventDeserialiser<TAuthenticationToken>>()
 				.To<EventDeserialiser<TAuthenticationToken>>()

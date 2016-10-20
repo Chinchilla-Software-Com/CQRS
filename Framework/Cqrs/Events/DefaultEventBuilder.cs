@@ -4,7 +4,7 @@ using Newtonsoft.Json.Converters;
 
 namespace Cqrs.Events
 {
-	public class SqlEventBuilder<TAuthenticationToken> : EventBuilder<TAuthenticationToken>
+	public class DefaultEventBuilder<TAuthenticationToken> : EventBuilder<TAuthenticationToken>
 	{
 		#region Implementation of EventBuilder
 

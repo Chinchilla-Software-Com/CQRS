@@ -146,6 +146,11 @@ namespace Cqrs.Sql.DataStores
 
 		public void Remove(TEntity data)
 		{
+			Destroy(data);
+		}
+
+		public void Destroy(TEntity data)
+		{
 			var converted = Converters.ConvertTo<TDbEntity>(data);
 			DataTable.DeleteOnSubmit(converted);
 		}

@@ -152,20 +152,40 @@ namespace Cqrs.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsLogicallyDeleted"/> to true
+		/// </summary>
 		public virtual void Remove(TData data)
 		{
 			Logger.LogDebug("Removing data from the Sql database", "SqlDataStore\\Remove");
 			try
 			{
 				DateTime start = DateTime.Now;
-				Table.DeleteOnSubmit(data);
-				DbDataContext.SubmitChanges();
+				data.IsLogicallyDeleted = true;
+				Update(data);
 				DateTime end = DateTime.Now;
 				Logger.LogDebug(string.Format("Removing data from the Sql database took {0}.", end - start), "SqlDataStore\\Remove");
 			}
 			finally
 			{
 				Logger.LogDebug("Removing data from the Sql database... Done", "SqlDataStore\\Remove");
+			}
+		}
+
+		public void Destroy(TData data)
+		{
+			Logger.LogDebug("Removing data from the Sql database", "SqlDataStore\\Destroy");
+			try
+			{
+				DateTime start = DateTime.Now;
+				Table.DeleteOnSubmit(data);
+				DbDataContext.SubmitChanges();
+				DateTime end = DateTime.Now;
+				Logger.LogDebug(string.Format("Removing data from the Sql database took {0}.", end - start), "SqlDataStore\\Destroy");
+			}
+			finally
+			{
+				Logger.LogDebug("Removing data from the Sql database... Done", "SqlDataStore\\Destroy");
 			}
 		}
 
