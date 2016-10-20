@@ -31,7 +31,7 @@ namespace CQRSWeb {
 							x.For<IUnitOfWork<ISingleSignOnToken>>().HybridHttpOrThreadLocalScoped().Use<UnitOfWork<ISingleSignOnToken>>();
 
 							x.For<IConfigurationManager>().Singleton().Use<ConfigurationManager>();
-							x.For<IEventBuilder<ISingleSignOnToken>>().Singleton().Use<SqlEventBuilder<ISingleSignOnToken>>();
+							x.For<IEventBuilder<ISingleSignOnToken>>().Singleton().Use<DefaultEventBuilder<ISingleSignOnToken>>();
 							x.For<IEventDeserialiser<ISingleSignOnToken>>().Singleton().Use<EventDeserialiser<ISingleSignOnToken>>();
 							x.For<IEventStore<ISingleSignOnToken>>().Singleton().Use<SqlEventStore<ISingleSignOnToken>>();
 
