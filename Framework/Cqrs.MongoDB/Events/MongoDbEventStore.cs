@@ -9,8 +9,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using cdmdotnet.Logging;
 using Cqrs.Events;
+using Cqrs.MongoDB.DataStores.Indexes;
+using Cqrs.MongoDB.Events.Indexes;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
@@ -31,6 +34,7 @@ namespace Cqrs.MongoDB.Events
 			MongoDbEventStoreConnectionStringFactory = mongoDbEventStoreConnectionStringFactory;
 
 			MongoCollection = GetCollection();
+			VerifyIndexes();
 		}
 
 		protected virtual IMongoCollection<EventData> GetCollection()
@@ -41,6 +45,49 @@ namespace Cqrs.MongoDB.Events
 			return mongoDatabase.GetCollection<EventData>(MongoDbEventStoreConnectionStringFactory.GetEventStoreDatabaseName());
 		}
 
+		protected virtual void VerifyIndexes()
+		{
+			VerifyIndex(new ByCorrelationIdMongoDbIndex());
+			VerifyIndex(new ByAggregateIdAndVersionMongoDbIndex());
+			VerifyIndex(new ByTimestampMongoDbIndex());
+			VerifyIndex(new ByTimestampAndEventTypeMongoDbIndex());
+		}
+
+		protected virtual void VerifyIndex(MongoDbIndex<EventData> mongoIndex)
+		{
+			IndexKeysDefinitionBuilder<EventData> indexKeysBuilder = Builders<EventData>.IndexKeys;
+			IndexKeysDefinition<EventData> indexKey = null;
+
+			IList<Expression<Func<EventData, object>>> selectors = mongoIndex.Selectors.ToList();
+			for (int i = 0; i < selectors.Count; i++)
+			{
+				Expression<Func<EventData, object>> expression = selectors[i];
+				if (mongoIndex.IsAcending)
+				{
+					if (i == 0)
+						indexKey = indexKeysBuilder.Ascending(expression);
+					else
+						indexKey = indexKey.Ascending(expression);
+				}
+				else
+				{
+					if (i == 0)
+						indexKey = indexKeysBuilder.Descending(expression);
+					else
+						indexKey = indexKey.Descending(expression);
+				}
+			}
+
+			MongoCollection.Indexes.CreateOne
+			(
+				indexKey,
+				new CreateIndexOptions
+				{
+					Unique = mongoIndex.IsUnique,
+					Name = mongoIndex.Name
+				}
+			);
+		}
 
 		#region Overrides of EventStore<TAuthenticationToken>
 
