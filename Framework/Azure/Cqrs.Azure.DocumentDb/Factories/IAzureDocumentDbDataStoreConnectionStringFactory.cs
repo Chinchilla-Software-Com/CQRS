@@ -17,5 +17,7 @@ namespace Cqrs.Azure.DocumentDb.Factories
 		string GetAzureDocumentDbDatabaseName();
 
 		string GetAzureDocumentDbCollectionName();
+
+		bool UseOneCollectionPerDataStore();
 	}
 }

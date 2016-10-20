@@ -41,6 +41,15 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Factories
 			return DatabaseName;
 		}
 
+		#region Overrides of AzureDocumentDbDataStoreConnectionStringFactory
+
+		public override bool UseOneCollectionPerDataStore()
+		{
+			return true;
+		}
+
+		#endregion
+
 		#endregion
 	}
 }
