@@ -6,7 +6,6 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Cqrs.Events;
@@ -18,8 +17,8 @@ namespace Cqrs.Azure.ServiceBus
 {
 	public class AzureEventBusPublisher<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IEventPublisher<TAuthenticationToken>
 	{
-		public AzureEventBusPublisher(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
-			: base(configurationManager, busHelper, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, true)
+		public AzureEventBusPublisher(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
+			: base(configurationManager, busHelper, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, true)
 		{
 		}
 
@@ -28,10 +27,8 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
-			if (@event.AuthenticationToken == null)
-				@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-			@event.TimeStamp = DateTimeOffset.UtcNow;
+			if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-ServiceBus"))
+				return;
 
 			ServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event)));
 			Logger.LogInfo(string.Format("An event was published with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));

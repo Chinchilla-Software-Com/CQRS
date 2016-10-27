@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
@@ -32,46 +33,78 @@ namespace Cqrs.Azure.ServiceBus
 			QueueTrackerLock = new ReaderWriterLockSlim();
 		}
 
-		protected override void ReceiveEvent(BrokeredMessage message)
+		protected override void ReceiveEvent(PartitionContext context, Microsoft.ServiceBus.Messaging.EventData eventData)
 		{
-			try
+			// Do a manual 10 try attempt with back-off
+			for (int i = 0; i < 10; i++)
 			{
-				Logger.LogDebug(string.Format("An event message arrived with the id '{0}'.", message.MessageId));
-				string messageBody = message.GetBody<string>();
-				IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(messageBody);
-
-				CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
-				Logger.LogInfo(string.Format("An event message arrived with the id '{0}' was of type {1}.", message.MessageId, @event.GetType().FullName));
-
-				Type eventType = @event.GetType();
-
-				string targetQueueName = eventType.FullName;
-
 				try
 				{
-					object rsn = eventType.GetProperty("Rsn").GetValue(@event, null);
-					targetQueueName = string.Format("{0}.{1}", targetQueueName, rsn);
+					Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
+					string messageBody = Encoding.UTF8.GetString(eventData.GetBytes());
+					IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(messageBody);
+
+					CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
+					Logger.LogInfo(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3}.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset, @event.GetType().FullName));
+
+					Type eventType = @event.GetType();
+
+					string targetQueueName = eventType.FullName;
+
+					try
+					{
+						object rsn = eventType.GetProperty("Rsn").GetValue(@event, null);
+						targetQueueName = string.Format("{0}.{1}", targetQueueName, rsn);
+					}
+					catch
+					{
+						Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3} but with no Rsn property.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset, eventType));
+						// Do nothing if there is no rsn. Just use @event type name
+					}
+
+					CreateQueueAndAttachListenerIfNotExist(targetQueueName);
+					EnqueueEvent(targetQueueName, @event);
+
+					// remove the original message from the incoming queue
+					context.CheckpointAsync(eventData);
+
+					Logger.LogDebug(string.Format("An event message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
+					return;
 				}
-				catch
+				catch (Exception exception)
 				{
-					Logger.LogDebug(string.Format("An event message arrived with the id '{0}' was of type {1} but with no Rsn property.", message.MessageId, eventType));
-					// Do nothing if there is no rsn. Just use @event type name
+					// Indicates a problem, unlock message in queue
+					Logger.LogError(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but failed to be process.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+
+					switch (i)
+					{
+						case 0:
+						case 1:
+							// 10 seconds
+							Thread.Sleep(10 * 1000);
+							break;
+						case 2:
+						case 3:
+							// 30 seconds
+							Thread.Sleep(30 * 1000);
+							break;
+						case 4:
+						case 5:
+						case 6:
+							// 1 minute
+							Thread.Sleep(60 * 1000);
+							break;
+						case 7:
+						case 8:
+						case 9:
+							// 3 minutes
+							Thread.Sleep(3 * 60 * 1000);
+							break;
+					}
 				}
-
-				CreateQueueAndAttachListenerIfNotExist(targetQueueName);
-				EnqueueEvent(targetQueueName, @event);
-
-				// remove the original message from the incoming queue
-				message.Complete();
-
-				Logger.LogDebug(string.Format("An event message arrived and was processed with the id '{0}'.", message.MessageId));
 			}
-			catch (Exception exception)
-			{
-				// Indicates a problem, unlock message in queue
-				Logger.LogError(string.Format("An event message arrived with the id '{0}' but failed to be process.", message.MessageId), exception: exception);
-				message.Abandon();
-			}
+			// Eventually just accept it
+			context.CheckpointAsync(eventData);
 		}
 
 		private void EnqueueEvent(string targetQueueName, IEvent<TAuthenticationToken> @event)

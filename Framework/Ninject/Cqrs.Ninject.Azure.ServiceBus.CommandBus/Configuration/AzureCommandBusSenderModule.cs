@@ -19,6 +19,10 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		{
 			RegisterCommandSender();
 			RegisterCommandMessageSerialiser();
+
+			Bind<IAzureBusHelper<TAuthenticationToken>>()
+				.To<AzureBusHelper<TAuthenticationToken>>()
+				.InSingletonScope();
 		}
 
 		#endregion

@@ -8,8 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Cqrs.Authentication;
@@ -19,7 +17,6 @@ using Cqrs.Events;
 using cdmdotnet.Logging;
 using Cqrs.Messages;
 using Microsoft.ServiceBus.Messaging;
-using Newtonsoft.Json;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -28,15 +25,17 @@ namespace Cqrs.Azure.ServiceBus
 		, IEventHandlerRegistrar
 		, IEventReceiver<TAuthenticationToken>
 	{
+		// ReSharper disable StaticMemberInGenericType
 		protected static RouteManager Routes { get; private set; }
+		// ReSharper restore StaticMemberInGenericType
 
 		static AzureEventBusReceiver()
 		{
 			Routes = new RouteManager();
 		}
 
-		public AzureEventBusReceiver(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger)
-			: base(configurationManager, busHelper, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, false)
+		public AzureEventBusReceiver(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
+			: base(configurationManager, busHelper, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, false)
 		{
 		}
 
@@ -61,21 +60,7 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			Action<TMessage> registerableHandler = handler;
-			if (!holdMessageLock)
-			{
-				registerableHandler = message =>
-				{
-					Action wrappedEventHandler = () =>
-					{
-						CorrelationIdHelper.SetCorrelationId(message.CorrelationId);
-						handler(message);
-					};
-					new Task(wrappedEventHandler).Start();
-				};
-			}
-
-			Routes.RegisterHandler(registerableHandler, targetedType);
+			AzureBusHelper.RegisterHandler(Routes, handler, targetedType, holdMessageLock);
 		}
 
 		/// <summary>
@@ -94,75 +79,33 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				Logger.LogDebug(string.Format("An event message arrived with the id '{0}'.", message.MessageId));
 				string messageBody = message.GetBody<string>();
-				IEvent<TAuthenticationToken> @event;
 
-				try
-				{
-					@event = MessageSerialiser.DeserialiseEvent(messageBody);
-				}
-				catch (JsonSerializationException exception)
-				{
-					JsonSerializationException checkException = exception;
-					bool safeToExit = false;
-					do
+				IEvent<TAuthenticationToken> @event = AzureBusHelper.ReceiveEvent(messageBody, ReceiveEvent,
+					string.Format("id '{0}'", message.MessageId),
+					() =>
 					{
-						if (checkException.Message.StartsWith("Could not load assembly"))
-						{
-							safeToExit = true;
-							break;
-						}
-					} while ((checkException = checkException.InnerException as JsonSerializationException) != null);
-					if (safeToExit)
+						// Remove message from queue
+						message.Complete();
+						Logger.LogDebug(string.Format("An event message arrived with the id '{0}' but processing was skipped due to event settings.", message.MessageId));
+					},
+					() =>
 					{
-						const string pattern = @"(?<=^Error resolving type specified in JSON ').+?(?='\. Path '\$type')";
-						Match match = new Regex(pattern).Match(exception.Message);
-						if (match.Success)
+						Task.Factory.StartNew(() =>
 						{
-							string[] typeParts = match.Value.Split(',');
-							if (typeParts.Length == 2)
+							while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
 							{
-								string classType = typeParts[0];
-								bool isRequired = BusHelper.IsEventRequired(string.Format("{0}.IsRequired", classType));
-
-								if (!isRequired)
+								//Based on LockedUntilUtc property to determine if the lock expires soon
+								if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-10))
 								{
-									// Remove message from queue
-									message.Complete();
-									Logger.LogDebug(string.Format("An event message arrived with the id '{0}' but processing was skipped due to event settings.", message.MessageId));
-									return;
+									// If so, repeat the message
+									message.RenewLock();
 								}
+
+								Thread.Sleep(500);
 							}
-						}
+						}, brokeredMessageRenewCancellationTokenSource.Token);
 					}
-					throw;
-				}
-
-				CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
-				Logger.LogInfo(string.Format("An event message arrived with the id '{0}' was of type {1}.", message.MessageId, @event.GetType().FullName));
-
-				bool canRefresh;
-				if (!ConfigurationManager.TryGetSetting(string.Format("{0}.ShouldRefresh", @event.GetType().FullName), out canRefresh))
-					canRefresh = false;
-
-				if (canRefresh)
-				{
-					Task.Factory.StartNew(() =>
-					{
-						while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
-						{
-							//Based on LockedUntilUtc property to determine if the lock expires soon
-							if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-10))
-							{
-								// If so, repeat the message
-								message.RenewLock();
-							}
-
-							Thread.Sleep(500);
-						}
-					}, brokeredMessageRenewCancellationTokenSource.Token);
-				}
-
-				ReceiveEvent(@event);
+				);
 
 				// Remove message from queue
 				message.Complete();
@@ -187,26 +130,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		public virtual void ReceiveEvent(IEvent<TAuthenticationToken> @event)
 		{
-			switch (@event.Framework)
-			{
-				case FrameworkType.Akka:
-					Logger.LogInfo(string.Format("An event arrived of the type '{0}' but was marked as coming from the '{1}' framework, so it was dropped.", @event.GetType().FullName, @event.Framework));
-					return;
-			}
-
-			CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
-			AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
-
-			Type eventType = @event.GetType();
-			bool isRequired = BusHelper.IsEventRequired(eventType);
-
-			IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
-			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
-			if (!handlers.Any())
-				Logger.LogDebug(string.Format("The event handler for '{0}' is not required.", eventType.FullName));
-
-			foreach (Action<IMessage> handler in handlers)
-				handler(@event);
+			AzureBusHelper.DefaultReceiveEvent(@event, Routes, "Azure-ServiceBus");
 		}
 	}
 }

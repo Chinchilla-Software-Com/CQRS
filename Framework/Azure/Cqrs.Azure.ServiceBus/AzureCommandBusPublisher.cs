@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="cdmdotnet Limited">
+// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -14,57 +22,9 @@ namespace Cqrs.Azure.ServiceBus
 {
 	public class AzureCommandBusPublisher<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, ISendAndWaitCommandSender<TAuthenticationToken>
 	{
-		protected IDependencyResolver DependencyResolver { get; private set; }
-
-		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IDependencyResolver dependencyResolver)
-			: base(configurationManager, busHelper, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, true)
+		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
+			: base(configurationManager, busHelper, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, true)
 		{
-			DependencyResolver = dependencyResolver;
-		}
-
-		protected virtual void PrepareCommand<TCommand>(TCommand command)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			if (command.AuthenticationToken == null)
-				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-
-			if (string.IsNullOrWhiteSpace(command.OriginatingFramework))
-				command.OriginatingFramework = "Azure";
-			IList<string> frameworks = new List<string>(command.Frameworks);
-			frameworks.Add("Azure");
-			command.Frameworks = frameworks;
-		}
-
-		protected virtual bool PrepareAndValidateCommand<TCommand>(TCommand command)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			Type commandType = command.GetType();
-
-			if (command.Frameworks.Contains("Azure"))
-			{
-				Logger.LogInfo("The provided command has already been processed in Azure.", string.Format("{0}\\Handle({1})", GetType().FullName, commandType.FullName));
-				return false;
-			}
-
-			ICommandValidator<TAuthenticationToken, TCommand> commandValidator = null;
-			try
-			{
-				commandValidator = DependencyResolver.Resolve<ICommandValidator<TAuthenticationToken, TCommand>>();
-			}
-			catch (Exception exception)
-			{
-				Logger.LogDebug("Locating an ICommandValidator failed.", string.Format("{0}\\Handle({1})", GetType().FullName, commandType.FullName), exception);
-			}
-
-			if (commandValidator != null && !commandValidator.IsCommandValid(command))
-			{
-				Logger.LogInfo("The provided command is not valid.", string.Format("{0}\\Handle({1})", GetType().FullName, commandType.FullName));
-				return false;
-			}
-
-			PrepareCommand(command);
-			return true;
 		}
 
 		#region Implementation of ICommandSender<TAuthenticationToken>
@@ -72,7 +32,7 @@ namespace Cqrs.Azure.ServiceBus
 		public void Send<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			if (!PrepareAndValidateCommand(command))
+			if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
 				return;
 
 			ServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseCommand(command)));
@@ -141,7 +101,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			if (eventReceiver != null)
 				throw new NotSupportedException("Specifying a different event receiver is not yet supported.");
-			if (!PrepareAndValidateCommand(command))
+			if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
 				return (TEvent)(object)null;
 
 			TEvent result = (TEvent)(object)null;

@@ -13,7 +13,7 @@ using Cqrs.Bus;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	public abstract class AzureEventBus<TAuthenticationToken> : AzureBus<TAuthenticationToken>
+	public abstract class AzureEventBus<TAuthenticationToken> : AzureServiceBus<TAuthenticationToken>
 	{
 		protected override string MessageBusConnectionStringConfigurationKey
 		{
@@ -50,9 +50,12 @@ namespace Cqrs.Azure.ServiceBus
 			get { return "Cqrs.EventBus"; }
 		}
 
-		protected AzureEventBus(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
+		protected IAzureBusHelper<TAuthenticationToken> AzureBusHelper { get; private set; }
+
+		protected AzureEventBus(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, bool isAPublisher)
 			: base(configurationManager, busHelper, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
+			AzureBusHelper = azureBusHelper;
 		}
 	}
 }
