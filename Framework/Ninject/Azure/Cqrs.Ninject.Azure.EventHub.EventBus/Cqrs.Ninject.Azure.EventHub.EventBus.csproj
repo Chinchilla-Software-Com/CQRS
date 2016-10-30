@@ -5,15 +5,16 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1886B47D-9119-4BCF-992F-B56C37CEA7AE}</ProjectGuid>
+    <ProjectGuid>{9EC7298C-0D22-484C-87D1-BC7F9EB8FB9B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cqrs.Ninject.Azure.ServiceBus.EventBus</RootNamespace>
-    <AssemblyName>Cqrs.Ninject.Azure.ServiceBus.EventBus</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>Cqrs.Azure.EventHub.EventBus</RootNamespace>
+    <AssemblyName>Cqrs.Azure.EventHub.EventBus</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ninject">
@@ -47,19 +50,20 @@
   <ItemGroup>
     <Compile Include="Configuration\AzureEventBusReceiverModule.cs" />
     <Compile Include="Configuration\AzureEventPublisherModule.cs" />
+    <Compile Include="Configuration\AzureQueuedEventBusReceiverModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Cqrs.Ninject.Azure.ServiceBus.EventBus.nuspec">
+    <None Include="Cqrs.Ninject.Azure.EventHub.EventBus.nuspec">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Azure\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj">
-      <Project>{9CB07796-8032-4273-B289-E82E84499C5F}</Project>
-      <Name>Cqrs.Azure.ServiceBus</Name>
+    <ProjectReference Include="..\..\..\Azure\Cqrs.Azure.EventHub\Cqrs.Azure.EventHub.csproj">
+      <Project>{066a57f0-460b-4dbc-a793-59fb8e1daa52}</Project>
+      <Name>Cqrs.Azure.EventHub</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Cqrs\Cqrs.csproj">
       <Project>{DAFD2A8A-D6B0-4433-8DDF-B98460C64EC6}</Project>
