@@ -9,7 +9,6 @@
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
-using Cqrs.Bus;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -57,8 +56,8 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected IAzureBusHelper<TAuthenticationToken> AzureBusHelper { get; private set; }
 
-		protected AzureEventHubBus(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, bool isAPublisher)
-			: base(configurationManager, busHelper, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
+		protected AzureEventHubBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, bool isAPublisher)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
 			AzureBusHelper = azureBusHelper;
 		}

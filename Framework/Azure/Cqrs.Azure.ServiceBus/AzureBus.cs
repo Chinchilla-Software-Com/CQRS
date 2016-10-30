@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
-using Cqrs.Bus;
 using Cqrs.Events;
 using Microsoft.ServiceBus;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -37,11 +36,9 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
-		protected IBusHelper BusHelper { get; private set; }
-
 		protected IDictionary<Guid, IList<IEvent<TAuthenticationToken>>> EventWaits { get; private set; }
 
-		protected AzureBus(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
+		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
 		{
 			EventWaits = new ConcurrentDictionary<Guid, IList<IEvent<TAuthenticationToken>>>();
 
@@ -49,11 +46,12 @@ namespace Cqrs.Azure.ServiceBus
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
 			Logger = logger;
-			BusHelper = busHelper;
 			ConfigurationManager = configurationManager;
 
+			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			if (isAPublisher)
 				InstantiatePublishing();
+			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
 		protected abstract void InstantiatePublishing();

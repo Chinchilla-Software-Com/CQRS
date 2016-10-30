@@ -9,7 +9,6 @@
 using System;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
-using Cqrs.Bus;
 using Cqrs.Configuration;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
@@ -52,10 +51,12 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected OnMessageOptions ReceiverMessageHandlerOptions { get; set; }
 
-		protected AzureServiceBus(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
-			: base (configurationManager, busHelper, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
+		protected AzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
+			: base (configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
+			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			ConnectionString = ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
+			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
 		protected override void InstantiatePublishing()
