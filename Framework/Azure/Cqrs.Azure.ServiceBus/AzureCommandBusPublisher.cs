@@ -116,7 +116,7 @@ namespace Cqrs.Azure.ServiceBus
 				result = condition(events);
 
 				return result != null;
-			}, millisecondsTimeout, 1000);
+			}, millisecondsTimeout, sleepInMilliseconds: 1000);
 
 			return result;
 		}

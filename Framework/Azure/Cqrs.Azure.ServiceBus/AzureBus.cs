@@ -101,7 +101,7 @@ namespace Cqrs.Azure.ServiceBus
 				// New thread remember
 				CorrelationIdHelper.SetCorrelationId(currentCorrelationId);
 
-				SpinWait.SpinUntil(ValidateConnectionSettingHasChanged, 1000);
+				SpinWait.SpinUntil(ValidateConnectionSettingHasChanged, sleepInMilliseconds: 1000);
 
 				Logger.LogInfo("Connecting string settings for the Azure Service Bus changed and will now refresh.");
 

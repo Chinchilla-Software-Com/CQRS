@@ -200,7 +200,7 @@ namespace Cqrs.Azure.ServiceBus
 					// Always return false to keep this spinning.
 					return false;
 				},
-				1000
+				sleepInMilliseconds: 1000
 			);
 		}
 
