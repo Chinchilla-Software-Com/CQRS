@@ -68,7 +68,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			Type commandType = command.GetType();
 
-			if (command.Frameworks.Contains("Azure-EventHub"))
+			if (command.Frameworks != null && command.Frameworks.Contains("Azure-EventHub"))
 			{
 				Logger.LogInfo("The provided command has already been processed in Azure.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, commandType.FullName));
 				return false;
@@ -162,7 +162,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			Type commandType = command.GetType();
 
-			if (command.Frameworks.Contains(framework))
+			if (command.Frameworks != null && command.Frameworks.Contains(framework))
 			{
 				Logger.LogInfo("The provided command has already been processed in Azure.", string.Format("{0}\\DefaultReceiveCommand({1})", GetType().FullName, commandType.FullName));
 				return;
@@ -205,7 +205,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			Type eventType = @event.GetType();
 
-			if (@event.Frameworks.Contains("Azure-EventHub"))
+			if (@event.Frameworks != null && @event.Frameworks.Contains("Azure-EventHub"))
 			{
 				Logger.LogInfo("The provided event has already been processed in Azure.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, eventType.FullName));
 				return false;
@@ -291,7 +291,7 @@ namespace Cqrs.Azure.ServiceBus
 
 			Type eventType = @event.GetType();
 
-			if (@event.Frameworks.Contains(framework))
+			if (@event.Frameworks != null && @event.Frameworks.Contains(framework))
 			{
 				Logger.LogInfo("The provided event has already been processed in Azure.", string.Format("{0}\\DefaultReceiveEvent({1})", GetType().FullName, eventType.FullName));
 				return;

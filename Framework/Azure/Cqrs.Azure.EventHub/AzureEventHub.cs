@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Configuration;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
@@ -68,6 +69,10 @@ namespace Cqrs.Azure.ServiceBus
 			ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(EventHubConnectionStringNameConfigurationKey)].ConnectionString;
 			StorageConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(EventHubStorageConnectionStringNameConfigurationKey)].ConnectionString;
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
+			if (string.IsNullOrWhiteSpace(ConnectionString))
+				throw new ConfigurationErrorsException(string.Format("Configuration is missing required information. Make sure the appSetting '{0}' is defined and a matching connection string with the name that matches the value of the appSetting value '{0}'.", EventHubConnectionStringNameConfigurationKey ));
+			if (string.IsNullOrWhiteSpace(StorageConnectionString))
+				throw new ConfigurationErrorsException(string.Format("Configuration is missing required information. Make sure the appSetting '{0}' is defined and a matching connection string with the name that matches the value of the appSetting value '{0}'.", EventHubStorageConnectionStringNameConfigurationKey));
 		}
 
 		#endregion

@@ -60,7 +60,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected override void SetConnectionStrings()
 		{
-			// ReSharper disable DoNotCallOverridableMethodsInConstructor
+			// ReSharper disable DoNotCallOverridableMethodsInConstructor 
 			ConnectionString = ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
