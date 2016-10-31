@@ -49,10 +49,13 @@ namespace Cqrs.Azure.ServiceBus
 			ConfigurationManager = configurationManager;
 
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
+			SetConnectionStrings();
 			if (isAPublisher)
 				InstantiatePublishing();
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
+
+		protected abstract void SetConnectionStrings();
 
 		protected abstract void InstantiatePublishing();
 

@@ -58,11 +58,19 @@ namespace Cqrs.Azure.ServiceBus
 		protected AzureEventHub(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
 			: base (configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
+		}
+
+		#region Overrides of AzureBus<TAuthenticationToken>
+
+		protected override void SetConnectionStrings()
+		{
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(EventHubConnectionStringNameConfigurationKey)].ConnectionString;
 			StorageConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(EventHubStorageConnectionStringNameConfigurationKey)].ConnectionString;
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
+
+		#endregion
 
 		protected override void InstantiatePublishing()
 		{

@@ -54,10 +54,18 @@ namespace Cqrs.Azure.ServiceBus
 		protected AzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
 			: base (configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
+		}
+
+		#region Overrides of AzureBus<TAuthenticationToken>
+
+		protected override void SetConnectionStrings()
+		{
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			ConnectionString = ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
+
+		#endregion
 
 		protected override void InstantiatePublishing()
 		{
