@@ -10,24 +10,15 @@ namespace Cqrs.Infrastructure
 	[HostProtection(SecurityAction.LinkDemand, ExternalThreading = true, Synchronization = true)]
 	public struct SpinWait
 	{
+		/// <summary>
+		/// A recommended sleep value of 50.
+		/// </summary>
 		public const short DefaultSleepInMilliseconds = 50;
 
 		internal const int YieldThreshold = 10;
 		internal const int Sleep0EveryHowManyTimes = 5;
 		internal const int Sleep1EveryHowManyTimes = 20;
 		private int _count;
-
-		/// <summary>
-		/// Gets the number of times <see cref="M:System.Threading.SpinWait.SpinOnce"/> has been called on this instance.
-		/// </summary>
-		/// 
-		/// <returns>
-		/// Returns an integer that represents the number of times <see cref="M:System.Threading.SpinWait.SpinOnce"/> has been called on this instance.
-		/// </returns>
-		public int Count
-		{
-			get { return _count; }
-		}
 
 		/// <summary>
 		/// Gets whether the next call to <see cref="M:System.Threading.SpinWait.SpinOnce"/> will yield the processor, triggering a forced context switch.
@@ -55,9 +46,9 @@ namespace Cqrs.Infrastructure
 			if (NextSpinWillYield)
 			{
 				int num = _count >= 10 ? _count - 10 : _count;
-				if (num % 20 == 19)
+				if (num % Sleep1EveryHowManyTimes == 19)
 					Thread.Sleep(sleepInMilliseconds == 0 ? 1 : sleepInMilliseconds * 2);
-				else if (num % 5 == 4)
+				else if (num % Sleep0EveryHowManyTimes == 4)
 					Thread.Sleep(sleepInMilliseconds);
 				else
 					Thread.Yield();
