@@ -10,7 +10,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Akka.Actor;
 using cdmdotnet.Logging;
 using Cqrs.Akka.Configuration;
@@ -19,6 +18,7 @@ using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
+using Cqrs.Infrastructure;
 using Cqrs.Messages;
 
 namespace Cqrs.Akka.Commands
@@ -245,7 +245,7 @@ namespace Cqrs.Akka.Commands
 				result = condition(events);
 
 				return result != null;
-			}, millisecondsTimeout);
+			}, millisecondsTimeout, SpinWait.DefaultSleepInMilliseconds);
 
 			return result;
 		}

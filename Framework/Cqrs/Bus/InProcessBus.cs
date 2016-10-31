@@ -17,6 +17,7 @@ using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Messages;
+using SpinWait = Cqrs.Infrastructure.SpinWait;
 
 namespace Cqrs.Bus
 {
@@ -202,7 +203,7 @@ namespace Cqrs.Bus
 				result = condition(events);
 
 				return result != null;
-			}, millisecondsTimeout);
+			}, millisecondsTimeout, SpinWait.DefaultSleepInMilliseconds);
 
 			return result;
 		}

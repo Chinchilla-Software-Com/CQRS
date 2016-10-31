@@ -10,12 +10,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
+using Cqrs.Infrastructure;
 using EventData = Microsoft.ServiceBus.Messaging.EventData;
 
 namespace Cqrs.Azure.ServiceBus
@@ -116,7 +116,7 @@ namespace Cqrs.Azure.ServiceBus
 				result = condition(events);
 
 				return result != null;
-			}, millisecondsTimeout);
+			}, millisecondsTimeout, SpinWait.DefaultSleepInMilliseconds);
 
 			return result;
 		}

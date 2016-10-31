@@ -17,6 +17,7 @@ using Cqrs.Configuration;
 using Cqrs.Events;
 using Microsoft.ServiceBus.Messaging;
 using EventData = Microsoft.ServiceBus.Messaging.EventData;
+using SpinWait = Cqrs.Infrastructure.SpinWait;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -198,7 +199,8 @@ namespace Cqrs.Azure.ServiceBus
 
 					// Always return false to keep this spinning.
 					return false;
-				}
+				},
+				SpinWait.DefaultSleepInMilliseconds
 			);
 		}
 

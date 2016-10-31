@@ -9,12 +9,12 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
 using Cqrs.Events;
+using Cqrs.Infrastructure;
 using Microsoft.ServiceBus;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling;
@@ -89,7 +89,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			Task.Factory.StartNew(() =>
 			{
-				SpinWait.SpinUntil(ValidateConnectionSettingHasChanged);
+				SpinWait.SpinUntil(ValidateConnectionSettingHasChanged, SpinWait.DefaultSleepInMilliseconds);
 
 				Logger.LogInfo("Connecting string settings for the Azure Service Bus changed and will now refresh.");
 
