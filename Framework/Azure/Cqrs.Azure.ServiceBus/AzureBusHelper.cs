@@ -58,7 +58,9 @@ namespace Cqrs.Azure.ServiceBus
 
 			if (string.IsNullOrWhiteSpace(command.OriginatingFramework))
 				command.OriginatingFramework = framework;
-			IList<string> frameworks = new List<string>(command.Frameworks);
+			var frameworks = new List<string>();
+			if (command.Frameworks != null)
+				frameworks.AddRange(command.Frameworks);
 			frameworks.Add("Azure-EventHub");
 			command.Frameworks = frameworks;
 		}
@@ -195,7 +197,9 @@ namespace Cqrs.Azure.ServiceBus
 
 			if (string.IsNullOrWhiteSpace(@event.OriginatingFramework))
 				@event.OriginatingFramework = framework;
-			IList<string> frameworks = new List<string>(@event.Frameworks);
+			var frameworks = new List<string>();
+			if (@event.Frameworks != null)
+				frameworks.AddRange(@event.Frameworks);
 			frameworks.Add("Azure-EventHub");
 			@event.Frameworks = frameworks;
 		}
