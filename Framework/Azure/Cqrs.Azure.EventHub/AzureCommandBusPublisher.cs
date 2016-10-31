@@ -11,18 +11,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;
-using cdmdotnet.Logging;
-using Cqrs.Bus;
 using Cqrs.Events;
+using EventData = Microsoft.ServiceBus.Messaging.EventData;
 
 namespace Cqrs.Azure.ServiceBus
 {
 	public class AzureCommandBusPublisher<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, ISendAndWaitCommandSender<TAuthenticationToken>
 	{
-		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
+		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, true)
 		{ }
 
@@ -34,7 +34,7 @@ namespace Cqrs.Azure.ServiceBus
 			if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-EventHub"))
 				return;
 
-			EventHubPublisher.Send(new Microsoft.ServiceBus.Messaging.EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command))));
+			EventHubPublisher.Send(new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command))));
 			Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
 		}
 
@@ -106,7 +106,7 @@ namespace Cqrs.Azure.ServiceBus
 			TEvent result = (TEvent)(object)null;
 			EventWaits.Add(command.CorrelationId, new List<IEvent<TAuthenticationToken>>());
 
-			EventHubPublisher.Send(new Microsoft.ServiceBus.Messaging.EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command))));
+			EventHubPublisher.Send(new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command))));
 			Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
 
 			SpinWait.SpinUntil(() =>

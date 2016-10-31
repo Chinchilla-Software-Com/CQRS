@@ -11,12 +11,12 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
-using cdmdotnet.Logging;
-using Cqrs.Bus;
 using Cqrs.Events;
 using Microsoft.ServiceBus.Messaging;
+using EventData = Microsoft.ServiceBus.Messaging.EventData;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -26,14 +26,14 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected ReaderWriterLockSlim QueueTrackerLock { get; private set; }
 
-		public AzureQueuedEventBusReceiver(IConfigurationManager configurationManager, IBusHelper busHelper, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
-			: base(configurationManager, busHelper, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper)
+		public AzureQueuedEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper)
 		{
 			QueueTracker = new ConcurrentDictionary<string, ConcurrentQueue<IEvent<TAuthenticationToken>>>();
 			QueueTrackerLock = new ReaderWriterLockSlim();
 		}
 
-		protected override void ReceiveEvent(PartitionContext context, Microsoft.ServiceBus.Messaging.EventData eventData)
+		protected override void ReceiveEvent(PartitionContext context, EventData eventData)
 		{
 			// Do a manual 10 try attempt with back-off
 			for (int i = 0; i < 10; i++)
