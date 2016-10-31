@@ -166,7 +166,7 @@ namespace Cqrs.Azure.ServiceBus
 					// Always return false to keep this spinning.
 					return false;
 				},
-				SpinWait.DefaultSleepInMilliseconds
+				1000
 			);
 		}
 

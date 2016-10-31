@@ -46,12 +46,16 @@ namespace Cqrs.Infrastructure
 			if (NextSpinWillYield)
 			{
 				int num = _count >= 10 ? _count - 10 : _count;
-				if (num % Sleep1EveryHowManyTimes == 19)
+				if (num % Sleep1EveryHowManyTimes == Sleep1EveryHowManyTimes - 1)
 					Thread.Sleep(sleepInMilliseconds == 0 ? 1 : sleepInMilliseconds * 2);
-				else if (num % Sleep0EveryHowManyTimes == 4)
+				else if (num % Sleep0EveryHowManyTimes == Sleep0EveryHowManyTimes - 1)
 					Thread.Sleep(sleepInMilliseconds);
 				else
+				{
 					Thread.Yield();
+					if (sleepInMilliseconds >= DefaultSleepInMilliseconds)
+						Thread.Sleep(sleepInMilliseconds / 10);
+				}
 			}
 			else
 				Thread.SpinWait(4 << _count);

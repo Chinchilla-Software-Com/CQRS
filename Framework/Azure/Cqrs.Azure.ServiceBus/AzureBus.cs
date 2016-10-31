@@ -89,7 +89,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			Task.Factory.StartNew(() =>
 			{
-				SpinWait.SpinUntil(ValidateConnectionSettingHasChanged, SpinWait.DefaultSleepInMilliseconds);
+				SpinWait.SpinUntil(ValidateConnectionSettingHasChanged, 1000);
 
 				Logger.LogInfo("Connecting string settings for the Azure Service Bus changed and will now refresh.");
 
