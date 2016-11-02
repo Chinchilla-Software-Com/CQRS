@@ -32,7 +32,7 @@ namespace Cqrs.MongoDB.Events
 
 		public string GetEventStoreConnectionString()
 		{
-			Logger.LogInfo("Getting MongoDB connection string", "MongoDbEventStoreConnectionStringFactory\\GetEventStoreConnectionString");
+			Logger.LogDebug("Getting MongoDB connection string", "MongoDbEventStoreConnectionStringFactory\\GetEventStoreConnectionString");
 			try
 			{
 				return ConfigurationManager.GetSetting(MongoDbConnectionStringKey) ?? System.Configuration.ConfigurationManager.ConnectionStrings[MongoDbConnectionStringKey].ConnectionString;
@@ -43,7 +43,7 @@ namespace Cqrs.MongoDB.Events
 			}
 			finally
 			{
-				Logger.LogInfo("Getting MongoDB connection string... Done", "MongoDbEventStoreConnectionStringFactory\\GetEventStoreConnectionString");
+				Logger.LogDebug("Getting MongoDB connection string... Done", "MongoDbEventStoreConnectionStringFactory\\GetEventStoreConnectionString");
 			}
 		}
 

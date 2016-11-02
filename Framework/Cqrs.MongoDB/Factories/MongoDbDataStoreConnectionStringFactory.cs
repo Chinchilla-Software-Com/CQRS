@@ -30,7 +30,7 @@ namespace Cqrs.MongoDB.Factories
 
 		public string GetDataStoreConnectionString()
 		{
-			Logger.LogInfo("Getting MongoDB connection string", "MongoDataStoreConnectionStringFactory\\GetDataStoreConnectionString");
+			Logger.LogDebug("Getting MongoDB connection string", "MongoDataStoreConnectionStringFactory\\GetDataStoreConnectionString");
 			try
 			{
 				return ConfigurationManager.GetSetting(MongoDbConnectionStringKey) ?? System.Configuration.ConfigurationManager.ConnectionStrings[MongoDbConnectionStringKey].ConnectionString;
@@ -41,7 +41,7 @@ namespace Cqrs.MongoDB.Factories
 			}
 			finally
 			{
-				Logger.LogInfo("Getting MongoDB connection string... Done", "MongoDataStoreConnectionStringFactory\\GetDataStoreConnectionString");
+				Logger.LogDebug("Getting MongoDB connection string... Done", "MongoDataStoreConnectionStringFactory\\GetDataStoreConnectionString");
 			}
 		}
 
