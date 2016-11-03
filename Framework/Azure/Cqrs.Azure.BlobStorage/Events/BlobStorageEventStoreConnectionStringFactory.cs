@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
-using Cqrs.Events;
 
 namespace Cqrs.Azure.BlobStorage.Events
 {
@@ -24,8 +23,6 @@ namespace Cqrs.Azure.BlobStorage.Events
 		public static string BlobStorageEventStoreConnectionStringKey = "Cqrs.Azure.BlobStorage.EventStore.ConnectionStringName";
 
 		public static string BlobStorageBaseContainerNameKey = "Cqrs.Azure.BlobStorage.EventStore.BaseContainerName";
-
-		public static string BlobStorageIsContainerPublicKey = "Cqrs.Azure.BlobStorage.EventStore.{0}.IsPublic";
 
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
@@ -44,11 +41,11 @@ namespace Cqrs.Azure.BlobStorage.Events
 			{
 				var collection = new List<string> ();
 
-				string blobStorageWritableEventStoreConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(BlobStorageWritableEventStoreConnectionStringKey)].ConnectionString;
-				if (blobStorageWritableEventStoreConnectionString == null)
+				string blobStorageWritableEventStoreConnectionString = ConfigurationManager.GetSetting(BlobStorageWritableEventStoreConnectionStringKey);
+				if (string.IsNullOrWhiteSpace(blobStorageWritableEventStoreConnectionString))
 				{
-					Logger.LogDebug(string.Format("No connection string named '{0}' in the configuration file.", BlobStorageWritableEventStoreConnectionStringKey), "BlobStorageEventStoreConnectionStringFactory\\GetWritableConnectionStrings");
-					blobStorageWritableEventStoreConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(BlobStorageEventStoreConnectionStringKey)].ConnectionString;
+					Logger.LogDebug(string.Format("No application setting named '{0}' in the configuration file.", BlobStorageWritableEventStoreConnectionStringKey), "BlobStorageEventStoreConnectionStringFactory\\GetWritableConnectionStrings");
+					blobStorageWritableEventStoreConnectionString = ConfigurationManager.GetSetting(BlobStorageEventStoreConnectionStringKey);
 				}
 
 				int writeIndex = 1;
@@ -56,7 +53,8 @@ namespace Cqrs.Azure.BlobStorage.Events
 				{
 					collection.Add(blobStorageWritableEventStoreConnectionString);
 
-					blobStorageWritableEventStoreConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(string.Format("{0}.{1}", BlobStorageWritableEventStoreConnectionStringKey, writeIndex))].ConnectionString;
+					blobStorageWritableEventStoreConnectionString = ConfigurationManager.GetSetting(string.Format("{0}.{1}", BlobStorageWritableEventStoreConnectionStringKey, writeIndex));
+
 					writeIndex++;
 				}
 
@@ -67,7 +65,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 			}
 			catch (NullReferenceException exception)
 			{
-				throw new NullReferenceException(string.Format("No connection string named '{0}' in the configuration file.", BlobStorageEventStoreConnectionStringKey), exception);
+				throw new NullReferenceException(string.Format("No application settings named '{0}' was found in the configuration file with the cloud storage connection string.", BlobStorageEventStoreConnectionStringKey), exception);
 			}
 			finally
 			{
@@ -80,11 +78,11 @@ namespace Cqrs.Azure.BlobStorage.Events
 			Logger.LogDebug("Getting blob storage readable connection strings", "BlobStorageEventStoreConnectionStringFactory\\GetReadableConnectionStrings");
 			try
 			{
-				string blobStorageWritableEventStoreConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(BlobStorageReadableEventStoreConnectionStringKey)].ConnectionString;
-				if (blobStorageWritableEventStoreConnectionString == null)
+				string blobStorageWritableEventStoreConnectionString = ConfigurationManager.GetSetting(BlobStorageReadableEventStoreConnectionStringKey);
+				if (string.IsNullOrWhiteSpace(blobStorageWritableEventStoreConnectionString))
 				{
-					Logger.LogDebug(string.Format("No connection string named '{0}' in the configuration file.", BlobStorageReadableEventStoreConnectionStringKey), "BlobStorageEventStoreConnectionStringFactory\\GetReadableConnectionStrings");
-					blobStorageWritableEventStoreConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(BlobStorageEventStoreConnectionStringKey)].ConnectionString;
+					Logger.LogDebug(string.Format("No application setting named '{0}' in the configuration file.", BlobStorageReadableEventStoreConnectionStringKey), "BlobStorageEventStoreConnectionStringFactory\\GetReadableConnectionStrings");
+					blobStorageWritableEventStoreConnectionString = ConfigurationManager.GetSetting(BlobStorageEventStoreConnectionStringKey);
 				}
 
 				if (string.IsNullOrWhiteSpace(blobStorageWritableEventStoreConnectionString))
@@ -94,7 +92,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 			}
 			catch (NullReferenceException exception)
 			{
-				throw new NullReferenceException(string.Format("No connection string named '{0}' in the configuration file.", BlobStorageEventStoreConnectionStringKey), exception);
+				throw new NullReferenceException(string.Format("No application settings named '{0}' was found in the configuration file with the cloud storage connection string.", BlobStorageEventStoreConnectionStringKey), exception);
 			}
 			finally
 			{

@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System.IO;
 using cdmdotnet.Logging;
 using Cqrs.DataStores;
 using Cqrs.Entities;
@@ -23,9 +24,9 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 		public BlobStorageDataStore(ILogger logger, IBlobStorageDataStoreConnectionStringFactory blobStorageDataStoreConnectionStringFactory)
 			: base(logger)
 		{
-			GetContainerName = blobStorageDataStoreConnectionStringFactory.GetContainerName<TData>;
+			GetContainerName = blobStorageDataStoreConnectionStringFactory.GetBaseContainerName;
 			IsContainerPublic = blobStorageDataStoreConnectionStringFactory.IsContainerPublic<TData>;
-			GenerateFileName = data => data.Rsn.ToString("N");
+			GenerateFileName = data => string.Format("{0}\\{1}", blobStorageDataStoreConnectionStringFactory.GetEntityName<TData>(), data.Rsn.ToString("N"));
 
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			Initialise(blobStorageDataStoreConnectionStringFactory);

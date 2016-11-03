@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Cqrs.Entities;
 using Cqrs.Events;
 using Cqrs.Messages;
 
 namespace Cqrs.Azure.ServiceBus.Tests.Unit
 {
-	public class TestEvent : IEvent<Guid>
+	public class TestEvent : Entity, IEvent<Guid>
 	{
 		#region Implementation of IMessageWithAuthenticationToken<Guid>
 

@@ -81,7 +81,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 			{
 				GetContainerName = blobStorageEventStoreConnectionStringFactory.GetBaseContainerName;
 				IsContainerPublic = () => false;
-				GenerateFileName = data => Path.Combine(data.AggregateId, string.Format("{0}-{1}",data.Version, data.EventId.ToString("N")));
+				GenerateFileName = data => Path.Combine(data.AggregateId, string.Format("{0:D10}\\{1}",data.Version, data.EventId.ToString("N")));
 
 				// ReSharper disable DoNotCallOverridableMethodsInConstructor
 				Initialise(blobStorageEventStoreConnectionStringFactory);
@@ -92,7 +92,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 			{
 				foreach (Tuple<CloudStorageAccount, CloudBlobContainer> tuple in WritableCollection)
 				{
-					CloudBlockBlob cloudBlockBlob = GetBlobReference(tuple.Item2, string.Format("by-correlation\\{0}\\{1}", data.CorrelationId, GenerateFileName(data)));
+					CloudBlockBlob cloudBlockBlob = GetBlobReference(tuple.Item2, string.Format("by-correlation\\{0:N}\\{1}", data.CorrelationId, GenerateFileName(data)));
 					Uri uri = AzureStorageRetryPolicy.ExecuteAction
 					(
 						() =>

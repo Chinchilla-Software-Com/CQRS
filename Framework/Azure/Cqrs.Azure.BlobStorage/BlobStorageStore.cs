@@ -39,7 +39,7 @@ namespace Cqrs.Azure.BlobStorage
 
 		protected Func<bool> IsContainerPublic { get; set; }
 
-		protected Func<TData, string> GenerateFileName { get; set; }
+		internal Func<TData, string> GenerateFileName { get; set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="BlobStorage"/> class using the specified container.
@@ -168,7 +168,7 @@ namespace Cqrs.Azure.BlobStorage
 		{
 			foreach (Tuple<CloudStorageAccount, CloudBlobContainer> tuple in WritableCollection)
 			{
-				CloudBlockBlob cloudBlockBlob = GetBlobReference(tuple.Item2, GenerateFileName(data));
+				CloudBlockBlob cloudBlockBlob = GetBlobReference(tuple.Item2, string.Format("{0}.json", GenerateFileName(data)));
 				Uri uri = AzureStorageRetryPolicy.ExecuteAction
 				(
 					() =>
@@ -180,7 +180,7 @@ namespace Cqrs.Azure.BlobStorage
 					}
 				);
 
-				Logger.LogDebug(string.Format("The data entity '{0}' was persisted at uri '{1}'", GenerateFileName(data), uri));
+				Logger.LogDebug(string.Format("The data entity '{0}' was persisted at uri '{1}'", string.Format("{0}.json", GenerateFileName(data)), uri));
 			}
 		}
 
@@ -194,7 +194,7 @@ namespace Cqrs.Azure.BlobStorage
 		{
 			foreach (Tuple<CloudStorageAccount, CloudBlobContainer> tuple in WritableCollection)
 			{
-				CloudBlockBlob cloudBlockBlob = GetBlobReference(tuple.Item2, GenerateFileName(data));
+				CloudBlockBlob cloudBlockBlob = GetBlobReference(tuple.Item2, string.Format("{0}.json", GenerateFileName(data)));
 				AzureStorageRetryPolicy.ExecuteAction
 				(
 					() =>
@@ -283,9 +283,18 @@ namespace Cqrs.Azure.BlobStorage
 		/// <summary>
 		/// Opens stream for reading from a block blob.
 		/// </summary>
-		protected virtual IEnumerable<Stream> OpenStreamsForReading(Func<CloudBlockBlob, bool> predicate = null)
+		protected virtual IEnumerable<Stream> OpenStreamsForReading(Func<CloudBlockBlob, bool> predicate = null, string blobPrefix = null, string folderName = null)
 		{
-			IEnumerable<IListBlobItem> blobs = ReadableContainer.ListBlobs(null, true);
+			IEnumerable<IListBlobItem> blobs;
+			if (!string.IsNullOrWhiteSpace(folderName))
+			{
+				CloudBlobDirectory container = ReadableContainer.GetDirectoryReference(folderName);
+				blobs = container.ListBlobs(true);
+			}
+			else
+			{
+				blobs = ReadableContainer.ListBlobs(blobPrefix, true);
+			}
 			IEnumerable<CloudBlockBlob> query = blobs
 				.Where(x => x is CloudBlockBlob)
 				.Cast<CloudBlockBlob>();
@@ -355,15 +364,25 @@ namespace Cqrs.Azure.BlobStorage
 
 		public virtual TData GetByName(string name)
 		{
+			return OpenStreamsForReading(blobPrefix: name.Replace("\\", "/"))
+				.Select(Deserialise)
+				.SingleOrDefault();
+			/*
 			return OpenStreamsForReading(x => x.Name == name)
 				.Select(Deserialise)
 				.SingleOrDefault();
+			*/
 		}
 
 		public virtual IEnumerable<TData> GetByFolder(string folderName)
 		{
-			return OpenStreamsForReading(x => x.Parent.StorageUri.PrimaryUri.AbsolutePath.EndsWith(folderName))
+			string folder = new Uri(string.Format(folderName.StartsWith("..\\") ? "http://l/2/{0}" : "http://l/{0}", folderName)).AbsolutePath.Substring(1);
+			return OpenStreamsForReading(folderName: folder)
 				.Select(Deserialise);
+			/*
+			return OpenStreamsForReading(x => x.Parent.StorageUri.PrimaryUri.AbsolutePath.StartsWith(new Uri(string.Format(folderName.StartsWith("..\\") ? "http://l/{0}/2/{1}" : "http://l/{0}/{1}", GetContainerName(), folderName)).AbsolutePath, StringComparison.InvariantCultureIgnoreCase))
+				.Select(Deserialise);
+			*/
 		}
 	}
 }
