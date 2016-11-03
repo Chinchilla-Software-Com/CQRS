@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using cdmdotnet.Logging;
 using cdmdotnet.Logging.Configuration;
 using Cqrs.Azure.BlobStorage.DataStores;
@@ -42,7 +43,11 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			dataStore.Add(event1);
 
 			// Assert
+			var timer = new Stopwatch();
+			timer.Start();
 			TestEvent view = dataStore.GetByName(event1.Rsn);
+			timer.Stop();
+			Console.WriteLine("Load operation took {0}", timer.Elapsed);
 			Assert.IsNotNull(view);
 			Assert.AreEqual(event1.Id, view.Id);
 		}

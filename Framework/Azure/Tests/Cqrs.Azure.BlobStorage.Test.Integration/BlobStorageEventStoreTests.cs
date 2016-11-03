@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using cdmdotnet.Logging;
 using cdmdotnet.Logging.Configuration;
@@ -53,17 +54,26 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			eventStore.Save<TestEvent>(event2);
 
 			// Assert
+			var timer = new Stopwatch();
 			IList<IEvent<Guid>> events = eventStore.Get<TestEvent>(event1.Id).ToList();
+			timer.Stop();
+			Console.WriteLine("Load one operation took {0}", timer.Elapsed);
 			Assert.AreEqual(1, events.Count);
 			Assert.AreEqual(event1.Id, events.Single().Id);
 			Assert.AreEqual(event1.Frameworks.Single(), events.Single().Frameworks.Single());
 
+			timer.Restart();
 			events = eventStore.Get<TestEvent>(event2.Id).ToList();
+			timer.Stop();
+			Console.WriteLine("Load one operation took {0}", timer.Elapsed);
 			Assert.AreEqual(1, events.Count);
 			Assert.AreEqual(event2.Id, events.Single().Id);
 			Assert.AreEqual(event2.Frameworks.Single(), events.Single().Frameworks.Single());
 
+			timer.Restart();
 			IList<EventData> correlatedEvents = eventStore.Get(event1.CorrelationId).ToList();
+			timer.Stop();
+			Console.WriteLine("Load several correlated operation took {0}", timer.Elapsed);
 			Assert.AreEqual(2, correlatedEvents.Count);
 		}
 	}
