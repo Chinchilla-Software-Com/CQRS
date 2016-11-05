@@ -8,7 +8,7 @@ namespace Cqrs.Mongo.Factories
 	{
 		public static string MongoDbConnectionStringKey = "CqrsMongoDb";
 
-		public static string MongoDbtabaseNameKey = "CqrsMongoDbDatabaseName";
+		public static string MongoDbDatabaseNameKey = "CqrsMongoDbDatabaseName";
 
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
@@ -33,13 +33,13 @@ namespace Cqrs.Mongo.Factories
 			}
 			finally
 			{
-				Logger.LogInfo("Getting MongoDB connection string... Done", "MongoDataStoreConnectionStringFactory\\GetMongoConnectionString");
+				Logger.LogDebug("Getting MongoDB connection string... Done", "MongoDataStoreConnectionStringFactory\\GetMongoConnectionString");
 			}
 		}
 
 		public string GetMongoDatabaseName()
 		{
-			return ConfigurationManager.GetSetting(MongoDbtabaseNameKey);
+			return ConfigurationManager.GetSetting(MongoDbDatabaseNameKey);
 		}
 	}
 }

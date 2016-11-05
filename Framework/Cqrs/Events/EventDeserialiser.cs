@@ -17,7 +17,9 @@ namespace Cqrs.Events
 	{
 		public virtual IEvent<TAuthenticationToken> Deserialise(EventData eventData)
 		{
-			return (IEvent<TAuthenticationToken>)JsonConvert.DeserializeObject((string)eventData.Data, Type.GetType(eventData.EventType));
+			JsonSerializerSettings jsonSerialiserSettings = GetSerialisationSettings();
+
+			return (IEvent<TAuthenticationToken>)JsonConvert.DeserializeObject((string)eventData.Data, Type.GetType(eventData.EventType), jsonSerialiserSettings);
 		}
 
 		protected virtual JsonSerializerSettings GetSerialisationSettings()
