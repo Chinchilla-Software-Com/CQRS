@@ -6,7 +6,7 @@
 
 		public override string GetSetting(string key)
 		{
-			return Microsoft.Azure.CloudConfigurationManager.GetSetting(key);
+			return Microsoft.Azure.CloudConfigurationManager.GetSetting(key, false);
 		}
 
 		#endregion
