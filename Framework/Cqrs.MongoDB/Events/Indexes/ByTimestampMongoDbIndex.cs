@@ -8,16 +8,15 @@
 
 using System;
 using System.Linq.Expressions;
-using Cqrs.Events;
 using Cqrs.MongoDB.DataStores.Indexes;
 
 namespace Cqrs.MongoDB.Events.Indexes
 {
-	public class ByTimestampMongoDbIndex : MongoDbIndex<EventData>
+	public class ByTimestampMongoDbIndex : MongoDbIndex<MongoDbEventData>
 	{
 		public ByTimestampMongoDbIndex()
 		{
-			Selectors = new Expression<Func<EventData, object>>[]
+			Selectors = new Expression<Func<MongoDbEventData, object>>[]
 			{
 				entity => entity.Timestamp
 			};

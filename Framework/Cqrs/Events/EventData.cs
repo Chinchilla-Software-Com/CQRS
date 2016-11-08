@@ -18,9 +18,6 @@ namespace Cqrs.Events
 	public class EventData
 	{
 		[DataMember]
-		public Guid Id { get; set; }
-
-		[DataMember]
 		[Column(CanBeNull = false, DbType = "text NOT NULL")]
 		public object Data { get; set; }
 

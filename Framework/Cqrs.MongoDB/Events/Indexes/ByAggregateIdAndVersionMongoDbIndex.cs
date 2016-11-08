@@ -8,16 +8,15 @@
 
 using System;
 using System.Linq.Expressions;
-using Cqrs.Events;
 using Cqrs.MongoDB.DataStores.Indexes;
 
 namespace Cqrs.MongoDB.Events.Indexes
 {
-	public class ByAggregateIdAndVersionMongoDbIndex : MongoDbIndex<EventData>
+	public class ByAggregateIdAndVersionMongoDbIndex : MongoDbIndex<MongoDbEventData>
 	{
 		public ByAggregateIdAndVersionMongoDbIndex()
 		{
-			Selectors = new Expression<Func<EventData, object>>[]
+			Selectors = new Expression<Func<MongoDbEventData, object>>[]
 			{
 				entity => entity.AggregateId,
 				entity => entity.Version

@@ -410,12 +410,14 @@
 
     <enumerationType name="EntityPersistenceTechnology">
       <enumerationLiterals>
+        <enumerationLiteral name="Mongo" displayName="MongoDB (Legacy)" />
         <enumerationLiteral name="MongoDb" displayName="MongoDB" />
         <enumerationLiteral name="AzureDocumentDb" displayName="Azure Document Db" />
         <enumerationLiteral name="SimplifiedSql" displayName="Simplified Sql" />
         <enumerationLiteral name="SqlServer" displayName="SqlServer" />
         <enumerationLiteral name="MySqlServer" displayName="MySql Server" />
         <enumerationLiteral name="InProcessOnly" displayName="In Process Only" />
+        <enumerationLiteral name="Blob" displayName="Blob Storage" />
       </enumerationLiterals>
     </enumerationType>
 
@@ -442,12 +444,14 @@
 
     <enumerationType name="EventStorePersistenceTechnology">
       <enumerationLiterals>
+        <enumerationLiteral name="MongoDb" displayName="MongoDB" />
         <enumerationLiteral name="GYEventStore" displayName="Greg Youngs EventStore" />
         <enumerationLiteral name="AzureDocumentDb" displayName="Azure Document Db" />
         <enumerationLiteral name="SimplifiedSql" displayName="Simplified Sql" />
         <enumerationLiteral name="SqlServer" displayName="SqlServer" />
         <enumerationLiteral name="MySqlServer" displayName="MySql Server" />
         <enumerationLiteral name="InProcessOnly" displayName="In Process Only" />
+        <enumerationLiteral name="Blob" displayName="Blob Storage" />
       </enumerationLiterals>
     </enumerationType>
 

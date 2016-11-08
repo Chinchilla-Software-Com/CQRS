@@ -24,7 +24,7 @@ namespace Cqrs.MongoDB.Factories
 	/// </summary>
 	public class MongoDbDataStoreFactory
 	{
-		private static IDictionary<Type, IList<object>> IndexTypesByEntityType { get; set; }
+		internal static IDictionary<Type, IList<object>> IndexTypesByEntityType { get; set; }
 
 		protected ILogger Logger { get; private set; }
 
