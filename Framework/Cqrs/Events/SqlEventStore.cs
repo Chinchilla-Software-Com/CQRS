@@ -88,7 +88,7 @@ namespace Cqrs.Events
 		protected virtual DataContext CreateDbDataContext()
 		{
 			string connectionStringKey;
-			if (!ConfigurationManager.TryGetSetting(SqlEventStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) && string.IsNullOrEmpty(connectionStringKey))
+			if (!ConfigurationManager.TryGetSetting(SqlEventStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
 				connectionStringKey = ConfigurationManager.GetSetting(SqlDataStore<Entity>.SqlDataStoreDbFileOrServerOrConnectionApplicationKey);
 			return new DataContext(connectionStringKey);
 		}
