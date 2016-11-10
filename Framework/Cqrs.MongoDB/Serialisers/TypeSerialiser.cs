@@ -48,21 +48,32 @@ namespace Cqrs.MongoDB.Serialisers
 		/// <summary>
 		/// Deserializes a value.
 		/// </summary>
-		/// <param name="context">The deserialization context.</param><param name="args">The deserialization args.</param>
+		/// <param name="context">The deserialization context.</param>
+		/// <param name="args">The deserialization args.</param>
 		/// <returns>
 		/// A deserialized value.
 		/// </returns>
 		Type IBsonSerializer<Type>.Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
 		{
-			if (context.Reader.CurrentBsonType == BsonType.Null)
+			var bsonReader = context.Reader;
+			BsonType currentBsonType = bsonReader.CurrentBsonType;
+			if (currentBsonType == BsonType.Null)
 				return null;
 
-			var bsonReader = context.Reader;
-			bsonReader.ReadStartDocument();
-			string assemblyQualifiedName = context.Reader.ReadString();
-			// This moves the pointer forward.
-			bsonReader.ReadBsonType();
-			bsonReader.ReadEndDocument();
+			string assemblyQualifiedName;
+			switch (currentBsonType)
+			{
+				case BsonType.Document:
+					bsonReader.ReadStartDocument();
+					assemblyQualifiedName = context.Reader.ReadString();
+					// This moves the pointer forward.
+					bsonReader.ReadBsonType();
+					bsonReader.ReadEndDocument();
+					break;
+				default:
+					assemblyQualifiedName = bsonReader.ReadString();
+					break;
+			}
 			return Type.GetType(assemblyQualifiedName);
 		}
 
@@ -78,7 +89,7 @@ namespace Cqrs.MongoDB.Serialisers
 		/// <summary>
 		/// Gets the type of the value.
 		/// </summary>
-		public Type ValueType { get; private set; }
+		public Type ValueType { get; protected set; }
 
 		#endregion
 	}
