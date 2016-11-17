@@ -160,7 +160,7 @@ namespace Cqrs.Azure.ServiceBus
 			return numberOfReceiversCount;
 		}
 
-		protected virtual int GetMaximumConcurrentReceiverProcessesCount()
+		protected override int GetCurrentMaximumConcurrentReceiverProcessesCount()
 		{
 			string maximumConcurrentReceiverProcessesCountValue;
 			int maximumConcurrentReceiverProcessesCount;

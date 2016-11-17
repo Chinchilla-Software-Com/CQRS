@@ -451,6 +451,7 @@
         <enumerationLiteral name="SqlServer" displayName="SqlServer" />
         <enumerationLiteral name="MySqlServer" displayName="MySql Server" />
         <enumerationLiteral name="InProcessOnly" displayName="In Process Only" />
+        <enumerationLiteral name="InProcessCache" displayName="An In Process Expiring Cache" />
         <enumerationLiteral name="Blob" displayName="Blob Storage" />
       </enumerationLiterals>
     </enumerationType>
