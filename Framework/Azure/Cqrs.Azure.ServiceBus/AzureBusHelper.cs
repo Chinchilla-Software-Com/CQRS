@@ -323,12 +323,11 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				registerableHandler = message =>
 				{
-					Action wrappedEventHandler = () =>
+					Task.Factory.StartNew(() =>
 					{
 						CorrelationIdHelper.SetCorrelationId(message.CorrelationId);
 						handler(message);
-					};
-					new Task(wrappedEventHandler).Start();
+					});
 				};
 			}
 

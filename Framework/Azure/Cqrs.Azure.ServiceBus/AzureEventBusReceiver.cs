@@ -25,6 +25,16 @@ namespace Cqrs.Azure.ServiceBus
 		, IEventHandlerRegistrar
 		, IEventReceiver<TAuthenticationToken>
 	{
+		protected virtual string NumberOfReceiversCountConfigurationKey
+		{
+			get { return "Cqrs.Azure.EventBus.NumberOfReceiversCount"; }
+		}
+
+		protected virtual string MaximumConcurrentReceiverProcessesCountConfigurationKey
+		{
+			get { return "Cqrs.Azure.EventBus.MaximumConcurrentReceiverProcessesCount"; }
+		}
+
 		// ReSharper disable StaticMemberInGenericType
 		protected static RouteManager Routes { get; private set; }
 		// ReSharper restore StaticMemberInGenericType
@@ -47,7 +57,8 @@ namespace Cqrs.Azure.ServiceBus
 			OnMessageOptions options = new OnMessageOptions
 			{
 				AutoComplete = false,
-				AutoRenewTimeout = TimeSpan.FromMinutes(1)
+				AutoRenewTimeout = TimeSpan.FromMinutes(1),
+				MaxConcurrentCalls = MaximumConcurrentReceiverProcessesCount
 			};
 
 			// Callback to handle received messages
@@ -132,5 +143,37 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			AzureBusHelper.DefaultReceiveEvent(@event, Routes, "Azure-ServiceBus");
 		}
+
+		#region Overrides of AzureServiceBus<TAuthenticationToken>
+
+		protected override int GetCurrentNumberOfReceiversCount()
+		{
+			string numberOfReceiversCountValue;
+			int numberOfReceiversCount;
+			if (ConfigurationManager.TryGetSetting(NumberOfReceiversCountConfigurationKey, out numberOfReceiversCountValue) && !string.IsNullOrWhiteSpace(numberOfReceiversCountValue))
+			{
+				if (!int.TryParse(numberOfReceiversCountValue, out numberOfReceiversCount))
+					numberOfReceiversCount = DefaultNumberOfReceiversCount;
+			}
+			else
+				numberOfReceiversCount = DefaultNumberOfReceiversCount;
+			return numberOfReceiversCount;
+		}
+
+		protected virtual int GetMaximumConcurrentReceiverProcessesCount()
+		{
+			string maximumConcurrentReceiverProcessesCountValue;
+			int maximumConcurrentReceiverProcessesCount;
+			if (ConfigurationManager.TryGetSetting(MaximumConcurrentReceiverProcessesCountConfigurationKey, out maximumConcurrentReceiverProcessesCountValue) && !string.IsNullOrWhiteSpace(maximumConcurrentReceiverProcessesCountValue))
+			{
+				if (!int.TryParse(maximumConcurrentReceiverProcessesCountValue, out maximumConcurrentReceiverProcessesCount))
+					maximumConcurrentReceiverProcessesCount = DefaultMaximumConcurrentReceiverProcessesCount;
+			}
+			else
+				maximumConcurrentReceiverProcessesCount = DefaultMaximumConcurrentReceiverProcessesCount;
+			return maximumConcurrentReceiverProcessesCount;
+		}
+
+		#endregion
 	}
 }

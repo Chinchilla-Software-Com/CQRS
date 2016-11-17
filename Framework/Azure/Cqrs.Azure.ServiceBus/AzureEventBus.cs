@@ -14,6 +14,8 @@ namespace Cqrs.Azure.ServiceBus
 {
 	public abstract class AzureEventBus<TAuthenticationToken> : AzureServiceBus<TAuthenticationToken>
 	{
+		#region Overrides of AzureServiceBus<TAuthenticationToken>
+
 		protected override string MessageBusConnectionStringConfigurationKey
 		{
 			get { return "Cqrs.Azure.EventBus.ConnectionString"; }
@@ -48,6 +50,8 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			get { return "Cqrs.EventBus"; }
 		}
+
+		#endregion
 
 		protected IAzureBusHelper<TAuthenticationToken> AzureBusHelper { get; private set; }
 

@@ -26,6 +26,11 @@ namespace Cqrs.Azure.ServiceBus
 		, IEventHandlerRegistrar
 		, IEventReceiver<TAuthenticationToken>
 	{
+		protected virtual string NumberOfReceiversCountConfigurationKey
+		{
+			get { return "Cqrs.Azure.EventHub.EventBus.NumberOfReceiversCount"; }
+		}
+
 		// ReSharper disable StaticMemberInGenericType
 		protected static RouteManager Routes { get; private set; }
 		// ReSharper restore StaticMemberInGenericType
@@ -136,5 +141,23 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			AzureBusHelper.DefaultReceiveEvent(@event, Routes, "Azure-EventHub");
 		}
+
+		#region Overrides of AzureServiceBus<TAuthenticationToken>
+
+		protected override int GetCurrentNumberOfReceiversCount()
+		{
+			string numberOfReceiversCountValue;
+			int numberOfReceiversCount;
+			if (ConfigurationManager.TryGetSetting(NumberOfReceiversCountConfigurationKey, out numberOfReceiversCountValue) && !string.IsNullOrWhiteSpace(numberOfReceiversCountValue))
+			{
+				if (!int.TryParse(numberOfReceiversCountValue, out numberOfReceiversCount))
+					numberOfReceiversCount = DefaultNumberOfReceiversCount;
+			}
+			else
+				numberOfReceiversCount = DefaultNumberOfReceiversCount;
+			return numberOfReceiversCount;
+		}
+
+		#endregion
 	}
 }

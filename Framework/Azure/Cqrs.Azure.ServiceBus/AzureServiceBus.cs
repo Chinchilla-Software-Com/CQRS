@@ -7,6 +7,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Configuration;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
@@ -19,7 +21,7 @@ namespace Cqrs.Azure.ServiceBus
 	{
 		protected TopicClient ServiceBusPublisher { get; private set; }
 
-		protected SubscriptionClient ServiceBusReceiver { get; private set; }
+		protected IDictionary<int, SubscriptionClient> ServiceBusReceivers { get; private set; }
 
 		protected string PrivateTopicName { get; set; }
 
@@ -54,15 +56,17 @@ namespace Cqrs.Azure.ServiceBus
 		protected AzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
 			: base (configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
+			ServiceBusReceivers = new Dictionary<int, SubscriptionClient>();
 		}
 
 		#region Overrides of AzureBus<TAuthenticationToken>
 
-		protected override void SetConnectionStrings()
+		protected override string GetConnectionString()
 		{
-			// ReSharper disable DoNotCallOverridableMethodsInConstructor 
-			ConnectionString = ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
-			// ReSharper restore DoNotCallOverridableMethodsInConstructor
+			string connectionString = ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
+			if (string.IsNullOrWhiteSpace(connectionString))
+				throw new ConfigurationErrorsException(string.Format("Configuration is missing required information. Make sure the appSetting '{0}' is defined and has a valid connection string value.", MessageBusConnectionStringConfigurationKey));
+			return connectionString;
 		}
 
 		#endregion
@@ -74,7 +78,7 @@ namespace Cqrs.Azure.ServiceBus
 			CheckPublicTopicExists(namespaceManager);
 
 			ServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PublicTopicName);
-			StartConnectionSettingsChecking();
+			StartSettingsChecking();
 		}
 
 		protected override void InstantiateReceiving()
@@ -84,13 +88,23 @@ namespace Cqrs.Azure.ServiceBus
 			CheckPrivateEventTopicExists(namespaceManager);
 			CheckPublicTopicExists(namespaceManager);
 
-			ServiceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, PublicTopicName, PublicTopicSubscriptionName);
+			for (int i = 0; i < NumberOfReceiversCount; i++)
+			{
+				SubscriptionClient serviceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, PublicTopicName, PublicTopicSubscriptionName);
+				if (ServiceBusReceivers.ContainsKey(i))
+					ServiceBusReceivers[i] = serviceBusReceiver;
+				else
+					ServiceBusReceivers.Add(i, serviceBusReceiver);
+			}
+			// Remove any if the number has decreased
+			for (int i = NumberOfReceiversCount; i < ServiceBusReceivers.Count; i++)
+				ServiceBusReceivers.Remove(i + 1);
 
 			// If this is also a publisher, then it will the check over there and that will handle this
 			if (ServiceBusPublisher != null)
 				return;
 
-			StartConnectionSettingsChecking();
+			StartSettingsChecking();
 		}
 
 		protected virtual void CheckPrivateEventTopicExists(NamespaceManager namespaceManager)
@@ -109,28 +123,18 @@ namespace Cqrs.Azure.ServiceBus
 			var eventTopicDescription = new TopicDescription(eventTopicName)
 			{
 				MaxSizeInMegabytes = 5120,
-				DefaultMessageTimeToLive = new TimeSpan(0, 1, 0)
+				DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
+				EnablePartitioning = true
 			};
 			// Create the topic if it does not exist already
 			if (!namespaceManager.TopicExists(eventTopicDescription.Path))
-				namespaceManager.CreateTopic(eventTopicDescription.Path);
+				namespaceManager.CreateTopic(eventTopicDescription);
 
 			if (!namespaceManager.SubscriptionExists(eventTopicDescription.Path, eventSubscriptionNames))
 				namespaceManager.CreateSubscription(eventTopicDescription.Path, eventSubscriptionNames);
 		}
 
-		protected override bool ValidateConnectionSettingHasChanged()
-		{
-			return ConnectionString != ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
-		}
-
-		protected override void UpdateConnectionSettings()
-		{
-			ConnectionString = ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
-			Logger.LogDebug(string.Format("Updated connection string settings set to {0}.", ConnectionString));
-		}
-
-		protected override void TriggerConnectionSettingsChecking()
+		protected override void TriggerSettingsChecking()
 		{
 			// Let's wrap up using this message bus and start the switch
 			if (ServiceBusPublisher != null)
@@ -138,27 +142,30 @@ namespace Cqrs.Azure.ServiceBus
 				ServiceBusPublisher.Close();
 				Logger.LogDebug("Publishing service bus closed.");
 			}
-			// Let's wrap up using this message bus and start the switch
-			if (ServiceBusReceiver != null)
+			foreach (SubscriptionClient serviceBusReceiver in ServiceBusReceivers.Values)
 			{
-				ServiceBusReceiver.Close();
-				Logger.LogDebug("Receiving service bus closed.");
-			}
-			// Restart configuration, we order this intentionally with the receiver first as if this triggers the cancellation we know this isn't a publisher as well
-			if (ServiceBusReceiver != null)
-			{
-				Logger.LogDebug("Recursively calling into InstantiateReceiving.");
-				InstantiateReceiving();
-
-				// This will be the case of a connection setting change re-connection
-				if (ReceiverMessageHandler != null && ReceiverMessageHandlerOptions != null)
+				// Let's wrap up using this message bus and start the switch
+				if (serviceBusReceiver != null)
 				{
-					// Callback to handle received messages
-					Logger.LogDebug("Re-registering onMessage handler.");
-					ApplyReceiverMessageHandler();
+					serviceBusReceiver.Close();
+					Logger.LogDebug("Receiving service bus closed.");
 				}
-				else
-					Logger.LogWarning("No onMessage handler was found to re-bind.");
+				// Restart configuration, we order this intentionally with the receiver first as if this triggers the cancellation we know this isn't a publisher as well
+				if (serviceBusReceiver != null)
+				{
+					Logger.LogDebug("Recursively calling into InstantiateReceiving.");
+					InstantiateReceiving();
+
+					// This will be the case of a connection setting change re-connection
+					if (ReceiverMessageHandler != null && ReceiverMessageHandlerOptions != null)
+					{
+						// Callback to handle received messages
+						Logger.LogDebug("Re-registering onMessage handler.");
+						ApplyReceiverMessageHandler();
+					}
+					else
+						Logger.LogWarning("No onMessage handler was found to re-bind.");
+				}
 			}
 			// Restart configuration, we order this intentionally with the publisher second as if this triggers the cancellation there's nothing else to process here
 			if (ServiceBusPublisher != null)
@@ -183,7 +190,8 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected override void ApplyReceiverMessageHandler()
 		{
-			ServiceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
+			foreach (SubscriptionClient serviceBusReceiver in ServiceBusReceivers.Values)
+				serviceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
 		}
 	}
 }

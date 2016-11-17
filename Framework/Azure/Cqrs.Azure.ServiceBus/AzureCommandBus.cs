@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
@@ -14,6 +15,8 @@ namespace Cqrs.Azure.ServiceBus
 {
 	public abstract class AzureCommandBus<TAuthenticationToken> : AzureServiceBus<TAuthenticationToken>
 	{
+		#region Overrides of AzureServiceBus<TAuthenticationToken>
+
 		protected override string MessageBusConnectionStringConfigurationKey
 		{
 			get { return "Cqrs.Azure.CommandBus.ConnectionString"; }
@@ -48,6 +51,8 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			get { return "Cqrs.CommandBus"; }
 		}
+
+		#endregion
 
 		protected IAzureBusHelper<TAuthenticationToken> AzureBusHelper { get; private set; }
 

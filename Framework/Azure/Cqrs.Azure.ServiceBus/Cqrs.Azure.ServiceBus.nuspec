@@ -19,7 +19,8 @@
 			* Added configurable setting to change the default behaviour of the "certain events and commands are required or not" settings into a white-list or black-list
 			* Added better handling when the message cannot be deserialised due to the event not being in a local assembly and attempts to apply the above configuration lookup to enable the message to be pushed off the queue.
 			* Added SendAndWait to command senders.
-			* Added a configuration checker to the service-bus. This means if you change the settings in Azure without recycling the application, this method will now pick up the connection change and switch to a new connection using the new setting.
+			* Added a configuration checker to the service-bus. This means if you change the settings in Azure without recycling the application, this method will now pick up change of several settings and switch to a new connection using the new setting.
+			* Added a configuration setting for Cqrs.Azure.EventBus.MaximumConcurrentReceiverProcessesCount (the number of threads used per client) and Cqrs.Azure.EventBus.NumberOfReceiversCount (the number of clients used).
 		</releaseNotes>
 		<dependencies>
 			<dependency id="Cqrs" version="[$version$]" />

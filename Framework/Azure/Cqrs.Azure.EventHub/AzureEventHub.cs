@@ -63,16 +63,21 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Overrides of AzureBus<TAuthenticationToken>
 
+		protected override string GetConnectionString()
+		{
+			string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(EventHubConnectionStringNameConfigurationKey)].ConnectionString;
+			if (string.IsNullOrWhiteSpace(connectionString))
+				throw new ConfigurationErrorsException(string.Format("Configuration is missing required information. Make sure the appSetting '{0}' is defined and a matching connection string with the name that matches the value of the appSetting value '{0}'.", EventHubConnectionStringNameConfigurationKey));
+			return connectionString;
+		}
+
 		protected override void SetConnectionStrings()
 		{
-			// ReSharper disable DoNotCallOverridableMethodsInConstructor
-			ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(EventHubConnectionStringNameConfigurationKey)].ConnectionString;
+			base.SetConnectionStrings();
 			StorageConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(EventHubStorageConnectionStringNameConfigurationKey)].ConnectionString;
-			// ReSharper restore DoNotCallOverridableMethodsInConstructor
-			if (string.IsNullOrWhiteSpace(ConnectionString))
-				throw new ConfigurationErrorsException(string.Format("Configuration is missing required information. Make sure the appSetting '{0}' is defined and a matching connection string with the name that matches the value of the appSetting value '{0}'.", EventHubConnectionStringNameConfigurationKey ));
 			if (string.IsNullOrWhiteSpace(StorageConnectionString))
 				throw new ConfigurationErrorsException(string.Format("Configuration is missing required information. Make sure the appSetting '{0}' is defined and a matching connection string with the name that matches the value of the appSetting value '{0}'.", EventHubStorageConnectionStringNameConfigurationKey));
+			Logger.LogDebug(string.Format("Storage connection string settings set to {0}.", StorageConnectionString));
 		}
 
 		#endregion
@@ -84,7 +89,7 @@ namespace Cqrs.Azure.ServiceBus
 			CheckPublicHubExists(namespaceManager);
 
 			EventHubPublisher = EventHubClient.CreateFromConnectionString(ConnectionString, PublicEventHubName);
-			StartConnectionSettingsChecking();
+			StartSettingsChecking();
 		}
 
 		protected override void InstantiateReceiving()
@@ -100,7 +105,7 @@ namespace Cqrs.Azure.ServiceBus
 			if (EventHubPublisher != null)
 				return;
 
-			StartConnectionSettingsChecking();
+			StartSettingsChecking();
 		}
 
 		protected virtual void CheckPrivateEventHubExists(NamespaceManager namespaceManager)
@@ -119,29 +124,26 @@ namespace Cqrs.Azure.ServiceBus
 			var eventHubDescription = new EventHubDescription(eventHubName)
 			{
 				MessageRetentionInDays = long.MaxValue,
+				
 			};
 
 			// Create the topic if it does not exist already
 			namespaceManager.CreateEventHubIfNotExists(eventHubDescription);
 
+			var subscriptionDescription = new SubscriptionDescription(eventHubDescription.Path, eventSubscriptionNames);
+
 			if (!namespaceManager.SubscriptionExists(eventHubDescription.Path, eventSubscriptionNames))
-				namespaceManager.CreateSubscription(eventHubDescription.Path, eventSubscriptionNames);
+				namespaceManager.CreateSubscription(subscriptionDescription);
 		}
 
-		protected override bool ValidateConnectionSettingHasChanged()
+		protected override bool ValidateSettingsHaveChanged()
 		{
-			return ConnectionString != ConfigurationManager.GetSetting(EventHubConnectionStringNameConfigurationKey) || StorageConnectionString != ConfigurationManager.GetSetting(EventHubStorageConnectionStringNameConfigurationKey);
+			return base.ValidateSettingsHaveChanged()
+				||
+			StorageConnectionString != ConfigurationManager.GetSetting(EventHubStorageConnectionStringNameConfigurationKey);
 		}
 
-		protected override void UpdateConnectionSettings()
-		{
-			ConnectionString = ConfigurationManager.GetSetting(EventHubConnectionStringNameConfigurationKey);
-			Logger.LogDebug(string.Format("Updated connection string settings set to {0}.", ConnectionString));
-			StorageConnectionString = ConfigurationManager.GetSetting(EventHubStorageConnectionStringNameConfigurationKey);
-			Logger.LogDebug(string.Format("Updated storage connection string settings set to {0}.", StorageConnectionString));
-		}
-
-		protected override void TriggerConnectionSettingsChecking()
+		protected override void TriggerSettingsChecking()
 		{
 			// Let's wrap up using this event hub and start the switch
 			if (EventHubPublisher != null)

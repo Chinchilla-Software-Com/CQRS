@@ -38,6 +38,14 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected IDictionary<Guid, IList<IEvent<TAuthenticationToken>>> EventWaits { get; private set; }
 
+		protected const int DefaultNumberOfReceiversCount = 1;
+
+		protected int NumberOfReceiversCount { get; set; }
+
+		protected const int DefaultMaximumConcurrentReceiverProcessesCount = 1;
+
+		protected int MaximumConcurrentReceiverProcessesCount { get; set; }
+
 		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
 		{
 			EventWaits = new ConcurrentDictionary<Guid, IList<IEvent<TAuthenticationToken>>>();
@@ -49,13 +57,41 @@ namespace Cqrs.Azure.ServiceBus
 			ConfigurationManager = configurationManager;
 
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
-			SetConnectionStrings();
+			UpdateSettings();
 			if (isAPublisher)
 				InstantiatePublishing();
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
-		protected abstract void SetConnectionStrings();
+		protected virtual void SetConnectionStrings()
+		{
+			ConnectionString = GetConnectionString();
+			Logger.LogDebug(string.Format("Connection string settings set to {0}.", ConnectionString));
+		}
+
+		protected virtual void SetNumberOfReceiversCount()
+		{
+			NumberOfReceiversCount = GetCurrentNumberOfReceiversCount();
+			Logger.LogDebug(string.Format("Number of receivers settings set to {0}.", NumberOfReceiversCount));
+		}
+
+		protected virtual void SetMaximumConcurrentReceiverProcessesCount()
+		{
+			MaximumConcurrentReceiverProcessesCount = GetCurrentMaximumConcurrentReceiverProcessesCount();
+			Logger.LogDebug(string.Format("Number of receivers settings set to {0}.", MaximumConcurrentReceiverProcessesCount));
+		}
+
+		protected abstract string GetConnectionString();
+
+		protected virtual int GetCurrentNumberOfReceiversCount()
+		{
+			return DefaultNumberOfReceiversCount;
+		}
+
+		protected virtual int GetCurrentMaximumConcurrentReceiverProcessesCount()
+		{
+			return DefaultMaximumConcurrentReceiverProcessesCount;
+		}
 
 		protected abstract void InstantiatePublishing();
 
@@ -85,7 +121,7 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
-		protected virtual void StartConnectionSettingsChecking()
+		protected virtual void StartSettingsChecking()
 		{
 			Guid currentCorrelationId;
 			try
@@ -101,21 +137,33 @@ namespace Cqrs.Azure.ServiceBus
 				// New thread remember
 				CorrelationIdHelper.SetCorrelationId(currentCorrelationId);
 
-				SpinWait.SpinUntil(ValidateConnectionSettingHasChanged, sleepInMilliseconds: 1000);
+				SpinWait.SpinUntil(ValidateSettingsHaveChanged, sleepInMilliseconds: 1000);
 
 				Logger.LogInfo("Connecting string settings for the Azure Service Bus changed and will now refresh.");
 
 				// Update the connection string and trigger a restart;
-				if (ValidateConnectionSettingHasChanged())
-					TriggerConnectionSettingsChecking();
+				if (ValidateSettingsHaveChanged())
+					TriggerSettingsChecking();
 			});
 		}
 
-		protected abstract bool ValidateConnectionSettingHasChanged();
+		protected virtual bool ValidateSettingsHaveChanged()
+		{
+			return ConnectionString != GetConnectionString()
+				||
+			NumberOfReceiversCount != GetCurrentNumberOfReceiversCount()
+				||
+			MaximumConcurrentReceiverProcessesCount != GetCurrentMaximumConcurrentReceiverProcessesCount();
+		}
 
-		protected abstract void UpdateConnectionSettings();
+		protected virtual void UpdateSettings()
+		{
+			SetConnectionStrings();
+			SetNumberOfReceiversCount();
+			SetMaximumConcurrentReceiverProcessesCount();
+		}
 
-		protected abstract void TriggerConnectionSettingsChecking();
+		protected abstract void TriggerSettingsChecking();
 
 		protected abstract void ApplyReceiverMessageHandler();
 	}
