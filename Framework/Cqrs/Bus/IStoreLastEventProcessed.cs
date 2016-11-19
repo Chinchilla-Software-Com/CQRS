@@ -10,7 +10,7 @@ using System.ServiceModel;
 
 namespace Cqrs.Bus
 {
-	[ServiceContract(Namespace = "http://cqrs.co.nz/Bus/StoreLastEventProcessed")]
+	[ServiceContract(Namespace = "https://getcqrs.net/Bus/StoreLastEventProcessed")]
 	public interface IStoreLastEventProcessed
 	{
 		string EventLocation { get; set; }

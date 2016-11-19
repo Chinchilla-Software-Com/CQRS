@@ -23,7 +23,7 @@ namespace Cqrs.Authentication
 			{
 				XmlDictionary dictionary = new XmlDictionary();
 				typeName = dictionary.Add("SingleSignOnTokenWithUserAndCompanyRsn");
-				typeNamespace = dictionary.Add("http://cqrs.co.nz");
+				typeNamespace = dictionary.Add("https://getcqrs.net");
 				return true;
 			}
 
@@ -31,7 +31,7 @@ namespace Cqrs.Authentication
 			{
 				XmlDictionary dictionary = new XmlDictionary();
 				typeName = dictionary.Add("SingleSignOnTokenWithUserRsn");
-				typeNamespace = dictionary.Add("http://cqrs.co.nz");
+				typeNamespace = dictionary.Add("https://getcqrs.net");
 				return true;
 			}
 
@@ -39,7 +39,7 @@ namespace Cqrs.Authentication
 			{
 				XmlDictionary dictionary = new XmlDictionary();
 				typeName = dictionary.Add("SingleSignOnTokenWithCompanyRsn");
-				typeNamespace = dictionary.Add("http://cqrs.co.nz");
+				typeNamespace = dictionary.Add("https://getcqrs.net");
 				return true;
 			}
 
@@ -47,7 +47,7 @@ namespace Cqrs.Authentication
 			{
 				XmlDictionary dictionary = new XmlDictionary();
 				typeName = dictionary.Add("SingleSignOnToken");
-				typeNamespace = dictionary.Add("http://cqrs.co.nz");
+				typeNamespace = dictionary.Add("https://getcqrs.net");
 				return true;
 			}
 
@@ -60,7 +60,7 @@ namespace Cqrs.Authentication
 		{
 			switch (typeNamespace)
 			{
-				case "http://cqrs.co.nz":
+				case "https://getcqrs.net":
 					switch (typeName)
 					{
 						case "SingleSignOnToken":

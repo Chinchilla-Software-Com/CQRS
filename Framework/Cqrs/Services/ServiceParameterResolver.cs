@@ -23,7 +23,7 @@ namespace Cqrs.Services
 		{
 			SingleSignOnTokenResolver = singleSignOnTokenResolver;
 			EventDataResolver = eventDataResolver;
-			ServiceNamespace = string.Format("http://cqrs.co.nz/{0}", typeof(TServiceParameter).FullName);
+			ServiceNamespace = string.Format("https://getcqrs.net/{0}", typeof(TServiceParameter).FullName);
 		}
 
 		protected ISingleSignOnTokenResolver SingleSignOnTokenResolver { get; private set; }

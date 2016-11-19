@@ -10,7 +10,7 @@ using System.ServiceModel;
 
 namespace Cqrs.Authentication
 {
-	[ServiceContract(Namespace = "http://cqrs.co.nz/SingleSignOn/TokenHelper")]
+	[ServiceContract(Namespace = "https://getcqrs.net/SingleSignOn/TokenHelper")]
 	public interface IAuthenticationTokenHelper<TAuthenticationToken>
 	{
 		[OperationContract]
