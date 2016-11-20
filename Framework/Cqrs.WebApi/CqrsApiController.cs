@@ -13,6 +13,9 @@ namespace Cqrs.WebApi
 	/// <summary>
 	/// A <see cref="ApiController"/> that expects the <see cref="ISingleSignOnToken.Token"/> to be sent as a <see cref="HttpHeaders"/> with a key of "X-Token", in accordance with OAuth specifications
 	/// </summary>
+	/// <remarks>
+	/// See https://www.asp.net/web-api/overview/getting-started-with-aspnet-web-api/creating-api-help-pages for details on adding WebApi Help Pages.
+	/// </remarks>
 	public abstract class CqrsApiController
 		: ApiController
 	{
