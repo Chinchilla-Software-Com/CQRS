@@ -34,11 +34,15 @@ namespace <#= classNamespace #>
 <#
 	// Class and Attributes
 #>
+<# WriteSummaryComment(this.Element.Description); #>
 	<#= GetGeneratedCodeAttribute() #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #> : <#= baseClass #>
 	{
 		#region Implementation of IEvent
 
+		/// <summary>
+		/// The Rsn of the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> being targeted.
+		/// </summary>
 		[DataMember]
 		public Guid Id
 		{
@@ -52,9 +56,15 @@ namespace <#= classNamespace #>
 			}
 		}
 
+		/// <summary>
+		/// The version number the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> shifted to as a result of the request.
+		/// </summary>
 		[DataMember]
 		public int Version { get; set; }
 
+		/// <summary>
+		/// The time the event was generated. Application of the event may happen at a different time.
+		/// </summary>
 		[DataMember]
 		public DateTimeOffset TimeStamp { get; set; }
 
@@ -62,6 +72,9 @@ namespace <#= classNamespace #>
 
 		#region Implementation of IMessageWithAuthenticationToken<<#= authenticationTokenType #>>
 
+		/// <summary>
+		/// The authentication token used to identify the requester.
+		/// </summary>
 		[DataMember]
 		public <#= authenticationTokenType #> AuthenticationToken { get; set; }
 
@@ -69,6 +82,9 @@ namespace <#= classNamespace #>
 
 		#region Implementation of IMessage
 
+		/// <summary>
+		/// The correlation id used to group together events and notifications.
+		/// </summary>
 		[DataMember]
 		public Guid CorrelationId { get; set; }
 
@@ -98,6 +114,9 @@ namespace <#= classNamespace #>
 
 		#endregion
 
+		/// <summary>
+		/// The Rsn of the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> being targeted.
+		/// </summary>
 		[DataMember]
 		public Guid Rsn { get; set; }
 
@@ -122,6 +141,7 @@ namespace <#= classNamespace #>
 					continue;
 			}
 #>
+<# WriteSummaryComment(collectionProperty.Description); #>
 		[DataMember]
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; private set; }
 
@@ -129,6 +149,9 @@ namespace <#= classNamespace #>
 		}
 #>
 
+		/// <summary>
+		/// Instantiate a new instance of the <see cref="<#= className #>"/> class
+		/// </summary>
 		public <#= className #>(Guid rsn<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{

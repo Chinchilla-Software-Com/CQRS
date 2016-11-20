@@ -12,6 +12,7 @@ namespace Cqrs.WebApi
 	/// </summary>
 	public abstract class CqrsEventApiController<TSingleSignOnToken>
 		: CqrsApiController
+		, IEventService<TSingleSignOnToken>
 		where TSingleSignOnToken : ISingleSignOnToken, new()
 	{
 		protected CqrsEventApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TSingleSignOnToken> authenticationTokenHelper, IEventStore<TSingleSignOnToken> eventStore)
@@ -24,6 +25,14 @@ namespace Cqrs.WebApi
 		protected IAuthenticationTokenHelper<TSingleSignOnToken> AuthenticationTokenHelper { get; private set; }
 
 		protected virtual IEventStore<TSingleSignOnToken> EventStore { get; private set; }
+
+
+		#region Implementation of IEventService<SingleSignOnToken>
+
+		IServiceResponseWithResultData<IEnumerable<EventData>> IEventService<TSingleSignOnToken>.GetEventData(IServiceRequestWithData<TSingleSignOnToken, Guid> serviceRequest)
+		{
+			return GetEventData(serviceRequest);
+		}
 
 		/// <summary>
 		/// Query for all the events that match the provided CorrelationId.
@@ -46,6 +55,8 @@ namespace Cqrs.WebApi
 				CorrelationId = CorrelationIdHelper.GetCorrelationId()
 			};
 		}
+
+		#endregion
 
 		protected virtual void OnGetEventData(IServiceRequestWithData<TSingleSignOnToken, Guid> serviceRequest) { }
 

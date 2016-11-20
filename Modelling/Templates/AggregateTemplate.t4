@@ -55,6 +55,7 @@ namespace <#= classNamespace #>
 <#
 	// Class and Attributes
 #>
+<# WriteSummaryComment(this.Element.Description); #>
 	<#= GetGeneratedCodeAttribute() #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #> : <#= baseClass #>
 	{
@@ -675,6 +676,7 @@ switch(aggregateTechnology)
 			IEnumerable<IAssociation> eventRelationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.Name == relationship.Name && associationEnd.SourceElement == this.Element);
 #>
 
+<# WriteSummaryComment(relationship.Description); #>
 		public void <#= relationshipName #>(<#
 			for (int i = 0; i < relationshipProperties.Count; i++)
 			{
