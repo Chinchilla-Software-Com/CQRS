@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using cdmdotnet.Logging;
@@ -12,14 +13,21 @@ namespace Cqrs.WebApi
 	/// <summary>
 	/// A <see cref="ApiController"/> that expects the <see cref="ISingleSignOnToken.Token"/> to be sent as a <see cref="HttpHeaders"/> with a key of "X-Token", in accordance with OAuth specifications
 	/// </summary>
-	public abstract class CqrsApiController : ApiController
+	/// <remarks>
+	/// See https://www.asp.net/web-api/overview/getting-started-with-aspnet-web-api/creating-api-help-pages for details on adding WebApi Help Pages.
+	/// </remarks>
+	public abstract class CqrsApiController
+		: ApiController
 	{
-		protected CqrsApiController(ICorrelationIdHelper correlationIdHelper)
+		protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper)
 		{
 			CorrelationIdHelper = correlationIdHelper;
+			Logger = logger;
 		}
 
 		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+
+		protected ILogger Logger { get; private set; }
 
 		protected virtual string GetToken()
 		{
@@ -31,7 +39,7 @@ namespace Cqrs.WebApi
 			return token;
 		}
 
-		protected virtual IServiceRequestWithData<TSingleSignOnToken, TParameters> CreateRequestWithData<TSingleSignOnToken, TParameters>()
+		protected virtual IServiceRequestWithData<TSingleSignOnToken, TParameters> CreateRequestWithData<TSingleSignOnToken, TParameters>(Func<TParameters> createParameterDelegate = null)
 			where TSingleSignOnToken : ISingleSignOnToken, new()
 			where TParameters : new()
 		{
@@ -39,7 +47,7 @@ namespace Cqrs.WebApi
 			{
 				AuthenticationToken = CreateAuthenticationToken<TSingleSignOnToken>(),
 				CorrelationId = CorrelationIdHelper.GetCorrelationId(),
-				Data = CreateParameter<TParameters>()
+				Data = createParameterDelegate == null ? CreateParameter<TParameters>() : createParameterDelegate()
 			};
 		}
 
@@ -68,6 +76,37 @@ namespace Cqrs.WebApi
 		protected virtual DateTime GetTokenTimeOfExpiry()
 		{
 			return default(DateTime);
+		}
+
+		protected virtual TServiceResponse CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
+			where TServiceResponse : IServiceResponse
+		{
+			serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+			switch (serviceResponse.State)
+			{
+				case ServiceResponseStateType.Succeeded:
+					StatusCode(HttpStatusCode.OK);
+					break;
+				case ServiceResponseStateType.FailedAuthentication:
+					StatusCode(HttpStatusCode.Forbidden);
+					break;
+				case ServiceResponseStateType.FailedAuthorisation:
+					StatusCode(HttpStatusCode.Unauthorized);
+					break;
+				case ServiceResponseStateType.FailedValidation:
+					StatusCode(HttpStatusCode.BadRequest);
+					break;
+				case ServiceResponseStateType.FailedWithAFatalException:
+					StatusCode(HttpStatusCode.InternalServerError);
+					break;
+				case ServiceResponseStateType.FailedWithAnUnexpectedException:
+					StatusCode(HttpStatusCode.InternalServerError);
+					break;
+				case ServiceResponseStateType.Unknown:
+					StatusCode(HttpStatusCode.BadRequest);
+					break;
+			}
+			return serviceResponse;
 		}
 	}
 }

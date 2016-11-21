@@ -76,10 +76,14 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 		{
 			if (!collectionProperty.AppliedStereotypes.Any())
 				continue;
-			var propertyStereoTypeProperties = collectionProperty.AppliedStereotypes.Single(property => property.Name == "EntityProperty");
-			var columnNameProperty = propertyStereoTypeProperties.PropertyInstances
-				.SingleOrDefault(property => property.Name == "ColumnName");
-			string columnName = columnNameProperty != null && !string.IsNullOrWhiteSpace(columnNameProperty.Value) ? string.Format("Column(Name = \"{0}\")", columnNameProperty.Value) : "Column";
+			string columnName = "Column";
+			var propertyStereoTypeProperties = collectionProperty.AppliedStereotypes.SingleOrDefault(property => property.Name == "EntityProperty");
+			if (propertyStereoTypeProperties != null)
+			{
+				var columnNameProperty = propertyStereoTypeProperties.PropertyInstances
+					.SingleOrDefault(property => property.Name == "ColumnName");
+				columnName = columnNameProperty != null && !string.IsNullOrWhiteSpace(columnNameProperty.Value) ? string.Format("Column(Name = \"{0}\")", columnNameProperty.Value) : "Column";
+			}
 #>
 <# WriteSummaryComment(collectionProperty.Description); #>
 		[DataMember]

@@ -10,7 +10,7 @@ namespace Cqrs.Services
 		[EnumMember]
 		Unknown = 0,
 
-		[EnumMember]
+		[EnumMember(Value = "Succeeded")]
 		Succeeded = 1,
 
 		[EnumMember]

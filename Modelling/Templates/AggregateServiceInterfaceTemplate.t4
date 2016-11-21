@@ -96,8 +96,75 @@ namespace <#= classNamespace #>.Services
 		IServiceResponse Delete<#= className #>(IServiceRequestWithData<<#= authenticationTokenType #>, Entities.<#= className #>Entity> serviceRequest);
 <#
 		}
+
+		IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => !string.IsNullOrWhiteSpace(associationEnd.Name) && associationEnd.TargetElement == this.Element);
+
+		foreach(IAssociation relationship in relationships)
+		{
+			string relationshipName = relationship.Name;
+			if (string.IsNullOrWhiteSpace(relationshipName))
+				relationshipName = ((INamedElement)relationship.SourceElement).Name;
+			string targetElementName = ((INamedElement)relationship.TargetElement).Name;
+			IList<IProperty> relationshipProperties = GetPropertyList((IClass)relationship.SourceElement).Where(property=> property.Type != relationship.TargetElement && property.Type != relationship.SourceElement).ToList();
+			IEnumerable<IAssociation> eventRelationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.Name == relationship.Name && associationEnd.SourceElement == this.Element);
+#>
+
+		IServiceResponse <#= relationshipName #>(<#
+			var methodSignatureParameter = string.Empty;
+
+			object returnParameter = null;
+			if (returnParameter == null && relationshipProperties.Any())
+				methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, relationshipName);
+			else if (returnParameter != null)
+				methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, relationshipName);
+			else
+				methodSignatureParameter = string.Format("IServiceRequest<{0}> serviceRequest", authenticationTokenType);
+#><#= methodSignatureParameter #>);
+<#
+		}
 #>
 	}
+<#
+
+		foreach(IAssociation relationship in relationships)
+		{
+			string relationshipName = relationship.Name;
+			if (string.IsNullOrWhiteSpace(relationshipName))
+				relationshipName = ((INamedElement)relationship.SourceElement).Name;
+			string targetElementName = ((INamedElement)relationship.TargetElement).Name;
+			IList<IProperty> relationshipProperties = GetPropertyList((IClass)relationship.SourceElement).Where(property=> property.Type != relationship.TargetElement && property.Type != relationship.SourceElement).ToList();
+			IEnumerable<IAssociation> eventRelationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.Name == relationship.Name && associationEnd.SourceElement == this.Element);
+#>
+
+	/// <summary>
+	/// The parameters for the <see cref="I<#= className #>.<#= relationshipName #>" /> method.
+	/// </summary>
+	public class <#= className #><#= relationshipName #>Parameters
+	{
+<#
+
+			if (!bool.Parse(((INamedElement)relationship.SourceElement).AppliedStereotypes.Single(property => property.Name == "Command").PropertyInstances.Single(property => property.Name == "CreatesNewInstance").Value))
+			{
+#>
+		public System.Guid Rsn { get; set; }
+
+<#
+			}
+
+			for (int i = 0; i < relationshipProperties.Count; i++)
+			{
+				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
+#>
+<# WriteSummaryComment(relationshipProperty.Description); #>
+		public <#= GetFullDisplayType(relationshipProperty) #> <#= relationshipProperty.Name #> { get; set; }
+
+<#
+			}
+#>
+	}
+<#
+		}
+#>
 }
 <#+
 	protected override bool AppliesToElement()

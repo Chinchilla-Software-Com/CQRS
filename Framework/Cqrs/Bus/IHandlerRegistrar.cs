@@ -15,7 +15,7 @@ namespace Cqrs.Bus
 	/// <summary>
 	/// Registers event or command handlers that listen and respond to events or commands.
 	/// </summary>
-	[ServiceContract(Namespace = "http://cqrs.co.nz/Bus/HandlerRegistrar")]
+	[ServiceContract(Namespace = "https://getcqrs.net/Bus/HandlerRegistrar")]
 	public interface IHandlerRegistrar
 	{
 		/// <summary>

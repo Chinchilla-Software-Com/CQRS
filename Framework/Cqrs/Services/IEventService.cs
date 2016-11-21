@@ -5,7 +5,7 @@ using Cqrs.Events;
 
 namespace Cqrs.Services
 {
-	[ServiceContract(Namespace = "https://cqrs.co.nz/Domain/1001/")]
+	[ServiceContract(Namespace = "https://getcqrs.net/Domain/1001/")]
 	public interface IEventService<TAuthenticationToken>
 	{
 		[OperationContract]

@@ -34,11 +34,15 @@ namespace <#= classNamespace #>
 <#
 	// Class and Attributes
 #>
+<# WriteSummaryComment(this.Element.Description); #>
 	<#= GetGeneratedCodeAttribute() #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #>Command : <#= baseClass #>
 	{
 		#region Implementation of ICommand
 
+		/// <summary>
+		/// The Rsn of the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> being targeted.
+		/// </summary>
 		[DataMember]
 		public Guid Id
 		{
@@ -46,6 +50,9 @@ namespace <#= classNamespace #>
 			set { Rsn = value; }
 		}
 
+		/// <summary>
+		/// The version number you expect this command to shift the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> to. I.E. +1 from what you know it's current version to be.
+		/// </summary>
 		[DataMember]
 		public int ExpectedVersion { get; set; }
 
@@ -53,6 +60,9 @@ namespace <#= classNamespace #>
 
 		#region Implementation of IMessageWithAuthenticationToken<<#= authenticationTokenType #>>
 
+		/// <summary>
+		/// The authentication token used to identify the requester.
+		/// </summary>
 		[DataMember]
 		public <#= authenticationTokenType #> AuthenticationToken { get; set; }
 
@@ -60,8 +70,27 @@ namespace <#= classNamespace #>
 
 		#region Implementation of IMessage
 
+		/// <summary>
+		/// The correlation id used to group together events and notifications.
+		/// </summary>
 		[DataMember]
 		public Guid CorrelationId { get; set; }
+
+		[DataMember]
+		[Obsolete("Use Frameworks, It's far more flexible and OriginatingFramework")]
+		public FrameworkType Framework { get; set; }
+
+		/// <summary>
+		/// The originating framework this message was sent from.
+		/// </summary>
+		[DataMember]
+		public string OriginatingFramework { get; set; }
+
+		/// <summary>
+		/// The frameworks this <see cref="IMessage"/> has been delivered to/sent via already.
+		/// </summary>
+		[DataMember]
+		public IEnumerable<string> Frameworks { get; set; }
 
 		[Obsolete("Use CorrelationId")]
 		[DataMember]
@@ -71,40 +100,49 @@ namespace <#= classNamespace #>
 			set { CorrelationId = value; }
 		}
 
-		[DataMember]
-		public FrameworkType Framework { get; set; }
-
 		#endregion
 
+		/// <summary>
+		/// The Rsn of the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> being targeted.
+		/// </summary>
 		[DataMember]
 		public Guid Rsn { get; set; }
 
 <#
-		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
+		IList<IProperty> collectionProperties = GetPropertyList(this.Element)
+			.Where(property=> property.Type != this)
+			.ToList();
 		// Properties
 		foreach(var collectionProperty in collectionProperties)
 		{
 			if (collectionProperty.OwningAssociation != null)
 			{
+				// This is new but supposed to remove any generation of relationships sine we only use attributes
+				continue;
 				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (commandHandler != null)
 					continue;
 			}
 #>
-		[DataMember]
 <# WriteSummaryComment(collectionProperty.Description); #>
+		[DataMember]
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; set; }
 
 <#
 		}
 #>
+		/// <summary>
+		/// Instantiate a new instance of the <see cref="<#= className #>Command"/> class
+		/// </summary>
 		public <#= className #>Command(Guid rsn<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
 			if (collectionProperty.OwningAssociation != null)
 			{
+				// This is new but supposed to remove any generation of relationships sine we only use attributes
+				continue;
 				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (commandHandler != null)
@@ -120,6 +158,8 @@ namespace <#= classNamespace #>
 		{
 			if (collectionProperty.OwningAssociation != null)
 			{
+				// This is new but supposed to remove any generation of relationships sine we only use attributes
+				continue;
 				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (commandHandler != null)

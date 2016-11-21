@@ -10,7 +10,7 @@ using System.ServiceModel;
 
 namespace Cqrs.Authentication
 {
-	[ServiceContract(Namespace = "http://cqrs.co.nz/SingleSignOn/TokenFactory")]
+	[ServiceContract(Namespace = "https://getcqrs.net/SingleSignOn/TokenFactory")]
 	public interface IDefaultSingleSignOnTokenFactory : ISingleSignOnTokenFactory<SingleSignOnToken>
 	{
 		[OperationContract]

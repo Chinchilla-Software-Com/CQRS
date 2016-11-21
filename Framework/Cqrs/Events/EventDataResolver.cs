@@ -24,7 +24,7 @@ namespace Cqrs.Events
 			{
 				XmlDictionary dictionary = new XmlDictionary();
 				typeName = dictionary.Add("EventData");
-				typeNamespace = dictionary.Add("http://cqrs.co.nz");
+				typeNamespace = dictionary.Add("https://getcqrs.net");
 				return true;
 			}
 
@@ -32,7 +32,7 @@ namespace Cqrs.Events
 			{
 				XmlDictionary dictionary = new XmlDictionary();
 				typeName = dictionary.Add("EventDataGetRequest");
-				typeNamespace = dictionary.Add("http://cqrs.co.nz");
+				typeNamespace = dictionary.Add("https://getcqrs.net");
 				return true;
 			}
 
@@ -40,7 +40,7 @@ namespace Cqrs.Events
 			{
 				XmlDictionary dictionary = new XmlDictionary();
 				typeName = dictionary.Add("EventDataGetResponse");
-				typeNamespace = dictionary.Add("http://cqrs.co.nz");
+				typeNamespace = dictionary.Add("https://getcqrs.net");
 				return true;
 			}
 
@@ -51,13 +51,13 @@ namespace Cqrs.Events
 
 		public virtual Type ResolveName(string typeName, string typeNamespace, Type declaredType, DataContractResolver knownTypeResolver)
 		{
-			if (typeName == "EventData" && typeNamespace == "http://cqrs.co.nz")
+			if (typeName == "EventData" && typeNamespace == "https://getcqrs.net")
 				return typeof(EventData);
 
-			if (typeName == "EventDataGetRequest" && typeNamespace == "http://cqrs.co.nz")
+			if (typeName == "EventDataGetRequest" && typeNamespace == "https://getcqrs.net")
 				return typeof(ServiceRequestWithData<TAuthenticationToken, Guid>);
 
-			if (typeName == "EventDataGetResponse" && typeNamespace == "http://cqrs.co.nz")
+			if (typeName == "EventDataGetResponse" && typeNamespace == "https://getcqrs.net")
 				return typeof(ServiceResponseWithResultData<IEnumerable<EventData>>);
 
 			return null;
