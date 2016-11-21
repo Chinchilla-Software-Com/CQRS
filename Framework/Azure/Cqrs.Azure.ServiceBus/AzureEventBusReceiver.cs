@@ -114,6 +114,7 @@ namespace Cqrs.Azure.ServiceBus
 
 								Thread.Sleep(500);
 							}
+							brokeredMessageRenewCancellationTokenSource.Dispose();
 						}, brokeredMessageRenewCancellationTokenSource.Token);
 					}
 				);
