@@ -156,6 +156,7 @@ namespace Cqrs.Azure.ServiceBus
 						}
 						else
 							Logger.LogDebug(string.Format("Trying to find the queue '{0}' failed.", queueName));
+
 						Thread.Sleep(100);
 					}
 					catch (Exception exception)
