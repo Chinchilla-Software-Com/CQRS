@@ -84,6 +84,7 @@ namespace Cqrs.Bus
 
 		protected virtual void DequeuAndProcessCommand(string queueName)
 		{
+			long loop = long.MinValue;
 			while (true)
 			{
 				try
@@ -128,7 +129,13 @@ namespace Cqrs.Bus
 					}
 					else
 						Logger.LogDebug(string.Format("Trying to find the queue '{0}' failed.", queueName));
-					Thread.Sleep(100);
+
+					if (loop++ % 5 == 0)
+						Thread.Yield();
+					else
+						Thread.Sleep(100);
+					if (loop == long.MaxValue)
+						loop = long.MinValue;
 				}
 				catch (Exception exception)
 				{
