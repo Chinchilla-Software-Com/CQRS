@@ -7,6 +7,7 @@ using cdmdotnet.Logging.Configuration;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
 using Cqrs.Events;
 using Cqrs.MongoDB.Events;
+using Cqrs.MongoDB.Serialisers;
 using MongoDB.Driver;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
@@ -36,7 +37,7 @@ namespace Cqrs.MongoDB.Tests.Integration
 				var connectionStringFactory = new TestMongoEventStoreConnectionStringFactory();
 				TestMongoEventStoreConnectionStringFactory.DatabaseName = string.Format("Test-{0}", new Random().Next(0, 9999));
 
-				var eventStore = new MongoDbEventStore<Guid>(new DefaultEventBuilder<Guid>(), new EventDeserialiser<Guid>(), logger, connectionStringFactory);
+				var eventStore = new MongoDbEventStore<Guid>(new MongoDbEventBuilder<Guid>(), new MongoDbEventDeserialiser<Guid>(), logger, connectionStringFactory);
 
 				var event1 = new TestEvent
 				{

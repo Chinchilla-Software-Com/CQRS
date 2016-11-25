@@ -55,7 +55,7 @@ namespace Cqrs.Ninject.MongoDB.Configuration
 				.To<MongoDbEventBuilder<TAuthenticationToken>>()
 				.InSingletonScope();
 			Bind<IEventDeserialiser<TAuthenticationToken>>()
-				.To<MongoEventDeserialiser<TAuthenticationToken>>()
+				.To<MongoDbEventDeserialiser<TAuthenticationToken>>()
 				.InSingletonScope();
 			Bind<IEventStore<TAuthenticationToken>>()
 				.To<MongoDbEventStore<TAuthenticationToken>>()
