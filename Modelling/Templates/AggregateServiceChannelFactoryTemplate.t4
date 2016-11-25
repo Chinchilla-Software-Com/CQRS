@@ -104,6 +104,18 @@ namespace <#= classNamespace #>.Services.ServiceHost.Ninject.ServiceChannelFacto
 			<#= className #>ServiceDelete<#= className #>ParametersResolver.RegisterDataContracts();
 <#
 		}
+
+		IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => !string.IsNullOrWhiteSpace(associationEnd.Name) && associationEnd.TargetElement == this.Element);
+
+		foreach(IAssociation relationship in relationships)
+		{
+			string relationshipName = relationship.Name;
+			if (string.IsNullOrWhiteSpace(relationshipName))
+				relationshipName = ((INamedElement)relationship.SourceElement).Name;
+#>
+			<#= className #>Service<#= relationshipName #>ParametersResolver.RegisterDataContracts();
+<#
+		}
 #>
 		}
 	}

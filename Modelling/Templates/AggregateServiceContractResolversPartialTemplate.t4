@@ -85,6 +85,24 @@ namespace <#= classNamespace #>.Services
 
 <#
 		}
+
+		IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => !string.IsNullOrWhiteSpace(associationEnd.Name) && associationEnd.TargetElement == this.Element);
+
+		foreach(IAssociation relationship in relationships)
+		{
+			string relationshipName = relationship.Name;
+			if (string.IsNullOrWhiteSpace(relationshipName))
+				relationshipName = ((INamedElement)relationship.SourceElement).Name;
+#>
+
+	/// <summary>
+	/// A <see cref="DataContractResolver"/> for using <see cref="I<#= className #>Service.<#= relationshipName #>"/> via WCF
+	/// </summary>
+	public partial class <#= className #>Service<#= relationshipName #>ParametersResolver
+	{
+	}
+<#
+		}
 #>
 }
 <#+
