@@ -26,6 +26,7 @@ else
 
 // using statements
 #>
+
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -109,6 +110,7 @@ namespace <#= classNamespace #>.Services
 			IEnumerable<IAssociation> eventRelationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.Name == relationship.Name && associationEnd.SourceElement == this.Element);
 #>
 
+		[OperationContract]
 		IServiceResponse <#= relationshipName #>(<#
 			var methodSignatureParameter = string.Empty;
 
@@ -137,7 +139,7 @@ namespace <#= classNamespace #>.Services
 #>
 
 	/// <summary>
-	/// The parameters for the <see cref="I<#= className #>.<#= relationshipName #>" /> method.
+	/// The parameters for the <see cref="I<#= className #>Service.<#= relationshipName #>" /> method.
 	/// </summary>
 	public class <#= className #><#= relationshipName #>Parameters
 	{
