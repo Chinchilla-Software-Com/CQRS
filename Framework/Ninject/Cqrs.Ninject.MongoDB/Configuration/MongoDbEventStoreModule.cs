@@ -8,6 +8,7 @@
 
 using Cqrs.Events;
 using Cqrs.MongoDB.Events;
+using Cqrs.MongoDB.Serialisers;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.MongoDB.Configuration
@@ -51,10 +52,10 @@ namespace Cqrs.Ninject.MongoDB.Configuration
 		public virtual void RegisterCqrsRequirements()
 		{
 			Bind<IEventBuilder<TAuthenticationToken>>()
-				.To<DefaultEventBuilder<TAuthenticationToken>>()
+				.To<MongoDbEventBuilder<TAuthenticationToken>>()
 				.InSingletonScope();
 			Bind<IEventDeserialiser<TAuthenticationToken>>()
-				.To<EventDeserialiser<TAuthenticationToken>>()
+				.To<MongoEventDeserialiser<TAuthenticationToken>>()
 				.InSingletonScope();
 			Bind<IEventStore<TAuthenticationToken>>()
 				.To<MongoDbEventStore<TAuthenticationToken>>()
