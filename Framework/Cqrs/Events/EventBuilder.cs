@@ -15,7 +15,7 @@ namespace Cqrs.Events
 	{
 		#region Implementation of IEventBuilder
 
-		public EventData CreateFrameworkEvent(string type, IEvent<TAuthenticationToken> eventData)
+		public virtual EventData CreateFrameworkEvent(string type, IEvent<TAuthenticationToken> eventData)
 		{
 			return new EventData
 			{
@@ -25,7 +25,7 @@ namespace Cqrs.Events
 			};
 		}
 
-		public EventData CreateFrameworkEvent(IEvent<TAuthenticationToken> eventData)
+		public virtual EventData CreateFrameworkEvent(IEvent<TAuthenticationToken> eventData)
 		{
 			return CreateFrameworkEvent(eventData.GetType().AssemblyQualifiedName, eventData);
 		}

@@ -66,7 +66,7 @@ namespace Cqrs.Azure.ServiceBus
 		protected virtual void SetConnectionStrings()
 		{
 			ConnectionString = GetConnectionString();
-			Logger.LogDebug(string.Format("Connection string settings set to {0}.", ConnectionString));
+			Logger.LogSensitive(string.Format("Connection string settings set to {0}.", ConnectionString));
 		}
 
 		protected virtual void SetNumberOfReceiversCount()

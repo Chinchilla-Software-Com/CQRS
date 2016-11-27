@@ -47,7 +47,7 @@ namespace <#= classNamespace #>.Services.ServiceHost.Ninject.ServiceChannelFacto
 		}
 
 		/// <summary>
-		/// Instantiates a new instance of the <see cref="Http<#= className #>ServiceChannelFactory"/> class with a specified endpoint configuration name.
+		/// Instantiates a new instance of the <see cref="Http<#= className #>ServiceChannelFactory" /> class with a specified endpoint configuration name.
 		/// </summary>
 		/// <param name="endpointConfigurationName">The configuration name used for the endpoint.</param>
 		public Http<#= className #>ServiceChannelFactory(string endpointConfigurationName)
@@ -102,6 +102,18 @@ namespace <#= classNamespace #>.Services.ServiceHost.Ninject.ServiceChannelFacto
 		{
 #>
 			<#= className #>ServiceDelete<#= className #>ParametersResolver.RegisterDataContracts();
+<#
+		}
+
+		IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => !string.IsNullOrWhiteSpace(associationEnd.Name) && associationEnd.TargetElement == this.Element);
+
+		foreach(IAssociation relationship in relationships)
+		{
+			string relationshipName = relationship.Name;
+			if (string.IsNullOrWhiteSpace(relationshipName))
+				relationshipName = ((INamedElement)relationship.SourceElement).Name;
+#>
+			<#= className #>Service<#= relationshipName #>ParametersResolver.RegisterDataContracts();
 <#
 		}
 #>
