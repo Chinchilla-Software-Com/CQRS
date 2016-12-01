@@ -12,17 +12,28 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
-using Cqrs.Authentication;
 using Cqrs.Events;
 using Microsoft.AspNet.SignalR;
 
 namespace Cqrs.WebApi.SignalR.Hubs
 {
-	public class NotificationHub : Hub
+	public class NotificationHub
+		: Hub
+		, INotificationHub
 	{
-		protected ILogger Logger { get; set; }
+		public NotificationHub(ILogger logger, ICorrelationIdHelper correlationIdHelper)
+		{
+			Logger = logger;
+			CorrelationIdHelper = correlationIdHelper;
+		}
 
-		protected ICorrelationIdHelper CorrelationIdHelper { get; set; }
+		public NotificationHub()
+		{
+		}
+
+		public ILogger Logger { get; set; }
+
+		public ICorrelationIdHelper CorrelationIdHelper { get; set; }
 
 		public Func<string, Guid> ConvertUserTokenToUserRsn { get; set; }
 
@@ -87,7 +98,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 			});
 		}
 
-		protected IHubContext CurrentHub
+		protected virtual IHubContext CurrentHub
 		{
 			get
 			{
@@ -98,8 +109,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 		/// <summary>
 		/// Send out an event to specific user IDs
 		/// </summary>
-		public void SendUsersEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, params Guid[] userRsnCollection)
-			where TSingleSignOnToken : ISingleSignOnToken, new()
+		void INotificationHub.SendUsersEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, params Guid[] userRsnCollection)
 		{
 			IList<Guid> optimisedUserRsnCollection = (userRsnCollection ?? Enumerable.Empty<Guid>()).ToList();
 
@@ -131,7 +141,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 							{
 								Clients
 									.Group(string.Format("UserRsn-{0}", userRsn))
-									.handleEvent(eventData);
+									.notifyEvent(eventData);
 							}
 							catch (TimeoutException exception)
 							{
@@ -157,8 +167,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 		/// <summary>
 		/// Send out an event to specific user IDs
 		/// </summary>
-		public void SendUserEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, string userToken)
-			where TSingleSignOnToken : ISingleSignOnToken, new()
+		void INotificationHub.SendUserEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, string userToken)
 		{
 			Logger.LogDebug(string.Format("Sending a message on the hub for user [{0}].", userToken));
 
@@ -186,7 +195,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 							CurrentHub
 								.Clients
 								.Group(string.Format("User-{0}", userToken))
-								.handleEvent(new { Type = eventData.GetType().FullName, Data = eventData });
+								.notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData });
 						}
 						catch (TimeoutException exception)
 						{

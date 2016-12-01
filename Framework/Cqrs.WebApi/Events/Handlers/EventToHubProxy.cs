@@ -15,13 +15,13 @@ namespace Cqrs.WebApi.Events.Handlers
 	public abstract class EventToHubProxy<TSingleSignOnToken>
 		where TSingleSignOnToken : ISingleSignOnToken, new()
 	{
-		protected EventToHubProxy(NotificationHub notificationHub, IAuthenticationTokenHelper<TSingleSignOnToken> authenticationTokenHelper)
+		protected EventToHubProxy(INotificationHub notificationHub, IAuthenticationTokenHelper<TSingleSignOnToken> authenticationTokenHelper)
 		{
 			NotificationHub = notificationHub;
 			AuthenticationTokenHelper = authenticationTokenHelper;
 		}
 
-		protected NotificationHub NotificationHub { get; private set; }
+		protected INotificationHub NotificationHub { get; private set; }
 
 		protected IAuthenticationTokenHelper<TSingleSignOnToken> AuthenticationTokenHelper { get; private set; }
 

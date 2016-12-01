@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using cdmdotnet.Logging;
@@ -43,6 +44,12 @@ namespace Cqrs.WebApi
 			IEnumerable<string> tokenValue;
 			if (Request.Headers.TryGetValues("X-Token", out tokenValue))
 				token = tokenValue.First();
+			else
+			{
+				CookieHeaderValue cookie = Request.Headers.GetCookies("X-Token").FirstOrDefault();
+				if (cookie != null)
+					token = cookie["X-Token"].Value;
+			}
 
 			return token;
 		}
