@@ -1,5 +1,14 @@
-﻿using Cqrs.Authentication;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="cdmdotnet Limited">
+// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using Cqrs.Authentication;
 using Cqrs.Events;
+using Cqrs.WebApi.SignalR.Hubs;
 
 namespace Cqrs.WebApi.Events.Handlers
 {

@@ -1,4 +1,12 @@
-﻿using System.Web.Http;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="cdmdotnet Limited">
+// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System.Web.Http;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Newtonsoft.Json;

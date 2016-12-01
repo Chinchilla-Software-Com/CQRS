@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="cdmdotnet Limited">
+// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -90,7 +98,8 @@ namespace Cqrs.WebApi.SignalR.Hubs
 		/// <summary>
 		/// Send out an event to specific user IDs
 		/// </summary>
-		public void SendUsersEvent(IEvent<SingleSignOnToken> eventData, params Guid[] userRsnCollection)
+		public void SendUsersEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, params Guid[] userRsnCollection)
+			where TSingleSignOnToken : ISingleSignOnToken, new()
 		{
 			IList<Guid> optimisedUserRsnCollection = (userRsnCollection ?? Enumerable.Empty<Guid>()).ToList();
 
@@ -148,7 +157,8 @@ namespace Cqrs.WebApi.SignalR.Hubs
 		/// <summary>
 		/// Send out an event to specific user IDs
 		/// </summary>
-		public void SendUserEvent(IEvent<SingleSignOnToken> eventData, string userToken)
+		public void SendUserEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, string userToken)
+			where TSingleSignOnToken : ISingleSignOnToken, new()
 		{
 			Logger.LogDebug(string.Format("Sending a message on the hub for user [{0}].", userToken));
 
