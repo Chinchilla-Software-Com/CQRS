@@ -60,7 +60,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 				IOrderedQueryable<EventData> query = client.CreateDocumentQuery<EventData>(collection.SelfLink);
 				string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
-				IEnumerable<EventData> results = query.Where(x => x.AggregateId == streamName && x.Version >= fromVersion);
+				IEnumerable<EventData> results = query.Where(x => x.AggregateId == streamName && x.Version > fromVersion);
 
 				return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
 					results
