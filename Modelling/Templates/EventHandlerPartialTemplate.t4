@@ -24,6 +24,7 @@ string eventName = stereoTypeProperties.PropertyInstances
 #>
 using System;
 using cdmdotnet.AutoMapper;
+using cdmdotnet.Logging;
 using Cqrs.Entities;
 
 namespace <#= classNamespace #>.Handlers
@@ -35,7 +36,7 @@ namespace <#= classNamespace #>.Handlers
 	{
 		protected IAutomapHelper AutomapHelper { get; private set; }
 
-		public <#= entityName ?? className #>EventHandler(IAutomapHelper automapHelper)
+		public <#= entityName ?? className #>EventHandler(ILogger logger, IAutomapHelper automapHelper)
 <#
 string eventHandlerTechnology = GetEventHandlerTechnology(this.Element);
 switch(eventHandlerTechnology)
@@ -46,11 +47,15 @@ switch(eventHandlerTechnology)
 <#
 		break;
 	default:
+#>
+			: this(logger)
+<#
 		// for now do nothing
 		break;
 }
 #>
 		{
+			Logger = logger;
 			AutomapHelper = automapHelper;
 		}
 
