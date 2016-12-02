@@ -12,7 +12,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
-using Cqrs.Authentication;
 using Cqrs.Events;
 using Microsoft.AspNet.SignalR;
 
@@ -221,7 +220,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 		/// <summary>
 		/// Send out an event to all users
 		/// </summary>
-		public void SendAllUsersEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData) where TSingleSignOnToken : ISingleSignOnToken, new()
+		void INotificationHub.SendAllUsersEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData)
 		{
 			Logger.LogDebug("Sending a message on the hub to all users.");
 
@@ -272,7 +271,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 		/// <summary>
 		/// Send out an event to all users except the specific user token
 		/// </summary>
-		public void SendExceptThisUserEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, string userToken) where TSingleSignOnToken : ISingleSignOnToken, new()
+		void INotificationHub.SendExceptThisUserEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, string userToken)
 		{
 			Logger.LogDebug(string.Format("Sending a message on the hub for all users except user [{0}].", userToken));
 
@@ -323,6 +322,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 				Logger.LogError("Queueing a message on the hub resulted in an error.", exception: exception, metaData: GetAdditionalDataForLogging(userToken));
 			}
 		}
+
 		protected virtual IDictionary<string, object> GetAdditionalDataForLogging(Guid userRsn)
 		{
 			return new Dictionary<string, object> { { "UserRsn", userRsn } };
