@@ -263,6 +263,16 @@
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
+        <property name="EventVisibility" displayName="Event Visibility: Which event bus to send the event via." defaultValue="Public">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/EventVisibility"/>
+          </propertyType>
+        </property>
+        <property name="EventNotification" displayName="Event Notification: Who to proxy the event via singalR to." defaultValue="Caller">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/EventNotification"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
     <stereotype name="EventHandler" displayName="Event Handler">
@@ -467,6 +477,23 @@
       <enumerationLiterals>
         <enumerationLiteral name="Simple" displayName="Simple pass through command targeting one aggregate root" />
         <enumerationLiteral name="Complex" displayName="A more complex command." />
+      </enumerationLiterals>
+    </enumerationType>
+
+    <enumerationType name="EventVisibility">
+      <enumerationLiterals>
+        <enumerationLiteral name="Private" displayName="Publish the event of the private event bus." />
+        <enumerationLiteral name="Public" displayName="Publish the event of the public event bus." />
+        <enumerationLiteral name="Both" displayName="Publish the event of the private and public event bus." />
+      </enumerationLiterals>
+    </enumerationType>
+
+    <enumerationType name="EventNotification">
+      <enumerationLiterals>
+        <enumerationLiteral name="Caller" displayName="Proxy the event to the caller via SignalR." />
+        <enumerationLiteral name="All" displayName="Proxy the event to all users via SignalR." />
+        <enumerationLiteral name="AllExceptCaller" displayName="Proxy the event to all users except the caller via SignalR." />
+        <enumerationLiteral name="NoOne" displayName="Do not proxy the event to anyone via SignalR." />
       </enumerationLiterals>
     </enumerationType>
   </propertyTypes>

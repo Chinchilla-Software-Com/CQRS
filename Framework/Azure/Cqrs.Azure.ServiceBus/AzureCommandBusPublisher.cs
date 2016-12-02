@@ -34,7 +34,7 @@ namespace Cqrs.Azure.ServiceBus
 			if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
 				return;
 
-			ServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseCommand(command)));
+			PrivateServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseCommand(command)));
 			Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
 		}
 
@@ -106,7 +106,7 @@ namespace Cqrs.Azure.ServiceBus
 			TEvent result = (TEvent)(object)null;
 			EventWaits.Add(command.CorrelationId, new List<IEvent<TAuthenticationToken>>());
 
-			ServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseCommand(command)));
+			PrivateServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseCommand(command)));
 			Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
 
 			SpinWait.SpinUntil(() =>

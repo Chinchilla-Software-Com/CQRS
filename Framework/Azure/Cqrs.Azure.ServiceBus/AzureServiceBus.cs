@@ -19,11 +19,15 @@ namespace Cqrs.Azure.ServiceBus
 {
 	public abstract class AzureServiceBus<TAuthenticationToken> : AzureBus<TAuthenticationToken>
 	{
-		protected TopicClient ServiceBusPublisher { get; private set; }
+		protected TopicClient PrivateServiceBusPublisher { get; private set; }
 
-		protected IDictionary<int, SubscriptionClient> ServiceBusReceivers { get; private set; }
+		protected TopicClient PublicServiceBusPublisher { get; private set; }
 
-		protected string PrivateTopicName { get; set; }
+		protected IDictionary<int, SubscriptionClient> PrivateServiceBusReceivers { get; private set; }
+
+		protected IDictionary<int, SubscriptionClient> PublicServiceBusReceivers { get; private set; }
+
+		protected string PrivateTopicName { get; private set; }
 
 		protected string PublicTopicName { get; private set; }
 
@@ -56,7 +60,8 @@ namespace Cqrs.Azure.ServiceBus
 		protected AzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
 			: base (configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
-			ServiceBusReceivers = new Dictionary<int, SubscriptionClient>();
+			PrivateServiceBusReceivers = new Dictionary<int, SubscriptionClient>();
+			PublicServiceBusReceivers = new Dictionary<int, SubscriptionClient>();
 		}
 
 		#region Overrides of AzureBus<TAuthenticationToken>
@@ -77,7 +82,8 @@ namespace Cqrs.Azure.ServiceBus
 			CheckPrivateEventTopicExists(namespaceManager);
 			CheckPublicTopicExists(namespaceManager);
 
-			ServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PublicTopicName);
+			PrivateServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PrivateTopicName);
+			PublicServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PublicTopicName);
 			StartSettingsChecking();
 		}
 
@@ -88,23 +94,30 @@ namespace Cqrs.Azure.ServiceBus
 			CheckPrivateEventTopicExists(namespaceManager);
 			CheckPublicTopicExists(namespaceManager);
 
-			for (int i = 0; i < NumberOfReceiversCount; i++)
-			{
-				SubscriptionClient serviceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, PublicTopicName, PublicTopicSubscriptionName);
-				if (ServiceBusReceivers.ContainsKey(i))
-					ServiceBusReceivers[i] = serviceBusReceiver;
-				else
-					ServiceBusReceivers.Add(i, serviceBusReceiver);
-			}
-			// Remove any if the number has decreased
-			for (int i = NumberOfReceiversCount; i < ServiceBusReceivers.Count; i++)
-				ServiceBusReceivers.Remove(i + 1);
+			InstantiateReceiving(PrivateServiceBusReceivers, PrivateTopicName, PrivateTopicSubscriptionName);
+			InstantiateReceiving(PublicServiceBusReceivers, PublicTopicName, PublicTopicSubscriptionName);
 
 			// If this is also a publisher, then it will the check over there and that will handle this
-			if (ServiceBusPublisher != null)
+			// we only need to check one of these
+			if (PublicServiceBusPublisher != null)
 				return;
 
 			StartSettingsChecking();
+		}
+
+		protected virtual void InstantiateReceiving(IDictionary<int, SubscriptionClient> serviceBusReceivers, string topicName, string topicSubscriptionName)
+		{
+			for (int i = 0; i < NumberOfReceiversCount; i++)
+			{
+				SubscriptionClient serviceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, topicName, topicSubscriptionName);
+				if (serviceBusReceivers.ContainsKey(i))
+					serviceBusReceivers[i] = serviceBusReceiver;
+				else
+					serviceBusReceivers.Add(i, serviceBusReceiver);
+			}
+			// Remove any if the number has decreased
+			for (int i = NumberOfReceiversCount; i < serviceBusReceivers.Count; i++)
+				serviceBusReceivers.Remove(i + 1);
 		}
 
 		protected virtual void CheckPrivateEventTopicExists(NamespaceManager namespaceManager)
@@ -136,13 +149,27 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected override void TriggerSettingsChecking()
 		{
-			// Let's wrap up using this message bus and start the switch
-			if (ServiceBusPublisher != null)
+			TriggerSettingsChecking(PrivateServiceBusPublisher, PrivateServiceBusReceivers);
+			TriggerSettingsChecking(PublicServiceBusPublisher, PublicServiceBusReceivers);
+
+			// Restart configuration, we order this intentionally with the publisher second as if this triggers the cancellation there's nothing else to process here
+			// we also only need to check one of the publishers
+			if (PublicServiceBusPublisher != null)
 			{
-				ServiceBusPublisher.Close();
+				Logger.LogDebug("Recursively calling into InstantiatePublishing.");
+				InstantiatePublishing();
+			}
+		}
+
+		protected virtual void TriggerSettingsChecking(TopicClient serviceBusPublisher, IDictionary<int, SubscriptionClient> serviceBusReceivers)
+		{
+			// Let's wrap up using this message bus and start the switch
+			if (serviceBusPublisher != null)
+			{
+				serviceBusPublisher.Close();
 				Logger.LogDebug("Publishing service bus closed.");
 			}
-			foreach (SubscriptionClient serviceBusReceiver in ServiceBusReceivers.Values)
+			foreach (SubscriptionClient serviceBusReceiver in serviceBusReceivers.Values)
 			{
 				// Let's wrap up using this message bus and start the switch
 				if (serviceBusReceiver != null)
@@ -167,12 +194,6 @@ namespace Cqrs.Azure.ServiceBus
 						Logger.LogWarning("No onMessage handler was found to re-bind.");
 				}
 			}
-			// Restart configuration, we order this intentionally with the publisher second as if this triggers the cancellation there's nothing else to process here
-			if (ServiceBusPublisher != null)
-			{
-				Logger.LogDebug("Recursively calling into InstantiatePublishing.");
-				InstantiatePublishing();
-			}
 		}
 
 		protected virtual void RegisterReceiverMessageHandler(Action<BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
@@ -190,7 +211,9 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected override void ApplyReceiverMessageHandler()
 		{
-			foreach (SubscriptionClient serviceBusReceiver in ServiceBusReceivers.Values)
+			foreach (SubscriptionClient serviceBusReceiver in PrivateServiceBusReceivers.Values)
+				serviceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
+			foreach (SubscriptionClient serviceBusReceiver in PublicServiceBusReceivers.Values)
 				serviceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
 		}
 	}
