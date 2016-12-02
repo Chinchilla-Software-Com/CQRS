@@ -265,12 +265,12 @@
         </property>
         <property name="EventVisibility" displayName="Event Visibility: Which event bus to send the event via." defaultValue="Public">
           <propertyType>
-            <externalTypeMoniker name="/CqrsProfile/EventVisibility"/>
+            <enumerationTypeMoniker name="/CqrsProfile/EventVisibility"/>
           </propertyType>
         </property>
         <property name="EventNotification" displayName="Event Notification: Who to proxy the event via singalR to." defaultValue="Caller">
           <propertyType>
-            <externalTypeMoniker name="/CqrsProfile/EventNotification"/>
+            <enumerationTypeMoniker name="/CqrsProfile/EventNotification"/>
           </propertyType>
         </property>
       </properties>
