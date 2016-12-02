@@ -109,6 +109,10 @@ namespace Cqrs.Ninject.Configuration
 			Bind<IStoreLastEventProcessed>()
 				.To<FileBasedLastEventProcessedStore>()
 				.InSingletonScope();
+
+			Bind<IBusHelper>()
+				.To<BusHelper>()
+				.InSingletonScope();
 		}
 
 		protected T Resolve<T>()
