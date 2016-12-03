@@ -42,7 +42,11 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
 			if (shouldBuild)
-				allDataStores.Add(element);
+			{
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
+				if (shouldBuild)
+					allDataStores.Add(element);
+			}
 		}
 		foreach (INamedElement element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
 		{

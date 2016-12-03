@@ -298,6 +298,18 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IAssociation" />
       </metaclasses>
+      <properties>
+        <property name="CommandName" displayName="CommandName: The name of the command this event handler will publish." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+        <property name="EventName" displayName="EventName: The name of the Event this event handler responds to." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+      </properties>
     </stereotype>
     <stereotype name="CommandHandler" displayName="Command Handler">
       <metaclasses>
@@ -353,7 +365,12 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
       <properties>
-        <property name="AggregateRootName" displayName="Entity Name: The name of the entity this query strategy is for." defaultValue="">
+        <property name="AggregateRootName" displayName="Aggregate Root Name: The name of the aggregate root this query strategy is for IF it is not for an entity." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+        <property name="EntityName" displayName="Entity Name: The name of the entity this query strategy is for." defaultValue="">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>

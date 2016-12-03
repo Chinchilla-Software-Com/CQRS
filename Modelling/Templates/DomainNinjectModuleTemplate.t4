@@ -118,8 +118,8 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 				.InSingletonScope();
 <# if (GetDomainAuthenticationTokenType(this.Element) == "Cqrs.Authentication.ISingleSignOnToken") { #>
 
-			Bind<Cqrs.Authentication.ISingleSignOnTokenFactory>()
-				.To<Cqrs.Authentication.SingleSignOnTokenFactory>()
+			Bind<Cqrs.Authentication.ISingleSignOnTokenFactory<<#= stereoTypeProperties.PropertyInstances.Single(property => property.Name == "AuthenticationTokenType").Value #>>>()
+				.To<Cqrs.Authentication.SingleSignOnTokenFactory<<#= stereoTypeProperties.PropertyInstances.Single(property => property.Name == "AuthenticationTokenType").Value #>>>()
 				.InSingletonScope();
 <# } #>
 
@@ -146,6 +146,8 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildService" && property.Value == "true");
+			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
 
 			bool createCommand = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildCreateCommand" && property.Value == "true");
@@ -210,6 +212,8 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildRepository" && property.Value == "true");
+			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
 
 			if (shouldBuild)
 			{

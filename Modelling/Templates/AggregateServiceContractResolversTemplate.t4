@@ -385,7 +385,7 @@ if (index > 0)
 
 		public override bool TryResolveType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace)
 		{
-			if (dataContractType == typeof(ServiceRequestWithData<<#= authenticationTokenType #>, <#= className #>Entity>))
+			if (dataContractType == typeof(ServiceRequestWithData<<#= authenticationTokenType #>, <#= className #><#= relationshipName #>Parameters>))
 			{
 				XmlDictionary dictionary = new XmlDictionary();
 				typeName = dictionary.Add("<#= className #>Service<#= relationshipName #>Parameters");
@@ -393,6 +393,7 @@ if (index > 0)
 				return true;
 			}
 
+			/*
 			if (dataContractType == typeof(ServiceResponseWithResultData<<#= className #>Entity>))
 			{
 				XmlDictionary dictionary = new XmlDictionary();
@@ -400,6 +401,7 @@ if (index > 0)
 				typeNamespace = dictionary.Add(ServiceNamespace);
 				return true;
 			}
+			*/
 
 			return base.TryResolveType(dataContractType, declaredType, knownTypeResolver, out typeName, out typeNamespace);
 		}
@@ -425,10 +427,12 @@ if (index > 0)
 			if (typeNamespace == ServiceNamespace)
 			{
 				if (typeName == "<#= className #>Service<#= relationshipName #>Parameters")
-					return typeof(ServiceRequestWithData<<#= authenticationTokenType #>, <#= className #>Entity>);
+					return typeof(ServiceRequestWithData<<#= authenticationTokenType #>, <#= className #><#= relationshipName #>Parameters>);
 
+				/*
 				if (typeName == "<#= className #>Service<#= relationshipName #>Response")
 					return typeof(ServiceResponseWithResultData<<#= className #>Entity>);
+				*/
 			}
 
 			return base.ResolveName(typeName, typeNamespace, declaredType, knownTypeResolver);

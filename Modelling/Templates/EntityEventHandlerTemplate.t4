@@ -57,8 +57,10 @@ namespace <#= classNamespace #>
 	int index = 0;
 	foreach(IAssociation relationship in relationships)
 	{
-		string entityElementName = ((INamedElement)relationship.TargetElement).Name;
-		string eventElementName = ((INamedElement)relationship.SourceElement).Name;
+		var targetElement = (INamedElement)relationship.TargetElement;
+		var sourceElement = (INamedElement)relationship.SourceElement;
+		string entityElementName = string.Format("{0}.{1}", GetNamespace(targetElement.Namespace).Replace("::", "."), targetElement.Name);
+		string eventElementName = string.Format("{0}.{1}", GetNamespace(sourceElement.Namespace).Replace("::", "."), sourceElement.Name);
 #>
 		<#= index == 0 ? ":" : "," #> IEventHandler<<#= authenticationTokenType #>, <#= eventElementName #>>
 <#
@@ -80,8 +82,10 @@ switch(eventHandlerTechnology)
 <#
 	foreach(IAssociation relationship in relationships)
 	{
-		string entityElementName = ((INamedElement)relationship.TargetElement).Name;
-		string eventElementName = ((INamedElement)relationship.SourceElement).Name;
+		var targetElement = (INamedElement)relationship.TargetElement;
+		var sourceElement = (INamedElement)relationship.SourceElement;
+		string entityElementName = string.Format("{0}.{1}", GetNamespace(targetElement.Namespace).Replace("::", "."), targetElement.Name);
+		string eventElementName = string.Format("{0}.{1}", GetNamespace(sourceElement.Namespace).Replace("::", "."), sourceElement.Name);
 #>
 			Receive<<#= eventElementName #>>(@event => Handle(@event));
 <#
@@ -106,8 +110,10 @@ switch(eventHandlerTechnology)
 <#
 foreach(IAssociation relationship in relationships)
 {
-	string entityElementName = ((INamedElement)relationship.TargetElement).Name;
-	string eventElementName = ((INamedElement)relationship.SourceElement).Name;
+		var targetElement = (INamedElement)relationship.TargetElement;
+		var sourceElement = (INamedElement)relationship.SourceElement;
+		string entityElementName = string.Format("{0}.{1}", GetNamespace(targetElement.Namespace).Replace("::", "."), targetElement.Name);
+		string eventElementName = string.Format("{0}.{1}", GetNamespace(sourceElement.Namespace).Replace("::", "."), sourceElement.Name);
 #>
 		#region Implementation of IEventHandler<in <#= eventElementName #>>
 

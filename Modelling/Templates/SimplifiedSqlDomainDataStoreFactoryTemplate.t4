@@ -57,6 +57,9 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
 			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
+
+			if (shouldBuild)
 			{
 #>
 		public virtual IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> Get<#= elementName #>DataStore()
@@ -81,6 +84,9 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "Entity");
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
+			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
+
 			if (shouldBuild)
 			{
 #>
@@ -107,6 +113,8 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
 			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
+			if (shouldBuild)
 			{
 #>
 		partial void OnGet<#= elementName #>DataStore(ref IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> result);
@@ -126,6 +134,8 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "Entity");
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
+			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
 			if (shouldBuild)
 			{
 #>
