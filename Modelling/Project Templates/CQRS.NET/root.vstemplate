@@ -1,0 +1,48 @@
+﻿<VSTemplate Version="3.0.0" Type="ProjectGroup" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+	<TemplateData>
+		<Name>CQRS.NET</Name>
+		<Description>A lightweight enterprise framework to help write CQRS and Eventsourcing applications in C#, with a special focus on deploying to Azure.</Description>
+		<ProjectType>CSharp</ProjectType>
+		<ProjectSubType>Web</ProjectSubType>
+		<TemplateGroupID>Web</TemplateGroupID>
+		<SortOrder>1000</SortOrder>
+		<CreateNewFolder>false</CreateNewFolder>
+		<DefaultName>MyCqrs</DefaultName>
+		<ProvideDefaultName>true</ProvideDefaultName>
+		<LocationField>Enabled</LocationField>
+		<EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+		<Icon>__TemplateIcon.png</Icon>
+		<PreviewImage>__PreviewImage.png</PreviewImage>
+		<RequiredFrameworkVersion>4.5</RequiredFrameworkVersion>
+	</TemplateData>
+	<TemplateContent>
+		<ProjectCollection>
+			<SolutionFolder Name=".nuget">
+			</SolutionFolder>
+			<ProjectTemplateLink ProjectName="$projectname$.Domain" CopyParameters="true">
+				CQRS.Domain\CQRS.Domain.vstemplate
+			</ProjectTemplateLink>
+			<ProjectTemplateLink ProjectName="$projectname$.Domain.Host" CopyParameters="true">
+				CQRS.Domain.Host\CQRS.Domain.Host.vstemplate
+			</ProjectTemplateLink>
+			<ProjectTemplateLink ProjectName="$projectname$.Domain.Host.Web" CopyParameters="true">
+				CQRS.Domain.Host.Web\CQRS.Domain.Host.Web.vstemplate
+			</ProjectTemplateLink>
+			<ProjectTemplateLink ProjectName="$projectname$.Domain.Ninject" CopyParameters="true">
+				CQRS.Domain.Ninject\CQRS.Domain.Ninject.vstemplate
+			</ProjectTemplateLink>
+			<ProjectTemplateLink ProjectName="$projectname$" CopyParameters="true">
+				CQRS.PublicEvents\CQRS.PublicEvents.vstemplate
+			</ProjectTemplateLink>
+			<ProjectTemplateLink ProjectName="$projectname$.ServiceHost.Ninject" CopyParameters="true">
+				CQRS.ServiceHost.Ninject\CQRS.ServiceHost.Ninject.vstemplate
+			</ProjectTemplateLink>
+			<ProjectTemplateLink ProjectName="$projectname$.Models" CopyParameters="true">
+				CQRS.UmlModels\CQRS.UmlModels.vstemplate
+			</ProjectTemplateLink>
+		</ProjectCollection>
+		<CustomParameters>
+			<CustomParameter Name="$ProjectPath$" Value="..\"/>
+		</CustomParameters>
+	</TemplateContent>
+</VSTemplate>
