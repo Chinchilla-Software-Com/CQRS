@@ -55,10 +55,17 @@ namespace <#= classNamespace #>.Repositories.Queries.Strategies
 	{
 		bool shouldGenerateCodeForElement = ShouldGenerateCodeForElement(this.Element) && this.Element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
 		if (!shouldGenerateCodeForElement)
-		return false;
+			return false;
 
 		var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
-		return stereoTypeProperties.PropertyInstances
+		shouldGenerateCodeForElement = stereoTypeProperties.PropertyInstances
 			.Any(property => property.Name == "BuildRepository" && property.Value == "true");
+		if (!shouldGenerateCodeForElement)
+			return false;
+
+		shouldGenerateCodeForElement = ShouldGenerateCodeForElement(this.Element) && this.Element.AppliedStereotypes.Any(property => property.Name == "Entity");
+		if (!shouldGenerateCodeForElement)
+			return false;
+		return true;
 	}
 #>

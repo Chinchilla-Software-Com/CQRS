@@ -263,6 +263,16 @@
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
+        <property name="EventVisibility" displayName="Event Visibility: Which event bus to send the event via." defaultValue="Public">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/EventVisibility"/>
+          </propertyType>
+        </property>
+        <property name="EventNotification" displayName="Event Notification: Who to proxy the event via singalR to." defaultValue="Caller">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/EventNotification"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
     <stereotype name="EventHandler" displayName="Event Handler">
@@ -288,6 +298,18 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IAssociation" />
       </metaclasses>
+      <properties>
+        <property name="CommandName" displayName="CommandName: The name of the command this event handler will publish." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+        <property name="EventName" displayName="EventName: The name of the Event this event handler responds to." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+      </properties>
     </stereotype>
     <stereotype name="CommandHandler" displayName="Command Handler">
       <metaclasses>
@@ -343,7 +365,12 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
       <properties>
-        <property name="AggregateRootName" displayName="Entity Name: The name of the entity this query strategy is for." defaultValue="">
+        <property name="AggregateRootName" displayName="Aggregate Root Name: The name of the aggregate root this query strategy is for IF it is not for an entity." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+        <property name="EntityName" displayName="Entity Name: The name of the entity this query strategy is for." defaultValue="">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
@@ -467,6 +494,23 @@
       <enumerationLiterals>
         <enumerationLiteral name="Simple" displayName="Simple pass through command targeting one aggregate root" />
         <enumerationLiteral name="Complex" displayName="A more complex command." />
+      </enumerationLiterals>
+    </enumerationType>
+
+    <enumerationType name="EventVisibility">
+      <enumerationLiterals>
+        <enumerationLiteral name="Private" displayName="Publish the event of the private event bus." />
+        <enumerationLiteral name="Public" displayName="Publish the event of the public event bus." />
+        <enumerationLiteral name="Both" displayName="Publish the event of the private and public event bus." />
+      </enumerationLiterals>
+    </enumerationType>
+
+    <enumerationType name="EventNotification">
+      <enumerationLiterals>
+        <enumerationLiteral name="Caller" displayName="Proxy the event to the caller via SignalR." />
+        <enumerationLiteral name="All" displayName="Proxy the event to all users via SignalR." />
+        <enumerationLiteral name="AllExceptCaller" displayName="Proxy the event to all users except the caller via SignalR." />
+        <enumerationLiteral name="NoOne" displayName="Do not proxy the event to anyone via SignalR." />
       </enumerationLiterals>
     </enumerationType>
   </propertyTypes>

@@ -107,7 +107,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 		}
 
 		/// <summary>
-		/// Send out an event to specific user IDs
+		/// Send out an event to specific user RSNs
 		/// </summary>
 		void INotificationHub.SendUsersEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, params Guid[] userRsnCollection)
 		{
@@ -165,11 +165,64 @@ namespace Cqrs.WebApi.SignalR.Hubs
 		}
 
 		/// <summary>
-		/// Send out an event to specific user IDs
+		/// Send out an event to specific user token
 		/// </summary>
 		void INotificationHub.SendUserEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, string userToken)
 		{
 			Logger.LogDebug(string.Format("Sending a message on the hub for user [{0}].", userToken));
+
+			try
+			{
+				var tokenSource = new CancellationTokenSource();
+				Guid correlationId = CorrelationIdHelper.GetCorrelationId();
+				Task.Run
+				(
+					() =>
+					{
+						var metaData = GetAdditionalDataForLogging(userToken);
+
+						// Since we're crossing threads, we need to pass the correlationId
+						try
+						{
+							CorrelationIdHelper.SetCorrelationId(correlationId);
+						}
+						catch (Exception exception)
+						{
+							Logger.LogWarning("Transferring CorrelationId across a thread failed.", exception: exception, metaData: metaData);
+						}
+
+						try
+						{
+							CurrentHub
+								.Clients
+								.Group(string.Format("User-{0}", userToken))
+								.notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData });
+						}
+						catch (TimeoutException exception)
+						{
+							Logger.LogWarning("Sending a message on the hub timed-out.", exception: exception, metaData: metaData);
+						}
+						catch (Exception exception)
+						{
+							Logger.LogError("Sending a message on the hub resulted in an error.", exception: exception, metaData: metaData);
+						}
+					}, tokenSource.Token
+				);
+
+				tokenSource.CancelAfter(15 * 1000);
+			}
+			catch (Exception exception)
+			{
+				Logger.LogError("Queueing a message on the hub resulted in an error.", exception: exception, metaData: GetAdditionalDataForLogging(userToken));
+			}
+		}
+
+		/// <summary>
+		/// Send out an event to all users
+		/// </summary>
+		void INotificationHub.SendAllUsersEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData)
+		{
+			Logger.LogDebug("Sending a message on the hub to all users.");
 
 			try
 			{
@@ -186,10 +239,64 @@ namespace Cqrs.WebApi.SignalR.Hubs
 						}
 						catch (Exception exception)
 						{
-							Logger.LogWarning("Transferring CorrelationId across a thread failed.", exception: exception, metaData: GetAdditionalDataForLogging(userToken));
+							Logger.LogWarning("Transferring CorrelationId across a thread failed.", exception: exception);
 						}
 
+						try
+						{
+							CurrentHub
+								.Clients
+								.All
+								.notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData });
+						}
+						catch (TimeoutException exception)
+						{
+							Logger.LogWarning("Sending a message on the hub to all users timed-out.", exception: exception);
+						}
+						catch (Exception exception)
+						{
+							Logger.LogError("Sending a message on the hub to all users resulted in an error.", exception: exception);
+						}
+					}, tokenSource.Token
+				);
+
+				tokenSource.CancelAfter(15 * 1000);
+			}
+			catch (Exception exception)
+			{
+				Logger.LogError("Queueing a message on the hub to all users resulted in an error.", exception: exception);
+			}
+		}
+
+		/// <summary>
+		/// Send out an event to all users except the specific user token
+		/// </summary>
+		void INotificationHub.SendExceptThisUserEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, string userToken)
+		{
+			Logger.LogDebug(string.Format("Sending a message on the hub for all users except user [{0}].", userToken));
+
+			return;
+
+			try
+			{
+				var tokenSource = new CancellationTokenSource();
+				Guid correlationId = CorrelationIdHelper.GetCorrelationId();
+				Task.Run
+				(
+					() =>
+					{
 						var metaData = GetAdditionalDataForLogging(userToken);
+
+						// Since we're crossing threads, we need to pass the correlationId
+						try
+						{
+							CorrelationIdHelper.SetCorrelationId(correlationId);
+						}
+						catch (Exception exception)
+						{
+							Logger.LogWarning("Transferring CorrelationId across a thread failed.", exception: exception, metaData: metaData);
+						}
+
 						try
 						{
 							CurrentHub
@@ -199,11 +306,11 @@ namespace Cqrs.WebApi.SignalR.Hubs
 						}
 						catch (TimeoutException exception)
 						{
-							Logger.LogWarning("Sending a message on the hub timed-out.", exception: exception, metaData: metaData);
+							Logger.LogWarning(string.Format("Sending a message on the hub for all users except user [{0}] timed-out.", userToken), exception: exception, metaData: metaData);
 						}
 						catch (Exception exception)
 						{
-							Logger.LogError("Sending a message on the hub resulted in an error.", exception: exception, metaData: metaData);
+							Logger.LogError(string.Format("Sending a message on the hub for all users except user [{0}] resulted in an error.", userToken), exception: exception, metaData: metaData);
 						}
 					}, tokenSource.Token
 				);

@@ -21,9 +21,13 @@ string baseClass = GetBaseClass(this.Element);
 string entityName = stereoTypeProperties.PropertyInstances
 	.Single(property => property.Name == "EntityName")
 	.Value;
+if (!string.IsNullOrWhiteSpace(entityName))
+	entityName = entityName.Replace("::", ".");
 string eventName = stereoTypeProperties.PropertyInstances
 	.Single(property => property.Name == "EventName")
 	.Value;
+if (!string.IsNullOrWhiteSpace(eventName))
+	eventName = eventName.Replace("::", ".");
 
 // using statements
 #>

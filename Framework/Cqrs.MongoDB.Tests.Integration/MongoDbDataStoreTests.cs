@@ -28,7 +28,7 @@ namespace Cqrs.MongoDB.Tests.Integration
 			// Arrange
 			var correlationIdHelper = new CorrelationIdHelper();
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
-			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
+			var logger = new ConsoleLogger(new LoggerSettings(), correlationIdHelper);
 
 			var connectionStringFactory = new TestMongoDataStoreConnectionStringFactory();
 			TestMongoDataStoreConnectionStringFactory.DatabaseName = string.Format("Test-{0}", new Random().Next(0, 9999));

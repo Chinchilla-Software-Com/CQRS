@@ -19,6 +19,13 @@ string className = ClassifierName(this.Element);
 string aggregateRootName = stereoTypeProperties.PropertyInstances
 	.Single(property => property.Name == "AggregateRootName")
 	.Value;
+string entityName = stereoTypeProperties.PropertyInstances
+	.Single(property => property.Name == "EntityName")
+	.Value;
+
+string targetName= entityName;
+if (string.IsNullOrWhiteSpace(entityName))
+	targetName = string.Format("{0}Entity", aggregateRootName);
 string entityPersistenceTechnology = GetEntityPersistenceTechnology(this.Element);
 
 // using statements
@@ -64,7 +71,7 @@ namespace <#= classNamespace #>
 				baseCallMethodName = "throw new NotImplementedException();";
 #>
 
-		partial void GeneratePredicate<#= partialMethodName #>(SortedSet<QueryParameter> parameters, IQueryable<Entities.<#= aggregateRootName #>Entity> leftHandQueryable, ref IQueryable<Entities.<#= aggregateRootName #>Entity> resultingQueryable)
+		partial void GeneratePredicate<#= partialMethodName #>(SortedSet<QueryParameter> parameters, IQueryable<Entities.<#= targetName #>> leftHandQueryable, ref IQueryable<Entities.<#= targetName #>> resultingQueryable)
 		{
 			<#= baseCallMethodName #>
 		}

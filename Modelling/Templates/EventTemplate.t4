@@ -36,6 +36,38 @@ namespace <#= classNamespace #>
 #>
 <# WriteSummaryComment(this.Element.Description); #>
 	<#= GetGeneratedCodeAttribute() #>
+<#
+if (stereoTypeProperties.PropertyInstances
+	.Any(property => property.Name == "EventVisibility" && (property.Value == "" || property.Value == "Public" || property.Value == "Both")))
+{#>
+	[PublicEvent]
+<#
+}
+if (stereoTypeProperties.PropertyInstances
+	.Any(property => property.Name == "EventVisibility" && (property.Value == "Private" || property.Value == "Both")))
+{#>
+	[PrivateEvent]
+<#
+}
+if (stereoTypeProperties.PropertyInstances
+	.Any(property => property.Name == "EventNotification" && (property.Value == "" || property.Value == "Caller")))
+{#>
+	[NotifyCallerEvent]
+<#
+}
+if (stereoTypeProperties.PropertyInstances
+	.Any(property => property.Name == "EventNotification" && (property.Value == "All")))
+{#>
+	[NotifyEveryoneEvent]
+<#
+}
+if (stereoTypeProperties.PropertyInstances
+	.Any(property => property.Name == "EventNotification" && (property.Value == "AllExceptCaller")))
+{#>
+	[NotifyEveryoneExceptCallerEvent]
+<#
+}
+#>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #> : <#= baseClass #>
 	{
 		#region Implementation of IEvent

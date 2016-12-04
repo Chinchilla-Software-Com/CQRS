@@ -30,7 +30,7 @@ namespace Cqrs.MongoDB.Tests.Integration
 			// Arrange
 			var correlationIdHelper = new CorrelationIdHelper();
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
-			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
+			var logger = new ConsoleLogger(new LoggerSettings(), correlationIdHelper);
 			try
 			{
 				// Arrange

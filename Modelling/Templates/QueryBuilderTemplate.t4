@@ -20,6 +20,13 @@ string className = ClassifierName(this.Element);
 string aggregateRootName = stereoTypeProperties.PropertyInstances
 	.Single(property => property.Name == "AggregateRootName")
 	.Value;
+string entityName = stereoTypeProperties.PropertyInstances
+	.Single(property => property.Name == "EntityName")
+	.Value;
+
+string targetName= entityName;
+if (string.IsNullOrWhiteSpace(entityName))
+	targetName = string.Format("{0}Entity", aggregateRootName);
 
 // using statements
 WriteUsingStatements(this.Element);
@@ -35,21 +42,21 @@ namespace <#= classNamespace #>
 	// Class and Attributes
 #>
 	<#= GetGeneratedCodeAttribute() #>
-	public partial class <#= className #>Builder : QueryBuilder<<#= className #>, Entities.<#= aggregateRootName #>Entity>, I<#= className #>Builder
+	public partial class <#= className #>Builder : QueryBuilder<<#= className #>, Entities.<#= targetName #>>, I<#= className #>Builder
 	{
 		public <#= className #>Builder(IDomainDataStoreFactory dataStoreFactory, IDependencyResolver dependencyResolver)
-			: base(dataStoreFactory.Get<#= aggregateRootName #>DataStore(), dependencyResolver)
+			: base(dataStoreFactory.Get<#= string.IsNullOrWhiteSpace(entityName) ? aggregateRootName : entityName.EndsWith("Entity") ? entityName.Substring(0, entityName.Length - 6) : entityName #>DataStore(), dependencyResolver)
 		{
 		}
 
-		#region Overrides of QueryBuilder<<#= className #>,Entities.<#= aggregateRootName #>Entity>
+		#region Overrides of QueryBuilder<<#= className #>,Entities.<#= targetName #>>
 
-		protected override IQueryable<Entities.<#= aggregateRootName #>Entity> GeneratePredicate(QueryPredicate queryPredicate, IQueryable<Entities.<#= aggregateRootName #>Entity> leftHandQueryable = null)
+		protected override IQueryable<Entities.<#= targetName #>> GeneratePredicate(QueryPredicate queryPredicate, IQueryable<Entities.<#= targetName #>> leftHandQueryable = null)
 		{
 			<#= className #> queryStrategy = GetNullQueryStrategy();
 			SortedSet<QueryParameter> parameters = queryPredicate.Parameters;
 
-			IQueryable<Entities.<#= aggregateRootName #>Entity> resultingQueryable = null;
+			IQueryable<Entities.<#= targetName #>> resultingQueryable = null;
 <#
 		IList<IOperation> collectionMethods = GetMethodList(this.Element);
 
@@ -115,11 +122,11 @@ namespace <#= classNamespace #>
 			methodNameList.Add(partialMethodName);
 #>
 
-		partial void OnGeneratePredicate<#= partialMethodName #>(QueryPredicate queryPredicate, IQueryable<Entities.<#= aggregateRootName #>Entity> leftHandQueryable, SortedSet<QueryParameter> parameters, ref IQueryable<Entities.<#= aggregateRootName #>Entity> resultingQueryable);
+		partial void OnGeneratePredicate<#= partialMethodName #>(QueryPredicate queryPredicate, IQueryable<Entities.<#= targetName #>> leftHandQueryable, SortedSet<QueryParameter> parameters, ref IQueryable<Entities.<#= targetName #>> resultingQueryable);
 
-		partial void GeneratePredicate<#= partialMethodName #>(SortedSet<QueryParameter> parameters, IQueryable<Entities.<#= aggregateRootName #>Entity> leftHandQueryable, ref IQueryable<Entities.<#= aggregateRootName #>Entity> resultingQueryable);
+		partial void GeneratePredicate<#= partialMethodName #>(SortedSet<QueryParameter> parameters, IQueryable<Entities.<#= targetName #>> leftHandQueryable, ref IQueryable<Entities.<#= targetName #>> resultingQueryable);
 
-		partial void OnGeneratedPredicate<#= partialMethodName #>(QueryPredicate queryPredicate, IQueryable<Entities.<#= aggregateRootName #>Entity> leftHandQueryable, SortedSet<QueryParameter> parameters, ref IQueryable<Entities.<#= aggregateRootName #>Entity> resultingQueryable);
+		partial void OnGeneratedPredicate<#= partialMethodName #>(QueryPredicate queryPredicate, IQueryable<Entities.<#= targetName #>> leftHandQueryable, SortedSet<QueryParameter> parameters, ref IQueryable<Entities.<#= targetName #>> resultingQueryable);
 
 <#
 			var queryStrategyOrderMethodProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "QueryStrategyOrderMethod");
@@ -131,7 +138,7 @@ namespace <#= classNamespace #>
 				applyMethodBody.AppendLine("\t\t\t\t}");
 #>
 
-		partial void Apply<#= partialMethodName #>(ref IOrderedQueryable<Entities.<#= aggregateRootName #>Entity> queryable, int index);
+		partial void Apply<#= partialMethodName #>(ref IOrderedQueryable<Entities.<#= targetName #>> queryable, int index);
 <#
 			}
 #>
@@ -139,9 +146,9 @@ namespace <#= classNamespace #>
 		}
 #>
 
-		protected override void ApplySorting(<#= className #> queryStrategy, ref IQueryable<Entities.<#= aggregateRootName #>Entity> queryable)
+		protected override void ApplySorting(<#= className #> queryStrategy, ref IQueryable<Entities.<#= targetName #>> queryable)
 		{
-			var orderQueryable = (IOrderedQueryable<Entities.<#= aggregateRootName #>Entity>)queryable;
+			var orderQueryable = (IOrderedQueryable<Entities.<#= targetName #>>)queryable;
 
 			int index = 0;
 			foreach (Func<int, <#= className #>> sortingMethod in queryStrategy.SortingList)

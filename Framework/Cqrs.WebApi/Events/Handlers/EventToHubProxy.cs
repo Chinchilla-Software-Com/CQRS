@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using Cqrs.Authentication;
 using Cqrs.Events;
 using Cqrs.WebApi.SignalR.Hubs;
@@ -27,7 +28,25 @@ namespace Cqrs.WebApi.Events.Handlers
 
 		protected virtual void HandleGenericEvent(IEvent<TSingleSignOnToken> message)
 		{
-			NotificationHub.SendUserEvent(message, (AuthenticationTokenHelper.GetAuthenticationToken().Token ?? string.Empty).Replace(".", string.Empty));
+			Type eventType = message.GetType();
+			var notifyCallerEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyCallerEventAttribute)) as NotifyCallerEventAttribute;
+			var notifyEveryoneEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyEveryoneEventAttribute)) as NotifyEveryoneEventAttribute;
+			var notifyEveryoneExceptCallerEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyEveryoneExceptCallerEventAttribute)) as NotifyEveryoneExceptCallerEventAttribute;
+
+			string userToken = (AuthenticationTokenHelper.GetAuthenticationToken().Token ?? string.Empty).Replace(".", string.Empty);
+
+			if (notifyCallerEventAttribute != null)
+			{
+				NotificationHub.SendUserEvent(message, userToken);
+			}
+			if (notifyEveryoneEventAttribute != null)
+			{
+				NotificationHub.SendAllUsersEvent(message);
+			}
+			if (notifyEveryoneExceptCallerEventAttribute != null)
+			{
+				NotificationHub.SendExceptThisUserEvent(message, userToken);
+			}
 		}
 	}
 }
