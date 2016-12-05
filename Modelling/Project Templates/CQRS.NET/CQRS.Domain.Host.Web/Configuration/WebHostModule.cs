@@ -62,7 +62,7 @@ namespace $safeprojectname$.Configuration
 				.To<NotificationHub>()
 				.InSingletonScope();
 
-			Bind<ISingleSignOnTokenFactory<SingleSignOnToken>>()
+			Bind<SingleSignOnTokenFactory<SingleSignOnToken>>()
 				.To<DefaultSingleSignOnTokenFactory>()
 				.InSingletonScope();
 		}

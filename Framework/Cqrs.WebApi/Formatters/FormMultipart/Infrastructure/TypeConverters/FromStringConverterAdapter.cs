@@ -2,30 +2,32 @@
 using System.ComponentModel;
 using System.Globalization;
 
-namespace MultipartDataMediaFormatter.Infrastructure.TypeConverters
+namespace Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.TypeConverters
 {
-    public class FromStringConverterAdapter
-    {
-        private readonly Type Type;
-        private readonly TypeConverter TypeConverter;
-        public FromStringConverterAdapter(Type type, TypeConverter typeConverter)
-        {
-            if(type == null)
-                throw new ArgumentNullException("type");
-            if (typeConverter == null)
-                throw new ArgumentNullException("typeConverter");
+	public class FromStringConverterAdapter
+	{
+		private readonly Type _type;
 
-            Type = type;
-            TypeConverter = typeConverter;
-        }
+		private readonly TypeConverter _typeConverter;
 
-        public object ConvertFromString(string src, CultureInfo culture)
-        {
-            var isUndefinedNullable = Nullable.GetUnderlyingType(Type) != null && src == "undefined";
-            if (isUndefinedNullable)
-                return null;
+		public FromStringConverterAdapter(Type type, TypeConverter typeConverter)
+		{
+			if(type == null)
+				throw new ArgumentNullException("type");
+			if (typeConverter == null)
+				throw new ArgumentNullException("typeConverter");
 
-            return TypeConverter.ConvertFromString(null, culture, src);
-        }
-    }
+			_type = type;
+			_typeConverter = typeConverter;
+		}
+
+		public object ConvertFromString(string src, CultureInfo culture)
+		{
+			var isUndefinedNullable = Nullable.GetUnderlyingType(_type) != null && src == "undefined";
+			if (isUndefinedNullable)
+				return null;
+
+			return _typeConverter.ConvertFromString(null, culture, src);
+		}
+	}
 }

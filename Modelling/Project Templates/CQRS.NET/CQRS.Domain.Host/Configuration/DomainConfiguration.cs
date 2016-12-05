@@ -20,10 +20,10 @@ namespace $safeprojectname$.Configuration
 		public virtual void Start()
 		{
 			NinjectDependencyResolver.ModulesToLoad.Add(new THostModule());
-			NinjectDependencyResolver.ModulesToLoad.Add(new CqrsModule<ISingleSignOnToken, SingleSignOnTokenValueHelper>());
-			NinjectDependencyResolver.ModulesToLoad.Add(new SimplifiedSqlModule<ISingleSignOnToken>());
-			NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule<ISingleSignOnToken>());
-			NinjectDependencyResolver.ModulesToLoad.Add(new InProcessCommandBusModule<ISingleSignOnToken>());
+			NinjectDependencyResolver.ModulesToLoad.Add(new CqrsModule<SingleSignOnToken, SingleSignOnTokenValueHelper>());
+			NinjectDependencyResolver.ModulesToLoad.Add(new SimplifiedSqlModule<SingleSignOnToken>());
+			NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule<SingleSignOnToken>());
+			NinjectDependencyResolver.ModulesToLoad.Add(new InProcessCommandBusModule<SingleSignOnToken>());
             // Uncomment once you generate your model.
             // NinjectDependencyResolver.ModulesToLoad.Add(new DomainNinjectModule());
 

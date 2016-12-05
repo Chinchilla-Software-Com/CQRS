@@ -18,6 +18,7 @@ string className = ClassifierName(this.Element);
 #>
 using System;
 using cdmdotnet.AutoMapper;
+using cdmdotnet.Logging;
 using Cqrs.Entities;
 
 namespace <#= classNamespace #>.Handlers
@@ -29,7 +30,7 @@ namespace <#= classNamespace #>.Handlers
 	{
 		protected IAutomapHelper AutomapHelper { get; private set; }
 
-		public <#= className #>EventHandler(IAutomapHelper automapHelper)
+		public <#= className #>EventHandler(ILogger logger, IAutomapHelper automapHelper)
 <#
 string eventHandlerTechnology = GetEventHandlerTechnology(this.Element);
 switch(eventHandlerTechnology)
@@ -40,11 +41,14 @@ switch(eventHandlerTechnology)
 <#
 		break;
 	default:
-		// for now do nothing
+#>
+			: this (logger)
+<#
 		break;
 }
 #>
 		{
+			Logger = logger;
 			AutomapHelper = automapHelper;
 		}
 

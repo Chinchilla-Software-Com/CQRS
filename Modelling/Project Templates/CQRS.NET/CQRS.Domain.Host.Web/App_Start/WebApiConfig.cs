@@ -3,6 +3,8 @@ using System.Web.Http;
 using Cqrs.Ninject.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Cqrs.WebApi.Formatters.FormMultipart;
+using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure;
 
 namespace $safeprojectname$
 {
@@ -27,6 +29,8 @@ namespace $safeprojectname$
 				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
 				Converters = new List<JsonConverter> { new StringEnumConverter() },
 			};
+
+			GlobalConfiguration.Configuration.Formatters.Add(new FormMultipartEncodedMediaTypeFormatter(new MultipartFormatterSettings()));
 		}
 	}
 }

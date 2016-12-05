@@ -765,7 +765,9 @@ switch(aggregateTechnology)
 		}
 #>
 
-		public class <#= className #>Snapshot : Snapshot
+		<#= GetGeneratedCodeAttribute() #>
+		<#= GetServiceContractAttribute(this.Element) #>
+		public partial class <#= className #>Snapshot : Snapshot
 		{
 			public bool IsLogicallyDeleted {get; set;}
 <#
@@ -800,7 +802,9 @@ switch(aggregateTechnology)
 			{
 #>
 
-	public class <#= collectionMethod.Name #>Parameters
+	<#= GetGeneratedCodeAttribute() #>
+	<#= GetServiceContractAttribute(this.Element) #>
+	public partial class <#= collectionMethod.Name #>Parameters
 	{
 <#
 				var parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return).ToList();

@@ -104,7 +104,9 @@ namespace <#= classNamespace #>
 	/// <summary>
 	/// The parameters for the <see cref="I<#= className #>.<#= collectionMethod.Name #>" /> method.
 	/// </summary>
-	public class <#= className #><#= collectionMethod.Name #>Parameters
+	<#= GetGeneratedCodeAttribute() #>
+	<#= GetServiceContractAttribute(this.Element) #>
+	public partial class <#= className #><#= collectionMethod.Name #>Parameters
 	{
 <#
 			var methodParameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);

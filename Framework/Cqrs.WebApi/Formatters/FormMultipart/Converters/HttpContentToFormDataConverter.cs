@@ -5,9 +5,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using MultipartDataMediaFormatter.Infrastructure;
+using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure;
 
-namespace MultipartDataMediaFormatter.Converters
+namespace Cqrs.WebApi.Formatters.FormMultipart.Converters
 {
 	public class HttpContentToFormDataConverter
 	{

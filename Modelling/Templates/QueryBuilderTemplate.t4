@@ -96,10 +96,10 @@ namespace <#= classNamespace #>
 #>
 
 			resultingQueryable
-				= GeneratePredicateWithPermissionScopeAny<ISingleSignOnToken>(queryPredicate, leftHandQueryable)
-				?? GeneratePredicateWithPermissionScopeUser<ISingleSignOnToken>(queryPredicate, leftHandQueryable)
-				?? GeneratePredicateWithPermissionScopeCompany<ISingleSignOnToken>(queryPredicate, leftHandQueryable)
-				?? GeneratePredicateWithPermissionScopeCompanyAndUser<ISingleSignOnToken>(queryPredicate, leftHandQueryable);
+				= GeneratePredicateWithPermissionScopeAny<<#=GetDomainAuthenticationTokenType(this.Element) #>(queryPredicate, leftHandQueryable)
+				?? GeneratePredicateWithPermissionScopeUser<<#=GetDomainAuthenticationTokenType(this.Element) #>>(queryPredicate, leftHandQueryable)
+				?? GeneratePredicateWithPermissionScopeCompany<<#=GetDomainAuthenticationTokenType(this.Element) #>>(queryPredicate, leftHandQueryable)
+				?? GeneratePredicateWithPermissionScopeCompanyAndUser<<#=GetDomainAuthenticationTokenType(this.Element) #>>(queryPredicate, leftHandQueryable);
 
 			if (resultingQueryable != null)
 				return resultingQueryable;

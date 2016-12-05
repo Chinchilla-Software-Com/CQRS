@@ -2,84 +2,84 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MultipartDataMediaFormatter.Infrastructure.Logger
+namespace Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger
 {
-    public class FormDataConverterLogger : IFormDataConverterLogger
-    {
-        private Dictionary<string, List<LogErrorInfo>> Errors { get; set; }
+	public class FormDataConverterLogger : IFormDataConverterLogger
+	{
+		private Dictionary<string, List<LogErrorInfo>> Errors { get; set; }
 
-        public FormDataConverterLogger()
-        {
-            Errors = new Dictionary<string, List<LogErrorInfo>>();
-        }
+		public FormDataConverterLogger()
+		{
+			Errors = new Dictionary<string, List<LogErrorInfo>>();
+		}
 
-        public void LogError(string errorPath, Exception exception)
-        {
-            AddError(errorPath, new LogErrorInfo(exception));
-        }
+		public void LogError(string errorPath, Exception exception)
+		{
+			AddError(errorPath, new LogErrorInfo(exception));
+		}
 
-        public void LogError(string errorPath, string errorMessage)
-        {
-            AddError(errorPath, new LogErrorInfo(errorMessage));
-        }
+		public void LogError(string errorPath, string errorMessage)
+		{
+			AddError(errorPath, new LogErrorInfo(errorMessage));
+		}
 
-        public List<LogItem> GetErrors()
-        {
-            return Errors.Select(m => new LogItem()
-            {
-                ErrorPath = m.Key,
-                Errors = m.Value.Select(t => t).ToList()
-            }).ToList();
-        }
-                
-        public void EnsureNoErrors()
-        {
-            if (Errors.Any())
-            {
-                var errors = Errors
-                    .Select(m => String.Format("{0}: {1}", m.Key, String.Join(". ", m.Value.Select(x => (x.ErrorMessage ?? (x.Exception != null ? x.Exception.Message : ""))))))
-                    .ToList();
+		public List<LogItem> GetErrors()
+		{
+			return Errors.Select(m => new LogItem()
+			{
+				ErrorPath = m.Key,
+				Errors = m.Value.Select(t => t).ToList()
+			}).ToList();
+		}
 
-                string errorMessage = String.Join(" ", errors);
+		public void EnsureNoErrors()
+		{
+			if (Errors.Any())
+			{
+				var errors = Errors
+					.Select(m => String.Format("{0}: {1}", m.Key, String.Join(". ", m.Value.Select(x => (x.ErrorMessage ?? (x.Exception != null ? x.Exception.Message : ""))))))
+					.ToList();
 
-                throw new Exception(errorMessage);
-            }
-        }
+				string errorMessage = String.Join(" ", errors);
 
-        private void AddError(string errorPath, LogErrorInfo info)
-        {
-            List<LogErrorInfo> listErrors;
-            if (!Errors.TryGetValue(errorPath, out listErrors))
-            {
-                listErrors = new List<LogErrorInfo>();
-                Errors.Add(errorPath, listErrors);
-            }
-            listErrors.Add(info);
-        }
+				throw new Exception(errorMessage);
+			}
+		}
 
-        public class LogItem
-        {
-            public string ErrorPath { get; set; }
-            public List<LogErrorInfo> Errors { get; set; }
-        }
+		private void AddError(string errorPath, LogErrorInfo info)
+		{
+			List<LogErrorInfo> listErrors;
+			if (!Errors.TryGetValue(errorPath, out listErrors))
+			{
+				listErrors = new List<LogErrorInfo>();
+				Errors.Add(errorPath, listErrors);
+			}
+			listErrors.Add(info);
+		}
 
-        public class LogErrorInfo
-        {
-            public string ErrorMessage { get; private set; }
-            public Exception Exception { get; private set; }
-            public bool IsException { get; private set; }
+		public class LogItem
+		{
+			public string ErrorPath { get; set; }
+			public List<LogErrorInfo> Errors { get; set; }
+		}
 
-            public LogErrorInfo(string errorMessage)
-            {
-                ErrorMessage = errorMessage;
-                IsException = false;
-            }
+		public class LogErrorInfo
+		{
+			public string ErrorMessage { get; private set; }
+			public Exception Exception { get; private set; }
+			public bool IsException { get; private set; }
 
-            public LogErrorInfo(Exception exception)
-            {
-                Exception = exception;
-                IsException = true;
-            }
-        }
-    }
+			public LogErrorInfo(string errorMessage)
+			{
+				ErrorMessage = errorMessage;
+				IsException = false;
+			}
+
+			public LogErrorInfo(Exception exception)
+			{
+				Exception = exception;
+				IsException = true;
+			}
+		}
+	}
 }
