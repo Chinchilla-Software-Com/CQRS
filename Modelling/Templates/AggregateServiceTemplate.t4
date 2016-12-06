@@ -232,15 +232,7 @@ namespace <#= classNamespace #>.Services
 #>
 
 		public IServiceResponse <#= relationshipName #>(<#
-			var methodSignatureParameter = string.Empty;
-
-			object returnParameter = null;
-			if (returnParameter == null && relationshipProperties.Any())
-				methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, relationshipName);
-			else if (returnParameter != null)
-				methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, relationshipName);
-			else
-				methodSignatureParameter = string.Format("IServiceRequest<{0}> serviceRequest", authenticationTokenType);
+			var methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, relationshipName);
 #><#= methodSignatureParameter #>)
 		{
 			Logger.LogDebug("Entered", "<#= className #>/<#= relationshipName #>");
@@ -282,7 +274,8 @@ namespace <#= classNamespace #>.Services
 
 		partial void On<#= relationshipName #>(<#= methodSignatureParameter #>, ref <#= sourceElementName #>Command command, ref ServiceResponseStateType? serviceResponseStateType);
 
-		partial void On<#= relationshipName #>Handled(<#= methodSignatureParameter #>, ref <#= sourceElementName #>Command command, ref ServiceResponseStateType? serviceResponseStateType);<#
+		partial void On<#= relationshipName #>Handled(<#= methodSignatureParameter #>, ref <#= sourceElementName #>Command command, ref ServiceResponseStateType? serviceResponseStateType);
+<#
 		}
 #>
 

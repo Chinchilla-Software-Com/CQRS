@@ -112,15 +112,7 @@ namespace <#= classNamespace #>.Services
 
 		[OperationContract]
 		IServiceResponse <#= relationshipName #>(<#
-			var methodSignatureParameter = string.Empty;
-
-			object returnParameter = null;
-			if (returnParameter == null && relationshipProperties.Any())
-				methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, relationshipName);
-			else if (returnParameter != null)
-				methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, relationshipName);
-			else
-				methodSignatureParameter = string.Format("IServiceRequest<{0}> serviceRequest", authenticationTokenType);
+			var methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, relationshipName);
 #><#= methodSignatureParameter #>);
 <#
 		}
@@ -145,16 +137,9 @@ namespace <#= classNamespace #>.Services
 	<#= GetServiceContractAttribute(this.Element) #>
 	public partial class <#= className #><#= relationshipName #>Parameters
 	{
-<#
-
-			if (!bool.Parse(((INamedElement)relationship.SourceElement).AppliedStereotypes.Single(property => property.Name == "Command").PropertyInstances.Single(property => property.Name == "CreatesNewInstance").Value))
-			{
-#>
 		public System.Guid Rsn { get; set; }
 
 <#
-			}
-
 			for (int i = 0; i < relationshipProperties.Count; i++)
 			{
 				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
