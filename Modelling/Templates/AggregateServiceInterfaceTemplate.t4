@@ -137,9 +137,16 @@ namespace <#= classNamespace #>.Services
 	<#= GetServiceContractAttribute(this.Element) #>
 	public partial class <#= className #><#= relationshipName #>Parameters
 	{
+<#
+
+			if (!bool.Parse(((INamedElement)relationship.SourceElement).AppliedStereotypes.Single(property => property.Name == "Command").PropertyInstances.Single(property => property.Name == "CreatesNewInstance").Value))
+			{
+#>
 		public System.Guid Rsn { get; set; }
 
 <#
+			}
+
 			for (int i = 0; i < relationshipProperties.Count; i++)
 			{
 				IProperty relationshipProperty = relationshipProperties.ElementAt(i);

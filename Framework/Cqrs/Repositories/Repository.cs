@@ -47,7 +47,7 @@ namespace Cqrs.Repositories
 
 		public virtual ISingleResultQuery<TQueryStrategy, TData> Retrieve(ISingleResultQuery<TQueryStrategy, TData> singleResultQuery, bool throwExceptionWhenNoQueryResults = true)
 		{
-			// The .Select(i => i) is Necassary due to inheritance
+			// The .Select(i => i) is necessary due to inheritance
 			// http://stackoverflow.com/questions/1021274/linq-to-sql-mapping-exception-when-using-abstract-base-classes
 			IQueryable<TData> query = QueryBuilder.CreateQueryable(singleResultQuery).Select(i => i);
 
@@ -76,7 +76,7 @@ namespace Cqrs.Repositories
 
 		public virtual ICollectionResultQuery<TQueryStrategy, TData> Retrieve(ICollectionResultQuery<TQueryStrategy, TData> resultQuery)
 		{
-			// The .Select(i => i) is Necassary due to inheritance
+			// The .Select(i => i) is necessary due to inheritance
 			// http://stackoverflow.com/questions/1021274/linq-to-sql-mapping-exception-when-using-abstract-base-classes
 			IQueryable<TData> result = QueryBuilder.CreateQueryable(resultQuery).Select(i => i);
 
@@ -122,7 +122,7 @@ namespace Cqrs.Repositories
 			using (IDataStore<TData> dataStore = CreateDataStoreFunction())
 			{
 				IEnumerable<TData> query = dataStore
-					// The .Select(i => i) is Necassary due to inheritance
+					// The .Select(i => i) is necessary due to inheritance
 					// http://stackoverflow.com/questions/1021274/linq-to-sql-mapping-exception-when-using-abstract-base-classes
 					.Select(i => i)
 					.Where(entity => entity.Rsn == rsn)

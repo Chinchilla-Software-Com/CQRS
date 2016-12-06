@@ -116,10 +116,12 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 			}
 #>
 				.InSingletonScope();
-<# if (GetDomainAuthenticationTokenType(this.Element) == "Cqrs.Authentication.ISingleSignOnToken") { #>
+<#
+string authenticationToken = GetDomainAuthenticationTokenType(this.Element);
+ if (authenticationToken == "Cqrs.Authentication.ISingleSignOnToken" || authenticationToken == "Cqrs.Authentication.SingleSignOnToken") { #>
 
-			Bind<Cqrs.Authentication.ISingleSignOnTokenFactory<<#= stereoTypeProperties.PropertyInstances.Single(property => property.Name == "AuthenticationTokenType").Value #>>>()
-				.To<Cqrs.Authentication.SingleSignOnTokenFactory<<#= stereoTypeProperties.PropertyInstances.Single(property => property.Name == "AuthenticationTokenType").Value #>>>()
+			Bind<Cqrs.Authentication.ISingleSignOnTokenFactory<<#= authenticationToken #>>>()
+				.To<Cqrs.Authentication.SingleSignOnTokenFactory<<#= authenticationToken #>>>()
 				.InSingletonScope();
 <# } #>
 
@@ -134,7 +136,7 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 		public virtual void RegisterServices()
 		{
 			Bind<IUnitOfWorkService>()
-				.To<UnitOfWorkService<<#= stereoTypeProperties.PropertyInstances.Single(property => property.Name == "AuthenticationTokenType").Value #>>>()
+				.To<UnitOfWorkService<<#= authenticationToken #>>>()
 				.InThreadScope();
 
 <#
@@ -224,6 +226,28 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 <#
 			}
 		}
+
+		foreach (var element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
+		{
+			// if this is also an aggregate, don't build it
+			if (element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot"))
+				continue;
+
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+			var entityStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "Entity");
+			bool shouldBuild = entityStereoTypeProperties.PropertyInstances
+				.Any(property => property.Name == "BuildRepository" && property.Value == "true");
+
+			if (shouldBuild)
+			{
+#>
+			Bind<<#= moduleName #>.Entities.Repositories.I<#= elementName #>Repository>()
+				.To<<#= moduleName #>.Entities.Repositories.<#= elementName #>Repository>()
+				.InSingletonScope();
+<#
+			}
+		}
 #>
 
 			OnRepositoriesRegistered();
@@ -252,7 +276,7 @@ switch(eventHandlerTechnology)
 switch(eventHandlerTechnology)
 {
 	case "Akka":
-		#>Cqrs.Akka.Configuration.AkkaBusRegistrar<<#= stereoTypeProperties.PropertyInstances.Single(property => property.Name == "AuthenticationTokenType").Value #>>(dependencyResolver, handlerResolver)<#
+		#>Cqrs.Akka.Configuration.AkkaBusRegistrar<<#= authenticationToken #>>(dependencyResolver, handlerResolver)<#
 		break;
 	default:
 		#>BusRegistrar(dependencyResolver)<#

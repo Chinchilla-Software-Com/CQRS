@@ -39,15 +39,6 @@ namespace $safeprojectname$.Configuration
 		/// </summary>
 		protected virtual void RegisterLogger()
 		{
-			Kernel.Unbind<ILogger>();
-
-			Bind<ILogger>()
-				.To<ConsoleLogger>()
-				.InSingletonScope();
-
-			Bind<ILoggerSettings>()
-				.To<LoggerSettings>()
-				.InSingletonScope();
 		}
 
 		/// <summary>
