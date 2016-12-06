@@ -6,6 +6,7 @@ using Cqrs.Bus;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using cdmdotnet.Logging;
+using cdmdotnet.Logging.Configuration;
 using Cqrs.Repositories.Queries;
 using Ninject.Modules;
 using Ninject.Parameters;
@@ -18,6 +19,18 @@ namespace Cqrs.Ninject.Configuration
 	public class CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper> : NinjectModule
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 	{
+		protected bool SetupForWeb { get; private set; }
+
+		protected bool SetupForSqlLogging { get; private set; }
+
+		/// <param name="setupForWeb">Set this to true if you will host this in IIS or some other web-server that provides access to System.Web.HttpContext.Current</param>
+		/// <param name="setupForSqlLogging">Set this to true to use <see cref="SqlLogger"/> otherwise the <see cref="ConsoleLogger"/> will be bootstrapped by default.</param>
+		public CqrsModule(bool setupForWeb, bool setupForSqlLogging)
+		{
+			SetupForWeb = setupForWeb;
+			SetupForSqlLogging = setupForSqlLogging;
+		}
+
 		#region Overrides of NinjectModule
 
 		/// <summary>
@@ -51,8 +64,26 @@ namespace Cqrs.Ninject.Configuration
 		/// </summary>
 		public virtual void RegisterLoggerComponents()
 		{
-			Bind<ICorrelationIdHelper>()
-				.To<CorrelationIdHelper>()
+			if (SetupForWeb)
+				Bind<ICorrelationIdHelper>()
+					.To<WebCorrelationIdHelper>()
+					.InSingletonScope();
+			else
+				Bind<ICorrelationIdHelper>()
+					.To<CorrelationIdHelper>()
+					.InSingletonScope();
+
+			if (SetupForSqlLogging)
+				Bind<ILogger>()
+					.To<SqlLogger>()
+					.InSingletonScope();
+			else
+				Bind<ILogger>()
+					.To<ConsoleLogger>()
+					.InSingletonScope();
+
+			Bind<ILoggerSettings>()
+				.To<LoggerSettings>()
 				.InSingletonScope();
 		}
 

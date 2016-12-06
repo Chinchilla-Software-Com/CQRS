@@ -81,12 +81,15 @@ switch(eventHandlerTechnology)
 }
 #>
 
-		public <#= className #>EventHandler(ILogger logger)
+		public <#= className #>EventHandler(ILogger logger, IAutomapHelper automapHelper)
 		{
 			Logger = logger;
+			AutomapHelper = automapHelper;
 		}
 
 		protected ILogger Logger { get; private set; }
+
+		protected IAutomapHelper AutomapHelper { get; private set; }
 
 		#region Implementation of IEventHandler<in <#= className #>>
 

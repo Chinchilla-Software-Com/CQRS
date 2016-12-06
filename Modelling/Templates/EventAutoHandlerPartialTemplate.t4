@@ -28,30 +28,6 @@ namespace <#= classNamespace #>.Handlers
 #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #>EventHandler
 	{
-		protected IAutomapHelper AutomapHelper { get; private set; }
-
-		public <#= className #>EventHandler(ILogger logger, IAutomapHelper automapHelper)
-<#
-string eventHandlerTechnology = GetEventHandlerTechnology(this.Element);
-switch(eventHandlerTechnology)
-{
-	case "Akka":
-#>
-			: this()
-<#
-		break;
-	default:
-#>
-			: this (logger)
-<#
-		break;
-}
-#>
-		{
-			Logger = logger;
-			AutomapHelper = automapHelper;
-		}
-
 		partial void OnHandle(<#= className #> @event)
 		{
 			throw new NotImplementedException();

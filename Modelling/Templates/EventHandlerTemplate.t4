@@ -29,6 +29,18 @@ string eventName = stereoTypeProperties.PropertyInstances
 if (!string.IsNullOrWhiteSpace(eventName))
 	eventName = eventName.Replace("::", ".");
 
+string entityNameAsInterface = entityName;
+if (!string.IsNullOrWhiteSpace(entityNameAsInterface))
+{
+	int lastIndex = entityNameAsInterface.LastIndexOf(".");
+	if (lastIndex == -1)
+		entityNameAsInterface = string.Format("Repositories.I{0}", entityNameAsInterface);
+	else
+	{
+		entityNameAsInterface = string.Format("{0}Repositories.I{1}", entityNameAsInterface.Substring(0, lastIndex + 1), entityNameAsInterface.Substring(lastIndex + 1));
+	}
+}
+
 // using statements
 #>
 using System;
@@ -65,7 +77,7 @@ namespace <#= classNamespace #>.Handlers
 		eventHandlerTechnologyBaseClass = ": " + eventHandlerTechnologyBaseClass;
 #>
 	<#= GetGeneratedCodeAttribute() #>
-	public <#= GetAbstract(this.Element) #> partial class <#= entityName ?? className #>EventHandler
+	public <#= GetAbstract(this.Element) #> partial class <#= className #>EventHandler
 		<#= baseClass #>
 		<#= eventHandlerTechnologyBaseClass #>
 	{
@@ -76,9 +88,9 @@ switch(eventHandlerTechnology)
 		baseClass = "ReceiveActor";
 #>
 		/// <summary>
-		/// Instantiates the <see cref="<#= entityName ?? className #>EventHandler"/> class registering any <see cref="ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
+		/// Instantiates the <see cref="<#= className #>EventHandler"/> class registering any <see cref="ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
 		/// </summary>
-		public <#= entityName ?? className #>EventHandler()
+		public <#= className #>EventHandler()
 		{
 			Receive<<#= eventName #>>(@event => Handle(@event));
 		}
@@ -90,12 +102,132 @@ switch(eventHandlerTechnology)
 }
 #>
 
-		public <#= entityName ?? className #>EventHandler(ILogger logger)
+		public <#= className #>EventHandler(ILogger logger, IAutomapHelper automapHelper<# if (!string.IsNullOrWhiteSpace(entityNameAsInterface)) { #>, <#= entityNameAsInterface #>Repository entityRepository<#} #>)
 		{
 			Logger = logger;
+			AutomapHelper = automapHelper;
+<#
+if (!string.IsNullOrWhiteSpace(entityNameAsInterface))
+{
+#>
+			EntityRepository = entityRepository;
+<#
+}
+#>
 		}
 
 		protected ILogger Logger { get; private set; }
+
+		protected IAutomapHelper AutomapHelper { get; private set; }
+<#
+if (!string.IsNullOrWhiteSpace(entityNameAsInterface))
+{
+#>
+
+		protected <#= entityNameAsInterface #>Repository EntityRepository { get; private set; }
+
+		#region Implementation of IEventHandler<in <#= eventName #>>
+
+		public void Handle(<#= eventName #> @event)
+		{
+			string eventTypeName = @event.GetType().FullName;
+			OnHandle(@event);
+
+			var entities = new List<ContentsItemEntity>();
+
+			bool singleItemNotCollection = true;
+			OnPreGet(@event, ref singleItemNotCollection);
+			if (singleItemNotCollection)
+			{
+				<#= entityName #>Entity entity = null;
+				OnGetEntity(@event, ref entity);
+				if (entity == null)
+				{
+					Guid? rsn = null;
+					bool throwExceptionOnMissingEntity = true;
+					GetSingleEntityRsn(@event, ref rsn, ref throwExceptionOnMissingEntity);
+					if (rsn == null)
+						rsn = @event.Rsn;
+					else
+						Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Rsn manually provided.", eventTypeName, @event.Rsn));
+					if (!throwExceptionOnMissingEntity)
+						Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Can expect no value from the repository without an exception.", eventTypeName, @event.Rsn));
+					entity = EntityRepository.Load(rsn.Value, throwExceptionOnMissingEntity);
+				}
+				else
+					Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Entity manually provided.", eventTypeName, @event.Rsn));
+				OnGotEntity(@event, ref entity);
+				entities.Add(entity);
+			}
+			else
+			{
+				Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Several entities will be loaded manually.", eventTypeName, @event.Rsn));
+				IEnumerable<<#= entityName #>Entity> manualEntities = null;
+				OnGetEntities(@event, ref manualEntities);
+				if (manualEntities != null)
+					entities.AddRange(manualEntities);
+			}
+			for (int i = 0; i < entities.Count; i++)
+			{
+				<#= entityName #>Entity entity = entities[i];
+
+				bool autoMap = true;
+				OnUpdateEntity(@event, ref entity, ref autoMap);
+				if (autoMap)
+					AutomapHelper.Automap(@event, entity);
+				else
+					Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Is not auto-mapped.", eventTypeName, @event.Rsn));
+				OnEntityUpdated(@event, ref entity);
+
+				bool continueWithRepositorySave = true;
+				bool createDontUpdate = true;
+				OnSaveEntity(@event, ref entity, ref continueWithRepositorySave, ref createDontUpdate);
+				if (continueWithRepositorySave)
+				{
+					if (createDontUpdate)
+					{
+						EntityRepository.Create(entity);
+						Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Created in repository.", eventTypeName, @event.Rsn));
+					}
+					else
+					{
+						EntityRepository.Update(entity);
+						Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Updated in repository.", eventTypeName, @event.Rsn));
+					}
+				}
+				else
+					Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Not auto-saving.", eventTypeName, @event.Rsn));
+				OnEntitySaved(@event, ref entity);
+			}
+			OnHandled(@event);
+		}
+
+		#endregion
+
+		partial void OnPreGet(<#= eventName #> @event, ref bool singleItemNotCollection);
+
+		partial void GetSingleEntityRsn(<#= eventName #> @event, ref Guid? rsn, ref bool throwExceptionOnMissingEntity);
+
+		partial void OnGetEntities(<#= eventName #> @event, ref IEnumerable<<#= entityName #>Entity> manualEntities);
+
+		partial void OnGetEntity(<#= eventName #> @event, ref <#= entityName #>Entity entity);
+
+		partial void OnGotEntity(<#= eventName #> @event, ref <#= entityName #>Entity entity);
+
+		partial void OnUpdateEntity(<#= eventName #> @event, ref <#= entityName #>Entity entity, ref bool autoMap);
+
+		partial void OnEntityUpdated(<#= eventName #> @event, ref <#= entityName #>Entity entity);
+
+		partial void OnSaveEntity(<#= eventName #> @event, ref <#= entityName #>Entity entity, ref bool continueWithRepositorySave, ref bool createDontUpdate);
+
+		partial void OnEntitySaved(<#= eventName #> @event, ref <#= entityName #>Entity entity);
+
+		partial void OnHandled(<#= eventName #> @event);
+<#
+}
+else
+{
+#>
 
 		#region Implementation of IEventHandler<in <#= eventName #>>
 
@@ -105,6 +237,9 @@ switch(eventHandlerTechnology)
 		}
 
 		#endregion
+<#
+}
+#>
 
 		partial void OnHandle(<#= eventName #> @event);
 	}
