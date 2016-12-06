@@ -47,7 +47,9 @@ namespace Cqrs.Repositories
 
 		public virtual ISingleResultQuery<TQueryStrategy, TData> Retrieve(ISingleResultQuery<TQueryStrategy, TData> singleResultQuery, bool throwExceptionWhenNoQueryResults = true)
 		{
-			IQueryable<TData> query = QueryBuilder.CreateQueryable(singleResultQuery);
+			// The .Select(i => i) is Necassary due to inheritance
+			// http://stackoverflow.com/questions/1021274/linq-to-sql-mapping-exception-when-using-abstract-base-classes
+			IQueryable<TData> query = QueryBuilder.CreateQueryable(singleResultQuery).Select(i => i);
 
 			IEnumerable<TData> result = query.AsEnumerable();
 
@@ -74,7 +76,9 @@ namespace Cqrs.Repositories
 
 		public virtual ICollectionResultQuery<TQueryStrategy, TData> Retrieve(ICollectionResultQuery<TQueryStrategy, TData> resultQuery)
 		{
-			IQueryable<TData> result = QueryBuilder.CreateQueryable(resultQuery);
+			// The .Select(i => i) is Necassary due to inheritance
+			// http://stackoverflow.com/questions/1021274/linq-to-sql-mapping-exception-when-using-abstract-base-classes
+			IQueryable<TData> result = QueryBuilder.CreateQueryable(resultQuery).Select(i => i);
 
 			try
 			{
@@ -117,9 +121,16 @@ namespace Cqrs.Repositories
 		{
 			using (IDataStore<TData> dataStore = CreateDataStoreFunction())
 			{
-				if (throwExceptionOnMissingEntity)
-					return dataStore.Single(entity => entity.Rsn == rsn);
-				return dataStore.SingleOrDefault(entity => entity.Rsn == rsn);
+				IEnumerable<TData> query = dataStore
+					// The .Select(i => i) is Necassary due to inheritance
+					// http://stackoverflow.com/questions/1021274/linq-to-sql-mapping-exception-when-using-abstract-base-classes
+					.Select(i => i)
+					.Where(entity => entity.Rsn == rsn)
+					.AsEnumerable();
+
+				return throwExceptionOnMissingEntity
+					? query.Single()
+					: query.SingleOrDefault();
 			}
 		}
 
