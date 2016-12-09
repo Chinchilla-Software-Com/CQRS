@@ -1,0 +1,114 @@
+<#@ Assembly Name="Microsoft.VisualStudio.ArchitectureTools.Extensibility.dll" #>
+<#@ Import Namespace="Microsoft.VisualStudio.Uml.Activities" #>
+<#@ Import Namespace="Microsoft.VisualStudio.Uml.Actions" #>
+<#@ Import Namespace="Microsoft.VisualStudio.Uml.AuxiliaryConstructs" #>
+<#@ Import Namespace="Microsoft.VisualStudio.Uml.Classes" #>
+<#@ Import Namespace="Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml" #>
+<#@ Import Namespace="System" #>
+<#@ Import Namespace="System.Text" #><#+
+private void ManualIndent(int depth)
+{
+	for(int i = 0; i < (depth + 2); i++)
+		Write("\t");
+}
+
+protected string DeeperIntoTheDecisionTree(IActivityNode node, int depth, string className, string methodName, IList<IProperty> relationshipProperties, string onMethodSignatures = null, string edgeName = null)
+{
+	var OnMethodSignatures = new StringBuilder(onMethodSignatures);
+	var eventNode = node as ISendSignalAction;
+	if (eventNode != null)
+	{
+		IOutputPin eventPin = eventNode.Outputs.SingleOrDefault(x => x.Type is IClass && ((IClass)x.Type).AppliedStereotypes.SingleOrDefault(property => property.Name == "Event") != null);
+		if (eventPin != null)
+		{
+			IType @event = eventPin.Type;
+#>
+<#+ ManualIndent(depth); #><#+ Write(@event.Name); #> <#+ Write(GetLowercaseFirstCharacter(@event.Name)); #>Event = null;
+<#+ ManualIndent(depth); #>On<#+ Write(methodName); #>Decision<#+ Write(edgeName); #>Matched(<#+
+			OnMethodSignatures.AppendLine();
+			OnMethodSignatures.AppendFormat("		partial void On{0}Decision{1}Matched(", methodName, edgeName);
+
+			for (int i = 0; i < relationshipProperties.Count; i++)
+			{
+				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
+				OnMethodSignatures.AppendFormat("{0}{1} {2}", (i == 0) ? string.Empty : ", ", GetFullDisplayType(relationshipProperty), GetLowercaseFirstCharacter(relationshipProperty.Name));
+				#><#+ Write((i == 0) ? string.Empty : ", "); #><#+ Write(GetLowercaseFirstCharacter(relationshipProperty.Name)); #><#+
+			}
+				OnMethodSignatures.AppendLine(", ref " + @event.Name + " " + GetLowercaseFirstCharacter(@event.Name) + "Event);");
+#>, ref <#+ Write(GetLowercaseFirstCharacter(@event.Name)); #>Event);
+<#+ ManualIndent(depth); #>if (<#+ Write(GetLowercaseFirstCharacter(@event.Name)); #>Event != null)
+<#+ ManualIndent(depth); #>{
+<#+ ManualIndent(depth); #>	Log.LogDebug("Pre", "<#+ Write(className + "/" + methodName); #>/ApplyChange/Decision<#+ Write(edgeName); #>Matched/<#+ Write(@event.Name); #>");
+<#+ ManualIndent(depth); #>	ApplyChange(<#+ Write(GetLowercaseFirstCharacter(@event.Name)); #>Event);
+<#+ ManualIndent(depth); #>	Log.LogDebug("Post", "<#+ Write(className + "/" + methodName); #>/ApplyChange/Decision<#+ Write(edgeName); #>Matched/<#+ Write(@event.Name); #>");
+<#+ ManualIndent(depth); #>}
+<#+
+			return OnMethodSignatures.ToString();
+		}
+	}
+	var decisionNode = node as IDecisionNode;
+	if (decisionNode == null)
+		decisionNode = node.Outgoings
+			.Where(edge => edge.Target is IDecisionNode)
+			.Select(edge => edge.Target)
+			.Cast<IDecisionNode>()
+			.SingleOrDefault();
+	if (decisionNode != null)
+	{
+		foreach (IActivityEdge edge in decisionNode.Outgoings.OrderByDescending(x => x.Guard))
+		{
+			string condition = edge.Guard;
+			if (!string.IsNullOrWhiteSpace(condition))
+			{
+				string operation = condition;
+				if (operation.StartsWith("command.", StringComparison.InvariantCultureIgnoreCase))
+					operation = GetLowercaseFirstCharacter(operation.Substring(8));
+				string thisEdgeName = edge.Name;
+				if (string.IsNullOrWhiteSpace(thisEdgeName))
+					thisEdgeName = depth.ToString();
+#>
+	
+<#+ ManualIndent(depth); #>bool isDecision<#+ Write(thisEdgeName); #>AMatch = <#+ Write(operation); #>;
+<#+ ManualIndent(depth); #>Log.LogDebug("Pre", "<#+ Write(className + "/" + methodName); #>/Decision<#+ Write(thisEdgeName); #>IsAMatch");
+<#+ ManualIndent(depth); #>On<#+ Write(methodName); #>Decision<#+ Write(thisEdgeName); #>IsAMatch(<#+
+				OnMethodSignatures.AppendLine();
+				OnMethodSignatures.AppendFormat("		partial void On{0}Decision{1}IsAMatch(", methodName, thisEdgeName);
+
+				for (int i = 0; i < relationshipProperties.Count; i++)
+				{
+					IProperty relationshipProperty = relationshipProperties.ElementAt(i);
+					OnMethodSignatures.AppendFormat("{0}{1} {2}", (i == 0) ? string.Empty : ", ", GetFullDisplayType(relationshipProperty), GetLowercaseFirstCharacter(relationshipProperty.Name));
+					#><#+ Write((i == 0) ? string.Empty : ", "); #><#+ Write(GetLowercaseFirstCharacter(relationshipProperty.Name)); #><#+
+				}
+				OnMethodSignatures.AppendLine(", ref bool isDecision" + thisEdgeName + "AMatch);");
+#>, ref isDecision<#+ Write(thisEdgeName); #>AMatch);
+<#+ ManualIndent(depth); #>Log.LogDebug("Post", "<#+ Write(className + "/" + methodName); #>/Decision<#+ Write(thisEdgeName); #>IsAMatch");
+<#+ ManualIndent(depth); #>if (isDecision<#+ Write(thisEdgeName); #>AMatch)
+<#+ ManualIndent(depth); #>{
+<#+ ManualIndent(depth); #>	Log.LogDebug("Matched", "<#+ Write(className + "/" + methodName); #>/Decision<#+ Write(thisEdgeName); #>");
+<#+
+				OnMethodSignatures.Append(DeeperIntoTheDecisionTree(edge.Target, depth + 1, className, methodName, relationshipProperties, null, thisEdgeName));
+#>
+<#+ ManualIndent(depth); #>}
+<#+
+			}
+			else
+			{
+				string thisEdgeName = edge.Name;
+				if (string.IsNullOrWhiteSpace(thisEdgeName))
+					thisEdgeName = depth.ToString();
+#>
+<#+ ManualIndent(depth); #>else
+<#+ ManualIndent(depth); #>{
+<#+ ManualIndent(depth); #>	Log.LogDebug("Not Matched", "<#+ Write(className + "/" + methodName); #>/Decision<#+ Write(thisEdgeName); #>");
+<#+
+				OnMethodSignatures.Append(DeeperIntoTheDecisionTree(edge.Target, depth + 1, className, methodName, relationshipProperties, null, edgeName ?? "Not"));
+#>
+<#+ ManualIndent(depth); #>}
+<#+
+			}
+		}
+	}
+	return OnMethodSignatures.ToString();
+}
+#>

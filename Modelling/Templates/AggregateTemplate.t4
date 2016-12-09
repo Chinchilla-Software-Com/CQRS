@@ -3,11 +3,14 @@
 <#@ Import Namespace="Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml" #>
 <#@ Import Namespace="Microsoft.VisualStudio.Uml.AuxiliaryConstructs" #>
 <#@ import namespace="Microsoft.VisualStudio.Uml.Classes" #>
+<#@ Import Namespace="System.Text" #>
 <#@ Include File="CSharpCommentHelpers.t4" #>
 <#@ Include File="CSharpHelpers.t4" #>
 <#@ Include File="CqrsTemplateHelpers.t4" #>
 <#@ Include File="ModelHelper.t4" #>
+<#@ Include File="DeeperIntoTheDecisionTree.t4" #>
 <#@ Output Extension=".cs" #>
+
 <#
 var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
 string authenticationTokenType = GetDomainAuthenticationTokenType(this.Element);
@@ -686,8 +689,44 @@ switch(aggregateTechnology)
 #>)
 		{
 			Log.LogDebug("Entered", "<#= className #>/<#= relationshipName #>");
-
 <#
+			var activity = this.Element.Package.OwnedElements
+				.Where(x => x is IActivity)
+				.Cast<IActivity>()
+				.SingleOrDefault(x => x.Name == relationshipName);
+
+			if (activity != null)
+			{
+				var initialNode = activity.Nodes.SingleOrDefault(x => x is InitialNode);
+				if (initialNode != null)
+				{
+					var commandNode = initialNode.Outgoings
+						.Where(edge => edge.Target is IAcceptEventAction)
+						.Select(edge => edge.Target)
+						.Cast<IAcceptEventAction>()
+						.SingleOrDefault();
+					if (commandNode != null)
+					{
+						var commandPin = commandNode.Inputs
+							.Where(x => x.Type is IClass)
+							.Select(x=> x.Type)
+							.Cast<IClass>()
+							.SingleOrDefault(x => x.Name == ((INamedElement)relationship.SourceElement).Name && x.AppliedStereotypes.SingleOrDefault(property => property.Name == "Command") != null);
+						if (commandPin != null)
+						{
+							string onMethodSignatures = DeeperIntoTheDecisionTree(commandNode, 1, className, relationshipName, relationshipProperties);
+#>
+
+			Log.LogDebug("Exited", "<#= className #>/<#= relationshipName #>");
+		}
+<#
+							Write(onMethodSignatures);
+							continue;
+						}
+					}
+				}
+			}
+
 			string eventParameters = "";
 			string eventParametersWithType = "";
 			foreach(IAssociation eventRelationship in eventRelationships)
