@@ -142,6 +142,7 @@ namespace <#= classNamespace #>.Services
 			if (!bool.Parse(((INamedElement)relationship.SourceElement).AppliedStereotypes.Single(property => property.Name == "Command").PropertyInstances.Single(property => property.Name == "CreatesNewInstance").Value))
 			{
 #>
+		[DataMember]
 		public System.Guid Rsn { get; set; }
 
 <#
@@ -152,6 +153,7 @@ namespace <#= classNamespace #>.Services
 				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
 #>
 <# WriteSummaryComment(relationshipProperty.Description); #>
+		[DataMember]
 		public <#= GetFullDisplayType(relationshipProperty) #> <#= relationshipProperty.Name #> { get; set; }
 
 <#

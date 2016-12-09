@@ -208,6 +208,8 @@ namespace Cqrs.DataStores
 			try
 			{
 				DateTime start = DateTime.Now;
+				Table.Attach(data);
+				DbDataContext.Refresh(RefreshMode.KeepCurrentValues, data);
 				DbDataContext.SubmitChanges();
 				DateTime end = DateTime.Now;
 				Logger.LogDebug(string.Format("Updating data in the Sql database took {0}.", end - start), "SqlDataStore\\Update");
