@@ -20,7 +20,7 @@ namespace $safeprojectname$.Configuration
 		public virtual void Start()
 		{
 			NinjectDependencyResolver.ModulesToLoad.Add(new THostModule());
-			NinjectDependencyResolver.ModulesToLoad.Add(new CqrsModule<SingleSignOnToken, SingleSignOnTokenValueHelper>());
+			NinjectDependencyResolver.ModulesToLoad.Add(new CqrsModule<SingleSignOnToken, SingleSignOnTokenValueHelper>(true, false));
 			NinjectDependencyResolver.ModulesToLoad.Add(new SimplifiedSqlModule<SingleSignOnToken>());
 			NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule<SingleSignOnToken>());
 			NinjectDependencyResolver.ModulesToLoad.Add(new InProcessCommandBusModule<SingleSignOnToken>());

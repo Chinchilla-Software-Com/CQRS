@@ -14,11 +14,19 @@ namespace $safeprojectname$
 		{
 			config.MapHttpAttributeRoutes();
 
+			/*
+			config.Routes.MapHttpRoute(
+				name: "DefaultApiWithAction",
+				routeTemplate: "{controller}/{action}/{id}",
+				defaults: new { action = "Index", id = RouteParameter.Optional }
+			);
+
 			config.Routes.MapHttpRoute(
 				name: "DefaultApi",
-				routeTemplate: "api/{controller}/{id}",
+				routeTemplate: "{controller}/{id}",
 				defaults: new { id = RouteParameter.Optional }
 			);
+			*/
 
 			GlobalConfiguration.Configuration.DependencyResolver = NinjectDependencyResolver.Current.Resolve<System.Web.Http.Dependencies.IDependencyResolver>();
 			GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings

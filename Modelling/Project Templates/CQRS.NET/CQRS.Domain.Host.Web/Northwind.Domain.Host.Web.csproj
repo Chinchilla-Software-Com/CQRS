@@ -57,11 +57,11 @@
       <HintPath>$ext_ProjectPath$..\packages\cdmdotnet.Performance.1.0.5.8\lib\net40\cdmdotnet.Performance.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs, Version=1.601.1152.466, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Cqrs, Version=1.601.1153.467, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$ext_ProjectPath$..\packages\Cqrs.1.601.954\lib\net40\Cqrs.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.Ninject, Version=1.601.1152.466, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Cqrs.Ninject, Version=1.601.1153.467, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$ext_ProjectPath$..\packages\Cqrs.Ninject.1.601.954\lib\net40\Cqrs.Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
@@ -76,6 +76,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin">
       <HintPath>$ext_ProjectPath$..\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RouteDebugger, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$ext_ProjectPath$..\packages\routedebugger.2.1.5\lib\net40\RouteDebugger.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin.Host.SystemWeb">
@@ -192,6 +196,8 @@
     <Content Include="packages.config" />
     <Content Include="system.serviceModel.serviceHostingEnvironment.config" />
     <Content Include="system.serviceModel.services.config" />
+    <Content Include="Areas\Client\Views\web.config" />
+    <Content Include="Areas\Client\Views\Client\Index.cshtml" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
@@ -226,6 +232,8 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Client\ClientAreaRegistration.cs" />
+    <Compile Include="Areas\Client\Controllers\ClientController.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
     <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
@@ -262,6 +270,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignalR\EventToHubProxy.cs" />
     <Compile Include="WebHost.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\Client\Models\" />
+    <Folder Include="Areas\Client\Views\Shared\" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\$ext_safeprojectname$.Domain.Host\$ext_safeprojectname$.Domain.Host.csproj">

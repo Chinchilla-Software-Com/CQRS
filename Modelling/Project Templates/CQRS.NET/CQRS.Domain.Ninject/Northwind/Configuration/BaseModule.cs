@@ -14,25 +14,15 @@ namespace $ext_safeprojectname$.Configuration
 {
 	public class BaseModule : NinjectModule
 	{
-		public override void Load()
-		{
-			Bind<ILoggerSettings>()
-				.To<LoggerSettingsConfigurationSection>()
-				.InSingletonScope();
-
-			RegisterLogger();
-		}
+		#region Overrides of NinjectModule
 
 		/// <summary>
-		/// Register the <see cref="ILogger"/>
+		/// Loads the module into the kernel.
 		/// </summary>
-		protected virtual void RegisterLogger()
+		public override void Load()
 		{
-			Kernel.Unbind<ILogger>();
-
-			Bind<ILogger>()
-				.To<ConsoleLogger>()
-				.InSingletonScope();
 		}
+
+		#endregion
 	}
 }
