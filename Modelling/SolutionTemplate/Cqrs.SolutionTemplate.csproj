@@ -52,6 +52,7 @@
     <WarningLevel>4</WarningLevel>
     <DeployExtension>True</DeployExtension>
     <CreateVsixContainer>True</CreateVsixContainer>
+    <CopyVsixExtensionFiles>False</CopyVsixExtensionFiles>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -108,8 +109,8 @@
     <PreBuildEvent>COPY /Y "$(ProjectDir)..\Project Templates\CQRS.NET.zip" "$(ProjectDir)ProjectTemplates\CQRS.NET.zip"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>REM IF "$(ConfigurationName)"=="Debug" "$(SolutionDir)..\Root-VSIX\Root-VSIX.exe" 12 Exp "$(TargetDir)$(TargetName).vsix" uninstall
+REM IF "$(ConfigurationName)"=="Debug" "$(SolutionDir)..\Root-VSIX\Root-VSIX.exe" 12 Exp "$(TargetDir)$(TargetName).vsix"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

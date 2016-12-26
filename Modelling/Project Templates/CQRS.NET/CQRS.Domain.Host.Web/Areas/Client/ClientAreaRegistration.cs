@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace InsureIT.Domain.Host.Web.Areas.Client
+namespace $safeprojectname$.Areas.Client
 {
 	public class ClientAreaRegistration : AreaRegistration 
 	{
