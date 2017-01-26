@@ -72,7 +72,7 @@ namespace Cqrs.Azure.ServiceBus
 					},
 					() =>
 					{
-						Task.Factory.StartNew(() =>
+						Task.Factory.StartNewSafely(() =>
 						{
 							long loop = long.MinValue;
 							while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
@@ -80,8 +80,16 @@ namespace Cqrs.Azure.ServiceBus
 								//Based on LockedUntilUtc property to determine if the lock expires soon
 								if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-10))
 								{
-									// If so, repeat the message
-									message.RenewLock();
+									// If so, renew the lock
+									for (int i = 0; i < 10; i++)
+									{
+										try
+										{
+											message.RenewLock();
+											break;
+										}
+										catch { }
+									}
 								}
 
 								if (loop++ % 5 == 0)

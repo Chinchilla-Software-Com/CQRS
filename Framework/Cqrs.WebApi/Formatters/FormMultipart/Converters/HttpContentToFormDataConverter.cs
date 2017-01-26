@@ -26,7 +26,7 @@ namespace Cqrs.WebApi.Formatters.FormMultipart.Converters
 			MultipartMemoryStreamProvider multipartProvider = null;
 
 			await Task.Factory
-				.StartNew(() =>
+				.StartNewSafely(() =>
 					{
 						try
 						{

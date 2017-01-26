@@ -68,7 +68,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 		{
 			string userToken = UserToken();
 			string connectionId = Context.ConnectionId;
-			return Task.Factory.StartNew(() =>
+			return Task.Factory.StartNewSafely(() =>
 			{
 				Groups.Add(connectionId, string.Format("User-{0}", userToken)).Wait();
 
@@ -118,22 +118,10 @@ namespace Cqrs.WebApi.SignalR.Hubs
 			try
 			{
 				var tokenSource = new CancellationTokenSource();
-				Guid correlationId = CorrelationIdHelper.GetCorrelationId();
-				Task.Run
+				Task.Factory.StartNewSafely
 				(
 					() =>
 					{
-						// Since we're crossing threads, we need to pass the correlationId
-						try
-						{
-							CorrelationIdHelper.SetCorrelationId(correlationId);
-						}
-						catch (Exception exception)
-						{
-							foreach (Guid userRsn in optimisedUserRsnCollection)
-								Logger.LogWarning("Transferring CorrelationId across a thread failed.", exception: exception, metaData: GetAdditionalDataForLogging(userRsn));
-						}
-
 						foreach (Guid userRsn in optimisedUserRsnCollection)
 						{
 							var metaData = GetAdditionalDataForLogging(userRsn);
@@ -174,22 +162,11 @@ namespace Cqrs.WebApi.SignalR.Hubs
 			try
 			{
 				var tokenSource = new CancellationTokenSource();
-				Guid correlationId = CorrelationIdHelper.GetCorrelationId();
-				Task.Run
+				Task.Factory.StartNewSafely
 				(
 					() =>
 					{
 						var metaData = GetAdditionalDataForLogging(userToken);
-
-						// Since we're crossing threads, we need to pass the correlationId
-						try
-						{
-							CorrelationIdHelper.SetCorrelationId(correlationId);
-						}
-						catch (Exception exception)
-						{
-							Logger.LogWarning("Transferring CorrelationId across a thread failed.", exception: exception, metaData: metaData);
-						}
 
 						try
 						{
@@ -227,21 +204,10 @@ namespace Cqrs.WebApi.SignalR.Hubs
 			try
 			{
 				var tokenSource = new CancellationTokenSource();
-				Guid correlationId = CorrelationIdHelper.GetCorrelationId();
-				Task.Run
+				Task.Factory.StartNewSafely
 				(
 					() =>
 					{
-						// Since we're crossing threads, we need to pass the correlationId
-						try
-						{
-							CorrelationIdHelper.SetCorrelationId(correlationId);
-						}
-						catch (Exception exception)
-						{
-							Logger.LogWarning("Transferring CorrelationId across a thread failed.", exception: exception);
-						}
-
 						try
 						{
 							CurrentHub
@@ -280,22 +246,11 @@ namespace Cqrs.WebApi.SignalR.Hubs
 			try
 			{
 				var tokenSource = new CancellationTokenSource();
-				Guid correlationId = CorrelationIdHelper.GetCorrelationId();
-				Task.Run
+				Task.Factory.StartNewSafely
 				(
 					() =>
 					{
 						var metaData = GetAdditionalDataForLogging(userToken);
-
-						// Since we're crossing threads, we need to pass the correlationId
-						try
-						{
-							CorrelationIdHelper.SetCorrelationId(correlationId);
-						}
-						catch (Exception exception)
-						{
-							Logger.LogWarning("Transferring CorrelationId across a thread failed.", exception: exception, metaData: metaData);
-						}
 
 						try
 						{

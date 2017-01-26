@@ -123,20 +123,8 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected virtual void StartSettingsChecking()
 		{
-			Guid currentCorrelationId;
-			try
+			Task.Factory.StartNewSafely(() =>
 			{
-				currentCorrelationId = CorrelationIdHelper.GetCorrelationId();
-			}
-			catch (Exception)
-			{
-				currentCorrelationId = Guid.NewGuid();
-			}
-			Task.Factory.StartNew(() =>
-			{
-				// New thread remember
-				CorrelationIdHelper.SetCorrelationId(currentCorrelationId);
-
 				SpinWait.SpinUntil(ValidateSettingsHaveChanged, sleepInMilliseconds: 1000);
 
 				Logger.LogInfo("Connecting string settings for the Azure Service Bus changed and will now refresh.");
