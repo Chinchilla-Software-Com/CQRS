@@ -69,7 +69,12 @@ namespace Cqrs.Domain
 
 			aggregate.MarkChangesAsCommitted();
 			foreach (IEvent<TAuthenticationToken> @event in eventsToPublish)
-				Publisher.Publish(@event);
+				PublishEvent(@event);
+		}
+
+		protected virtual void PublishEvent(IEvent<TAuthenticationToken> @event)
+		{
+			Publisher.Publish(@event);
 		}
 
 		public virtual TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)
@@ -78,24 +83,42 @@ namespace Cqrs.Domain
 			return LoadAggregate<TAggregateRoot>(aggregateId, events);
 		}
 
+		protected virtual TAggregateRoot CreateAggregate<TAggregateRoot>(Guid id)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
+		{
+			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>(id);
+
+			return aggregate;
+		}
+
 		protected virtual TAggregateRoot LoadAggregate<TAggregateRoot>(Guid id, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>(id);
 
-			IList<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get<TAggregateRoot>(id).ToList();
+			LoadAggregateHistory(aggregate, events);
+			return aggregate;
+		}
+
+		public virtual void LoadAggregateHistory<TAggregateRoot>(TAggregateRoot aggregate, IList<IEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
+		{
+			IList<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get<TAggregateRoot>(aggregate.Id).ToList();
 			if (!theseEvents.Any())
-				throw new AggregateNotFoundException<TAggregateRoot, TAuthenticationToken>(id);
+			{
+				if (throwExceptionOnNoEvents)
+					throw new AggregateNotFoundException<TAggregateRoot, TAuthenticationToken>(aggregate.Id);
+				return;
+			}
 
 			var duplicatedEvents =
 				theseEvents.GroupBy(x => x.Version)
-					.Select(x => new {Version = x.Key, Total = x.Count()})
+					.Select(x => new { Version = x.Key, Total = x.Count() })
 					.FirstOrDefault(x => x.Total > 1);
 			if (duplicatedEvents != null)
-				throw new DuplicateEventException<TAggregateRoot, TAuthenticationToken>(id, duplicatedEvents.Version);
+				throw new DuplicateEventException<TAggregateRoot, TAuthenticationToken>(aggregate.Id, duplicatedEvents.Version);
 
 			aggregate.LoadFromHistory(theseEvents);
-			return aggregate;
 		}
 	}
 }

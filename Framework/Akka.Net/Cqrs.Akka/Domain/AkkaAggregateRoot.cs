@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Akka.Actor;
+using cdmdotnet.Logging;
 using Cqrs.Domain;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Events;
@@ -22,15 +23,60 @@ namespace Cqrs.Akka.Domain
 		: ReceiveActor // PersistentActor 
 		, IAggregateRoot<TAuthenticationToken>
 	{
+		protected IUnitOfWork<TAuthenticationToken> UnitOfWork { get; set; }
+
+		protected IAkkaRepository<TAuthenticationToken> Repository { get; set; }
+
+		protected ILogger Logger { get; set; }
+
 		private ICollection<IEvent<TAuthenticationToken>> Changes { get; set; }
 
 		public Guid Id { get; protected set; }
 
 		public int Version { get; protected set; }
 
-		protected AkkaAggregateRoot()
+		protected AkkaAggregateRoot(IUnitOfWork<TAuthenticationToken> unitOfWork, ILogger logger, IAkkaRepository<TAuthenticationToken> repository)
 		{
+			UnitOfWork = unitOfWork;
+			Logger = logger;
+			Repository = repository;
 			Changes = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(new List<IEvent<TAuthenticationToken>>());
+		}
+
+		#region Overrides of ActorBase
+
+		/// <summary>
+		/// User overridable callback.
+		///                 <p/>
+		///                 Is called when an Actor is started.
+		///                 Actors are automatically started asynchronously when created.
+		///                 Empty default implementation.
+		/// </summary>
+		protected override void PreStart()
+		{
+			base.PreStart();
+			Repository.LoadAggregateHistory(this, throwExceptionOnNoEvents: false);
+		}
+
+		#endregion
+
+		protected virtual void Execute<TParameters>(Action<TParameters> action, TParameters parameters)
+		{
+			UnitOfWork.Add(this);
+			try
+			{
+				action(parameters);
+
+				UnitOfWork.Commit();
+
+				Sender.Tell(true, Self);
+			}
+			catch(Exception exception)
+			{
+				Logger.LogError("Executing an Akka.net request failed.", exception: exception, metaData: new Dictionary<string, object> { { "Type", GetType() }, { "Parameters", parameters } });
+				Sender.Tell(false, Self);
+				throw;
+			}
 		}
 
 		public IEnumerable<IEvent<TAuthenticationToken>> GetUncommittedChanges()

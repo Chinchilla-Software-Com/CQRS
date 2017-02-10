@@ -15,37 +15,47 @@ namespace Cqrs.Domain.Factories
 			DependencyResolver = dependencyResolver;
 		}
 
-		public virtual TAggregate CreateAggregate<TAggregate>(Guid? rsn = null)
+		public virtual TAggregate CreateAggregate<TAggregate>(Guid? rsn = null, bool tryDependencyResolutionFirst = true)
 		{
-			try
-			{
-				return DependencyResolver.Resolve<TAggregate>();
-			}
-			catch (Exception)
-			{
-				DependencyResolver.Resolve<ILogger>().LogDebug(string.Format("Using the dependency resolver to create an instance of the aggregate typed '{0}' failed.", typeof(TAggregate).FullName), "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate");
+			return (TAggregate)CreateAggregate(typeof (TAggregate), rsn);
+		}
+
+		public object CreateAggregate(Type aggregateType, Guid? rsn = null, bool tryDependencyResolutionFirst = true)
+		{
+			ILogger logger = DependencyResolver.Resolve<ILogger>();
+			if (tryDependencyResolutionFirst)
+			{ 
 				try
 				{
-					return (TAggregate)Activator.CreateInstance(typeof(TAggregate), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { DependencyResolver, DependencyResolver.Resolve<ILogger>(), rsn }, null);
+					return DependencyResolver.Resolve(aggregateType);
 				}
-				catch (MissingMethodException exception)
+				catch
 				{
-					DependencyResolver.Resolve<ILogger>().LogDebug(string.Format("Looking for a private constructor with a dependency resolver and logger, to create an instance of the aggregate typed '{0}' failed.", typeof(TAggregate).FullName), "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate", exception);
+					logger.LogDebug(string.Format("Using the dependency resolver to create an instance of the aggregate typed '{0}' failed.", aggregateType.FullName), "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate");
+				}
+			}
+
+			try
+			{
+				return Activator.CreateInstance(aggregateType, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { DependencyResolver, logger, rsn }, null);
+			}
+			catch (MissingMethodException exception)
+			{
+				logger.LogDebug(string.Format("Looking for a private constructor with a dependency resolver and logger, to create an instance of the aggregate typed '{0}' failed.", aggregateType.FullName), "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate", exception);
+				try
+				{
+					return Activator.CreateInstance(aggregateType, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { DependencyResolver, logger }, null);
+				}
+				catch (MissingMethodException exception2)
+				{
+					logger.LogDebug(string.Format("Looking for a private constructor with a dependency resolver and logger, to create an instance of the aggregate typed '{0}' failed.", aggregateType.FullName), "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate", exception2);
 					try
 					{
-						return (TAggregate)Activator.CreateInstance(typeof(TAggregate), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { DependencyResolver, DependencyResolver.Resolve<ILogger>() }, null);
+						return Activator.CreateInstance(aggregateType, true);
 					}
-					catch (MissingMethodException exception2)
+					catch (MissingMethodException)
 					{
-						DependencyResolver.Resolve<ILogger>().LogDebug(string.Format("Looking for a private constructor with a dependency resolver and logger, to create an instance of the aggregate typed '{0}' failed.", typeof(TAggregate).FullName), "Cqrs.Domain.Factories.AggregateFactory.CreateAggregate", exception2);
-						try
-						{
-							return (TAggregate)Activator.CreateInstance(typeof(TAggregate), true);
-						}
-						catch (MissingMethodException)
-						{
-							throw new MissingParameterLessConstructorException(typeof(TAggregate));
-						}
+						throw new MissingParameterLessConstructorException(aggregateType);
 					}
 				}
 			}

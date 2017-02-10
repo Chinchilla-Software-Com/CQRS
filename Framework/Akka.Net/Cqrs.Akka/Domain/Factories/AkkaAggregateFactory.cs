@@ -22,18 +22,18 @@ namespace Cqrs.Akka.Domain.Factories
 			AggregateResolver = aggregateResolver;
 		}
 
-		public override TAggregateRoot CreateAggregate<TAggregateRoot>(Guid? rsn = null)
+		public override TAggregateRoot CreateAggregate<TAggregateRoot>(Guid? rsn = null, bool tryDependencyResolutionFirst = true)
 		{
 			if (rsn == null)
-				throw new ArgumentNullException("rsn");
+				rsn = Guid.NewGuid();
 
 			try
 			{
-				var akkaAggregateRootProxy = DependencyResolver.Resolve<IAkkaAggregateRootProxy<TAggregateRoot>>();
-				var rawProxy = akkaAggregateRootProxy as AkkaAggregateRootProxy<TAuthenticationToken, TAggregateRoot>;
-				if (rawProxy != null)
-					rawProxy.ActorReference = AggregateResolver.Resolve<TAggregateRoot>(rsn.Value);
-				return akkaAggregateRootProxy.Aggregate;
+				var rawProxy = new AkkaAggregateRootProxy<TAuthenticationToken, TAggregateRoot>
+				{
+					ActorReference = AggregateResolver.Resolve<TAggregateRoot>(rsn.Value)
+				};
+				return rawProxy.Aggregate;
 			}
 			catch (Exception)
 			{

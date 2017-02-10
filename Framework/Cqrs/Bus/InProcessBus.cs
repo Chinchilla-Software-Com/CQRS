@@ -64,18 +64,27 @@ namespace Cqrs.Bus
 			if (command.AuthenticationToken == null)
 				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+
+			if (string.IsNullOrWhiteSpace(command.OriginatingFramework))
+				command.OriginatingFramework = "Built-In";
+
+			var frameworks = new List<string>();
+			if (command.Frameworks != null)
+				frameworks.AddRange(command.Frameworks);
+			frameworks.Add("Built-In");
+			command.Frameworks = frameworks;
 		}
 
 		protected virtual bool PrepareAndValidateCommand<TCommand>(TCommand command, out RouteHandlerDelegate commandHandler)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			Type commandType = command.GetType();
-			switch (command.Framework)
+
+			if (command.Frameworks != null && command.Frameworks.Contains("Built-In"))
 			{
-				case FrameworkType.Akka:
-					Logger.LogInfo(string.Format("A command arrived of the type '{0}' but was marked as coming from the '{1}' framework, so it was dropped.", commandType.FullName, command.Framework));
-					commandHandler = null;
-					return false;
+				Logger.LogInfo("The provided command has already been processed by the Built-In bus.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, commandType.FullName));
+				commandHandler = null;
+				return false;
 			}
 
 			ICommandValidator<TAuthenticationToken, TCommand> commandValidator = null;
@@ -230,19 +239,30 @@ namespace Cqrs.Bus
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
-			switch (@event.Framework)
+			Type eventType = @event.GetType();
+
+			if (@event.Frameworks != null && @event.Frameworks.Contains("Built-In"))
 			{
-				case FrameworkType.Akka:
-					Logger.LogInfo(string.Format("An event arrived of the type '{0}' but was marked as coming from the '{1}' framework, so it was dropped.", @event.GetType().FullName, @event.Framework));
-					return;
+				Logger.LogInfo("The provided event has already been processed by the Built-In bus.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, eventType.FullName));
+				return;
 			}
 
 			if (@event.AuthenticationToken == null)
 				@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-			@event.TimeStamp = DateTimeOffset.UtcNow;
 
-			Type eventType = @event.GetType();
+			if (string.IsNullOrWhiteSpace(@event.OriginatingFramework))
+			{
+				@event.TimeStamp = DateTimeOffset.UtcNow;
+				@event.OriginatingFramework = "Built-In";
+			}
+
+			var frameworks = new List<string>();
+			if (@event.Frameworks != null)
+				frameworks.AddRange(@event.Frameworks);
+			frameworks.Add("Built-In");
+			@event.Frameworks = frameworks;
+
 			bool isRequired;
 			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", eventType.FullName), out isRequired))
 				isRequired = true;
@@ -250,7 +270,7 @@ namespace Cqrs.Bus
 			IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 			if (!handlers.Any())
-				Logger.LogDebug(string.Format("The event handler for '{0}' is not required.", eventType.FullName));
+				Logger.LogDebug(string.Format("An event handler for '{0}' is not required.", eventType.FullName));
 
 			foreach (Action<IMessage> handler in handlers)
 			{

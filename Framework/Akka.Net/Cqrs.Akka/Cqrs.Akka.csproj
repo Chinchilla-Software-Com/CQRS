@@ -38,8 +38,8 @@
     <Reference Include="Akka">
       <HintPath>..\..\..\packages\Akka.1.0.4\lib\net45\Akka.dll</HintPath>
     </Reference>
-    <Reference Include="cdmdotnet.Logging, Version=1.2.53.46, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\cdmdotnet.Logging.1.2.53.46\lib\net40\cdmdotnet.Logging.dll</HintPath>
+    <Reference Include="cdmdotnet.Logging, Version=1.2.54.47, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\cdmdotnet.Logging.1.2.54.47\lib\net40\cdmdotnet.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="cdmdotnet.Performance, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -72,9 +72,9 @@
     <Compile Include="Domain\AkkaRepository.cs" />
     <Compile Include="Domain\Commands\GetAkkaAggregateRootVersion.cs" />
     <Compile Include="Domain\Commands\GetAkkaAggregateRootId.cs" />
-    <Compile Include="Domain\Factories\AkkaAggregateFactory.cs" />
     <Compile Include="Domain\IAkkaAggregateRootProxy.cs" />
     <Compile Include="Commands\ConcurrentAkkaCommandSender.cs" />
+    <Compile Include="Domain\IAkkaRepository.cs" />
     <Compile Include="Events\AkkaEventBus.cs" />
     <Compile Include="Domain\IAkkaAggregateResolver.cs" />
     <Compile Include="Commands\IConcurrentAkkaCommandSender.cs" />
@@ -93,7 +93,9 @@
       <Name>Cqrs</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Domain\Factories\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

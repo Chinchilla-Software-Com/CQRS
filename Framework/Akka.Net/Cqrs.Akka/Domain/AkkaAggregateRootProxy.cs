@@ -15,7 +15,7 @@ using Cqrs.Events;
 
 namespace Cqrs.Akka.Domain
 {
-	public abstract class AkkaAggregateRootProxy<TAuthenticationToken, TAggregateRoot>
+	public class AkkaAggregateRootProxy<TAuthenticationToken, TAggregateRoot>
 		: IAkkaAggregateRootProxy<TAggregateRoot>
 		, IAggregateRoot<TAuthenticationToken>
 		// TODO think about if this is necessary again.
@@ -23,33 +23,33 @@ namespace Cqrs.Akka.Domain
 	{
 		public IActorRef ActorReference { get; internal set; }
 
-		public abstract TAggregateRoot Aggregate { get; }
+		public TAggregateRoot Aggregate { get; protected set; }
 
 		#region Implementation of IAggregateRoot<TAuthenticationToken>
 
-		public Guid Id
+		public virtual Guid Id
 		{
 			get { return ActorReference.Ask<Guid>(new GetAkkaAggregateRootId()).Result; }
 		}
 
-		public int Version
+		public virtual int Version
 		{
 			get { return ActorReference.Ask<int>(new GetAkkaAggregateRootVersion()).Result; }
 		}
 
-		public IEnumerable<IEvent<TAuthenticationToken>> GetUncommittedChanges()
+		public virtual IEnumerable<IEvent<TAuthenticationToken>> GetUncommittedChanges()
 		{
-			throw new NotImplementedException();
+			return ((IAggregateRoot<TAuthenticationToken>)Aggregate).GetUncommittedChanges();
 		}
 
-		public void MarkChangesAsCommitted()
+		public virtual void MarkChangesAsCommitted()
 		{
-			throw new NotImplementedException();
+			((IAggregateRoot<TAuthenticationToken>)Aggregate).MarkChangesAsCommitted();
 		}
 
-		public void LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>> history)
+		public virtual void LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>> history)
 		{
-			throw new NotImplementedException();
+			((IAggregateRoot<TAuthenticationToken>)Aggregate).LoadFromHistory(history);
 		}
 
 		#endregion

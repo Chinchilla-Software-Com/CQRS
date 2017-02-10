@@ -2,9 +2,9 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Akka.Actor;
-using Akka.DI.Core;
 using Cqrs.Akka.Configuration;
 using Cqrs.Akka.Domain;
+using Cqrs.Domain.Factories;
 using Cqrs.Ninject.Configuration;
 using Ninject;
 
@@ -17,15 +17,18 @@ namespace Cqrs.Ninject.Akka
 	{
 		protected global::Akka.DI.Ninject.NinjectDependencyResolver RawAkkaNinjectDependencyResolver { get; set; }
 
-		protected ActorSystem AkkaSystem { get; set; }
+		protected ActorSystem AkkaSystem { get; private set; }
 
-		protected IDictionary<Type, IActorRef> AkkaActors { get; set; }
+		protected IDictionary<Type, IActorRef> AkkaActors { get; private set; }
+
+		protected IAggregateFactory AggregateFactory { get; private set; }
 
 		public AkkaNinjectDependencyResolver(IKernel kernel, ActorSystem system)
 			: base(kernel)
 		{
 			RawAkkaNinjectDependencyResolver = new global::Akka.DI.Ninject.NinjectDependencyResolver(kernel, AkkaSystem = system);
 			AkkaActors = new ConcurrentDictionary<Type, IActorRef>();
+			AggregateFactory = Resolve<IAggregateFactory>();
 		}
 
 		/// <summary>
@@ -71,9 +74,10 @@ namespace Cqrs.Ninject.Akka
 
 				return base.Resolve(serviceType);
 			}
-			catch (ActorInitializationException)
+			catch (/*ActorInitialization*/Exception)
 			{
-				actorReference = AkkaSystem.ActorOf(AkkaSystem.GetExtension<DIExt>().Props(serviceType), serviceType.FullName);
+				var properties = Props.Create(() => (ActorBase)AggregateFactory.CreateAggregate(serviceType, rsn as Guid?, false));
+				actorReference = AkkaSystem.ActorOf(properties, string.Format("{0}~{1}", serviceType.FullName, rsn));
 				AkkaActors.Add(serviceType, actorReference);
 				return actorReference;
 			}

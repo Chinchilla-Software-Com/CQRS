@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Akka.Actor;
 using cdmdotnet.Logging;
-using Cqrs.Akka.Configuration;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;
@@ -38,45 +37,26 @@ namespace Cqrs.Akka.Commands
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
-		protected IHandlerResolver ConcurrentEventBusProxy { get; private set; }
-
 		static AkkaCommandBus()
 		{
 			Routes = new RouteManager();
 		}
 
-		public AkkaCommandBus(IHandlerResolver concurrentEventBusProxy, IBusHelper busHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger)
+		public AkkaCommandBus(IBusHelper busHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger, ICommandSender<TAuthenticationToken> commandSender, ICommandReceiver<TAuthenticationToken> commandReceiver)
 		{
-			ConcurrentEventBusProxy = concurrentEventBusProxy;
 			Logger = logger;
 			BusHelper = busHelper;
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
 			DependencyResolver = dependencyResolver;
 			EventWaits = new ConcurrentDictionary<Guid, IList<IEvent<TAuthenticationToken>>>();
-		}
-
-		public AkkaCommandBus(IConfigurationManager configurationManager, IBusHelper busHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger, IActorRef actorReference, ICommandSender<TAuthenticationToken> commandSender, ICommandReceiver<TAuthenticationToken> commandReceiver)
-		{
-			ConfigurationManager = configurationManager;
-			Logger = logger;
-			ActorReference = actorReference;
 			CommandSender = commandSender;
 			CommandReceiver = commandReceiver;
-			AuthenticationTokenHelper = authenticationTokenHelper;
-			CorrelationIdHelper = correlationIdHelper;
-			DependencyResolver = dependencyResolver;
-			BusHelper = busHelper;
-			EventWaits = new ConcurrentDictionary<Guid, IList<IEvent<TAuthenticationToken>>>();
 		}
-
-		protected IConfigurationManager ConfigurationManager { get; private set; }
 
 		protected IBusHelper BusHelper { get; private set; }
 
 		protected ILogger Logger { get; private set; }
-
-		protected IActorRef ActorReference { get; private set; }
 
 		protected ICommandSender<TAuthenticationToken> CommandSender { get; private set; }
 
@@ -93,7 +73,10 @@ namespace Cqrs.Akka.Commands
 
 			if (string.IsNullOrWhiteSpace(command.OriginatingFramework))
 				command.OriginatingFramework = "Akka";
-			IList<string> frameworks = new List<string>(command.Frameworks);
+
+			var frameworks = new List<string>();
+			if (command.Frameworks != null)
+				frameworks.AddRange(command.Frameworks);
 			frameworks.Add("Akka");
 			command.Frameworks = frameworks;
 		}
@@ -103,9 +86,9 @@ namespace Cqrs.Akka.Commands
 		{
 			Type commandType = command.GetType();
 
-			if (command.Frameworks.Contains("Akka"))
+			if (command.Frameworks != null && command.Frameworks.Contains("Akka"))
 			{
-				Logger.LogInfo("The provided command has already been processed in Akka.", string.Format("{0}\\Handle({1})", GetType().FullName, commandType.FullName));
+				Logger.LogInfo("The provided command has already been processed in Akka.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, commandType.FullName));
 				commandHandler = null;
 				return false;
 			}
@@ -134,10 +117,7 @@ namespace Cqrs.Akka.Commands
 			commandHandler = Routes.GetSingleHandler(command, isRequired);
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 			if (commandHandler == null)
-			{
 				Logger.LogDebug(string.Format("The command handler for '{0}' is not required.", commandType.FullName));
-				return false;
-			}
 
 			return true;
 		}
@@ -151,12 +131,11 @@ namespace Cqrs.Akka.Commands
 			if (!PrepareAndValidateCommand(command, out commandHandler))
 				return;
 
-			Type senderType = commandHandler.TargetedType == null
-				? typeof(IConcurrentAkkaCommandSender<>).MakeGenericType(typeof(TAuthenticationToken))
-				: typeof(IConcurrentAkkaCommandSender<,>).MakeGenericType(typeof(TAuthenticationToken), commandHandler.TargetedType);
-			var proxy = (IActorRef)ConcurrentEventBusProxy.Resolve(senderType, command.Id);
-			proxy.Tell(command);
+			// This could be null if Akka won't handle the command and something else will.
+			if (commandHandler != null)
+				commandHandler.Delegate(command);
 
+			// Let everything else know about the command (usually double handling a command is bad... but sometimes it might be useful... like pushing from AWS to Azure so both systems handle it... although an event really is the proper pattern to use here.
 			CommandSender.Send(command);
 		}
 
@@ -222,21 +201,11 @@ namespace Cqrs.Akka.Commands
 		{
 			if (eventReceiver != null)
 				throw new NotSupportedException("Specifying a different event receiver is not yet supported.");
-			RouteHandlerDelegate commandHandler;
-			if (!PrepareAndValidateCommand(command, out commandHandler))
-				return (TEvent)(object)null;
 
 			TEvent result = (TEvent)(object)null;
 			EventWaits.Add(command.CorrelationId, new List<IEvent<TAuthenticationToken>>());
 
-			Type senderType = commandHandler.TargetedType == null
-				? typeof(IConcurrentAkkaCommandSender<>).MakeGenericType(typeof(TAuthenticationToken))
-				: typeof(IConcurrentAkkaCommandSender<,>).MakeGenericType(typeof(TAuthenticationToken), commandHandler.TargetedType);
-			var proxy = (IActorRef)ConcurrentEventBusProxy.Resolve(senderType, command.Id);
-
-			proxy.Tell(command);
-
-			CommandSender.Send(command);
+			Send(command);
 
 			SpinWait.SpinUntil(() =>
 			{
