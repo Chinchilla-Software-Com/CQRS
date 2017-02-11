@@ -51,20 +51,24 @@ namespace Cqrs.Akka.Tests.Unit
 			kernel.Bind<IEventDeserialiser<Guid>>().To<EventDeserialiser<Guid>>();
 			kernel.Bind<IEventPublisher<Guid>>().ToConstant(inProcessBus);
 			kernel.Bind<ICorrelationIdHelper>().ToConstant(correlationIdHelper);
-			kernel.Bind<IAkkaEventBus<Guid>>().ToConstant(eventBus);
+			kernel.Bind<IAkkaEventPublisher<Guid>>().ToConstant(eventBus);
+			kernel.Bind<IAkkaEventPublisherProxy<Guid>>().To<AkkaEventBusProxy<Guid>>();
 			kernel.Bind<IAkkaCommandSender<Guid>>().ToConstant(commandBus);
 
 			AkkaNinjectDependencyResolver.Start(kernel);
 			var dependencyResolver = NinjectDependencyResolver.Current as AkkaNinjectDependencyResolver;
 
 			var commandBusProxy = new AkkaCommandBusProxy<Guid>(dependencyResolver);
-
 			// Commands handled by Akka.net
 			commandBus.RegisterHandler<SayHelloWorldCommand>(new SayHelloWorldCommandHandler(dependencyResolver).Handle);
 			commandBus.RegisterHandler<HelloWorldReplyCommand>(new HelloWorldReplyCommandHandler(dependencyResolver).Handle);
 
-			// Events
+			// Events in process
 			inProcessBus.RegisterHandler<HelloWorldSaid>(new HelloWorldSaidEventHandler(commandBus).Handle);
+
+			var eventBusProxy = new AkkaEventBusProxy<Guid>(dependencyResolver);
+			// events handled by Akka.net
+			eventBus.RegisterHandler<HelloWorldReplied>(new HelloWorldRepliedEventHandler(dependencyResolver).Handle);
 
 			// Act
 			commandBusProxy.Send(command);

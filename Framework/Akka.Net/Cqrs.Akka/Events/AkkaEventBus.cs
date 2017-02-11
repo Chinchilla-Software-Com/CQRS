@@ -22,7 +22,7 @@ namespace Cqrs.Akka.Events
 	/// An <see cref="IEventPublisher{TAuthenticationToken}"/> that proxies <see cref="IEvent{TAuthenticationToken}"/> back onto the <see cref="IActorRef"/> and then publishes the <see cref="IEvent{TAuthenticationToken}"/> on the public event bus.
 	/// </summary>
 	public class AkkaEventBus<TAuthenticationToken>
-		: IAkkaEventBus<TAuthenticationToken>
+		: IAkkaEventPublisher<TAuthenticationToken>
 		, IEventHandlerRegistrar
 	{
 		protected static RouteManager Routes { get; private set; }

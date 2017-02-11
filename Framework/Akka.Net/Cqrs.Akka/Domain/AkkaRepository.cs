@@ -20,9 +20,9 @@ namespace Cqrs.Akka.Domain
 		: Repository<TAuthenticationToken>
 		, IAkkaRepository<TAuthenticationToken>
 	{
-		protected IAkkaEventBus<TAuthenticationToken> EventPublisher { get; private set; }
+		protected IAkkaEventPublisherProxy<TAuthenticationToken> EventPublisher { get; private set; }
 
-		public AkkaRepository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICorrelationIdHelper correlationIdHelper, IAkkaEventBus<TAuthenticationToken> eventPublisher)
+		public AkkaRepository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICorrelationIdHelper correlationIdHelper, IAkkaEventPublisherProxy<TAuthenticationToken> eventPublisher)
 			: base(aggregateFactory, eventStore, publisher, correlationIdHelper)
 		{
 			EventPublisher = eventPublisher;
@@ -37,8 +37,6 @@ namespace Cqrs.Akka.Domain
 			return aggregate;
 		}
 
-		#region Overrides of Repository<TAuthenticationToken>
-
 		protected override void PublishEvent(IEvent<TAuthenticationToken> @event)
 		{
 			Task.Factory.StartNewSafely(() =>
@@ -47,8 +45,6 @@ namespace Cqrs.Akka.Domain
 				base.PublishEvent(@event);
 			});
 		}
-
-		#endregion
 
 		#endregion
 	}

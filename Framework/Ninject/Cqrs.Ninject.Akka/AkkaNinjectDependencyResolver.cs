@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Akka.Actor;
 using Cqrs.Akka.Configuration;
 using Cqrs.Akka.Domain;
@@ -70,12 +69,12 @@ namespace Cqrs.Ninject.Akka
 		public virtual IActorRef ResolveActor<TAggregate, TAuthenticationToken>(Guid rsn)
 			where TAggregate : IAggregateRoot<TAuthenticationToken>
 		{
-			return (IActorRef)Resolve(typeof(TAggregate), rsn);
+			return (IActorRef)AkkaResolve(typeof(TAggregate), rsn, true);
 		}
 
 		public IActorRef ResolveActor<T>()
 		{
-			return (IActorRef)Resolve(typeof(T));
+			return (IActorRef)AkkaResolve(typeof(T), null, true);
 		}
 
 		#endregion
@@ -87,44 +86,48 @@ namespace Cqrs.Ninject.Akka
 
 		public virtual object Resolve(Type serviceType, object rsn)
 		{
+			return AkkaResolve(serviceType, rsn);
+		}
+
+		public virtual object AkkaResolve(Type serviceType, object rsn, bool isAForcedActorSearch = false)
+		{
 			IActorRef actorReference;
 			try
 			{
 				if (AkkaActors.TryGetValue(serviceType, out actorReference))
 					return actorReference;
+				if (!isAForcedActorSearch)
+					return base.Resolve(serviceType);
+			}
+			catch ( /*ActorInitialization*/Exception) { }
 
-				return base.Resolve(serviceType);
-			}
-			catch (/*ActorInitialization*/Exception)
+			Props properties;
+			Type typeToTest = serviceType;
+			while (typeToTest != null)
 			{
-				Props properties;
-				Type typeToTest = serviceType;
-				while (typeToTest != null)
+				Type[] types = typeToTest.GenericTypeArguments;
+				if (types.Length == 1)
 				{
-					Type[] types = typeToTest.GenericTypeArguments;
-					if (types.Length == 1)
+					Type aggregateType = typeof (AkkaAggregateRoot<>).MakeGenericType(typeToTest.GenericTypeArguments.Single());
+					if (typeToTest == aggregateType)
 					{
-						Type aggregateType = typeof (AkkaAggregateRoot<>).MakeGenericType(typeToTest.GenericTypeArguments.Single());
-						if (typeToTest == aggregateType)
-						{
-							typeToTest = aggregateType;
-							break;
-						}
+						typeToTest = aggregateType;
+						break;
 					}
-					typeToTest = typeToTest.BaseType;
 				}
-				if (typeToTest == null || !(typeToTest).IsAssignableFrom(serviceType))
-					properties = Props.Create(() => (ActorBase)RootResolve(serviceType));
-				else
-					properties = Props.Create(() => (ActorBase) AggregateFactory.CreateAggregate(serviceType, rsn as Guid?, false));
-				string actorName = serviceType.FullName.Replace("`", string.Empty);
-				int index = actorName.IndexOf("[[", StringComparison.Ordinal);
-				if (index > -1)
-					actorName = actorName.Substring(0, index);
-				actorReference = AkkaSystem.ActorOf(properties, string.Format("{0}~{1}", actorName, rsn));
-				AkkaActors.Add(serviceType, actorReference);
-				return actorReference;
+				typeToTest = typeToTest.BaseType;
 			}
+			if (typeToTest == null || !(typeToTest).IsAssignableFrom(serviceType))
+				properties = Props.Create(() => (ActorBase)RootResolve(serviceType));
+			else
+				properties = Props.Create(() => (ActorBase) AggregateFactory.CreateAggregate(serviceType, rsn as Guid?, false));
+			string actorName = serviceType.FullName.Replace("`", string.Empty);
+			int index = actorName.IndexOf("[[", StringComparison.Ordinal);
+			if (index > -1)
+				actorName = actorName.Substring(0, index);
+			actorReference = AkkaSystem.ActorOf(properties, string.Format("{0}~{1}", actorName, rsn));
+			AkkaActors.Add(serviceType, actorReference);
+			return actorReference;
 		}
 	}
 }

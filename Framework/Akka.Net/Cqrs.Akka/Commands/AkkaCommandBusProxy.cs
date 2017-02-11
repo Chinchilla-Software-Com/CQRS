@@ -6,18 +6,14 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using Akka.Actor;
 using Cqrs.Commands;
 using Cqrs.Configuration;
-using Cqrs.Events;
 
 namespace Cqrs.Akka.Commands
 {
 	/// <summary>
-	/// A <see cref="ICommandSender{TAuthenticationToken}"/> that proxies <see cref="ICommand{TAuthenticationToken}"/> to and <see cref="IActorRef"/> which acts as a single point of all handler resolutions.
+	/// A <see cref="ICommandSender{TAuthenticationToken}"/> that proxies <see cref="ICommand{TAuthenticationToken}"/> to the <see cref="IActorRef"/> which acts as a single point of all handler resolutions.
 	/// </summary>
 	public class AkkaCommandBusProxy<TAuthenticationToken>
 		: IAkkaCommandSenderProxy<TAuthenticationToken>
@@ -35,7 +31,6 @@ namespace Cqrs.Akka.Commands
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			bool result = CommandHandlerResolver.Ask<bool>(command).Result;
-			// CommandHandlerResolver.Tell(parameters);
 		}
 
 		#endregion

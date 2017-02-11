@@ -67,7 +67,6 @@ namespace Cqrs.Akka.Tests.Unit.Aggregates
 		public virtual void HelloWorldReply()
 		{
 			ApplyChange(new HelloWorldReplied { Id = Id });
-			UnitTest1.Step2Reached = true;
 		}
 	}
 
