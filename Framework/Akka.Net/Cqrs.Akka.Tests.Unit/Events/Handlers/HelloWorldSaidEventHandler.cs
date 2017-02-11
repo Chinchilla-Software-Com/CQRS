@@ -20,6 +20,7 @@ namespace Cqrs.Akka.Tests.Unit.Events.Handlers
 		public void Handle(HelloWorldSaid message)
 		{
 			CommandBus.Send(new HelloWorldReplyCommand {Id = message.Id});
+			UnitTest1.Step1Reached = true;
 		}
 
 		#endregion

@@ -8,11 +8,15 @@
 
 using System;
 using Akka.Actor;
+using Cqrs.Domain;
 
 namespace Cqrs.Akka.Domain
 {
 	public interface IAkkaAggregateResolver
 	{
-		IActorRef Resolve<TAggregate>(Guid rsn);
+		IActorRef ResolveActor<TAggregate, TAuthenticationToken>(Guid rsn)
+			where TAggregate : IAggregateRoot<TAuthenticationToken>;
+
+		IActorRef ResolveActor<T>();
 	}
 }

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using Akka.Actor;
 using Cqrs.Akka.Configuration;
 using Cqrs.Akka.Domain;
+using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Ninject.Configuration;
 using Ninject;
@@ -46,6 +49,13 @@ namespace Cqrs.Ninject.Akka
 			NinjectDependencyResolver.Start(kernel, prepareProvidedKernel);
 		}
 
+		public static void Stop()
+		{
+			var di = Current as AkkaNinjectDependencyResolver;
+			if (di != null)
+				di.AkkaSystem.Shutdown();
+		}
+
 		#region Overrides of NinjectDependencyResolver
 
 		public override object Resolve(Type serviceType)
@@ -57,12 +67,23 @@ namespace Cqrs.Ninject.Akka
 
 		#region Implementation of IAkkaAggregateResolver
 
-		public virtual IActorRef Resolve<TAggregate>(Guid rsn)
+		public virtual IActorRef ResolveActor<TAggregate, TAuthenticationToken>(Guid rsn)
+			where TAggregate : IAggregateRoot<TAuthenticationToken>
 		{
 			return (IActorRef)Resolve(typeof(TAggregate), rsn);
 		}
 
+		public IActorRef ResolveActor<T>()
+		{
+			return (IActorRef)Resolve(typeof(T));
+		}
+
 		#endregion
+
+		protected virtual object RootResolve(Type serviceType)
+		{
+			return base.Resolve(serviceType);
+		}
 
 		public virtual object Resolve(Type serviceType, object rsn)
 		{
@@ -76,8 +97,31 @@ namespace Cqrs.Ninject.Akka
 			}
 			catch (/*ActorInitialization*/Exception)
 			{
-				var properties = Props.Create(() => (ActorBase)AggregateFactory.CreateAggregate(serviceType, rsn as Guid?, false));
-				actorReference = AkkaSystem.ActorOf(properties, string.Format("{0}~{1}", serviceType.FullName, rsn));
+				Props properties;
+				Type typeToTest = serviceType;
+				while (typeToTest != null)
+				{
+					Type[] types = typeToTest.GenericTypeArguments;
+					if (types.Length == 1)
+					{
+						Type aggregateType = typeof (AkkaAggregateRoot<>).MakeGenericType(typeToTest.GenericTypeArguments.Single());
+						if (typeToTest == aggregateType)
+						{
+							typeToTest = aggregateType;
+							break;
+						}
+					}
+					typeToTest = typeToTest.BaseType;
+				}
+				if (typeToTest == null || !(typeToTest).IsAssignableFrom(serviceType))
+					properties = Props.Create(() => (ActorBase)RootResolve(serviceType));
+				else
+					properties = Props.Create(() => (ActorBase) AggregateFactory.CreateAggregate(serviceType, rsn as Guid?, false));
+				string actorName = serviceType.FullName.Replace("`", string.Empty);
+				int index = actorName.IndexOf("[[", StringComparison.Ordinal);
+				if (index > -1)
+					actorName = actorName.Substring(0, index);
+				actorReference = AkkaSystem.ActorOf(properties, string.Format("{0}~{1}", actorName, rsn));
 				AkkaActors.Add(serviceType, actorReference);
 				return actorReference;
 			}

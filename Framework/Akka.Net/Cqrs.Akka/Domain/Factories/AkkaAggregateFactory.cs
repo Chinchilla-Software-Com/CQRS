@@ -31,7 +31,7 @@ namespace Cqrs.Akka.Domain.Factories
 			{
 				var rawProxy = new AkkaAggregateRootProxy<TAuthenticationToken, TAggregateRoot>
 				{
-					ActorReference = AggregateResolver.Resolve<TAggregateRoot>(rsn.Value)
+					ActorReference = AggregateResolver.ResolveActor<TAggregateRoot, TAuthenticationToken>(rsn.Value)
 				};
 				return rawProxy.Aggregate;
 			}

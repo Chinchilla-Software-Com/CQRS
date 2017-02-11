@@ -23,7 +23,7 @@ namespace Cqrs.Akka.Tests.Unit.Commands.Handlers
 
 		public void Handle(HelloWorldReplyCommand command)
 		{
-			IActorRef item = AggregateResolver.Resolve<HelloWorld>(command.Id);
+			IActorRef item = AggregateResolver.ResolveActor<HelloWorld, Guid>(command.Id);
 			var parameters = new HelloWorldReplyParameters();
 			bool result = item.Ask<bool>(parameters).Result;
 			// item.Tell(parameters);

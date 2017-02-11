@@ -25,7 +25,7 @@ namespace Cqrs.Akka.Tests.Unit.Commands.Handlers
 		{
 			if (command.Id == Guid.Empty)
 				command.Id = Guid.NewGuid();
-			IActorRef item = AggregateResolver.Resolve<HelloWorld>(command.Id);
+			IActorRef item = AggregateResolver.ResolveActor<HelloWorld, Guid>(command.Id);
 			var parameters = new SayHelloParameters();
 			bool result = item.Ask<bool>(parameters).Result;
 			// item.Tell(parameters);

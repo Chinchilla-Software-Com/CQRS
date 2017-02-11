@@ -24,6 +24,9 @@ namespace Cqrs.Akka.Tests.Unit
 	[TestClass]
 	public class UnitTest1
 	{
+		internal static bool Step1Reached = false;
+		internal static bool Step2Reached = false;
+
 		[TestMethod]
 		public void TestMethod1()
 		{
@@ -49,10 +52,12 @@ namespace Cqrs.Akka.Tests.Unit
 			kernel.Bind<IEventPublisher<Guid>>().ToConstant(inProcessBus);
 			kernel.Bind<ICorrelationIdHelper>().ToConstant(correlationIdHelper);
 			kernel.Bind<IAkkaEventBus<Guid>>().ToConstant(eventBus);
+			kernel.Bind<IAkkaCommandSender<Guid>>().ToConstant(commandBus);
 
 			AkkaNinjectDependencyResolver.Start(kernel);
 			var dependencyResolver = NinjectDependencyResolver.Current as AkkaNinjectDependencyResolver;
 
+			var commandBusProxy = new AkkaCommandBusProxy<Guid>(dependencyResolver);
 
 			// Commands handled by Akka.net
 			commandBus.RegisterHandler<SayHelloWorldCommand>(new SayHelloWorldCommandHandler(dependencyResolver).Handle);
@@ -62,10 +67,12 @@ namespace Cqrs.Akka.Tests.Unit
 			inProcessBus.RegisterHandler<HelloWorldSaid>(new HelloWorldSaidEventHandler(commandBus).Handle);
 
 			// Act
-			commandBus.Send(command);
+			commandBusProxy.Send(command);
 
 			// Assert
-			SpinWait.SpinUntil(() => false);
+			SpinWait.SpinUntil(() => Step1Reached && Step2Reached);
+
+			AkkaNinjectDependencyResolver.Stop();
 		}
 	}
 }
