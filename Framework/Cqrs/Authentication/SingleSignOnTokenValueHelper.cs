@@ -6,23 +6,22 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System.Runtime.Remoting.Messaging;
+using cdmdotnet.StateManagement;
 
 namespace Cqrs.Authentication
 {
-	public class SingleSignOnTokenValueHelper
-		: IAuthenticationTokenHelper<ISingleSignOnToken>
+	public class AuthenticationTokenHelper
+		: AuthenticationTokenHelper<ISingleSignOnToken>
 		, IAuthenticationTokenHelper<ISingleSignOnTokenWithUserRsn>
 		, IAuthenticationTokenHelper<ISingleSignOnTokenWithCompanyRsn>
 		, IAuthenticationTokenHelper<ISingleSignOnTokenWithUserRsnAndCompanyRsn>
 	{
 		private const string CallContextPermissionScopeValueKey = "SingleSignOnTokenValue";
 
-		#region Implementation of IAuthenticationTokenHelper<out ISingleSignOnToken>
-
-		public ISingleSignOnToken GetAuthenticationToken()
+		public AuthenticationTokenHelper(IContextItemCollectionFactory factory)
+			: base(factory)
 		{
-			return (ISingleSignOnToken)CallContext.GetData(CallContextPermissionScopeValueKey);
+			CacheKey = CallContextPermissionScopeValueKey;
 		}
 
 		public ISingleSignOnTokenWithUserRsnAndCompanyRsn SetAuthenticationToken(ISingleSignOnTokenWithUserRsnAndCompanyRsn token)
@@ -43,27 +42,19 @@ namespace Cqrs.Authentication
 			return token;
 		}
 
-		public ISingleSignOnToken SetAuthenticationToken(ISingleSignOnToken token)
-		{
-			CallContext.SetData(CallContextPermissionScopeValueKey, token);
-			return token;
-		}
-
-		#endregion
-
 		ISingleSignOnTokenWithUserRsn IAuthenticationTokenHelper<ISingleSignOnTokenWithUserRsn>.GetAuthenticationToken()
 		{
-			return (ISingleSignOnTokenWithUserRsn)CallContext.GetData(CallContextPermissionScopeValueKey);
+			return Cache.GetData<ISingleSignOnTokenWithUserRsn>(CallContextPermissionScopeValueKey);
 		}
 
 		ISingleSignOnTokenWithCompanyRsn IAuthenticationTokenHelper<ISingleSignOnTokenWithCompanyRsn>.GetAuthenticationToken()
 		{
-			return (ISingleSignOnTokenWithCompanyRsn)CallContext.GetData(CallContextPermissionScopeValueKey);
+			return Cache.GetData<ISingleSignOnTokenWithCompanyRsn>(CallContextPermissionScopeValueKey);
 		}
 
 		ISingleSignOnTokenWithUserRsnAndCompanyRsn IAuthenticationTokenHelper<ISingleSignOnTokenWithUserRsnAndCompanyRsn>.GetAuthenticationToken()
 		{
-			return (ISingleSignOnTokenWithUserRsnAndCompanyRsn)CallContext.GetData(CallContextPermissionScopeValueKey);
+			return Cache.GetData<ISingleSignOnTokenWithUserRsnAndCompanyRsn>(CallContextPermissionScopeValueKey);
 		}
 	}
 }

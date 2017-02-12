@@ -6,10 +6,12 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using System.Web;
 
 namespace Cqrs.Authentication
 {
+	[Obsolete("Use SingleSignOnTokenValueHelper.")]
 	public class WebSingleSignOnTokenValueHelper
 		: IAuthenticationTokenHelper<ISingleSignOnToken>
 		, IAuthenticationTokenHelper<ISingleSignOnTokenWithUserRsn>

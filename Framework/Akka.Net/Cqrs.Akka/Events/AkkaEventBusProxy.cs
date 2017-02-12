@@ -7,6 +7,7 @@
 #endregion
 
 using Akka.Actor;
+using Cqrs.Akka.Domain;
 using Cqrs.Configuration;
 using Cqrs.Events;
 
@@ -20,7 +21,7 @@ namespace Cqrs.Akka.Events
 	{
 		public AkkaEventBusProxy(IDependencyResolver dependencyResolver)
 		{
-			EventHandlerResolver = (IActorRef)dependencyResolver.Resolve(typeof(BusActor));
+			EventHandlerResolver = ((IAkkaAggregateResolver)dependencyResolver).ResolveActor<BusActor>();
 		}
 
 		protected IActorRef EventHandlerResolver { get; private set; }

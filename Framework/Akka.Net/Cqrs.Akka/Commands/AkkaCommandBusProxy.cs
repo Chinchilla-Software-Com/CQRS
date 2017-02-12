@@ -6,7 +6,9 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using Akka.Actor;
+using Cqrs.Akka.Domain;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 
@@ -20,7 +22,7 @@ namespace Cqrs.Akka.Commands
 	{
 		public AkkaCommandBusProxy(IDependencyResolver dependencyResolver)
 		{
-			CommandHandlerResolver = (IActorRef)dependencyResolver.Resolve(typeof(BusActor));
+			CommandHandlerResolver = ((IAkkaAggregateResolver)dependencyResolver).ResolveActor<BusActor>();
 		}
 
 		protected IActorRef CommandHandlerResolver { get; private set; }

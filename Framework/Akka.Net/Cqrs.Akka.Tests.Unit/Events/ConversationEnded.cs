@@ -5,7 +5,7 @@ using Cqrs.Messages;
 
 namespace Cqrs.Akka.Tests.Unit.Events
 {
-	public class HelloWorldReplied : IEvent<Guid>
+	public class ConversationEnded : IEvent<Guid>
 	{
 		#region Implementation of IMessage
 

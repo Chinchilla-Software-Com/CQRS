@@ -25,6 +25,8 @@ namespace Cqrs.Bus
 		, IEventPublisher<TAuthenticationToken>
 		, IEventHandlerRegistrar
 		, ICommandHandlerRegistrar
+		, ICommandReceiver<TAuthenticationToken>
+		, IEventReceiver<TAuthenticationToken>
 	{
 		private static RouteManager Routes { get; set; }
 
@@ -301,6 +303,34 @@ namespace Cqrs.Bus
 			where TMessage : IMessage
 		{
 			RegisterHandler(handler, null, holdMessageLock);
+		}
+
+		#endregion
+
+		#region Implementation of ICommandReceiver
+
+		public void ReceiveCommand(ICommand<TAuthenticationToken> command)
+		{
+			Send(command);
+		}
+
+		public void ReceiveEvent(IEvent<TAuthenticationToken> @event)
+		{
+			Publish(@event);
+		}
+
+		void ICommandReceiver.Start()
+		{
+			// This is in-process so doesn't need to do anything
+		}
+
+		#endregion
+
+		#region Implementation of IEventReceiver
+
+		void IEventReceiver.Start()
+		{
+			// This is in-process so doesn't need to do anything
 		}
 
 		#endregion

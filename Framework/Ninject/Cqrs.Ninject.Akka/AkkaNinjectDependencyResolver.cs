@@ -99,6 +99,7 @@ namespace Cqrs.Ninject.Akka
 				if (!isAForcedActorSearch)
 					return base.Resolve(serviceType);
 			}
+			catch (ActivationException) { throw; }
 			catch ( /*ActorInitialization*/Exception) { }
 
 			Props properties;

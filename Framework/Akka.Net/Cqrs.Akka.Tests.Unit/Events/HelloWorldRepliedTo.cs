@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cqrs.Commands;
+using Cqrs.Events;
 using Cqrs.Messages;
 
-namespace Cqrs.Akka.Tests.Unit.Commands
+namespace Cqrs.Akka.Tests.Unit.Events
 {
-	public class HelloWorldReplyCommand : ICommand<Guid>
+	public class HelloWorldRepliedTo : IEvent<Guid>
 	{
 		#region Implementation of IMessage
 
 		public Guid CorrolationId { get; set; }
 		public Guid CorrelationId { get { return CorrolationId; } set { CorrolationId = value; } }
-
 		public FrameworkType Framework { get; set; }
 
 		/// <summary>
@@ -32,10 +31,11 @@ namespace Cqrs.Akka.Tests.Unit.Commands
 
 		#endregion
 
-		#region Implementation of ICommand<Guid>
+		#region Implementation of IEvent<Guid>
 
 		public Guid Id { get; set; }
-		public int ExpectedVersion { get; set; }
+		public int Version { get; set; }
+		public DateTimeOffset TimeStamp { get; set; }
 
 		#endregion
 	}

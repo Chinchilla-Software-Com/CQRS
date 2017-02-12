@@ -27,7 +27,8 @@ namespace Cqrs.Akka.Tests.Unit.Aggregates
 			: base(null, null, null)
 		{
 			Receive<SayHelloParameters>(parameters => Execute(SayHello, parameters));
-			Receive<HelloWorldReplyParameters>(parameters => Execute(HelloWorldReply, parameters));
+			Receive<ReplyToHelloWorldParameters>(parameters => Execute(ReplyToHelloWorld, parameters));
+			Receive<EndConversationParameters>(parameters => Execute(EndConversation, parameters));
 		}
 
 		/// <summary>
@@ -54,9 +55,14 @@ namespace Cqrs.Akka.Tests.Unit.Aggregates
 			SayHello();
 		}
 
-		public virtual void HelloWorldReply(HelloWorldReplyParameters parameter)
+		public virtual void ReplyToHelloWorld(ReplyToHelloWorldParameters parameter)
 		{
-			HelloWorldReply();
+			ReplyToHelloWorld();
+		}
+
+		public virtual void EndConversation(EndConversationParameters parameter)
+		{
+			EndConversation();
 		}
 
 		public virtual void SayHello()
@@ -64,13 +70,20 @@ namespace Cqrs.Akka.Tests.Unit.Aggregates
 			ApplyChange(new HelloWorldSaid { Id = Id });
 		}
 
-		public virtual void HelloWorldReply()
+		public virtual void ReplyToHelloWorld()
 		{
-			ApplyChange(new HelloWorldReplied { Id = Id });
+			ApplyChange(new HelloWorldRepliedTo { Id = Id });
+		}
+
+		public virtual void EndConversation()
+		{
+			ApplyChange(new ConversationEnded { Id = Id });
 		}
 	}
 
 	public class SayHelloParameters { }
 
-	public class HelloWorldReplyParameters { }
+	public class ReplyToHelloWorldParameters { }
+
+	public class EndConversationParameters { }
 }
