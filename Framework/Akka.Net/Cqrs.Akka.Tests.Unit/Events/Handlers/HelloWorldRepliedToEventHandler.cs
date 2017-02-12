@@ -3,6 +3,7 @@ using Akka.Actor;
 using cdmdotnet.Logging;
 using Cqrs.Akka.Domain;
 using Cqrs.Akka.Events;
+using Cqrs.Authentication;
 using Cqrs.Events;
 
 namespace Cqrs.Akka.Tests.Unit.Events.Handlers
@@ -33,19 +34,19 @@ namespace Cqrs.Akka.Tests.Unit.Events.Handlers
 	}
 
 	public class HelloWorldRepliedToEventHandlerActor
-		: AkkaEventHandler
+		: AkkaEventHandler<Guid>
 	{
 		#region Implementation of IMessageHandler<in HelloWorldRepliedTo>
 
 		public void Handle(HelloWorldRepliedTo message)
 		{
-			UnitTest1.Step2Reached = true;
+			AkkaUnitTests.Step2Reached[message.CorrelationId] = true;
 		}
 
 		#endregion
 
-		public HelloWorldRepliedToEventHandlerActor(ILogger logger)
-			: base(logger)
+		public HelloWorldRepliedToEventHandlerActor(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<Guid> authenticationTokenHelper)
+			: base(logger, correlationIdHelper, authenticationTokenHelper)
 		{
 			Receive<HelloWorldRepliedTo>(@event => Execute(Handle, @event));
 		}

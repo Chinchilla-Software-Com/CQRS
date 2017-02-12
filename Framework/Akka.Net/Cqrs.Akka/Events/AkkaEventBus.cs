@@ -77,7 +77,7 @@ namespace Cqrs.Akka.Events
 		public virtual void PrepareEvent<TEvent>(TEvent @event, string framework)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
-			if (@event.AuthenticationToken == null)
+			if (@event.AuthenticationToken == null || @event.AuthenticationToken.Equals(default(TAuthenticationToken)))
 				@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 

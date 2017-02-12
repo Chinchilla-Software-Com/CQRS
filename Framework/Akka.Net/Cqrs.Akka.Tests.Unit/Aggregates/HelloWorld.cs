@@ -1,7 +1,9 @@
 ﻿using System;
 using cdmdotnet.Logging;
 using Cqrs.Akka.Domain;
+using Cqrs.Akka.Tests.Unit.Commands;
 using Cqrs.Akka.Tests.Unit.Events;
+using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Cqrs.Domain;
 
@@ -24,11 +26,11 @@ namespace Cqrs.Akka.Tests.Unit.Aggregates
 		/// A constructor for the <see cref="Cqrs.Domain.Factories.IAggregateFactory"/>
 		/// </summary>
 		private HelloWorld()
-			: base(null, null, null)
+			: base(null, null, null, null, null)
 		{
-			Receive<SayHelloParameters>(parameters => Execute(SayHello, parameters));
-			Receive<ReplyToHelloWorldParameters>(parameters => Execute(ReplyToHelloWorld, parameters));
-			Receive<EndConversationParameters>(parameters => Execute(EndConversation, parameters));
+			Receive<SayHelloWorldCommand>(command => Execute(SayHello, command));
+			Receive<ReplyToHelloWorldCommand>(command => Execute(ReplyToHelloWorld, command));
+			Receive<EndConversationCommand>(command => Execute(EndConversation, command));
 		}
 
 		/// <summary>
@@ -41,6 +43,8 @@ namespace Cqrs.Akka.Tests.Unit.Aggregates
 			Logger = logger;
 			UnitOfWork = DependencyResolver.Resolve<IUnitOfWork<Guid>>();
 			Repository = DependencyResolver.Resolve<IAkkaRepository<Guid>>();
+			CorrelationIdHelper = DependencyResolver.Resolve<ICorrelationIdHelper>();
+			AuthenticationTokenHelper = DependencyResolver.Resolve<IAuthenticationTokenHelper<Guid>>();
 		}
 // ReSharper restore UnusedMember.Local
 
@@ -50,17 +54,17 @@ namespace Cqrs.Akka.Tests.Unit.Aggregates
 			Rsn = rsn;
 		}
 
-		public virtual void SayHello(SayHelloParameters parameter)
+		public virtual void SayHello(SayHelloWorldCommand command)
 		{
 			SayHello();
 		}
 
-		public virtual void ReplyToHelloWorld(ReplyToHelloWorldParameters parameter)
+		public virtual void ReplyToHelloWorld(ReplyToHelloWorldCommand command)
 		{
 			ReplyToHelloWorld();
 		}
 
-		public virtual void EndConversation(EndConversationParameters parameter)
+		public virtual void EndConversation(EndConversationCommand command)
 		{
 			EndConversation();
 		}
@@ -80,10 +84,4 @@ namespace Cqrs.Akka.Tests.Unit.Aggregates
 			ApplyChange(new ConversationEnded { Id = Id });
 		}
 	}
-
-	public class SayHelloParameters { }
-
-	public class ReplyToHelloWorldParameters { }
-
-	public class EndConversationParameters { }
 }

@@ -67,7 +67,7 @@ namespace Cqrs.Akka.Commands
 		protected virtual void PrepareCommand<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			if (command.AuthenticationToken == null)
+			if (command.AuthenticationToken == null || command.AuthenticationToken.Equals(default(TAuthenticationToken)))
 				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 

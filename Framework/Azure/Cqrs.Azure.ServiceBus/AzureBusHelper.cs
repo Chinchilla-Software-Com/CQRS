@@ -52,7 +52,7 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void PrepareCommand<TCommand>(TCommand command, string framework)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			if (command.AuthenticationToken == null)
+			if (command.AuthenticationToken == null || command.AuthenticationToken.Equals(default(TAuthenticationToken)))
 				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
@@ -190,7 +190,7 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void PrepareEvent<TEvent>(TEvent @event, string framework)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
-			if (@event.AuthenticationToken == null)
+			if (@event.AuthenticationToken == null || @event.AuthenticationToken.Equals(default(TAuthenticationToken)))
 				@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 			@event.TimeStamp = DateTimeOffset.UtcNow;

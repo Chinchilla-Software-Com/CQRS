@@ -19,7 +19,7 @@ namespace Cqrs.Akka.Tests.Unit.Events.Handlers
 
 		public void Handle(ConversationEnded message)
 		{
-			UnitTest1.Step4Reached = true;
+			AkkaUnitTests.Step4Reached[message.CorrelationId] = true;
 		}
 
 		#endregion

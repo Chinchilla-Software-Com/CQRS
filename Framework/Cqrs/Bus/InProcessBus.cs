@@ -63,7 +63,7 @@ namespace Cqrs.Bus
 		protected virtual void PrepareCommand<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			if (command.AuthenticationToken == null)
+			if (command.AuthenticationToken == null || command.AuthenticationToken.Equals(default(TAuthenticationToken)))
 				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
@@ -249,7 +249,7 @@ namespace Cqrs.Bus
 				return;
 			}
 
-			if (@event.AuthenticationToken == null)
+			if (@event.AuthenticationToken == null || @event.AuthenticationToken.Equals(default(TAuthenticationToken)))
 				@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 

@@ -7,6 +7,7 @@ using Cqrs.Akka.Events;
 using Cqrs.Akka.Tests.Unit.Commands;
 using Cqrs.Commands;
 using Cqrs.Events;
+using Cqrs.Authentication;
 
 namespace Cqrs.Akka.Tests.Unit.Events.Handlers
 {
@@ -36,7 +37,7 @@ namespace Cqrs.Akka.Tests.Unit.Events.Handlers
 	}
 
 	public class HelloWorldRepliedToSendEndConversationCommandEventHandlerActor
-		: AkkaEventHandler
+		: AkkaEventHandler<Guid>
 	{
 		protected ICommandSender<Guid> CommandBus { get; private set; }
 
@@ -45,13 +46,13 @@ namespace Cqrs.Akka.Tests.Unit.Events.Handlers
 		public void Handle(HelloWorldRepliedTo message)
 		{
 			CommandBus.Send(new EndConversationCommand { Id = message.Id });
-			UnitTest1.Step3Reached = true;
+			AkkaUnitTests.Step3Reached[message.CorrelationId] = true;
 		}
 
 		#endregion
 
-		public HelloWorldRepliedToSendEndConversationCommandEventHandlerActor(ILogger logger, IAkkaCommandSender<Guid> commandBus)
-			: base(logger)
+		public HelloWorldRepliedToSendEndConversationCommandEventHandlerActor(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, IAkkaCommandSender<Guid> commandBus)
+			: base(logger, correlationIdHelper, authenticationTokenHelper)
 		{
 			CommandBus = commandBus;
 			Receive<HelloWorldRepliedTo>(@event => Execute(Handle, @event));

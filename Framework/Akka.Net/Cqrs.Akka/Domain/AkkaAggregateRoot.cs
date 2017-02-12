@@ -12,6 +12,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Akka.Actor;
 using cdmdotnet.Logging;
+using Cqrs.Authentication;
+using Cqrs.Commands;
 using Cqrs.Domain;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Events;
@@ -29,17 +31,23 @@ namespace Cqrs.Akka.Domain
 
 		protected ILogger Logger { get; set; }
 
+		protected ICorrelationIdHelper CorrelationIdHelper { get; set; }
+
+		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; set; }
+
 		private ICollection<IEvent<TAuthenticationToken>> Changes { get; set; }
 
 		public Guid Id { get; protected set; }
 
 		public int Version { get; protected set; }
 
-		protected AkkaAggregateRoot(IUnitOfWork<TAuthenticationToken> unitOfWork, ILogger logger, IAkkaRepository<TAuthenticationToken> repository)
+		protected AkkaAggregateRoot(IUnitOfWork<TAuthenticationToken> unitOfWork, ILogger logger, IAkkaRepository<TAuthenticationToken> repository, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
 		{
 			UnitOfWork = unitOfWork;
 			Logger = logger;
 			Repository = repository;
+			CorrelationIdHelper = correlationIdHelper;
+			AuthenticationTokenHelper = authenticationTokenHelper;
 			Changes = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(new List<IEvent<TAuthenticationToken>>());
 		}
 
@@ -60,12 +68,15 @@ namespace Cqrs.Akka.Domain
 
 		#endregion
 
-		protected virtual void Execute<TParameters>(Action<TParameters> action, TParameters parameters)
+		protected virtual void Execute<TCommand>(Action<TCommand> action, TCommand command)
+			where TCommand : ICommand<TAuthenticationToken>
 		{
 			UnitOfWork.Add(this);
 			try
 			{
-				action(parameters);
+				AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
+				CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
+				action(command);
 
 				UnitOfWork.Commit();
 
@@ -73,7 +84,7 @@ namespace Cqrs.Akka.Domain
 			}
 			catch(Exception exception)
 			{
-				Logger.LogError("Executing an Akka.net request failed.", exception: exception, metaData: new Dictionary<string, object> { { "Type", GetType() }, { "Parameters", parameters } });
+				Logger.LogError("Executing an Akka.net request failed.", exception: exception, metaData: new Dictionary<string, object> { { "Type", GetType() }, { "Command", command } });
 				Sender.Tell(false, Self);
 				throw;
 			}

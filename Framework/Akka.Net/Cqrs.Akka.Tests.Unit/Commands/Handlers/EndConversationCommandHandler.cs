@@ -24,8 +24,7 @@ namespace Cqrs.Akka.Tests.Unit.Commands.Handlers
 		public void Handle(EndConversationCommand command)
 		{
 			IActorRef item = AggregateResolver.ResolveActor<HelloWorld, Guid>(command.Id);
-			var parameters = new EndConversationParameters();
-			bool result = item.Ask<bool>(parameters).Result;
+			bool result = item.Ask<bool>(command).Result;
 			// item.Tell(parameters);
 		}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using cdmdotnet.Logging;
 using cdmdotnet.Logging.Configuration;
@@ -26,19 +27,21 @@ using Ninject;
 namespace Cqrs.Akka.Tests.Unit
 {
 	[TestClass]
-	public class UnitTest1
+	public class AkkaUnitTests
 	{
-		internal static bool Step1Reached = false;
-		internal static bool Step2Reached = false;
-		internal static bool Step3Reached = false;
-		internal static bool Step4Reached = false;
+		internal static IDictionary<Guid, bool> Step1Reached = new Dictionary<Guid, bool>();
+		internal static IDictionary<Guid, bool> Step2Reached = new Dictionary<Guid, bool>();
+		internal static IDictionary<Guid, bool> Step3Reached = new Dictionary<Guid, bool>();
+		internal static IDictionary<Guid, bool> Step4Reached = new Dictionary<Guid, bool>();
 
 		[TestMethod]
-		public void TestMethod1()
+		public void SendingCommandsAndEvents_AcrossBusesInMultipleWays_AllWork()
 		{
 			// Arrange
 			var command = new SayHelloWorldCommand();
-			ICorrelationIdHelper correlationIdHelper = new NullCorrelationIdHelper();
+			Guid correlationId = Guid.NewGuid();
+			ICorrelationIdHelper correlationIdHelper = new WebCorrelationIdHelper(new WebContextItemCollectionFactory());
+			correlationIdHelper.SetCorrelationId(correlationId);
 			ILogger logger = new ConsoleLogger(new LoggerSettings(), correlationIdHelper);
 			IConfigurationManager configurationManager = new ConfigurationManager();
 			IBusHelper busHelper = new BusHelper(configurationManager);
@@ -74,7 +77,7 @@ namespace Cqrs.Akka.Tests.Unit
 			var eventBus = dependencyResolver.Resolve<IEventHandlerRegistrar>();
 			var inProcessBus = dependencyResolver.Resolve<InProcessBus<Guid>>();
 
-			var commandBusProxy = new AkkaCommandBusProxy<Guid>(dependencyResolver);
+			var commandBusProxy = new AkkaCommandBusProxy<Guid>(dependencyResolver, correlationIdHelper, dependencyResolver.Resolve<IAuthenticationTokenHelper<Guid>>());
 			// Commands handled by Akka.net
 			commandBus.RegisterHandler<SayHelloWorldCommand>(new SayHelloWorldCommandHandler(dependencyResolver).Handle);
 			commandBus.RegisterHandler<ReplyToHelloWorldCommand>(new ReplyToHelloWorldCommandHandler(dependencyResolver).Handle);
@@ -88,11 +91,16 @@ namespace Cqrs.Akka.Tests.Unit
 			eventBus.RegisterHandler<HelloWorldRepliedTo>(new HelloWorldRepliedToEventHandler(dependencyResolver).Handle);
 			eventBus.RegisterHandler<HelloWorldRepliedTo>(new HelloWorldRepliedToSendEndConversationCommandEventHandler(dependencyResolver).Handle);
 
+			Step1Reached.Add(correlationId, false);
+			Step2Reached.Add(correlationId, false);
+			Step3Reached.Add(correlationId, false);
+			Step4Reached.Add(correlationId, false);
+
 			// Act
 			commandBusProxy.Send(command);
 
 			// Assert
-			SpinWait.SpinUntil(() => Step1Reached && Step2Reached && Step3Reached && Step4Reached);
+			SpinWait.SpinUntil(() => Step1Reached[correlationId] && Step2Reached[correlationId] && Step3Reached[correlationId] && Step4Reached[correlationId]);
 
 			AkkaNinjectDependencyResolver.Stop();
 		}
