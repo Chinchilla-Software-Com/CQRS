@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using cdmdotnet.Logging;
 using cdmdotnet.Logging.Configuration;
+using cdmdotnet.StateManagement.Threaded;
 using Cqrs.Azure.BlobStorage.DataStores;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
 using Cqrs.Configuration;
@@ -25,7 +26,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 		public void Save_ValidProjectionView_ProjectionViewCanBeRetreived()
 		{
 			// Arrange
-			var correlationIdHelper = new CorrelationIdHelper();
+			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
 			var dataStore = new BlobStorageDataStore<TestEvent>(logger, new BlobStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));

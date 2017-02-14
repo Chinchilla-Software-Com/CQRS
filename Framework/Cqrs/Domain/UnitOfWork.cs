@@ -13,7 +13,7 @@ using Cqrs.Domain.Exceptions;
 namespace Cqrs.Domain
 {
 	/// <summary>
-	/// This is a Unit of Work
+	/// This is a Unit of Work. This shouldn't normally be used as a singleton.
 	/// </summary>
 	public class UnitOfWork<TAuthenticationToken> : IUnitOfWork<TAuthenticationToken>
 	{
