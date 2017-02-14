@@ -151,6 +151,11 @@
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
+        <property name="AggregateTechnology" displayName="Aggregate Technology: What technology are you using for aggregate processing of THIS aggregate." defaultValue="BuiltIn">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/AggregateTechnology"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
     <stereotype name="AggregateProperty" displayName="Aggregate Property">
@@ -291,6 +296,11 @@
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
         </property>
+        <property name="AggregateTechnology" displayName="Aggregate Technology: What technology are you using for aggregate processing of THIS aggregate." defaultValue="BuiltIn">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/AggregateTechnology"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
     <stereotype name="EventToCommandConverter" displayName="Event To Command Converter">
@@ -307,6 +317,11 @@
         <property name="EventName" displayName="EventName: The name of the Event this event handler responds to." defaultValue="">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+        <property name="AggregateTechnology" displayName="Aggregate Technology: What technology are you using for aggregate processing of THIS aggregate." defaultValue="BuiltIn">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/AggregateTechnology"/>
           </propertyType>
         </property>
       </properties>
