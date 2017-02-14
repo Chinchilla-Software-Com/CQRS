@@ -22,7 +22,8 @@ namespace Cqrs.Tests.Domain
 		{
 			_eventStore = new TestInMemoryEventStore();
 			_eventPublisher = new TestEventPublisher();
-			var aggregateFactory = new AggregateFactory(null);
+			var dependencyResolver = new TestDependencyResolver(null);
+			var aggregateFactory = new AggregateFactory(dependencyResolver, dependencyResolver.Resolve<ILogger>());
 			_rep = new Repository<ISingleSignOnToken>(aggregateFactory, _eventStore, _eventPublisher, new NullCorrelationIdHelper());
 
 			_aggregate = new TestAggregate(Guid.Empty);

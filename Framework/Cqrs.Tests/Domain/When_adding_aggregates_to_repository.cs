@@ -17,8 +17,9 @@ namespace Cqrs.Tests.Domain
 		[SetUp]
 		public void SetUp()
 		{
-			var aggregateFactory = new AggregateFactory(null);
-			var eventStore = new TestInMemoryEventStore();
+			var eventStore = new TestEventStore();
+			var dependencyResolver = new TestDependencyResolver(eventStore);
+			var aggregateFactory = new AggregateFactory(dependencyResolver, dependencyResolver.Resolve<ILogger>());
 			var eventPublisher = new TestEventPublisher();
 			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(new Repository<ISingleSignOnToken>(aggregateFactory, eventStore, eventPublisher, new NullCorrelationIdHelper()));
 		}

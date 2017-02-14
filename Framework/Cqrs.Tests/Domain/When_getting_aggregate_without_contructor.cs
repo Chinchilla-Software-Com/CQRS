@@ -17,16 +17,20 @@ namespace Cqrs.Tests.Domain
 		[SetUp]
 		public void Setup()
 		{
-			var aggregateFactory = new AggregateFactory(new TestDependencyResolver());
-			var eventStore = new TestInMemoryEventStore();
+			var eventStore = new TestEventStore();
+			var dependencyResolver = new TestDependencyResolver(eventStore);
+			var aggregateFactory = new AggregateFactory(dependencyResolver, dependencyResolver.Resolve<ILogger>());
 			var eventPublisher = new TestEventPublisher();
 			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(new Repository<ISingleSignOnToken>(aggregateFactory, eventStore, eventPublisher, new NullCorrelationIdHelper()));
 		}
 
+		/*
+		 * I don't think this makes sense anymore as it tests the test dependency resolver... test code testing test code.
 		[Test]
 		public void Should_throw_missing_parameterless_constructor_exception()
 		{
 			Assert.Throws<MissingParameterLessConstructorException>(() => _unitOfWork.Get<TestAggregateNoParameterLessConstructor>(Guid.NewGuid()));
 		}
+		*/
 	}
 }

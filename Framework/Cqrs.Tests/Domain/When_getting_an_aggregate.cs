@@ -14,11 +14,14 @@ namespace Cqrs.Tests.Domain
 	{
 		private IUnitOfWork<ISingleSignOnToken> _unitOfWork;
 
+		private TestDependencyResolver _dependencyResolver;
+
 		[SetUp]
 		public void Setup()
 		{
-			var aggregateFactory = new AggregateFactory(new TestDependencyResolver());
 			var eventStore = new TestEventStore();
+			_dependencyResolver = new TestDependencyResolver(eventStore);
+			var aggregateFactory = new AggregateFactory(_dependencyResolver, _dependencyResolver.Resolve<ILogger>());
 			var testEventPublisher = new TestEventPublisher();
 			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(new Repository<ISingleSignOnToken>(aggregateFactory, eventStore, testEventPublisher, new NullCorrelationIdHelper()));
 		}
@@ -26,6 +29,7 @@ namespace Cqrs.Tests.Domain
 		[Test]
 		public void Should_get_aggregate_from_eventstore()
 		{
+			_dependencyResolver.UseTestEventStoreGuid = false;
 			var aggregate = _unitOfWork.Get<TestAggregate>(Guid.NewGuid());
 			Assert.NotNull(aggregate);
 		}
@@ -40,6 +44,7 @@ namespace Cqrs.Tests.Domain
 		[Test]
 		public void Should_fail_if_aggregate_do_not_exist()
 		{
+			_dependencyResolver.UseTestEventStoreGuid = true;
 			Assert.Throws<AggregateNotFoundException<TestAggregate, ISingleSignOnToken>>(() => _unitOfWork.Get<TestAggregate>(Guid.Empty));
 		}
 
@@ -56,6 +61,7 @@ namespace Cqrs.Tests.Domain
 		public void Should_get_from_session_if_tracked()
 		{
 			var id = Guid.NewGuid();
+			_dependencyResolver.NewAggregateGuid = id;
 			var aggregate = _unitOfWork.Get<TestAggregate>(id);
 			var aggregate2 = _unitOfWork.Get<TestAggregate>(id);
 

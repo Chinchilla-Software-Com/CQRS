@@ -14,7 +14,7 @@ namespace Cqrs.Tests.Bus
 		[SetUp]
 		public void Setup()
 		{
-			_locator = new TestDependencyResolver();
+			_locator = new TestDependencyResolver(null);
 			_register = new BusRegistrar(_locator);
 			if (TestHandleRegistrar.HandlerList.Count == 0)
 				_register.Register(GetType());

@@ -21,7 +21,8 @@ namespace Cqrs.Tests.Snapshots
 			var eventPublisher = new TestEventPublisher();
 			var snapshotStore = new TestSnapshotStore();
 			var snapshotStrategy = new DefaultSnapshotStrategy<ISingleSignOnToken>();
-			var aggregateFactory = new AggregateFactory(new TestDependencyResolver());
+			var dependencyResolver = new TestDependencyResolver(null);
+			var aggregateFactory = new AggregateFactory(dependencyResolver, dependencyResolver.Resolve<ILogger>());
 			var snapshotRepository = new SnapshotRepository<ISingleSignOnToken>(snapshotStore, snapshotStrategy, new Repository<ISingleSignOnToken>(aggregateFactory, eventStore, eventPublisher, new NullCorrelationIdHelper()), eventStore, aggregateFactory);
 			var session = new UnitOfWork<ISingleSignOnToken>(snapshotRepository);
 

@@ -14,6 +14,8 @@ namespace Cqrs.Tests.Snapshots
 	{
 		private TestSnapshotAggregate _aggregate;
 
+		private TestDependencyResolver _dependencyResolver;
+
 		[SetUp]
 		public void Setup()
 		{
@@ -21,10 +23,13 @@ namespace Cqrs.Tests.Snapshots
 			var eventPublisher = new TestEventPublisher();
 			var snapshotStore = new NullSnapshotStore();
 			var snapshotStrategy = new DefaultSnapshotStrategy<ISingleSignOnToken>();
-			var aggregateFactory = new AggregateFactory(new TestDependencyResolver());
+			_dependencyResolver = new TestDependencyResolver(null);
+			var aggregateFactory = new AggregateFactory(_dependencyResolver, _dependencyResolver.Resolve<ILogger>());
 			var repository = new SnapshotRepository<ISingleSignOnToken>(snapshotStore, snapshotStrategy, new Repository<ISingleSignOnToken>(aggregateFactory, eventStore, eventPublisher, new NullCorrelationIdHelper()), eventStore, aggregateFactory);
 			var session = new UnitOfWork<ISingleSignOnToken>(repository);
-			_aggregate = session.Get<TestSnapshotAggregate>(Guid.NewGuid());
+			Guid id = Guid.NewGuid();
+			_dependencyResolver.NewAggregateGuid = id;
+			_aggregate = session.Get<TestSnapshotAggregate>(id);
 		}
 
 		private class NullSnapshotStore : ISnapshotStore

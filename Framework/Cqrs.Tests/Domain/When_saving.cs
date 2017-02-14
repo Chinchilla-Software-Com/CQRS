@@ -18,11 +18,13 @@ namespace Cqrs.Tests.Domain
 		private TestEventPublisher _eventPublisher;
 		private IUnitOfWork<ISingleSignOnToken> _unitOfWork;
 		private Repository<ISingleSignOnToken> _rep;
+		private TestDependencyResolver _dependencyResolver;
 
 		[SetUp]
 		public void Setup()
 		{
-			var aggregateFactory = new AggregateFactory(new TestDependencyResolver());
+			_dependencyResolver = new TestDependencyResolver(null);
+			var aggregateFactory = new AggregateFactory(_dependencyResolver, _dependencyResolver.Resolve<ILogger>());
 			_eventStore = new TestInMemoryEventStore();
 			_eventPublisher = new TestEventPublisher();
 			_rep = new Repository<ISingleSignOnToken>(aggregateFactory, _eventStore, _eventPublisher, new NullCorrelationIdHelper());
@@ -107,6 +109,7 @@ namespace Cqrs.Tests.Domain
 		public void Should_clear_tracked_aggregates()
 		{
 			var agg = new TestAggregate(Guid.NewGuid());
+			_dependencyResolver.NewAggregateGuid = agg.Id;
 			_unitOfWork.Add(agg);
 			agg.DoSomething();
 			_unitOfWork.Commit();

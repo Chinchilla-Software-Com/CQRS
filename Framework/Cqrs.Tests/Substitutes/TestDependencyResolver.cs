@@ -9,7 +9,19 @@ namespace Cqrs.Tests.Substitutes
 {
 	public class TestDependencyResolver : IDependencyResolver
 	{
+		protected TestEventStore TestEventStore { get; private set; }
+
+		public bool UseTestEventStoreGuid { get; set; }
+
+		public Guid? NewAggregateGuid { get; set; }
+
 		public readonly List<dynamic> Handlers = new List<dynamic>();
+
+		public TestDependencyResolver(TestEventStore testEventStore)
+		{
+			TestEventStore = testEventStore;
+		}
+
 		public T Resolve<T>()
 		{
 			return (T)Resolve(typeof(T));
@@ -23,6 +35,10 @@ namespace Cqrs.Tests.Substitutes
 				return new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper());
 			if (type == typeof (IConfigurationManager))
 				return new ConfigurationManager();
+			if (type == typeof(TestAggregate))
+				return new TestAggregate(TestEventStore == null || !UseTestEventStoreGuid ? NewAggregateGuid ?? Guid.NewGuid() : TestEventStore.EmptyGuid);
+			if (type == typeof(TestSnapshotAggregate))
+				return new TestSnapshotAggregate(TestEventStore == null || !UseTestEventStoreGuid ? NewAggregateGuid ?? Guid.NewGuid() : TestEventStore.EmptyGuid);
 			if (type == typeof(TestAggregateDidSomethingHandler))
 			{
 				var handler = new TestAggregateDidSomethingHandler();
