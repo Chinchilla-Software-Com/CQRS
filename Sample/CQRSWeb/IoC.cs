@@ -22,7 +22,7 @@ namespace CQRSWeb {
 							x.For<ICorrelationIdHelper>().Singleton().Use<NullCorrelationIdHelper>();
 							x.For<ILogger>().Singleton().Use<ConsoleLogger>();
 							x.For<ILoggerSettings>().Singleton().Use<LoggerSettingsConfigurationSection>();
-							x.For<IAuthenticationTokenHelper<ISingleSignOnToken>>().Singleton().Use<SingleSignOnTokenValueHelper>();
+							x.For<IAuthenticationTokenHelper<ISingleSignOnToken>>().Singleton().Use<AuthenticationTokenHelper>();
 							x.For<InProcessBus<ISingleSignOnToken>>().Singleton().Use<InProcessBus<ISingleSignOnToken>>();
 							x.For<IAggregateFactory>().Singleton().Use<AggregateFactory>();
 							x.For<ICommandSender<ISingleSignOnToken>>().Use(y => y.GetInstance<InProcessBus<ISingleSignOnToken>>());
