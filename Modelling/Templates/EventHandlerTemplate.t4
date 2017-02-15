@@ -70,27 +70,6 @@ namespace <#= classNamespace #>.Handlers
 		<#= baseClass #>
 		<#= eventHandlerTechnologyBaseClass #>
 	{
-<#
-switch(eventHandlerTechnology)
-{
-	case "Akka":
-		baseClass = "ReceiveActor";
-#>
-		/// <summary>
-		/// Instantiates the <see cref="<#= className #>EventHandler"/> class registering any <see cref="ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
-		/// </summary>
-		public <#= className #>EventHandler()
-		{
-			Receive<<#= eventName #>>(@event => Handle(@event));
-		}
-<#
-		break;
-	default:
-		// for now do nothing
-		break;
-}
-#>
-
 		public <#= className #>EventHandler(ILogger logger, IAutomapHelper automapHelper<# if (!string.IsNullOrWhiteSpace(entityNameAsInterface)) { #>, <#= entityNameAsInterface #>Repository entityRepository<#} #>)
 		{
 			Logger = logger;
