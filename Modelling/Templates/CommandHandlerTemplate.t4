@@ -21,18 +21,7 @@ string baseClass = GetBaseClass(this.Element);
 
 // using statements
 WriteUsingStatements(this.Element);
-string commandHandlerTechnology = GetCommandHandlerTechnology(this.Element);
-switch(commandHandlerTechnology)
-{
-	case "Akka":
-		baseClass = "ReceiveActor";
-#>using Akka.Actor;
-<#
-		break;
-	default:
-		// for now do nothing
-		break;
-}
+string aggregateTechnology = GetAggregateTechnology(this.Element);
 #>
 using Cqrs.Commands;
 using Cqrs.Configuration;
@@ -59,52 +48,6 @@ namespace <#= classNamespace #>.Handlers
 		<#= baseClass #>
 		<#= commandHandlerTechnologyBaseClass #>
 	{
-		protected IUnitOfWork<<#= authenticationTokenType #>> UnitOfWork { get; private set; }
-
-		protected IDependencyResolver DependencyResolver { get; private set; }
-
-		protected ILogger Logger { get; private set; }
-<#
-switch(commandHandlerTechnology)
-{
-	case "Akka":
-#>
-
-		/// <summary>
-		/// Instantiates the <see cref="<#= className #>CommandHandler"/> class registering any <see cref="ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
-		/// </summary>
-		public <#= className #>CommandHandler()
-		{
-			Receive<<#= className #>Command>(command => Handle(command));
-		}
-<#
-		break;
-	default:
-		// for now do nothing
-		break;
-}
-#>
-
-		public <#= className #>CommandHandler(IUnitOfWork<<#= authenticationTokenType #>> unitOfWork, IDependencyResolver dependencyResolver, ILogger logger)
-<#
-switch(commandHandlerTechnology)
-{
-	case "Akka":
-#>
-			: this()
-<#
-		break;
-	default:
-		// for now do nothing
-		break;
-}
-#>
-		{
-			UnitOfWork = unitOfWork;
-			DependencyResolver = dependencyResolver;
-			Logger = logger;
-		}
-
 <#
 IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => !string.IsNullOrWhiteSpace(associationEnd.Name) && associationEnd.SourceElement == this.Element);
 
@@ -282,9 +225,12 @@ if (!relationships.Any())
 <#
 		}
 
+		// Relationships
+
 		foreach(IAssociation relationship in relationships)
 		{
 			string targetElementName = ((INamedElement)relationship.TargetElement).Name;
+			aggregateTechnology = GetAggregateTechnology(relationship.TargetElement);
 #>
 		#region Implementation of ICommandHandler<in <#= className #>>
 
@@ -310,45 +256,64 @@ if (!relationships.Any())
 			OnHandle(command, ref continueExecution);
 			if (continueExecution)
 			{
+				Guid rsn = command.Rsn;
+<#
+			if (aggregateTechnology == "Akka")
+			{
+				if (createsNewInstance)
+				{
+#>
+				rsn = Guid.NewGuid();
+<#
+				}
+#>
+				global::Akka.Actor.IActorRef item = AggregateResolver.ResolveActor<<#= targetElementName #>, <#= authenticationTokenType #>>(rsn);
+				// bool result = global::Akka.Actor.Futures.Ask<bool>(item, command).Result;
+				global::Akka.Actor.ActorRefImplicitSenderExtensions.Tell(item, command);
+<#
+			}
+			else
+			{
+#>
 				<#= targetElementName #> item = null;
 				On<#= relationship.Name #>(command, ref item);
 				if (item == null)
 <#
-		if (createsNewInstance)
-		{
+				if (createsNewInstance)
+				{
 #>
 				{
 					item = new <#= targetElementName #>(DependencyResolver, Logger, command.Rsn == Guid.Empty ? Guid.NewGuid() : command.Rsn);
 					UnitOfWork.Add(item);
 				}
 <#
-		}
-		else
-		{
+				}
+				else
+				{
 #>
 					item = UnitOfWork.Get<<#= targetElementName #>>(command.Rsn);
 <#
-		}
+				}
 #>
 				item.<#= relationship.Name #>(<#
-			int processedProperties= 0;
-			for (int i = 0; i < collectionProperties.Count; i++)
-			{
-				IProperty collectionProperty = collectionProperties.ElementAt(i);
-				if (collectionProperty.OwningAssociation != null)
+				int processedProperties= 0;
+				for (int i = 0; i < collectionProperties.Count; i++)
 				{
-					// This is new but supposed to remove any generation of relationships sine we only use attributes
-					continue;
-/*
-					var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
-					// If this is a command handler association, don't add a property for it as it's a command handler definition
-					if (commandHandler != null)
+					IProperty collectionProperty = collectionProperties.ElementAt(i);
+					if (collectionProperty.OwningAssociation != null)
+					{
+						// This is new but supposed to remove any generation of relationships sine we only use attributes
 						continue;
+/*
+						var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+						// If this is a command handler association, don't add a property for it as it's a command handler definition
+						if (commandHandler != null)
+							continue;
 */
-				}
+					}
 			#><#= (processedProperties == 0) ? string.Empty : ", " #>command.<#= collectionProperty.Name #><#
 				processedProperties++;
-			}
+				}
 #>);
 				On<#= relationship.Name #>Handled(command, item);
 				OnAddToUnitOfWork(command, item);
@@ -357,6 +322,9 @@ if (!relationships.Any())
 				OnCommit(command, item);
 				UnitOfWork.Commit();
 				OnCommited(command, item);
+<#
+			}
+#>
 			}
 		}
 
@@ -378,6 +346,47 @@ if (!relationships.Any())
 <#
 		}
 #>
+
+		protected ILogger Logger { get; private set; }
+
+		protected IDependencyResolver DependencyResolver { get; private set; }
+<#
+		if (aggregateTechnology == "Akka")
+		{
+#>
+
+		protected Cqrs.Akka.Domain.IAkkaAggregateResolver AggregateResolver { get; private set; }
+
+		/// <summary>
+		/// Instantiates the <see cref="<#= className #>CommandHandler"/> class registering any <see cref="ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
+		/// </summary>
+		public <#= className #>CommandHandler(Cqrs.Akka.Domain.IAkkaAggregateResolver aggregateResolver, IDependencyResolver dependencyResolver, ILogger logger)
+			: this (dependencyResolver, logger)
+		{
+			AggregateResolver = aggregateResolver;
+		}
+<#
+		}
+		else
+		{
+#>
+
+		protected IUnitOfWork<<#= authenticationTokenType #>> UnitOfWork { get; private set; }
+
+		public <#= className #>CommandHandler(IUnitOfWork<<#= authenticationTokenType #>> unitOfWork, IDependencyResolver dependencyResolver, ILogger logger)
+			: this (dependencyResolver, logger)
+		{
+			UnitOfWork = unitOfWork;
+		}
+<#
+		}
+#>
+
+		public <#= className #>CommandHandler(IDependencyResolver dependencyResolver, ILogger logger)
+		{
+			DependencyResolver = dependencyResolver;
+			Logger = logger;
+		}
 	}
 }
 <#+

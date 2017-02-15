@@ -1,5 +1,4 @@
 ﻿using System;
-using Akka.Actor;
 using cdmdotnet.Logging;
 using Cqrs.Akka.Commands;
 using Cqrs.Akka.Domain;
@@ -26,36 +25,36 @@ namespace Cqrs.Akka.Tests.Unit.Events.Handlers
 
 		#region Implementation of IMessageHandler<in HelloWorldRepliedTo>
 
-		public void Handle(HelloWorldRepliedTo message)
+		public void Handle(HelloWorldRepliedTo @event)
 		{
-			IActorRef item = AggregateResolver.ResolveActor<HelloWorldRepliedToSendEndConversationCommandEventHandlerActor>();
-			bool result = item.Ask<bool>(message).Result;
-			// item.Tell(message);
-		}
-
-		#endregion
-	}
-
-	public class HelloWorldRepliedToSendEndConversationCommandEventHandlerActor
-		: AkkaEventHandler<Guid>
-	{
-		protected ICommandSender<Guid> CommandBus { get; private set; }
-
-		#region Implementation of IMessageHandler<in HelloWorldRepliedTo>
-
-		public void Handle(HelloWorldRepliedTo message)
-		{
-			CommandBus.Send(new EndConversationCommand { Id = message.Id });
-			AkkaUnitTests.Step3Reached[message.CorrelationId] = true;
+			global::Akka.Actor.IActorRef item = AggregateResolver.ResolveActor<Actor>();
+			// bool result = global::Akka.Actor.Futures.Ask<bool>(item, @event).Result;
+			global::Akka.Actor.ActorRefImplicitSenderExtensions.Tell(item, @event);
 		}
 
 		#endregion
 
-		public HelloWorldRepliedToSendEndConversationCommandEventHandlerActor(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, IAkkaCommandSender<Guid> commandBus)
-			: base(logger, correlationIdHelper, authenticationTokenHelper)
+		public partial class Actor
+			: AkkaEventHandler<Guid>
 		{
-			CommandBus = commandBus;
-			Receive<HelloWorldRepliedTo>(@event => Execute(Handle, @event));
+			protected ICommandSender<Guid> CommandBus { get; private set; }
+
+			#region Implementation of IMessageHandler<in HelloWorldRepliedTo>
+
+			public void Handle(HelloWorldRepliedTo message)
+			{
+				CommandBus.Send(new EndConversationCommand { Id = message.Id });
+				AkkaUnitTests.Step3Reached[message.CorrelationId] = true;
+			}
+
+			#endregion
+
+			public Actor(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, IAkkaCommandSender<Guid> commandBus)
+				: base(logger, correlationIdHelper, authenticationTokenHelper)
+			{
+				CommandBus = commandBus;
+				Receive<HelloWorldRepliedTo>(@event => Execute(Handle, @event));
+			}
 		}
 	}
 }

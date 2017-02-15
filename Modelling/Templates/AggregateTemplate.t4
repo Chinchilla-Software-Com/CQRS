@@ -51,11 +51,16 @@ using Cqrs.Akka.Domain;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
 using Cqrs.Snapshots;
+using Cqrs.Authentication;
+using Cqrs.Domain;
 using <#= classNamespace #>.Events;
+using <#= classNamespace #>.Commands;
 
 namespace <#= classNamespace #>
 {
 <#
+	IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => !string.IsNullOrWhiteSpace(associationEnd.Name) && associationEnd.TargetElement == this.Element);
+
 	// Class and Attributes
 #>
 <# WriteSummaryComment(this.Element.Description); #>
@@ -70,18 +75,16 @@ namespace <#= classNamespace #>
 
 		public bool IsLogicallyDeleted {get; set;}
 
-/*
-		#region Implementation of IMessageWithAuthenticationToken<<#= authenticationTokenType #>>
-
-		public <#= authenticationTokenType #> AuthenticationToken { get; set; }
-
-		#endregion
-*/
-
 		protected IDependencyResolver DependencyResolver { get; private set; }
+<#
+	if (aggregateTechnology != "Akka")
+	{
+#>
+		protected ILogger Logger { get; private set; }
 
-		protected ILogger Log { get; private set; }
-
+<#
+	}
+#>
 <#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
 		// Properties
@@ -115,7 +118,7 @@ switch(aggregateTechnology)
 {
 	case "Akka":
 #>
-			: base()
+			: base(null, null, null, null, null)
 <#
 		break;
 	default:
@@ -138,11 +141,31 @@ IList<IOperation> collectionMethods = GetMethodList(this.Element);
 switch(aggregateTechnology)
 {
 	case "Akka":
+#>
+			// Methods
+<#
 		// Methods
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
 #>
-			Receive<<#= collectionMethod.Name #>Parameters>(parameters => <#= collectionMethod.Name #>(parameters));
+			Receive<<#= collectionMethod.Name #>Command>(command => Execute(<#= collectionMethod.Name #>, command));
+<#
+		}
+
+#>
+			// Relationships
+<#
+		// Relationships
+		foreach(IAssociation relationship in relationships)
+		{
+			string relationshipName = relationship.Name;
+			if (string.IsNullOrWhiteSpace(relationshipName))
+				relationshipName = ((INamedElement)relationship.SourceElement).Name;
+			string targetElementName = ((INamedElement)relationship.TargetElement).Name;
+			IList<IProperty> relationshipProperties = GetPropertyList((IClass)relationship.SourceElement).Where(property=> property.Type != relationship.TargetElement && property.Type != relationship.SourceElement).ToList();
+			IEnumerable<IAssociation> eventRelationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.Name == relationship.Name && associationEnd.SourceElement == this.Element);
+#>
+			Receive<<#= ((INamedElement)relationship.SourceElement).Name #>Command>(command => Execute(<#= relationshipName #>, command));
 <#
 		}
 		break;
@@ -156,7 +179,7 @@ switch(aggregateTechnology)
 		/// <summary>
 		/// A constructor for the <see cref="Cqrs.Domain.Factories.IAggregateFactory"/>
 		/// </summary>
-		private <#= className #>(IDependencyResolver dependencyResolver, ILogger log)
+		private <#= className #>(IDependencyResolver dependencyResolver, ILogger logger)
 <#
 switch(aggregateTechnology)
 {
@@ -172,7 +195,19 @@ switch(aggregateTechnology)
 #>
 		{
 			DependencyResolver = dependencyResolver;
-			Log = log;
+			Logger = logger;
+<#
+	if (aggregateTechnology != "Akka")
+	{
+#>
+			UnitOfWork = DependencyResolver.Resolve<IUnitOfWork<<#= authenticationTokenType #>>>();
+			Repository = DependencyResolver.Resolve<IAkkaRepository<<#= authenticationTokenType #>>>();
+			CorrelationIdHelper = DependencyResolver.Resolve<ICorrelationIdHelper>();
+			AuthenticationTokenHelper = DependencyResolver.Resolve<IAuthenticationTokenHelper<<#= authenticationTokenType #>>>();
+
+<#
+	}
+#>
 <#
 			foreach(IProperty collectionProperty in collectionProperties.Where(property => property.UpperValue != null && property.UpperValue.ToString() == "*").ToList())
 			{
@@ -184,23 +219,9 @@ switch(aggregateTechnology)
 		}
 // ReSharper restore UnusedMember.Local
 
-		public <#= className #>(IDependencyResolver dependencyResolver, ILogger log, Guid rsn)
-<#
-switch(aggregateTechnology)
-{
-	case "Akka":
-#>
-			: this()
-<#
-		break;
-	default:
-		// for now do nothing
-		break;
-}
-#>
+		public <#= className #>(IDependencyResolver dependencyResolver, ILogger logger, Guid rsn)
+			: this(dependencyResolver, logger)
 		{
-			DependencyResolver = dependencyResolver;
-			Log = log;
 			Rsn = rsn;
 <#
 			foreach(IProperty collectionProperty in collectionProperties.Where(property => property.UpperValue != null && property.UpperValue.ToString() == "*").ToList())
@@ -226,10 +247,10 @@ switch(aggregateTechnology)
 			}
 #>
 <#
-		if (aggregateTechnology == "Akka")
-		{
+			if (aggregateTechnology == "Akka")
+			{
 #>
-		public virtual void <#= collectionMethod.Name #>(<#= collectionMethod.Name #>Parameters parameter)
+		public virtual void <#= collectionMethod.Name #>(<#= collectionMethod.Name #>Command command)
 		{
 			<#= collectionMethod.Name #>(<#
 				var parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return).ToList();
@@ -240,18 +261,18 @@ switch(aggregateTechnology)
 					if (akkaIndex > 0)
 						methodBody.Append(", ");
 					akkaIndex++;
-					methodBody.Append("parameter.");
+					methodBody.Append("command.");
 					methodBody.Append(collectionProperty.Name);
 				}
 #><#= methodBody.ToString() #>);
 		}
 <#
-		}
+			}
 #>
 
 		public virtual void <#= collectionMethod.Name #>(<#= GetMethodParameterList(collectionMethod) #>)
 		{
-			Log.LogDebug("Entered", "<#= className #>/<#= collectionMethod.Name #>");
+			Logger.LogDebug("Entered", "<#= className #>/<#= collectionMethod.Name #>");
 <#
 			if (isSimple && !string.IsNullOrWhiteSpace(eventName))
 			{
@@ -259,7 +280,7 @@ switch(aggregateTechnology)
 				if (!string.IsNullOrWhiteSpace(applyEventParameters))
 					applyEventParameters = string.Format(", {0}", applyEventParameters);
 #>
-			Log.LogDebug("Applying event", "<#= className #>/<#= collectionMethod.Name #>/<#= eventName #>");
+			Logger.LogDebug("Applying event", "<#= className #>/<#= collectionMethod.Name #>/<#= eventName #>");
 			ApplyChange(new <#= eventName #>(Rsn<#= applyEventParameters #>));
 <#
 			}
@@ -270,7 +291,7 @@ switch(aggregateTechnology)
 <#
 			}
 #>
-			Log.LogDebug("Exited", "<#= className #>/<#= collectionMethod.Name #>");
+			Logger.LogDebug("Exited", "<#= className #>/<#= collectionMethod.Name #>");
 		}
 <#
 			if (isSimple && !string.IsNullOrWhiteSpace(eventName))
@@ -328,8 +349,8 @@ switch(aggregateTechnology)
 		}
 #>)
 		{
-			Log.LogDebug("Entered", "<#= className #>/Create<#= className #>");
-			Log.LogDebug("Pre", "<#= className #>/OnCreate<#= className #>");
+			Logger.LogDebug("Entered", "<#= className #>/Create<#= className #>");
+			Logger.LogDebug("Pre", "<#= className #>/OnCreate<#= className #>");
 			OnCreate<#= className #>(<#
 		propertyIndex= 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
@@ -350,8 +371,8 @@ switch(aggregateTechnology)
 			propertyIndex++;
 		}
 #>);
-			Log.LogDebug("Post", "<#= className #>/OnCreate<#= className #>");
-			Log.LogDebug("Pre", "<#= className #>/ApplyChange/Create");
+			Logger.LogDebug("Post", "<#= className #>/OnCreate<#= className #>");
+			Logger.LogDebug("Pre", "<#= className #>/ApplyChange/Create");
 			ApplyChange(new <#= className #>Created(Rsn<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
@@ -370,8 +391,8 @@ switch(aggregateTechnology)
 			#>, <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>));
-			Log.LogDebug("Post", "<#= className #>/ApplyChange");
-			Log.LogDebug("Pre", "<#= className #>/OnCreated<#= className #>");
+			Logger.LogDebug("Post", "<#= className #>/ApplyChange");
+			Logger.LogDebug("Pre", "<#= className #>/OnCreated<#= className #>");
 			OnCreated<#= className #>(<#
 		propertyIndex = 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
@@ -392,8 +413,8 @@ switch(aggregateTechnology)
 			propertyIndex++;
 		}
 #>);
-			Log.LogDebug("Post", "<#= className #>/OnCreated<#= className #>");
-			Log.LogDebug("Exited", "<#= className #>/Create<#= className #>");
+			Logger.LogDebug("Post", "<#= className #>/OnCreated<#= className #>");
+			Logger.LogDebug("Exited", "<#= className #>/Create<#= className #>");
 		}
 
 		partial void OnCreate<#= className #>(<#
@@ -495,8 +516,8 @@ switch(aggregateTechnology)
 		}
 #>)
 		{
-			Log.LogDebug("Entered", "<#= className #>/Update<#= className #>");
-			Log.LogDebug("Pre", "<#= className #>/OnUpdate<#= className #>");
+			Logger.LogDebug("Entered", "<#= className #>/Update<#= className #>");
+			Logger.LogDebug("Pre", "<#= className #>/OnUpdate<#= className #>");
 			OnUpdate<#= className #>(<#
 		propertyIndex = 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
@@ -517,8 +538,8 @@ switch(aggregateTechnology)
 			propertyIndex++;
 		}
 #>);
-			Log.LogDebug("Post", "<#= className #>/OnUpdate<#= className #>");
-			Log.LogDebug("Pre", "<#= className #>/ApplyChange/Update");
+			Logger.LogDebug("Post", "<#= className #>/OnUpdate<#= className #>");
+			Logger.LogDebug("Pre", "<#= className #>/ApplyChange/Update");
 			ApplyChange(new <#= className #>Updated(Rsn<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
@@ -537,8 +558,8 @@ switch(aggregateTechnology)
 			#>, <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>));
-			Log.LogDebug("Post", "<#= className #>/ApplyChange");
-			Log.LogDebug("Pre", "<#= className #>/OnUpdated<#= className #>");
+			Logger.LogDebug("Post", "<#= className #>/ApplyChange");
+			Logger.LogDebug("Pre", "<#= className #>/OnUpdated<#= className #>");
 			OnUpdated<#= className #>(<#
 		propertyIndex = 0;
 		for (int i = 0; i < collectionProperties.Count; i++)
@@ -559,8 +580,8 @@ switch(aggregateTechnology)
 			propertyIndex++;
 		}
 #>);
-			Log.LogDebug("Post", "<#= className #>/OnUpdated<#= className #>");
-			Log.LogDebug("Exited", "<#= className #>/Update<#= className #>");
+			Logger.LogDebug("Post", "<#= className #>/OnUpdated<#= className #>");
+			Logger.LogDebug("Exited", "<#= className #>/Update<#= className #>");
 		}
 
 		partial void OnUpdate<#= className #>(<#
@@ -645,17 +666,17 @@ switch(aggregateTechnology)
 		/// </summary>
 		public virtual void Delete<#= className #>()
 		{
-			Log.LogDebug("Entered", "<#= className #>/Delete<#= className #>");
-			Log.LogDebug("Pre", "<#= className #>/OnDelete<#= className #>");
+			Logger.LogDebug("Entered", "<#= className #>/Delete<#= className #>");
+			Logger.LogDebug("Pre", "<#= className #>/OnDelete<#= className #>");
 			OnDelete<#= className #>();
-			Log.LogDebug("Post", "<#= className #>/OnDelete<#= className #>");
-			Log.LogDebug("Pre", "<#= className #>/ApplyChange/Delete");
+			Logger.LogDebug("Post", "<#= className #>/OnDelete<#= className #>");
+			Logger.LogDebug("Pre", "<#= className #>/ApplyChange/Delete");
 			ApplyChange(new <#= className #>Deleted(Rsn));
-			Log.LogDebug("Post", "<#= className #>/ApplyChange");
-			Log.LogDebug("Pre", "<#= className #>/OnDeleted<#= className #>");
+			Logger.LogDebug("Post", "<#= className #>/ApplyChange");
+			Logger.LogDebug("Pre", "<#= className #>/OnDeleted<#= className #>");
 			OnDeleted<#= className #>();
-			Log.LogDebug("Post", "<#= className #>/OnDeleted<#= className #>");
-			Log.LogDebug("Exited", "<#= className #>/Delete<#= className #>");
+			Logger.LogDebug("Post", "<#= className #>/OnDeleted<#= className #>");
+			Logger.LogDebug("Exited", "<#= className #>/Delete<#= className #>");
 		}
 
 		partial void OnDelete<#= className #>();
@@ -669,7 +690,7 @@ switch(aggregateTechnology)
 <#
 		}
 
-		IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => !string.IsNullOrWhiteSpace(associationEnd.Name) && associationEnd.TargetElement == this.Element);
+		// Relationship based methods
 
 		foreach(IAssociation relationship in relationships)
 		{
@@ -679,10 +700,31 @@ switch(aggregateTechnology)
 			string targetElementName = ((INamedElement)relationship.TargetElement).Name;
 			IList<IProperty> relationshipProperties = GetPropertyList((IClass)relationship.SourceElement).Where(property=> property.Type != relationship.TargetElement && property.Type != relationship.SourceElement).ToList();
 			IEnumerable<IAssociation> eventRelationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.Name == relationship.Name && associationEnd.SourceElement == this.Element);
+
+			if (aggregateTechnology == "Akka")
+			{
+#>
+		public virtual void <#= relationshipName #>(<#= ((INamedElement)relationship.SourceElement).Name #>Command command)
+		{
+			<#= relationshipName #>(<#
+				var methodBody = new System.Text.StringBuilder();
+				int akkaIndex = 0;
+				foreach (IProperty relationshipProperty in relationshipProperties)
+				{
+					if (akkaIndex > 0)
+						methodBody.Append(", ");
+					akkaIndex++;
+					methodBody.Append("command.");
+					methodBody.Append(relationshipProperty.Name);
+				}
+#><#= methodBody.ToString() #>);
+		}
+<#
+			}
 #>
 
 <# WriteSummaryComment(relationship.Description); #>
-		public void <#= relationshipName #>(<#
+		public virtual void <#= relationshipName #>(<#
 			for (int i = 0; i < relationshipProperties.Count; i++)
 			{
 				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
@@ -690,7 +732,7 @@ switch(aggregateTechnology)
 			}
 #>)
 		{
-			Log.LogDebug("Entered", "<#= className #>/<#= relationshipName #>");
+			Logger.LogDebug("Entered", "<#= className #>/<#= relationshipName #>");
 <#
 			var activity = this.Element.Package.OwnedElements
 				.Where(x => x is IActivity)
@@ -719,7 +761,7 @@ switch(aggregateTechnology)
 							string onMethodSignatures = DeeperIntoTheDecisionTree(commandNode, 1, className, relationshipName, relationshipProperties);
 #>
 
-			Log.LogDebug("Exited", "<#= className #>/<#= relationshipName #>");
+			Logger.LogDebug("Exited", "<#= className #>/<#= relationshipName #>");
 		}
 <#
 							Write(onMethodSignatures);
@@ -757,7 +799,7 @@ switch(aggregateTechnology)
 				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
 				#><#= (i == 0) ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(relationshipProperty.Name) #><#
 			}
-#><#= eventParameters.Substring(relationshipProperties.Any() ? 0 : 2) #>);
+#><#= eventParameters.Substring(eventRelationships.Any() ? 2 : 0) #>);
 <#
 			foreach(IAssociation eventRelationship in eventRelationships)
 			{
@@ -765,15 +807,15 @@ switch(aggregateTechnology)
 #>
 			if (<#= GetLowercaseFirstCharacter(eventTargetElementName) #>Event != null)
 			{
-				Log.LogDebug("Pre", "<#= className #>/<#= relationshipName #>/ApplyChange/<#= eventTargetElementName #>");
+				Logger.LogDebug("Pre", "<#= className #>/<#= relationshipName #>/ApplyChange/<#= eventTargetElementName #>");
 				ApplyChange(<#= GetLowercaseFirstCharacter(eventTargetElementName) #>Event);
-				Log.LogDebug("Post", "<#= className #>/<#= relationshipName #>/ApplyChange/<#= eventTargetElementName #>");
+				Logger.LogDebug("Post", "<#= className #>/<#= relationshipName #>/ApplyChange/<#= eventTargetElementName #>");
 			}
 <#
 			}
 #>
 
-			Log.LogDebug("Pre", "<#= className #>/<#= relationshipName #>/On<#= relationshipName #>Handled");
+			Logger.LogDebug("Pre", "<#= className #>/<#= relationshipName #>/On<#= relationshipName #>Handled");
 			On<#= relationshipName #>Handled(<#
 			for (int i = 0; i < relationshipProperties.Count; i++)
 			{
@@ -781,9 +823,9 @@ switch(aggregateTechnology)
 				#><#= (i == 0) ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(relationshipProperty.Name) #><#
 			}
 #>);
-			Log.LogDebug("Post", "<#= className #>/<#= relationshipName #>/On<#= relationshipName #>Handled");
+			Logger.LogDebug("Post", "<#= className #>/<#= relationshipName #>/On<#= relationshipName #>Handled");
 
-			Log.LogDebug("Exited", "<#= className #>/<#= relationshipName #>");
+			Logger.LogDebug("Exited", "<#= className #>/<#= relationshipName #>");
 		}
 
 		partial void On<#= relationshipName #>(<#
@@ -792,7 +834,7 @@ switch(aggregateTechnology)
 				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
 				#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(relationshipProperty) #> <#= GetLowercaseFirstCharacter(relationshipProperty.Name) #><#
 			}
-#><#= eventParametersWithType.Substring(relationshipProperties.Any() ? 0 : 2) #>);
+#><#= eventParametersWithType.Substring(eventRelationships.Any() ? 2 : 0) #>);
 
 		partial void On<#= relationshipName #>Handled(<#
 			for (int i = 0; i < relationshipProperties.Count; i++)
@@ -835,33 +877,6 @@ switch(aggregateTechnology)
 #>
 		}
 	}
-<#
-		if (aggregateTechnology == "Akka")
-		{
-			// Methods
-			foreach(IOperation collectionMethod in collectionMethods)
-			{
-#>
-
-	<#= GetGeneratedCodeAttribute() #>
-	<#= GetServiceContractAttribute(this.Element) #>
-	public partial class <#= collectionMethod.Name #>Parameters
-	{
-<#
-				var parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return).ToList();
-				foreach (IParameter collectionProperty in parameters)
-				{
-#>
-
-		public <#= GetFullDisplayType(collectionProperty, false) #> <#= collectionProperty.Name #> { get; set; }
-<#
-				}
-#>
-	}
-<#
-			}
-		}
-#>
 }
 <#+
 	protected override bool AppliesToElement()

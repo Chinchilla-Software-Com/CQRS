@@ -288,7 +288,17 @@
 	{
 		IElement domainElement = FindDomainElement(t);
 		var domainStereoTypeProperties = domainElement.AppliedStereotypes.Single(property => property.Name == "Domain");
-		return domainStereoTypeProperties.PropertyInstances.Single(property => property.Name == "AggregateTechnology").Value;
+		string aggregateTechnology = domainStereoTypeProperties.PropertyInstances.Single(property => property.Name == "AggregateTechnology").Value;
+
+		var aggregateStereoTypeProperties = t.AppliedStereotypes.SingleOrDefault(property => property.Name == "AggregateRoot");
+		if (aggregateStereoTypeProperties != null)
+		{
+			var propertyInstance = aggregateStereoTypeProperties.PropertyInstances.SingleOrDefault(property => property.Name == "AggregateTechnology");
+			if (propertyInstance != null)
+				aggregateTechnology = propertyInstance.Value;
+		}
+
+		return aggregateTechnology;
 	}
 
 	private static string GetDomainAuthenticationTokenType(IElement t)
