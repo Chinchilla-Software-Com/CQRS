@@ -211,6 +211,11 @@
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
+        <property name="EntityPersistenceTechnology" displayName="Entity Persistence Technology: What technology are you using for persisting this entity." defaultValue="SimplifiedSql">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/EntityPersistenceTechnology"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
     <stereotype name="EntityProperty" displayName="Entity Property">
