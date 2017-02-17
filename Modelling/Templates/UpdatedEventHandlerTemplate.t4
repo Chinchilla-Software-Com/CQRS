@@ -23,27 +23,130 @@ string className = ClassifierName(this.Element);
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using cdmdotnet.AutoMapper;
+using cdmdotnet.Logging;
 using Cqrs.Events;
 using Cqrs.Domain;
+using <#= classNamespace #>.Entities;
+using <#= classNamespace #>.Events;
+using <#= classNamespace #>.Repositories;
 
-namespace <#= classNamespace #>.Events.Handlers
+namespace <#= classNamespace #>.Handlers
 {
 <#
 	// Class and Attributes
 #>
-	<#= GetGeneratedCodeAttribute() #>
-	public <#= GetAbstract(this.Element) #> partial class <#= className #>UpdatedEventHandler : IEventHandler<<#= authenticationTokenType #>, <#= className #>Updated>
+	// <#= GetGeneratedCodeAttribute() #>
+	public <#= GetAbstract(this.Element) #> partial class <#= className #>EventHandler : IEventHandler<<#= authenticationTokenType #>, <#= className #>Updated>
 	{
-		#region Implementation of IEventHandler<in <#= className #>Updated>
+<#
+	string eventName = className + "Updated";
+	string entityName = className;
+#>
 
-		public void Handle(<#= className #>Updated @event)
+		#region Implementation of IEventHandler<in <#= eventName #>>
+
+		public void Handle(<#= eventName #> @event)
 		{
+			string eventTypeName = @event.GetType().FullName;
 			OnHandle(@event);
+
+			var entities = new List<<#= entityName #>Entity>();
+
+			bool singleItemNotCollection = true;
+			OnPreGet(@event, ref singleItemNotCollection);
+			if (singleItemNotCollection)
+			{
+				<#= entityName #>Entity entity = null;
+				OnGetEntity(@event, ref entity);
+				if (entity == null)
+				{
+					Guid? rsn = null;
+					bool throwExceptionOnMissingEntity = true;
+					GetSingleEntityRsn(@event, ref rsn, ref throwExceptionOnMissingEntity);
+					if (rsn == null)
+						rsn = @event.Rsn;
+					else
+						Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Rsn manually provided.", eventTypeName, @event.Rsn));
+					if (!throwExceptionOnMissingEntity)
+						Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Can expect no value from the repository without an exception.", eventTypeName, @event.Rsn));
+					entity = <#= className #>Repository.Load(rsn.Value, throwExceptionOnMissingEntity);
+				}
+				else
+					Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Entity manually provided.", eventTypeName, @event.Rsn));
+				OnGotEntity(@event, ref entity);
+				entities.Add(entity);
+			}
+			else
+			{
+				Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Several entities will be loaded manually.", eventTypeName, @event.Rsn));
+				IEnumerable<<#= entityName #>Entity> manualEntities = null;
+				OnGetEntities(@event, ref manualEntities);
+				if (manualEntities != null)
+					entities.AddRange(manualEntities);
+			}
+			for (int i = 0; i < entities.Count; i++)
+			{
+				<#= entityName #>Entity entity = entities[i];
+
+				bool autoMap = true;
+				OnUpdateEntity(@event, ref entity, ref autoMap);
+				if (autoMap)
+					AutomapHelper.Automap(@event, entity);
+				else
+					Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Is not auto-mapped.", eventTypeName, @event.Rsn));
+				OnEntityUpdated(@event, ref entity);
+
+				bool continueWithRepositorySave = true;
+				bool createDontUpdate = false;
+				OnSaveEntity(@event, ref entity, ref continueWithRepositorySave, ref createDontUpdate);
+				if (continueWithRepositorySave)
+				{
+					if (createDontUpdate)
+					{
+						<#= className #>Repository.Create(entity);
+						Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Created in repository.", eventTypeName, @event.Rsn));
+					}
+					else
+					{
+						<#= className #>Repository.Update(entity);
+						Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Updated in repository.", eventTypeName, @event.Rsn));
+					}
+				}
+				else
+					Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Not auto-saving.", eventTypeName, @event.Rsn));
+				OnEntitySaved(@event, ref entity);
+			}
+			OnHandled(@event);
 		}
 
 		#endregion
 
-		partial void OnHandle(<#= className #>Updated @event);
+		#region Implementation of IEventHandler<in <#= eventName #>> Partials
+
+		partial void OnHandle(<#= eventName #> @event);
+
+		partial void OnPreGet(<#= eventName #> @event, ref bool singleItemNotCollection);
+
+		partial void GetSingleEntityRsn(<#= eventName #> @event, ref Guid? rsn, ref bool throwExceptionOnMissingEntity);
+
+		partial void OnGetEntities(<#= eventName #> @event, ref IEnumerable<<#= entityName #>Entity> manualEntities);
+
+		partial void OnGetEntity(<#= eventName #> @event, ref <#= entityName #>Entity entity);
+
+		partial void OnGotEntity(<#= eventName #> @event, ref <#= entityName #>Entity entity);
+
+		partial void OnUpdateEntity(<#= eventName #> @event, ref <#= entityName #>Entity entity, ref bool autoMap);
+
+		partial void OnEntityUpdated(<#= eventName #> @event, ref <#= entityName #>Entity entity);
+
+		partial void OnSaveEntity(<#= eventName #> @event, ref <#= entityName #>Entity entity, ref bool continueWithRepositorySave, ref bool createDontUpdate);
+
+		partial void OnEntitySaved(<#= eventName #> @event, ref <#= entityName #>Entity entity);
+
+		partial void OnHandled(<#= eventName #> @event);
+
+		#endregion
 	}
 }
 <#+

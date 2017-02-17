@@ -113,6 +113,16 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 				.To<Factories.DomainInProcessDataStoreFactory>()
 <#
 					break;
+				case "Blob" :
+#>
+				.To<Factories.DomainBlobStorageDataStoreFactory>()
+<#
+					break;
+				default :
+#>
+				.To<Factories.Domain<#= technology #>DataStoreFactory>()
+<#
+					break;
 			}
 #>
 				.InSingletonScope();

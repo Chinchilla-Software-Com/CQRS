@@ -7,6 +7,9 @@ using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using cdmdotnet.Logging;
 using cdmdotnet.Logging.Configuration;
+using cdmdotnet.StateManagement;
+using cdmdotnet.StateManagement.Threaded;
+using cdmdotnet.StateManagement.Web;
 using Cqrs.Repositories.Queries;
 using Ninject.Modules;
 using Ninject.Parameters;
@@ -45,6 +48,7 @@ namespace Cqrs.Ninject.Configuration
 			RegisterCqrsRequirements();
 			RegisterAutomapperComponents();
 			RegisterLoggerComponents();
+			RegisterCaching();
 		}
 
 		#endregion
@@ -64,14 +68,9 @@ namespace Cqrs.Ninject.Configuration
 		/// </summary>
 		public virtual void RegisterLoggerComponents()
 		{
-			if (SetupForWeb)
-				Bind<ICorrelationIdHelper>()
-					.To<WebCorrelationIdHelper>()
-					.InSingletonScope();
-			else
-				Bind<ICorrelationIdHelper>()
-					.To<CorrelationIdHelper>()
-					.InSingletonScope();
+			Bind<ICorrelationIdHelper>()
+				.To<WebCorrelationIdHelper>()
+				.InSingletonScope();
 
 			if (SetupForSqlLogging)
 				Bind<ILogger>()
@@ -116,6 +115,28 @@ namespace Cqrs.Ninject.Configuration
 		/// </summary>
 		public virtual void RegisterServices()
 		{
+		}
+
+		/// <summary>
+		/// Register the all caching stuffs
+		/// </summary>
+		public virtual void RegisterCaching()
+		{
+			if (SetupForWeb)
+			{
+				Bind<IContextItemCollectionFactory>()
+					.To<WebContextItemCollectionFactory>()
+					.InSingletonScope();
+			}
+			else
+			{
+				Bind<IContextItemCollectionFactory>()
+					.To<ThreadedContextItemCollectionFactory>()
+					.InSingletonScope();
+			}
+			Bind<IContextItemCollection>()
+				.To<WebContextItemCollection>()
+				.InSingletonScope();
 		}
 
 		/// <summary>

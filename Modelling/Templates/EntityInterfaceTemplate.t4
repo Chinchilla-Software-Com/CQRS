@@ -47,19 +47,30 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 #>
 	<#= GetGeneratedCodeAttribute() #>
 	public <#= GetAbstract(this.Element) #> partial interface I<#= className #>Entity : IEntity
-	{
-<#
+	{<#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
 		// Properties
 		foreach(var collectionProperty in collectionProperties)
 		{
 			if (!collectionProperty.AppliedStereotypes.Any())
 				continue;
+
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 #>
+
 <# WriteSummaryComment(collectionProperty.Description); #>
 		[DataMember]
 		<#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; set; }
-
 <#
 		}
 #>

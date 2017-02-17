@@ -62,6 +62,10 @@ namespace <#= classNamespace #>
 	{
 		var targetElement = (INamedElement)relationship.TargetElement;
 		var sourceElement = (INamedElement)relationship.SourceElement;
+
+		if (!sourceElement.AppliedStereotypes.Any(property => property.Name == "Event"))
+			continue;
+
 		string entityElementName = string.Format("{0}.{1}", GetNamespace(targetElement.Namespace).Replace("::", "."), targetElement.Name);
 		string eventElementName = string.Format("{0}.{1}", GetNamespace(sourceElement.Namespace).Replace("::", "."), sourceElement.Name);
 #>
@@ -87,6 +91,10 @@ switch(eventHandlerTechnology)
 	{
 		var targetElement = (INamedElement)relationship.TargetElement;
 		var sourceElement = (INamedElement)relationship.SourceElement;
+
+		if (!sourceElement.AppliedStereotypes.Any(property => property.Name == "Event"))
+			continue;
+
 		string entityElementName = string.Format("{0}.{1}", GetNamespace(targetElement.Namespace).Replace("::", "."), targetElement.Name);
 		string eventElementName = string.Format("{0}.{1}", GetNamespace(sourceElement.Namespace).Replace("::", "."), sourceElement.Name);
 #>
@@ -120,6 +128,10 @@ foreach(IAssociation relationship in relationships)
 {
 		var targetElement = (INamedElement)relationship.TargetElement;
 		var sourceElement = (INamedElement)relationship.SourceElement;
+
+		if (!sourceElement.AppliedStereotypes.Any(property => property.Name == "Event"))
+			continue;
+
 		string entityElementName = string.Format("{0}.{1}", GetNamespace(targetElement.Namespace).Replace("::", "."), targetElement.Name);
 		string eventElementName = string.Format("{0}.{1}", GetNamespace(sourceElement.Namespace).Replace("::", "."), sourceElement.Name);
 

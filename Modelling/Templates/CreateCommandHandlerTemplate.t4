@@ -124,6 +124,17 @@ switch(commandHandlerTechnology)
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
 			if (!collectionProperty.AppliedStereotypes.Any())
 				continue;
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 			#><#= (i == 0) ? string.Empty : ", " #>command.<#= collectionProperty.Name #><#
 		}
 #>);

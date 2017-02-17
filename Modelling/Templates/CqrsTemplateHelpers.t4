@@ -65,12 +65,12 @@
 
 		if (typedElement == null)
 			return string.Empty;
-		else if (typedElement.Type == null)
+		if (typedElement.Type == null)
 			return "object";
-		else if (typedElement is IClassifier)
+		if (typedElement is IClassifier)
 			typeName = ClassifierName((IClassifier)typedElement.Type);
 		else
-			typeName = CSharpTranslation(typedElement.Type.Name);
+			typeName = CSharpTranslation(ElementType(typedElement));
 
 		return typeName;
 	}
