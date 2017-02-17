@@ -127,6 +127,14 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 #>
 				.InSingletonScope();
 <#
+	if (technology == "Blob")
+	{
+#>
+			Bind<Cqrs.Azure.BlobStorage.DataStores.IBlobStorageDataStoreConnectionStringFactory>()
+				.To<Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory>()
+				.InSingletonScope();
+<#
+	}
 string authenticationToken = GetDomainAuthenticationTokenType(this.Element);
  if (authenticationToken == "Cqrs.Authentication.ISingleSignOnToken" || authenticationToken == "Cqrs.Authentication.SingleSignOnToken") { #>
 
