@@ -84,10 +84,12 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
     <Reference Include="VSLangProj, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="EnvDTE">
@@ -146,6 +148,19 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Code\CqrsSolutionOptionsDialogPage.cs">
+      <Link>Code\CqrsSolutionOptionsDialogPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Code\CqrsSolutionOptionsDialogPageControl.cs">
+      <Link>Code\CqrsSolutionOptionsDialogPageControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Code\CqrsSolutionOptionsDialogPageControl.Designer.cs">
+      <Link>Code\CqrsSolutionOptionsDialogPageControl.Designer.cs</Link>
+      <DependentUpon>CqrsSolutionOptionsDialogPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Code\ExceptionHandling.cs">
+      <Link>Code\ExceptionHandling.cs</Link>
+    </Compile>
     <Compile Include="..\..\Code\Builders\Commands\CommandModelBuilder.cs">
       <Link>Code\Builders\Commands\CommandModelBuilder.cs</Link>
     </Compile>
@@ -215,7 +230,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Code\CqrsSolutionOptionsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Code\ExceptionHandling.cs" />
     <Compile Include="ComStreamWrapper.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -261,6 +275,10 @@
     <VSCTCompile Include="UmlPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
+    <EmbeddedResource Include="..\..\Code\CqrsSolutionOptionsDialogPageControl.resx">
+      <Link>Code\CqrsSolutionOptionsDialogPageControl.resx</Link>
+      <DependentUpon>CqrsSolutionOptionsDialogPageControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="..\Templates\AggregateHostTemplate.t4">
       <Link>Templates\AggregateHostTemplate.t4</Link>
     </EmbeddedResource>
