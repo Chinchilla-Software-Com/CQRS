@@ -40,9 +40,15 @@ namespace <#= classNamespace #>.Repositories
 	// Class and Attributes
 	string entityPersistenceTechnology = GetEntityPersistenceTechnology(this.Element);
 	string repositoryClassName = "Repository";
-	if (entityPersistenceTechnology == "AzureDocumentDb")
-		repositoryClassName = "Cqrs.Azure.DocumentDb.Repositories.AzureRepository";
-
+	switch(entityPersistenceTechnology)
+	{
+		case "AzureDocumentDb":
+			repositoryClassName = "Cqrs.Azure.DocumentDb.Repositories.AzureRepository";
+			break;
+		case "Blob":
+			repositoryClassName = "Cqrs.Azure.BlobStorage.Repositories.BlobStorageRepository";
+			break;
+	}
 #>
 	<#= GetGeneratedCodeAttribute() #>
 	public partial class <#= className #>Repository : <#= repositoryClassName #><<#= className #>QueryStrategy, <#= className #>QueryStrategyBuilder, Entities.<#= className #>Entity>, I<#= className #>Repository

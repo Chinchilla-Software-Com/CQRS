@@ -19,6 +19,11 @@ $.each(window.api.metadata, function (i, action)
 		{
 			data = parameters;
 		}
+		else if (action.Parameters.length == 2 && action.Parameters[0].Name == "entity" && action.Parameters[1].Name == "rsn")
+		{
+			url = url.substring(0, url.length - 5) + parameters["Rsn"];
+			data = parameters;
+		}
 		else
 		{
 			$.each(action.Parameters, function (j, parameter)
