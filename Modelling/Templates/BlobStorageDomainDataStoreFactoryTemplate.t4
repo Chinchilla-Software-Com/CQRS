@@ -22,6 +22,8 @@ string className = this.Element.Name;
 #>
 using System.CodeDom.Compiler;
 using cdmdotnet.Logging;
+using Cqrs.Azure.BlobStorage.DataStores;
+using Cqrs.Azure.BlobStorage.Factories;
 using Cqrs.Configuration;
 using Cqrs.DataStores;
 
@@ -34,7 +36,9 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 	/// <summary>
 	/// A factory for obtaining <see cref="IDataStore{TData}"/> instances using Azure Blob Storage
 	/// </summary>
-	public partial class <#= className #>BlobStorageDataStoreFactory : I<#= className #>DataStoreFactory
+	public partial class <#= className #>BlobStorageDataStoreFactory
+		: BlobStorageDataStoreFactory
+		, IDomainDataStoreFactory
 	{
 		public <#= className #>BlobStorageDataStoreFactory(ILogger logger, IBlobStorageDataStoreConnectionStringFactory blobStorageDataStoreConnectionStringFactory)
 			: base(logger, blobStorageDataStoreConnectionStringFactory)

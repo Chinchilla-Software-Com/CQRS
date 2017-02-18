@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure;
 using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Extensions;
@@ -97,6 +98,8 @@ namespace Cqrs.WebApi.Formatters.FormMultipart.Converters
 				{
 					foreach (var propertyInfo in type.GetProperties())
 					{
+						if (propertyInfo.CustomAttributes.Any(attribute => attribute.AttributeType == typeof(IgnoreDataMemberAttribute)))
+							continue;
 						string propName = string.IsNullOrWhiteSpace(prefix)
 							? propertyInfo.Name
 							: String.Format("{0}.{1}", prefix, propertyInfo.Name);
