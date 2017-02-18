@@ -178,6 +178,16 @@
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
         </property>
+        <property name="WebApiVerb" displayName="Web API Verb: What HTTP Verb will the Web API controller method use." defaultValue="HttpPost">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/WebApiVerbs"/>
+          </propertyType>
+        </property>
+        <property name="IsWebApiRsn" displayName="IsWebApiRsn: Is the Rsn appended to the url of the Web API controller method." defaultValue="false">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
 
@@ -533,5 +543,16 @@
         <enumerationLiteral name="NoOne" displayName="Do not proxy the event to anyone via SignalR." />
       </enumerationLiterals>
     </enumerationType>
+
+      <enumerationType name="WebApiVerbs">
+          <enumerationLiterals>
+              <enumerationLiteral name="HttpPost" displayName="Post." />
+              <enumerationLiteral name="HttpPatch" displayName="Patch." />
+              <enumerationLiteral name="HttpDelete" displayName="Delete." />
+              <enumerationLiteral name="HttpGet" displayName="Get." />
+              <enumerationLiteral name="HttpHead" displayName="Heads." />
+              <enumerationLiteral name="HttpOptions" displayName="Options." />
+          </enumerationLiterals>
+      </enumerationType>
   </propertyTypes>
 </profile>
