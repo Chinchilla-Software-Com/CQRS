@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Events;
 using Cqrs.WebApi.SignalR.Hubs;
@@ -16,11 +17,14 @@ namespace Cqrs.WebApi.Events.Handlers
 	public abstract class EventToHubProxy<TSingleSignOnToken>
 		where TSingleSignOnToken : ISingleSignOnToken, new()
 	{
-		protected EventToHubProxy(INotificationHub notificationHub, IAuthenticationTokenHelper<TSingleSignOnToken> authenticationTokenHelper)
+		protected EventToHubProxy(ILogger logger, INotificationHub notificationHub, IAuthenticationTokenHelper<TSingleSignOnToken> authenticationTokenHelper)
 		{
+			Logger = logger;
 			NotificationHub = notificationHub;
 			AuthenticationTokenHelper = authenticationTokenHelper;
 		}
+
+		protected ILogger Logger { get; private set; }
 
 		protected INotificationHub NotificationHub { get; private set; }
 
