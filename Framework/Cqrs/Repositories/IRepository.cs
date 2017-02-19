@@ -25,9 +25,14 @@ namespace Cqrs.Repositories
 
 		void Update(TData data);
 
+		/// <summary>
+		/// Will mark the <paramref name="data"/> as logically (or soft).
+		/// </summary>
 		void Delete(TData data);
 
 		void DeleteAll();
+
+		void Destroy(TData data);
 
 		TData Load(Guid rsn, bool throwExceptionOnMissingEntity = true);
 	}

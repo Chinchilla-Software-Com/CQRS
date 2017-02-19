@@ -105,6 +105,9 @@ namespace Cqrs.Repositories
 				dataStore.Update(data);
 		}
 
+		/// <summary>
+		/// Will mark the <paramref name="data"/> as logically (or soft).
+		/// </summary>
 		public virtual void Delete(TData data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
@@ -115,6 +118,12 @@ namespace Cqrs.Repositories
 		{
 			using (var dataStore = CreateDataStoreFunction())
 				dataStore.RemoveAll();
+		}
+
+		public void Destroy(TData data)
+		{
+			using (var dataStore = CreateDataStoreFunction())
+				dataStore.Destroy(data);
 		}
 
 		public virtual TData Load(Guid rsn, bool throwExceptionOnMissingEntity = true)

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<$safeprojectname$.Areas.Client.Controllers.ClientController.ApiMethodModel>
+﻿@model IEnumerable<Results.Domain.Host.Web.Areas.Client.Controllers.ClientController.ApiMethodModel>
 window.api = window.api || {
 	metadata: @Html.Raw(Json.Encode(Model)),
 	useJson: true
@@ -10,13 +10,18 @@ $.each(window.api.metadata, function (i, action)
 	{
 		window.api[action.ControllerName] = {};
 	}
-	window.api[action.ControllerName][action.ActionName] = function (parameters)
+	window.api[action.ControllerName][action.ActionName] = function (parameters, successFunction, errorFunction, statusCodeFunctions)
 	{
 		var url = '@Url.Content(Request.Url.AbsoluteUri.Substring(0, Request.Url.AbsoluteUri.Length - Request.Url.AbsolutePath.Length))@Url.Content("~/")' + action.Url;
 		var data = [];
 
-		if (action.Parameters.length == 1 && action.Parameters[0].Name == "parameters")
+		if (action.Parameters.length == 1 && (action.Parameters[0].Name == "parameters" || action.Parameters[0].Name == "entity"))
 		{
+			data = parameters;
+		}
+		else if (action.Parameters.length == 2 && action.Parameters[0].Name == "entity" && action.Parameters[1].Name == "rsn")
+		{
+			url = url.substring(0, url.length - 5) + parameters["Rsn"];
 			data = parameters;
 		}
 		else
@@ -47,7 +52,10 @@ $.each(window.api.metadata, function (i, action)
 				type: action.Method,
 				url: url,
 				data: JSON.stringify(data),
-				contentType: 'application/json'
+				contentType: 'application/json',
+				error: errorFunction,
+				statusCode: statusCodeFunctions,
+				success: successFunction
 			});
 		return $.ajax({
 			type: action.Method,

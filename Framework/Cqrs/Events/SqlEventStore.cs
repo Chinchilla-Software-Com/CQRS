@@ -24,7 +24,11 @@ namespace Cqrs.Events
 	{
 		internal const string SqlEventStoreDbFileOrServerOrConnectionApplicationKey = @"SqlEventStoreDbFileOrServerOrConnection";
 
-		internal const string SqlEventStoreGetByCorrelationIdCommandTimeout = @"SqlEventStoreGetByCorrelationIdCommandTimeout";
+		internal const string SqlEventStoreConnectionNameApplicationKey = @"Cqrs.SqlEventStore.ConnectionStringName";
+
+		internal const string OldSqlEventStoreGetByCorrelationIdCommandTimeout = @"SqlEventStoreGetByCorrelationIdCommandTimeout";
+
+		internal const string SqlEventStoreGetByCorrelationIdCommandTimeout = @"Cqrs.SqlEventStore.GetByCorrelationId.CommandTimeout";
 
 		public IConfigurationManager ConfigurationManager { get; set; }
 
@@ -62,9 +66,11 @@ namespace Cqrs.Events
 			{
 				string commandTimeoutValue;
 				int commandTimeout;
-				if (ConfigurationManager.TryGetSetting(SqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue))
-					if (int.TryParse(commandTimeoutValue, out commandTimeout))
-						dbDataContext.CommandTimeout = commandTimeout;
+				bool found = ConfigurationManager.TryGetSetting(SqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue);
+				if (!found)
+					found = ConfigurationManager.TryGetSetting(OldSqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue);
+				if (found && int.TryParse(commandTimeoutValue, out commandTimeout))
+					dbDataContext.CommandTimeout = commandTimeout;
 
 				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
 					.AsQueryable()
@@ -88,8 +94,28 @@ namespace Cqrs.Events
 		protected virtual DataContext CreateDbDataContext()
 		{
 			string connectionStringKey;
-			if (!ConfigurationManager.TryGetSetting(SqlEventStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
-				connectionStringKey = ConfigurationManager.GetSetting(SqlDataStore<Entity>.SqlDataStoreDbFileOrServerOrConnectionApplicationKey);
+			string applicationKey;
+			if (!ConfigurationManager.TryGetSetting(SqlEventStoreConnectionNameApplicationKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
+			{
+				if (!ConfigurationManager.TryGetSetting(SqlEventStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
+				{
+					if (!ConfigurationManager.TryGetSetting(SqlDataStore<Entity>.SqlDataStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
+					{
+						throw new NullReferenceException(string.Format("No application settings named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlEventStoreConnectionNameApplicationKey));
+					}
+				}
+			}
+			else
+			{
+				try
+				{
+					connectionStringKey = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey].ConnectionString;
+				}
+				catch (NullReferenceException exception)
+				{
+					throw new NullReferenceException(string.Format("No connection string settings named '{0}' was found in the configuration file with the SQL Event Store connection string.", applicationKey), exception);
+				}
+			}
 			return new DataContext(connectionStringKey);
 		}
 

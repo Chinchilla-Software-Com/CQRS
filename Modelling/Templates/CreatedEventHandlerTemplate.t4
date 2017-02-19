@@ -91,6 +91,8 @@ namespace <#= classNamespace #>.Handlers
 
 				bool autoMap = true;
 				OnCreateEntity(@event, ref entity, ref autoMap);
+				if (entity == null)
+					entity = new <#= entityName #>Entity{ Rsn = @event.Rsn };
 				if (autoMap)
 					AutomapHelper.Automap(@event, entity);
 				else

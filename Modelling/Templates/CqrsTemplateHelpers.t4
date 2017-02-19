@@ -116,7 +116,7 @@
 		canBeMultiple = property.UpperValue != null ? property.UpperValue.ToString() == "*" : false;
 		isStruct = typedProperty != null && typedProperty.Type != null && (typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Struct", StringComparison.InvariantCultureIgnoreCase)) || typeName == "int" || typeName == "integer");
 		isEnum = (typedProperty.Type as IEnumeration) != null;
-		isEntity = typedProperty != null && typedProperty.Type != null && typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Entity", StringComparison.InvariantCultureIgnoreCase));
+		isEntity = typedProperty != null && typedProperty.Type != null && typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Entity", StringComparison.InvariantCultureIgnoreCase) && !typedProperty.Type.Name.EndsWith("Entity"));
 
 		return string.Format("{0}{1}{2}{3}{4}"
 			, canBeMultiple && isUnique ? "ICollection<" : canBeMultiple ? "IEnumerable<" : string.Empty

@@ -6,7 +6,6 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System.IO;
 using cdmdotnet.Logging;
 using Cqrs.DataStores;
 using Cqrs.Entities;

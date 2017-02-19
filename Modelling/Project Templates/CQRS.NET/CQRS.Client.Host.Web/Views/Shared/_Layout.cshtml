@@ -10,6 +10,18 @@
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/SignalR")
 	<script src="@Url.Content("~/../API/signalr/hubs")" type="text/javascript"></script>
+	<script type="text/javascript">
+		getFormData = function($form) {
+			var unindexedArray = $form.serializeArray();
+			var indexedArray = {};
+
+			$.map(unindexedArray, function(n, i) {
+				indexedArray[n['name']] = n['value'];
+			});
+
+			return indexedArray;
+		};
+	</script>
 	<script src="@Url.Content("~/../API/Client/")" type="text/javascript"></script>
 </head>
 <body>
