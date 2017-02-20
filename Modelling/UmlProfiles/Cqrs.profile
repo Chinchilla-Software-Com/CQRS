@@ -401,6 +401,16 @@
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
+        <property name="AutoGenerateWebApiRoute" displayName="AutoGenerateWebApiRoute: Automatically generate a Web API controller method route." defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="WebApiRoute" displayName="Web Api Route: Manually specify a Web API route." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
 
@@ -459,6 +469,7 @@
 
   <metaclasses>
     <metaclass name="Microsoft.VisualStudio.Uml.Classes.IClass" />
+    <metaclass name="Microsoft.VisualStudio.Uml.Classes.IComment" />
     <metaclass name="Microsoft.VisualStudio.Uml.Classes.IDependency" />
     <metaclass name="Microsoft.VisualStudio.Uml.Classes.IEnumeration" />
     <metaclass name="Microsoft.VisualStudio.Uml.Classes.IInterface" />
@@ -566,12 +577,12 @@
 
       <enumerationType name="WebApiVerbs">
           <enumerationLiterals>
-              <enumerationLiteral name="HttpPost" displayName="Post." />
-              <enumerationLiteral name="HttpPatch" displayName="Patch." />
-              <enumerationLiteral name="HttpDelete" displayName="Delete." />
-              <enumerationLiteral name="HttpGet" displayName="Get." />
-              <enumerationLiteral name="HttpHead" displayName="Heads." />
-              <enumerationLiteral name="HttpOptions" displayName="Options." />
+              <enumerationLiteral name="HttpPost" displayName="Post" />
+              <enumerationLiteral name="HttpPatch" displayName="Patch" />
+              <enumerationLiteral name="HttpDelete" displayName="Delete" />
+              <enumerationLiteral name="HttpGet" displayName="Get" />
+              <enumerationLiteral name="HttpHead" displayName="Heads" />
+              <enumerationLiteral name="HttpOptions" displayName="Options" />
           </enumerationLiterals>
       </enumerationType>
   </propertyTypes>

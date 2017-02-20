@@ -54,6 +54,16 @@ namespace Cqrs.WebApi
 			return token;
 		}
 
+		protected virtual IServiceRequest<TSingleSignOnToken> CreateRequest<TSingleSignOnToken>()
+			where TSingleSignOnToken : ISingleSignOnToken, new()
+		{
+			return new ServiceRequest<TSingleSignOnToken>
+			{
+				AuthenticationToken = CreateAuthenticationToken<TSingleSignOnToken>(),
+				CorrelationId = CorrelationIdHelper.GetCorrelationId()
+			};
+		}
+
 		protected virtual IServiceRequestWithData<TSingleSignOnToken, TParameters> CreateRequestWithData<TSingleSignOnToken, TParameters>(Func<TParameters> createParameterDelegate = null)
 			where TSingleSignOnToken : ISingleSignOnToken, new()
 			where TParameters : new()
