@@ -91,7 +91,11 @@ namespace <#= classNamespace #>
 string authenticationTokenTypeResolver = authenticationTokenType;
 int index = authenticationTokenTypeResolver.LastIndexOf(".");
 if (index > 0)
-	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
+{
+	if (authenticationTokenTypeResolver.Substring(index).StartsWith(".I"))
+		authenticationTokenTypeResolver = string.Format("{0}{1}", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
+authenticationTokenTypeResolver = authenticationTokenTypeResolver + "Resolver";
+}
 #>
 		public <#= className #><#= collectionMethod.Name #>Resolver()
 			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
