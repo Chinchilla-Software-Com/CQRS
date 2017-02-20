@@ -178,6 +178,21 @@
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
         </property>
+        <property name="AutoGenerateWebApiMethod" displayName="AutoGenerateWebApiMethod: Automatically create a Web API controller method." defaultValue="true">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="WebApiVerb" displayName="Web API Verb: What HTTP Verb will the Web API controller method use." defaultValue="HttpPost">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/WebApiVerbs"/>
+          </propertyType>
+        </property>
+        <property name="IsWebApiUrlRsned" displayName="IsWebApiUrlRsned: Is the Rsn appended to the url of the Web API controller method." defaultValue="false">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
 
