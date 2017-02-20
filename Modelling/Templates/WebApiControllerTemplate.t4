@@ -71,7 +71,10 @@ namespace <#= classNamespace #>.Controllers
 					methodTypeNameSuffix = string.Concat(methodTypeNameSuffix, methodTypeName.Substring(methodTypeName.Length - 1));
 					methodTypeName = methodTypeName.Substring(0, methodTypeName.Length - 1);
 				}
-				methodTypeName = string.Format("{0}Entity{1}", methodTypeName, methodTypeNameSuffix);
+				if (methodTypeName.EndsWith("Entity"))
+					methodTypeName = string.Format("{0}{1}", methodTypeName, methodTypeNameSuffix);
+				else
+					methodTypeName = string.Format("{0}Entity{1}", methodTypeName, methodTypeNameSuffix);
 			}
 			if (methodTypeName == "void")
 			{
@@ -99,9 +102,7 @@ namespace <#= classNamespace #>.Controllers
 			var returnParameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction == ParameterDirectionKind.Return);
 			var parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);
 			bool hasData = parameters.Any();
-			if (returnParameter == null && parameters.Any())
-				parameterName = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters>", authenticationTokenType, className, collectionMethod.Name);
-			else if (returnParameter != null)
+			if (parameters.Any())
 				parameterName = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters>", authenticationTokenType, className, collectionMethod.Name);
 			else
 				parameterName = string.Format("IServiceRequest<{0}>", authenticationTokenType);
@@ -110,12 +111,15 @@ namespace <#= classNamespace #>.Controllers
 		var serviceMethod = collectionMethod.AppliedStereotypes.Single(property => property.Name == "ServiceMethod");
 		string httpMethodAttributeValue = serviceMethod.PropertyInstances.Single(property => property.Name == "WebApiVerb").Value;
 		string responseDataType = methodResponseTypeName + methodTypeName;
+		string route = (serviceMethod.PropertyInstances.Any(property => property.Name == "IsWebApiUrlRsned" && property.Value == "true") ? "rsn:guid/" : string.Empty) + collectionMethod.Name;
+		if (!serviceMethod.PropertyInstances.Any(property => property.Name == "AutoGenerateWebApiRoute" && property.Value == "true"))
+			route = serviceMethod.PropertyInstances.Single(property => property.Name == "WebApiRoute").Value;
 #>
-// <#= parameters.Count() #>
+
 		#region <#= relationshipName #>
 
 <# WriteSummaryComment(collectionMethod.Description) ; #>
-		[Route("<#= serviceMethod.PropertyInstances.Any(property => property.Name == "IsWebApiUrlRsned" && property.Value == "true") ? "rsn:guid/" : string.Empty #><#= collectionMethod.Name #>")]
+		[Route("<#= route #>")]
 		[<#= httpMethodAttributeValue #>]
 		public virtual <#= responseDataType #> <#= relationshipName #>(<#
 		if (hasData)

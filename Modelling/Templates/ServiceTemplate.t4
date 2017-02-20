@@ -99,7 +99,10 @@ namespace <#= classNamespace #>
 					methodTypeNameSuffix = string.Concat(methodTypeNameSuffix, methodTypeName.Substring(methodTypeName.Length - 1));
 					methodTypeName = methodTypeName.Substring(0, methodTypeName.Length - 1);
 				}
-				methodTypeName = string.Format("{0}Entity{1}", methodTypeName, methodTypeNameSuffix);
+				if (methodTypeName.EndsWith("Entity"))
+					methodTypeName = string.Format("{0}{1}", methodTypeName, methodTypeNameSuffix);
+				else
+					methodTypeName = string.Format("{0}Entity{1}", methodTypeName, methodTypeNameSuffix);
 			}
 			if (methodTypeName == "void")
 			{
@@ -125,9 +128,7 @@ namespace <#= classNamespace #>
 
 			var returnParameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction == ParameterDirectionKind.Return);
 			var parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);
-			if (returnParameter == null && parameters.Any())
-				methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, collectionMethod.Name);
-			else if (returnParameter != null)
+			if (parameters.Any())
 				methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, collectionMethod.Name);
 			else
 				methodSignatureParameter = string.Format("IServiceRequest<{0}> serviceRequest", authenticationTokenType);
