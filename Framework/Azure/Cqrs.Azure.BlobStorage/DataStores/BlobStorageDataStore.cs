@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using cdmdotnet.Logging;
 using Cqrs.DataStores;
 using Cqrs.Entities;
@@ -53,7 +54,8 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 		public virtual IEnumerable<TData> GetByFolder()
 		{
 			string folderName = GenerateFolderName();
-			return GetByFolder(folderName);
+			return OpenStreamsForReading(folderName: folderName)
+				.Select(Deserialise);
 		}
 	}
 }
