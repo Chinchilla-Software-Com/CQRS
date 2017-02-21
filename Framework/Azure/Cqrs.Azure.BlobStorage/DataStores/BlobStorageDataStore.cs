@@ -6,6 +6,8 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
+using System.Collections.Generic;
 using cdmdotnet.Logging;
 using Cqrs.DataStores;
 using Cqrs.Entities;
@@ -17,6 +19,8 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 		, IDataStore<TData>
 		where TData : Entity
 	{
+		internal Func<string> GenerateFolderName { get; set; }
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="BlobStorage"/> class using the specified container.
 		/// </summary>
@@ -25,7 +29,8 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 		{
 			GetContainerName = blobStorageDataStoreConnectionStringFactory.GetBaseContainerName;
 			IsContainerPublic = blobStorageDataStoreConnectionStringFactory.IsContainerPublic<TData>;
-			GenerateFileName = data => string.Format("{0}\\{1}", blobStorageDataStoreConnectionStringFactory.GetEntityName<TData>(), data.Rsn.ToString("N"));
+			GenerateFolderName = blobStorageDataStoreConnectionStringFactory.GetEntityName<TData>;
+			GenerateFileName = data => string.Format("{0}\\{1}", GenerateFolderName(), data.Rsn.ToString("N"));
 
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			Initialise(blobStorageDataStoreConnectionStringFactory);
@@ -44,5 +49,11 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 		}
 
 		#endregion
+
+		public virtual IEnumerable<TData> GetByFolder()
+		{
+			string folderName = GenerateFolderName();
+			return GetByFolder(folderName);
+		}
 	}
 }

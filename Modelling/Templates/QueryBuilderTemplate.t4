@@ -30,6 +30,9 @@ if (string.IsNullOrWhiteSpace(entityName))
 
 // using statements
 WriteUsingStatements(this.Element);
+
+var technology = GetEntityPersistenceTechnology(this.Element);
+string baseClass= technology == "Blob" ? "BlobStorageQueryBuilder" : "QueryBuilder";
 #>
 using Cqrs.Configuration;
 using Cqrs.Authentication;
@@ -42,7 +45,7 @@ namespace <#= classNamespace #>
 	// Class and Attributes
 #>
 	<#= GetGeneratedCodeAttribute() #>
-	public partial class <#= className #>Builder : QueryBuilder<<#= className #>, Entities.<#= targetName #>>, I<#= className #>Builder
+	public partial class <#= className #>Builder : <#= baseClass #><<#= className #>, Entities.<#= targetName #>>, I<#= className #>Builder
 	{
 		public <#= className #>Builder(IDomainDataStoreFactory dataStoreFactory, IDependencyResolver dependencyResolver)
 			: base(dataStoreFactory.Get<#= string.IsNullOrWhiteSpace(entityName) ? aggregateRootName : entityName.EndsWith("Entity") ? entityName.Substring(0, entityName.Length - 6) : entityName #>DataStore(), dependencyResolver)

@@ -9,7 +9,7 @@
 
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/SignalR")
-	<script src="@Url.Content("~/../API/signalr/hubs")" type="text/javascript"></script>
+		<script src="@Url.Content(Microsoft.Azure.CloudConfigurationManager.GetSetting("ApiUrl", false) + "/signalr/hubs")" type="text/javascript"></script>
 	<script type="text/javascript">
 		getFormData = function($form) {
 			var unindexedArray = $form.serializeArray();
@@ -22,7 +22,7 @@
 			return indexedArray;
 		};
 	</script>
-	<script src="@Url.Content("~/../API/Client/")" type="text/javascript"></script>
+	<script src="@Url.Content(Microsoft.Azure.CloudConfigurationManager.GetSetting("ApiUrl", false) + "/Client/")" type="text/javascript"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">

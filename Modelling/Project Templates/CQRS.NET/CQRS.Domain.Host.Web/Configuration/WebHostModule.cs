@@ -9,8 +9,8 @@
 using System;
 using System.Web;
 using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
 using Cqrs.Authentication;
+using Cqrs.Azure.ConfigurationManager;
 using Cqrs.Configuration;
 using Cqrs.WebApi.SignalR.Hubs;
 using Ninject;
@@ -27,7 +27,7 @@ namespace $safeprojectname$.Configuration
 		public override void Load()
 		{
 			Bind<IConfigurationManager>()
-				.To<ConfigurationManager>()
+				.To<CloudConfigurationManager>()
 				.InSingletonScope();
 
 			RegisterLogger();

@@ -76,7 +76,7 @@ namespace Cqrs.Repositories.Queries
 			if (queryPredicate.Name != GetFunctionName(queryStrategy.IsNotLogicallyDeleted))
 				return null;
 
-			return (leftHandQueryable ?? DataStore).Where
+			return (leftHandQueryable ?? GetEmptyQueryPredicate()).Where
 			(
 				entity => !entity.IsLogicallyDeleted
 			);
@@ -97,7 +97,7 @@ namespace Cqrs.Repositories.Queries
 
 		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeAny<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
-			return (leftHandQueryable ?? DataStore);
+			return (leftHandQueryable ?? GetEmptyQueryPredicate());
 		}
 
 		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeUser<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
@@ -115,7 +115,7 @@ namespace Cqrs.Repositories.Queries
 
 		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeUser<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
-			return (leftHandQueryable ?? DataStore);
+			return (leftHandQueryable ?? GetEmptyQueryPredicate());
 		}
 
 		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompany<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
@@ -133,7 +133,7 @@ namespace Cqrs.Repositories.Queries
 
 		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompany<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
-			return (leftHandQueryable ?? DataStore);
+			return (leftHandQueryable ?? GetEmptyQueryPredicate());
 		}
 
 		protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompanyAndUser<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
@@ -151,7 +151,7 @@ namespace Cqrs.Repositories.Queries
 
 		protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompanyAndUser<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
 		{
-			return (leftHandQueryable ?? DataStore);
+			return (leftHandQueryable ?? GetEmptyQueryPredicate());
 		}
 
 		protected abstract IQueryable<TData> GeneratePredicate(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null);

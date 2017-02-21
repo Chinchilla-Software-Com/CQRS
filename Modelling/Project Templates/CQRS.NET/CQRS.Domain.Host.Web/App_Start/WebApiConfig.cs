@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
+using System.Web.Http.Cors;
+using Cqrs.Azure.ConfigurationManager;
 using Cqrs.Ninject.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -12,6 +14,15 @@ namespace $safeprojectname$
 	{
 		public static void Register(HttpConfiguration config)
 		{
+			var configurationManager = new CloudConfigurationManager();
+			var cors = new EnableCorsAttribute
+			(
+				configurationManager.GetSetting("Cqrs.WebApi.Cors.Origins"),
+				configurationManager.GetSetting("Cqrs.WebApi.Cors.Headers"),
+				configurationManager.GetSetting("Cqrs.WebApi.Cors.Methods"),
+				configurationManager.GetSetting("Cqrs.WebApi.Cors.ExposedHeaders")
+			);
+			config.EnableCors(cors);
 			config.MapHttpAttributeRoutes();
 
 			/*

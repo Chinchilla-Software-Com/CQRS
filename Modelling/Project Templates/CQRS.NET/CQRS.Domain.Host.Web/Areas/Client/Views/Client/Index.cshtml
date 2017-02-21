@@ -47,11 +47,14 @@ $.each(window.api.metadata, function (i, action)
 			});
 		}
 
+		if (data.length == 0 && action.Method == "GET")
+			data = null;
+
 		if (window.api.useJson)
 			return $.ajax({
 				type: action.Method,
 				url: url,
-				data: JSON.stringify(data),
+				data: data == null ? data : JSON.stringify(data),
 				contentType: 'application/json',
 				error: errorFunction,
 				statusCode: statusCodeFunctions,
@@ -60,7 +63,7 @@ $.each(window.api.metadata, function (i, action)
 		return $.ajax({
 			type: action.Method,
 			url: url,
-			data: data
+			data: data == null ? data : JSON.stringify(data)
 		});
 	};
 });
