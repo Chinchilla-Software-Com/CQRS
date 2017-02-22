@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 using cdmdotnet.Logging;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling;
@@ -162,56 +163,98 @@ namespace Cqrs.Azure.BlobStorage
 
 		#endregion
 
-		#region Implementation of IDataStore<TData>
-
-		public void Add(TData data)
+		protected virtual void AsyncSaveData<TResult>(TData data, Func<TData, CloudBlockBlob, TResult> function, Func<TData, string> customFilenameFunction = null)
 		{
+			IList<Task> persistTasks = new List<Task>();
 			foreach (Tuple<CloudStorageAccount, CloudBlobContainer> tuple in WritableCollection)
 			{
-				CloudBlockBlob cloudBlockBlob = GetBlobReference(tuple.Item2, string.Format("{0}.json", GenerateFileName(data)));
-				Uri uri = AzureStorageRetryPolicy.ExecuteAction
+				TData taskData = data;
+				CloudBlobContainer container = tuple.Item2;
+				Task task = Task.Factory.StartNewSafely
 				(
 					() =>
 					{
-						cloudBlockBlob.UploadFromStream(Serialise(data));
+						string fileName = string.Format("{0}.json", (customFilenameFunction ?? GenerateFileName)(taskData));
+						CloudBlockBlob cloudBlockBlob = GetBlobReference(container, fileName);
+						if (typeof(TResult) == typeof(Uri))
+						{
+							Uri uri = AzureStorageRetryPolicy.ExecuteAction(() => (Uri)(object)function(taskData, cloudBlockBlob));
+
+							Logger.LogDebug(string.Format("The data entity '{0}' was persisted at uri '{1}'", fileName, uri));
+						}
+						else
+							AzureStorageRetryPolicy.ExecuteAction(() => function(taskData, cloudBlockBlob));
+					}
+				);
+				persistTasks.Add(task);
+			}
+
+			bool anyFailed = Task.Factory.ContinueWhenAll(persistTasks.ToArray(), tasks =>
+			{
+				return tasks.Any(task => task.IsFaulted);
+			}).Result;
+			if (anyFailed)
+				throw new AggregateException("Persisting data to blob storage failed. Check the logs for more details.");
+		}
+
+		#region Implementation of IDataStore<TData>
+
+		public virtual void Add(TData data)
+		{
+			AsyncSaveData
+			(
+				data,
+				(taskData, cloudBlockBlob) =>
+				{
+					try
+					{
+						cloudBlockBlob.UploadFromStream(Serialise(taskData));
 						cloudBlockBlob.Properties.ContentType = "application/json";
 						cloudBlockBlob.SetProperties();
 						return cloudBlockBlob.Uri;
 					}
-				);
-
-				Logger.LogDebug(string.Format("The data entity '{0}' was persisted at uri '{1}'", string.Format("{0}.json", GenerateFileName(data)), uri));
-			}
+					catch (Exception exception)
+					{
+						Logger.LogError("There was an issue persisting data to blob storage.", exception: exception);
+						throw;
+					}
+				}
+			);
 		}
 
-		public void Add(IEnumerable<TData> data)
+		public virtual void Add(IEnumerable<TData> data)
 		{
 			foreach (TData dataItem in data)
 				Add(dataItem);
 		}
 
-		public void Destroy(TData data)
+		public virtual void Destroy(TData data)
 		{
-			foreach (Tuple<CloudStorageAccount, CloudBlobContainer> tuple in WritableCollection)
-			{
-				CloudBlockBlob cloudBlockBlob = GetBlobReference(tuple.Item2, string.Format("{0}.json", GenerateFileName(data)));
-				AzureStorageRetryPolicy.ExecuteAction
-				(
-					() =>
+			AsyncSaveData
+			(
+				data,
+				(taskData, cloudBlockBlob) =>
+				{
+					try
 					{
-						cloudBlockBlob.DeleteIfExists(DeleteSnapshotsOption.IncludeSnapshots);
+						return cloudBlockBlob.DeleteIfExists(DeleteSnapshotsOption.IncludeSnapshots);
 					}
-				);
-			}
+					catch (Exception exception)
+					{
+						Logger.LogError("There was an issue deleting data from blob storage.", exception: exception);
+						throw;
+					}
+				}
+			);
 		}
 
-		public void RemoveAll()
+		public virtual void RemoveAll()
 		{
 			foreach (Tuple<CloudStorageAccount, CloudBlobContainer> tuple in WritableCollection)
 				tuple.Item2.DeleteIfExists();
 		}
 
-		public void Update(TData data)
+		public virtual void Update(TData data)
 		{
 			Add(data);
 		}

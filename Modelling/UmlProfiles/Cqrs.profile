@@ -211,6 +211,11 @@
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
+        <property name="OverrideDomainEntityPersistenceTechnology" displayName="Override the Domain Entity Persistence Technology: Indicates that this entity won't use the domain level specified Entity Persistence Technology." defaultValue="false">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
         <property name="EntityPersistenceTechnology" displayName="Entity Persistence Technology: What technology are you using for persisting this entity." defaultValue="SimplifiedSql">
           <propertyType>
             <enumerationTypeMoniker name="/CqrsProfile/EntityPersistenceTechnology"/>
@@ -435,6 +440,11 @@
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
         </property>
+        <property name="EntityType" displayName="Entity Type: The type of the entity this query strategy is for." defaultValue="">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Type"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
     <stereotype name="QueryStrategyMethod" displayName="Query Strategy Method">
@@ -478,14 +488,21 @@
     <metaclass name="Microsoft.VisualStudio.Uml.Classes.IPackageImport" />
     <metaclass name="Microsoft.VisualStudio.Uml.Classes.IProperty" />
     <metaclass name="Microsoft.VisualStudio.Uml.Classes.IAssociation" />
+    <metaclass name="Microsoft.VisualStudio.Uml.Classes.IType" />
   </metaclasses>
 
   <propertyTypes>
     <externalType name="System.Object" />
     <externalType name="System.String" />
     <externalType name="System.Boolean" />
+    <externalType name="System.Int16" />
+    <externalType name="System.Int32" />
+    <externalType name="System.Int64" />
+    <externalType name="System.Decimal" />
+    <externalType name="System.Double" />
     <externalType name="System.DateTime" />
     <externalType name="System.Type" />
+    <externalType name="System.Guid" />
 
     <enumerationType name="PermissionScope">
       <enumerationLiterals>
@@ -575,15 +592,15 @@
       </enumerationLiterals>
     </enumerationType>
 
-      <enumerationType name="WebApiVerbs">
-          <enumerationLiterals>
-              <enumerationLiteral name="HttpPost" displayName="Post" />
-              <enumerationLiteral name="HttpPatch" displayName="Patch" />
-              <enumerationLiteral name="HttpDelete" displayName="Delete" />
-              <enumerationLiteral name="HttpGet" displayName="Get" />
-              <enumerationLiteral name="HttpHead" displayName="Heads" />
-              <enumerationLiteral name="HttpOptions" displayName="Options" />
-          </enumerationLiterals>
-      </enumerationType>
+    <enumerationType name="WebApiVerbs">
+      <enumerationLiterals>
+        <enumerationLiteral name="HttpPost" displayName="Post" />
+        <enumerationLiteral name="HttpPatch" displayName="Patch" />
+        <enumerationLiteral name="HttpDelete" displayName="Delete" />
+        <enumerationLiteral name="HttpGet" displayName="Get" />
+        <enumerationLiteral name="HttpHead" displayName="Heads" />
+        <enumerationLiteral name="HttpOptions" displayName="Options" />
+      </enumerationLiterals>
+    </enumerationType>
   </propertyTypes>
 </profile>

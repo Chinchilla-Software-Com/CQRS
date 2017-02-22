@@ -90,22 +90,26 @@ namespace Cqrs.Azure.BlobStorage.Events
 
 			public void AddToCorrelationFolder(EventData data)
 			{
-				foreach (Tuple<CloudStorageAccount, CloudBlobContainer> tuple in WritableCollection)
-				{
-					CloudBlockBlob cloudBlockBlob = GetBlobReference(tuple.Item2, string.Format("by-correlation\\{0:N}\\{1}", data.CorrelationId, GenerateFileName(data)));
-					Uri uri = AzureStorageRetryPolicy.ExecuteAction
-					(
-						() =>
+				AsyncSaveData
+				(
+					data,
+					(taskData, cloudBlockBlob) =>
+					{
+						try
 						{
-							cloudBlockBlob.UploadFromStream(Serialise(data));
+							cloudBlockBlob.UploadFromStream(Serialise(taskData));
 							cloudBlockBlob.Properties.ContentType = "application/json";
 							cloudBlockBlob.SetProperties();
 							return cloudBlockBlob.Uri;
 						}
-					);
-
-					Logger.LogDebug(string.Format("The data entity '{0}' was persisted at uri '{1}'", GenerateFileName(data), uri));
-				}
+						catch (Exception exception)
+						{
+							Logger.LogError("There was an issue persisting data to blob storage.", exception: exception);
+							throw;
+						}
+					},
+					taskData => string.Format("by-correlation\\{0:N}\\{1}", data.CorrelationId, GenerateFileName(data))
+				);
 			}
 		}
 	}
