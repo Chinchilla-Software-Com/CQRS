@@ -440,11 +440,6 @@
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
         </property>
-        <property name="EntityType" displayName="Entity Type: The type of the entity this query strategy is for." defaultValue="">
-          <propertyType>
-            <externalTypeMoniker name="/CqrsProfile/System.Type"/>
-          </propertyType>
-        </property>
       </properties>
     </stereotype>
     <stereotype name="QueryStrategyMethod" displayName="Query Strategy Method">

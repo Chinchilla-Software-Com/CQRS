@@ -29,7 +29,7 @@ namespace Results.Domain.Host.Web.Areas.Client.Controllers
 				IList<ApiDescription> ads = apiDescription.Value;
 				if (ads.Count == 1)
 					apiMethods.Add(new ApiMethodModel(ads.Single()));
-				if (ads.Count == 2)
+				else if (ads.Count == 2)
 				{
 					string actionName0 = ads[0].ActionDescriptor.ActionName;
 					string actionName1 = ads[1].ActionDescriptor.ActionName;
