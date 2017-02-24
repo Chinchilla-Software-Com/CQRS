@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>@ViewBag.Title - @ConfigurationManager.AppSettings["ApplicationName"]</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/SignalR")
+		<script src="@Url.Content(Microsoft.Azure.CloudConfigurationManager.GetSetting("ApiUrl", false) + "/signalr/hubs")" type="text/javascript"></script>
+	<script type="text/javascript">
+		getFormData = function($form) {
+			var unindexedArray = $form.serializeArray();
+			var indexedArray = {};
+
+			$.map(unindexedArray, function(n, i) {
+				indexedArray[n['name']] = n['value'];
+			});
+
+			return indexedArray;
+		};
+	</script>
+	<script src="@Url.Content(Microsoft.Azure.CloudConfigurationManager.GetSetting("ApiUrl", false) + "/Client/")" type="text/javascript"></script>
+
+		<style>
+			nav {
+				display: inline;
+				padding:10px 0;
+			}
+			nav ul {
+				list-style-type:none;
+				margin:0;
+				padding:0;
+			}
+			nav ul li {
+				display:inline-block;
+				position:relative;
+			}
+
+			/* sub navigation */
+			nav li ul {
+				background-color:#222222;
+				position:absolute;
+				left:0;
+				top:40px; /* make this equal to the line-height of the links (specified below) */
+				width:200px;
+			}
+			nav li li {
+				position:relative;
+				margin:0;
+				display:block;
+				height: 50px;
+			}
+			nav li li ul {
+				position:absolute;
+				top:0;
+				left:200px; /* make this equal to the width of the sub nav above */
+				margin:0;
+			}
+
+			/* style sub level links */
+			nav li li a {
+				border-bottom:solid 1px #999999;
+				margin:0 10px;
+				padding:0 12px;
+				line-height: 50px;
+				display: block;
+			}
+			nav li li:last-child a {
+				border-bottom:none;
+			}
+
+			/* show arrows for dropdowns */
+			nav li.dropdown > a {
+				background-image:url('@Url.Content("~/Content/arrow-down.png")');
+				background-position:right 20px;
+				background-repeat:no-repeat;
+			}
+
+			nav li li.dropdown > a {
+				background-image:url('@Url.Content("~/Content/arrow-right.png")');
+				background-position:right 16px;
+				background-repeat:no-repeat;
+			}
+
+			/* hide sub menu links */
+			ul.sub-menu {
+				display:none;
+			}
+
+			ul.sub-menu > li > a {
+				color: #999999;
+			}
+
+			ul.sub-menu > li > a:hover,
+			ul.sub-menu > li > a:focus {
+				color: #ffffff;
+				background-color: transparent;
+				text-decoration: none;
+			}
+
+		</style>
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('.dropdown').hover(
+					function () {
+						$(this).children('.sub-menu').slideDown(200);
+					},
+					function () {
+						$(this).children('.sub-menu').slideUp(200);
+					}
+				);
+				function stop()
+				{
+					$('.sub-menu').stop(true, true);
+				}
+			}); // end ready
+		</script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+					@Html.ActionLink(ConfigurationManager.AppSettings["ApplicationShortName"], "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+				<p>&copy; @DateTime.Now.Year - @ConfigurationManager.AppSettings["ApplicationName"]</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

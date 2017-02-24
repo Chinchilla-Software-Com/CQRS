@@ -85,7 +85,7 @@ namespace <#= classNamespace #>
 	}
 #>
 <#
-		IList<IOperation> collectionMethods = GetMethodList(this.Element);
+		IList<IOperation> collectionMethods = GetMethodList(this.Element).Where(m => m.AppliedStereotypes.Any()(property => property.Name == "ServiceMethod")).ToList();
 		// Methods
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
@@ -126,8 +126,8 @@ namespace <#= classNamespace #>
 
 			var methodSignatureParameter = string.Empty;
 
-			var returnParameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction == ParameterDirectionKind.Return);
-			var parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);
+			IParameter returnParameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction == ParameterDirectionKind.Return);
+			IEnumerable<IParameter> parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);
 			if (parameters.Any())
 				methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, collectionMethod.Name);
 			else
