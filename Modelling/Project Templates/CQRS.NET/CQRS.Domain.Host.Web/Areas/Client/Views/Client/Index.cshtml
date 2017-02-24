@@ -47,7 +47,7 @@ $.each(window.api.metadata, function (i, action)
 			});
 		}
 
-		if (data.length == 0 && action.Method == "GET")
+		if (data.length == 0 && (action.Method == "GET" || action.Method == "DELETE"))
 			data = null;
 
 		if (window.api.useJson)
@@ -55,7 +55,8 @@ $.each(window.api.metadata, function (i, action)
 				type: action.Method,
 				url: url,
 				data: data == null ? data : JSON.stringify(data),
-				contentType: 'application/json',
+				// see http://barnabas.tumblr.com/post/87914971548/the-curse-of-the-cors-preflight-and-how-to-defeat for why 'text/plain' to avoid CORS preflight
+				contentType: data == null ? 'text/plain' : 'application/json',
 				error: errorFunction,
 				statusCode: statusCodeFunctions,
 				success: successFunction

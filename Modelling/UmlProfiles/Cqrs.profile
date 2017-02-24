@@ -233,6 +233,11 @@
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
         </property>
+        <property name="IsWebApiListProperty" displayName="Is a WebAPI List Property: Indicates that WebAPI lists will include this property." defaultValue="false">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
     <stereotype name="ValueObject" displayName="Value Object">
@@ -414,6 +419,11 @@
         <property name="WebApiRoute" displayName="Web Api Route: Manually specify a Web API route." defaultValue="">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
+          </propertyType>
+        </property>
+        <property name="IsWebApiListMethod" displayName="Is a WebAPI List Method: Indicates that this method is the default WebAPI lists method." defaultValue="false">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
       </properties>
