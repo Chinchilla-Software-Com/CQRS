@@ -141,7 +141,7 @@ namespace Cqrs.Bus
 					throw new NoCommandHandlerRegisteredException(messageType);
 				if (isAnEvent)
 					throw new NoEventHandlerRegisteredException(messageType);
-				throw new InvalidOperationException("No handler(s) registered.");
+				throw new NoHandlerRegisteredException(messageType);
 			}
 
 			return Enumerable.Empty<RouteHandlerDelegate>();
