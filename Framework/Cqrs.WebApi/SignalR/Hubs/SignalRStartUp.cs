@@ -14,15 +14,15 @@ using Microsoft.Owin.Cors;
 using Newtonsoft.Json;
 using Owin;
 
-[assembly: OwinStartup(typeof(Cqrs.WebApi.SignalR.Hubs.SignalRStartUp))]
+[assembly: OwinStartup("Cqrs.WebApi.SignalR.Hubs.SignalRStartUp", typeof(Cqrs.WebApi.SignalR.Hubs.SignalRStartUp))]
 namespace Cqrs.WebApi.SignalR.Hubs
 {
 	public class SignalRStartUp
 	{
-		public virtual void Configuration(IAppBuilder app, IConfigurationManager configurationManager)
+		public virtual void Configuration(IAppBuilder app)
 		{
 			string url;
-			if (!configurationManager.TryGetSetting("Cqrs.WebApi.SignalR.EndpointPath", out url) || string.IsNullOrWhiteSpace(url))
+			if (!new ConfigurationManager().TryGetSetting("Cqrs.WebApi.SignalR.EndpointPath", out url) || string.IsNullOrWhiteSpace(url))
 				url = "/signalr";
 			// Branch the pipeline here for requests that start with "/signalr"
 			app.Map(url, map =>
