@@ -809,7 +809,7 @@ switch(aggregateTechnology)
 				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
 				#><#= (i == 0) ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(relationshipProperty.Name) #><#
 			}
-#><#= eventParameters.Substring(eventRelationships.Any() ? 2 : 0) #>);
+#><#= eventParameters.Substring(!relationshipProperties.Any() ? 2 : 0) #>);
 <#
 			foreach(IAssociation eventRelationship in eventRelationships)
 			{
@@ -844,7 +844,7 @@ switch(aggregateTechnology)
 				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
 				#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(relationshipProperty) #> <#= GetLowercaseFirstCharacter(relationshipProperty.Name) #><#
 			}
-#><#= eventParametersWithType.Substring(eventRelationships.Any() ? 2 : 0) #>);
+#><#= eventParametersWithType.Substring(!relationshipProperties.Any() ? 2 : 0) #>);
 
 		partial void On<#= relationshipName #>Handled(<#
 			for (int i = 0; i < relationshipProperties.Count; i++)
