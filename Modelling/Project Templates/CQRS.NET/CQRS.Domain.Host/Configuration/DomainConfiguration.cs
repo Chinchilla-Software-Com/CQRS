@@ -24,8 +24,8 @@ namespace $safeprojectname$.Configuration
 			NinjectDependencyResolver.ModulesToLoad.Add(new SimplifiedSqlModule<SingleSignOnToken>());
 			NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule<SingleSignOnToken>());
 			NinjectDependencyResolver.ModulesToLoad.Add(new InProcessCommandBusModule<SingleSignOnToken>());
-            // Uncomment once you generate your model.
-            // NinjectDependencyResolver.ModulesToLoad.Add(new DomainNinjectModule());
+            // This file will become available once you generate your model.
+            NinjectDependencyResolver.ModulesToLoad.Add(new DomainNinjectModule());
 
 			StartResolver();
 		}
