@@ -6,11 +6,14 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Text;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using cdmdotnet.Logging;
+using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -29,7 +32,20 @@ namespace Cqrs.Azure.ServiceBus
 			if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-EventHub"))
 				return;
 
-			EventHubPublisher.Send(new Microsoft.ServiceBus.Messaging.EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseEvent(@event))));
+			try
+			{
+				EventHubPublisher.Send(new Microsoft.ServiceBus.Messaging.EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseEvent(@event))));
+			}
+			catch (QuotaExceededException exception)
+			{
+				Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
+				throw;
+			}
+			catch (Exception exception)
+			{
+				Logger.LogError("An issue occurred while trying to publish an event.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
+				throw;
+			}
 			Logger.LogInfo(string.Format("An event was published with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
 		}
 

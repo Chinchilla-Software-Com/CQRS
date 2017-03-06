@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
@@ -36,17 +37,56 @@ namespace Cqrs.Azure.ServiceBus
 			// Backwards compatibility and simplicity
 			if (publicEventAttribute == null && privateEventAttribute == null)
 			{
-				PublicServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event)));
+				try
+				{
+					PublicServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event)));
+				}
+				catch (QuotaExceededException exception)
+				{
+					Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
+					throw;
+				}
+				catch (Exception exception)
+				{
+					Logger.LogError("An issue occurred while trying to publish an event.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
+					throw;
+				}
 				Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
 			}
 			if (publicEventAttribute != null)
 			{
-				PublicServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event)));
+				try
+				{
+					PublicServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event)));
+				}
+				catch (QuotaExceededException exception)
+				{
+					Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
+					throw;
+				}
+				catch (Exception exception)
+				{
+					Logger.LogError("An issue occurred while trying to publish an event.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
+					throw;
+				}
 				Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
 			}
 			if (privateEventAttribute != null)
 			{
-				PrivateServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event)));
+				try
+				{
+					PrivateServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event)));
+				}
+				catch (QuotaExceededException exception)
+				{
+					Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
+					throw;
+				}
+				catch (Exception exception)
+				{
+					Logger.LogError("An issue occurred while trying to publish an event.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
+					throw;
+				}
 				Logger.LogDebug(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
 			}
 		}
