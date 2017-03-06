@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Cqrs.Authentication;
@@ -115,9 +116,42 @@ namespace Cqrs.Azure.ServiceBus
 										try
 										{
 											message.RenewLock();
+											try
+											{
+												Logger.LogDebug(string.Format("Renewed the lock on event '{0}'.", message.MessageId));
+											}
+											catch
+											{
+												Trace.TraceError("Renewed the lock on event '{0}'.", message.MessageId);
+											}
+
 											break;
 										}
-										catch { }
+										catch (MessageLockLostException exception)
+										{
+											try
+											{
+												Logger.LogWarning(string.Format("Renewing the lock on event '{0}' failed as the message lock was lost.", message.MessageId), exception: exception);
+											}
+											catch
+											{
+												Trace.TraceError("Renewing the lock on event '{0}' failed as the message lock was lost.\r\n{1}", message.MessageId, exception.Message);
+											}
+											return;
+										}
+										catch (Exception exception)
+										{
+											try
+											{
+												Logger.LogWarning(string.Format("Renewing the lock on event '{0}' failed.", message.MessageId), exception: exception);
+											}
+											catch
+											{
+												Trace.TraceError("Renewing the lock on event '{0}' failed.\r\n{1}", message.MessageId, exception.Message);
+											}
+											if (i == 9)
+												return;
+										}
 									}
 								}
 

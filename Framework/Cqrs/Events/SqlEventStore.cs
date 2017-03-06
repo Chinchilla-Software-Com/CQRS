@@ -30,7 +30,7 @@ namespace Cqrs.Events
 
 		internal const string SqlEventStoreGetByCorrelationIdCommandTimeout = @"Cqrs.SqlEventStore.GetByCorrelationId.CommandTimeout";
 
-		public IConfigurationManager ConfigurationManager { get; set; }
+		protected IConfigurationManager ConfigurationManager { get; private set; }
 
 		public SqlEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)
 			: base(eventBuilder, eventDeserialiser, logger)
@@ -101,7 +101,7 @@ namespace Cqrs.Events
 				{
 					if (!ConfigurationManager.TryGetSetting(SqlDataStore<Entity>.SqlDataStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
 					{
-						throw new NullReferenceException(string.Format("No application settings named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlEventStoreConnectionNameApplicationKey));
+						throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlEventStoreConnectionNameApplicationKey));
 					}
 				}
 			}
@@ -113,7 +113,7 @@ namespace Cqrs.Events
 				}
 				catch (NullReferenceException exception)
 				{
-					throw new NullReferenceException(string.Format("No connection string settings named '{0}' was found in the configuration file with the SQL Event Store connection string.", applicationKey), exception);
+					throw new NullReferenceException(string.Format("No connection string setting named '{0}' was found in the configuration file with the SQL Event Store connection string.", applicationKey), exception);
 				}
 			}
 			return new DataContext(connectionStringKey);
@@ -127,20 +127,24 @@ namespace Cqrs.Events
 
 		protected virtual void Add(DataContext dbDataContext, EventData data)
 		{
-			Logger.LogDebug("Adding data to the Sql eventstore database", "SqlEventStore\\Add");
+			Logger.LogDebug("Adding data to the SQL eventstore database", "SqlEventStore\\Add");
 			try
 			{
 				DateTime start = DateTime.Now;
 				GetEventStoreTable(dbDataContext).InsertOnSubmit(data);
 				dbDataContext.SubmitChanges();
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Adding data in the Sql eventstore database took {0}.", end - start), "SqlEventStore\\Add");
+				Logger.LogDebug(string.Format("Adding data in the SQL eventstore database took {0}.", end - start), "SqlEventStore\\Add");
+			}
+			catch (Exception exception)
+			{
+				Logger.LogError("There was an issue persisting data to the SQL event store.", exception: exception);
+				throw;
 			}
 			finally
 			{
-				Logger.LogDebug("Adding data to the Sql eventstore database... Done", "SqlEventStore\\Add");
+				Logger.LogDebug("Adding data to the SQL eventstore database... Done", "SqlEventStore\\Add");
 			}
 		}
-
 	}
 }

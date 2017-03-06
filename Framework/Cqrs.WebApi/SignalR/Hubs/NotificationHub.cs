@@ -59,7 +59,12 @@ namespace Cqrs.WebApi.SignalR.Hubs
 
 		protected virtual string UserToken()
 		{
-			string userRsn = Context.RequestCookies["X-Token"].Value;
+			string userRsn;
+			Cookie cookie;
+			if (Context.RequestCookies.TryGetValue("X-Token", out cookie))
+				userRsn = cookie.Value;
+			else
+				userRsn = Context.QueryString["X-Token"];
 
 			return userRsn.Replace(".", string.Empty);
 		}

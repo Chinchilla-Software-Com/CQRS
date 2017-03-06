@@ -175,6 +175,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Properties\PublishProfiles\$ext_safeprojectname$.pubxml" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +288,52 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>echo Param( &gt; $(ProjectDir)prepare.ps1
+echo 	[string] $sourceFolder, &gt;&gt; $(ProjectDir)prepare.ps1
+echo 	[string] $targetFolder, &gt;&gt; $(ProjectDir)prepare.ps1
+echo 	[string] $filter ## *.css,*.js,*.png,*.jpg,*.gif,*.htm,*.html &gt;&gt; $(ProjectDir)prepare.ps1
+echo ^) &gt;&gt; $(ProjectDir)prepare.ps1
+
+echo $source = "$sourceFolder\*" &gt;&gt; $(ProjectDir)prepare.ps1
+
+echo Get-ChildItem -Path "$sourceFolder\*" -Recurse -Filter $filter ^|  foreach { &gt;&gt; $(ProjectDir)prepare.ps1
+echo 	$DestFile =  $_.Fullname.Substring($sourceFolder.Length - 1) &gt;&gt; $(ProjectDir)prepare.ps1
+echo 	$DestFile =  "$targetFolder\$DestFile" &gt;&gt; $(ProjectDir)prepare.ps1
+echo 	$null = New-Item -Path  $DestFile -Type File -Force &gt;&gt; $(ProjectDir)prepare.ps1
+echo 	Copy-Item -Path  $_.FullName -Destination $DestFile -Force &gt;&gt; $(ProjectDir)prepare.ps1
+echo } &gt;&gt; $(ProjectDir)prepare.ps1
+
+echo Param( &gt; $(ProjectDir)download.ps1
+echo 	[string] $url, &gt;&gt; $(ProjectDir)download.ps1
+echo 	[string] $path &gt;&gt; $(ProjectDir)\download.ps1
+echo ^) &gt;&gt; $(ProjectDir)download.ps1
+
+echo [System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true} &gt;&gt; $(ProjectDir)download.ps1
+echo $WebClient = New-Object net.webclient &gt;&gt; $(ProjectDir)download.ps1
+echo $path="$path\index.htm" &gt;&gt; $(ProjectDir)download.ps1
+echo ## $WebClient.DownloadFile($url, $path) &gt;&gt; $(ProjectDir)download.ps1
+
+echo $content=$WebClient.DownloadString($url) &gt;&gt; $(ProjectDir)download.ps1
+echo $fileContent = $content.Replace("/$ext_safeprojectname$/Client", "") &gt;&gt; $(ProjectDir)download.ps1
+echo $fileContent ^| Out-File $path &gt;&gt; $(ProjectDir)download.ps1</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>powershell -File "$(ProjectDir)prepare.ps1" -sourceFolder "$(ProjectDir)." -targetFolder "$(ProjectDir)..\$ext_safeprojectname$.Client.Host.Mobile\www" -filter "*.css"
+powershell -File "$(ProjectDir)prepare.ps1" -sourceFolder "$(ProjectDir)." -targetFolder "$(ProjectDir)..\$ext_safeprojectname$.Client.Host.Mobile\www" -filter "*.js"
+powershell -File "$(ProjectDir)prepare.ps1" -sourceFolder "$(ProjectDir)." -targetFolder "$(ProjectDir)..\$ext_safeprojectname$.Client.Host.Mobile\www" -filter "*.png"
+powershell -File "$(ProjectDir)prepare.ps1" -sourceFolder "$(ProjectDir)." -targetFolder "$(ProjectDir)..\$ext_safeprojectname$.Client.Host.Mobile\www" -filter "*.jpg"
+powershell -File "$(ProjectDir)prepare.ps1" -sourceFolder "$(ProjectDir)." -targetFolder "$(ProjectDir)..\$ext_safeprojectname$.Client.Host.Mobile\www" -filter "*.gif"
+powershell -File "$(ProjectDir)prepare.ps1" -sourceFolder "$(ProjectDir)." -targetFolder "$(ProjectDir)..\$ext_safeprojectname$.Client.Host.Mobile\www" -filter "*.htm"
+powershell -File "$(ProjectDir)prepare.ps1" -sourceFolder "$(ProjectDir)." -targetFolder "$(ProjectDir)..\$ext_safeprojectname$.Client.Host.Mobile\www" -filter "*.html"
+powershell -File "$(ProjectDir)prepare.ps1" -sourceFolder "$(ProjectDir)." -targetFolder "$(ProjectDir)..\$ext_safeprojectname$.Client.Host.Mobile\www" -filter "*.svg"
+powershell -File "$(ProjectDir)prepare.ps1" -sourceFolder "$(ProjectDir)." -targetFolder "$(ProjectDir)..\$ext_safeprojectname$.Client.Host.Mobile\www" -filter "*.eot"
+powershell -File "$(ProjectDir)prepare.ps1" -sourceFolder "$(ProjectDir)." -targetFolder "$(ProjectDir)..\$ext_safeprojectname$.Client.Host.Mobile\www" -filter "*.ttf"
+powershell -File "$(ProjectDir)prepare.ps1" -sourceFolder "$(ProjectDir)." -targetFolder "$(ProjectDir)..\$ext_safeprojectname$.Client.Host.Mobile\www" -filter "*.woff"
+
+powershell -File "$(ProjectDir)download.ps1" -url "https://localhost/$ext_safeprojectname$/Client" -path "$(ProjectDir)..\$ext_safeprojectname$.Client.Host.Mobile\www"
+DEL "$(ProjectDir)..\$ext_safeprojectname$.Client.Host.Mobile\www\Project_Readme.html"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
