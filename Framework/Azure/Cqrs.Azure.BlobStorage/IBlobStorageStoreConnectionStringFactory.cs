@@ -6,16 +6,10 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System.Collections.Generic;
-
 namespace Cqrs.Azure.BlobStorage
 {
-	public interface IBlobStorageStoreConnectionStringFactory
+	public interface IBlobStorageStoreConnectionStringFactory : IStorageStoreConnectionStringFactory
 	{
-		IEnumerable<string> GetWritableConnectionStrings();
-
-		string GetReadableConnectionString();
-
 		string GetBaseContainerName();
 	}
 }

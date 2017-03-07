@@ -46,7 +46,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 		public void Remove(TData data)
 		{
 			data.IsLogicallyDeleted = true;
-			Add(data);
+			Update(data);
 		}
 
 		#endregion

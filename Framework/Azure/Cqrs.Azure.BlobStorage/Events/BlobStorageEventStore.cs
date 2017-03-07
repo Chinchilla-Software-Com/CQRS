@@ -12,8 +12,6 @@ using System.IO;
 using System.Linq;
 using cdmdotnet.Logging;
 using Cqrs.Events;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Cqrs.Azure.BlobStorage.Events
 {
@@ -23,7 +21,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 		protected RawBlobStorageEventStore BlobStorageStore { get; private set; }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="BlobStorage"/> class using the specified container.
+		/// Initializes a new instance of the <see cref="BlobStorageEventStore{TAuthenticationToken}"/> class using the specified container.
 		/// </summary>
 		public BlobStorageEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IBlobStorageStoreConnectionStringFactory blobStorageEventStoreConnectionStringFactory)
 			: base(eventBuilder, eventDeserialiser, logger)
@@ -74,7 +72,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 			: BlobStorageStore<EventData>
 		{
 			/// <summary>
-			/// Initializes a new instance of the <see cref="BlobStorage"/> class using the specified container.
+			/// Initializes a new instance of the <see cref="RawBlobStorageEventStore"/> class using the specified container.
 			/// </summary>
 			public RawBlobStorageEventStore(ILogger logger, IBlobStorageStoreConnectionStringFactory blobStorageEventStoreConnectionStringFactory)
 				: base(logger)

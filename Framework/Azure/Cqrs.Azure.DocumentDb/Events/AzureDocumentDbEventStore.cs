@@ -106,7 +106,20 @@ namespace Cqrs.Azure.DocumentDb.Events
 					DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName, UniqueIndexProperties).Result;
 
 					Logger.LogDebug("Creating document for event asynchronously", string.Format("{0}\\PersitEvent", GetType().Name));
-					AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() => client.CreateDocumentAsync(collection.SelfLink, eventData, new RequestOptions{ PreTriggerInclude = new [] {"ValidateUniqueConstraints"} }).Wait());
+					AzureDocumentDbHelper.ExecuteFaultTollerantFunction
+					(
+						() =>
+						{
+							Task<ResourceResponse<Document>> work = client.CreateDocumentAsync
+							(
+								collection.SelfLink,
+								eventData,
+								new RequestOptions {PreTriggerInclude = new[] {"ValidateUniqueConstraints"}}
+							);
+							work.ConfigureAwait(false);
+							work.Wait();
+						}
+					);
 				}
 			}
 			finally

@@ -8,6 +8,7 @@
 
 using System;
 using System.Configuration;
+using System.Threading.Tasks;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
@@ -154,7 +155,9 @@ namespace Cqrs.Azure.ServiceBus
 			// Let's wrap up using this event hub and start the switch
 			if (EventHubReceiver != null)
 			{
-				EventHubReceiver.UnregisterEventProcessorAsync().Wait();
+				Task work = EventHubReceiver.UnregisterEventProcessorAsync();
+				work.ConfigureAwait(false);
+				work.Wait();
 				Logger.LogDebug("Receiving event hub closed.");
 			}
 			// Restart configuration, we order this intentionally with the receiver first as if this triggers the cancellation we know this isn't a publisher as well

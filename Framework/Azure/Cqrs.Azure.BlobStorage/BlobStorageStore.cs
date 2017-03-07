@@ -7,64 +7,28 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
-using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling;
-using Microsoft.Practices.TransientFaultHandling;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Cqrs.Azure.BlobStorage
 {
 	public class BlobStorageStore<TData>
-		: IEnumerable<TData>
+		: StorageStore<TData, CloudBlobContainer>
 	{
-		protected IList<Tuple<CloudStorageAccount, CloudBlobContainer>> WritableCollection { get; private set; }
-
-		protected CloudStorageAccount ReadableStorageAccount { get; private set; }
-
-		protected CloudBlobContainer ReadableContainer { get; private set; }
-
-		protected ILogger Logger { get; private set; }
-
-		protected Func<string> GetContainerName { get; set; }
-
-		protected Func<bool> IsContainerPublic { get; set; }
-
 		internal Func<TData, string> GenerateFileName { get; set; }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="BlobStorage"/> class using the specified container.
+		/// Initializes a new instance of the <see cref="BlobStorageStore{TData}"/> class using the specified container.
 		/// </summary>
 		public BlobStorageStore(ILogger logger)
+			: base(logger)
 		{
-			// ReSharper disable DoNotCallOverridableMethodsInConstructor
-			Logger = logger;
-			// ReSharper restore DoNotCallOverridableMethodsInConstructor
-		}
-
-		protected virtual void Initialise(IBlobStorageStoreConnectionStringFactory blobStorageDataStoreConnectionStringFactory)
-		{
-			WritableCollection = new List<Tuple<CloudStorageAccount, CloudBlobContainer>>();
-			ReadableStorageAccount = CloudStorageAccount.Parse(blobStorageDataStoreConnectionStringFactory.GetReadableConnectionString());
-			ReadableContainer = CreateContainer(ReadableStorageAccount, GetContainerName(), IsContainerPublic());
-
-			foreach (string writableConnectionString in blobStorageDataStoreConnectionStringFactory.GetWritableConnectionStrings())
-			{
-				CloudStorageAccount storageAccount = CloudStorageAccount.Parse(writableConnectionString);
-				CloudBlobContainer container = CreateContainer(storageAccount, GetContainerName(), IsContainerPublic());
-
-				WritableCollection.Add(new Tuple<CloudStorageAccount, CloudBlobContainer>(storageAccount, container));
-			}
 		}
 
 		#region Implementation of IEnumerable
@@ -75,22 +39,11 @@ namespace Cqrs.Azure.BlobStorage
 		/// <returns>
 		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
 		/// </returns>
-		public IEnumerator<TData> GetEnumerator()
+		public override IEnumerator<TData> GetEnumerator()
 		{
 			return OpenStreamsForReading()
 				.Select(Deserialise)
 				.GetEnumerator();
-		}
-
-		/// <summary>
-		/// Returns an enumerator that iterates through a collection.
-		/// </summary>
-		/// <returns>
-		/// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-		/// </returns>
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
 		}
 
 		#endregion
@@ -103,7 +56,7 @@ namespace Cqrs.Azure.BlobStorage
 		/// <returns>
 		/// The <see cref="T:System.Linq.Expressions.Expression"/> that is associated with this instance of <see cref="T:System.Linq.IQueryable"/>.
 		/// </returns>
-		public Expression Expression
+		public override Expression Expression
 		{
 			get
 			{
@@ -120,7 +73,7 @@ namespace Cqrs.Azure.BlobStorage
 		/// <returns>
 		/// A <see cref="T:System.Type"/> that represents the type of the element(s) that are returned when the expression tree associated with this object is executed.
 		/// </returns>
-		public Type ElementType
+		public override Type ElementType
 		{
 			get
 			{
@@ -137,28 +90,13 @@ namespace Cqrs.Azure.BlobStorage
 		/// <returns>
 		/// The <see cref="T:System.Linq.IQueryProvider"/> that is associated with this data source.
 		/// </returns>
-		public IQueryProvider Provider
+		public override IQueryProvider Provider
 		{
 			get { return OpenStreamsForReading()
 					.Select(Deserialise)
 					.AsQueryable()
 					.Provider;
 			}
-		}
-
-		#endregion
-
-		#region Implementation of IDisposable
-
-		/// <summary>
-		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-		/// </summary>
-		public void Dispose()
-		{
-			ReadableContainer = null;
-			ReadableStorageAccount = null;
-
-			WritableCollection = null;
 		}
 
 		#endregion
@@ -199,7 +137,7 @@ namespace Cqrs.Azure.BlobStorage
 
 		#region Implementation of IDataStore<TData>
 
-		public virtual void Add(TData data)
+		public override void Add(TData data)
 		{
 			AsyncSaveData
 			(
@@ -222,13 +160,7 @@ namespace Cqrs.Azure.BlobStorage
 			);
 		}
 
-		public virtual void Add(IEnumerable<TData> data)
-		{
-			foreach (TData dataItem in data)
-				Add(dataItem);
-		}
-
-		public virtual void Destroy(TData data)
+		public override void Destroy(TData data)
 		{
 			AsyncSaveData
 			(
@@ -248,13 +180,13 @@ namespace Cqrs.Azure.BlobStorage
 			);
 		}
 
-		public virtual void RemoveAll()
+		public override void RemoveAll()
 		{
 			foreach (Tuple<CloudStorageAccount, CloudBlobContainer> tuple in WritableCollection)
 				tuple.Item2.DeleteIfExists();
 		}
 
-		public virtual void Update(TData data)
+		public override void Update(TData data)
 		{
 			Add(data);
 		}
@@ -262,12 +194,12 @@ namespace Cqrs.Azure.BlobStorage
 		#endregion
 
 		/// <summary>
-		/// Creates a container with the specified name <paramref name="containerName"/> if it doesn't already exist.
+		/// Creates a <see cref="CloudBlobContainer"/> with the specified name <paramref name="containerName"/> if it doesn't already exist.
 		/// </summary>
-		/// <param name="storageAccount">The storage account to create the container is</param>
-		/// <param name="containerName">The name of the container.</param>
-		/// <param name="isPublic">Whether or not this container is publicly accessible.</param>
-		protected virtual CloudBlobContainer CreateContainer(CloudStorageAccount storageAccount, string containerName, bool isPublic = true)
+		/// <param name="storageAccount">The storage account to create the <see cref="CloudBlobContainer"/> is</param>
+		/// <param name="containerName">The name of the <see cref="CloudBlobContainer"/>.</param>
+		/// <param name="isPublic">Whether or not this <see cref="CloudBlobContainer"/> is publicly accessible.</param>
+		protected override CloudBlobContainer CreateSource(CloudStorageAccount storageAccount, string containerName, bool isPublic = true)
 		{
 			CloudBlobContainer container = null;
 			AzureStorageRetryPolicy.ExecuteAction
@@ -275,7 +207,7 @@ namespace Cqrs.Azure.BlobStorage
 				() =>
 				{
 					CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-					container = blobClient.GetContainerReference(GetSafeContainerName(containerName));
+					container = blobClient.GetContainerReference(GetSafeSourceName(containerName));
 					container.CreateIfNotExists();
 					if (isPublic)
 					{
@@ -290,39 +222,6 @@ namespace Cqrs.Azure.BlobStorage
 			return container;
 		}
 
-		protected virtual string GetSafeContainerName(string containerName)
-		{
-			if (containerName.Contains(":"))
-				return containerName;
-
-			string safeContainerName = containerName.Replace(@"\", @"/").Replace(@"/", @"-").ToLowerInvariant();
-			if (safeContainerName.StartsWith("-"))
-				safeContainerName = safeContainerName.Substring(1);
-			if (safeContainerName.EndsWith("-"))
-				safeContainerName = safeContainerName.Substring(0, safeContainerName.Length - 1);
-			safeContainerName = safeContainerName.Replace(" ", "-");
-
-			return safeContainerName;
-		}
-
-		/// <summary>
-		/// Gets the default retry policy dedicated to handling transient conditions with Windows Azure Storage.
-		/// </summary>
-		protected virtual RetryPolicy AzureStorageRetryPolicy
-		{
-			get
-			{
-				RetryManager retryManager = EnterpriseLibraryContainer.Current.GetInstance<RetryManager>();
-				RetryPolicy retryPolicy = retryManager.GetDefaultAzureStorageRetryPolicy();
-				retryPolicy.Retrying += (sender, args) =>
-				{
-					var msg = string.Format("Retrying action - Count: {0}, Delay: {1}", args.CurrentRetryCount, args.Delay);
-					Logger.LogWarning(msg, exception: args.LastException);
-				};
-				return retryPolicy;
-			}
-		}
-
 		/// <summary>
 		/// Opens stream for reading from a block blob.
 		/// </summary>
@@ -331,12 +230,12 @@ namespace Cqrs.Azure.BlobStorage
 			IEnumerable<IListBlobItem> blobs;
 			if (!string.IsNullOrWhiteSpace(folderName))
 			{
-				CloudBlobDirectory container = ReadableContainer.GetDirectoryReference(folderName);
+				CloudBlobDirectory container = ReadableSource.GetDirectoryReference(folderName);
 				blobs = container.ListBlobs(true);
 			}
 			else
 			{
-				blobs = ReadableContainer.ListBlobs(blobPrefix, true);
+				blobs = ReadableSource.ListBlobs(blobPrefix, true);
 			}
 			IEnumerable<CloudBlockBlob> query = blobs
 				.Where(x => x is CloudBlockBlob)
@@ -344,54 +243,6 @@ namespace Cqrs.Azure.BlobStorage
 			if (predicate != null)
 				query = query.Where(predicate);
 			return query.Select(x => x.OpenRead());
-		}
-
-		protected virtual TData Deserialise(Stream dataStream)
-		{
-			using (dataStream)
-			{
-				using (var reader = new StreamReader(dataStream))
-				{
-					string jsonContents = reader.ReadToEnd();
-					TData obj = Deserialise(jsonContents);
-					return obj;
-				}
-			}
-		}
-
-		protected virtual TData Deserialise(string json)
-		{
-			using (var stringReader = new StringReader(json))
-				using (var jsonTextReader = new JsonTextReader(stringReader))
-					return GetSerialiser().Deserialize<TData>(jsonTextReader);
-		}
-
-		protected virtual Stream Serialise(TData data)
-		{
-			string dataContent = JsonConvert.SerializeObject(data, GetSerialisationSettings());
-
-			byte[] byteArray = Encoding.UTF8.GetBytes(dataContent);
-			var stream = new MemoryStream(byteArray);
-
-			return stream;
-		}
-
-		protected virtual JsonSerializerSettings GetSerialisationSettings()
-		{
-			return new JsonSerializerSettings
-			{
-				Formatting = Formatting.None,
-				MissingMemberHandling = MissingMemberHandling.Ignore,
-				DateParseHandling = DateParseHandling.DateTimeOffset,
-				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-				Converters = new List<JsonConverter> { new StringEnumConverter() },
-			};
-		}
-
-		protected virtual JsonSerializer GetSerialiser()
-		{
-			JsonSerializerSettings settings = GetSerialisationSettings();
-			return JsonSerializer.Create(settings);
 		}
 
 		/// <summary>
