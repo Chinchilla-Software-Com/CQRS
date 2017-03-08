@@ -39,9 +39,9 @@ namespace Cqrs.Azure.BlobStorage.Events
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
 			// Create the table query.
-			var rangeQuery = new TableQuery<RawTableStorageEventStore.EventDataTableEntity<EventData>>().Where
+			var rangeQuery = new TableQuery<EventDataTableEntity<EventData>>().Where
 			(
-				TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, streamName)
+				TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, StorageStore<object, object>.GetSafeStorageKey(streamName))
 			);
 
 			IEnumerable<EventData> query = TableStorageStore.ReadableSource.ExecuteQuery(rangeQuery)
@@ -53,17 +53,16 @@ namespace Cqrs.Azure.BlobStorage.Events
 				query = query.AsQueryable().Take(1);
 
 			return query
-				.Select(eventData => eventData.Data)
-				.Cast<IEvent<TAuthenticationToken>>()
+				.Select(eventData => EventDeserialiser.Deserialise(eventData))
 				.ToList();
 		}
 
 		public override IEnumerable<EventData> Get(Guid correlationId)
 		{
 			// Create the table query.
-			var rangeQuery = new TableQuery<RawTableStorageEventStore.EventDataTableEntity<EventData>>().Where
+			var rangeQuery = new TableQuery<EventDataTableEntity<EventData>>().Where
 			(
-				TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, correlationId.ToString("N"))
+				TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, StorageStore<object, object>.GetSafeStorageKey(correlationId.ToString("N")))
 			);
 
 			IEnumerable<EventData> query = CorrelationIdTableStorageStore.ReadableSource.ExecuteQuery(rangeQuery)
@@ -84,7 +83,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 		#endregion
 
 		public class RawTableStorageEventStore
-			: TableStorageStore<EventData>
+			: TableStorageStore<EventDataTableEntity<EventData>, EventData>
 		{
 			private string TableName { get; set; }
 
@@ -123,9 +122,22 @@ namespace Cqrs.Azure.BlobStorage.Events
 				return new EventDataTableEntity<EventData>(data, IsCorrelationIdTableStorageStore);
 			}
 
+			/// <summary>
+			/// Will mark the <paramref name="data"/> as logically (or soft).
+			/// </summary>
+			public override void Remove(EventData data)
+			{
+				throw new InvalidOperationException("Event store entries are not deletable.");
+			}
+
 			protected override TableOperation GetUpdatableTableEntity(EventData data)
 			{
 				throw new InvalidOperationException("Event store entries are not updatable.");
+			}
+
+			protected override TableOperation GetUpdatableTableEntity(EventDataTableEntity<EventData> data)
+			{
+				return GetUpdatableTableEntity(data.EventData);
 			}
 
 			#endregion

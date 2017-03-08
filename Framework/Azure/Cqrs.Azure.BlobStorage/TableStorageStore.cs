@@ -8,24 +8,30 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
+using Cqrs.DataStores;
 using Cqrs.Entities;
 using Cqrs.Events;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Cqrs.Azure.BlobStorage
 {
-	public abstract class TableStorageStore<TData>
+	public abstract class TableStorageStore<TData, TCollectionItemData>
 		: StorageStore<TData, CloudTable>
+		, IDataStore<TCollectionItemData>
+		where TData : TableEntity, new()
 	{
-		protected TableQuery<TData> Collection { get; private set; }
+		public TableQuery<TData> Collection { get; private set; }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="TableStorageStore{TData}"/> class using the specified container.
+		/// Initializes a new instance of the <see cref="TableStorageStore{TData,TCollectionItemData}"/> class using the specified container.
 		/// </summary>
 		protected TableStorageStore(ILogger logger)
 			: base(logger)
@@ -43,6 +49,17 @@ namespace Cqrs.Azure.BlobStorage
 		#endregion
 
 		#region Implementation of IEnumerable
+
+		/// <summary>
+		/// Returns an enumerator that iterates through the collection.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+		/// </returns>
+		IEnumerator<TCollectionItemData> IEnumerable<TCollectionItemData>.GetEnumerator()
+		{
+			throw new NotImplementedException("Use IEnumerable<TData>.GetEnumerator() directly");
+		}
 
 		/// <summary>
 		/// Returns an enumerator that iterates through the collection.
@@ -128,7 +145,7 @@ namespace Cqrs.Azure.BlobStorage
 				throw new AggregateException("Persisting data to table storage failed. Check the logs for more details.");
 		}
 
-		protected abstract TableEntity CreateTableEntity(TData data);
+		protected abstract TableEntity CreateTableEntity(TCollectionItemData data);
 
 		#region Implementation of IDataStore<TData>
 
@@ -141,12 +158,15 @@ namespace Cqrs.Azure.BlobStorage
 				{
 					try
 					{
-						// Create the TableOperation object that inserts the customer entity.
-						TableEntity tableEntity = CreateTableEntity(data);
-						TableOperation insertOperation = TableOperation.Insert(tableEntity);
+						TableOperation insertOperation = TableOperation.Insert(taskData);
 
 						// Execute the insert operation.
 						return table.Execute(insertOperation);
+					}
+					catch (StorageException exception)
+					{
+						Logger.LogError(string.Format("There was an issue persisting data to table storage. Specifically {0} :: {1}", exception.RequestInformation.ExtendedErrorInformation.ErrorCode, exception.RequestInformation.ExtendedErrorInformation.ErrorMessage), exception: exception);
+						throw;
 					}
 					catch (Exception exception)
 					{
@@ -169,12 +189,8 @@ namespace Cqrs.Azure.BlobStorage
 						// Create the batch operation.
 						TableBatchOperation batchOperation = new TableBatchOperation();
 
-						foreach (TData item in data)
-						{
-							// Create the TableOperation object that inserts the customer entity.
-							TableEntity tableEntity = CreateTableEntity(item);
-							batchOperation.Insert(tableEntity);
-						}
+						foreach (TData item in taskData)
+							batchOperation.Insert(item);
 
 						// Execute the insert operation.
 						return table.ExecuteBatch(batchOperation);
@@ -198,7 +214,7 @@ namespace Cqrs.Azure.BlobStorage
 					try
 					{
 						// Create a retrieve operation that takes a customer entity.
-						TableOperation retrieveOperation = GetUpdatableTableEntity(data);
+						TableOperation retrieveOperation = GetUpdatableTableEntity(taskData);
 
 						// Execute the operation.
 						TableResult retrievedResult = table.Execute(retrieveOperation);
@@ -223,10 +239,39 @@ namespace Cqrs.Azure.BlobStorage
 			);
 		}
 
+		public virtual void Add(TCollectionItemData data)
+		{
+			// Create the TableOperation object that inserts the customer entity.
+			Add((TData)CreateTableEntity(data));
+		}
+
+		public virtual void Add(IEnumerable<TCollectionItemData> data)
+		{
+			// Create the TableOperation object that inserts the customer entity.
+			Add(data.Select(tdata => (TData)CreateTableEntity(tdata)));
+		}
+
+		/// <summary>
+		/// Will mark the <paramref name="data"/> as logically (or soft).
+		/// </summary>
+		public abstract void Remove(TCollectionItemData data);
+
+		public virtual void Destroy(TCollectionItemData data)
+		{
+			// Create the TableOperation object that inserts the customer entity.
+			Destroy((TData)CreateTableEntity(data));
+		}
+
 		public override void RemoveAll()
 		{
 			foreach (Tuple<CloudStorageAccount, CloudTable> tuple in WritableCollection)
 				tuple.Item2.DeleteIfExists();
+		}
+
+		public virtual void Update(TCollectionItemData data)
+		{
+			// Create the TableOperation object that inserts the customer entity.
+			Update((TData)CreateTableEntity(data));
 		}
 
 		public override void Update(TData data)
@@ -266,6 +311,8 @@ namespace Cqrs.Azure.BlobStorage
 
 		#endregion
 
+		protected abstract TableOperation GetUpdatableTableEntity(TCollectionItemData data);
+
 		protected abstract TableOperation GetUpdatableTableEntity(TData data);
 
 		/// <summary>
@@ -288,50 +335,159 @@ namespace Cqrs.Azure.BlobStorage
 			return table;
 		}
 
-		public interface IEntityTableEntity<TEntity>
+		public virtual TData GetByKeyAndRow(Guid rsn)
 		{
-			TEntity Entity { get; set; }
+			// Create the table query.
+			var rangeQuery = Collection.Where
+			(
+				TableQuery.CombineFilters
+				(
+					TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, StorageStore<object, object>.GetSafeStorageKey(typeof(TCollectionItemData).FullName)),
+					TableOperators.And,
+					TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, StorageStore<object, object>.GetSafeStorageKey(rsn.ToString("N")))
+				)
+			);
+
+			return ReadableSource.ExecuteQuery(rangeQuery).Single();
 		}
 
-		public class EntityTableEntity<TEntity>
-			: TableEntity
-			, IEntityTableEntity<TEntity>
-			where TEntity : IEntity
+		public virtual IEnumerable<TData> GetByKey()
 		{
-			public EntityTableEntity(TEntity entity)
-			{
-				PartitionKey = entity.GetType().FullName;
-				RowKey = entity.Rsn.ToString("N");
-			}
+			// Create the table query.
+			var rangeQuery = Collection.Where
+			(
+				TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, StorageStore<object, object>.GetSafeStorageKey(typeof(TCollectionItemData).FullName))
+			);
 
-			public EntityTableEntity()
-			{
-			}
+			return ReadableSource.ExecuteQuery(rangeQuery);
+		}
+	}
 
-			public TEntity Entity { get; set; }
+	public abstract class TableEntity<TData>
+		: TableEntity
+	{
+		protected virtual TData Deserialise(string json)
+		{
+			using (var stringReader = new StringReader(json))
+			using (var jsonTextReader = new JsonTextReader(stringReader))
+				return GetSerialiser().Deserialize<TData>(jsonTextReader);
 		}
 
-		public interface IEventDataTableEntity<TEventData>
+		protected virtual string Serialise(TData data)
 		{
-			TEventData EventData { get; set; }
+			string dataContent = JsonConvert.SerializeObject(data, GetSerialisationSettings());
+
+			return dataContent;
 		}
 
-		public class EventDataTableEntity<TEventData>
-			: TableEntity
-			, IEventDataTableEntity<TEventData>
-			where TEventData : EventData
+		protected virtual JsonSerializerSettings GetSerialisationSettings()
 		{
-			public EventDataTableEntity(TEventData eventData, bool isCorrelationIdTableStorageStore = false)
+			return new JsonSerializerSettings
 			{
-				PartitionKey = isCorrelationIdTableStorageStore ? eventData.CorrelationId.ToString("N") : eventData.AggregateId;
-				RowKey = eventData.EventId.ToString("N");
-			}
+				Formatting = Formatting.None,
+				MissingMemberHandling = MissingMemberHandling.Ignore,
+				DateParseHandling = DateParseHandling.DateTimeOffset,
+				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+				Converters = new List<JsonConverter> { new StringEnumConverter() },
+			};
+		}
 
-			public EventDataTableEntity()
+		protected virtual JsonSerializer GetSerialiser()
+		{
+			JsonSerializerSettings settings = GetSerialisationSettings();
+			return JsonSerializer.Create(settings);
+		}
+	}
+
+	public interface IEntityTableEntity<TEntity>
+	{
+		TEntity Entity { get; set; }
+	}
+
+	public class EntityTableEntity<TEntity>
+		: TableEntity<TEntity>
+		, IEntityTableEntity<TEntity>
+		where TEntity : IEntity
+	{
+		public EntityTableEntity(TEntity entity)
+		{
+			PartitionKey = StorageStore<object, object>.GetSafeStorageKey(entity.GetType().FullName);
+			RowKey = StorageStore<object, object>.GetSafeStorageKey(entity.Rsn.ToString("N"));
+			_entity = entity;
+			_entityContent = Serialise(Entity);
+		}
+
+		public EntityTableEntity()
+		{
+		}
+
+		private TEntity _entity;
+
+		public TEntity Entity
+		{
+			get { return _entity; }
+			set { _entity = value; }
+		}
+
+		private string _entityContent;
+
+		public string EntityContent
+		{
+			get
 			{
+				return _entityContent;
 			}
+			set
+			{
+				_entityContent = value;
+				_entity = Deserialise(value);
+			}
+		}
+	}
 
-			public TEventData EventData { get; set; }
+	public interface IEventDataTableEntity<TEventData>
+	{
+		TEventData EventData { get; set; }
+	}
+
+	public class EventDataTableEntity<TEventData>
+		: TableEntity<TEventData>
+		, IEventDataTableEntity<TEventData>
+		where TEventData : EventData
+	{
+		public EventDataTableEntity(TEventData eventData, bool isCorrelationIdTableStorageStore = false)
+		{
+			PartitionKey = StorageStore<object, object>.GetSafeStorageKey(isCorrelationIdTableStorageStore ? eventData.CorrelationId.ToString("N") : eventData.AggregateId);
+			RowKey = StorageStore<object, object>.GetSafeStorageKey(eventData.EventId.ToString("N"));
+			_eventData = eventData;
+			_eventDataContent = Serialise(EventData);
+		}
+
+		public EventDataTableEntity()
+		{
+		}
+
+		private TEventData _eventData;
+
+		public TEventData EventData
+		{
+			get { return _eventData; }
+			set { _eventData = value; }
+		}
+
+		private string _eventDataContent;
+
+		public string EventDataContent
+		{
+			get
+			{
+				return _eventDataContent;
+			}
+			set
+			{
+				_eventDataContent = value;
+				_eventData = Deserialise(value);
+			}
 		}
 	}
 }

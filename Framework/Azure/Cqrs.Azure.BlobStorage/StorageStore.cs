@@ -169,6 +169,37 @@ namespace Cqrs.Azure.BlobStorage
 		}
 
 		/// <summary>
+		/// Characters Disallowed in Key Fields
+		/// 
+		/// The following characters are not allowed in values for the PartitionKey and RowKey properties:
+		/// 
+		/// The forward slash (/) character
+		/// The backslash (\) character
+		/// The number sign (#) character
+		/// The question mark (?) character
+		/// Control characters from U+0000 to U+001F, including:
+		/// The horizontal tab (\t) character
+		/// The linefeed (\n) character
+		/// The carriage return (\r) character
+		/// Control characters from U+007F to U+009F
+		/// </summary>
+		/// <param name="sourceName"></param>
+		/// <returns></returns>
+		internal static string GetSafeStorageKey(string sourceName)
+		{
+			var sb = new StringBuilder();
+			foreach (var c in sourceName
+				.Where(c => c != '/'
+							&& c != '\\'
+							&& c != '#'
+							&& c != '/'
+							&& c != '?'
+							&& !char.IsControl(c)))
+				sb.Append(c);
+			return sb.ToString();
+		}
+
+		/// <summary>
 		/// Gets the default retry policy dedicated to handling transient conditions with Windows Azure Storage.
 		/// </summary>
 		protected virtual RetryPolicy AzureStorageRetryPolicy

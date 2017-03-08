@@ -7,15 +7,13 @@
 #endregion
 
 using cdmdotnet.Logging;
-using Cqrs.DataStores;
 using Cqrs.Entities;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Cqrs.Azure.BlobStorage.DataStores
 {
 	public class TableStorageDataStore<TData>
-		: TableStorageStore<TData>
-		, IDataStore<TData>
+		: TableStorageStore<EntityTableEntity<TData>, TData>
 		where TData : Entity
 	{
 		/// <summary>
@@ -24,7 +22,8 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 		public TableStorageDataStore(ILogger logger, ITableStorageDataStoreConnectionStringFactory tableStorageDataStoreConnectionStringFactory)
 			: base(logger)
 		{
-			GetContainerName = tableStorageDataStoreConnectionStringFactory.GetContainerName;
+			GetContainerName = tableStorageDataStoreConnectionStringFactory.GetBaseContainerName;
+			IsContainerPublic = () => false;
 
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			Initialise(tableStorageDataStoreConnectionStringFactory);
@@ -36,7 +35,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 		/// <summary>
 		/// Will mark the <paramref name="data"/> as logically (or soft).
 		/// </summary>
-		public virtual void Remove(TData data)
+		public override void Remove(TData data)
 		{
 			data.IsLogicallyDeleted = true;
 			Update(data);
@@ -54,6 +53,11 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 		protected override TableOperation GetUpdatableTableEntity(TData data)
 		{
 			return TableOperation.Retrieve<EntityTableEntity<TData>>(data.GetType().FullName, data.Rsn.ToString("N"));
+		}
+
+		protected override TableOperation GetUpdatableTableEntity(EntityTableEntity<TData> data)
+		{
+			return GetUpdatableTableEntity(data.Entity);
 		}
 
 		#endregion
