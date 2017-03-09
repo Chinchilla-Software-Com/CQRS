@@ -10,6 +10,6 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 {
 	public interface ITableStorageDataStoreConnectionStringFactory : ITableStorageStoreConnectionStringFactory
 	{
-		string GetContainerName();
+		string GetTableName<TData>();
 	}
 }

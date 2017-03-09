@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
 
@@ -126,19 +127,53 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 			return GetBaseContainerName();
 		}
 
+		readonly char[] _alphanumericCharacters =
+		{
+			'0','1','2','3','4','5','6','7','8','9',
+			'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+			'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
+		};
+		/// <remarks>https://blogs.msdn.microsoft.com/jmstall/2014/06/12/azure-storage-naming-rules/</remarks>
 		public virtual string GetTableName<TData>()
 		{
 			Type type = typeof (TData);
-			string name = type.AssemblyQualifiedName;
-			int index1 = name.IndexOf(",");
+			string fullTableName = type.AssemblyQualifiedName ?? "Entities";
+			StringBuilder sb;
+
+			string name = fullTableName;
+			int index1 = name.IndexOf(",", StringComparison.InvariantCultureIgnoreCase);
 			int index2 = -1;
 			if (index1 > -1)
-				index2 = name.IndexOf(",", index1 + 1);
+				index2 = name.IndexOf(",", index1 + 1, StringComparison.InvariantCultureIgnoreCase);
 			if (index2 > -1)
-				return name.Substring(0, index2);
-			if (index1 > -1)
-				return name.Substring(0, index1);
-			return name;
+			{
+				name = name.Substring(0, index2);
+				string[] nameParts = name.Split(',');
+				if (nameParts.Length == 2)
+				{
+					if (nameParts[0].StartsWith(nameParts[1].Trim()))
+					{
+						name = name.Substring(0, index1);
+						sb = new StringBuilder();
+						foreach (var c in name.Where(c => _alphanumericCharacters.Contains(c)))
+							sb.Append(c);
+
+						name = sb.ToString();
+						name = name.Substring(name.Length - 36);
+
+						return name;
+					}
+				}
+			}
+			else if (index1 > -1)
+				name = name.Substring(0, index1);
+
+			sb = new StringBuilder();
+			foreach (var c in name.Where(c => _alphanumericCharacters.Contains(c)))
+				sb.Append(c);
+
+			name = sb.ToString();
+			return name.Substring(0, 36);
 		}
 	}
 }

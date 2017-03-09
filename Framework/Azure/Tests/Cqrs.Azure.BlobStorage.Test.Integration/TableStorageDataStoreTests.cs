@@ -10,6 +10,7 @@ using Cqrs.Azure.BlobStorage.Repositories;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
 using Cqrs.Configuration;
 using Cqrs.DataStores;
+using Cqrs.Entities;
 using Cqrs.Repositories.Queries;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
@@ -27,7 +28,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 	public class TableStorageDataStoreTests
 	{
 		[TestMethod]
-		public void Save_ValidProjectionView_ProjectionViewCanBeRetreived()
+		public void Add_ValidProjectionView_ProjectionViewCanBeRetreived()
 		{
 			// Arrange
 			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
@@ -49,13 +50,82 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 
 			// Assert
 			var timer = new Stopwatch();
-			var repository = new TableStorageRepository<TestQueryStrategy, TestQueryBuilder, TestEvent>(() => dataStore, null);
+			var repository = new TableStorageRepository<TestQueryStrategy, TestQueryBuilder<TestEvent>, TestEvent>(() => dataStore, null);
 			timer.Start();
 			TestEvent view = repository.Load(event1.Rsn);
 			timer.Stop();
 			Console.WriteLine("Load operation took {0}", timer.Elapsed);
 			Assert.IsNotNull(view);
 			Assert.AreEqual(event1.Id, view.Id);
+		}
+
+		[TestMethod]
+		public void Add_ValidProjectionEntityView_ProjectionEntityViewCanBeRetreived()
+		{
+			// Arrange
+			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
+			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
+			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
+			var dataStore = new TableStorageDataStore<TestEntity>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
+
+			var event1 = new TestEntity
+			{
+				Rsn = Guid.NewGuid(),
+				Name = "Name"
+			};
+
+			// Act
+			dataStore.Add(event1);
+
+			// Assert
+			var timer = new Stopwatch();
+			var repository = new TableStorageRepository<TestQueryStrategy, TestQueryBuilder<TestEntity>, TestEntity>(() => dataStore, null);
+			timer.Start();
+			TestEntity view = repository.Load(event1.Rsn);
+			timer.Stop();
+			Console.WriteLine("Load operation took {0}", timer.Elapsed);
+			Assert.IsNotNull(view);
+			Assert.AreEqual(event1.Rsn, view.Rsn);
+			Assert.AreEqual(event1.Name, view.Name);
+		}
+
+		[TestMethod]
+		public void Update_ValidProjectionEntityView_ProjectionEntityViewCanBeRetreived()
+		{
+			// Arrange
+			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
+			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
+			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
+			var dataStore = new TableStorageDataStore<TestEntity>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
+
+			var event1 = new TestEntity
+			{
+				Rsn = Guid.NewGuid(),
+				Name = "Name1"
+			};
+			dataStore.Add(event1);
+
+			// The repo disposes the datastore, so a copy is needed.
+			var repoDataStore = new TableStorageDataStore<TestEntity>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
+			var repository = new TableStorageRepository<TestQueryStrategy, TestQueryBuilder<TestEntity>, TestEntity>(() => repoDataStore, null);
+			TestEntity view = repository.Load(event1.Rsn);
+			view.Name = "Name2";
+
+			// Act
+			dataStore.Update(event1);
+
+			// Assert
+			var timer = new Stopwatch();
+			timer.Start();
+			// Refresh the data store due to disposal.
+			repoDataStore = new TableStorageDataStore<TestEntity>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
+			repository = new TableStorageRepository<TestQueryStrategy, TestQueryBuilder<TestEntity>, TestEntity>(() => repoDataStore, null);
+			view = repository.Load(event1.Rsn);
+			timer.Stop();
+			Console.WriteLine("Load operation took {0}", timer.Elapsed);
+			Assert.IsNotNull(view);
+			Assert.AreEqual(event1.Rsn, view.Rsn);
+			Assert.AreEqual(event1.Name, view.Name);
 		}
 
 		public class TestQueryStrategy : IQueryStrategy
@@ -67,16 +137,17 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			#endregion
 		}
 
-		public class TestQueryBuilder : QueryBuilder<TestQueryStrategy, TestEvent>
+		public class TestQueryBuilder<TData> : QueryBuilder<TestQueryStrategy, TData>
+			where TData : Entity
 		{
-			public TestQueryBuilder(IDataStore<TestEvent> dataStore, IDependencyResolver dependencyResolver)
+			public TestQueryBuilder(IDataStore<TData> dataStore, IDependencyResolver dependencyResolver)
 				: base(dataStore, dependencyResolver)
 			{
 			}
 
-			#region Overrides of QueryBuilder<TestQueryStrategy,TestEvent>
+			#region Overrides of QueryBuilder<TestQueryStrategy,TData>
 
-			protected override IQueryable<TestEvent> GeneratePredicate(QueryPredicate queryPredicate, IQueryable<TestEvent> leftHandQueryable = null)
+			protected override IQueryable<TData> GeneratePredicate(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null)
 			{
 				throw new NotImplementedException();
 			}

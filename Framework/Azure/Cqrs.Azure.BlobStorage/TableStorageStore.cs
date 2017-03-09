@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
 using Cqrs.DataStores;
@@ -145,7 +146,7 @@ namespace Cqrs.Azure.BlobStorage
 				throw new AggregateException("Persisting data to table storage failed. Check the logs for more details.");
 		}
 
-		protected abstract TableEntity CreateTableEntity(TCollectionItemData data);
+		protected abstract ITableEntity CreateTableEntity(TCollectionItemData data);
 
 		#region Implementation of IDataStore<TData>
 
@@ -218,12 +219,7 @@ namespace Cqrs.Azure.BlobStorage
 
 						// Execute the operation.
 						TableResult retrievedResult = table.Execute(retrieveOperation);
-						TableEntity tableEntity = (TableEntity)retrievedResult.Result;
-						var eventTableEntity = tableEntity as IEventDataTableEntity<TData>;
-						if (eventTableEntity != null)
-							eventTableEntity.EventData = data;
-						else
-							((IEntityTableEntity<TData>)tableEntity).Entity = data;
+						ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
 
 						TableOperation deleteOperation = TableOperation.Delete(tableEntity);
 
@@ -284,16 +280,16 @@ namespace Cqrs.Azure.BlobStorage
 					try
 					{
 						// Create a retrieve operation that takes a customer entity.
-						TableOperation retrieveOperation = GetUpdatableTableEntity(data);
+						TableOperation retrieveOperation = GetUpdatableTableEntity(taskData);
 
 						// Execute the operation.
 						TableResult retrievedResult = table.Execute(retrieveOperation);
-						TableEntity tableEntity = (TableEntity)retrievedResult.Result;
+						ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
 						var eventTableEntity = tableEntity as IEventDataTableEntity<TData>;
 						if (eventTableEntity != null)
-							eventTableEntity.EventData = data;
+							eventTableEntity.EventData = taskData;
 						else
-							((IEntityTableEntity<TData>) tableEntity).Entity = data;
+							((IEntityTableEntity<TCollectionItemData>)tableEntity).Entity = ((IEntityTableEntity<TCollectionItemData>)taskData).Entity;
 
 						TableOperation updateOperation = TableOperation.Replace(tableEntity);
 
@@ -330,7 +326,20 @@ namespace Cqrs.Azure.BlobStorage
 			CloudTable table = tableClient.GetTableReference(GetSafeSourceName(sourceName));
 
 			// Create the table if it doesn't exist.
-			table.CreateIfNotExists();
+			try
+			{
+				table.CreateIfNotExists();
+			}
+			catch (StorageException exception)
+			{
+				Logger.LogError(string.Format("There was an issue creating the table. Specifically {0} :: {1}", exception.RequestInformation.ExtendedErrorInformation.ErrorCode, exception.RequestInformation.ExtendedErrorInformation.ErrorMessage), exception: exception);
+				throw;
+			}
+			catch (Exception exception)
+			{
+				Logger.LogError("There was an issue creating the table.", exception: exception);
+				throw;
+			}
 
 			return table;
 		}
@@ -360,6 +369,16 @@ namespace Cqrs.Azure.BlobStorage
 			);
 
 			return ReadableSource.ExecuteQuery(rangeQuery);
+		}
+
+		protected virtual void ReplaceValues(TableResult retrievedResult, TData data)
+		{
+			ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
+			var eventTableEntity = tableEntity as IEventDataTableEntity<TData>;
+			if (eventTableEntity != null)
+				eventTableEntity.EventData = data;
+			else
+				((IEntityTableEntity<TData>)tableEntity).Entity = data;
 		}
 	}
 
@@ -423,6 +442,7 @@ namespace Cqrs.Azure.BlobStorage
 
 		private TEntity _entity;
 
+		[DataMember]
 		public TEntity Entity
 		{
 			get { return _entity; }
@@ -431,6 +451,7 @@ namespace Cqrs.Azure.BlobStorage
 
 		private string _entityContent;
 
+		[DataMember]
 		public string EntityContent
 		{
 			get
@@ -469,6 +490,7 @@ namespace Cqrs.Azure.BlobStorage
 
 		private TEventData _eventData;
 
+		[DataMember]
 		public TEventData EventData
 		{
 			get { return _eventData; }
@@ -477,6 +499,7 @@ namespace Cqrs.Azure.BlobStorage
 
 		private string _eventDataContent;
 
+		[DataMember]
 		public string EventDataContent
 		{
 			get

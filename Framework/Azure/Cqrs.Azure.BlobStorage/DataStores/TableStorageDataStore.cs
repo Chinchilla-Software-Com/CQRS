@@ -22,7 +22,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 		public TableStorageDataStore(ILogger logger, ITableStorageDataStoreConnectionStringFactory tableStorageDataStoreConnectionStringFactory)
 			: base(logger)
 		{
-			GetContainerName = tableStorageDataStoreConnectionStringFactory.GetBaseContainerName;
+			GetContainerName = tableStorageDataStoreConnectionStringFactory.GetTableName<TData>;
 			IsContainerPublic = () => false;
 
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
@@ -45,7 +45,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 
 		#region Overrides of TableStorageStore<TData>
 
-		protected override TableEntity CreateTableEntity(TData data)
+		protected override ITableEntity CreateTableEntity(TData data)
 		{
 			return new EntityTableEntity<TData>(data);
 		}

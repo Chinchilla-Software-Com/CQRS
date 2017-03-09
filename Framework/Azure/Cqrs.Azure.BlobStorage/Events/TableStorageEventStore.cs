@@ -117,7 +117,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 
 			#region Overrides of TableStorageStore<EventData>
 
-			protected override TableEntity CreateTableEntity(EventData data)
+			protected override ITableEntity CreateTableEntity(EventData data)
 			{
 				return new EventDataTableEntity<EventData>(data, IsCorrelationIdTableStorageStore);
 			}
