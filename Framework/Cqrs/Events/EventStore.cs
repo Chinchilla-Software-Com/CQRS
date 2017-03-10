@@ -34,11 +34,21 @@ namespace Cqrs.Events
 			Save(typeof(T), @event);
 		}
 
+		protected virtual string GenerateStreamName(Type aggregateRootType, IEvent<TAuthenticationToken> @event)
+		{
+			return GenerateStreamName(aggregateRootType, @event.Id);
+		}
+
+		protected virtual string GenerateStreamName(Type aggregateRootType, Guid aggregateId)
+		{
+			return string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+		}
+
 		public virtual void Save(Type aggregateRootType, IEvent<TAuthenticationToken> @event)
 		{
 			Logger.LogDebug(string.Format("Saving aggregate root event type '{0}'", @event.GetType().FullName), string.Format("{0}\\Save", GetType().Name));
 			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
-			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id);
+			string streamName = GenerateStreamName(aggregateRootType, @event);
 			eventData.AggregateId = streamName;
 			eventData.AggregateRsn = @event.Id;
 			eventData.Version = @event.Version;

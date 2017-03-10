@@ -155,10 +155,17 @@ namespace Cqrs.Azure.BlobStorage
 
 		protected virtual string GetSafeSourceName(string sourceName)
 		{
+			return GetSafeSourceName(sourceName, true);
+		}
+
+		protected virtual string GetSafeSourceName(string sourceName, bool lowerCaseName)
+		{
 			if (sourceName.Contains(":"))
 				return sourceName;
 
-			string safeContainerName = sourceName.Replace(@"\", @"/").Replace(@"/", @"-").ToLowerInvariant();
+			string safeContainerName = sourceName.Replace(@"\", @"/").Replace(@"/", @"-");
+			if (lowerCaseName)
+				safeContainerName = safeContainerName.ToLowerInvariant();
 			if (safeContainerName.StartsWith("-"))
 				safeContainerName = safeContainerName.Substring(1);
 			if (safeContainerName.EndsWith("-"))
