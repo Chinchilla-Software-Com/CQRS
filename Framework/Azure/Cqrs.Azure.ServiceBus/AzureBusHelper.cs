@@ -319,6 +319,11 @@ namespace Cqrs.Azure.ServiceBus
 				if (telemeteredMessage != null)
 					telemetryName = telemeteredMessage.TelemetryName;
 
+				if (message is IEvent<TAuthenticationToken>)
+					telemetryName = string.Format("Event/{0}", telemetryName);
+				else if (message is ICommand<TAuthenticationToken>)
+					telemetryName = string.Format("Command/{0}", telemetryName);
+
 				Stopwatch mainStopWatch = Stopwatch.StartNew();
 				string responseCode = "200";
 				bool wasSuccessfull = true;

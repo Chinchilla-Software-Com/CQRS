@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
@@ -26,6 +27,8 @@ namespace Cqrs.Azure.ServiceBus
 	{
 		// ReSharper disable StaticMemberInGenericType
 		protected static RouteManager Routes { get; private set; }
+
+		protected static long CurrentHandles { get; set; }
 		// ReSharper restore StaticMemberInGenericType
 
 		protected ITelemetryHelper TelemetryHelper { get; private set; }
@@ -58,6 +61,8 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected virtual void ReceiveCommand(BrokeredMessage message)
 		{
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
+			TelemetryHelper.TrackMetric("Cqrs/Handle/Command", CurrentHandles++, telemetryProperties);
 			var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
 			try
 			{
@@ -112,6 +117,7 @@ namespace Cqrs.Azure.ServiceBus
 			}
 			catch (Exception exception)
 			{
+				TelemetryHelper.TrackException(exception, null, telemetryProperties);
 				// Indicates a problem, unlock message in queue
 				Logger.LogError(string.Format("A command message arrived with the id '{0}' but failed to be process.", message.MessageId), exception: exception);
 				message.Abandon();
@@ -120,6 +126,7 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				// Cancel the lock of renewing the task
 				brokeredMessageRenewCancellationTokenSource.Cancel();
+				TelemetryHelper.TrackMetric("Cqrs/Handle/Command", CurrentHandles--, telemetryProperties);
 			}
 		}
 

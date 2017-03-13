@@ -33,6 +33,8 @@ namespace Cqrs.Azure.ServiceBus
 
 		// ReSharper disable StaticMemberInGenericType
 		protected static RouteManager Routes { get; private set; }
+
+		protected static long CurrentHandles { get; set; }
 		// ReSharper restore StaticMemberInGenericType
 
 		protected ITelemetryHelper TelemetryHelper { get; private set; }
@@ -76,6 +78,8 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected virtual void ReceiveEvent(PartitionContext context, EventData eventData)
 		{
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> {{"Type", "Azure/EventHub"}};
+			TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles++, telemetryProperties);
 			// Do a manual 10 try attempt with back-off
 			for (int i = 0; i < 10; i++)
 			{
@@ -138,6 +142,7 @@ namespace Cqrs.Azure.ServiceBus
 			}
 			// Eventually just accept it
 			context.CheckpointAsync(eventData);
+			TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles--, telemetryProperties);
 		}
 
 		public virtual void ReceiveEvent(IEvent<TAuthenticationToken> @event)
