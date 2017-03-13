@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using cdmdotnet.Logging;
 using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Events;
@@ -37,7 +38,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		void DefaultReceiveEvent(IEvent<TAuthenticationToken> @event, RouteManager routeManager, string framework);
 
-		void RegisterHandler<TMessage>(RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
+		void RegisterHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage;
 	}
 }

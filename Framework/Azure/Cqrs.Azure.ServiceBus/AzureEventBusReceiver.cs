@@ -40,6 +40,8 @@ namespace Cqrs.Azure.ServiceBus
 		protected static RouteManager Routes { get; private set; }
 		// ReSharper restore StaticMemberInGenericType
 
+		protected ITelemetryHelper TelemetryHelper { get; private set; }
+
 		static AzureEventBusReceiver()
 		{
 			Routes = new RouteManager();
@@ -48,6 +50,7 @@ namespace Cqrs.Azure.ServiceBus
 		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, false)
 		{
+			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventBus.Receiver.UseApplicationInsightTelemetryHelper");
 		}
 
 		public void Start()
@@ -72,7 +75,7 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			AzureBusHelper.RegisterHandler(Routes, handler, targetedType, holdMessageLock);
+			AzureBusHelper.RegisterHandler(TelemetryHelper, Routes, handler, targetedType, holdMessageLock);
 		}
 
 		/// <summary>

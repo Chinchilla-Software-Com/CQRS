@@ -13,13 +13,7 @@ namespace Cqrs.Messages
 {
 	public interface IMessage
 	{
-		[Obsolete("Use CorrelationId")]
-		Guid CorrolationId { get; set; }
-
 		Guid CorrelationId { get; set; }
-
-		[Obsolete("Use Frameworks, It's far more flexible and OriginatingFramework")]
-		FrameworkType Framework { get; set; }
 
 		/// <summary>
 		/// The originating framework this message was sent from.
