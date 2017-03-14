@@ -85,8 +85,9 @@ namespace Cqrs.Azure.ServiceBus
 							long loop = long.MinValue;
 							while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
 							{
-								//Based on LockedUntilUtc property to determine if the lock expires soon
-								if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-10))
+								//vBased on LockedUntilUtc property to determine if the lock expires soon
+								// We lock for 60 seconds to ensure any thread based issues are mitigated.
+								if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-60))
 								{
 									// If so, renew the lock
 									for (int i = 0; i < 10; i++)
