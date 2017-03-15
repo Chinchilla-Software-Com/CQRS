@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
@@ -85,9 +86,9 @@ namespace Cqrs.Azure.ServiceBus
 							long loop = long.MinValue;
 							while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
 							{
-								//vBased on LockedUntilUtc property to determine if the lock expires soon
-								// We lock for 60 seconds to ensure any thread based issues are mitigated.
-								if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-60))
+								// Based on LockedUntilUtc property to determine if the lock expires soon
+								// We lock for 45 seconds to ensure any thread based issues are mitigated.
+								if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-45))
 								{
 									// If so, renew the lock
 									for (int i = 0; i < 10; i++)
@@ -95,9 +96,46 @@ namespace Cqrs.Azure.ServiceBus
 										try
 										{
 											message.RenewLock();
+											try
+											{
+												Logger.LogDebug(string.Format("Renewed the lock on command '{0}'.", message.MessageId));
+											}
+											catch
+											{
+												Trace.TraceError("Renewed the lock on command '{0}'.", message.MessageId);
+											}
+
 											break;
 										}
-										catch { }
+										catch (ObjectDisposedException)
+										{
+											return;
+										}
+										catch (MessageLockLostException exception)
+										{
+											try
+											{
+												Logger.LogWarning(string.Format("Renewing the lock on command '{0}' failed as the message lock was lost.", message.MessageId), exception: exception);
+											}
+											catch
+											{
+												Trace.TraceError("Renewing the lock on command '{0}' failed as the message lock was lost.\r\n{1}", message.MessageId, exception.Message);
+											}
+											return;
+										}
+										catch (Exception exception)
+										{
+											try
+											{
+												Logger.LogWarning(string.Format("Renewing the lock on command '{0}' failed.", message.MessageId), exception: exception);
+											}
+											catch
+											{
+												Trace.TraceError("Renewing the lock on command '{0}' failed.\r\n{1}", message.MessageId, exception.Message);
+											}
+											if (i == 9)
+												return;
+										}
 									}
 								}
 
