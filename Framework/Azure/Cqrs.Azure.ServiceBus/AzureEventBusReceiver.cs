@@ -174,7 +174,11 @@ namespace Cqrs.Azure.ServiceBus
 								if (loop == long.MaxValue)
 									loop = long.MinValue;
 							}
-							brokeredMessageRenewCancellationTokenSource.Dispose();
+							try
+							{
+								brokeredMessageRenewCancellationTokenSource.Dispose();
+							}
+							catch (ObjectDisposedException) { }
 						}, brokeredMessageRenewCancellationTokenSource.Token);
 					}
 				);
