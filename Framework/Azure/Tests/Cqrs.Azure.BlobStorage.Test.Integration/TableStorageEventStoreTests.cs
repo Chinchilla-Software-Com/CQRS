@@ -25,13 +25,13 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 	public class TableStorageEventStoreTests
 	{
 		[TestMethod]
-		public void Save_ValidEvent_EventCanBeRetreived()
+		public virtual void Save_ValidEvent_EventCanBeRetreived()
 		{
 			// Arrange
 			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
-			var eventStore = new TableStorageEventStore<Guid>(new DefaultEventBuilder<Guid>(), new EventDeserialiser<Guid>(), logger, new TableStorageEventStoreConnectionStringFactory(new ConfigurationManager(), logger));
+			var eventStore = CreateDataStore(new DefaultEventBuilder<Guid>(), new EventDeserialiser<Guid>(), logger, new TableStorageEventStoreConnectionStringFactory(new ConfigurationManager(), logger));
 
 			var event1 = new TestEvent
 			{
@@ -76,6 +76,11 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			timer.Stop();
 			Console.WriteLine("Load several correlated operation took {0}", timer.Elapsed);
 			Assert.AreEqual(2, correlatedEvents.Count);
+		}
+
+		protected virtual TableStorageEventStore<Guid> CreateDataStore(IEventBuilder<Guid> eventBuilder, IEventDeserialiser<Guid> eventDeserialiser, ILogger logger, ITableStorageStoreConnectionStringFactory tableStorageEventStoreConnectionStringFactory)
+		{
+			return new TableStorageEventStore<Guid>(eventBuilder, eventDeserialiser, logger, tableStorageEventStoreConnectionStringFactory);
 		}
 	}
 }

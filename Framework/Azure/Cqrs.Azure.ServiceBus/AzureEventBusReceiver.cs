@@ -38,7 +38,11 @@ namespace Cqrs.Azure.ServiceBus
 
 		// ReSharper disable StaticMemberInGenericType
 		protected static RouteManager Routes { get; private set; }
+
+		protected static long CurrentHandles { get; set; }
 		// ReSharper restore StaticMemberInGenericType
+
+		protected ITelemetryHelper TelemetryHelper { get; private set; }
 
 		static AzureEventBusReceiver()
 		{
@@ -48,6 +52,7 @@ namespace Cqrs.Azure.ServiceBus
 		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, false)
 		{
+			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventBus.Receiver.UseApplicationInsightTelemetryHelper");
 		}
 
 		public void Start()
@@ -72,7 +77,7 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			AzureBusHelper.RegisterHandler(Routes, handler, targetedType, holdMessageLock);
+			AzureBusHelper.RegisterHandler(TelemetryHelper, Routes, handler, targetedType, holdMessageLock);
 		}
 
 		/// <summary>
@@ -86,6 +91,8 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected virtual void ReceiveEvent(BrokeredMessage message)
 		{
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
+			TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles++, telemetryProperties);
 			var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
 			try
 			{
@@ -107,8 +114,9 @@ namespace Cqrs.Azure.ServiceBus
 							long loop = long.MinValue;
 							while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
 							{
-								//Based on LockedUntilUtc property to determine if the lock expires soon
-								if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-10))
+								// Based on LockedUntilUtc property to determine if the lock expires soon
+								// We lock for 45 seconds to ensure any thread based issues are mitigated.
+								if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-45))
 								{
 									// If so, renew the lock
 									for (int i = 0; i < 10; i++)
@@ -126,6 +134,10 @@ namespace Cqrs.Azure.ServiceBus
 											}
 
 											break;
+										}
+										catch (ObjectDisposedException)
+										{
+											return;
 										}
 										catch (MessageLockLostException exception)
 										{
@@ -162,7 +174,11 @@ namespace Cqrs.Azure.ServiceBus
 								if (loop == long.MaxValue)
 									loop = long.MinValue;
 							}
-							brokeredMessageRenewCancellationTokenSource.Dispose();
+							try
+							{
+								brokeredMessageRenewCancellationTokenSource.Dispose();
+							}
+							catch (ObjectDisposedException) { }
 						}, brokeredMessageRenewCancellationTokenSource.Token);
 					}
 				);
@@ -177,6 +193,7 @@ namespace Cqrs.Azure.ServiceBus
 			}
 			catch (Exception exception)
 			{
+				TelemetryHelper.TrackException(exception, null, telemetryProperties);
 				// Indicates a problem, unlock message in queue
 				Logger.LogError(string.Format("An event message arrived with the id '{0}' but failed to be process.", message.MessageId), exception: exception);
 				message.Abandon();
@@ -185,6 +202,7 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				// Cancel the lock of renewing the task
 				brokeredMessageRenewCancellationTokenSource.Cancel();
+				TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles--, telemetryProperties);
 			}
 		}
 

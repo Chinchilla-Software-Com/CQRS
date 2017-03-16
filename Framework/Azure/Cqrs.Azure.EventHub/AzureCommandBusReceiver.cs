@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using Cqrs.Authentication;
@@ -26,7 +27,11 @@ namespace Cqrs.Azure.ServiceBus
 	{
 		// ReSharper disable StaticMemberInGenericType
 		private static RouteManager Routes { get; set; }
+
+		protected static long CurrentHandles { get; set; }
 		// ReSharper restore StaticMemberInGenericType
+
+		protected ITelemetryHelper TelemetryHelper { get; private set; }
 
 		static AzureCommandBusReceiver()
 		{
@@ -36,12 +41,13 @@ namespace Cqrs.Azure.ServiceBus
 		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, false)
 		{
+			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventHub.CommandBus.Receiver.UseApplicationInsightTelemetryHelper");
 		}
 
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			AzureBusHelper.RegisterHandler(Routes, handler, targetedType, holdMessageLock);
+			AzureBusHelper.RegisterHandler(TelemetryHelper, Routes, handler, targetedType, holdMessageLock);
 		}
 
 		/// <summary>
@@ -55,6 +61,8 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected virtual void ReceiveCommand(PartitionContext context, EventData eventData)
 		{
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/EventHub" } };
+			TelemetryHelper.TrackMetric("Cqrs/Handle/Command", CurrentHandles++, telemetryProperties);
 			// Do a manual 10 try attempt with back-off
 			for (int i = 0; i < 10; i++)
 			{
@@ -112,6 +120,7 @@ namespace Cqrs.Azure.ServiceBus
 			}
 			// Eventually just accept it
 			context.CheckpointAsync(eventData);
+			TelemetryHelper.TrackMetric("Cqrs/Handle/Command", CurrentHandles--, telemetryProperties);
 		}
 
 		public virtual void ReceiveCommand(ICommand<TAuthenticationToken> command)

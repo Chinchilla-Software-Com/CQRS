@@ -8,19 +8,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
 using Cqrs.DataStores;
-using Cqrs.Entities;
-using Cqrs.Events;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Cqrs.Azure.BlobStorage
 {
@@ -152,6 +146,11 @@ namespace Cqrs.Azure.BlobStorage
 
 		public override void Add(TData data)
 		{
+			Add(data);
+		}
+
+		public virtual void Add(ITableEntity data)
+		{
 			AsyncSaveData
 			(
 				data,
@@ -179,6 +178,11 @@ namespace Cqrs.Azure.BlobStorage
 		}
 
 		public override void Add(IEnumerable<TData> data)
+		{
+			Add(data);
+		}
+
+		public virtual void Add(IEnumerable<ITableEntity> data)
 		{
 			AsyncSaveData
 			(
@@ -235,10 +239,42 @@ namespace Cqrs.Azure.BlobStorage
 			);
 		}
 
+		/*
+		public virtual void Destroy(ITableEntity data)
+		{
+			AsyncSaveData
+			(
+				data,
+				(taskData, table) =>
+				{
+					try
+					{
+						// Create a retrieve operation that takes a customer entity.
+						TableOperation retrieveOperation = GetUpdatableTableEntity(taskData);
+
+						// Execute the operation.
+						TableResult retrievedResult = table.Execute(retrieveOperation);
+						ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
+
+						TableOperation deleteOperation = TableOperation.Delete(tableEntity);
+
+						// Execute the delete operation.
+						return table.Execute(deleteOperation);
+					}
+					catch (Exception exception)
+					{
+						Logger.LogError("There was an issue deleting data from table storage.", exception: exception);
+						throw;
+					}
+				}
+			);
+		}
+		*/
+
 		public virtual void Add(TCollectionItemData data)
 		{
 			// Create the TableOperation object that inserts the customer entity.
-			Add((TData)CreateTableEntity(data));
+			Add(CreateTableEntity(data));
 		}
 
 		public virtual void Add(IEnumerable<TCollectionItemData> data)
@@ -254,7 +290,6 @@ namespace Cqrs.Azure.BlobStorage
 
 		public virtual void Destroy(TCollectionItemData data)
 		{
-			// Create the TableOperation object that inserts the customer entity.
 			Destroy((TData)CreateTableEntity(data));
 		}
 
@@ -266,7 +301,6 @@ namespace Cqrs.Azure.BlobStorage
 
 		public virtual void Update(TCollectionItemData data)
 		{
-			// Create the TableOperation object that inserts the customer entity.
 			Update((TData)CreateTableEntity(data));
 		}
 
@@ -284,12 +318,7 @@ namespace Cqrs.Azure.BlobStorage
 
 						// Execute the operation.
 						TableResult retrievedResult = table.Execute(retrieveOperation);
-						ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
-						var eventTableEntity = tableEntity as IEventDataTableEntity<TData>;
-						if (eventTableEntity != null)
-							eventTableEntity.EventData = taskData;
-						else
-							((IEntityTableEntity<TCollectionItemData>)tableEntity).Entity = ((IEntityTableEntity<TCollectionItemData>)taskData).Entity;
+						ITableEntity tableEntity = ReplaceValues(retrievedResult, data);
 
 						TableOperation updateOperation = TableOperation.Replace(tableEntity);
 
@@ -371,146 +400,25 @@ namespace Cqrs.Azure.BlobStorage
 			return ReadableSource.ExecuteQuery(rangeQuery);
 		}
 
-		protected virtual void ReplaceValues(TableResult retrievedResult, TData data)
+		protected virtual ITableEntity ReplaceValues(TableResult retrievedResult, TData data)
 		{
 			ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
 			var eventTableEntity = tableEntity as IEventDataTableEntity<TData>;
 			if (eventTableEntity != null)
 				eventTableEntity.EventData = data;
 			else
-				((IEntityTableEntity<TData>)tableEntity).Entity = data;
-		}
-	}
+				((IEntityTableEntity<TCollectionItemData>)tableEntity).Entity = ((IEntityTableEntity<TCollectionItemData>)data).Entity;
 
-	public abstract class TableEntity<TData>
-		: TableEntity
-	{
-		protected virtual TData Deserialise(string json)
+			return tableEntity;
+		}
+
+		#region Overrides of StorageStore<TData,CloudTable>
+
+		protected override string GetSafeSourceName(string sourceName)
 		{
-			using (var stringReader = new StringReader(json))
-			using (var jsonTextReader = new JsonTextReader(stringReader))
-				return GetSerialiser().Deserialize<TData>(jsonTextReader);
+			return GetSafeSourceName(sourceName, false);
 		}
 
-		protected virtual string Serialise(TData data)
-		{
-			string dataContent = JsonConvert.SerializeObject(data, GetSerialisationSettings());
-
-			return dataContent;
-		}
-
-		protected virtual JsonSerializerSettings GetSerialisationSettings()
-		{
-			return new JsonSerializerSettings
-			{
-				Formatting = Formatting.None,
-				MissingMemberHandling = MissingMemberHandling.Ignore,
-				DateParseHandling = DateParseHandling.DateTimeOffset,
-				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-				Converters = new List<JsonConverter> { new StringEnumConverter() },
-			};
-		}
-
-		protected virtual JsonSerializer GetSerialiser()
-		{
-			JsonSerializerSettings settings = GetSerialisationSettings();
-			return JsonSerializer.Create(settings);
-		}
-	}
-
-	public interface IEntityTableEntity<TEntity>
-	{
-		TEntity Entity { get; set; }
-	}
-
-	public class EntityTableEntity<TEntity>
-		: TableEntity<TEntity>
-		, IEntityTableEntity<TEntity>
-		where TEntity : IEntity
-	{
-		public EntityTableEntity(TEntity entity)
-		{
-			PartitionKey = StorageStore<object, object>.GetSafeStorageKey(entity.GetType().FullName);
-			RowKey = StorageStore<object, object>.GetSafeStorageKey(entity.Rsn.ToString("N"));
-			_entity = entity;
-			_entityContent = Serialise(Entity);
-		}
-
-		public EntityTableEntity()
-		{
-		}
-
-		private TEntity _entity;
-
-		[DataMember]
-		public TEntity Entity
-		{
-			get { return _entity; }
-			set { _entity = value; }
-		}
-
-		private string _entityContent;
-
-		[DataMember]
-		public string EntityContent
-		{
-			get
-			{
-				return _entityContent;
-			}
-			set
-			{
-				_entityContent = value;
-				_entity = Deserialise(value);
-			}
-		}
-	}
-
-	public interface IEventDataTableEntity<TEventData>
-	{
-		TEventData EventData { get; set; }
-	}
-
-	public class EventDataTableEntity<TEventData>
-		: TableEntity<TEventData>
-		, IEventDataTableEntity<TEventData>
-		where TEventData : EventData
-	{
-		public EventDataTableEntity(TEventData eventData, bool isCorrelationIdTableStorageStore = false)
-		{
-			PartitionKey = StorageStore<object, object>.GetSafeStorageKey(isCorrelationIdTableStorageStore ? eventData.CorrelationId.ToString("N") : eventData.AggregateId);
-			RowKey = StorageStore<object, object>.GetSafeStorageKey(eventData.EventId.ToString("N"));
-			_eventData = eventData;
-			_eventDataContent = Serialise(EventData);
-		}
-
-		public EventDataTableEntity()
-		{
-		}
-
-		private TEventData _eventData;
-
-		[DataMember]
-		public TEventData EventData
-		{
-			get { return _eventData; }
-			set { _eventData = value; }
-		}
-
-		private string _eventDataContent;
-
-		[DataMember]
-		public string EventDataContent
-		{
-			get
-			{
-				return _eventDataContent;
-			}
-			set
-			{
-				_eventDataContent = value;
-				_eventData = Deserialise(value);
-			}
-		}
+		#endregion
 	}
 }

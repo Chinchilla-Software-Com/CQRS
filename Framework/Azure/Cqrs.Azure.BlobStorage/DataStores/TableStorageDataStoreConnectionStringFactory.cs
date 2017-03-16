@@ -159,7 +159,8 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 							sb.Append(c);
 
 						name = sb.ToString();
-						name = name.Substring(name.Length - 36);
+						if (name.Length > 36)
+							name = name.Substring(name.Length - 36);
 
 						return name;
 					}

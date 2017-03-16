@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using System.Collections.Generic;
 using cdmdotnet.Logging;
 using Cqrs.Azure.BlobStorage;
@@ -26,7 +27,6 @@ namespace Cqrs.Azure.Storage.DataStores
 		public TableStorageDataStore(ILogger logger, ITableStorageDataStoreConnectionStringFactory tableStorageDataStoreConnectionStringFactory)
 			: base(logger, tableStorageDataStoreConnectionStringFactory)
 		{
-			GetContainerName = () => string.Format("{0}_v2", tableStorageDataStoreConnectionStringFactory.GetTableName<TData>());
 		}
 
 		#region Overrides of TableStorageStore<TData>
@@ -55,7 +55,7 @@ namespace Cqrs.Azure.Storage.DataStores
 
 		#region Overrides of TableStorageStore<EntityTableEntity<TData>,TData>
 
-		protected override void ReplaceValues(TableResult retrievedResult, EntityTableEntity<TData> data)
+		protected override ITableEntity ReplaceValues(TableResult retrievedResult, EntityTableEntity<TData> data)
 		{
 			ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
 			// Events aren't updated
@@ -63,14 +63,57 @@ namespace Cqrs.Azure.Storage.DataStores
 			if (dynamicTableEntity == null)
 			{
 				base.ReplaceValues(retrievedResult, data);
-				return;
+				return tableEntity;
 			}
 
 			//Flatten object of type TData and convert it to EntityProperty Dictionary
-			Dictionary<string, EntityProperty> flattenedProperties = EntityPropertyConverter.Flatten(data, new OperationContext());
+			Dictionary<string, EntityProperty> flattenedProperties = EntityPropertyConverter.Flatten(data.Entity, new OperationContext());
 			dynamicTableEntity.Properties = flattenedProperties;
+
+			return dynamicTableEntity;
+		}
+
+		public override EntityTableEntity<TData> GetByKeyAndRow(Guid rsn)
+		{
+			TableOperation searchQuery = TableOperation.Retrieve<DynamicTableEntity>(typeof(TData).FullName, rsn.ToString("N"));
+
+			TableResult searchResult = ReadableSource.Execute(searchQuery);
+
+			var dynamicTableEntity = searchResult.Result as DynamicTableEntity;
+			if (dynamicTableEntity == null)
+				return base.GetByKeyAndRow(rsn);
+
+			//Convert the DynamicTableEntity back to original complex object.
+			TData result = EntityPropertyConverter.ConvertBack<TData>(dynamicTableEntity.Properties, new OperationContext());
+			return new EntityTableEntity<TData>(result);
+		}
+
+		public override IEnumerable<EntityTableEntity<TData>> GetByKey()
+		{
+			// Create the table query.
+			var rangeQuery = Collection.Where
+			(
+				TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, StorageStore<object, object>.GetSafeStorageKey(typeof(TData).FullName))
+			);
+
+			IEnumerable<EntityTableEntity<TData>> results = ReadableSource.ExecuteQuery(rangeQuery);
+
+			return results;
 		}
 
 		#endregion
+
+		public override void Update(TData data)
+		{
+			DynamicTableEntity dynamicTableEntity = CreateTableEntity(data) as DynamicTableEntity;
+			if (dynamicTableEntity == null)
+			{
+				base.Update(data);
+				return;
+			}
+			//Convert the DynamicTableEntity back to original complex object.
+			TData result = EntityPropertyConverter.ConvertBack<TData>(dynamicTableEntity.Properties, new OperationContext());
+			Update(new EntityTableEntity<TData>(result));
+		}
 	}
 }

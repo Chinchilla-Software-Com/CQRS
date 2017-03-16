@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using cdmdotnet.Logging;
+using Cqrs.Configuration;
 using Cqrs.Entities;
 using Cqrs.DataStores;
 using Cqrs.Repositories.Queries;
@@ -25,10 +27,13 @@ namespace Cqrs.Repositories
 
 		protected TQueryBuilder QueryBuilder { get; private set; }
 
+		protected ITelemetryHelper TelemetryHelper { get; set; }
+
 		protected Repository(Func<IDataStore<TData>> createDataStoreFunction, TQueryBuilder queryBuilder)
 		{
 			CreateDataStoreFunction = createDataStoreFunction;
 			QueryBuilder = queryBuilder;
+			TelemetryHelper = new NullTelemetryHelper();
 		}
 
 		#region Implementation of IRepository<TData>
@@ -52,19 +57,25 @@ namespace Cqrs.Repositories
 			IQueryable<TData> query = QueryBuilder.CreateQueryable(singleResultQuery).Select(i => i);
 
 			IEnumerable<TData> result = query.AsEnumerable();
+			int finalResultCount = 0;
+			TData finalResult = throwExceptionWhenNoQueryResults
+				? result.Single()
+				: result.SingleOrDefault();
+			if (finalResult != null)
+				finalResultCount = 1;
 
 			try
 			{
 				return new SingleResultQuery<TQueryStrategy, TData>
 				{
 					QueryStrategy = singleResultQuery.QueryStrategy,
-					Result = throwExceptionWhenNoQueryResults
-						? result.Single()
-						: result.SingleOrDefault()
+					Result = finalResult
 				};
 			}
 			finally
 			{
+				TelemetryHelper.TrackMetric(string.Format("Cqrs/Repository/Retrieve/Single/{0}", typeof(TData).Name), finalResultCount);
+
 				// This is disabled until I can figure out a better way to handle disposing these... as it will most likely dispose the data store... and that's not cool.
 				/*
 				var disposable = result as IDisposable;
@@ -80,16 +91,19 @@ namespace Cqrs.Repositories
 			// http://stackoverflow.com/questions/1021274/linq-to-sql-mapping-exception-when-using-abstract-base-classes
 			IQueryable<TData> result = QueryBuilder.CreateQueryable(resultQuery).Select(i => i);
 
+			IList<TData> finalResult = result.ToList();
+
 			try
 			{
 				return new CollectionResultQuery<TQueryStrategy, TData>
 				{
 					QueryStrategy = resultQuery.QueryStrategy,
-					Result = result.ToList()
+					Result = finalResult
 				};
 			}
 			finally
 			{
+				TelemetryHelper.TrackMetric(string.Format("Cqrs/Repository/Retrieve/Collection/{0}", typeof(TData).Name), finalResult.Count);
 				// This is disabled until I can figure out a better way to handle disposing these... as it will most likely dispose the data store... and that's not cool.
 				/*
 				var disposable = result as IDisposable;
@@ -137,9 +151,21 @@ namespace Cqrs.Repositories
 					.Where(entity => entity.Rsn == rsn)
 					.AsEnumerable();
 
-				return throwExceptionOnMissingEntity
+				int finalResultCount = 0;
+				TData result = throwExceptionOnMissingEntity
 					? query.Single()
 					: query.SingleOrDefault();
+				if (result != null)
+					finalResultCount = 1;
+
+				try
+				{
+					return result;
+				}
+				finally
+				{
+					TelemetryHelper.TrackMetric(string.Format("Cqrs/Repository/Load/{0}", typeof(TData).Name), finalResultCount);
+				}
 			}
 		}
 

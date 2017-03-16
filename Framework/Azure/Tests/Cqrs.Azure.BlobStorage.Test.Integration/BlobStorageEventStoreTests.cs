@@ -25,7 +25,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 	public class BlobStorageEventStoreTests
 	{
 		[TestMethod]
-		public void Save_ValidEvent_EventCanBeRetreived()
+		public virtual void Save_ValidEvent_EventCanBeRetreived()
 		{
 			// Arrange
 			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());

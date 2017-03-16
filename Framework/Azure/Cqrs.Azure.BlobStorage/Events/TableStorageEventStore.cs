@@ -18,25 +18,34 @@ namespace Cqrs.Azure.BlobStorage.Events
 	public class TableStorageEventStore<TAuthenticationToken>
 		: EventStore<TAuthenticationToken>
 	{
-		protected RawTableStorageEventStore TableStorageStore { get; private set; }
+		protected const string TableCqrsEventStoreStreamNamePattern = "{0}.{1}";
 
-		protected RawTableStorageEventStore CorrelationIdTableStorageStore { get; private set; }
+		protected RawTableStorageEventStore TableStorageStore { get; set; }
+
+		protected RawTableStorageEventStore CorrelationIdTableStorageStore { get; set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TableStorageEventStore{TAuthenticationToken}"/> class using the specified container.
 		/// </summary>
-		public TableStorageEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, ITableStorageStoreConnectionStringFactory tableStorageEventStoreConnectionStringFactory)
+		public TableStorageEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, ITableStorageStoreConnectionStringFactory tableStorageEventStoreConnectionStringFactory, Func<ILogger, ITableStorageStoreConnectionStringFactory, bool, RawTableStorageEventStore> createRawTableStorageEventStoreFunction = null)
 			: base(eventBuilder, eventDeserialiser, logger)
 		{
-			TableStorageStore = new RawTableStorageEventStore(logger, tableStorageEventStoreConnectionStringFactory);
-			CorrelationIdTableStorageStore = new RawTableStorageEventStore(logger, tableStorageEventStoreConnectionStringFactory, true);
+			if (createRawTableStorageEventStoreFunction == null)
+				createRawTableStorageEventStoreFunction = (logger1, tableStorageEventStoreConnectionStringFactory1, isCorrelationIdTableStorageStore) => new RawTableStorageEventStore(logger1, tableStorageEventStoreConnectionStringFactory1, isCorrelationIdTableStorageStore);
+			TableStorageStore = createRawTableStorageEventStoreFunction(logger, tableStorageEventStoreConnectionStringFactory, false);
+			CorrelationIdTableStorageStore = createRawTableStorageEventStoreFunction(logger, tableStorageEventStoreConnectionStringFactory, true);
 		}
 
 		#region Overrides of EventStore<TAuthenticationToken>
 
+		protected override string GenerateStreamName(Type aggregateRootType, Guid aggregateId)
+		{
+			return string.Format(TableCqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+		}
+
 		public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
-			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+			string streamName = GenerateStreamName(aggregateRootType, aggregateId);
 
 			// Create the table query.
 			var rangeQuery = new TableQuery<EventDataTableEntity<EventData>>().Where
@@ -87,7 +96,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 		{
 			private string TableName { get; set; }
 
-			private bool IsCorrelationIdTableStorageStore { get; set; }
+			protected bool IsCorrelationIdTableStorageStore { get; set; }
 
 			/// <summary>
 			/// Initializes a new instance of the <see cref="RawTableStorageEventStore"/> class using the specified container.
