@@ -71,12 +71,19 @@ namespace Cqrs.Azure.ServiceBus
 				string messageBody = message.GetBody<string>();
 
 
-				AzureBusHelper.ReceiveCommand(messageBody, ReceiveCommand,
+				ICommand<TAuthenticationToken> command = AzureBusHelper.ReceiveCommand(messageBody, ReceiveCommand,
 					string.Format("id '{0}'", message.MessageId),
 					() =>
 					{
 						// Remove message from queue
-						message.Complete();
+						try
+						{
+							message.Complete();
+						}
+						catch (MessageLockLostException exception)
+						{
+							throw new MessageLockLostException(string.Format("The lock supplied for the skipped message '{0}' is invalid.", message.MessageId), exception);
+						}
 						Logger.LogDebug(string.Format("A command message arrived with the id '{0}' but processing was skipped due to command settings.", message.MessageId));
 					},
 					() =>
@@ -156,7 +163,14 @@ namespace Cqrs.Azure.ServiceBus
 				);
 
 				// Remove message from queue
-				message.Complete();
+				try
+				{
+					message.Complete();
+				}
+				catch (MessageLockLostException exception)
+				{
+					throw new MessageLockLostException(string.Format("The lock supplied for command '{0}' of type {1} is invalid.", command.Id, command.GetType().Name), exception);
+				}
 				Logger.LogDebug(string.Format("A command message arrived and was processed with the id '{0}'.", message.MessageId));
 			}
 			catch (Exception exception)
