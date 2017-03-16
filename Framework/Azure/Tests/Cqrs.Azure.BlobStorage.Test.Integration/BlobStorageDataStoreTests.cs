@@ -23,7 +23,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 	public class BlobStorageDataStoreTests
 	{
 		[TestMethod]
-		public virtual void Save_ValidProjectionView_ProjectionViewCanBeRetreived()
+		public void Save_ValidProjectionView_ProjectionViewCanBeRetreived()
 		{
 			// Arrange
 			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());

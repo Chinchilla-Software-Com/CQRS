@@ -72,17 +72,5 @@ namespace Cqrs.Azure.Storage.DataStores
 		}
 
 		#endregion
-
-		/*
-		#region Overrides of TableStorageStore<EntityTableEntity<TData>,TData>
-
-		public override void Add(TData data)
-		{
-			// Create the TableOperation object that inserts the customer entity.
-			Add(CreateTableEntity(data));
-		}
-
-		#endregion
-		*/
 	}
 }

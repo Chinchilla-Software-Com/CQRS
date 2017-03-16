@@ -28,13 +28,13 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 	public class TableStorageDataStoreTests
 	{
 		[TestMethod]
-		public virtual void Add_ValidProjectionView_ProjectionViewCanBeRetreived()
+		public void Add_ValidProjectionView_ProjectionViewCanBeRetreived()
 		{
 			// Arrange
 			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
-			TableStorageDataStore<TestEvent> dataStore = CreateDataStore<TestEvent>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
+			var dataStore = new TableStorageDataStore<TestEvent>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
 
 			var event1 = new TestEvent
 			{
@@ -60,13 +60,13 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 		}
 
 		[TestMethod]
-		public virtual void Add_ValidProjectionEntityView_ProjectionEntityViewCanBeRetreived()
+		public void Add_ValidProjectionEntityView_ProjectionEntityViewCanBeRetreived()
 		{
 			// Arrange
 			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
-			TableStorageDataStore<TestEntity> dataStore = CreateDataStore<TestEntity>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
+			var dataStore = new TableStorageDataStore<TestEntity>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
 
 			var event1 = new TestEntity
 			{
@@ -90,13 +90,13 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 		}
 
 		[TestMethod]
-		public virtual void Update_ValidProjectionEntityView_ProjectionEntityViewCanBeRetreived()
+		public void Update_ValidProjectionEntityView_ProjectionEntityViewCanBeRetreived()
 		{
 			// Arrange
 			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
-			TableStorageDataStore<TestEntity> dataStore = CreateDataStore<TestEntity>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
+			var dataStore = new TableStorageDataStore<TestEntity>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
 
 			var event1 = new TestEntity
 			{
@@ -106,7 +106,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			dataStore.Add(event1);
 
 			// The repo disposes the datastore, so a copy is needed.
-			TableStorageDataStore<TestEntity> repoDataStore = CreateDataStore<TestEntity>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
+			var repoDataStore = new TableStorageDataStore<TestEntity>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
 			var repository = new TableStorageRepository<TestQueryStrategy, TestQueryBuilder<TestEntity>, TestEntity>(() => repoDataStore, null);
 			TestEntity view = repository.Load(event1.Rsn);
 			view.Name = "Name2";
@@ -118,7 +118,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			var timer = new Stopwatch();
 			timer.Start();
 			// Refresh the data store due to disposal.
-			repoDataStore = CreateDataStore<TestEntity>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
+			repoDataStore = new TableStorageDataStore<TestEntity>(logger, new TableStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
 			repository = new TableStorageRepository<TestQueryStrategy, TestQueryBuilder<TestEntity>, TestEntity>(() => repoDataStore, null);
 			view = repository.Load(event1.Rsn);
 			timer.Stop();
@@ -126,12 +126,6 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			Assert.IsNotNull(view);
 			Assert.AreEqual(event1.Rsn, view.Rsn);
 			Assert.AreEqual(event1.Name, view.Name);
-		}
-
-		protected virtual TableStorageDataStore<TData> CreateDataStore<TData>(ILogger logger, ITableStorageDataStoreConnectionStringFactory tableStorageDataStoreConnectionStringFactory)
-			where TData : Entity
-		{
-			return new TableStorageDataStore<TData>(logger, tableStorageDataStoreConnectionStringFactory);
 		}
 
 		public class TestQueryStrategy : IQueryStrategy
