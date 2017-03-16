@@ -152,6 +152,11 @@ namespace Cqrs.Azure.BlobStorage
 
 		public override void Add(TData data)
 		{
+			Add(data);
+		}
+
+		public virtual void Add(ITableEntity data)
+		{
 			AsyncSaveData
 			(
 				data,
@@ -179,6 +184,11 @@ namespace Cqrs.Azure.BlobStorage
 		}
 
 		public override void Add(IEnumerable<TData> data)
+		{
+			Add(data);
+		}
+
+		public virtual void Add(IEnumerable<ITableEntity> data)
 		{
 			AsyncSaveData
 			(
@@ -235,10 +245,42 @@ namespace Cqrs.Azure.BlobStorage
 			);
 		}
 
+		/*
+		public virtual void Destroy(ITableEntity data)
+		{
+			AsyncSaveData
+			(
+				data,
+				(taskData, table) =>
+				{
+					try
+					{
+						// Create a retrieve operation that takes a customer entity.
+						TableOperation retrieveOperation = GetUpdatableTableEntity(taskData);
+
+						// Execute the operation.
+						TableResult retrievedResult = table.Execute(retrieveOperation);
+						ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
+
+						TableOperation deleteOperation = TableOperation.Delete(tableEntity);
+
+						// Execute the delete operation.
+						return table.Execute(deleteOperation);
+					}
+					catch (Exception exception)
+					{
+						Logger.LogError("There was an issue deleting data from table storage.", exception: exception);
+						throw;
+					}
+				}
+			);
+		}
+		*/
+
 		public virtual void Add(TCollectionItemData data)
 		{
 			// Create the TableOperation object that inserts the customer entity.
-			Add((TData)CreateTableEntity(data));
+			Add(CreateTableEntity(data));
 		}
 
 		public virtual void Add(IEnumerable<TCollectionItemData> data)
@@ -304,6 +346,43 @@ namespace Cqrs.Azure.BlobStorage
 				}
 			);
 		}
+
+		/*
+		public virtual void Update(ITableEntity data)
+		{
+			AsyncSaveData
+			(
+				data,
+				(taskData, table) =>
+				{
+					try
+					{
+						// Create a retrieve operation that takes a customer entity.
+						TableOperation retrieveOperation = GetUpdatableTableEntity(taskData);
+
+						// Execute the operation.
+						TableResult retrievedResult = table.Execute(retrieveOperation);
+						ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
+						var eventTableEntity = tableEntity as IEventDataTableEntity<TData>;
+						if (eventTableEntity != null)
+							eventTableEntity.EventData = taskData;
+						else
+							((IEntityTableEntity<TCollectionItemData>)tableEntity).Entity = ((IEntityTableEntity<TCollectionItemData>)taskData).Entity;
+
+						TableOperation updateOperation = TableOperation.Replace(tableEntity);
+
+						// Execute the update operation.
+						return table.Execute(updateOperation);
+					}
+					catch (Exception exception)
+					{
+						Logger.LogError("There was an issue updating data in table storage.", exception: exception);
+						throw;
+					}
+				}
+			);
+		}
+		*/
 
 		#endregion
 
