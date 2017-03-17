@@ -9,9 +9,14 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
+using Cqrs.Bus;
 using Cqrs.Configuration;
+using Cqrs.Messages;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 
@@ -57,9 +62,12 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected OnMessageOptions ReceiverMessageHandlerOptions { get; set; }
 
-		protected AzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
-			: base (configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
+		protected AzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, BusHelper busHelper, bool isAPublisher)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
+			AzureBusHelper = azureBusHelper;
+			BusHelper = busHelper;
+			TelemetryHelper = new NullTelemetryHelper();
 			PrivateServiceBusReceivers = new Dictionary<int, SubscriptionClient>();
 			PublicServiceBusReceivers = new Dictionary<int, SubscriptionClient>();
 		}
@@ -96,6 +104,14 @@ namespace Cqrs.Azure.ServiceBus
 
 			InstantiateReceiving(PrivateServiceBusReceivers, PrivateTopicName, PrivateTopicSubscriptionName);
 			InstantiateReceiving(PublicServiceBusReceivers, PublicTopicName, PublicTopicSubscriptionName);
+
+			bool enableDeadLetterCleanUp;
+			string enableDeadLetterCleanUpValue = ConfigurationManager.GetSetting("Cqrs.Azure.Servicebus.EnableDeadLetterCleanUp");
+			if (bool.TryParse(enableDeadLetterCleanUpValue, out enableDeadLetterCleanUp) && enableDeadLetterCleanUp)
+			{
+				CleanUpDeadLetters(PrivateTopicName, PrivateTopicSubscriptionName);
+				CleanUpDeadLetters(PublicTopicName, PublicTopicSubscriptionName);
+			}
 
 			// If this is also a publisher, then it will the check over there and that will handle this
 			// we only need to check one of these
@@ -215,6 +231,152 @@ namespace Cqrs.Azure.ServiceBus
 				serviceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
 			foreach (SubscriptionClient serviceBusReceiver in PublicServiceBusReceivers.Values)
 				serviceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
+		}
+
+		protected IBusHelper BusHelper { get; private set; }
+
+		protected IAzureBusHelper<TAuthenticationToken> AzureBusHelper { get; private set; }
+
+		protected ITelemetryHelper TelemetryHelper { get; set; }
+
+		protected virtual CancellationTokenSource CleanUpDeadLetters(string topicName, string topicSubscriptionName)
+		{
+			var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
+			int lockIssues = 0;
+
+			Action<BrokeredMessage, IMessage> leaveDeadlLetterInQueue = (deadLetterBrokeredMessage, deadLetterMessage) =>
+			{
+				// Remove message from queue
+				try
+				{
+					deadLetterBrokeredMessage.Abandon();
+					lockIssues = 0;
+				}
+				catch (MessageLockLostException)
+				{
+					lockIssues++;
+					Logger.LogWarning(string.Format("The lock supplied for abandon for the skipped dead-letter message '{0}' is invalid.", deadLetterBrokeredMessage.MessageId));
+				}
+				Logger.LogDebug(string.Format("A dead-letter message of type {0} arrived with the id '{1}' but left in the queue due to settings.", deadLetterMessage.GetType().FullName, deadLetterBrokeredMessage.MessageId));
+			};
+			Action<BrokeredMessage> removeDeadlLetterFromQueue = deadLetterBrokeredMessage =>
+			{
+				// Remove message from queue
+				try
+				{
+					deadLetterBrokeredMessage.Complete();
+					lockIssues = 0;
+				}
+				catch (MessageLockLostException)
+				{
+					lockIssues++;
+					Logger.LogWarning(string.Format("The lock supplied for complete for the skipped dead-letter message '{0}' is invalid.", deadLetterBrokeredMessage.MessageId));
+				}
+				Logger.LogDebug(string.Format("A dead-letter message arrived with the id '{0}' but was removed as processing was skipped due to settings.", deadLetterBrokeredMessage.MessageId));
+			};
+
+			Task.Factory.StartNewSafely(() =>
+			{
+				int loop = 0;
+				while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
+				{
+					lockIssues = 0;
+					MessagingFactory factory = MessagingFactory.CreateFromConnectionString(ConnectionString);
+					string deadLetterPath = SubscriptionClient.FormatDeadLetterPath(topicName, topicSubscriptionName);
+					MessageReceiver client = factory.CreateMessageReceiver(deadLetterPath, ReceiveMode.PeekLock);
+
+					IEnumerable<BrokeredMessage> brokeredMessages = client.ReceiveBatch(1000);
+
+					foreach (BrokeredMessage brokeredMessage in brokeredMessages)
+					{
+						if (lockIssues > 10)
+							break;
+						try
+						{
+							Logger.LogDebug(string.Format("A dead-letter message arrived with the id '{0}'.", brokeredMessage.MessageId));
+							string messageBody = brokeredMessage.GetBody<string>();
+
+							// Closure protection
+							BrokeredMessage message = brokeredMessage;
+							try
+							{
+								AzureBusHelper.ReceiveEvent
+								(
+									messageBody,
+									@event =>
+									{
+										bool isRequired = BusHelper.IsEventRequired(@event.GetType());
+										if (!isRequired)
+											removeDeadlLetterFromQueue(message);
+										else
+											leaveDeadlLetterInQueue(message, @event);
+									},
+									string.Format("id '{0}'", brokeredMessage.MessageId),
+									() =>
+									{
+										removeDeadlLetterFromQueue(message);
+									},
+									() => { }
+								);
+							}
+							catch
+							{
+								AzureBusHelper.ReceiveCommand
+								(
+									messageBody,
+									command =>
+									{
+										bool isRequired = BusHelper.IsEventRequired(command.GetType());
+										if (!isRequired)
+											removeDeadlLetterFromQueue(message);
+										else
+											leaveDeadlLetterInQueue(message, command);
+									},
+									string.Format("id '{0}'", brokeredMessage.MessageId),
+									() =>
+									{
+										removeDeadlLetterFromQueue(message);
+									},
+									() => { }
+								);
+							}
+						}
+						catch (Exception exception)
+						{
+							TelemetryHelper.TrackException(exception, null, telemetryProperties);
+							// Indicates a problem, unlock message in queue
+							Logger.LogError(string.Format("A dead-letter message arrived with the id '{0}' but failed to be process.", brokeredMessage.MessageId), exception: exception);
+							try
+							{
+								brokeredMessage.Abandon();
+							}
+							catch (MessageLockLostException)
+							{
+								lockIssues++;
+								Logger.LogWarning(string.Format("The lock supplied for abandon for the skipped dead-letter message '{0}' is invalid.", brokeredMessage.MessageId));
+							}
+						}
+					}
+
+					client.Close();
+
+					if (loop++ % 5 == 0)
+					{
+						loop = 0;
+						Thread.Yield();
+					}
+					else
+						Thread.Sleep(500);
+				}
+				try
+				{
+					brokeredMessageRenewCancellationTokenSource.Dispose();
+				}
+				catch (ObjectDisposedException) { }
+			}, brokeredMessageRenewCancellationTokenSource.Token);
+
+			return brokeredMessageRenewCancellationTokenSource;
 		}
 	}
 }

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Threading;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
+using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Microsoft.ServiceBus.Messaging;
@@ -25,8 +26,8 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected ReaderWriterLockSlim QueueTrackerLock { get; private set; }
 
-		public AzureQueuedCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper)
+		public AzureQueuedCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, BusHelper busHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper)
 		{
 			QueueTracker = new ConcurrentDictionary<string, ConcurrentQueue<ICommand<TAuthenticationToken>>>();
 			QueueTrackerLock = new ReaderWriterLockSlim();

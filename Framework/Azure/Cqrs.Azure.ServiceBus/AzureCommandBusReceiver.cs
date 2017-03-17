@@ -26,24 +26,48 @@ namespace Cqrs.Azure.ServiceBus
 		, ICommandHandlerRegistrar
 		, ICommandReceiver<TAuthenticationToken>
 	{
+		protected virtual string FilterKeyConfigurationKey
+		{
+			get { return "Cqrs.Azure.CommandBus.TopicName.SubscriptionName.Filter"; }
+		}
+
 		// ReSharper disable StaticMemberInGenericType
 		protected static RouteManager Routes { get; private set; }
 
 		protected static long CurrentHandles { get; set; }
 		// ReSharper restore StaticMemberInGenericType
 
-		protected ITelemetryHelper TelemetryHelper { get; private set; }
-
 		static AzureCommandBusReceiver()
 		{
 			Routes = new RouteManager();
 		}
 
-		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, false)
+		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, BusHelper busHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, false)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.CommandBus.Receiver.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
+
+		#region Overrides of AzureServiceBus<TAuthenticationToken>
+
+		protected override void InstantiateReceiving(IDictionary<int, SubscriptionClient> serviceBusReceivers, string topicName, string topicSubscriptionName)
+		{
+			base.InstantiateReceiving(serviceBusReceivers, topicName, topicSubscriptionName);
+
+			string filter = ConfigurationManager.GetSetting(FilterKeyConfigurationKey);
+			if (!string.IsNullOrWhiteSpace(filter))
+			{
+				SubscriptionClient client = serviceBusReceivers[0];
+				RuleDescription ruleDescription = new RuleDescription
+					(
+					"CqrsConfiguredFilter",
+					new SqlFilter(filter)
+					);
+				client.AddRuleAsync(ruleDescription);
+			}
+		}
+
+		#endregion
 
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage

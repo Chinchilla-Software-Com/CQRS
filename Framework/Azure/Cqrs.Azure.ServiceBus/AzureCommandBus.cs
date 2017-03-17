@@ -6,10 +6,10 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
+using Cqrs.Bus;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -54,12 +54,9 @@ namespace Cqrs.Azure.ServiceBus
 
 		#endregion
 
-		protected IAzureBusHelper<TAuthenticationToken> AzureBusHelper { get; private set; }
-
-		protected AzureCommandBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, bool isAPublisher)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
+		protected AzureCommandBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, BusHelper busHelper, bool isAPublisher)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, isAPublisher)
 		{
-			AzureBusHelper = azureBusHelper;
 		}
 	}
 }

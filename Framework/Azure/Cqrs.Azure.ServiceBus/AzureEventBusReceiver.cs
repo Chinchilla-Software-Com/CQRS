@@ -36,21 +36,24 @@ namespace Cqrs.Azure.ServiceBus
 			get { return "Cqrs.Azure.EventBus.MaximumConcurrentReceiverProcessesCount"; }
 		}
 
+		protected virtual string FilterKeyConfigurationKey
+		{
+			get { return "Cqrs.Azure.EventBus.TopicName.SubscriptionName.Filter"; }
+		}
+
 		// ReSharper disable StaticMemberInGenericType
 		protected static RouteManager Routes { get; private set; }
 
 		protected static long CurrentHandles { get; set; }
 		// ReSharper restore StaticMemberInGenericType
 
-		protected ITelemetryHelper TelemetryHelper { get; private set; }
-
 		static AzureEventBusReceiver()
 		{
 			Routes = new RouteManager();
 		}
 
-		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, false)
+		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, BusHelper busHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, false)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventBus.Receiver.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
@@ -70,6 +73,27 @@ namespace Cqrs.Azure.ServiceBus
 			// Callback to handle received messages
 			RegisterReceiverMessageHandler(ReceiveEvent, options);
 		}
+
+		#region Overrides of AzureServiceBus<TAuthenticationToken>
+
+		protected override void InstantiateReceiving(IDictionary<int, SubscriptionClient> serviceBusReceivers, string topicName, string topicSubscriptionName)
+		{
+			base.InstantiateReceiving(serviceBusReceivers, topicName, topicSubscriptionName);
+
+			string filter = ConfigurationManager.GetSetting(FilterKeyConfigurationKey);
+			if (!string.IsNullOrWhiteSpace(filter))
+			{
+				SubscriptionClient client = serviceBusReceivers[0];
+				RuleDescription ruleDescription = new RuleDescription
+					(
+					"CqrsConfiguredFilter",
+					new SqlFilter(filter)
+					);
+				client.AddRuleAsync(ruleDescription);
+			}
+		}
+
+		#endregion
 
 		/// <summary>
 		/// Register an event or command handler that will listen and respond to events or commands.

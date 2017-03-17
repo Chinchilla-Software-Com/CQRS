@@ -13,6 +13,7 @@ using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
+using Cqrs.Bus;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
 using Microsoft.ServiceBus.Messaging;
@@ -21,8 +22,8 @@ namespace Cqrs.Azure.ServiceBus
 {
 	public class AzureCommandBusPublisher<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, ISendAndWaitCommandSender<TAuthenticationToken>
 	{
-		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, true)
+		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, BusHelper busHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
 		{
 		}
 
@@ -34,7 +35,25 @@ namespace Cqrs.Azure.ServiceBus
 			if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
 				return;
 
-			PrivateServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseCommand(command)));
+			try
+			{
+				var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
+				{
+					CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
+				};
+				brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+				PrivateServiceBusPublisher.Send(brokeredMessage);
+			}
+			catch (QuotaExceededException exception)
+			{
+				Logger.LogError("The size of the command being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+				throw;
+			}
+			catch (Exception exception)
+			{
+				Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+				throw;
+			}
 			Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
 		}
 
@@ -106,7 +125,25 @@ namespace Cqrs.Azure.ServiceBus
 			TEvent result = (TEvent)(object)null;
 			EventWaits.Add(command.CorrelationId, new List<IEvent<TAuthenticationToken>>());
 
-			PrivateServiceBusPublisher.Send(new BrokeredMessage(MessageSerialiser.SerialiseCommand(command)));
+			try
+			{
+				var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
+				{
+					CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
+				};
+				brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+				PrivateServiceBusPublisher.Send(brokeredMessage);
+			}
+			catch (QuotaExceededException exception)
+			{
+				Logger.LogError("The size of the command being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+				throw;
+			}
+			catch (Exception exception)
+			{
+				Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+				throw;
+			}
 			Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
 
 			SpinWait.SpinUntil(() =>
