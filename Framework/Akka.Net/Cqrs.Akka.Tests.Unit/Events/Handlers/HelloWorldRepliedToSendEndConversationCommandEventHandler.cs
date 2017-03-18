@@ -37,13 +37,13 @@ namespace Cqrs.Akka.Tests.Unit.Events.Handlers
 		public partial class Actor
 			: AkkaEventHandler<Guid>
 		{
-			protected ICommandSender<Guid> CommandBus { get; private set; }
+			protected ICommandPublisher<Guid> CommandBus { get; private set; }
 
 			#region Implementation of IMessageHandler<in HelloWorldRepliedTo>
 
 			public void Handle(HelloWorldRepliedTo message)
 			{
-				CommandBus.Send(new EndConversationCommand { Id = message.Id });
+				CommandBus.Publish(new EndConversationCommand { Id = message.Id });
 				AkkaUnitTests.Step3Reached[message.CorrelationId] = true;
 			}
 

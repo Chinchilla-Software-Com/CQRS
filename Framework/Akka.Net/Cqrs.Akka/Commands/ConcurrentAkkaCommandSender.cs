@@ -31,12 +31,33 @@ namespace Cqrs.Akka.Commands
 
 		#region Implementation of ICommandSender<TAuthenticationToken>
 
-		public void Send<TCommand>(TCommand command)
+		public void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			// This will trigger the Akka cycle back publishing... It looks weird, but trust it
 			// This is for when a command originated outside Akka and now needs to be pushed into Akka
 			CommandReceiver.ReceiveCommand(command);
+		}
+
+		public void Send<TCommand>(TCommand command)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			Publish(command);
+		}
+
+		public void Publish<TCommand>(IEnumerable<TCommand> commands)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			// This will trigger the Akka cycle back publishing... It looks weird, but trust it
+			// This is for when a command originated outside Akka and now needs to be pushed into Akka
+			foreach (TCommand command in commands)
+				CommandReceiver.ReceiveCommand(command);
+		}
+
+		public void Send<TCommand>(IEnumerable<TCommand> commands)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			Publish(commands);
 		}
 
 		/// <summary>

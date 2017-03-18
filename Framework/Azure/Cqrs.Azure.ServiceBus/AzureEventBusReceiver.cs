@@ -80,17 +80,17 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			base.InstantiateReceiving(serviceBusReceivers, topicName, topicSubscriptionName);
 
+			SubscriptionClient client = serviceBusReceivers[0];
+			try
+			{
+				client.RemoveRule("CqrsConfiguredFilter");
+			}
+			catch (MessagingEntityNotFoundException)
+			{
+			}
 			string filter = ConfigurationManager.GetSetting(FilterKeyConfigurationKey);
 			if (!string.IsNullOrWhiteSpace(filter))
 			{
-				SubscriptionClient client = serviceBusReceivers[0];
-				try
-				{
-					client.RemoveRule("CqrsConfiguredFilter");
-				}
-				catch (MessagingEntityNotFoundException)
-				{
-				}
 				RuleDescription ruleDescription = new RuleDescription
 				(
 					"CqrsConfiguredFilter",

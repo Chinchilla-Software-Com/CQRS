@@ -24,13 +24,21 @@ namespace Cqrs.EventStore.Bus
 
 		#region Implementation of IEventPublisher<TAuthenticationToken>
 
-		public void Publish<TEvent>(TEvent @event) where TEvent : IEvent<TAuthenticationToken>
+		public void Publish<TEvent>(TEvent @event)
+			where TEvent : IEvent<TAuthenticationToken>
 		{
 			List<Action<IMessage>> handlers;
 			if (!Routes.TryGetValue(@event.GetType(), out handlers))
 				return;
 			foreach (Action<IMessage> handler in handlers)
 				handler(@event);
+		}
+
+		public void Publish<TEvent>(IEnumerable<TEvent> events)
+			where TEvent : IEvent<TAuthenticationToken>
+		{
+			foreach (TEvent @event in events)
+				Publish(@event);
 		}
 
 		#endregion

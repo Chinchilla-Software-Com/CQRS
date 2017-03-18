@@ -13,7 +13,7 @@ namespace Cqrs.Akka.Tests.Unit.Events.Handlers
 			CommandBus = commandBus;
 		}
 
-		protected ICommandSender<Guid> CommandBus { get; private set; }
+		protected ICommandPublisher<Guid> CommandBus { get; private set; }
 
 		#region Implementation of IMessageHandler<in ConversationEnded>
 

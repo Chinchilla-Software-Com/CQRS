@@ -52,7 +52,7 @@ namespace <#= classNamespace #>.Services
 	<#= GetDataContractAttribute(this.Element) #>
 	public partial class <#= className #>Service : <#= baseClass #>
 	{
-		protected ICommandSender<<#= authenticationTokenType #>> CommandSender { get; private set; }
+		protected ICommandPublisher<<#= authenticationTokenType #>> CommandPublisher { get; private set; }
 
 		protected IUnitOfWorkService UnitOfWorkService { get; private set; }
 <# if (hasRepository) { #>
@@ -62,10 +62,10 @@ namespace <#= classNamespace #>.Services
 
 		protected IQueryFactory QueryFactory { get; private set; }
 
-		public <#= className #>Service(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IEventStore<<#= authenticationTokenType #>> eventStore, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper<# if (hasRepository) { #>, I<#= className #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository<# } #>, ILogger logger)
+		public <#= className #>Service(ICommandPublisher<<#= authenticationTokenType #>> commandPublisher, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IEventStore<<#= authenticationTokenType #>> eventStore, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper<# if (hasRepository) { #>, I<#= className #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository<# } #>, ILogger logger)
 			: base(eventStore, logger, correlationIdHelper, authenticationTokenHelper)
 		{
-			CommandSender = commandSender;
+			CommandPublisher = commandPublisher;
 			UnitOfWorkService = unitOfWorkService;
 			QueryFactory = queryFactory;
 <# if (hasRepository) { #>
@@ -115,7 +115,7 @@ namespace <#= classNamespace #>.Services
 		}
 #>);
 			OnCreate<#= className #>(serviceRequest, command);
-			CommandSender.Send(command);
+			CommandPublisher.Publish(command);
 			OnCreated<#= className #>(serviceRequest, command);
 
 			UnitOfWorkService.Commit(this);
@@ -177,7 +177,7 @@ namespace <#= classNamespace #>.Services
 			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
 				return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = serviceResponseStateType.Value });
 
-			CommandSender.Send(command);
+			CommandPublisher.Publish(command);
 			OnUpdated<#= className #>(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
 			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
 				return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = serviceResponseStateType.Value });
@@ -225,7 +225,7 @@ namespace <#= classNamespace #>.Services
 			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
 				return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = serviceResponseStateType.Value });
 
-			CommandSender.Send(command);
+			CommandPublisher.Publish(command);
 			OnDeleted<#= className #>(serviceRequest, ref command, locatedItem, ref serviceResponseStateType);
 			if (serviceResponseStateType != null && serviceResponseStateType != ServiceResponseStateType.Succeeded)
 				return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = serviceResponseStateType.Value });
@@ -285,7 +285,7 @@ namespace <#= classNamespace #>.Services
 				return CompleteResponse(new ServiceResponse { State = serviceResponseStateType.Value });
 
 			Logger.LogDebug("Pre", "<#= className #>/<#= relationshipName #>/PublishCommand");
-			CommandSender.Send(command);
+			CommandPublisher.Publish(command);
 			Logger.LogDebug("Post", "<#= className #>/<#= relationshipName #>/PublishCommand");
 			Logger.LogDebug("Pre", "<#= className #>/<#= relationshipName #>/On<#= relationshipName #>Handled");
 			On<#= relationshipName #>Handled(serviceRequest, ref command, ref serviceResponseStateType);

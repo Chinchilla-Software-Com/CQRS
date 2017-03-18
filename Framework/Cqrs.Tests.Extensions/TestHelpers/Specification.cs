@@ -81,9 +81,17 @@ namespace Cqrs.Tests.Extensions.TestHelpers
 			PublishedEvents = new List<IEvent<ISingleSignOnToken>>();
 		}
 
-		public void Publish<T>(T @event) where T : IEvent<ISingleSignOnToken>
+		public void Publish<T>(T @event)
+			where T : IEvent<ISingleSignOnToken>
 		{
 			PublishedEvents.Add(@event);
+		}
+
+		public void Publish<TEvent>(IEnumerable<TEvent> events)
+			where TEvent : IEvent<ISingleSignOnToken>
+		{
+			foreach (TEvent @event in events)
+				PublishedEvents.Add(@event);
 		}
 
 		public IList<IEvent<ISingleSignOnToken>> PublishedEvents { get; set; }

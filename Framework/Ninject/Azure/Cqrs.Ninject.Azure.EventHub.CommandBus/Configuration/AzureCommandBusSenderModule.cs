@@ -36,6 +36,10 @@ namespace Cqrs.Azure.EventHub.CommandBus.Configuration
 				.To<AzureCommandBusPublisher<TAuthenticationToken>>()
 				.InSingletonScope();
 
+			Bind<ICommandPublisher<TAuthenticationToken>>()
+				.To<AzureCommandBusPublisher<TAuthenticationToken>>()
+				.InSingletonScope();
+
 			Bind<ISendAndWaitCommandSender<TAuthenticationToken>>()
 				.To<AzureCommandBusPublisher<TAuthenticationToken>>()
 				.InSingletonScope();

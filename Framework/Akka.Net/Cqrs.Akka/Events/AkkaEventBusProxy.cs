@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System.Collections.Generic;
 using Akka.Actor;
 using cdmdotnet.Logging;
 using Cqrs.Akka.Domain;
@@ -36,7 +37,7 @@ namespace Cqrs.Akka.Events
 
 		#region Implementation of IEventPublisher<TAuthenticationToken>
 
-		public void Publish<TEvent>(TEvent @event)
+		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
 			// We only set these two properties as they are not going to be available across the thread/task
@@ -45,6 +46,13 @@ namespace Cqrs.Akka.Events
 			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
 			bool result = EventHandlerResolver.Ask<bool>(@event).Result;
+		}
+
+		public virtual void Publish<TEvent>(IEnumerable<TEvent> events)
+			where TEvent : IEvent<TAuthenticationToken>
+		{
+			foreach (TEvent @event in events)
+				Publish(@event);
 		}
 
 		#endregion

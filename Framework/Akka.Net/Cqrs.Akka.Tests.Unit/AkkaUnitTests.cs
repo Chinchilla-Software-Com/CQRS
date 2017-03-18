@@ -64,6 +64,7 @@ namespace Cqrs.Akka.Tests.Unit
 			kernel.Bind<ICommandHandlerRegistrar>().To<AkkaCommandBus<Guid>>().InSingletonScope();
 			kernel.Bind<IEventHandlerRegistrar>().To<AkkaEventBus<Guid>>().InSingletonScope();
 			kernel.Bind<ICommandSender<Guid>>().To<InProcessBus<Guid>>().InSingletonScope();
+			kernel.Bind<ICommandPublisher<Guid>>().To<InProcessBus<Guid>>().InSingletonScope();
 			kernel.Bind<ICommandReceiver<Guid>>().To<InProcessBus<Guid>>().InSingletonScope();
 			kernel.Bind<IConfigurationManager>().ToConstant(configurationManager).InSingletonScope();
 			kernel.Bind<IBusHelper>().ToConstant(busHelper).InSingletonScope();

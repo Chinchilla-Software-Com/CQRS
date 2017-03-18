@@ -71,8 +71,26 @@ namespace Cqrs.Akka.Events
 			EventPublisher.Publish(@event);
 		}
 
-		#endregion
+		public virtual void Publish<TEvent>(IEnumerable<TEvent> events)
+			where TEvent : IEvent<TAuthenticationToken>
+		{
+			events = events.ToList();
+			foreach (TEvent @event in events)
+			{
+				IEnumerable<RouteHandlerDelegate> handlers;
+				if (!PrepareAndValidateEvent(@event, "Akka", out handlers))
+					return;
 
+				// This could be null if Akka won't handle the command and something else will.
+				foreach (RouteHandlerDelegate eventHandler in handlers)
+					eventHandler.Delegate(@event);
+			}
+
+			// Let everything else know about the event
+			EventPublisher.Publish(events);
+		}
+
+		#endregion
 
 		public virtual void PrepareEvent<TEvent>(TEvent @event, string framework)
 			where TEvent : IEvent<TAuthenticationToken>

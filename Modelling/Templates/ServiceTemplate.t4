@@ -51,7 +51,7 @@ namespace <#= classNamespace #>
 	if (hasNoAggregateRootService)
 	{
 #>
-		protected ICommandSender<<#= authenticationTokenType #>> CommandSender { get; private set; }
+		protected ICommandPublisher<<#= authenticationTokenType #>> CommandPublisher { get; private set; }
 
 		protected IUnitOfWorkService UnitOfWorkService { get; private set; }
 
@@ -63,10 +63,10 @@ namespace <#= classNamespace #>
 
 		protected ILogger Logger { get; private set; }
 
-		public <#= className #>(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IEventStore<<#= authenticationTokenType #>> eventStore)
+		public <#= className #>(ICommandPublisher<<#= authenticationTokenType #>> commandPublisher, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IEventStore<<#= authenticationTokenType #>> eventStore)
 			: base(eventStore, logger, correlationIdHelper, authenticationTokenHelper)
 		{
-			CommandSender = commandSender;
+			CommandPublisher = commandPublisher;
 			UnitOfWorkService = unitOfWorkService;
 			QueryFactory = queryFactory;
 			AuthenticationTokenHelper = authenticationTokenHelper;

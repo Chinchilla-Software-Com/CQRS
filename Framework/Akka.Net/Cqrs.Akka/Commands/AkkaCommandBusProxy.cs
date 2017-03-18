@@ -6,7 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System;
+using System.Collections.Generic;
 using Akka.Actor;
 using cdmdotnet.Logging;
 using Cqrs.Akka.Domain;
@@ -17,7 +17,7 @@ using Cqrs.Configuration;
 namespace Cqrs.Akka.Commands
 {
 	/// <summary>
-	/// A <see cref="ICommandSender{TAuthenticationToken}"/> that proxies <see cref="ICommand{TAuthenticationToken}"/> to the <see cref="IActorRef"/> which acts as a single point of all handler resolutions.
+	/// A <see cref="ICommandPublisher{TAuthenticationToken}"/> that proxies <see cref="ICommand{TAuthenticationToken}"/> to the <see cref="IActorRef"/> which acts as a single point of all handler resolutions.
 	/// </summary>
 	public class AkkaCommandBusProxy<TAuthenticationToken>
 		: IAkkaCommandSenderProxy<TAuthenticationToken>
@@ -37,7 +37,7 @@ namespace Cqrs.Akka.Commands
 
 		#region Implementation of ICommandSender<TAuthenticationToken>
 
-		public void Send<TCommand>(TCommand command)
+		public virtual void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			// We only set these two properties as they are not going to be available across the thread/task
@@ -46,6 +46,34 @@ namespace Cqrs.Akka.Commands
 			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
 			bool result = CommandHandlerResolver.Ask<bool>(command).Result;
+		}
+
+		public virtual void Send<TCommand>(TCommand command)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			Publish(command);
+		}
+
+		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			foreach (TCommand rawCommand in commands)
+			{
+				// Lambda scoping thing
+				TCommand command = rawCommand;
+				// We only set these two properties as they are not going to be available across the thread/task
+				if (command.AuthenticationToken == null || command.AuthenticationToken.Equals(default(TAuthenticationToken)))
+					command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+				command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+
+				bool result = CommandHandlerResolver.Ask<bool>(command).Result;
+			}
+		}
+
+		public virtual void Send<TCommand>(IEnumerable<TCommand> commands)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			Publish(commands);
 		}
 
 		#endregion

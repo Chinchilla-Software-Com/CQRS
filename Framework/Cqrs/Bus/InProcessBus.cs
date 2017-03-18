@@ -123,6 +123,11 @@ namespace Cqrs.Bus
 
 		#region Implementation of ICommandSender<TAuthenticationToken>
 
+		void ICommandPublisher<TAuthenticationToken>.Publish<TCommand>(TCommand command)
+		{
+			Send(command);
+		}
+
 		public virtual void Send<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
@@ -132,6 +137,18 @@ namespace Cqrs.Bus
 
 			Action<IMessage> handler = commandHandler.Delegate;
 			handler(command);
+		}
+
+		void ICommandPublisher<TAuthenticationToken>.Publish<TCommand>(IEnumerable<TCommand> command)
+		{
+			Send(command);
+		}
+
+		public virtual void Send<TCommand>(IEnumerable<TCommand> commands)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			foreach (TCommand command in commands)
+				Send(command);
 		}
 
 		/// <summary>
@@ -151,7 +168,7 @@ namespace Cqrs.Bus
 		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			return SendAndWait(command, events => (TEvent)events.SingleOrDefault(@event => @events is TEvent), millisecondsTimeout, eventReceiver);
@@ -163,7 +180,7 @@ namespace Cqrs.Bus
 		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			long num = (long)timeout.TotalMilliseconds;
@@ -178,7 +195,7 @@ namespace Cqrs.Bus
 		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			return SendAndWait(command, condition, -1, eventReceiver);
@@ -191,7 +208,7 @@ namespace Cqrs.Bus
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			if (eventReceiver != null)
@@ -225,7 +242,7 @@ namespace Cqrs.Bus
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			long num = (long)timeout.TotalMilliseconds;
@@ -283,6 +300,13 @@ namespace Cqrs.Bus
 			}
 		}
 
+		public virtual void Publish<TEvent>(IEnumerable<TEvent> events)
+			where TEvent : IEvent<TAuthenticationToken>
+		{
+			foreach (TEvent @event in events)
+				Publish(@event);
+		}
+
 		#endregion
 
 		#region Implementation of IHandlerRegistrar
@@ -299,7 +323,7 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
-		public void RegisterHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
+		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
 			RegisterHandler(handler, null, holdMessageLock);
@@ -309,12 +333,12 @@ namespace Cqrs.Bus
 
 		#region Implementation of ICommandReceiver
 
-		public void ReceiveCommand(ICommand<TAuthenticationToken> command)
+		public virtual void ReceiveCommand(ICommand<TAuthenticationToken> command)
 		{
 			Send(command);
 		}
 
-		public void ReceiveEvent(IEvent<TAuthenticationToken> @event)
+		public virtual void ReceiveEvent(IEvent<TAuthenticationToken> @event)
 		{
 			Publish(@event);
 		}

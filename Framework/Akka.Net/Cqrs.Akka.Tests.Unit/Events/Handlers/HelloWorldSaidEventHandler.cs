@@ -14,13 +14,13 @@ namespace Cqrs.Akka.Tests.Unit.Events.Handlers
 			CommandBus = commandBus;
 		}
 
-		protected ICommandSender<Guid> CommandBus { get; private set; }
+		protected ICommandPublisher<Guid> CommandBus { get; private set; }
 
 		#region Implementation of IMessageHandler<in HelloWorldSaid>
 
 		public void Handle(HelloWorldSaid message)
 		{
-			CommandBus.Send(new ReplyToHelloWorldCommand {Id = message.Id});
+			CommandBus.Publish(new ReplyToHelloWorldCommand {Id = message.Id});
 			AkkaUnitTests.Step1Reached[message.CorrelationId] = true;
 		}
 

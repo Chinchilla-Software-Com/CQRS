@@ -10,7 +10,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Akka.Actor;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
@@ -23,7 +22,7 @@ using Cqrs.Messages;
 namespace Cqrs.Akka.Commands
 {
 	/// <summary>
-	/// A <see cref="ICommandSender{TAuthenticationToken}"/> that resolves handlers , executes the handler and then publishes the <see cref="ICommand{TAuthenticationToken}"/> on the public command bus.
+	/// A <see cref="ICommandPublisher{TAuthenticationToken}"/> that resolves handlers , executes the handler and then publishes the <see cref="ICommand{TAuthenticationToken}"/> on the public command bus.
 	/// </summary>
 	public class AkkaCommandBus<TAuthenticationToken>
 		: IAkkaCommandSender<TAuthenticationToken>
@@ -42,7 +41,7 @@ namespace Cqrs.Akka.Commands
 			Routes = new RouteManager();
 		}
 
-		public AkkaCommandBus(IBusHelper busHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger, ICommandSender<TAuthenticationToken> commandSender, ICommandReceiver<TAuthenticationToken> commandReceiver)
+		public AkkaCommandBus(IBusHelper busHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger, ICommandPublisher<TAuthenticationToken> commandSender, ICommandReceiver<TAuthenticationToken> commandReceiver)
 		{
 			Logger = logger;
 			BusHelper = busHelper;
@@ -58,7 +57,7 @@ namespace Cqrs.Akka.Commands
 
 		protected ILogger Logger { get; private set; }
 
-		protected ICommandSender<TAuthenticationToken> CommandSender { get; private set; }
+		protected ICommandPublisher<TAuthenticationToken> CommandSender { get; private set; }
 
 		protected ICommandReceiver<TAuthenticationToken> CommandReceiver { get; private set; }
 
@@ -124,7 +123,7 @@ namespace Cqrs.Akka.Commands
 
 		#region Implementation of ICommandSender<TAuthenticationToken>
 
-		public void Send<TCommand>(TCommand command)
+		public virtual void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			RouteHandlerDelegate commandHandler;
@@ -136,7 +135,37 @@ namespace Cqrs.Akka.Commands
 				commandHandler.Delegate(command);
 
 			// Let everything else know about the command (usually double handling a command is bad... but sometimes it might be useful... like pushing from AWS to Azure so both systems handle it... although an event really is the proper pattern to use here.
-			CommandSender.Send(command);
+			CommandSender.Publish(command);
+		}
+
+		public virtual void Send<TCommand>(TCommand command)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			Publish(command);
+		}
+
+		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			IList<TCommand> sourceCommands = commands.ToList();
+			foreach (TCommand command in sourceCommands)
+			{
+				RouteHandlerDelegate commandHandler;
+				if (!PrepareAndValidateCommand(command, out commandHandler))
+					return;
+
+				// This could be null if Akka won't handle the command and something else will.
+				if (commandHandler != null)
+					commandHandler.Delegate(command);
+			}
+			// Let everything else know about the command (usually double handling a command is bad... but sometimes it might be useful... like pushing from AWS to Azure so both systems handle it... although an event really is the proper pattern to use here.
+			CommandSender.Publish((IEnumerable<TCommand>)sourceCommands);
+		}
+
+		public virtual void Send<TCommand>(IEnumerable<TCommand> commands)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			Publish(commands);
 		}
 
 		/// <summary>
@@ -156,7 +185,7 @@ namespace Cqrs.Akka.Commands
 		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			return SendAndWait(command, events => (TEvent)events.SingleOrDefault(@event => @events is TEvent), millisecondsTimeout, eventReceiver);
@@ -168,7 +197,7 @@ namespace Cqrs.Akka.Commands
 		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			long num = (long)timeout.TotalMilliseconds;
@@ -183,7 +212,7 @@ namespace Cqrs.Akka.Commands
 		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			return SendAndWait(command, condition, -1, eventReceiver);
@@ -196,7 +225,7 @@ namespace Cqrs.Akka.Commands
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			if (eventReceiver != null)
@@ -226,7 +255,7 @@ namespace Cqrs.Akka.Commands
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			long num = (long)timeout.TotalMilliseconds;

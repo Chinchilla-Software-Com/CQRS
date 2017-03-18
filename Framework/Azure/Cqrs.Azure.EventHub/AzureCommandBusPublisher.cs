@@ -28,14 +28,52 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Implementation of ICommandSender<TAuthenticationToken>
 
-		public void Send<TCommand>(TCommand command)
+		public virtual void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-EventHub"))
 				return;
 
-			EventHubPublisher.Send(new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command))));
+			var brokeredMessage = new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command)));
+			brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+
+			EventHubPublisher.Send(brokeredMessage);
 			Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+		}
+
+		public virtual void Send<TCommand>(TCommand command)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			Publish(command);
+		}
+
+		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			IList<TCommand> sourceCommands = commands.ToList();
+			IList<string> sourceCommandMessages = new List<string>();
+			IList<EventData> brokeredMessages = new List<EventData>(sourceCommands.Count);
+			foreach (TCommand command in sourceCommands)
+			{
+				if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-EventHub"))
+					continue;
+
+				var brokeredMessage = new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command)));
+				brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+
+				brokeredMessages.Add(brokeredMessage);
+				sourceCommandMessages.Add(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+			}
+
+			EventHubPublisher.SendBatch(brokeredMessages);
+			foreach (string message in sourceCommandMessages)
+				Logger.LogInfo(message);
+		}
+
+		public virtual void Send<TCommand>(IEnumerable<TCommand> commands)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			Publish(commands);
 		}
 
 		/// <summary>
@@ -55,7 +93,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			return SendAndWait(command, events => (TEvent)events.SingleOrDefault(@event => @events is TEvent), millisecondsTimeout, eventReceiver);
@@ -67,7 +105,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			long num = (long)timeout.TotalMilliseconds;
@@ -82,7 +120,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			return SendAndWait(command, condition, -1, eventReceiver);
@@ -95,7 +133,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout,
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout,
 			IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
 		{
 			if (eventReceiver != null)
@@ -128,7 +166,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			long num = (long)timeout.TotalMilliseconds;

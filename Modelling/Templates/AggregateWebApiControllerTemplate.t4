@@ -68,7 +68,7 @@ namespace <#= classNamespace #>.Controllers
 		: CqrsEventApiController<<#= authenticationTokenType #>>
 		, I<#= className #>Service
 	{
-		protected ICommandSender<<#= authenticationTokenType #>> CommandSender { get; private set; }
+		protected ICommandPublisher<<#= authenticationTokenType #>> CommandPublisher { get; private set; }
 
 		protected IUnitOfWorkService UnitOfWorkService { get; private set;}
 <# if (hasRepository) { #>
@@ -81,10 +81,10 @@ namespace <#= classNamespace #>.Controllers
 		/// <summary>
 		/// Instantiate a new instance of the <see cref="<#= className #>Controller"/> class
 		/// </summary>
-		public <#= className #>Controller(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, IEventStore<<#= authenticationTokenType #>> eventStore, ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory<# if (hasRepository) { #>, I<#= className #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository<# } #>)
+		public <#= className #>Controller(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, IEventStore<<#= authenticationTokenType #>> eventStore, ICommandPublisher<<#= authenticationTokenType #>> commandPublisher, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory<# if (hasRepository) { #>, I<#= className #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository<# } #>)
 			: base(logger, correlationIdHelper, authenticationTokenHelper, eventStore)
 		{
-			CommandSender = commandSender;
+			CommandPublisher = commandPublisher;
 			UnitOfWorkService = unitOfWorkService;
 			QueryFactory = queryFactory;
 <# if (hasRepository) { #>
@@ -188,7 +188,7 @@ namespace <#= classNamespace #>.Controllers
 				return CompleteResponse(new <#= responseDataTypeConstructor #> { State = serviceResponseStateType.Value });
 
 			Logger.LogDebug("Pre", "<#= className #>/<#= relationshipName #>/PublishCommand");
-			CommandSender.Send(command);
+			CommandPublisher.Publish(command);
 			Logger.LogDebug("Post", "<#= className #>/<#= relationshipName #>/PublishCommand");
 			Logger.LogDebug("Pre", "<#= className #>/<#= relationshipName #>/On<#= relationshipName #>Handled");
 			On<#= relationshipName #>Handled(serviceRequest, ref command, ref serviceResponseStateType);
