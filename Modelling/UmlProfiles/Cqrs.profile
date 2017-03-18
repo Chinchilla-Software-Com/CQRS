@@ -528,6 +528,8 @@
         <enumerationLiteral name="MySqlServer" displayName="MySql Server" />
         <enumerationLiteral name="InProcessOnly" displayName="In Process Only" />
         <enumerationLiteral name="Blob" displayName="Blob Storage" />
+        <enumerationLiteral name="Table7" displayName="Table Storage 7.2" />
+        <enumerationLiteral name="Table8" displayName="Table Storage 8.2" />
       </enumerationLiterals>
     </enumerationType>
 
@@ -563,6 +565,8 @@
         <enumerationLiteral name="InProcessOnly" displayName="In Process Only" />
         <enumerationLiteral name="InProcessCache" displayName="An In Process Expiring Cache" />
         <enumerationLiteral name="Blob" displayName="Blob Storage" />
+        <enumerationLiteral name="Table7" displayName="Table Storage 7.2" />
+        <enumerationLiteral name="Table8" displayName="Table Storage 8.2" />
       </enumerationLiterals>
     </enumerationType>
 
