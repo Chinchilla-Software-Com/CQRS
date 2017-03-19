@@ -1,15 +1,28 @@
-﻿using Cqrs.Azure.ServiceBus;
-using Cqrs.Bus;
+﻿using System.Linq;
+using Cqrs.Azure.ServiceBus;
 
 namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 {
 	public class AzureQueuedCommandBusReceiverModule<TAuthenticationToken> : AzureCommandBusReceiverModule<TAuthenticationToken>
 	{
-		public override void RegisterCommandHandlerRegistrar()
+		/// <summary>
+		/// Loads the module into the kernel.
+		/// </summary>
+		public override void Load()
 		{
-			Bind<ICommandHandlerRegistrar>()
-				.To<AzureQueuedCommandBusReceiver<TAuthenticationToken>>()
-				.InSingletonScope();
+			bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IAzureBusHelper<TAuthenticationToken>)).Any();
+			if (!isMessageSerialiserBound)
+			{
+				Bind<IAzureBusHelper<TAuthenticationToken>>()
+					.To<AzureBusHelper<TAuthenticationToken>>()
+					.InSingletonScope();
+			}
+
+			var bus = GetOrCreateBus<AzureQueuedCommandBusReceiver<TAuthenticationToken>>();
+
+			RegisterCommandReceiver(bus);
+			RegisterCommandHandlerRegistrar(bus);
+			RegisterCommandMessageSerialiser();
 		}
 	}
 }
