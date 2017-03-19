@@ -1,5 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using cdmdotnet.Logging;
+using Cqrs.Commands;
 using Cqrs.Configuration;
+using Cqrs.Events;
+using Cqrs.Messages;
 
 namespace Cqrs.Bus
 {
@@ -40,6 +47,83 @@ namespace Cqrs.Bus
 				isRequired = isblackListRequired;
 
 			return isRequired;
+		}
+
+		/// <summary>
+		/// Build a message handler that implements telemetry capturing as well as off thread handling.
+		/// </summary>
+		public virtual Action<TMessage> BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper telemetryHelper, Action<TMessage> handler, bool holdMessageLock, string source)
+			where TMessage : IMessage
+		{
+			Action<TMessage> registerableMessageHandler = message =>
+			{
+				string telemetryName = message.GetType().FullName;
+				var telemeteredMessage = message as ITelemeteredMessage;
+				string messagePrefix = null;
+				var @event = message as IEvent<TAuthenticationToken>;
+				if (@event != null)
+				{
+					messagePrefix = "Event/";
+					telemetryName = string.Format("{0}/{1}", telemetryName, @event.Id);
+				}
+				else
+				{
+					var command = message as ICommand<TAuthenticationToken>;
+					if (command != null)
+					{
+						messagePrefix = "Command/";
+						telemetryName = string.Format("{0}/{1}", telemetryName, command.Id);
+					}
+				}
+
+				if (telemeteredMessage != null)
+					telemetryName = telemeteredMessage.TelemetryName;
+
+				Stopwatch mainStopWatch = Stopwatch.StartNew();
+				string responseCode = "200";
+				bool wasSuccessfull = true;
+
+				try
+				{
+					handler(message);
+				}
+				catch (Exception exception)
+				{
+					telemetryHelper.TrackException(exception);
+					wasSuccessfull = false;
+					responseCode = "500";
+					throw;
+				}
+				finally
+				{
+					mainStopWatch.Stop();
+					telemetryHelper.TrackRequest
+					(
+						string.Format("Cqrs/Handle/{0}{1}", messagePrefix, telemetryName),
+						DateTimeOffset.UtcNow,
+						mainStopWatch.Elapsed,
+						responseCode,
+						wasSuccessfull,
+						new Dictionary<string, string> { { "Type", source } }
+					);
+
+					telemetryHelper.Flush();
+				}
+			};
+
+			Action<TMessage> registerableHandler = registerableMessageHandler;
+			if (!holdMessageLock)
+			{
+				registerableHandler = message =>
+				{
+					Task.Factory.StartNewSafely(() =>
+					{
+						registerableMessageHandler(message);
+					});
+				};
+			}
+
+			return registerableHandler;
 		}
 	}
 }

@@ -44,6 +44,8 @@ namespace Cqrs.Bus
 
 		protected IDictionary<Guid, IList<IEvent<TAuthenticationToken>>> EventWaits { get; private set; }
 
+		protected ITelemetryHelper TelemetryHelper { get; set; }
+
 		static InProcessBus()
 		{
 			Routes = new RouteManager();
@@ -58,6 +60,7 @@ namespace Cqrs.Bus
 			ConfigurationManager = configurationManager;
 			BusHelper = busHelper;
 			EventWaits = new ConcurrentDictionary<Guid, IList<IEvent<TAuthenticationToken>>>();
+			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.InProcessBus.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
 
 		protected virtual void PrepareCommand<TCommand>(TCommand command)
@@ -317,7 +320,12 @@ namespace Cqrs.Bus
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			Routes.RegisterHandler(handler, targetedType);
+			Action<TMessage> registerableHandler = BusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(TelemetryHelper, handler, holdMessageLock, "In-Process/Bus");
+
+			Routes.RegisterHandler(registerableHandler, targetedType);
+
+			TelemetryHelper.TrackEvent(string.Format("Cqrs/RegisterHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "In-Process/Bus" } });
+			TelemetryHelper.Flush();
 		}
 
 		/// <summary>

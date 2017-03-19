@@ -8,10 +8,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
@@ -312,62 +310,12 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void RegisterHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			Action<TMessage> registerableEventHandler = message =>
-			{
-				string telemetryName = message.GetType().Name;
-				var telemeteredMessage = message as ITelemeteredMessage;
-				if (telemeteredMessage != null)
-					telemetryName = telemeteredMessage.TelemetryName;
-
-				if (message is IEvent<TAuthenticationToken>)
-					telemetryName = string.Format("Event/{0}", telemetryName);
-				else if (message is ICommand<TAuthenticationToken>)
-					telemetryName = string.Format("Command/{0}", telemetryName);
-
-				Stopwatch mainStopWatch = Stopwatch.StartNew();
-				string responseCode = "200";
-				bool wasSuccessfull = true;
-
-				try
-				{
-					handler(message);
-				}
-				catch (Exception exception)
-				{
-					telemetryHelper.TrackException(exception);
-					wasSuccessfull = false;
-					responseCode = "500";
-					throw;
-				}
-				finally
-				{
-					mainStopWatch.Stop();
-					telemetryHelper.TrackRequest
-					(
-						string.Format("Cqrs/Handle/{0}", telemetryName),
-						DateTimeOffset.UtcNow,
-						mainStopWatch.Elapsed,
-						responseCode,
-						wasSuccessfull
-					);
-				}
-			};
-
-			Action<TMessage> registerableHandler = registerableEventHandler;
-			if (!holdMessageLock)
-			{
-				registerableHandler = message =>
-				{
-					Task.Factory.StartNewSafely(() =>
-					{
-						registerableEventHandler(message);
-					});
-				};
-			}
+			Action<TMessage> registerableHandler = BusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(telemetryHelper, handler, holdMessageLock, "Azure/Bus");
 
 			routeManger.RegisterHandler(registerableHandler, targetedType);
 
-			telemetryHelper.TrackEvent(string.Format("Cqrs/RegisterHandler/{0}", typeof(TMessage).Name));
+			telemetryHelper.TrackEvent(string.Format("Cqrs/RegisterHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "Azure/Bus" } });
+			telemetryHelper.Flush();
 		}
 	}
 }

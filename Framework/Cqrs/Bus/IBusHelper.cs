@@ -7,7 +7,9 @@
 #endregion
 
 using System;
+using cdmdotnet.Logging;
 using Cqrs.Configuration;
+using Cqrs.Messages;
 
 namespace Cqrs.Bus
 {
@@ -28,5 +30,11 @@ namespace Cqrs.Bus
 		/// </summary>
 		/// <param name="configurationKey">The configuration key to check.</param>
 		bool IsEventRequired(string configurationKey);
+
+		/// <summary>
+		/// Build a message handler that implements telemetry capturing as well as off thread handling.
+		/// </summary>
+		Action<TMessage> BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper telemetryHelper, Action<TMessage> handler, bool holdMessageLock, string source)
+			where TMessage : IMessage;
 	}
 }
