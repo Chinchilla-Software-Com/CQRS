@@ -17,6 +17,14 @@ namespace Cqrs.Azure.EventHub.EventBus.Configuration
 		/// </summary>
 		public override void Load()
 		{
+			bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IAzureBusHelper<TAuthenticationToken>)).Any();
+			if (!isMessageSerialiserBound)
+			{
+				Bind<IAzureBusHelper<TAuthenticationToken>>()
+					.To<AzureBusHelper<TAuthenticationToken>>()
+					.InSingletonScope();
+			}
+
 			RegisterEventHandlerRegistrar();
 			RegisterEventMessageSerialiser();
 		}
