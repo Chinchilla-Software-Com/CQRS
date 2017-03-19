@@ -83,6 +83,8 @@ namespace Cqrs.Bus
 				string responseCode = "200";
 				bool wasSuccessfull = true;
 
+				telemetryHelper.TrackEvent(string.Format("Cqrs/Handle/{0}{1}/Started", messagePrefix, telemetryName));
+
 				try
 				{
 					handler(message);
@@ -96,6 +98,8 @@ namespace Cqrs.Bus
 				}
 				finally
 				{
+					telemetryHelper.TrackEvent(string.Format("Cqrs/Handle/{0}{1}/Finished", messagePrefix, telemetryName));
+
 					mainStopWatch.Stop();
 					telemetryHelper.TrackRequest
 					(
