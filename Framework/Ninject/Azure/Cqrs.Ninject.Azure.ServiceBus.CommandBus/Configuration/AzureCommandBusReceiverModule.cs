@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Cqrs.Azure.ServiceBus;
 using Cqrs.Bus;
+using Cqrs.Commands;
 using Ninject;
 using Ninject.Modules;
 
@@ -18,7 +19,10 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// </summary>
 		public override void Load()
 		{
-			RegisterCommandHandlerRegistrar();
+			var bus = GetOrCreateBus<AzureCommandBusReceiver<TAuthenticationToken>>();
+
+			RegisterCommandReceiver(bus);
+			RegisterCommandHandlerRegistrar(bus);
 			RegisterCommandMessageSerialiser();
 
 			Bind<IAzureBusHelper<TAuthenticationToken>>()
@@ -28,13 +32,43 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 
 		#endregion
 
+		public virtual TBus GetOrCreateBus<TBus>()
+			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+		{
+			bool isBusBound = Kernel.GetBindings(typeof(TBus)).Any();
+			TBus bus;
+			if (!isBusBound)
+			{
+				bus = Kernel.Get<TBus>();
+				Bind<TBus>()
+					.ToConstant(bus)
+					.InSingletonScope();
+			}
+			else
+				bus = Kernel.Get<TBus>();
+
+			return bus;
+		}
+
+		/// <summary>
+		/// Register the Cqrs command receiver
+		/// </summary>
+		public virtual void RegisterCommandReceiver<TBus>(TBus bus)
+			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+		{
+			Bind<ICommandReceiver<TAuthenticationToken>>()
+				.ToConstant(bus)
+				.InSingletonScope();
+		}
+
 		/// <summary>
 		/// Register the Cqrs command handler registrar
 		/// </summary>
-		public virtual void RegisterCommandHandlerRegistrar()
+		public virtual void RegisterCommandHandlerRegistrar<TBus>(TBus bus)
+			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
 		{
 			Bind<ICommandHandlerRegistrar>()
-				.To<AzureCommandBusReceiver<TAuthenticationToken>>()
+					.ToConstant(bus)
 				.InSingletonScope();
 		}
 
