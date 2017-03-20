@@ -290,72 +290,77 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			Task.Factory.StartNewSafely(() =>
 			{
-				long loop = long.MinValue;
-				while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
-				{
-					// Based on LockedUntilUtc property to determine if the lock expires soon
-					// We lock for 45 seconds to ensure any thread based issues are mitigated.
-					if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-45))
-					{
-						// If so, renew the lock
-						for (int i = 0; i < 10; i++)
-						{
-							try
-							{
-								message.RenewLock();
-								try
-								{
-									Logger.LogDebug(string.Format("Renewed the lock on {1} '{0}'.", message.MessageId, type));
-								}
-								catch
-								{
-									Trace.TraceError("Renewed the lock on {1} '{0}'.", message.MessageId, type);
-								}
-
-								break;
-							}
-							catch (ObjectDisposedException)
-							{
-								return;
-							}
-							catch (MessageLockLostException exception)
-							{
-								try
-								{
-									Logger.LogWarning(string.Format("Renewing the lock on {1} '{0}' failed as the message lock was lost.", message.MessageId, type), exception: exception);
-								}
-								catch
-								{
-									Trace.TraceError("Renewing the lock on {1} '{0}' failed as the message lock was lost.\r\n{2}", message.MessageId, type, exception.Message);
-								}
-								return;
-							}
-							catch (Exception exception)
-							{
-								try
-								{
-									Logger.LogWarning(string.Format("Renewing the lock on {1} '{0}' failed.", message.MessageId, type), exception: exception);
-								}
-								catch
-								{
-									Trace.TraceError("Renewing the lock on {1} '{0}' failed.\r\n{2}", message.MessageId, type, exception.Message);
-								}
-								if (i == 9)
-									return;
-							}
-						}
-					}
-
-					if (loop++ % 5 == 0)
-						Thread.Yield();
-					else
-						Thread.Sleep(500);
-					if (loop == long.MaxValue)
-						loop = long.MinValue;
-				}
+				// The capturing of ObjectDisposedException is because even the properties can throw it.
 				try
 				{
-					brokeredMessageRenewCancellationTokenSource.Dispose();
+					long loop = long.MinValue;
+					while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
+					{
+						// Based on LockedUntilUtc property to determine if the lock expires soon
+						// We lock for 45 seconds to ensure any thread based issues are mitigated.
+						if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-45))
+						{
+							// If so, renew the lock
+							for (int i = 0; i < 10; i++)
+							{
+								try
+								{
+									message.RenewLock();
+									try
+									{
+										Logger.LogDebug(string.Format("Renewed the lock on {1} '{0}'.", message.MessageId, type));
+									}
+									catch
+									{
+										Trace.TraceError("Renewed the lock on {1} '{0}'.", message.MessageId, type);
+									}
+
+									break;
+								}
+								catch (ObjectDisposedException)
+								{
+									return;
+								}
+								catch (MessageLockLostException exception)
+								{
+									try
+									{
+										Logger.LogWarning(string.Format("Renewing the lock on {1} '{0}' failed as the message lock was lost.", message.MessageId, type), exception: exception);
+									}
+									catch
+									{
+										Trace.TraceError("Renewing the lock on {1} '{0}' failed as the message lock was lost.\r\n{2}", message.MessageId, type, exception.Message);
+									}
+									return;
+								}
+								catch (Exception exception)
+								{
+									try
+									{
+										Logger.LogWarning(string.Format("Renewing the lock on {1} '{0}' failed.", message.MessageId, type), exception: exception);
+									}
+									catch
+									{
+										Trace.TraceError("Renewing the lock on {1} '{0}' failed.\r\n{2}", message.MessageId, type, exception.Message);
+									}
+									if (i == 9)
+										return;
+								}
+							}
+						}
+
+						if (loop++ % 5 == 0)
+							Thread.Yield();
+						else
+							Thread.Sleep(500);
+						if (loop == long.MaxValue)
+							loop = long.MinValue;
+					}
+					try
+					{
+						brokeredMessageRenewCancellationTokenSource.Dispose();
+					}
+					catch (ObjectDisposedException) { }
 				}
 				catch (ObjectDisposedException) { }
 			}, brokeredMessageRenewCancellationTokenSource.Token);
