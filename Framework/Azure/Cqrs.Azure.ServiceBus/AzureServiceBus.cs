@@ -153,14 +153,23 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				MaxSizeInMegabytes = 5120,
 				DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
-				EnablePartitioning = true
+				EnablePartitioning = true,
+				EnableBatchedOperations = true
 			};
 			// Create the topic if it does not exist already
 			if (!namespaceManager.TopicExists(eventTopicDescription.Path))
 				namespaceManager.CreateTopic(eventTopicDescription);
 
 			if (!namespaceManager.SubscriptionExists(eventTopicDescription.Path, eventSubscriptionNames))
-				namespaceManager.CreateSubscription(eventTopicDescription.Path, eventSubscriptionNames);
+				namespaceManager.CreateSubscription
+				(
+					new SubscriptionDescription(eventTopicDescription.Path, eventSubscriptionNames)
+					{
+						DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
+						EnableBatchedOperations = true,
+						EnableDeadLetteringOnFilterEvaluationExceptions = true
+					}
+				);
 		}
 
 		protected override void TriggerSettingsChecking()

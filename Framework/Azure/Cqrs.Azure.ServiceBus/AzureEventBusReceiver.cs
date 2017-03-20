@@ -80,6 +80,8 @@ namespace Cqrs.Azure.ServiceBus
 			base.InstantiateReceiving(serviceBusReceivers, topicName, topicSubscriptionName);
 
 			// https://docs.microsoft.com/en-us/azure/application-insights/app-insights-analytics-reference#summarize-operator
+			// http://www.summa.com/blog/business-blog/everything-you-need-to-know-about-azure-service-bus-brokered-messaging-part-2#rulesfiltersactions
+			// https://github.com/Azure-Samples/azure-servicebus-messaging-samples/tree/master/TopicFilters
 			SubscriptionClient client = serviceBusReceivers[0];
 			try
 			{
