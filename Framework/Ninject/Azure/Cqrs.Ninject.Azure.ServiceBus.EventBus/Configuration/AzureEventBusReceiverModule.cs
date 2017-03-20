@@ -27,11 +27,11 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 					.InSingletonScope();
 			}
 
+			RegisterEventMessageSerialiser();
 			var bus = GetOrCreateBus<AzureEventBusReceiver<TAuthenticationToken>>();
 
 			RegisterEventReceiver(bus);
 			RegisterEventHandlerRegistrar(bus);
-			RegisterEventMessageSerialiser();
 		}
 
 		#endregion

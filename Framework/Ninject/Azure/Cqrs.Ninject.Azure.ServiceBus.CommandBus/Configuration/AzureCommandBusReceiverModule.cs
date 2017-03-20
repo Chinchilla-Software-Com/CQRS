@@ -27,11 +27,11 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 					.InSingletonScope();
 			}
 
+			RegisterCommandMessageSerialiser();
 			var bus = GetOrCreateBus<AzureCommandBusReceiver<TAuthenticationToken>>();
 
 			RegisterCommandReceiver(bus);
 			RegisterCommandHandlerRegistrar(bus);
-			RegisterCommandMessageSerialiser();
 		}
 
 		#endregion
