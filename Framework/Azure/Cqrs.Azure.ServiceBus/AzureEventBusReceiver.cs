@@ -129,7 +129,10 @@ namespace Cqrs.Azure.ServiceBus
 			// Null means it was skipped
 			bool? wasSuccessfull = true;
 
-			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" }, { "MessageType", message.Properties["Type"].ToString() } };
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
+			object value;
+			if (message.Properties.TryGetValue("Type", out value))
+				telemetryProperties.Add("MessageType", value.ToString());
 			TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles++, telemetryProperties);
 			var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
 			try
