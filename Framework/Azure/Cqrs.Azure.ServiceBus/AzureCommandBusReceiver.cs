@@ -53,6 +53,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			base.InstantiateReceiving(serviceBusReceivers, topicName, topicSubscriptionName);
 
+			// https://docs.microsoft.com/en-us/azure/application-insights/app-insights-analytics-reference#summarize-operator
 			SubscriptionClient client = serviceBusReceivers[0];
 			try
 			{
