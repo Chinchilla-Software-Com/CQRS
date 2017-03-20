@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
@@ -122,7 +121,13 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected virtual void ReceiveEvent(BrokeredMessage message)
 		{
-			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "200";
+			// Null means it was skipped
+			bool? wasSuccessfull = true;
+
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" }, { "MessageType", message.Properties["Type"].ToString() } };
 			TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles++, telemetryProperties);
 			var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
 			try
@@ -134,6 +139,7 @@ namespace Cqrs.Azure.ServiceBus
 					string.Format("id '{0}'", message.MessageId),
 					() =>
 					{
+						wasSuccessfull = null;
 						// Remove message from queue
 						try
 						{
@@ -141,9 +147,10 @@ namespace Cqrs.Azure.ServiceBus
 						}
 						catch (MessageLockLostException exception)
 						{
-							throw new MessageLockLostException(string.Format("The lock supplied for the skipped message '{0}' is invalid.", message.MessageId), exception);
+							throw new MessageLockLostException(string.Format("The lock supplied for the skipped event message '{0}' is invalid.", message.MessageId), exception);
 						}
 						Logger.LogDebug(string.Format("An event message arrived with the id '{0}' but processing was skipped due to event settings.", message.MessageId));
+						TelemetryHelper.TrackEvent("Cqrs/Handle/Event/Skipped", telemetryProperties);
 					},
 					() =>
 					{
@@ -151,14 +158,17 @@ namespace Cqrs.Azure.ServiceBus
 					}
 				);
 
-				// Remove message from queue
-				try
+				if (wasSuccessfull != null)
 				{
-					message.Complete();
-				}
-				catch (MessageLockLostException exception)
-				{
-					throw new MessageLockLostException(string.Format("The lock supplied for event '{0}' of type {1} is invalid.", @event.Id, @event.GetType().Name), exception);
+					// Remove message from queue
+					try
+					{
+						message.Complete();
+					}
+					catch (MessageLockLostException exception)
+					{
+						throw new MessageLockLostException(string.Format("The lock supplied for event '{0}' of type {1} is invalid.", @event.Id, @event.GetType().Name), exception);
+					}
 				}
 				Logger.LogDebug(string.Format("An event message arrived and was processed with the id '{0}'.", message.MessageId));
 
@@ -172,12 +182,29 @@ namespace Cqrs.Azure.ServiceBus
 				// Indicates a problem, unlock message in queue
 				Logger.LogError(string.Format("An event message arrived with the id '{0}' but failed to be process.", message.MessageId), exception: exception);
 				message.Abandon();
+				wasSuccessfull = false;
 			}
 			finally
 			{
 				// Cancel the lock of renewing the task
 				brokeredMessageRenewCancellationTokenSource.Cancel();
 				TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles--, telemetryProperties);
+
+				mainStopWatch.Stop();
+				if (wasSuccessfull == null || !wasSuccessfull.Value)
+				{
+					TelemetryHelper.TrackRequest
+					(
+						string.Format("Cqrs/Handle/Event/Skipped/{0}", message.MessageId),
+						startedAt,
+						mainStopWatch.Elapsed,
+						responseCode,
+						wasSuccessfull == null,
+						telemetryProperties
+					);
+				}
+
+				TelemetryHelper.Flush();
 			}
 		}
 

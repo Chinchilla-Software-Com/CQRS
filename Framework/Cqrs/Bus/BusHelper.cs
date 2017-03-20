@@ -57,6 +57,11 @@ namespace Cqrs.Bus
 		{
 			Action<TMessage> registerableMessageHandler = message =>
 			{
+				DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+				Stopwatch mainStopWatch = Stopwatch.StartNew();
+				string responseCode = "200";
+				bool wasSuccessfull = true;
+
 				string telemetryName = message.GetType().FullName;
 				var telemeteredMessage = message as ITelemeteredMessage;
 				string messagePrefix = null;
@@ -79,10 +84,6 @@ namespace Cqrs.Bus
 				if (telemeteredMessage != null)
 					telemetryName = telemeteredMessage.TelemetryName;
 
-				Stopwatch mainStopWatch = Stopwatch.StartNew();
-				string responseCode = "200";
-				bool wasSuccessfull = true;
-
 				telemetryHelper.TrackEvent(string.Format("Cqrs/Handle/{0}{1}/Started", messagePrefix, telemetryName));
 
 				try
@@ -104,7 +105,7 @@ namespace Cqrs.Bus
 					telemetryHelper.TrackRequest
 					(
 						string.Format("Cqrs/Handle/{0}{1}", messagePrefix, telemetryName),
-						DateTimeOffset.UtcNow,
+						startedAt,
 						mainStopWatch.Elapsed,
 						responseCode,
 						wasSuccessfull,
