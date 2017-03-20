@@ -7,11 +7,13 @@
 #endregion
 
 using System;
+using System.Threading;
 using cdmdotnet.Logging;
 using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Events;
 using Cqrs.Messages;
+using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -35,6 +37,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		IEvent<TAuthenticationToken> ReceiveEvent(string messageBody, Action<IEvent<TAuthenticationToken>> receiveCommandHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null);
 
+		void RefreshLock(CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message");
 
 		void DefaultReceiveEvent(IEvent<TAuthenticationToken> @event, RouteManager routeManager, string framework);
 
