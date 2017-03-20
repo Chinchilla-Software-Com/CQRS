@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Cqrs.Authentication;
 using Cqrs.Commands;
@@ -16,6 +17,7 @@ using cdmdotnet.Logging;
 using Cqrs.Bus;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
+using Cqrs.Messages;
 using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
@@ -35,29 +37,50 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
-				return;
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			bool wasSuccessfull = false;
+
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
+			string telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+			var telemeteredEvent = command as ITelemeteredMessage;
+			if (telemeteredEvent != null)
+				telemetryName = telemeteredEvent.TelemetryName;
+			telemetryName = string.Format("Command/{0}", telemetryName);
 
 			try
 			{
-				var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
+				if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
+					return;
+
+				try
 				{
-					CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-				};
-				brokeredMessage.Properties.Add("Type", command.GetType().FullName);
-				PrivateServiceBusPublisher.Send(brokeredMessage);
+					var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
+					{
+						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
+					};
+					brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+					PrivateServiceBusPublisher.Send(brokeredMessage);
+				}
+				catch (QuotaExceededException exception)
+				{
+					Logger.LogError("The size of the command being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+					throw;
+				}
+				catch (Exception exception)
+				{
+					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+					throw;
+				}
+
+				Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+				wasSuccessfull = true;
 			}
-			catch (QuotaExceededException exception)
+			finally
 			{
-				Logger.LogError("The size of the command being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
-				throw;
+				mainStopWatch.Stop();
+				TelemetryHelper.TrackDependency(telemetryName, telemetryName, startedAt, mainStopWatch.Elapsed, wasSuccessfull, telemetryProperties);
 			}
-			catch (Exception exception)
-			{
-				Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
-				throw;
-			}
-			Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
 		}
 
 		public virtual void Send<TCommand>(TCommand command)
@@ -70,40 +93,70 @@ namespace Cqrs.Azure.ServiceBus
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			IList<TCommand> sourceCommands = commands.ToList();
-			IList<string> sourceCommandMessages = new List<string>();
-			IList<BrokeredMessage> brokeredMessages = new List<BrokeredMessage>(sourceCommands.Count);
+
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			bool wasSuccessfull = false;
+
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
+			string telemetryName = "Commands";
+			string telemetryNames = string.Empty;
 			foreach (TCommand command in sourceCommands)
 			{
-				if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
-					continue;
-
-				var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
-				{
-					CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-				};
-				brokeredMessage.Properties.Add("Type", command.GetType().FullName);
-
-				brokeredMessages.Add(brokeredMessage);
-				sourceCommandMessages.Add(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+				string subTelemetryName = string.Format("{0}/{1}", commands.GetType().FullName, command.Id);
+				var telemeteredEvent = commands as ITelemeteredMessage;
+				if (telemeteredEvent != null)
+					subTelemetryName = telemeteredEvent.TelemetryName;
+				telemetryNames = string.Format("{0}{1},", telemetryNames, subTelemetryName);
 			}
+			if (telemetryNames.Length > 0)
+				telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
+			telemetryProperties.Add("Commands", telemetryNames);
 
 			try
 			{
-				PrivateServiceBusPublisher.SendBatch(brokeredMessages);
-			}
-			catch (QuotaExceededException exception)
-			{
-				Logger.LogError("The size of the command being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Commands", sourceCommands } });
-				throw;
-			}
-			catch (Exception exception)
-			{
-				Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Commands", sourceCommands } });
-				throw;
-			}
+				IList<string> sourceCommandMessages = new List<string>();
+				IList<BrokeredMessage> brokeredMessages = new List<BrokeredMessage>(sourceCommands.Count);
+				foreach (TCommand command in sourceCommands)
+				{
+					if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
+						continue;
 
-			foreach (string message in sourceCommandMessages)
-				Logger.LogInfo(message);
+					var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
+					{
+						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
+					};
+					brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+
+					brokeredMessages.Add(brokeredMessage);
+					sourceCommandMessages.Add(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+				}
+
+				try
+				{
+					PrivateServiceBusPublisher.SendBatch(brokeredMessages);
+				}
+				catch (QuotaExceededException exception)
+				{
+					Logger.LogError("The size of the command being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Commands", sourceCommands } });
+					throw;
+				}
+				catch (Exception exception)
+				{
+					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Commands", sourceCommands } });
+					throw;
+				}
+
+				foreach (string message in sourceCommandMessages)
+					Logger.LogInfo(message);
+
+				wasSuccessfull = true;
+			}
+			finally
+			{
+				mainStopWatch.Stop();
+				TelemetryHelper.TrackDependency(telemetryName, telemetryName, startedAt, mainStopWatch.Elapsed, wasSuccessfull, telemetryProperties);
+			}
 		}
 
 		public virtual void Send<TCommand>(IEnumerable<TCommand> commands)
