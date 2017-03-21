@@ -25,5 +25,7 @@ namespace Cqrs.Authentication
 		[Required]
 		[DataMember]
 		DateTime DateIssued { get; set; }
+
+		string Serialise();
 	}
 }

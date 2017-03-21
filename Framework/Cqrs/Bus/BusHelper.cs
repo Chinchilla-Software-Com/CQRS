@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
+using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
@@ -130,11 +131,13 @@ namespace Cqrs.Bus
 				string telemetryName = message.GetType().FullName;
 				var telemeteredMessage = message as ITelemeteredMessage;
 				string messagePrefix = null;
+				ISingleSignOnToken authenticationToken = null;
 				var @event = message as IEvent<TAuthenticationToken>;
 				if (@event != null)
 				{
 					messagePrefix = "Event/";
 					telemetryName = string.Format("{0}/{1}", telemetryName, @event.Id);
+					authenticationToken = @event.AuthenticationToken as ISingleSignOnToken;
 				}
 				else
 				{
@@ -143,6 +146,7 @@ namespace Cqrs.Bus
 					{
 						messagePrefix = "Command/";
 						telemetryName = string.Format("{0}/{1}", telemetryName, command.Id);
+						authenticationToken = command.AuthenticationToken as ISingleSignOnToken;
 					}
 				}
 
@@ -170,6 +174,7 @@ namespace Cqrs.Bus
 					telemetryHelper.TrackRequest
 					(
 						string.Format("Cqrs/Handle/{0}{1}", messagePrefix, telemetryName),
+						authenticationToken,
 						startedAt,
 						mainStopWatch.Elapsed,
 						responseCode,

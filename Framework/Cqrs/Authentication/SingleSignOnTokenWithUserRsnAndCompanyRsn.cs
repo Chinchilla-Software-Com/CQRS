@@ -32,5 +32,10 @@ namespace Cqrs.Authentication
 		[Required]
 		[DataMember]
 		public Guid UserRsn { get; set; }
+
+		public override string Serialise()
+		{
+			return string.Format("{0:N}/{1:N}", CompanyRsn, UserRsn);
+		}
 	}
 }

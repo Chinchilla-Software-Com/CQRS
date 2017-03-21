@@ -28,5 +28,10 @@ namespace Cqrs.Authentication
 		[Required]
 		[DataMember]
 		Guid CompanyRsn { get; set; }
+
+		public override string Serialise()
+		{
+			return CompanyRsn.ToString("N");
+		}
 	}
 }

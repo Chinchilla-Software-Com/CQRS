@@ -27,5 +27,10 @@ namespace Cqrs.Authentication
 		[Required]
 		[DataMember]
 		public DateTime DateIssued { get; set; }
+
+		public virtual string Serialise()
+		{
+			return Token;
+		}
 	}
 }

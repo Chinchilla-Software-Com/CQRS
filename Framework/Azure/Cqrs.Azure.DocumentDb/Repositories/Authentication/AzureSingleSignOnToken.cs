@@ -29,5 +29,10 @@ namespace Cqrs.Azure.DocumentDb.Repositories.Authentication
 		[Required]
 		[DataMember]
 		public DateTime DateIssued { get; set; }
+
+		public string Serialise()
+		{
+			return Token;
+		}
 	}
 }

@@ -171,6 +171,7 @@ namespace Cqrs.Azure.ServiceBus
 					TelemetryHelper.TrackRequest
 					(
 						string.Format("Cqrs/Handle/Command/Skipped/{0}", message.MessageId),
+						(ISingleSignOnToken)null,
 						startedAt,
 						mainStopWatch.Elapsed,
 						responseCode,
