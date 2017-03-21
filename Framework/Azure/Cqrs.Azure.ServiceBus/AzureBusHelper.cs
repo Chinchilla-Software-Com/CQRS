@@ -393,7 +393,7 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void RegisterHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			Action<TMessage> registerableHandler = BusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(telemetryHelper, handler, holdMessageLock, "Azure/Bus");
+			Action<TMessage> registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
 
 			routeManger.RegisterHandler(registerableHandler, targetedType);
 

@@ -101,6 +101,8 @@ namespace Cqrs.Azure.ServiceBus
 			string responseCode = "200";
 			// Null means it was skipped
 			bool? wasSuccessfull = true;
+			string telemetryName = string.Format("Cqrs/Handle/Command/{0}", message.MessageId);
+			ISingleSignOnToken authenticationToken = null;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
 			object value;
@@ -119,6 +121,8 @@ namespace Cqrs.Azure.ServiceBus
 					() =>
 					{
 						wasSuccessfull = null;
+						telemetryName = string.Format("Cqrs/Handle/Command/Skipped/{0}", message.MessageId);
+						responseCode = "204";
 						// Remove message from queue
 						try
 						{
@@ -139,6 +143,17 @@ namespace Cqrs.Azure.ServiceBus
 
 				if (wasSuccessfull != null)
 				{
+					if (command != null)
+					{
+						telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+						authenticationToken = command.AuthenticationToken as ISingleSignOnToken;
+
+						var telemeteredMessage = command as ITelemeteredMessage;
+						if (telemeteredMessage != null)
+							telemetryName = telemeteredMessage.TelemetryName;
+
+						telemetryName = string.Format("Cqrs/Handle/Command/{0}", telemetryName);
+					}
 					// Remove message from queue
 					try
 					{
@@ -158,6 +173,7 @@ namespace Cqrs.Azure.ServiceBus
 				Logger.LogError(string.Format("A command message arrived with the id '{0}' but failed to be process.", message.MessageId), exception: exception);
 				message.Abandon();
 				wasSuccessfull = false;
+				responseCode = "500";
 			}
 			finally
 			{
@@ -166,19 +182,16 @@ namespace Cqrs.Azure.ServiceBus
 				TelemetryHelper.TrackMetric("Cqrs/Handle/Command", CurrentHandles--, telemetryProperties);
 
 				mainStopWatch.Stop();
-				if (wasSuccessfull == null || !wasSuccessfull.Value)
-				{
-					TelemetryHelper.TrackRequest
-					(
-						string.Format("Cqrs/Handle/Command/Skipped/{0}", message.MessageId),
-						(ISingleSignOnToken)null,
-						startedAt,
-						mainStopWatch.Elapsed,
-						responseCode,
-						wasSuccessfull == null,
-						telemetryProperties
-					);
-				}
+				TelemetryHelper.TrackRequest
+				(
+					telemetryName,
+					authenticationToken,
+					startedAt,
+					mainStopWatch.Elapsed,
+					responseCode,
+					wasSuccessfull == null || wasSuccessfull.Value,
+					telemetryProperties
+				);
 
 				TelemetryHelper.Flush();
 			}

@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using Cqrs.Authentication;
@@ -61,6 +62,14 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected virtual void ReceiveCommand(PartitionContext context, EventData eventData)
 		{
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "200";
+			// Null means it was skipped
+			bool? wasSuccessfull = true;
+			string telemetryName = string.Format("Cqrs/Handle/Command/{0}", eventData.SequenceNumber);
+			ISingleSignOnToken authenticationToken = null;
+
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/EventHub" } };
 			TelemetryHelper.TrackMetric("Cqrs/Handle/Command", CurrentHandles++, telemetryProperties);
 			// Do a manual 10 try attempt with back-off
@@ -71,18 +80,36 @@ namespace Cqrs.Azure.ServiceBus
 					Logger.LogDebug(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
 					string messageBody = Encoding.UTF8.GetString(eventData.GetBytes());
 
-					AzureBusHelper.ReceiveCommand(messageBody, ReceiveCommand,
+					ICommand<TAuthenticationToken> command = AzureBusHelper.ReceiveCommand(messageBody, ReceiveCommand,
 						string.Format("partition key '{0}', sequence number '{1}' and offset '{2}'", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset),
 						() =>
 						{
+							wasSuccessfull = null;
+							telemetryName = string.Format("Cqrs/Handle/Command/Skipped/{0}", eventData.SequenceNumber);
+							responseCode = "204";
 							// Remove message from queue
 							context.CheckpointAsync(eventData);
 							Logger.LogDebug(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but processing was skipped due to command settings.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
+							TelemetryHelper.TrackEvent("Cqrs/Handle/Command/Skipped", telemetryProperties);
 						}
 					);
 
-					// Remove message from queue
-					context.CheckpointAsync(eventData);
+					if (wasSuccessfull != null)
+					{
+						if (command != null)
+						{
+							telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+							authenticationToken = command.AuthenticationToken as ISingleSignOnToken;
+
+							var telemeteredMessage = command as ITelemeteredMessage;
+							if (telemeteredMessage != null)
+								telemetryName = telemeteredMessage.TelemetryName;
+
+							telemetryName = string.Format("Cqrs/Handle/Command/{0}", telemetryName);
+						}
+						// Remove message from queue
+						context.CheckpointAsync(eventData);
+					}
 					Logger.LogDebug(string.Format("A command message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
 					return;
 				}
@@ -117,10 +144,28 @@ namespace Cqrs.Azure.ServiceBus
 							break;
 					}
 				}
+				finally
+				{
+					// Eventually just accept it
+					context.CheckpointAsync(eventData);
+
+					TelemetryHelper.TrackMetric("Cqrs/Handle/Command", CurrentHandles--, telemetryProperties);
+
+					mainStopWatch.Stop();
+					TelemetryHelper.TrackRequest
+					(
+						telemetryName,
+						authenticationToken,
+						startedAt,
+						mainStopWatch.Elapsed,
+						responseCode,
+						wasSuccessfull == null || wasSuccessfull.Value,
+						telemetryProperties
+					);
+
+					TelemetryHelper.Flush();
+				}
 			}
-			// Eventually just accept it
-			context.CheckpointAsync(eventData);
-			TelemetryHelper.TrackMetric("Cqrs/Handle/Command", CurrentHandles--, telemetryProperties);
 		}
 
 		public virtual void ReceiveCommand(ICommand<TAuthenticationToken> command)

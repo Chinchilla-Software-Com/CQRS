@@ -36,5 +36,11 @@ namespace Cqrs.Bus
 		/// </summary>
 		Action<TMessage> BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper telemetryHelper, Action<TMessage> handler, bool holdMessageLock, string source)
 			where TMessage : IMessage;
+
+		/// <summary>
+		/// Build a message handler that implements telemetry capturing as well as off thread handling.
+		/// </summary>
+		Action<TMessage> BuildActionHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock)
+			where TMessage : IMessage;
 	}
 }

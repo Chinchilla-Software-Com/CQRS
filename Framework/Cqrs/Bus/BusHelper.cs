@@ -186,6 +186,17 @@ namespace Cqrs.Bus
 				}
 			};
 
+			return BuildActionHandler(registerableMessageHandler, holdMessageLock);
+		}
+
+		/// <summary>
+		/// Build a message handler that implements telemetry capturing as well as off thread handling.
+		/// </summary>
+		public virtual Action<TMessage> BuildActionHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock)
+			where TMessage : IMessage
+		{
+			Action<TMessage> registerableMessageHandler = handler;
+
 			Action<TMessage> registerableHandler = registerableMessageHandler;
 			if (!holdMessageLock)
 			{
