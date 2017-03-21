@@ -122,8 +122,8 @@ namespace Cqrs.Azure.ServiceBus
 					}
 
 					Logger.LogDebug(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
-					wasSuccessfull = true;
 				}
+				wasSuccessfull = true;
 			}
 			finally
 			{
@@ -227,7 +227,7 @@ namespace Cqrs.Azure.ServiceBus
 				foreach (string message in sourceEventMessages)
 					Logger.LogInfo(message);
 
-			wasSuccessfull = true;
+				wasSuccessfull = true;
 			}
 			finally
 			{
