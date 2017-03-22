@@ -57,9 +57,12 @@ namespace Cqrs.Azure.ServiceBus
 		
 		protected EventProcessorOptions ReceiverMessageHandlerOptions { get; private set; }
 
+		protected ITelemetryHelper TelemetryHelper { get; set; }
+
 		protected AzureEventHub(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
 			: base (configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
+			TelemetryHelper = new NullTelemetryHelper();
 		}
 
 		#region Overrides of AzureBus<TAuthenticationToken>

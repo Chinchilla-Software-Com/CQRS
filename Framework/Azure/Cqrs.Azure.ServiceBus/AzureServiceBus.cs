@@ -62,6 +62,12 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected OnMessageOptions ReceiverMessageHandlerOptions { get; set; }
 
+		protected IBusHelper BusHelper { get; private set; }
+
+		protected IAzureBusHelper<TAuthenticationToken> AzureBusHelper { get; private set; }
+
+		protected ITelemetryHelper TelemetryHelper { get; set; }
+
 		protected AzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper, bool isAPublisher)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
@@ -241,12 +247,6 @@ namespace Cqrs.Azure.ServiceBus
 			foreach (SubscriptionClient serviceBusReceiver in PublicServiceBusReceivers.Values)
 				serviceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
 		}
-
-		protected IBusHelper BusHelper { get; private set; }
-
-		protected IAzureBusHelper<TAuthenticationToken> AzureBusHelper { get; private set; }
-
-		protected ITelemetryHelper TelemetryHelper { get; set; }
 
 		protected virtual CancellationTokenSource CleanUpDeadLetters(string topicName, string topicSubscriptionName)
 		{

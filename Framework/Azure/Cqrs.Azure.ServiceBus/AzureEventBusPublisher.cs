@@ -35,7 +35,8 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
-			bool wasSuccessfull = false;
+			string responseCode = null;
+			bool mainWasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
 			string telemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
@@ -53,8 +54,13 @@ namespace Cqrs.Azure.ServiceBus
 				var publicEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PublicEventAttribute;
 
 				// Backwards compatibility and simplicity
+				bool wasSuccessfull;
+				Stopwatch stopWatch = Stopwatch.StartNew();
 				if (publicEventAttribute == null && privateEventAttribute == null)
 				{
+					stopWatch.Restart();
+					responseCode = "200";
+					wasSuccessfull = false;
 					try
 					{
 						var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
@@ -63,21 +69,31 @@ namespace Cqrs.Azure.ServiceBus
 						};
 						brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
 						PublicServiceBusPublisher.Send(brokeredMessage);
+						wasSuccessfull = true;
 					}
 					catch (QuotaExceededException exception)
 					{
+						responseCode = "429";
 						Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
 						throw;
 					}
 					catch (Exception exception)
 					{
+						responseCode = "500";
 						Logger.LogError("An issue occurred while trying to publish an event.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
 						throw;
+					}
+					finally
+					{
+						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Default Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
 					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
 				}
 				if (publicEventAttribute != null)
 				{
+					stopWatch.Restart();
+					responseCode = "200";
+					wasSuccessfull = false;
 					try
 					{
 						var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
@@ -86,21 +102,31 @@ namespace Cqrs.Azure.ServiceBus
 						};
 						brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
 						PublicServiceBusPublisher.Send(brokeredMessage);
+						wasSuccessfull = true;
 					}
 					catch (QuotaExceededException exception)
 					{
+						responseCode = "429";
 						Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
 						throw;
 					}
 					catch (Exception exception)
 					{
+						responseCode = "500";
 						Logger.LogError("An issue occurred while trying to publish an event.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
 						throw;
+					}
+					finally
+					{
+						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Public Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
 					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
 				}
 				if (privateEventAttribute != null)
 				{
+					stopWatch.Restart();
+					responseCode = "200";
+					wasSuccessfull = false;
 					try
 					{
 						var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
@@ -109,26 +135,33 @@ namespace Cqrs.Azure.ServiceBus
 						};
 						brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
 						PrivateServiceBusPublisher.Send(brokeredMessage);
+						wasSuccessfull = true;
 					}
 					catch (QuotaExceededException exception)
 					{
+						responseCode = "429";
 						Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
 						throw;
 					}
 					catch (Exception exception)
 					{
+						responseCode = "500";
 						Logger.LogError("An issue occurred while trying to publish an event.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
 						throw;
+					}
+					finally
+					{
+						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Private Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
 
 					Logger.LogDebug(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
 				}
-				wasSuccessfull = true;
+				mainWasSuccessfull = true;
 			}
 			finally
 			{
 				mainStopWatch.Stop();
-				TelemetryHelper.TrackDependency(telemetryName, telemetryName, startedAt, mainStopWatch.Elapsed, wasSuccessfull, telemetryProperties);
+				TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, mainWasSuccessfull, telemetryProperties);
 			}
 		}
 
@@ -139,7 +172,8 @@ namespace Cqrs.Azure.ServiceBus
 
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
-			bool wasSuccessfull = false;
+			string responseCode = null;
+			bool mainWasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
 			string telemetryName = "Events";
@@ -193,46 +227,69 @@ namespace Cqrs.Azure.ServiceBus
 					}
 				}
 
+				bool wasSuccessfull;
+				Stopwatch stopWatch = Stopwatch.StartNew();
+
 				// Backwards compatibility and simplicity
+				stopWatch.Restart();
+				responseCode = "200";
+				wasSuccessfull = false;
 				try
 				{
 					PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
+					wasSuccessfull = true;
 				}
 				catch (QuotaExceededException exception)
 				{
+					responseCode = "429";
 					Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Events", publicBrokeredMessages } });
 					throw;
 				}
 				catch (Exception exception)
 				{
+					responseCode = "500";
 					Logger.LogError("An issue occurred while trying to publish an event.", exception: exception, metaData: new Dictionary<string, object> { { "Events", publicBrokeredMessages } });
 					throw;
 				}
+				finally
+				{
+					TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Public Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+				}
 
+				stopWatch.Restart();
+				responseCode = "200";
+				wasSuccessfull = false;
 				try
 				{
 					PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
+					wasSuccessfull = true;
 				}
 				catch (QuotaExceededException exception)
 				{
+					responseCode = "429";
 					Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Events", privateBrokeredMessages } });
 					throw;
 				}
 				catch (Exception exception)
 				{
+					responseCode = "500";
 					Logger.LogError("An issue occurred while trying to publish an event.", exception: exception, metaData: new Dictionary<string, object> { { "Events", privateBrokeredMessages } });
 					throw;
+				}
+				finally
+				{
+					TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Private Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 				}
 
 				foreach (string message in sourceEventMessages)
 					Logger.LogInfo(message);
 
-				wasSuccessfull = true;
+				mainWasSuccessfull = true;
 			}
 			finally
 			{
 				mainStopWatch.Stop();
-				TelemetryHelper.TrackDependency(telemetryName, telemetryName, startedAt, mainStopWatch.Elapsed, wasSuccessfull, telemetryProperties);
+				TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, mainWasSuccessfull, telemetryProperties);
 			}
 		}
 

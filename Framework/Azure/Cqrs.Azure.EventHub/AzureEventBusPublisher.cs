@@ -8,12 +8,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using cdmdotnet.Logging;
+using Cqrs.Messages;
 using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
@@ -23,6 +25,7 @@ namespace Cqrs.Azure.ServiceBus
 		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, true)
 		{
+			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventHub.EventBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
 
 		#region Implementation of IEventPublisher<TAuthenticationToken>
@@ -30,25 +33,47 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
-			if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-EventHub"))
-				return;
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "200";
+			bool wasSuccessfull = false;
+
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/EventHub" } };
+			string telemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+			var telemeteredEvent = @event as ITelemeteredMessage;
+			if (telemeteredEvent != null)
+				telemetryName = telemeteredEvent.TelemetryName;
+			telemetryName = string.Format("Event/{0}", telemetryName);
 
 			try
 			{
-				var brokeredMessage = new Microsoft.ServiceBus.Messaging.EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseEvent(@event)));
-				brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
+				if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-EventHub"))
+					return;
 
-				EventHubPublisher.Send(brokeredMessage);
+				try
+				{
+					var brokeredMessage = new Microsoft.ServiceBus.Messaging.EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseEvent(@event)));
+					brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
+
+					EventHubPublisher.Send(brokeredMessage);
+					wasSuccessfull = true;
+				}
+				catch (QuotaExceededException exception)
+				{
+					responseCode = "429";
+					Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
+					throw;
+				}
+				catch (Exception exception)
+				{
+					responseCode = "500";
+					Logger.LogError("An issue occurred while trying to publish an event.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
+					throw;
+				}
 			}
-			catch (QuotaExceededException exception)
+			finally
 			{
-				Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
-				throw;
-			}
-			catch (Exception exception)
-			{
-				Logger.LogError("An issue occurred while trying to publish an event.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
-				throw;
+				TelemetryHelper.TrackDependency("Azure/EventHub/EventBus", "Event", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 			}
 			Logger.LogInfo(string.Format("An event was published with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
 		}
@@ -57,37 +82,71 @@ namespace Cqrs.Azure.ServiceBus
 			where TEvent : IEvent<TAuthenticationToken>
 		{
 			IList<TEvent> sourceEvents = events.ToList();
-			IList<string> sourceEventMessages = new List<string>();
-			IList<Microsoft.ServiceBus.Messaging.EventData> brokeredMessages = new List<Microsoft.ServiceBus.Messaging.EventData>(sourceEvents.Count);
+
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "200";
+			bool wasSuccessfull = false;
+
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/EventHub" } };
+			string telemetryName = "Events";
+			string telemetryNames = string.Empty;
 			foreach (TEvent @event in sourceEvents)
 			{
-				if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-EventHub"))
-					continue;
-
-				var brokeredMessage = new Microsoft.ServiceBus.Messaging.EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseEvent(@event)));
-				brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
-
-				brokeredMessages.Add(brokeredMessage);
-				sourceEventMessages.Add(string.Format("A command was sent of type {0}.", @event.GetType().FullName));
+				string subTelemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+				var telemeteredEvent = @event as ITelemeteredMessage;
+				if (telemeteredEvent != null)
+					subTelemetryName = telemeteredEvent.TelemetryName;
+				telemetryNames = string.Format("{0}{1},", telemetryNames, subTelemetryName);
 			}
+			if (telemetryNames.Length > 0)
+				telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
+			telemetryProperties.Add("Events", telemetryNames);
 
 			try
 			{
-				EventHubPublisher.SendBatch(brokeredMessages);
-			}
-			catch (QuotaExceededException exception)
-			{
-				Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Events", sourceEvents } });
-				throw;
-			}
-			catch (Exception exception)
-			{
-				Logger.LogError("An issue occurred while trying to publish a event.", exception: exception, metaData: new Dictionary<string, object> { { "Events", sourceEvents } });
-				throw;
-			}
+				IList<string> sourceEventMessages = new List<string>();
+				IList<Microsoft.ServiceBus.Messaging.EventData> brokeredMessages = new List<Microsoft.ServiceBus.Messaging.EventData>(sourceEvents.Count);
+				foreach (TEvent @event in sourceEvents)
+				{
+					if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-EventHub"))
+						continue;
 
-			foreach (string message in sourceEventMessages)
-				Logger.LogInfo(message);
+					var brokeredMessage = new Microsoft.ServiceBus.Messaging.EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseEvent(@event)));
+					brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
+
+					brokeredMessages.Add(brokeredMessage);
+					sourceEventMessages.Add(string.Format("A command was sent of type {0}.", @event.GetType().FullName));
+				}
+
+				try
+				{
+					EventHubPublisher.SendBatch(brokeredMessages);
+					wasSuccessfull = true;
+				}
+				catch (QuotaExceededException exception)
+				{
+					responseCode = "429";
+					Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Events", sourceEvents } });
+					throw;
+				}
+				catch (Exception exception)
+				{
+					responseCode = "500";
+					Logger.LogError("An issue occurred while trying to publish a event.", exception: exception, metaData: new Dictionary<string, object> { { "Events", sourceEvents } });
+					throw;
+				}
+
+				foreach (string message in sourceEventMessages)
+					Logger.LogInfo(message);
+
+				wasSuccessfull = true;
+			}
+			finally
+			{
+				mainStopWatch.Stop();
+				TelemetryHelper.TrackDependency("Azure/EventHub/EventBus", "Event", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+			}
 		}
 
 		#endregion

@@ -32,8 +32,6 @@ namespace Cqrs.Azure.ServiceBus
 		protected static long CurrentHandles { get; set; }
 		// ReSharper restore StaticMemberInGenericType
 
-		protected ITelemetryHelper TelemetryHelper { get; private set; }
-
 		static AzureCommandBusReceiver()
 		{
 			Routes = new RouteManager();
@@ -71,6 +69,9 @@ namespace Cqrs.Azure.ServiceBus
 			ISingleSignOnToken authenticationToken = null;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/EventHub" } };
+			object value;
+			if (eventData.Properties.TryGetValue("Type", out value))
+				telemetryProperties.Add("MessageType", value.ToString());
 			TelemetryHelper.TrackMetric("Cqrs/Handle/Command", CurrentHandles++, telemetryProperties);
 			// Do a manual 10 try attempt with back-off
 			for (int i = 0; i < 10; i++)
@@ -111,6 +112,9 @@ namespace Cqrs.Azure.ServiceBus
 						context.CheckpointAsync(eventData);
 					}
 					Logger.LogDebug(string.Format("A command message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
+
+					wasSuccessfull = true;
+					responseCode = "200";
 					return;
 				}
 				catch (Exception exception)
@@ -143,6 +147,8 @@ namespace Cqrs.Azure.ServiceBus
 							Thread.Sleep(3 * 60 * 1000);
 							break;
 					}
+					wasSuccessfull = false;
+					responseCode = "500";
 				}
 				finally
 				{

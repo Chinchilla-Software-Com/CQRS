@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using cdmdotnet.Logging;
@@ -16,6 +17,7 @@ using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
+using Cqrs.Messages;
 using EventData = Microsoft.ServiceBus.Messaging.EventData;
 
 namespace Cqrs.Azure.ServiceBus
@@ -24,21 +26,53 @@ namespace Cqrs.Azure.ServiceBus
 	{
 		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, true)
-		{ }
+		{
+			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventHub.EventBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
+		}
 
 		#region Implementation of ICommandSender<TAuthenticationToken>
 
 		public virtual void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-EventHub"))
-				return;
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "200";
+			bool wasSuccessfull = false;
 
-			var brokeredMessage = new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command)));
-			brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/EventHub" } };
+			string telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+			var telemeteredCommand = command as ITelemeteredMessage;
+			if (telemeteredCommand != null)
+				telemetryName = telemeteredCommand.TelemetryName;
+			telemetryName = string.Format("Command/{0}", telemetryName);
 
-			EventHubPublisher.Send(brokeredMessage);
-			Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+			try
+			{
+				if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-EventHub"))
+					return;
+
+				var brokeredMessage = new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command)));
+				brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+
+				try
+				{
+					EventHubPublisher.Send(brokeredMessage);
+				}
+				catch (Exception exception)
+				{
+					responseCode = "500";
+					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+					throw;
+				}
+				Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+				wasSuccessfull = true;
+			}
+			finally
+			{
+				mainStopWatch.Stop();
+				TelemetryHelper.TrackDependency("Azure/EventHub/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+			}
 		}
 
 		public virtual void Send<TCommand>(TCommand command)
@@ -51,23 +85,64 @@ namespace Cqrs.Azure.ServiceBus
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			IList<TCommand> sourceCommands = commands.ToList();
-			IList<string> sourceCommandMessages = new List<string>();
-			IList<EventData> brokeredMessages = new List<EventData>(sourceCommands.Count);
+
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "200";
+			bool wasSuccessfull = false;
+
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/EventHub" } };
+			string telemetryName = "Commands";
+			string telemetryNames = string.Empty;
 			foreach (TCommand command in sourceCommands)
 			{
-				if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-EventHub"))
-					continue;
-
-				var brokeredMessage = new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command)));
-				brokeredMessage.Properties.Add("Type", command.GetType().FullName);
-
-				brokeredMessages.Add(brokeredMessage);
-				sourceCommandMessages.Add(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+				string subTelemetryName = string.Format("{0}/{1}", commands.GetType().FullName, command.Id);
+				var telemeteredCommand = commands as ITelemeteredMessage;
+				if (telemeteredCommand != null)
+					subTelemetryName = telemeteredCommand.TelemetryName;
+				telemetryNames = string.Format("{0}{1},", telemetryNames, subTelemetryName);
 			}
+			if (telemetryNames.Length > 0)
+				telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
+			telemetryProperties.Add("Commands", telemetryNames);
 
-			EventHubPublisher.SendBatch(brokeredMessages);
-			foreach (string message in sourceCommandMessages)
-				Logger.LogInfo(message);
+			try
+			{
+				IList<string> sourceCommandMessages = new List<string>();
+				IList<EventData> brokeredMessages = new List<EventData>(sourceCommands.Count);
+				foreach (TCommand command in sourceCommands)
+				{
+					if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-EventHub"))
+						continue;
+
+					var brokeredMessage = new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command)));
+					brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+
+					brokeredMessages.Add(brokeredMessage);
+					sourceCommandMessages.Add(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+				}
+
+				try
+				{
+					EventHubPublisher.SendBatch(brokeredMessages);
+				}
+				catch (Exception exception)
+				{
+					responseCode = "500";
+					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Commands", sourceCommands } });
+					throw;
+				}
+
+				foreach (string message in sourceCommandMessages)
+					Logger.LogInfo(message);
+
+				wasSuccessfull = true;
+			}
+			finally
+			{
+				mainStopWatch.Stop();
+				TelemetryHelper.TrackDependency("Azure/EventHub/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+			}
 		}
 
 		public virtual void Send<TCommand>(IEnumerable<TCommand> commands)
@@ -136,16 +211,48 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout,
 			IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
 		{
-			if (eventReceiver != null)
-				throw new NotSupportedException("Specifying a different event receiver is not yet supported.");
-			if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-EventHub"))
-				return (TEvent)(object)null;
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "200";
+			bool wasSuccessfull = false;
 
-			TEvent result = (TEvent)(object)null;
-			EventWaits.Add(command.CorrelationId, new List<IEvent<TAuthenticationToken>>());
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/EventHub" } };
+			string telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+			var telemeteredCommand = command as ITelemeteredMessage;
+			if (telemeteredCommand != null)
+				telemetryName = telemeteredCommand.TelemetryName;
+			telemetryName = string.Format("Command/{0}", telemetryName);
 
-			EventHubPublisher.Send(new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command))));
-			Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+			TEvent result;
+
+			try
+			{
+				if (eventReceiver != null)
+					throw new NotSupportedException("Specifying a different event receiver is not yet supported.");
+				if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-EventHub"))
+					return (TEvent)(object)null;
+
+				result = (TEvent)(object)null;
+				EventWaits.Add(command.CorrelationId, new List<IEvent<TAuthenticationToken>>());
+
+				try
+				{
+					EventHubPublisher.Send(new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command))));
+				}
+				catch (Exception exception)
+				{
+					responseCode = "500";
+					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+					throw;
+				}
+				Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+				wasSuccessfull = true;
+			}
+			finally
+			{
+				mainStopWatch.Stop();
+				TelemetryHelper.TrackDependency("Azure/EventHub/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+			}
 
 			SpinWait.SpinUntil(() =>
 			{
@@ -156,6 +263,7 @@ namespace Cqrs.Azure.ServiceBus
 				return result != null;
 			}, millisecondsTimeout, 1000);
 
+			TelemetryHelper.TrackDependency("Azure/EventHub/CommandBus", "Command/AndWait", string.Format("Command/AndWait{0}", telemetryName.Substring(7)), null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties); 
 			return result;
 		}
 

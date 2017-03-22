@@ -30,6 +30,7 @@ namespace Cqrs.Azure.ServiceBus
 		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
 		{
+			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.CommandBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
 
 		#region Implementation of ICommandSender<TAuthenticationToken>
@@ -39,13 +40,14 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "200";
 			bool wasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
 			string telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
-			var telemeteredEvent = command as ITelemeteredMessage;
-			if (telemeteredEvent != null)
-				telemetryName = telemeteredEvent.TelemetryName;
+			var telemeteredCommand = command as ITelemeteredMessage;
+			if (telemeteredCommand != null)
+				telemetryName = telemeteredCommand.TelemetryName;
 			telemetryName = string.Format("Command/{0}", telemetryName);
 
 			try
@@ -64,11 +66,13 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				catch (QuotaExceededException exception)
 				{
+					responseCode = "429";
 					Logger.LogError("The size of the command being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
 					throw;
 				}
 				catch (Exception exception)
 				{
+					responseCode = "500";
 					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
 					throw;
 				}
@@ -79,7 +83,7 @@ namespace Cqrs.Azure.ServiceBus
 			finally
 			{
 				mainStopWatch.Stop();
-				TelemetryHelper.TrackDependency(telemetryName, telemetryName, startedAt, mainStopWatch.Elapsed, wasSuccessfull, telemetryProperties);
+				TelemetryHelper.TrackDependency("Azure/Servicebus/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 			}
 		}
 
@@ -96,6 +100,7 @@ namespace Cqrs.Azure.ServiceBus
 
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "200";
 			bool wasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
@@ -104,9 +109,9 @@ namespace Cqrs.Azure.ServiceBus
 			foreach (TCommand command in sourceCommands)
 			{
 				string subTelemetryName = string.Format("{0}/{1}", commands.GetType().FullName, command.Id);
-				var telemeteredEvent = commands as ITelemeteredMessage;
-				if (telemeteredEvent != null)
-					subTelemetryName = telemeteredEvent.TelemetryName;
+				var telemeteredCommand = commands as ITelemeteredMessage;
+				if (telemeteredCommand != null)
+					subTelemetryName = telemeteredCommand.TelemetryName;
 				telemetryNames = string.Format("{0}{1},", telemetryNames, subTelemetryName);
 			}
 			if (telemetryNames.Length > 0)
@@ -138,11 +143,13 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				catch (QuotaExceededException exception)
 				{
+					responseCode = "429";
 					Logger.LogError("The size of the command being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Commands", sourceCommands } });
 					throw;
 				}
 				catch (Exception exception)
 				{
+					responseCode = "500";
 					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Commands", sourceCommands } });
 					throw;
 				}
@@ -155,7 +162,7 @@ namespace Cqrs.Azure.ServiceBus
 			finally
 			{
 				mainStopWatch.Stop();
-				TelemetryHelper.TrackDependency(telemetryName, telemetryName, startedAt, mainStopWatch.Elapsed, wasSuccessfull, telemetryProperties);
+				TelemetryHelper.TrackDependency("Azure/Servicebus/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 			}
 		}
 
@@ -225,34 +232,59 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout,
 			IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
 		{
-			if (eventReceiver != null)
-				throw new NotSupportedException("Specifying a different event receiver is not yet supported.");
-			if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
-				return (TEvent)(object)null;
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "200";
+			bool wasSuccessfull = false;
 
-			TEvent result = (TEvent)(object)null;
-			EventWaits.Add(command.CorrelationId, new List<IEvent<TAuthenticationToken>>());
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
+			string telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+			var telemeteredCommand = command as ITelemeteredMessage;
+			if (telemeteredCommand != null)
+				telemetryName = telemeteredCommand.TelemetryName;
+			telemetryName = string.Format("Command/{0}", telemetryName);
+
+			TEvent result;
 
 			try
 			{
-				var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
+				if (eventReceiver != null)
+					throw new NotSupportedException("Specifying a different event receiver is not yet supported.");
+				if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
+					return (TEvent)(object)null;
+
+				result = (TEvent)(object)null;
+				EventWaits.Add(command.CorrelationId, new List<IEvent<TAuthenticationToken>>());
+
+				try
 				{
-					CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-				};
-				brokeredMessage.Properties.Add("Type", command.GetType().FullName);
-				PrivateServiceBusPublisher.Send(brokeredMessage);
+					var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
+					{
+						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
+					};
+					brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+					PrivateServiceBusPublisher.Send(brokeredMessage);
+				}
+				catch (QuotaExceededException exception)
+				{
+					responseCode = "429";
+					Logger.LogError("The size of the command being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+					throw;
+				}
+				catch (Exception exception)
+				{
+					responseCode = "500";
+					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+					throw;
+				}
+				Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+				wasSuccessfull = true;
 			}
-			catch (QuotaExceededException exception)
+			finally
 			{
-				Logger.LogError("The size of the command being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
-				throw;
+				mainStopWatch.Stop();
+				TelemetryHelper.TrackDependency("Azure/Servicebus/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 			}
-			catch (Exception exception)
-			{
-				Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
-				throw;
-			}
-			Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
 
 			SpinWait.SpinUntil(() =>
 			{
@@ -263,6 +295,7 @@ namespace Cqrs.Azure.ServiceBus
 				return result != null;
 			}, millisecondsTimeout, sleepInMilliseconds: 1000);
 
+			TelemetryHelper.TrackDependency("Azure/Servicebus/CommandBus", "Command/AndWait", string.Format("Command/AndWait{0}", telemetryName.Substring(7)), null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 			return result;
 		}
 

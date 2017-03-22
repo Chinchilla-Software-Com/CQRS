@@ -38,8 +38,6 @@ namespace Cqrs.Azure.ServiceBus
 		protected static long CurrentHandles { get; set; }
 		// ReSharper restore StaticMemberInGenericType
 
-		protected ITelemetryHelper TelemetryHelper { get; private set; }
-
 		static AzureEventBusReceiver()
 		{
 			Routes = new RouteManager();
@@ -88,6 +86,9 @@ namespace Cqrs.Azure.ServiceBus
 			ISingleSignOnToken authenticationToken = null;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/EventHub" } };
+			object value;
+			if (eventData.Properties.TryGetValue("Type", out value))
+				telemetryProperties.Add("MessageType", value.ToString());
 			TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles++, telemetryProperties);
 			// Do a manual 10 try attempt with back-off
 			for (int i = 0; i < 10; i++)
@@ -133,6 +134,8 @@ namespace Cqrs.Azure.ServiceBus
 					if (EventWaits.TryGetValue(@event.CorrelationId, out events))
 						events.Add(@event);
 
+					wasSuccessfull = true;
+					responseCode = "200";
 					return;
 				}
 				catch (Exception exception)
@@ -165,6 +168,8 @@ namespace Cqrs.Azure.ServiceBus
 							Thread.Sleep(3 * 60 * 1000);
 							break;
 					}
+					wasSuccessfull = false;
+					responseCode = "500";
 				}
 				finally
 				{
