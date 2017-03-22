@@ -37,6 +37,7 @@ namespace Cqrs.Azure.ServiceBus
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = null;
 			bool mainWasSuccessfull = false;
+			bool telemeterOverall = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
 			string telemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
@@ -52,6 +53,9 @@ namespace Cqrs.Azure.ServiceBus
 
 				var privateEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PrivateEventAttribute;
 				var publicEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PublicEventAttribute;
+
+				// We only add telemetry for overall operations if two occured
+				telemeterOverall = publicEventAttribute != null && privateEventAttribute != null;
 
 				// Backwards compatibility and simplicity
 				bool wasSuccessfull;
@@ -161,7 +165,8 @@ namespace Cqrs.Azure.ServiceBus
 			finally
 			{
 				mainStopWatch.Stop();
-				TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, mainWasSuccessfull, telemetryProperties);
+				if (telemeterOverall)
+					TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, mainWasSuccessfull, telemetryProperties);
 			}
 		}
 
