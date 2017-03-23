@@ -10,7 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
+using System.Threading;
+using System.Threading.Tasks;
 using cdmdotnet.Logging;
+using Cqrs.Configuration;
 
 namespace Cqrs.Events
 {
@@ -20,16 +23,25 @@ namespace Cqrs.Events
 	public class MemoryCacheEventStore<TAuthenticationToken>
 		: EventStore<TAuthenticationToken>
 	{
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
 		protected MemoryCache EventStoreByType { get; private set; }
 
 		protected MemoryCache EventStoreByCorrelationId { get; private set; }
 
-		public MemoryCacheEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger)
+		protected string SlidingExpirationValue { get; set; }
+
+		protected TimeSpan SlidingExpiration { get; set; }
+
+		public MemoryCacheEventStore(IConfigurationManager configurationManager, IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger)
 			: base(eventBuilder, eventDeserialiser, logger)
 		{
 			Guid id = Guid.NewGuid();
+			ConfigurationManager = configurationManager;
 			EventStoreByType = new MemoryCache(string.Format("EventStoreByType-{0:N}", id));
 			EventStoreByCorrelationId = new MemoryCache(string.Format("EventStoreByCorrelationId-{0:N}", id));
+
+			StartRefreshSlidingExpirationValue();
 		}
 
 		#region Overrides of EventStore<TAuthenticationToken>
@@ -140,12 +152,66 @@ namespace Cqrs.Events
 
 		#endregion
 
+		protected virtual void RefreshSlidingExpirationValue()
+		{
+			// First refresh the EventBlackListProcessing property
+			string slidingExpirationValue;
+			if (!ConfigurationManager.TryGetSetting("Cqrs.EventStore.MemoryCacheEventStore.SlidingExpiration", out slidingExpirationValue))
+				slidingExpirationValue = "0, 15, 0";
+
+			if (SlidingExpirationValue != slidingExpirationValue)
+			{
+				string[] slidingExpirationParts = slidingExpirationValue.Split(',');
+				if (slidingExpirationParts.Length != 3 || slidingExpirationParts.Length != 4)
+					return;
+
+				int adjuster = slidingExpirationParts.Length == 3 ? 0 : 1;
+				int days = 0;
+				int hours;
+				int minutes;
+				int seconds;
+				if (!int.TryParse(slidingExpirationParts[0 + adjuster].Trim(), out hours))
+					return;
+				if (!int.TryParse(slidingExpirationParts[1 + adjuster].Trim(), out minutes))
+					return;
+				if (!int.TryParse(slidingExpirationParts[2 + adjuster].Trim(), out seconds))
+					return;
+				if (slidingExpirationParts.Length == 4)
+					if (!int.TryParse(slidingExpirationParts[0].Trim(), out days))
+						return;
+				SlidingExpirationValue = slidingExpirationValue;
+				if (slidingExpirationParts.Length == 4)
+					SlidingExpiration = new TimeSpan(days, hours, minutes, seconds);
+				else
+					SlidingExpiration = new TimeSpan(hours, minutes, seconds);
+			}
+		}
+
+		protected virtual void StartRefreshSlidingExpirationValue()
+		{
+			Task.Factory.StartNewSafely(() =>
+			{
+				long loop = 0;
+				while (true)
+				{
+					RefreshSlidingExpirationValue();
+
+					if (loop++ % 5 == 0)
+						Thread.Yield();
+					else
+						Thread.Sleep(1000);
+					if (loop == long.MaxValue)
+						loop = long.MinValue;
+				}
+			});
+		}
+
 		/// <summary>
 		/// Get's a <see cref="CacheItemPolicy"/> with the <see cref="CacheItemPolicy.SlidingExpiration"/> set to 15 minutes
 		/// </summary>
 		protected virtual CacheItemPolicy GetDetaultCacheItemPolicy()
 		{
-			return new CacheItemPolicy { SlidingExpiration = new TimeSpan(0, 15, 0) };
+			return new CacheItemPolicy { SlidingExpiration = SlidingExpiration };
 		}
 	}
 }

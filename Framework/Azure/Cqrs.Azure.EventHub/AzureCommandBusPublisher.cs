@@ -96,8 +96,8 @@ namespace Cqrs.Azure.ServiceBus
 			string telemetryNames = string.Empty;
 			foreach (TCommand command in sourceCommands)
 			{
-				string subTelemetryName = string.Format("{0}/{1}", commands.GetType().FullName, command.Id);
-				var telemeteredCommand = commands as ITelemeteredMessage;
+				string subTelemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+				var telemeteredCommand = command as ITelemeteredMessage;
 				if (telemeteredCommand != null)
 					subTelemetryName = telemeteredCommand.TelemetryName;
 				telemetryNames = string.Format("{0}{1},", telemetryNames, subTelemetryName);

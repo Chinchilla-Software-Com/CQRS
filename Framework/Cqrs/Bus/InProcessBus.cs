@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
@@ -134,24 +135,89 @@ namespace Cqrs.Bus
 		public virtual void Send<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			RouteHandlerDelegate commandHandler;
-			if (!PrepareAndValidateCommand(command, out commandHandler))
-				return;
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "200";
+			bool wasSuccessfull = false;
 
-			Action<IMessage> handler = commandHandler.Delegate;
-			handler(command);
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "InProcessBus" } };
+			string telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+			var telemeteredCommand = command as ITelemeteredMessage;
+			if (telemeteredCommand != null)
+				telemetryName = telemeteredCommand.TelemetryName;
+			telemetryName = string.Format("Command/{0}", telemetryName);
+
+			try
+			{
+				RouteHandlerDelegate commandHandler;
+				if (!PrepareAndValidateCommand(command, out commandHandler))
+					return;
+
+				try
+				{
+					Action<IMessage> handler = commandHandler.Delegate;
+					handler(command);
+				}
+				catch (Exception exception)
+				{
+					responseCode = "500";
+					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> {{"Command", command}});
+					throw;
+				}
+
+				Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+				wasSuccessfull = true;
+			}
+			finally
+			{
+				mainStopWatch.Stop();
+				TelemetryHelper.TrackDependency("InProcessBus/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+			}
 		}
 
-		void ICommandPublisher<TAuthenticationToken>.Publish<TCommand>(IEnumerable<TCommand> command)
+		void ICommandPublisher<TAuthenticationToken>.Publish<TCommand>(IEnumerable<TCommand> commands)
 		{
-			Send(command);
+			Send(commands);
 		}
 
 		public virtual void Send<TCommand>(IEnumerable<TCommand> commands)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			foreach (TCommand command in commands)
-				Send(command);
+			IEnumerable<TCommand> sourceCommands = commands.ToList();
+
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "500";
+			bool wasSuccessfull = false;
+
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "InProcessBus" } };
+			string telemetryName = "Commands";
+			string telemetryNames = string.Empty;
+			foreach (TCommand command in sourceCommands)
+			{
+				string subTelemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+				var telemeteredCommand = command as ITelemeteredMessage;
+				if (telemeteredCommand != null)
+					subTelemetryName = telemeteredCommand.TelemetryName;
+				telemetryNames = string.Format("{0}{1},", telemetryNames, subTelemetryName);
+			}
+			if (telemetryNames.Length > 0)
+				telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
+			telemetryProperties.Add("Commands", telemetryNames);
+
+			try
+			{
+				foreach (TCommand command in sourceCommands)
+					Send(command);
+
+				responseCode = "200";
+				wasSuccessfull = true;
+			}
+			finally
+			{
+				mainStopWatch.Stop();
+				TelemetryHelper.TrackDependency("InProcessBus/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+			}
 		}
 
 		/// <summary>
@@ -214,17 +280,41 @@ namespace Cqrs.Bus
 		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			if (eventReceiver != null)
-				throw new NotSupportedException("Specifying a different event receiver is not yet supported.");
-			RouteHandlerDelegate commandHandler;
-			if (!PrepareAndValidateCommand(command, out commandHandler))
-				return (TEvent)(object)null;
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "200";
+			bool wasSuccessfull = false;
 
-			TEvent result = (TEvent)(object)null;
-			EventWaits.Add(command.CorrelationId, new List<IEvent<TAuthenticationToken>>());
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "InProcessBus" } };
+			string telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+			var telemeteredCommand = command as ITelemeteredMessage;
+			if (telemeteredCommand != null)
+				telemetryName = telemeteredCommand.TelemetryName;
+			telemetryName = string.Format("Command/{0}", telemetryName);
 
-			Action<IMessage> handler = commandHandler.Delegate;
-			handler(command);
+			TEvent result;
+
+			try
+			{
+				if (eventReceiver != null)
+					throw new NotSupportedException("Specifying a different event receiver is not yet supported.");
+				RouteHandlerDelegate commandHandler;
+				if (!PrepareAndValidateCommand(command, out commandHandler))
+					return (TEvent)(object)null;
+
+				result = (TEvent)(object)null;
+				EventWaits.Add(command.CorrelationId, new List<IEvent<TAuthenticationToken>>());
+
+				Action<IMessage> handler = commandHandler.Delegate;
+				handler(command);
+				Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+				wasSuccessfull = true;
+			}
+			finally
+			{
+				mainStopWatch.Stop();
+				TelemetryHelper.TrackDependency("InProcessBus/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+			}
 
 			SpinWait.SpinUntil(() =>
 			{
@@ -235,6 +325,7 @@ namespace Cqrs.Bus
 				return result != null;
 			}, millisecondsTimeout, SpinWait.DefaultSleepInMilliseconds);
 
+			TelemetryHelper.TrackDependency("InProcessBus/CommandBus", "Command/AndWait", string.Format("Command/AndWait{0}", telemetryName.Substring(7)), null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 			return result;
 		}
 
@@ -261,53 +352,115 @@ namespace Cqrs.Bus
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
-			Type eventType = @event.GetType();
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "200";
+			bool wasSuccessfull = false;
 
-			if (@event.Frameworks != null && @event.Frameworks.Contains("Built-In"))
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "InProcessBus" } };
+			string telemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+			var telemeteredEvent = @event as ITelemeteredMessage;
+			if (telemeteredEvent != null)
+				telemetryName = telemeteredEvent.TelemetryName;
+			telemetryName = string.Format("Event/{0}", telemetryName);
+
+			try
 			{
-				Logger.LogInfo("The provided event has already been processed by the Built-In bus.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, eventType.FullName));
-				return;
+				Type eventType = @event.GetType();
+
+				if (@event.Frameworks != null && @event.Frameworks.Contains("Built-In"))
+				{
+					Logger.LogInfo("The provided event has already been processed by the Built-In bus.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, eventType.FullName));
+					return;
+				}
+
+				if (@event.AuthenticationToken == null || @event.AuthenticationToken.Equals(default(TAuthenticationToken)))
+					@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+				@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+
+				if (string.IsNullOrWhiteSpace(@event.OriginatingFramework))
+				{
+					@event.TimeStamp = DateTimeOffset.UtcNow;
+					@event.OriginatingFramework = "Built-In";
+				}
+
+				var frameworks = new List<string>();
+				if (@event.Frameworks != null)
+					frameworks.AddRange(@event.Frameworks);
+				frameworks.Add("Built-In");
+				@event.Frameworks = frameworks;
+
+				bool isRequired;
+				if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", eventType.FullName), out isRequired))
+					isRequired = true;
+
+				IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
+				// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
+				if (!handlers.Any())
+					Logger.LogDebug(string.Format("An event handler for '{0}' is not required.", eventType.FullName));
+
+				foreach (Action<IMessage> handler in handlers)
+				{
+					IList<IEvent<TAuthenticationToken>> events;
+					if (EventWaits.TryGetValue(@event.CorrelationId, out events))
+						events.Add(@event);
+					handler(@event);
+				}
+
+				Logger.LogInfo(string.Format("An event was sent of type {0}.", eventType.FullName));
+				wasSuccessfull = true;
 			}
-
-			if (@event.AuthenticationToken == null || @event.AuthenticationToken.Equals(default(TAuthenticationToken)))
-				@event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-			@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-
-			if (string.IsNullOrWhiteSpace(@event.OriginatingFramework))
+			catch (Exception exception)
 			{
-				@event.TimeStamp = DateTimeOffset.UtcNow;
-				@event.OriginatingFramework = "Built-In";
+				responseCode = "500";
+				Logger.LogError("An issue occurred while trying to publish an event.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
+				throw;
 			}
-
-			var frameworks = new List<string>();
-			if (@event.Frameworks != null)
-				frameworks.AddRange(@event.Frameworks);
-			frameworks.Add("Built-In");
-			@event.Frameworks = frameworks;
-
-			bool isRequired;
-			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", eventType.FullName), out isRequired))
-				isRequired = true;
-
-			IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
-			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
-			if (!handlers.Any())
-				Logger.LogDebug(string.Format("An event handler for '{0}' is not required.", eventType.FullName));
-
-			foreach (Action<IMessage> handler in handlers)
+			finally
 			{
-				IList<IEvent<TAuthenticationToken>> events;
-				if (EventWaits.TryGetValue(@event.CorrelationId, out events))
-					events.Add(@event);
-				handler(@event);
+				mainStopWatch.Stop();
+				TelemetryHelper.TrackDependency("InProcessBus/EventBus", "Event", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 			}
 		}
 
 		public virtual void Publish<TEvent>(IEnumerable<TEvent> events)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
-			foreach (TEvent @event in events)
-				Publish(@event);
+			IEnumerable<TEvent> sourceEvents = events.ToList();
+
+			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+			Stopwatch mainStopWatch = Stopwatch.StartNew();
+			string responseCode = "500";
+			bool wasSuccessfull = false;
+
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "InProcessBus" } };
+			string telemetryName = "Events";
+			string telemetryNames = string.Empty;
+			foreach (TEvent @event in sourceEvents)
+			{
+				string subTelemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+				var telemeteredCommand = @event as ITelemeteredMessage;
+				if (telemeteredCommand != null)
+					subTelemetryName = telemeteredCommand.TelemetryName;
+				telemetryNames = string.Format("{0}{1},", telemetryNames, subTelemetryName);
+			}
+			if (telemetryNames.Length > 0)
+				telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
+			telemetryProperties.Add("Events", telemetryNames);
+
+			try
+			{
+				foreach (TEvent @event in events)
+					Publish(@event);
+
+				responseCode = "200";
+				wasSuccessfull = true;
+			}
+			finally
+			{
+				mainStopWatch.Stop();
+				TelemetryHelper.TrackDependency("InProcessBus/EventBus", "Event", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+			}
 		}
 
 		#endregion
