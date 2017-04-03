@@ -119,7 +119,7 @@ namespace Cqrs.WebApi
 					StatusCode(HttpStatusCode.Unauthorized);
 					break;
 				case ServiceResponseStateType.FailedValidation:
-					StatusCode(HttpStatusCode.BadRequest);
+					StatusCode(HttpStatusCode.PreconditionFailed);
 					break;
 				case ServiceResponseStateType.FailedWithAFatalException:
 					StatusCode(HttpStatusCode.InternalServerError);

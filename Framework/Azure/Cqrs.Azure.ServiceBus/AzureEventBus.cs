@@ -52,6 +52,11 @@ namespace Cqrs.Azure.ServiceBus
 			get { return "Cqrs.EventBus"; }
 		}
 
+		protected override string ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey
+		{
+			get { return "Cqrs.Azure.EventBus.ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete"; }
+		}
+
 		#endregion
 
 		protected AzureEventBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper, bool isAPublisher)

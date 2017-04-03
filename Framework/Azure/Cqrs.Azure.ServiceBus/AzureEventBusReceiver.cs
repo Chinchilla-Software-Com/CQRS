@@ -198,6 +198,33 @@ namespace Cqrs.Azure.ServiceBus
 				if (EventWaits.TryGetValue(@event.CorrelationId, out events))
 					events.Add(@event);
 			}
+			catch (MessageLockLostException exception)
+			{
+				IDictionary<string, string> subTelemetryProperties = new Dictionary<string, string>(telemetryProperties);
+				subTelemetryProperties.Add("TimeTaken", mainStopWatch.Elapsed.ToString());
+				TelemetryHelper.TrackException(exception, null, subTelemetryProperties);
+				if (ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete)
+				{
+					Logger.LogError(exception.Message, exception: exception);
+					// Indicates a problem, unlock message in queue
+					message.Abandon();
+					wasSuccessfull = false;
+				}
+				else
+				{
+					Logger.LogWarning(exception.Message, exception: exception);
+					try
+					{
+						message.DeadLetter("LockLostButHandled", "The message was handled but the lock was lost.");
+					}
+					catch (Exception)
+					{
+						// Oh well, move on.
+						message.Abandon();
+					}
+				}
+				responseCode = "599";
+			}
 			catch (Exception exception)
 			{
 				TelemetryHelper.TrackException(exception, null, telemetryProperties);

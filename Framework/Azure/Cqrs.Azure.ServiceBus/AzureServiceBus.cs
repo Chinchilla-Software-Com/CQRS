@@ -9,7 +9,6 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
@@ -53,6 +52,10 @@ namespace Cqrs.Azure.ServiceBus
 		protected abstract string PrivateTopicSubscriptionNameConfigurationKey { get; }
 
 		protected abstract string PublicTopicSubscriptionNameConfigurationKey { get; }
+
+		protected abstract string ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey { get; }
+
+		protected bool ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete { get; private set; }
 
 		protected const string DefaultPrivateTopicSubscriptionName = "Root";
 
@@ -180,6 +183,12 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected override void TriggerSettingsChecking()
 		{
+			// First refresh the EventBlackListProcessing property
+			bool throwExceptionOnReceiverMessageLockLostExceptionDuringComplete;
+			if (!ConfigurationManager.TryGetSetting(ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey, out throwExceptionOnReceiverMessageLockLostExceptionDuringComplete))
+				throwExceptionOnReceiverMessageLockLostExceptionDuringComplete = true;
+			ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete = throwExceptionOnReceiverMessageLockLostExceptionDuringComplete;
+
 			TriggerSettingsChecking(PrivateServiceBusPublisher, PrivateServiceBusReceivers);
 			TriggerSettingsChecking(PublicServiceBusPublisher, PublicServiceBusReceivers);
 
