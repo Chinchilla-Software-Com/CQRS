@@ -106,7 +106,16 @@ namespace Cqrs.Bus
 					isRequired = EventBlackListProcessing;
 
 				// Now cache the response
-				CachedChecks.Add(configurationKey, new Tuple<bool, DateTime>(isRequired, DateTime.UtcNow));
+				try
+				{
+					CachedChecks.Add(configurationKey, new Tuple<bool, DateTime>(isRequired, DateTime.UtcNow));
+				}
+				catch (ArgumentException exception)
+				{
+					if (exception.Message != "The key already existed in the dictionary.")
+						throw;
+					// It's been added since we checked... adding locks is slow, so just move on.
+				}
 			}
 			// Don't refresh the expiry, we'll just update the cache every so often which is faster than constantly changing dictionary values.
 			else

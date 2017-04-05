@@ -65,15 +65,23 @@ namespace Cqrs.Azure.ServiceBus
 			{
 			}
 
-			string filter = ConfigurationManager.GetSetting(FilterKeyConfigurationKey);
-			if (!string.IsNullOrWhiteSpace(filter))
+			try
 			{
-				RuleDescription ruleDescription = new RuleDescription
-				(
-					"CqrsConfiguredFilter",
-					new SqlFilter(filter)
-				);
-				client.AddRuleAsync(ruleDescription);
+				string filter = ConfigurationManager.GetSetting(FilterKeyConfigurationKey);
+				if (!string.IsNullOrWhiteSpace(filter))
+				{
+					RuleDescription ruleDescription = new RuleDescription
+					(
+						"CqrsConfiguredFilter",
+						new SqlFilter(filter)
+					);
+					client.AddRuleAsync(ruleDescription);
+				}
+			}
+			catch (Exception exception)
+			{
+				Logger.LogError("Setting the filter failed.", exception: exception);
+				TelemetryHelper.TrackException(exception);
 			}
 		}
 
