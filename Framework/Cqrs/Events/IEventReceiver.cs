@@ -16,6 +16,6 @@ namespace Cqrs.Events
 	public interface IEventReceiver<TAuthenticationToken>
 		: IEventReceiver
 	{
-		void ReceiveEvent(IEvent<TAuthenticationToken> @event);
+		bool? ReceiveEvent(IEvent<TAuthenticationToken> @event);
 	}
 }

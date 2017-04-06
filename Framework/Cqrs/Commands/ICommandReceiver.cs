@@ -15,6 +15,6 @@ namespace Cqrs.Commands
 
 	public interface ICommandReceiver<TAuthenticationToken> : ICommandReceiver
 	{
-		void ReceiveCommand(ICommand<TAuthenticationToken> command);
+		bool? ReceiveCommand(ICommand<TAuthenticationToken> command);
 	}
 }

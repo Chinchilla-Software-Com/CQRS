@@ -494,14 +494,16 @@ namespace Cqrs.Bus
 
 		#region Implementation of ICommandReceiver
 
-		public virtual void ReceiveCommand(ICommand<TAuthenticationToken> command)
+		public virtual bool? ReceiveCommand(ICommand<TAuthenticationToken> command)
 		{
 			Send(command);
+			return true;
 		}
 
-		public virtual void ReceiveEvent(IEvent<TAuthenticationToken> @event)
+		public virtual bool? ReceiveEvent(IEvent<TAuthenticationToken> @event)
 		{
 			Publish(@event);
+			return true;
 		}
 
 		void ICommandReceiver.Start()

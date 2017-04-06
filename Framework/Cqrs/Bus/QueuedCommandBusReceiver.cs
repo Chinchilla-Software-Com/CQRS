@@ -176,13 +176,14 @@ namespace Cqrs.Bus
 			}
 		}
 
-		public virtual void ReceiveCommand(ICommand<TAuthenticationToken> command)
+		public virtual bool? ReceiveCommand(ICommand<TAuthenticationToken> command)
 		{
 			CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
 			AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
 
 			Type commandType = command.GetType();
 
+			bool response = true;
 			bool isRequired = BusHelper.IsEventRequired(commandType);
 
 			IList<Action<IMessage>> handlers;
@@ -196,12 +197,19 @@ namespace Cqrs.Bus
 						handlers.Single()(command);
 					else if (isRequired)
 						throw new NoCommandHandlerRegisteredException(commandType);
+					else
+						response = false;
 				}
 				else if (isRequired)
 					throw new NoCommandHandlerRegisteredException(commandType);
+				else
+					response = false;
 			}
 			else if (isRequired)
 				throw new NoCommandHandlerRegisteredException(commandType);
+			else
+				response = false;
+			return response;
 		}
 
 		#region Implementation of ICommandReceiver

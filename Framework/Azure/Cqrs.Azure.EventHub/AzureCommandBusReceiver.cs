@@ -174,9 +174,9 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
-		public virtual void ReceiveCommand(ICommand<TAuthenticationToken> command)
+		public virtual bool? ReceiveCommand(ICommand<TAuthenticationToken> command)
 		{
-			AzureBusHelper.DefaultReceiveCommand(command, Routes, "Azure-EventHub");
+			return AzureBusHelper.DefaultReceiveCommand(command, Routes, "Azure-EventHub");
 		}
 
 		#region Implementation of ICommandReceiver

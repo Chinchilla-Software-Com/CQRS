@@ -195,9 +195,9 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
-		public virtual void ReceiveEvent(IEvent<TAuthenticationToken> @event)
+		public virtual bool? ReceiveEvent(IEvent<TAuthenticationToken> @event)
 		{
-			AzureBusHelper.DefaultReceiveEvent(@event, Routes, "Azure-EventHub");
+			return AzureBusHelper.DefaultReceiveEvent(@event, Routes, "Azure-EventHub");
 		}
 
 		#region Overrides of AzureServiceBus<TAuthenticationToken>

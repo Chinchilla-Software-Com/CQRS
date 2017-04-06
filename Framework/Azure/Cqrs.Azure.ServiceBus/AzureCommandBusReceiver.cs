@@ -232,9 +232,9 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
-		public virtual void ReceiveCommand(ICommand<TAuthenticationToken> command)
+		public virtual bool? ReceiveCommand(ICommand<TAuthenticationToken> command)
 		{
-			AzureBusHelper.DefaultReceiveCommand(command, Routes, "Azure-ServiceBus");
+			return AzureBusHelper.DefaultReceiveCommand(command, Routes, "Azure-ServiceBus");
 		}
 
 		#region Implementation of ICommandReceiver

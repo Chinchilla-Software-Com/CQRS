@@ -99,7 +99,7 @@ namespace Cqrs.Azure.ServiceBus
 			return true;
 		}
 
-		public virtual ICommand<TAuthenticationToken> ReceiveCommand(string messageBody, Action<ICommand<TAuthenticationToken>> receiveCommandHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)
+		public virtual ICommand<TAuthenticationToken> ReceiveCommand(string messageBody, Func<ICommand<TAuthenticationToken>, bool?> receiveCommandHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)
 		{
 			ICommand<TAuthenticationToken> command;
 			try
@@ -158,19 +158,28 @@ namespace Cqrs.Azure.ServiceBus
 					lockRefreshAction();
 			}
 
-			receiveCommandHandler(command);
+			// a false response means the action wasn't handled, but didn't throw an error, so we assume, by convention, that this means it was skipped.
+			bool? result = receiveCommandHandler(command);
+			if (result != null && !result.Value)
+				if (skippedAction != null)
+					skippedAction();
 
 			return command;
 		}
 
-		public virtual void DefaultReceiveCommand(ICommand<TAuthenticationToken> command, RouteManager routeManager, string framework)
+		/// <returns>
+		/// True indicates the <paramref name="command"/> was successfully handled by a handler.
+		/// False indicates the <paramref name="command"/> wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
+		/// Null indicates the command<paramref name="command"/> wasn't handled as it was already handled.
+		/// </returns>
+		public virtual bool? DefaultReceiveCommand(ICommand<TAuthenticationToken> command, RouteManager routeManager, string framework)
 		{
 			Type commandType = command.GetType();
 
 			if (command.Frameworks != null && command.Frameworks.Contains(framework))
 			{
 				Logger.LogInfo("The provided command has already been processed in Azure.", string.Format("{0}\\DefaultReceiveCommand({1})", GetType().FullName, commandType.FullName));
-				return;
+				return null;
 			}
 
 			CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
@@ -183,11 +192,12 @@ namespace Cqrs.Azure.ServiceBus
 			if (commandHandler == null)
 			{
 				Logger.LogDebug(string.Format("The command handler for '{0}' is not required.", commandType.FullName));
-				return;
+				return false;
 			}
 
 			Action<IMessage> handler = commandHandler.Delegate;
 			handler(command);
+			return true;
 		}
 
 		public virtual void PrepareEvent<TEvent>(TEvent @event, string framework)
@@ -222,7 +232,7 @@ namespace Cqrs.Azure.ServiceBus
 			return true;
 		}
 
-		public virtual IEvent<TAuthenticationToken> ReceiveEvent(string messageBody, Action<IEvent<TAuthenticationToken>> receiveEventHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)
+		public virtual IEvent<TAuthenticationToken> ReceiveEvent(string messageBody, Func<IEvent<TAuthenticationToken>, bool?> receiveEventHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)
 		{
 			IEvent<TAuthenticationToken> @event;
 			try
@@ -281,7 +291,11 @@ namespace Cqrs.Azure.ServiceBus
 					lockRefreshAction();
 			}
 
-			receiveEventHandler(@event);
+			// a false response means the action wasn't handled, but didn't throw an error, so we assume, by convention, that this means it was skipped.
+			bool? result = receiveEventHandler(@event);
+			if (result != null && !result.Value)
+				if (skippedAction != null)
+					skippedAction();
 
 			return @event;
 		}
@@ -366,14 +380,19 @@ namespace Cqrs.Azure.ServiceBus
 			}, brokeredMessageRenewCancellationTokenSource.Token);
 		}
 
-		public virtual void DefaultReceiveEvent(IEvent<TAuthenticationToken> @event, RouteManager routeManager, string framework)
+		/// <returns>
+		/// True indicates the <paramref name="event"/> was successfully handled by a handler.
+		/// False indicates the <paramref name="event"/> wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
+		/// Null indicates the <paramref name="event"/> wasn't handled as it was already handled.
+		/// </returns>
+		public virtual bool? DefaultReceiveEvent(IEvent<TAuthenticationToken> @event, RouteManager routeManager, string framework)
 		{
 			Type eventType = @event.GetType();
 
 			if (@event.Frameworks != null && @event.Frameworks.Contains(framework))
 			{
 				Logger.LogInfo("The provided event has already been processed in Azure.", string.Format("{0}\\DefaultReceiveEvent({1})", GetType().FullName, eventType.FullName));
-				return;
+				return null;
 			}
 
 			CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
@@ -384,10 +403,14 @@ namespace Cqrs.Azure.ServiceBus
 			IEnumerable<Action<IMessage>> handlers = routeManager.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 			if (!handlers.Any())
+			{
 				Logger.LogDebug(string.Format("The event handler for '{0}' is not required.", eventType.FullName));
+				return false;
+			}
 
 			foreach (Action<IMessage> handler in handlers)
 				handler(@event);
+			return true;
 		}
 
 		public virtual void RegisterHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)

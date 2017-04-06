@@ -329,6 +329,7 @@ namespace Cqrs.Azure.ServiceBus
 											removeDeadlLetterFromQueue(message);
 										else
 											leaveDeadlLetterInQueue(message, @event);
+										return true;
 									},
 									string.Format("id '{0}'", brokeredMessage.MessageId),
 									() =>
@@ -350,6 +351,7 @@ namespace Cqrs.Azure.ServiceBus
 											removeDeadlLetterFromQueue(message);
 										else
 											leaveDeadlLetterInQueue(message, command);
+										return true;
 									},
 									string.Format("id '{0}'", brokeredMessage.MessageId),
 									() =>
