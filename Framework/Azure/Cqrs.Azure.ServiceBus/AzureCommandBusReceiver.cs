@@ -30,6 +30,8 @@ namespace Cqrs.Azure.ServiceBus
 			get { return "Cqrs.Azure.CommandBus.TopicName.SubscriptionName.Filter"; }
 		}
 
+		protected string FilterKey { get; set; }
+
 		// ReSharper disable StaticMemberInGenericType
 		protected static RouteManager Routes { get; private set; }
 
@@ -53,6 +55,15 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			base.InstantiateReceiving(serviceBusReceivers, topicName, topicSubscriptionName);
 
+
+			// Because refreshing the rule can take a while, we only want to do this when the value changes
+			string filter;
+			if (!ConfigurationManager.TryGetSetting(FilterKeyConfigurationKey, out filter))
+				return;
+			if (FilterKey == filter)
+				return;
+			FilterKey = filter;
+
 			// https://docs.microsoft.com/en-us/azure/application-insights/app-insights-analytics-reference#summarize-operator
 			// http://www.summa.com/blog/business-blog/everything-you-need-to-know-about-azure-service-bus-brokered-messaging-part-2#rulesfiltersactions
 			// https://github.com/Azure-Samples/azure-servicebus-messaging-samples/tree/master/TopicFilters
@@ -65,23 +76,39 @@ namespace Cqrs.Azure.ServiceBus
 			{
 			}
 
-			try
+			int loopCounter = 0;
+			while (loopCounter < 10)
 			{
-				string filter = ConfigurationManager.GetSetting(FilterKeyConfigurationKey);
-				if (!string.IsNullOrWhiteSpace(filter))
+				try
 				{
-					RuleDescription ruleDescription = new RuleDescription
-					(
-						"CqrsConfiguredFilter",
-						new SqlFilter(filter)
-					);
-					client.AddRuleAsync(ruleDescription);
+					if (!string.IsNullOrWhiteSpace(filter))
+					{
+						RuleDescription ruleDescription = new RuleDescription
+						(
+							"CqrsConfiguredFilter",
+							new SqlFilter(filter)
+						);
+						client.AddRule(ruleDescription);
+					}
+					break;
 				}
-			}
-			catch (Exception exception)
-			{
-				Logger.LogError("Setting the filter failed.", exception: exception);
-				TelemetryHelper.TrackException(exception);
+				catch (MessagingEntityAlreadyExistsException exception)
+				{
+					loopCounter++;
+					// Still waiting for the delete to complete
+					Thread.Sleep(1000);
+					if (loopCounter == 9)
+					{
+						Logger.LogError("Setting the filter failed as it already exists.", exception: exception);
+						TelemetryHelper.TrackException(exception);
+					}
+				}
+				catch (Exception exception)
+				{
+					Logger.LogError("Setting the filter failed.", exception: exception);
+					TelemetryHelper.TrackException(exception);
+					break;
+				}
 			}
 		}
 
