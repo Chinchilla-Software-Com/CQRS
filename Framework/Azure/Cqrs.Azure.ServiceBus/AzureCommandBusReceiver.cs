@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
@@ -55,61 +56,65 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			base.InstantiateReceiving(serviceBusReceivers, topicName, topicSubscriptionName);
 
-
-			// Because refreshing the rule can take a while, we only want to do this when the value changes
-			string filter;
-			if (!ConfigurationManager.TryGetSetting(FilterKeyConfigurationKey, out filter))
-				return;
-			if (FilterKey == filter)
-				return;
-			FilterKey = filter;
-
-			// https://docs.microsoft.com/en-us/azure/application-insights/app-insights-analytics-reference#summarize-operator
-			// http://www.summa.com/blog/business-blog/everything-you-need-to-know-about-azure-service-bus-brokered-messaging-part-2#rulesfiltersactions
-			// https://github.com/Azure-Samples/azure-servicebus-messaging-samples/tree/master/TopicFilters
-			SubscriptionClient client = serviceBusReceivers[0];
-			try
+			Task.Factory.StartNewSafely
+			(() =>
 			{
-				client.RemoveRule("CqrsConfiguredFilter");
-			}
-			catch (MessagingEntityNotFoundException)
-			{
-			}
+				// Because refreshing the rule can take a while, we only want to do this when the value changes
+				string filter;
+				if (!ConfigurationManager.TryGetSetting(FilterKeyConfigurationKey, out filter))
+					return;
+				if (FilterKey == filter)
+					return;
+				FilterKey = filter;
 
-			int loopCounter = 0;
-			while (loopCounter < 10)
-			{
+				// https://docs.microsoft.com/en-us/azure/application-insights/app-insights-analytics-reference#summarize-operator
+				// http://www.summa.com/blog/business-blog/everything-you-need-to-know-about-azure-service-bus-brokered-messaging-part-2#rulesfiltersactions
+				// https://github.com/Azure-Samples/azure-servicebus-messaging-samples/tree/master/TopicFilters
+				SubscriptionClient client = serviceBusReceivers[0];
 				try
 				{
-					if (!string.IsNullOrWhiteSpace(filter))
-					{
-						RuleDescription ruleDescription = new RuleDescription
-						(
-							"CqrsConfiguredFilter",
-							new SqlFilter(filter)
-						);
-						client.AddRule(ruleDescription);
-					}
-					break;
+					client.RemoveRule("CqrsConfiguredFilter");
 				}
-				catch (MessagingEntityAlreadyExistsException exception)
+				catch (MessagingEntityNotFoundException)
 				{
-					loopCounter++;
-					// Still waiting for the delete to complete
-					Thread.Sleep(1000);
-					if (loopCounter == 9)
+				}
+
+				int loopCounter = 0;
+				while (loopCounter < 10)
+				{
+					try
 					{
-						Logger.LogError("Setting the filter failed as it already exists.", exception: exception);
+						if (!string.IsNullOrWhiteSpace(filter))
+						{
+							RuleDescription ruleDescription = new RuleDescription
+							(
+								"CqrsConfiguredFilter",
+								new SqlFilter(filter)
+							);
+							client.AddRule(ruleDescription);
+						}
+						break;
+					}
+					catch (MessagingEntityAlreadyExistsException exception)
+					{
+						loopCounter++;
+						// Still waiting for the delete to complete
+						Thread.Sleep(1000);
+						if (loopCounter == 9)
+						{
+							Logger.LogError("Setting the filter failed as it already exists.", exception: exception);
+							TelemetryHelper.TrackException(exception);
+						}
+					}
+					catch (Exception exception)
+					{
+						Logger.LogError("Setting the filter failed.", exception: exception);
 						TelemetryHelper.TrackException(exception);
+						break;
 					}
 				}
-				catch (Exception exception)
-				{
-					Logger.LogError("Setting the filter failed.", exception: exception);
-					TelemetryHelper.TrackException(exception);
-					break;
-				}
-			}
+			});
+
 		}
 
 		#endregion
