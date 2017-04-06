@@ -163,9 +163,12 @@ namespace Cqrs.Azure.ServiceBus
 							break;
 						case 7:
 						case 8:
-						case 9:
 							// 3 minutes
 							Thread.Sleep(3 * 60 * 1000);
+							break;
+						case 9:
+							telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
+							telemetryProperties.Add("ExceptionMessage", exception.Message);
 							break;
 					}
 					wasSuccessfull = false;

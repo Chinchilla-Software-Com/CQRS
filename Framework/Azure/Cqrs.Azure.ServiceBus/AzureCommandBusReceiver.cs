@@ -209,6 +209,8 @@ namespace Cqrs.Azure.ServiceBus
 				message.Abandon();
 				wasSuccessfull = false;
 				responseCode = "500";
+				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
+				telemetryProperties.Add("ExceptionMessage", exception.Message);
 			}
 			finally
 			{
