@@ -19,7 +19,7 @@ namespace Cqrs.Configuration
 
 			if (useApplicationInsightTelemetryHelper)
 			{
-				var helper = (ITelemetryHelper)Activator.CreateInstanceFrom("cdmdotnet.Logging.Azure.ApplicationInsights.dll", "cdmdotnet.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper }, null, null).Unwrap();
+				var helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format("{0}\\cdmdotnet.Logging.Azure.ApplicationInsights.dll", AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), "cdmdotnet.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper }, null, null).Unwrap();
 				return helper;
 			}
 			return new NullTelemetryHelper();

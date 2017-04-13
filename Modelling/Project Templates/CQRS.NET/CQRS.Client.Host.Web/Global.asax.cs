@@ -12,6 +12,12 @@ namespace $safeprojectname$
     {
         protected void Application_Start()
         {
+			// https://alexandrebrisebois.wordpress.com/2013/03/24/why-are-webrequests-throttled-i-want-more-throughput/
+			ServicePointManager.UseNagleAlgorithm = false;
+			ServicePointManager.DefaultConnectionLimit = 1000;
+			// http://stackoverflow.com/questions/12915585/azure-queue-performance
+			ServicePointManager.Expect100Continue = false;
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

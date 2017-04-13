@@ -23,6 +23,12 @@ namespace $safeprojectname$
 	{
 		protected void Application_Start(object sender, EventArgs e)
 		{
+			// https://alexandrebrisebois.wordpress.com/2013/03/24/why-are-webrequests-throttled-i-want-more-throughput/
+			ServicePointManager.UseNagleAlgorithm = false;
+			ServicePointManager.DefaultConnectionLimit = 1000;
+			// http://stackoverflow.com/questions/12915585/azure-queue-performance
+			ServicePointManager.Expect100Continue = false;
+
 			// Register the default hubs route: ~/signalr/hubs
 			RouteTable.Routes.MapOwinPath("/signalr");
 
