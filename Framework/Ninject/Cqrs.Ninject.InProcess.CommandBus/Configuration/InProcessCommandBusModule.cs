@@ -60,6 +60,10 @@ namespace Cqrs.Ninject.InProcess.CommandBus.Configuration
 				.ToConstant(inProcessBus)
 				.InSingletonScope();
 
+			Bind<ICommandPublisher<TAuthenticationToken>>()
+				.ToConstant(inProcessBus)
+				.InSingletonScope();
+
 			bool isHandlerRegistrationBound = Kernel.GetBindings(typeof(ICommandHandlerRegistrar)).Any();
 			if (!isHandlerRegistrationBound)
 			{

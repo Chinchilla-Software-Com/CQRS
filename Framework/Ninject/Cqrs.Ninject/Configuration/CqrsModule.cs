@@ -84,6 +84,10 @@ namespace Cqrs.Ninject.Configuration
 			Bind<ILoggerSettings>()
 				.To<LoggerSettings>()
 				.InSingletonScope();
+
+			Bind<ITelemetryHelper>()
+				.To<NullTelemetryHelper>()
+				.InSingletonScope();
 		}
 
 		/// <summary>

@@ -44,7 +44,17 @@ namespace Cqrs.Ninject.Akka
 			// Create the ActorSystem and Dependency Resolver
 			ActorSystem system = ActorSystem.Create("Cqrs");
 
-			DependencyResolverCreator = container => new AkkaNinjectDependencyResolver(container, system);
+			Func<IKernel, NinjectDependencyResolver> originalDependencyResolverCreator = DependencyResolverCreator;
+			Func<IKernel, NinjectDependencyResolver> dependencyResolverCreator = container => new AkkaNinjectDependencyResolver(container, system);
+			if (originalDependencyResolverCreator == null)
+				DependencyResolverCreator = dependencyResolverCreator;
+			else
+				DependencyResolverCreator = container =>
+				{
+					originalDependencyResolverCreator(container);
+					return dependencyResolverCreator(container);
+				};
+
 			NinjectDependencyResolver.Start(kernel, prepareProvidedKernel);
 		}
 
