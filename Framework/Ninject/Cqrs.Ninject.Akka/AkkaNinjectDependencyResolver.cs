@@ -36,7 +36,7 @@ namespace Cqrs.Ninject.Akka
 		protected override void BindDependencyResolver()
 		{
 			bool isDependencyResolverBound = Kernel.GetBindings(typeof(Cqrs.Configuration.IDependencyResolver)).Any();
-			if (!isDependencyResolverBound)
+			if (isDependencyResolverBound)
 				Kernel.Unbind<Cqrs.Configuration.IDependencyResolver>();
 			Kernel.Bind<Cqrs.Configuration.IDependencyResolver>()
 				.ToConstant(this)
