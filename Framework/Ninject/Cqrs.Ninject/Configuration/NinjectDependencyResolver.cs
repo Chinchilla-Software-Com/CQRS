@@ -41,10 +41,18 @@ namespace Cqrs.Ninject.Configuration
 		public NinjectDependencyResolver(IKernel kernel)
 		{
 			Kernel = kernel;
+			BindDependencyResolver();
+		}
 
-			Kernel.Bind<IDependencyResolver>()
-				.ToConstant(this)
-				.InSingletonScope();
+		protected virtual void BindDependencyResolver()
+		{
+			bool isDependencyResolverBound = Kernel.GetBindings(typeof(IDependencyResolver)).Any();
+			if (!isDependencyResolverBound)
+			{
+				Kernel.Bind<IDependencyResolver>()
+					.ToConstant(this)
+					.InSingletonScope();
+			}
 		}
 
 		/// <summary>

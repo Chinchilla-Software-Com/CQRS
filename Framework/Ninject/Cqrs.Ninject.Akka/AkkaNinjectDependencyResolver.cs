@@ -33,6 +33,16 @@ namespace Cqrs.Ninject.Akka
 			AggregateFactory = Resolve<IAggregateFactory>();
 		}
 
+		protected override void BindDependencyResolver()
+		{
+			bool isDependencyResolverBound = Kernel.GetBindings(typeof(Cqrs.Configuration.IDependencyResolver)).Any();
+			if (!isDependencyResolverBound)
+				Kernel.Unbind<Cqrs.Configuration.IDependencyResolver>();
+			Kernel.Bind<Cqrs.Configuration.IDependencyResolver>()
+				.ToConstant(this)
+				.InSingletonScope();
+		}
+
 		/// <summary>
 		/// Starts the <see cref="AkkaNinjectDependencyResolver"/>
 		/// </summary>
