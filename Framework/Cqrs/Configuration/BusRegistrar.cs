@@ -25,26 +25,32 @@ namespace Cqrs.Configuration
 	{
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
+		public static Func<Type, IHandlerRegistrar> GetEventHandlerRegistrar { get; set; }
+
+		public static Func<Type, IHandlerRegistrar> GetCommandHandlerRegistrar { get; set; }
+
 		public BusRegistrar(IDependencyResolver dependencyResolver)
 		{
 			if(dependencyResolver == null)
 				throw new ArgumentNullException("dependencyResolver");
 
 			DependencyResolver = dependencyResolver;
+			GetEventHandlerRegistrar = type => DependencyResolver.Resolve<IEventHandlerRegistrar>();
+			GetCommandHandlerRegistrar = type => DependencyResolver.Resolve<ICommandHandlerRegistrar>();
 		}
 
 		public virtual void Register(params Type[] typesFromAssemblyContainingMessages)
 		{
 			var eventHandlerRegistrar = DependencyResolver.Resolve<IEventHandlerRegistrar>();
 			if (eventHandlerRegistrar != null)
-				Register(eventHandlerRegistrar, ResolveEventHandlerInterface, true, typesFromAssemblyContainingMessages);
+				Register(true, ResolveEventHandlerInterface, true, typesFromAssemblyContainingMessages);
 
 			var commandHandlerRegistrar = DependencyResolver.Resolve<ICommandHandlerRegistrar>();
 			if (commandHandlerRegistrar != null)
-				Register(commandHandlerRegistrar, ResolveCommandHandlerInterface, false, typesFromAssemblyContainingMessages);
+				Register(false, ResolveCommandHandlerInterface, false, typesFromAssemblyContainingMessages);
 		}
 
-		public virtual void Register(IHandlerRegistrar handlerRegistrar, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, bool skipCommandHandlers, params Type[] typesFromAssemblyContainingMessages)
+		public virtual void Register(bool trueForEventsFalseForCommands, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, bool skipCommandHandlers, params Type[] typesFromAssemblyContainingMessages)
 		{
 			foreach (Type typesFromAssemblyContainingMessage in typesFromAssemblyContainingMessages)
 			{
@@ -66,7 +72,7 @@ namespace Cqrs.Configuration
 							Type[] genericArguments = typesFromAssemblyContainingMessage.GetGenericArguments().Take(2).ToArray();
 							safeExecutorType = safeExecutorType.MakeGenericType(genericArguments.Take(2).ToArray());
 						}
-						InvokeHandler(@interface, handlerRegistrar, resolveMessageHandlerInterface, safeExecutorType);
+						InvokeHandler(@interface, trueForEventsFalseForCommands, resolveMessageHandlerInterface, safeExecutorType);
 					}
 				}
 			}
@@ -78,11 +84,11 @@ namespace Cqrs.Configuration
 		/// Then register the created <see cref="Action"/> using the extracted <see cref="IHandlerRegistrar.RegisterHandler{TMessage}"/> method
 		/// </summary>
 		/// <param name="executorType">The <see cref="Type"/> of the event handler that will do the handling</param>
-		protected virtual void InvokeHandler(Type @interface, IHandlerRegistrar bus, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, Type executorType)
+		protected virtual void InvokeHandler(Type @interface, bool trueForEventsFalseForCommands, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, Type executorType)
 		{
 			MethodInfo registerExecutorMethod = null;
 
-			MethodInfo originalRegisterExecutorMethod = bus
+			MethodInfo originalRegisterExecutorMethod = (trueForEventsFalseForCommands ? GetEventHandlerRegistrar(null) : GetCommandHandlerRegistrar(null))
 				.GetType()
 				.GetMethods(BindingFlags.Instance | BindingFlags.Public)
 				.Where(mi => mi.Name == "RegisterHandler")
@@ -118,17 +124,19 @@ namespace Cqrs.Configuration
 				throw new InvalidOperationException("No executor method could be compiled for " + @interface.FullName);
 
 			HandlerDelegate handlerDelegate = BuildDelegateAction(executorType, resolveMessageHandlerInterface);
-			
-			InvokeHandlerDelegate(registerExecutorMethod, bus, handlerDelegate);
+
+			InvokeHandlerDelegate(registerExecutorMethod, trueForEventsFalseForCommands, handlerDelegate);
 		}
 
-		protected virtual void InvokeHandlerDelegate(MethodInfo registerExecutorMethod, IHandlerRegistrar bus, HandlerDelegate handlerDelegate)
+		protected virtual void InvokeHandlerDelegate(MethodInfo registerExecutorMethod, bool trueForEventsFalseForCommands, HandlerDelegate handlerDelegate)
 		{
+			Type messageType = null;
 			bool holdMessageLock;
 			try
 			{
-				string messageType = registerExecutorMethod.GetParameters()[0].ParameterType.GetGenericArguments()[0].FullName;
-				string configuration = string.Format("{0}<{1}>.HoldMessageLock", handlerDelegate.TargetedType.FullName, messageType);
+				messageType = registerExecutorMethod.GetParameters()[0].ParameterType.GetGenericArguments()[0];
+				string messageTypeName = messageType.FullName;
+				string configuration = string.Format("{0}<{1}>.HoldMessageLock", handlerDelegate.TargetedType.FullName, messageTypeName);
 				// If this cannot be parsed then assume the safe route that this must be required to hold the lock.
 				if (!bool.TryParse(DependencyResolver.Resolve<IConfigurationManager>().GetSetting(configuration), out holdMessageLock))
 					holdMessageLock = true;
@@ -137,7 +145,7 @@ namespace Cqrs.Configuration
 			{
 				holdMessageLock = true;
 			}
-			registerExecutorMethod.Invoke(bus, new object[] { handlerDelegate.Delegate, handlerDelegate.TargetedType, holdMessageLock });
+			registerExecutorMethod.Invoke(trueForEventsFalseForCommands ? GetEventHandlerRegistrar(messageType) : GetCommandHandlerRegistrar(messageType), new object[] { handlerDelegate.Delegate, handlerDelegate.TargetedType, holdMessageLock });
 		}
 
 		protected virtual HandlerDelegate BuildDelegateAction(Type executorType, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface)

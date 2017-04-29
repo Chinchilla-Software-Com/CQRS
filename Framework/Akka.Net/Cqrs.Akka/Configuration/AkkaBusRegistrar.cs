@@ -76,9 +76,9 @@ namespace Cqrs.Akka.Configuration
 			return new HandlerDelegate { Delegate = handlerDelegate, TargetedType = targetedType };
 		}
 
-		protected override void InvokeHandlerDelegate(MethodInfo registerExecutorMethod, IHandlerRegistrar bus, HandlerDelegate handlerDelegate)
+		protected override void InvokeHandlerDelegate(MethodInfo registerExecutorMethod, bool trueForEventsFalseForCommands, HandlerDelegate handlerDelegate)
 		{
-			base.InvokeHandlerDelegate(registerExecutorMethod, bus, handlerDelegate);
+			base.InvokeHandlerDelegate(registerExecutorMethod, trueForEventsFalseForCommands, handlerDelegate);
 			registerExecutorMethod.Invoke(DependencyResolver.Resolve<IAkkaEventPublisher<TAuthenticationToken>>(), new object[] { handlerDelegate.Delegate, handlerDelegate.TargetedType });
 		}
 
