@@ -33,6 +33,7 @@ namespace Cqrs.Ninject.Akka.Configuration
 			Bind<IAkkaEventPublisherProxy<TAuthenticationToken>>().To<AkkaEventBusProxy<TAuthenticationToken>>().InSingletonScope();
 			Bind<IAkkaCommandSender<TAuthenticationToken>>().To<AkkaCommandBus<TAuthenticationToken>>().InSingletonScope();
 			Bind<IAkkaCommandSenderProxy<TAuthenticationToken>>().To<AkkaCommandBusProxy<TAuthenticationToken>>().InSingletonScope();
+			Bind<IAkkaAggregateResolver>().To<AkkaAggregateResolver>().InSingletonScope();
 
 			BusRegistrar.GetEventHandlerRegistrar = (messageType, handlerDelegateTargetedType) =>
 			{

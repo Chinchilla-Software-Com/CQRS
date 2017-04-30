@@ -41,6 +41,14 @@ namespace Cqrs.Ninject.Akka
 			Kernel.Bind<Cqrs.Configuration.IDependencyResolver>()
 				.ToConstant(this)
 				.InSingletonScope();
+
+			isDependencyResolverBound = Kernel.GetBindings(typeof(IAkkaAggregateResolver)).Any();
+			if (!isDependencyResolverBound)
+			{
+				Kernel.Bind<IAkkaAggregateResolver>()
+					.ToConstant(this)
+					.InSingletonScope();
+			}
 		}
 
 		/// <summary>
