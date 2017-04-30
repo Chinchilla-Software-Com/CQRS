@@ -23,11 +23,16 @@ namespace Cqrs.DataStores
 	{
 		internal const string SqlDataStoreDbFileOrServerOrConnectionApplicationKey = @"SqlDataStoreDbFileOrServerOrConnection";
 
+		internal const string SqlDataStoreConnectionNameApplicationKey = @"Cqrs.SqlDataStore.ConnectionStringName";
+
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
 		public SqlDataStore(IConfigurationManager configurationManager, ILogger logger)
 		{
+			ConfigurationManager = configurationManager;
 			Logger = logger;
 			// Use a connection string.
-			DbDataContext = new DataContext(configurationManager.GetSetting(SqlDataStoreDbFileOrServerOrConnectionApplicationKey));
+			DbDataContext = CreateDbDataContext();
 
 			// Get a typed table to run queries.
 			Table = DbDataContext.GetTable<TData>();
@@ -38,6 +43,31 @@ namespace Cqrs.DataStores
 		protected Table<TData> Table { get; private set; }
 
 		protected ILogger Logger { get; private set; }
+
+		protected virtual DataContext CreateDbDataContext()
+		{
+			string connectionStringKey;
+			string applicationKey;
+			if (!ConfigurationManager.TryGetSetting(SqlDataStoreConnectionNameApplicationKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
+			{
+				if (!ConfigurationManager.TryGetSetting(SqlDataStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
+				{
+					throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlDataStoreConnectionNameApplicationKey));
+				}
+			}
+			else
+			{
+				try
+				{
+					connectionStringKey = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey].ConnectionString;
+				}
+				catch (NullReferenceException exception)
+				{
+					throw new NullReferenceException(string.Format("No connection string setting named '{0}' was found in the configuration file with the SQL Data Store connection string.", applicationKey), exception);
+				}
+			}
+			return new DataContext(connectionStringKey);
+		}
 
 		#region Implementation of IEnumerable
 
