@@ -36,7 +36,7 @@ namespace Cqrs.Ninject.Akka.Configuration
 
 			BusRegistrar.GetEventHandlerRegistrar = (messageType, handlerDelegateTargetedType) =>
 			{
-				bool isAnActor = messageType.GetNestedTypes().Any(type => type.Name == "Actor");
+				bool isAnActor = messageType != null && messageType.GetNestedTypes().Any(type => type.Name == "Actor");
 				IEventHandlerRegistrar eventHandlerRegistrar = null;
 				if (isAnActor)
 					eventHandlerRegistrar = Resolve<IAkkaEventPublisher<TAuthenticationToken>>() as IEventHandlerRegistrar;
@@ -45,7 +45,7 @@ namespace Cqrs.Ninject.Akka.Configuration
 
 			BusRegistrar.GetCommandHandlerRegistrar = (messageType, handlerDelegateTargetedType) =>
 			{
-				bool isAnActor = messageType.GetProperty("AggregateResolver", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.NonPublic | BindingFlags.Public) != null;
+				bool isAnActor = handlerDelegateTargetedType != null && handlerDelegateTargetedType.GetProperty("AggregateResolver", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.NonPublic | BindingFlags.Public) != null;
 				ICommandHandlerRegistrar commandHandlerRegistrar = null;
 				if (isAnActor)
 					commandHandlerRegistrar = Resolve<IAkkaCommandSender<TAuthenticationToken>>() as ICommandHandlerRegistrar;
