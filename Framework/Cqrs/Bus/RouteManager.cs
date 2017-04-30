@@ -113,7 +113,7 @@ namespace Cqrs.Bus
 			{
 				if (route.Handlers != null)
 				{
-					if (route.Handlers.Count != 1)
+					if (route.Handlers.Count > 1)
 					{
 						if (isACommand)
 							throw new MultipleCommandHandlersRegisteredException(messageType);

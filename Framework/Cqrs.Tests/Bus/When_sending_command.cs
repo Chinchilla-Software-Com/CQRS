@@ -4,6 +4,7 @@ using Cqrs.Authentication;
 using cdmdotnet.Logging;
 using cdmdotnet.Logging.Configuration;
 using cdmdotnet.StateManagement.Threaded;
+using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
@@ -38,13 +39,13 @@ namespace Cqrs.Tests.Bus
 			_bus.RegisterHandler<TestAggregateDoSomething>(x.Handle, x.GetType());
 			_bus.RegisterHandler<TestAggregateDoSomething>(x.Handle, x.GetType());
 
-			Assert.Throws<InvalidOperationException>(() => _bus.Send(new TestAggregateDoSomething()));
+			Assert.Throws<MultipleCommandHandlersRegisteredException>(() => _bus.Send(new TestAggregateDoSomething()));
 		}
 
 		[Test]
 		public void Should_throw_if_no_handlers()
 		{
-			Assert.Throws<InvalidOperationException>(() => _bus.Send(new TestAggregateDoSomething()));
+			Assert.Throws<NoCommandHandlerRegisteredException>(() => _bus.Send(new TestAggregateDoSomething()));
 		}
 	}
 }
