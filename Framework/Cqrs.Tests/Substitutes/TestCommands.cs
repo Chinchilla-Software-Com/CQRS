@@ -24,10 +24,6 @@ namespace Cqrs.Tests.Substitutes
 		[DataMember]
 		public Guid CorrelationId { get; set; }
 
-		[DataMember]
-		[Obsolete("Use Frameworks, It's far more flexible and OriginatingFramework")]
-		public FrameworkType Framework { get; set; }
-
 		/// <summary>
 		/// The originating framework this message was sent from.
 		/// </summary>
@@ -40,15 +36,15 @@ namespace Cqrs.Tests.Substitutes
 		[DataMember]
 		public IEnumerable<string> Frameworks { get; set; }
 
-		[Obsolete("Use CorrelationId")]
-		[DataMember]
-		public Guid CorrolationId
-		{
-			get { return CorrelationId; }
-			set { CorrelationId = value; }
-		}
-
 		#endregion
+	}
+
+	public class TestAggregateDoSomething2 : TestAggregateDoSomething
+	{
+	}
+
+	public class TestAggregateDoSomething3 : TestAggregateDoSomething
+	{
 	}
 
 	public class TestAggregateDoSomethingHandler : ICommandHandler<ISingleSignOnToken, TestAggregateDoSomething> 

@@ -45,7 +45,13 @@ namespace Cqrs.Tests.Bus
 		[Test]
 		public void Should_throw_if_no_handlers()
 		{
-			Assert.Throws<NoCommandHandlerRegisteredException>(() => _bus.Send(new TestAggregateDoSomething()));
+			Assert.Throws<NoCommandHandlerRegisteredException>(() => _bus.Send(new TestAggregateDoSomething2()));
+		}
+
+		[Test]
+		public void Has_no_handles_should_not_throw_due_to_settings()
+		{
+			_bus.Send(new TestAggregateDoSomething3());
 		}
 	}
 }
