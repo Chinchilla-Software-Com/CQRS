@@ -21,9 +21,19 @@ namespace Cqrs.Bus
 	{
 		protected IDictionary<Type, Route> Routes { get; private set; }
 
+		private static Type CommandType { get; set; }
+
+		private static Type EventType { get; set; }
+
 		public RouteManager()
 		{
 			Routes = new Dictionary<Type, Route>();
+		}
+
+		static RouteManager()
+		{
+			CommandType = typeof (ICommand<>);
+			EventType = typeof (IEvent<>);
 		}
 
 		#region Implementation of IHandlerRegistrar
@@ -69,7 +79,7 @@ namespace Cqrs.Bus
 		{
 			Route route;
 			Type messageType = typeof(TMessage);
-			bool isACommand = typeof(ICommand<>).IsAssignableFrom(messageType);
+			bool isACommand = IsACommand(messageType);
 
 			if (Routes.TryGetValue(typeof(TMessage), out route))
 			{
@@ -97,7 +107,7 @@ namespace Cqrs.Bus
 		{
 			Route route;
 			Type messageType = message.GetType();
-			bool isACommand = typeof (ICommand<>).IsAssignableFrom(messageType);
+			bool isACommand = IsACommand(messageType);
 
 			if (Routes.TryGetValue(messageType, out route))
 			{
@@ -134,8 +144,8 @@ namespace Cqrs.Bus
 
 			if (throwExceptionOnNoRouteHandlers)
 			{
-				bool isACommand = typeof(ICommand<>).IsAssignableFrom(messageType);
-				bool isAnEvent = typeof(IEvent<>).IsAssignableFrom(messageType);
+				bool isACommand = IsACommand(messageType);
+				bool isAnEvent = IsAnEvent(messageType);
 
 				if (isACommand)
 					throw new NoCommandHandlerRegisteredException(messageType);
@@ -145,6 +155,46 @@ namespace Cqrs.Bus
 			}
 
 			return Enumerable.Empty<RouteHandlerDelegate>();
+		}
+
+		protected virtual bool IsACommand<TMessage>(TMessage message)
+		{
+			Type messageType = message.GetType();
+			return IsACommand(messageType);
+		}
+
+		protected virtual bool IsACommand(Type messageType)
+		{
+			bool isACommand = false;
+			Type messageCommandInterface = messageType.GetInterfaces().FirstOrDefault(type => type.FullName.StartsWith(CommandType.FullName));
+			if (messageCommandInterface != null)
+			{
+				Type[] genericArguments = messageCommandInterface.GetGenericArguments();
+				if (genericArguments.Length == 1)
+					isACommand = CommandType.MakeGenericType(genericArguments.Single()).IsAssignableFrom(messageType);
+			}
+
+			return isACommand;
+		}
+
+		protected virtual bool IsAnEvent<TMessage>(TMessage message)
+		{
+			Type messageType = message.GetType();
+			return IsACommand(messageType);
+		}
+
+		protected virtual bool IsAnEvent(Type messageType)
+		{
+			bool isAnEvent = false;
+			Type messageCommandInterface = messageType.GetInterfaces().FirstOrDefault(type => type.FullName.StartsWith(EventType.FullName));
+			if (messageCommandInterface != null)
+			{
+				Type[] genericArguments = messageCommandInterface.GetGenericArguments();
+				if (genericArguments.Length == 1)
+					isAnEvent = EventType.MakeGenericType(genericArguments.Single()).IsAssignableFrom(messageType);
+			}
+
+			return isAnEvent;
 		}
 	}
 }
