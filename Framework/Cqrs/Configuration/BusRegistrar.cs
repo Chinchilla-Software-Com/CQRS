@@ -35,8 +35,10 @@ namespace Cqrs.Configuration
 				throw new ArgumentNullException("dependencyResolver");
 
 			DependencyResolver = dependencyResolver;
-			GetEventHandlerRegistrar = (messageType, handlerDelegateTargetedType) => DependencyResolver.Resolve<IEventHandlerRegistrar>();
-			GetCommandHandlerRegistrar = (messageType, handlerDelegateTargetedType) => DependencyResolver.Resolve<ICommandHandlerRegistrar>();
+			if (GetEventHandlerRegistrar == null)
+				GetEventHandlerRegistrar = (messageType, handlerDelegateTargetedType) => DependencyResolver.Resolve<IEventHandlerRegistrar>();
+			if (GetCommandHandlerRegistrar == null)
+				GetCommandHandlerRegistrar = (messageType, handlerDelegateTargetedType) => DependencyResolver.Resolve<ICommandHandlerRegistrar>();
 		}
 
 		public virtual void Register(params Type[] typesFromAssemblyContainingMessages)
