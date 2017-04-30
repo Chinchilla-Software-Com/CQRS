@@ -146,6 +146,11 @@ namespace Cqrs.Ninject.Akka
 				}
 				typeToTest = typeToTest.BaseType;
 			}
+
+			// This sorts out an out-of-order binder issue
+			if (AggregateFactory == null)
+				AggregateFactory = Resolve<IAggregateFactory>();
+
 			if (typeToTest == null || !(typeToTest).IsAssignableFrom(serviceType))
 				properties = Props.Create(() => (ActorBase)RootResolve(serviceType));
 			else
