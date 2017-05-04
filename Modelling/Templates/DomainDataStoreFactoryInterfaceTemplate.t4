@@ -62,9 +62,10 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 		foreach (INamedElement element in allDataStores)
 		{
 			string elementName = element.Name;
+			bool isAggregateTo = element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
 			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
 #>
-		IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> Get<#= elementName #>DataStore();
+		IDataStore<<#= moduleName #>.Entities.<#= elementName #><#= isAggregateTo ? "Entity" : string.Empty #>> Get<#= elementName #>DataStore();
 
 <#
 		}

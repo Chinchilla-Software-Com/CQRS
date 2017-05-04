@@ -89,9 +89,9 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			if (shouldBuild)
 			{
 #>
-		public virtual IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> Get<#= elementName #>DataStore()
+		public virtual IDataStore<<#= moduleName #>.Entities.<#= elementName #>> Get<#= elementName #>DataStore()
 		{
-			IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> result = new BlobStorageDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity>(Logger, BlobStorageDataStoreConnectionStringFactory);
+			IDataStore<<#= moduleName #>.Entities.<#= elementName #>> result = new BlobStorageDataStore<<#= moduleName #>.Entities.<#= elementName #>>(Logger, BlobStorageDataStoreConnectionStringFactory);
 			OnGet<#= elementName #>DataStore(ref result);
 			return result;
 		}
@@ -138,7 +138,7 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			if (shouldBuild)
 			{
 #>
-		partial void OnGet<#= elementName #>DataStore(ref IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> result);
+		partial void OnGet<#= elementName #>DataStore(ref IDataStore<<#= moduleName #>.Entities.<#= elementName #>> result);
 
 <#
 			}

@@ -281,7 +281,17 @@
 	{
 		IElement domainElement = FindDomainElement(t);
 		var domainStereoTypeProperties = domainElement.AppliedStereotypes.Single(property => property.Name == "Domain");
-		return domainStereoTypeProperties.PropertyInstances.Single(property => property.Name == "EventHandlerTechnology").Value;
+		string eventHandlerTechnology = domainStereoTypeProperties.PropertyInstances.Single(property => property.Name == "EventHandlerTechnology").Value;
+
+		var aggregateStereoTypeProperties = t.AppliedStereotypes.SingleOrDefault(property => (property.Name == "EventHandler" || property.Name == "EventToCommandConverter"));
+		if (aggregateStereoTypeProperties != null)
+		{
+			var propertyInstance = aggregateStereoTypeProperties.PropertyInstances.SingleOrDefault(property => property.Name == "EventHandlerTechnology" || property.Name == "AggregateTechnology");
+			if (propertyInstance != null)
+				eventHandlerTechnology = propertyInstance.Value;
+		}
+
+		return eventHandlerTechnology;
 	}
 
 	private static string GetAggregateTechnology(IElement t)

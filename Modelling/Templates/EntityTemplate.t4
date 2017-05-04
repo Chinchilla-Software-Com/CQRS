@@ -56,7 +56,7 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 	[DataContract]
 	[Table(Name = "<#= tableName #>")]
 	<#= GetServiceContractAttribute(this.Element) #>
-	public <#= GetAbstract(this.Element) #> partial class <#= className #>Entity : <#= baseClass #>, I<#= className #>Entity
+	public <#= GetAbstract(this.Element) #> partial class <#= className #><#= isAggregateTo ? "Entity" : string.Empty #> : <#= baseClass #>, I<#= className #><#= isAggregateTo ? "Entity" : string.Empty #>
 	{
 		[DataMember]
 		[Column(IsPrimaryKey = true)]

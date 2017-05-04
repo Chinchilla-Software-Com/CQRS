@@ -5,7 +5,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Mvc;
 
-namespace Results.Domain.Host.Web.Areas.Client.Controllers
+namespace $safeprojectname$.Areas.Client.Controllers
 {
 	public class ClientController : Controller
 	{

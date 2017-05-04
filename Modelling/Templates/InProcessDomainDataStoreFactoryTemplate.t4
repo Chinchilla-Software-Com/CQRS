@@ -46,6 +46,9 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
 			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
+
+			if (shouldBuild)
 			{
 #>
 		public virtual IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> Get<#= elementName #>DataStore()
@@ -54,6 +57,36 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			OnGet<#= elementName #>DataStore(ref result);
 			if (result == null)
 				result = new InProcessDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity>();
+			return result;
+		}
+
+<#
+			}
+		}
+#>
+<#
+		foreach (var element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
+		{
+			bool isAggregateTo = element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
+			if (isAggregateTo)
+				continue;
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "Entity");
+			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
+				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
+			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
+
+			if (shouldBuild)
+			{
+#>
+		public virtual IDataStore<<#= moduleName #>.Entities.<#= elementName #>> Get<#= elementName #>DataStore()
+		{
+			IDataStore<<#= moduleName #>.Entities.<#= elementName #>> result = null;
+			OnGet<#= elementName #>DataStore(ref result);
+			if (result == null)
+				result = new InProcessDataStore<<#= moduleName #>.Entities.<#= elementName #>>();
 			return result;
 		}
 
@@ -72,9 +105,33 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
 			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
+			if (shouldBuild)
 			{
 #>
 		partial void OnGet<#= elementName #>DataStore(ref IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> result);
+
+<#
+			}
+		}
+#>
+<#
+		foreach (var element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
+		{
+			bool isAggregateTo = element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
+			if (isAggregateTo)
+				continue;
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "Entity");
+			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
+				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
+			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
+			if (shouldBuild)
+			{
+#>
+		partial void OnGet<#= elementName #>DataStore(ref IDataStore<<#= moduleName #>.Entities.<#= elementName #>> result);
 
 <#
 			}

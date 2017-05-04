@@ -57,6 +57,9 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
 			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
+
+			if (shouldBuild)
 			{
 #>
 		public virtual IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> Get<#= elementName #>DataStore()
@@ -77,6 +80,41 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			}
 		}
 #>
+<#
+		foreach (var element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
+		{
+			bool isAggregateTo = element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
+			if (isAggregateTo)
+				continue;
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "Entity");
+			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
+				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
+			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
+
+			if (shouldBuild)
+			{
+#>
+		public virtual IDataStore<<#= moduleName #>.Entities.<#= elementName #>> Get<#= elementName #>DataStore()
+		{
+			OnObtain<#= elementName #>Collection();
+
+			DocumentClient client = GetClient();
+			Database database = GetDatabase(client);
+			DocumentCollection collection = GetCollection<<#= moduleName #>.Entities.<#= elementName #>>(client, database);
+			IOrderedQueryable<<#= moduleName #>.Entities.<#= elementName #>> query = GetQuery<<#= moduleName #>.Entities.<#= elementName #>>(client, collection);
+
+			OnObtained<#= elementName #>Collection(ref client, ref database, ref collection, ref query);
+			VerifyIndexes(client, database, collection, query);
+			return new AzureDocumentDbDataStore<<#= moduleName #>.Entities.<#= elementName #>>(Logger, client, database, collection, query, AzureDocumentDbHelper);
+		}
+
+<#
+			}
+		}
+#>
 		#endregion
 
 <#
@@ -84,6 +122,13 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 		{
 			string elementName = element.Name;
 			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
+				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
+			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
+			if (shouldBuild)
+			{
 #>
 		partial void OnObtain<#= elementName #>Collection();
 
@@ -92,6 +137,33 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 		partial void VerifyIndexes(DocumentClient client, Database database, DocumentCollection collection, IOrderedQueryable<<#= moduleName #>.Entities.<#= elementName #>Entity> query);
 
 <#
+			}
+		}
+#>
+<#
+		foreach (var element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
+		{
+			bool isAggregateTo = element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
+			if (isAggregateTo)
+				continue;
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "Entity");
+			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
+				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
+			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
+			if (shouldBuild)
+			{
+#>
+		partial void OnObtain<#= elementName #>Collection();
+
+		partial void OnObtained<#= elementName #>Collection(ref DocumentClient client, ref Database database, ref DocumentCollection collection, ref IOrderedQueryable<<#= moduleName #>.Entities.<#= elementName #>> query);
+
+		partial void VerifyIndexes(DocumentClient client, Database database, DocumentCollection collection, IOrderedQueryable<<#= moduleName #>.Entities.<#= elementName #>> query);
+
+<#
+			}
 		}
 #>
 	}

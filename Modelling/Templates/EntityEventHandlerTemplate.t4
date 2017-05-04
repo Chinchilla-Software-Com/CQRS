@@ -10,6 +10,7 @@
 <#@ Output Extension=".cs" #>
 <#
 var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "Entity");
+bool isAggregateTo = this.Element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
 string authenticationTokenType = GetDomainAuthenticationTokenType(this.Element);
 
 // Header
@@ -155,13 +156,13 @@ foreach(IAssociation relationship in relationships)
 			string eventTypeName = @event.GetType().FullName;
 			OnHandle(@event);
 
-			var entities = new List<<#= entityName #>Entity>();
+			var entities = new List<<#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #>>();
 
 			bool singleItemNotCollection = true;
 			OnPreGet(@event, ref singleItemNotCollection);
 			if (singleItemNotCollection)
 			{
-				<#= entityName #>Entity entity = null;
+				<#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #> entity = null;
 				OnGetEntity(@event, ref entity);
 				if (entity == null)
 				{
@@ -174,7 +175,7 @@ foreach(IAssociation relationship in relationships)
 						Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Rsn manually provided.", eventTypeName, @event.Rsn));
 					if (!throwExceptionOnMissingEntity)
 						Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Can expect no value from the repository without an exception.", eventTypeName, @event.Rsn));
-					entity = <#= className #>Repository.Load(rsn.Value, throwExceptionOnMissingEntity);
+					entity = <#= className #>Repository.Load(rsn.Value, throwExceptionOnMissingEntity) ?? new <#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #>{ Rsn = rsn.Value };
 				}
 				else
 					Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Entity manually provided.", eventTypeName, @event.Rsn));
@@ -184,14 +185,14 @@ foreach(IAssociation relationship in relationships)
 			else
 			{
 				Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Several entities will be loaded manually.", eventTypeName, @event.Rsn));
-				IEnumerable<<#= entityName #>Entity> manualEntities = null;
+				IEnumerable<<#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #>> manualEntities = null;
 				OnGetEntities(@event, ref manualEntities);
 				if (manualEntities != null)
 					entities.AddRange(manualEntities);
 			}
 			for (int i = 0; i < entities.Count; i++)
 			{
-				<#= entityName #>Entity entity = entities[i];
+				<#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #> entity = entities[i];
 
 				bool autoMap = true;
 				OnUpdateEntity(@event, ref entity, ref autoMap);
@@ -234,19 +235,19 @@ foreach(IAssociation relationship in relationships)
 
 		partial void GetSingleEntityRsn(<#= eventName #> @event, ref Guid? rsn, ref bool throwExceptionOnMissingEntity);
 
-		partial void OnGetEntities(<#= eventName #> @event, ref IEnumerable<<#= entityName #>Entity> manualEntities);
+		partial void OnGetEntities(<#= eventName #> @event, ref IEnumerable<<#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #>> manualEntities);
 
-		partial void OnGetEntity(<#= eventName #> @event, ref <#= entityName #>Entity entity);
+		partial void OnGetEntity(<#= eventName #> @event, ref <#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #> entity);
 
-		partial void OnGotEntity(<#= eventName #> @event, ref <#= entityName #>Entity entity);
+		partial void OnGotEntity(<#= eventName #> @event, ref <#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #> entity);
 
-		partial void OnUpdateEntity(<#= eventName #> @event, ref <#= entityName #>Entity entity, ref bool autoMap);
+		partial void OnUpdateEntity(<#= eventName #> @event, ref <#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #> entity, ref bool autoMap);
 
-		partial void OnEntityUpdated(<#= eventName #> @event, ref <#= entityName #>Entity entity);
+		partial void OnEntityUpdated(<#= eventName #> @event, ref <#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #> entity);
 
-		partial void OnSaveEntity(<#= eventName #> @event, ref <#= entityName #>Entity entity, ref bool continueWithRepositorySave, ref bool createDontUpdate);
+		partial void OnSaveEntity(<#= eventName #> @event, ref <#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #> entity, ref bool continueWithRepositorySave, ref bool createDontUpdate);
 
-		partial void OnEntitySaved(<#= eventName #> @event, ref <#= entityName #>Entity entity);
+		partial void OnEntitySaved(<#= eventName #> @event, ref <#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #> entity);
 
 		partial void OnHandled(<#= eventName #> @event);
 
