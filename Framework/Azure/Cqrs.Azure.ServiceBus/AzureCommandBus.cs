@@ -39,7 +39,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected override string PublicTopicSubscriptionNameConfigurationKey
 		{
-			get { return "Cqrs.Azure.CommandBus.PublicEvent.TopicName.SubscriptionName"; }
+			get { return "Cqrs.Azure.CommandBus.PrivateEvent.TopicName.SubscriptionName"; }
 		}
 
 		protected override string DefaultPrivateTopicName

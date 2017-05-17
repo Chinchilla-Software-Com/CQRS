@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cqrs.Authentication;
@@ -17,6 +18,7 @@ using Cqrs.Configuration;
 using Cqrs.Events;
 using cdmdotnet.Logging;
 using Cqrs.Messages;
+using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
@@ -78,9 +80,9 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Overrides of AzureServiceBus<TAuthenticationToken>
 
-		protected override void InstantiateReceiving(IDictionary<int, SubscriptionClient> serviceBusReceivers, string topicName, string topicSubscriptionName)
+		protected override void InstantiateReceiving(NamespaceManager namespaceManager, IDictionary<int, SubscriptionClient> serviceBusReceivers, string topicName, string topicSubscriptionName)
 		{
-			base.InstantiateReceiving(serviceBusReceivers, topicName, topicSubscriptionName);
+			base.InstantiateReceiving(namespaceManager, serviceBusReceivers, topicName, topicSubscriptionName);
 
 			Task.Factory.StartNewSafely
 			(() =>
@@ -97,28 +99,41 @@ namespace Cqrs.Azure.ServiceBus
 				// http://www.summa.com/blog/business-blog/everything-you-need-to-know-about-azure-service-bus-brokered-messaging-part-2#rulesfiltersactions
 				// https://github.com/Azure-Samples/azure-servicebus-messaging-samples/tree/master/TopicFilters
 				SubscriptionClient client = serviceBusReceivers[0];
+				bool reAddRule = false;
 				try
 				{
-					client.RemoveRule("CqrsConfiguredFilter");
+					RuleDescription ruleDescription = namespaceManager.GetRules(client.TopicPath, client.Name).SingleOrDefault(rule => rule.Name == "CqrsConfiguredFilter");
+					if (ruleDescription != null)
+					{
+						var sqlFilter = ruleDescription.Filter as SqlFilter;
+						if (sqlFilter == null && !string.IsNullOrWhiteSpace(filter))
+							reAddRule = true;
+						else if (sqlFilter != null && sqlFilter.SqlExpression != filter)
+							reAddRule = true;
+						if (sqlFilter != null && reAddRule)
+							client.RemoveRule("CqrsConfiguredFilter");
+					}
+					else if (!string.IsNullOrWhiteSpace(filter))
+						reAddRule = true;
 				}
 				catch (MessagingEntityNotFoundException)
 				{
 				}
+
+				if (!reAddRule)
+					return;
 
 				int loopCounter = 0;
 				while (loopCounter < 10)
 				{
 					try
 					{
-						if (!string.IsNullOrWhiteSpace(filter))
-						{
-							RuleDescription ruleDescription = new RuleDescription
-							(
-								"CqrsConfiguredFilter",
-								new SqlFilter(filter)
-							);
-							client.AddRule(ruleDescription);
-						}
+						RuleDescription ruleDescription = new RuleDescription
+						(
+							"CqrsConfiguredFilter",
+							new SqlFilter(filter)
+						);
+						client.AddRule(ruleDescription);
 						break;
 					}
 					catch (MessagingEntityAlreadyExistsException exception)

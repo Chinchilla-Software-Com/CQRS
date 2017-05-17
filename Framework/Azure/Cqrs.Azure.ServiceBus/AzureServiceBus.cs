@@ -111,8 +111,8 @@ namespace Cqrs.Azure.ServiceBus
 			CheckPrivateEventTopicExists(namespaceManager);
 			CheckPublicTopicExists(namespaceManager);
 
-			InstantiateReceiving(PrivateServiceBusReceivers, PrivateTopicName, PrivateTopicSubscriptionName);
-			InstantiateReceiving(PublicServiceBusReceivers, PublicTopicName, PublicTopicSubscriptionName);
+			InstantiateReceiving(namespaceManager, PrivateServiceBusReceivers, PrivateTopicName, PrivateTopicSubscriptionName);
+			InstantiateReceiving(namespaceManager, PublicServiceBusReceivers, PublicTopicName, PublicTopicSubscriptionName);
 
 			bool enableDeadLetterCleanUp;
 			string enableDeadLetterCleanUpValue = ConfigurationManager.GetSetting("Cqrs.Azure.Servicebus.EnableDeadLetterCleanUp");
@@ -130,7 +130,7 @@ namespace Cqrs.Azure.ServiceBus
 			StartSettingsChecking();
 		}
 
-		protected virtual void InstantiateReceiving(IDictionary<int, SubscriptionClient> serviceBusReceivers, string topicName, string topicSubscriptionName)
+		protected virtual void InstantiateReceiving(NamespaceManager namespaceManager, IDictionary<int, SubscriptionClient> serviceBusReceivers, string topicName, string topicSubscriptionName)
 		{
 			for (int i = 0; i < NumberOfReceiversCount; i++)
 			{
