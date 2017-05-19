@@ -102,7 +102,8 @@ namespace Cqrs.Azure.ServiceBus
 				bool reAddRule = false;
 				try
 				{
-					RuleDescription ruleDescription = namespaceManager.GetRules(client.TopicPath, client.Name).SingleOrDefault(rule => rule.Name == "CqrsConfiguredFilter");
+					IEnumerable<RuleDescription> rules = namespaceManager.GetRules(client.TopicPath, client.Name).ToList();
+					RuleDescription ruleDescription = rules.SingleOrDefault(rule => rule.Name == "CqrsConfiguredFilter");
 					if (ruleDescription != null)
 					{
 						var sqlFilter = ruleDescription.Filter as SqlFilter;
@@ -115,6 +116,21 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					else if (!string.IsNullOrWhiteSpace(filter))
 						reAddRule = true;
+
+					ruleDescription = rules.SingleOrDefault(rule => rule.Name == "$Default");
+					// If there is a default rule and we have a rule, it will cause issues
+					if (!string.IsNullOrWhiteSpace(filter) && ruleDescription != null)
+						client.RemoveRule("$Default");
+					// If we don't have a rule and there is no longer a default rule, it will cause issues
+					else if (string.IsNullOrWhiteSpace(filter) && !rules.Any())
+					{
+						ruleDescription = new RuleDescription
+						(
+							"$Default",
+							new SqlFilter("1=1")
+						);
+						client.AddRule(ruleDescription);
+					}
 				}
 				catch (MessagingEntityNotFoundException)
 				{
