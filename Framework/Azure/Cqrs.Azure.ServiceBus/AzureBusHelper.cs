@@ -1,4 +1,8 @@
-﻿#region Copyright
+﻿#region IMPORTANT NOTE
+// This is copied almost exactly into the eventhub except for a string difference. Replicate changes there until a refactor is done.
+#endregion
+
+#region Copyright
 // // -----------------------------------------------------------------------
 // // <copyright company="cdmdotnet Limited">
 // // 	Copyright cdmdotnet Limited. All rights reserved.
@@ -64,7 +68,7 @@ namespace Cqrs.Azure.ServiceBus
 			var frameworks = new List<string>();
 			if (command.Frameworks != null)
 				frameworks.AddRange(command.Frameworks);
-			frameworks.Add("Azure-EventHub");
+			frameworks.Add("Azure-ServiceBus");
 			command.Frameworks = frameworks;
 		}
 
@@ -73,7 +77,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			Type commandType = command.GetType();
 
-			if (command.Frameworks != null && command.Frameworks.Contains("Azure-EventHub"))
+			if (command.Frameworks != null && command.Frameworks.Contains("Azure-ServiceBus"))
 			{
 				Logger.LogInfo("The provided command has already been processed in Azure.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, commandType.FullName));
 				return false;
@@ -213,7 +217,7 @@ namespace Cqrs.Azure.ServiceBus
 			var frameworks = new List<string>();
 			if (@event.Frameworks != null)
 				frameworks.AddRange(@event.Frameworks);
-			frameworks.Add("Azure-EventHub");
+			frameworks.Add("Azure-ServiceBus");
 			@event.Frameworks = frameworks;
 		}
 
@@ -222,7 +226,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			Type eventType = @event.GetType();
 
-			if (@event.Frameworks != null && @event.Frameworks.Contains("Azure-EventHub"))
+			if (@event.Frameworks != null && @event.Frameworks.Contains("Azure-ServiceBus"))
 			{
 				Logger.LogInfo("The provided event has already been processed in Azure.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, eventType.FullName));
 				return false;

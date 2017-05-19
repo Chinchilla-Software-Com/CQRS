@@ -28,6 +28,16 @@ namespace Cqrs.Azure.ServiceBus
 		, ICommandHandlerRegistrar
 		, ICommandReceiver<TAuthenticationToken>
 	{
+		protected virtual string NumberOfReceiversCountConfigurationKey
+		{
+			get { return "Cqrs.Azure.CommandBus.NumberOfReceiversCount"; }
+		}
+
+		protected virtual string MaximumConcurrentReceiverProcessesCountConfigurationKey
+		{
+			get { return "Cqrs.Azure.CommandBus.MaximumConcurrentReceiverProcessesCount"; }
+		}
+
 		protected virtual string FilterKeyConfigurationKey
 		{
 			get { return "Cqrs.Azure.CommandBus.TopicName.SubscriptionName.Filter"; }
@@ -285,6 +295,42 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			return AzureBusHelper.DefaultReceiveCommand(command, Routes, "Azure-ServiceBus");
 		}
+
+		#region Overrides of AzureBus<TAuthenticationToken>
+
+		protected override int GetCurrentNumberOfReceiversCount()
+		{
+			string numberOfReceiversCountValue;
+			int numberOfReceiversCount;
+			if (ConfigurationManager.TryGetSetting(NumberOfReceiversCountConfigurationKey, out numberOfReceiversCountValue) && !string.IsNullOrWhiteSpace(numberOfReceiversCountValue))
+			{
+				if (!int.TryParse(numberOfReceiversCountValue, out numberOfReceiversCount))
+					numberOfReceiversCount = DefaultNumberOfReceiversCount;
+			}
+			else
+				numberOfReceiversCount = DefaultNumberOfReceiversCount;
+			return numberOfReceiversCount;
+		}
+
+		#region Overrides of AzureBus<TAuthenticationToken>
+
+		protected override int GetCurrentMaximumConcurrentReceiverProcessesCount()
+		{
+			string maximumConcurrentReceiverProcessesCountValue;
+			int maximumConcurrentReceiverProcessesCount;
+			if (ConfigurationManager.TryGetSetting(MaximumConcurrentReceiverProcessesCountConfigurationKey, out maximumConcurrentReceiverProcessesCountValue) && !string.IsNullOrWhiteSpace(maximumConcurrentReceiverProcessesCountValue))
+			{
+				if (!int.TryParse(maximumConcurrentReceiverProcessesCountValue, out maximumConcurrentReceiverProcessesCount))
+					maximumConcurrentReceiverProcessesCount = DefaultMaximumConcurrentReceiverProcessesCount;
+			}
+			else
+				maximumConcurrentReceiverProcessesCount = DefaultMaximumConcurrentReceiverProcessesCount;
+			return maximumConcurrentReceiverProcessesCount;
+		}
+
+		#endregion
+
+		#endregion
 
 		#region Implementation of ICommandReceiver
 
