@@ -143,10 +143,17 @@ namespace Cqrs.Ninject.Configuration
 		/// </summary>
 		public virtual void RegisterCaching()
 		{
+			if (Kernel.GetBindings(typeof (IContextItemCollectionFactory)).Any())
+				Kernel.Unbind<IContextItemCollectionFactory>();
+			if (Kernel.GetBindings(typeof(IContextItemCollection)).Any())
+				Kernel.Unbind<IContextItemCollection>();
 			if (SetupForWeb)
 			{
 				Bind<IContextItemCollectionFactory>()
 					.To<WebContextItemCollectionFactory>()
+					.InSingletonScope();
+				Bind<IContextItemCollection>()
+					.To<WebContextItemCollection>()
 					.InSingletonScope();
 			}
 			else
@@ -154,10 +161,10 @@ namespace Cqrs.Ninject.Configuration
 				Bind<IContextItemCollectionFactory>()
 					.To<ThreadedContextItemCollectionFactory>()
 					.InSingletonScope();
+				Bind<IContextItemCollection>()
+					.To<ThreadedContextItemCollection>()
+					.InSingletonScope();
 			}
-			Bind<IContextItemCollection>()
-				.To<WebContextItemCollection>()
-				.InSingletonScope();
 		}
 
 		/// <summary>
