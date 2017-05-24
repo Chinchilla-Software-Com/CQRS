@@ -118,9 +118,13 @@ namespace Cqrs.Akka.Events
 
 			if (@event.Frameworks != null && @event.Frameworks.Contains(framework))
 			{
-				Logger.LogInfo("The provided event has already been processed in Akka.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, eventType.FullName));
-				handlers = Enumerable.Empty<RouteHandlerDelegate>();
-				return false;
+				// if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
+				if (@event.Frameworks.Count() != 1)
+				{
+					Logger.LogInfo("The provided event has already been processed in Akka.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, eventType.FullName));
+					handlers = Enumerable.Empty<RouteHandlerDelegate>();
+					return false;
+				}
 			}
 
 			PrepareEvent(@event, framework);

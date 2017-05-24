@@ -87,9 +87,13 @@ namespace Cqrs.Akka.Commands
 
 			if (command.Frameworks != null && command.Frameworks.Contains("Akka"))
 			{
-				Logger.LogInfo("The provided command has already been processed in Akka.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, commandType.FullName));
-				commandHandler = null;
-				return false;
+				// if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
+				if (command.Frameworks.Count() != 1)
+				{
+					Logger.LogInfo("The provided command has already been processed in Akka.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, commandType.FullName));
+					commandHandler = null;
+					return false;
+				}
 			}
 
 			ICommandValidator<TAuthenticationToken, TCommand> commandValidator = null;

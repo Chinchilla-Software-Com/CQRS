@@ -38,10 +38,6 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		[DataMember]
 		public Guid CorrelationId { get; set; }
 
-		[DataMember]
-		[Obsolete("Use Frameworks, It's far more flexible and OriginatingFramework")]
-		public FrameworkType Framework { get; set; }
-
 		/// <summary>
 		/// The originating framework this message was sent from.
 		/// </summary>
@@ -53,14 +49,6 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		/// </summary>
 		[DataMember]
 		public IEnumerable<string> Frameworks { get; set; }
-
-		[Obsolete("Use CorrelationId")]
-		[DataMember]
-		public Guid CorrolationId
-		{
-			get { return CorrelationId; }
-			set { CorrelationId = value; }
-		}
 
 		#endregion
 	}

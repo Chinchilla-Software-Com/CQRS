@@ -77,10 +77,14 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			Type commandType = command.GetType();
 
-			if (command.Frameworks != null && command.Frameworks.Contains("Azure-ServiceBus"))
+			if (command.Frameworks != null && command.Frameworks.Contains(framework))
 			{
-				Logger.LogInfo("The provided command has already been processed in Azure.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, commandType.FullName));
-				return false;
+				// if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
+				if (command.Frameworks.Count() != 1)
+				{
+					Logger.LogInfo("The provided command has already been processed in Azure.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, commandType.FullName));
+					return false;
+				}
 			}
 
 			ICommandValidator<TAuthenticationToken, TCommand> commandValidator = null;
@@ -182,8 +186,12 @@ namespace Cqrs.Azure.ServiceBus
 
 			if (command.Frameworks != null && command.Frameworks.Contains(framework))
 			{
-				Logger.LogInfo("The provided command has already been processed in Azure.", string.Format("{0}\\DefaultReceiveCommand({1})", GetType().FullName, commandType.FullName));
-				return null;
+				// if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
+				if (command.Frameworks.Count() != 1)
+				{
+					Logger.LogInfo("The provided command has already been processed in Azure.", string.Format("{0}\\DefaultReceiveCommand({1})", GetType().FullName, commandType.FullName));
+					return null;
+				}
 			}
 
 			CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
@@ -395,8 +403,12 @@ namespace Cqrs.Azure.ServiceBus
 
 			if (@event.Frameworks != null && @event.Frameworks.Contains(framework))
 			{
-				Logger.LogInfo("The provided event has already been processed in Azure.", string.Format("{0}\\DefaultReceiveEvent({1})", GetType().FullName, eventType.FullName));
-				return null;
+				// if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
+				if (@event.Frameworks.Count() != 1)
+				{
+					Logger.LogInfo("The provided event has already been processed in Azure.", string.Format("{0}\\DefaultReceiveEvent({1})", GetType().FullName, eventType.FullName));
+					return null;
+				}
 			}
 
 			CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
