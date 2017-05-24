@@ -68,9 +68,18 @@ namespace Cqrs.Ninject.Configuration
 		/// </summary>
 		public virtual void RegisterLoggerComponents()
 		{
-			Bind<ICorrelationIdHelper>()
-				.To<WebCorrelationIdHelper>()
-				.InSingletonScope();
+			bool isCorrelationIdHelperBound = Kernel.GetBindings(typeof(ICorrelationIdHelper)).Any();
+			if (!isCorrelationIdHelperBound)
+			{
+				if (SetupForWeb)
+					Bind<ICorrelationIdHelper>()
+						.To<WebCorrelationIdHelper>()
+						.InSingletonScope();
+				else
+					Bind<ICorrelationIdHelper>()
+						.To<CorrelationIdHelper>()
+						.InSingletonScope();
+			}
 
 			bool isLoggerBound = Kernel.GetBindings(typeof(ILogger)).Any();
 			if (!isLoggerBound)
