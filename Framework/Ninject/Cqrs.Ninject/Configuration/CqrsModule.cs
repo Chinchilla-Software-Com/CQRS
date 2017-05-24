@@ -72,18 +72,26 @@ namespace Cqrs.Ninject.Configuration
 				.To<WebCorrelationIdHelper>()
 				.InSingletonScope();
 
-			if (SetupForSqlLogging)
-				Bind<ILogger>()
-					.To<SqlLogger>()
-					.InSingletonScope();
-			else
-				Bind<ILogger>()
-					.To<ConsoleLogger>()
-					.InSingletonScope();
+			bool isLoggerBound = Kernel.GetBindings(typeof(ILogger)).Any();
+			if (!isLoggerBound)
+			{
+				if (SetupForSqlLogging)
+					Bind<ILogger>()
+						.To<SqlLogger>()
+						.InSingletonScope();
+				else
+					Bind<ILogger>()
+						.To<ConsoleLogger>()
+						.InSingletonScope();
+			}
 
-			Bind<ILoggerSettings>()
-				.To<LoggerSettings>()
-				.InSingletonScope();
+			bool isLoggerSettingsBound = Kernel.GetBindings(typeof(ILoggerSettings)).Any();
+			if (!isLoggerSettingsBound)
+			{
+				Bind<ILoggerSettings>()
+					.To<LoggerSettings>()
+					.InSingletonScope();
+			}
 
 			Bind<ITelemetryHelper>()
 				.To<NullTelemetryHelper>()
