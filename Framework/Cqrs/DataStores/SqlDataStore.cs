@@ -208,7 +208,18 @@ namespace Cqrs.DataStores
 			try
 			{
 				DateTime start = DateTime.Now;
-				Table.DeleteOnSubmit(data);
+				try
+				{
+					Table.DeleteOnSubmit(data);
+				}
+				catch (InvalidOperationException exception)
+				{
+					if (exception.Message != "Cannot remove an entity that has not been attached.")
+						throw;
+					Table.Attach(data);
+					DbDataContext.Refresh(RefreshMode.KeepCurrentValues, data); 
+					Table.DeleteOnSubmit(data);
+				}
 				DbDataContext.SubmitChanges();
 				DateTime end = DateTime.Now;
 				Logger.LogDebug(string.Format("Removing data from the Sql database took {0}.", end - start), "SqlDataStore\\Destroy");
