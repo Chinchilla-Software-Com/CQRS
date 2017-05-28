@@ -5,22 +5,36 @@ param($installPath, $toolsPath, $package, $project)
 
 try
 {
-  $url = "https://www.chinchillasoftware.com/nuget/install/Unknown/Unknown/Unknown"
+  $url = "Unknown/Unknown/Unknown"
+  $SafePassword = "Unknown"
   try
   {
-    $url = "https://www.chinchillasoftware.com/nuget/install/" + $package.Id + "/Unknown/Unknown"
+    $url = $package.Id + "/Unknown/Unknown"
   }
   catch{}
   try
   {
-    $url = "https://www.chinchillasoftware.com/nuget/install/" + $package.Id + "/" + $package.Version + "/Unknown"
+    $url = $package.Id + "/" + $package.Version + "/Unknown"
   }
   catch{}
   try
   {
-    $url = "https://www.chinchillasoftware.com/nuget/install/" + $package.Id + "/" + $package.Version + "/" + $project.Name
+    $url = $package.Id + "/" + $package.Version + "/" + $project.Name
   }
   catch{}
+
+  try
+  {
+    $Password = $url | ConvertTo-SecureString -AsPlainText -Force
+    $Key = (3,4,2,3,56,34,254,222,1,1,2,23,42,54,33,233,1,34,2,7,6,5,35,43)
+    $SafePassword = $Password | ConvertFrom-SecureString -key $key
+  }
+  catch{}
+
+  Add-Type -AssemblyName System.Web
+  $url = "http://nuget.chinchillasoftware.com/nuget/install?track=" + [System.Web.HttpUtility]::UrlEncode($SafePassword)
+
+echo $url
 
   $dte2 = Get-Interface $dte ([EnvDTE80.DTE2])
 
