@@ -165,7 +165,11 @@ namespace Cqrs.Azure.BlobStorage
 					}
 					catch (StorageException exception)
 					{
-						Logger.LogError(string.Format("There was an issue persisting data to table storage. Specifically {0} :: {1}", exception.RequestInformation.ExtendedErrorInformation.ErrorCode, exception.RequestInformation.ExtendedErrorInformation.ErrorMessage), exception: exception);
+						var extendedErrorInformation = exception.RequestInformation.ExtendedErrorInformation;
+						if (extendedErrorInformation != null)
+							Logger.LogError("There was an issue persisting data to table storag.", exception: exception);
+						else
+							Logger.LogError(string.Format("There was an issue persisting data to table storag. Specifically {0} :: {1}", exception.RequestInformation.ExtendedErrorInformation.ErrorCode, exception.RequestInformation.ExtendedErrorInformation.ErrorMessage), exception: exception);
 						throw;
 					}
 					catch (Exception exception)
@@ -361,7 +365,11 @@ namespace Cqrs.Azure.BlobStorage
 			}
 			catch (StorageException exception)
 			{
-				Logger.LogError(string.Format("There was an issue creating the table. Specifically {0} :: {1}", exception.RequestInformation.ExtendedErrorInformation.ErrorCode, exception.RequestInformation.ExtendedErrorInformation.ErrorMessage), exception: exception);
+				var extendedErrorInformation = exception.RequestInformation.ExtendedErrorInformation;
+				if (extendedErrorInformation != null)
+					Logger.LogError("There was an issue creating the table.", exception: exception);
+				else
+					Logger.LogError(string.Format("There was an issue creating the table. Specifically {0} :: {1}", exception.RequestInformation.ExtendedErrorInformation.ErrorCode, exception.RequestInformation.ExtendedErrorInformation.ErrorMessage), exception: exception);
 				throw;
 			}
 			catch (Exception exception)
