@@ -32,7 +32,7 @@ try
   catch{}
 
   Add-Type -AssemblyName System.Web
-  $url = "http://nuget.chinchillasoftware.com/nuget/install?track=" + [System.Web.HttpUtility]::UrlEncode($SafePassword)
+  $url = "http://nuget.chinchillasoftware.com/nuget/install2?track=" + [System.Web.HttpUtility]::UrlEncode($SafePassword)
 
 echo $url
 
