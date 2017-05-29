@@ -26,9 +26,9 @@ namespace Cqrs.Azure.BlobStorage.Repositories
 				{
 					return dataStore.GetByKeyAndRow(rsn);
 				}
-				catch (Exception)
+				catch (InvalidOperationException exception)
 				{
-					if (throwExceptionOnMissingEntity)
+					if (throwExceptionOnMissingEntity && exception.Message == "Sequence contains no elements")
 						throw;
 				}
 
