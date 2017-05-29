@@ -14,12 +14,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using cdmdotnet.Logging;
+using Cqrs.Events;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling;
 using Microsoft.Practices.TransientFaultHandling;
 using Microsoft.WindowsAzure.Storage;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Cqrs.Azure.BlobStorage
 {
@@ -44,6 +44,13 @@ namespace Cqrs.Azure.BlobStorage
 		protected StorageStore(ILogger logger)
 		{
 			Logger = logger;
+		}
+
+		public static JsonSerializerSettings DefaultSettings { get; private set; }
+
+		static StorageStore()
+		{
+			DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
 		}
 
 		protected virtual void Initialise(IStorageStoreConnectionStringFactory storageDataStoreConnectionStringFactory)
@@ -256,14 +263,7 @@ namespace Cqrs.Azure.BlobStorage
 
 		protected virtual JsonSerializerSettings GetSerialisationSettings()
 		{
-			return new JsonSerializerSettings
-			{
-				Formatting = Formatting.None,
-				MissingMemberHandling = MissingMemberHandling.Ignore,
-				DateParseHandling = DateParseHandling.DateTimeOffset,
-				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-				Converters = new List<JsonConverter> { new StringEnumConverter() },
-			};
+			return DefaultSettings;
 		}
 
 		protected virtual JsonSerializer GetSerialiser()

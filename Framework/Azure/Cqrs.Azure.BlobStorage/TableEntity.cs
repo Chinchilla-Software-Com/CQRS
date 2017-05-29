@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Cqrs.Events;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -9,6 +10,13 @@ namespace Cqrs.Azure.BlobStorage
 	public abstract class TableEntity<TData>
 		: TableEntity
 	{
+		public static JsonSerializerSettings DefaultSettings { get; private set; }
+
+		static TableEntity()
+		{
+			DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
+		}
+
 		protected virtual TData Deserialise(string json)
 		{
 			using (var stringReader = new StringReader(json))
@@ -25,14 +33,7 @@ namespace Cqrs.Azure.BlobStorage
 
 		protected virtual JsonSerializerSettings GetSerialisationSettings()
 		{
-			return new JsonSerializerSettings
-			{
-				Formatting = Formatting.None,
-				MissingMemberHandling = MissingMemberHandling.Ignore,
-				DateParseHandling = DateParseHandling.DateTimeOffset,
-				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-				Converters = new List<JsonConverter> { new StringEnumConverter() },
-			};
+			return DefaultSettings;
 		}
 
 		protected virtual JsonSerializer GetSerialiser()

@@ -7,14 +7,19 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Cqrs.Events
 {
 	public class EventDeserialiser<TAuthenticationToken> : IEventDeserialiser<TAuthenticationToken>
 	{
+		public static JsonSerializerSettings DefaultSettings { get; private set; }
+
+		static EventDeserialiser()
+		{
+			DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
+		}
+
 		public virtual IEvent<TAuthenticationToken> Deserialise(EventData eventData)
 		{
 			JsonSerializerSettings jsonSerialiserSettings = GetSerialisationSettings();
@@ -24,14 +29,7 @@ namespace Cqrs.Events
 
 		protected virtual JsonSerializerSettings GetSerialisationSettings()
 		{
-			return new JsonSerializerSettings
-			{
-				Formatting = Formatting.None,
-				MissingMemberHandling = MissingMemberHandling.Ignore,
-				DateParseHandling = DateParseHandling.DateTimeOffset,
-				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-				Converters = new List<JsonConverter> { new StringEnumConverter() },
-			};
+			return DefaultSettings;
 		}
 	}
 }

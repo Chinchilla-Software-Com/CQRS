@@ -18,39 +18,33 @@ namespace Cqrs.Azure.ServiceBus
 
 		static MessageSerialiser()
 		{
-			DefaultSettings = new JsonSerializerSettings
-			{
-				DateFormatHandling = DateFormatHandling.IsoDateFormat,
-				DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind,
-				DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
-				FloatFormatHandling = FloatFormatHandling.DefaultValue,
-				NullValueHandling = NullValueHandling.Include,
-				PreserveReferencesHandling = PreserveReferencesHandling.All,
-				ReferenceLoopHandling = ReferenceLoopHandling.Error,
-				StringEscapeHandling = StringEscapeHandling.EscapeNonAscii,
-				TypeNameHandling = TypeNameHandling.All
-			};
+			DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
 		}
 
 		public string SerialiseEvent<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
-			return JsonConvert.SerializeObject(@event, DefaultSettings);
+			return JsonConvert.SerializeObject(@event, GetSerialisationSettings());
 		}
 
 		public string SerialiseCommand<TCommand>(TCommand command) where TCommand : ICommand<TAuthenticationToken>
 		{
-			return JsonConvert.SerializeObject(command, DefaultSettings);
+			return JsonConvert.SerializeObject(command, GetSerialisationSettings());
 		}
 
 		public IEvent<TAuthenticationToken> DeserialiseEvent(string @event)
 		{
-			return JsonConvert.DeserializeObject<IEvent<TAuthenticationToken>>(@event, DefaultSettings);
+			return JsonConvert.DeserializeObject<IEvent<TAuthenticationToken>>(@event, GetSerialisationSettings());
 		}
 
 		public ICommand<TAuthenticationToken> DeserialiseCommand(string @event)
 		{
-			return JsonConvert.DeserializeObject<ICommand<TAuthenticationToken>>(@event, DefaultSettings);
+			return JsonConvert.DeserializeObject<ICommand<TAuthenticationToken>>(@event, GetSerialisationSettings());
+		}
+
+		protected virtual JsonSerializerSettings GetSerialisationSettings()
+		{
+			return DefaultSettings;
 		}
 	}
 }

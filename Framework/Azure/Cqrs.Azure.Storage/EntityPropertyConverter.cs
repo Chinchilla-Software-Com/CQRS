@@ -38,6 +38,28 @@ namespace Microsoft.WindowsAzure.Storage.Table
 	/// </summary>
 	public static class EntityPropertyConverter
 	{
+		public static JsonSerializerSettings DefaultSettings { get; private set; }
+
+		static EntityPropertyConverter()
+		{
+			DefaultSettings = new JsonSerializerSettings
+			{
+				Formatting = Formatting.None,
+				MissingMemberHandling = MissingMemberHandling.Ignore,
+				DateParseHandling = DateParseHandling.DateTimeOffset,
+				DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind,
+				Converters = new List<JsonConverter> { new StringEnumConverter() },
+				DateFormatHandling = DateFormatHandling.IsoDateFormat,
+				DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
+				FloatFormatHandling = FloatFormatHandling.DefaultValue,
+				NullValueHandling = NullValueHandling.Include,
+				PreserveReferencesHandling = PreserveReferencesHandling.All,
+				ReferenceLoopHandling = ReferenceLoopHandling.Error,
+				StringEscapeHandling = StringEscapeHandling.EscapeNonAscii,
+				TypeNameHandling = TypeNameHandling.All
+			};
+		}
+
 		/// <summary>
 		/// The property delimiter.
 		/// </summary>
@@ -219,14 +241,7 @@ namespace Microsoft.WindowsAzure.Storage.Table
 
 		static JsonSerializerSettings GetSerialisationSettings()
 		{
-			return new JsonSerializerSettings
-			{
-				Formatting = Formatting.None,
-				MissingMemberHandling = MissingMemberHandling.Ignore,
-				DateParseHandling = DateParseHandling.DateTimeOffset,
-				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-				Converters = new List<JsonConverter> { new StringEnumConverter() },
-			};
+			return DefaultSettings;
 		}
 
 		/// <summary>Creates entity property with given type.</summary>
