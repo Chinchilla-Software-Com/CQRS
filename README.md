@@ -1,13 +1,13 @@
-# CS-CQRS
+# CQRS.NET
 #### https://www.nuget.org/packages/Cqrs
 
 ## The framework
-A lightweight enterprise framework to help write CQRS and Eventsourcing applications in C#, with a special focus on deploying to Azure. Currently published as nuget packages @ http://www.nuget.org. It is written in C# and targets .NET 4.0, with the exception of some Azure packages which target .NET 4.5. CS-CQRS borrows heavily from CQRSlite (https://github.com/gautema/cqrslite), from some point in 2013.
+A lightweight enterprise framework to help write CQRS and Eventsourcing applications in C#, with a special focus on deploying to Azure. Currently published as nuget packages @ http://www.nuget.org. It is written in C# and targets .NET 4.0, with the exception of some Azure packages which target .NET 4.5. CQRS.NET borrows heavily from CQRSlite (https://github.com/gautema/cqrslite), from some point in 2013.
 
-CS-CQRS has been designed with modularity in mind... see the number of technology packages below you can chose from. Every package and design choice made should be interchangeable with custom code if needed.
+CQRS.NET has been designed with modularity in mind... see the number of technology packages below you can chose from. Every package and design choice made should be interchangeable with custom code if needed.
 
 ## Tutorials and getting started
-For those wanting to take a plunge into using the CS-CQRS platform, we strongly suggest you have a look at our basic [Northwind Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Tutorial-0:-Quick-Northwind-sample.).
+For those wanting to take a plunge into using the CQRS.NET, we strongly suggest you have a look at our basic [Northwind Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Tutorial-0:-Quick-Northwind-sample.).
 
 And for those looking for a more thorough tutorial we suggest you start with the [getting started](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Getting-Started) section in the [wiki](https://github.com/Chinchilla-Software-Com/CQRS/wiki)
 
@@ -15,7 +15,7 @@ And for those looking for a more thorough tutorial we suggest you start with the
 Documentation is starting off for now in the [wiki section](https://github.com/Chinchilla-Software-Com/CQRS/wiki) of this project. We strongly invite people to post questions and issues which we'll answer and work on.
 
 ## Sample projects.
-Several sample projects are located within the code, these show two approaches/common usage scenarios of the framework. One sample is the original sample from CQRSlite, ported to use CS-CQRS, the other is Modelled in UML and uses T4 template generation to heavily reduce the amount of code written.
+Several sample projects are located within the code, these show two approaches/common usage scenarios of the framework. One sample is the original sample from CQRSlite, ported to use CQRS.NET, the other is Modelled in UML and uses T4 template generation to heavily reduce the amount of code written.
 
 The project should compile without any setup in .NET 4.0. The Azure project should compile without any setup in .NET 4.5.2. I'm guessing Mono 3.10.0 should work too.
 
@@ -23,7 +23,7 @@ The project should compile without any setup in .NET 4.0. The Azure project shou
 Commercial support is now available through our partner company [Chinchilla Software](http://www.chinchillasoftware.com).
 
 ## Continual improvements
-This project is actively developed, however we sometimes have specific feature requests that are outside of our roadmap and plan. We're always open to new ideas and requests for new modules and technology connectors that you need. Right now we've got an unplanned request to have better [akka.net](http://getakka.net) modules. To help out this we've got a [kickstarter project](https://www.kickstarter.com/projects/chinchilla-software/cqrs-for-akknet) running to help get the funding to bring this work forward.
+This project is actively developed, however we sometimes have specific feature requests that are outside of our roadmap and plan. We're always open to new ideas and requests for new modules and technology connectors that you need. The biggest requests in version 2.0 where to have better [akka.net](http://getakka.net) modules as well as support for Azure blob/table storage and performance/telemetry.
 
 ## Features
 * Command sending and event publishing
