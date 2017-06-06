@@ -1,4 +1,4 @@
-#region Copyright
+﻿#region Copyright
 // // -----------------------------------------------------------------------
 // // <copyright company="cdmdotnet Limited">
 // // 	Copyright cdmdotnet Limited. All rights reserved.
@@ -10,15 +10,18 @@ using System.Runtime.Serialization;
 
 namespace Cqrs.Domain
 {
-	internal interface IAggregateDescriptor
+	internal class SagaDescriptor<TSaga, TAuthenticationToken> : ISagaDescriptor<TAuthenticationToken>
+		where TSaga : ISaga<TAuthenticationToken>
 	{
-		[DataMember]
-		int Version { get; set; }
-	}
+		ISaga<TAuthenticationToken> ISagaDescriptor<TAuthenticationToken>.Saga
+		{
+			get { return Saga; }
+		}
 
-	internal interface IAggregateDescriptor<TAuthenticationToken> : IAggregateDescriptor
-	{
 		[DataMember]
-		IAggregateRoot<TAuthenticationToken> Aggregate { get; }
+		public TSaga Saga { get; set; }
+
+		[DataMember]
+		public int Version { get; set; }
 	}
 }

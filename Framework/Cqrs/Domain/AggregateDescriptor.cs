@@ -6,6 +6,8 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System.Runtime.Serialization;
+
 namespace Cqrs.Domain
 {
 	internal class AggregateDescriptor<TAggregateRoot, TAuthenticationToken> : IAggregateDescriptor<TAuthenticationToken>
@@ -16,8 +18,10 @@ namespace Cqrs.Domain
 			get { return Aggregate; }
 		}
 
+		[DataMember]
 		public TAggregateRoot Aggregate { get; set; }
 
+		[DataMember]
 		public int Version { get; set; }
 	}
 }

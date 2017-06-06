@@ -99,6 +99,10 @@ namespace Cqrs.Tests.Substitutes
 		#endregion
 	}
 
+	public class TestAggregateDidSomethingElse2 : TestAggregateDidSomethingElse
+	{
+	}
+
 	public class TestAggregateDidSomethingHandler : IEventHandler<ISingleSignOnToken, TestAggregateDidSomething>
 	{
 		public void Handle(TestAggregateDidSomething message)

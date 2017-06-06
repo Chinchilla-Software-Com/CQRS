@@ -86,7 +86,7 @@ namespace Cqrs.Domain
 		protected virtual TAggregateRoot CreateAggregate<TAggregateRoot>(Guid id)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>(id);
+			var aggregate = AggregateFactory.Create<TAggregateRoot>(id);
 
 			return aggregate;
 		}
@@ -94,7 +94,7 @@ namespace Cqrs.Domain
 		protected virtual TAggregateRoot LoadAggregate<TAggregateRoot>(Guid id, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>(id);
+			var aggregate = AggregateFactory.Create<TAggregateRoot>(id);
 
 			LoadAggregateHistory(aggregate, events);
 			return aggregate;

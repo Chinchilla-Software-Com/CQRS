@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 using Cqrs.Commands;
 using Cqrs.Domain;
 using Cqrs.Entities;
@@ -71,10 +72,13 @@ namespace Cqrs.Events
 	/// </remarks>
 	public interface IEvent<TAuthenticationToken> : IMessageWithAuthenticationToken<TAuthenticationToken>
 	{
+		[DataMember]
 		Guid Id { get; set; }
 
+		[DataMember]
 		int Version { get; set; }
 
+		[DataMember]
 		DateTimeOffset TimeStamp { get; set; }
 	}
 }

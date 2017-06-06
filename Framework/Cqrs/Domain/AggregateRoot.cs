@@ -17,6 +17,16 @@ using Cqrs.Infrastructure;
 
 namespace Cqrs.Domain
 {
+	/// <summary>
+	/// A larger unit of encapsulation than just a class. Every transaction is scoped to a single aggregate. The lifetimes of the components of an aggregate are bounded by the lifetime of the entire aggregate.
+	/// 
+	/// Concretely, an aggregate will handle commands, apply events, and have a state model encapsulated within it that allows it to implement the required command validation, thus upholding the invariants (business rules) of the aggregate.
+	/// </summary>
+	/// <remarks>
+	/// Why is the use of GUID as IDs a good practice?
+	/// 
+	/// Because they are (reasonably) globally unique, and can be generated either by the server or by the client.
+	/// </remarks>
 	public abstract class AggregateRoot<TAuthenticationToken> : IAggregateRoot<TAuthenticationToken>
 	{
 		private ReaderWriterLockSlim Lock { get; set; }

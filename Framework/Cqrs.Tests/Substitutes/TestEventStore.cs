@@ -33,11 +33,30 @@ namespace Cqrs.Tests.Substitutes
 				return new List<IEvent<ISingleSignOnToken>>();
 			}
 
+			if (aggregateType == typeof (TestSaga))
+			{
+				return new List<ISagaEvent<ISingleSignOnToken>>
+				{
+					new SagaEvent<ISingleSignOnToken>
+					(
+						new TestAggregateDidSomething {Id = Guid.NewGuid(), Version = 26}
+					){Id = aggregateId, Version = 2},
+					new SagaEvent<ISingleSignOnToken>
+					(
+						new TestAggregateDidSomethingElse {Id = Guid.NewGuid(), Version = 13}
+					){Id = aggregateId, Version = 3},
+					new SagaEvent<ISingleSignOnToken>
+					(
+						new TestAggregateDidSomething {Id = Guid.NewGuid(), Version = 47}
+					){Id = aggregateId, Version = 4}
+				}
+				.Where(x => x.Version > fromVersion);
+			}
 			return new List<IEvent<ISingleSignOnToken>>
 			{
 				new TestAggregateDidSomething {Id = aggregateId, Version = 2},
 				new TestAggregateDidSomethingElse {Id = aggregateId, Version = 3},
-				new TestAggregateDidSomething {Id = aggregateId, Version = 4},
+				new TestAggregateDidSomething {Id = aggregateId, Version = 4}
 			}
 			.Where(x => x.Version > fromVersion);
 		}

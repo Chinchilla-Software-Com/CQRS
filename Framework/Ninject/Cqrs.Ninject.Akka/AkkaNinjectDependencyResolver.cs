@@ -154,7 +154,7 @@ namespace Cqrs.Ninject.Akka
 			if (typeToTest == null || !(typeToTest).IsAssignableFrom(serviceType))
 				properties = Props.Create(() => (ActorBase)RootResolve(serviceType));
 			else
-				properties = Props.Create(() => (ActorBase) AggregateFactory.CreateAggregate(serviceType, rsn as Guid?, false));
+				properties = Props.Create(() => (ActorBase) AggregateFactory.Create(serviceType, rsn as Guid?, false));
 			string actorName = serviceType.FullName.Replace("`", string.Empty);
 			int index = actorName.IndexOf("[[", StringComparison.Ordinal);
 			if (index > -1)

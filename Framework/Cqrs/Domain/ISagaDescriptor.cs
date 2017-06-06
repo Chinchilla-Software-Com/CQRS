@@ -10,15 +10,15 @@ using System.Runtime.Serialization;
 
 namespace Cqrs.Domain
 {
-	internal interface IAggregateDescriptor
+	internal interface ISagaDescriptor
 	{
 		[DataMember]
 		int Version { get; set; }
 	}
 
-	internal interface IAggregateDescriptor<TAuthenticationToken> : IAggregateDescriptor
+	internal interface ISagaDescriptor<TAuthenticationToken> : ISagaDescriptor
 	{
 		[DataMember]
-		IAggregateRoot<TAuthenticationToken> Aggregate { get; }
+		ISaga<TAuthenticationToken> Saga { get; }
 	}
 }

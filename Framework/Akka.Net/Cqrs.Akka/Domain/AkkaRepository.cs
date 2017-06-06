@@ -32,7 +32,7 @@ namespace Cqrs.Akka.Domain
 
 		protected override TAggregateRoot CreateAggregate<TAggregateRoot>(Guid id)
 		{
-			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>();
+			var aggregate = AggregateFactory.Create<TAggregateRoot>();
 
 			return aggregate;
 		}

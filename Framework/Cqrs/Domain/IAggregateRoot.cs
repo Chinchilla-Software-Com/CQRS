@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Cqrs.Commands;
 using Cqrs.Events;
 
@@ -140,8 +141,10 @@ namespace Cqrs.Domain
 	/// </remarks>
 	public interface IAggregateRoot<TAuthenticationToken>
 	{
+		[DataMember]
 		Guid Id { get; }
 
+		[DataMember]
 		int Version { get; }
 
 		IEnumerable<IEvent<TAuthenticationToken>> GetUncommittedChanges();

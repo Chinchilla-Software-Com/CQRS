@@ -47,7 +47,7 @@ namespace Cqrs.Snapshots
 		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			var aggregate = AggregateFactory.CreateAggregate<TAggregateRoot>();
+			var aggregate = AggregateFactory.Create<TAggregateRoot>();
 			int snapshotVersion = TryRestoreAggregateFromSnapshot(aggregateId, aggregate);
 			if (snapshotVersion == -1)
 			{

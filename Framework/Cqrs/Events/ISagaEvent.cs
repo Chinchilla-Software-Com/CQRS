@@ -8,17 +8,12 @@
 
 using System.Runtime.Serialization;
 
-namespace Cqrs.Domain
+namespace Cqrs.Events
 {
-	internal interface IAggregateDescriptor
+	public interface ISagaEvent<TAuthenticationToken>
+		: IEvent<TAuthenticationToken>
 	{
 		[DataMember]
-		int Version { get; set; }
-	}
-
-	internal interface IAggregateDescriptor<TAuthenticationToken> : IAggregateDescriptor
-	{
-		[DataMember]
-		IAggregateRoot<TAuthenticationToken> Aggregate { get; }
+		IEvent<TAuthenticationToken> Event { get; set; }
 	}
 }
