@@ -12,7 +12,8 @@ For those wanting to take a plunge into using the CQRS.NET, we strongly suggest 
 And for those looking for a more thorough tutorial we suggest you start with the [getting started](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Getting-Started) section in the [wiki](https://github.com/Chinchilla-Software-Com/CQRS/wiki)
 
 ## Documentation
-Documentation is starting off for now in the [wiki section](https://github.com/Chinchilla-Software-Com/CQRS/wiki) of this project. We strongly invite people to post questions and issues which we'll answer and work on.
+[API reference documentation](https://chinchilla-software-com.github.io/CQRS/wiki/docs/html/annotated.html) is available to browse. We are adding more and more documentation as we edit each file. By version 3.0 we aim to have all public methods and classes documented.
+User documentation is starting off for now in the [wiki section](https://github.com/Chinchilla-Software-Com/CQRS/wiki) of this project. We strongly invite people to post questions and issues which we'll answer and work on.
 
 ## Sample projects.
 Several sample projects are located within the code, these show two approaches/common usage scenarios of the framework. One sample is the original sample from CQRSlite, ported to use CQRS.NET, the other is Modelled in UML and uses T4 template generation to heavily reduce the amount of code written.
