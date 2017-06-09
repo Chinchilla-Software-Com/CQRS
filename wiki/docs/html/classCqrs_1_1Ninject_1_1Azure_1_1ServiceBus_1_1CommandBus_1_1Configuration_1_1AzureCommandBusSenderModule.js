@@ -1,0 +1,6 @@
+var classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusSenderModule =
+[
+    [ "Load", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusSenderModule.html#ab05a13b7c4c9cc5bf81bdb24acb40571", null ],
+    [ "RegisterCommandMessageSerialiser", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusSenderModule.html#a9a40a7924b1adaa02b95e5d244ff5e82", null ],
+    [ "RegisterCommandSender", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusSenderModule.html#a5061605c053140301a8778e13ab630ac", null ]
+];

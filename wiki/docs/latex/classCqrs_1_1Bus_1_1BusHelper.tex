@@ -1,0 +1,156 @@
+\hypertarget{classCqrs_1_1Bus_1_1BusHelper}{}\section{Cqrs.\+Bus.\+Bus\+Helper Class Reference}
+\label{classCqrs_1_1Bus_1_1BusHelper}\index{Cqrs.\+Bus.\+Bus\+Helper@{Cqrs.\+Bus.\+Bus\+Helper}}
+Inheritance diagram for Cqrs.\+Bus.\+Bus\+Helper\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classCqrs_1_1Bus_1_1BusHelper}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCqrs_1_1Bus_1_1BusHelper_a7799db8bc78bdd9ec25be5bd301d0b8a}{Bus\+Helper} (\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} configuration\+Manager)
+\item 
+virtual bool \hyperlink{classCqrs_1_1Bus_1_1BusHelper_a28c675e976adbf348637ec6ff6410c1a}{Is\+Event\+Required} (Type message\+Type)
+\begin{DoxyCompactList}\small\item\em Checks if a white-\/list or black-\/list approach is taken, then checks the I\+Configuration\+Manager to see if a key exists defining if the event is required or not. If the event is required and it cannot be resolved, an error will be raised. Otherwise the event will be marked as processed. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classCqrs_1_1Bus_1_1BusHelper_a60a9603d5c6b7f29ee42491475714895}{Is\+Event\+Required} (string configuration\+Key)
+\begin{DoxyCompactList}\small\item\em Checks if a white-\/list or black-\/list approach is taken, then checks the I\+Configuration\+Manager to see if a key exists defining if the event is required or not. If the event is required and it cannot be resolved, an error will be raised. Otherwise the event will be marked as processed. \end{DoxyCompactList}\item 
+virtual Action$<$ T\+Message $>$ \hyperlink{classCqrs_1_1Bus_1_1BusHelper_a7edd5b2ac0d46ce225e592f857f6d525}{Build\+Telemetered\+Action\+Handler$<$ T\+Message, T\+Authentication\+Token $>$} (I\+Telemetry\+Helper telemetry\+Helper, Action$<$ T\+Message $>$ handler, bool hold\+Message\+Lock, string source)
+\begin{DoxyCompactList}\small\item\em Build a message handler that implements telemetry capturing as well as off thread handling. \end{DoxyCompactList}\item 
+virtual Action$<$ T\+Message $>$ \hyperlink{classCqrs_1_1Bus_1_1BusHelper_a6dc1f5166b7bcd13aa7a0d5e25ded295}{Build\+Action\+Handler$<$ T\+Message $>$} (Action$<$ T\+Message $>$ handler, bool hold\+Message\+Lock)
+\begin{DoxyCompactList}\small\item\em Build a message handler that implements telemetry capturing as well as off thread handling. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{classCqrs_1_1Bus_1_1BusHelper_ad589391a51cd61673d2403ee8012e713}{Refresh\+Cached\+Checks} ()
+\item 
+virtual void \hyperlink{classCqrs_1_1Bus_1_1BusHelper_a23bfab1be70af651cc48033fcdf4ce2c}{Start\+Refresh\+Cached\+Checks} ()
+\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} \hyperlink{classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8}{Configuration\+Manager}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+I\+Dictionary$<$ string, Tuple$<$ bool, Date\+Time $>$ $>$ \hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae29e80bd315b6284509c9fd0b977d2a0}{Cached\+Checks}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+bool \hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b}{Event\+Black\+List\+Processing}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a7799db8bc78bdd9ec25be5bd301d0b8a}\label{classCqrs_1_1Bus_1_1BusHelper_a7799db8bc78bdd9ec25be5bd301d0b8a}} 
+\index{Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}!Bus\+Helper@{Bus\+Helper}}
+\index{Bus\+Helper@{Bus\+Helper}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Bus\+Helper()}{BusHelper()}}
+{\footnotesize\ttfamily Cqrs.\+Bus.\+Bus\+Helper.\+Bus\+Helper (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}}]{configuration\+Manager }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a6dc1f5166b7bcd13aa7a0d5e25ded295}\label{classCqrs_1_1Bus_1_1BusHelper_a6dc1f5166b7bcd13aa7a0d5e25ded295}} 
+\index{Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}!Build\+Action\+Handler$<$ T\+Message $>$@{Build\+Action\+Handler$<$ T\+Message $>$}}
+\index{Build\+Action\+Handler$<$ T\+Message $>$@{Build\+Action\+Handler$<$ T\+Message $>$}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Build\+Action\+Handler$<$ T\+Message $>$()}{BuildActionHandler< TMessage >()}}
+{\footnotesize\ttfamily virtual Action$<$T\+Message$>$ Cqrs.\+Bus.\+Bus\+Helper.\+Build\+Action\+Handler$<$ T\+Message $>$ (\begin{DoxyParamCaption}\item[{Action$<$ T\+Message $>$}]{handler,  }\item[{bool}]{hold\+Message\+Lock }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Build a message handler that implements telemetry capturing as well as off thread handling. 
+
+
+
+Implements \hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_ac69a1e4722e2839c2c180b9a06a8646c}{Cqrs.\+Bus.\+I\+Bus\+Helper}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Message} : {\em I\+Message}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a7edd5b2ac0d46ce225e592f857f6d525}\label{classCqrs_1_1Bus_1_1BusHelper_a7edd5b2ac0d46ce225e592f857f6d525}} 
+\index{Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}!Build\+Telemetered\+Action\+Handler$<$ T\+Message, T\+Authentication\+Token $>$@{Build\+Telemetered\+Action\+Handler$<$ T\+Message, T\+Authentication\+Token $>$}}
+\index{Build\+Telemetered\+Action\+Handler$<$ T\+Message, T\+Authentication\+Token $>$@{Build\+Telemetered\+Action\+Handler$<$ T\+Message, T\+Authentication\+Token $>$}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Build\+Telemetered\+Action\+Handler$<$ T\+Message, T\+Authentication\+Token $>$()}{BuildTelemeteredActionHandler< TMessage, TAuthenticationToken >()}}
+{\footnotesize\ttfamily virtual Action$<$T\+Message$>$ Cqrs.\+Bus.\+Bus\+Helper.\+Build\+Telemetered\+Action\+Handler$<$ T\+Message, T\+Authentication\+Token $>$ (\begin{DoxyParamCaption}\item[{I\+Telemetry\+Helper}]{telemetry\+Helper,  }\item[{Action$<$ T\+Message $>$}]{handler,  }\item[{bool}]{hold\+Message\+Lock,  }\item[{string}]{source }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Build a message handler that implements telemetry capturing as well as off thread handling. 
+
+
+
+Implements \hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_a29751c186da5e2b042067af6a1be6d5d}{Cqrs.\+Bus.\+I\+Bus\+Helper}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Message} : {\em I\+Message}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a28c675e976adbf348637ec6ff6410c1a}\label{classCqrs_1_1Bus_1_1BusHelper_a28c675e976adbf348637ec6ff6410c1a}} 
+\index{Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}!Is\+Event\+Required@{Is\+Event\+Required}}
+\index{Is\+Event\+Required@{Is\+Event\+Required}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Is\+Event\+Required()}{IsEventRequired()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual bool Cqrs.\+Bus.\+Bus\+Helper.\+Is\+Event\+Required (\begin{DoxyParamCaption}\item[{Type}]{message\+Type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Checks if a white-\/list or black-\/list approach is taken, then checks the I\+Configuration\+Manager to see if a key exists defining if the event is required or not. If the event is required and it cannot be resolved, an error will be raised. Otherwise the event will be marked as processed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message\+Type} & The Type of the message being processed.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_acddf7635d6de08e3b09d552361fe4fda}{Cqrs.\+Bus.\+I\+Bus\+Helper}.
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a60a9603d5c6b7f29ee42491475714895}\label{classCqrs_1_1Bus_1_1BusHelper_a60a9603d5c6b7f29ee42491475714895}} 
+\index{Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}!Is\+Event\+Required@{Is\+Event\+Required}}
+\index{Is\+Event\+Required@{Is\+Event\+Required}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Is\+Event\+Required()}{IsEventRequired()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual bool Cqrs.\+Bus.\+Bus\+Helper.\+Is\+Event\+Required (\begin{DoxyParamCaption}\item[{string}]{configuration\+Key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Checks if a white-\/list or black-\/list approach is taken, then checks the I\+Configuration\+Manager to see if a key exists defining if the event is required or not. If the event is required and it cannot be resolved, an error will be raised. Otherwise the event will be marked as processed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em configuration\+Key} & The configuration key to check.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_af73d0d2aa8e98566acb4b2fb13a3e986}{Cqrs.\+Bus.\+I\+Bus\+Helper}.
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_ad589391a51cd61673d2403ee8012e713}\label{classCqrs_1_1Bus_1_1BusHelper_ad589391a51cd61673d2403ee8012e713}} 
+\index{Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}!Refresh\+Cached\+Checks@{Refresh\+Cached\+Checks}}
+\index{Refresh\+Cached\+Checks@{Refresh\+Cached\+Checks}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Refresh\+Cached\+Checks()}{RefreshCachedChecks()}}
+{\footnotesize\ttfamily virtual void Cqrs.\+Bus.\+Bus\+Helper.\+Refresh\+Cached\+Checks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a23bfab1be70af651cc48033fcdf4ce2c}\label{classCqrs_1_1Bus_1_1BusHelper_a23bfab1be70af651cc48033fcdf4ce2c}} 
+\index{Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}!Start\+Refresh\+Cached\+Checks@{Start\+Refresh\+Cached\+Checks}}
+\index{Start\+Refresh\+Cached\+Checks@{Start\+Refresh\+Cached\+Checks}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Start\+Refresh\+Cached\+Checks()}{StartRefreshCachedChecks()}}
+{\footnotesize\ttfamily virtual void Cqrs.\+Bus.\+Bus\+Helper.\+Start\+Refresh\+Cached\+Checks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\subsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_ae29e80bd315b6284509c9fd0b977d2a0}\label{classCqrs_1_1Bus_1_1BusHelper_ae29e80bd315b6284509c9fd0b977d2a0}} 
+\index{Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}!Cached\+Checks@{Cached\+Checks}}
+\index{Cached\+Checks@{Cached\+Checks}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Cached\+Checks}{CachedChecks}}
+{\footnotesize\ttfamily I\+Dictionary$<$string, Tuple$<$bool, Date\+Time$>$ $>$ Cqrs.\+Bus.\+Bus\+Helper.\+Cached\+Checks\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8}\label{classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8}} 
+\index{Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}!Configuration\+Manager@{Configuration\+Manager}}
+\index{Configuration\+Manager@{Configuration\+Manager}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Configuration\+Manager}{ConfigurationManager}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} Cqrs.\+Bus.\+Bus\+Helper.\+Configuration\+Manager\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b}\label{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b}} 
+\index{Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}!Event\+Black\+List\+Processing@{Event\+Black\+List\+Processing}}
+\index{Event\+Black\+List\+Processing@{Event\+Black\+List\+Processing}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Event\+Black\+List\+Processing}{EventBlackListProcessing}}
+{\footnotesize\ttfamily bool Cqrs.\+Bus.\+Bus\+Helper.\+Event\+Black\+List\+Processing\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
