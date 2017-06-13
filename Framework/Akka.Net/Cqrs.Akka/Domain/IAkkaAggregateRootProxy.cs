@@ -2,7 +2,7 @@
 
 namespace Cqrs.Akka.Domain
 {
-	public interface IAkkaAggregateRootProxy<TAggregate>
+	public interface IAkkaAggregateRootProxy<out TAggregate>
 	{
 		IActorRef ActorReference { get; }
 

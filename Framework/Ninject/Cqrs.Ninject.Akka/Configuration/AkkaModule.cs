@@ -28,7 +28,8 @@ namespace Cqrs.Ninject.Akka.Configuration
 		/// </summary>
 		public override void Load()
 		{
-			Bind<IAkkaRepository<TAuthenticationToken>>().To<AkkaRepository<TAuthenticationToken>>().InSingletonScope();
+			Bind<IAkkaAggregateRepository<TAuthenticationToken>>().To<AkkaAggregateRepository<TAuthenticationToken>>().InSingletonScope();
+			Bind<IAkkaSagaRepository<TAuthenticationToken>>().To<AkkaSagaRepository<TAuthenticationToken>>().InSingletonScope();
 			Bind<IAkkaEventPublisher<TAuthenticationToken>>().To<AkkaEventBus<TAuthenticationToken>>().InSingletonScope();
 			Bind<IAkkaEventPublisherProxy<TAuthenticationToken>>().To<AkkaEventBusProxy<TAuthenticationToken>>().InSingletonScope();
 			Bind<IAkkaCommandSender<TAuthenticationToken>>().To<AkkaCommandBus<TAuthenticationToken>>().InSingletonScope();

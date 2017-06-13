@@ -29,7 +29,7 @@ This project is actively developed, however we sometimes have specific feature r
 ## Features
 * Command sending and event publishing
 * Unit of work through session with aggregate tracking (I'm tempted to remove the UOW)
-* Repository for getting and saving aggregates
+* Repository for getting and saving aggregates and process managers
 * Strategy/Specification pattern for querying
 * Optimistic concurrency checking
 * In process bus with autoregistration of handlers

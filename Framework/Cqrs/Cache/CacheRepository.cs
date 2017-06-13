@@ -8,9 +8,9 @@ using Cqrs.Events;
 
 namespace Cqrs.Cache
 {
-	public class CacheRepository<TAuthenticationToken> : IRepository<TAuthenticationToken>
+	public class CacheRepository<TAuthenticationToken> : IAggregateRepository<TAuthenticationToken>
 	{
-		private IRepository<TAuthenticationToken> Repository { get; set; }
+		private IAggregateRepository<TAuthenticationToken> Repository { get; set; }
 
 		private IEventStore<TAuthenticationToken> EventStore { get; set; }
 
@@ -20,7 +20,7 @@ namespace Cqrs.Cache
 
 		private static readonly ConcurrentDictionary<string, object> Locks = new ConcurrentDictionary<string, object>();
 
-		public CacheRepository(IRepository<TAuthenticationToken> repository, IEventStore<TAuthenticationToken> eventStore)
+		public CacheRepository(IAggregateRepository<TAuthenticationToken> repository, IEventStore<TAuthenticationToken> eventStore)
 		{
 			if(repository == null)
 				throw new ArgumentNullException("repository");
@@ -41,7 +41,7 @@ namespace Cqrs.Cache
 				};
 		}
 
-		public void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
+		public virtual void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			var idstring = aggregate.Id.ToString();
@@ -61,7 +61,7 @@ namespace Cqrs.Cache
 			}
 		}
 
-		public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)
+		public virtual TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			string idstring = aggregateId.ToString();

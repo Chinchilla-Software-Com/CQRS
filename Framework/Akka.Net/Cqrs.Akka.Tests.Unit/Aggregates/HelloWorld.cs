@@ -42,7 +42,7 @@ namespace Cqrs.Akka.Tests.Unit.Aggregates
 			DependencyResolver = dependencyResolver;
 			Logger = logger;
 			UnitOfWork = DependencyResolver.Resolve<IUnitOfWork<Guid>>();
-			Repository = DependencyResolver.Resolve<IAkkaRepository<Guid>>();
+			Repository = DependencyResolver.Resolve<IAkkaAggregateRepository<Guid>>();
 			CorrelationIdHelper = DependencyResolver.Resolve<ICorrelationIdHelper>();
 			AuthenticationTokenHelper = DependencyResolver.Resolve<IAuthenticationTokenHelper<Guid>>();
 		}

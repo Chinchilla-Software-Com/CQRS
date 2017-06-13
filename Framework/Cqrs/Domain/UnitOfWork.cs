@@ -17,11 +17,11 @@ namespace Cqrs.Domain
 	/// </summary>
 	public class UnitOfWork<TAuthenticationToken> : IUnitOfWork<TAuthenticationToken>
 	{
-		private IRepository<TAuthenticationToken> Repository { get; set; }
+		private IAggregateRepository<TAuthenticationToken> Repository { get; set; }
 
 		private Dictionary<Guid, IAggregateDescriptor<TAuthenticationToken>> TrackedAggregates { get; set; }
 
-		public UnitOfWork(IRepository<TAuthenticationToken> repository)
+		public UnitOfWork(IAggregateRepository<TAuthenticationToken> repository)
 		{
 			if(repository == null)
 				throw new ArgumentNullException("repository");

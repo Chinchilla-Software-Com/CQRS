@@ -352,13 +352,19 @@ namespace Cqrs.Bus
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
+			Type eventType = @event.GetType();
+			string eventName = eventType.FullName;
+			ISagaEvent<TAuthenticationToken> sagaEvent = @event as ISagaEvent<TAuthenticationToken>;
+			if (sagaEvent != null)
+				eventName = string.Format("Cqrs.Events.SagaEvent[{0}]", sagaEvent.Event.GetType().FullName);
+
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = "200";
 			bool wasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "InProcessBus" } };
-			string telemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+			string telemetryName = string.Format("{0}/{1}", eventName, @event.Id);
 			var telemeteredEvent = @event as ITelemeteredMessage;
 			if (telemeteredEvent != null)
 				telemetryName = telemeteredEvent.TelemetryName;
@@ -366,8 +372,6 @@ namespace Cqrs.Bus
 
 			try
 			{
-				Type eventType = @event.GetType();
-
 				if (@event.Frameworks != null && @event.Frameworks.Contains("Built-In"))
 				{
 					Logger.LogInfo("The provided event has already been processed by the Built-In bus.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, eventType.FullName));
@@ -391,13 +395,13 @@ namespace Cqrs.Bus
 				@event.Frameworks = frameworks;
 
 				bool isRequired;
-				if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", eventType.FullName), out isRequired))
+				if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", eventName), out isRequired))
 					isRequired = true;
 
 				IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
 				// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 				if (!handlers.Any())
-					Logger.LogDebug(string.Format("An event handler for '{0}' is not required.", eventType.FullName));
+					Logger.LogDebug(string.Format("An event handler for '{0}' is not required.", eventName));
 
 				foreach (Action<IMessage> handler in handlers)
 				{
@@ -407,7 +411,7 @@ namespace Cqrs.Bus
 					handler(@event);
 				}
 
-				Logger.LogInfo(string.Format("An event was sent of type {0}.", eventType.FullName));
+				Logger.LogInfo(string.Format("An event was sent of type {0}.", eventName));
 				wasSuccessfull = true;
 			}
 			catch (Exception exception)

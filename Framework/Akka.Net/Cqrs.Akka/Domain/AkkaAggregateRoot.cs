@@ -27,7 +27,7 @@ namespace Cqrs.Akka.Domain
 	{
 		protected IUnitOfWork<TAuthenticationToken> UnitOfWork { get; set; }
 
-		protected IAkkaRepository<TAuthenticationToken> Repository { get; set; }
+		protected IAkkaAggregateRepository<TAuthenticationToken> Repository { get; set; }
 
 		protected ILogger Logger { get; set; }
 
@@ -41,7 +41,7 @@ namespace Cqrs.Akka.Domain
 
 		public int Version { get; protected set; }
 
-		protected AkkaAggregateRoot(IUnitOfWork<TAuthenticationToken> unitOfWork, ILogger logger, IAkkaRepository<TAuthenticationToken> repository, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
+		protected AkkaAggregateRoot(IUnitOfWork<TAuthenticationToken> unitOfWork, ILogger logger, IAkkaAggregateRepository<TAuthenticationToken> repository, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
 		{
 			UnitOfWork = unitOfWork;
 			Logger = logger;
