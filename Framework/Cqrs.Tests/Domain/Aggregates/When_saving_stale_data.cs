@@ -15,7 +15,7 @@ namespace Cqrs.Tests.Domain
 		private TestInMemoryEventStore _eventStore;
 		private TestAggregate _aggregate;
 		private TestEventPublisher _eventPublisher;
-		private Repository<ISingleSignOnToken> _rep;
+		private AggregateRepository<ISingleSignOnToken> _rep;
 		private UnitOfWork<ISingleSignOnToken> _unitOfWork;
 
 		[SetUp]
@@ -25,7 +25,7 @@ namespace Cqrs.Tests.Domain
 			_eventPublisher = new TestEventPublisher();
 			var dependencyResolver = new TestDependencyResolver(null);
 			var aggregateFactory = new AggregateFactory(dependencyResolver, dependencyResolver.Resolve<ILogger>());
-			_rep = new Repository<ISingleSignOnToken>(aggregateFactory, _eventStore, _eventPublisher, new NullCorrelationIdHelper());
+			_rep = new AggregateRepository<ISingleSignOnToken>(aggregateFactory, _eventStore, _eventPublisher, new NullCorrelationIdHelper());
 			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(_rep);
 
 			_aggregate = new TestAggregate(Guid.NewGuid());

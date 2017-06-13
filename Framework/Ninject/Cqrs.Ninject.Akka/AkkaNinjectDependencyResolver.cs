@@ -143,6 +143,12 @@ namespace Cqrs.Ninject.Akka
 						typeToTest = aggregateType;
 						break;
 					}
+					Type sagaType = typeof (AkkaSaga<>).MakeGenericType(typeToTest.GenericTypeArguments.Single());
+					if (typeToTest == sagaType)
+					{
+						typeToTest = sagaType;
+						break;
+					}
 				}
 				typeToTest = typeToTest.BaseType;
 			}

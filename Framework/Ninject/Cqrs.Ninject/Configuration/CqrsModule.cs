@@ -175,8 +175,17 @@ namespace Cqrs.Ninject.Configuration
 			Bind<IUnitOfWork<TAuthenticationToken>>()
 				.To<UnitOfWork<TAuthenticationToken>>()
 				.InTransientScope();
+			Bind<ISagaUnitOfWork<TAuthenticationToken>>()
+				.To<SagaUnitOfWork<TAuthenticationToken>>()
+				.InTransientScope();
+			Bind<IAggregateRepository<TAuthenticationToken>>()
+				.To<AggregateRepository<TAuthenticationToken>>()
+				.InSingletonScope();
 			Bind<IRepository<TAuthenticationToken>>()
 				.To<Repository<TAuthenticationToken>>()
+				.InSingletonScope();
+			Bind<ISagaRepository<TAuthenticationToken>>()
+				.To<SagaRepository<TAuthenticationToken>>()
 				.InSingletonScope();
 			Bind<IAggregateFactory>()
 				.To<AggregateFactory>()

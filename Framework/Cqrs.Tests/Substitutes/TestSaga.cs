@@ -26,7 +26,7 @@ namespace Cqrs.Tests.Substitutes
 		private TestSaga(IDependencyResolver dependencyResolver)
 			: base(dependencyResolver, dependencyResolver.Resolve<ILogger>())
 		{
-			ApplyChange(new TestAggregateCreated());
+			ApplyChange(new SagaEvent<ISingleSignOnToken>(new TestAggregateCreated()));
 			Version++;
 		}
 
@@ -34,7 +34,7 @@ namespace Cqrs.Tests.Substitutes
 			: base(dependencyResolver, dependencyResolver.Resolve<ILogger>())
 		{
 			Id = id;
-			ApplyChange(new TestAggregateCreated());
+			ApplyChange(new SagaEvent<ISingleSignOnToken>(new TestAggregateCreated()));
 			Version++;
 		}
 

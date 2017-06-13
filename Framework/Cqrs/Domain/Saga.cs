@@ -121,7 +121,10 @@ namespace Cqrs.Domain
 
 		protected virtual void ApplyChange(IEvent<TAuthenticationToken> @event)
 		{
-			ApplyChange(new SagaEvent<TAuthenticationToken>(@event));
+			var sagaEvent = new SagaEvent<TAuthenticationToken>(@event);
+			// Set ID
+			this.AsDynamic().SetId(sagaEvent);
+			ApplyChange(sagaEvent);
 		}
 
 		private void ApplyChange(ISagaEvent<TAuthenticationToken> @event, bool isEventReplay)

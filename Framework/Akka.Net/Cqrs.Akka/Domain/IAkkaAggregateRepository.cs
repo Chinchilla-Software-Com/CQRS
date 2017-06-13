@@ -4,7 +4,7 @@ using Cqrs.Events;
 
 namespace Cqrs.Akka.Domain
 {
-	public interface IAkkaRepository<TAuthenticationToken> : IRepository<TAuthenticationToken>
+	public interface IAkkaAggregateRepository<TAuthenticationToken> : IAggregateRepository<TAuthenticationToken>
 	{
 		void LoadAggregateHistory<TAggregateRoot>(TAggregateRoot aggregate, IList<IEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>;

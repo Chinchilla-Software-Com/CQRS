@@ -12,6 +12,7 @@ using Cqrs.Akka.Tests.Unit.Commands;
 using Cqrs.Akka.Tests.Unit.Commands.Handlers;
 using Cqrs.Akka.Tests.Unit.Events;
 using Cqrs.Akka.Tests.Unit.Events.Handlers;
+using Cqrs.Akka.Tests.Unit.Sagas;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;
@@ -33,6 +34,7 @@ namespace Cqrs.Akka.Tests.Unit
 		internal static IDictionary<Guid, bool> Step2Reached = new Dictionary<Guid, bool>();
 		internal static IDictionary<Guid, bool> Step3Reached = new Dictionary<Guid, bool>();
 		internal static IDictionary<Guid, bool> Step4Reached = new Dictionary<Guid, bool>();
+		internal static IDictionary<Guid, bool> FinalCommandReached = new Dictionary<Guid, bool>();
 
 		[TestMethod]
 		public void SendingCommandsAndEvents_AcrossBusesInMultipleWays_AllWork()
@@ -50,8 +52,11 @@ namespace Cqrs.Akka.Tests.Unit
 			kernel.Bind<ILogger>().ToConstant(logger);
 			kernel.Bind<IAggregateFactory>().To<AggregateFactory>().InSingletonScope();
 			kernel.Bind<IUnitOfWork<Guid>>().To<UnitOfWork<Guid>>().InSingletonScope();
-			kernel.Bind<IRepository<Guid>>().To<AkkaRepository<Guid>>().InSingletonScope();
-			kernel.Bind<IAkkaRepository<Guid>>().To<AkkaRepository<Guid>>().InSingletonScope();
+			kernel.Bind<ISagaUnitOfWork<Guid>>().To<SagaUnitOfWork<Guid>>().InSingletonScope();
+			kernel.Bind<IAggregateRepository<Guid>>().To<AkkaAggregateRepository<Guid>>().InSingletonScope();
+			kernel.Bind<IAkkaAggregateRepository<Guid>>().To<AkkaAggregateRepository<Guid>>().InSingletonScope();
+			kernel.Bind<ISagaRepository<Guid>>().To<AkkaSagaRepository<Guid>>().InSingletonScope();
+			kernel.Bind<IAkkaSagaRepository<Guid>>().To<AkkaSagaRepository<Guid>>().InSingletonScope();
 			kernel.Bind<IEventStore<Guid>>().To<MemoryCacheEventStore<Guid>>().InSingletonScope();
 			kernel.Bind<IEventBuilder<Guid>>().To<DefaultEventBuilder<Guid>>().InSingletonScope();
 			kernel.Bind<IEventDeserialiser<Guid>>().To<EventDeserialiser<Guid>>().InSingletonScope();
@@ -84,6 +89,9 @@ namespace Cqrs.Akka.Tests.Unit
 			commandBus.RegisterHandler<ReplyToHelloWorldCommand>(new ReplyToHelloWorldCommandHandler(dependencyResolver).Handle);
 			commandBus.RegisterHandler<EndConversationCommand>(new EndConversationCommandHandler(dependencyResolver).Handle);
 
+			// Commands handled in process
+			inProcessBus.RegisterHandler<UpdateCompletedConversationReportCommand>(new UpdateCompletedConversationReportCommandHandler(dependencyResolver).Handle);
+
 			// Events in process
 			inProcessBus.RegisterHandler<HelloWorldSaid>(new HelloWorldSaidEventHandler(dependencyResolver.Resolve<IAkkaCommandSender<Guid>>()).Handle);
 			inProcessBus.RegisterHandler<ConversationEnded>(new ConversationEndedEventHandler(dependencyResolver.Resolve<IAkkaCommandSender<Guid>>()).Handle);
@@ -92,16 +100,30 @@ namespace Cqrs.Akka.Tests.Unit
 			eventBus.RegisterHandler<HelloWorldRepliedTo>(new HelloWorldRepliedToEventHandler(dependencyResolver).Handle);
 			eventBus.RegisterHandler<HelloWorldRepliedTo>(new HelloWorldRepliedToSendEndConversationCommandEventHandler(dependencyResolver).Handle);
 
+			var handler = new ConversationReportProcessManagerEventHandlers(dependencyResolver);
+			eventBus.RegisterHandler<HelloWorldSaid>(handler.Handle);
+			eventBus.RegisterHandler<ConversationEnded>(handler.Handle);
+			eventBus.RegisterHandler<HelloWorldRepliedTo>(handler.Handle);
+
 			Step1Reached.Add(correlationId, false);
 			Step2Reached.Add(correlationId, false);
 			Step3Reached.Add(correlationId, false);
 			Step4Reached.Add(correlationId, false);
+			FinalCommandReached.Add(correlationId, false);
 
 			// Act
 			commandBusProxy.Send(command);
 
 			// Assert
-			SpinWait.SpinUntil(() => Step1Reached[correlationId] && Step2Reached[correlationId] && Step3Reached[correlationId] && Step4Reached[correlationId]);
+			SpinWait.SpinUntil
+			(
+				() => 
+					Step1Reached[correlationId] && 
+					Step2Reached[correlationId] && 
+					Step3Reached[correlationId] && 
+					Step4Reached[correlationId] &&
+					FinalCommandReached[correlationId]
+			);
 
 			AkkaNinjectDependencyResolver.Stop();
 		}

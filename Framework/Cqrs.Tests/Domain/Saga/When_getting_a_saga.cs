@@ -48,7 +48,6 @@ namespace Cqrs.Tests.Domain.Saga
 		[Test]
 		public void Should_not_send_command()
 		{
-			// this test is currently stupid, it doesn't actually test things
 			var saga = _unitOfWork.Get<TestSaga>(Guid.NewGuid());
 			Assert.AreEqual(0, _commandPublisher.Published);
 		}
