@@ -20,20 +20,27 @@ namespace Cqrs.Akka.Tests.Unit.Sagas
 		/// <summary>
 		/// Instantiates the <see cref="ConversationReportProcessManagerEventHandlers"/> class registering any <see cref="ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
 		/// </summary>
-		public ConversationReportProcessManagerEventHandlers(IAkkaAggregateResolver aggregateResolver)
+		public ConversationReportProcessManagerEventHandlers(IAkkaSagaResolver sagaResolver)
 		{
-			AggregateResolver = aggregateResolver;
+			SagaResolver = sagaResolver;
 		}
 
-		protected IAkkaAggregateResolver AggregateResolver { get; private set; }
+		protected IAkkaSagaResolver SagaResolver { get; private set; }
 
 		#region Implementation of IMessageHandler<in HelloWorldRepliedTo>
 
-		public void Handle(HelloWorldRepliedTo message)
+		protected virtual void HandleEvent(IEvent<Guid> message)
 		{
-			IActorRef item = AggregateResolver.ResolveActor<ConversationReportProcessManager>();
+			// Resolve and locate the instance of the Saga to pass the message to
+			IActorRef item = SagaResolver.ResolveActor<ConversationReportProcessManager, Guid>(message.Id);
+			// Pass the message to it (and wait?)
 			bool result = item.Ask<bool>(message).Result;
 			// item.Tell(message);
+		}
+
+		public void Handle(HelloWorldRepliedTo message)
+		{
+			HandleEvent(message);
 		}
 
 		#endregion
@@ -42,9 +49,7 @@ namespace Cqrs.Akka.Tests.Unit.Sagas
 
 		public void Handle(HelloWorldSaid message)
 		{
-			IActorRef item = AggregateResolver.ResolveActor<ConversationReportProcessManager>();
-			bool result = item.Ask<bool>(message).Result;
-			// item.Tell(message);
+			HandleEvent(message);
 		}
 
 		#endregion
@@ -53,9 +58,7 @@ namespace Cqrs.Akka.Tests.Unit.Sagas
 
 		public void Handle(ConversationEnded message)
 		{
-			IActorRef item = AggregateResolver.ResolveActor<ConversationReportProcessManager>();
-			bool result = item.Ask<bool>(message).Result;
-			// item.Tell(message);
+			HandleEvent(message);
 		}
 
 		#endregion

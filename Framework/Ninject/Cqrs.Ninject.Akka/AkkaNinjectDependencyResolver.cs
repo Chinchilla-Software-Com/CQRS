@@ -15,6 +15,7 @@ namespace Cqrs.Ninject.Akka
 	public class AkkaNinjectDependencyResolver
 		: NinjectDependencyResolver
 		, IAkkaAggregateResolver
+		, IAkkaSagaResolver
 		, IHandlerResolver
 	{
 		protected global::Akka.DI.Ninject.NinjectDependencyResolver RawAkkaNinjectDependencyResolver { get; set; }
@@ -103,6 +104,21 @@ namespace Cqrs.Ninject.Akka
 		public IActorRef ResolveActor<T>()
 		{
 			return (IActorRef)AkkaResolve(typeof(T), null, true);
+		}
+
+		#endregion
+
+		#region Implementation of IAkkaSagaResolver
+
+		IActorRef IAkkaSagaResolver.ResolveActor<TSaga, TAuthenticationToken>(Guid rsn)
+		{
+			return ResolveSagaActor<TSaga, TAuthenticationToken>(rsn);
+		}
+
+		public virtual IActorRef ResolveSagaActor<TSaga, TAuthenticationToken>(Guid rsn)
+			where TSaga : ISaga<TAuthenticationToken>
+		{
+			return (IActorRef)AkkaResolve(typeof(TSaga), rsn, true);
 		}
 
 		#endregion
