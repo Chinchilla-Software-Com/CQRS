@@ -7,11 +7,67 @@ using Cqrs.Events;
 
 namespace Cqrs.Tests.Substitutes
 {
-	public class TestSaga
-		: Saga<ISingleSignOnToken>
+	public class TestSagaEventHandlers
+		: SagaEventHandler<ISingleSignOnToken, TestSaga>
 		, IEventHandler<ISingleSignOnToken, TestAggregateDidSomething>
 		, IEventHandler<ISingleSignOnToken, TestAggregateDidSomethingElse>
 		, IEventHandler<ISingleSignOnToken, TestAggregateDidSomethingElse2>
+	{
+		public TestSagaEventHandlers(IDependencyResolver dependencyResolver, ILogger logger, ISagaUnitOfWork<ISingleSignOnToken> sagaUnitOfWork) : base(dependencyResolver, logger, sagaUnitOfWork)
+		{
+		}
+
+		/// <summary>
+		/// A constructor for the <see cref="Cqrs.Domain.Factories.IAggregateFactory"/>
+		/// </summary>
+		public TestSagaEventHandlers(IDependencyResolver dependencyResolver, ILogger logger) : base(dependencyResolver, logger)
+		{
+		}
+
+		#region Implementation of IMessageHandler<in TestAggregateDidSomething>
+
+		public void Handle(TestAggregateDidSomething message)
+		{
+			// There are two ways for this to pan out.
+			// 1) Events WILL arrive in order in which case this handler would ADD TO and all others would GET FROM the UOW
+			// 2) Events may not arrive in order in which case all handlers should try to GET FROM and if it fails ADD TO the UOW
+			// Given this is a test, we'll code for the first.
+
+			var saga = new TestSaga(DependencyResolver, message.Id == Guid.Empty ? Guid.NewGuid() : message.Id);
+			saga.Handle(message);
+			SagaUnitOfWork.Add(saga);
+			SagaUnitOfWork.Commit();
+		}
+
+		#endregion
+
+		#region Implementation of IMessageHandler<in TestAggregateDidSomethingElse>
+
+		public void Handle(TestAggregateDidSomethingElse message)
+		{
+			TestSaga saga = GetSaga(message.Id);
+			saga.Handle(message);
+			SagaUnitOfWork.Add(saga);
+			SagaUnitOfWork.Commit();
+		}
+
+		#endregion
+
+		#region Implementation of IMessageHandler<in TestAggregateDidSomethingElse2>
+
+		public void Handle(TestAggregateDidSomethingElse2 message)
+		{
+			TestSaga saga = GetSaga(message.Id);
+			saga.Handle(message);
+			SagaUnitOfWork.Add(saga);
+			SagaUnitOfWork.Commit();
+		}
+
+		#endregion
+	}
+
+	public class TestSaga : Saga<ISingleSignOnToken>
+
 	{
 		public int DidSomethingCount;
 
