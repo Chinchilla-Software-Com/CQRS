@@ -13,6 +13,8 @@ namespace Cqrs.Tests.Substitutes
 		, IEventHandler<ISingleSignOnToken, TestAggregateDidSomethingElse>
 		, IEventHandler<ISingleSignOnToken, TestAggregateDidSomethingElse2>
 	{
+		public int TimesRun { get; set; }
+
 		public TestSagaEventHandlers(IDependencyResolver dependencyResolver, ILogger logger, ISagaUnitOfWork<ISingleSignOnToken> sagaUnitOfWork) : base(dependencyResolver, logger, sagaUnitOfWork)
 		{
 		}
@@ -37,6 +39,8 @@ namespace Cqrs.Tests.Substitutes
 			saga.Handle(message);
 			SagaUnitOfWork.Add(saga);
 			SagaUnitOfWork.Commit();
+
+			TimesRun++;
 		}
 
 		#endregion
@@ -49,6 +53,8 @@ namespace Cqrs.Tests.Substitutes
 			saga.Handle(message);
 			SagaUnitOfWork.Add(saga);
 			SagaUnitOfWork.Commit();
+
+			TimesRun++;
 		}
 
 		#endregion
@@ -61,6 +67,8 @@ namespace Cqrs.Tests.Substitutes
 			saga.Handle(message);
 			SagaUnitOfWork.Add(saga);
 			SagaUnitOfWork.Commit();
+
+			TimesRun++;
 		}
 
 		#endregion

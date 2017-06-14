@@ -6,6 +6,7 @@ using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Configuration;
+using Cqrs.Domain;
 
 namespace Cqrs.Tests.Substitutes
 {
@@ -52,6 +53,14 @@ namespace Cqrs.Tests.Substitutes
 				return new TestSaga(this, TestEventStore == null || !UseTestEventStoreGuid ? NewAggregateGuid ?? Guid.NewGuid() : TestEventStore.EmptyGuid);
 			if (type == typeof(TestSnapshotAggregate))
 				return new TestSnapshotAggregate(TestEventStore == null || !UseTestEventStoreGuid ? NewAggregateGuid ?? Guid.NewGuid() : TestEventStore.EmptyGuid);
+			if (type == typeof(ISagaUnitOfWork<ISingleSignOnToken>) || type == typeof(ISagaUnitOfWork<Guid>))
+				return new TestSagaUnitOfWork();
+			if (type == typeof(TestSagaEventHandlers))
+			{
+				var handler = new TestSagaEventHandlers(this, Resolve<ILogger>());
+				Handlers.Add(handler);
+				return handler;
+			}
 			if (type == typeof(TestAggregateDidSomethingHandler))
 			{
 				var handler = new TestAggregateDidSomethingHandler();
