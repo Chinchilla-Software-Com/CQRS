@@ -1,4 +1,4 @@
-﻿0.1 Create a new ASP.NET Web Application (make sure .net framework 4.5 is selected.) as per https://docs.microsoft.com/en-us/aspnet/mvc/overview/security/create-an-aspnet-mvc-5-app-with-facebook-and-google-oauth2-and-openid-sign-on
+﻿0.1 Create a new ASP.NET Web Application (make sure .net framework 4.5 is selected.) as per https://docs.microsoft.com/en-us/aspnet/mvc/overview/security/create-an-aspnet-mvc-5-app-with-facebook-and-google-oauth2-and-openid-sign-on and make sure WebAPI AND MVC are selected 
 0.2 In our tests we enabled Google External Authentication.
 
 1.1. Add Cqrs.Ninject.WebApi package
@@ -19,7 +19,11 @@
 		}
 	}
 
-1.3. In global.asax.cs, replace the inherited class of HttpApplication with CqrsHttpApplication<string, EventToHubProxy>
+1.3. In global.asax.cs, replace the inherited class of HttpApplication with CqrsHttpApplication<string, EventToHubProxy> and set the following namespaces
+	using Cqrs.Ninject.Configuration;
+	using Cqrs.WebApi;
+	using HelloWorld.Code;
+
 1.4. Remove the existing Application_Start method and add the follow to Global.asax.cs
 		protected override void ConfigureDefaultDependencyResolver()
 		{
@@ -29,6 +33,7 @@
 		protected override void ConfigureMvc()
 		{
 			AreaRegistration.RegisterAllAreas();
+			GlobalConfiguration.Configure(WebApiConfig.Register);
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
