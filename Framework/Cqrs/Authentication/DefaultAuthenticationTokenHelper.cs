@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using cdmdotnet.StateManagement;
 
 namespace Cqrs.Authentication
@@ -15,6 +16,9 @@ namespace Cqrs.Authentication
 		, IAuthenticationTokenHelper<SingleSignOnTokenWithUserRsn>
 		, IAuthenticationTokenHelper<SingleSignOnTokenWithCompanyRsn>
 		, IAuthenticationTokenHelper<SingleSignOnTokenWithUserRsnAndCompanyRsn>
+		, IAuthenticationTokenHelper<int>
+		, IAuthenticationTokenHelper<Guid>
+		, IAuthenticationTokenHelper<string>
 	{
 		private const string CallContextPermissionScopeValueKey = "SingleSignOnTokenValue";
 
@@ -47,6 +51,24 @@ namespace Cqrs.Authentication
 			return Cache.GetData<SingleSignOnTokenWithUserRsn>(CallContextPermissionScopeValueKey);
 		}
 
+		public Guid SetAuthenticationToken(Guid token)
+		{
+			Cache.SetData(CacheKey, token);
+			return token;
+		}
+
+		public int SetAuthenticationToken(int token)
+		{
+			Cache.SetData(CacheKey, token);
+			return token;
+		}
+
+		public string SetAuthenticationToken(string token)
+		{
+			Cache.SetData(CacheKey, token);
+			return token;
+		}
+
 		SingleSignOnTokenWithCompanyRsn IAuthenticationTokenHelper<SingleSignOnTokenWithCompanyRsn>.GetAuthenticationToken()
 		{
 			return Cache.GetData<SingleSignOnTokenWithCompanyRsn>(CallContextPermissionScopeValueKey);
@@ -56,5 +78,32 @@ namespace Cqrs.Authentication
 		{
 			return Cache.GetData<SingleSignOnTokenWithUserRsnAndCompanyRsn>(CallContextPermissionScopeValueKey);
 		}
+
+		#region Implementation of IAuthenticationTokenHelper<int>
+
+		int IAuthenticationTokenHelper<int>.GetAuthenticationToken()
+		{
+			return Cache.GetData<int>(CallContextPermissionScopeValueKey);
+		}
+
+		#endregion
+
+		#region Implementation of IAuthenticationTokenHelper<Guid>
+
+		Guid IAuthenticationTokenHelper<Guid>.GetAuthenticationToken()
+		{
+			return Cache.GetData<Guid>(CallContextPermissionScopeValueKey);
+		}
+
+		#endregion
+
+		#region Implementation of IAuthenticationTokenHelper<string>
+
+		string IAuthenticationTokenHelper<string>.GetAuthenticationToken()
+		{
+			return Cache.GetData<string>(CallContextPermissionScopeValueKey);
+		}
+
+		#endregion
 	}
 }

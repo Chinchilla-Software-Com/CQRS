@@ -22,7 +22,7 @@ namespace Cqrs.Ninject.Configuration
 		/// <summary>
 		/// The inner Ninject <see cref="IKernel"/> used by this instance.
 		/// </summary>
-		protected IKernel Kernel { get; private set; }
+		public IKernel Kernel { get; private set; }
 
 		/// <summary>
 		/// A collection of <see cref="INinjectModule"/> instances to load when we call <see cref="PrepareKernel"/>

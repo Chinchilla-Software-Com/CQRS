@@ -20,6 +20,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 	public class NotificationHub
 		: Hub
 		, INotificationHub
+		, ISingleSignOnTokenNotificationHub
 	{
 		public NotificationHub(ILogger logger, ICorrelationIdHelper correlationIdHelper)
 		{
@@ -285,6 +286,38 @@ namespace Cqrs.WebApi.SignalR.Hubs
 			{
 				Logger.LogError("Queueing a message on the hub resulted in an error.", exception: exception, metaData: GetAdditionalDataForLogging(userToken));
 			}
+		}
+
+		/// <summary>
+		/// Send out an event to specific user token
+		/// </summary>
+		void ISingleSignOnTokenNotificationHub.SendUserEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, string userToken)
+		{
+			((INotificationHub) this).SendUserEvent(eventData, userToken);
+		}
+
+		/// <summary>
+		/// Send out an event to all users
+		/// </summary>
+		void ISingleSignOnTokenNotificationHub.SendAllUsersEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData)
+		{
+			((INotificationHub)this).SendAllUsersEvent(eventData);
+		}
+
+		/// <summary>
+		/// Send out an event to all users except the specific user token
+		/// </summary>
+		void ISingleSignOnTokenNotificationHub.SendExceptThisUserEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, string userToken)
+		{
+			((INotificationHub)this).SendExceptThisUserEvent(eventData, userToken);
+		}
+
+		/// <summary>
+		/// Send out an event to specific user RSNs
+		/// </summary>
+		void ISingleSignOnTokenNotificationHub.SendUsersEvent<TSingleSignOnToken>(IEvent<TSingleSignOnToken> eventData, params Guid[] userRsnCollection)
+		{
+			((INotificationHub)this).SendUsersEvent(eventData, userRsnCollection);
 		}
 
 		protected virtual IDictionary<string, object> GetAdditionalDataForLogging(Guid userRsn)

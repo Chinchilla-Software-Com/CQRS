@@ -1,11 +1,3 @@
-﻿#region Copyright
-// // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
-// // </copyright>
-// // -----------------------------------------------------------------------
-#endregion
-
 using System;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
@@ -14,9 +6,10 @@ using Cqrs.WebApi.SignalR.Hubs;
 
 namespace Cqrs.WebApi.Events.Handlers
 {
-	public abstract class EventToHubProxy<TAuthenticationToken>
+	public abstract class SingleSignOnTokenEventToHubProxy<TSingleSignOnToken>
+		where TSingleSignOnToken : ISingleSignOnToken, new()
 	{
-		protected EventToHubProxy(ILogger logger, INotificationHub notificationHub, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
+		protected SingleSignOnTokenEventToHubProxy(ILogger logger, INotificationHub notificationHub, IAuthenticationTokenHelper<TSingleSignOnToken> authenticationTokenHelper)
 		{
 			Logger = logger;
 			NotificationHub = notificationHub;
@@ -27,16 +20,16 @@ namespace Cqrs.WebApi.Events.Handlers
 
 		protected INotificationHub NotificationHub { get; private set; }
 
-		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
+		protected IAuthenticationTokenHelper<TSingleSignOnToken> AuthenticationTokenHelper { get; private set; }
 
-		protected virtual void HandleGenericEvent(IEvent<TAuthenticationToken> message)
+		protected virtual void HandleGenericEvent(IEvent<TSingleSignOnToken> message)
 		{
 			Type eventType = message.GetType();
 			var notifyCallerEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyCallerEventAttribute)) as NotifyCallerEventAttribute;
 			var notifyEveryoneEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyEveryoneEventAttribute)) as NotifyEveryoneEventAttribute;
 			var notifyEveryoneExceptCallerEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyEveryoneExceptCallerEventAttribute)) as NotifyEveryoneExceptCallerEventAttribute;
 
-			string userToken = ((object)AuthenticationTokenHelper.GetAuthenticationToken() ?? string.Empty).ToString().Replace(".", string.Empty);
+			string userToken = (AuthenticationTokenHelper.GetAuthenticationToken().Token ?? string.Empty).Replace(".", string.Empty);
 
 			if (notifyCallerEventAttribute != null)
 			{

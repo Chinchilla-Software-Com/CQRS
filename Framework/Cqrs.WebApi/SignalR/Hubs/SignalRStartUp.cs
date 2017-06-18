@@ -19,10 +19,22 @@ namespace Cqrs.WebApi.SignalR.Hubs
 {
 	public class SignalRStartUp
 	{
+		public IConfigurationManager ConfigurationManager { get; set; }
+
+		public SignalRStartUp()
+			:this (new ConfigurationManager())
+		{
+		}
+
+		public SignalRStartUp(IConfigurationManager configurationManager)
+		{
+			ConfigurationManager = configurationManager;
+		}
+
 		public virtual void Configuration(IAppBuilder app)
 		{
 			string url;
-			if (!new ConfigurationManager().TryGetSetting("Cqrs.WebApi.SignalR.EndpointPath", out url) || string.IsNullOrWhiteSpace(url))
+			if (!ConfigurationManager.TryGetSetting("Cqrs.WebApi.SignalR.EndpointPath", out url) || string.IsNullOrWhiteSpace(url))
 				url = "/signalr";
 			// Branch the pipeline here for requests that start with "/signalr"
 			app.Map(url, map =>
@@ -47,7 +59,26 @@ namespace Cqrs.WebApi.SignalR.Hubs
 				map.RunSignalR(hubConfiguration);
 			});
 
-			JsonSerializer serializer = JsonSerializer.Create(GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
+			JsonSerializer serializer = JsonSerializer.Create
+			(
+				new JsonSerializerSettings
+				{
+					Formatting = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.Formatting,
+					MissingMemberHandling = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.MissingMemberHandling,
+					DateParseHandling = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.DateParseHandling,
+					DateTimeZoneHandling = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.DateTimeZoneHandling,
+					Converters = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.Converters,
+					ContractResolver = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver,
+					DateFormatHandling = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.DateFormatHandling,
+					DefaultValueHandling = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.DefaultValueHandling,
+					FloatFormatHandling = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.FloatFormatHandling,
+					NullValueHandling = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.NullValueHandling,
+					PreserveReferencesHandling = PreserveReferencesHandling.None,
+					ReferenceLoopHandling = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling,
+					StringEscapeHandling = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.StringEscapeHandling,
+					TypeNameHandling = TypeNameHandling.None
+				}
+			);
 			GlobalHost.DependencyResolver.Register(typeof(JsonSerializer), () => serializer);
 		}
 	}

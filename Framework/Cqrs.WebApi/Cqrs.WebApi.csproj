@@ -44,8 +44,8 @@
       <HintPath>..\..\packages\cdmdotnet.StateManagement.3.0.13.9\lib\net40\cdmdotnet.StateManagement.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Core.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Core.2.2.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -54,6 +54,10 @@
     </Reference>
     <Reference Include="Microsoft.Owin.Cors, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Owin.Cors.3.0.1\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Host.SystemWeb.2.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -82,6 +86,7 @@
       <HintPath>..\..\packages\Microsoft.AspNet.Cors.5.0.0\lib\net45\System.Web.Cors.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
       <Private>True</Private>
@@ -97,9 +102,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\WebApiConfig.cs" />
+    <Compile Include="Controllers\System.Web.Helpers.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\HelpersResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HelpersResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="CqrsEventApiController.cs" />
     <Compile Include="CqrsApiController.cs" />
+    <Compile Include="CqrsHttpApplication.cs" />
     <Compile Include="Events\Handlers\EventToHubProxy.cs" />
+    <Compile Include="Events\Handlers\SingleSignOnTokenEventToHubProxy.cs" />
     <Compile Include="Formatters\FormMultipart\Converters\FormDataToObjectConverter.cs" />
     <Compile Include="Formatters\FormMultipart\Converters\HttpContentToFormDataConverter.cs" />
     <Compile Include="Formatters\FormMultipart\Converters\ObjectToMultipartDataByteArrayConverter.cs" />
@@ -117,6 +132,7 @@
     <Compile Include="HelpPageConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignalR\Hubs\INotificationHub.cs" />
+    <Compile Include="SignalR\Hubs\ISingleSignOnTokenNotificationHub.cs" />
     <Compile Include="SignalR\Hubs\NotificationHub.cs" />
     <Compile Include="SignalR\Hubs\SignalRStartUp.cs" />
   </ItemGroup>
@@ -132,6 +148,12 @@
       <Project>{dafd2a8a-d6b0-4433-8ddf-b98460c64ec6}</Project>
       <Name>Cqrs</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controllers\HelpersResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HelpersResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
