@@ -59,7 +59,7 @@ namespace HelloWorldExample
 				new FacebookAuthenticationOptions
 				{
 					AppId = "",
-					AppSecret = "",
+					AppSecret = ""
 				}
 			);
 

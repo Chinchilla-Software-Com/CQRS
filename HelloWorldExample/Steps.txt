@@ -1,11 +1,21 @@
-﻿1.1. Add Cqrs.WebApi and Cqrs.Ninject.WebApi package
+﻿0.1 Create a new ASP.NET Web Application (make sure .net framework 4.5 is selected.) as per https://docs.microsoft.com/en-us/aspnet/mvc/overview/security/create-an-aspnet-mvc-5-app-with-facebook-and-google-oauth2-and-openid-sign-on
+0.2 In our tests we enabled Google External Authentication.
+
+1.1. Add Cqrs.Ninject.WebApi package
 1.2. Add a new class named EventToHubProxy, with the following content
-	public class EventToHubProxy
-		: Cqrs.WebApi.Events.Handlers.EventToHubProxy<string>
+	namespace HelloWorld.Code
 	{
-		public EventToHubProxy(ILogger logger, INotificationHub notificationHub, IAuthenticationTokenHelper<string> authenticationTokenHelper)
-			: base(logger, notificationHub, authenticationTokenHelper)
+		using cdmdotnet.Logging;
+		using Cqrs.Authentication;
+		using Cqrs.WebApi.SignalR.Hubs;
+
+		public class EventToHubProxy
+			: Cqrs.WebApi.Events.Handlers.EventToHubProxy<string>
 		{
+			public EventToHubProxy(ILogger logger, INotificationHub notificationHub, IAuthenticationTokenHelper<string> authenticationTokenHelper)
+				: base(logger, notificationHub, authenticationTokenHelper)
+			{
+			}
 		}
 	}
 
