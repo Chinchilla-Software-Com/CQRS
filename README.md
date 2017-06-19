@@ -7,7 +7,8 @@ A lightweight enterprise framework to help write CQRS and Eventsourcing applicat
 CQRS.NET has been designed with modularity in mind... see the number of technology packages below you can chose from. Every package and design choice made should be interchangeable with custom code if needed.
 
 ## Tutorials and getting started
-For those wanting to take a plunge into using the CQRS.NET, we strongly suggest you have a look at our basic [Northwind Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Tutorial-0:-Quick-Northwind-sample.).
+For those new to CQRS.NET, we strongly suggest you have a look at our basic [Hello World Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Hello-World-Example-1) that covers basic commands and events.
+Or you have a look at our basic [Northwind Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Tutorial-0:-Quick-Northwind-sample.) which takes a look into queries, views, read stores and read models.
 
 And for those looking for a more thorough tutorial we suggest you start with the [getting started](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Getting-Started) section in the [wiki](https://github.com/Chinchilla-Software-Com/CQRS/wiki)
 
