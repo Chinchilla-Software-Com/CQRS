@@ -1,7 +1,7 @@
 ﻿0.1 Create a new ASP.NET Web Application (make sure .net framework 4.5 is selected.) as per https://docs.microsoft.com/en-us/aspnet/mvc/overview/security/create-an-aspnet-mvc-5-app-with-facebook-and-google-oauth2-and-openid-sign-on and make sure WebAPI AND MVC are selected 
 0.2 In our tests we enabled Google External Authentication.
 
-1.1. Add Cqrs.Ninject.WebApi package
+1.1. Add the Cqrs.Ninject.WebApi nuget package
 1.2. Add a new class named EventToHubProxy, with the following content
 	namespace HelloWorld.Code
 	{
@@ -25,43 +25,52 @@
 	using HelloWorld.Code;
 
 1.4. Remove the existing Application_Start method and add the follow to Global.asax.cs
-		protected override void ConfigureDefaultDependencyResolver()
-		{
-			DependencyResolver = NinjectDependencyResolver.Current;
-		}
+	protected override void ConfigureDefaultDependencyResolver()
+	{
+		DependencyResolver = NinjectDependencyResolver.Current;
+	}
 
-		protected override void ConfigureMvc()
-		{
-			AreaRegistration.RegisterAllAreas();
-			GlobalConfiguration.Configure(WebApiConfig.Register);
-			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-			RouteConfig.RegisterRoutes(RouteTable.Routes);
-			BundleConfig.RegisterBundles(BundleTable.Bundles);
-		}
-1.5. Add the following app setting
-		<add key="AuthenticationTokenType" value="string" />
-1.6. Add the following to Views/Shared/_Layout.cshtml
+	protected override void ConfigureMvc()
+	{
+		AreaRegistration.RegisterAllAreas();
+		GlobalConfiguration.Configure(WebApiConfig.Register);
+		FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+		RouteConfig.RegisterRoutes(RouteTable.Routes);
+		BundleConfig.RegisterBundles(BundleTable.Bundles);
+	}
+1.5. Remove the following line from \App_Start\WebApiConfig.cs
+	config.MapHttpAttributeRoutes();
+1.6. Add the following app setting
+		<add key="Cqrs.WebApi.AuthenticationTokenType" value="string" />
+1.7. Add the following to Views/Shared/_Layout.cshtml, right before </head> tag.
 	<script src="@Url.Content("~/Client/")" type="text/javascript"></script>
-1.7. Compile and run the site
+1.8. In Views/Shared/_Layout.cshtml move the JQuery bundle from the bottom of the file to one line after the title.
+1.9. Compile and run the site
 
-2.1. Add the following to Views/Shared/_Layout.cshtml, before the script from step 1.6.
+2.1. Add the following to Views/Shared/_Layout.cshtml, before the script from step 1.7.
 	@Scripts.Render("~/bundles/SignalR")
 	<script src="@Url.Content("~/signalr/hubs")" type="text/javascript"></script>
-2.2. Add the following to the RegisterBundles method in \App_Start\BundleConfig.cs
+2.2. Add the Microsoft.AspNet.SignalR.JS version 2.2.2 nuget package
+2.3. Add the following to the RegisterBundles method in \App_Start\BundleConfig.cs
 	bundles.Add(new ScriptBundle("~/bundles/SignalR").Include("~/Scripts/jquery.signalR-2.2.2.js"));
-2.3. Add the following to the end of the Startup method in \Startup.cs
+2.4. Add the following to the end of the Startup method in \Startup.cs
 	new Cqrs.WebApi.SignalR.Hubs.SignalRStartUp().Configuration(app);
-2.4. Check Views/Shared/_Layout.cshtml and make sure the following is not near the end of the file.
+2.5. Check Views/Shared/_Layout.cshtml and make sure the following is not near the end of the file.
 	@Scripts.Render("~/bundles/jquery")
 This should be just after the title.
-2.5. Compile and run the site
+2.6. Compile and run the site. Open the developer tools for your browser and in the console entering the following command should return an object.
+	window.api
 
 3.1. Add js.cookie.js to your Scripts folder from https://github.com/js-cookie/js-cookie/blob/v2.1.3/src/js.cookie.js
 3.2. Add the following to the RegisterBundles method in \App_Start\BundleConfig.cs
 	bundles.Add(new ScriptBundle("~/bundles/Cookies").Include("~/Scripts/js.cookie.js"));
-3.3. Add the following to Views/Shared/_Layout.cshtml, after the script from step 2.2.
+3.3. Add the following to Views/Shared/_Layout.cshtml, after the script from step 2.3.
 	@Scripts.Render("~/bundles/Cookies")
-3.4. Add the following to Global.asax.cs
+3.4. Add the foolowing namespaces to Global.asax.cs
+	using System;
+	using System.Web;
+	using Cqrs.Authentication;
+3.5. Add the following to Global.asax.cs
 
 		protected override void Application_BeginRequest(object sender, EventArgs e)
 		{
@@ -75,32 +84,32 @@ This should be just after the title.
 				DependencyResolver.Resolve<IAuthenticationTokenHelper<string>>().SetAuthenticationToken(authCookie.Value);
 			}
 		}
-3.5. Add the following to Views/Shared/_Layout.cshtml, right before </head> tag.
+3.6. Add the following to Views/Shared/_Layout.cshtml, right before </head> tag.
 	<script type="text/javascript">
-	var cqrsNotificationHub;
-	$(function () {
-		// Declare a proxy to reference the hub.
-		cqrsNotificationHub = $.connection.notificationHub;
+		var cqrsNotificationHub;
+		$(function () {
+			// Declare a proxy to reference the hub.
+			cqrsNotificationHub = $.connection.notificationHub;
 
-		// Create a function that the hub can call to notify you when it is setup.
-		cqrsNotificationHub.client.registered = function () {
-			console.info("Now registered to receive notifications.");
-		};
+			// Create a function that the hub can call to notify you when it is setup.
+			cqrsNotificationHub.client.registered = function () {
+				console.info("Now registered to receive notifications.");
+			};
 
-		// Create a function that the hub can call to broadcast messages.
-		cqrsNotificationHub.client.notifyEvent = function (event) {
-			console.info(event);
-		};
+			// Create a function that the hub can call to broadcast messages.
+			cqrsNotificationHub.client.notifyEvent = function (event) {
+				console.info(event);
+			};
 
-		$.connection.hub.qs = { "X-Token": Cookies.get("X-Token") };
-		$.connection.logging = false;
+			$.connection.hub.qs = { "X-Token": Cookies.get("X-Token") };
+			$.connection.logging = false;
 
-		// Start the connection.
-		$.connection.hub.start({ withCredentials: false }).done(function () {
+			// Start the connection.
+			$.connection.hub.start({ withCredentials: false }).done(function () {
+			});
 		});
-	});
 	</script>
-3.6. Compile and run the site. Open the developer tools for your browser and check the console. You should see a message "Now registered to receive notifications.".
+3.7. Compile and run the site. Open the developer tools for your browser and check the console. You should see a message "Now registered to receive notifications.".
 
 4.1. Add the following to the top of the web.config file
 	<configSections>
@@ -110,18 +119,19 @@ This should be just after the title.
 4.2. Add the follow packages:
 	Cqrs.Ninject.InProcess.CommandBus
 	Cqrs.Ninject.InProcess.EventBus
-4.3. Add a new class to the App_Start folder as follows:
-	using System.Web.Mvc;
-	using HelloWorldExample;
-	using Cqrs.Ninject.Configuration;
-	using Cqrs.Ninject.InProcess.CommandBus.Configuration;
-	using Cqrs.Ninject.InProcess.EventBus.Configuration;
+	Ninject.MVC3 version 3.2.1.0
+4.3. Remove the now auto added file \App_Start\NinjectWebCommon.cs
+4.4. Add a new class to the App_Start folder as follows:
+	[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(HelloWorld.HelloWorldConfiguration), "ConfigureNinject", Order = 40)]
+	[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(HelloWorld.HelloWorldConfiguration), "ConfigureMvc", Order = 60)]
 
-	[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(HelloWorldConfiguration), "ConfigureNinject", Order = 40)]
-	[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(HelloWorldConfiguration), "ConfigureMvc", Order = 60)]
-
-	namespace HelloWorldExample
+	namespace HelloWorld
 	{
+		using System.Web.Mvc;
+		using Cqrs.Ninject.Configuration;
+		using Cqrs.Ninject.InProcess.CommandBus.Configuration;
+		using Cqrs.Ninject.InProcess.EventBus.Configuration;
+
 		public static class HelloWorldConfiguration
 		{
 			public static void ConfigureNinject()
@@ -137,7 +147,7 @@ This should be just after the title.
 			}
 		}
 	}
-4.4. Add a Sample MVC Controller as follows:
+4.5. Add an Empty MVC 5 Controller named Sample as follows:
 	[Authorize]
 	public class SampleController : Controller
 	{
@@ -147,7 +157,7 @@ This should be just after the title.
 			return View();
 		}
 	}
-4.5. Add an Index razor view for the new Sample MVC Controller as follows:
+4.6. Add an Index razor view for the new Sample MVC Controller as follows:
 	@{
 		ViewBag.Title = "Sample Command and Event via SignalR";
 	}
@@ -169,7 +179,7 @@ This should be just after the title.
 			};
 		});
 	</script>
-4.6. Replace the navigation menu code in \Views\Shared\_Layout.cshtml as follows
+4.7. Replace the navigation menu code in \Views\Shared\_Layout.cshtml as follows
 	<ul class="nav navbar-nav">
 		<li>@Html.ActionLink("Home", "Index", "Home")</li>
 		<!-- This is the new link to the same page -->
@@ -177,66 +187,68 @@ This should be just after the title.
 		<li>@Html.ActionLink("About", "About", "Home")</li>
 		<li>@Html.ActionLink("Contact", "Contact", "Home")</li>
 	</ul>
-
-4.7. Compile and run the site. Click on the new Sample link in the menu. The "Say Hello" button will appear once SignalR is ready and registered.
+4.8. Compile and run the site. Click on the new Sample link in the menu (you may have to log in). The "Say Hello" button will appear once SignalR is ready and registered.
 
 5.1. Create a new command as follows:
-	using System;
-	using System.Collections.Generic;
-	using System.Runtime.Serialization;
-	using Cqrs.Commands;
-
-	[Serializable]
-	[DataContract]
-	public class SayHelloCommand : ICommand<string>
+	namespace HelloWorld.Code.Commands
 	{
-		#region Implementation of IMessage
+		using System;
+		using System.Collections.Generic;
+		using System.Runtime.Serialization;
+		using Cqrs.Commands;
 
-		[DataMember]
-		public Guid CorrelationId { get; set; }
+		[Serializable]
+		[DataContract]
+		public class SayHelloCommand : ICommand<string>
+		{
+			#region Implementation of IMessage
 
-		/// <summary>
-		/// The originating framework this message was sent from.
-		/// </summary>
-		[DataMember]
-		public string OriginatingFramework { get; set; }
+			[DataMember]
+			public Guid CorrelationId { get; set; }
 
-		/// <summary>
-		/// The frameworks this <see cref="T:Cqrs.Messages.IMessage"/> has been delivered to/sent via already.
-		/// </summary>
-		[DataMember]
-		public IEnumerable<string> Frameworks { get; set; }
+			/// <summary>
+			/// The originating framework this message was sent from.
+			/// </summary>
+			[DataMember]
+			public string OriginatingFramework { get; set; }
 
-		#endregion
+			/// <summary>
+			/// The frameworks this <see cref="T:Cqrs.Messages.IMessage"/> has been delivered to/sent via already.
+			/// </summary>
+			[DataMember]
+			public IEnumerable<string> Frameworks { get; set; }
 
-		#region Implementation of IMessageWithAuthenticationToken<string>
+			#endregion
 
-		[DataMember]
-		public string AuthenticationToken { get; set; }
+			#region Implementation of IMessageWithAuthenticationToken<string>
 
-		#endregion
+			[DataMember]
+			public string AuthenticationToken { get; set; }
 
-		#region Implementation of ICommand<string>
+			#endregion
 
-		[DataMember]
-		public Guid Id { get; set; }
+			#region Implementation of ICommand<string>
 
-		[DataMember]
-		public int ExpectedVersion { get; set; }
+			[DataMember]
+			public Guid Id { get; set; }
 
-		#endregion
+			[DataMember]
+			public int ExpectedVersion { get; set; }
+
+			#endregion
+		}
 	}
 
 5.2. Create a new event as follows:
 NOTE 1 This event has the NotifyCallerEvent attribute. This means the event will be sent to the browser via SignalR
-NOTE 2 If you change the namespace of this class, you will need to update the string in step 5.6.
-	using System;
-	using System.Collections.Generic;
-	using System.Runtime.Serialization;
-	using Cqrs.Events;
-
-	namespace HelloWorldExample.Controllers.Events
+NOTE 2 If you change the namespace of this class, you will need to update the string in step 5.7.
+	namespace HelloWorld.Code.Events
 	{
+		using System;
+		using System.Collections.Generic;
+		using System.Runtime.Serialization;
+		using Cqrs.Events;
+
 		[NotifyCallerEvent]
 		[Serializable]
 		[DataContract]
@@ -283,55 +295,96 @@ NOTE 2 If you change the namespace of this class, you will need to update the st
 		}
 	}
 
-5.3. Add a Sample WebAPI Controller as follows:
-	[RoutePrefix("Sample")]
-	public class SampleApiController : ApiController
+5.3. Add an Empty Web API 2 Controller named SampleApi as follows:
+	namespace HelloWorld.Controllers
 	{
-		public SampleApiController(ICommandPublisher<string> commandPublisher)
-		{
-			CommandPublisher = commandPublisher;
-		}
+		using System.Web.Http;
+		using Cqrs.Commands;
+		using Cqrs.Ninject.Configuration;
+		using Code.Commands;
 
-		public SampleApiController()
-			: this(NinjectDependencyResolver.Current.Resolve<ICommandPublisher<string>>())
+		[RoutePrefix("Sample")]
+		public class SampleApiController : ApiController
 		{
-		}
+			public SampleApiController(ICommandPublisher<string> commandPublisher)
+			{
+				CommandPublisher = commandPublisher;
+			}
 
-		private ICommandPublisher<string> CommandPublisher { get; set; }
+			public SampleApiController()
+				: this(NinjectDependencyResolver.Current.Resolve<ICommandPublisher<string>>())
+			{
+			}
 
-		[Route("SayHelloWorld")]
-		[HttpPost]
-		public IHttpActionResult SayHelloWorld()
-		{
-			CommandPublisher.Publish(new SayHelloCommand());
-			return Ok();
+			private ICommandPublisher<string> CommandPublisher { get; set; }
+
+			[Route("SayHelloWorld")]
+			[HttpPost]
+			public IHttpActionResult SayHelloWorld()
+			{
+				CommandPublisher.Publish(new SayHelloCommand());
+				return Ok();
+			}
 		}
 	}
 
 5.4. Add a command handler as follows:
-	using Cqrs.Commands;
-	using Cqrs.Events;
-
-	public class SayHelloCommandHandler : ICommandHandler<string, SayHelloCommand>
+	namespace HelloWorld.Code.Commands.Handlers
 	{
-		public SayHelloCommandHandler(IEventPublisher<string> eventPublisher)
+		using Cqrs.Commands;
+		using Cqrs.Events;
+		using Events;
+
+		public class SayHelloCommandHandler : ICommandHandler<string, SayHelloCommand>
 		{
-			EventPublisher = eventPublisher;
+			public SayHelloCommandHandler(IEventPublisher<string> eventPublisher)
+			{
+				EventPublisher = eventPublisher;
+			}
+
+			protected IEventPublisher<string> EventPublisher { get; private set; }
+
+			#region Implementation of IMessageHandler<in SayHelloCommand>
+
+			public void Handle(SayHelloCommand message)
+			{
+				EventPublisher.Publish(new HelloSaidEvent());
+			}
+
+			#endregion
 		}
-
-		protected IEventPublisher<string> EventPublisher { get; private set; }
-
-		#region Implementation of IMessageHandler<in SayHelloCommand>
-
-		public void Handle(SayHelloCommand message)
-		{
-			EventPublisher.Publish(new HelloSaidEvent());
-		}
-
-		#endregion
 	}
 
-5.5. Modify the Index razor view create in step 4.5 by adding the following as the last element inside the DIV tag:
+5.5. Add an event handler by modifying the EventToHubProxy class created in step 1.2:
+	namespace HelloWorld.Code
+	{
+		using cdmdotnet.Logging;
+		using Cqrs.Authentication;
+		using Cqrs.Events;
+		using Cqrs.WebApi.SignalR.Hubs;
+		using Events;
+
+		public class EventToHubProxy
+			: Cqrs.WebApi.Events.Handlers.EventToHubProxy<string>
+			, IEventHandler<string, HelloSaidEvent>
+		{
+			public EventToHubProxy(ILogger logger, INotificationHub notificationHub, IAuthenticationTokenHelper<string> authenticationTokenHelper)
+				: base(logger, notificationHub, authenticationTokenHelper)
+			{
+			}
+
+			#region Implementation of IMessageHandler<in HelloSaidEvent>
+
+			public virtual void Handle(HelloSaidEvent message)
+			{
+				HandleGenericEvent(message);
+			}
+
+			#endregion
+		}
+	}
+
+5.6. Modify the Index razor view create in step 4.6 by adding the following as the last element inside the DIV tag:
 	<div id="HelloWorldSaid">
 		<p style="color: crimson">Congratulations. You've just written and executed your first CQRS command and event!!!<p>
 		<p>You've learnt:</p>
@@ -347,7 +400,7 @@ NOTE 2 If you change the namespace of this class, you will need to update the st
 		</ul>
 	</div>
 
-5.6.Modify the Index razor view create in step 4.5 by replacing the original script block at the end of the file with the following:
+5.7. Modify the Index razor view create in step 4.6 by replacing the original script block at the end of the file with the following:
 	<script>
 		$(function () {
 			$("#SayHelloWorld").hide();
@@ -364,11 +417,11 @@ NOTE 2 If you change the namespace of this class, you will need to update the st
 			window.cqrsNotificationHub.client.notifyEvent = function (event) {
 				console.info(event);
 				switch (event.Type) {
-					case "HelloWorldExample.Controllers.Events.HelloSaidEvent":
+					case "HelloWorld.Code.Events.HelloSaidEvent":
 						$("#HelloWorldSaid").show();
 						break;
 				}
 			};
 		});
 	</script>
-5.7. Compile and run the site. Click on the new Sample link in the menu. Click on the "Say Hello" button. You will be met with a Congratulations message.
+5.8. Compile and run the site. Click on the new Sample link in the menu. Click on the "Say Hello" button. You will be met with a Congratulations message.
