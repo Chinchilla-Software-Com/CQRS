@@ -12,12 +12,16 @@ using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Transactions;
 using cdmdotnet.Logging;
 using Cqrs.Configuration;
 using Cqrs.Entities;
 
 namespace Cqrs.DataStores
 {
+	/// <summary>
+	/// A <see cref="IDataStore{TData}"/> using simplified SQL.
+	/// </summary>
 	public class SqlDataStore<TData> : IDataStore<TData>
 		where TData : Entity
 	{
@@ -25,48 +29,155 @@ namespace Cqrs.DataStores
 
 		internal const string SqlDataStoreConnectionNameApplicationKey = @"Cqrs.SqlDataStore.ConnectionStringName";
 
+		internal const string SqlReadableDataStoreConnectionStringKey = "Cqrs.SqlDataStore.Read.ConnectionStringName";
+
+		internal const string SqlWritableDataStoreConnectionStringKey = "Cqrs.SqlDataStore.Write.ConnectionStringName";
+
+		/// <summary />
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of the <see cref="SqlDataStore{TData}"/> class
+		/// </summary>
 		public SqlDataStore(IConfigurationManager configurationManager, ILogger logger)
 		{
 			ConfigurationManager = configurationManager;
 			Logger = logger;
-			// Use a connection string.
+			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			DbDataContext = CreateDbDataContext();
+			WriteableConnectionStrings = GetWriteableConnectionStrings();
+			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 
 			// Get a typed table to run queries.
 			Table = DbDataContext.GetTable<TData>();
 		}
 
+		/// <summary />
 		protected DataContext DbDataContext { get; private set; }
 
+		/// <summary />
+		protected IEnumerable<string> WriteableConnectionStrings { get; private set; }
+
+		/// <summary />
+		private IList<DataContext> _writeableConnections;
+
+		/// <summary />
+		protected IEnumerable<DataContext> WriteableConnections
+		{
+			get
+			{
+				if (_writeableConnections == null)
+				{
+					_writeableConnections = new List<DataContext>();
+					foreach (string writeableConnectionString in WriteableConnectionStrings)
+						_writeableConnections.Add(new DataContext(writeableConnectionString));
+				}
+				return _writeableConnections;
+			}
+		}
+
+		/// <summary />
 		protected Table<TData> Table { get; private set; }
 
+		/// <summary />
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Locate the connection settings and create a <see cref="DataContext"/>.
+		/// </summary>
 		protected virtual DataContext CreateDbDataContext()
 		{
 			string connectionStringKey;
 			string applicationKey;
-			if (!ConfigurationManager.TryGetSetting(SqlDataStoreConnectionNameApplicationKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
+
+			// Try read/write connection values first
+			if (!ConfigurationManager.TryGetSetting(SqlReadableDataStoreConnectionStringKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
 			{
-				if (!ConfigurationManager.TryGetSetting(SqlDataStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
+				// Try single connection value
+				if (!ConfigurationManager.TryGetSetting(SqlDataStoreConnectionNameApplicationKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
 				{
-					throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlDataStoreConnectionNameApplicationKey));
+					// Default to old connection value
+					if (!ConfigurationManager.TryGetSetting(SqlDataStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
+						throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlDataStoreConnectionNameApplicationKey));
+					return new DataContext(connectionStringKey);
 				}
 			}
-			else
+
+			try
 			{
-				try
-				{
-					connectionStringKey = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey].ConnectionString;
-				}
-				catch (NullReferenceException exception)
-				{
-					throw new NullReferenceException(string.Format("No connection string setting named '{0}' was found in the configuration file with the SQL Data Store connection string.", applicationKey), exception);
-				}
+				connectionStringKey = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey].ConnectionString;
 			}
+			catch (NullReferenceException exception)
+			{
+				throw new NullReferenceException(string.Format("No connection string setting named '{0}' was found in the configuration file with the SQL Data Store connection string.", applicationKey), exception);
+			}
+
 			return new DataContext(connectionStringKey);
+		}
+
+		/// <summary>
+		/// Locate the connection settings for persisting data.
+		/// </summary>
+		protected virtual IEnumerable<string> GetWriteableConnectionStrings()
+		{
+			Logger.LogDebug("Getting SQL data store writeable connection strings", "SqlDataStore\\GetWritableConnectionStrings");
+
+			string connectionStringKey;
+			string applicationKey;
+
+			// Try read/write connection values first
+			if (!ConfigurationManager.TryGetSetting(SqlWritableDataStoreConnectionStringKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
+			{
+				Logger.LogDebug(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlWritableDataStoreConnectionStringKey), "SqlDataStore\\GetWriteableConnectionStrings");
+				// Try single connection value
+				if (!ConfigurationManager.TryGetSetting(SqlDataStoreConnectionNameApplicationKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
+				{
+					Logger.LogDebug(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlDataStoreConnectionNameApplicationKey), "SqlDataStore\\GetWriteableConnectionStrings");
+					// Default to old connection value
+					if (!ConfigurationManager.TryGetSetting(SqlDataStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
+						throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlDataStoreConnectionNameApplicationKey));
+					_writeableConnections = new List<DataContext> { DbDataContext };
+					return new List<string> {connectionStringKey};
+				}
+			}
+
+			try
+			{
+				var collection = new List<string>();
+				string rootApplicationKey = applicationKey;
+
+				int writeIndex = 1;
+				while (!string.IsNullOrWhiteSpace(applicationKey))
+				{
+					try
+					{
+						connectionStringKey = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey].ConnectionString;
+						collection.Add(connectionStringKey);
+					}
+					catch (NullReferenceException exception)
+					{
+						throw new NullReferenceException(string.Format("No connection string setting named '{0}' was found in the configuration file with a SQL connection string.", applicationKey), exception);
+					}
+
+					if (!ConfigurationManager.TryGetSetting(string.Format("{0}.{1}", rootApplicationKey, writeIndex), out applicationKey))
+						applicationKey = null;
+
+					writeIndex++;
+				}
+
+				if (!collection.Any())
+					throw new NullReferenceException();
+
+				return collection;
+			}
+			catch (NullReferenceException exception)
+			{
+				throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with a SQL connection string.", SqlWritableDataStoreConnectionStringKey), exception);
+			}
+			finally
+			{
+				Logger.LogDebug("Getting SQL writeable connection string... Done", "SqlDataStore\\GetWriteableConnectionStrings");
+			}
 		}
 
 		#region Implementation of IEnumerable
@@ -148,42 +259,72 @@ namespace Cqrs.DataStores
 
 		#region Implementation of IDataStore<TData>
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public virtual void Add(TData data)
 		{
-			Logger.LogDebug("Adding data to the Sql database", "SqlDataStore\\Add");
+			Logger.LogDebug("Adding data to the SQL database", "SqlDataStore\\Add");
 			try
 			{
 				DateTime start = DateTime.Now;
-				Table.InsertOnSubmit(data);
-				DbDataContext.SubmitChanges();
+				using (var transaction = new TransactionScope())
+				{
+					foreach (DataContext writeableConnection in WriteableConnections)
+					{
+						Table<TData> table = Table;
+						// This optimises for single connection handling
+						if (writeableConnection != DbDataContext)
+							table = writeableConnection.GetTable<TData>();
+						table.InsertOnSubmit(data);
+						writeableConnection.SubmitChanges();
+					}
+					transaction.Complete();
+				}
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Adding data in the Sql database took {0}.", end - start), "SqlDataStore\\Add");
+				Logger.LogDebug(string.Format("Adding data in the SQL database took {0}.", end - start), "SqlDataStore\\Add");
 			}
 			finally
 			{
-				Logger.LogDebug("Adding data to the Sql database... Done", "SqlDataStore\\Add");
-			}
-		}
-
-		public virtual void Add(IEnumerable<TData> data)
-		{
-			Logger.LogDebug("Adding data collection to the Sql database", "SqlDataStore\\Add\\Collection");
-			try
-			{
-				DateTime start = DateTime.Now;
-				Table.InsertAllOnSubmit(data);
-				DbDataContext.SubmitChanges();
-				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Adding data in the Sql database took {0}.", end - start), "SqlDataStore\\Add\\Collection");
-			}
-			finally
-			{
-				Logger.LogDebug("Adding data collection to the Sql database... Done", "SqlDataStore\\Add\\Collection");
+				Logger.LogDebug("Adding data to the SQL database... Done", "SqlDataStore\\Add");
 			}
 		}
 
 		/// <summary>
-		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsLogicallyDeleted"/> to true
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
+		public virtual void Add(IEnumerable<TData> data)
+		{
+			Logger.LogDebug("Adding data collection to the SQL database", "SqlDataStore\\Add\\Collection");
+			try
+			{
+				DateTime start = DateTime.Now;
+				// Multiple enumeration optimisation
+				data = data.ToList();
+				using (var transaction = new TransactionScope())
+				{
+					foreach (DataContext writeableConnection in WriteableConnections)
+					{
+						Table<TData> table = Table;
+						// This optimises for single connection handling
+						if (writeableConnection != DbDataContext)
+							table = writeableConnection.GetTable<TData>();
+						table.InsertAllOnSubmit(data);
+						writeableConnection.SubmitChanges();
+					}
+					transaction.Complete();
+				}
+				DateTime end = DateTime.Now;
+				Logger.LogDebug(string.Format("Adding data in the SQL database took {0}.", end - start), "SqlDataStore\\Add\\Collection");
+			}
+			finally
+			{
+				Logger.LogDebug("Adding data collection to the SQL database... Done", "SqlDataStore\\Add\\Collection");
+			}
+		}
+
+		/// <summary>
+		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsLogicallyDeleted"/> to true in the data store and persist the change.
 		/// </summary>
 		public virtual void Remove(TData data)
 		{
@@ -202,62 +343,127 @@ namespace Cqrs.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
 		public void Destroy(TData data)
 		{
-			Logger.LogDebug("Removing data from the Sql database", "SqlDataStore\\Destroy");
+			Logger.LogDebug("Removing data from the SQL database", "SqlDataStore\\Destroy");
 			try
 			{
 				DateTime start = DateTime.Now;
-				try
+				using (var transaction = new TransactionScope())
 				{
-					Table.DeleteOnSubmit(data);
+					foreach (DataContext writeableConnection in WriteableConnections)
+					{
+						Table<TData> table = Table;
+						// This optimises for single connection handling
+						if (writeableConnection != DbDataContext)
+							table = writeableConnection.GetTable<TData>();
+						try
+						{
+							table.DeleteOnSubmit(data);
+						}
+						catch (InvalidOperationException exception)
+						{
+							if (exception.Message != "Cannot remove an entity that has not been attached.")
+								throw;
+							try
+							{
+								table.Attach(data);
+								writeableConnection.Refresh(RefreshMode.KeepCurrentValues, data);
+							}
+							catch (DuplicateKeyException)
+							{
+								// We're using the same context apparently
+							}
+							table.DeleteOnSubmit(data);
+						}
+						try
+						{
+							writeableConnection.SubmitChanges();
+						}
+						catch (ChangeConflictException)
+						{
+							writeableConnection.Refresh(RefreshMode.KeepCurrentValues, data);
+							writeableConnection.SubmitChanges();
+						}
+					}
+					transaction.Complete();
 				}
-				catch (InvalidOperationException exception)
-				{
-					if (exception.Message != "Cannot remove an entity that has not been attached.")
-						throw;
-					Table.Attach(data);
-					DbDataContext.Refresh(RefreshMode.KeepCurrentValues, data); 
-					Table.DeleteOnSubmit(data);
-				}
-				DbDataContext.SubmitChanges();
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Removing data from the Sql database took {0}.", end - start), "SqlDataStore\\Destroy");
+				Logger.LogDebug(string.Format("Removing data from the SQL database took {0}.", end - start), "SqlDataStore\\Destroy");
 			}
 			finally
 			{
-				Logger.LogDebug("Removing data from the Sql database... Done", "SqlDataStore\\Destroy");
+				Logger.LogDebug("Removing data from the SQL database... Done", "SqlDataStore\\Destroy");
 			}
 		}
 
+		/// <summary>
+		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+		/// </summary>
 		public virtual void RemoveAll()
 		{
-			Logger.LogDebug("Removing all from the Sql database", "SqlDataStore\\RemoveAll");
+			Logger.LogDebug("Removing all from the SQL database", "SqlDataStore\\RemoveAll");
 			try
 			{
-				Table.Truncate();
+				using (var transaction = new TransactionScope())
+				{
+					foreach (DataContext writeableConnection in WriteableConnections)
+					{
+						Table<TData> table = Table;
+						// This optimises for single connection handling
+						if (writeableConnection != DbDataContext)
+							table = writeableConnection.GetTable<TData>();
+						table.Truncate();
+						writeableConnection.SubmitChanges();
+					}
+					transaction.Complete();
+				}
 			}
 			finally
 			{
-				Logger.LogDebug("Removing all from the Sql database... Done", "SqlDataStore\\RemoveAll");
+				Logger.LogDebug("Removing all from the SQL database... Done", "SqlDataStore\\RemoveAll");
 			}
 		}
 
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
 		public virtual void Update(TData data)
 		{
-			Logger.LogDebug("Updating data in the Sql database", "SqlDataStore\\Update");
+			Logger.LogDebug("Updating data in the SQL database", "SqlDataStore\\Update");
 			try
 			{
 				DateTime start = DateTime.Now;
-				Table.Attach(data);
-				DbDataContext.Refresh(RefreshMode.KeepCurrentValues, data);
-				DbDataContext.SubmitChanges();
+				using (var transaction = new TransactionScope())
+				{
+					foreach (DataContext writeableConnection in WriteableConnections)
+					{
+						Table<TData> table = Table;
+						// This optimises for single connection handling
+						if (writeableConnection != DbDataContext)
+							table = writeableConnection.GetTable<TData>();
+						try
+						{
+							table.Attach(data);
+							writeableConnection.Refresh(RefreshMode.KeepCurrentValues, data);
+						}
+						catch (DuplicateKeyException)
+						{
+							// We're using the same context apparently
+						}
+						writeableConnection.SubmitChanges();
+					}
+					transaction.Complete();
+				}
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Updating data in the Sql database took {0}.", end - start), "SqlDataStore\\Update");
+				Logger.LogDebug(string.Format("Updating data in the SQL database took {0}.", end - start), "SqlDataStore\\Update");
 			}
 			finally
 			{
-				Logger.LogDebug("Updating data to the Sql database... Done", "SqlDataStore\\Update");
+				Logger.LogDebug("Updating data to the SQL database... Done", "SqlDataStore\\Update");
 			}
 		}
 

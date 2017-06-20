@@ -37,7 +37,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 
 		public virtual IEnumerable<string> GetWritableConnectionStrings()
 		{
-			Logger.LogDebug("Getting table storage writable connection strings", "TableStorageDataStoreConnectionStringFactory\\GetWritableConnectionStrings");
+			Logger.LogDebug("Getting table storage writeable connection strings", "TableStorageDataStoreConnectionStringFactory\\GetWritableConnectionStrings");
 			try
 			{
 				var collection = new List<string> ();
@@ -45,7 +45,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 				string blobStorageWritableDataStoreConnectionString = ConfigurationManager.GetSetting(TableStorageWritableDataStoreConnectionStringKey);
 				if (blobStorageWritableDataStoreConnectionString == null)
 				{
-					Logger.LogDebug(string.Format("No application settings named '{0}' was found in the configuration file with the cloud storage connection string.", TableStorageWritableDataStoreConnectionStringKey), "TableStorageDataStoreConnectionStringFactory\\GetWritableConnectionStrings");
+					Logger.LogDebug(string.Format("No application setting named '{0}' was found in the configuration file with the cloud storage connection string.", TableStorageWritableDataStoreConnectionStringKey), "TableStorageDataStoreConnectionStringFactory\\GetWritableConnectionStrings");
 					blobStorageWritableDataStoreConnectionString = ConfigurationManager.GetSetting(TableStorageDataStoreConnectionStringKey);
 				}
 
@@ -65,11 +65,11 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 			}
 			catch (NullReferenceException exception)
 			{
-				throw new NullReferenceException(string.Format("No application settings named '{0}' was found in the configuration file with the cloud storage connection string.", TableStorageDataStoreConnectionStringKey), exception);
+				throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the cloud storage connection string.", TableStorageDataStoreConnectionStringKey), exception);
 			}
 			finally
 			{
-				Logger.LogDebug("Getting table storage writable connection string... Done", "TableStorageDataStoreConnectionStringFactory\\GetWritableConnectionStrings");
+				Logger.LogDebug("Getting table storage writeable connection string... Done", "TableStorageDataStoreConnectionStringFactory\\GetWritableConnectionStrings");
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 				string blobStorageWritableDataStoreConnectionString = ConfigurationManager.GetSetting(TableStorageReadableDataStoreConnectionStringKey);
 				if (blobStorageWritableDataStoreConnectionString == null)
 				{
-					Logger.LogDebug(string.Format("No application settings named '{0}' was found in the configuration file with the cloud storage connection string.", TableStorageReadableDataStoreConnectionStringKey), "TableStorageDataStoreConnectionStringFactory\\GetReadableConnectionStrings");
+					Logger.LogDebug(string.Format("No application setting named '{0}' was found in the configuration file with the cloud storage connection string.", TableStorageReadableDataStoreConnectionStringKey), "TableStorageDataStoreConnectionStringFactory\\GetReadableConnectionStrings");
 					blobStorageWritableDataStoreConnectionString = ConfigurationManager.GetSetting(TableStorageDataStoreConnectionStringKey);
 				}
 
@@ -92,7 +92,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 			}
 			catch (NullReferenceException exception)
 			{
-				throw new NullReferenceException(string.Format("No application settings named '{0}' was found in the configuration file with the cloud storage connection string.", TableStorageDataStoreConnectionStringKey), exception);
+				throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the cloud storage connection string.", TableStorageDataStoreConnectionStringKey), exception);
 			}
 			finally
 			{

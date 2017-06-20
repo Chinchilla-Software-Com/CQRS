@@ -15,6 +15,9 @@ using Cqrs.Entities;
 
 namespace Cqrs.Repositories
 {
+	/// <summary>
+	/// Uses a static <see cref="ConcurrentDictionary{TKey,TValue}"/> to store data accessible by all threads.
+	/// </summary>
 	public class InMemoryDatabase
 	{
 		private static IDictionary<Type, object> Database { get; set; }

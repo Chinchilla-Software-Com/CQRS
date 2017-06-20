@@ -16,11 +16,17 @@ using Cqrs.Repositories;
 
 namespace Cqrs.DataStores
 {
+	/// <summary>
+	/// A <see cref="IDataStore{TData}"/> using an <see cref="InMemoryDatabase"/>.
+	/// </summary>
 	public class InProcessDataStore<TData> : IDataStore<TData>
 		where TData : Entity
 	{
 		private InMemoryDatabase InMemoryDatabase { get; set; }
 
+		/// <summary>
+		/// Instantiates a new instance of the <see cref="InProcessDataStore{TData}"/> class
+		/// </summary>
 		public InProcessDataStore()
 		{
 			InMemoryDatabase = new InMemoryDatabase();
@@ -102,11 +108,17 @@ namespace Cqrs.DataStores
 
 		#region Implementation of IDataStore<TData>
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public void Add(TData data)
 		{
 			InMemoryDatabase.Get<TData>().Add(data.Rsn, data);
 		}
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public void Add(IEnumerable<TData> data)
 		{
 			foreach (TData dataItem in data)
@@ -114,23 +126,32 @@ namespace Cqrs.DataStores
 		}
 
 		/// <summary>
-		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsLogicallyDeleted"/> to true
+		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsLogicallyDeleted"/> to true in the data store and persist the change.
 		/// </summary>
 		public void Remove(TData data)
 		{
 			InMemoryDatabase.Get<TData>()[data.Rsn].IsLogicallyDeleted = true;
 		}
 
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
 		public void Destroy(TData data)
 		{
 			InMemoryDatabase.Get<TData>().Remove(data.Rsn);
 		}
 
+		/// <summary>
+		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+		/// </summary>
 		public void RemoveAll()
 		{
 			InMemoryDatabase.Get<TData>().Clear();
 		}
 
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
 		public void Update(TData data)
 		{
 			InMemoryDatabase.Get<TData>()[data.Rsn] = data;
