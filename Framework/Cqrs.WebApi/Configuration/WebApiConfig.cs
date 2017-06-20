@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
 
 namespace Cqrs.WebApi.Configuration
 {
@@ -6,7 +7,15 @@ namespace Cqrs.WebApi.Configuration
 	{
 		public static void Register(HttpConfiguration config)
 		{
-			config.MapHttpAttributeRoutes();
+			try
+			{
+				config.MapHttpAttributeRoutes();
+			}
+			catch (ArgumentException exception)
+			{
+				if (exception.ParamName != "name")
+					throw;
+			}
 
 			GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings;
 		}
