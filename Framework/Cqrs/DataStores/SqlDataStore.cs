@@ -52,16 +52,24 @@ namespace Cqrs.DataStores
 			Table = DbDataContext.GetTable<TData>();
 		}
 
-		/// <summary />
+		/// <summary>
+		/// Gets or sets the DataContext.
+		/// </summary>
 		protected DataContext DbDataContext { get; private set; }
 
-		/// <summary />
+		/// <summary>
+		/// Gets or sets the list of writeable connection strings for data mirroring
+		/// </summary>
 		protected IEnumerable<string> WriteableConnectionStrings { get; private set; }
 
-		/// <summary />
+		/// <summary>
+		/// Gets or sets the list of writeable DataContexts for data mirroring
+		/// </summary>
 		private IList<DataContext> _writeableConnections;
 
-		/// <summary />
+		/// <summary>
+		/// Gets or sets the list of writeable DataContexts for data mirroring
+		/// </summary>
 		protected IEnumerable<DataContext> WriteableConnections
 		{
 			get
@@ -76,10 +84,14 @@ namespace Cqrs.DataStores
 			}
 		}
 
-		/// <summary />
+		/// <summary>
+		/// Gets or sets the readable Table
+		/// </summary>
 		protected Table<TData> Table { get; private set; }
 
-		/// <summary />
+		/// <summary>
+		/// Gets or sets the Logger
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
 		/// <summary>

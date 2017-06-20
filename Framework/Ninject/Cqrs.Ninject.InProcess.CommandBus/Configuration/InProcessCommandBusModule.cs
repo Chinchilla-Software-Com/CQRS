@@ -64,6 +64,10 @@ namespace Cqrs.Ninject.InProcess.CommandBus.Configuration
 				.ToConstant(inProcessBus)
 				.InSingletonScope();
 
+			Bind<IPublishAndWaitCommandPublisher<TAuthenticationToken>>()
+				.ToConstant(inProcessBus)
+				.InSingletonScope();
+
 			Bind<ICommandReceiver<TAuthenticationToken>>()
 				.ToConstant(inProcessBus)
 				.InSingletonScope();

@@ -15,9 +15,15 @@ namespace Cqrs.Commands
 	/// </summary>
 	public interface ICommandPublisher<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Publishes the provided <paramref name="command"/> on the command bus.
+		/// </summary>
 		void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>;
 
+		/// <summary>
+		/// Publishes the provided <paramref name="commands"/> on the command bus.
+		/// </summary>
 		void Publish<TCommand>(IEnumerable<TCommand> commands)
 			where TCommand : ICommand<TAuthenticationToken>;
 	}
