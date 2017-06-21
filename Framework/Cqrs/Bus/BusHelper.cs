@@ -140,13 +140,13 @@ namespace Cqrs.Bus
 				string telemetryName = message.GetType().FullName;
 				var telemeteredMessage = message as ITelemeteredMessage;
 				string messagePrefix = null;
-				ISingleSignOnToken authenticationToken = null;
+				object authenticationToken = null;
 				var @event = message as IEvent<TAuthenticationToken>;
 				if (@event != null)
 				{
 					messagePrefix = "Event/";
 					telemetryName = string.Format("{0}/{1}", telemetryName, @event.Id);
-					authenticationToken = @event.AuthenticationToken as ISingleSignOnToken;
+					authenticationToken = @event.AuthenticationToken;
 				}
 				else
 				{
@@ -155,7 +155,7 @@ namespace Cqrs.Bus
 					{
 						messagePrefix = "Command/";
 						telemetryName = string.Format("{0}/{1}", telemetryName, command.Id);
-						authenticationToken = command.AuthenticationToken as ISingleSignOnToken;
+						authenticationToken = command.AuthenticationToken;
 					}
 				}
 
@@ -180,16 +180,53 @@ namespace Cqrs.Bus
 					telemetryHelper.TrackEvent(string.Format("Cqrs/Handle/{0}{1}/Finished", messagePrefix, telemetryName));
 
 					mainStopWatch.Stop();
-					telemetryHelper.TrackRequest
-					(
-						string.Format("Cqrs/Handle/{0}{1}", messagePrefix, telemetryName),
-						authenticationToken,
-						startedAt,
-						mainStopWatch.Elapsed,
-						responseCode,
-						wasSuccessfull,
-						new Dictionary<string, string> { { "Type", source } }
-					);
+					if (authenticationToken is ISingleSignOnToken)
+						telemetryHelper.TrackRequest
+						(
+							string.Format("Cqrs/Handle/{0}{1}", messagePrefix, telemetryName),
+							(ISingleSignOnToken)authenticationToken,
+							startedAt,
+							mainStopWatch.Elapsed,
+							responseCode,
+							wasSuccessfull,
+							new Dictionary<string, string> { { "Type", source } }
+						);
+					else if (authenticationToken is Guid)
+						telemetryHelper.TrackRequest
+						(
+							string.Format("Cqrs/Handle/{0}{1}", messagePrefix, telemetryName),
+							(Guid?)authenticationToken,
+							startedAt,
+							mainStopWatch.Elapsed,
+							responseCode,
+							wasSuccessfull,
+							new Dictionary<string, string> { { "Type", source } }
+						);
+					else if (authenticationToken is int)
+						telemetryHelper.TrackRequest
+						(
+							string.Format("Cqrs/Handle/{0}{1}", messagePrefix, telemetryName),
+							(int?)authenticationToken,
+							startedAt,
+							mainStopWatch.Elapsed,
+							responseCode,
+							wasSuccessfull,
+							new Dictionary<string, string> { { "Type", source } }
+						);
+					else
+					{
+						string token = authenticationToken == null ? null : authenticationToken.ToString();
+						telemetryHelper.TrackRequest
+						(
+							string.Format("Cqrs/Handle/{0}{1}", messagePrefix, telemetryName),
+							token,
+							startedAt,
+							mainStopWatch.Elapsed,
+							responseCode,
+							wasSuccessfull,
+							new Dictionary<string, string> { { "Type", source } }
+						);
+					}
 
 					telemetryHelper.Flush();
 				}
