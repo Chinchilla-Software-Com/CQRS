@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace HelloWorldExample.Controllers
+namespace HelloWorld.Controllers
 {
 	[Authorize]
 	public class SampleController : Controller

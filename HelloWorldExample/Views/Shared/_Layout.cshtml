@@ -1,29 +1,32 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" />
+	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>@ViewBag.Title - My ASP.NET Application</title>
 	@Scripts.Render("~/bundles/jquery")
 	@Styles.Render("~/Content/css")
 	@Scripts.Render("~/bundles/modernizr")
 	@Scripts.Render("~/bundles/SignalR")
-	@Scripts.Render("~/bundles/Cookies")
 	<script src="@Url.Content("~/signalr/hubs")" type="text/javascript"></script>
+	@Scripts.Render("~/bundles/Cookies")
 	<script src="@Url.Content("~/Client/")" type="text/javascript"></script>
 	<script type="text/javascript">
 	var cqrsNotificationHub;
-	$(function () {
+	$(function ()
+	{
 		// Declare a proxy to reference the hub.
 		cqrsNotificationHub = $.connection.notificationHub;
 
 		// Create a function that the hub can call to notify you when it is setup.
-		cqrsNotificationHub.client.registered = function () {
+		cqrsNotificationHub.client.registered = function ()
+		{
 			console.info("Now registered to receive notifications.");
 		};
 
 		// Create a function that the hub can call to broadcast messages.
-		cqrsNotificationHub.client.notifyEvent = function (event) {
+		cqrsNotificationHub.client.notifyEvent = function (event)
+		{
 			console.info(event);
 		};
 
@@ -31,23 +34,25 @@
 		$.connection.logging = false;
 
 		// Start the connection.
-		$.connection.hub.start({ withCredentials: false }).done(function () {
+		$.connection.hub.start({ withCredentials: false }).done(function ()
+		{
 		});
 	});
 	</script>
 </head>
 <body>
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle main-menu" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				@Html.ActionLink("My ASP.NET Application", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-			</div>
-			<div class="navbar-collapse collapse">
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			@Html.ActionLink("Application name", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
 				<ul class="nav navbar-nav">
 					<li>@Html.ActionLink("Home", "Index", "Home")</li>
 					<!-- This is the new link to the same page -->
@@ -55,19 +60,20 @@
 					<li>@Html.ActionLink("About", "About", "Home")</li>
 					<li>@Html.ActionLink("Contact", "Contact", "Home")</li>
 				</ul>
-				@Html.Partial("_LoginPartial")
-			</div>
+			</ul>
+			@Html.Partial("_LoginPartial")
 		</div>
 	</div>
-	<div class="container body-content">
-		@RenderBody()
-		<hr />
-		<footer>
-			<p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-		</footer>
-	</div>
+</div>
+<div class="container body-content">
+	@RenderBody()
+	<hr/>
+	<footer>
+		<p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+	</footer>
+</div>
 
-	@Scripts.Render("~/bundles/bootstrap")
-	@RenderSection("scripts", required: false)
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
 </body>
 </html>

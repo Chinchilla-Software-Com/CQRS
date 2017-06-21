@@ -5,10 +5,9 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using HelloWorldExample.Models;
-using Microsoft.Owin.Security.Facebook;
+using HelloWorld.Models;
 
-namespace HelloWorldExample
+namespace HelloWorld
 {
 	public partial class Startup
 	{
@@ -55,18 +54,14 @@ namespace HelloWorldExample
 			//   consumerKey: "",
 			//   consumerSecret: "");
 
-			app.UseFacebookAuthentication(
-				new FacebookAuthenticationOptions
-				{
-					AppId = "",
-					AppSecret = ""
-				}
-			);
+			//app.UseFacebookAuthentication(
+			//   appId: "",
+			//   appSecret: "");
 
-			app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions
+			app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
 			{
-				ClientId = "",
-				ClientSecret = ""
+				ClientId = "115597113815-8tjef54p5tmm1e37c6t4h2ke9k1ibn7g.apps.googleusercontent.com",
+				ClientSecret = "5nBRDEFLkJyEfvjFoEueu-oL"
 			});
 		}
 	}

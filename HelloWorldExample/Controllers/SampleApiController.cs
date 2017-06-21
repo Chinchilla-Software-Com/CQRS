@@ -1,10 +1,10 @@
-﻿using System.Web.Http;
-using Cqrs.Commands;
-using Cqrs.Ninject.Configuration;
-using HelloWorldExample.Controllers.Commands;
-
-namespace HelloWorldExample.Controllers
+﻿namespace HelloWorld.Controllers
 {
+	using System.Web.Http;
+	using Cqrs.Commands;
+	using Cqrs.Ninject.Configuration;
+	using Code.Commands;
+
 	[RoutePrefix("Sample")]
 	public class SampleApiController : ApiController
 	{

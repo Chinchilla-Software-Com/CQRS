@@ -1,19 +1,18 @@
-﻿using System;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Optimization;
-using System.Web.Routing;
-using Cqrs.Authentication;
-using Cqrs.Ninject.Configuration;
-using Cqrs.WebApi;
-using HelloWorldExample.Controllers.SignalR;
-
-namespace HelloWorldExample
+﻿namespace HelloWorld
 {
+	using System;
+	using System.Web;
+	using System.Web.Http;
+	using System.Web.Mvc;
+	using System.Web.Optimization;
+	using System.Web.Routing;
+	using Cqrs.Authentication;
+	using Cqrs.Ninject.Configuration;
+	using Cqrs.WebApi;
+	using Code;
+
 	public class MvcApplication : CqrsHttpApplication<string, EventToHubProxy>
 	{
-		#region Overrides of CqrsHttpApplication<string,EventToHubProxy>
-
 		protected override void ConfigureDefaultDependencyResolver()
 		{
 			DependencyResolver = NinjectDependencyResolver.Current;
@@ -22,6 +21,7 @@ namespace HelloWorldExample
 		protected override void ConfigureMvc()
 		{
 			AreaRegistration.RegisterAllAreas();
+			GlobalConfiguration.Configure(WebApiConfig.Register);
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
@@ -39,7 +39,5 @@ namespace HelloWorldExample
 				DependencyResolver.Resolve<IAuthenticationTokenHelper<string>>().SetAuthenticationToken(authCookie.Value);
 			}
 		}
-
-		#endregion
 	}
 }

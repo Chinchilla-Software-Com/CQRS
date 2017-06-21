@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace HelloWorldExample.Models
+namespace HelloWorld.Models
 {
     public class ExternalLoginConfirmationViewModel
     {

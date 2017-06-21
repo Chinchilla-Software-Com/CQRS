@@ -1,14 +1,13 @@
-﻿using System.Web.Mvc;
-using HelloWorldExample;
-using Cqrs.Ninject.Configuration;
-using Cqrs.Ninject.InProcess.CommandBus.Configuration;
-using Cqrs.Ninject.InProcess.EventBus.Configuration;
+﻿[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(HelloWorld.HelloWorldConfiguration), "ConfigureNinject", Order = 40)]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(HelloWorld.HelloWorldConfiguration), "ConfigureMvc", Order = 60)]
 
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(HelloWorldConfiguration), "ConfigureNinject", Order = 40)]
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(HelloWorldConfiguration), "ConfigureMvc", Order = 60)]
-
-namespace HelloWorldExample
+namespace HelloWorld
 {
+	using System.Web.Mvc;
+	using Cqrs.Ninject.Configuration;
+	using Cqrs.Ninject.InProcess.CommandBus.Configuration;
+	using Cqrs.Ninject.InProcess.EventBus.Configuration;
+
 	public static class HelloWorldConfiguration
 	{
 		public static void ConfigureNinject()

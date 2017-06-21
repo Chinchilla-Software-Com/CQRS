@@ -23,25 +23,29 @@
 </div>
 
 <script>
-$(function () {
-	$("#SayHelloWorld").hide();
+	$(function ()
+	{
+		$("#SayHelloWorld").hide();
 
-	// Create a function that the hub can call to notify you when it is setup.
-	window.cqrsNotificationHub.client.registered = function () {
-		console.info("Now registered to receive notifications.");
-		$("#SayHelloWorld").show();
-	};
+		// Create a function that the hub can call to notify you when it is setup.
+		window.cqrsNotificationHub.client.registered = function ()
+		{
+			console.info("Now registered to receive notifications.");
+			$("#SayHelloWorld").show();
+		};
 
-	$("#HelloWorldSaid").hide();
+		$("#HelloWorldSaid").hide();
 
-	// Create a function that the hub can call to broadcast messages.
-	window.cqrsNotificationHub.client.notifyEvent = function (event) {
-		console.info(event);
-		switch (event.Type) {
-			case "HelloWorldExample.Controllers.Events.HelloSaidEvent":
-				$("#HelloWorldSaid").show();
-				break;
-		}
-	};
-});
+		// Create a function that the hub can call to broadcast messages.
+		window.cqrsNotificationHub.client.notifyEvent = function (event)
+		{
+			console.info(event);
+			switch (event.Type)
+			{
+				case "HelloWorld.Code.Events.HelloSaidEvent":
+					$("#HelloWorldSaid").show();
+					break;
+			}
+		};
+	});
 </script>
