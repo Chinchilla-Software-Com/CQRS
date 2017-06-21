@@ -67,6 +67,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Tools\install.ps1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cqrs\Cqrs.csproj">
@@ -82,6 +83,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>COPY /Y "$(SolutionDir)Framework\Cqrs\Tools\install.ps1" "$(ProjectDir)Tools\install.ps1"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
