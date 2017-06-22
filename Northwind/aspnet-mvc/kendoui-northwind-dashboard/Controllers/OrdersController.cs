@@ -1,31 +1,27 @@
 ﻿namespace KendoUI.Northwind.Dashboard.Controllers
 {
-	using KendoUI.Northwind.Dashboard.Models;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using System.Web;
 	using System.Web.Mvc;
-	using Kendo.Mvc.Extensions;
-	using Kendo.Mvc.UI;
-	using System.Data;
-
+	using Code.Commands;
+	using Code.Entities;
+	using Code.Events;
+	using Code.Repositories;
+	using Code.Repositories.Queries.Strategies;
 	using Cqrs.Commands;
 	using Cqrs.Repositories.Queries;
-	using Cqrs.WebApi;
-	using KendoUI.Northwind.Dashboard.Code.Commands;
-	using KendoUI.Northwind.Dashboard.Code.Entities;
-	using KendoUI.Northwind.Dashboard.Code.Events;
-	using KendoUI.Northwind.Dashboard.Code.Repositories;
-	using KendoUI.Northwind.Dashboard.Code.Repositories.Queries.Strategies;
+	using Cqrs.Web.Mvc;
+	using Kendo.Mvc.Extensions;
+	using Kendo.Mvc.UI;
+	using Models;
 
-    public class OrdersController : Controller
-    {
-
-        public ActionResult Orders_Read([DataSourceRequest] DataSourceRequest request)
-        {
-            return Json(GetOrders().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
-        }
+	public class OrdersController : Controller
+	{
+		public ActionResult Orders_Read([DataSourceRequest] DataSourceRequest request)
+		{
+			return Json(GetOrders().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+		}
 
 		public ActionResult Orders_Create([DataSourceRequest]DataSourceRequest request, [ModelBinder(typeof(NullableGuidBinder))]OrderViewModel order)
 		{
@@ -35,11 +31,14 @@
 				// The Telerik Northwind dashboard website is synchronous not asynchronous.
 				var command = (CreateOrderCommand)order;
 				OrderCreated orderCreatedEvent = CommandPublisher.PublishAndWait<CreateOrderCommand, OrderCreated>(command);
-				// Refresh orderId from data store.
-				order.OrderID = GetOrders(orderCreatedEvent.Rsn).Single().OrderID;
+				// Refresh server defined values from data store.
+				OrderViewModel newOrder = GetOrders(orderCreatedEvent.Rsn).Single();
+				order.OrderID = newOrder.OrderID;
+				order.Rsn = newOrder.Rsn;
 			}
 			return Json(new[] { order }.ToDataSourceResult(request, ModelState));
 		}
+
 		public ActionResult Orders_Update([DataSourceRequest]DataSourceRequest request, [ModelBinder(typeof(NullableGuidBinder))]OrderViewModel order)
 		{
 			if (ModelState.IsValid)
@@ -51,6 +50,7 @@
 			}
 			return Json(new[] { order }.ToDataSourceResult(request, ModelState));
 		}
+
 		public ActionResult Orders_Destroy([DataSourceRequest]DataSourceRequest request, [ModelBinder(typeof(NullableGuidBinder))]OrderViewModel order)
 		{
 			if (ModelState.IsValid)
@@ -63,16 +63,16 @@
 			return Json(new[] { order }.ToDataSourceResult(request, ModelState));
 		}
 
-        public ActionResult Countries_Read()
-        {
+		public ActionResult Countries_Read()
+		{
 
-            var countries = GetOrders().GroupBy(o => o.ShipCountry).Select(group => new
-            {
-                Country = group.Key == null ? " Other" : group.Key
-            }).OrderBy(c => c.Country).ToList();
+			var countries = GetOrders().GroupBy(o => o.ShipCountry).Select(group => new
+			{
+				Country = group.Key == null ? " Other" : group.Key
+			}).OrderBy(c => c.Country).ToList();
 
-            return Json(countries, JsonRequestBehavior.AllowGet);
-        }
+			return Json(countries, JsonRequestBehavior.AllowGet);
+		}
 
 		private IQueryable<OrderViewModel> GetOrders(Guid? orderRsn = null, int? orderId = null)
 		{
@@ -104,7 +104,6 @@
 
 		protected IQueryFactory QueryFactory { get; private set; }
 
-
 		protected IPublishAndWaitCommandPublisher<string> CommandPublisher { get; private set; }
 
 		public OrdersController(IOrderRepository orderRepository, IQueryFactory queryFactory, IPublishAndWaitCommandPublisher<string> commandPublisher)
@@ -113,5 +112,5 @@
 			QueryFactory = queryFactory;
 			CommandPublisher = commandPublisher;
 		}
-    }
+	}
 }
