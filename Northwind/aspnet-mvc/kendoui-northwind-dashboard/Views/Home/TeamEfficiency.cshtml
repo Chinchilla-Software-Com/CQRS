@@ -1,0 +1,274 @@
+﻿@using KendoUI.Northwind.Dashboard.Models;
+
+<script type="text/x-kendo-tmpl" id="employeeItemTemplate">
+    <div class="employee">
+        <div class="employee-wrapper">
+            <img src="@(Url.Content("~/content/employees/"))#:EmployeeID#-t.png" class="img-responsive employee-list-image"/> 
+            <dl class="employee-list-details">    
+                <dt class="name">#:FirstName# #:LastName#</dt>
+                <dd class="title">#:Title#</dd>
+            </dl>
+        </div>
+    </div> 
+</script>
+
+<script type="text/x-kendo-tmpl" id="employeeBioTemplate">
+    <div>
+        <h3>ABOUT</h3>
+        <img src="@(Url.Content("~/content/employees/"))#:EmployeeID#.png" class="img-responsive employee-details-image" /> 
+        <dl class="employee-bio-details">
+            <dt class="name">#:FirstName# #:LastName#</dt>
+            <dd class="title">#:Title#</dd>
+            <dd class="phone"><span class="icon icon-mobile"></span>#:HomePhone#</dd>
+            <dd><a href='\\#' class='bioTooltip'> >>FULL BIO <span style='display:none;'>#:Notes#</span></a></dd>
+        </dl>
+    </div> 
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#TeamEfficiency").addClass("active");
+        $("#dateFilter").kendoValidator({
+            rules: {
+                startDate: function (input) {
+                    if (input.is("#StartDate")) {
+                        startDate = kendo.parseDate(input.val());
+                        endDate = kendo.parseDate($("#EndDate").val());
+                        if (startDate > endDate) {
+                            return false;
+                        }
+                    }
+                    return true;
+                },
+                endDate: function (input) {
+                    if (input.is("#EndDate")) {
+                        startDate = kendo.parseDate($("#StartDate").val());
+                        endDate = kendo.parseDate(input.val());
+                        if (startDate > endDate) {
+                            return false;
+                        }
+                    }
+                    return true;
+                },
+            },
+            messages: {
+                startDate: "Start date should preceed the End date.",
+                endDate: "End date should not preceed the Start date."
+            }
+        });
+    });
+
+    function onListDataBound(e) {
+        this.select($(".employee:first"));
+    }
+    function onCriteriaChange() { 
+        var employeeList = $("#EmployeesList").data("kendoListView"),
+            employee = employeeList.dataSource.getByUid(employeeList.select().attr("data-uid")),
+            employeeQuarterSales = $("#EmployeeQuarterSales").data("kendoChart"),
+            employeeAverageSales = $("#EmployeeAverageSales").data("kendoChart"),
+            teamSales = $("#TeamSales").data("kendoChart"),
+            employeeSales = $("#EmployeeSales").data("kendoScheduler"),
+            startDate = $("#StartDate").data("kendoDatePicker"),
+            endDate = $("#EndDate").data("kendoDatePicker"),
+            filter = { EmployeeID: employee.EmployeeID, startDate: startDate.value(), endDate: endDate.value() },
+            template = kendo.template($("#employeeBioTemplate").html());
+        
+        $("#employeeBio").html(template(employee));
+        
+        employeeSales.dataSource.filter({ field: "EmployeeID", operator: "eq", value: employee.EmployeeID });
+
+        teamSales.dataSource.read(filter);
+        
+        employeeQuarterSales.dataSource.read(filter);
+        employeeAverageSales.dataSource.read(filter);
+    }
+    function getBio(e) {
+        return e.target.find("span").text();
+    }
+    function onQuarterSalesDataBound(e) {
+        var data = this.dataSource.at(0);
+        $("#EmployeeQuarterSalesLabel").text(kendo.toString(data.Current,"c2"));
+    }
+    function onAverageSalesDataBound(e) { 
+        var data = this.dataSource.aggregates()
+        if (data.EmployeeSales) {
+            $("#EmployeeAverageSalesLabel").text(kendo.toString(data.EmployeeSales.average, "c2"));
+        } else {
+            $("#EmployeeAverageSalesLabel").text(kendo.toString(0, "c2"));
+        }
+    }
+
+    $(window).on("resize", function () {
+        kendo.resize($("#TeamSales"));
+        var containerWidth = $(".sparkline-container").parent().width();       
+        $("#EmployeeQuarterSales").data("kendoChart").setOptions({ chartArea: { width: containerWidth } });
+        $("#EmployeeAverageSales").data("kendoChart").setOptions({ chartArea: { width: containerWidth } });
+    });
+</script>
+
+@(Html.Kendo().Tooltip()
+    .For("#employeeBio") 
+    .Filter("a")
+    .ContentHandler("getBio")
+)
+
+<div id="main-section-header" class="row">
+    <h2 id="team-efficiency" class="col-xs-3">Team efficiency</h2>   
+    <div id="dateFilter" class="col-xs-9">
+        <div class="period-wrapper">
+            <label for="StartDate" class="select-period">Stats from</label>
+            @(Html.Kendo().DatePicker() 
+                .Name("StartDate")
+                .Value(new DateTime(1996, 1, 1))
+                .Events(e=>e.Change("onCriteriaChange"))
+            )
+            <span class="k-invalid-msg" data-for="StartDate"></span>
+        </div>
+        <div class="period-wrapper">    
+            <label for="EndDate" class="select-period">To</label>
+            @(Html.Kendo().DatePicker() 
+                .Name("EndDate")
+                .Value(new DateTime(1998, 8, 1))
+                .Events(e=>e.Change("onCriteriaChange"))
+            )
+            <span class="k-invalid-msg" data-for="EndDate"></span>
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+
+<div class="main-section-content row" style="">
+
+<div id="employee-list" class="col col-xs-2">
+    <h3>TEAM MEMBERS</h3>
+    @(Html.Kendo().ListView<EmployeeViewModel>()
+        .Name("EmployeesList") 
+        .TagName("div") 
+        .Events(e=>e.DataBound("onListDataBound").Change("onCriteriaChange"))
+        .ClientTemplateId("employeeItemTemplate")
+        .DataSource(dataSource => {
+            dataSource.Read(read => read.Action("EmployeesList", "Team"));
+            dataSource.PageSize(9);
+        }) 
+        .Selectable(s=>s.Mode(ListViewSelectionMode.Single))
+    )
+</div>
+<div id="employee-details-wrapper"class="col col-xs-10">
+    <div id="employee-details" class="row">
+        <div id="employee-about" class="col-xs-12 placeholder">
+            <div class="row"> 
+            <div id="employeeBio" class="col-xs-12 col-sm-4">
+            </div>
+            <div class="col-xs-12 col-sm-4">
+                <h3>Quarter to date sales</h3>
+                <span id="EmployeeQuarterSalesLabel"></span>
+                <div class="sparkline-container">
+                    @(Html.Kendo().Chart<QuarterToDateSalesViewModel>()
+                        .Name("EmployeeQuarterSales")
+                        .Theme("metro")
+                        .HtmlAttributes(new {style = "height:30px;" } )
+                        .AutoBind(false)
+                        .Tooltip(false)
+                        .Events(e=>e.DataBound("onQuarterSalesDataBound"))
+                        .DataSource(ds => ds
+                            .Read(read => read.Action("EmployeeQuarterSales", "Team"))
+                        ) 
+                        .Series(series =>
+                        {
+                            series.Bullet(m => m.Current, m => m.Target);
+                        })
+                        .Legend(leg => leg.Visible(false))
+                        .CategoryAxis(cat => cat.Labels(lab => lab.Visible(false)).MajorGridLines(m => m.Visible(false)).Visible(false))
+                        .ValueAxis(val => val.Numeric().Labels(lab =>lab.Visible(false)).MajorGridLines(m => m.Visible(false)).MajorTicks(mT => mT.Visible(false)))
+                    )
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+                <h3>Monthly Average Sales</h3>
+                <span id="EmployeeAverageSalesLabel"></span>
+                <div class="sparkline-container">
+                    @(Html.Kendo().Chart<MonthlySalesByEmployee_Result>()
+                        .Name("EmployeeAverageSales")
+                        .Theme("metro")
+                        .HtmlAttributes(new {style = "height:30px;" } )
+                        .AutoBind(false)
+                        .Events(e=>e.DataBound("onAverageSalesDataBound"))
+                        .DataSource(ds => ds
+                            .Aggregates(a=>a.Add(s=>s.EmployeeSales).Average())
+                            .Read(read => read.Action("EmployeeAverageSales", "Team"))
+                        ) 
+                        .Series(series =>
+                        {
+                            series.Line(model => model.EmployeeSales).Width(1.5).Markers(m => m.Visible(false)).Tooltip(t => t.Template("#=kendo.toString(value, 'c2')#"));
+                        }) 
+                        .CategoryAxis(c=>c
+                            .Date()
+                            .Categories(x=>x.Date)
+                            .Visible(false).MajorGridLines(m => m.Visible(false)).MajorTicks(mT => mT.Visible(false))
+                        )
+                        .Legend(leg => leg.Visible(false))
+                        .ValueAxis(val => val.Numeric().Visible(false).Labels(lab =>lab.Visible(false)).MajorGridLines(m => m.Visible(false)).MajorTicks(mT => mT.Visible(false)))
+                    )
+                </div> 
+            </div> 
+            </div>     
+        </div>
+        <div id="employeeStats" class="col-xs-12">
+            @(Html.Kendo().Chart<SalesAmounts_Result>()
+                .Name("TeamSales")
+                .Theme("metro")
+                .Title(t => t.Text("REPRESENTATIVE SALES VS. TOTAL SALES").Align(ChartTextAlignment.Left).Font("11px").Color("#35373d"))
+                .HtmlAttributes(new {style = "height:200px;" } )
+                .AutoBind(false)
+                .Legend(l=>l.Position(ChartLegendPosition.Bottom))
+                .DataSource(ds => ds.Read(read => read.Action("EmployeeAndTeamSales", "Team")))
+                .Series(series =>
+                {
+                    series.Column(model => model.EmployeeSales).CategoryField("Date") .Name("Employee Sales").Aggregate(ChartSeriesAggregate.Sum);
+                    series.Column(model => model.TotalSales).CategoryField("Date").Name("Team Sales").Aggregate(ChartSeriesAggregate.Sum);
+                })
+                .CategoryAxis(axis => axis
+                    .Date()
+                    .BaseUnit(ChartAxisBaseUnit.Months)
+                    .MajorGridLines(lines => lines.Visible(false))
+                )
+                .ValueAxis(axis => axis.Numeric()
+                    .Labels(labels => labels.Format("{0:c2}").Visible(false))
+                    .MajorUnit(25000)
+                    .Line(line => line.Visible(false))
+                    .MajorGridLines(m => m.Visible(false))
+                )
+                .Tooltip(tooltip => tooltip
+                    .Visible(true)
+                    .Format("{0:c2}")
+                )
+            )
+        </div>       
+        <div id="employeeSchedule" class="col-xs-12">
+             <h3>Representative orders - schedule</h3>
+            @(Html.Kendo().Scheduler<SaleViewModel>()
+                .Name("EmployeeSales")
+                .AutoBind(false)
+                .Date(new DateTime(1996, 7, 1))
+                .Views(views =>
+                {
+                    views.MonthView();
+                })
+                .Editable(false)
+                .Timezone("Etc/UTC")
+                .Resources(resource =>
+                {
+                    resource.Add(m => m.EmployeeID)
+                        .Title("Employee") 
+                        .DataTextField("EmployeeName")
+                        .DataValueField("EmployeeID") 
+                        .DataSource(dataSource => {
+                            dataSource.Read(read => read.Action("GetEmployees", "Team"));
+                        });
+                })
+                .DataSource(d => d.Read("EmployeeSales", "Team"))
+            )
+        </div>
+    </div>
+</div>
+    </div>

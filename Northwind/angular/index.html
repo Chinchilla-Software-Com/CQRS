@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://kendo.cdn.telerik.com/2015.3.1111/styles/kendo.common.min.css" rel="stylesheet">
+        <link href="https://kendo.cdn.telerik.com/2015.3.1111/styles/kendo.metro.min.css" rel="stylesheet">
+        <link href="Content/Site.css" rel="stylesheet" type="text/css">
+        <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="./bower_components/angular/angular.min.js"></script>
+        <script src="./bower_components/angular-resource/angular-resource.min.js"></script>
+        <script src="./bower_components/angular-new-router/dist/router.es5.min.js"></script>
+        <script src="https://kendo.cdn.telerik.com/2015.3.1111/js/kendo.all.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/0.5.7/chroma.min.js"></script>
+        <script src="./components/about/about.js"></script>
+        <script src="./components/regional-sales/regional-sales.js"></script>
+        <script src="./components/team-efficiency/team-efficiency.js"></script>
+        <script src="./components/products-orders/products-orders.js"></script>
+        <script src="app.js"></script>
+    </head>
+    <body ng-app="app" ng-controller="AppController as app">
+        <div class="container-fluid">
+            <!--open container-->
+            <div class="row row-offcanvas row-offcanvas-left">
+                <!--open row-->
+                <div id="nav-section" class="col-xs-12 column">
+                    <!--open nav column-->
+                    <div class="navbar-default">
+                        <button id="toggle-button" type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <h1 id="dash-logo" class="center-block">Northwind&#183;Dash</h1>
+                    <div class="collapse navbar-collapse" id="sidebar-nav" role="navigation">
+                        <ul class="nav">
+                            <li id="regional-sales-status">
+                            <a ng-link="regionalSales()">
+                                <span class="icon icon-chart-column"></span>Regional Sales Status</a>
+                            </li>
+                            <li id="products-and-orders">
+                            <a ng-link="productsOrders()">
+                                <span class="icon icon-star-empty"></span>Products &amp; Orders</a>
+                            </li>
+                            <li id="team-efficiency">
+                            <a ng-link="teamEfficiency()">
+                                <span class="icon icon-faves"></span>Team Efficiency</a>
+                            </li>
+                            <li id="about">
+                            <a ng-link="about()">
+                                <span class="icon icon-info"></span>About</a>
+                            </li>
+                        </ul>
+                        <div id="rights">
+                            <p>Copyright &copy; 2016, Progress Software Corporation and/or its subsidiaries or affiliates. All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </div>
+                <!--close left column-->
+                <div id="main-section" class="col-xs-12 column" ng-viewport></div>
+                <!--close main column-->
+            </div>
+            <!--close row-->
+        </div>
+        <!--close container-->
+        <script>
+            $(window).resize(function() {
+                kendo.resize("#main-section");
+            });
+        </script>
+    </body>
+</html>
