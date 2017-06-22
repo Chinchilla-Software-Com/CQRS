@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Cqrs.WebApi")]
+[assembly: AssemblyTitle("Cqrs.Web.Mvc")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("cdmdotnet Limited")]
-[assembly: AssemblyProduct("Cqrs.WebApi")]
-[assembly: AssemblyCopyright("Copyright © cdmdotnet Limited 2016")]
+[assembly: AssemblyProduct("Cqrs.Web.Mvc")]
+[assembly: AssemblyCopyright("Copyright © cdmdotnet Limited 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0feb05e3-855c-405b-8826-f9c225bf5dfc")]
+[assembly: Guid("4b74cad7-de17-43c1-8f8c-dac93c2a6709")]
 
 // Version information for an assembly consists of the following four values:
 //
