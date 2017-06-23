@@ -78,7 +78,7 @@ namespace Cqrs.Azure.ServiceBus
 					catch (QuotaExceededException exception)
 					{
 						responseCode = "429";
-						Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
+						Logger.LogError("The size of the event being sent was too large or the topic has reached it's limit.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
 						throw;
 					}
 					catch (Exception exception)
