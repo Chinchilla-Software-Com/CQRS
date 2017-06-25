@@ -6,7 +6,7 @@ A lightweight framework to help write CQRS and Eventsourcing applications in C#,
 
 CQRS.NET has been designed with modularity in mind... see the number of technology packages below you can chose from. Every package and design choice made should be interchangeable with custom code if needed.
 
-![CQRS.NET](https://pbs.twimg.com/media/DC_zFcTUAAAvaYP.png:large)
+![CQRS.NET](https://raw.githubusercontent.com/Chinchilla-Software-Com/CQRS/master/wiki/CQRS-Process-Flow-Level-2.png)
 
 ## Tutorials and getting started
 For those new to CQRS.NET, we strongly suggest you have a look at our basic [Hello World Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Hello-World-Example-1) that covers basic commands and events.
