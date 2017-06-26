@@ -253,6 +253,7 @@ namespace Cqrs.Azure.ServiceBus
 			IEvent<TAuthenticationToken> @event;
 			try
 			{
+				
 				@event = MessageSerialiser.DeserialiseEvent(messageBody);
 			}
 			catch (JsonSerializationException exception)

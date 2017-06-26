@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
@@ -20,12 +21,29 @@ using Cqrs.Messages;
 
 namespace Cqrs.Azure.ServiceBus
 {
+	// The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public class AzureEventBusPublisher<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IEventPublisher<TAuthenticationToken>
 	{
 		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
+		}
+
+		internal string DebuggerDisplay
+		{
+			get
+			{
+				string connectionString = string.Format("ConnectionString : {0}", MessageBusConnectionStringConfigurationKey);
+				try
+				{
+					connectionString = string.Concat(connectionString, "=", GetConnectionString());
+				}
+				catch { /**/ }
+				return string.Format(CultureInfo.InvariantCulture, "{0}, PrivateTopicName : {1}, PrivateTopicSubscriptionName : {2}, PublicTopicName : {3}, PublicTopicSubscriptionName : {4}",
+					connectionString, PrivateTopicName, PrivateTopicSubscriptionName, PublicTopicName, PublicTopicSubscriptionName);
+			}
 		}
 
 		#region Implementation of IEventPublisher<TAuthenticationToken>
