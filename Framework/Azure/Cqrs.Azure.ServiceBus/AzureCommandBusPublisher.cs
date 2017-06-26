@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using Cqrs.Authentication;
 using Cqrs.Commands;
@@ -25,12 +26,29 @@ namespace Cqrs.Azure.ServiceBus
 	/// <summary>
 	/// A <see cref="ICommandPublisher{TAuthenticationToken}"/> that resolves handlers , executes the handler and then publishes the <see cref="ICommand{TAuthenticationToken}"/> on the public command bus.
 	/// </summary>
+	// The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public class AzureCommandBusPublisher<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, ISendAndWaitCommandSender<TAuthenticationToken>
 	{
 		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.CommandBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
+		}
+
+		internal string DebuggerDisplay
+		{
+			get
+			{
+				string connectionString = string.Format("ConnectionString : {0}", MessageBusConnectionStringConfigurationKey);
+				try
+				{
+					connectionString = string.Concat(connectionString, "=", GetConnectionString());
+				}
+				catch { /**/ }
+				return string.Format(CultureInfo.InvariantCulture, "{0}, PrivateTopicName : {1}, PrivateTopicSubscriptionName : {2}, PublicTopicName : {3}, PublicTopicSubscriptionName : {4}",
+					connectionString, PrivateTopicName, PrivateTopicSubscriptionName, PublicTopicName, PublicTopicSubscriptionName);
+			}
 		}
 
 		#region Implementation of ICommandSender<TAuthenticationToken>

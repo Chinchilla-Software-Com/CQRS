@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public class AzureCommandBusReceiver<TAuthenticationToken>
 		: AzureCommandBus<TAuthenticationToken>
 		, ICommandHandlerRegistrar
@@ -60,6 +62,21 @@ namespace Cqrs.Azure.ServiceBus
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, false)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.CommandBus.Receiver.UseApplicationInsightTelemetryHelper", correlationIdHelper);
+		}
+
+		internal string DebuggerDisplay
+		{
+			get
+			{
+				string connectionString = string.Format("ConnectionString : {0}", MessageBusConnectionStringConfigurationKey);
+				try
+				{
+					connectionString = string.Concat(connectionString, "=", GetConnectionString());
+				}
+				catch { /**/ }
+				return string.Format(CultureInfo.InvariantCulture, "{0}, PrivateTopicName : {1}, PrivateTopicSubscriptionName : {2}, PublicTopicName : {3}, PublicTopicSubscriptionName : {4}, FilterKey : {5}, NumberOfReceiversCount : {6}",
+					connectionString, PrivateTopicName, PrivateTopicSubscriptionName, PublicTopicName, PublicTopicSubscriptionName, FilterKey, NumberOfReceiversCount);
+			}
 		}
 
 		#region Overrides of AzureServiceBus<TAuthenticationToken>
