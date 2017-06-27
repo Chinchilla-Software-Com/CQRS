@@ -1,0 +1,180 @@
+\hypertarget{structCqrs_1_1Infrastructure_1_1SpinWait}{}\section{Cqrs.\+Infrastructure.\+Spin\+Wait Struct Reference}
+\label{structCqrs_1_1Infrastructure_1_1SpinWait}\index{Cqrs.\+Infrastructure.\+Spin\+Wait@{Cqrs.\+Infrastructure.\+Spin\+Wait}}
+
+
+Provides support for spin-\/based waiting.  
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries Timeout\+Helper}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{structCqrs_1_1Infrastructure_1_1SpinWait_a2df9b40d5281fda47702cc99fac7e6d3}{Spin\+Once} (short sleep\+In\+Milliseconds=0)
+\begin{DoxyCompactList}\small\item\em Performs a single spin. \end{DoxyCompactList}\item 
+void \hyperlink{structCqrs_1_1Infrastructure_1_1SpinWait_a32a06438f849dc88a0fce77b23e3271e}{Reset} ()
+\begin{DoxyCompactList}\small\item\em Resets the spin counter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{structCqrs_1_1Infrastructure_1_1SpinWait_ae6b5bdef734568b515fa8d2ed04af9bb}{Spin\+Until} (Func$<$ bool $>$ condition, short sleep\+In\+Milliseconds=0)
+\begin{DoxyCompactList}\small\item\em Spins until the specified condition is satisfied. \end{DoxyCompactList}\item 
+static bool \hyperlink{structCqrs_1_1Infrastructure_1_1SpinWait_a3b8ad06e785634704c7555bd8d0f1ac9}{Spin\+Until} (Func$<$ bool $>$ condition, Time\+Span timeout, short sleep\+In\+Milliseconds=0)
+\begin{DoxyCompactList}\small\item\em Spins until the specified condition is satisfied or until the specified timeout is expired. \end{DoxyCompactList}\item 
+static bool \hyperlink{structCqrs_1_1Infrastructure_1_1SpinWait_a9132e663f1bd0c28ec846cf026ab1c5f}{Spin\+Until} (Func$<$ bool $>$ condition, int milliseconds\+Timeout, short sleep\+In\+Milliseconds=0)
+\begin{DoxyCompactList}\small\item\em Spins until the specified condition is satisfied or until the specified timeout is expired. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const short \hyperlink{structCqrs_1_1Infrastructure_1_1SpinWait_a1d7345222f47db5e45af305591b92da5}{Default\+Sleep\+In\+Milliseconds} = 50
+\begin{DoxyCompactList}\small\item\em A recommended sleep value of 50. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{structCqrs_1_1Infrastructure_1_1SpinWait_a8bf89d0140fcedc664f18b41229cda0a}{Next\+Spin\+Will\+Yield}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets whether the next call to M\+:\+System.\+Threading.\+Spin\+Wait.\+Spin\+Once will yield the processor, triggering a forced context switch. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Provides support for spin-\/based waiting. 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{structCqrs_1_1Infrastructure_1_1SpinWait_a32a06438f849dc88a0fce77b23e3271e}\label{structCqrs_1_1Infrastructure_1_1SpinWait_a32a06438f849dc88a0fce77b23e3271e}} 
+\index{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}!Reset@{Reset}}
+\index{Reset@{Reset}!Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}}
+\subsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily void Cqrs.\+Infrastructure.\+Spin\+Wait.\+Reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Resets the spin counter. 
+
+\mbox{\Hypertarget{structCqrs_1_1Infrastructure_1_1SpinWait_a2df9b40d5281fda47702cc99fac7e6d3}\label{structCqrs_1_1Infrastructure_1_1SpinWait_a2df9b40d5281fda47702cc99fac7e6d3}} 
+\index{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}!Spin\+Once@{Spin\+Once}}
+\index{Spin\+Once@{Spin\+Once}!Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}}
+\subsubsection{\texorpdfstring{Spin\+Once()}{SpinOnce()}}
+{\footnotesize\ttfamily void Cqrs.\+Infrastructure.\+Spin\+Wait.\+Spin\+Once (\begin{DoxyParamCaption}\item[{short}]{sleep\+In\+Milliseconds = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+Performs a single spin. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sleep\+In\+Milliseconds} & The amount of milliseconds the thread will sleep for.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structCqrs_1_1Infrastructure_1_1SpinWait_ae6b5bdef734568b515fa8d2ed04af9bb}\label{structCqrs_1_1Infrastructure_1_1SpinWait_ae6b5bdef734568b515fa8d2ed04af9bb}} 
+\index{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}!Spin\+Until@{Spin\+Until}}
+\index{Spin\+Until@{Spin\+Until}!Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}}
+\subsubsection{\texorpdfstring{Spin\+Until()}{SpinUntil()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily static void Cqrs.\+Infrastructure.\+Spin\+Wait.\+Spin\+Until (\begin{DoxyParamCaption}\item[{Func$<$ bool $>$}]{condition,  }\item[{short}]{sleep\+In\+Milliseconds = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Spins until the specified condition is satisfied. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em condition} & A delegate to be executed over and over until it returns true.\\
+\hline
+{\em sleep\+In\+Milliseconds} & The amount of milliseconds the thread will sleep for.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em T\+:\+System.\+Argument\+Null\+Exception} & The {\itshape condition}  argument is null.\\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{structCqrs_1_1Infrastructure_1_1SpinWait_a3b8ad06e785634704c7555bd8d0f1ac9}\label{structCqrs_1_1Infrastructure_1_1SpinWait_a3b8ad06e785634704c7555bd8d0f1ac9}} 
+\index{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}!Spin\+Until@{Spin\+Until}}
+\index{Spin\+Until@{Spin\+Until}!Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}}
+\subsubsection{\texorpdfstring{Spin\+Until()}{SpinUntil()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily static bool Cqrs.\+Infrastructure.\+Spin\+Wait.\+Spin\+Until (\begin{DoxyParamCaption}\item[{Func$<$ bool $>$}]{condition,  }\item[{Time\+Span}]{timeout,  }\item[{short}]{sleep\+In\+Milliseconds = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Spins until the specified condition is satisfied or until the specified timeout is expired. 
+
+\begin{DoxyReturn}{Returns}
+True if the condition is satisfied within the timeout; otherwise, false 
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em condition} & A delegate to be executed over and over until it returns true.\\
+\hline
+{\em timeout} & A T\+:\+System.\+Time\+Span that represents the number of milliseconds to wait, or a Time\+Span that represents -\/1 milliseconds to wait indefinitely.\\
+\hline
+{\em sleep\+In\+Milliseconds} & The amount of milliseconds the thread will sleep for.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em T\+:\+System.\+Argument\+Null\+Exception} & The {\itshape condition}  argument is null.\\
+\hline
+{\em T\+:\+System.\+Argument\+Out\+Of\+Range\+Exception} & {\itshape timeout}  is a negative number other than -\/1 milliseconds, which represents an infinite time-\/out -\/or-\/ timeout is greater than F\+:\+System.\+Int32.\+Max\+Value.\\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{structCqrs_1_1Infrastructure_1_1SpinWait_a9132e663f1bd0c28ec846cf026ab1c5f}\label{structCqrs_1_1Infrastructure_1_1SpinWait_a9132e663f1bd0c28ec846cf026ab1c5f}} 
+\index{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}!Spin\+Until@{Spin\+Until}}
+\index{Spin\+Until@{Spin\+Until}!Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}}
+\subsubsection{\texorpdfstring{Spin\+Until()}{SpinUntil()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily static bool Cqrs.\+Infrastructure.\+Spin\+Wait.\+Spin\+Until (\begin{DoxyParamCaption}\item[{Func$<$ bool $>$}]{condition,  }\item[{int}]{milliseconds\+Timeout,  }\item[{short}]{sleep\+In\+Milliseconds = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Spins until the specified condition is satisfied or until the specified timeout is expired. 
+
+\begin{DoxyReturn}{Returns}
+True if the condition is satisfied within the timeout; otherwise, false 
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em condition} & A delegate to be executed over and over until it returns true.\\
+\hline
+{\em milliseconds\+Timeout} & The number of milliseconds to wait, or F\+:\+System.\+Threading.\+Timeout.\+Infinite (-\/1) to wait indefinitely.\\
+\hline
+{\em sleep\+In\+Milliseconds} & The amount of milliseconds the thread will sleep for.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em T\+:\+System.\+Argument\+Null\+Exception} & The {\itshape condition}  argument is null.\\
+\hline
+{\em T\+:\+System.\+Argument\+Out\+Of\+Range\+Exception} & {\itshape milliseconds\+Timeout}  is a negative number other than -\/1, which represents an infinite time-\/out.\\
+\hline
+\end{DoxyExceptions}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structCqrs_1_1Infrastructure_1_1SpinWait_a1d7345222f47db5e45af305591b92da5}\label{structCqrs_1_1Infrastructure_1_1SpinWait_a1d7345222f47db5e45af305591b92da5}} 
+\index{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}!Default\+Sleep\+In\+Milliseconds@{Default\+Sleep\+In\+Milliseconds}}
+\index{Default\+Sleep\+In\+Milliseconds@{Default\+Sleep\+In\+Milliseconds}!Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}}
+\subsubsection{\texorpdfstring{Default\+Sleep\+In\+Milliseconds}{DefaultSleepInMilliseconds}}
+{\footnotesize\ttfamily const short Cqrs.\+Infrastructure.\+Spin\+Wait.\+Default\+Sleep\+In\+Milliseconds = 50}
+
+
+
+A recommended sleep value of 50. 
+
+
+
+\subsection{Property Documentation}
+\mbox{\Hypertarget{structCqrs_1_1Infrastructure_1_1SpinWait_a8bf89d0140fcedc664f18b41229cda0a}\label{structCqrs_1_1Infrastructure_1_1SpinWait_a8bf89d0140fcedc664f18b41229cda0a}} 
+\index{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}!Next\+Spin\+Will\+Yield@{Next\+Spin\+Will\+Yield}}
+\index{Next\+Spin\+Will\+Yield@{Next\+Spin\+Will\+Yield}!Cqrs\+::\+Infrastructure\+::\+Spin\+Wait@{Cqrs\+::\+Infrastructure\+::\+Spin\+Wait}}
+\subsubsection{\texorpdfstring{Next\+Spin\+Will\+Yield}{NextSpinWillYield}}
+{\footnotesize\ttfamily bool Cqrs.\+Infrastructure.\+Spin\+Wait.\+Next\+Spin\+Will\+Yield\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Gets whether the next call to M\+:\+System.\+Threading.\+Spin\+Wait.\+Spin\+Once will yield the processor, triggering a forced context switch. 
+
+\begin{DoxyReturn}{Returns}
+Whether the next call to M\+:\+System.\+Threading.\+Spin\+Wait.\+Spin\+Once will yield the processor, triggering a forced context switch. 
+\end{DoxyReturn}

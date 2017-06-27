@@ -1,0 +1,27 @@
+var namespaceCqrs =
+[
+    [ "Akka", "namespaceCqrs_1_1Akka.html", "namespaceCqrs_1_1Akka" ],
+    [ "Authentication", "namespaceCqrs_1_1Authentication.html", "namespaceCqrs_1_1Authentication" ],
+    [ "Azure", "namespaceCqrs_1_1Azure.html", "namespaceCqrs_1_1Azure" ],
+    [ "Bus", "namespaceCqrs_1_1Bus.html", "namespaceCqrs_1_1Bus" ],
+    [ "Cache", "namespaceCqrs_1_1Cache.html", "namespaceCqrs_1_1Cache" ],
+    [ "Commands", "namespaceCqrs_1_1Commands.html", "namespaceCqrs_1_1Commands" ],
+    [ "Configuration", "namespaceCqrs_1_1Configuration.html", "namespaceCqrs_1_1Configuration" ],
+    [ "DataStores", "namespaceCqrs_1_1DataStores.html", "namespaceCqrs_1_1DataStores" ],
+    [ "Domain", "namespaceCqrs_1_1Domain.html", "namespaceCqrs_1_1Domain" ],
+    [ "Entities", "namespaceCqrs_1_1Entities.html", "namespaceCqrs_1_1Entities" ],
+    [ "Events", "namespaceCqrs_1_1Events.html", "namespaceCqrs_1_1Events" ],
+    [ "EventStore", "namespaceCqrs_1_1EventStore.html", "namespaceCqrs_1_1EventStore" ],
+    [ "Infrastructure", "namespaceCqrs_1_1Infrastructure.html", "namespaceCqrs_1_1Infrastructure" ],
+    [ "Messages", "namespaceCqrs_1_1Messages.html", "namespaceCqrs_1_1Messages" ],
+    [ "Mongo", "namespaceCqrs_1_1Mongo.html", "namespaceCqrs_1_1Mongo" ],
+    [ "MongoDB", "namespaceCqrs_1_1MongoDB.html", "namespaceCqrs_1_1MongoDB" ],
+    [ "Ninject", "namespaceCqrs_1_1Ninject.html", "namespaceCqrs_1_1Ninject" ],
+    [ "Repositories", "namespaceCqrs_1_1Repositories.html", "namespaceCqrs_1_1Repositories" ],
+    [ "Services", "namespaceCqrs_1_1Services.html", "namespaceCqrs_1_1Services" ],
+    [ "Snapshots", "namespaceCqrs_1_1Snapshots.html", "namespaceCqrs_1_1Snapshots" ],
+    [ "Sql", "namespaceCqrs_1_1Sql.html", "namespaceCqrs_1_1Sql" ],
+    [ "Tests", "namespaceCqrs_1_1Tests.html", "namespaceCqrs_1_1Tests" ],
+    [ "Web", "namespaceCqrs_1_1Web.html", "namespaceCqrs_1_1Web" ],
+    [ "WebApi", "namespaceCqrs_1_1WebApi.html", "namespaceCqrs_1_1WebApi" ]
+];

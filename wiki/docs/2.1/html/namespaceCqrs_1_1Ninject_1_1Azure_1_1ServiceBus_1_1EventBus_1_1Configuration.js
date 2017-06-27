@@ -1,0 +1,5 @@
+var namespaceCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration =
+[
+    [ "AzureEventBusReceiverModule", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule.html", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule" ],
+    [ "AzureEventPublisherModule", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventPublisherModule.html", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventPublisherModule" ]
+];

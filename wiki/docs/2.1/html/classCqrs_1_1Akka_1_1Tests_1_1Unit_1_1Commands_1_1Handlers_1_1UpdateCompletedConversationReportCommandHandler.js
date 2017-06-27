@@ -1,0 +1,6 @@
+var classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1Handlers_1_1UpdateCompletedConversationReportCommandHandler =
+[
+    [ "UpdateCompletedConversationReportCommandHandler", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1Handlers_1_1UpdateCompletedConversationReportCommandHandler.html#a816316549866b3e4abb410a7b9ea06a3", null ],
+    [ "Handle", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1Handlers_1_1UpdateCompletedConversationReportCommandHandler.html#aecb596ab5c5e17823b93ac4fcae0e43e", null ],
+    [ "AggregateResolver", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1Handlers_1_1UpdateCompletedConversationReportCommandHandler.html#af5cde3b1fadb7cb1962301a67aa9339b", null ]
+];
