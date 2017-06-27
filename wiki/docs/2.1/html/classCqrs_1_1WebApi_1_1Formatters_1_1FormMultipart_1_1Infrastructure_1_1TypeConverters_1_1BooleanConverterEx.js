@@ -1,0 +1,4 @@
+var classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1BooleanConverterEx =
+[
+    [ "ConvertFrom", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1BooleanConverterEx.html#afac51ee1e191c7b27da72d7cf6f25fa7", null ]
+];
