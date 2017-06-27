@@ -15,7 +15,7 @@ Or you have a look at our basic [Northwind Tutorial](https://github.com/Chinchil
 And for those looking for a more thorough tutorial we suggest you start with the [getting started](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Getting-Started) section in the [wiki](https://github.com/Chinchilla-Software-Com/CQRS/wiki)
 
 ## Documentation
-[CQRS.NET API reference documentation](https://chinchilla-software-com.github.io/CQRS/wiki/docs/html/annotated.html) is available to browse. We are adding more and more documentation as we edit each file. By version 3.0 we aim to have all public methods and classes documented.
+[CQRS.NET API reference documentation](https://chinchilla-software-com.github.io/CQRS/wiki/docs) is available to browse. We are adding more and more documentation as we edit each file. By version 3.0 we aim to have all public methods and classes documented.
 User documentation is starting off for now in the [wiki section](https://github.com/Chinchilla-Software-Com/CQRS/wiki) of this project. We strongly invite people to post questions and issues which we'll answer and work on.
 
 ## Sample projects.
