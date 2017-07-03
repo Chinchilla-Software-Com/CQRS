@@ -15,17 +15,16 @@ namespace Cqrs.Ninject.Configuration
 		/// </summary>
 		public override void Load()
 		{
-			RegisterFactories();
-			RegisterServices();
-			RegisterCqrsRequirements();
+			RegisterEventSerialisationConfiguration();
+			RegisterEventStore();
 		}
 
 		#endregion
 
 		/// <summary>
-		/// Register the all factories
+		/// Register the all event serialisation configurations
 		/// </summary>
-		public virtual void RegisterFactories()
+		public virtual void RegisterEventSerialisationConfiguration()
 		{
 			Bind<IEventBuilder<TAuthenticationToken>>()
 				.To<DefaultEventBuilder<TAuthenticationToken>>()
@@ -36,16 +35,9 @@ namespace Cqrs.Ninject.Configuration
 		}
 
 		/// <summary>
-		/// Register the all services
+		/// Register the <see cref="IEventStore{TAuthenticationToken}"/>
 		/// </summary>
-		public virtual void RegisterServices()
-		{
-		}
-
-		/// <summary>
-		/// Register the all Cqrs command handlers
-		/// </summary>
-		public virtual void RegisterCqrsRequirements()
+		public virtual void RegisterEventStore()
 		{
 			Bind<IEventStore<TAuthenticationToken>>()
 				.To<SqlEventStore<TAuthenticationToken>>()

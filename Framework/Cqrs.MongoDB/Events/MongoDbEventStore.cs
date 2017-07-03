@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using cdmdotnet.Logging;
+using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.MongoDB.DataStores.Indexes;
 using Cqrs.MongoDB.Events.Indexes;
@@ -32,6 +33,8 @@ namespace Cqrs.MongoDB.Events
 
 		protected IMongoDbEventStoreConnectionStringFactory MongoDbEventStoreConnectionStringFactory { get; private set; }
 
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
 		static MongoDbEventStore()
 		{
 			IDictionary<Type, IList<object>> randomCallToStartStaticProperty = MongoDbDataStoreFactory.IndexTypesByEntityType;
@@ -51,10 +54,11 @@ namespace Cqrs.MongoDB.Events
 			}
 		}
 
-		public MongoDbEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IMongoDbEventStoreConnectionStringFactory mongoDbEventStoreConnectionStringFactory)
+		public MongoDbEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IMongoDbEventStoreConnectionStringFactory mongoDbEventStoreConnectionStringFactory, IConfigurationManager configurationManager)
 			: base(eventBuilder, eventDeserialiser, logger)
 		{
 			MongoDbEventStoreConnectionStringFactory = mongoDbEventStoreConnectionStringFactory;
+			ConfigurationManager = configurationManager;
 
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			MongoCollection = GetCollection();
@@ -103,15 +107,27 @@ namespace Cqrs.MongoDB.Events
 				}
 			}
 
-			MongoCollection.Indexes.CreateOne
-			(
-				indexKey,
-				new CreateIndexOptions
-				{
-					Unique = mongoIndex.IsUnique,
-					Name = mongoIndex.Name
-				}
-			);
+			bool throwExceptions;
+			if (!bool.TryParse(ConfigurationManager.GetSetting("Cqrs.MongoDb.EventStore.ThrowExceptionsOnIndexPreparation"), out throwExceptions))
+				throwExceptions = true;
+			try
+			{
+				MongoCollection.Indexes.CreateOne
+				(
+					indexKey,
+					new CreateIndexOptions
+					{
+						Unique = mongoIndex.IsUnique,
+						Name = mongoIndex.Name
+					}
+				);
+
+			}
+			catch
+			{
+				if (throwExceptions)
+					throw;
+			}
 		}
 
 		#region Overrides of EventStore<TAuthenticationToken>

@@ -10,6 +10,7 @@ using cdmdotnet.Logging.Configuration;
 using cdmdotnet.StateManagement;
 using cdmdotnet.StateManagement.Threaded;
 using cdmdotnet.StateManagement.Web;
+using Cqrs.Configuration;
 using Cqrs.Repositories.Queries;
 using Ninject.Modules;
 using Ninject.Parameters;
@@ -26,12 +27,16 @@ namespace Cqrs.Ninject.Configuration
 
 		protected bool SetupForSqlLogging { get; private set; }
 
+		protected bool RegisterDefaultConfigurationManager { get; private set; }
+
 		/// <param name="setupForWeb">Set this to true if you will host this in IIS or some other web-server that provides access to System.Web.HttpContext.Current</param>
 		/// <param name="setupForSqlLogging">Set this to true to use <see cref="SqlLogger"/> otherwise the <see cref="ConsoleLogger"/> will be bootstrapped by default.</param>
-		public CqrsModule(bool setupForWeb, bool setupForSqlLogging)
+		/// <param name="registerDefaultConfigurationManager">Set this to true to use <see cref="ConfigurationManager"/>. If you want to use the Azure one leave this as false (the default) and register it yourself.</param>
+		public CqrsModule(bool setupForWeb, bool setupForSqlLogging, bool registerDefaultConfigurationManager = false)
 		{
 			SetupForWeb = setupForWeb;
 			SetupForSqlLogging = setupForSqlLogging;
+			RegisterDefaultConfigurationManager = registerDefaultConfigurationManager;
 		}
 
 		#region Overrides of NinjectModule
@@ -102,9 +107,13 @@ namespace Cqrs.Ninject.Configuration
 					.InSingletonScope();
 			}
 
-			Bind<ITelemetryHelper>()
-				.To<NullTelemetryHelper>()
-				.InSingletonScope();
+			bool isTelemetryHelperBound = Kernel.GetBindings(typeof(ITelemetryHelper)).Any();
+			if (!isTelemetryHelperBound)
+			{
+				Bind<ITelemetryHelper>()
+					.To<NullTelemetryHelper>()
+					.InSingletonScope();
+			}
 		}
 
 		/// <summary>
@@ -202,6 +211,11 @@ namespace Cqrs.Ninject.Configuration
 			Bind<IBusHelper>()
 				.To<BusHelper>()
 				.InSingletonScope();
+
+			if (RegisterDefaultConfigurationManager)
+				Bind<IConfigurationManager>()
+					.To<ConfigurationManager>()
+					.InSingletonScope();
 		}
 
 		protected T Resolve<T>()

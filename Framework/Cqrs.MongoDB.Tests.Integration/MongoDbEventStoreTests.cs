@@ -6,6 +6,7 @@ using cdmdotnet.Logging;
 using cdmdotnet.Logging.Configuration;
 using cdmdotnet.StateManagement.Threaded;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
+using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.MongoDB.Events;
 using Cqrs.MongoDB.Serialisers;
@@ -38,7 +39,7 @@ namespace Cqrs.MongoDB.Tests.Integration
 				var connectionStringFactory = new TestMongoEventStoreConnectionStringFactory();
 				TestMongoEventStoreConnectionStringFactory.DatabaseName = string.Format("Test-{0}", new Random().Next(0, 9999));
 
-				var eventStore = new MongoDbEventStore<Guid>(new MongoDbEventBuilder<Guid>(), new MongoDbEventDeserialiser<Guid>(), logger, connectionStringFactory);
+				var eventStore = new MongoDbEventStore<Guid>(new MongoDbEventBuilder<Guid>(), new MongoDbEventDeserialiser<Guid>(), logger, connectionStringFactory, new ConfigurationManager());
 
 				var event1 = new TestEvent
 				{

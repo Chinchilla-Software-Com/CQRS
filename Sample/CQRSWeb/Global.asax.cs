@@ -6,7 +6,6 @@ using Cqrs.Commands;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using CQRSCode.ReadModel;
-using IDependencyResolver = Cqrs.Configuration.IDependencyResolver;
 
 namespace CQRSWeb
 {	
@@ -38,12 +37,12 @@ namespace CQRSWeb
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
 			RegisterRoutes(RouteTable.Routes);
-			RegisterHandlers((IDependencyResolver)DependencyResolver.Current);
+			RegisterHandlers();
 		}
 
-		private void RegisterHandlers(IDependencyResolver DependencyResolver)
+		private void RegisterHandlers()
 		{
-			var registrar = new BusRegistrar(DependencyResolver);
+			var registrar = new BusRegistrar(Cqrs.Configuration.DependencyResolver.Current);
 			registrar.Register(typeof(InventoryCommandHandlers), typeof(DtoCommandHandler<ISingleSignOnToken, UserDto>));
 		}
 	}

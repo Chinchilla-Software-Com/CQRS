@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Cqrs.Azure.EventHub.EventBus")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("cdmdotnet Limited")]
+[assembly: AssemblyCompany("Chinchilla Software Limited")]
 [assembly: AssemblyProduct("Cqrs.Azure.EventHub.EventBus")]
-[assembly: AssemblyCopyright("Copyright © cdmdotnet Limited 2015")]
+[assembly: AssemblyCopyright("Copyright © Chinchilla Software Limited 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
