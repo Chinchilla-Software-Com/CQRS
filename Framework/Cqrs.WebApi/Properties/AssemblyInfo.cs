@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Cqrs.WebApi")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("cdmdotnet Limited")]
+[assembly: AssemblyCompany("Chinchilla Software Limited")]
 [assembly: AssemblyProduct("Cqrs.WebApi")]
-[assembly: AssemblyCopyright("Copyright © cdmdotnet Limited 2016")]
+[assembly: AssemblyCopyright("Copyright © Chinchilla Software Limited 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

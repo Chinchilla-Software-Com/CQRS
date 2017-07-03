@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -23,23 +23,26 @@ namespace Cqrs.Ninject.Azure.BlobStorage.Configuration
 		public override void Load()
 		{
 			RegisterFactories();
-			RegisterServices();
-			RegisterCqrsRequirements();
+			RegisterEventSerialisationConfiguration();
+			RegisterEventStore();
 		}
 
 		#endregion
 
 		/// <summary>
-		/// Register the all services
-		/// </summary>
-		public virtual void RegisterServices()
-		{
-		}
-
-		/// <summary>
 		/// Register the all factories
 		/// </summary>
 		public virtual void RegisterFactories()
+		{
+			Bind<IBlobStorageStoreConnectionStringFactory>()
+				.To<BlobStorageEventStoreConnectionStringFactory>()
+				.InSingletonScope();
+		}
+
+		/// <summary>
+		/// Register the all event serialisation configurations
+		/// </summary>
+		public virtual void RegisterEventSerialisationConfiguration()
 		{
 			Bind<IEventBuilder<TAuthenticationToken>>()
 				.To<DefaultEventBuilder<TAuthenticationToken>>()
@@ -47,15 +50,12 @@ namespace Cqrs.Ninject.Azure.BlobStorage.Configuration
 			Bind<IEventDeserialiser<TAuthenticationToken>>()
 				.To<EventDeserialiser<TAuthenticationToken>>()
 				.InSingletonScope();
-			Bind<IBlobStorageStoreConnectionStringFactory>()
-				.To<BlobStorageEventStoreConnectionStringFactory>()
-				.InSingletonScope();
 		}
 
 		/// <summary>
-		/// Register the all Cqrs command handlers
+		/// Register the <see cref="IEventStore{TAuthenticationToken}"/>
 		/// </summary>
-		public virtual void RegisterCqrsRequirements()
+		public virtual void RegisterEventStore()
 		{
 		}
 	}

@@ -10,15 +10,10 @@ using Ninject.Syntax;
 namespace Cqrs.Ninject.Configuration
 {
 	/// <summary>
-	/// An implementation of <see cref="IDependencyResolver"/> using Ninject
+	/// Provides an ability to resolve instances of objects using Ninject
 	/// </summary>
-	public class NinjectDependencyResolver : IDependencyResolver
+	public class NinjectDependencyResolver : DependencyResolver
 	{
-		/// <summary>
-		/// The current instance of the <see cref="IDependencyResolver"/>.
-		/// </summary>
-		public static IDependencyResolver Current { get; protected set; }
-
 		/// <summary>
 		/// The inner Ninject <see cref="IKernel"/> used by this instance.
 		/// </summary>
@@ -91,19 +86,21 @@ namespace Cqrs.Ninject.Configuration
 		}
 
 		/// <summary>
-		/// Calls <see cref="IResolutionRoot.Resolve"/>
+		/// Resolves a single instance for the specified <typeparamref name="T"/>.
+		/// by calling <see cref="IResolutionRoot.Resolve"/>
 		/// </summary>
-		public virtual T Resolve<T>()
+		public override T Resolve<T>()
 		{
 			return (T)Resolve(typeof(T));
 		}
 
 		/// <summary>
-		/// Calls <see cref="IResolutionRoot.Resolve"/>
+		/// Resolves a single instance for the specified <paramref name="type"/>.
+		/// by calling <see cref="IResolutionRoot.Resolve"/>
 		/// </summary>
-		public virtual object Resolve(Type serviceType)
+		public override object Resolve(Type type)
 		{
-			return Kernel.Resolve(Kernel.CreateRequest(serviceType, null, new Parameter[0], true, true)).SingleOrDefault();
+			return Kernel.Resolve(Kernel.CreateRequest(type, null, new Parameter[0], true, true)).SingleOrDefault();
 		}
 	}
 }

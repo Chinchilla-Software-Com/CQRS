@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -21,34 +21,18 @@ namespace Cqrs.Ninject.Azure.BlobStorage.Configuration
 		public override void Load()
 		{
 			RegisterFactories();
-			RegisterServices();
-			RegisterCqrsRequirements();
 		}
 
 		#endregion
 
 		/// <summary>
-		/// Register the all services
-		/// </summary>
-		public virtual void RegisterServices()
-		{
-		}
-
-		/// <summary>
-		/// Register the all factories
+		/// Register all the factories
 		/// </summary>
 		public virtual void RegisterFactories()
 		{
 			Bind<IBlobStorageDataStoreConnectionStringFactory>()
 				.To<BlobStorageDataStoreConnectionStringFactory>()
 				.InSingletonScope();
-		}
-
-		/// <summary>
-		/// Register the all Cqrs command handlers
-		/// </summary>
-		public virtual void RegisterCqrsRequirements()
-		{
 		}
 	}
 }

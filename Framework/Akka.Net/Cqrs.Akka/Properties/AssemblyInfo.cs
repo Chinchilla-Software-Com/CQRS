@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Cqrs.Akka")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("cdmdotnet Limited")]
+[assembly: AssemblyCompany("Chinchilla Software Limited")]
 [assembly: AssemblyProduct("Cqrs.Akka")]
-[assembly: AssemblyCopyright("Copyright © cdmdotnet Limited 2015")]
+[assembly: AssemblyCopyright("Copyright © Chinchilla Software Limited 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
