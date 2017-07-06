@@ -169,7 +169,7 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>copy /Y "$(SolutionDir)Code\Cqrs.Azure.Storage.Test.Integration.app.config" "$(ProjectDir)app.config"</PreBuildEvent>
+    <PreBuildEvent>IF EXIST "$(SolutionDir)Code\Cqrs.Azure.Storage.Test.Integration.app.config" copy /Y "$(SolutionDir)Code\Cqrs.Azure.Storage.Test.Integration.app.config" "$(ProjectDir)app.config"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
