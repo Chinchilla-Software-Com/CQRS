@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
-using System.Web.Mvc;
-using System.Web.Optimization;
-using System.Web.Routing;
-
-namespace Chat.Api
+﻿namespace Chat.Api
 {
-	public class WebApiApplication : System.Web.HttpApplication
+	using System.Web.Http;
+	using System.Web.Routing;
+	using Code;
+	using Cqrs.Ninject.Configuration;
+	using Cqrs.WebApi;
+
+	public class WebApiApplication : CqrsHttpApplication<string, EventToHubProxy>
 	{
-		protected void Application_Start()
+		protected override void ConfigureDefaultDependencyResolver()
+		{
+			DependencyResolver = NinjectDependencyResolver.Current;
+		}
+
+		protected override void ConfigureMvc()
 		{
 			AreaRegistration.RegisterAllAreas();
 			GlobalConfiguration.Configure(WebApiConfig.Register);
-			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
-			BundleConfig.RegisterBundles(BundleTable.Bundles);
 		}
 	}
 }
