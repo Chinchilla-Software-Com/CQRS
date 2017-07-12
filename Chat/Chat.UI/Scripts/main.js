@@ -14,8 +14,10 @@ require
 	[
 		'scripts/app',
 		'services/routeResolver',
-		'services/authService'
-],
+		'services/authService',
+		'services/httpInterceptors',
+		'controllers/NavbarController'
+	],
 	function ()
 	{
 		angular.bootstrap(document, ['chatApp']);

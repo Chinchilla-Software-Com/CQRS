@@ -51,13 +51,15 @@ define([], function ()
 				return defer.promise;
 			},
 
-			resolve = function (baseName, path, secure)
+			resolve = function (baseName, path, controllerAs, secure)
 			{
 				if (!path) path = '';
 
 				var routeDef = {};
 				routeDef.templateUrl = routeConfig.getViewsDirectory() + path + baseName + '.html';
 				routeDef.controller = baseName + 'Controller';
+				if (controllerAs)
+					routeDef.controllerAs = controllerAs;
 				routeDef.secure = (secure) ? secure : false;
 				routeDef.resolve = {
 					load: ['$q', '$rootScope', function ($q, $rootScope)
@@ -75,8 +77,8 @@ define([], function ()
 
 	};
 
-	window.chatApp.servicesApp = angular.module('routeResolverServices', []);
+	window.chatApp.services.resolver = angular.module('routeResolverServices', []);
 
 	//Must be a provider since it will be injected into module.config()
-	window.chatApp.servicesApp.provider('routeResolver', routeResolver);
+	window.chatApp.services.resolver.provider('routeResolver', routeResolver);
 });

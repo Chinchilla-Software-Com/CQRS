@@ -55,16 +55,20 @@
       <HintPath>..\packages\cdmdotnet.StateManagement.3.0.9.7\lib\net40\cdmdotnet.StateManagement.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs, Version=2.1.1364.606, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.2.1.1364.606\lib\net40\Cqrs.dll</HintPath>
+    <Reference Include="Cqrs, Version=2.2.1365.607, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.2.2.1365.607\lib\net40\Cqrs.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.Ninject, Version=2.1.1364.606, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.Ninject.2.1.1364.606\lib\net40\Cqrs.Ninject.dll</HintPath>
+    <Reference Include="Cqrs.Ninject, Version=2.2.1365.607, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.2.2.1365.607\lib\net40\Cqrs.Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.WebApi, Version=2.1.1364.606, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.WebApi.2.1.1364.606\lib\net45\Cqrs.WebApi.dll</HintPath>
+    <Reference Include="Cqrs.Ninject.WebApi, Version=2.2.1365.607, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.WebApi.2.2.1365.607\lib\net45\Cqrs.Ninject.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Cqrs.WebApi, Version=2.2.1365.607, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.WebApi.2.2.1365.607\lib\net45\Cqrs.WebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -100,6 +104,14 @@
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.MVC3.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Omu.ValueInjecter, Version=2.3.3.0, Culture=neutral, PublicKeyToken=c7694541b0ac80e4, processorArchitecture=MSIL">
       <HintPath>..\packages\valueinjecter.2.3.3\lib\net35\Omu.ValueInjecter.dll</HintPath>
       <Private>True</Private>
@@ -129,12 +141,15 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0.3\lib\net40\WebActivatorEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Code\EventToHubProxy.cs" />
+    <Compile Include="Code\Startup.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -144,7 +159,7 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="tools\Create-Log-Table.sql" />
+    <None Include="tools\Create-Log-Table.sql" />
     <Content Include="tools\EventStoreTable-SqlServer-Migration.sql" />
     <Content Include="tools\EventStoreTable-SqlServer.sql" />
     <Content Include="Web.config" />
