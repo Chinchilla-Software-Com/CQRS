@@ -37,7 +37,7 @@ $.each(window.api.metadata, function (i, action)
 	window.api[action.ControllerName][action.ActionName] = function (parameters)
 	{{
 		var url = '{1}{2}' + action.Url;
-		var data = [];
+		var data = {{}};
 
 		if (action.Parameters.length == 1 && action.Parameters[0].Name == 'parameters')
 		{{
