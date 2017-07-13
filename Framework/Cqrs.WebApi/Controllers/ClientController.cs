@@ -1,4 +1,12 @@
-﻿using System.Collections.Generic;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -46,6 +54,10 @@ $.each(window.api.metadata, function (i, action)
 		else if (action.Parameters.length == 2 && action.Parameters[0].Name == 'entity' && action.Parameters[1].Name == 'rsn')
 		{{
 			url = url.substring(0, url.length - 5) + parameters['Rsn'];
+			data = parameters;
+		}}
+		else if (window.api.unwrapParameters && action.Parameters.length == 1 && parameters.constructor !== Array)
+		{{
 			data = parameters;
 		}}
 		else
