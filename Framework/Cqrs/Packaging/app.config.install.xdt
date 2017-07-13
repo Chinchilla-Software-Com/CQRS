@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<!-- If configSections tag is absent -->
+	<appSettings xdt:Transform="InsertIfMissing">
+	</appSettings>
+
+	<appSettings>
+		<add key="Cqrs.SqlDataStore.ConnectionStringName" value="DataStore" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+		<add key="Cqrs.SqlEventStore.ConnectionStringName" value="EventStore" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+	</appSettings>
+
+	<connectionStrings xdt:Transform="InsertIfMissing">
+	</connectionStrings>
+
+	<connectionStrings>
+		<add name="DataStore" connectionString="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\MyApp.MDF;Integrated Security=SSPI;MultipleActiveResultSets=True;Connect Timeout=30;Application Name=DataStore;User Instance=True" providerName="System.Data.SqlClient" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+		<add name="EventStore" connectionString="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\MyApp.MDF;Integrated Security=SSPI;MultipleActiveResultSets=True;Connect Timeout=30;Application Name=EventStore;User Instance=True" providerName="System.Data.SqlClient" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+	</connectionStrings>
+</configuration>
