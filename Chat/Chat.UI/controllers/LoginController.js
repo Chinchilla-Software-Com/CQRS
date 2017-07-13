@@ -13,16 +13,29 @@ window.chatApp.controllers.LoginController = function ($location, $routeParams, 
 	{
 		authService
 			.login(vm.email, vm.password)
-			.then
+			.always
 			(
-				function (status)
+				function (jqXHR, statusText, responseType)
 				{
-					//$routeParams.redirect will have the route
-					//they were trying to go to initially
-					if (!status)
+					if (statusText !== "success")
 					{
-						vm.errorMessage = 'Unable to login';
-						return;
+						//$routeParams.redirect will have the route
+						//they were trying to go to initially
+						if (responseType === "Forbidden")
+						{
+							vm.errorMessage = 'Invalid credentials.';
+							return;
+						}
+						if (responseType === "Precondition Failed")
+						{
+							vm.errorMessage = 'Please provide credentials.';
+							return;
+						}
+						if (responseType !== "Accepted")
+						{
+							vm.errorMessage = 'Unable to login';
+							return;
+						}
 					}
 
 					if (status && $routeParams && $routeParams.redirect)
@@ -36,13 +49,10 @@ window.chatApp.controllers.LoginController = function ($location, $routeParams, 
 	};
 };
 
-var injectParams = ['$location', '$routeParams', 'authService'];
-window.chatApp.controllers.LoginController.$inject = injectParams;
-
 define
 (
-	['scripts/app'],
+	['Scripts/app'],
 	function (app) {
-		app.register.controller('LoginController', ['$scope', window.chatApp.controllers.LoginController]);
+		app.register.controller('LoginController', window.chatApp.controllers.LoginController);
 	}
 );

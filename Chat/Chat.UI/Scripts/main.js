@@ -1,6 +1,7 @@
 ﻿window.chatApp = {};
 window.chatApp.controllers = {};
 window.chatApp.services = {};
+window.chatApp.filters = {};
 
 window.chatApp.config = {
 	baseUrl: '/Chat/UI',
@@ -12,10 +13,12 @@ require.config(window.chatApp.config);
 require
 (
 	[
-		'scripts/app',
+		'Scripts/app',
 		'services/routeResolver',
 		'services/authService',
 		'services/httpInterceptors',
+		'filters/ConversationNameFilter',
+		'filters/DateFormattingFilter',
 		'controllers/NavbarController'
 	],
 	function ()

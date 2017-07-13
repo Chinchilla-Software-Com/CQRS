@@ -1,4 +1,12 @@
-﻿using System.Globalization;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System.Globalization;
 
 namespace Cqrs.WebApi.Formatters.FormMultipart.Infrastructure
 {

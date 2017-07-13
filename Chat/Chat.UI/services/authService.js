@@ -1,66 +1,90 @@
 ﻿'use strict';
 
-window.chatApp.services.authService = function (app)
+window.chatApp.services.authService = function ($http, $rootScope)
 {
-	var injectParams = ['$http', '$rootScope'];
+	var ready = false;
 
-	var authFactory = function ($http, $rootScope)
+	var factory = {
+			loginPath: '/login',
+			user: {
+				isAuthenticated: function ()
+				{
+					var authCookie = Cookies.get("X-Token");
+					var result = (authCookie != null && authCookie != "");
+					if (!ready && result)
+					{
+						ready = true;
+						// Start the connection.
+						$.connection.hub.start({ withCredentials: false }).done(function () {
+						});
+					}
+					else if (!result)
+					{
+						ready = false;
+						// Stop the connection.
+						$.connection.hub.stop();
+					}
+					return result;
+				},
+				roles: null
+			}
+		};
+
+	factory.login = function (email, password)
 	{
-		var serviceBase = '/api/dataservice/',
-			factory = {
-				loginPath: '/login',
-				user: {
-					isAuthenticated: false,
-					roles: null
-				}
-			};
-
-		function changeAuth(loggedIn) {
-			factory.user.isAuthenticated = loggedIn;
-			$rootScope.$broadcast('loginStatusChanged', loggedIn);
-		}
-
-		factory.login = function (email, password)
-		{
-			return $http
-				.post(serviceBase + 'login', { userLogin: { userName: email, password: password } })
-				.then
-				(
-					function (results)
-					{
-						var loggedIn = results.data.status;;
-						changeAuth(loggedIn);
-						return loggedIn;
-					}
-				);
-		};
-
-		factory.logout = function ()
-		{
-			return $http
-				.post(serviceBase + 'logout')
-				.then
-				(
-					function (results)
-					{
-						var loggedIn = !results.data.status;
-						changeAuth(loggedIn);
-						return loggedIn;
-					}
-				);
-		};
-
-		factory.redirectToLogin = function ()
-		{
-			$rootScope.$broadcast('redirectToLogin', null);
-		};
-
-		return factory;
+		return window.api.Authentication
+			.Login({ EmailAddress: email, Password: password })
+		.done
+		(
+			function (result, textStatus, jqXHR)
+			{
+				Cookies.set("X-Token", result.ResultData.xToken);
+				return factory.user.isAuthenticated();
+			}
+		)
+		.fail
+		(
+			function (jqXHR, textStatus, errorThrown)
+			{
+				console.error(textStatus, errorThrown);
+			}
+		);
 	};
 
-	authFactory.$inject = injectParams;
+	factory.logout = function ()
+	{
+		return window.api.Authentication
+			.Logout()
+			.done
+			(
+				function (result, textStatus, jqXHR)
+				{
+					Cookies.set("X-Token", "");
+					return factory.user.isAuthenticated();
+				}
+			)
+			.fail
+			(
+				function (jqXHR, textStatus, errorThrown)
+				{
+					console.error(textStatus, errorThrown);
+				}
+			);
+	};
 
-	app.factory('authService', authFactory);
+	factory.redirectToLogin = function ()
+	{
+		$rootScope.$broadcast('redirectToLogin', null);
+	};
+
+	return factory;
 };
 
-define(['scripts/app'], window.chatApp.services.authService);
+define
+(
+	['Scripts/app'],
+	function (app)
+	{
+		app.factory('authService', window.chatApp.services.authService);
+	}
+);
