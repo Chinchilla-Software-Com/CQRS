@@ -32,11 +32,16 @@ window.chatApp.controllers.NavbarController = function ($scope, $location, authS
 		if (isAuthenticated)
 		{
 			//logout 
-			authService.logout().then(function ()
-			{
-				$location.path('/');
-				return;
-			});
+			authService
+				.logout()
+				.always
+				(
+					function (jqXHR, statusText, responseType)
+					{
+						$location.path('/');
+						return;
+					}
+				);
 		}
 		redirectToLogin();
 	};

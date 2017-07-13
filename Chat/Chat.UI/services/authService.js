@@ -59,7 +59,7 @@ window.chatApp.services.authService = function ($http, $rootScope)
 			(
 				function (result, textStatus, jqXHR)
 				{
-					Cookies.set("X-Token", null);
+					Cookies.set("X-Token", "");
 					return factory.user.isAuthenticated();
 				}
 			)

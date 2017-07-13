@@ -76,7 +76,8 @@ namespace Chat.Api.Controllers
 			return response;
 		}
 
-		[HttpPost]
+		[Route("Logout")]
+		[HttpDelete]
 		public HttpResponseMessage Logout()
 		{
 			var responseData = new ServiceResponseWithResultData<dynamic>
