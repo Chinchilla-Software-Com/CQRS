@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Chat</title>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/Chat/UI/Content/bootstrap.css" rel="stylesheet" />
+		<link href="/Chat/UI/Content/animations.css" rel="stylesheet" />
+		<link href="/Chat/UI/Content/styles.css" rel="stylesheet" />
+		<base href="/Chat/UI/" target="_blank" />
+	</head>
+	<body data-ng-cloak>
+
+		<header class="navbar navbar-inner navbar-fixed-top" data-ng-controller="NavbarController as vm">
+			<nav class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-ng-click="vm.isCollapsed = !vm.isCollapsed">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/Chat/UI/">
+						<img src="/Chat/UI/Content/images/people.png" alt="logo">
+						<span class="appTitle">{{ vm.appTitle }}</span>
+					</a>
+				</div>
+				<div class="nav-container" data-collapse="vm.isCollapsed">
+
+					<!-- With menu-highlighter directive -->
+					<ul class="nav navbar-nav nav-pills navBarPadding"
+						data-menu-highlighter data-highlight-class-name="active">
+						<li><a href="chats">Chats</a></li>
+						<li><a href="about">About</a></li>
+						<li id="nav-login" data-ng-click="vm.loginOrOut()">
+							<!-- href not used but needed to compare against path in menu-highlighter -->
+							<a data-href="/login">{{ vm.loginLogoutText }}</a>
+						</li>
+					</ul>
+
+					<!-- Without menu-highlighter directive -->
+					<!--<ul class="nav navbar-nav nav-pills navBarPadding">
+					<li data-ng-class="{'active':highlight('/chats')}"><a href="chats">Chats</a></li>
+					<li data-ng-class="{'active':highlight('/about')}"><a href="about">About</a></li>
+					<li data-ng-class="{'active':highlight('/login')}" id="nav-login"
+						data-ng-click="loginOrOut()">
+						<a>{{ loginLogoutText }}</a>
+					</li>
+				</ul>-->
+				</div>
+			</nav>
+		</header>
+
+		<div class="slide-animation-container">
+			<div data-ng-view id="ng-view" class="slide-animation"></div>
+		</div>
+
+		<div id="footer">
+			<div class="navbar navbar-fixed-bottom">
+				<div class="navbar-inner footer">
+					<div class="container">
+						<footer>
+							<div class="row">
+								<div class="col-md-12">
+									Created by <a href="http://twitter.com/chinchillasoft" target="_blank">Chinchilla Software</a>
+								</div>
+							</div>
+						</footer>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div data-wc-overlay data-wc-overlay-delay="300">
+			<br /><img src="Content/images/spinner.gif" />&nbsp;&nbsp;Loading
+		</div>
+
+		<script src="Scripts/js.cookie.js"></script>
+		<script src="Scripts/jquery-1.6.4.js"></script>
+		<script src="Scripts/jquery.signalR-2.2.2.js"></script>
+		<script src="../Api/signalr/hubs"></script>
+		<script src="../Api/Client"></script>
+		<script src="Scripts/angular.js"></script>
+		<script src="Scripts/angular-route.js"></script>
+		<script src="Scripts/require.js" data-main="Scripts/main"></script>
+
+
+		<script src="directives/wcOverlay.js"></script>
+		<script src="directives/menuHighlighter.js"></script>
+	</body>
+</html>

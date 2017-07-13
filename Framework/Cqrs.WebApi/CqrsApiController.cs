@@ -134,4 +134,52 @@ namespace Cqrs.WebApi
 			return serviceResponse;
 		}
 	}
+
+	/// <summary>
+	/// A <see cref="ApiController"/> that expects the <see cref="ISingleSignOnToken.Token"/> to be sent as a <see cref="HttpHeaders"/> with a key of "X-Token", in accordance with OAuth specifications
+	/// </summary>
+	/// <remarks>
+	/// See https://www.asp.net/web-api/overview/getting-started-with-aspnet-web-api/creating-api-help-pages for details on adding WebApi Help Pages.
+	/// </remarks>
+	public abstract class CqrsApiController<TAuthenticationToken>
+		: CqrsApiController
+	{
+		protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
+			: base(logger, correlationIdHelper)
+		{
+			AuthenticationTokenHelper = authenticationTokenHelper;
+		}
+
+		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
+
+		protected override string GetToken()
+		{
+			TAuthenticationToken token = AuthenticationTokenHelper.GetAuthenticationToken();
+			if (token != null)
+				return token.ToString();
+			return null;
+		}
+
+		protected virtual IServiceRequest<TAuthenticationToken> CreateRequest()
+		{
+			TAuthenticationToken token = AuthenticationTokenHelper.GetAuthenticationToken();
+			return new ServiceRequest<TAuthenticationToken>
+			{
+				AuthenticationToken = token,
+				CorrelationId = CorrelationIdHelper.GetCorrelationId()
+			};
+		}
+
+		protected virtual IServiceRequestWithData<TAuthenticationToken, TParameters> CreateRequestWithData<TParameters>(Func<TParameters> createParameterDelegate = null)
+			where TParameters : new()
+		{
+			TAuthenticationToken token = AuthenticationTokenHelper.GetAuthenticationToken();
+			return new ServiceRequestWithData<TAuthenticationToken, TParameters>
+			{
+				AuthenticationToken = token,
+				CorrelationId = CorrelationIdHelper.GetCorrelationId(),
+				Data = createParameterDelegate == null ? CreateParameter<TParameters>() : createParameterDelegate()
+			};
+		}
+	}
 }
