@@ -28,9 +28,9 @@ window.chatApp.controllers.ChatController = function ($scope)
 
 define
 (
-	['scripts/app'],
+	['Scripts/app'],
 	function (app)
 	{
-		app.register.controller('ChatController', ['$scope', window.chatApp.controllers.ChatController]);
+		app.register.controller('ChatController', window.chatApp.controllers.ChatController);
 	}
 );

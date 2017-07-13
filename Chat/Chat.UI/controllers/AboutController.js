@@ -6,8 +6,8 @@ window.chatApp.controllers.AboutController = function ()
 
 define
 (
-	['scripts/app'],
+	['Scripts/app'],
 	function (app) {
-		app.register.controller('AboutController', ['$scope', window.chatApp.controllers.AboutController]);
+		app.register.controller('AboutController', window.chatApp.controllers.AboutController);
 	}
 );

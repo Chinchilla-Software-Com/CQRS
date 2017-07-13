@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Net.Http.Formatting;
 
 namespace Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger

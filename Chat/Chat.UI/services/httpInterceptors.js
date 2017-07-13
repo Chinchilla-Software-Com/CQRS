@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-define(['scripts/app'], function (app)
+define(['Scripts/app'], function (app)
 {
 	app.config(['$httpProvider', function ($httpProvider)
 	{

@@ -3,7 +3,7 @@
 window.chatApp.controllers.NavbarController = function ($scope, $location, authService)
 {
 	var vm = this,
-		appTitle = 'Customer Management';
+		appTitle = 'My Chat App';
 
 	vm.isCollapsed = false;
 	vm.appTitle = appTitle;
@@ -15,7 +15,7 @@ window.chatApp.controllers.NavbarController = function ($scope, $location, authS
 
 	function setLoginLogoutText()
 	{
-		vm.loginLogoutText = (authService.user.isAuthenticated) ? 'Logout' : 'Login';
+		vm.loginLogoutText = (authService.user.isAuthenticated()) ? 'Logout' : 'Login';
 	}
 
 	function redirectToLogin()
@@ -28,7 +28,7 @@ window.chatApp.controllers.NavbarController = function ($scope, $location, authS
 	vm.loginOrOut = function ()
 	{
 		setLoginLogoutText();
-		var isAuthenticated = authService.user.isAuthenticated;
+		var isAuthenticated = authService.user.isAuthenticated();
 		if (isAuthenticated)
 		{
 			//logout 
@@ -56,16 +56,9 @@ window.chatApp.controllers.NavbarController = function ($scope, $location, authS
 
 define
 (
-	['scripts/app'],
+	['Scripts/app'],
 	function (app)
 	{
-		var injectParams = ['$scope', '$location', 'authService'];
-
-		window.chatApp.controllers.NavbarController.$inject = injectParams;
-
-		//Loaded normally since the script is loaded upfront 
-		//Dynamically loaded controller use app.register.controller
 		app.controller('NavbarController', window.chatApp.controllers.NavbarController);
-
 	}
 );

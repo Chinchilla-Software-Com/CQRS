@@ -2,6 +2,8 @@
 
 define(['services/routeResolver'], function ()
 {
+	window.api.unwrapParameters = true;
+
 	// Declare a proxy to reference the hub.
 	window.cqrsNotificationHub = $.connection.notificationHub;
 
@@ -18,10 +20,6 @@ define(['services/routeResolver'], function ()
 
 	$.connection.hub.qs = { "X-Token": Cookies.get("X-Token") };
 	$.connection.logging = false;
-
-	// Start the connection.
-	$.connection.hub.start({ withCredentials: false }).done(function () {
-	});
 
 	window.cqrsNotificationHub.GlobalEventHandlers = {};
 
@@ -89,7 +87,7 @@ define(['services/routeResolver'], function ()
 				{
 					if (next && next.$$route && next.$$route.secure)
 					{
-						if (!authService.user.isAuthenticated)
+						if (!authService.user.isAuthenticated())
 						{
 							$rootScope.$evalAsync(function () {
 								authService.redirectToLogin();

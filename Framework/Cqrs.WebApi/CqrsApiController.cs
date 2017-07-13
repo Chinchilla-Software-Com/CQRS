@@ -16,6 +16,8 @@ using System.Web.Http;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Services;
+using System.Net.Http.Formatting;
+using System.Web.Http.Results;
 
 namespace Cqrs.WebApi
 {
@@ -103,35 +105,72 @@ namespace Cqrs.WebApi
 			return default(DateTime);
 		}
 
-		protected virtual TServiceResponse CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
+		protected virtual StatusCodeResult CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
 			where TServiceResponse : IServiceResponse
 		{
 			serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 			switch (serviceResponse.State)
 			{
 				case ServiceResponseStateType.Succeeded:
-					StatusCode(HttpStatusCode.OK);
+					return StatusCode(HttpStatusCode.OK);
+				case ServiceResponseStateType.FailedAuthentication:
+					return StatusCode(HttpStatusCode.Forbidden);
+				case ServiceResponseStateType.FailedAuthorisation:
+					return StatusCode(HttpStatusCode.Unauthorized);
+				case ServiceResponseStateType.FailedValidation:
+					return StatusCode(HttpStatusCode.PreconditionFailed);
+				case ServiceResponseStateType.FailedWithAFatalException:
+					return StatusCode(HttpStatusCode.InternalServerError);
+				case ServiceResponseStateType.FailedWithAnUnexpectedException:
+					return StatusCode(HttpStatusCode.InternalServerError);
+				case ServiceResponseStateType.Unknown:
+					return StatusCode(HttpStatusCode.BadRequest);
+			}
+			return StatusCode(HttpStatusCode.OK);
+		}
+
+		protected virtual HttpResponseMessage CompleteResponse<TServiceResponse, TData>(TServiceResponse serviceResponse)
+			where TServiceResponse : IServiceResponseWithResultData<TData>
+		{
+			serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+
+			var response = new HttpResponseMessage();
+
+			HttpConfiguration configuration = Request.GetConfiguration();
+			var contentNegotiator = configuration.Services.GetContentNegotiator();
+			ContentNegotiationResult negotiationResult = contentNegotiator.Negotiate(typeof(IServiceResponseWithResultData<TData>), Request, configuration.Formatters);
+
+			response.Content = new ObjectContent<IServiceResponseWithResultData<TData>>(serviceResponse, negotiationResult.Formatter, negotiationResult.MediaType);
+
+			switch (serviceResponse.State)
+			{
+				case ServiceResponseStateType.Succeeded:
+					response.StatusCode = HttpStatusCode.Accepted;
 					break;
 				case ServiceResponseStateType.FailedAuthentication:
-					StatusCode(HttpStatusCode.Forbidden);
+					response.StatusCode = HttpStatusCode.Forbidden;
 					break;
 				case ServiceResponseStateType.FailedAuthorisation:
-					StatusCode(HttpStatusCode.Unauthorized);
+					response.StatusCode = HttpStatusCode.Unauthorized;
 					break;
 				case ServiceResponseStateType.FailedValidation:
-					StatusCode(HttpStatusCode.PreconditionFailed);
+					response.StatusCode = HttpStatusCode.PreconditionFailed;
 					break;
 				case ServiceResponseStateType.FailedWithAFatalException:
-					StatusCode(HttpStatusCode.InternalServerError);
+					response.StatusCode = HttpStatusCode.InternalServerError;
 					break;
 				case ServiceResponseStateType.FailedWithAnUnexpectedException:
-					StatusCode(HttpStatusCode.InternalServerError);
+					response.StatusCode = HttpStatusCode.InternalServerError;
 					break;
 				case ServiceResponseStateType.Unknown:
-					StatusCode(HttpStatusCode.BadRequest);
+					response.StatusCode = HttpStatusCode.BadRequest;
+					break;
+				default:
+					response.StatusCode = HttpStatusCode.Ambiguous;
 					break;
 			}
-			return serviceResponse;
+
+			return response;
 		}
 	}
 
