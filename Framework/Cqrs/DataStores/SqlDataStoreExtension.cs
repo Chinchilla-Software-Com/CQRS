@@ -56,7 +56,7 @@ namespace Cqrs.DataStores
 			Type rowType = table.GetType().GetGenericArguments()[0];
 			string tableName = table.Context.Mapping.GetTable(rowType).TableName;
 			const string sqlCommand = "TRUNCATE TABLE {0}";
-			table.Context.ExecuteCommand(sqlCommand, tableName);
+			table.Context.ExecuteCommand(string.Format(sqlCommand, tableName));
 		}
 	}
 }
