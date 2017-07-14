@@ -33,7 +33,23 @@ namespace Cqrs.WebApi.Controllers
 
 			var responseBody = string.Format(@"window.api = window.api || {{
 	metadata: {0},
-	useJson: true
+	useJson: true,
+	// This is because JQuery notes Global events are never fired for cross-domain script or JSONP requests, regardless of the value of global at https://api.jquery.com/category/ajax/global-ajax-event-handlers/
+	globalHandlers: {{
+		'before' : function(jqXHR, settings) {{}},
+		'complete' : function(jqXHR, textStatus) {{}},
+		'error' : function(jqXHR, textStatus, errorThrown) {{}},
+		'success' : function(data, textStatus, jqXHR) {{}},
+		'setHeaders' : function() {{ return {{}} }}
+		'202' : function(data, textStatus, jqXHR) {{}},
+		'300' : function(jqXHR, textStatus, errorThrown) {{}},
+		'400' : function(jqXHR, textStatus, errorThrown) {{}},
+		'401' : function(jqXHR, textStatus, errorThrown) {{}},
+		'403' : function(jqXHR, textStatus, errorThrown) {{}},
+		'404' : function(jqXHR, textStatus, errorThrown) {{}},
+		'412' : function(jqXHR, textStatus, errorThrown) {{}},
+		'500' : function(jqXHR, textStatus, errorThrown) {{}},
+	}}
 }};
 
 $.each(window.api.metadata, function (i, action)
@@ -102,12 +118,42 @@ $.each(window.api.metadata, function (i, action)
 				type: action.Method,
 				url: url,
 				data: data == null ? data : JSON.stringify(data),
-				contentType: 'application/json'
+				contentType: 'application/json',
+				headers: window.api.globalHandlers['setHeaders'](),
+				beforeSend: window.api.globalHandlers['before'],
+				complete: window.api.globalHandlers['complete'],
+				error: window.api.globalHandlers['error'],
+				success: window.api.globalHandlers['success'],
+				statusCode: {{
+					202: window.api.globalHandlers['202'],
+					300: window.api.globalHandlers['300'],
+					400: window.api.globalHandlers['400'],
+					401: window.api.globalHandlers['401'],
+					403: window.api.globalHandlers['403'],
+					404: window.api.globalHandlers['404'],
+					412: window.api.globalHandlers['412'],
+					500: window.api.globalHandlers['500']
+				}}
 			}});
 		return $.ajax({{
 			type: action.Method,
 			url: url,
-			data: data
+			data: data,
+			headers: window.api.globalHandlers['setHeaders'](),
+			beforeSend: window.api.globalHandlers['before'],
+			complete: window.api.globalHandlers['complete'],
+			error: window.api.globalHandlers['error'],
+			success: window.api.globalHandlers['success'],
+			statusCode: {{
+				202: window.api.globalHandlers['202'],
+				300: window.api.globalHandlers['300'],
+				400: window.api.globalHandlers['400'],
+				401: window.api.globalHandlers['401'],
+				403: window.api.globalHandlers['403'],
+				404: window.api.globalHandlers['404'],
+				412: window.api.globalHandlers['412'],
+				500: window.api.globalHandlers['500']
+			}}
 		}});
 	}};
 }});",
