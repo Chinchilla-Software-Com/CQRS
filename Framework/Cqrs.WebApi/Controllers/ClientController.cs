@@ -46,31 +46,23 @@ $.each(window.api.metadata, function (i, action)
 	{{
 		var url = '{1}{2}' + action.Url;
 		var data = {{}};
+		var bodyParameters = 0;
+		var complexParameters = 0;
 
 		if (action.Parameters.length == 1 && action.Parameters[0].Name == 'parameters')
 		{{
+			bodyParameters = 1;
 			data = parameters;
 		}}
 		else if (action.Parameters.length == 2 && action.Parameters[0].Name == 'entity' && action.Parameters[1].Name == 'rsn')
 		{{
+			bodyParameters = 1;
 			url = url.substring(0, url.length - 5) + parameters['Rsn'];
 			data = parameters;
 		}}
-		else if (window.api.unwrapParameters && action.Parameters.length == 1 && parameters.constructor !== Array)
-		{{
-			var parameter = action.Parameters[0];
-			if (parameter.IsUriParameter)
-			{{
-				url = url.replace('{{' + parameter.Name + '}}', typeof(parameters) === 'object' ? parameters[parameter.Name] : parameters);
-				data = null;
-			}}
-			else
-			{{
-				data = parameters;
-			}}
-		}}
 		else
 		{{
+			var lastBodyParameter = null;
 			$.each(action.Parameters, function (j, parameter)
 			{{
 				if (parameters[parameter.Name] === undefined)
@@ -83,6 +75,13 @@ $.each(window.api.metadata, function (i, action)
 				}}
 				else if (data[parameter.Name] === undefined)
 				{{
+					if (parameter.IsBodyParameter)
+					{{
+						bodyParameters++;
+						lastBodyParameter = parameter.Name;
+					}}
+					else
+						complexParameters++;
 					data[parameter.Name] = parameters[parameter.Name];
 				}}
 				else
@@ -92,11 +91,17 @@ $.each(window.api.metadata, function (i, action)
 			}});
 		}}
 
+		if (bodyParameters == 1 && complexParameters == 0)
+			data = data[lastBodyParameter];
+
+		if (bodyParameters == 0 && complexParameters == 0)
+			data = null;
+
 		if (window.api.useJson)
 			return $.ajax({{
 				type: action.Method,
 				url: url,
-				data: JSON.stringify(data),
+				data: data == null ? data : JSON.stringify(data),
 				contentType: 'application/json'
 			}});
 		return $.ajax({{
@@ -137,11 +142,13 @@ $.each(window.api.metadata, function (i, action)
 		{
 			public string Name { get; set; }
 			public bool IsUriParameter { get; set; }
+			public bool IsBodyParameter { get; set; }
 
 			public ApiParameterModel(ApiParameterDescription apiParameterDescription)
 			{
 				Name = apiParameterDescription.Name;
 				IsUriParameter = apiParameterDescription.Source == ApiParameterSource.FromUri;
+				IsBodyParameter = apiParameterDescription.Source == ApiParameterSource.FromBody;
 			}
 		}
 	}
