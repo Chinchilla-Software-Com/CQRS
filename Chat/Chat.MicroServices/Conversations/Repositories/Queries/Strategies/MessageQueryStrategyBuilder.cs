@@ -51,7 +51,7 @@
 			{
 				if (sortingMethod.Method.Name == GetFunctionName<int>(queryStrategy.OrderByDatePosted))
 				{
-					ApplyOrderByDatePosted(ref orderQueryable, index++);
+					orderQueryable = ApplyOrderByDatePosted(orderQueryable, index++);
 				}
 			}
 			queryable = orderQueryable;
@@ -87,12 +87,11 @@
 			return resultingQueryable;
 		}
 
-		protected virtual void ApplyOrderByDatePosted(ref IOrderedQueryable<MessageEntity> queryable, int index)
+		protected virtual IOrderedQueryable<MessageEntity> ApplyOrderByDatePosted(IOrderedQueryable<MessageEntity> queryable, int index)
 		{
 			if (index == 0)
-				queryable = queryable.OrderBy(message => message.DatePosted);
-			else
-				queryable = queryable.ThenBy(message => message.DatePosted);
+				return queryable.OrderBy(message => message.DatePosted);
+			return queryable.ThenBy(message => message.DatePosted);
 		}
 
 		protected override IQueryable<MessageEntity> GetEmptyQueryPredicate()
