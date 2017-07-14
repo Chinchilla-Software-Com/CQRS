@@ -108,9 +108,17 @@
 					conversationSummaryRepository.DeleteAll();
 				}
 				catch { /**/ }
-				conversationSummaryRepository.Create(new ConversationSummaryEntity { Rsn = Guid.NewGuid(), Name = "Project Nemesis", MessageCount = nList.Count, LastUpdatedDate = nList.OrderByDescending(x => x.DatePosted).First().DatePosted });
-				conversationSummaryRepository.Create(new ConversationSummaryEntity { Rsn = Guid.NewGuid(), Name = "Sales", MessageCount = sList.Count, LastUpdatedDate = sList.OrderByDescending(x => x.DatePosted).First().DatePosted });
-				conversationSummaryRepository.Create(new ConversationSummaryEntity { Rsn = Guid.NewGuid(), Name = "Marketing", MessageCount = mList.Count, LastUpdatedDate = mList.OrderByDescending(x => x.DatePosted).First().DatePosted });
+
+				n.MessageCount = nList.Count;
+				n.LastUpdatedDate = nList.OrderByDescending(x => x.DatePosted).First().DatePosted;
+				s.MessageCount = sList.Count;
+				s.LastUpdatedDate = sList.OrderByDescending(x => x.DatePosted).First().DatePosted;
+				m.MessageCount = mList.Count;
+				m.LastUpdatedDate = mList.OrderByDescending(x => x.DatePosted).First().DatePosted;
+
+				conversationSummaryRepository.Create(n);
+				conversationSummaryRepository.Create(s);
+				conversationSummaryRepository.Create(m);
 			}
 		}
 

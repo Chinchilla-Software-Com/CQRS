@@ -1,8 +1,9 @@
 ﻿'use strict';
 
-window.chatApp.controllers.ChatController = function ($scope)
+window.chatApp.controllers.ChatController = function ($routeParams, $timeout)
 {
-	var vm = this;
+	var vm = this,
+		chatRsn = $routeParams.chatRsn;
 
 	vm.messages = [];
 	vm.cardAnimationClass = '.card-animation';
@@ -11,7 +12,7 @@ window.chatApp.controllers.ChatController = function ($scope)
 	function getMessages()
 	{
 		window.api.Conversations
-			.GetMessages({ "conversationRsn" : "ffdae0a1-f333-4063-b352-d9c000459d83" })
+			.GetMessages({ "conversationRsn": chatRsn })
 			.done
 			(
 				function (result, textStatus, jqXHR)

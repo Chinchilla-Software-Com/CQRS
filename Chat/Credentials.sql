@@ -1,6 +1,3 @@
-USE [Chat]
-GO
-
 SET ANSI_NULLS ON
 GO
 

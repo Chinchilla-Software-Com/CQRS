@@ -96,49 +96,5 @@ namespace Chat.Api.Controllers
 
 			return response;
 		}
-
-		protected virtual HttpResponseMessage CompleteResponse<TServiceResponse, TData>(TServiceResponse serviceResponse)
-			where TServiceResponse : IServiceResponseWithResultData<TData>
-		{
-			serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-
-			var response = new HttpResponseMessage();
-
-			HttpConfiguration configuration = Request.GetConfiguration();
-			var contentNegotiator = configuration.Services.GetContentNegotiator();
-			ContentNegotiationResult negotiationResult = contentNegotiator.Negotiate(typeof(IServiceResponseWithResultData<TData>), Request, configuration.Formatters);
-
-			response.Content = new ObjectContent<IServiceResponseWithResultData<TData>>(serviceResponse, negotiationResult.Formatter, negotiationResult.MediaType);
-
-			switch (serviceResponse.State)
-			{
-				case ServiceResponseStateType.Succeeded:
-					response.StatusCode = HttpStatusCode.Accepted;
-					break;
-				case ServiceResponseStateType.FailedAuthentication:
-					response.StatusCode = HttpStatusCode.Forbidden;
-					break;
-				case ServiceResponseStateType.FailedAuthorisation:
-					response.StatusCode = HttpStatusCode.Unauthorized;
-					break;
-				case ServiceResponseStateType.FailedValidation:
-					response.StatusCode = HttpStatusCode.PreconditionFailed;
-					break;
-				case ServiceResponseStateType.FailedWithAFatalException:
-					response.StatusCode = HttpStatusCode.InternalServerError;
-					break;
-				case ServiceResponseStateType.FailedWithAnUnexpectedException:
-					response.StatusCode = HttpStatusCode.InternalServerError;
-					break;
-				case ServiceResponseStateType.Unknown:
-					response.StatusCode = HttpStatusCode.BadRequest;
-					break;
-				default:
-					response.StatusCode = HttpStatusCode.Ambiguous;
-					break;
-			}
-
-			return response;
-		}
 	}
 }
