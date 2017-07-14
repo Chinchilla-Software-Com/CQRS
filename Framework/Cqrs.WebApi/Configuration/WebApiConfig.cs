@@ -30,7 +30,7 @@ namespace Cqrs.WebApi.Configuration
 			{
 				ContractResolver = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ContractResolver,
 				StringEscapeHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.StringEscapeHandling,
-				PreserveReferencesHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.PreserveReferencesHandling,
+				PreserveReferencesHandling = PreserveReferencesHandling.None,
 				MissingMemberHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.MissingMemberHandling,
 				Binder = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Binder,
 				CheckAdditionalContent = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.CheckAdditionalContent,

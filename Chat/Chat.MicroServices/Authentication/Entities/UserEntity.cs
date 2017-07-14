@@ -5,6 +5,9 @@
 	using System.Runtime.Serialization;
 	using Cqrs.Entities;
 
+	/// <summary>
+	/// A User
+	/// </summary>
 	[Serializable]
 	[DataContract]
 	[Table(Name = "Users")]

@@ -1,4 +1,6 @@
-﻿namespace Chat.MicroServices.Factories
+﻿using Chat.MicroServices.Conversations.Entities;
+
+namespace Chat.MicroServices.Factories
 {
 	using Authentication.Entities;
 	using cdmdotnet.Logging;
@@ -37,6 +39,24 @@
 		public IDataStore<UserEntity> GetUserDataStore()
 		{
 			IDataStore<UserEntity> result = new SqlDataStore<UserEntity>(ConfigurationManager, Logger);
+			return result;
+		}
+
+		/// <summary>
+		/// Get a <see cref="IDataStore{TData}"/> to access <see cref="ConversationSummaryEntity"/>
+		/// </summary>
+		public IDataStore<ConversationSummaryEntity> GetConversationSummaryDataStore()
+		{
+			IDataStore<ConversationSummaryEntity> result = new SqlDataStore<ConversationSummaryEntity>(ConfigurationManager, Logger);
+			return result;
+		}
+
+		/// <summary>
+		/// Get a <see cref="IDataStore{TData}"/> to access <see cref="MessageEntity"/>
+		/// </summary>
+		public IDataStore<MessageEntity> GetMessageDataStore()
+		{
+			IDataStore<MessageEntity> result = new SqlDataStore<MessageEntity>(ConfigurationManager, Logger);
 			return result;
 		}
 

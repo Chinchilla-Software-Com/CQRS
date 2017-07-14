@@ -1,4 +1,4 @@
-﻿namespace Chat.MicroServices.Authentication.Entities
+﻿namespace Chat.MicroServices.Conversations.Entities
 {
 	using System;
 	using System.Data.Linq.Mapping;
@@ -6,12 +6,12 @@
 	using Cqrs.Entities;
 
 	/// <summary>
-	/// User Credentials
+	/// A conversation message
 	/// </summary>
 	[Serializable]
 	[DataContract]
-	[Table(Name = "Credentials")]
-	public class CredentialEntity : Entity
+	[Table(Name = "Messages")]
+	public class MessageEntity : Entity
 	{
 		[DataMember]
 		[Column(IsPrimaryKey = true)]
@@ -27,10 +27,26 @@
 
 		[DataMember]
 		[Column]
+		public Guid ConversationRsn { get; set; }
+
+		[DataMember]
+		[Column]
+		public string ConversationName { get; set; }
+
+		[DataMember]
+		[Column]
 		public Guid UserRsn { get; set; }
 
 		[DataMember]
 		[Column]
-		public string Hash { get; set; }
+		public string UserName { get; set; }
+
+		[DataMember]
+		[Column]
+		public string Content { get; set; }
+
+		[DataMember]
+		[Column]
+		public DateTime DatePosted { get; set; }
 	}
 }
