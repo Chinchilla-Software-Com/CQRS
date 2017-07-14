@@ -47,7 +47,7 @@ namespace Cqrs.WebApi.Controllers
 			if (window.api.useXToken && typeof(Cookies) === 'function')
 				return {{ window.api.cookieTokenName : Cookies.get(window.api.cookieTokenName) }}
 			return {{}}
-		}}
+		}},
 		'202' : function(data, textStatus, jqXHR) {{}},
 		'300' : function(jqXHR, textStatus, errorThrown) {{}},
 		'400' : function(jqXHR, textStatus, errorThrown) {{}},
