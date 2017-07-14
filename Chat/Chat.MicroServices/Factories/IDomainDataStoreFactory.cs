@@ -1,4 +1,6 @@
 ﻿
+using Chat.MicroServices.Conversations.Entities;
+
 namespace Chat.MicroServices.Factories
 {
 	using Authentication.Entities;
@@ -18,5 +20,15 @@ namespace Chat.MicroServices.Factories
 		/// Get a <see cref="IDataStore{TData}"/> to access <see cref="UserEntity"/>
 		/// </summary>
 		IDataStore<UserEntity> GetUserDataStore();
+
+		/// <summary>
+		/// Get a <see cref="IDataStore{TData}"/> to access <see cref="ConversationSummaryEntity"/>
+		/// </summary>
+		IDataStore<ConversationSummaryEntity> GetConversationSummaryDataStore();
+
+		/// <summary>
+		/// Get a <see cref="IDataStore{TData}"/> to access <see cref="MessageEntity"/>
+		/// </summary>
+		IDataStore<MessageEntity> GetMessageDataStore();
 	}
 }

@@ -2,28 +2,48 @@
 
 window.chatApp.controllers.ChatController = function ($scope)
 {
-	// scope variables
-	$scope.name = 'Guest'; // holds the user's name
-	$scope.message = ''; // holds the new message
-	$scope.messages = []; // collection of messages coming from server
-	$scope.notificationHub = window.cqrsNotificationHub;
+	var vm = this;
 
-	window.cqrsNotificationHub.GlobalEventHandlers[""] = function (event)
+	vm.messages = [];
+	vm.cardAnimationClass = '.card-animation';
+	vm.ConversationName = "";
+
+	function getMessages()
 	{
-		var newMessage = event.data.name + ' says: ' + event.data.message;
+		window.api.Conversations
+			.GetMessages({ "conversationRsn" : "ffdae0a1-f333-4063-b352-d9c000459d83" })
+			.done
+			(
+				function (result, textStatus, jqXHR)
+				{
+					var data = result.ResultData;
+					vm.totalRecords = data.length;
+					vm.messages = data;
 
-		// push the newly coming message to the collection of messages
-		$scope.messages.push(newMessage);
-		$scope.$apply();
-	};
+					vm.ConversationName = data[0].ConversationName;
 
-	$scope.newMessage = function ()
+					$timeout(function ()
+					{
+						//Turn off animation since it won't keep up with filtering
+						vm.cardAnimationClass = '';
+					}, 1000);
+				}
+			)
+			.fail
+			(
+				function (jqXHR, textStatus, errorThrown)
+				{
+					console.error(textStatus, errorThrown);
+				}
+			);
+	}
+
+	function init()
 	{
-		// sends a new message to the server
-		$scope.notificationHub.server.sendMessage($scope.name, $scope.message);
+		getMessages();
+	}
 
-		$scope.message = '';
-	};
+	init();
 };
 
 define

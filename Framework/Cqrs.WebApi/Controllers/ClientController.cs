@@ -58,7 +58,16 @@ $.each(window.api.metadata, function (i, action)
 		}}
 		else if (window.api.unwrapParameters && action.Parameters.length == 1 && parameters.constructor !== Array)
 		{{
-			data = parameters;
+			var parameter = action.Parameters[0];
+			if (parameter.IsUriParameter)
+			{{
+				url = url.replace('{{' + parameter.Name + '}}', typeof(parameters) === 'object' ? parameters[parameter.Name] : parameters);
+				data = null;
+			}}
+			else
+			{{
+				data = parameters;
+			}}
 		}}
 		else
 		{{

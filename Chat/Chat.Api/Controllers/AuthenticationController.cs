@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Web.Http.ModelBinding;
 
 namespace Chat.Api.Controllers
 {
@@ -18,7 +17,6 @@ namespace Chat.Api.Controllers
 	using System.Net.Http.Formatting;
 	using System.Net.Http.Headers;
 	using System.Web.Http;
-	using System.Web.ModelBinding;
 
 	[RoutePrefix("Authentication")]
 	public class AuthenticationController : CqrsApiController<Guid>

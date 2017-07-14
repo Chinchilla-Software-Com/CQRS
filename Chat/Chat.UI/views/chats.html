@@ -43,16 +43,16 @@
 					 data-ng-repeat="conversation in vm.filteredConversations | orderBy:'Name'">
 					<div class="card">
 						<button class="btn close cardClose" title="Delete Customer" data-ng-click="vm.deleteCustomer(conversation.Rsn)">&times;</button>
-						<div class="cardHeader"><a href="/Chat/UI/Chat/{{conversation.Rsn}}" class="white">{{conversation.Name }} <i class="icon-edit icon-white editIcon"></i></a></div>
+						<div class="cardHeader"><a href="/Chat/UI/chat/{{conversation.Rsn}}" class="white">{{conversation.Name }} <i class="icon-edit icon-white editIcon"></i></a></div>
 						<div class="cardBody">
 							<div class="clearfix">
 								<div class="pull-left cardBodyLeft">
-									<a href="/Chat/UI/Chat/{{conversation.Rsn}}" class="white"><img data-ng-src="Content/images/{{(customer.gender || 'male') | lowercase}}.png" class="cardImage" /></a>
+									<a href="/Chat/UI/chat/{{conversation.Rsn}}" class="white"><img data-ng-src="Content/images/{{(customer.gender || 'male') | lowercase}}.png" class="cardImage" /></a>
 								</div>
 								<div class="pull-left cardBodyRight">
-									<div class="cardBodyContent">{{conversation.LastUpdated | date }}</div>
+									<div class="cardBodyContent">{{conversation.LastUpdatedDate | date }}</div>
 									<div>
-										<a href="/Chat/UI/Chat/{{conversation.Rsn}}" class="btn-link">
+										<a href="/Chat/UI/chat/{{conversation.Rsn}}" class="btn-link">
 											{{ conversation.MessageCount }}
 											<span data-ng-pluralize count="conversation.MessageCount"
 												  when="{'1': 'Message','other': 'Messages'}">
@@ -73,18 +73,18 @@
 								<tr>
 									<th>&nbsp;</th>
 									<th data-ng-click="vm.setOrder('Name')">Name</th>
-									<th data-ng-click="vm.setOrder('LastUpdated')">Date</th>
+									<th data-ng-click="vm.setOrder('LastUpdatedDate')">Date</th>
 									<th data-ng-click="vm.setOrder('MessageCount')">Messages</th>
 									<th>&nbsp;</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr data-ng-repeat="conversation in vm.filteredConversations | orderBy:vm.orderby:vm.reverse" class="repeat-animation">
-									<td><a href="/Chat/UI/Chat/{{conversation.Rsn}}"><img data-ng-src="Content/images/{{(conversation.gender || 'male') | lowercase}}.png" class="cardImage" alt="Customer Image" /></a></td>
-									<td><a href="/Chat/UI/Chat/{{conversation.Rsn}}">{{conversation.Name }}</a></td>
-									<td>{{conversation.LastUpdated | date}}</td>
+									<td><a href="/Chat/UI/chat/{{conversation.Rsn}}"><img data-ng-src="Content/images/{{(conversation.gender || 'male') | lowercase}}.png" class="cardImage" alt="Customer Image" /></a></td>
+									<td><a href="/Chat/UI/chat/{{conversation.Rsn}}">{{conversation.Name }}</a></td>
+									<td>{{conversation.LastUpdatedDate | date}}</td>
 									<td>
-										<a href="/Chat/UI/Chat/{{conversation.Rsn}}" class="btn-link">
+										<a href="/Chat/UI/chat/{{conversation.Rsn}}" class="btn-link">
 											{{ conversation.MessageCount }}
 											<span data-ng-pluralize count="conversation.MessageCount"
 												  when="{'1': 'Message','other': 'Messages'}">

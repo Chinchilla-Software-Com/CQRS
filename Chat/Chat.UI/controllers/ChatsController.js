@@ -56,8 +56,8 @@ window.chatApp.controllers.ChatsController = function ($filter, $timeout)
 				function (result, textStatus, jqXHR)
 				{
 					var data = result.ResultData;
-					vm.totalRecords = data.Results.length;
-					vm.conversations = data.Results;
+					vm.totalRecords = data.length;
+					vm.conversations = data;
 					filterConversations('');
 
 					$timeout(function ()

@@ -66,8 +66,8 @@ define(['services/routeResolver'], function ()
 				//The controllers for orders live in controllers/orders and the views are in views/orders
 				//The second parameter allows for putting related controllers/views into subfolders to better organize large projects
 				//Thanks to Ton Yeung for the idea and contribution
-				.when('/chats', route.resolve('Chats', null, 'vm', true))
 				.when('/chat/:chatRsn', route.resolve('Chat', null, 'vm', true))
+				.when('/chats', route.resolve('Chats', null, 'vm', true))
 				.when('/about', route.resolve('About', null, 'vm'))
 				.when('/login/:redirect*?', route.resolve('Login', null, 'vm'))
 				.otherwise({ redirectTo: '/chats' });
