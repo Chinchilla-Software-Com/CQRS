@@ -2,6 +2,8 @@
 
 define(['services/routeResolver'], function ()
 {
+	window.api.useXToken = true;
+
 	// Declare a proxy to reference the hub.
 	window.cqrsNotificationHub = $.connection.notificationHub;
 

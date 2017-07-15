@@ -33,12 +33,12 @@ window.chatApp.services.authService = function ($http, $rootScope)
 	factory.login = function (email, password)
 	{
 		return window.api.Authentication
-			.Login({ EmailAddress: email, Password: password })
+			.Login( { "userLogin" : { "EmailAddress" : email, "Password" : password } } )
 		.done
 		(
 			function (result, textStatus, jqXHR)
 			{
-				Cookies.set("X-Token", result.ResultData.xToken);
+				Cookies.set("X-Token", result.ResultData);
 				return factory.user.isAuthenticated();
 			}
 		)
