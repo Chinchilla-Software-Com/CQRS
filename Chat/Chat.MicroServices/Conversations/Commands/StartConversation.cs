@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using Cqrs.Commands;
-
-namespace Chat.MicroServices.Conversations.Commands
+﻿namespace Chat.MicroServices.Conversations.Commands
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Runtime.Serialization;
+	using Cqrs.Commands;
+
+	/// <summary>
+	/// A <see cref="ICommand{TAuthenticationToken}"/> that instructs the system to start a new <see cref="Conversation"/>.
+	/// </summary>
 	[Serializable]
 	[DataContract]
-	public class PostCommentCommand : ICommand<Guid>
+	public class StartConversation : ICommand<Guid>
 	{
 		#region Implementation of IMessage
 
@@ -44,5 +47,11 @@ namespace Chat.MicroServices.Conversations.Commands
 		public int ExpectedVersion { get; set; }
 
 		#endregion
+
+		/// <summary>
+		/// The name of the conversation.
+		/// </summary>
+		[DataMember]
+		public string Name { get; set; }
 	}
 }

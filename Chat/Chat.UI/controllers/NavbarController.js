@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-window.chatApp.controllers.NavbarController = function ($scope, $location, authService)
+window.chatApp.controllers.NavbarController = function ($scope, $location, $rootScope, authService)
 {
 	var vm = this,
 		appTitle = 'My Chat App';
@@ -12,6 +12,9 @@ window.chatApp.controllers.NavbarController = function ($scope, $location, authS
 	{
 		return $location.path().substr(0, path.length) === path;
 	};
+
+	window.api.globalHandlers = window.api.globalHandlers || [];
+	window.api.globalHandlers.error = authService.processApiResponse;
 
 	function setLoginLogoutText()
 	{

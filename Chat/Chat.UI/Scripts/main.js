@@ -19,6 +19,7 @@ require
 		'services/httpInterceptors',
 		'filters/ConversationNameFilter',
 		'filters/DateFormattingFilter',
+		'filters/ConversationContentFormatter',
 		'controllers/NavbarController'
 	],
 	function ()

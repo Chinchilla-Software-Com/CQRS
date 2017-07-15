@@ -3,23 +3,27 @@
 
 namespace Chat.Api.Code
 {
-	using Ninject.Web.WebApi;
+	using Cqrs.Configuration;
+	using Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration;
+	using Cqrs.Ninject.Configuration;
 	using MicroServices.Configuration;
+	using System;
 	using System.Web.Http;
 
 	public class ChatConfiguration
 	{
 		public static void ConfigureNinject()
 		{
-			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new QueriesModule());
-			//			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new InProcessCommandBusModule<string>());
-			//			Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule<string>());
+			NinjectDependencyResolver.ModulesToLoad.Add(new QueriesModule());
+			NinjectDependencyResolver.ModulesToLoad.Add(new AzureCommandBusPublisherModule<Guid>());
+			//			NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule<string>());
+			NinjectDependencyResolver.ModulesToLoad.Add(new ApiModule());
 		}
 
 		public static void ConfigureMvc()
 		{
 			// Tell ASP.NET WebAPI to use our Ninject DI Container 
-			GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver(((Cqrs.Ninject.Configuration.NinjectDependencyResolver)Cqrs.Ninject.Configuration.NinjectDependencyResolver.Current).Kernel);
+			GlobalConfiguration.Configuration.DependencyResolver = new Ninject.Web.WebApi.NinjectDependencyResolver(((NinjectDependencyResolver)DependencyResolver.Current).Kernel);
 		}
 	}
 }

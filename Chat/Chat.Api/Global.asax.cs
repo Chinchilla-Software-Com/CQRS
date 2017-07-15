@@ -15,7 +15,6 @@
 	using MicroServices.Authentication.Repositories;
 	using MicroServices.Conversations.Entities;
 	using MicroServices.Conversations.Repositories;
-	using Newtonsoft.Json;
 
 	public class WebApiApplication : CqrsHttpApplication<string, EventToHubProxy>
 	{
@@ -125,16 +124,20 @@
 		protected override void ConfigureMvc()
 		{
 			GlobalConfiguration.Configure(WebApiConfig.Register);
-			GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.TypeNameHandling = TypeNameHandling.None;
-			GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
 		}
 
 		protected override void Application_BeginRequest(object sender, EventArgs e)
 		{
 			base.Application_BeginRequest(sender, e);
-			HttpCookie authCookie = Request.Cookies["X-Token"];
+			string xToken = Request.Headers["X-Token"];
+			if (string.IsNullOrWhiteSpace(xToken))
+			{
+				HttpCookie authCookie = Request.Cookies["X-Token"];
+				if (authCookie != null)
+					xToken = authCookie.Value;
+			}
 			Guid token;
-			if (authCookie != null && Guid.TryParse(authCookie.Value, out token))
+			if (Guid.TryParse(xToken, out token))
 			{
 				// Pass the authentication token to the helper to allow automated authentication handling
 				DependencyResolver.Resolve<IAuthenticationTokenHelper<Guid>>().SetAuthenticationToken(token);

@@ -77,6 +77,12 @@ window.chatApp.services.authService = function ($http, $rootScope)
 		$rootScope.$broadcast('redirectToLogin', null);
 	};
 
+	factory.processApiResponse = function (jqXHR, textStatus, errorThrown)
+	{
+		if (jqXHR.status === 401 || jqXHR.status === 403)
+			factory.redirectToLogin();
+	};
+
 	return factory;
 };
 

@@ -9,7 +9,7 @@ public class CqrsWebJobProgram : CqrsNinjectJobHost<SingleSignOnToken, DefaultAu
 {
 	public CqrsWebJobProgram()
 	{
-		HandlerTypes = new[] { typeof(PostCommentCommand) };
+		HandlerTypes = new[] { typeof(PostComment) };
 	}
 
 	/// <remarks>

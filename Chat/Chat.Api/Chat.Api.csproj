@@ -2,6 +2,7 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>
@@ -55,28 +56,28 @@
       <HintPath>..\packages\cdmdotnet.StateManagement.3.0.9.7\lib\net40\cdmdotnet.StateManagement.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs, Version=2.2.1370.612, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.2.2.1370.612\lib\net40\Cqrs.dll</HintPath>
+    <Reference Include="Cqrs, Version=2.2.1373.615, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.2.2.1373.615\lib\net40\Cqrs.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.Azure.ServiceBus, Version=2.2.1370.612, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.Azure.ServiceBus.2.2.1370.612\lib\net40\Cqrs.Azure.ServiceBus.dll</HintPath>
+    <Reference Include="Cqrs.Azure.ServiceBus, Version=2.2.1373.615, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Azure.ServiceBus.2.2.1373.615\lib\net40\Cqrs.Azure.ServiceBus.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.Ninject, Version=2.2.1370.612, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.Ninject.2.2.1370.612\lib\net40\Cqrs.Ninject.dll</HintPath>
+    <Reference Include="Cqrs.Ninject, Version=2.2.1373.615, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.2.2.1373.615\lib\net40\Cqrs.Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.Ninject.Azure.ServiceBus.CommandBus, Version=2.2.1370.612, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.Ninject.Azure.ServiceBus.CommandBus.2.2.1370.612\lib\net40\Cqrs.Ninject.Azure.ServiceBus.CommandBus.dll</HintPath>
+    <Reference Include="Cqrs.Ninject.Azure.ServiceBus.CommandBus, Version=2.2.1373.615, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.Azure.ServiceBus.CommandBus.2.2.1373.615\lib\net40\Cqrs.Ninject.Azure.ServiceBus.CommandBus.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.Ninject.WebApi, Version=2.2.1370.612, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.Ninject.WebApi.2.2.1370.612\lib\net45\Cqrs.Ninject.WebApi.dll</HintPath>
+    <Reference Include="Cqrs.Ninject.WebApi, Version=2.2.1373.615, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.Ninject.WebApi.2.2.1373.615\lib\net45\Cqrs.Ninject.WebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cqrs.WebApi, Version=2.2.1370.612, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cqrs.WebApi.2.2.1370.612\lib\net45\Cqrs.WebApi.dll</HintPath>
+    <Reference Include="Cqrs.WebApi, Version=2.2.1373.615, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cqrs.WebApi.2.2.1373.615\lib\net45\Cqrs.WebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -203,6 +204,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Code\ApiModule.cs" />
     <Compile Include="Code\ChatConfiguration.cs" />
     <Compile Include="Code\EventToHubProxy.cs" />
     <Compile Include="Code\Startup.cs" />
@@ -211,6 +213,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AuthenticationHelper.cs" />
+    <Compile Include="Helpers\IAuthenticationHelper.cs" />
     <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -262,6 +266,8 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
+  <Import Project="$(SolutionDir)\LiveReloadOnSuccessfulBuild.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
