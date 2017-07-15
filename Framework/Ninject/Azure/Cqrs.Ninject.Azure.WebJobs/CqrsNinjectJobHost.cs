@@ -22,7 +22,7 @@ namespace Cqrs.Ninject.Azure.WebJobs
 	/// <summary>
 	/// Execute command and event handlers in an Azure WebJob using Ninject
 	/// </summary>
-	public class CqrsNinjectJobHost<TAuthenticationToken, TAuthenticationTokenHelper> : CqrsJobHost
+	public class CqrsNinjectJobHost<TAuthenticationToken, TAuthenticationTokenHelper> : CqrsJobHost<TAuthenticationToken>
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 	{
 		#region Overrides of CoreHost
