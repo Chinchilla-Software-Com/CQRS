@@ -45,7 +45,11 @@ namespace Cqrs.WebApi.Controllers
 		'setHeaders' : function()
 		{{
 			if (window.api.useXToken && typeof(Cookies) === 'function')
-				return {{ window.api.cookieTokenName : Cookies.get(window.api.cookieTokenName) }}
+			{{
+				var headers = {{}};
+				headers[window.api.cookieTokenName] = Cookies.get(window.api.cookieTokenName);
+				return headers;
+			}}
 			return {{}}
 		}},
 		'202' : function(data, textStatus, jqXHR) {{}},
