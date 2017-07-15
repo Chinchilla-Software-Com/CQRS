@@ -7,9 +7,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using cdmdotnet.Logging;
-using Cqrs.Authentication;
 using Cqrs.Events;
 using Cqrs.Messages;
 using Microsoft.ApplicationInsights;
@@ -26,7 +24,7 @@ namespace Cqrs.Azure.WebJobs
 	/// <summary>
 	/// Configure and start command and event handlers in an Azure WebJob
 	/// </summary>
-	public abstract class CoreHost
+	public abstract class CoreHost<TAuthenticationToken>
 	{
 		protected CoreHost()
 		{
@@ -69,9 +67,9 @@ namespace Cqrs.Azure.WebJobs
 		/// </summary>
 		protected Type[] HandlerTypes { get; set; }
 
-		protected IEventReceiver<SingleSignOnToken> EventBus { get; private set; }
+		protected IEventReceiver<TAuthenticationToken> EventBus { get; private set; }
 
-		protected ICommandReceiver<SingleSignOnToken> CommandBus { get; private set; }
+		protected ICommandReceiver<TAuthenticationToken> CommandBus { get; private set; }
 
 		public TelemetryClient TelemetryClient { get; private set; }
 
@@ -102,8 +100,8 @@ namespace Cqrs.Azure.WebJobs
 			ServicePointManager.DefaultConnectionLimit = 1000;
 
 			new StartUp(ConfigureDefaultDependencyResolver).Initialise();
-			EventBus = DependencyResolver.Current.Resolve<IEventReceiver<SingleSignOnToken>>();
-			CommandBus = DependencyResolver.Current.Resolve<ICommandReceiver<SingleSignOnToken>>();
+			EventBus = DependencyResolver.Current.Resolve<IEventReceiver<TAuthenticationToken>>();
+			CommandBus = DependencyResolver.Current.Resolve<ICommandReceiver<TAuthenticationToken>>();
 			Guid correlationId = Guid.NewGuid();
 			CorrelationIdHelper = DependencyResolver.Current.Resolve<ICorrelationIdHelper>();
 			CorrelationIdHelper.SetCorrelationId(correlationId);

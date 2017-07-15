@@ -15,9 +15,9 @@ namespace Cqrs.Azure.WebJobs
 	/// <summary>
 	/// Execute command and event handlers in an Azure WebJob
 	/// </summary>
-	public abstract class CqrsJobHost : CoreHost
+	public abstract class CqrsJobHost<TAuthenticationToken> : CoreHost<TAuthenticationToken>
 	{
-		protected static CqrsJobHost CoreHost { get; set; }
+		protected static CqrsJobHost<TAuthenticationToken> CoreHost { get; set; }
 
 		protected static Action PreRunAndBlockAction { get; set; }
 
