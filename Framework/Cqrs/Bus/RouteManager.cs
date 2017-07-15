@@ -36,7 +36,7 @@ namespace Cqrs.Bus
 		public RouteManager()
 		{
 			Routes = new Dictionary<Type, Route>();
-			GlobalEventRoute = new Route();
+			GlobalEventRoute = new Route { Handlers = new List<RouteHandlerDelegate>() };
 		}
 
 		static RouteManager()
@@ -185,7 +185,7 @@ namespace Cqrs.Bus
 				throw new NoHandlerRegisteredException(messageType);
 			}
 
-			return Enumerable.Empty<RouteHandlerDelegate>();
+			return routeHandlers;
 		}
 
 		protected virtual bool IsACommand<TMessage>(TMessage message)
