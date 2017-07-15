@@ -138,8 +138,8 @@ namespace Cqrs.Azure.WebJobs
 		protected virtual void ManuallyRegisterEventHandler<TMessage>(Action<TMessage> eventHandler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			var eventBus = DependencyResolver.Current.Resolve<IEventHandlerRegistrar>();
-			eventBus.RegisterHandler(eventHandler, holdMessageLock);
+			var eventHandlerRegistrar = DependencyResolver.Current.Resolve<IEventHandlerRegistrar>();
+			eventHandlerRegistrar.RegisterHandler(eventHandler, holdMessageLock);
 		}
 
 		/// <summary>
@@ -150,8 +150,8 @@ namespace Cqrs.Azure.WebJobs
 		protected virtual void ManuallyRegisterCommandHandler<TMessage>(Action<TMessage> commandHandler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			var eventBus = DependencyResolver.Current.Resolve<IEventHandlerRegistrar>();
-			eventBus.RegisterHandler(commandHandler, holdMessageLock);
+			var eventHandlerRegistrar = DependencyResolver.Current.Resolve<IEventHandlerRegistrar>();
+			eventHandlerRegistrar.RegisterHandler(commandHandler, holdMessageLock);
 		}
 
 		protected virtual void StartBusRegistrar()

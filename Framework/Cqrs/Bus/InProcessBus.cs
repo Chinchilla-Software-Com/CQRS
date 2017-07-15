@@ -650,6 +650,19 @@ namespace Cqrs.Bus
 			RegisterHandler(handler, null, holdMessageLock);
 		}
 
+		/// <summary>
+		/// Register an event handler that will listen and respond to all events.
+		/// </summary>
+		public void RegisterGlobalEventHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true) where TMessage : IMessage
+		{
+			Action<TMessage> registerableHandler = BusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(TelemetryHelper, handler, holdMessageLock, "In-Process/Bus");
+
+			Routes.RegisterHandler(registerableHandler, null);
+
+			TelemetryHelper.TrackEvent(string.Format("Cqrs/RegisterGlobalEventHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "In-Process/Bus" } });
+			TelemetryHelper.Flush();
+		}
+
 		#endregion
 
 		#region Implementation of ICommandReceiver

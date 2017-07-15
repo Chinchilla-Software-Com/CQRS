@@ -444,5 +444,19 @@ namespace Cqrs.Azure.ServiceBus
 			telemetryHelper.TrackEvent(string.Format("Cqrs/RegisterHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "Azure/Bus" } });
 			telemetryHelper.Flush();
 		}
+
+		/// <summary>
+		/// Register an event handler that will listen and respond to all events.
+		/// </summary>
+		public void RegisterGlobalEventHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler,
+			bool holdMessageLock = true) where TMessage : IMessage
+		{
+			Action<TMessage> registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
+
+			routeManger.RegisterGlobalEventHandler(registerableHandler);
+
+			telemetryHelper.TrackEvent(string.Format("Cqrs/RegisterHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "Azure/Bus" } });
+			telemetryHelper.Flush();
+		}
 	}
 }

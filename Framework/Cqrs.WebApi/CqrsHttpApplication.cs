@@ -12,7 +12,9 @@ using System.Security;
 using System.Web.Http;
 using System.Web.Routing;
 using cdmdotnet.Logging;
+using Cqrs.Bus;
 using Cqrs.Configuration;
+using Cqrs.Events;
 using Cqrs.WebApi.Configuration;
 using Cqrs.WebApi.Events.Handlers;
 
@@ -141,6 +143,22 @@ namespace Cqrs.WebApi
 
 		protected virtual void Session_End(object sender, EventArgs e)
 		{
+		}
+	}
+
+	public abstract class CqrsHttpApplication<TAuthenticationToken>
+		: CqrsHttpApplication<TAuthenticationToken, GlobalEventToHubProxy<TAuthenticationToken>>
+	{
+		/// <summary>
+		/// Register SignalR to the path /signalr
+		/// </summary>
+		protected override void RegisterSignalR(BusRegistrar registrar)
+		{
+			base.RegisterSignalR(registrar);
+
+			var eventHandlerRegistrar = DependencyResolver.Resolve<IEventHandlerRegistrar>();
+			var proxy = DependencyResolver.Resolve<GlobalEventToHubProxy<TAuthenticationToken>>();
+			eventHandlerRegistrar.RegisterGlobalEventHandler<IEvent<TAuthenticationToken>>(proxy.Handle, false);
 		}
 	}
 }
