@@ -4,11 +4,13 @@ using Cqrs.Ninject.Azure.WebJobs;
 /// <summary>
 /// Starts the Webjob
 /// </summary>
-public class CqrsWebJobProgram : CqrsNinjectJobHost<SingleSignOnToken, DefaultAuthenticationTokenHelper>
+public partial class CqrsWebJobProgram : CqrsNinjectJobHost<SingleSignOnToken, DefaultAuthenticationTokenHelper>
 {
 	public CqrsWebJobProgram()
 	{
-		HandlerTypes = new[] { typeof(/* Add a command or event handler here */) };
+		System.Type commandOrEventType = null;
+		GetCommandOrEventType(ref commandOrEventType);
+		HandlerTypes = new[] { commandOrEventType };
 	}
 
 	/// <remarks>
@@ -21,4 +23,9 @@ public class CqrsWebJobProgram : CqrsNinjectJobHost<SingleSignOnToken, DefaultAu
 		CoreHost = new CqrsWebJobProgram();
 		StartHost();
 	}
+
+	/// <summary>
+	/// Use a partial class to set add a command or event handler here on <paramref name="commandOrEventType"/>
+	/// </summary>
+	partial void GetCommandOrEventType(ref System.Type commandOrEventType);
 }
