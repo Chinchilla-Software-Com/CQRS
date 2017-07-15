@@ -1,6 +1,4 @@
-﻿using Cqrs.Repositories.Queries;
-
-namespace Chat.MicroServices.Configuration
+﻿namespace Chat.MicroServices.Configuration
 {
 	using Authentication.Configuration;
 	using Authentication.Helpers;

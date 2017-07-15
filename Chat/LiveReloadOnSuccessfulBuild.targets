@@ -1,0 +1,24 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<!-- trick from https://blogs.msdn.microsoft.com/msbuild/2005/10/06/how-to-add-a-custom-build-action-to-visual-studio/ -->
+		<AvailableItemName Include="UpdateOnSuccessfulBuild" />
+	</ItemGroup>
+
+	<Target Name="LiveReloadOnSuccessfulBuild" AfterTargets="Build">
+		<!--
+			If you're using LiveReload, you want your pages to reload 
+			after your web app compiles. This adds a build action, 
+			"UpdateOnSuccessfulBuild", which you can use to mark a 
+			dummy file. The build action writes a random guid to 
+			the file within your web app folder; this can be watched 
+			for in your Gruntfile.js, gulpfile.js, or by the 
+			LiveReload app.
+		-->
+		<Message Importance="High" Text="Writing LiveReload token to LiveReloadOnSuccessfulBuild.token" />
+		<WriteLinesToFile
+			File="LiveReloadOnSuccessfulBuild.token"
+			Lines="Live Reload Token: this changes on a successful build, to trigger LiveReloads. Exclude the token file from source control! $([System.Guid]::NewGuid().ToString())"
+			Overwrite="true"
+			Encoding="Unicode"/>
+	</Target>
+</Project>

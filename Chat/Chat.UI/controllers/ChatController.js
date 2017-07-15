@@ -8,6 +8,32 @@ window.chatApp.controllers.ChatController = function ($routeParams, $timeout)
 	vm.messages = [];
 	vm.cardAnimationClass = '.card-animation';
 	vm.ConversationName = "";
+	vm.replyContent = "Well done.";
+
+	vm.formatContent = function (content)
+	{
+		return content.replace(/\r\n/g, '<br />\r\n');
+	}
+
+	vm.postReply = function ()
+	{
+		window.api.Conversations
+			.PostComment({ "conversationRsn": chatRsn, "comment": vm.replyContent })
+			.done
+			(
+				function (result, textStatus, jqXHR)
+				{
+					vm.replyContent = "";
+				}
+			)
+			.fail
+			(
+				function (jqXHR, textStatus, errorThrown)
+				{
+					console.error(textStatus, errorThrown);
+				}
+			);
+	}
 
 	function getMessages()
 	{

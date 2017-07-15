@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace Chat.Api.Controllers
+﻿namespace Chat.Api.Controllers
 {
 	using cdmdotnet.Logging;
 	using Cqrs.Authentication;
@@ -14,7 +12,6 @@ namespace Chat.Api.Controllers
 	using Models;
 	using System;
 	using System.Net.Http;
-	using System.Net.Http.Formatting;
 	using System.Net.Http.Headers;
 	using System.Web.Http;
 

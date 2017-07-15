@@ -5,9 +5,10 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using HelloWorld.Models;
+using HelloWorldExample.Models;
+using Microsoft.Owin.Security.Facebook;
 
-namespace HelloWorld
+namespace HelloWorldExample
 {
 	public partial class Startup
 	{
@@ -54,11 +55,15 @@ namespace HelloWorld
 			//   consumerKey: "",
 			//   consumerSecret: "");
 
-			//app.UseFacebookAuthentication(
-			//   appId: "",
-			//   appSecret: "");
+			app.UseFacebookAuthentication(
+				new FacebookAuthenticationOptions
+				{
+					AppId = "1348969788448930",
+					AppSecret = "56b8436e0e500e273848d21cbccf1190"
+				}
+			);
 
-			app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+			app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions
 			{
 				ClientId = "115597113815-8tjef54p5tmm1e37c6t4h2ke9k1ibn7g.apps.googleusercontent.com",
 				ClientSecret = "5nBRDEFLkJyEfvjFoEueu-oL"

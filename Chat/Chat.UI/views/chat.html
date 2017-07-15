@@ -13,10 +13,18 @@
 									<td>{{ message.DatePosted | date }}</td>
 									<td>
 										<span class="messageUserName">{{ message.UserName }}</span>
-										{{ message.Content }}
+										<span class="messageContent" ng-bind-html="message.Content | ConversationContentFormatter"></span>
 									</td>
 								</tr>
 							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="2">
+										<input type="email" placeholder="Type your reply here." style="width: 90%" ng-model="vm.replyContent" required />
+										&nbsp;&nbsp;<span class="glyphicon glyphicon-send" ng-click="vm.postReply()" style="cursor: pointer;"></span>
+									</td>
+								</tr>
+							</tfoot>
 						</table>
 					</div>
 				</div>
@@ -25,7 +33,7 @@
 		<div class="container">
 			<div class="row show-hide-animation" data-ng-show="vm.messages.length == 0">
 				<div class="col-span-12">
-					<h4>No messages found</h4>
+					<h4>No messages found.</h4>
 				</div>
 			</div>
 		</div>

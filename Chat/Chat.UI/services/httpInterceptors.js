@@ -2,19 +2,13 @@
 
 define(['Scripts/app'], function (app)
 {
-	app.config(['$httpProvider', function ($httpProvider)
+	app.config(function ($httpProvider)
 	{
-		var injectParams = ['$q', '$rootScope'];
 		var httpInterceptor401 = function ($q, $rootScope)
 		{
-			var success = function (response)
-			{
-				return response;
-			};
-
 			var error = function (res)
 			{
-				if (res.status === 401)
+				if (res.status === 401 || res.status === 403)
 				{
 					//Raise event so listener (navbarController) can act on it
 					$rootScope.$broadcast('redirectToLogin', null);
@@ -43,7 +37,6 @@ define(['Scripts/app'], function (app)
 			};
 		};
 
-		httpInterceptor401.$inject = injectParams;
 		$httpProvider.interceptors.push(httpInterceptor401);
-	}]);
+	});
 });

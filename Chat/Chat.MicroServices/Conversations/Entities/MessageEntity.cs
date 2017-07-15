@@ -6,7 +6,7 @@
 	using Cqrs.Entities;
 
 	/// <summary>
-	/// A conversation message
+	/// A conversation message/comment
 	/// </summary>
 	[Serializable]
 	[DataContract]
