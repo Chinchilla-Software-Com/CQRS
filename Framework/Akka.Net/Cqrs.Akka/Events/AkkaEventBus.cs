@@ -162,6 +162,14 @@ namespace Cqrs.Akka.Events
 			RegisterHandler(handler, null);
 		}
 
+		/// <summary>
+		/// Register an event handler that will listen and respond to all events.
+		/// </summary>
+		public void RegisterGlobalEventHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true) where TMessage : IMessage
+		{
+			Routes.RegisterGlobalEventHandler(handler, holdMessageLock);
+		}
+
 		#endregion
 	}
 }

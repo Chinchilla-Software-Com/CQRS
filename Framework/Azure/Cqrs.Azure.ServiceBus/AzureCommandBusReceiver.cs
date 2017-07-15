@@ -48,7 +48,7 @@ namespace Cqrs.Azure.ServiceBus
 		protected string FilterKey { get; set; }
 
 		// ReSharper disable StaticMemberInGenericType
-		protected static RouteManager Routes { get; private set; }
+		public static RouteManager Routes { get; private set; }
 
 		protected static long CurrentHandles { get; set; }
 		// ReSharper restore StaticMemberInGenericType

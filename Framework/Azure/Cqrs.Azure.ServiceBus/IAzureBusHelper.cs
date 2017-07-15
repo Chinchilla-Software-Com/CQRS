@@ -53,5 +53,11 @@ namespace Cqrs.Azure.ServiceBus
 
 		void RegisterHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage;
+
+		/// <summary>
+		/// Register an event handler that will listen and respond to all events.
+		/// </summary>
+		void RegisterGlobalEventHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, bool holdMessageLock = true)
+			where TMessage : IMessage;
 	}
 }

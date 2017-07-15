@@ -2,6 +2,7 @@
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Cqrs.Ninject.Configuration;
+using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Ninject;
 using Ninject.Web.Common;
 
@@ -10,8 +11,6 @@ using Ninject.Web.Common;
 
 namespace Cqrs.Ninject.WebApi.Configuration
 {
-	using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
 	public static class SimplifiedNinjectWebApi
 	{
 		private static readonly Bootstrapper Bootstrapper = new Bootstrapper();

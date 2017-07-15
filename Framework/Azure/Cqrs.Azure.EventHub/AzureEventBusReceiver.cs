@@ -75,6 +75,14 @@ namespace Cqrs.Azure.ServiceBus
 			RegisterHandler(handler, null, holdMessageLock);
 		}
 
+		/// <summary>
+		/// Register an event handler that will listen and respond to all events.
+		/// </summary>
+		public void RegisterGlobalEventHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true) where TMessage : IMessage
+		{
+			Routes.RegisterGlobalEventHandler(handler, holdMessageLock);
+		}
+
 		protected virtual void ReceiveEvent(PartitionContext context, EventData eventData)
 		{
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;

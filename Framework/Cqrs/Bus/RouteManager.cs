@@ -19,7 +19,15 @@ namespace Cqrs.Bus
 	public class RouteManager
 		: IHandlerRegistrar
 	{
+		/// <summary>
+		/// The <see cref="Route"/> to execute per <see cref="Type"/>
+		/// </summary>
 		protected IDictionary<Type, Route> Routes { get; private set; }
+
+		/// <summary>
+		/// A <see cref="Route"/> to execute for all <see cref="IEvent{TAuthenticationToken}"/>
+		/// </summary>
+		public Route GlobalEventRoute { get; private set; }
 
 		private static Type CommandType { get; set; }
 
@@ -28,6 +36,7 @@ namespace Cqrs.Bus
 		public RouteManager()
 		{
 			Routes = new Dictionary<Type, Route>();
+			GlobalEventRoute = new Route { Handlers = new List<RouteHandlerDelegate>() };
 		}
 
 		static RouteManager()
@@ -70,6 +79,21 @@ namespace Cqrs.Bus
 			where TMessage : IMessage
 		{
 			RegisterHandler(handler, null, holdMessageLock);
+		}
+
+		/// <summary>
+		/// Register an event handler that will listen and respond to all events.
+		/// </summary>
+		public void RegisterGlobalEventHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true) where TMessage : IMessage
+		{
+			GlobalEventRoute.Handlers.Add
+			(
+				new RouteHandlerDelegate
+				{
+					Delegate = DelegateAdjuster.CastArgument<IMessage, TMessage>(x => handler(x)),
+					TargetedType = null
+				}
+			);
 		}
 
 		#endregion
@@ -137,16 +161,23 @@ namespace Cqrs.Bus
 		public IEnumerable<RouteHandlerDelegate> GetHandlers<TMessage>(TMessage message, bool throwExceptionOnNoRouteHandlers = true)
 			where TMessage : IMessage
 		{
-			Route route;
 			Type messageType = message.GetType();
+			bool isACommand = IsACommand(messageType);
+			bool isAnEvent = IsAnEvent(messageType);
+
+			var routeHandlers = new List<RouteHandlerDelegate>();
+			if (isAnEvent && GlobalEventRoute.Handlers != null)
+				routeHandlers.AddRange(GlobalEventRoute.Handlers);
+
+			Route route;
 			if (Routes.TryGetValue(messageType, out route))
-				return route.Handlers;
+			{
+				routeHandlers.AddRange(route.Handlers);
+				return routeHandlers;
+			}
 
 			if (throwExceptionOnNoRouteHandlers)
 			{
-				bool isACommand = IsACommand(messageType);
-				bool isAnEvent = IsAnEvent(messageType);
-
 				if (isACommand)
 					throw new NoCommandHandlerRegisteredException(messageType);
 				if (isAnEvent)
@@ -154,7 +185,7 @@ namespace Cqrs.Bus
 				throw new NoHandlerRegisteredException(messageType);
 			}
 
-			return Enumerable.Empty<RouteHandlerDelegate>();
+			return routeHandlers;
 		}
 
 		protected virtual bool IsACommand<TMessage>(TMessage message)

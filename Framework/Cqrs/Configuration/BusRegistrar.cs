@@ -102,6 +102,11 @@ namespace Cqrs.Configuration
 			if (interfaceGenericArguments.Count == 2)
 			{
 				Type commandType = interfaceGenericArguments[1];
+				Type[] genericArguments = commandType.GetGenericArguments();
+				if (genericArguments.Length == 1)
+					if (typeof (IEvent<>).MakeGenericType(genericArguments.First()) == commandType)
+						return;
+
 				registerExecutorMethod = BuildExecutorMethod(originalRegisterExecutorMethod, executorType, commandType);
 			}
 			else

@@ -211,6 +211,14 @@ namespace Cqrs.Azure.ServiceBus
 			RegisterHandler(handler, null, holdMessageLock);
 		}
 
+		/// <summary>
+		/// Register an event handler that will listen and respond to all events.
+		/// </summary>
+		public void RegisterGlobalEventHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true) where TMessage : IMessage
+		{
+			AzureBusHelper.RegisterGlobalEventHandler(TelemetryHelper, Routes, handler, holdMessageLock);
+		}
+
 		protected virtual void ReceiveEvent(BrokeredMessage message)
 		{
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
