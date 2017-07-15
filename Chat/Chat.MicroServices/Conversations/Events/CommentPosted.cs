@@ -10,6 +10,7 @@
 	/// </summary>
 	[Serializable]
 	[DataContract]
+	[NotifyEveryoneEventAttribute]
 	public class CommentPosted : IEvent<Guid>
 	{
 		#region Implementation of IEvent

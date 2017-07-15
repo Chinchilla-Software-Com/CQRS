@@ -8,14 +8,8 @@ define(['services/routeResolver'], function ()
 	window.cqrsNotificationHub = $.connection.notificationHub;
 
 	// Create a function that the hub can call to notify you when it is setup.
-	cqrsNotificationHub.client.registered = function () {
+	window.cqrsNotificationHub.client.registered = function () {
 		console.info("Now registered to receive notifications.");
-	};
-
-	// Create a function that the hub can call to broadcast messages.
-	cqrsNotificationHub.client.notifyEvent = function (event)
-	{
-		console.info(event);
 	};
 
 	$.connection.hub.qs = { "X-Token": Cookies.get("X-Token") };
