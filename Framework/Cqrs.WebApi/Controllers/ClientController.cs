@@ -34,7 +34,7 @@ namespace Cqrs.WebApi.Controllers
 			var responseBody = string.Format(@"window.api = window.api || {{
 	metadata: {0},
 	useJson: true,
-	useCookieToken: true,
+	useXToken: true,
 	cookieTokenName: 'X-Token',
 	// This is because JQuery notes Global events are never fired for cross-domain script or JSONP requests, regardless of the value of global at https://api.jquery.com/category/ajax/global-ajax-event-handlers/
 	globalHandlers: {{
