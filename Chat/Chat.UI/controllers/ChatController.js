@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-window.chatApp.controllers.ChatController = function ($routeParams, $timeout)
+window.chatApp.controllers.ChatController = function ($scope, $routeParams, $timeout)
 {
 	var vm = this,
 		chatRsn = $routeParams.chatRsn;
@@ -28,6 +28,7 @@ window.chatApp.controllers.ChatController = function ($routeParams, $timeout)
 						"DatePosted": event.Data.DatePosted
 					}
 				);
+				$scope.$apply();
 			}
 		}
 
