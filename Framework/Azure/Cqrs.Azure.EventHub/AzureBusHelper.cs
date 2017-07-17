@@ -294,7 +294,7 @@ namespace Cqrs.Azure.ServiceBus
 
 			string eventTypeName = @event.GetType().FullName;
 			CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
-			AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
+			AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
 			Logger.LogInfo(string.Format("An event message arrived with the {0} was of type {1}.", messageId, eventTypeName));
 
 			bool canRefresh;
