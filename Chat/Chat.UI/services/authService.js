@@ -17,6 +17,7 @@ window.chatApp.services.authService = function ($http, $rootScope)
 						// Start the connection.
 						$.connection.hub.start({ withCredentials: false }).done(function () {
 						});
+						$rootScope.$broadcast('loggedIn', null);
 					}
 					else if (!result)
 					{
@@ -39,6 +40,7 @@ window.chatApp.services.authService = function ($http, $rootScope)
 			function (result, textStatus, jqXHR)
 			{
 				Cookies.set("X-Token", result.ResultData);
+				$rootScope.$apply();
 				return factory.user.isAuthenticated();
 			}
 		)
@@ -60,6 +62,7 @@ window.chatApp.services.authService = function ($http, $rootScope)
 				function (result, textStatus, jqXHR)
 				{
 					Cookies.set("X-Token", "");
+					$rootScope.$apply();
 					return factory.user.isAuthenticated();
 				}
 			)

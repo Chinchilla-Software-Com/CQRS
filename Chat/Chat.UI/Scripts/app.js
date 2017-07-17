@@ -32,7 +32,7 @@ define(['services/routeResolver'], function ()
 		}
 	};
 
-	window.app = angular.module('chatApp', ['ngRoute', 'routeResolverServices', 'wc.directives']);
+	window.app = angular.module('chatApp', ['ngRoute', 'routeResolverServices', 'ui.bootstrap', 'wc.directives']);
 
 	window.app.config
 	(

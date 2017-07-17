@@ -41,6 +41,10 @@ window.chatApp.controllers.NavbarController = function ($scope, $location, $root
 				(
 					function (jqXHR, statusText, responseType)
 					{
+						$scope.$apply();
+
+						setLoginLogoutText();
+
 						$location.path('/');
 						return;
 					}
@@ -57,6 +61,11 @@ window.chatApp.controllers.NavbarController = function ($scope, $location, $root
 	$scope.$on('redirectToLogin', function ()
 	{
 		redirectToLogin();
+	});
+
+	$scope.$on('loggedIn', function ()
+	{
+		setLoginLogoutText();
 	});
 
 	setLoginLogoutText();

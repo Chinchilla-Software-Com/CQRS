@@ -51,7 +51,7 @@
 
 		protected override IQueryable<ConversationSummaryEntity> GetEmptyQueryPredicate()
 		{
-			return DataStore;
+			return DependencyResolver.Resolve<IDomainDataStoreFactory>().GetConversationSummaryDataStore();
 		}
 	}
 }

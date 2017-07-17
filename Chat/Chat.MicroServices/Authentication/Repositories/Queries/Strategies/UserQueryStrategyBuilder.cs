@@ -51,7 +51,7 @@
 
 		protected override IQueryable<UserEntity> GetEmptyQueryPredicate()
 		{
-			return DataStore;
+			return DependencyResolver.Resolve<IDomainDataStoreFactory>().GetUserDataStore();
 		}
 	}
 }

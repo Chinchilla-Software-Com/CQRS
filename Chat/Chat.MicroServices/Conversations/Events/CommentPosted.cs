@@ -38,22 +38,26 @@
 
 		#region Implementation of IMessageWithAuthenticationToken<Guid>
 
+		[DataMember]
 		public Guid AuthenticationToken { get; set; }
 
 		#endregion
 
 		#region Implementation of IMessage
 
+		[DataMember]
 		public Guid CorrelationId { get; set; }
 
 		/// <summary>
 		/// The originating framework this message was sent from.
 		/// </summary>
+		[DataMember]
 		public string OriginatingFramework { get; set; }
 
 		/// <summary>
 		/// The frameworks this <see cref="T:Cqrs.Messages.IMessage"/> has been delivered to/sent via already.
 		/// </summary>
+		[DataMember]
 		public IEnumerable<string> Frameworks { get; set; }
 
 		#endregion
@@ -68,7 +72,17 @@
 		/// The conversation the comment was posted into.
 		/// </summary>
 		[DataMember]
-		public Guid ConversationRsn { get; set; }
+		public Guid ConversationRsn
+		{
+			get { return Rsn; }
+			set { Rsn = value; }
+		}
+
+		/// <summary>
+		/// The identifier of the comment was posted into.
+		/// </summary>
+		[DataMember]
+		public Guid MessageRsn { get; set; }
 
 		/// <summary>
 		/// The name of conversation the comment was posted into.
@@ -106,10 +120,10 @@
 		[DataMember]
 		public int CurrentMessageCount { get; set; }
 
-		public CommentPosted(Guid rsn, Guid conversationRsn, string conversationName, Guid userRsn, string userName, string comment, DateTime datePosted, int currentMessageCount)
+		public CommentPosted(Guid rsn, Guid messageRsn, string conversationName, Guid userRsn, string userName, string comment, DateTime datePosted, int currentMessageCount)
 		{
 			Rsn = rsn;
-			ConversationRsn = conversationRsn;
+			MessageRsn = messageRsn;
 			ConversationName = conversationName;
 			UserRsn = userRsn;
 			UserName = userName;

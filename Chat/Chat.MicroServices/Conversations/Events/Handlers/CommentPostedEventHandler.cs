@@ -34,9 +34,9 @@
 			// As this is an update of an existing conversation, pass the updated entity to the Repository to be updated and persisted
 			ConversationSummaryRepository.Update(conversationSummary);
 
-			MessageEntity entity = new MessageEntity
+			MessageEntity messageEntity = new MessageEntity
 			{
-				Rsn = @event.Rsn,
+				Rsn = @event.MessageRsn,
 				ConversationRsn = @event.ConversationRsn,
 				ConversationName = @event.ConversationName,
 				UserRsn = @event.UserRsn,
@@ -46,7 +46,7 @@
 			};
 
 			// As this is the creation of a new comment, pass the entity to the Repository for creation and persisted
-			MessageRepository.Create(entity);
+			MessageRepository.Create(messageEntity);
 		}
 
 		#endregion

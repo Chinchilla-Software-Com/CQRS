@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-window.chatApp.controllers.LoginController = function ($location, $routeParams, authService)
+window.chatApp.controllers.LoginController = function ($scope, $location, $routeParams, authService)
 {
 	var vm = this,
 		path = '/';
@@ -19,6 +19,8 @@ window.chatApp.controllers.LoginController = function ($location, $routeParams, 
 				{
 					if (statusText !== "success")
 					{
+						$scope.$apply();
+
 						//$routeParams.redirect will have the route
 						//they were trying to go to initially
 						if (responseType === "Forbidden")

@@ -37,7 +37,7 @@
 		public HttpResponseMessage Login(UserLogin userLogin)
 		{
 			if (userLogin == null || string.IsNullOrEmpty(userLogin.EmailAddress) || string.IsNullOrEmpty(userLogin.Password))
-				return CompleteResponse<ServiceResponseWithResultData<Guid?>, Guid?>(new ServiceResponseWithResultData<Guid?> { State = ServiceResponseStateType.FailedValidation });
+				return CompleteResponse(new ServiceResponseWithResultData<Guid?> { State = ServiceResponseStateType.FailedValidation });
 			// Define Query
 			ISingleResultQuery<CredentialQueryStrategy, CredentialEntity> query = QueryFactory.CreateNewSingleResultQuery<CredentialQueryStrategy, CredentialEntity>();
 
@@ -55,7 +55,7 @@
 			};
 
 			// Complete the response
-			HttpResponseMessage response = CompleteResponse<ServiceResponseWithResultData<Guid?>, Guid?>(responseData);
+			HttpResponseMessage response = CompleteResponse(responseData);
 
 			// If authentication has succeeded then return now.
 			if (responseData.State != ServiceResponseStateType.Succeeded || responseData.ResultData == null)
@@ -75,21 +75,20 @@
 		[HttpDelete]
 		public HttpResponseMessage Logout()
 		{
-			var responseData = new ServiceResponseWithResultData<dynamic>
+			var responseData = new ServiceResponse
 			{
-				State = ServiceResponseStateType.Succeeded,
-				ResultData = new { xToken = string.Empty }
+				State = ServiceResponseStateType.Succeeded
 			};
 
+			// Complete the response
+			HttpResponseMessage response = CompleteResponse(responseData);
+
 			// Clear encrypted auth token from the UI
-			var cookie = new CookieHeaderValue("X-Token", responseData.ResultData.xToken)
+			var cookie = new CookieHeaderValue("X-Token", string.Empty)
 			{
 				Expires = DateTimeOffset.Now,
 			};
-			var response = new HttpResponseMessage();
 			response.Headers.AddCookies(new[] { cookie });
-
-			CompleteResponse(responseData);
 
 			return response;
 		}

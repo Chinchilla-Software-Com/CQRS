@@ -61,12 +61,12 @@
 			};
 
 			// Complete the response
-			HttpResponseMessage response = CompleteResponse<ServiceResponseWithResultData<IEnumerable<ConversationSummaryEntity>>, IEnumerable<ConversationSummaryEntity>>(responseData);
+			HttpResponseMessage response = CompleteResponse(responseData);
 
 			return response;
 		}
 
-		[Route("{conversationRsn:guid}")]
+		[Route("{conversationRsn:guid}/messages")]
 		[HttpGet]
 		public virtual HttpResponseMessage GetMessages(Guid conversationRsn)
 		{
@@ -87,7 +87,7 @@
 			};
 
 			// Complete the response
-			HttpResponseMessage response = CompleteResponse<ServiceResponseWithResultData<IEnumerable<MessageEntity>>, IEnumerable<MessageEntity>>(responseData);
+			HttpResponseMessage response = CompleteResponse(responseData);
 
 			if (!queryResults.Any())
 				response.StatusCode = HttpStatusCode.NotFound;
@@ -95,9 +95,14 @@
 			return response;
 		}
 
-		[Route("{conversationRsn:guid}")]
-		[HttpPut]
-		public virtual IHttpActionResult PostComment(Guid conversationRsn, [FromBody]string comment)
+		/// <summary>
+		/// Post a comment to the conversation.
+		/// </summary>
+		/// <param name="conversationRsn">The conversation to post the message to.</param>
+		/// <param name="comment">The content of the comment being posted.</param>
+		[Route("{conversationRsn:guid}/messages")]
+		[HttpPost]
+		public virtual HttpResponseMessage PostComment(Guid conversationRsn, [FromBody]string comment)
 		{
 			var responseData = new ServiceResponse
 			{
@@ -124,6 +129,107 @@
 				UserName = userName,
 				ConversationRsn = conversationRsn,
 				Comment = comment
+			};
+
+			try
+			{
+				CommandPublisher.Publish(command);
+
+				responseData.State = ServiceResponseStateType.Succeeded;
+			}
+			catch (Exception)
+			{
+				responseData.State = ServiceResponseStateType.Unknown;
+			}
+
+			// Complete the response
+			return CompleteResponse(responseData);
+		}
+
+		/// <summary>
+		/// Start a new conversation
+		/// </summary>
+		/// <param name="name">The name of the conversation to start</param>
+		[Route("")]
+		[HttpPut]
+		public virtual HttpResponseMessage StartConversation([FromBody]string name)
+		{
+			var responseData = new ServiceResponse
+			{
+				State = ServiceResponseStateType.FailedValidation
+			};
+
+			if (string.IsNullOrWhiteSpace(name))
+				return CompleteResponse(responseData);
+
+			var command = new StartConversation
+			{
+				Name = name
+			};
+
+			try
+			{
+				CommandPublisher.Publish(command);
+
+				responseData.State = ServiceResponseStateType.Succeeded;
+			}
+			catch (Exception)
+			{
+				responseData.State = ServiceResponseStateType.Unknown;
+			}
+
+			// Complete the response
+			return CompleteResponse(responseData);
+		}
+
+		/// <summary>
+		/// Update the name of an existing conversation.
+		/// </summary>
+		/// <param name="conversationRsn">The conversation to update.</param>
+		/// <param name="name">The new name of the conversation</param>
+		[Route("{conversationRsn:guid}")]
+		[HttpPatch]
+		public virtual HttpResponseMessage UpdateConversation(Guid conversationRsn, [FromBody]string name)
+		{
+			var responseData = new ServiceResponse();
+
+			if (string.IsNullOrWhiteSpace(name))
+				return CompleteResponse(responseData);
+
+			var command = new UpdateConversation
+			{
+				Rsn = conversationRsn,
+				Name = name
+			};
+
+			try
+			{
+				CommandPublisher.Publish(command);
+
+				responseData.State = ServiceResponseStateType.Succeeded;
+			}
+			catch (Exception)
+			{
+				responseData.State = ServiceResponseStateType.Unknown;
+			}
+
+			// Complete the response
+			return CompleteResponse(responseData);
+		}
+
+		/// <summary>
+		/// Delete an existing conversation.
+		/// </summary>
+		/// <param name="conversationRsn">The conversation to delete.</param>
+		[Route("{conversationRsn:guid}")]
+		[HttpDelete]
+		public virtual HttpResponseMessage DeleteConversation(Guid conversationRsn)
+		{
+			var responseData = new ServiceResponse();
+
+			var command = new DeleteConversation
+			{
+				Rsn = conversationRsn
 			};
 
 			try

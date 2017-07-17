@@ -7,7 +7,7 @@
 			<div class="customerEdit">
 				<div class="row">
 					<div class="col-md-12">
-						<h4>{{ vm.conversation.Name }} <span data-ng-hide="vm.conversation.Rsn === undefined">(<a style="font-size:12pt" href="../{{vm.conversation.Rsn}}">View Conversation</a>)</span></h4>
+						<h4>{{ vm.conversation.Name }} <span data-ng-hide="vm.conversation.Rsn === undefined">(<a style="font-size:12pt" href="/Chat/UI/chat/{{vm.conversation.Rsn}}">View the conversation's {{ vm.messageCount }} messages</a>)</span></h4>
 						<br />
 					</div>
 				</div>
@@ -36,8 +36,14 @@
 				<br />
 				<div class="statusRow">
 					<br />
+					<div class="label label-success" data-ng-show="vm.requestMade">
+						<span class="glyphicon glyphicon-thumbs-up icon-white"></span>&nbsp;&nbsp;Request Submitted!
+					</div>
 					<div class="label label-success" data-ng-show="vm.updateStatus">
 						<span class="glyphicon glyphicon-thumbs-up icon-white"></span>&nbsp;&nbsp;Conversation updated!
+					</div>
+					<div class="label label-success" data-ng-show="vm.startStatus">
+						<span class="glyphicon glyphicon-thumbs-up icon-white"></span>&nbsp;&nbsp;Conversation started!
 					</div>
 				</div>
 				<div class="statusRow">

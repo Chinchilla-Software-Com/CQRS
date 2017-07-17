@@ -96,7 +96,7 @@
 
 		protected override IQueryable<MessageEntity> GetEmptyQueryPredicate()
 		{
-			return DataStore;
+			return DependencyResolver.Resolve<IDomainDataStoreFactory>().GetMessageDataStore();
 		}
 	}
 }

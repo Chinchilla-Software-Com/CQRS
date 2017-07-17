@@ -54,7 +54,25 @@
 		/// <param name="name">The name of the conversation.</param>
 		public virtual void Start(string name)
 		{
-			ApplyChange(new ConversationStarted(Rsn, Name));
+			ApplyChange(new ConversationStarted(Rsn, name));
+			ApplyChange(new CommentPosted(Rsn, Guid.NewGuid(), Name, Guid.Empty, "System", "Welcome!", DateTime.UtcNow, 1));
+		}
+
+		/// <summary>
+		/// Update the conversation name
+		/// </summary>
+		/// <param name="name">The new name of the conversation.</param>
+		public virtual void Update(string name)
+		{
+			ApplyChange(new ConversationUpdated(Rsn, name));
+		}
+
+		/// <summary>
+		/// Delete the conversation
+		/// </summary>
+		public virtual void Delete()
+		{
+			ApplyChange(new ConversationDeleted(Rsn));
 		}
 
 		/// <summary>
@@ -65,7 +83,7 @@
 		/// <param name="comment">The content of the comment being posted.</param>
 		public virtual void PostComment(Guid userRsn, string userName, string comment)
 		{
-			ApplyChange(new CommentPosted(Guid.NewGuid(), Rsn, Name, userRsn, userName, comment, DateTime.UtcNow, CurrentMessageCount + 1));
+			ApplyChange(new CommentPosted(Rsn, Guid.NewGuid(), Name, userRsn, userName, comment, DateTime.UtcNow, CurrentMessageCount + 1));
 		}
 
 		/// <summary>
@@ -73,8 +91,14 @@
 		/// </summary>
 		protected virtual void Apply(ConversationStarted @event)
 		{
-			// One of the event handlers adds a system generated "Welcome" message into each conversation.
-			CurrentMessageCount++;
+			Name = @event.Name;
+		}
+
+		/// <summary>
+		/// This will set the <see cref="Name"/>.
+		/// </summary>
+		protected virtual void Apply(ConversationUpdated @event)
+		{
 			Name = @event.Name;
 		}
 
