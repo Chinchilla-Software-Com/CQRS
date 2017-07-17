@@ -41,12 +41,14 @@ namespace Cqrs.Services
 			IEnumerable<EventData> results = EventStore.Get(serviceRequest.Data);
 			results = OnGotEventData(serviceRequest, results);
 
-			return new ServiceResponseWithResultData<IEnumerable<EventData>>
-			{
-				State = ServiceResponseStateType.Succeeded,
-				ResultData = results,
-				CorrelationId = CorrelationIdHelper.GetCorrelationId()
-			};
+			return CompleteResponse
+			(
+				new ServiceResponseWithResultData<IEnumerable<EventData>>
+				{
+					State = ServiceResponseStateType.Succeeded,
+					ResultData = results,
+				}
+			);
 		}
 
 		protected virtual void OnGetEventData(IServiceRequestWithData<TAuthenticationToken, Guid> serviceRequest) { }
@@ -54,6 +56,13 @@ namespace Cqrs.Services
 		protected virtual IEnumerable<EventData> OnGotEventData(IServiceRequestWithData<TAuthenticationToken, Guid> serviceRequest, IEnumerable<EventData> results)
 		{
 			return results;
+		}
+
+		protected virtual TServiceResponse CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
+			where TServiceResponse : IServiceResponse
+		{
+			serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+			return serviceResponse;
 		}
 	}
 }
