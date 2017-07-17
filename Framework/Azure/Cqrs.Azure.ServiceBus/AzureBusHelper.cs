@@ -152,6 +152,7 @@ namespace Cqrs.Azure.ServiceBus
 
 			string commandTypeName = command.GetType().FullName;
 			CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
+			AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
 			Logger.LogInfo(string.Format("A command message arrived with the {0} was of type {1}.", messageId, commandTypeName));
 
 			bool canRefresh;
@@ -294,6 +295,7 @@ namespace Cqrs.Azure.ServiceBus
 
 			string eventTypeName = @event.GetType().FullName;
 			CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
+			AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
 			Logger.LogInfo(string.Format("An event message arrived with the {0} was of type {1}.", messageId, eventTypeName));
 
 			bool canRefresh;
