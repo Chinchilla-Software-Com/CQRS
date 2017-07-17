@@ -17,11 +17,12 @@ require
 		'services/routeResolver',
 		'services/authService',
 		'services/httpInterceptors',
+		'services/realtimeService',
 		'filters/ConversationNameFilter',
 		'filters/DateFormattingFilter',
 		'filters/ConversationContentFormatter',
-		'controllers/NavbarController'
-	],
+		'controllers/NavbarController',
+],
 	function ()
 	{
 		angular.bootstrap(document, ['chatApp']);

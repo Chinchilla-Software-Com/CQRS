@@ -5,7 +5,10 @@ namespace Chat.Api.Code
 {
 	using Cqrs.Configuration;
 	using Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration;
+	using Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration;
 	using Cqrs.Ninject.Configuration;
+	// Don't remove this one
+	using Cqrs.Ninject.WebApi.Configuration;
 	using MicroServices.Configuration;
 	using System;
 	using System.Web.Http;
@@ -16,7 +19,7 @@ namespace Chat.Api.Code
 		{
 			NinjectDependencyResolver.ModulesToLoad.Add(new QueriesModule());
 			NinjectDependencyResolver.ModulesToLoad.Add(new AzureCommandBusPublisherModule<Guid>());
-			//			NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule<string>());
+			NinjectDependencyResolver.ModulesToLoad.Add(new AzureEventBusReceiverModule<Guid>());
 			NinjectDependencyResolver.ModulesToLoad.Add(new ApiModule());
 		}
 

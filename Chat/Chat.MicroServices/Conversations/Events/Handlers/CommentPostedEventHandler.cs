@@ -30,6 +30,7 @@
 			ConversationSummaryEntity conversationSummary = ConversationSummaryRepository.Load(@event.ConversationRsn);
 			// Update the message count from the aggregate
 			conversationSummary.MessageCount = @event.CurrentMessageCount;
+			conversationSummary.LastUpdatedDate = @event.DatePosted;
 			// As this is an update of an existing conversation, pass the updated entity to the Repository to be updated and persisted
 			ConversationSummaryRepository.Update(conversationSummary);
 

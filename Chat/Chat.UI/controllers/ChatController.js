@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-window.chatApp.controllers.ChatController = function ($routeParams, $timeout)
+window.chatApp.controllers.ChatController = function ($scope, $routeParams, $timeout)
 {
 	var vm = this,
 		chatRsn = $routeParams.chatRsn;
@@ -8,7 +8,29 @@ window.chatApp.controllers.ChatController = function ($routeParams, $timeout)
 	vm.messages = [];
 	vm.cardAnimationClass = '.card-animation';
 	vm.ConversationName = "";
-	vm.replyContent = "Well done.";
+	vm.comment = "";
+
+	window.cqrsNotificationHub
+		.GlobalEventHandlers["Chat.MicroServices.Conversations.Events.CommentPosted"] =
+		function (event)
+		{
+			if (event.Data.ConversationRsn === chatRsn)
+			{
+				vm.messages.push
+				(
+					{
+						"Rsn": event.Data.Rsn,
+						"ConversationRsn": event.Data.ConversationRsn,
+						"ConversationName": event.Data.ConversationName,
+						"UserRsn": event.Data.UserRsn,
+						"UserName": event.Data.UserName,
+						"Content": event.Data.Comment,
+						"DatePosted": event.Data.DatePosted
+					}
+				);
+				$scope.$apply();
+			}
+		}
 
 	vm.formatContent = function (content)
 	{
@@ -18,12 +40,12 @@ window.chatApp.controllers.ChatController = function ($routeParams, $timeout)
 	vm.postReply = function ()
 	{
 		window.api.Conversations
-			.PostComment({ "conversationRsn": chatRsn, "comment": vm.replyContent })
+			.PostComment({ "conversationRsn": chatRsn, "comment": vm.comment })
 			.done
 			(
 				function (result, textStatus, jqXHR)
 				{
-					vm.replyContent = "";
+					vm.comment = "";
 				}
 			)
 			.fail

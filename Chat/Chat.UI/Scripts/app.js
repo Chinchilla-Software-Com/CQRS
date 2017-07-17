@@ -8,14 +8,8 @@ define(['services/routeResolver'], function ()
 	window.cqrsNotificationHub = $.connection.notificationHub;
 
 	// Create a function that the hub can call to notify you when it is setup.
-	cqrsNotificationHub.client.registered = function () {
+	window.cqrsNotificationHub.client.registered = function () {
 		console.info("Now registered to receive notifications.");
-	};
-
-	// Create a function that the hub can call to broadcast messages.
-	cqrsNotificationHub.client.notifyEvent = function (event)
-	{
-		console.info(event);
 	};
 
 	$.connection.hub.qs = { "X-Token": Cookies.get("X-Token") };
@@ -66,7 +60,9 @@ define(['services/routeResolver'], function ()
 				//The controllers for orders live in controllers/orders and the views are in views/orders
 				//The second parameter allows for putting related controllers/views into subfolders to better organize large projects
 				//Thanks to Ton Yeung for the idea and contribution
+				.when('/chat/new', route.resolve('EditChat', null, 'vm', true))
 				.when('/chat/:chatRsn', route.resolve('Chat', null, 'vm', true))
+				.when('/chat/edit/:chatRsn*?', route.resolve('EditChat', null, 'vm', true))
 				.when('/chats', route.resolve('Chats', null, 'vm', true))
 				.when('/about', route.resolve('About', null, 'vm'))
 				.when('/login/:redirect*?', route.resolve('Login', null, 'vm'))

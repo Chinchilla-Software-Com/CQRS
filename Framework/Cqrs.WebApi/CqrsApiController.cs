@@ -105,32 +105,8 @@ namespace Cqrs.WebApi
 			return default(DateTime);
 		}
 
-		protected virtual StatusCodeResult CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
+		protected virtual HttpResponseMessage CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
 			where TServiceResponse : IServiceResponse
-		{
-			serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-			switch (serviceResponse.State)
-			{
-				case ServiceResponseStateType.Succeeded:
-					return StatusCode(HttpStatusCode.OK);
-				case ServiceResponseStateType.FailedAuthentication:
-					return StatusCode(HttpStatusCode.Forbidden);
-				case ServiceResponseStateType.FailedAuthorisation:
-					return StatusCode(HttpStatusCode.Unauthorized);
-				case ServiceResponseStateType.FailedValidation:
-					return StatusCode(HttpStatusCode.PreconditionFailed);
-				case ServiceResponseStateType.FailedWithAFatalException:
-					return StatusCode(HttpStatusCode.InternalServerError);
-				case ServiceResponseStateType.FailedWithAnUnexpectedException:
-					return StatusCode(HttpStatusCode.InternalServerError);
-				case ServiceResponseStateType.Unknown:
-					return StatusCode(HttpStatusCode.BadRequest);
-			}
-			return StatusCode(HttpStatusCode.OK);
-		}
-
-		protected virtual HttpResponseMessage CompleteResponse<TServiceResponse, TData>(TServiceResponse serviceResponse)
-			where TServiceResponse : IServiceResponseWithResultData<TData>
 		{
 			serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
@@ -138,9 +114,9 @@ namespace Cqrs.WebApi
 
 			HttpConfiguration configuration = Request.GetConfiguration();
 			var contentNegotiator = configuration.Services.GetContentNegotiator();
-			ContentNegotiationResult negotiationResult = contentNegotiator.Negotiate(typeof(IServiceResponseWithResultData<TData>), Request, configuration.Formatters);
+			ContentNegotiationResult negotiationResult = contentNegotiator.Negotiate(typeof(IServiceResponse), Request, configuration.Formatters);
 
-			response.Content = new ObjectContent<IServiceResponseWithResultData<TData>>(serviceResponse, negotiationResult.Formatter, negotiationResult.MediaType);
+			response.Content = new ObjectContent<IServiceResponse>(serviceResponse, negotiationResult.Formatter, negotiationResult.MediaType);
 
 			switch (serviceResponse.State)
 			{
