@@ -7,6 +7,7 @@
 	using Cqrs.Services;
 	using Cqrs.WebApi;
 	using Helpers;
+	using MicroServices.Conversations;
 	using MicroServices.Conversations.Commands;
 	using MicroServices.Conversations.Entities;
 	using MicroServices.Conversations.Repositories;
@@ -18,6 +19,9 @@
 	using System.Net.Http;
 	using System.Web.Http;
 
+	/// <summary>
+	/// A WebAPI RESTful service for accessing and modifying <see cref="Conversation">conversations</see>.
+	/// </summary>
 	[RoutePrefix("Conversation")]
 	public class ConversationsController : CqrsApiController<Guid>
 	{
@@ -41,6 +45,9 @@
 
 		protected ICommandPublisher<Guid> CommandPublisher { get; private set; }
 
+		/// <summary>
+		/// Get all <see cref="ConversationSummaryEntity">conversations</see>.
+		/// </summary>
 		[Route("")]
 		[HttpGet]
 		public virtual HttpResponseMessage Get()
@@ -66,6 +73,10 @@
 			return response;
 		}
 
+		/// <summary>
+		/// Get all <see cref="MessageEntity">messages</see> for the provided <paramref name="conversationRsn"/>.
+		/// </summary>
+		/// <param name="conversationRsn">The conversation to get message for.</param>
 		[Route("{conversationRsn:guid}/messages")]
 		[HttpGet]
 		public virtual HttpResponseMessage GetMessages(Guid conversationRsn)
