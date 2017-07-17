@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Chat.UI")]
-[assembly: AssemblyDescription("An AngularJS UI designed to use A RESTful API using CQRS, Azure WebJobs, Azure Servicebus and Azure SQL.")]
+[assembly: AssemblyTitle("Chat.WcfAPI")]
+[assembly: AssemblyDescription("A WCF API using CQRS, Azure WebJobs, Azure Servicebus and Azure SQL.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Chat.UI")]
+[assembly: AssemblyProduct("Chat.WcfAPI")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("2adee29b-6614-4328-9876-e0fa96b9358f")]
+[assembly: Guid("730fd304-8bc4-4335-bee4-dbfb9338486c")]
 
 // Version information for an assembly consists of the following four values:
 //

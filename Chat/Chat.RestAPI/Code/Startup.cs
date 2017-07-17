@@ -1,6 +1,6 @@
-﻿[assembly: Microsoft.Owin.OwinStartup(typeof(Chat.Api.Code.Startup))]
+﻿[assembly: Microsoft.Owin.OwinStartup(typeof(Chat.RestAPI.Code.Startup))]
 
-namespace Chat.Api.Code
+namespace Chat.RestAPI.Code
 {
 	using Owin;
 

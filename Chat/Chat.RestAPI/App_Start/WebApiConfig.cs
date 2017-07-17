@@ -1,4 +1,4 @@
-﻿namespace Chat.Api
+﻿namespace Chat.RestAPI
 {
 	using System.Web.Http;
 

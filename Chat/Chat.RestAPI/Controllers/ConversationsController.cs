@@ -1,4 +1,4 @@
-﻿namespace Chat.Api.Controllers
+﻿namespace Chat.RestAPI.Controllers
 {
 	using cdmdotnet.Logging;
 	using Cqrs.Authentication;

@@ -1,6 +1,6 @@
 module.exports = function (grunt)
 {
-	var reloadTokens = ['Chat.Api/LiveReloadOnSuccessfulBuild.token','Chat.UI/LiveReloadOnSuccessfulBuild.token'];
+	var reloadTokens = ['Chat.RestAPI/LiveReloadOnSuccessfulBuild.token', 'Chat.UI/LiveReloadOnSuccessfulBuild.token'];
 
 	grunt.initConfig
 	({

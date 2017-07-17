@@ -1,4 +1,4 @@
-﻿namespace Chat.Api.Code
+﻿namespace Chat.RestAPI.Code
 {
 	using Helpers;
 	using Ninject.Modules;

@@ -1,7 +1,7 @@
-﻿[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Chat.Api.Code.ChatConfiguration), "ConfigureNinject", Order = 40)]
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Chat.Api.Code.ChatConfiguration), "ConfigureMvc", Order = 60)]
+﻿[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Chat.RestAPI.Code.ChatConfiguration), "ConfigureNinject", Order = 40)]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Chat.RestAPI.Code.ChatConfiguration), "ConfigureMvc", Order = 60)]
 
-namespace Chat.Api.Code
+namespace Chat.RestAPI.Code
 {
 	using Cqrs.Configuration;
 	using Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration;
