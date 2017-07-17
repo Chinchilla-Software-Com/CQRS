@@ -60,8 +60,8 @@ namespace Cqrs.WebApi.SignalR.Hubs
 				// Instruct DI to resolve the Hub
 				GlobalHost.DependencyResolver.Register
 				(
-					typeof(NotificationHub),
-					() => DependencyResolver.Current.Resolve(typeof(NotificationHub))
+					typeof(INotificationHub),
+					() => DependencyResolver.Current.Resolve(typeof(INotificationHub))
 				);
 
 			});
