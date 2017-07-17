@@ -51,6 +51,7 @@ namespace Cqrs.Domain
 			var eventsToPublish = new List<IEvent<TAuthenticationToken>>();
 
 			int i = 0;
+			int version = aggregate.Version;
 			foreach (IEvent<TAuthenticationToken> @event in uncommittedChanges)
 			{
 				if (@event.Id == Guid.Empty) 
@@ -59,8 +60,9 @@ namespace Cqrs.Domain
 					throw new AggregateOrEventMissingIdException(aggregate.GetType(), @event.GetType());
 
 				i++;
+				version++;
 
-				@event.Version = aggregate.Version + i;
+				@event.Version = version;
 				@event.TimeStamp = DateTimeOffset.UtcNow;
 				@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 				EventStore.Save(aggregate.GetType(), @event);
