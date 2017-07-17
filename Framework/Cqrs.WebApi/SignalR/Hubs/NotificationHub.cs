@@ -139,7 +139,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 							{
 								Clients
 									.Group(string.Format("UserRsn-{0}", userRsn))
-									.notifyEvent(eventData);
+									.notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData, CorrelationId = CorrelationIdHelper.GetCorrelationId() });
 							}
 							catch (TimeoutException exception)
 							{
@@ -176,14 +176,14 @@ namespace Cqrs.WebApi.SignalR.Hubs
 				(
 					() =>
 					{
-						var metaData = GetAdditionalDataForLogging(userToken);
+						IDictionary<string, object> metaData = GetAdditionalDataForLogging(userToken);
 
 						try
 						{
 							CurrentHub
 								.Clients
 								.Group(string.Format("User-{0}", userToken))
-								.notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData });
+								.notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData, CorrelationId = CorrelationIdHelper.GetCorrelationId() });
 						}
 						catch (TimeoutException exception)
 						{
@@ -223,7 +223,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 							CurrentHub
 								.Clients
 								.All
-								.notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData });
+								.notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData, CorrelationId = CorrelationIdHelper.GetCorrelationId() });
 						}
 						catch (TimeoutException exception)
 						{
@@ -267,7 +267,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 							CurrentHub
 								.Clients
 								.Group(string.Format("User-{0}", userToken))
-								.notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData });
+								.notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData, CorrelationId = CorrelationIdHelper.GetCorrelationId() });
 						}
 						catch (TimeoutException exception)
 						{
