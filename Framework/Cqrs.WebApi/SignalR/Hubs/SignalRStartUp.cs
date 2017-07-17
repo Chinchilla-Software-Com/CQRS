@@ -6,7 +6,6 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System.Web.Http;
 using Cqrs.Configuration;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
@@ -57,6 +56,14 @@ namespace Cqrs.WebApi.SignalR.Hubs
 				// since this branch already runs under the "/signalr"
 				// path.
 				map.RunSignalR(hubConfiguration);
+
+				// Instruct DI to resolve the Hub
+				GlobalHost.DependencyResolver.Register
+				(
+					typeof(NotificationHub),
+					() => DependencyResolver.Current.Resolve(typeof(NotificationHub))
+				);
+
 			});
 
 			JsonSerializer serializer = JsonSerializer.Create
