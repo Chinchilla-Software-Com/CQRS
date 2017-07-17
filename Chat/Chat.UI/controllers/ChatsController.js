@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-window.chatApp.controllers.ChatsController = function ($filter, $timeout)
+window.chatApp.controllers.ChatsController = function ($filter, $timeout, $location)
 {
 	var vm = this;
 
@@ -80,6 +80,11 @@ window.chatApp.controllers.ChatsController = function ($filter, $timeout)
 	{
 		vm.currentPage = page;
 		getConversations();
+	};
+
+	vm.navigate = function (url)
+	{
+		$location.path(url);
 	};
 
 	function init()

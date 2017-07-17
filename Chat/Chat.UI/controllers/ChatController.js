@@ -14,7 +14,7 @@ window.chatApp.controllers.ChatController = function ($routeParams, $timeout)
 		.GlobalEventHandlers["Chat.MicroServices.Conversations.Events.CommentPosted"] =
 		function (event)
 		{
-			if (event.Data.ConversationRsn == chatRsn)
+			if (event.Data.ConversationRsn === chatRsn)
 			{
 				vm.messages.push
 				(
