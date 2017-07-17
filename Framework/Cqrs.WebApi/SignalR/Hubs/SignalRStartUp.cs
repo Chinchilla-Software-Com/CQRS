@@ -63,7 +63,11 @@ namespace Cqrs.WebApi.SignalR.Hubs
 					typeof(INotificationHub),
 					() => DependencyResolver.Current.Resolve(typeof(INotificationHub))
 				);
-
+				GlobalHost.DependencyResolver.Register
+				(
+					typeof(NotificationHub),
+					() => DependencyResolver.Current.Resolve(typeof(INotificationHub))
+				);
 			});
 
 			JsonSerializer serializer = JsonSerializer.Create
