@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-window.chatApp.controllers.EditChatController = function ($scope, $routeParams, $timeout)
+window.chatApp.controllers.EditChatController = function ($scope, $routeParams, $timeout, modalService, $location)
 {
 	var vm = this,
 		chatRsn = $routeParams.chatRsn,
@@ -8,44 +8,127 @@ window.chatApp.controllers.EditChatController = function ($scope, $routeParams, 
 		onRouteChangeOff;
 
 	vm.conversation = { "Rsn": chatRsn };
-	vm.title = (chatRsn !== undefined) ? 'Edit An Existing' : 'Start A New';
-	vm.buttonText = (chatRsn !== undefined) ? 'Update' : 'Start';
+	vm.title = "";
+	vm.buttonText = "";
+	vm.requestMade = false;
 	vm.updateStatus = false;
-	vm.errorMessage = '';
+	vm.startStatus = false;
+	vm.errorMessage = "";
 	vm.messageCount = 0;
+	vm.correlationId = "";
 
+	function setVariables()
+	{
+		vm.title = (chatRsn !== undefined) ? 'Edit An Existing' : 'Start A New';
+		vm.buttonText = (chatRsn !== undefined) ? 'Update' : 'Start';
+	}
+
+	function startTimer()
+	{
+		timer = $timeout(function ()
+		{
+			$timeout.cancel(timer);
+			vm.errorMessage = "";
+			vm.requestMade = false;
+			vm.updateStatus = false;
+			vm.startStatus = false;
+		}, 3000);
+	}
+
+	window.cqrsNotificationHub
+		.GlobalEventHandlers["Chat.MicroServices.Conversations.Events.ConversationStarted"] =
+		function (event)
+		{
+			if (event.CorrelationId === vm.correlationId)
+			{
+				chatRsn = event.Data.Rsn;
+				vm.conversation.Rsn = event.Data.Rsn;
+
+				setVariables();
+
+				vm.requestMade = false;
+				vm.startStatus = true;
+				startTimer();
+				$scope.$apply();
+			}
+		};
 	window.cqrsNotificationHub
 		.GlobalEventHandlers["Chat.MicroServices.Conversations.Events.CommentPosted"] =
 		function (event)
 		{
-			if (event.Data.ConversationRsn === chatRsn)
+			if (event.CorrelationId === vm.correlationId || event.Data.ConversationRsn === chatRsn)
 			{
-				vm.messages.push
-				(
-					{
-						"Rsn": event.Data.Rsn,
-						"ConversationRsn": event.Data.ConversationRsn,
-						"ConversationName": event.Data.ConversationName,
-						"UserRsn": event.Data.UserRsn,
-						"UserName": event.Data.UserName,
-						"Content": event.Data.Comment,
-						"DatePosted": event.Data.DatePosted
-					}
-				);
+				vm.requestMade = false;
+				vm.messageCount++;
+				$scope.$apply();
 			}
-		}
+		};
+	window.cqrsNotificationHub
+		.GlobalEventHandlers["Chat.MicroServices.Conversations.Events.ConversationUpdated"] =
+		function (event)
+		{
+			if (event.CorrelationId === vm.correlationId)
+			{
+				vm.requestMade = false;
+				vm.updateStatus = true;
+				startTimer();
+				$scope.$apply();
+			}
+		};
+	window.cqrsNotificationHub
+		.GlobalEventHandlers["Chat.MicroServices.Conversations.Events.ConversationDeleted"] =
+		function (event)
+		{
+			if (event.CorrelationId === vm.correlationId || event.Data.ConversationRsn === chatRsn)
+			{
+				onRouteChangeOff(); //Stop listening for location changes
+				$location.path('/chats');
+				$scope.$apply();
+			}
+		};
+
+	function processSuccess(result)
+	{
+		$scope.editForm.$dirty = false;
+		vm.requestMade = true;
+		vm.correlationId = result.CorrelationId;
+	}
+
+	function processError(error)
+	{
+		vm.errorMessage = error;
+		startTimer();
+	}
 
 	vm.saveConversation = function ()
 	{
 		if ($scope.editForm.$valid)
 		{
+			var operation;
+			var parameters = { "name": vm.conversation.Name };
+
 			if (!vm.conversation.Rsn)
 			{
-				dataService.insertCustomer(vm.customer).then(processSuccess, processError);
+				operation = window.api.Conversations.StartConversation;
 			}
-			else {
-				dataService.updateCustomer(vm.customer).then(processSuccess, processError);
+			else
+			{
+				operation = window.api.Conversations.UpdateConversation;
+				parameters.conversationRsn = vm.conversation.Rsn;
 			}
+
+			operation(parameters)
+				.done
+				(
+					processSuccess
+				)
+				.fail
+				(
+					function (jqXHR, textStatus, errorThrown)
+					{
+						processError(textStatus);
+					}
+				);
 		}
 	};
 
@@ -53,38 +136,37 @@ window.chatApp.controllers.EditChatController = function ($scope, $routeParams, 
 	{
 		var modalOptions =
 		{
-			closeButtonText: 'Cancel',
+			closeButtonText: 'Keep Conversation',
 			actionButtonText: 'Delete Conversation',
 			headerText: 'Delete ' + vm.conversation.Name + '?',
 			bodyText: 'Are you sure you want to delete this conversation?'
 		};
 
-		modalService.showModal({}, modalOptions).then(function (result) {
-			if (result === 'ok') {
-				dataService.deleteCustomer(vm.customer.id).then(function () {
-					onRouteChangeOff(); //Stop listening for location changes
-					$location.path('/customers');
-				}, processError);
-			}
-		});
-	};
-
-	vm.postReply = function () {
-		window.api.Conversations
-			.PostComment({ "conversationRsn": chatRsn, "comment": vm.comment })
-			.done
+		modalService
+			.showModal({}, modalOptions)
+			.then
 			(
-				function (result, textStatus, jqXHR) {
-					vm.comment = "";
-				}
-			)
-			.fail
-			(
-				function (jqXHR, textStatus, errorThrown) {
-					console.error(textStatus, errorThrown);
+				function (result)
+				{
+					if (result === 'ok')
+					{
+						window.api.Conversations
+							.DeleteConversation({ "conversationRsn": vm.conversation.Rsn })
+							.done
+							(
+								processSuccess
+							)
+							.fail
+							(
+								function (jqXHR, textStatus, errorThrown)
+								{
+									processError(textStatus);
+								}
+							);
+					}
 				}
 			);
-	}
+	};
 
 	function getMessages()
 	{
@@ -110,7 +192,6 @@ window.chatApp.controllers.EditChatController = function ($scope, $routeParams, 
 				}
 			);
 	}
-
 
 	function routeChange(event, newUrl, oldUrl)
 	{
@@ -141,37 +222,13 @@ window.chatApp.controllers.EditChatController = function ($scope, $routeParams, 
 
 	function init()
 	{
+		setVariables();
 		getMessages();
 
 		//Make sure they're warned if they made a change but didn't save it
 		//Call to $on returns a "deregistration" function that can be called to
 		//remove the listener (see routeChange() for an example of using it)
 		onRouteChangeOff = $scope.$on('$locationChangeStart', routeChange);
-	}
-
-	function startTimer()
-	{
-		timer = $timeout(function ()
-		{
-			$timeout.cancel(timer);
-			vm.errorMessage = '';
-			vm.updateStatus = false;
-		}, 3000);
-	}
-
-	function processSuccess()
-	{
-		$scope.editForm.$dirty = false;
-		vm.updateStatus = true;
-		vm.title = 'Edit';
-		vm.buttonText = 'Update';
-		startTimer();
-	}
-
-	function processError(error)
-	{
-		vm.errorMessage = error.message;
-		startTimer();
 	}
 
 	init();

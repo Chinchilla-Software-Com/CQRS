@@ -29,9 +29,21 @@
 		[Column]
 		public string Name { get; set; }
 
+		private int _messageCount;
+
 		[DataMember]
 		[Column]
-		public int MessageCount { get; set; }
+		public int MessageCount
+		{
+			get
+			{
+				return _messageCount;
+			}
+			set
+			{
+				_messageCount = value;
+			}
+		}
 
 		[DataMember]
 		[Column]

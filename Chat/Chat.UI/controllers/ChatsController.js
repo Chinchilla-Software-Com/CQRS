@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-window.chatApp.controllers.ChatsController = function ($filter, $timeout, $location)
+window.chatApp.controllers.ChatsController = function ($scope, $filter, $timeout, $location)
 {
 	var vm = this;
 
@@ -65,6 +65,7 @@ window.chatApp.controllers.ChatsController = function ($filter, $timeout, $locat
 						//Turn off animation since it won't keep up with filtering
 						vm.cardAnimationClass = '';
 					}, 1000);
+					$scope.$apply();
 				}
 			)
 			.fail

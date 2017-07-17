@@ -30,7 +30,7 @@ window.chatApp.controllers.ChatController = function ($scope, $routeParams, $tim
 				);
 				$scope.$apply();
 			}
-		}
+		};
 
 	vm.formatContent = function (content)
 	{

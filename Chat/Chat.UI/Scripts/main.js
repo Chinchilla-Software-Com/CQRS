@@ -16,6 +16,7 @@ require
 		'Scripts/app',
 		'services/routeResolver',
 		'services/authService',
+		'services/modalService',
 		'services/httpInterceptors',
 		'services/realtimeService',
 		'filters/ConversationNameFilter',

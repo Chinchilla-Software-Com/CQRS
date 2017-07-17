@@ -7,6 +7,7 @@
 	using Cqrs.Configuration;
 	using Cqrs.Events;
 	using Cqrs.WebApi;
+	using Cqrs.WebApi.SignalR.Hubs;
 
 	public class WebApiApplication : CqrsHttpApplication<Guid>
 	{
@@ -27,6 +28,10 @@
 			base.RegisterSignalR(registrar);
 			// Start the event bus receiving messages once everything is in place.
 			DependencyResolver.Resolve<IEventReceiver<Guid>>().Start();
+			// Inform the NotificationHub that the token is the user identifier and that it can be cast directly.
+			var notificationHub = DependencyResolver.Resolve<INotificationHub>() as NotificationHub;
+			if (notificationHub != null)
+				notificationHub.ConvertUserTokenToUserRsn = token => new Guid(token);
 		}
 
 		#endregion

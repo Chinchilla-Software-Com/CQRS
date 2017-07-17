@@ -89,7 +89,7 @@
 
 		protected override IQueryable<CredentialEntity> GetEmptyQueryPredicate()
 		{
-			return DataStore;
+			return DependencyResolver.Resolve<IDomainDataStoreFactory>().GetCredentialDataStore();
 		}
 	}
 }

@@ -6,12 +6,12 @@
 	using Cqrs.Events;
 
 	/// <summary>
-	/// An <see cref="IEvent{TAuthenticationToken}"/> that informs the system a new <see cref="Conversation"/> was started.
+	/// An <see cref="IEvent{TAuthenticationToken}"/> that informs the system the <see cref="Conversation"/> updated its name.
 	/// </summary>
 	[Serializable]
 	[DataContract]
 	[NotifyEveryoneEventAttribute]
-	public class ConversationStarted : IEvent<Guid>
+	public class ConversationUpdated : IEvent<Guid>
 	{
 		#region Implementation of IEvent
 
@@ -63,18 +63,18 @@
 		#endregion
 
 		/// <summary>
-		/// The id of the conversation that was started.
+		/// The id of the conversation that was updated.
 		/// </summary>
 		[DataMember]
 		public Guid Rsn { get; set; }
 
 		/// <summary>
-		/// The name of conversation that was started.
+		/// The new name of conversation.
 		/// </summary>
 		[DataMember]
 		public string Name { get; set; }
 
-		public ConversationStarted(Guid rsn, string name)
+		public ConversationUpdated(Guid rsn, string name)
 		{
 			Rsn = rsn;
 			Name = name;

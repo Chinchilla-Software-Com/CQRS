@@ -193,7 +193,7 @@ namespace Cqrs.Repositories.Queries
 
 		protected virtual TQueryStrategy GetNullQueryStrategy()
 		{
-			return DependencyResolver.Resolve<TQueryStrategy>();
+			return Activator.CreateInstance<TQueryStrategy>();
 		}
 
 		protected virtual void ApplySorting(TQueryStrategy queryStrategy, ref IQueryable<TData> queryable)
