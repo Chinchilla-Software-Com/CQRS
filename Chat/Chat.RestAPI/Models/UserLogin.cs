@@ -1,4 +1,4 @@
-﻿namespace Chat.Api.Models
+﻿namespace Chat.RestAPI.Models
 {
 	/// <summary>
 	/// User login credentials

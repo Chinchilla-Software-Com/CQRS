@@ -1,4 +1,4 @@
-namespace Chat.Api.Helpers
+namespace Chat.RestAPI.Helpers
 {
 	using System;
 

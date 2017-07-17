@@ -26,6 +26,15 @@ namespace Cqrs.Services
 		FailedAuthorisation = 12,
 
 		[EnumMember]
-		FailedValidation = 21
+		FailedValidation = 21,
+
+		[EnumMember]
+		AggregateNotFound = 31,
+
+		[EnumMember]
+		EntityNotFound = 32,
+
+		[EnumMember]
+		SagaNotFound = 33
 	}
 }

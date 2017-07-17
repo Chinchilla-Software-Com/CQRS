@@ -1,4 +1,4 @@
-﻿namespace Chat.Api.Helpers
+﻿namespace Chat.RestAPI.Helpers
 {
 	using Cqrs.Authentication;
 	using Cqrs.Repositories.Queries;
