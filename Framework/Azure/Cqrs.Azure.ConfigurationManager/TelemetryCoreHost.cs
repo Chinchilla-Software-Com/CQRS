@@ -84,7 +84,7 @@ namespace Cqrs.Azure.ConfigurationManager
 		/// </summary>
 		protected override void Start()
 		{
-			base.Prepare();
+			base.Start();
 
 			TelemetryClient.TrackEvent(string.Format("{0}/Started", TelemetryName));
 		}
