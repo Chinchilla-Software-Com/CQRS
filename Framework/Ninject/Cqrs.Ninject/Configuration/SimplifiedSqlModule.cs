@@ -1,10 +1,18 @@
-﻿using Cqrs.Events;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using Cqrs.Events;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Configuration
 {
 	/// <summary>
-	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
+	/// The <see cref="INinjectModule"/> to wireup <see cref="IEvent{TAuthenticationToken}"/> to <see cref="SqlEventStore{TAuthenticationToken}"/>.
 	/// </summary>
 	public class SimplifiedSqlModule<TAuthenticationToken> : NinjectModule
 	{

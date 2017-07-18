@@ -1,4 +1,12 @@
-﻿using Cqrs.Events;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using Cqrs.Events;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Configuration

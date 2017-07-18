@@ -32,6 +32,7 @@ namespace Cqrs.WebApi
 			SetBuses();
 
 			RegisterDefaultRoutes();
+			RegisterServiceParameterResolver();
 
 			ConfigureMvcOrWebApi();
 

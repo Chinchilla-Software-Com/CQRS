@@ -1,4 +1,6 @@
-﻿namespace Chat.RestAPI.Controllers
+﻿using Cqrs.Configuration;
+
+namespace Chat.RestAPI.Controllers
 {
 	using cdmdotnet.Logging;
 	using Cqrs.Authentication;
@@ -18,8 +20,8 @@
 	[RoutePrefix("Authentication")]
 	public class AuthenticationController : CqrsApiController<Guid>
 	{
-		public AuthenticationController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, IQueryFactory queryFactory, ICredentialRepository credentialRepository, IAuthenticationHashHelper authenticationHashHelper)
-			: base(logger, correlationIdHelper, authenticationTokenHelper)
+		public AuthenticationController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, IQueryFactory queryFactory, ICredentialRepository credentialRepository, IAuthenticationHashHelper authenticationHashHelper)
+			: base(logger, correlationIdHelper, configurationManager, authenticationTokenHelper)
 		{
 			QueryFactory = queryFactory;
 			CredentialRepository = credentialRepository;

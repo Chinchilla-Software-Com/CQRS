@@ -1,5 +1,5 @@
 ﻿[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Chat.RestAPI.Code.ChatConfiguration), "ConfigureNinject", Order = 40)]
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Chat.RestAPI.Code.ChatConfiguration), "ConfigureMvc", Order = 60)]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Chat.RestAPI.Code.ChatConfiguration), "ConfigureWebApi", Order = 60)]
 
 namespace Chat.RestAPI.Code
 {
@@ -8,7 +8,7 @@ namespace Chat.RestAPI.Code
 	using Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration;
 	using Cqrs.Ninject.Configuration;
 	// Don't remove this one
-	using Cqrs.Ninject.WebApi.Configuration;
+	using StartUp = Cqrs.Ninject.WebApi.Configuration.SimplifiedNinjectWebApi;
 	using MicroServices.Configuration;
 	using System;
 	using System.Web.Http;
@@ -23,7 +23,7 @@ namespace Chat.RestAPI.Code
 			NinjectDependencyResolver.ModulesToLoad.Add(new ApiModule());
 		}
 
-		public static void ConfigureMvc()
+		public static void ConfigureWebApi()
 		{
 			// Tell ASP.NET WebAPI to use our Ninject DI Container 
 			GlobalConfiguration.Configuration.DependencyResolver = new Ninject.Web.WebApi.NinjectDependencyResolver(((NinjectDependencyResolver)DependencyResolver.Current).Kernel);

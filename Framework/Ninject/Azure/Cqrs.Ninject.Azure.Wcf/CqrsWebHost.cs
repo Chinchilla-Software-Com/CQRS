@@ -21,10 +21,19 @@ using Ninject.Modules;
 namespace Cqrs.Ninject.Azure.Wcf
 {
 	/// <summary>
+	/// Execute command and event handlers in a WCF Host using Ninject, defaulting to <see cref="WebHostModule"/> as the module to load.
+	/// </summary>
+	public class CqrsWebHost<TAuthenticationToken, TAuthenticationTokenHelper> : CqrsWebHost<TAuthenticationToken, TAuthenticationTokenHelper, WebHostModule>
+		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
+	{
+	}
+
+	/// <summary>
 	/// Execute command and event handlers in a WCF Host using Ninject
 	/// </summary>
-	public class CqrsWebHost<TAuthenticationToken, TAuthenticationTokenHelper> : TelemetryCoreHost<TAuthenticationToken>
+	public class CqrsWebHost<TAuthenticationToken, TAuthenticationTokenHelper, TWebHostModule> : TelemetryCoreHost<TAuthenticationToken>
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
+		where TWebHostModule : WebHostModule, new ()
 	{
 		#region Overrides of CoreHost
 
@@ -48,7 +57,7 @@ namespace Cqrs.Ninject.Azure.Wcf
 		{
 			var results = new List<INinjectModule>
 			{
-				new WebHostModule(),
+				new TWebHostModule(),
 				new CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper>(true, true)
 			};
 

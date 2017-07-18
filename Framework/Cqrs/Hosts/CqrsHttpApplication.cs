@@ -8,6 +8,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Security;
 using System.Web;
 using System.Web.SessionState;
@@ -16,6 +18,7 @@ using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
+using Cqrs.Services;
 
 namespace Cqrs.Hosts
 {
@@ -58,6 +61,7 @@ namespace Cqrs.Hosts
 			SetBuses();
 
 			RegisterCommandAndEventHandlers();
+			RegisterServiceParameterResolver();
 
 			StartBuses();
 
@@ -78,6 +82,27 @@ namespace Cqrs.Hosts
 			registrar.Register(HandlerTypes);
 
 			return registrar;
+		}
+
+		/// <summary>
+		/// Call the static "RegisterDataContracts" method on any <see cref="IServiceParameterResolver"/> we can find in the <see cref="Assembly"/> of any <see cref="Type"/> in <see cref="HandlerTypes"/>
+		/// </summary>
+		protected virtual void RegisterServiceParameterResolver()
+		{
+			foreach (Type handlerType in HandlerTypes)
+			{
+				Assembly executorsAssembly = handlerType.Assembly;
+				IEnumerable<Type> serviceParameterResolverTypes = executorsAssembly
+					.GetTypes()
+					.Where(type => typeof(IServiceParameterResolver).IsAssignableFrom(type));
+
+				foreach (Type serviceParameterResolverType in serviceParameterResolverTypes)
+				{
+					MethodInfo registerDataContractsMethod = serviceParameterResolverType.GetMethod("RegisterDataContracts");
+					if (registerDataContractsMethod != null)
+						registerDataContractsMethod.Invoke(null, null);
+				}
+			}
 		}
 
 		/// <summary>

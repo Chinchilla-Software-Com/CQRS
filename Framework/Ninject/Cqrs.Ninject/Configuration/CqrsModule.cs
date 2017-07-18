@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Linq;
 using cdmdotnet.AutoMapper;
 using Cqrs.Authentication;
@@ -20,7 +28,7 @@ namespace Cqrs.Ninject.Configuration
 	/// <summary>
 	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
 	/// </summary>
-	public class CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper> : NinjectModule
+	public class CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper> : ResolvableModule
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 	{
 		protected bool SetupForWeb { get; private set; }
@@ -216,16 +224,6 @@ namespace Cqrs.Ninject.Configuration
 				Bind<IConfigurationManager>()
 					.To<ConfigurationManager>()
 					.InSingletonScope();
-		}
-
-		protected T Resolve<T>()
-		{
-			return (T)Resolve(typeof(T));
-		}
-
-		protected object Resolve(Type serviceType)
-		{
-			return Kernel.Resolve(Kernel.CreateRequest(serviceType, null, new Parameter[0], true, true)).SingleOrDefault();
 		}
 	}
 }

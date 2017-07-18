@@ -1,4 +1,6 @@
-﻿namespace Chat.RestAPI.Controllers
+﻿using Cqrs.Configuration;
+
+namespace Chat.RestAPI.Controllers
 {
 	using cdmdotnet.Logging;
 	using Cqrs.Authentication;
@@ -25,8 +27,8 @@
 	[RoutePrefix("Conversation")]
 	public class ConversationsController : CqrsApiController<Guid>
 	{
-		public ConversationsController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, IQueryFactory queryFactory, IConversationSummaryRepository conversationSummaryRepository, IMessageRepository messageRepository, IAuthenticationHelper authenticationHelper, ICommandPublisher<Guid> commandPublisher)
-			: base(logger, correlationIdHelper, authenticationTokenHelper)
+		public ConversationsController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, IQueryFactory queryFactory, IConversationSummaryRepository conversationSummaryRepository, IMessageRepository messageRepository, IAuthenticationHelper authenticationHelper, ICommandPublisher<Guid> commandPublisher)
+			: base(logger, correlationIdHelper, configurationManager, authenticationTokenHelper)
 		{
 			QueryFactory = queryFactory;
 			ConversationSummaryRepository = conversationSummaryRepository;
