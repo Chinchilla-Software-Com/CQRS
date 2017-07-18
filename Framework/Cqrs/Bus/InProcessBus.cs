@@ -28,7 +28,7 @@ namespace Cqrs.Bus
 	/// (<see cref="IEventPublisher{TAuthenticationToken}"/> and <see cref="IEventHandler{TAuthenticationToken,TTarget,TEvent}"/>)
 	/// as well as a <see cref="IEventHandlerRegistrar"/> and <see cref="ICommandHandlerRegistrar"/> that requires no networking.
 	/// </summary>
-	/// <typeparam name="TAuthenticationToken"></typeparam>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class InProcessBus<TAuthenticationToken>
 		: ISendAndWaitCommandSender<TAuthenticationToken>
 		, IPublishAndWaitCommandPublisher<TAuthenticationToken>

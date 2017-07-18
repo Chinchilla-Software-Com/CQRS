@@ -8,6 +8,8 @@
 
 using System;
 using System.Web.Http;
+using System.Web.Http.Cors;
+using Cqrs.Configuration;
 using Newtonsoft.Json;
 
 namespace Cqrs.WebApi.Configuration
@@ -16,6 +18,16 @@ namespace Cqrs.WebApi.Configuration
 	{
 		public static void Register(HttpConfiguration config)
 		{
+			var configurationManager = DependencyResolver.Current.Resolve<IConfigurationManager>();
+			var cors = new EnableCorsAttribute
+			(
+				configurationManager.GetSetting("Cqrs.WebApi.Cors.Origins"),
+				configurationManager.GetSetting("Cqrs.WebApi.Cors.Headers"),
+				configurationManager.GetSetting("Cqrs.WebApi.Cors.Methods"),
+				configurationManager.GetSetting("Cqrs.WebApi.Cors.ExposedHeaders")
+			);
+			config.EnableCors(cors);
+
 			try
 			{
 				config.MapHttpAttributeRoutes();

@@ -16,12 +16,12 @@ using Cqrs.Azure.ConfigurationManager;
 using Cqrs.Configuration;
 using Ninject.Modules;
 
-namespace Cqrs.Ninject.Azure.WebJobs.Configuration
+namespace Cqrs.Ninject.Azure.Wcf.Configuration
 {
 	/// <summary>
 	/// The core <see cref="INinjectModule"/> for use defining base level requirements.
 	/// </summary>
-	public class WebJobHostModule : NinjectModule
+	public class WebHostModule : NinjectModule
 	{
 		#region Overrides of NinjectModule
 

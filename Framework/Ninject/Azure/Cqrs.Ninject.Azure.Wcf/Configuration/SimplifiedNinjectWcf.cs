@@ -7,18 +7,19 @@
 #endregion
 
 using Cqrs.Authentication;
+using Cqrs.Azure.ConfigurationManager;
 using Cqrs.Configuration;
 using Cqrs.Ninject.Configuration;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Ninject;
 using Ninject.Web.Common;
 
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Cqrs.Ninject.WebApi.Configuration.SimplifiedNinjectWebApi), "Start", Order = 50)]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Cqrs.Ninject.WebApi.Configuration.SimplifiedNinjectWebApi), "Stop", Order = 50)]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf), "Start", Order = 50)]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf), "Stop", Order = 50)]
 
-namespace Cqrs.Ninject.WebApi.Configuration
+namespace Cqrs.Ninject.Azure.Wcf.Configuration
 {
-	public static class SimplifiedNinjectWebApi
+	public static class SimplifiedNinjectWcf
 	{
 		private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
 
@@ -46,12 +47,12 @@ namespace Cqrs.Ninject.WebApi.Configuration
 		/// <returns>The created kernel.</returns>
 		private static IKernel CreateKernel()
 		{
-			return new WebApiStartUp(new ConfigurationManager()).CreateKernel();
+			return new WcfStartUp(new CloudConfigurationManager()).CreateKernel();
 		}
 
-		private class WebApiStartUp : SimplifiedNinjectStartUp<WebApiModule>
+		private class WcfStartUp : SimplifiedNinjectStartUp<WebHostModule>
 		{
-			public WebApiStartUp(IConfigurationManager configurationManager)
+			public WcfStartUp(IConfigurationManager configurationManager)
 				: base(configurationManager)
 			{
 			}

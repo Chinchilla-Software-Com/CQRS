@@ -7,7 +7,7 @@
 #endregion
 
 using System;
-using Microsoft.Azure;
+using Cqrs.Azure.ConfigurationManager;
 using Microsoft.Azure.WebJobs;
 
 namespace Cqrs.Azure.WebJobs
@@ -15,7 +15,7 @@ namespace Cqrs.Azure.WebJobs
 	/// <summary>
 	/// Execute command and event handlers in an Azure WebJob
 	/// </summary>
-	public abstract class CqrsJobHost<TAuthenticationToken> : CoreHost<TAuthenticationToken>
+	public abstract class CqrsJobHost<TAuthenticationToken> : TelemetryCoreHost<TAuthenticationToken>
 	{
 		protected static CqrsJobHost<TAuthenticationToken> CoreHost { get; set; }
 
@@ -29,12 +29,13 @@ namespace Cqrs.Azure.WebJobs
 		protected static void StartHost()
 		{
 			// We use console state as, even though a webjob runs in an azure website, it's technically loaded via something call the 'WindowsScriptHost', which is not web and IIS based so it's threading model is very different and more console based.
+			// This actually does all the work... Just sit back and relax... but also stay in memory and don't shutdown.
 			CoreHost.Run();
 
 			JobHost host;
 			bool disableHostControl;
 			// I set this to true ... just because.
-			if (!bool.TryParse(CloudConfigurationManager.GetSetting("Cqrs.Azure.WebJobs.DisableWebJobHostControl", true), out disableHostControl))
+			if (!bool.TryParse(_configurationManager.GetSetting("Cqrs.Azure.WebJobs.DisableWebJobHostControl"), out disableHostControl))
 				disableHostControl = false;
 			if (disableHostControl)
 			{

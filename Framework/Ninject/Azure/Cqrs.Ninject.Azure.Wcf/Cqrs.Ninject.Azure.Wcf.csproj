@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E2C4019B-F6AA-4A9D-86CD-FB940F13B7B6}</ProjectGuid>
+    <ProjectGuid>{791DED7F-608C-41C3-9CF5-4495520A40BD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cqrs.Ninject.Azure.WebJobs</RootNamespace>
-    <AssemblyName>Cqrs.Ninject.Azure.WebJobs</AssemblyName>
+    <RootNamespace>Cqrs.Ninject.Azure.Wcf</RootNamespace>
+    <AssemblyName>Cqrs.Ninject.Azure.Wcf</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -45,7 +45,7 @@
       <HintPath>..\..\..\..\packages\cdmdotnet.Logging.Azure.ApplicationInsights.1.2.91.71\lib\net46\cdmdotnet.Logging.Azure.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="cdmdotnet.Performance">
+    <Reference Include="cdmdotnet.Performance, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\cdmdotnet.Performance.1.0.5.8\lib\net40\cdmdotnet.Performance.dll</HintPath>
       <Private>True</Private>
     </Reference>
@@ -81,6 +81,10 @@
       <HintPath>..\..\..\..\packages\Microsoft.ApplicationInsights.TraceListener.2.2.0\lib\net45\Microsoft.ApplicationInsights.TraceListener.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.WindowsAzure.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.2.3\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
       <Private>True</Private>
@@ -93,29 +97,33 @@
       <HintPath>..\..\..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\WebActivatorEx.2.0.3\lib\net40\WebActivatorEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CqrsNinjectJobHost.cs" />
-    <Content Include="CqrsWebJobProgram.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Compile Include="Configuration\SimplifiedNinjectWcf.cs" />
+    <Compile Include="Configuration\WebHostModule.cs" />
+    <Compile Include="CqrsWebHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Azure\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj">
       <Project>{628594ca-a097-4e6b-8dbd-00dbf2d9f19b}</Project>
       <Name>Cqrs.Azure.ConfigurationManager</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Azure\Cqrs.Azure.WebJobs\Cqrs.Azure.WebJobs.csproj">
-      <Project>{0ad8f4ef-43e8-4e25-b36a-f0c4e01fe584}</Project>
-      <Name>Cqrs.Azure.WebJobs</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Cqrs\Cqrs.csproj">
       <Project>{dafd2a8a-d6b0-4433-8ddf-b98460c64ec6}</Project>
@@ -133,17 +141,13 @@
       <Project>{1886b47d-9119-4bcf-992f-b56c37cea7ae}</Project>
       <Name>Cqrs.Ninject.Azure.ServiceBus.EventBus</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cqrs.Ninject.Azure.Wcf\Cqrs.Ninject.Azure.Wcf.csproj">
-      <Project>{791ded7f-608c-41c3-9cf5-4495520a40bd}</Project>
-      <Name>Cqrs.Ninject.Azure.Wcf</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Cqrs.Ninject.Azure.WebJobs.nuspec" />
+    <None Include="Cqrs.Ninject.Azure.Wcf.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
