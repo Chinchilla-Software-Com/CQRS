@@ -96,7 +96,7 @@ namespace Cqrs.Hosts
 		/// <summary>
 		/// Calls <see cref="Prepare"/>, <paramref name="handlerRegistation"/> and then <see cref="Start"/>
 		/// </summary>
-		protected virtual void Run(Action handlerRegistation = null)
+		public virtual void Run(Action handlerRegistation = null)
 		{
 			Prepare();
 			if (handlerRegistation != null)
