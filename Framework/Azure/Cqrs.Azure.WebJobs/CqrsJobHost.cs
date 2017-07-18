@@ -8,6 +8,7 @@
 
 using System;
 using Cqrs.Azure.ConfigurationManager;
+using Cqrs.Hosts;
 using Microsoft.Azure.WebJobs;
 
 namespace Cqrs.Azure.WebJobs
@@ -17,7 +18,7 @@ namespace Cqrs.Azure.WebJobs
 	/// </summary>
 	public abstract class CqrsJobHost<TAuthenticationToken> : TelemetryCoreHost<TAuthenticationToken>
 	{
-		protected static CqrsJobHost<TAuthenticationToken> CoreHost { get; set; }
+		protected static CoreHost<TAuthenticationToken> CoreHost { get; set; }
 
 		protected static Action PreRunAndBlockAction { get; set; }
 

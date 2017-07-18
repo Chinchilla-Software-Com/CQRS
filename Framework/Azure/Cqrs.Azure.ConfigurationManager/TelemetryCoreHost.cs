@@ -53,7 +53,7 @@ namespace Cqrs.Azure.ConfigurationManager
 		/// <summary>
 		/// Calls <see cref="Prepare"/>, <paramref name="handlerRegistation"/> and then <see cref="Start"/>
 		/// </summary>
-		protected override void Run(Action handlerRegistation = null)
+		public override void Run(Action handlerRegistation = null)
 		{
 			base.Run(handlerRegistation);
 			TelemetryClient.TrackEvent(string.Format("{0}/Ran", TelemetryName));
