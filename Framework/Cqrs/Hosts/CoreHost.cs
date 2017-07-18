@@ -83,6 +83,7 @@ namespace Cqrs.Hosts
 			);
 
 			TelemetryName = ConfigurationManager.GetSetting("Cqrs.Hosts.AppName") ?? AppDomain.CurrentDomain.FriendlyName;
+			ConfigureTelemetry();
 		}
 		// ReSharper restore DoNotCallOverridableMethodsInConstructor
 
