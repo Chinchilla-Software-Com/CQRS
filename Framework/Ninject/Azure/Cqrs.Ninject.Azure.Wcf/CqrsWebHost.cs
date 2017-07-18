@@ -62,7 +62,6 @@ namespace Cqrs.Ninject.Azure.Wcf
 		/// <summary>
 		/// A collection of <see cref="INinjectModule"/> that configure the Azure Servicebus as a command bus as both
 		/// <see cref="ICommandPublisher{TAuthenticationToken}"/> and <see cref="ICommandReceiver{TAuthenticationToken}"/>.
-		/// If the app setting Cqrs.Azure.WebJobs.EnableEventReceiving is "false" then no modules will be returned.
 		/// </summary>
 		protected virtual IEnumerable<INinjectModule> GetCommandBusModules()
 		{
@@ -76,6 +75,7 @@ namespace Cqrs.Ninject.Azure.Wcf
 		/// <summary>
 		/// A collection of <see cref="INinjectModule"/> that configure the Azure Servicebus as a event bus as both
 		/// <see cref="IEventPublisher{TAuthenticationToken}"/> and <see cref="IEventReceiver{TAuthenticationToken}"/>
+		/// If the app setting Cqrs.Host.EnableEventReceiving is "false" then no modules will be returned.
 		/// </summary>
 		protected virtual IEnumerable<INinjectModule> GetEventBusModules()
 		{

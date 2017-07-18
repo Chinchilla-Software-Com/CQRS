@@ -13,7 +13,9 @@ using System.Web;
 using System.Web.SessionState;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
+using Cqrs.Commands;
 using Cqrs.Configuration;
+using Cqrs.Events;
 
 namespace Cqrs.Hosts
 {
@@ -24,43 +26,76 @@ namespace Cqrs.Hosts
 		: HttpApplication
 	{
 		/// <summary>
-		/// The <see cref="IDependencyResolver"/> to configure in <see cref="ConfigureDefaultDependencyResolver"/>
-		/// </summary>
-		protected static IDependencyResolver DependencyResolver { get; set; }
-
-		/// <summary>
 		/// Each <see cref="Type"/> will be traced back to it's assembly, and that assembly will be scanned for other handlers to auto register.
 		/// </summary>
 		protected Type[] HandlerTypes { get; set; }
 
 		/// <summary>
-		/// Calls <see cref="ConfigureDefaultDependencyResolver"/>, <see cref="RegisterCommandAndEventHandlers"/> and finally <see cref="LogApplicationStarted"/>.
+		/// The <see cref="IEventReceiver"/> that will be configured to receive <see cref="IEvent{TAuthenticationToken}">events</see>.
+		/// </summary>
+		protected IEventReceiver EventBus { get; set; }
+
+		/// <summary>
+		/// The <see cref="ICommandReceiver"/> that will be configured to receive <see cref="ICommand{TAuthenticationToken}">commands</see>.
+		/// </summary>
+		protected ICommandReceiver CommandBus { get; set; }
+
+		/// <summary>
+		/// Instantiate a new instance of a <see cref="CqrsHttpApplication"/>
+		/// </summary>
+		protected CqrsHttpApplication()
+		{
+			HandlerTypes = new Type[]{};
+		}
+
+		/// <summary>
+		/// Calls <see cref="SetBuses"/>, <see cref="RegisterCommandAndEventHandlers"/> and finally <see cref="LogApplicationStarted"/>.
 		/// Gets executed once during the life cycle of the application when the first request for any resource in the application is made. A resource can be a page or an image in the application. 
 		/// If the server where the application is hosted is restarted then this is fired once again upon the first request for any resource in the application.
 		/// </summary>
 		protected virtual void Application_Start(object sender, EventArgs e)
 		{
-			ConfigureDefaultDependencyResolver();
+			SetBuses();
 
 			RegisterCommandAndEventHandlers();
+
+			StartBuses();
 
 			LogApplicationStarted();
 		}
 
 		/// <summary>
-		/// Configure the <see cref="DependencyResolver"/>.
+		/// Set <see cref="EventBus"/> and <see cref="CommandBus"/>.
 		/// </summary>
-		protected abstract void ConfigureDefaultDependencyResolver();
+		protected abstract void SetBuses();
 
 		/// <summary>
 		/// Start the <see cref="BusRegistrar"/> by calling <see cref="BusRegistrar.Register(System.Type[])"/> passing <see cref="HandlerTypes"/>
 		/// </summary>
 		protected virtual BusRegistrar RegisterCommandAndEventHandlers()
 		{
-			var registrar = new BusRegistrar(DependencyResolver);
+			var registrar = new BusRegistrar(DependencyResolver.Current);
 			registrar.Register(HandlerTypes);
 
 			return registrar;
+		}
+
+		/// <summary>
+		/// Starts the command bus and event bus receivers depending on configuration settings
+		/// </summary>
+		protected virtual void StartBuses()
+		{
+
+			var configurationManager = DependencyResolver.Current.Resolve<IConfigurationManager>();
+			bool setting;
+			if (!configurationManager.TryGetSetting("Cqrs.Hosts.EnableEventReceiving", out setting))
+				setting = true;
+			if (setting)
+				EventBus.Start();
+			if (!configurationManager.TryGetSetting("Cqrs.Hosts.EnableCommandReceiving", out setting))
+				setting = true;
+			if (setting)
+				CommandBus.Start();
 		}
 
 		/// <summary>
@@ -70,11 +105,11 @@ namespace Cqrs.Hosts
 		{
 			try
 			{
-				ILogger logger = DependencyResolver.Resolve<ILogger>();
+				ILogger logger = DependencyResolver.Current.Resolve<ILogger>();
 
 				if (logger != null)
 				{
-					DependencyResolver.Resolve<ICorrelationIdHelper>().SetCorrelationId(Guid.Empty);
+					DependencyResolver.Current.Resolve<ICorrelationIdHelper>().SetCorrelationId(Guid.Empty);
 					logger.LogInfo("Application started.");
 				}
 			}
@@ -89,11 +124,11 @@ namespace Cqrs.Hosts
 		{
 			try
 			{
-				ILogger logger = DependencyResolver.Resolve<ILogger>();
+				ILogger logger = DependencyResolver.Current.Resolve<ILogger>();
 
 				if (logger != null)
 				{
-					DependencyResolver.Resolve<ICorrelationIdHelper>().SetCorrelationId(Guid.Empty);
+					DependencyResolver.Current.Resolve<ICorrelationIdHelper>().SetCorrelationId(Guid.Empty);
 					logger.LogInfo("Application stopped.");
 				}
 			}
@@ -110,7 +145,7 @@ namespace Cqrs.Hosts
 			{
 				Exception ex = Server.GetLastError();
 
-				ILogger logger = DependencyResolver.Resolve<ILogger>();
+				ILogger logger = DependencyResolver.Current.Resolve<ILogger>();
 				Action<string, string, Exception, IDictionary<string, object>, IDictionary<string, object>> loggerFunction = logger.LogError;
 				if (ex is SecurityException)
 					loggerFunction = logger.LogWarning;
@@ -129,7 +164,7 @@ namespace Cqrs.Hosts
 			try
 			{
 				Guid correlationId = Guid.NewGuid();
-				DependencyResolver.Resolve<ICorrelationIdHelper>().SetCorrelationId(correlationId);
+				DependencyResolver.Current.Resolve<ICorrelationIdHelper>().SetCorrelationId(correlationId);
 				Response.AddHeader("CorrelationId", correlationId.ToString("N"));
 			}
 			catch (NullReferenceException) { }
@@ -181,9 +216,11 @@ namespace Cqrs.Hosts
 	public abstract class CqrsHttpApplication<TAuthenticationToken>
 		: CqrsHttpApplication
 	{
+		#region Overrides of CqrsHttpApplication
+
 		/// <summary>
 		/// Gets executed after <see cref="CqrsHttpApplication.Application_BeginRequest"/>.
-		/// Extracts the authentication token looking for a <see cref="KeyValuePair{TKey,TValue}"/> where the key is "X-Token",
+		/// Extracts the authentication token looking for a <see cref="KeyValuePair{TKey,TValue}"/> where the key as defined by the <see cref="System.Configuration.ConfigurationManager.AppSettings"/> "Cqrs.Web.AuthenticationTokenName",
 		/// from the <see cref="HttpRequest.Headers"/>, if one isn't found we then try the following in order 
 		/// <see cref="HttpRequest.Cookies"/>, <see cref="HttpRequest.Form"/> or <see cref="HttpRequest.QueryString"/>; then
 		/// calls <see cref="IAuthenticationTokenHelper{TAuthenticationToken}.SetAuthenticationToken"/> to make it accessible to others parts of the system if one is found.
@@ -193,24 +230,26 @@ namespace Cqrs.Hosts
 			if (typeof (TAuthenticationToken) != typeof (Guid) && typeof (TAuthenticationToken) != typeof (string) && typeof (TAuthenticationToken) != typeof (int))
 				return;
 
-			string xToken = Request.Headers["X-Token"];
+			string authenticationTokenName = DependencyResolver.Current.Resolve<IConfigurationManager>().GetSetting("Cqrs.Web.AuthenticationTokenName") ?? "X-Token";
+
+			string xToken = Request.Headers[authenticationTokenName];
 			if (string.IsNullOrWhiteSpace(xToken))
 			{
-				HttpCookie authCookie = Request.Cookies["X-Token"];
+				HttpCookie authCookie = Request.Cookies[authenticationTokenName];
 				if (authCookie != null)
 					xToken = authCookie.Value;
 			}
 			if (string.IsNullOrWhiteSpace(xToken))
-				xToken = Request.Form["X-Token"];
+				xToken = Request.Form[authenticationTokenName];
 			if (string.IsNullOrWhiteSpace(xToken))
-				xToken = Request.QueryString["X-Token"];
+				xToken = Request.QueryString[authenticationTokenName];
 			if (typeof(TAuthenticationToken) != typeof(Guid))
 			{
 				Guid token;
 				if (Guid.TryParse(xToken, out token))
 				{
 					// Pass the authentication token to the helper to allow automated authentication handling
-					DependencyResolver.Resolve<IAuthenticationTokenHelper<TAuthenticationToken>>().SetAuthenticationToken((TAuthenticationToken)(object)token);
+					DependencyResolver.Current.Resolve<IAuthenticationTokenHelper<TAuthenticationToken>>().SetAuthenticationToken((TAuthenticationToken)(object)token);
 				}
 			}
 			else if (typeof(TAuthenticationToken) != typeof(int))
@@ -219,11 +258,22 @@ namespace Cqrs.Hosts
 				if (int.TryParse(xToken, out token))
 				{
 					// Pass the authentication token to the helper to allow automated authentication handling
-					DependencyResolver.Resolve<IAuthenticationTokenHelper<TAuthenticationToken>>().SetAuthenticationToken((TAuthenticationToken)(object)token);
+					DependencyResolver.Current.Resolve<IAuthenticationTokenHelper<TAuthenticationToken>>().SetAuthenticationToken((TAuthenticationToken)(object)token);
 				}
 			}
 			else
-				DependencyResolver.Resolve<IAuthenticationTokenHelper<TAuthenticationToken>>().SetAuthenticationToken((TAuthenticationToken)(object)xToken);
+				DependencyResolver.Current.Resolve<IAuthenticationTokenHelper<TAuthenticationToken>>().SetAuthenticationToken((TAuthenticationToken)(object)xToken);
 		}
+
+		/// <summary>
+		/// Set <see cref="CqrsHttpApplication.EventBus"/> and <see cref="CqrsHttpApplication.CommandBus"/>.
+		/// </summary>
+		protected override void SetBuses()
+		{
+			EventBus = DependencyResolver.Current.Resolve<IEventReceiver<TAuthenticationToken>>();
+			CommandBus = DependencyResolver.Current.Resolve<ICommandReceiver<TAuthenticationToken>>();
+		}
+
+		#endregion
 	}
 }

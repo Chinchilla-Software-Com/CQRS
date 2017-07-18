@@ -37,7 +37,7 @@ namespace Cqrs.Ninject.Configuration
 			NinjectDependencyResolver.ModulesToLoad.Insert(0, new THostModule());
 
 			string authenticationType;
-			if (!ConfigurationManager.TryGetSetting("Cqrs.WebApi.AuthenticationTokenType", out authenticationType))
+			if (!ConfigurationManager.TryGetSetting("Cqrs.AuthenticationTokenType", out authenticationType))
 				authenticationType = "Guid";
 
 			if (authenticationType.ToLowerInvariant() == "int" || authenticationType.ToLowerInvariant() == "integer")

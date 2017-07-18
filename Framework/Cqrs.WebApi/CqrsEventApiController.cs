@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
+using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Services;
 
@@ -23,8 +24,8 @@ namespace Cqrs.WebApi
 		, IEventService<TSingleSignOnToken>
 		where TSingleSignOnToken : ISingleSignOnToken, new()
 	{
-		protected CqrsEventApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TSingleSignOnToken> authenticationTokenHelper, IEventStore<TSingleSignOnToken> eventStore)
-			: base(logger, correlationIdHelper)
+		protected CqrsEventApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TSingleSignOnToken> authenticationTokenHelper, IEventStore<TSingleSignOnToken> eventStore, IConfigurationManager configurationManager)
+			: base(logger, correlationIdHelper, configurationManager)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			EventStore = eventStore;

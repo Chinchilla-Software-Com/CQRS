@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
+using Cqrs.Configuration;
 using Cqrs.Events;
 using Microsoft.AspNet.SignalR;
 
@@ -62,10 +63,13 @@ namespace Cqrs.WebApi.SignalR.Hubs
 		{
 			string userRsn;
 			Cookie cookie;
-			if (Context.RequestCookies.TryGetValue("X-Token", out cookie))
+
+			string authenticationTokenName = DependencyResolver.Current.Resolve<IConfigurationManager>().GetSetting("Cqrs.Web.AuthenticationTokenName") ?? "X-Token";
+
+			if (Context.RequestCookies.TryGetValue(authenticationTokenName, out cookie))
 				userRsn = cookie.Value;
 			else
-				userRsn = Context.QueryString["X-Token"];
+				userRsn = Context.QueryString[authenticationTokenName];
 
 			return userRsn.Replace(".", string.Empty);
 		}

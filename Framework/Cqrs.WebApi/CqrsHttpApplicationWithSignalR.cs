@@ -29,13 +29,16 @@ namespace Cqrs.WebApi
 	{
 		protected override void Application_Start(object sender, EventArgs e)
 		{
-			ConfigureDefaultDependencyResolver();
+			SetBuses();
+
 			RegisterDefaultRoutes();
 
 			ConfigureMvcOrWebApi();
 
 			BusRegistrar registrar = RegisterCommandAndEventHandlers();
 			RegisterSignalR(registrar);
+
+			StartBuses();
 
 			LogApplicationStarted();
 		}
@@ -72,6 +75,8 @@ namespace Cqrs.WebApi
 	public abstract class CqrsHttpApplicationWithSignalR<TAuthenticationToken>
 		: CqrsHttpApplicationWithSignalR<TAuthenticationToken, GlobalEventToHubProxy<TAuthenticationToken>>
 	{
+		#region Overrides of CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>
+
 		/// <summary>
 		/// Register SignalR and auto wire-up <see cref="GlobalEventToHubProxy{TAuthenticationToken}"/> to automatically proxy all <see cref="IEvent{TAuthenticationToken}">events</see> to SignalR.
 		/// </summary>
@@ -79,9 +84,11 @@ namespace Cqrs.WebApi
 		{
 			base.RegisterSignalR(registrar);
 
-			var eventHandlerRegistrar = DependencyResolver.Resolve<IEventHandlerRegistrar>();
-			var proxy = DependencyResolver.Resolve<GlobalEventToHubProxy<TAuthenticationToken>>();
+			var eventHandlerRegistrar = DependencyResolver.Current.Resolve<IEventHandlerRegistrar>();
+			var proxy = DependencyResolver.Current.Resolve<GlobalEventToHubProxy<TAuthenticationToken>>();
 			eventHandlerRegistrar.RegisterGlobalEventHandler<IEvent<TAuthenticationToken>>(proxy.Handle, false);
 		}
+
+		#endregion
 	}
 }

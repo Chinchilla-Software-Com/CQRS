@@ -68,7 +68,6 @@ namespace Cqrs.Hosts
 			bool pauseAndWait;
 			long waitCounter = 0;
 			long maximumCount;
-			// I set this to true ... just because.
 			if (!long.TryParse(ConfigurationManager.GetSetting("Cqrs.Hosts.PauseAndWaitMaximumCount"), out maximumCount))
 				maximumCount = 300;
 			SpinWait.SpinUntil
@@ -83,7 +82,6 @@ namespace Cqrs.Hosts
 				(short)1000
 			);
 
-			// I set this to true ... just because.
 			TelemetryName = ConfigurationManager.GetSetting("Cqrs.Hosts.AppName") ?? AppDomain.CurrentDomain.FriendlyName;
 		}
 		// ReSharper restore DoNotCallOverridableMethodsInConstructor
