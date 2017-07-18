@@ -268,7 +268,7 @@ namespace Cqrs.Hosts
 				xToken = Request.Form[authenticationTokenName];
 			if (string.IsNullOrWhiteSpace(xToken))
 				xToken = Request.QueryString[authenticationTokenName];
-			if (typeof(TAuthenticationToken) != typeof(Guid))
+			if (typeof(TAuthenticationToken) == typeof(Guid))
 			{
 				Guid token;
 				if (Guid.TryParse(xToken, out token))
@@ -277,7 +277,7 @@ namespace Cqrs.Hosts
 					DependencyResolver.Current.Resolve<IAuthenticationTokenHelper<TAuthenticationToken>>().SetAuthenticationToken((TAuthenticationToken)(object)token);
 				}
 			}
-			else if (typeof(TAuthenticationToken) != typeof(int))
+			else if (typeof(TAuthenticationToken) == typeof(int))
 			{
 				int token;
 				if (int.TryParse(xToken, out token))
