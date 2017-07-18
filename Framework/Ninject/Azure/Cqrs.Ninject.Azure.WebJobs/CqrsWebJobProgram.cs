@@ -1,4 +1,12 @@
-﻿using Cqrs.Authentication;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using Cqrs.Authentication;
 using Cqrs.Ninject.Azure.WebJobs;
 
 /// <summary>

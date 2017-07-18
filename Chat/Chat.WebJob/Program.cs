@@ -7,7 +7,7 @@ using Chat.MicroServices.Authentication.Helpers;
 using Chat.MicroServices.Authentication.Repositories;
 using Chat.MicroServices.Configuration;
 using Chat.MicroServices.Conversations;
-using Chat.MicroServices.Conversations.Commands.Handlers;
+using Chat.MicroServices.Conversations.Commands;
 using Chat.MicroServices.Conversations.Events;
 using Chat.MicroServices.Conversations.Repositories;
 using Cqrs.Authentication;
@@ -23,7 +23,7 @@ public partial class CqrsWebJobProgram
 {
 	partial void GetCommandOrEventType(ref Type commandOrEventType)
 	{
-		commandOrEventType = typeof(StartConversationCommandHandler);
+		commandOrEventType = typeof(StartConversation);
 	}
 
 	#region Overrides of CqrsNinjectJobHost<Guid,DefaultAuthenticationTokenHelper>

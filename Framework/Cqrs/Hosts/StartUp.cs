@@ -10,17 +10,29 @@ using System;
 using cdmdotnet.Logging;
 using Cqrs.Configuration;
 
-namespace Cqrs.Azure.WebJobs
+namespace Cqrs.Hosts
 {
+	/// <summary>
+	/// A startUp action for the <see cref="CoreHost{TAuthenticationToken}"/>
+	/// </summary>
 	public class StartUp
 	{
+		/// <summary>
+		/// The <see cref="Action"/> that will configure the <see cref="DependencyResolver"/>.
+		/// </summary>
 		protected Action DependencyResolverConfigurationFunction { get; set; }
 
+		/// <summary>
+		/// Instantiate a new instance of a <see cref="StartUp"/>
+		/// </summary>
 		public StartUp(Action dependencyResolverConfigurationFunction)
 		{
 			DependencyResolverConfigurationFunction = dependencyResolverConfigurationFunction;
 		}
 
+		/// <summary>
+		/// Initialise by calling the <see cref="DependencyResolverConfigurationFunction"/>.
+		/// </summary>
 		public virtual void Initialise()
 		{
 			DependencyResolverConfigurationFunction();

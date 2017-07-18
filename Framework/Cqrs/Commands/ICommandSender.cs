@@ -14,7 +14,7 @@ namespace Cqrs.Commands
 	/// <summary>
 	/// Sends an <see cref="ICommand{TAuthenticationToken}"/>
 	/// </summary>
-	/// <typeparam name="TAuthenticationToken"></typeparam>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	[Obsolete("Replaced by ICommandPublisher<TAuthenticationToken>")]
 	public interface ICommandSender<TAuthenticationToken> : ICommandPublisher<TAuthenticationToken>
 	{

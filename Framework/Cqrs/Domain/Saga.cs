@@ -135,7 +135,7 @@ namespace Cqrs.Domain
 				this.AsDynamic().Apply(@event.Event);
 				if (!isEventReplay)
 				{
-					Changes = new ReadOnlyCollection<ISagaEvent<TAuthenticationToken>>(new[] { @event }.Concat(Changes).ToList());
+					Changes = new ReadOnlyCollection<ISagaEvent<TAuthenticationToken>>(Changes.Concat(new[] { @event }).ToList());
 				}
 				else
 				{

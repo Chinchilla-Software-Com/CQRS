@@ -1,4 +1,11 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Cqrs.Ninject.Configuration;
@@ -39,45 +46,24 @@ namespace Cqrs.Ninject.WebApi.Configuration
 		/// <returns>The created kernel.</returns>
 		private static IKernel CreateKernel()
 		{
-			NinjectDependencyResolver.ModulesToLoad.Insert(0, new WebApiModule());
+			return new WebApiStartUp(new ConfigurationManager()).CreateKernel();
+		}
 
-			string authenticationType;
-			if (!new ConfigurationManager().TryGetSetting("Cqrs.WebApi.AuthenticationTokenType", out authenticationType))
-				authenticationType = "Guid";
+		private class WebApiStartUp : SimplifiedNinjectStartUp<WebApiModule>
+		{
+			public WebApiStartUp(IConfigurationManager configurationManager)
+				: base(configurationManager)
+			{
+			}
 
-			if (authenticationType.ToLowerInvariant() == "int" || authenticationType.ToLowerInvariant() == "integer")
-				NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<int, DefaultAuthenticationTokenHelper>(true, false));
-			else if (authenticationType.ToLowerInvariant() == "guid")
-				NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<Guid, DefaultAuthenticationTokenHelper>(true, false));
-			else if (authenticationType.ToLowerInvariant() == "string" || authenticationType.ToLowerInvariant() == "text")
-				NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<string, DefaultAuthenticationTokenHelper>(true, false));
+			#region Overrides of SimplifiedNinjectStartUp<WebHostModule>
 
-			else if (authenticationType == "SingleSignOnToken")
-				NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<SingleSignOnToken, DefaultAuthenticationTokenHelper>(true, false));
-			else if (authenticationType == "SingleSignOnTokenWithUserRsn")
-				NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<SingleSignOnTokenWithUserRsn, DefaultAuthenticationTokenHelper>(true, false));
-			else if (authenticationType == "SingleSignOnTokenWithCompanyRsn")
-				NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<SingleSignOnTokenWithCompanyRsn, DefaultAuthenticationTokenHelper>(true, false));
-			else if (authenticationType == "SingleSignOnTokenWithUserRsnAndCompanyRsn")
-				NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<SingleSignOnTokenWithUserRsnAndCompanyRsn, DefaultAuthenticationTokenHelper>(true, false));
+			protected override void AddSupplementryModules()
+			{
+				NinjectDependencyResolver.ModulesToLoad.Insert(2, new SimplifiedSqlModule<SingleSignOnToken>());
+			}
 
-			else if (authenticationType == "ISingleSignOnToken")
-				NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<ISingleSignOnToken, AuthenticationTokenHelper>(true, false));
-			else if (authenticationType == "ISingleSignOnTokenWithUserRsn")
-				NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<ISingleSignOnTokenWithUserRsn, AuthenticationTokenHelper>(true, false));
-			else if (authenticationType == "ISingleSignOnTokenWithCompanyRsn")
-				NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<ISingleSignOnTokenWithCompanyRsn, AuthenticationTokenHelper>(true, false));
-			else if (authenticationType == "ISingleSignOnTokenWithUserRsnAndCompanyRsn")
-				NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<ISingleSignOnTokenWithUserRsnAndCompanyRsn, AuthenticationTokenHelper>(true, false));
-
-			NinjectDependencyResolver.ModulesToLoad.Insert(2, new SimplifiedSqlModule<SingleSignOnToken>());
-
-			// NinjectDependencyResolver.Start();
-			var kernel = new StandardKernel();
-			// This is only done so the follow Wcf safe method can be called. Otherwise use the commented out line above.
-			NinjectDependencyResolver.Start(kernel, true);
-
-			return kernel;
+			#endregion
 		}
 	}
 }

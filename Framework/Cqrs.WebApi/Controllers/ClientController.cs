@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Cqrs.Configuration;
 
 namespace Cqrs.WebApi.Controllers
 {
@@ -35,7 +36,7 @@ namespace Cqrs.WebApi.Controllers
 	metadata: {0},
 	useJson: true,
 	useXToken: true,
-	cookieTokenName: 'X-Token',
+	cookieTokenName: '{3}',
 	// This is because JQuery notes Global events are never fired for cross-domain script or JSONP requests, regardless of the value of global at https://api.jquery.com/category/ajax/global-ajax-event-handlers/
 	globalHandlers: {{
 		'before' : function(jqXHR, settings) {{}},
@@ -170,7 +171,8 @@ $.each(window.api.metadata, function (i, action)
 }});",
 				System.Web.Helpers.Json.Encode(apiMethods),
 				host,
-				path);
+				path,
+				DependencyResolver.Current.Resolve<IConfigurationManager>().GetSetting("Cqrs.Web.AuthenticationTokenName") ?? "X-Token");
 
 			HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, responseBody);
 			response.Content = new StringContent(responseBody, Encoding.UTF8, "application/javascript");

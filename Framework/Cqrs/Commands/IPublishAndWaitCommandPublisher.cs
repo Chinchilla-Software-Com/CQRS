@@ -15,7 +15,7 @@ namespace Cqrs.Commands
 	/// <summary>
 	/// Publishes an <see cref="ICommand{TAuthenticationToken}"/>
 	/// </summary>
-	/// <typeparam name="TAuthenticationToken"></typeparam>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public interface IPublishAndWaitCommandPublisher<TAuthenticationToken> : ICommandPublisher<TAuthenticationToken>
 	{
 		/// <summary>

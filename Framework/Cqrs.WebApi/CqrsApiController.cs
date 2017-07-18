@@ -17,12 +17,12 @@ using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Services;
 using System.Net.Http.Formatting;
-using System.Web.Http.Results;
+using Cqrs.Configuration;
 
 namespace Cqrs.WebApi
 {
 	/// <summary>
-	/// A <see cref="ApiController"/> that expects the <see cref="ISingleSignOnToken.Token"/> to be sent as a <see cref="HttpHeaders"/> with a key of "X-Token", in accordance with OAuth specifications
+	/// A <see cref="ApiController"/> that expects the <see cref="ISingleSignOnToken.Token"/> to be sent as a <see cref="HttpHeaders"/> with a key whose name is defined by the <see cref="System.Configuration.ConfigurationManager.AppSettings"/> "Cqrs.Web.AuthenticationTokenName", in accordance with OAuth specifications
 	/// </summary>
 	/// <remarks>
 	/// See https://www.asp.net/web-api/overview/getting-started-with-aspnet-web-api/creating-api-help-pages for details on adding WebApi Help Pages.
@@ -30,9 +30,10 @@ namespace Cqrs.WebApi
 	public abstract class CqrsApiController
 		: ApiController
 	{
-		protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper)
+		protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager)
 		{
 			CorrelationIdHelper = correlationIdHelper;
+			ConfigurationManager = configurationManager;
 			Logger = logger;
 		}
 
@@ -40,20 +41,24 @@ namespace Cqrs.WebApi
 
 		protected ILogger Logger { get; private set; }
 
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
 		protected virtual string GetToken()
 		{
-			string token = null;
+			string authenticationTokenName = ConfigurationManager.GetSetting("Cqrs.Web.AuthenticationTokenName") ?? "X-Token";
+
+			string xToken = null;
 			IEnumerable<string> tokenValue;
-			if (Request.Headers.TryGetValues("X-Token", out tokenValue))
-				token = tokenValue.First();
+			if (Request.Headers.TryGetValues(authenticationTokenName, out tokenValue))
+				xToken = tokenValue.First();
 			else
 			{
-				CookieHeaderValue cookie = Request.Headers.GetCookies("X-Token").FirstOrDefault();
+				CookieHeaderValue cookie = Request.Headers.GetCookies(authenticationTokenName).FirstOrDefault();
 				if (cookie != null)
-					token = cookie["X-Token"].Value;
+					xToken = cookie[authenticationTokenName].Value;
 			}
 
-			return token;
+			return xToken;
 		}
 
 		protected virtual IServiceRequest<TSingleSignOnToken> CreateRequest<TSingleSignOnToken>()
@@ -159,8 +164,8 @@ namespace Cqrs.WebApi
 	public abstract class CqrsApiController<TAuthenticationToken>
 		: CqrsApiController
 	{
-		protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
-			: base(logger, correlationIdHelper)
+		protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
+			: base(logger, correlationIdHelper, configurationManager)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
 		}

@@ -21,17 +21,14 @@
 	[DataContract(Namespace = "https://getcqrs.net/Conversations/1001/")]
 	public class ConversationService : EventService<Guid>, IConversationService
 	{
-		public ConversationService(IEventStore<Guid> eventStore, ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, IUnitOfWorkService unitOfWorkService, IConversationSummaryRepository conversationSummaryRepository, IQueryFactory queryFactory, IMessageRepository messageRepository, ICommandPublisher<Guid> commandPublisher)
+		public ConversationService(IEventStore<Guid> eventStore, ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, IConversationSummaryRepository conversationSummaryRepository, IQueryFactory queryFactory, IMessageRepository messageRepository, ICommandPublisher<Guid> commandPublisher)
 			: base(eventStore, logger, correlationIdHelper, authenticationTokenHelper)
 		{
-			UnitOfWorkService = unitOfWorkService;
 			ConversationSummaryRepository = conversationSummaryRepository;
 			QueryFactory = queryFactory;
 			MessageRepository = messageRepository;
 			CommandPublisher = commandPublisher;
 		}
-
-		protected IUnitOfWorkService UnitOfWorkService { get; private set; }
 
 		protected IConversationSummaryRepository ConversationSummaryRepository { get; private set; }
 
@@ -121,7 +118,6 @@
 			if (string.IsNullOrWhiteSpace(serviceRequest.Data.Comment))
 				return CompleteResponse(responseData);
 
-			UnitOfWorkService.SetCommitter(this);
 			var command = new PostComment
 			{
 				UserRsn = serviceRequest.Data.UserRsn,
@@ -140,8 +136,6 @@
 			{
 				responseData.State = ServiceResponseStateType.Unknown;
 			}
-
-			UnitOfWorkService.Commit(this);
 
 			// Complete the response
 			return CompleteResponse(responseData);
@@ -163,7 +157,6 @@
 			if (string.IsNullOrWhiteSpace(serviceRequest.Data.Name))
 				return CompleteResponse(responseData);
 
-			UnitOfWorkService.SetCommitter(this);
 			var command = new StartConversation
 			{
 				Name = serviceRequest.Data.Name
@@ -179,8 +172,6 @@
 			{
 				responseData.State = ServiceResponseStateType.Unknown;
 			}
-
-			UnitOfWorkService.Commit(this);
 
 			// Complete the response
 			return CompleteResponse(responseData);
@@ -199,7 +190,6 @@
 			if (string.IsNullOrWhiteSpace(serviceRequest.Data.Name))
 				return CompleteResponse(responseData);
 
-			UnitOfWorkService.SetCommitter(this);
 			var command = new UpdateConversation
 			{
 				Rsn = serviceRequest.Data.ConversationRsn,
@@ -217,8 +207,6 @@
 				responseData.State = ServiceResponseStateType.Unknown;
 			}
 
-			UnitOfWorkService.Commit(this);
-
 			// Complete the response
 			return CompleteResponse(responseData);
 		}
@@ -233,7 +221,6 @@
 
 			var responseData = new ServiceResponse();
 
-			UnitOfWorkService.SetCommitter(this);
 			var command = new DeleteConversation
 			{
 				Rsn = serviceRequest.Data.ConversationRsn

@@ -15,7 +15,7 @@ namespace Cqrs.Snapshots
 	/// <summary>
 	/// An <see cref="ISnapshotStrategy{TAuthenticationToken}"/> that takes a snapshot every 15 versions
 	/// </summary>
-	/// <typeparam name="TAuthenticationToken"></typeparam>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class DefaultSnapshotStrategy<TAuthenticationToken> : ISnapshotStrategy<TAuthenticationToken>
 	{
 		private const int SnapshotInterval = 15;
