@@ -17,6 +17,9 @@ using Cqrs.Configuration;
 
 namespace Cqrs.WebApi.Controllers
 {
+	/// <summary>
+	/// A WebAPI RESTful service that provide a 'no configuration required' javascript client ready for developers to use.
+	/// </summary>
 	[RoutePrefix("Client")]
 	public class ClientController : ApiController
 	{
