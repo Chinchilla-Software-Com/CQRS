@@ -8,21 +8,29 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Web;
 using System.Xml;
 using Cqrs.Authentication;
+using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Messages;
 using Cqrs.Services;
 
 namespace Cqrs.WebApi
 {
-	public static class HelpPageConfig<TSingleSignOnToken>
-		where TSingleSignOnToken : ISingleSignOnToken, new()
+	public static class HelpPageConfig<TAuthenticationToken>
 	{
-		public class UserCreatedEvent : IEvent<TSingleSignOnToken>
+		public static IList<string> AssemblyXmlFileNames { get; set; }
+
+		static HelpPageConfig()
+		{
+			AssemblyXmlFileNames = new List<string>();
+		}
+
+		public class UserCreatedEvent : IEvent<TAuthenticationToken>
 		{
 			#region Implementation of IEvent
 
@@ -50,7 +58,7 @@ namespace Cqrs.WebApi
 			#region Implementation of IMessageWithAuthenticationToken<TSingleSignOnToken>
 
 			[DataMember]
-			public TSingleSignOnToken AuthenticationToken { get; set; }
+			public TAuthenticationToken AuthenticationToken { get; set; }
 
 			#endregion
 
@@ -92,22 +100,65 @@ namespace Cqrs.WebApi
 			public string EmailAddress { get; set; }
 		}
 
+		static TAuthenticationToken GenerateAuthenticationToken()
+		{
+			string authenticationType;
+			if (!DependencyResolver.Current.Resolve<IConfigurationManager>().TryGetSetting("Cqrs.AuthenticationTokenType", out authenticationType))
+				authenticationType = "Guid";
+
+			TAuthenticationToken token = default(TAuthenticationToken);
+
+			if (authenticationType.ToLowerInvariant() == "int" || authenticationType.ToLowerInvariant() == "integer")
+				token = (TAuthenticationToken)(object)123;
+			else if (authenticationType.ToLowerInvariant() == "guid")
+				token = (TAuthenticationToken)(object)Guid.NewGuid();
+			else if (authenticationType.ToLowerInvariant() == "string" || authenticationType.ToLowerInvariant() == "text")
+				token = (TAuthenticationToken)(object)"UserToken123";
+			else if (authenticationType == "SingleSignOnToken" || authenticationType == "ISingleSignOnToken")
+				token = (TAuthenticationToken)(object)new SingleSignOnToken
+				{
+					Token = Guid.NewGuid().ToString("N"),
+					DateIssued = DateTime.Now,
+					TimeOfExpiry = DateTime.Now.AddMinutes(20)
+				};
+			else if (authenticationType == "SingleSignOnTokenWithUserRsn" || authenticationType == "ISingleSignOnTokenWithUserRsn")
+				token = (TAuthenticationToken)(object)new SingleSignOnTokenWithUserRsn
+				{
+					Token = Guid.NewGuid().ToString("N"),
+					DateIssued = DateTime.Now,
+					TimeOfExpiry = DateTime.Now.AddMinutes(20),
+					UserRsn = Guid.NewGuid()
+				};
+			else if (authenticationType == "SingleSignOnTokenWithCompanyRsn" || authenticationType == "ISingleSignOnTokenWithCompanyRsn")
+				token = (TAuthenticationToken)(object)new SingleSignOnTokenWithCompanyRsn
+				{
+					Token = Guid.NewGuid().ToString("N"),
+					DateIssued = DateTime.Now,
+					TimeOfExpiry = DateTime.Now.AddMinutes(20),
+					CompanyRsn = Guid.NewGuid()
+				};
+			else if (authenticationType == "SingleSignOnTokenWithUserRsnAndCompanyRsn" || authenticationType == "ISingleSignOnTokenWithUserRsnAndCompanyRsn")
+				token = (TAuthenticationToken)(object)new SingleSignOnTokenWithUserRsnAndCompanyRsn
+				{
+					Token = Guid.NewGuid().ToString("N"),
+					DateIssued = DateTime.Now,
+					TimeOfExpiry = DateTime.Now.AddMinutes(20),
+					UserRsn = Guid.NewGuid(),
+					CompanyRsn = Guid.NewGuid()
+				};
+
+			return token;
+		}
+
 		public static IDictionary<Type, object> GetBasicSampleObjects()
 		{
 			var eventCorrelationId = Guid.NewGuid();
 			var correlationId = Guid.NewGuid();
 
-			var authenticationToken = new TSingleSignOnToken
-			{
-				Token = Guid.NewGuid().ToString("N"),
-				DateIssued = DateTime.Now,
-				TimeOfExpiry = DateTime.Now.AddMinutes(20)
-			};
-
 			var sameplEvent = new UserCreatedEvent
 			{
 				CorrelationId = correlationId,
-				AuthenticationToken = authenticationToken,
+				AuthenticationToken = GenerateAuthenticationToken(),
 				EmailAddress = "john@smith.com",
 				Frameworks = new List<string> { "Azure", "Amazon EC2" },
 				Id = Guid.NewGuid(),
@@ -132,15 +183,10 @@ namespace Cqrs.WebApi
 					}
 				},
 				{
-					typeof(IServiceRequestWithData<TSingleSignOnToken, Guid>),
-					new ServiceRequestWithData<TSingleSignOnToken, Guid>
+					typeof(IServiceRequestWithData<TAuthenticationToken, Guid>),
+					new ServiceRequestWithData<TAuthenticationToken, Guid>
 					{
-						AuthenticationToken = new TSingleSignOnToken
-						{
-							Token = Guid.NewGuid().ToString("N"),
-							DateIssued = DateTime.Now,
-							TimeOfExpiry = DateTime.Now.AddMinutes(20)
-						},
+						AuthenticationToken = GenerateAuthenticationToken(),
 						CorrelationId = correlationId,
 						Data = eventCorrelationId
 					}
@@ -171,29 +217,50 @@ namespace Cqrs.WebApi
 			};
 		}
 
-		public static void CreateXmlDocumentation()
+		public static void GenerateAssemblyXmlFileNames()
 		{
-			XmlDocument cqrsDocumentation = new XmlDocument();
-			cqrsDocumentation.Load(HttpContext.Current.Server.MapPath("~/bin/Cqrs.xml"));
+			if (AssemblyXmlFileNames.Any())
+				return;
 
 			string webAssemblyName = Assembly.GetCallingAssembly().FullName;
 			webAssemblyName = webAssemblyName.Substring(0, webAssemblyName.IndexOf(","));
-			XmlDocument finalDocumentation = new XmlDocument();
-			finalDocumentation.Load(HttpContext.Current.Server.MapPath("~/bin/" + webAssemblyName + ".XML"));
-			foreach (XmlNode childNode in cqrsDocumentation.DocumentElement.ChildNodes)
-				finalDocumentation.DocumentElement.AppendChild(finalDocumentation.ImportNode(childNode, true));
+			AssemblyXmlFileNames = new List<string> { webAssemblyName };
+			try
+			{
+				string publicAssemblyName = webAssemblyName.Substring(0, webAssemblyName.Length - ".Domain.Host.Web".Length);
+				AssemblyXmlFileNames.Add(publicAssemblyName);
+			}
+			catch (ArgumentOutOfRangeException) { }
+			try
+			{
+				string domainAssemblyName = webAssemblyName.Substring(0, webAssemblyName.Length - ".Host.Web".Length);
+				AssemblyXmlFileNames.Add(domainAssemblyName);
+			}
+			catch (ArgumentOutOfRangeException) { }
+		}
 
-			string publicAssemblyName = webAssemblyName.Substring(0, webAssemblyName.Length - ".Domain.Host.Web".Length);
-			XmlDocument publicDocumentation = new XmlDocument();
-			publicDocumentation.Load(HttpContext.Current.Server.MapPath("~/bin/" + publicAssemblyName + ".XML"));
-			foreach (XmlNode childNode in publicDocumentation.DocumentElement.ChildNodes)
-				finalDocumentation.DocumentElement.AppendChild(finalDocumentation.ImportNode(childNode, true));
+		public static void CreateXmlDocumentation()
+		{
+			GenerateAssemblyXmlFileNames();
+			var finalDocumentation = new XmlDocument();
+			for (int i = 0; i < AssemblyXmlFileNames.Count; i++)
+			{
+				string assemblyXmlFileName = AssemblyXmlFileNames[i];
 
-			string domainAssemblyName = webAssemblyName.Substring(0, webAssemblyName.Length - ".Host.Web".Length);
-			XmlDocument domainDocumentation = new XmlDocument();
-			domainDocumentation.Load(HttpContext.Current.Server.MapPath("~/bin/" + domainAssemblyName + ".XML"));
-			foreach (XmlNode childNode in domainDocumentation.DocumentElement.ChildNodes)
-				finalDocumentation.DocumentElement.AppendChild(finalDocumentation.ImportNode(childNode, true));
+				XmlDocument documentation = new XmlDocument();
+				if (i == 0)
+				{
+					finalDocumentation.Load(HttpContext.Current.Server.MapPath(string.Format("~/bin/{0}.XML", assemblyXmlFileName)));
+					documentation.Load(HttpContext.Current.Server.MapPath("~/bin/Cqrs.xml"));
+				}
+				else
+				{
+					documentation.Load(HttpContext.Current.Server.MapPath(string.Format("~/bin/{0}.XML", assemblyXmlFileName)));
+				}
+
+				foreach (XmlNode childNode in documentation.DocumentElement.ChildNodes)
+					finalDocumentation.DocumentElement.AppendChild(finalDocumentation.ImportNode(childNode, true));
+			}
 
 			finalDocumentation.Save(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml"));
 		}

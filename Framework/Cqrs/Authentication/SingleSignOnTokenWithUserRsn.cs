@@ -25,7 +25,7 @@ namespace Cqrs.Authentication
 		/// </summary>
 		[Required]
 		[DataMember]
-		Guid UserRsn { get; set; }
+		public Guid UserRsn { get; set; }
 
 		public override string Serialise()
 		{
