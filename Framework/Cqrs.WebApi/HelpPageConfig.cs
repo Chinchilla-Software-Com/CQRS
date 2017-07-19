@@ -242,21 +242,19 @@ namespace Cqrs.WebApi
 		public static void CreateXmlDocumentation()
 		{
 			GenerateAssemblyXmlFileNames();
+			var assemblyXmlFileNames = new List<string>(AssemblyXmlFileNames) {"Cqrs", "Cqrs.WebApi"};
 			var finalDocumentation = new XmlDocument();
-			for (int i = 0; i < AssemblyXmlFileNames.Count; i++)
+			for (int i = 0; i < assemblyXmlFileNames.Count; i++)
 			{
-				string assemblyXmlFileName = AssemblyXmlFileNames[i];
+				string assemblyXmlFileName = assemblyXmlFileNames[i];
 
 				XmlDocument documentation = new XmlDocument();
 				if (i == 0)
 				{
 					finalDocumentation.Load(HttpContext.Current.Server.MapPath(string.Format("~/bin/{0}.XML", assemblyXmlFileName)));
-					documentation.Load(HttpContext.Current.Server.MapPath("~/bin/Cqrs.xml"));
+					continue;
 				}
-				else
-				{
-					documentation.Load(HttpContext.Current.Server.MapPath(string.Format("~/bin/{0}.XML", assemblyXmlFileName)));
-				}
+				documentation.Load(HttpContext.Current.Server.MapPath(string.Format("~/bin/{0}.XML", assemblyXmlFileName)));
 
 				foreach (XmlNode childNode in documentation.DocumentElement.ChildNodes)
 					finalDocumentation.DocumentElement.AppendChild(finalDocumentation.ImportNode(childNode, true));
