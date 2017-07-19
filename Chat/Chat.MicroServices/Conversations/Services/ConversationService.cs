@@ -185,7 +185,10 @@
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
 			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 
-			var responseData = new ServiceResponse();
+			var responseData = new ServiceResponse
+			{
+				State = ServiceResponseStateType.FailedValidation
+			};
 
 			if (string.IsNullOrWhiteSpace(serviceRequest.Data.Name))
 				return CompleteResponse(responseData);

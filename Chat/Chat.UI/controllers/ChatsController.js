@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-window.chatApp.controllers.ChatsController = function ($scope, $filter, $timeout, $location)
+window.chatApp.controllers.ChatsController = function ($scope, $filter, $timeout, $location, authService, modalService)
 {
 	var vm = this;
 
@@ -11,7 +11,7 @@ window.chatApp.controllers.ChatsController = function ($scope, $filter, $timeout
 	vm.reverse = false;
 	vm.searchText = null;
 	vm.cardAnimationClass = '.card-animation';
-
+	vm.correlationId = "";
 
 	//paging
 	vm.totalRecords = 0;
@@ -88,10 +88,72 @@ window.chatApp.controllers.ChatsController = function ($scope, $filter, $timeout
 		$location.path(url);
 	};
 
+	function getConversationByRsn(rsn)
+	{
+		for (var i = 0; i < vm.conversations.length; i++)
+		{
+			var conversation = vm.conversations[i];
+			if (conversation.Rsn === rsn)
+				return conversation;
+		}
+		return null;
+	}
+
+	vm.deleteConversation = function (rsn)
+	{
+		if (!authService.user.isAuthenticated)
+		{
+			$location.path(authService.loginPath + $location.$$path);
+			return;
+		}
+
+		var conversation = getConversationByRsn(rsn);
+
+		var modalOptions = {
+			closeButtonText: 'Cancel',
+			actionButtonText: 'Delete Conversation',
+			headerText: 'Delete ' + conversation.Name + '?',
+			bodyText: 'Are you sure you want to delete this conversation?'
+		};
+
+		modalService.showModal({}, modalOptions).then(function (result)
+		{
+			if (result === 'ok')
+			{
+				window.api.Conversations
+					.DeleteConversation({ "conversationRsn": conversation.Rsn })
+					.done
+					(
+						function (result, textStatus, jqXHR)
+						{
+							vm.correlationId = result.CorrelationId;
+						}
+					)
+					.fail
+					(
+						function (jqXHR, textStatus, errorThrown)
+						{
+							console.error(textStatus, errorThrown);
+						}
+					);
+			}
+		});
+	};
+
 	function init()
 	{
 		getConversations();
 	}
+
+	window.cqrsNotificationHub
+		.GlobalEventHandlers["Chat.MicroServices.Conversations.Events.ConversationDeleted"] =
+		function (event)
+		{
+			if (event.CorrelationId === vm.correlationId)
+				vm.correlationId = "";
+
+			getConversations();
+		};
 
 	init();
 };

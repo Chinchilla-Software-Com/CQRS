@@ -1,7 +1,8 @@
-﻿namespace Chat.RestAPI
+﻿using System.Web.Routing;
+
+namespace Chat.RestAPI
 {
 	using Cqrs.Configuration;
-	using Cqrs.Events;
 	using Cqrs.WebApi;
 	using Cqrs.WebApi.SignalR.Hubs;
 	using System;
@@ -13,7 +14,14 @@
 
 		protected override void ConfigureMvcOrWebApi()
 		{
-			GlobalConfiguration.Configure(WebApiConfig.Register);
+			GlobalConfiguration.Configure
+			(
+				config =>
+				{
+					MvcConfig.Register();
+					WebApiConfig.Register(config);
+				}
+			);
 		}
 
 		protected override void RegisterSignalR(BusRegistrar registrar)

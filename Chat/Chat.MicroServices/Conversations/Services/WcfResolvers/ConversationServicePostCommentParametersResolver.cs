@@ -59,7 +59,7 @@
 
 		public static void RegisterDataContracts()
 		{
-			WcfDataContractResolverConfiguration.Current.RegisterDataContract<IConversationService, ConversationServicePostCommentParametersResolver>("PostCommentParameters");
+			WcfDataContractResolverConfiguration.Current.RegisterDataContract<IConversationService, ConversationServicePostCommentParametersResolver>("PostComment");
 		}
 	}
 }

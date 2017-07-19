@@ -36,7 +36,7 @@
 				return true;
 			}
 
-			if (dataContractType == typeof(IServiceResponseWithResultData<IEnumerable<ConversationSummaryEntity>>))
+			if (dataContractType == typeof(ServiceResponseWithResultData<IEnumerable<ConversationSummaryEntity>>))
 			{
 				XmlDictionary dictionary = new XmlDictionary();
 				typeName = dictionary.Add("ConversationServiceGetResponse");
@@ -91,7 +91,9 @@
 
 		public static void RegisterDataContracts()
 		{
-			WcfDataContractResolverConfiguration.Current.RegisterDataContract<IConversationService, ConversationServiceConversationParametersResolver>("ConversationParameters");
+			WcfDataContractResolverConfiguration.Current.RegisterDataContract<IConversationService, ConversationServiceConversationParametersResolver>("Get");
+			WcfDataContractResolverConfiguration.Current.RegisterDataContract<IConversationService, ConversationServiceConversationParametersResolver>("GetMessages");
+			WcfDataContractResolverConfiguration.Current.RegisterDataContract<IConversationService, ConversationServiceConversationParametersResolver>("DeleteConversation");
 		}
 	}
 }
