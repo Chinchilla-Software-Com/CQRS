@@ -21,6 +21,9 @@
 	[DataContract(Namespace = "https://getcqrs.net/Conversations/1001/")]
 	public class ConversationService : EventService<Guid>, IConversationService
 	{
+		/// <summary>
+		/// Instantiate a new instance of the <see cref="ConversationService"/> class.
+		/// </summary>
 		public ConversationService(IEventStore<Guid> eventStore, ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, IConversationSummaryRepository conversationSummaryRepository, IQueryFactory queryFactory, IMessageRepository messageRepository, ICommandPublisher<Guid> commandPublisher)
 			: base(eventStore, logger, correlationIdHelper, authenticationTokenHelper)
 		{
@@ -247,55 +250,69 @@
 		/// <summary>
 		/// WCF parameters for all operations on a specific conversation.
 		/// </summary>
+		[Serializable]
+		[DataContract(Namespace = "https://getcqrs.net/Conversations/1001/")]
 		public class ConversationParameters
 		{
 			/// <summary>
 			/// The conversation.
 			/// </summary>
-			public Guid ConversationRsn { get;set; }
+			[DataMember]
+			public Guid ConversationRsn { get; set; }
 		}
 
 		/// <summary>
 		/// WCF parameters to post a comment to a conversation.
 		/// </summary>
+		[Serializable]
+		[DataContract(Namespace = "https://getcqrs.net/Conversations/1001/")]
 		public class PostCommentParameters : ConversationParameters
 		{
 			/// <summary>
 			/// The content of the comment being posted.
 			/// </summary>
+			[DataMember]
 			public string Comment { get; set; }
 
 			/// <summary>
 			/// The person who posted the comment, which might be different from the logged in user if you have permission to post of other people behalf.
 			/// </summary>
+			[DataMember]
 			public Guid UserRsn { get; set; }
 
 			/// <summary>
 			/// The name of the person who posted the comment, which might be different from the logged in user if you have permission to post of other people behalf.
 			/// </summary>
+			[DataMember]
 			public string UserName { get; set; }
 		}
 
 		/// <summary>
 		/// WCF parameters to start a new conversation.
 		/// </summary>
+		[Serializable]
+		[DataContract(Namespace = "https://getcqrs.net/Conversations/1001/")]
 		public class StartConversationParameters
 		{
 			/// <summary>
 			/// The name of the conversation.
 			/// </summary>
+			[DataMember]
 			public string Name { get; set; }
 		}
 
 		/// <summary>
 		/// WCF parameters to update an existing conversation.
 		/// </summary>
+		[Serializable]
+		[DataContract(Namespace = "https://getcqrs.net/Conversations/1001/")]
 		public class UpdateConversationParameters : StartConversationParameters
 		{
 			/// <summary>
 			/// The conversation to update.
 			/// </summary>
-			public Guid ConversationRsn { get;set; }
+			[DataMember]
+			public Guid ConversationRsn { get; set; }
 		}
 	}
 }

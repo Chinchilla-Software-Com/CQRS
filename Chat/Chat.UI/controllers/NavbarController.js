@@ -7,6 +7,12 @@ window.chatApp.controllers.NavbarController = function ($scope, $location, $root
 
 	vm.isCollapsed = false;
 	vm.appTitle = appTitle;
+	vm.showWcfEndpoints = false;
+
+	vm.toggleSubmenu = function ()
+	{
+		vm.showWcfEndpoints = !vm.showWcfEndpoints;
+	}
 
 	vm.highlight = function (path)
 	{

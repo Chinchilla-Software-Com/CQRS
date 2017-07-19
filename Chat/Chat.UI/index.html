@@ -34,7 +34,13 @@
 						<li><a href="chats">Chats</a></li>
 						<li><a href="about">About</a></li>
 						<li><a href="../RestAPI/Help">API Documentation</a></li>
-						<li><a href="../WcfApi/Conversations/ConversationService.svc">Wcf Documentation</a></li>
+						<li>
+							<a href="#" data-ng-click="vm.toggleSubmenu()">Wcf Documentation</a>
+							<ul class="nav" data-ng-class="{'sub-menu-opened' : vm.showWcfEndpoints, 'sub-menu-closed' : !vm.showWcfEndpoints}">
+								<li data-ng-click="vm.toggleSubmenu()"><a href="../WcfApi/Authentication/AuthenticationService.svc">Authentication</a></li>
+								<li data-ng-click="vm.toggleSubmenu()"><a href="../WcfApi/Conversations/ConversationService.svc">Conversations</a></li>
+							</ul>
+						</li>
 						<li><a href="about">About</a></li>
 						<li id="nav-login" data-ng-click="vm.loginOrOut()">
 							<!-- href not used but needed to compare against path in menu-highlighter -->

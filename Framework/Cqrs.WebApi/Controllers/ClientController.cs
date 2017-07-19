@@ -18,11 +18,14 @@ using Cqrs.Configuration;
 namespace Cqrs.WebApi.Controllers
 {
 	/// <summary>
-	/// A WebAPI RESTful service that provide a 'no configuration required' javascript client ready for developers to use.
+	/// A WebAPI RESTful service that provide a 'no configuration required' java-script client ready for developers to use.
 	/// </summary>
 	[RoutePrefix("Client")]
 	public class ClientController : ApiController
 	{
+		/// <summary>
+		/// A java-script file with a 'no configuration required' java-script client
+		/// </summary>
 		[Route("")]
 		[HttpGet]
 		public virtual HttpResponseMessage Index()
@@ -215,4 +218,3 @@ $.each(window.api.metadata, function (i, action)
 		}
 	}
 }
-
