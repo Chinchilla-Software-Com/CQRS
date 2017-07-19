@@ -42,12 +42,12 @@
 				<div class="col-sm-6 col-md-4 col-lg-3" data-ng-class="vm.cardAnimationClass"
 					 data-ng-repeat="conversation in vm.filteredConversations | orderBy:'Name'">
 					<div class="card">
-						<button class="btn close cardClose" title="Delete Customer" data-ng-click="vm.deleteCustomer(conversation.Rsn)">&times;</button>
+						<button class="btn close cardClose" title="Delete Conversation" data-ng-click="vm.deleteConversation(conversation.Rsn)">&times;</button>
 						<div class="cardHeader"><a href="/Chat/UI/chat/edit/{{conversation.Rsn}}" class="white">{{ conversation.Name }} <i class="icon-edit icon-white editIcon"></i></a></div>
 						<div class="cardBody">
 							<div class="clearfix">
 								<div class="pull-left cardBodyLeft">
-									<a href="/Chat/UI/chat/edit/{{conversation.Rsn}}" class="white"><img data-ng-src="Content/images/{{(customer.gender || 'male') | lowercase}}.png" class="cardImage" /></a>
+									<a href="/Chat/UI/chat/edit/{{conversation.Rsn}}" class="white"><img data-ng-src="Content/images/{{(conversation.gender || 'male') | lowercase}}.png" class="cardImage" /></a>
 								</div>
 								<div class="pull-left cardBodyRight">
 									<div class="cardBodyContent">{{conversation.LastUpdatedDate | date }}</div>
@@ -80,7 +80,7 @@
 							</thead>
 							<tbody>
 								<tr data-ng-repeat="conversation in vm.filteredConversations | orderBy:vm.orderby:vm.reverse" class="repeat-animation">
-									<td><a href="/Chat/UI/chat/edit/{{conversation.Rsn}}"><img data-ng-src="Content/images/{{(conversation.gender || 'male') | lowercase}}.png" class="cardImage" alt="Customer Image" /></a></td>
+									<td><a href="/Chat/UI/chat/edit/{{conversation.Rsn}}"><img data-ng-src="Content/images/{{(conversation.gender || 'male') | lowercase}}.png" class="cardImage" alt="Conversation Image" /></a></td>
 									<td><a href="/Chat/UI/chat/edit/{{conversation.Rsn}}">{{conversation.Name }}</a></td>
 									<td>{{conversation.LastUpdatedDate | date}}</td>
 									<td>
@@ -91,7 +91,7 @@
 											</span>
 										</a>
 									</td>
-									<td><button class="btn btn-danger" data-ng-click="vm.deleteCustomer(customer.id)">Delete</button></td>
+									<td><button class="btn btn-danger" data-ng-click="vm.deleteConversation(conversation.Rsn)">Delete</button></td>
 								</tr>
 							</tbody>
 						</table>

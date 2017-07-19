@@ -17,6 +17,9 @@ namespace Chat.RestAPI.Controllers
 	using System.Net.Http.Headers;
 	using System.Web.Http;
 
+	/// <summary>
+	/// A WebAPI RESTful service for validating user credential.
+	/// </summary>
 	[RoutePrefix("Authentication")]
 	public class AuthenticationController : CqrsApiController<Guid>
 	{
@@ -34,6 +37,12 @@ namespace Chat.RestAPI.Controllers
 
 		protected IAuthenticationHashHelper AuthenticationHashHelper { get; private set; }
 
+		/// <summary>
+		/// Validate the provided <paramref name="userLogin">credentials</paramref> are valid.
+		/// This also sets the users id into a <see cref="CookieHeaderValue"/> named after the value of the application settings "Cqrs.Web.AuthenticationTokenName"
+		/// </summary>
+		/// <param name="userLogin">The user credentials to validate.</param>
+		/// <returns>The users id.</returns>
 		[Route("Login")]
 		[HttpPost]
 		public HttpResponseMessage Login(UserLogin userLogin)
@@ -64,7 +73,8 @@ namespace Chat.RestAPI.Controllers
 				return response;
 
 			// Copy encrypted auth token to X-Token for SignalR
-			var cookie = new CookieHeaderValue("X-Token", responseData.ResultData.Value.ToString("N"))
+			string authenticationTokenName = DependencyResolver.Current.Resolve<IConfigurationManager>().GetSetting("Cqrs.Web.AuthenticationTokenName") ?? "X-Token";
+			var cookie = new CookieHeaderValue(authenticationTokenName, responseData.ResultData.Value.ToString("N"))
 			{
 				Expires = DateTimeOffset.Now.AddDays(1),
 			};
@@ -73,6 +83,9 @@ namespace Chat.RestAPI.Controllers
 			return response;
 		}
 
+		/// <summary>
+		/// Clears the value of the <see cref="CookieHeaderValue"/> named after the value of the application settings "Cqrs.Web.AuthenticationTokenName".
+		/// </summary>
 		[Route("Logout")]
 		[HttpDelete]
 		public HttpResponseMessage Logout()
@@ -86,7 +99,8 @@ namespace Chat.RestAPI.Controllers
 			HttpResponseMessage response = CompleteResponse(responseData);
 
 			// Clear encrypted auth token from the UI
-			var cookie = new CookieHeaderValue("X-Token", string.Empty)
+			string authenticationTokenName = DependencyResolver.Current.Resolve<IConfigurationManager>().GetSetting("Cqrs.Web.AuthenticationTokenName") ?? "X-Token";
+			var cookie = new CookieHeaderValue(authenticationTokenName, string.Empty)
 			{
 				Expires = DateTimeOffset.Now,
 			};
