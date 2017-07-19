@@ -1,10 +1,9 @@
-﻿using Cqrs.Configuration;
-
-namespace Chat.RestAPI.Controllers
+﻿namespace Chat.RestAPI.Controllers
 {
 	using cdmdotnet.Logging;
 	using Cqrs.Authentication;
 	using Cqrs.Commands;
+	using Cqrs.Configuration;
 	using Cqrs.Repositories.Queries;
 	using Cqrs.Services;
 	using Cqrs.WebApi;

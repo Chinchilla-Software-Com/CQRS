@@ -1,15 +1,21 @@
 ﻿namespace Chat.MicroServices.Authentication.Services
 {
-	using Cqrs.Services;
-	using Entities;
 	using System;
+	using System.ServiceModel;
+	using Cqrs.Services;
 
-	public interface IAuthenticationService
+	/// <summary>
+	/// A WCF contract for accessing and modifying credentials.
+	/// </summary>
+	[ServiceContract(Namespace = "https://getcqrs.net/Authentication/1001/")]
+	public interface IAuthenticationService : IEventService<Guid>
 	{
 		/// <summary>
-		/// Validate the provided <paramref name="emailAddress"/> and <paramref name="password"/> match a valid set of credentials
+		/// Validate the provided <paramref name="serviceRequest">credentials</paramref> are valid.
 		/// </summary>
-		/// <returns>The <see cref="UserEntity.Rsn"/></returns>
-		IServiceResponseWithResultData<Guid?> ValidateCredentials(string emailAddress, string password);
+		/// <param name="serviceRequest">The user credentials to validate.</param>
+		/// <returns>The users identifier.</returns>
+		[OperationContract]
+		IServiceResponseWithResultData<Guid?> Login(IServiceRequestWithData<Guid, AuthenticationService.LoginParameters> serviceRequest);
 	}
 }

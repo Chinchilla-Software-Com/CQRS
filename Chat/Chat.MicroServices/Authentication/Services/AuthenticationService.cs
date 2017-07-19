@@ -1,58 +1,99 @@
 ﻿namespace Chat.MicroServices.Authentication.Services
 {
+	using System;
+	using System.Runtime.Serialization;
+	using cdmdotnet.Logging;
+	using Cqrs.Authentication;
+	using Cqrs.Commands;
+	using Cqrs.Events;
 	using Cqrs.Repositories.Queries;
 	using Cqrs.Services;
 	using Entities;
+	using Helpers;
 	using Repositories;
 	using Repositories.Queries.Strategies;
-	using System;
-	using System.Security.Cryptography;
-	using System.Text;
 
-	public class AuthenticationService : IAuthenticationService
+	/// <summary>
+	/// A WCF service for accessing and modifying credentials.
+	/// </summary>
+	[DataContract(Namespace = "https://getcqrs.net/Authentication/1001/")]
+	public class AuthenticationService : EventService<Guid>, IAuthenticationService
 	{
-		public AuthenticationService(ICredentialRepository credentialRepository, IQueryFactory queryFactory)
+		/// <summary>
+		/// Instantiate a new instance of the <see cref="AuthenticationService"/> class.
+		/// </summary>
+		public AuthenticationService(IEventStore<Guid> eventStore, ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, IQueryFactory queryFactory, ICredentialRepository credentialRepository, IAuthenticationHashHelper authenticationHashHelper, ICommandPublisher<Guid> commandPublisher)
+			: base(eventStore, logger, correlationIdHelper, authenticationTokenHelper)
 		{
 			CredentialRepository = credentialRepository;
 			QueryFactory = queryFactory;
+			AuthenticationHashHelper = authenticationHashHelper;
+			CommandPublisher = commandPublisher;
 		}
 
 		protected ICredentialRepository CredentialRepository { get; private set; }
 
 		protected IQueryFactory QueryFactory { get; private set; }
 
+		protected IAuthenticationHashHelper AuthenticationHashHelper { get; private set; }
+
+		protected ICommandPublisher<Guid> CommandPublisher { get; private set; }
+
 		/// <summary>
-		/// Validate the provided <paramref name="emailAddress"/> and <paramref name="password"/> match a valid set of credentials
+		/// Validate the provided <paramref name="serviceRequest">credentials</paramref> are valid.
 		/// </summary>
-		/// <returns>The <see cref="UserEntity.Rsn"/></returns>
-		public virtual IServiceResponseWithResultData<Guid?> ValidateCredentials(string emailAddress, string password)
+		/// <param name="serviceRequest">The user credentials to validate.</param>
+		/// <returns>The users identifier.</returns>
+		public virtual IServiceResponseWithResultData<Guid?> Login(IServiceRequestWithData<Guid, LoginParameters> serviceRequest)
 		{
+			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
+
+			var userLogin = serviceRequest.Data;
+
+			if (userLogin == null || string.IsNullOrEmpty(userLogin.EmailAddress) || string.IsNullOrEmpty(userLogin.Password))
+				return CompleteResponse(new ServiceResponseWithResultData<Guid?> { State = ServiceResponseStateType.FailedValidation });
+
 			// Define Query
 			ISingleResultQuery<CredentialQueryStrategy, CredentialEntity> query = QueryFactory.CreateNewSingleResultQuery<CredentialQueryStrategy, CredentialEntity>();
 
-			string hash = GenerateCredentialHash(emailAddress, password);
+			string hash = AuthenticationHashHelper.GenerateCredentialHash(userLogin.EmailAddress, userLogin.Password);
 			query.QueryStrategy.WithHash(hash);
 
 			// Retrieve Data
 			query = CredentialRepository.Retrieve(query, false);
 			CredentialEntity queryResults = query.Result;
 
-			return new ServiceResponseWithResultData<Guid?>
+			var responseData = new ServiceResponseWithResultData<Guid?>
 			{
 				State = queryResults == null ? ServiceResponseStateType.FailedAuthentication : ServiceResponseStateType.Succeeded,
 				ResultData = queryResults == null ? (Guid?)null : queryResults.UserRsn
 			};
+
+			// Complete the response
+			ServiceResponseWithResultData<Guid?> response = CompleteResponse(responseData);
+
+			return response;
 		}
 
-		private const string Salt1 = "a6f723b251304867bdada865f4d93694";
-		private const string Salt2 = "b71a8bc00f1d41fb804921febac180d2";
-
-		internal virtual string GenerateCredentialHash(string emailAddress, string password)
+		/// <summary>
+		/// WCF parameters to validate credentials.
+		/// </summary>
+		[Serializable]
+		[DataContract(Namespace = "https://getcqrs.net/Authentication/1001/")]
+		public class LoginParameters
 		{
-			SHA512 sha512 = SHA512.Create();
-			byte[] bytes = Encoding.UTF8.GetBytes(string.Format("{0}::{1}::{2}::{3}", Salt1, emailAddress, Salt2, password));
-			byte[] hash = sha512.ComputeHash(bytes);
-			return Encoding.UTF8.GetString(hash);
+			/// <summary>
+			/// The user's email address
+			/// </summary>
+			[DataMember]
+			public string EmailAddress { get; set; }
+
+			/// <summary>
+			/// The user's password
+			/// </summary>
+			[DataMember]
+			public string Password { get; set; }
 		}
 	}
 }
