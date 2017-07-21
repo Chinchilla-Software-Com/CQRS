@@ -1,0 +1,4 @@
+var namespaceCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories =
+[
+    [ "TestAzureDocumentDbDataStoreConnectionStringFactory", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories_1_1TestAzureDocumentDbDataStoreConnectionStringFactory.html", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories_1_1TestAzureDocumentDbDataStoreConnectionStringFactory" ]
+];
