@@ -17,7 +17,6 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Net;
-	using System.Net.Http;
 	using System.Web.Http;
 
 	/// <summary>
@@ -51,7 +50,7 @@
 		/// </summary>
 		[Route("")]
 		[HttpGet]
-		public virtual HttpResponseMessage Get()
+		public virtual HttpResponseMessage<ServiceResponseWithResultData<IEnumerable<ConversationSummaryEntity>>> Get()
 		{
 			// Define Query
 			ICollectionResultQuery<ConversationSummaryQueryStrategy, ConversationSummaryEntity> query = QueryFactory.CreateNewCollectionResultQuery<ConversationSummaryQueryStrategy, ConversationSummaryEntity>();
@@ -69,7 +68,7 @@
 			};
 
 			// Complete the response
-			HttpResponseMessage response = CompleteResponse(responseData);
+			HttpResponseMessage<ServiceResponseWithResultData<IEnumerable<ConversationSummaryEntity>>> response = CompleteResponseWithData(responseData);
 
 			return response;
 		}
@@ -80,7 +79,7 @@
 		/// <param name="conversationRsn">The conversation to get message for.</param>
 		[Route("{conversationRsn:guid}/messages")]
 		[HttpGet]
-		public virtual HttpResponseMessage GetMessages(Guid conversationRsn)
+		public virtual HttpResponseMessage<ServiceResponseWithResultData<IEnumerable<MessageEntity>>> GetMessages(Guid conversationRsn)
 		{
 			// Define Query
 			ICollectionResultQuery<MessageQueryStrategy, MessageEntity> query = QueryFactory.CreateNewCollectionResultQuery<MessageQueryStrategy, MessageEntity>();
@@ -99,7 +98,7 @@
 			};
 
 			// Complete the response
-			HttpResponseMessage response = CompleteResponse(responseData);
+			HttpResponseMessage<ServiceResponseWithResultData<IEnumerable<MessageEntity>>> response = CompleteResponseWithData(responseData);
 
 			if (!queryResults.Any())
 				response.StatusCode = HttpStatusCode.NotFound;
@@ -114,7 +113,7 @@
 		/// <param name="comment">The content of the comment being posted.</param>
 		[Route("{conversationRsn:guid}/messages")]
 		[HttpPost]
-		public virtual HttpResponseMessage PostComment(Guid conversationRsn, [FromBody]string comment)
+		public virtual HttpResponseMessage<ServiceResponse> PostComment(Guid conversationRsn, [FromBody]string comment)
 		{
 			var responseData = new ServiceResponse
 			{
@@ -122,7 +121,7 @@
 			};
 
 			if (string.IsNullOrWhiteSpace(comment))
-				return CompleteResponse(responseData);
+				return CompleteResponseWithData(responseData);
 
 			string userName;
 			try
@@ -132,7 +131,7 @@
 			catch (InvalidOperationException)
 			{
 				responseData.State = ServiceResponseStateType.FailedAuthentication;
-				return CompleteResponse(responseData);
+				return CompleteResponseWithData(responseData);
 			}
 
 			var command = new PostComment
@@ -155,7 +154,7 @@
 			}
 
 			// Complete the response
-			return CompleteResponse(responseData);
+			return CompleteResponseWithData(responseData);
 		}
 
 		/// <summary>
@@ -164,7 +163,7 @@
 		/// <param name="name">The name of the conversation to start</param>
 		[Route("")]
 		[HttpPut]
-		public virtual HttpResponseMessage StartConversation([FromBody]string name)
+		public virtual HttpResponseMessage<ServiceResponse> StartConversation([FromBody]string name)
 		{
 			var responseData = new ServiceResponse
 			{
@@ -172,7 +171,7 @@
 			};
 
 			if (string.IsNullOrWhiteSpace(name))
-				return CompleteResponse(responseData);
+				return CompleteResponseWithData(responseData);
 
 			var command = new StartConversation
 			{
@@ -191,7 +190,7 @@
 			}
 
 			// Complete the response
-			return CompleteResponse(responseData);
+			return CompleteResponseWithData(responseData);
 		}
 
 		/// <summary>
@@ -201,12 +200,12 @@
 		/// <param name="name">The new name of the conversation</param>
 		[Route("{conversationRsn:guid}")]
 		[HttpPatch]
-		public virtual HttpResponseMessage UpdateConversation(Guid conversationRsn, [FromBody]string name)
+		public virtual HttpResponseMessage<ServiceResponse> UpdateConversation(Guid conversationRsn, [FromBody]string name)
 		{
 			var responseData = new ServiceResponse();
 
 			if (string.IsNullOrWhiteSpace(name))
-				return CompleteResponse(responseData);
+				return CompleteResponseWithData(responseData);
 
 			var command = new UpdateConversation
 			{
@@ -226,7 +225,7 @@
 			}
 
 			// Complete the response
-			return CompleteResponse(responseData);
+			return CompleteResponseWithData(responseData);
 		}
 
 		/// <summary>
@@ -235,7 +234,7 @@
 		/// <param name="conversationRsn">The conversation to delete.</param>
 		[Route("{conversationRsn:guid}")]
 		[HttpDelete]
-		public virtual HttpResponseMessage DeleteConversation(Guid conversationRsn)
+		public virtual HttpResponseMessage<ServiceResponse> DeleteConversation(Guid conversationRsn)
 		{
 			var responseData = new ServiceResponse();
 
@@ -256,7 +255,7 @@
 			}
 
 			// Complete the response
-			return CompleteResponse(responseData);
+			return CompleteResponseWithData(responseData);
 		}
 	}
 }
