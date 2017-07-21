@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Web.Http;
@@ -113,6 +114,9 @@ namespace Chat.RestAPI.Areas.HelpPage.ModelDescriptions
 			{
 				throw new ArgumentNullException("modelType");
 			}
+
+			if (modelType.IsGenericType && typeof (Cqrs.WebApi.HttpResponseMessage<>).IsAssignableFrom(modelType.GetGenericTypeDefinition()))
+				modelType = modelType.GetGenericArguments().Single();
 
 			Type underlyingType = Nullable.GetUnderlyingType(modelType);
 			if (underlyingType != null)
@@ -333,6 +337,7 @@ namespace Chat.RestAPI.Areas.HelpPage.ModelDescriptions
 
 			GeneratedModels.Add(complexModelDescription.Name, complexModelDescription);
 			bool hasDataContractAttribute = modelType.GetCustomAttribute<DataContractAttribute>() != null;
+
 			PropertyInfo[] properties = modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 			foreach (PropertyInfo property in properties)
 			{

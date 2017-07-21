@@ -29,9 +29,9 @@ namespace Chat.RestAPI.Areas.HelpPage
 			ActionSamples = new Dictionary<HelpPageSampleKey, object>();
 			SampleObjects = new Dictionary<Type, object>();
 			SampleObjectFactories = new List<Func<HelpPageSampleGenerator, Type, object>>
-            {
-                DefaultSampleObjectFactory,
-            };
+			{
+				DefaultSampleObjectFactory,
+			};
 		}
 
 		/// <summary>
@@ -109,7 +109,8 @@ namespace Chat.RestAPI.Areas.HelpPage
 
 			// Do the sample generation based on formatters only if an action doesn't return an HttpResponseMessage.
 			// Here we cannot rely on formatters because we don't know what's in the HttpResponseMessage, it might not even use formatters.
-			if (type != null && !typeof(HttpResponseMessage).IsAssignableFrom(type))
+			// BUT if it does return HttpResponseMessage<TData>, then we can handle this.
+			if (type != null && (!typeof(HttpResponseMessage).IsAssignableFrom(type) || (type.IsGenericType && typeof(Cqrs.WebApi.HttpResponseMessage<>).IsAssignableFrom(type.GetGenericTypeDefinition()))))
 			{
 				object sampleObject = GetSampleObject(type);
 				foreach (var formatter in formatters)
@@ -304,6 +305,9 @@ namespace Chat.RestAPI.Areas.HelpPage
 				if (formatter.CanWriteType(type))
 				{
 					ms = new MemoryStream();
+					// Get the TData in HttpResponseMessage<TData>
+					if (type.IsGenericType && typeof(Cqrs.WebApi.HttpResponseMessage<>).IsAssignableFrom(type.GetGenericTypeDefinition()))
+						type = type.GetGenericArguments().Single();
 					content = new ObjectContent(type, value, formatter, mediaType);
 					formatter.WriteToStreamAsync(type, value, ms, content, null).Wait();
 					ms.Position = 0;

@@ -110,12 +110,10 @@ namespace Cqrs.WebApi
 			return default(DateTime);
 		}
 
-		protected virtual HttpResponseMessage CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
+		protected virtual HttpResponseMessage CompleteResponse<TServiceResponse>(HttpResponseMessage response, TServiceResponse serviceResponse)
 			where TServiceResponse : IServiceResponse
 		{
 			serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-
-			var response = new HttpResponseMessage();
 
 			HttpConfiguration configuration = Request.GetConfiguration();
 			var contentNegotiator = configuration.Services.GetContentNegotiator();
@@ -150,6 +148,24 @@ namespace Cqrs.WebApi
 					response.StatusCode = HttpStatusCode.Ambiguous;
 					break;
 			}
+
+			return response;
+		}
+
+		protected virtual HttpResponseMessage CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
+			where TServiceResponse : IServiceResponse
+		{
+			var response = new HttpResponseMessage();
+
+			return CompleteResponse(response, serviceResponse);
+		}
+
+		protected virtual HttpResponseMessage<TServiceResponse> CompleteResponseWithData<TServiceResponse>(TServiceResponse serviceResponse)
+			where TServiceResponse : IServiceResponse
+		{
+			var response = new HttpResponseMessage<TServiceResponse>();
+
+			CompleteResponse(response, serviceResponse);
 
 			return response;
 		}

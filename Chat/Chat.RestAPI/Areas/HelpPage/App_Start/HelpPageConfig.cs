@@ -5,10 +5,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
-using Cqrs.Authentication;
+using Cqrs.Services;
 
 #if Handle_PageResultOfT
 using System.Web.Http.OData;
@@ -45,15 +46,18 @@ namespace Chat.RestAPI.Areas.HelpPage
 			//// Uncomment the following to use "sample string" as the sample for all actions that have string as the body parameter or return type.
 			//// Also, the string arrays will be used for IEnumerable<string>. The sample objects will be serialized into different media type 
 			//// formats by the available formatters.
+			config.SetSampleObjects(SampleObjects);
 			//config.SetSampleObjects(new Dictionary<Type, object>
 			//{
 			//    {typeof(string), "sample string"},
 			//    {typeof(IEnumerable<string>), new string[]{"sample 1", "sample 2"}}
 			//});
 
+
 			// Extend the following to provide factories for types not handled automatically (those lacking parameterless
 			// constructors) or for which you prefer to use non-default property values. Line below provides a fallback
 			// since automatic handling will fail and GeneratePageResult handles only a single type.
+			config.GetHelpPageSampleGenerator().SampleObjectFactories.Insert(0, GenerateHttpResponseMessage);
 #if Handle_PageResultOfT
 			config.GetHelpPageSampleGenerator().SampleObjectFactories.Add(GeneratePageResult);
 #endif
@@ -84,6 +88,19 @@ namespace Chat.RestAPI.Areas.HelpPage
 			//// Uncomment the following to correct the sample response when the action returns an HttpResponseMessage with ObjectContent<string>.
 			//// The sample will be generated as if the controller named "Values" and action named "Post" were returning a string.
 			//config.SetActualResponseType(typeof(string), "Values", "Post");
+		}
+
+		private static object GenerateHttpResponseMessage(HelpPageSampleGenerator sampleGenerator, Type type)
+		{
+			if (type.IsGenericType)
+			{
+				Type openGenericType = type.GetGenericTypeDefinition();
+				// Get the TData in HttpResponseMessage<TData>
+				if (typeof(Cqrs.WebApi.HttpResponseMessage<>).IsAssignableFrom(openGenericType))
+					return sampleGenerator.GetSampleObject(type.GetGenericArguments().Single());
+			}
+
+			return null;
 		}
 
 #if Handle_PageResultOfT
