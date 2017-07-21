@@ -1,0 +1,108 @@
+\hypertarget{classCqrs_1_1Domain_1_1AggregateRoot}{}\section{Cqrs.\+Domain.\+Aggregate\+Root$<$ T\+Authentication\+Token $>$ Class Template Reference}
+\label{classCqrs_1_1Domain_1_1AggregateRoot}\index{Cqrs.\+Domain.\+Aggregate\+Root$<$ T\+Authentication\+Token $>$@{Cqrs.\+Domain.\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}}
+
+
+A larger unit of encapsulation than just a class. Every transaction is scoped to a single aggregate. The lifetimes of the components of an aggregate are bounded by the lifetime of the entire aggregate.  
+
+
+Inheritance diagram for Cqrs.\+Domain.\+Aggregate\+Root$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.822126cm]{classCqrs_1_1Domain_1_1AggregateRoot}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot_a625e885ec7885a686f729ed1efe3a8fa_a625e885ec7885a686f729ed1efe3a8fa}{Get\+Uncommitted\+Changes} ()
+\item 
+virtual void \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot_adab968b830e186cb832583910bf6f3a6_adab968b830e186cb832583910bf6f3a6}{Mark\+Changes\+As\+Committed} ()
+\item 
+virtual void \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot_aec873ad6e4c98309cad2d9f1c534aebb_aec873ad6e4c98309cad2d9f1c534aebb}{Load\+From\+History} (I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ history)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCqrs_1_1Domain_1_1AggregateRoot_a1db2322dd7442e1e0c3c07332124eb2f_a1db2322dd7442e1e0c3c07332124eb2f}{Aggregate\+Root} ()
+\item 
+virtual void \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot_a7e299b13c7556731e52670aa6d782296_a7e299b13c7556731e52670aa6d782296}{Apply\+Change} (\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @event)
+\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+Guid \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot_ab84d521c8c3bffd3c2e58959984d1e88_ab84d521c8c3bffd3c2e58959984d1e88}{Id}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
+\item 
+int \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot_a15f351663975c1d8e2cdc37b8c4d970f_a15f351663975c1d8e2cdc37b8c4d970f}{Version}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A larger unit of encapsulation than just a class. Every transaction is scoped to a single aggregate. The lifetimes of the components of an aggregate are bounded by the lifetime of the entire aggregate. 
+
+Concretely, an aggregate will handle commands, apply events, and have a state model encapsulated within it that allows it to implement the required command validation, thus upholding the invariants (business rules) of the aggregate. 
+
+Why is the use of G\+U\+ID as I\+Ds a good practice?
+
+Because they are (reasonably) globally unique, and can be generated either by the server or by the client. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1AggregateRoot_a1db2322dd7442e1e0c3c07332124eb2f_a1db2322dd7442e1e0c3c07332124eb2f}\label{classCqrs_1_1Domain_1_1AggregateRoot_a1db2322dd7442e1e0c3c07332124eb2f_a1db2322dd7442e1e0c3c07332124eb2f}} 
+\index{Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}!Aggregate\+Root@{Aggregate\+Root}}
+\index{Aggregate\+Root@{Aggregate\+Root}!Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}}
+\subsubsection{\texorpdfstring{Aggregate\+Root()}{AggregateRoot()}}
+{\footnotesize\ttfamily \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot}{Cqrs.\+Domain.\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Domain_1_1AggregateRoot}{Aggregate\+Root} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1AggregateRoot_a7e299b13c7556731e52670aa6d782296_a7e299b13c7556731e52670aa6d782296}\label{classCqrs_1_1Domain_1_1AggregateRoot_a7e299b13c7556731e52670aa6d782296_a7e299b13c7556731e52670aa6d782296}} 
+\index{Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}!Apply\+Change@{Apply\+Change}}
+\index{Apply\+Change@{Apply\+Change}!Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}}
+\subsubsection{\texorpdfstring{Apply\+Change()}{ApplyChange()}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot}{Cqrs.\+Domain.\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$.Apply\+Change (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1AggregateRoot_a625e885ec7885a686f729ed1efe3a8fa_a625e885ec7885a686f729ed1efe3a8fa}\label{classCqrs_1_1Domain_1_1AggregateRoot_a625e885ec7885a686f729ed1efe3a8fa_a625e885ec7885a686f729ed1efe3a8fa}} 
+\index{Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}!Get\+Uncommitted\+Changes@{Get\+Uncommitted\+Changes}}
+\index{Get\+Uncommitted\+Changes@{Get\+Uncommitted\+Changes}!Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}}
+\subsubsection{\texorpdfstring{Get\+Uncommitted\+Changes()}{GetUncommittedChanges()}}
+{\footnotesize\ttfamily I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot}{Cqrs.\+Domain.\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$.Get\+Uncommitted\+Changes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_a22fda414613f5ac0d4371554d7d6473b_a22fda414613f5ac0d4371554d7d6473b}{Cqrs.\+Domain.\+I\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1AggregateRoot_aec873ad6e4c98309cad2d9f1c534aebb_aec873ad6e4c98309cad2d9f1c534aebb}\label{classCqrs_1_1Domain_1_1AggregateRoot_aec873ad6e4c98309cad2d9f1c534aebb_aec873ad6e4c98309cad2d9f1c534aebb}} 
+\index{Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}!Load\+From\+History@{Load\+From\+History}}
+\index{Load\+From\+History@{Load\+From\+History}!Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}}
+\subsubsection{\texorpdfstring{Load\+From\+History()}{LoadFromHistory()}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot}{Cqrs.\+Domain.\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$.Load\+From\+History (\begin{DoxyParamCaption}\item[{I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{history }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_afe9329ee26ae68613059189ca64dfe60_afe9329ee26ae68613059189ca64dfe60}{Cqrs.\+Domain.\+I\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1AggregateRoot_adab968b830e186cb832583910bf6f3a6_adab968b830e186cb832583910bf6f3a6}\label{classCqrs_1_1Domain_1_1AggregateRoot_adab968b830e186cb832583910bf6f3a6_adab968b830e186cb832583910bf6f3a6}} 
+\index{Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}!Mark\+Changes\+As\+Committed@{Mark\+Changes\+As\+Committed}}
+\index{Mark\+Changes\+As\+Committed@{Mark\+Changes\+As\+Committed}!Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}}
+\subsubsection{\texorpdfstring{Mark\+Changes\+As\+Committed()}{MarkChangesAsCommitted()}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot}{Cqrs.\+Domain.\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$.Mark\+Changes\+As\+Committed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_af31116870bbf6566b3eec0b8bc02c6de_af31116870bbf6566b3eec0b8bc02c6de}{Cqrs.\+Domain.\+I\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}.
+
+
+
+\subsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1AggregateRoot_ab84d521c8c3bffd3c2e58959984d1e88_ab84d521c8c3bffd3c2e58959984d1e88}\label{classCqrs_1_1Domain_1_1AggregateRoot_ab84d521c8c3bffd3c2e58959984d1e88_ab84d521c8c3bffd3c2e58959984d1e88}} 
+\index{Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}!Id@{Id}}
+\index{Id@{Id}!Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}}
+\subsubsection{\texorpdfstring{Id}{Id}}
+{\footnotesize\ttfamily Guid \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot}{Cqrs.\+Domain.\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$.Id\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected set]}}
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1AggregateRoot_a15f351663975c1d8e2cdc37b8c4d970f_a15f351663975c1d8e2cdc37b8c4d970f}\label{classCqrs_1_1Domain_1_1AggregateRoot_a15f351663975c1d8e2cdc37b8c4d970f_a15f351663975c1d8e2cdc37b8c4d970f}} 
+\index{Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}!Version@{Version}}
+\index{Version@{Version}!Cqrs\+::\+Domain\+::\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+Aggregate\+Root}}
+\subsubsection{\texorpdfstring{Version}{Version}}
+{\footnotesize\ttfamily int \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot}{Cqrs.\+Domain.\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$.Version\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected set]}}
+
