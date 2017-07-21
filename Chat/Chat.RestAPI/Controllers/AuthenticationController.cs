@@ -44,10 +44,10 @@
 		/// <returns>The users id.</returns>
 		[Route("Login")]
 		[HttpPost]
-		public HttpResponseMessage Login(UserLogin userLogin)
+		public HttpResponseMessage<ServiceResponseWithResultData<Guid?>> Login(UserLogin userLogin)
 		{
 			if (userLogin == null || string.IsNullOrEmpty(userLogin.EmailAddress) || string.IsNullOrEmpty(userLogin.Password))
-				return CompleteResponse(new ServiceResponseWithResultData<Guid?> { State = ServiceResponseStateType.FailedValidation });
+				return CompleteResponseWithData(new ServiceResponseWithResultData<Guid?> { State = ServiceResponseStateType.FailedValidation });
 			// Define Query
 			ISingleResultQuery<CredentialQueryStrategy, CredentialEntity> query = QueryFactory.CreateNewSingleResultQuery<CredentialQueryStrategy, CredentialEntity>();
 
@@ -65,7 +65,7 @@
 			};
 
 			// Complete the response
-			HttpResponseMessage response = CompleteResponse(responseData);
+			HttpResponseMessage<ServiceResponseWithResultData<Guid?>> response = CompleteResponseWithData(responseData);
 
 			// If authentication has succeeded then return now.
 			if (responseData.State != ServiceResponseStateType.Succeeded || responseData.ResultData == null)
@@ -87,7 +87,7 @@
 		/// </summary>
 		[Route("Logout")]
 		[HttpDelete]
-		public HttpResponseMessage Logout()
+		public HttpResponseMessage<ServiceResponse> Logout()
 		{
 			var responseData = new ServiceResponse
 			{
@@ -95,7 +95,7 @@
 			};
 
 			// Complete the response
-			HttpResponseMessage response = CompleteResponse(responseData);
+			HttpResponseMessage<ServiceResponse> response = CompleteResponseWithData(responseData);
 
 			// Clear encrypted auth token from the UI
 			string authenticationTokenName = DependencyResolver.Current.Resolve<IConfigurationManager>().GetSetting("Cqrs.Web.AuthenticationTokenName") ?? "X-Token";
