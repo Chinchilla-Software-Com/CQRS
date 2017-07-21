@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Chat.WebJob")]
-[assembly: AssemblyDescription("A CQRS, Azure WebJobs host using Azure Servicebus and Azure SQL.")]
+[assembly: AssemblyDescription("A CQRS kernel, hosted in Azure WebJobs using Azure Servicebus and Azure SQL.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Chat.WebJob")]
