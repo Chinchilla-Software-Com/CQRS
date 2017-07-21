@@ -1,6 +1,4 @@
-﻿using System.Web.Routing;
-
-namespace Chat.RestAPI
+﻿namespace Chat.RestAPI
 {
 	using Cqrs.Configuration;
 	using Cqrs.WebApi;
