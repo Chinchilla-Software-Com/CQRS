@@ -1,6 +1,6 @@
 var NAVTREE =
 [
-  [ "Cqrs.NET", "index.html", [
+  [ "CQRS.NET", "index.html", [
     [ "Packages", null, [
       [ "Packages", "namespaces.html", "namespaces" ],
       [ "Package Functions", "namespacemembers.html", [
