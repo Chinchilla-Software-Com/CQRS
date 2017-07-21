@@ -248,8 +248,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)packages\Microsoft.Web.WebJobs.Publish.1.0.13\tools\webjobs.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.Web.WebJobs.Publish.1.0.13\tools\webjobs.targets')" />
-  <Import Project="$(SolutionDir)packages.nuget\NuGet.targets" />
-  <Import Project="$(SolutionDir)packagesLiveReloadOnSuccessfulBuild.targets" />
+  <Import Project="$(SolutionDir).nuget\NuGet.targets"  Condition="Exists('$(SolutionDir).nuget\NuGet.targets')" />
+  <Import Project="$(SolutionDir)LiveReloadOnSuccessfulBuild.targets" Condition="Exists('$(SolutionDir)LiveReloadOnSuccessfulBuild.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
