@@ -1,0 +1,4 @@
+var namespaceCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1Queries =
+[
+    [ "BlobStorageQueryBuilder", "classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1Queries_1_1BlobStorageQueryBuilder.html", "classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1Queries_1_1BlobStorageQueryBuilder" ]
+];
