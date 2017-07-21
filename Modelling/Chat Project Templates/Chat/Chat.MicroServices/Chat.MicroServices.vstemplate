@@ -1,0 +1,136 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>CQRS Micro Services</Name>
+    <Description>A micro-service layer using CQRS, Azure WebJobs, Azure Servicebus and Azure SQL.</Description>
+    <ProjectType>CSharp</ProjectType>
+    <ProjectSubType>
+    </ProjectSubType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>Chat.MicroServices</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>__TemplateIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <Project TargetFileName="$safeprojectname$.MicroServices.csproj" File="Chat.MicroServices.csproj" ReplaceParameters="true">
+      <ProjectItem ReplaceParameters="true" TargetFileName="app.config">app.config</ProjectItem>
+      <Folder Name="Authentication" TargetFolderName="Authentication">
+        <Folder Name="Commands" TargetFolderName="Commands">
+          <Folder Name="Handlers" TargetFolderName="Handlers" />
+        </Folder>
+        <Folder Name="Configuration" TargetFolderName="Configuration">
+          <ProjectItem ReplaceParameters="true" TargetFileName="AuthenticationModule.cs">AuthenticationModule.cs</ProjectItem>
+        </Folder>
+        <Folder Name="Entities" TargetFolderName="Entities">
+          <ProjectItem ReplaceParameters="true" TargetFileName="CredentialEntity.cs">CredentialEntity.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="UserEntity.cs">UserEntity.cs</ProjectItem>
+        </Folder>
+        <Folder Name="Events" TargetFolderName="Events">
+          <Folder Name="Handlers" TargetFolderName="Handlers" />
+        </Folder>
+        <Folder Name="Helpers" TargetFolderName="Helpers">
+          <ProjectItem ReplaceParameters="true" TargetFileName="AuthenticationHashHelper.cs">AuthenticationHashHelper.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="IAuthenticationHashHelper.cs">IAuthenticationHashHelper.cs</ProjectItem>
+        </Folder>
+        <Folder Name="Repositories" TargetFolderName="Repositories">
+          <ProjectItem ReplaceParameters="true" TargetFileName="CredentialRepository.cs">CredentialRepository.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="ICredentialRepository.cs">ICredentialRepository.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="IUserRepository.cs">IUserRepository.cs</ProjectItem>
+          <Folder Name="Queries" TargetFolderName="Queries">
+            <Folder Name="Strategies" TargetFolderName="Strategies">
+              <ProjectItem ReplaceParameters="true" TargetFileName="CredentialQueryStrategy.cs">CredentialQueryStrategy.cs</ProjectItem>
+              <ProjectItem ReplaceParameters="true" TargetFileName="CredentialQueryStrategyBuilder.cs">CredentialQueryStrategyBuilder.cs</ProjectItem>
+              <ProjectItem ReplaceParameters="true" TargetFileName="UserQueryStrategy.cs">UserQueryStrategy.cs</ProjectItem>
+              <ProjectItem ReplaceParameters="true" TargetFileName="UserQueryStrategyBuilder.cs">UserQueryStrategyBuilder.cs</ProjectItem>
+            </Folder>
+          </Folder>
+          <ProjectItem ReplaceParameters="true" TargetFileName="UserRepository.cs">UserRepository.cs</ProjectItem>
+        </Folder>
+        <Folder Name="Services" TargetFolderName="Services">
+          <ProjectItem ReplaceParameters="true" TargetFileName="AuthenticationService.cs">AuthenticationService.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="IAuthenticationService.cs">IAuthenticationService.cs</ProjectItem>
+          <Folder Name="ServiceChannelFactories" TargetFolderName="ServiceChannelFactories">
+            <ProjectItem ReplaceParameters="true" TargetFileName="HttpAuthenticationServiceChannelFactory.cs">HttpAuthenticationServiceChannelFactory.cs</ProjectItem>
+          </Folder>
+          <Folder Name="WcfResolvers" TargetFolderName="WcfResolvers">
+            <ProjectItem ReplaceParameters="true" TargetFileName="AuthenticationServiceLoginParametersResolver.cs">AuthenticationServiceLoginParametersResolver.cs</ProjectItem>
+          </Folder>
+        </Folder>
+      </Folder>
+      <Folder Name="Configuration" TargetFolderName="Configuration">
+        <ProjectItem ReplaceParameters="true" TargetFileName="QueriesModule.cs">QueriesModule.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Conversations" TargetFolderName="Conversations">
+        <Folder Name="Commands" TargetFolderName="Commands">
+          <ProjectItem ReplaceParameters="true" TargetFileName="DeleteConversation.cs">DeleteConversation.cs</ProjectItem>
+          <Folder Name="Handlers" TargetFolderName="Handlers">
+            <ProjectItem ReplaceParameters="true" TargetFileName="DeleteConversationCommandHandler.cs">DeleteConversationCommandHandler.cs</ProjectItem>
+            <ProjectItem ReplaceParameters="true" TargetFileName="PostCommentCommandHandler.cs">PostCommentCommandHandler.cs</ProjectItem>
+            <ProjectItem ReplaceParameters="true" TargetFileName="StartConversationCommandHandler.cs">StartConversationCommandHandler.cs</ProjectItem>
+            <ProjectItem ReplaceParameters="true" TargetFileName="UpdateConversationCommandHandler.cs">UpdateConversationCommandHandler.cs</ProjectItem>
+          </Folder>
+          <ProjectItem ReplaceParameters="true" TargetFileName="PostComment.cs">PostComment.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="StartConversation.cs">StartConversation.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="UpdateConversation.cs">UpdateConversation.cs</ProjectItem>
+        </Folder>
+        <Folder Name="Configuration" TargetFolderName="Configuration">
+          <ProjectItem ReplaceParameters="true" TargetFileName="ConversationsModule.cs">ConversationsModule.cs</ProjectItem>
+        </Folder>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Conversation.cs">Conversation.cs</ProjectItem>
+        <Folder Name="Entities" TargetFolderName="Entities">
+          <ProjectItem ReplaceParameters="true" TargetFileName="ConversationSummaryEntity.cs">ConversationSummaryEntity.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="MessageEntity.cs">MessageEntity.cs</ProjectItem>
+        </Folder>
+        <Folder Name="Events" TargetFolderName="Events">
+          <ProjectItem ReplaceParameters="true" TargetFileName="CommentPosted.cs">CommentPosted.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="ConversationDeleted.cs">ConversationDeleted.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="ConversationStarted.cs">ConversationStarted.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="ConversationUpdated.cs">ConversationUpdated.cs</ProjectItem>
+          <Folder Name="Handlers" TargetFolderName="Handlers">
+            <ProjectItem ReplaceParameters="true" TargetFileName="CommentPostedEventHandler.cs">CommentPostedEventHandler.cs</ProjectItem>
+            <ProjectItem ReplaceParameters="true" TargetFileName="ConversationDeletedEventHandler.cs">ConversationDeletedEventHandler.cs</ProjectItem>
+            <ProjectItem ReplaceParameters="true" TargetFileName="ConversationStartedEventHandler.cs">ConversationStartedEventHandler.cs</ProjectItem>
+            <ProjectItem ReplaceParameters="true" TargetFileName="ConversationUpdatedEventHandler.cs">ConversationUpdatedEventHandler.cs</ProjectItem>
+          </Folder>
+        </Folder>
+        <Folder Name="Repositories" TargetFolderName="Repositories">
+          <ProjectItem ReplaceParameters="true" TargetFileName="ConversationSummaryRepository.cs">ConversationSummaryRepository.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="IConversationSummaryRepository.cs">IConversationSummaryRepository.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="IMessageRepository.cs">IMessageRepository.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="MessageRepository.cs">MessageRepository.cs</ProjectItem>
+          <Folder Name="Queries" TargetFolderName="Queries">
+            <Folder Name="Strategies" TargetFolderName="Strategies">
+              <ProjectItem ReplaceParameters="true" TargetFileName="ConversationSummaryStrategy.cs">ConversationSummaryStrategy.cs</ProjectItem>
+              <ProjectItem ReplaceParameters="true" TargetFileName="ConversationSummaryStrategyBuilder.cs">ConversationSummaryStrategyBuilder.cs</ProjectItem>
+              <ProjectItem ReplaceParameters="true" TargetFileName="MessageQueryStrategy.cs">MessageQueryStrategy.cs</ProjectItem>
+              <ProjectItem ReplaceParameters="true" TargetFileName="MessageQueryStrategyBuilder.cs">MessageQueryStrategyBuilder.cs</ProjectItem>
+            </Folder>
+          </Folder>
+        </Folder>
+        <Folder Name="Services" TargetFolderName="Services">
+          <ProjectItem ReplaceParameters="true" TargetFileName="ConversationService.cs">ConversationService.cs</ProjectItem>
+          <ProjectItem ReplaceParameters="true" TargetFileName="IConversationService.cs">IConversationService.cs</ProjectItem>
+          <Folder Name="ServiceChannelFactories" TargetFolderName="ServiceChannelFactories">
+            <ProjectItem ReplaceParameters="true" TargetFileName="HttpConversationServiceChannelFactory.cs">HttpConversationServiceChannelFactory.cs</ProjectItem>
+          </Folder>
+          <Folder Name="WcfResolvers" TargetFolderName="WcfResolvers">
+            <ProjectItem ReplaceParameters="true" TargetFileName="ConversationServiceConversationParametersResolver.cs">ConversationServiceConversationParametersResolver.cs</ProjectItem>
+            <ProjectItem ReplaceParameters="true" TargetFileName="ConversationServicePostCommentParametersResolver.cs">ConversationServicePostCommentParametersResolver.cs</ProjectItem>
+            <ProjectItem ReplaceParameters="true" TargetFileName="ConversationServiceStartConversationParametersResolver.cs">ConversationServiceStartConversationParametersResolver.cs</ProjectItem>
+            <ProjectItem ReplaceParameters="true" TargetFileName="ConversationServiceUpdateConversationParametersResolver.cs">ConversationServiceUpdateConversationParametersResolver.cs</ProjectItem>
+          </Folder>
+        </Folder>
+      </Folder>
+      <Folder Name="Factories" TargetFolderName="Factories">
+        <ProjectItem ReplaceParameters="true" TargetFileName="DomainSimplifiedSqlDataStoreFactory.cs">DomainSimplifiedSqlDataStoreFactory.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="IDomainDataStoreFactory.cs">IDomainDataStoreFactory.cs</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="packages.config">packages.config</ProjectItem>
+      <Folder Name="Properties" TargetFolderName="Properties">
+        <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+      </Folder>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

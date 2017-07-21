@@ -1,0 +1,42 @@
+﻿<div class="customers view indent">
+	<div class="container">
+		<header>
+			<h3><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;{{vm.ConversationName}}</h3>
+		</header>
+		<div class="container">
+			<div class="row gridContainer customersTable show-hide-animation">
+				<div class="col-md-10">
+					<div>
+						<table class="table table-striped table-condensed">
+							<tbody>
+								<tr data-ng-repeat="message in vm.messages" class="repeat-animation">
+									<td>{{ message.DatePosted | date }}</td>
+									<td>
+										<span class="messageUserName">{{ message.UserName }}</span>
+										<span class="messageContent" ng-bind-html="message.Content | ConversationContentFormatter"></span>
+									</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="2">
+										<input type="text" placeholder="Type your reply here." style="width: 90%" ng-model="vm.comment" required />
+										&nbsp;&nbsp;<span class="glyphicon glyphicon-send" ng-click="vm.postReply()" style="cursor: pointer;"></span>
+									</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row show-hide-animation" data-ng-show="vm.messages.length == 0">
+				<div class="col-span-12">
+					<h4>No messages found.</h4>
+				</div>
+			</div>
+		</div>
+		<br /><br /><br />
+	</div>
+</div>

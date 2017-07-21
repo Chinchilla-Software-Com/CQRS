@@ -1,0 +1,50 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>CQRS WCF API</Name>
+    <Description>A WCF API using CQRS, Azure WebJobs, Azure Servicebus and Azure SQL.</Description>
+    <ProjectType>CSharp</ProjectType>
+    <ProjectSubType>
+    </ProjectSubType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>Chat.WcfAPI</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>__TemplateIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <Project TargetFileName="Chat.WcfAPI.csproj" File="Chat.WcfAPI.csproj" ReplaceParameters="true">
+      <ProjectItem ReplaceParameters="true" TargetFileName="ApplicationInsights.config">ApplicationInsights.config</ProjectItem>
+      <Folder Name="Authentication" TargetFolderName="Authentication">
+        <Folder Name="Services" TargetFolderName="Services">
+          <Folder Name="ServiceHostFactories" TargetFolderName="ServiceHostFactories">
+            <ProjectItem ReplaceParameters="true" TargetFileName="AuthenticationServiceHostFactory.cs">AuthenticationServiceHostFactory.cs</ProjectItem>
+          </Folder>
+        </Folder>
+      </Folder>
+      <Folder Name="Code" TargetFolderName="Code">
+        <ProjectItem ReplaceParameters="true" TargetFileName="ChatConfiguration.cs">ChatConfiguration.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Conversations" TargetFolderName="Conversations">
+        <Folder Name="Services" TargetFolderName="Services">
+          <Folder Name="ServiceHostFactories" TargetFolderName="ServiceHostFactories">
+            <ProjectItem ReplaceParameters="true" TargetFileName="ConversationServiceHostFactory.cs">ConversationServiceHostFactory.cs</ProjectItem>
+          </Folder>
+        </Folder>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Global.asax">Global.asax</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Global.asax.cs">Global.asax.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="packages.config">packages.config</ProjectItem>
+      <Folder Name="Properties" TargetFolderName="Properties">
+        <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+        <Folder Name="PublishProfiles" TargetFolderName="PublishProfiles">
+          <ProjectItem ReplaceParameters="false" TargetFileName="WebDeploy.pubxml" OpenInEditor="true" OpenOrder="20">WebDeploy.pubxml</ProjectItem>
+        </Folder>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Web.config" OpenInEditor="true" OpenOrder="10">Web.config</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Web.Debug.config">Web.Debug.config</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Web.Release.config">Web.Release.config</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>
