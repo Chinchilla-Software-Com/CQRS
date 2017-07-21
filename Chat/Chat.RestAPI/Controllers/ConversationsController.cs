@@ -51,7 +51,7 @@
 		/// </summary>
 		[Route("")]
 		[HttpGet]
-		public virtual HttpResponseMessage Get()
+		public virtual HttpResponseMessage<IEnumerable<ConversationSummaryEntity>> Get()
 		{
 			// Define Query
 			ICollectionResultQuery<ConversationSummaryQueryStrategy, ConversationSummaryEntity> query = QueryFactory.CreateNewCollectionResultQuery<ConversationSummaryQueryStrategy, ConversationSummaryEntity>();
@@ -80,7 +80,7 @@
 		/// <param name="conversationRsn">The conversation to get message for.</param>
 		[Route("{conversationRsn:guid}/messages")]
 		[HttpGet]
-		public virtual HttpResponseMessage GetMessages(Guid conversationRsn)
+		public virtual HttpResponseMessage<IEnumerable<MessageEntity>> GetMessages(Guid conversationRsn)
 		{
 			// Define Query
 			ICollectionResultQuery<MessageQueryStrategy, MessageEntity> query = QueryFactory.CreateNewCollectionResultQuery<MessageQueryStrategy, MessageEntity>();

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Chat.WebJob")]
+[assembly: AssemblyTitle("Chat.MicroKernel")]
 [assembly: AssemblyDescription("A CQRS kernel, hosted in Azure WebJobs using Azure Servicebus and Azure SQL.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Chat.WebJob")]
+[assembly: AssemblyProduct("Chat.MicroKernel")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
