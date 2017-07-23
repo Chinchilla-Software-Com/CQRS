@@ -194,5 +194,24 @@ namespace Cqrs.Mongo.DataStores
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Executes the "repairDatabase" command on the current database.
+		/// </summary>
+		public void Repair()
+		{
+			Logger.LogDebug("Repairing the Mongo database", "MongoDataStore\\Repair");
+			try
+			{
+				DateTime start = DateTime.Now;
+				MongoCollection.Database.RunCommand(new CommandDocument("repairDatabase", 1));
+				DateTime end = DateTime.Now;
+				Logger.LogDebug(string.Format("Repairing the Mongo database took {0}.", end - start), "MongoDataStore\\Repair");
+			}
+			finally
+			{
+				Logger.LogDebug("Repairing the Mongo database... Done", "MongoDataStore\\Repair");
+			}
+		}
 	}
 }
