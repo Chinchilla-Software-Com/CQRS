@@ -1,7 +1,6 @@
 var searchData=
 [
   ['daterange',['DateRange',['../classCqrs_1_1Entities_1_1DateRange.html',1,'Cqrs::Entities']]],
-  ['debuggerdisplayattribute',['DebuggerDisplayAttribute',['../classSystem_1_1Diagnostics_1_1DebuggerDisplayAttribute.html',1,'System::Diagnostics']]],
   ['decimalrange',['DecimalRange',['../classCqrs_1_1Entities_1_1DecimalRange.html',1,'Cqrs::Entities']]],
   ['defaultauthenticationtokenhelper',['DefaultAuthenticationTokenHelper',['../classCqrs_1_1Authentication_1_1DefaultAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],
   ['defaulteventbuilder',['DefaultEventBuilder',['../classCqrs_1_1Events_1_1DefaultEventBuilder.html',1,'Cqrs::Events']]],

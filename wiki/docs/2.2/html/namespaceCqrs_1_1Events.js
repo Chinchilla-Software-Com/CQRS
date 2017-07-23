@@ -17,6 +17,7 @@ var namespaceCqrs_1_1Events =
     [ "IEventPublisher", "interfaceCqrs_1_1Events_1_1IEventPublisher.html", "interfaceCqrs_1_1Events_1_1IEventPublisher" ],
     [ "IEventReceiver", "interfaceCqrs_1_1Events_1_1IEventReceiver.html", null ],
     [ "IEventStore", "interfaceCqrs_1_1Events_1_1IEventStore.html", "interfaceCqrs_1_1Events_1_1IEventStore" ],
+    [ "InProcessEventStore", "classCqrs_1_1Events_1_1InProcessEventStore.html", "classCqrs_1_1Events_1_1InProcessEventStore" ],
     [ "ISagaEvent", "interfaceCqrs_1_1Events_1_1ISagaEvent.html", "interfaceCqrs_1_1Events_1_1ISagaEvent" ],
     [ "MemoryCacheEventStore", "classCqrs_1_1Events_1_1MemoryCacheEventStore.html", "classCqrs_1_1Events_1_1MemoryCacheEventStore" ],
     [ "NoEventHandlerRegisteredException", "classCqrs_1_1Events_1_1NoEventHandlerRegisteredException.html", "classCqrs_1_1Events_1_1NoEventHandlerRegisteredException" ],

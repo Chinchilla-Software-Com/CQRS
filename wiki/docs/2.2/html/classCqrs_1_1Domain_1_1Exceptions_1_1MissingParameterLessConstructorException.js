@@ -1,4 +1,5 @@
 var classCqrs_1_1Domain_1_1Exceptions_1_1MissingParameterLessConstructorException =
 [
-    [ "MissingParameterLessConstructorException", "classCqrs_1_1Domain_1_1Exceptions_1_1MissingParameterLessConstructorException_a5de10c873bab008d2527ff96fdf5f6b2.html#a5de10c873bab008d2527ff96fdf5f6b2", null ]
+    [ "MissingParameterLessConstructorException", "classCqrs_1_1Domain_1_1Exceptions_1_1MissingParameterLessConstructorException_a5de10c873bab008d2527ff96fdf5f6b2.html#a5de10c873bab008d2527ff96fdf5f6b2", null ],
+    [ "Type", "classCqrs_1_1Domain_1_1Exceptions_1_1MissingParameterLessConstructorException_a9350872fe9744fbd82af49b2e663ccc0.html#a9350872fe9744fbd82af49b2e663ccc0", null ]
 ];
