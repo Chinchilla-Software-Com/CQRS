@@ -45,7 +45,7 @@ namespace Cqrs.Ninject.MongoDB.Configuration
 		}
 
 		/// <summary>
-		/// Register the all Cqrs command handlers
+		/// Register any CQRS requirements
 		/// </summary>
 		public virtual void RegisterCqrsRequirements()
 		{

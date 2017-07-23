@@ -44,7 +44,7 @@ namespace Cqrs.Ninject.Configuration
 		}
 
 		/// <summary>
-		/// Register the all Cqrs command handlers
+		/// Register the <see cref="IEventStoreConnectionHelper"/> and <see cref="IEventStore{TAuthenticationToken}"/>.
 		/// </summary>
 		public virtual void RegisterCqrsRequirements()
 		{
