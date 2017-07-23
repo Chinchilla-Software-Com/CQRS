@@ -52,7 +52,7 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 		}
 
 		/// <summary>
-		/// Register the all Cqrs command handlers
+		/// Register any CQRS requirements.
 		/// </summary>
 		public virtual void RegisterCqrsRequirements()
 		{

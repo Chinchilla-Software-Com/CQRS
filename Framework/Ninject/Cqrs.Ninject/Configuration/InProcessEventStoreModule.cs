@@ -13,10 +13,10 @@ using Ninject.Modules;
 namespace Cqrs.Ninject.Configuration
 {
 	/// <summary>
-	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
+	/// A <see cref="INinjectModule"/> that configures the <see cref="InProcessEventStore{TAuthenticationToken}"/> as a <see cref="IEventStore{TAuthenticationToken}"/>.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class MemoryCacheEventStoreModule<TAuthenticationToken> : ResolvableModule
+	public class InProcessEventStoreModule<TAuthenticationToken> : ResolvableModule
 	{
 		#region Overrides of NinjectModule
 
@@ -25,32 +25,34 @@ namespace Cqrs.Ninject.Configuration
 		/// </summary>
 		public override void Load()
 		{
-			RegisterEventSerialisationConfiguration();
+			RegisterFactories();
+			RegisterServices();
 			RegisterEventStore();
 		}
 
 		#endregion
 
 		/// <summary>
-		/// Register the all event serialisation configurations
+		/// Register the all factories
 		/// </summary>
-		public virtual void RegisterEventSerialisationConfiguration()
+		public virtual void RegisterFactories()
 		{
-			Bind<IEventBuilder<TAuthenticationToken>>()
-				.To<DefaultEventBuilder<TAuthenticationToken>>()
-				.InSingletonScope();
-			Bind<IEventDeserialiser<TAuthenticationToken>>()
-				.To<EventDeserialiser<TAuthenticationToken>>()
-				.InSingletonScope();
 		}
 
 		/// <summary>
-		/// Register the <see cref="IEventStore{TAuthenticationToken}"/>
+		/// Register the all services
+		/// </summary>
+		public virtual void RegisterServices()
+		{
+		}
+
+		/// <summary>
+		/// Register the <see cref="InProcessEventStore{TAuthenticationToken}"/>
 		/// </summary>
 		public virtual void RegisterEventStore()
 		{
 			Bind<IEventStore<TAuthenticationToken>>()
-				.To<MemoryCacheEventStore<TAuthenticationToken>>()
+				.To<InProcessEventStore<TAuthenticationToken>>()
 				.InSingletonScope();
 		}
 	}

@@ -21,13 +21,14 @@ using cdmdotnet.StateManagement.Web;
 using Cqrs.Configuration;
 using Cqrs.Repositories.Queries;
 using Ninject.Modules;
-using Ninject.Parameters;
 
 namespace Cqrs.Ninject.Configuration
 {
 	/// <summary>
 	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
 	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	/// <typeparam name="TAuthenticationTokenHelper">The <see cref="Type"/> of the authentication token helper.</typeparam>
 	public class CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper> : ResolvableModule
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 	{
@@ -37,7 +38,32 @@ namespace Cqrs.Ninject.Configuration
 
 		protected bool RegisterDefaultConfigurationManager { get; private set; }
 
-		/// <param name="setupForWeb">Set this to true if you will host this in IIS or some other web-server that provides access to System.Web.HttpContext.Current</param>
+		/// <summary>
+		/// Instantiate a new instance of the <see cref="CqrsModule{TAuthenticationToken,TAuthenticationTokenHelper}"/> that uses the provided <paramref name="configurationManager"/>
+		/// to read the following configuration settings:
+		/// "Cqrs.SetupForWeb": If set to true the system will be configured for hosting in IIS or some other web-server that provides access to System.Web.HttpContext.Current.
+		/// "Cqrs.SetupForSqlLogging": If set to true the <see cref="SqlLogger"/> will be bootstrapped by default, otherwise the <see cref="ConsoleLogger"/> will be bootstrapped by default.
+		/// "Cqrs.RegisterDefaultConfigurationManager": If set true the <see cref="ConfigurationManager"/> will be registered. If you want to use the Azure one leave this as false (the default) and register it yourself.
+		/// </summary>
+		/// <param name="configurationManager">The <see cref="IConfigurationManager"/> to use, if one isn't provided then <see cref="ConfigurationManager"/> is instantiate, used and then disposed.</param>
+		public CqrsModule(IConfigurationManager configurationManager = null)
+		{
+			configurationManager = configurationManager ?? new ConfigurationManager();
+			bool setupForWeb;
+			if (configurationManager.TryGetSetting("Cqrs.SetupForWeb", out setupForWeb))
+				SetupForWeb = setupForWeb;
+			bool setupForSqlLogging;
+			if (configurationManager.TryGetSetting("Cqrs.SetupForSqlLogging", out setupForSqlLogging))
+				SetupForSqlLogging = setupForSqlLogging;
+			bool registerDefaultConfigurationManager;
+			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultConfigurationManager", out registerDefaultConfigurationManager))
+				RegisterDefaultConfigurationManager = registerDefaultConfigurationManager;
+		}
+
+		/// <summary>
+		/// Instantiate a new instance of the <see cref="CqrsModule{TAuthenticationToken,TAuthenticationTokenHelper}"/>.
+		/// </summary>
+		/// <param name="setupForWeb">Set this to true if you will host this in IIS or some other web-server that provides access to System.Web.HttpContext.Current.</param>
 		/// <param name="setupForSqlLogging">Set this to true to use <see cref="SqlLogger"/> otherwise the <see cref="ConsoleLogger"/> will be bootstrapped by default.</param>
 		/// <param name="registerDefaultConfigurationManager">Set this to true to use <see cref="ConfigurationManager"/>. If you want to use the Azure one leave this as false (the default) and register it yourself.</param>
 		public CqrsModule(bool setupForWeb, bool setupForSqlLogging, bool registerDefaultConfigurationManager = false)

@@ -29,7 +29,7 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 		{
 			RegisterFactories();
 			RegisterServices();
-			RegisterCqrsRequirements();
+			RegisterEventStore();
 			RegisterAzureHelpers();
 		}
 
@@ -66,9 +66,9 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 		}
 
 		/// <summary>
-		/// Register the all Cqrs command handlers
+		/// Register the <see cref="IAzureDocumentDbEventStoreConnectionStringFactory"/> and <see cref="IEventStore{TAuthenticationToken}"/>
 		/// </summary>
-		public virtual void RegisterCqrsRequirements()
+		public virtual void RegisterEventStore()
 		{
 			Bind<IAzureDocumentDbEventStoreConnectionStringFactory>()
 				.To<TestAzureDocumentDbEventStoreConnectionStringFactory>()

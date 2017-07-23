@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using Cqrs.Events;
 using Ninject.Modules;
 
@@ -14,7 +15,8 @@ namespace Cqrs.Ninject.Configuration
 	/// <summary>
 	/// The <see cref="INinjectModule"/> to wireup <see cref="IEvent{TAuthenticationToken}"/> to <see cref="SqlEventStore{TAuthenticationToken}"/>.
 	/// </summary>
-	public class SimplifiedSqlModule<TAuthenticationToken> : NinjectModule
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	public class SimplifiedSqlModule<TAuthenticationToken> : ResolvableModule
 	{
 		#region Overrides of NinjectModule
 

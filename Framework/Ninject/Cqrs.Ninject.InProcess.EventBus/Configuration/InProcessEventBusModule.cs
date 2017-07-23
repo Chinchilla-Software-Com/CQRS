@@ -1,76 +1,24 @@
-﻿using System.Linq;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using Cqrs.Bus;
 using Cqrs.Events;
-using Ninject;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.InProcess.EventBus.Configuration
 {
 	/// <summary>
-	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
+	/// A <see cref="INinjectModule"/> that configures the <see cref="InProcessBus{TAuthenticationToken}"/> as a <see cref="IEventPublisher{TAuthenticationToken}"/> and <see cref="IEventReceiver"/>.
 	/// </summary>
-	public class InProcessEventBusModule<TAuthenticationToken> : NinjectModule
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	[Obsolete("Use Cqrs.Ninject.Configuration.InProcessEventBusModule<TAuthenticationToken> instead.")]
+	public class InProcessEventBusModule<TAuthenticationToken> : Ninject.Configuration.InProcessEventBusModule<TAuthenticationToken>
 	{
-		#region Overrides of NinjectModule
-
-		/// <summary>
-		/// Loads the module into the kernel.
-		/// </summary>
-		public override void Load()
-		{
-			RegisterFactories();
-			RegisterServices();
-			RegisterCqrsRequirements();
-		}
-
-		#endregion
-
-		/// <summary>
-		/// Register the all factories
-		/// </summary>
-		public virtual void RegisterFactories()
-		{
-		}
-
-		/// <summary>
-		/// Register the all services
-		/// </summary>
-		public virtual void RegisterServices()
-		{
-		}
-
-		/// <summary>
-		/// Register the all Cqrs command handlers
-		/// </summary>
-		public virtual void RegisterCqrsRequirements()
-		{
-			bool isInProcessBusBound = Kernel.GetBindings(typeof (InProcessBus<TAuthenticationToken>)).Any();
-			InProcessBus<TAuthenticationToken> inProcessBus;
-			if (!isInProcessBusBound)
-			{
-				inProcessBus = Kernel.Get<InProcessBus<TAuthenticationToken>>();
-				Bind<InProcessBus<TAuthenticationToken>>()
-					.ToConstant(inProcessBus)
-					.InSingletonScope();
-			}
-			else
-				inProcessBus = Kernel.Get<InProcessBus<TAuthenticationToken>>();
-
-			Bind<IEventPublisher<TAuthenticationToken>>()
-				.ToConstant(inProcessBus)
-				.InSingletonScope();
-
-			Bind<IEventReceiver<TAuthenticationToken>>()
-				.ToConstant(inProcessBus)
-				.InSingletonScope();
-
-			bool isHandlerRegistrationBound = Kernel.GetBindings(typeof(IEventHandlerRegistrar)).Any();
-			if (!isHandlerRegistrationBound)
-			{
-				Bind<IEventHandlerRegistrar>()
-					.ToConstant(inProcessBus)
-					.InSingletonScope();
-			}
-		}
 	}
 }

@@ -32,6 +32,9 @@ namespace Cqrs.Events
 
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
+		/// <summary>
+		/// Instantiate a new instance of the <see cref="SqlEventStore{TAuthenticationToken}"/> class.
+		/// </summary>
 		public SqlEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)
 			: base(eventBuilder, eventDeserialiser, logger)
 		{
