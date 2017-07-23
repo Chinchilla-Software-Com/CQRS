@@ -53,7 +53,7 @@ namespace Cqrs.Mongo.Factories
 						throw new MissingConnectionStringException(applicationKey, exception);
 					}
 				}
-				if (ConfigurationManager.TryGetSetting(OldMongoDbConnectionStringKey, out applicationKey))
+				if (ConfigurationManager.TryGetSetting(OldMongoDbConnectionStringKey, out applicationKey) && !string.IsNullOrEmpty(applicationKey))
 					return applicationKey;
 				throw new MissingApplicationSettingForConnectionStringException(MongoDbConnectionStringKey);
 			}
