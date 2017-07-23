@@ -18,7 +18,7 @@ namespace Cqrs.Authentication
 	/// As such, if not used correctly, this can expose identifiable information.
 	/// It is suggested the service layer populates this before sending commands as part of authorisation/authentication.
 	/// </summary>
-	public class SingleSignOnTokenWithCompanyRsn : SingleSignOnToken
+	public class SingleSignOnTokenWithCompanyRsn : SingleSignOnToken, ISingleSignOnTokenWithCompanyRsn
 	{
 		/// <summary>
 		/// The Rsn of the company the user doing the operation is operating on.
