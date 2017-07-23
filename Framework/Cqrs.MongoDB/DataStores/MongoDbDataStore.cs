@@ -101,30 +101,30 @@ namespace Cqrs.MongoDB.DataStores
 
 		public virtual void Add(TData data)
 		{
-			Logger.LogDebug("Adding data to the Mongo database", "MongoDataStore\\Add");
+			Logger.LogDebug("Adding data to the Mongo database", "MongoDbDataStore\\Add");
 			try
 			{
 				DateTime start = DateTime.Now;
 				MongoCollection.InsertOne(data);
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Adding data in the Mongo database took {0}.", end - start), "MongoDataStore\\Add");
+				Logger.LogDebug(string.Format("Adding data in the Mongo database took {0}.", end - start), "MongoDbDataStore\\Add");
 			}
 			finally
 			{
-				Logger.LogDebug("Adding data to the Mongo database... Done", "MongoDataStore\\Add");
+				Logger.LogDebug("Adding data to the Mongo database... Done", "MongoDbDataStore\\Add");
 			}
 		}
 
 		public virtual void Add(IEnumerable<TData> data)
 		{
-			Logger.LogDebug("Adding data collection to the Mongo database", "MongoDataStore\\Add");
+			Logger.LogDebug("Adding data collection to the Mongo database", "MongoDbDataStore\\Add");
 			try
 			{
 				MongoCollection.InsertMany(data);
 			}
 			finally
 			{
-				Logger.LogDebug("Adding data collection to the Mongo database... Done", "MongoDataStore\\Add");
+				Logger.LogDebug("Adding data collection to the Mongo database... Done", "MongoDbDataStore\\Add");
 			}
 		}
 
@@ -133,7 +133,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// </summary>
 		public virtual void Remove(TData data)
 		{
-			Logger.LogDebug("Removing data from the Mongo database", "MongoDataStore\\Remove");
+			Logger.LogDebug("Removing data from the Mongo database", "MongoDbDataStore\\Remove");
 			try
 			{
 				data.IsLogicallyDeleted = true;
@@ -141,52 +141,52 @@ namespace Cqrs.MongoDB.DataStores
 			}
 			finally
 			{
-				Logger.LogDebug("Removing data from the Mongo database... Done", "MongoDataStore\\Remove");
+				Logger.LogDebug("Removing data from the Mongo database... Done", "MongoDbDataStore\\Remove");
 			}
 		}
 
 		public virtual void Destroy(TData data)
 		{
-			Logger.LogDebug("Removing data from the Mongo database", "MongoDataStore\\Destroy");
+			Logger.LogDebug("Removing data from the Mongo database", "MongoDbDataStore\\Destroy");
 			try
 			{
 				DateTime start = DateTime.Now;
 				MongoCollection.DeleteOne(x => x.Rsn == data.Rsn);
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Updating data in the Mongo database took {0}.", end - start), "MongoDataStore\\Update");
+				Logger.LogDebug(string.Format("Updating data in the Mongo database took {0}.", end - start), "MongoDbDataStore\\Update");
 			}
 			finally
 			{
-				Logger.LogDebug("Removing data from the Mongo database... Done", "MongoDataStore\\Destroy");
+				Logger.LogDebug("Removing data from the Mongo database... Done", "MongoDbDataStore\\Destroy");
 			}
 		}
 
 		public virtual void RemoveAll()
 		{
-			Logger.LogDebug("Removing all from the Mongo database", "MongoDataStore\\RemoveAll");
+			Logger.LogDebug("Removing all from the Mongo database", "MongoDbDataStore\\RemoveAll");
 			try
 			{
 				MongoCollection.DeleteMany(x => true);
 			}
 			finally
 			{
-				Logger.LogDebug("Removing all from the Mongo database... Done", "MongoDataStore\\RemoveAll");
+				Logger.LogDebug("Removing all from the Mongo database... Done", "MongoDbDataStore\\RemoveAll");
 			}
 		}
 
 		public virtual void Update(TData data)
 		{
-			Logger.LogDebug("Updating data in the Mongo database", "MongoDataStore\\Update");
+			Logger.LogDebug("Updating data in the Mongo database", "MongoDbDataStore\\Update");
 			try
 			{
 				DateTime start = DateTime.Now;
 				MongoCollection.ReplaceOne(x => x.Rsn == data.Rsn, data);
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Updating data in the Mongo database took {0}.", end - start), "MongoDataStore\\Update");
+				Logger.LogDebug(string.Format("Updating data in the Mongo database took {0}.", end - start), "MongoDbDataStore\\Update");
 			}
 			finally
 			{
-				Logger.LogDebug("Updating data to the Mongo database... Done", "MongoDataStore\\Update");
+				Logger.LogDebug("Updating data to the Mongo database... Done", "MongoDbDataStore\\Update");
 			}
 		}
 
@@ -203,5 +203,24 @@ namespace Cqrs.MongoDB.DataStores
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Executes the "repairDatabase" command on the current database.
+		/// </summary>
+		public void Repair()
+		{
+			Logger.LogDebug("Repairing the Mongo database", "MongoDbDataStore\\Repair");
+			try
+			{
+				DateTime start = DateTime.Now;
+				MongoCollection.Database.RunCommand(new JsonCommand<object>("{ repairDatabase: 1 }"));
+				DateTime end = DateTime.Now;
+				Logger.LogDebug(string.Format("Repairing the Mongo database took {0}.", end - start), "MongoDbDataStore\\Repair");
+			}
+			finally
+			{
+				Logger.LogDebug("Repairing the Mongo database... Done", "MongoDbDataStore\\Repair");
+			}
+		}
 	}
 }
