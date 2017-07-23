@@ -7,16 +7,22 @@
 #endregion
 
 using System;
+using System.Configuration;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
+using Cqrs.Exceptions;
 
 namespace Cqrs.MongoDB.Factories
 {
 	public class MongoDbDataStoreConnectionStringFactory : IMongoDbDataStoreConnectionStringFactory
 	{
-		public static string MongoDbConnectionStringKey = "CqrsMongoDb";
+		public static string MongoDbConnectionStringKey = "Cqrs.MongoDb.DataStore.ConnectionStringName";
 
-		public static string MongoDbDatabaseNameKey = "CqrsMongoDbDatabaseName";
+		public static string OldMongoDbConnectionStringKey = "CqrsMongoDb";
+
+		public static string OldMongoDbDatabaseNameKey = "CqrsMongoDbDatabaseName";
+
+		public static string MongoDbDatabaseNameKey = "Cqrs.MongoDb.DataStore.DatabaseName";
 
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
@@ -30,24 +36,37 @@ namespace Cqrs.MongoDB.Factories
 
 		public string GetDataStoreConnectionString()
 		{
-			Logger.LogDebug("Getting MongoDB connection string", "MongoDataStoreConnectionStringFactory\\GetDataStoreConnectionString");
+			Logger.LogDebug("Getting MongoDB connection string", "MongoDbDataStoreConnectionStringFactory\\GetDataStoreConnectionString");
 			try
 			{
-				return ConfigurationManager.GetSetting(MongoDbConnectionStringKey) ?? System.Configuration.ConfigurationManager.ConnectionStrings[MongoDbConnectionStringKey].ConnectionString;
-			}
-			catch (NullReferenceException exception)
-			{
-				throw new NullReferenceException(string.Format("No connection string named '{0}' in the configuration file.", MongoDbConnectionStringKey), exception);
+				string appKey;
+				if (ConfigurationManager.TryGetSetting(MongoDbConnectionStringKey, out appKey))
+				{
+					try
+					{
+						return System.Configuration.ConfigurationManager.ConnectionStrings[MongoDbConnectionStringKey].ConnectionString;
+					}
+					catch (Exception exception)
+					{
+						throw new MissingApplicationSettingForConnectionStringException(MongoDbConnectionStringKey, exception);
+					}
+				}
+				if (ConfigurationManager.TryGetSetting(OldMongoDbConnectionStringKey, out appKey))
+					return appKey;
+				throw new MissingApplicationSettingForConnectionStringException(MongoDbConnectionStringKey);
 			}
 			finally
 			{
-				Logger.LogDebug("Getting MongoDB connection string... Done", "MongoDataStoreConnectionStringFactory\\GetDataStoreConnectionString");
+				Logger.LogDebug("Getting MongoDB connection string... Done", "MongoDbDataStoreConnectionStringFactory\\GetDataStoreConnectionString");
 			}
 		}
 
 		public string GetDataStoreDatabaseName()
 		{
-			return ConfigurationManager.GetSetting(MongoDbDatabaseNameKey);
+			string databaseName = ConfigurationManager.GetSetting(MongoDbDatabaseNameKey) ?? ConfigurationManager.GetSetting(OldMongoDbDatabaseNameKey);
+			if (string.IsNullOrEmpty(databaseName))
+				throw new MissingApplicationSettingException(MongoDbDatabaseNameKey);
+			return databaseName;
 		}
 	}
 }

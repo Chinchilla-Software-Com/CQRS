@@ -1,8 +1,17 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using cdmdotnet.Logging;
+using Cqrs.DataStores;
 using Cqrs.Mongo.DataStores.Indexes;
 using Cqrs.Mongo.Serialisers;
 using MongoDB.Driver;
@@ -11,7 +20,7 @@ using MongoDB.Driver.Builders;
 namespace Cqrs.Mongo.Factories
 {
 	/// <summary>
-	/// A factory for obtaining DataStore collections from Mongo
+	/// A factory for obtaining <see cref="IDataStore{TData}"/> collections from Mongo
 	/// </summary>
 	public class MongoDataStoreFactory
 	{

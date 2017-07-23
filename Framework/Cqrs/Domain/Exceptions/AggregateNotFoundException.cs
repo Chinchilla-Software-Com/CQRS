@@ -7,6 +7,8 @@
 #endregion
 
 using System;
+using System.Runtime.Serialization;
+using Cqrs.Events;
 
 namespace Cqrs.Domain.Exceptions
 {
@@ -26,6 +28,20 @@ namespace Cqrs.Domain.Exceptions
 		public AggregateNotFoundException(Guid id)
 			: base(string.Format("Aggregate '{0}' of type '{1}' was not found", id, typeof(TAggregateRoot).FullName))
 		{
+			Id = id;
+			AggregateType = typeof(TAggregateRoot);
 		}
+
+		/// <summary>
+		/// The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> that wasn't found.
+		/// </summary>
+		[DataMember]
+		public Guid Id { get; set; }
+
+		/// <summary>
+		/// The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> that wasn't found.
+		/// </summary>
+		[DataMember]
+		public Type AggregateType { get; set; }
 	}
 }

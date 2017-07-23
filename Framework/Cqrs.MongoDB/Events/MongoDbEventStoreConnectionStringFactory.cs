@@ -10,6 +10,7 @@ using System;
 using System.Configuration;
 using cdmdotnet.Logging;
 using Cqrs.Configuration;
+using Cqrs.Exceptions;
 
 namespace Cqrs.MongoDB.Events
 {
@@ -50,7 +51,7 @@ namespace Cqrs.MongoDB.Events
 					if (!ConfigurationManager.TryGetSetting(MongoDbConnectionStringKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
 					{
 						Logger.LogDebug(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", MongoDbConnectionStringKey), "MongoDbEventStoreConnectionStringFactory\\GetEventStoreConnectionString");
-						throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", MongoDbConnectionNameApplicationKey));
+						throw new MissingApplicationSettingForConnectionStringException(MongoDbConnectionNameApplicationKey);
 					}
 				}
 
