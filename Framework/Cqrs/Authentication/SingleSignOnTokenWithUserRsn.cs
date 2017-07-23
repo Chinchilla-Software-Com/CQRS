@@ -18,7 +18,7 @@ namespace Cqrs.Authentication
 	/// As such, if not used correctly, this can expose identifiable information.
 	/// It is suggested the service layer populates this before sending commands as part of authorisation/authentication.
 	/// </summary>
-	public class SingleSignOnTokenWithUserRsn : SingleSignOnToken
+	public class SingleSignOnTokenWithUserRsn : SingleSignOnToken, ISingleSignOnTokenWithUserRsn
 	{
 		/// <summary>
 		/// The Rsn of the user doing the operation. When used by an external 3rd party this is the person being impersonated, not the 3rd party system itself.
