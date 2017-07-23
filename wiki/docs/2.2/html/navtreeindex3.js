@@ -1,7 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHubBus_a4ab2143b01ac269db357fa9dff613a4a.html#a4ab2143b01ac269db357fa9dff613a4a":[1,0,0,2,4,10,4],
-"classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHubBus_a56af12dd26c6a34ba444dcc8b0110337.html#a56af12dd26c6a34ba444dcc8b0110337":[1,0,0,2,4,10,5],
 "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHubBus_a5e03e9ddac66cf136bde75e40fc11afc.html#a5e03e9ddac66cf136bde75e40fc11afc":[1,0,0,2,4,10,8],
 "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHubBus_a8903cb16fa7bfc2396f249c48fe42a60.html#a8903cb16fa7bfc2396f249c48fe42a60":[1,0,0,2,4,10,2],
 "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHubBus_ac70c513a41f42208cc3332d4ed855af8.html#ac70c513a41f42208cc3332d4ed855af8":[1,0,0,2,4,10,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX3 =
 "classCqrs_1_1Bus_1_1RouteManager_aa681cc48828440452f6984f198369e69.html#aa681cc48828440452f6984f198369e69":[1,0,0,3,15,3],
 "classCqrs_1_1Bus_1_1RouteManager_abcc8a62319ac7a6edd38ed2d26ef5234.html#abcc8a62319ac7a6edd38ed2d26ef5234":[1,0,0,3,15,0],
 "classCqrs_1_1Bus_1_1RouteManager_ad6a3c8e41e10f62d075e52d08d817cee.html#ad6a3c8e41e10f62d075e52d08d817cee":[1,0,0,3,15,14],
-"classCqrs_1_1Bus_1_1RouteManager_aeb620222dd0351a6d3848caf93e29954.html#aeb620222dd0351a6d3848caf93e29954":[1,0,0,3,15,10]
+"classCqrs_1_1Bus_1_1RouteManager_aeb620222dd0351a6d3848caf93e29954.html#aeb620222dd0351a6d3848caf93e29954":[1,0,0,3,15,10],
+"classCqrs_1_1Bus_1_1Route_ac82e93e4bb4667c9d1683d07c28d8b04.html#ac82e93e4bb4667c9d1683d07c28d8b04":[1,0,0,3,13,0],
+"classCqrs_1_1Cache_1_1CacheRepository.html":[1,0,0,4,0]
 };

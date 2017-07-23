@@ -25,8 +25,7 @@ var hierarchy =
       [ "Cqrs.Events.NotifyEveryoneEventAttribute", "classCqrs_1_1Events_1_1NotifyEveryoneEventAttribute.html", null ],
       [ "Cqrs.Events.NotifyEveryoneExceptCallerEventAttribute", "classCqrs_1_1Events_1_1NotifyEveryoneExceptCallerEventAttribute.html", null ],
       [ "Cqrs.Events.PrivateEventAttribute", "classCqrs_1_1Events_1_1PrivateEventAttribute.html", null ],
-      [ "Cqrs.Events.PublicEventAttribute", "classCqrs_1_1Events_1_1PublicEventAttribute.html", null ],
-      [ "System.Diagnostics.DebuggerDisplayAttribute", "classSystem_1_1Diagnostics_1_1DebuggerDisplayAttribute.html", null ]
+      [ "Cqrs.Events.PublicEventAttribute", "classCqrs_1_1Events_1_1PublicEventAttribute.html", null ]
     ] ],
     [ "Cqrs.Authentication.AuthenticationTokenHelper< SingleSignOnToken >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", [
       [ "Cqrs.Authentication.DefaultAuthenticationTokenHelper", "classCqrs_1_1Authentication_1_1DefaultAuthenticationTokenHelper.html", null ]
@@ -72,10 +71,12 @@ var hierarchy =
       [ "Cqrs.Authentication.ISingleSignOnTokenWithCompanyRsn", "interfaceCqrs_1_1Authentication_1_1ISingleSignOnTokenWithCompanyRsn.html", [
         [ "Cqrs.Authentication.ISingleSignOnTokenWithUserRsnAndCompanyRsn", "interfaceCqrs_1_1Authentication_1_1ISingleSignOnTokenWithUserRsnAndCompanyRsn.html", [
           [ "Cqrs.Authentication.SingleSignOnTokenWithUserRsnAndCompanyRsn", "classCqrs_1_1Authentication_1_1SingleSignOnTokenWithUserRsnAndCompanyRsn.html", null ]
-        ] ]
+        ] ],
+        [ "Cqrs.Authentication.SingleSignOnTokenWithCompanyRsn", "classCqrs_1_1Authentication_1_1SingleSignOnTokenWithCompanyRsn.html", null ]
       ] ],
       [ "Cqrs.Authentication.ISingleSignOnTokenWithUserRsn", "interfaceCqrs_1_1Authentication_1_1ISingleSignOnTokenWithUserRsn.html", [
-        [ "Cqrs.Authentication.ISingleSignOnTokenWithUserRsnAndCompanyRsn", "interfaceCqrs_1_1Authentication_1_1ISingleSignOnTokenWithUserRsnAndCompanyRsn.html", null ]
+        [ "Cqrs.Authentication.ISingleSignOnTokenWithUserRsnAndCompanyRsn", "interfaceCqrs_1_1Authentication_1_1ISingleSignOnTokenWithUserRsnAndCompanyRsn.html", null ],
+        [ "Cqrs.Authentication.SingleSignOnTokenWithUserRsn", "classCqrs_1_1Authentication_1_1SingleSignOnTokenWithUserRsn.html", null ]
       ] ],
       [ "Cqrs.Authentication.SingleSignOnToken", "classCqrs_1_1Authentication_1_1SingleSignOnToken.html", [
         [ "Cqrs.Authentication.SingleSignOnTokenWithCompanyRsn", "classCqrs_1_1Authentication_1_1SingleSignOnTokenWithCompanyRsn.html", null ],
@@ -367,8 +368,10 @@ var hierarchy =
         ] ],
         [ "Cqrs.MongoDB.Events.MongoDbEventStore< TAuthenticationToken >", "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore.html", null ]
       ] ],
-      [ "Cqrs.EventStore.EventStore< TAuthenticationToken >", "classCqrs_1_1EventStore_1_1EventStore.html", null ],
-      [ "Cqrs.Ninject.InProcess.EventStore.InProcessEventStore< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1InProcess_1_1EventStore_1_1InProcessEventStore.html", null ]
+      [ "Cqrs.Events.InProcessEventStore< TAuthenticationToken >", "classCqrs_1_1Events_1_1InProcessEventStore.html", [
+        [ "Cqrs.Ninject.InProcess.EventStore.InProcessEventStore< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1InProcess_1_1EventStore_1_1InProcessEventStore.html", null ]
+      ] ],
+      [ "Cqrs.EventStore.EventStore< TAuthenticationToken >", "classCqrs_1_1EventStore_1_1EventStore.html", null ]
     ] ],
     [ "Cqrs.EventStore.Bus.EventConverter", "classCqrs_1_1EventStore_1_1Bus_1_1EventConverter.html", null ],
     [ "Cqrs.EventStore.Bus.EventStoreUtilities", "classCqrs_1_1EventStore_1_1Bus_1_1EventStoreUtilities.html", null ],
@@ -605,7 +608,6 @@ var hierarchy =
       [ "Cqrs.WebApi.CqrsHttpApplicationWithSignalR< TAuthenticationToken >", "classCqrs_1_1WebApi_1_1CqrsHttpApplicationWithSignalR.html", null ]
     ] ],
     [ "Cqrs.Ninject.Azure.WebJobs.CqrsNinjectJobHost< SingleSignOnToken, DefaultAuthenticationTokenHelper >", "classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost.html", [
-      [ "CqrsWebJobProgram", "classCqrsWebJobProgram.html", null ],
       [ "CqrsWebJobProgram", "classCqrsWebJobProgram.html", null ]
     ] ],
     [ "Cqrs.Ninject.Azure.Wcf.CqrsWebHost< TAuthenticationToken, TAuthenticationTokenHelper, WebHostModule >", "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html", [
@@ -636,7 +638,11 @@ var hierarchy =
       [ "Cqrs.Domain.Exceptions.EventsOutOfOrderException", "classCqrs_1_1Domain_1_1Exceptions_1_1EventsOutOfOrderException.html", null ],
       [ "Cqrs.Domain.Exceptions.MissingParameterLessConstructorException", "classCqrs_1_1Domain_1_1Exceptions_1_1MissingParameterLessConstructorException.html", null ],
       [ "Cqrs.Domain.Exceptions.SagaNotFoundException< TSaga, TAuthenticationToken >", "classCqrs_1_1Domain_1_1Exceptions_1_1SagaNotFoundException.html", null ],
-      [ "Cqrs.EventStore.Bus.InvalidLastEventProcessedException", "classCqrs_1_1EventStore_1_1Bus_1_1InvalidLastEventProcessedException.html", null ]
+      [ "Cqrs.EventStore.Bus.InvalidLastEventProcessedException", "classCqrs_1_1EventStore_1_1Bus_1_1InvalidLastEventProcessedException.html", null ],
+      [ "Cqrs.Exceptions.MissingApplicationSettingException", "classCqrs_1_1Exceptions_1_1MissingApplicationSettingException.html", [
+        [ "Cqrs.Exceptions.MissingApplicationSettingForConnectionStringException", "classCqrs_1_1Exceptions_1_1MissingApplicationSettingForConnectionStringException.html", null ]
+      ] ],
+      [ "Cqrs.Exceptions.MissingConnectionStringException", "classCqrs_1_1Exceptions_1_1MissingConnectionStringException.html", null ]
     ] ],
     [ "ExpressionVisitor", null, [
       [ "Cqrs.Sql.DataStores.ExpressionTreeConverter< TA, TB >", "classCqrs_1_1Sql_1_1DataStores_1_1ExpressionTreeConverter.html", null ],
@@ -917,17 +923,23 @@ var hierarchy =
       ] ],
       [ "Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration.AzureEventBusReceiverModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule.html", null ],
       [ "Cqrs.Ninject.Configuration.EventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Configuration_1_1EventStoreModule.html", null ],
-      [ "Cqrs.Ninject.Configuration.MemoryCacheEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Configuration_1_1MemoryCacheEventStoreModule.html", null ],
       [ "Cqrs.Ninject.Configuration.ResolvableModule", "classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule.html", [
         [ "Cqrs.Ninject.Azure.Wcf.Configuration.WebHostModule", "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule.html", [
           [ "Cqrs.Ninject.Azure.WebJobs.Configuration.WebJobHostModule", "classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1Configuration_1_1WebJobHostModule.html", null ]
         ] ],
-        [ "Cqrs.Ninject.Configuration.CqrsModule< TAuthenticationToken, TAuthenticationTokenHelper >", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule.html", null ]
+        [ "Cqrs.Ninject.Configuration.CqrsModule< TAuthenticationToken, TAuthenticationTokenHelper >", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule.html", null ],
+        [ "Cqrs.Ninject.Configuration.InProcessCommandBusModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule.html", [
+          [ "Cqrs.Ninject.InProcess.CommandBus.Configuration.InProcessCommandBusModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1InProcess_1_1CommandBus_1_1Configuration_1_1InProcessCommandBusModule.html", null ]
+        ] ],
+        [ "Cqrs.Ninject.Configuration.InProcessEventBusModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessEventBusModule.html", [
+          [ "Cqrs.Ninject.InProcess.EventBus.Configuration.InProcessEventBusModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1InProcess_1_1EventBus_1_1Configuration_1_1InProcessEventBusModule.html", null ]
+        ] ],
+        [ "Cqrs.Ninject.Configuration.InProcessEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessEventStoreModule.html", [
+          [ "Cqrs.Ninject.InProcess.EventStore.Configuration.InProcessEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1InProcess_1_1EventStore_1_1Configuration_1_1InProcessEventStoreModule.html", null ]
+        ] ],
+        [ "Cqrs.Ninject.Configuration.MemoryCacheEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Configuration_1_1MemoryCacheEventStoreModule.html", null ],
+        [ "Cqrs.Ninject.Configuration.SimplifiedSqlModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedSqlModule.html", null ]
       ] ],
-      [ "Cqrs.Ninject.Configuration.SimplifiedSqlModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedSqlModule.html", null ],
-      [ "Cqrs.Ninject.InProcess.CommandBus.Configuration.InProcessCommandBusModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1InProcess_1_1CommandBus_1_1Configuration_1_1InProcessCommandBusModule.html", null ],
-      [ "Cqrs.Ninject.InProcess.EventBus.Configuration.InProcessEventBusModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1InProcess_1_1EventBus_1_1Configuration_1_1InProcessEventBusModule.html", null ],
-      [ "Cqrs.Ninject.InProcess.EventStore.Configuration.InProcessEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1InProcess_1_1EventStore_1_1Configuration_1_1InProcessEventStoreModule.html", null ],
       [ "Cqrs.Ninject.Mongo.Configuration.MongoModule", "classCqrs_1_1Ninject_1_1Mongo_1_1Configuration_1_1MongoModule.html", [
         [ "Cqrs.Ninject.Mongo.Configuration.TestMongoModule", "classCqrs_1_1Ninject_1_1Mongo_1_1Configuration_1_1TestMongoModule.html", null ]
       ] ],

@@ -1,5 +1,6 @@
 var classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule =
 [
+    [ "CqrsModule", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a31a1047d3940842b760ad2a796aa1606.html#a31a1047d3940842b760ad2a796aa1606", null ],
     [ "CqrsModule", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a197055fca498bff31fd9a91a2a07292d.html#a197055fca498bff31fd9a91a2a07292d", null ],
     [ "Load", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a8cf4c81c21496699b2f32112b23308fe.html#a8cf4c81c21496699b2f32112b23308fe", null ],
     [ "RegisterAutomapperComponents", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a5c3b6741270b2cb16aa1a1a84c57041b.html#a5c3b6741270b2cb16aa1a1a84c57041b", null ],

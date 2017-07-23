@@ -12,6 +12,7 @@ var namespaceCqrs =
     [ "Entities", "namespaceCqrs_1_1Entities.html", "namespaceCqrs_1_1Entities" ],
     [ "Events", "namespaceCqrs_1_1Events.html", "namespaceCqrs_1_1Events" ],
     [ "EventStore", "namespaceCqrs_1_1EventStore.html", "namespaceCqrs_1_1EventStore" ],
+    [ "Exceptions", "namespaceCqrs_1_1Exceptions.html", "namespaceCqrs_1_1Exceptions" ],
     [ "Hosts", "namespaceCqrs_1_1Hosts.html", "namespaceCqrs_1_1Hosts" ],
     [ "Infrastructure", "namespaceCqrs_1_1Infrastructure.html", "namespaceCqrs_1_1Infrastructure" ],
     [ "Messages", "namespaceCqrs_1_1Messages.html", "namespaceCqrs_1_1Messages" ],
