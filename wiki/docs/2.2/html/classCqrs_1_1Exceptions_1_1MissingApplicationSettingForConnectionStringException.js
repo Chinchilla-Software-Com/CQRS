@@ -1,0 +1,5 @@
+var classCqrs_1_1Exceptions_1_1MissingApplicationSettingForConnectionStringException =
+[
+    [ "MissingApplicationSettingForConnectionStringException", "classCqrs_1_1Exceptions_1_1MissingApplicationSettingForConnectionStringException_a1cbfb4c5a94ac501f8bfda5382862e4d.html#a1cbfb4c5a94ac501f8bfda5382862e4d", null ],
+    [ "MissingApplicationSettingForConnectionStringException", "classCqrs_1_1Exceptions_1_1MissingApplicationSettingForConnectionStringException_ac007052f2ab651e31647acbdbe2ce7e7.html#ac007052f2ab651e31647acbdbe2ce7e7", null ]
+];
