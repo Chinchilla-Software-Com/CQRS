@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using cdmdotnet.Logging;
+using Cqrs.DataStores;
 using Cqrs.MongoDB.DataStores.Indexes;
 using Cqrs.MongoDB.Serialisers;
 using MongoDB.Driver;
@@ -20,7 +21,7 @@ using MongoDB.Bson.Serialization;
 namespace Cqrs.MongoDB.Factories
 {
 	/// <summary>
-	/// A factory for obtaining DataStore collections from Mongo
+	/// A factory for obtaining <see cref="IDataStore{TData}"/> collections from Mongo
 	/// </summary>
 	public class MongoDbDataStoreFactory
 	{

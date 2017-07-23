@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 using Cqrs.Entities;
 
 namespace Cqrs.Domain.Exceptions
@@ -26,6 +27,20 @@ namespace Cqrs.Domain.Exceptions
 		public EntityNotFoundException(Guid id)
 			: base(string.Format("Entity '{0}' of type '{1}' was not found", id, typeof(TEntity).FullName))
 		{
+			Id = id;
+			EntityType = typeof(TEntity);
 		}
+
+		/// <summary>
+		/// The identifier of the <see cref="IEntity"/> that wasn't found.
+		/// </summary>
+		[DataMember]
+		public Guid Id { get; set; }
+
+		/// <summary>
+		/// The <see cref="Type"/> of the <see cref="IEntity"/> that wasn't found.
+		/// </summary>
+		[DataMember]
+		public Type EntityType { get; set; }
 	}
 }

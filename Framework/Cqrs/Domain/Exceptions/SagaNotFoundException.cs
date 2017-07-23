@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 
 namespace Cqrs.Domain.Exceptions
 {
@@ -26,6 +27,20 @@ namespace Cqrs.Domain.Exceptions
 		public SagaNotFoundException(Guid id)
 			: base(string.Format("Saga '{0}' of type '{1}' was not found", id, typeof(TSaga).FullName))
 		{
+			Id = id;
+			SagaType = typeof(TSaga);
 		}
+
+		/// <summary>
+		/// The identifier of the <see cref="ISaga{TAuthenticationToken}"/> that wasn't found.
+		/// </summary>
+		[DataMember]
+		public Guid Id { get; set; }
+
+		/// <summary>
+		/// The <see cref="Type"/> of the <see cref="ISaga{TAuthenticationToken}"/> that wasn't found.
+		/// </summary>
+		[DataMember]
+		public Type SagaType { get; set; }
 	}
 }
