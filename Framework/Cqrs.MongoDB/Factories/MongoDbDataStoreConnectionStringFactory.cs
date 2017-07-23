@@ -39,20 +39,22 @@ namespace Cqrs.MongoDB.Factories
 			Logger.LogDebug("Getting MongoDB connection string", "MongoDbDataStoreConnectionStringFactory\\GetDataStoreConnectionString");
 			try
 			{
-				string appKey;
-				if (ConfigurationManager.TryGetSetting(MongoDbConnectionStringKey, out appKey))
+				string applicationKey;
+				if (ConfigurationManager.TryGetSetting(MongoDbConnectionStringKey, out applicationKey) && !string.IsNullOrEmpty(applicationKey))
 				{
 					try
 					{
-						return System.Configuration.ConfigurationManager.ConnectionStrings[MongoDbConnectionStringKey].ConnectionString;
+						ConnectionStringSettings connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey];
+						if (connectionString != null)
+							return connectionString.ConnectionString;
 					}
 					catch (Exception exception)
 					{
-						throw new MissingApplicationSettingForConnectionStringException(MongoDbConnectionStringKey, exception);
+						throw new MissingConnectionStringException(applicationKey, exception);
 					}
 				}
-				if (ConfigurationManager.TryGetSetting(OldMongoDbConnectionStringKey, out appKey))
-					return appKey;
+				if (ConfigurationManager.TryGetSetting(OldMongoDbConnectionStringKey, out applicationKey))
+					return applicationKey;
 				throw new MissingApplicationSettingForConnectionStringException(MongoDbConnectionStringKey);
 			}
 			finally
