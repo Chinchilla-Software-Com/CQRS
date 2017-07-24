@@ -102,7 +102,7 @@
 
 <div id="header">
 	<h1>Your Azure micro-service application</h1>
-	<p>Congratulations! You've created a project</p>
+	<p>Congratulations! You've created a project. <a href=".">Launch your app</a> once you've configured it using the instructions below.</p>
 </div>
 
 <div id="main">
@@ -128,15 +128,15 @@
 		<ol>
 			<li>Create a new Azure SQL Database:<ol>
 					<li>Run SQL scripts:<ol>
-							<li>\ConversationSummary.sql</li>
-							<li>\Credentials.sql</li>
-							<li>\Messages.sql</li>
-							<li>\Users.sql</li>
+							<li>\$ext_safeprojectname$.MicroServices\tools\ConversationSummary.sql</li>
+							<li>\$ext_safeprojectname$.MicroServices\tools\Credentials.sql</li>
+							<li>\$ext_safeprojectname$.MicroServices\tools\Messages.sql</li>
+							<li>\$ext_safeprojectname$.MicroServices\tools\Users.sql</li>
 						</ol>
 					</li>
 					<li>Run CQRS SQL scripts:<ol>
-							<li>\Chat.MicroServices\tools\Create-Log-Table.sql</li>
-							<li>\Chat.MicroServices\tools\EventStoreTable-SqlServer.sql</li>
+							<li>\$ext_safeprojectname$.MicroServices\tools\Create-Log-Table.sql</li>
+							<li>\$ext_safeprojectname$.MicroServices\tools\EventStoreTable-SqlServer.sql</li>
 						</ol>
 					</li>
 				</ol>
@@ -178,22 +178,22 @@
 						Confirm the below virtual applications are correctly setup first.<br/>
 						<img src="https://chinchilla-software-com.github.io/CQRS/wiki/Chat/VirtualDirectorySettings.png"/>
 						<ol>
-							<li>/Chat<ol>
+							<li>/$ext_safeprojectname$<ol>
 									<li>Directory: &quot;site\wwwroot&quot;</li>
 									<li>Application turned Off</li>
 								</ol>
 							</li>
-							<li>/Chat/UI<ol>
+							<li>/$ext_safeprojectname$/UI<ol>
 									<li>Directory: &quot;site\UI&quot;</li>
 									<li>Application turned On</li>
 								</ol>
 							</li>
-							<li>/Chat/RestAPI<ol>
+							<li>/$ext_safeprojectname$/RestAPI<ol>
 									<li>Directory: &quot;site\RestAPI&quot;</li>
 									<li>Application turned On</li>
 								</ol>
 							</li>
-							<li>/Chat/WcfAPI<ol>
+							<li>/$ext_safeprojectname$/WcfAPI<ol>
 									<li>Directory: &quot;site\WcfAPI&quot;</li>
 									<li>Application turned On</li>
 								</ol>
@@ -203,10 +203,10 @@
 				</ol>
 			</li>
 			<li>Update the follow files with the above app settings and connection strings so you can run you application locally:<ol>
-				<li>Chat.RestAPI\web.config</li>
-				<li>Chat.WcfAPI\web.config</li>
-				<li>Chat.WcfAPI.Tests\app.config</li>
-				<li>Chat.MicroKernel\app.config</li>
+				<li>$ext_safeprojectname$.RestAPI\web.config</li>
+				<li>$ext_safeprojectname$.WcfAPI\web.config</li>
+				<li>$ext_safeprojectname$.WcfAPI.Tests\app.config</li>
+				<li>$ext_safeprojectname$.MicroKernel\app.config</li>
 				</ol>
 			</li>
 			<li>Make sure you start the micro-kernel (it&#39;s a console application) first.<ol>
@@ -221,10 +221,10 @@
 		<ul>
 			<li>Open the <em>WebDeploy.pubxml</em> WebDeploy publishing profiles in each project and replace any reference to <em>cqrs-chat</em> with the name of your Azure App Service created in step 4 of <em>Configure you app</em>.</li>
 			<li>Publish the following project to Azure using the provided WebDeploy publishing profiles:<ul>
-				<li>Chat.RestAPI</li>
-				<li>Chat.WcfAPI</li>
+				<li>$ext_safeprojectname$.RestAPI</li>
+				<li>$ext_safeprojectname$.WcfAPI</li>
 				<li>$safeprojectname$</li>
-				<li>Chat.MicroKernel</li>
+				<li>$ext_safeprojectname$.MicroKernel</li>
 				</ul>
 			</li>
 		</ul>

@@ -4,7 +4,7 @@ window.chatApp.services = {};
 window.chatApp.filters = {};
 
 window.chatApp.config = {
-	baseUrl: '/Chat/UI',
+	baseUrl: '/$ext_safeprojectname$/UI',
 	urlArgs: 'v=1.0'
 };
 
