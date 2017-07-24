@@ -6,8 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System.Linq;
-using Cqrs.Azure.DocumentDb;
+using System;
 using Cqrs.Azure.DocumentDb.Events;
 using Cqrs.Events;
 using Cqrs.Ninject.Azure.DocumentDb.Events;
@@ -16,59 +15,16 @@ using Ninject.Modules;
 namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 {
 	/// <summary>
-	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
+	/// A <see cref="INinjectModule"/> that wires up <see cref="AzureDocumentDbEventStoreConnectionStringFactory"/> as the
+	/// <see cref="IAzureDocumentDbEventStoreConnectionStringFactory"/>.
 	/// </summary>
-	public class TestAzureDocumentDbEventStoreModule<TAuthenticationToken> : NinjectModule
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	public class TestAzureDocumentDbEventStoreModule<TAuthenticationToken> : AzureDocumentDbEventStoreModule<TAuthenticationToken>
 	{
-		#region Overrides of NinjectModule
-
-		/// <summary>
-		/// Loads the module into the kernel.
-		/// </summary>
-		public override void Load()
-		{
-			RegisterFactories();
-			RegisterServices();
-			RegisterEventStore();
-			RegisterAzureHelpers();
-		}
-
-		#endregion
-
-		/// <summary>
-		/// Register the all factories
-		/// </summary>
-		public virtual void RegisterFactories()
-		{
-			Bind<IEventBuilder<TAuthenticationToken>>()
-				.To<AzureDocumentDbEventBuilder<TAuthenticationToken>>()
-				.InSingletonScope();
-			Bind<IEventDeserialiser<TAuthenticationToken>>()
-				.To<AzureDocumentDbEventDeserialiser<TAuthenticationToken>>()
-				.InSingletonScope();
-		}
-
-		/// <summary>
-		/// Register the all services
-		/// </summary>
-		public virtual void RegisterServices()
-		{
-		}
-
-		public virtual void RegisterAzureHelpers()
-		{
-			if (!Kernel.GetBindings(typeof(IAzureDocumentDbHelper)).Any())
-			{
-				Bind<IAzureDocumentDbHelper>()
-					.To<AzureDocumentDbHelper>()
-					.InSingletonScope();
-			}
-		}
-
 		/// <summary>
 		/// Register the <see cref="IAzureDocumentDbEventStoreConnectionStringFactory"/> and <see cref="IEventStore{TAuthenticationToken}"/>
 		/// </summary>
-		public virtual void RegisterEventStore()
+		public override void RegisterEventStore()
 		{
 			Bind<IAzureDocumentDbEventStoreConnectionStringFactory>()
 				.To<TestAzureDocumentDbEventStoreConnectionStringFactory>()

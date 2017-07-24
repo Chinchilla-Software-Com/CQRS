@@ -19,6 +19,11 @@ using Ninject.Web.Common;
 
 namespace Cqrs.Ninject.Azure.Wcf.Configuration
 {
+	/// <summary>
+	/// A <see cref="WebActivatorEx.PreApplicationStartMethodAttribute"/> that calls <see cref="Start"/>
+	/// and <see cref="WebActivatorEx.ApplicationShutdownMethodAttribute"/> that calls <see cref="Stop"/>
+	/// configuring Simplified SQL by wiring up <see cref="SimplifiedSqlModule{TAuthenticationToken}"/>.
+	/// </summary>
 	public static class SimplifiedNinjectWcf
 	{
 		private static readonly Bootstrapper Bootstrapper = new Bootstrapper();

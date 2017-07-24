@@ -18,14 +18,24 @@ namespace Cqrs.Ninject.Configuration
 	/// </summary>
 	public abstract class ResolvableModule : NinjectModule
 	{
+		/// <summary>
+		/// Resolves instances for the specified <typeparamref name="T"/>.
+		/// </summary>
+		/// <typeparam name="T">The <see cref="Type"/> to resolve.</typeparam>
+		/// <returns>Null if no resolution is made.</returns>
 		protected virtual T Resolve<T>()
 		{
 			return (T)Resolve(typeof(T));
 		}
 
-		protected virtual object Resolve(Type serviceType)
+		/// <summary>
+		/// Resolves instances for the specified <paramref name="type"/>.
+		/// </summary>
+		/// <param name="type">The <see cref="Type"/> to resolve.</param>
+		/// <returns>Null if no resolution is made.</returns>
+		protected virtual object Resolve(Type type)
 		{
-			return Kernel.Resolve(Kernel.CreateRequest(serviceType, null, new Parameter[0], true, true)).SingleOrDefault();
+			return Kernel.Resolve(Kernel.CreateRequest(type, null, new Parameter[0], true, true)).SingleOrDefault();
 		}
 	}
 }

@@ -1,12 +1,14 @@
-﻿using Cqrs.EventStore;
+﻿using System;
+using Cqrs.EventStore;
 using Cqrs.Events;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Configuration
 {
 	/// <summary>
-	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
+	/// A <see cref="INinjectModule"/> that wires up <see cref="EventStore.EventStore{TAuthenticationToken}"/> as the <see cref="IEventStore{TAuthenticationToken}"/>.
 	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class EventStoreModule<TAuthenticationToken> : NinjectModule
 	{
 		#region Overrides of NinjectModule

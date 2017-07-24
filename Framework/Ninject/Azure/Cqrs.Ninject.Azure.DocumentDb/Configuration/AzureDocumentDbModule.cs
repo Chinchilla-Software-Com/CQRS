@@ -14,7 +14,7 @@ using Ninject.Modules;
 namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 {
 	/// <summary>
-	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
+	/// A <see cref="INinjectModule"/> that wires up <see cref="AzureDocumentDbDataStoreConnectionStringFactory"/> as the <see cref="IAzureDocumentDbDataStoreConnectionStringFactory"/>.
 	/// </summary>
 	public class AzureDocumentDbModule : NinjectModule
 	{
@@ -57,6 +57,9 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 		{
 		}
 
+		/// <summary>
+		/// Register <see cref="IAzureDocumentDbHelper"/> if it hasn't already been registered.
+		/// </summary>
 		public virtual void RegisterAzureHelpers()
 		{
 			if (!Kernel.GetBindings(typeof(IAzureDocumentDbHelper)).Any())

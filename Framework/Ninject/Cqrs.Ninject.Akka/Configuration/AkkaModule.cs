@@ -14,12 +14,16 @@ using Cqrs.Akka.Domain;
 using Cqrs.Akka.Events;
 using Cqrs.Bus;
 using Cqrs.Configuration;
+using Cqrs.Ninject.Configuration;
 using Ninject.Modules;
-using Ninject.Parameters;
 
 namespace Cqrs.Ninject.Akka.Configuration
 {
-	public class AkkaModule<TAuthenticationToken> : NinjectModule
+	/// <summary>
+	/// A <see cref="INinjectModule"/> that wires up many of the prerequisites for running CQRS.NET with Akka.NET
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	public class AkkaModule<TAuthenticationToken> : ResolvableModule
 	{
 		#region Overrides of NinjectModule
 
@@ -55,15 +59,5 @@ namespace Cqrs.Ninject.Akka.Configuration
 		}
 
 		#endregion
-
-		protected T Resolve<T>()
-		{
-			return (T)Resolve(typeof(T));
-		}
-
-		protected object Resolve(Type serviceType)
-		{
-			return Kernel.Resolve(Kernel.CreateRequest(serviceType, null, new Parameter[0], true, true)).SingleOrDefault();
-		}
 	}
 }

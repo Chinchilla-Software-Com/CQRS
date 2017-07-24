@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using System.Linq;
 using Cqrs.Azure.ServiceBus;
 using Cqrs.Events;
@@ -14,8 +15,9 @@ using Ninject.Modules;
 namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 {
 	/// <summary>
-	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
+	/// A <see cref="INinjectModule"/> that wires up <see cref="AzureEventBusPublisher{TAuthenticationToken}"/> as the <see cref="IEventPublisher{TAuthenticationToken}"/> and other require components.
 	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureEventBusPublisherModule<TAuthenticationToken> : NinjectModule
 	{
 		#region Overrides of NinjectModule
@@ -40,7 +42,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 		#endregion
 
 		/// <summary>
-		/// Register the Cqrs event publisher
+		/// Register the CQRS event publisher
 		/// </summary>
 		public virtual void RegisterEventPublisher()
 		{
@@ -50,7 +52,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 		}
 
 		/// <summary>
-		/// Register the Cqrs event handler message serialiser
+		/// Register the CQRS event handler message serialiser
 		/// </summary>
 		public virtual void RegisterEventMessageSerialiser()
 		{

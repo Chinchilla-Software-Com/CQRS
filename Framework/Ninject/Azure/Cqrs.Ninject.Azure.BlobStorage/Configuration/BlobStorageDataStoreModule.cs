@@ -11,6 +11,9 @@ using Ninject.Modules;
 
 namespace Cqrs.Ninject.Azure.BlobStorage.Configuration
 {
+	/// <summary>
+	/// A <see cref="INinjectModule"/> that wires up <see cref="BlobStorageDataStoreConnectionStringFactory"/> as the <see cref="IBlobStorageDataStoreConnectionStringFactory"/>.
+	/// </summary>
 	public class BlobStorageDataStoreModule : NinjectModule
 	{
 		#region Overrides of NinjectModule

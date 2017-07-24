@@ -26,6 +26,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug\Cqrs.Azure.EventHub.CommandBus.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,6 +37,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Release\Cqrs.Azure.EventHub.CommandBus.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ninject">
@@ -50,8 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\AzureCommandHubPublisherModule.cs" />
+    <Compile Include="Configuration\AzureCommandBusPublisherModule.cs" />
+    <Compile Include="Configuration\AzureCommandHubReceiverModule.cs" />
     <Compile Include="Configuration\AzureCommandBusSenderModule.cs" />
     <Compile Include="Configuration\AzureCommandBusReceiverModule.cs" />
+    <Compile Include="Configuration\AzureQueuedCommandHubReceiverModule.cs" />
     <Compile Include="Configuration\AzureQueuedCommandBusReceiverModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

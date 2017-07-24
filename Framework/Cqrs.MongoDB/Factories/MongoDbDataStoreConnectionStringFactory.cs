@@ -10,10 +10,14 @@ using System;
 using System.Configuration;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
+using Cqrs.DataStores;
 using Cqrs.Exceptions;
 
 namespace Cqrs.MongoDB.Factories
 {
+	/// <summary>
+	/// A factory for getting connection strings and database names for <see cref="IDataStore{TData}"/> access.
+	/// </summary>
 	public class MongoDbDataStoreConnectionStringFactory : IMongoDbDataStoreConnectionStringFactory
 	{
 		public static string MongoDbConnectionStringKey = "Cqrs.MongoDb.DataStore.ConnectionStringName";

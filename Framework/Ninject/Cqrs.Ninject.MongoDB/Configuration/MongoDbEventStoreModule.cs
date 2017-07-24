@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using Cqrs.Events;
 using Cqrs.MongoDB.Events;
 using Cqrs.MongoDB.Serialisers;
@@ -13,6 +14,10 @@ using Ninject.Modules;
 
 namespace Cqrs.Ninject.MongoDB.Configuration
 {
+	/// <summary>
+	/// A <see cref="INinjectModule"/> that wires up <see cref="MongoDbEventStore{TAuthenticationToken}"/> as the <see cref="IEventStore{TAuthenticationToken}"/>.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class MongoDbEventStoreModule<TAuthenticationToken> : NinjectModule
 	{
 		#region Overrides of NinjectModule

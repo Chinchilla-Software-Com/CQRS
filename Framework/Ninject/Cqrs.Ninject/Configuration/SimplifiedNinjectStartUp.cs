@@ -21,11 +21,18 @@ namespace Cqrs.Ninject.Configuration
 	public class SimplifiedNinjectStartUp<THostModule>
 		where THostModule : INinjectModule, new()
 	{
+		/// <summary>
+		/// Instantiates a new instance of <see cref="SimplifiedNinjectStartUp{THostModule}"/>
+		/// </summary>
 		public SimplifiedNinjectStartUp(IConfigurationManager configurationManager)
 		{
 			ConfigurationManager = configurationManager;
 		}
 
+		/// <summary>
+		/// The <see cref="IConfigurationManager"/> that will be used to resolve configuration settings in <see cref="CreateKernel"/>.
+		/// It is not used elsewhere.
+		/// </summary>
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
 		/// <summary>
