@@ -77,6 +77,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <None Include="source.extension.2015.vsixmanifest" />
     <Content Include="__PreviewImage.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -116,7 +117,8 @@
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" Condition="false" />
   <PropertyGroup>
-    <PreBuildEvent>COPY /Y "$(ProjectDir)..\Chat.zip" "$(ProjectDir)ProjectTemplates\Chat.zip"</PreBuildEvent>
+    <PreBuildEvent>COPY /Y "$(ProjectDir)..\Chat.zip" "$(ProjectDir)ProjectTemplates\Chat.zip"
+COPY /Y "$(ProjectDir)source.extension.2015.vsixmanifest" "$(ProjectDir)source.extension.vsixmanifest"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>REM IF "$(ConfigurationName)"=="Debug" "$(SolutionDir)..\Root-VSIX\Root-VSIX.exe" 12 Exp "$(TargetDir)$(TargetName).vsix" uninstall
