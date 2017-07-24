@@ -33,20 +33,22 @@ namespace Cqrs.Ninject.Configuration
 		public static IList<INinjectModule> ModulesToLoad = new List<INinjectModule>();
 
 		/// <summary>
-		/// A user supplied <see cref="Func{TResult}"/> that will be called during <see cref="Start"/> to create and populate <see cref="Current"/>.
+		/// A user supplied <see cref="Func{TResult}"/> that will be called during <see cref="Start"/> to create and populate <see cref="DependencyResolver.Current"/>.
 		/// </summary>
 		public static Func<IKernel, NinjectDependencyResolver> DependencyResolverCreator { get; set; }
 
 		/// <summary>
 		/// Instantiates a new instance of <see cref="NinjectDependencyResolver"/>
 		/// </summary>
-		/// <param name="kernel"></param>
 		public NinjectDependencyResolver(IKernel kernel)
 		{
 			Kernel = kernel;
 			BindDependencyResolver();
 		}
 
+		/// <summary>
+		/// Checks if <see cref="IDependencyResolver"/> has already been registered and if not, registers this instance to it.
+		/// </summary>
 		protected virtual void BindDependencyResolver()
 		{
 			bool isDependencyResolverBound = Kernel.GetBindings(typeof(IDependencyResolver)).Any();

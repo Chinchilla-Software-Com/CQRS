@@ -6,29 +6,49 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System.Runtime.Remoting.Messaging;
 using Cqrs.Azure.DocumentDb.Events;
 using cdmdotnet.Logging;
+using cdmdotnet.StateManagement;
+using cdmdotnet.StateManagement.Threaded;
 using Cqrs.Configuration;
+using Cqrs.DataStores;
+using Cqrs.Events;
 
 namespace Cqrs.Ninject.Azure.DocumentDb.Events
 {
+	/// <summary>
+	/// A <see cref="AzureDocumentDbEventStoreConnectionStringFactory"/>
+	/// that enables you to set a database name with <see cref="DatabaseName"/>. This means you can randomly generate your own database name per test.
+	/// </summary>
 	public class TestAzureDocumentDbEventStoreConnectionStringFactory : AzureDocumentDbEventStoreConnectionStringFactory
 	{
 		private const string CallContextDatabaseNameKey = "AzureDocumentDbEventStoreConnectionStringFactory¿DatabaseName";
 
+		private static IContextItemCollection Query { get; set; }
+
+		static TestAzureDocumentDbEventStoreConnectionStringFactory()
+		{
+			Query = new ThreadedContextItemCollection();
+		}
+
+		/// <summary>
+		/// The name of the database currently being used.
+		/// </summary>
 		public static string DatabaseName
 		{
 			get
 			{
-				return (string)CallContext.GetData(CallContextDatabaseNameKey);
+				return Query.GetData<string>(CallContextDatabaseNameKey);
 			}
 			set
 			{
-				CallContext.SetData(CallContextDatabaseNameKey, value);
+				Query.SetData(CallContextDatabaseNameKey, value);
 			}
 		}
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="TestAzureDocumentDbEventStoreConnectionStringFactory"/> defaulting to using <see cref="ConfigurationManager"/>
+		/// </summary>
 		public TestAzureDocumentDbEventStoreConnectionStringFactory(ILogger logger)
 			: base(logger, new ConfigurationManager())
 		{
@@ -36,6 +56,9 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Events
 
 		#region Implementation of IAzureDocumentDbDataStoreConnectionStringFactory
 
+		/// <summary>
+		/// Gets the value of <see cref="DatabaseName"/>.
+		/// </summary>
 		public override string GetEventStoreConnectionDatabaseName()
 		{
 			return DatabaseName;

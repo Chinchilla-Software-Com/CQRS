@@ -11,6 +11,9 @@ using Ninject.Modules;
 
 namespace Cqrs.Ninject.MongoDB.Configuration
 {
+	/// <summary>
+	/// A <see cref="INinjectModule"/> that wires up <see cref="MongoDbDataStoreConnectionStringFactory"/> as the <see cref="IMongoDbDataStoreConnectionStringFactory"/>.
+	/// </summary>
 	public class MongoDbDataStoreModule : NinjectModule
 	{
 		#region Overrides of NinjectModule

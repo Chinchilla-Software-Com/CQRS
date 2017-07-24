@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using System.Linq;
 using Cqrs.Azure.ServiceBus;
 using Cqrs.Commands;
@@ -14,8 +15,9 @@ using Ninject.Modules;
 namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 {
 	/// <summary>
-	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
+	/// A <see cref="INinjectModule"/> that wires up <see cref="AzureCommandBusPublisher{TAuthenticationToken}"/> as the <see cref="ICommandPublisher{TAuthenticationToken}"/> and other require components.
 	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureCommandBusPublisherModule<TAuthenticationToken> : NinjectModule
 	{
 		#region Overrides of NinjectModule
@@ -40,12 +42,14 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		#endregion
 
 		/// <summary>
-		/// Register the Cqrs command sender
+		/// Register the CQRS command publisher
 		/// </summary>
 		public virtual void RegisterCommandSender()
 		{
+#pragma warning disable 618
 			Bind<ICommandSender<TAuthenticationToken>>()
-				.To<AzureCommandBusPublisher<TAuthenticationToken>>()
+#pragma warning restore 618
+.To<AzureCommandBusPublisher<TAuthenticationToken>>()
 				.InSingletonScope();
 
 			Bind<ICommandPublisher<TAuthenticationToken>>()
@@ -58,7 +62,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		}
 
 		/// <summary>
-		/// Register the Cqrs command handler message serialiser
+		/// Register the CQRS command handler message serialiser
 		/// </summary>
 		public virtual void RegisterCommandMessageSerialiser()
 		{

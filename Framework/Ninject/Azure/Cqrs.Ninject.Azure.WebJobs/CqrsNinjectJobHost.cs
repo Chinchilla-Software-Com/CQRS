@@ -21,8 +21,15 @@ namespace Cqrs.Ninject.Azure.WebJobs
 	public class CqrsNinjectJobHost<TAuthenticationToken, TAuthenticationTokenHelper> : CqrsWebHost<TAuthenticationToken, TAuthenticationTokenHelper, WebJobHostModule>
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The <see cref="CoreHost"/> to run, WebJobs are console apps and console apps start via a static method, this is the instance
+		/// that static method will actually run.
+		/// </summary>
 		protected static CoreHost<TAuthenticationToken> CoreHost { get; set; }
 
+		/// <summary>
+		/// An <see cref="Action"/> to run just before <see cref="JobHost.RunAndBlock"/>.
+		/// </summary>
 		protected static Action PreRunAndBlockAction { get; set; }
 
 		/// <remarks>

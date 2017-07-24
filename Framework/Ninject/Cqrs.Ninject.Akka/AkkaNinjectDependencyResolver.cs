@@ -5,6 +5,7 @@ using System.Linq;
 using Akka.Actor;
 using Cqrs.Akka.Configuration;
 using Cqrs.Akka.Domain;
+using Cqrs.Configuration;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Ninject.Configuration;
@@ -12,34 +13,58 @@ using Ninject;
 
 namespace Cqrs.Ninject.Akka
 {
+	/// <summary>
+	/// Provides an ability to resolve instances of objects and Akka.NET objects using Ninject
+	/// </summary>
 	public class AkkaNinjectDependencyResolver
 		: NinjectDependencyResolver
 		, IAkkaAggregateResolver
 		, IAkkaSagaResolver
 		, IHandlerResolver
 	{
+		/// <summary>
+		/// The inner resolver used by Akka.NET
+		/// </summary>
 		protected global::Akka.DI.Ninject.NinjectDependencyResolver RawAkkaNinjectDependencyResolver { get; set; }
 
+		/// <summary>
+		/// The <see cref="ActorSystem"/> as part of Akka.NET.
+		/// </summary>
 		protected ActorSystem AkkaSystem { get; private set; }
 
+		/// <summary>
+		/// A generic type, quick reference, lookup for fast resolving of Akka.NET objects since the patterns calls for them to be treated like statics
+		/// </summary>
 		protected IDictionary<Type, IActorRef> AkkaActors { get; private set; }
 
+		/// <summary>
+		/// The <see cref="IAggregateFactory"/> that will be used to create new instances of Akka.NET objects.
+		/// </summary>
 		protected IAggregateFactory AggregateFactory { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AkkaNinjectDependencyResolver"/>
+		/// </summary>
 		public AkkaNinjectDependencyResolver(IKernel kernel, ActorSystem system)
 			: base(kernel)
 		{
 			RawAkkaNinjectDependencyResolver = new global::Akka.DI.Ninject.NinjectDependencyResolver(kernel, AkkaSystem = system);
 			AkkaActors = new ConcurrentDictionary<Type, IActorRef>();
+			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			AggregateFactory = Resolve<IAggregateFactory>();
+			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
+		/// <summary>
+		/// Checks if an instance of <see cref="IDependencyResolver"/> is already registered, if one is registered, it in unregistered and this instance is registered as the <see cref="IDependencyResolver"/>.
+		/// It then checks if an instance of <see cref="IAkkaAggregateResolver"/> is already registered, if one is registered, it in unregistered and this instance is registered as the <see cref="IAkkaAggregateResolver"/>
+		/// </summary>
 		protected override void BindDependencyResolver()
 		{
-			bool isDependencyResolverBound = Kernel.GetBindings(typeof(Cqrs.Configuration.IDependencyResolver)).Any();
+			bool isDependencyResolverBound = Kernel.GetBindings(typeof(IDependencyResolver)).Any();
 			if (isDependencyResolverBound)
-				Kernel.Unbind<Cqrs.Configuration.IDependencyResolver>();
-			Kernel.Bind<Cqrs.Configuration.IDependencyResolver>()
+				Kernel.Unbind<IDependencyResolver>();
+			Kernel.Bind<IDependencyResolver>()
 				.ToConstant(this)
 				.InSingletonScope();
 
@@ -56,7 +81,7 @@ namespace Cqrs.Ninject.Akka
 		/// Starts the <see cref="AkkaNinjectDependencyResolver"/>
 		/// </summary>
 		/// <remarks>
-		/// this exists to the static constructor can be triggered.
+		/// This exists so the static constructor can be triggered.
 		/// </remarks>
 		public new static void Start(IKernel kernel = null, bool prepareProvidedKernel = false)
 		{
@@ -77,6 +102,9 @@ namespace Cqrs.Ninject.Akka
 			NinjectDependencyResolver.Start(kernel, prepareProvidedKernel);
 		}
 
+		/// <summary>
+		/// Calls <see cref="ActorSystem.Shutdown"/>
+		/// </summary>
 		public static void Stop()
 		{
 			var di = Current as AkkaNinjectDependencyResolver;
@@ -86,6 +114,9 @@ namespace Cqrs.Ninject.Akka
 
 		#region Overrides of NinjectDependencyResolver
 
+		/// <summary>
+		/// Resolves instances of <paramref name="serviceType"/> using <see cref="Resolve(System.Type, Object)"/>.
+		/// </summary>
 		public override object Resolve(Type serviceType)
 		{
 			return Resolve(serviceType, null);
@@ -95,12 +126,18 @@ namespace Cqrs.Ninject.Akka
 
 		#region Implementation of IAkkaAggregateResolver
 
+		/// <summary>
+		/// Resolves instances of <typeparamref name="TAggregate"/> using <see cref="AkkaResolve"/>.
+		/// </summary>
 		public virtual IActorRef ResolveActor<TAggregate, TAuthenticationToken>(Guid rsn)
 			where TAggregate : IAggregateRoot<TAuthenticationToken>
 		{
 			return (IActorRef)AkkaResolve(typeof(TAggregate), rsn, true);
 		}
 
+		/// <summary>
+		/// Resolves instances of <typeparamref name="T"/> using <see cref="AkkaResolve"/>.
+		/// </summary>
 		public IActorRef ResolveActor<T>()
 		{
 			return (IActorRef)AkkaResolve(typeof(T), null, true);
@@ -110,11 +147,17 @@ namespace Cqrs.Ninject.Akka
 
 		#region Implementation of IAkkaSagaResolver
 
+		/// <summary>
+		/// Resolves instances of <typeparamref name="TSaga"/> using <see cref="ResolveSagaActor{TSaga,TAuthenticationToken}"/>.
+		/// </summary>
 		IActorRef IAkkaSagaResolver.ResolveActor<TSaga, TAuthenticationToken>(Guid rsn)
 		{
 			return ResolveSagaActor<TSaga, TAuthenticationToken>(rsn);
 		}
 
+		/// <summary>
+		/// Resolves instances of <typeparamref name="TSaga"/> using <see cref="AkkaResolve"/>.
+		/// </summary>
 		public virtual IActorRef ResolveSagaActor<TSaga, TAuthenticationToken>(Guid rsn)
 			where TSaga : ISaga<TAuthenticationToken>
 		{
@@ -123,16 +166,25 @@ namespace Cqrs.Ninject.Akka
 
 		#endregion
 
+		/// <summary>
+		/// Resolves instances of <paramref name="serviceType"/> using <see cref="IDependencyResolver.Resolve{T}"/>.
+		/// </summary>
 		protected virtual object RootResolve(Type serviceType)
 		{
 			return base.Resolve(serviceType);
 		}
 
+		/// <summary>
+		/// Resolves instances of <paramref name="serviceType"/> using <see cref="AkkaResolve"/>.
+		/// </summary>
 		public virtual object Resolve(Type serviceType, object rsn)
 		{
 			return AkkaResolve(serviceType, rsn);
 		}
 
+		/// <summary>
+		/// Resolves instances of <paramref name="serviceType"/> looking up <see cref="AkkaActors"/>, then <see cref="IDependencyResolver.Resolve{T}"/> and finally <see cref="AggregateFactory"/>.
+		/// </summary>
 		public virtual object AkkaResolve(Type serviceType, object rsn, bool isAForcedActorSearch = false)
 		{
 			IActorRef actorReference;
@@ -144,7 +196,7 @@ namespace Cqrs.Ninject.Akka
 					return base.Resolve(serviceType);
 			}
 			catch (ActivationException) { throw; }
-			catch ( /*ActorInitialization*/Exception) { }
+			catch ( /*ActorInitialization*/Exception) { /* */ }
 
 			Props properties;
 			Type typeToTest = serviceType;

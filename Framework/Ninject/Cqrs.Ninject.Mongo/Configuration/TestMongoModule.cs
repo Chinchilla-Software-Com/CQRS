@@ -7,12 +7,13 @@
 #endregion
 
 using Cqrs.Mongo.Factories;
+using Ninject.Modules;
 
 namespace Cqrs.Ninject.Mongo.Configuration
 {
 	/// <summary>
-	/// A <see cref="MongoModule"/> that assumes the connection string is keyed "MongoDb-Test".
-	/// This will generated a random suffix to the database name so as to create a unique store for testing against.
+	/// A <see cref="INinjectModule"/> that wires up <see cref="TestMongoDataStoreConnectionStringFactory"/> as the
+	/// <see cref="IMongoDataStoreConnectionStringFactory"/>.
 	/// </summary>
 	public class TestMongoModule : MongoModule
 	{

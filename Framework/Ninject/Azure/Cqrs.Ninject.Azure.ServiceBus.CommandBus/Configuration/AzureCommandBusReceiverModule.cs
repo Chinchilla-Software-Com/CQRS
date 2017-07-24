@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using System.Linq;
 using Cqrs.Azure.ServiceBus;
 using Cqrs.Bus;
@@ -16,8 +17,9 @@ using Ninject.Modules;
 namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 {
 	/// <summary>
-	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
+	/// A <see cref="INinjectModule"/> that wires up <see cref="AzureCommandBusReceiver{TAuthenticationToken}"/> as the <see cref="ICommandReceiver"/> and other require components.
 	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureCommandBusReceiverModule<TAuthenticationToken> : NinjectModule
 	{
 		#region Overrides of NinjectModule
@@ -44,6 +46,11 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 
 		#endregion
 
+		/// <summary>
+		/// Checks if an existing <typeparamref name="TBus"/> has already been registered, if not
+		/// it tries to instantiates a new instance via resolution and registers that instance.
+		/// </summary>
+		/// <typeparam name="TBus">The <see cref="Type"/> of bus to resolve. Best if a class not an interface.</typeparam>
 		public virtual TBus GetOrCreateBus<TBus>()
 			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
 		{
@@ -63,7 +70,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		}
 
 		/// <summary>
-		/// Register the Cqrs command receiver
+		/// Register the CQRS command receiver
 		/// </summary>
 		public virtual void RegisterCommandReceiver<TBus>(TBus bus)
 			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
@@ -74,7 +81,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		}
 
 		/// <summary>
-		/// Register the Cqrs command handler registrar
+		/// Register the CQRS command handler registrar
 		/// </summary>
 		public virtual void RegisterCommandHandlerRegistrar<TBus>(TBus bus)
 			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
@@ -85,7 +92,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		}
 
 		/// <summary>
-		/// Register the Cqrs command handler message serialiser
+		/// Register the CQRS command handler message serialiser
 		/// </summary>
 		public virtual void RegisterCommandMessageSerialiser()
 		{

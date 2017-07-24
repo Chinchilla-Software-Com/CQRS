@@ -25,17 +25,26 @@ using Ninject.Modules;
 namespace Cqrs.Ninject.Configuration
 {
 	/// <summary>
-	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
+	/// The main <see cref="INinjectModule"/> for use with the CQRS package that wires up many of the prerequisites for running CQRS.NET.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	/// <typeparam name="TAuthenticationTokenHelper">The <see cref="Type"/> of the authentication token helper.</typeparam>
 	public class CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper> : ResolvableModule
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Indicates that web based wire-up is required rather than console, WPF or winforms based wire-up.s
+		/// </summary>
 		protected bool SetupForWeb { get; private set; }
 
+		/// <summary>
+		/// Indicates that logging should be configured for SQL Server rather than console.
+		/// </summary>
 		protected bool SetupForSqlLogging { get; private set; }
 
+		/// <summary>
+		/// Indicates that the <see cref="ConfigurationManager"/> should be registered automatically.
+		/// </summary>
 		protected bool RegisterDefaultConfigurationManager { get; private set; }
 
 		/// <summary>
@@ -224,9 +233,11 @@ namespace Cqrs.Ninject.Configuration
 			Bind<IAggregateRepository<TAuthenticationToken>>()
 				.To<AggregateRepository<TAuthenticationToken>>()
 				.InSingletonScope();
+#pragma warning disable 618
 			Bind<IRepository<TAuthenticationToken>>()
 				.To<Repository<TAuthenticationToken>>()
 				.InSingletonScope();
+#pragma warning restore 618
 			Bind<ISagaRepository<TAuthenticationToken>>()
 				.To<SagaRepository<TAuthenticationToken>>()
 				.InSingletonScope();

@@ -49,10 +49,12 @@ namespace Cqrs.Ninject.Configuration
 		{
 		}
 
+#pragma warning disable 618
 		/// <summary>
 		/// Register the <see cref="ICommandPublisher{TAuthenticationToken}"/>, <see cref="IPublishAndWaitCommandPublisher{TAuthenticationToken}"/>, <see cref="ICommandReceiver{TAuthenticationToken}"/> and <see cref="ICommandHandlerRegistrar"/>
 		/// Register (for backwards compatibility) <see cref="ICommandSender{TAuthenticationToken}"/>
 		/// </summary>
+#pragma warning restore 618
 		public virtual void RegisterCqrsRequirements()
 		{
 			bool isInProcessBusBound = Kernel.GetBindings(typeof(InProcessBus<TAuthenticationToken>)).Any();
@@ -67,9 +69,11 @@ namespace Cqrs.Ninject.Configuration
 			else
 				inProcessBus = Kernel.Get<InProcessBus<TAuthenticationToken>>();
 
+#pragma warning disable 618
 			Bind<ICommandSender<TAuthenticationToken>>()
 				.ToConstant(inProcessBus)
 				.InSingletonScope();
+#pragma warning restore 618
 
 			Bind<ICommandPublisher<TAuthenticationToken>>()
 				.ToConstant(inProcessBus)
