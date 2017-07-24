@@ -1,5 +1,9 @@
 var NAVTREEINDEX9 =
 {
+"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomething_af7f1de240f8dc7b1191a08f8f26b61e9.html#af7f1de240f8dc7b1191a08f8f26b61e9":[1,0,0,23,6,3,4],
+"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomething.html":[1,0,0,23,6,7],
+"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomething2.html":[1,0,0,23,6,8],
+"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomething3.html":[1,0,0,23,6,9],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomethingElseHandler.html":[1,0,0,23,6,10],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomethingElseHandler_a513bed5d82a997c4b5df4fb77a449ae9.html#a513bed5d82a997c4b5df4fb77a449ae9":[1,0,0,23,6,10,0],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomethingHandler.html":[1,0,0,23,6,11],
@@ -245,9 +249,5 @@ var NAVTREEINDEX9 =
 "classCqrs_1_1WebApi_1_1HelpPageConfig_afc36e0fcbf46ecda7770656373dbd46c.html#afc36e0fcbf46ecda7770656373dbd46c":[1,0,0,25,8,2],
 "classCqrs_1_1WebApi_1_1HttpResponseMessage.html":[1,0,0,25,9],
 "classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub.html":[1,0,0,25,4,0,2],
-"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a0188fd4fea68476ffc3b375482c7b56c.html#a0188fd4fea68476ffc3b375482c7b56c":[1,0,0,25,4,0,2,5],
-"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a255a9ddc4f274cab0eae62e827f3726a.html#a255a9ddc4f274cab0eae62e827f3726a":[1,0,0,25,4,0,2,8],
-"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a27c6b1d7673af05bab0305e00aef9be7.html#a27c6b1d7673af05bab0305e00aef9be7":[1,0,0,25,4,0,2,10],
-"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a4b662758eb3732be37b9702c8d4e1791.html#a4b662758eb3732be37b9702c8d4e1791":[1,0,0,25,4,0,2,2],
-"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a4c2512231d4ad5975fa584b14c2974c3.html#a4c2512231d4ad5975fa584b14c2974c3":[1,0,0,25,4,0,2,3]
+"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a0188fd4fea68476ffc3b375482c7b56c.html#a0188fd4fea68476ffc3b375482c7b56c":[1,0,0,25,4,0,2,5]
 };

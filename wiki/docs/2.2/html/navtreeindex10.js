@@ -1,5 +1,9 @@
 var NAVTREEINDEX10 =
 {
+"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a255a9ddc4f274cab0eae62e827f3726a.html#a255a9ddc4f274cab0eae62e827f3726a":[1,0,0,25,4,0,2,8],
+"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a27c6b1d7673af05bab0305e00aef9be7.html#a27c6b1d7673af05bab0305e00aef9be7":[1,0,0,25,4,0,2,10],
+"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a4b662758eb3732be37b9702c8d4e1791.html#a4b662758eb3732be37b9702c8d4e1791":[1,0,0,25,4,0,2,2],
+"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a4c2512231d4ad5975fa584b14c2974c3.html#a4c2512231d4ad5975fa584b14c2974c3":[1,0,0,25,4,0,2,3],
 "classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a649436109e0060be9224aff8e75986b4.html#a649436109e0060be9224aff8e75986b4":[1,0,0,25,4,0,2,7],
 "classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a83b123b045c22ce5bcaee79168cca10a.html#a83b123b045c22ce5bcaee79168cca10a":[1,0,0,25,4,0,2,1],
 "classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a94a46d2beddc12c3920b33b53e579d36.html#a94a46d2beddc12c3920b33b53e579d36":[1,0,0,25,4,0,2,11],
@@ -64,8 +68,8 @@ var NAVTREEINDEX10 =
 "functions_e.html":[1,3,0,5],
 "functions_enum.html":[1,3,3],
 "functions_f.html":[1,3,0,6],
-"functions_func.html":[1,3,1],
 "functions_func.html":[1,3,1,0],
+"functions_func.html":[1,3,1],
 "functions_func_b.html":[1,3,1,1],
 "functions_func_c.html":[1,3,1,2],
 "functions_func_d.html":[1,3,1,3],
@@ -97,8 +101,8 @@ var NAVTREEINDEX10 =
 "functions_n.html":[1,3,0,14],
 "functions_o.html":[1,3,0,15],
 "functions_p.html":[1,3,0,16],
-"functions_prop.html":[1,3,4],
 "functions_prop.html":[1,3,4,0],
+"functions_prop.html":[1,3,4],
 "functions_prop_a.html":[1,3,4,1],
 "functions_prop_b.html":[1,3,4,2],
 "functions_prop_c.html":[1,3,4,3],
@@ -197,7 +201,7 @@ var NAVTREEINDEX10 =
 "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1IAzureDocumentDbDataStoreConnectionStringFactory_a0ad3d0046331ea62ea2415f2c0af5675.html#a0ad3d0046331ea62ea2415f2c0af5675":[1,0,0,2,2,3,2,0],
 "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1IAzureDocumentDbDataStoreConnectionStringFactory_aa5e3d0920e86a97aef18f4f215ce4f88.html#aa5e3d0920e86a97aef18f4f215ce4f88":[1,0,0,2,2,3,2,2],
 "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1IAzureDocumentDbDataStoreConnectionStringFactory_ad5207c6dfcb6496aa9fb731b6453a1ee.html#ad5207c6dfcb6496aa9fb731b6453a1ee":[1,0,0,2,2,3,2,1],
-"interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1IAzureDocumentDbDataStoreConnectionStringFactory_afdb9a4c6d4ada68c58413909d65e3d1c.html#afdb9a4c6d4ada68c58413909d65e3d1c":[1,0,0,2,2,3,2,3],
+"interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1IAzureDocumentDbDataStoreConnectionStringFactory_ae500b0191fee202806701e4f856c43dd.html#ae500b0191fee202806701e4f856c43dd":[1,0,0,2,2,3,2,3],
 "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1IAzureDocumentDbConnectionCache.html":[1,0,0,2,2,8],
 "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1IAzureDocumentDbConnectionCache_a38d813e12b632a93a2934e2b1252f409.html#a38d813e12b632a93a2934e2b1252f409":[1,0,0,2,2,8,0],
 "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1IAzureDocumentDbConnectionCache_a56a01a4224cb64d9349913e5237cebda.html#a56a01a4224cb64d9349913e5237cebda":[1,0,0,2,2,8,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX10 =
 "interfaceCqrs_1_1Commands_1_1ICommandHandler.html":[1,0,0,5,4],
 "interfaceCqrs_1_1Commands_1_1ICommandPublisher.html":[1,0,0,5,5],
 "interfaceCqrs_1_1Commands_1_1ICommandPublisher_aeeb487ad5686d9c44d214b1daaf7833a.html#aeeb487ad5686d9c44d214b1daaf7833a":[1,0,0,5,5,0],
-"interfaceCqrs_1_1Commands_1_1ICommandPublisher_af0f033c0b949e5650032e4f00b11b595.html#af0f033c0b949e5650032e4f00b11b595":[1,0,0,5,5,1],
-"interfaceCqrs_1_1Commands_1_1ICommandReceiver.html":[1,0,0,5,6],
-"interfaceCqrs_1_1Commands_1_1ICommandSender.html":[1,0,0,5,7],
-"interfaceCqrs_1_1Commands_1_1ICommandSender_a3fb3ec40a3e862f721a7c9204e67e832.html#a3fb3ec40a3e862f721a7c9204e67e832":[1,0,0,5,7,1],
-"interfaceCqrs_1_1Commands_1_1ICommandSender_a551d69f8679399fc0ce0fd99dead507a.html#a551d69f8679399fc0ce0fd99dead507a":[1,0,0,5,7,0]
+"interfaceCqrs_1_1Commands_1_1ICommandPublisher_af0f033c0b949e5650032e4f00b11b595.html#af0f033c0b949e5650032e4f00b11b595":[1,0,0,5,5,1]
 };

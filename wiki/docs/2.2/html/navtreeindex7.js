@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost_a16eceaa51739d5baff6e4986ed822d8f.html#a16eceaa51739d5baff6e4986ed822d8f":[1,0,0,18,1,4,1,2],
+"classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost_a2c166839548b7c238a9462b46bd8e555.html#a2c166839548b7c238a9462b46bd8e555":[1,0,0,18,1,4,1,1],
 "classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost_a9b7fb1deadaf625c21f1d7d55cd5752f.html#a9b7fb1deadaf625c21f1d7d55cd5752f":[1,0,0,18,1,4,1,0],
 "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule.html":[1,0,0,18,2,0],
 "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a10e7a8adbe03fc05ebb7003727cbe541.html#a10e7a8adbe03fc05ebb7003727cbe541":[1,0,0,18,2,0,12],
@@ -51,8 +53,8 @@ var NAVTREEINDEX7 =
 "classCqrs_1_1Ninject_1_1Configuration_1_1NinjectDependencyResolver_ab9da7f1556cc1ef205d03d3ff62017c0.html#ab9da7f1556cc1ef205d03d3ff62017c0":[1,0,0,18,2,6,3],
 "classCqrs_1_1Ninject_1_1Configuration_1_1NinjectDependencyResolver_adc6171ed45679dcbaa67782770ba5083.html#adc6171ed45679dcbaa67782770ba5083":[1,0,0,18,2,6,5],
 "classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule.html":[1,0,0,18,2,7],
+"classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule_a182fa5666c70e6871aa371fc81fb788d.html#a182fa5666c70e6871aa371fc81fb788d":[1,0,0,18,2,7,0],
 "classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule_a41a1826cee70c7627e6ec1ef0053f1ea.html#a41a1826cee70c7627e6ec1ef0053f1ea":[1,0,0,18,2,7,1],
-"classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule_ad0851fd40b9e9ef25f345280b8cae1f0.html#ad0851fd40b9e9ef25f345280b8cae1f0":[1,0,0,18,2,7,0],
 "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp.html":[1,0,0,18,2,8],
 "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp_a481f691fbc1eec3f793a3b5769d83e5c.html#a481f691fbc1eec3f793a3b5769d83e5c":[1,0,0,18,2,8,1],
 "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp_a4a503b092601f347cfe320e3b6f1d26e.html#a4a503b092601f347cfe320e3b6f1d26e":[1,0,0,18,2,8,3],
@@ -81,6 +83,7 @@ var NAVTREEINDEX7 =
 "classCqrs_1_1Ninject_1_1MongoDB_1_1Configuration_1_1TestMongoDbDataStoreModule.html":[1,0,0,18,5,0,2],
 "classCqrs_1_1Ninject_1_1MongoDB_1_1Configuration_1_1TestMongoDbDataStoreModule_abff300412dc5c2602db5f51925204c6e.html#abff300412dc5c2602db5f51925204c6e":[1,0,0,18,5,0,2,0],
 "classCqrs_1_1Ninject_1_1MongoDB_1_1TestMongoDbDataStoreConnectionStringFactory.html":[1,0,0,18,5,1],
+"classCqrs_1_1Ninject_1_1MongoDB_1_1TestMongoDbDataStoreConnectionStringFactory.html#a8f40b40b983ed704f1b278b78b08be35":[1,0,0,18,5,1,5],
 "classCqrs_1_1Ninject_1_1MongoDB_1_1TestMongoDbDataStoreConnectionStringFactory_a3dcdc2262f3a39be8fdba16a6d09c523.html#a3dcdc2262f3a39be8fdba16a6d09c523":[1,0,0,18,5,1,2],
 "classCqrs_1_1Ninject_1_1MongoDB_1_1TestMongoDbDataStoreConnectionStringFactory_a53412e87f2114b8a61d6898f7f290187.html#a53412e87f2114b8a61d6898f7f290187":[1,0,0,18,5,1,4],
 "classCqrs_1_1Ninject_1_1MongoDB_1_1TestMongoDbDataStoreConnectionStringFactory_a9ef0515d08d9a309fcfef00b15dad8cf.html#a9ef0515d08d9a309fcfef00b15dad8cf":[1,0,0,18,5,1,1],
@@ -94,6 +97,7 @@ var NAVTREEINDEX7 =
 "classCqrs_1_1Ninject_1_1Mongo_1_1Configuration_1_1TestMongoModule.html":[1,0,0,18,4,0,1],
 "classCqrs_1_1Ninject_1_1Mongo_1_1Configuration_1_1TestMongoModule_a8cce844ec177b88a0be2ca8f71b2bc6b.html#a8cce844ec177b88a0be2ca8f71b2bc6b":[1,0,0,18,4,0,1,0],
 "classCqrs_1_1Ninject_1_1Mongo_1_1TestMongoDataStoreConnectionStringFactory.html":[1,0,0,18,4,1],
+"classCqrs_1_1Ninject_1_1Mongo_1_1TestMongoDataStoreConnectionStringFactory.html#a9b9fc0878b137d62437e9511e8806635":[1,0,0,18,4,1,3],
 "classCqrs_1_1Ninject_1_1Mongo_1_1TestMongoDataStoreConnectionStringFactory_a911d570725e6702a9c1d16321202d89f.html#a911d570725e6702a9c1d16321202d89f":[1,0,0,18,4,1,2],
 "classCqrs_1_1Ninject_1_1Mongo_1_1TestMongoDataStoreConnectionStringFactory_ac638a5771711c1d0746ee0ec55c5e192.html#ac638a5771711c1d0746ee0ec55c5e192":[1,0,0,18,4,1,1],
 "classCqrs_1_1Ninject_1_1Mongo_1_1TestMongoDataStoreConnectionStringFactory_ae23b67139698984823fa7c250dcca47a.html#ae23b67139698984823fa7c250dcca47a":[1,0,0,18,4,1,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX7 =
 "classCqrs_1_1Services_1_1ServiceResponse_ab93fe1cf6395706bc77ee3d670854f24.html#ab93fe1cf6395706bc77ee3d670854f24":[1,0,0,20,16,2],
 "classCqrs_1_1Services_1_1ServiceResponse_ad6b80b1b6d1122bcbac201f41ee37124.html#ad6b80b1b6d1122bcbac201f41ee37124":[1,0,0,20,16,1],
 "classCqrs_1_1Services_1_1UnitOfWorkService.html":[1,0,0,20,18],
-"classCqrs_1_1Services_1_1UnitOfWorkService_a187b3f612490a8316770bb7c6a9aa25f.html#a187b3f612490a8316770bb7c6a9aa25f":[1,0,0,20,18,0],
-"classCqrs_1_1Services_1_1UnitOfWorkService_a1ba76512e37e5006c2b65d071803e99f.html#a1ba76512e37e5006c2b65d071803e99f":[1,0,0,20,18,4],
-"classCqrs_1_1Services_1_1UnitOfWorkService_a3291740821150ecea174820ed27ee56c.html#a3291740821150ecea174820ed27ee56c":[1,0,0,20,18,1],
-"classCqrs_1_1Services_1_1UnitOfWorkService_a663471bc62f79df22c800ad683a27f59.html#a663471bc62f79df22c800ad683a27f59":[1,0,0,20,18,2],
-"classCqrs_1_1Services_1_1UnitOfWorkService_aabeccb6ba949fe02b8676b324f85950b.html#aabeccb6ba949fe02b8676b324f85950b":[1,0,0,20,18,3]
+"classCqrs_1_1Services_1_1UnitOfWorkService_a187b3f612490a8316770bb7c6a9aa25f.html#a187b3f612490a8316770bb7c6a9aa25f":[1,0,0,20,18,0]
 };

@@ -2,13 +2,13 @@
 \label{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule}\index{Cqrs.\+Ninject.\+Azure.\+Service\+Bus.\+Event\+Bus.\+Configuration.\+Azure\+Event\+Bus\+Receiver\+Module$<$ T\+Authentication\+Token $>$@{Cqrs.\+Ninject.\+Azure.\+Service\+Bus.\+Event\+Bus.\+Configuration.\+Azure\+Event\+Bus\+Receiver\+Module$<$ T\+Authentication\+Token $>$}}
 
 
-The I\+Ninject\+Module for use with the \hyperlink{namespaceCqrs}{Cqrs} package.  
+A I\+Ninject\+Module that wires up Azure\+Event\+Bus\+Receiver$<$\+T\+Authentication\+Token$>$ as the I\+Event\+Receiver and other require components.  
 
 
 Inheritance diagram for Cqrs.\+Ninject.\+Azure.\+Service\+Bus.\+Event\+Bus.\+Configuration.\+Azure\+Event\+Bus\+Receiver\+Module$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=1.691843cm]{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule}
+\includegraphics[height=2.376238cm]{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
@@ -17,18 +17,23 @@ Inheritance diagram for Cqrs.\+Ninject.\+Azure.\+Service\+Bus.\+Event\+Bus.\+Con
 override void \hyperlink{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_a806a400a3eec26d81ab200a425ef6121_a806a400a3eec26d81ab200a425ef6121}{Load} ()
 \begin{DoxyCompactList}\small\item\em Loads the module into the kernel. \end{DoxyCompactList}\item 
 virtual T\+Bus \hyperlink{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_a421f5ac0599f0d3d5be569cc954be73b_a421f5ac0599f0d3d5be569cc954be73b}{Get\+Or\+Create\+Bus$<$ T\+Bus $>$} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Checks if an existing {\itshape T\+Bus}  has already been registered, if not it tries to instantiates a new instance via resolution and registers that instance. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_a67b8ec2c2762bf04c0568bead3d03cbf_a67b8ec2c2762bf04c0568bead3d03cbf}{Register\+Event\+Receiver$<$ T\+Bus $>$} (T\+Bus bus)
-\begin{DoxyCompactList}\small\item\em Register the \hyperlink{namespaceCqrs}{Cqrs} event receiver \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Register the C\+Q\+RS event receiver \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_ab80bf02927363075fc0be6cd180a3398_ab80bf02927363075fc0be6cd180a3398}{Register\+Event\+Handler\+Registrar$<$ T\+Bus $>$} (T\+Bus bus)
-\begin{DoxyCompactList}\small\item\em Register the \hyperlink{namespaceCqrs}{Cqrs} event handler registrar \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Register the C\+Q\+RS event handler registrar \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_a240eed04165b4f23ca27aee357d44b28_a240eed04165b4f23ca27aee357d44b28}{Register\+Event\+Message\+Serialiser} ()
-\begin{DoxyCompactList}\small\item\em Register the \hyperlink{namespaceCqrs}{Cqrs} event handler message serialiser \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Register the C\+Q\+RS event handler message serialiser \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-The I\+Ninject\+Module for use with the \hyperlink{namespaceCqrs}{Cqrs} package. 
+A I\+Ninject\+Module that wires up Azure\+Event\+Bus\+Receiver$<$\+T\+Authentication\+Token$>$ as the I\+Event\+Receiver and other require components. 
 
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of the authentication token.\\
+\hline
+\end{DoxyTemplParams}
 
 
 \subsection{Member Function Documentation}
@@ -38,6 +43,15 @@ The I\+Ninject\+Module for use with the \hyperlink{namespaceCqrs}{Cqrs} package.
 \subsubsection{\texorpdfstring{Get\+Or\+Create\+Bus$<$ T\+Bus $>$()}{GetOrCreateBus< TBus >()}}
 {\footnotesize\ttfamily virtual T\+Bus \hyperlink{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule}{Cqrs.\+Ninject.\+Azure.\+Service\+Bus.\+Event\+Bus.\+Configuration.\+Azure\+Event\+Bus\+Receiver\+Module}$<$ T\+Authentication\+Token $>$.Get\+Or\+Create\+Bus$<$ T\+Bus $>$ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
+
+
+Checks if an existing {\itshape T\+Bus}  has already been registered, if not it tries to instantiates a new instance via resolution and registers that instance. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Bus} & The Type of bus to resolve. Best if a class not an interface.\\
+\hline
+\end{DoxyTemplParams}
 \begin{Desc}
 \item[Type Constraints]\begin{description}
 \item[{\em T\+Bus} : {\em I\+Event\+Receiver$<$T\+Authentication\+Token$>$}]\item[{\em T\+Bus} : {\em I\+Event\+Handler\+Registrar}]\end{description}
@@ -60,7 +74,7 @@ Loads the module into the kernel.
 
 
 
-Register the \hyperlink{namespaceCqrs}{Cqrs} event handler registrar 
+Register the C\+Q\+RS event handler registrar 
 
 \begin{Desc}
 \item[Type Constraints]\begin{description}
@@ -74,7 +88,7 @@ Register the \hyperlink{namespaceCqrs}{Cqrs} event handler registrar
 
 
 
-Register the \hyperlink{namespaceCqrs}{Cqrs} event handler message serialiser 
+Register the C\+Q\+RS event handler message serialiser 
 
 \mbox{\Hypertarget{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_a67b8ec2c2762bf04c0568bead3d03cbf_a67b8ec2c2762bf04c0568bead3d03cbf}\label{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_a67b8ec2c2762bf04c0568bead3d03cbf_a67b8ec2c2762bf04c0568bead3d03cbf}} 
 \index{Cqrs\+::\+Ninject\+::\+Azure\+::\+Service\+Bus\+::\+Event\+Bus\+::\+Configuration\+::\+Azure\+Event\+Bus\+Receiver\+Module@{Cqrs\+::\+Ninject\+::\+Azure\+::\+Service\+Bus\+::\+Event\+Bus\+::\+Configuration\+::\+Azure\+Event\+Bus\+Receiver\+Module}!Register\+Event\+Receiver$<$ T\+Bus $>$@{Register\+Event\+Receiver$<$ T\+Bus $>$}}
@@ -84,7 +98,7 @@ Register the \hyperlink{namespaceCqrs}{Cqrs} event handler message serialiser
 
 
 
-Register the \hyperlink{namespaceCqrs}{Cqrs} event receiver 
+Register the C\+Q\+RS event receiver 
 
 \begin{Desc}
 \item[Type Constraints]\begin{description}

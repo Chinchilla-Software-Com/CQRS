@@ -2,7 +2,7 @@
 \label{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule}\index{Cqrs.\+Ninject.\+Azure.\+Service\+Bus.\+Command\+Bus.\+Configuration.\+Azure\+Command\+Bus\+Receiver\+Module$<$ T\+Authentication\+Token $>$@{Cqrs.\+Ninject.\+Azure.\+Service\+Bus.\+Command\+Bus.\+Configuration.\+Azure\+Command\+Bus\+Receiver\+Module$<$ T\+Authentication\+Token $>$}}
 
 
-The I\+Ninject\+Module for use with the \hyperlink{namespaceCqrs}{Cqrs} package.  
+A I\+Ninject\+Module that wires up Azure\+Command\+Bus\+Receiver$<$\+T\+Authentication\+Token$>$ as the I\+Command\+Receiver and other require components.  
 
 
 Inheritance diagram for Cqrs.\+Ninject.\+Azure.\+Service\+Bus.\+Command\+Bus.\+Configuration.\+Azure\+Command\+Bus\+Receiver\+Module$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
@@ -17,18 +17,23 @@ Inheritance diagram for Cqrs.\+Ninject.\+Azure.\+Service\+Bus.\+Command\+Bus.\+C
 override void \hyperlink{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule_a61b7d4b1fbabc6b1e4d8943f55116a51_a61b7d4b1fbabc6b1e4d8943f55116a51}{Load} ()
 \begin{DoxyCompactList}\small\item\em Loads the module into the kernel. \end{DoxyCompactList}\item 
 virtual T\+Bus \hyperlink{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule_a02ed26e1f091dc077449dbd3c76305f7_a02ed26e1f091dc077449dbd3c76305f7}{Get\+Or\+Create\+Bus$<$ T\+Bus $>$} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Checks if an existing {\itshape T\+Bus}  has already been registered, if not it tries to instantiates a new instance via resolution and registers that instance. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule_ad8a7eb743b41cb901444922a3d458695_ad8a7eb743b41cb901444922a3d458695}{Register\+Command\+Receiver$<$ T\+Bus $>$} (T\+Bus bus)
-\begin{DoxyCompactList}\small\item\em Register the \hyperlink{namespaceCqrs}{Cqrs} command receiver \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Register the C\+Q\+RS command receiver \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule_a66eb0005a2639fbf33d9a9ade7ed2c8e_a66eb0005a2639fbf33d9a9ade7ed2c8e}{Register\+Command\+Handler\+Registrar$<$ T\+Bus $>$} (T\+Bus bus)
-\begin{DoxyCompactList}\small\item\em Register the \hyperlink{namespaceCqrs}{Cqrs} command handler registrar \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Register the C\+Q\+RS command handler registrar \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule_a4a068e214a9adee012fa16365d8d2fe7_a4a068e214a9adee012fa16365d8d2fe7}{Register\+Command\+Message\+Serialiser} ()
-\begin{DoxyCompactList}\small\item\em Register the \hyperlink{namespaceCqrs}{Cqrs} command handler message serialiser \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Register the C\+Q\+RS command handler message serialiser \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-The I\+Ninject\+Module for use with the \hyperlink{namespaceCqrs}{Cqrs} package. 
+A I\+Ninject\+Module that wires up Azure\+Command\+Bus\+Receiver$<$\+T\+Authentication\+Token$>$ as the I\+Command\+Receiver and other require components. 
 
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of the authentication token.\\
+\hline
+\end{DoxyTemplParams}
 
 
 \subsection{Member Function Documentation}
@@ -38,6 +43,15 @@ The I\+Ninject\+Module for use with the \hyperlink{namespaceCqrs}{Cqrs} package.
 \subsubsection{\texorpdfstring{Get\+Or\+Create\+Bus$<$ T\+Bus $>$()}{GetOrCreateBus< TBus >()}}
 {\footnotesize\ttfamily virtual T\+Bus \hyperlink{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule}{Cqrs.\+Ninject.\+Azure.\+Service\+Bus.\+Command\+Bus.\+Configuration.\+Azure\+Command\+Bus\+Receiver\+Module}$<$ T\+Authentication\+Token $>$.Get\+Or\+Create\+Bus$<$ T\+Bus $>$ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
+
+
+Checks if an existing {\itshape T\+Bus}  has already been registered, if not it tries to instantiates a new instance via resolution and registers that instance. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Bus} & The Type of bus to resolve. Best if a class not an interface.\\
+\hline
+\end{DoxyTemplParams}
 \begin{Desc}
 \item[Type Constraints]\begin{description}
 \item[{\em T\+Bus} : {\em I\+Command\+Receiver$<$T\+Authentication\+Token$>$}]\item[{\em T\+Bus} : {\em I\+Command\+Handler\+Registrar}]\end{description}
@@ -60,7 +74,7 @@ Loads the module into the kernel.
 
 
 
-Register the \hyperlink{namespaceCqrs}{Cqrs} command handler registrar 
+Register the C\+Q\+RS command handler registrar 
 
 \begin{Desc}
 \item[Type Constraints]\begin{description}
@@ -74,7 +88,7 @@ Register the \hyperlink{namespaceCqrs}{Cqrs} command handler registrar
 
 
 
-Register the \hyperlink{namespaceCqrs}{Cqrs} command handler message serialiser 
+Register the C\+Q\+RS command handler message serialiser 
 
 \mbox{\Hypertarget{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule_ad8a7eb743b41cb901444922a3d458695_ad8a7eb743b41cb901444922a3d458695}\label{classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule_ad8a7eb743b41cb901444922a3d458695_ad8a7eb743b41cb901444922a3d458695}} 
 \index{Cqrs\+::\+Ninject\+::\+Azure\+::\+Service\+Bus\+::\+Command\+Bus\+::\+Configuration\+::\+Azure\+Command\+Bus\+Receiver\+Module@{Cqrs\+::\+Ninject\+::\+Azure\+::\+Service\+Bus\+::\+Command\+Bus\+::\+Configuration\+::\+Azure\+Command\+Bus\+Receiver\+Module}!Register\+Command\+Receiver$<$ T\+Bus $>$@{Register\+Command\+Receiver$<$ T\+Bus $>$}}
@@ -84,7 +98,7 @@ Register the \hyperlink{namespaceCqrs}{Cqrs} command handler message serialiser
 
 
 
-Register the \hyperlink{namespaceCqrs}{Cqrs} command receiver 
+Register the C\+Q\+RS command receiver 
 
 \begin{Desc}
 \item[Type Constraints]\begin{description}
