@@ -36,7 +36,7 @@ window.chatApp.controllers.EditChatController = function ($scope, $routeParams, 
 	}
 
 	window.cqrsNotificationHub
-		.GlobalEventHandlers["Chat.MicroServices.Conversations.Events.ConversationStarted"] =
+		.GlobalEventHandlers["$ext_safeprojectname$.MicroServices.Conversations.Events.ConversationStarted"] =
 		function (event)
 		{
 			if (event.CorrelationId === vm.correlationId)
@@ -53,7 +53,7 @@ window.chatApp.controllers.EditChatController = function ($scope, $routeParams, 
 			}
 		};
 	window.cqrsNotificationHub
-		.GlobalEventHandlers["Chat.MicroServices.Conversations.Events.CommentPosted"] =
+		.GlobalEventHandlers["$ext_safeprojectname$.MicroServices.Conversations.Events.CommentPosted"] =
 		function (event)
 		{
 			if (event.CorrelationId === vm.correlationId || event.Data.ConversationRsn === chatRsn)
@@ -64,7 +64,7 @@ window.chatApp.controllers.EditChatController = function ($scope, $routeParams, 
 			}
 		};
 	window.cqrsNotificationHub
-		.GlobalEventHandlers["Chat.MicroServices.Conversations.Events.ConversationUpdated"] =
+		.GlobalEventHandlers["$ext_safeprojectname$.MicroServices.Conversations.Events.ConversationUpdated"] =
 		function (event)
 		{
 			if (event.CorrelationId === vm.correlationId)
@@ -76,7 +76,7 @@ window.chatApp.controllers.EditChatController = function ($scope, $routeParams, 
 			}
 		};
 	window.cqrsNotificationHub
-		.GlobalEventHandlers["Chat.MicroServices.Conversations.Events.ConversationDeleted"] =
+		.GlobalEventHandlers["$ext_safeprojectname$.MicroServices.Conversations.Events.ConversationDeleted"] =
 		function (event)
 		{
 			if (event.CorrelationId === vm.correlationId || event.Data.ConversationRsn === chatRsn)

@@ -146,7 +146,7 @@ window.chatApp.controllers.ChatsController = function ($scope, $filter, $timeout
 	}
 
 	window.cqrsNotificationHub
-		.GlobalEventHandlers["Chat.MicroServices.Conversations.Events.ConversationDeleted"] =
+		.GlobalEventHandlers["$ext_safeprojectname$.MicroServices.Conversations.Events.ConversationDeleted"] =
 		function (event)
 		{
 			if (event.CorrelationId === vm.correlationId)

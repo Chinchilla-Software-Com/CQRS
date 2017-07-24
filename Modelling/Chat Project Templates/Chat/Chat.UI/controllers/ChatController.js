@@ -11,7 +11,7 @@ window.chatApp.controllers.ChatController = function ($scope, $routeParams, $tim
 	vm.comment = "";
 
 	window.cqrsNotificationHub
-		.GlobalEventHandlers["Chat.MicroServices.Conversations.Events.CommentPosted"] =
+		.GlobalEventHandlers["$ext_safeprojectname$.MicroServices.Conversations.Events.CommentPosted"] =
 		function (event)
 		{
 			if (event.Data.ConversationRsn === chatRsn)

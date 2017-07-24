@@ -43,16 +43,16 @@
 					 data-ng-repeat="conversation in vm.filteredConversations | orderBy:'Name'">
 					<div class="card">
 						<button class="btn close cardClose" title="Delete Conversation" data-ng-click="vm.deleteConversation(conversation.Rsn)">&times;</button>
-						<div class="cardHeader"><a href="/Chat/UI/chat/edit/{{conversation.Rsn}}" class="white">{{ conversation.Name }} <i class="icon-edit icon-white editIcon"></i></a></div>
+						<div class="cardHeader"><a href="/$ext_safeprojectname$/UI/chat/edit/{{conversation.Rsn}}" class="white">{{ conversation.Name }} <i class="icon-edit icon-white editIcon"></i></a></div>
 						<div class="cardBody">
 							<div class="clearfix">
 								<div class="pull-left cardBodyLeft">
-									<a href="/Chat/UI/chat/edit/{{conversation.Rsn}}" class="white"><img data-ng-src="Content/images/{{(conversation.gender || 'male') | lowercase}}.png" class="cardImage" /></a>
+									<a href="/$ext_safeprojectname$/UI/chat/edit/{{conversation.Rsn}}" class="white"><img data-ng-src="Content/images/{{(conversation.gender || 'male') | lowercase}}.png" class="cardImage" /></a>
 								</div>
 								<div class="pull-left cardBodyRight">
 									<div class="cardBodyContent">{{conversation.LastUpdatedDate | date }}</div>
 									<div>
-										<a href="/Chat/UI/chat/{{conversation.Rsn}}" class="btn-link">
+										<a href="/$ext_safeprojectname$/UI/chat/{{conversation.Rsn}}" class="btn-link">
 											Read {{ conversation.MessageCount }}
 											<span data-ng-pluralize count="conversation.MessageCount"
 												  when="{'1': 'Message','other': 'Messages'}">
@@ -80,11 +80,11 @@
 							</thead>
 							<tbody>
 								<tr data-ng-repeat="conversation in vm.filteredConversations | orderBy:vm.orderby:vm.reverse" class="repeat-animation">
-									<td><a href="/Chat/UI/chat/edit/{{conversation.Rsn}}"><img data-ng-src="Content/images/{{(conversation.gender || 'male') | lowercase}}.png" class="cardImage" alt="Conversation Image" /></a></td>
-									<td><a href="/Chat/UI/chat/edit/{{conversation.Rsn}}">{{conversation.Name }}</a></td>
+									<td><a href="/$ext_safeprojectname$/UI/chat/edit/{{conversation.Rsn}}"><img data-ng-src="Content/images/{{(conversation.gender || 'male') | lowercase}}.png" class="cardImage" alt="Conversation Image" /></a></td>
+									<td><a href="/$ext_safeprojectname$/UI/chat/edit/{{conversation.Rsn}}">{{conversation.Name }}</a></td>
 									<td>{{conversation.LastUpdatedDate | date}}</td>
 									<td>
-										<a href="/Chat/UI/chat/{{conversation.Rsn}}" class="btn-link">
+										<a href="/$ext_safeprojectname$/UI/chat/{{conversation.Rsn}}" class="btn-link">
 											Read {{ conversation.MessageCount }}
 											<span data-ng-pluralize count="conversation.MessageCount"
 												when="{'1': 'Message','other': 'Messages'}">

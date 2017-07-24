@@ -51,6 +51,7 @@ public partial class CqrsWebJobProgram
 		bool createTestData;
 		if (DependencyResolver.Current.Resolve<IConfigurationManager>().TryGetSetting("CreateTestData", out createTestData) && createTestData)
 		{
+			Console.WriteLine("Starting to refresh and populate test data.");
 			using (var connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings[CloudConfigurationManager.GetSetting("Cqrs.SqlEventStore.ConnectionStringName", false)].ConnectionString))
 			{
 				using (SqlCommand command = connection.CreateCommand())
@@ -145,6 +146,7 @@ public partial class CqrsWebJobProgram
 
 			foreach (CommentPosted @event in mList)
 				PushEvent<Conversation>(@event, @event.UserRsn);
+			Console.WriteLine("Finished refreshing and populating test data.");
 		}
 	}
 
