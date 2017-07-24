@@ -15,6 +15,7 @@ using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
+using Cqrs.Exceptions;
 using Cqrs.Messages;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
@@ -111,8 +112,22 @@ namespace Cqrs.Azure.ServiceBus
 			CheckPrivateEventTopicExists(namespaceManager);
 			CheckPublicTopicExists(namespaceManager);
 
-			InstantiateReceiving(namespaceManager, PrivateServiceBusReceivers, PrivateTopicName, PrivateTopicSubscriptionName);
-			InstantiateReceiving(namespaceManager, PublicServiceBusReceivers, PublicTopicName, PublicTopicSubscriptionName);
+			try
+			{
+				InstantiateReceiving(namespaceManager, PrivateServiceBusReceivers, PrivateTopicName, PrivateTopicSubscriptionName);
+			}
+			catch (UriFormatException exception)
+			{
+				throw new InvalidConfigurationException("The connection string for one of the private Service Bus receivers may be invalid.", exception);
+			}
+			try
+			{
+				InstantiateReceiving(namespaceManager, PublicServiceBusReceivers, PublicTopicName, PublicTopicSubscriptionName);
+			}
+			catch (UriFormatException exception)
+			{
+				throw new InvalidConfigurationException("The connection string for one of the public Service Bus receivers may be invalid.", exception);
+			}
 
 			bool enableDeadLetterCleanUp;
 			string enableDeadLetterCleanUpValue = ConfigurationManager.GetSetting("Cqrs.Azure.Servicebus.EnableDeadLetterCleanUp");
