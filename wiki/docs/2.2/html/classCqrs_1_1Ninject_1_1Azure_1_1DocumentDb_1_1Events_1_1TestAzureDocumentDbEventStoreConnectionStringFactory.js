@@ -2,5 +2,6 @@ var classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Events_1_1TestAzureDocumentDb
 [
     [ "TestAzureDocumentDbEventStoreConnectionStringFactory", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Events_1_1TestAzureDocumentDbEventStoreConnectionStringFactory_ab9c02577f0f7b3b43d5d4d53a9755894.html#ab9c02577f0f7b3b43d5d4d53a9755894", null ],
     [ "GetEventStoreConnectionDatabaseName", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Events_1_1TestAzureDocumentDbEventStoreConnectionStringFactory_a85b4e6cd45d285be6de5db19148118b9.html#a85b4e6cd45d285be6de5db19148118b9", null ],
-    [ "DatabaseName", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Events_1_1TestAzureDocumentDbEventStoreConnectionStringFactory_ad82e2485313ff7802ad125958173f3bf.html#ad82e2485313ff7802ad125958173f3bf", null ]
+    [ "DatabaseName", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Events_1_1TestAzureDocumentDbEventStoreConnectionStringFactory_ad82e2485313ff7802ad125958173f3bf.html#ad82e2485313ff7802ad125958173f3bf", null ],
+    [ "Query", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Events_1_1TestAzureDocumentDbEventStoreConnectionStringFactory.html#a71e7f497451f6da82bc5f2139cd9f432", null ]
 ];

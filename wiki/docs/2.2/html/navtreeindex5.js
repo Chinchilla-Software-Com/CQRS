@@ -1,5 +1,13 @@
 var NAVTREEINDEX5 =
 {
+"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreBasedLastEventProcessedStore_a54dc3860c38026fd298bd204e3079490.html#a54dc3860c38026fd298bd204e3079490":[1,0,0,11,0,1,0],
+"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreBasedLastEventProcessedStore_a63b4ae4f14e782d605aff1bd214db3f1.html#a63b4ae4f14e782d605aff1bd214db3f1":[1,0,0,11,0,1,2],
+"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreBasedLastEventProcessedStore_aa3125d75a64df58026e0fd785f99bfff.html#aa3125d75a64df58026e0fd785f99bfff":[1,0,0,11,0,1,1],
+"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreBasedLastEventProcessedStore_acce685c2420cae5df4291fea96e20e64.html#acce685c2420cae5df4291fea96e20e64":[1,0,0,11,0,1,4],
+"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher.html":[1,0,0,11,0,2],
+"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a145dd61678031747b4c1768e68937181.html#a145dd61678031747b4c1768e68937181":[1,0,0,11,0,2,1],
+"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a16df48a7203bc3bcde5f5a12f1d47934.html#a16df48a7203bc3bcde5f5a12f1d47934":[1,0,0,11,0,2,4],
+"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a1ebb6f08648bdfd5c5bd29fcc12adfea.html#a1ebb6f08648bdfd5c5bd29fcc12adfea":[1,0,0,11,0,2,2],
 "classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a4ca16479fe387fae0135865ae3f889d7.html#a4ca16479fe387fae0135865ae3f889d7":[1,0,0,11,0,2,0],
 "classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a552a16f86c52837bf81200778e3a9fe4.html#a552a16f86c52837bf81200778e3a9fe4":[1,0,0,11,0,2,5],
 "classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a85b4922ff01b088b01b39463681c6eb6.html#a85b4922ff01b088b01b39463681c6eb6":[1,0,0,11,0,2,3],
@@ -241,13 +249,5 @@ var NAVTREEINDEX5 =
 "classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_a709fc1e29d266a7c19a46bd181d03963.html#a709fc1e29d266a7c19a46bd181d03963":[1,0,0,17,0,1,2],
 "classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_ab08ce716944d76cbaef9a94fd1525440.html#ab08ce716944d76cbaef9a94fd1525440":[1,0,0,17,0,1,14],
 "classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_ac0cb8626e8f8ab0275a31e88a920ee3e.html#ac0cb8626e8f8ab0275a31e88a920ee3e":[1,0,0,17,0,1,7],
-"classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_ade387c1d511dfad22ff7eb752fb842e5.html#ade387c1d511dfad22ff7eb752fb842e5":[1,0,0,17,0,1,11],
-"classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_af86a3df56e2df92fb9ef880ff4fa5f16.html#af86a3df56e2df92fb9ef880ff4fa5f16":[1,0,0,17,0,1,9],
-"classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_affcb1268469b99963501dd8c58e4a480.html#affcb1268469b99963501dd8c58e4a480":[1,0,0,17,0,1,1],
-"classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity.html":[1,0,0,17,1,0],
-"classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity_a3d5f7476fc2de3b9061ea3e76e77e0cb.html#a3d5f7476fc2de3b9061ea3e76e77e0cb":[1,0,0,17,1,0,2],
-"classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity_a763ab3fddd6f7d07e907c274bea305f5.html#a763ab3fddd6f7d07e907c274bea305f5":[1,0,0,17,1,0,0],
-"classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity_acc0c0c4d927e9abfe88415cababff6b5.html#acc0c0c4d927e9abfe88415cababff6b5":[1,0,0,17,1,0,1],
-"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByAggregateIdAndVersionMongoDbIndex.html":[1,0,0,17,2,0,0],
-"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByAggregateIdAndVersionMongoDbIndex_a084cc895e473e0e0ea2dbcf81bba4514.html#a084cc895e473e0e0ea2dbcf81bba4514":[1,0,0,17,2,0,0,0]
+"classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_ade387c1d511dfad22ff7eb752fb842e5.html#ade387c1d511dfad22ff7eb752fb842e5":[1,0,0,17,0,1,11]
 };

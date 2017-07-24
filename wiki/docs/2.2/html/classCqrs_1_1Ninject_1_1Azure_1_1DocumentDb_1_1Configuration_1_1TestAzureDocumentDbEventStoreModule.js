@@ -1,8 +1,4 @@
 var classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule =
 [
-    [ "Load", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule_a4d0760683287b26556b40f329ee4c3d3.html#a4d0760683287b26556b40f329ee4c3d3", null ],
-    [ "RegisterAzureHelpers", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule_ae9bbe4cf906d56596fd23200ab25653c.html#ae9bbe4cf906d56596fd23200ab25653c", null ],
-    [ "RegisterEventStore", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule_a56944ba87116492df224b93aedd3310e.html#a56944ba87116492df224b93aedd3310e", null ],
-    [ "RegisterFactories", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule_a256d9315cfd5cf44f829828c5b172536.html#a256d9315cfd5cf44f829828c5b172536", null ],
-    [ "RegisterServices", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule_a430b27a2e09a3bfef5e239c26967003e.html#a430b27a2e09a3bfef5e239c26967003e", null ]
+    [ "RegisterEventStore", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule_a2b3e6c1f8edd6aa4101b98df7d1be93e.html#a2b3e6c1f8edd6aa4101b98df7d1be93e", null ]
 ];

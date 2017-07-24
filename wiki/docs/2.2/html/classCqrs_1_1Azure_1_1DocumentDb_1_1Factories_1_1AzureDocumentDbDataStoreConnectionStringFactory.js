@@ -6,7 +6,7 @@ var classCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1AzureDocumentDbDataStoreCon
     [ "GetAzureDocumentDbConnectionClient", "classCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1AzureDocumentDbDataStoreConnectionStringFactory_a0525c318c3930076e08ed83f9829ab2c.html#a0525c318c3930076e08ed83f9829ab2c", null ],
     [ "GetAzureDocumentDbConnectionUrl", "classCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1AzureDocumentDbDataStoreConnectionStringFactory_af5d090f6195c7b59183db1eec8dcafc0.html#af5d090f6195c7b59183db1eec8dcafc0", null ],
     [ "GetAzureDocumentDbDatabaseName", "classCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1AzureDocumentDbDataStoreConnectionStringFactory_a2a30d6066e2bc9c4af078b1f0a5407ab.html#a2a30d6066e2bc9c4af078b1f0a5407ab", null ],
-    [ "UseOneCollectionPerDataStore", "classCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1AzureDocumentDbDataStoreConnectionStringFactory_a736e0967785b1391ec21989a3f005c01.html#a736e0967785b1391ec21989a3f005c01", null ],
+    [ "UseSingleCollectionForAllDataStores", "classCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1AzureDocumentDbDataStoreConnectionStringFactory_aa7b4b3eca609a815358af227b0f53909.html#aa7b4b3eca609a815358af227b0f53909", null ],
     [ "ConfigurationManager", "classCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1AzureDocumentDbDataStoreConnectionStringFactory_a7d0a40bb03e9e15306023bf97094cf60.html#a7d0a40bb03e9e15306023bf97094cf60", null ],
     [ "Logger", "classCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1AzureDocumentDbDataStoreConnectionStringFactory_aa195f69522b48a21dc36db3ce64260e2.html#aa195f69522b48a21dc36db3ce64260e2", null ]
 ];

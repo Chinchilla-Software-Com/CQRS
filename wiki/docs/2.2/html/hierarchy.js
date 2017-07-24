@@ -895,23 +895,36 @@ var hierarchy =
       [ "Cqrs.MongoDB.Events.Indexes.ByTimestampMongoDbIndex", "classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampMongoDbIndex.html", null ]
     ] ],
     [ "NinjectModule", null, [
-      [ "Cqrs.Azure.EventHub.CommandBus.Configuration.AzureCommandBusReceiverModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule.html", [
-        [ "Cqrs.Azure.EventHub.CommandBus.Configuration.AzureQueuedCommandBusReceiverModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureQueuedCommandBusReceiverModule.html", null ]
+      [ "Cqrs.Azure.EventHub.CommandBus.Configuration.AzureCommandHubPublisherModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureCommandHubPublisherModule.html", [
+        [ "Cqrs.Azure.EventHub.CommandBus.Configuration.AzureCommandBusPublisherModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureCommandBusPublisherModule.html", null ],
+        [ "Cqrs.Azure.EventHub.CommandBus.Configuration.AzureCommandBusSenderModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureCommandBusSenderModule.html", null ]
       ] ],
-      [ "Cqrs.Azure.EventHub.CommandBus.Configuration.AzureCommandBusSenderModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureCommandBusSenderModule.html", null ],
-      [ "Cqrs.Azure.EventHub.EventBus.Configuration.AzureEventBusReceiverModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule.html", [
-        [ "Cqrs.Azure.EventHub.EventBus.Configuration.AzureQueuedEventBusReceiverModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureQueuedEventBusReceiverModule.html", null ]
+      [ "Cqrs.Azure.EventHub.CommandBus.Configuration.AzureCommandHubReceiverModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureCommandHubReceiverModule.html", [
+        [ "Cqrs.Azure.EventHub.CommandBus.Configuration.AzureCommandBusReceiverModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule.html", null ],
+        [ "Cqrs.Azure.EventHub.CommandBus.Configuration.AzureQueuedCommandHubReceiverModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureQueuedCommandHubReceiverModule.html", [
+          [ "Cqrs.Azure.EventHub.CommandBus.Configuration.AzureQueuedCommandBusReceiverModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureQueuedCommandBusReceiverModule.html", null ]
+        ] ]
       ] ],
-      [ "Cqrs.Azure.EventHub.EventBus.Configuration.AzureEventPublisherModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventPublisherModule.html", null ],
-      [ "Cqrs.Ninject.Akka.Configuration.AkkaModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Akka_1_1Configuration_1_1AkkaModule.html", null ],
+      [ "Cqrs.Azure.EventHub.EventBus.Configuration.AzureEventHubPublisherModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubPublisherModule.html", [
+        [ "Cqrs.Azure.EventHub.EventBus.Configuration.AzureEventBusPublisherModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventBusPublisherModule.html", null ],
+        [ "Cqrs.Azure.EventHub.EventBus.Configuration.AzureEventPublisherModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventPublisherModule.html", null ]
+      ] ],
+      [ "Cqrs.Azure.EventHub.EventBus.Configuration.AzureEventHubReceiverModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubReceiverModule.html", [
+        [ "Cqrs.Azure.EventHub.EventBus.Configuration.AzureEventBusReceiverModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule.html", null ],
+        [ "Cqrs.Azure.EventHub.EventBus.Configuration.AzureQueuedEventHubReceiverModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureQueuedEventHubReceiverModule.html", [
+          [ "Cqrs.Azure.EventHub.EventBus.Configuration.AzureQueuedEventBusReceiverModule< TAuthenticationToken >", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureQueuedEventBusReceiverModule.html", null ]
+        ] ]
+      ] ],
       [ "Cqrs.Ninject.Azure.BlobStorage.Configuration.BlobStorageDataStoreModule", "classCqrs_1_1Ninject_1_1Azure_1_1BlobStorage_1_1Configuration_1_1BlobStorageDataStoreModule.html", null ],
       [ "Cqrs.Ninject.Azure.BlobStorage.Configuration.BlobStoragEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1BlobStorage_1_1Configuration_1_1BlobStoragEventStoreModule.html", null ],
       [ "Cqrs.Ninject.Azure.BlobStorage.Configuration.TableStorageDataStoreModule", "classCqrs_1_1Ninject_1_1Azure_1_1BlobStorage_1_1Configuration_1_1TableStorageDataStoreModule.html", null ],
       [ "Cqrs.Ninject.Azure.BlobStorage.Configuration.TableStoragEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1BlobStorage_1_1Configuration_1_1TableStoragEventStoreModule.html", null ],
-      [ "Cqrs.Ninject.Azure.DocumentDb.Configuration.AzureDocumentDbEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule.html", null ],
-      [ "Cqrs.Ninject.Azure.DocumentDb.Configuration.AzureDocumentDbModule", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule.html", null ],
-      [ "Cqrs.Ninject.Azure.DocumentDb.Configuration.TestAzureDocumentDbEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule.html", null ],
-      [ "Cqrs.Ninject.Azure.DocumentDb.Configuration.TestAzureDocumentDbModule", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbModule.html", null ],
+      [ "Cqrs.Ninject.Azure.DocumentDb.Configuration.AzureDocumentDbEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule.html", [
+        [ "Cqrs.Ninject.Azure.DocumentDb.Configuration.TestAzureDocumentDbEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule.html", null ]
+      ] ],
+      [ "Cqrs.Ninject.Azure.DocumentDb.Configuration.AzureDocumentDbModule", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule.html", [
+        [ "Cqrs.Ninject.Azure.DocumentDb.Configuration.TestAzureDocumentDbModule", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbModule.html", null ]
+      ] ],
       [ "Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration.AzureCommandBusPublisherModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusPublisherModule.html", [
         [ "Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration.AzureCommandBusSenderModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusSenderModule.html", null ]
       ] ],
@@ -921,9 +934,12 @@ var hierarchy =
       [ "Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration.AzureEventBusPublisherModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusPublisherModule.html", [
         [ "Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration.AzureEventPublisherModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventPublisherModule.html", null ]
       ] ],
-      [ "Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration.AzureEventBusReceiverModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule.html", null ],
+      [ "Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration.AzureEventBusReceiverModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule.html", [
+        [ "Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration.AzureQueuedEventBusReceiverModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureQueuedEventBusReceiverModule.html", null ]
+      ] ],
       [ "Cqrs.Ninject.Configuration.EventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Configuration_1_1EventStoreModule.html", null ],
       [ "Cqrs.Ninject.Configuration.ResolvableModule", "classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule.html", [
+        [ "Cqrs.Ninject.Akka.Configuration.AkkaModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Akka_1_1Configuration_1_1AkkaModule.html", null ],
         [ "Cqrs.Ninject.Azure.Wcf.Configuration.WebHostModule", "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule.html", [
           [ "Cqrs.Ninject.Azure.WebJobs.Configuration.WebJobHostModule", "classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1Configuration_1_1WebJobHostModule.html", null ]
         ] ],

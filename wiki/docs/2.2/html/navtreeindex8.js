@@ -1,5 +1,9 @@
 var NAVTREEINDEX8 =
 {
+"classCqrs_1_1Services_1_1UnitOfWorkService_a1ba76512e37e5006c2b65d071803e99f.html#a1ba76512e37e5006c2b65d071803e99f":[1,0,0,20,18,4],
+"classCqrs_1_1Services_1_1UnitOfWorkService_a3291740821150ecea174820ed27ee56c.html#a3291740821150ecea174820ed27ee56c":[1,0,0,20,18,1],
+"classCqrs_1_1Services_1_1UnitOfWorkService_a663471bc62f79df22c800ad683a27f59.html#a663471bc62f79df22c800ad683a27f59":[1,0,0,20,18,2],
+"classCqrs_1_1Services_1_1UnitOfWorkService_aabeccb6ba949fe02b8676b324f85950b.html#aabeccb6ba949fe02b8676b324f85950b":[1,0,0,20,18,3],
 "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration.html":[1,0,0,20,19],
 "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_a22cf32559867b0a067950c4ce35504b2.html#a22cf32559867b0a067950c4ce35504b2":[1,0,0,20,19,4],
 "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_a3f0ed5ca3b65b2ca5a6c31c1e4d5e4ba.html#a3f0ed5ca3b65b2ca5a6c31c1e4d5e4ba":[1,0,0,20,19,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX8 =
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomething_a87be89d49da8a13dd5adc5f4212113d1.html#a87be89d49da8a13dd5adc5f4212113d1":[1,0,0,23,6,3,8],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomething_ac1a52622a285f1c4d2e226fbb4c91c09.html#ac1a52622a285f1c4d2e226fbb4c91c09":[1,0,0,23,6,3,6],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomething_ac9a5ee87be68aa399f3a9d62e1e4e7ae.html#ac9a5ee87be68aa399f3a9d62e1e4e7ae":[1,0,0,23,6,3,5],
-"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomething_af609de5278f3842a61a727bd20a4f22f.html#af609de5278f3842a61a727bd20a4f22f":[1,0,0,23,6,3,7],
-"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomething_af7f1de240f8dc7b1191a08f8f26b61e9.html#af7f1de240f8dc7b1191a08f8f26b61e9":[1,0,0,23,6,3,4],
-"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomething.html":[1,0,0,23,6,7],
-"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomething2.html":[1,0,0,23,6,8],
-"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomething3.html":[1,0,0,23,6,9]
+"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomething_af609de5278f3842a61a727bd20a4f22f.html#af609de5278f3842a61a727bd20a4f22f":[1,0,0,23,6,3,7]
 };
