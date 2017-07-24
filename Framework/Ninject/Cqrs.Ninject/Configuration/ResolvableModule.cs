@@ -37,5 +37,23 @@ namespace Cqrs.Ninject.Configuration
 		{
 			return Kernel.Resolve(Kernel.CreateRequest(type, null, new Parameter[0], true, true)).SingleOrDefault();
 		}
+
+		/// <summary>
+		/// Indicates if the provided <typeparamref name="T"/> is already registered or not.
+		/// </summary>
+		/// <typeparam name="T">The <see cref="Type"/> to check.</typeparam>
+		public bool IsRegistered<T>()
+		{
+			return IsRegistered(typeof(T));
+		}
+
+		/// <summary>
+		/// Indicates if the provided <paramref name="type"/> is already registered or not.
+		/// </summary>
+		/// <param name="type">The <see cref="Type"/> to check.</param>
+		public bool IsRegistered(Type type)
+		{
+			return Kernel.GetBindings(type).Any();
+		}
 	}
 }

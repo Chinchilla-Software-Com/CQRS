@@ -36,8 +36,8 @@ namespace Cqrs.Ninject.Akka.Configuration
 			Bind<IAkkaSagaRepository<TAuthenticationToken>>().To<AkkaSagaRepository<TAuthenticationToken>>().InSingletonScope();
 			Bind<IAkkaEventPublisher<TAuthenticationToken>>().To<AkkaEventBus<TAuthenticationToken>>().InSingletonScope();
 			Bind<IAkkaEventPublisherProxy<TAuthenticationToken>>().To<AkkaEventBusProxy<TAuthenticationToken>>().InSingletonScope();
-			Bind<IAkkaCommandSender<TAuthenticationToken>>().To<AkkaCommandBus<TAuthenticationToken>>().InSingletonScope();
-			Bind<IAkkaCommandSenderProxy<TAuthenticationToken>>().To<AkkaCommandBusProxy<TAuthenticationToken>>().InSingletonScope();
+			Bind<IAkkaCommandPublisher<TAuthenticationToken>>().To<AkkaCommandBus<TAuthenticationToken>>().InSingletonScope();
+			Bind<IAkkaCommandPublisherProxy<TAuthenticationToken>>().To<AkkaCommandBusProxy<TAuthenticationToken>>().InSingletonScope();
 
 			BusRegistrar.GetEventHandlerRegistrar = (messageType, handlerDelegateTargetedType) =>
 			{
@@ -53,7 +53,7 @@ namespace Cqrs.Ninject.Akka.Configuration
 				bool isAnActor = handlerDelegateTargetedType != null && handlerDelegateTargetedType.GetProperty("AggregateResolver", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.NonPublic | BindingFlags.Public) != null;
 				ICommandHandlerRegistrar commandHandlerRegistrar = null;
 				if (isAnActor)
-					commandHandlerRegistrar = Resolve<IAkkaCommandSender<TAuthenticationToken>>() as ICommandHandlerRegistrar;
+					commandHandlerRegistrar = Resolve<IAkkaCommandPublisher<TAuthenticationToken>>() as ICommandHandlerRegistrar;
 				return commandHandlerRegistrar ?? Resolve<ICommandHandlerRegistrar>();
 			};
 		}

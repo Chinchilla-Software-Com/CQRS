@@ -1,4 +1,13 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
+using Akka.Actor;
 using cdmdotnet.Logging;
 using Cqrs.Akka.Commands;
 using Cqrs.Akka.Domain;
@@ -49,7 +58,7 @@ namespace Cqrs.Akka.Tests.Unit.Events.Handlers
 
 			#endregion
 
-			public Actor(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, IAkkaCommandSender<Guid> commandBus)
+			public Actor(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, IAkkaCommandPublisher<Guid> commandBus)
 				: base(logger, correlationIdHelper, authenticationTokenHelper)
 			{
 				CommandBus = commandBus;

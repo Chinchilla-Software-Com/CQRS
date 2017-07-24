@@ -20,7 +20,7 @@ namespace Cqrs.Akka.Commands
 	/// A <see cref="ICommandPublisher{TAuthenticationToken}"/> that proxies <see cref="ICommand{TAuthenticationToken}"/> to the <see cref="IActorRef"/> which acts as a single point of all handler resolutions.
 	/// </summary>
 	public class AkkaCommandBusProxy<TAuthenticationToken>
-		: IAkkaCommandSenderProxy<TAuthenticationToken>
+		: IAkkaCommandPublisherProxy<TAuthenticationToken>
 	{
 		public AkkaCommandBusProxy(IDependencyResolver dependencyResolver, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
 		{
@@ -81,7 +81,7 @@ namespace Cqrs.Akka.Commands
 		public class BusActor
 			: ReceiveActor
 		{
-			public BusActor(IAkkaCommandSender<TAuthenticationToken> commandHandlerResolver, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
+			public BusActor(IAkkaCommandPublisher<TAuthenticationToken> commandHandlerResolver, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
 			{
 				CommandHandlerResolver = commandHandlerResolver;
 				CorrelationIdHelper = correlationIdHelper;
@@ -89,7 +89,7 @@ namespace Cqrs.Akka.Commands
 				Receive<ICommand<TAuthenticationToken>>(command => ExecuteReceive(command));
 			}
 
-			protected IAkkaCommandSender<TAuthenticationToken> CommandHandlerResolver { get; private set; }
+			protected IAkkaCommandPublisher<TAuthenticationToken> CommandHandlerResolver { get; private set; }
 
 			protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
@@ -101,7 +101,7 @@ namespace Cqrs.Akka.Commands
 				{
 					AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
 					CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
-					CommandHandlerResolver.Send(command);
+					CommandHandlerResolver.Publish(command);
 
 					Sender.Tell(true);
 				}

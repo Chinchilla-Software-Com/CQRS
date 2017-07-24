@@ -46,9 +46,7 @@ namespace Cqrs.Azure.EventHub.CommandBus.Configuration
 		/// </summary>
 		public virtual void RegisterCommandSender()
 		{
-#pragma warning disable 618
-			Bind<ICommandSender<TAuthenticationToken>>()
-#pragma warning restore 618
+			Bind<ICommandPublisher<TAuthenticationToken>>()
 				.To<AzureCommandBusPublisher<TAuthenticationToken>>()
 				.InSingletonScope();
 
@@ -56,7 +54,7 @@ namespace Cqrs.Azure.EventHub.CommandBus.Configuration
 				.To<AzureCommandBusPublisher<TAuthenticationToken>>()
 				.InSingletonScope();
 
-			Bind<ISendAndWaitCommandSender<TAuthenticationToken>>()
+			Bind<IPublishAndWaitCommandPublisher<TAuthenticationToken>>()
 				.To<AzureCommandBusPublisher<TAuthenticationToken>>()
 				.InSingletonScope();
 		}

@@ -46,17 +46,11 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// </summary>
 		public virtual void RegisterCommandSender()
 		{
-#pragma warning disable 618
-			Bind<ICommandSender<TAuthenticationToken>>()
-#pragma warning restore 618
-.To<AzureCommandBusPublisher<TAuthenticationToken>>()
-				.InSingletonScope();
-
 			Bind<ICommandPublisher<TAuthenticationToken>>()
 				.To<AzureCommandBusPublisher<TAuthenticationToken>>()
 				.InSingletonScope();
 
-			Bind<ISendAndWaitCommandSender<TAuthenticationToken>>()
+			Bind<IPublishAndWaitCommandPublisher<TAuthenticationToken>>()
 				.To<AzureCommandBusPublisher<TAuthenticationToken>>()
 				.InSingletonScope();
 		}
