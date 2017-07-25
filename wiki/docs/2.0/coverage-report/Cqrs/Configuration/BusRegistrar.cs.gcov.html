@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Configuration/BusRegistrar.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Configuration</a> - BusRegistrar.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryLo">25.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;cdmdotnet Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright cdmdotnet Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Linq;
+<span class="lineNum">      12 </span>            : using System.Reflection;
+<span class="lineNum">      13 </span>            : using System.Security;
+<span class="lineNum">      14 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      15 </span>            : using Cqrs.Bus;
+<span class="lineNum">      16 </span>            : using Cqrs.Commands;
+<span class="lineNum">      17 </span>            : using Cqrs.Events;
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : namespace Cqrs.Configuration
+<span class="lineNum">      20 </span>            : {
+<span class="lineNum">      21 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :         /// Triggers the &lt;see cref=&quot;IEventHandlerRegistrar&quot;/&gt; and &lt;see cref=&quot;ICommandHandlerRegistrar&quot;/&gt; if they are registered in the &lt;see cref=&quot;IDependencyResolver&quot;/&gt;.
+<span class="lineNum">      23 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      24 </span>            :         public class BusRegistrar
+<span class="lineNum">      25 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      26 </span>            :                 protected IDependencyResolver DependencyResolver { get; private set; }
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            :                 public static Func&lt;Type, Type, IHandlerRegistrar&gt; GetEventHandlerRegistrar { get; set; }
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 public static Func&lt;Type, Type, IHandlerRegistrar&gt; GetCommandHandlerRegistrar { get; set; }
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span><span class="lineNoCov">          0 :                 public BusRegistrar(IDependencyResolver dependencyResolver)</span>
+<span class="lineNum">      33 </span>            :                 {
+<span class="lineNum">      34 </span>            :                         if(dependencyResolver == null)
+<span class="lineNum">      35 </span>            :                                 throw new ArgumentNullException(&quot;dependencyResolver&quot;);
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                         DependencyResolver = dependencyResolver;
+<span class="lineNum">      38 </span>            :                         if (GetEventHandlerRegistrar == null)
+<span class="lineNum">      39 </span>            :                                 GetEventHandlerRegistrar = (messageType, handlerDelegateTargetedType) =&gt; DependencyResolver.Resolve&lt;IEventHandlerRegistrar&gt;();
+<span class="lineNum">      40 </span>            :                         if (GetCommandHandlerRegistrar == null)
+<span class="lineNum">      41 </span>            :                                 GetCommandHandlerRegistrar = (messageType, handlerDelegateTargetedType) =&gt; DependencyResolver.Resolve&lt;ICommandHandlerRegistrar&gt;();
+<span class="lineNum">      42 </span>            :                 }
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span><span class="lineNoCov">          0 :                 public virtual void Register(params Type[] typesFromAssemblyContainingMessages)</span>
+<span class="lineNum">      45 </span>            :                 {
+<span class="lineNum">      46 </span>            :                         var eventHandlerRegistrar = DependencyResolver.Resolve&lt;IEventHandlerRegistrar&gt;();
+<span class="lineNum">      47 </span>            :                         if (eventHandlerRegistrar != null)
+<span class="lineNum">      48 </span>            :                                 Register(true, ResolveEventHandlerInterface, true, typesFromAssemblyContainingMessages);
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :                         var commandHandlerRegistrar = DependencyResolver.Resolve&lt;ICommandHandlerRegistrar&gt;();
+<span class="lineNum">      51 </span>            :                         if (commandHandlerRegistrar != null)
+<span class="lineNum">      52 </span>            :                                 Register(false, ResolveCommandHandlerInterface, false, typesFromAssemblyContainingMessages);
+<span class="lineNum">      53 </span>            :                 }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :                 public virtual void Register(bool trueForEventsFalseForCommands, Func&lt;Type, IEnumerable&lt;Type&gt;&gt; resolveMessageHandlerInterface, bool skipCommandHandlers, params Type[] typesFromAssemblyContainingMessages)</span>
+<span class="lineNum">      56 </span>            :                 {
+<span class="lineNum">      57 </span>            :                         foreach (Type typesFromAssemblyContainingMessage in typesFromAssemblyContainingMessages)
+<span class="lineNum">      58 </span>            :                         {
+<span class="lineNum">      59 </span>            :                                 Assembly executorsAssembly = typesFromAssemblyContainingMessage.Assembly;
+<span class="lineNum">      60 </span>            :                                 var executorTypes = executorsAssembly
+<span class="lineNum">      61 </span>            :                                         .GetTypes()
+<span class="lineNum">      62 </span>            :                                         .Select(type =&gt; new { Type = type, Interfaces = resolveMessageHandlerInterface(type) })
+<span class="lineNum">      63 </span>            :                                         .Where(type =&gt; type.Interfaces != null &amp;&amp; type.Interfaces.Any());
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                                 foreach (var executorType in executorTypes)
+<span class="lineNum">      66 </span>            :                                 {
+<span class="lineNum">      67 </span>            :                                         foreach (Type @interface in executorType.Interfaces)
+<span class="lineNum">      68 </span>            :                                         {
+<span class="lineNum">      69 </span>            :                                                 Type safeExecutorType = executorType.Type;
+<span class="lineNum">      70 </span>            :                                                 if (typesFromAssemblyContainingMessage.IsGenericType &amp;&amp; typesFromAssemblyContainingMessage.Name == typeof(DtoCommandHandler&lt;,&gt;).Name)
+<span class="lineNum">      71 </span>            :                                                 {
+<span class="lineNum">      72 </span>            :                                                         if (skipCommandHandlers)
+<span class="lineNum">      73 </span>            :                                                                 continue;
+<span class="lineNum">      74 </span>            :                                                         Type[] genericArguments = typesFromAssemblyContainingMessage.GetGenericArguments().Take(2).ToArray();
+<span class="lineNum">      75 </span>            :                                                         safeExecutorType = safeExecutorType.MakeGenericType(genericArguments.Take(2).ToArray());
+<span class="lineNum">      76 </span>            :                                                 }
+<span class="lineNum">      77 </span>            :                                                 InvokeHandler(@interface, trueForEventsFalseForCommands, resolveMessageHandlerInterface, safeExecutorType);
+<span class="lineNum">      78 </span>            :                                         }
+<span class="lineNum">      79 </span>            :                                 }
+<span class="lineNum">      80 </span>            :                         }
+<span class="lineNum">      81 </span>            :                 }
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      84 </span>            :                 /// Extract the &lt;see cref=&quot;IHandlerRegistrar.RegisterHandler{TMessage}&quot;/&gt; method from the provided &lt;paramref name=&quot;bus&quot;/&gt;
+<span class="lineNum">      85 </span>            :                 /// Create an &lt;see cref=&quot;Action&quot;/&gt; around the provided &lt;paramref name=&quot;executorType&quot;/&gt;
+<span class="lineNum">      86 </span>            :                 /// Then register the created &lt;see cref=&quot;Action&quot;/&gt; using the extracted &lt;see cref=&quot;IHandlerRegistrar.RegisterHandler{TMessage}&quot;/&gt; method
+<span class="lineNum">      87 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      88 </span>            :                 /// &lt;param name=&quot;executorType&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the event handler that will do the handling&lt;/param&gt;
+<span class="lineNum">      89 </span>            :                 protected virtual void InvokeHandler(Type @interface, bool trueForEventsFalseForCommands, Func&lt;Type, IEnumerable&lt;Type&gt;&gt; resolveMessageHandlerInterface, Type executorType)
+<span class="lineNum">      90 </span>            :                 {
+<span class="lineNum">      91 </span>            :                         MethodInfo registerExecutorMethod = null;
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :                         MethodInfo originalRegisterExecutorMethod = (trueForEventsFalseForCommands ? GetEventHandlerRegistrar(null, executorType) : GetCommandHandlerRegistrar(null, executorType))
+<span class="lineNum">      94 </span>            :                                 .GetType()
+<span class="lineNum">      95 </span>            :                                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+<span class="lineNum">      96 </span>            :                                 .Where(mi =&gt; mi.Name == &quot;RegisterHandler&quot;)
+<span class="lineNum">      97 </span>            :                                 .Where(mi =&gt; mi.IsGenericMethod)
+<span class="lineNum">      98 </span>            :                                 .Where(mi =&gt; mi.GetGenericArguments().Count() == 1)
+<span class="lineNum">      99 </span>            :                                 .Single(mi =&gt; mi.GetParameters().Count() == 3);
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            :                         IList&lt;Type&gt; interfaceGenericArguments = @interface.GetGenericArguments().ToList();
+<span class="lineNum">     102 </span>            :                         if (interfaceGenericArguments.Count == 2)
+<span class="lineNum">     103 </span>            :                         {
+<span class="lineNum">     104 </span>            :                                 Type commandType = interfaceGenericArguments[1];
+<span class="lineNum">     105 </span>            :                                 registerExecutorMethod = BuildExecutorMethod(originalRegisterExecutorMethod, executorType, commandType);
+<span class="lineNum">     106 </span>            :                         }
+<span class="lineNum">     107 </span>            :                         else
+<span class="lineNum">     108 </span>            :                         {
+<span class="lineNum">     109 </span>            :                                 foreach (Type commandType in interfaceGenericArguments)
+<span class="lineNum">     110 </span>            :                                 {
+<span class="lineNum">     111 </span>            :                                         try
+<span class="lineNum">     112 </span>            :                                         {
+<span class="lineNum">     113 </span>            :                                                 registerExecutorMethod = BuildExecutorMethod(originalRegisterExecutorMethod, executorType, commandType);
+<span class="lineNum">     114 </span>            :                                                 break;
+<span class="lineNum">     115 </span>            :                                         }
+<span class="lineNum">     116 </span>            :                                         catch (VerificationException)
+<span class="lineNum">     117 </span>            :                                         {
+<span class="lineNum">     118 </span>            :                                         }
+<span class="lineNum">     119 </span>            :                                         catch (ArgumentException)
+<span class="lineNum">     120 </span>            :                                         {
+<span class="lineNum">     121 </span>            :                                         }
+<span class="lineNum">     122 </span>            :                                 }
+<span class="lineNum">     123 </span>            :                         }
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :                         if (registerExecutorMethod == null)
+<span class="lineNum">     126 </span>            :                                 throw new InvalidOperationException(&quot;No executor method could be compiled for &quot; + @interface.FullName);
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            :                         HandlerDelegate handlerDelegate = BuildDelegateAction(executorType, resolveMessageHandlerInterface);
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :                         InvokeHandlerDelegate(registerExecutorMethod, trueForEventsFalseForCommands, handlerDelegate);
+<span class="lineNum">     131 </span>            :                 }
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            :                 protected virtual void InvokeHandlerDelegate(MethodInfo registerExecutorMethod, bool trueForEventsFalseForCommands, HandlerDelegate handlerDelegate)
+<span class="lineNum">     134 </span>            :                 {
+<span class="lineNum">     135 </span>            :                         Type messageType = null;
+<span class="lineNum">     136 </span>            :                         bool holdMessageLock;
+<span class="lineNum">     137 </span>            :                         try
+<span class="lineNum">     138 </span>            :                         {
+<span class="lineNum">     139 </span>            :                                 messageType = registerExecutorMethod.GetParameters()[0].ParameterType.GetGenericArguments()[0];
+<span class="lineNum">     140 </span>            :                                 string messageTypeName = messageType.FullName;
+<span class="lineNum">     141 </span>            :                                 string configuration = string.Format(&quot;{0}&lt;{1}&gt;.HoldMessageLock&quot;, handlerDelegate.TargetedType.FullName, messageTypeName);
+<span class="lineNum">     142 </span>            :                                 // If this cannot be parsed then assume the safe route that this must be required to hold the lock.
+<span class="lineNum">     143 </span>            :                                 if (!bool.TryParse(DependencyResolver.Resolve&lt;IConfigurationManager&gt;().GetSetting(configuration), out holdMessageLock))
+<span class="lineNum">     144 </span>            :                                         holdMessageLock = true;
+<span class="lineNum">     145 </span>            :                         }
+<span class="lineNum">     146 </span>            :                         catch
+<span class="lineNum">     147 </span>            :                         {
+<span class="lineNum">     148 </span>            :                                 holdMessageLock = true;
+<span class="lineNum">     149 </span>            :                         }
+<span class="lineNum">     150 </span>            :                         registerExecutorMethod.Invoke(trueForEventsFalseForCommands ? GetEventHandlerRegistrar(messageType, handlerDelegate.TargetedType) : GetCommandHandlerRegistrar(messageType, handlerDelegate.TargetedType), new object[] { handlerDelegate.Delegate, handlerDelegate.TargetedType, holdMessageLock });
+<span class="lineNum">     151 </span>            :                 }
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            :                 protected virtual HandlerDelegate BuildDelegateAction(Type executorType, Func&lt;Type, IEnumerable&lt;Type&gt;&gt; resolveMessageHandlerInterface)
+<span class="lineNum">     154 </span>            :                 {
+<span class="lineNum">     155 </span>            :                         Action&lt;dynamic&gt; handlerDelegate = x =&gt;
+<span class="lineNum">     156 </span>            :                         {
+<span class="lineNum">     157 </span>            :                                 dynamic handler = DependencyResolver.Resolve(executorType);
+<span class="lineNum">     158 </span>            :                                 try
+<span class="lineNum">     159 </span>            :                                 {
+<span class="lineNum">     160 </span>            :                                         handler.Handle(x);
+<span class="lineNum">     161 </span>            :                                 }
+<span class="lineNum">     162 </span>            :                                 catch (NotImplementedException exception)
+<span class="lineNum">     163 </span>            :                                 {
+<span class="lineNum">     164 </span>            :                                         var logger = DependencyResolver.Resolve&lt;ILogger&gt;();
+<span class="lineNum">     165 </span>            :                                         logger.LogInfo(string.Format(&quot;An event message arrived of the type '{0}' went to a handler of type '{1}' but was not implemented.&quot;, x.GetType().FullName, handler.GetType().FullName), exception: exception);
+<span class="lineNum">     166 </span>            :                                 }
+<span class="lineNum">     167 </span>            :                         };
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            :                         return new HandlerDelegate { Delegate = handlerDelegate, TargetedType = executorType };
+<span class="lineNum">     170 </span>            :                 }
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span>            :                 protected virtual MethodInfo BuildExecutorMethod(MethodInfo originalRegisterExecutorMethod, Type executorType, Type commandType)
+<span class="lineNum">     173 </span>            :                 {
+<span class="lineNum">     174 </span>            :                         Type safeCommandType = commandType;
+<span class="lineNum">     175 </span>            :                         if (safeCommandType.IsGenericType &amp;&amp; safeCommandType.Name == typeof(DtoCommand&lt;,&gt;).Name &amp;&amp; executorType.IsGenericType &amp;&amp; executorType.Name == typeof(DtoCommandHandler&lt;,&gt;).Name)
+<span class="lineNum">     176 </span>            :                         {
+<span class="lineNum">     177 </span>            :                                 Type[] genericArguments = executorType.GetGenericArguments().Take(2).ToArray();
+<span class="lineNum">     178 </span>            :                                 safeCommandType = typeof(DtoCommand&lt;,&gt;).MakeGenericType(genericArguments);
+<span class="lineNum">     179 </span>            :                         }
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span>            :                         return originalRegisterExecutorMethod.MakeGenericMethod(safeCommandType);
+<span class="lineNum">     182 </span>            :                 }
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span>            :                 protected virtual IEnumerable&lt;Type&gt; ResolveEventHandlerInterface(Type type)
+<span class="lineNum">     185 </span>            :                 {
+<span class="lineNum">     186 </span>            :                         return type
+<span class="lineNum">     187 </span>            :                                 .GetInterfaces()
+<span class="lineNum">     188 </span>            :                                 .Where
+<span class="lineNum">     189 </span>            :                                 (
+<span class="lineNum">     190 </span>            :                                         @interface =&gt;
+<span class="lineNum">     191 </span>            :                                                 @interface.IsGenericType &amp;&amp;
+<span class="lineNum">     192 </span>            :                                                 (
+<span class="lineNum">     193 </span>            :                                                         @interface.GetGenericTypeDefinition() == typeof(IEventHandler&lt;,&gt;)
+<span class="lineNum">     194 </span>            :                                                 )
+<span class="lineNum">     195 </span>            :                                 );
+<span class="lineNum">     196 </span>            :                 }
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span>            :                 protected virtual IEnumerable&lt;Type&gt; ResolveCommandHandlerInterface(Type type)
+<span class="lineNum">     199 </span>            :                 {
+<span class="lineNum">     200 </span>            :                         return type
+<span class="lineNum">     201 </span>            :                                 .GetInterfaces()
+<span class="lineNum">     202 </span>            :                                 .Where
+<span class="lineNum">     203 </span>            :                                 (
+<span class="lineNum">     204 </span>            :                                         @interface =&gt;
+<span class="lineNum">     205 </span>            :                                                 @interface.IsGenericType &amp;&amp;
+<span class="lineNum">     206 </span>            :                                                 (
+<span class="lineNum">     207 </span>            :                                                         @interface.GetGenericTypeDefinition() == typeof(ICommandHandler&lt;,&gt;)
+<span class="lineNum">     208 </span>            :                                                 )
+<span class="lineNum">     209 </span>            :                                 );
+<span class="lineNum">     210 </span>            :                 }
+<span class="lineNum">     211 </span>            :         }
+<span class="lineNum">     212 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

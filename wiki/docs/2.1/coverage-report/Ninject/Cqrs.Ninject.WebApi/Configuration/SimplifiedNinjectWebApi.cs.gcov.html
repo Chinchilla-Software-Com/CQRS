@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Ninject/Cqrs.Ninject.WebApi/Configuration/SimplifiedNinjectWebApi.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Ninject/Cqrs.Ninject.WebApi/Configuration</a> - SimplifiedNinjectWebApi.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryLo">66.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System;
+<span class="lineNum">       2 </span>            : using Cqrs.Authentication;
+<span class="lineNum">       3 </span>            : using Cqrs.Configuration;
+<span class="lineNum">       4 </span>            : using Cqrs.Ninject.Configuration;
+<span class="lineNum">       5 </span>            : using Ninject;
+<span class="lineNum">       6 </span>            : using Ninject.Web.Common;
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Cqrs.Ninject.WebApi.Configuration.SimplifiedNinjectWebApi), &quot;Start&quot;, Order = 50)]
+<span class="lineNum">       9 </span>            : [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Cqrs.Ninject.WebApi.Configuration.SimplifiedNinjectWebApi), &quot;Stop&quot;, Order = 50)]
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : namespace Cqrs.Ninject.WebApi.Configuration
+<span class="lineNum">      12 </span>            : {
+<span class="lineNum">      13 </span>            :         using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            :         public static class SimplifiedNinjectWebApi
+<span class="lineNum">      16 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      17 </span>            :                 private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      20 </span>            :                 /// Starts the application
+<span class="lineNum">      21 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      22 </span><span class="lineCov">          1 :                 public static void Start()</span>
+<span class="lineNum">      23 </span>            :                 {
+<span class="lineNum">      24 </span>            :                         DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
+<span class="lineNum">      25 </span>            :                         DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
+<span class="lineNum">      26 </span>            :                         Bootstrapper.Initialize(CreateKernel);
+<span class="lineNum">      27 </span>            :                 }
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      30 </span>            :                 /// Stops the application.
+<span class="lineNum">      31 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      32 </span><span class="lineCov">          1 :                 public static void Stop()</span>
+<span class="lineNum">      33 </span>            :                 {
+<span class="lineNum">      34 </span>            :                         Bootstrapper.ShutDown();
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :                 /// Creates the kernel that will manage your application.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span>            :                 /// &lt;returns&gt;The created kernel.&lt;/returns&gt;
+<span class="lineNum">      41 </span>            :                 private static IKernel CreateKernel()
+<span class="lineNum">      42 </span>            :                 {
+<span class="lineNum">      43 </span>            :                         NinjectDependencyResolver.ModulesToLoad.Insert(0, new WebApiModule());
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                         string authenticationType;
+<span class="lineNum">      46 </span>            :                         if (!new ConfigurationManager().TryGetSetting(&quot;Cqrs.WebApi.AuthenticationTokenType&quot;, out authenticationType))
+<span class="lineNum">      47 </span>            :                                 authenticationType = &quot;Guid&quot;;
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                         if (authenticationType.ToLowerInvariant() == &quot;int&quot; || authenticationType.ToLowerInvariant() == &quot;integer&quot;)
+<span class="lineNum">      50 </span>            :                                 NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule&lt;int, DefaultAuthenticationTokenHelper&gt;(true, false));
+<span class="lineNum">      51 </span>            :                         else if (authenticationType.ToLowerInvariant() == &quot;guid&quot;)
+<span class="lineNum">      52 </span>            :                                 NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule&lt;Guid, DefaultAuthenticationTokenHelper&gt;(true, false));
+<span class="lineNum">      53 </span>            :                         else if (authenticationType.ToLowerInvariant() == &quot;string&quot; || authenticationType.ToLowerInvariant() == &quot;text&quot;)
+<span class="lineNum">      54 </span>            :                                 NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule&lt;string, DefaultAuthenticationTokenHelper&gt;(true, false));
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                         else if (authenticationType == &quot;SingleSignOnToken&quot;)
+<span class="lineNum">      57 </span>            :                                 NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule&lt;SingleSignOnToken, DefaultAuthenticationTokenHelper&gt;(true, false));
+<span class="lineNum">      58 </span>            :                         else if (authenticationType == &quot;SingleSignOnTokenWithUserRsn&quot;)
+<span class="lineNum">      59 </span>            :                                 NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule&lt;SingleSignOnTokenWithUserRsn, DefaultAuthenticationTokenHelper&gt;(true, false));
+<span class="lineNum">      60 </span>            :                         else if (authenticationType == &quot;SingleSignOnTokenWithCompanyRsn&quot;)
+<span class="lineNum">      61 </span>            :                                 NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule&lt;SingleSignOnTokenWithCompanyRsn, DefaultAuthenticationTokenHelper&gt;(true, false));
+<span class="lineNum">      62 </span>            :                         else if (authenticationType == &quot;SingleSignOnTokenWithUserRsnAndCompanyRsn&quot;)
+<span class="lineNum">      63 </span>            :                                 NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule&lt;SingleSignOnTokenWithUserRsnAndCompanyRsn, DefaultAuthenticationTokenHelper&gt;(true, false));
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                         else if (authenticationType == &quot;ISingleSignOnToken&quot;)
+<span class="lineNum">      66 </span>            :                                 NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule&lt;ISingleSignOnToken, AuthenticationTokenHelper&gt;(true, false));
+<span class="lineNum">      67 </span>            :                         else if (authenticationType == &quot;ISingleSignOnTokenWithUserRsn&quot;)
+<span class="lineNum">      68 </span>            :                                 NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule&lt;ISingleSignOnTokenWithUserRsn, AuthenticationTokenHelper&gt;(true, false));
+<span class="lineNum">      69 </span>            :                         else if (authenticationType == &quot;ISingleSignOnTokenWithCompanyRsn&quot;)
+<span class="lineNum">      70 </span>            :                                 NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule&lt;ISingleSignOnTokenWithCompanyRsn, AuthenticationTokenHelper&gt;(true, false));
+<span class="lineNum">      71 </span>            :                         else if (authenticationType == &quot;ISingleSignOnTokenWithUserRsnAndCompanyRsn&quot;)
+<span class="lineNum">      72 </span>            :                                 NinjectDependencyResolver.ModulesToLoad.Insert(1, new CqrsModule&lt;ISingleSignOnTokenWithUserRsnAndCompanyRsn, AuthenticationTokenHelper&gt;(true, false));
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :                         NinjectDependencyResolver.ModulesToLoad.Insert(2, new SimplifiedSqlModule&lt;SingleSignOnToken&gt;());
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span>            :                         // NinjectDependencyResolver.Start();
+<span class="lineNum">      77 </span>            :                         var kernel = new StandardKernel();
+<span class="lineNum">      78 </span>            :                         // This is only done so the follow Wcf safe method can be called. Otherwise use the commented out line above.
+<span class="lineNum">      79 </span>            :                         NinjectDependencyResolver.Start(kernel, true);
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :                         return kernel;
+<span class="lineNum">      82 </span>            :                 }
+<span class="lineNum">      83 </span>            :         }
+<span class="lineNum">      84 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

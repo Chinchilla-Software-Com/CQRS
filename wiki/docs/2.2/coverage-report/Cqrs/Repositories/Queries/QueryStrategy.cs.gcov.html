@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Repositories/Queries/QueryStrategy.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Cqrs/Repositories/Queries</a> - QueryStrategy.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System;
+<span class="lineNum">       2 </span>            : using System.Collections.Generic;
+<span class="lineNum">       3 </span>            : using System.Reflection;
+<span class="lineNum">       4 </span>            : 
+<span class="lineNum">       5 </span>            : namespace Cqrs.Repositories.Queries
+<span class="lineNum">       6 </span>            : {
+<span class="lineNum">       7 </span>            :         public abstract class QueryStrategy : IQueryStrategy
+<span class="lineNum">       8 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">       9 </span>            :                 #region Implementation of IQueryStrategy
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            :                 public IQueryPredicate QueryPredicate { get; protected set; }
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            :                 #endregion
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span><span class="lineNoCov">          0 :                 public virtual IQueryPredicate IsNotLogicallyDeleted()</span>
+<span class="lineNum">      16 </span>            :                 {
+<span class="lineNum">      17 </span>            :                         return BuildQueryPredicate(IsNotLogicallyDeleted);
+<span class="lineNum">      18 </span>            :                 }
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span><span class="lineNoCov">          0 :                 public virtual IQueryPredicate WithPermissionScopeAny&lt;TAuthenticationToken&gt;(TAuthenticationToken authenticationToken)</span>
+<span class="lineNum">      21 </span>            :                 {
+<span class="lineNum">      22 </span>            :                         return BuildQueryPredicate(WithPermissionScopeAny, authenticationToken);
+<span class="lineNum">      23 </span>            :                 }
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span><span class="lineNoCov">          0 :                 public virtual IQueryPredicate WithPermissionScopeUser&lt;TAuthenticationToken&gt;(TAuthenticationToken authenticationToken)</span>
+<span class="lineNum">      26 </span>            :                 {
+<span class="lineNum">      27 </span>            :                         return BuildQueryPredicate(WithPermissionScopeUser, authenticationToken);
+<span class="lineNum">      28 </span>            :                 }
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span><span class="lineNoCov">          0 :                 public virtual IQueryPredicate WithPermissionScopeCompany&lt;TAuthenticationToken&gt;(TAuthenticationToken authenticationToken)</span>
+<span class="lineNum">      31 </span>            :                 {
+<span class="lineNum">      32 </span>            :                         return BuildQueryPredicate(WithPermissionScopeCompany, authenticationToken);
+<span class="lineNum">      33 </span>            :                 }
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 :                 public virtual IQueryPredicate WithPermissionScopeCompanyAndUser&lt;TAuthenticationToken&gt;(TAuthenticationToken authenticationToken)</span>
+<span class="lineNum">      36 </span>            :                 {
+<span class="lineNum">      37 </span>            :                         return BuildQueryPredicate(WithPermissionScopeCompanyAndUser, authenticationToken);
+<span class="lineNum">      38 </span>            :                 }
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 :                 protected virtual IQueryPredicate BuildQueryPredicate&lt;TData&gt;(Func&lt;TData&gt; func)</span>
+<span class="lineNum">      41 </span>            :                 {
+<span class="lineNum">      42 </span>            :                         var queryPredicate = new QueryPredicate
+<span class="lineNum">      43 </span>            :                         {
+<span class="lineNum">      44 </span>            :                                 Name = func.Method.Name,
+<span class="lineNum">      45 </span>            :                                 Parameters = new SortedSet&lt;QueryParameter&gt;()
+<span class="lineNum">      46 </span>            :                         };
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                         return queryPredicate;
+<span class="lineNum">      49 </span>            :                 }
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :                 protected virtual IQueryPredicate BuildQueryPredicate&lt;TParameter1, TData&gt;(Func&lt;TParameter1, TData&gt; func, TParameter1 parameter1)</span>
+<span class="lineNum">      52 </span>            :                 {
+<span class="lineNum">      53 </span>            :                         var queryPredicate = new QueryPredicate
+<span class="lineNum">      54 </span>            :                         {
+<span class="lineNum">      55 </span>            :                                 Name = func.Method.Name,
+<span class="lineNum">      56 </span>            :                                 Parameters = new SortedSet&lt;QueryParameter&gt;()
+<span class="lineNum">      57 </span>            :                         };
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :                         foreach (ParameterInfo parameterInfo in func.Method.GetParameters())
+<span class="lineNum">      60 </span>            :                         {
+<span class="lineNum">      61 </span>            :                                 queryPredicate.Parameters.Add(new QueryParameter(parameterInfo.Name, parameter1));
+<span class="lineNum">      62 </span>            :                         }
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :                         return queryPredicate;
+<span class="lineNum">      65 </span>            :                 }
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :                 protected virtual IQueryPredicate BuildQueryPredicate&lt;TParameter1, TParameter2, TData&gt;(Func&lt;TParameter1, TParameter2, TData&gt; func, TParameter1 parameter1, TParameter2 parameter2)</span>
+<span class="lineNum">      68 </span>            :                 {
+<span class="lineNum">      69 </span>            :                         var queryPredicate = new QueryPredicate
+<span class="lineNum">      70 </span>            :                         {
+<span class="lineNum">      71 </span>            :                                 Name = func.Method.Name,
+<span class="lineNum">      72 </span>            :                                 Parameters = new SortedSet&lt;QueryParameter&gt;()
+<span class="lineNum">      73 </span>            :                         };
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :                         int parameterIndex = 1;
+<span class="lineNum">      76 </span>            :                         foreach (ParameterInfo parameterInfo in func.Method.GetParameters())
+<span class="lineNum">      77 </span>            :                         {
+<span class="lineNum">      78 </span>            :                                 object parameter;
+<span class="lineNum">      79 </span>            :                                 switch (parameterIndex)
+<span class="lineNum">      80 </span>            :                                 {
+<span class="lineNum">      81 </span>            :                                         case 1:
+<span class="lineNum">      82 </span>            :                                                 parameter = parameter1;
+<span class="lineNum">      83 </span>            :                                                 break;
+<span class="lineNum">      84 </span>            :                                         case 2:
+<span class="lineNum">      85 </span>            :                                                 parameter = parameter2;
+<span class="lineNum">      86 </span>            :                                                 break;
+<span class="lineNum">      87 </span>            :                                         default:
+<span class="lineNum">      88 </span>            :                                                 throw new InvalidOperationException();
+<span class="lineNum">      89 </span>            :                                 }
+<span class="lineNum">      90 </span>            :                                 queryPredicate.Parameters.Add(new QueryParameter(parameterInfo.Name, parameter));
+<span class="lineNum">      91 </span>            :                                 parameterIndex++;
+<span class="lineNum">      92 </span>            :                         }
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span>            :                         return queryPredicate;
+<span class="lineNum">      95 </span>            :                 }
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :                 protected virtual IQueryPredicate And(IQueryPredicate queryPredicate)</span>
+<span class="lineNum">      98 </span>            :                 {
+<span class="lineNum">      99 </span>            :                         if (QueryPredicate == null)
+<span class="lineNum">     100 </span>            :                                 return queryPredicate;
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            :                         return new AndQueryPredicate
+<span class="lineNum">     103 </span>            :                         {
+<span class="lineNum">     104 </span>            :                                 LeftQueryPredicate = QueryPredicate,
+<span class="lineNum">     105 </span>            :                                 RightQueryPredicate = queryPredicate
+<span class="lineNum">     106 </span>            :                         };
+<span class="lineNum">     107 </span>            :                 }
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 protected virtual IQueryPredicate Or(IQueryPredicate queryPredicate)</span>
+<span class="lineNum">     110 </span>            :                 {
+<span class="lineNum">     111 </span>            :                         return new OrQueryPredicate
+<span class="lineNum">     112 </span>            :                         {
+<span class="lineNum">     113 </span>            :                                 LeftQueryPredicate = QueryPredicate,
+<span class="lineNum">     114 </span>            :                                 RightQueryPredicate = queryPredicate
+<span class="lineNum">     115 </span>            :                         };
+<span class="lineNum">     116 </span>            :                 }
+<span class="lineNum">     117 </span>            :         }
+<span class="lineNum">     118 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

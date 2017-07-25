@@ -72,12 +72,21 @@ namespace Cqrs.Events
 	/// </remarks>
 	public interface IEvent<TAuthenticationToken> : IMessageWithAuthenticationToken<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The ID of the <see cref="IEvent{TAuthenticationToken}"/>
+		/// </summary>
 		[DataMember]
 		Guid Id { get; set; }
 
+		/// <summary>
+		/// The version of the <see cref="IEvent{TAuthenticationToken}"/>
+		/// </summary>
 		[DataMember]
 		int Version { get; set; }
 
+		/// <summary>
+		/// The date and time the event was raised or published.
+		/// </summary>
 		[DataMember]
 		DateTimeOffset TimeStamp { get; set; }
 	}

@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using Cqrs.Akka.Commands;
 using Cqrs.Akka.Tests.Unit.Commands;
 using Cqrs.Commands;
@@ -9,7 +17,7 @@ namespace Cqrs.Akka.Tests.Unit.Events.Handlers
 	public class HelloWorldSaidEventHandler
 		: IEventHandler<Guid, HelloWorldSaid>
 	{
-		public HelloWorldSaidEventHandler(IAkkaCommandSender<Guid> commandBus)
+		public HelloWorldSaidEventHandler(IAkkaCommandPublisher<Guid> commandBus)
 		{
 			CommandBus = commandBus;
 		}

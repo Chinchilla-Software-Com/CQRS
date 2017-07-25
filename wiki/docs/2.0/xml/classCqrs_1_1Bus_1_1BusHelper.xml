@@ -1,0 +1,240 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="classCqrs_1_1Bus_1_1BusHelper" kind="class" prot="public">
+    <compoundname>Cqrs::Bus::BusHelper</compoundname>
+    <basecompoundref refid="interfaceCqrs_1_1Bus_1_1IBusHelper" prot="public" virt="non-virtual">Cqrs.Bus.IBusHelper</basecompoundref>
+      <sectiondef kind="property">
+      <memberdef kind="property" id="classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8_1aff0eaa0679d808e268ab4b5fb669bac8" prot="protected" static="no" readable="no" writable="no" gettable="yes" settable="yes">
+        <type><ref refid="interfaceCqrs_1_1Configuration_1_1IConfigurationManager" kindref="compound">IConfigurationManager</ref></type>
+        <definition>IConfigurationManager Cqrs.Bus.BusHelper.ConfigurationManager</definition>
+        <argsstring></argsstring>
+        <name>ConfigurationManager</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" line="30" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Bus_1_1BusHelper_ae29e80bd315b6284509c9fd0b977d2a0_1ae29e80bd315b6284509c9fd0b977d2a0" prot="protected" static="no" readable="no" writable="no" gettable="yes" settable="yes">
+        <type>IDictionary&lt; string, Tuple&lt; bool, DateTime &gt; &gt;</type>
+        <definition>IDictionary&lt;string, Tuple&lt;bool, DateTime&gt; &gt; Cqrs.Bus.BusHelper.CachedChecks</definition>
+        <argsstring></argsstring>
+        <name>CachedChecks</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" line="32" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b_1ae8d3525369ee9572de06f935cc09510b" prot="protected" static="no" readable="no" writable="no" gettable="yes" settable="yes">
+        <type>bool</type>
+        <definition>bool Cqrs.Bus.BusHelper.EventBlackListProcessing</definition>
+        <argsstring></argsstring>
+        <name>EventBlackListProcessing</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" line="34" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classCqrs_1_1Bus_1_1BusHelper_a7799db8bc78bdd9ec25be5bd301d0b8a_1a7799db8bc78bdd9ec25be5bd301d0b8a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Cqrs.Bus.BusHelper.BusHelper</definition>
+        <argsstring>(IConfigurationManager configurationManager)</argsstring>
+        <name>BusHelper</name>
+        <param>
+          <type><ref refid="interfaceCqrs_1_1Configuration_1_1IConfigurationManager" kindref="compound">IConfigurationManager</ref></type>
+          <declname>configurationManager</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" line="19" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" bodystart="19" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Bus_1_1BusHelper_a28c675e976adbf348637ec6ff6410c1a_1a28c675e976adbf348637ec6ff6410c1a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool Cqrs.Bus.BusHelper.IsEventRequired</definition>
+        <argsstring>(Type messageType)</argsstring>
+        <name>IsEventRequired</name>
+        <reimplements refid="interfaceCqrs_1_1Bus_1_1IBusHelper_acddf7635d6de08e3b09d552361fe4fda_1acddf7635d6de08e3b09d552361fe4fda">IsEventRequired</reimplements>
+        <param>
+          <type>Type</type>
+          <declname>messageType</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a white-list or black-list approach is taken, then checks the IConfigurationManager to see if a key exists defining if the event is required or not. If the event is required and it cannot be resolved, an error will be raised. Otherwise the event will be marked as processed. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>messageType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of the message being processed.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" line="87" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" bodystart="87" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Bus_1_1BusHelper_a60a9603d5c6b7f29ee42491475714895_1a60a9603d5c6b7f29ee42491475714895" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool Cqrs.Bus.BusHelper.IsEventRequired</definition>
+        <argsstring>(string configurationKey)</argsstring>
+        <name>IsEventRequired</name>
+        <reimplements refid="interfaceCqrs_1_1Bus_1_1IBusHelper_af73d0d2aa8e98566acb4b2fb13a3e986_1af73d0d2aa8e98566acb4b2fb13a3e986">IsEventRequired</reimplements>
+        <param>
+          <type>string</type>
+          <declname>configurationKey</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a white-list or black-list approach is taken, then checks the IConfigurationManager to see if a key exists defining if the event is required or not. If the event is required and it cannot be resolved, an error will be raised. Otherwise the event will be marked as processed. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>configurationKey</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The configuration key to check.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" line="98" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" bodystart="98" bodyend="125"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Bus_1_1BusHelper_a7edd5b2ac0d46ce225e592f857f6d525_1a7edd5b2ac0d46ce225e592f857f6d525" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>Action&lt; TMessage &gt;</type>
+        <definition>virtual Action&lt;TMessage&gt; Cqrs.Bus.BusHelper.BuildTelemeteredActionHandler&lt; TMessage, TAuthenticationToken &gt;</definition>
+        <argsstring>(ITelemetryHelper telemetryHelper, Action&lt; TMessage &gt; handler, bool holdMessageLock, string source)</argsstring>
+        <name>BuildTelemeteredActionHandler&lt; TMessage, TAuthenticationToken &gt;</name>
+        <reimplements refid="interfaceCqrs_1_1Bus_1_1IBusHelper_a29751c186da5e2b042067af6a1be6d5d_1a29751c186da5e2b042067af6a1be6d5d">BuildTelemeteredActionHandler&lt; TMessage, TAuthenticationToken &gt;</reimplements>
+        <param>
+          <type>ITelemetryHelper</type>
+          <declname>telemetryHelper</declname>
+        </param>
+        <param>
+          <type>Action&lt; TMessage &gt;</type>
+          <declname>handler</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>holdMessageLock</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+<para>Build a message handler that implements telemetry capturing as well as off thread handling. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" line="130" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" bodystart="130" bodyend="199"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Bus_1_1BusHelper_a6dc1f5166b7bcd13aa7a0d5e25ded295_1a6dc1f5166b7bcd13aa7a0d5e25ded295" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>Action&lt; TMessage &gt;</type>
+        <definition>virtual Action&lt;TMessage&gt; Cqrs.Bus.BusHelper.BuildActionHandler&lt; TMessage &gt;</definition>
+        <argsstring>(Action&lt; TMessage &gt; handler, bool holdMessageLock)</argsstring>
+        <name>BuildActionHandler&lt; TMessage &gt;</name>
+        <reimplements refid="interfaceCqrs_1_1Bus_1_1IBusHelper_ac69a1e4722e2839c2c180b9a06a8646c_1ac69a1e4722e2839c2c180b9a06a8646c">BuildActionHandler&lt; TMessage &gt;</reimplements>
+        <param>
+          <type>Action&lt; TMessage &gt;</type>
+          <declname>handler</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>holdMessageLock</declname>
+        </param>
+        <briefdescription>
+<para>Build a message handler that implements telemetry capturing as well as off thread handling. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" line="204" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" bodystart="204" bodyend="222"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classCqrs_1_1Bus_1_1BusHelper_ad589391a51cd61673d2403ee8012e713_1ad589391a51cd61673d2403ee8012e713" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Cqrs.Bus.BusHelper.RefreshCachedChecks</definition>
+        <argsstring>()</argsstring>
+        <name>RefreshCachedChecks</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" line="36" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" bodystart="36" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Bus_1_1BusHelper_a23bfab1be70af651cc48033fcdf4ce2c_1a23bfab1be70af651cc48033fcdf4ce2c" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Cqrs.Bus.BusHelper.StartRefreshCachedChecks</definition>
+        <argsstring>()</argsstring>
+        <name>StartRefreshCachedChecks</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" line="62" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" bodystart="62" bodyend="79"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1021">
+        <label>IBusHelper</label>
+        <link refid="interfaceCqrs_1_1Bus_1_1IBusHelper"/>
+      </node>
+      <node id="1020">
+        <label>Cqrs.Bus.BusHelper</label>
+        <link refid="classCqrs_1_1Bus_1_1BusHelper"/>
+        <childnode refid="1021" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1023">
+        <label>IBusHelper</label>
+        <link refid="interfaceCqrs_1_1Bus_1_1IBusHelper"/>
+      </node>
+      <node id="1022">
+        <label>Cqrs.Bus.BusHelper</label>
+        <link refid="classCqrs_1_1Bus_1_1BusHelper"/>
+        <childnode refid="1023" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" line="18" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Cqrs/Bus/BusHelper.cs" bodystart="17" bodyend="223"/>
+    <listofallmembers>
+      <member refid="classCqrs_1_1Bus_1_1BusHelper_a6dc1f5166b7bcd13aa7a0d5e25ded295_1a6dc1f5166b7bcd13aa7a0d5e25ded295" prot="public" virt="virtual"><scope>Cqrs::Bus::BusHelper</scope><name>BuildActionHandler&lt; TMessage &gt;</name></member>
+      <member refid="classCqrs_1_1Bus_1_1BusHelper_a7edd5b2ac0d46ce225e592f857f6d525_1a7edd5b2ac0d46ce225e592f857f6d525" prot="public" virt="virtual"><scope>Cqrs::Bus::BusHelper</scope><name>BuildTelemeteredActionHandler&lt; TMessage, TAuthenticationToken &gt;</name></member>
+      <member refid="classCqrs_1_1Bus_1_1BusHelper_a7799db8bc78bdd9ec25be5bd301d0b8a_1a7799db8bc78bdd9ec25be5bd301d0b8a" prot="public" virt="non-virtual"><scope>Cqrs::Bus::BusHelper</scope><name>BusHelper</name></member>
+      <member refid="classCqrs_1_1Bus_1_1BusHelper_ae29e80bd315b6284509c9fd0b977d2a0_1ae29e80bd315b6284509c9fd0b977d2a0" prot="protected" virt="non-virtual"><scope>Cqrs::Bus::BusHelper</scope><name>CachedChecks</name></member>
+      <member refid="classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8_1aff0eaa0679d808e268ab4b5fb669bac8" prot="protected" virt="non-virtual"><scope>Cqrs::Bus::BusHelper</scope><name>ConfigurationManager</name></member>
+      <member refid="classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b_1ae8d3525369ee9572de06f935cc09510b" prot="protected" virt="non-virtual"><scope>Cqrs::Bus::BusHelper</scope><name>EventBlackListProcessing</name></member>
+      <member refid="classCqrs_1_1Bus_1_1BusHelper_a28c675e976adbf348637ec6ff6410c1a_1a28c675e976adbf348637ec6ff6410c1a" prot="public" virt="virtual"><scope>Cqrs::Bus::BusHelper</scope><name>IsEventRequired</name></member>
+      <member refid="classCqrs_1_1Bus_1_1BusHelper_a60a9603d5c6b7f29ee42491475714895_1a60a9603d5c6b7f29ee42491475714895" prot="public" virt="virtual"><scope>Cqrs::Bus::BusHelper</scope><name>IsEventRequired</name></member>
+      <member refid="classCqrs_1_1Bus_1_1BusHelper_ad589391a51cd61673d2403ee8012e713_1ad589391a51cd61673d2403ee8012e713" prot="protected" virt="virtual"><scope>Cqrs::Bus::BusHelper</scope><name>RefreshCachedChecks</name></member>
+      <member refid="classCqrs_1_1Bus_1_1BusHelper_a23bfab1be70af651cc48033fcdf4ce2c_1a23bfab1be70af651cc48033fcdf4ce2c" prot="protected" virt="virtual"><scope>Cqrs::Bus::BusHelper</scope><name>StartRefreshCachedChecks</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

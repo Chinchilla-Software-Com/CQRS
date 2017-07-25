@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.Tests/Domain/When_saving.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs.Tests/Domain</a> - When_saving.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System;
+<span class="lineNum">       2 </span>            : using System.Linq;
+<span class="lineNum">       3 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">       4 </span>            : using Cqrs.Domain;
+<span class="lineNum">       5 </span>            : using Cqrs.Domain.Exceptions;
+<span class="lineNum">       6 </span>            : using Cqrs.Domain.Factories;
+<span class="lineNum">       7 </span>            : using Cqrs.Authentication;
+<span class="lineNum">       8 </span>            : using Cqrs.Tests.Substitutes;
+<span class="lineNum">       9 </span>            : using NUnit.Framework;
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : namespace Cqrs.Tests.Domain
+<span class="lineNum">      12 </span>            : {
+<span class="lineNum">      13 </span>            :         [TestFixture]
+<span class="lineNum">      14 </span>            :         public class When_saving
+<span class="lineNum">      15 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      16 </span>            :                 private TestInMemoryEventStore _eventStore;
+<span class="lineNum">      17 </span>            :                 private TestAggregateNoParameterLessConstructor _aggregate;
+<span class="lineNum">      18 </span>            :                 private TestEventPublisher _eventPublisher;
+<span class="lineNum">      19 </span>            :                 private IUnitOfWork&lt;ISingleSignOnToken&gt; _unitOfWork;
+<span class="lineNum">      20 </span>            :                 private Repository&lt;ISingleSignOnToken&gt; _rep;
+<span class="lineNum">      21 </span>            :                 private TestDependencyResolver _dependencyResolver;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            :                 [SetUp]
+<span class="lineNum">      24 </span><span class="lineNoCov">          0 :                 public void Setup()</span>
+<span class="lineNum">      25 </span>            :                 {
+<span class="lineNum">      26 </span>            :                         _dependencyResolver = new TestDependencyResolver(null);
+<span class="lineNum">      27 </span>            :                         var aggregateFactory = new AggregateFactory(_dependencyResolver, _dependencyResolver.Resolve&lt;ILogger&gt;());
+<span class="lineNum">      28 </span>            :                         _eventStore = new TestInMemoryEventStore();
+<span class="lineNum">      29 </span>            :                         _eventPublisher = new TestEventPublisher();
+<span class="lineNum">      30 </span>            :                         _rep = new Repository&lt;ISingleSignOnToken&gt;(aggregateFactory, _eventStore, _eventPublisher, new NullCorrelationIdHelper());
+<span class="lineNum">      31 </span>            :                         _unitOfWork = new UnitOfWork&lt;ISingleSignOnToken&gt;(_rep);
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            :                         _aggregate = new TestAggregateNoParameterLessConstructor(2);
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 [Test]
+<span class="lineNum">      38 </span><span class="lineNoCov">          0 :                 public void Should_save_uncommited_changes()</span>
+<span class="lineNum">      39 </span>            :                 {
+<span class="lineNum">      40 </span>            :                         _aggregate.DoSomething();
+<span class="lineNum">      41 </span>            :                         _unitOfWork.Add(_aggregate);
+<span class="lineNum">      42 </span>            :                         _unitOfWork.Commit();
+<span class="lineNum">      43 </span>            :                         Assert.AreEqual(1, _eventStore.Events.Count);
+<span class="lineNum">      44 </span>            :                 }
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                 [Test]
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :                 public void Should_mark_commited_after_commit()</span>
+<span class="lineNum">      48 </span>            :                 {
+<span class="lineNum">      49 </span>            :                         _aggregate.DoSomething();
+<span class="lineNum">      50 </span>            :                         _unitOfWork.Add(_aggregate);
+<span class="lineNum">      51 </span>            :                         _unitOfWork.Commit();
+<span class="lineNum">      52 </span>            :                         Assert.AreEqual(0, _aggregate.GetUncommittedChanges().Count());
+<span class="lineNum">      53 </span>            :                 }
+<span class="lineNum">      54 </span>            :                 
+<span class="lineNum">      55 </span>            :                 [Test]
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :                 public void Should_publish_events()</span>
+<span class="lineNum">      57 </span>            :                 {
+<span class="lineNum">      58 </span>            :                         _aggregate.DoSomething();
+<span class="lineNum">      59 </span>            :                         _unitOfWork.Add(_aggregate);
+<span class="lineNum">      60 </span>            :                         _unitOfWork.Commit();
+<span class="lineNum">      61 </span>            :                         Assert.AreEqual(1, _eventPublisher.Published);
+<span class="lineNum">      62 </span>            :                 }
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :                 [Test]
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :                 public void Should_add_new_aggregate()</span>
+<span class="lineNum">      66 </span>            :                 {
+<span class="lineNum">      67 </span>            :                         var agg = new TestAggregateNoParameterLessConstructor(1);
+<span class="lineNum">      68 </span>            :                         agg.DoSomething();
+<span class="lineNum">      69 </span>            :                         _unitOfWork.Add(agg);
+<span class="lineNum">      70 </span>            :                         _unitOfWork.Commit();
+<span class="lineNum">      71 </span>            :                         Assert.AreEqual(1, _eventStore.Events.Count);
+<span class="lineNum">      72 </span>            :                 }
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :                 [Test]
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :                 public void Should_set_date()</span>
+<span class="lineNum">      76 </span>            :                 {
+<span class="lineNum">      77 </span>            :                         var agg = new TestAggregateNoParameterLessConstructor(1);
+<span class="lineNum">      78 </span>            :                         agg.DoSomething();
+<span class="lineNum">      79 </span>            :                         _unitOfWork.Add(agg);
+<span class="lineNum">      80 </span>            :                         _unitOfWork.Commit();
+<span class="lineNum">      81 </span>            :                         Assert.That(_eventStore.Events.First().TimeStamp, Is.InRange(DateTimeOffset.UtcNow.AddSeconds(-1), DateTimeOffset.UtcNow.AddSeconds(1)));
+<span class="lineNum">      82 </span>            :                 }
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            :                 [Test]
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :                 public void Should_set_version()</span>
+<span class="lineNum">      86 </span>            :                 {
+<span class="lineNum">      87 </span>            :                         var agg = new TestAggregateNoParameterLessConstructor(1);
+<span class="lineNum">      88 </span>            :                         agg.DoSomething();
+<span class="lineNum">      89 </span>            :                         agg.DoSomething();
+<span class="lineNum">      90 </span>            :                         _unitOfWork.Add(agg);
+<span class="lineNum">      91 </span>            :                         _unitOfWork.Commit();
+<span class="lineNum">      92 </span>            :                         Assert.That(_eventStore.Events.First().Version, Is.EqualTo(1));
+<span class="lineNum">      93 </span>            :                         Assert.That(_eventStore.Events.Last().Version, Is.EqualTo(2));
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :                 }
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :                 [Test]
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :                 public void Should_set_id()</span>
+<span class="lineNum">      99 </span>            :                 {
+<span class="lineNum">     100 </span>            :                         var id = Guid.NewGuid();
+<span class="lineNum">     101 </span>            :                         var agg = new TestAggregateNoParameterLessConstructor(1, id);
+<span class="lineNum">     102 </span>            :                         agg.DoSomething();
+<span class="lineNum">     103 </span>            :                         _unitOfWork.Add(agg);
+<span class="lineNum">     104 </span>            :                         _unitOfWork.Commit();
+<span class="lineNum">     105 </span>            :                         Assert.That(_eventStore.Events.First().Id, Is.EqualTo(id));
+<span class="lineNum">     106 </span>            :                 }
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :                 [Test]
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 public void Should_clear_tracked_aggregates()</span>
+<span class="lineNum">     110 </span>            :                 {
+<span class="lineNum">     111 </span>            :                         var agg = new TestAggregate(Guid.NewGuid());
+<span class="lineNum">     112 </span>            :                         _dependencyResolver.NewAggregateGuid = agg.Id;
+<span class="lineNum">     113 </span>            :                         _unitOfWork.Add(agg);
+<span class="lineNum">     114 </span>            :                         agg.DoSomething();
+<span class="lineNum">     115 </span>            :                         _unitOfWork.Commit();
+<span class="lineNum">     116 </span>            :                         _eventStore.Events.Clear();
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span>            :                         Assert.Throws&lt;AggregateNotFoundException&lt;TestAggregate, ISingleSignOnToken&gt;&gt;(() =&gt; _unitOfWork.Get&lt;TestAggregate&gt;(agg.Id));
+<span class="lineNum">     119 </span>            :                 }
+<span class="lineNum">     120 </span>            :         }
+<span class="lineNum">     121 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

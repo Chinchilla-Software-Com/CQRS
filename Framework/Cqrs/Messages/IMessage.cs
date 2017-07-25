@@ -11,8 +11,14 @@ using System.Collections.Generic;
 
 namespace Cqrs.Messages
 {
+	/// <summary>
+	/// A message such as an event or command.
+	/// </summary>
 	public interface IMessage
 	{
+		/// <summary>
+		/// An identifier used to group together several <see cref="IMessage"/>. Any <see cref="IMessage"/> with the same <see cref="CorrelationId"/> were triggered by the same initiating request.
+		/// </summary>
 		Guid CorrelationId { get; set; }
 
 		/// <summary>

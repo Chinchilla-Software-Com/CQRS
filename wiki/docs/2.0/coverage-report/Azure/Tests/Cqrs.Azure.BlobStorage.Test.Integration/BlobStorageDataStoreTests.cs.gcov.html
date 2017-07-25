@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Tests/Cqrs.Azure.BlobStorage.Test.Integration/BlobStorageDataStoreTests.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Azure/Tests/Cqrs.Azure.BlobStorage.Test.Integration</a> - BlobStorageDataStoreTests.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryLo">14.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System;
+<span class="lineNum">       2 </span>            : using System.Collections.Generic;
+<span class="lineNum">       3 </span>            : using System.Diagnostics;
+<span class="lineNum">       4 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">       5 </span>            : using cdmdotnet.Logging.Configuration;
+<span class="lineNum">       6 </span>            : using cdmdotnet.StateManagement.Threaded;
+<span class="lineNum">       7 </span>            : using Cqrs.Azure.BlobStorage.DataStores;
+<span class="lineNum">       8 </span>            : using Cqrs.Azure.ServiceBus.Tests.Unit;
+<span class="lineNum">       9 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      10 </span>            : using NUnit.Framework;
+<span class="lineNum">      11 </span><span class="lineNoCov">          0 : using TestClass = NUnit.Framework.TestFixtureAttribute;</span>
+<span class="lineNum">      12 </span><span class="lineNoCov">          0 : using TestMethod = NUnit.Framework.TestAttribute;</span>
+<span class="lineNum">      13 </span><span class="lineNoCov">          0 : using TestInitialize = NUnit.Framework.SetUpAttribute;</span>
+<span class="lineNum">      14 </span><span class="lineNoCov">          0 : using TestCleanup = NUnit.Framework.TearDownAttribute;</span>
+<span class="lineNum">      15 </span><span class="lineNoCov">          0 : using TestContext = System.Object;</span>
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : namespace Cqrs.Azure.BlobStorage.Test.Integration
+<span class="lineNum">      18 </span>            : {
+<span class="lineNum">      19 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      20 </span>            :         /// A series of tests on the &lt;see cref=&quot;BlobStorageDataStore{TData}&quot;/&gt; class
+<span class="lineNum">      21 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      22 </span>            :         [TestClass]
+<span class="lineNum">      23 </span>            :         public class BlobStorageDataStoreTests
+<span class="lineNum">      24 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      25 </span>            :                 [TestMethod]
+<span class="lineNum">      26 </span><span class="lineNoCov">          0 :                 public virtual void Save_ValidProjectionView_ProjectionViewCanBeRetreived()</span>
+<span class="lineNum">      27 </span>            :                 {
+<span class="lineNum">      28 </span>            :                         // Arrange
+<span class="lineNum">      29 </span>            :                         var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
+<span class="lineNum">      30 </span>            :                         correlationIdHelper.SetCorrelationId(Guid.NewGuid());
+<span class="lineNum">      31 </span>            :                         var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
+<span class="lineNum">      32 </span>            :                         var dataStore = new BlobStorageDataStore&lt;TestEvent&gt;(logger, new BlobStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                         var event1 = new TestEvent
+<span class="lineNum">      35 </span>            :                         {
+<span class="lineNum">      36 </span>            :                                 Rsn = Guid.NewGuid(),
+<span class="lineNum">      37 </span>            :                                 Id = Guid.NewGuid(),
+<span class="lineNum">      38 </span>            :                                 CorrelationId = correlationIdHelper.GetCorrelationId(),
+<span class="lineNum">      39 </span>            :                                 Frameworks = new List&lt;string&gt; { &quot;Test 1&quot; },
+<span class="lineNum">      40 </span>            :                                 TimeStamp = DateTimeOffset.UtcNow
+<span class="lineNum">      41 </span>            :                         };
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                         // Act
+<span class="lineNum">      44 </span>            :                         dataStore.Add(event1);
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                         // Assert
+<span class="lineNum">      47 </span>            :                         var timer = new Stopwatch();
+<span class="lineNum">      48 </span>            :                         timer.Start();
+<span class="lineNum">      49 </span>            :                         TestEvent view = dataStore.GetByName(event1.Rsn);
+<span class="lineNum">      50 </span>            :                         timer.Stop();
+<span class="lineNum">      51 </span>            :                         Console.WriteLine(&quot;Load operation took {0}&quot;, timer.Elapsed);
+<span class="lineNum">      52 </span>            :                         Assert.IsNotNull(view);
+<span class="lineNum">      53 </span>            :                         Assert.AreEqual(event1.Id, view.Id);
+<span class="lineNum">      54 </span>            :                 }
+<span class="lineNum">      55 </span>            :         }
+<span class="lineNum">      56 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

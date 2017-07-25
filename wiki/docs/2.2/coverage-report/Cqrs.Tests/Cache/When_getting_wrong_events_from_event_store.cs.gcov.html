@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.Tests/Cache/When_getting_wrong_events_from_event_store.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs.Tests/Cache</a> - When_getting_wrong_events_from_event_store.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System;
+<span class="lineNum">       2 </span>            : using System.Runtime.Caching;
+<span class="lineNum">       3 </span>            : using Cqrs.Cache;
+<span class="lineNum">       4 </span>            : using Cqrs.Authentication;
+<span class="lineNum">       5 </span>            : using Cqrs.Tests.Substitutes;
+<span class="lineNum">       6 </span>            : using NUnit.Framework;
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : namespace Cqrs.Tests.Cache
+<span class="lineNum">       9 </span>            : {
+<span class="lineNum">      10 </span>            :         [TestFixture]
+<span class="lineNum">      11 </span>            :         public class When_getting_earlier_than_expected_events_from_event_store
+<span class="lineNum">      12 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      13 </span>            :                 private CacheRepository&lt;ISingleSignOnToken&gt; _rep;
+<span class="lineNum">      14 </span>            :                 private TestAggregate _aggregate;
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            :                 [SetUp]
+<span class="lineNum">      17 </span><span class="lineNoCov">          0 :                 public void Setup()</span>
+<span class="lineNum">      18 </span>            :                 {
+<span class="lineNum">      19 </span>            :                         _rep = new CacheRepository&lt;ISingleSignOnToken&gt;(new TestAggregateRepository(), new TestEventStoreWithBugs());
+<span class="lineNum">      20 </span>            :                         _aggregate = _rep.Get&lt;TestAggregate&gt;(Guid.NewGuid());
+<span class="lineNum">      21 </span>            :                 }
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            :                 [Test]
+<span class="lineNum">      24 </span><span class="lineNoCov">          0 :                 public void Should_get_events_from_start()</span>
+<span class="lineNum">      25 </span>            :                 {
+<span class="lineNum">      26 </span>            :                         var aggregate =_rep.Get&lt;TestAggregate&gt;(_aggregate.Id);
+<span class="lineNum">      27 </span>            :                         Assert.That(aggregate.Version, Is.EqualTo(4));
+<span class="lineNum">      28 </span>            :                 }
+<span class="lineNum">      29 </span>            :         }
+<span class="lineNum">      30 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

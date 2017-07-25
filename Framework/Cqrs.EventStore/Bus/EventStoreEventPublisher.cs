@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using Cqrs.Bus;
 using Cqrs.Events;
@@ -7,14 +15,32 @@ using EventStore.ClientAPI;
 
 namespace Cqrs.EventStore.Bus
 {
+	/// <summary>
+	/// A <see cref="IEventPublisher{TAuthenticationToken}"/> that uses Greg Young's Event Store.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class EventStoreEventPublisher<TAuthenticationToken> : IEventPublisher<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The actions to execute per <see cref="Type"/>
+		/// </summary>
 		protected Dictionary<Type, List<Action<IMessage>>> Routes { get; private set; }
 
+		/// <summary>
+		/// The <see cref="IEventStoreConnection"/> used to read and write streams in the Greg Young Event Store.
+		/// </summary>
 		protected IEventStoreConnection EventStoreConnection { get; private set; }
 
+		/// <summary>
+		/// The store that hold stream position information.
+		/// </summary>
 		protected IStoreLastEventProcessed LastEventProcessedStore { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="EventStoreEventPublisher{TAuthenticationToken}"/>
+		/// </summary>
+		/// <param name="eventStoreConnectionHelper">The <see cref="IEventStoreConnection"/> used to read and write streams in the Greg Young Event Store.</param>
+		/// <param name="lastEventProcessedStore">The store that hold stream position information.</param>
 		public EventStoreEventPublisher(IEventStoreConnectionHelper eventStoreConnectionHelper, IStoreLastEventProcessed lastEventProcessedStore)
 		{
 			EventStoreConnection = eventStoreConnectionHelper.GetEventStoreConnection();
@@ -24,6 +50,9 @@ namespace Cqrs.EventStore.Bus
 
 		#region Implementation of IEventPublisher<TAuthenticationToken>
 
+		/// <summary>
+		/// Publishes the provided <paramref name="event"/> on the event bus.
+		/// </summary>
 		public void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
@@ -34,6 +63,9 @@ namespace Cqrs.EventStore.Bus
 				handler(@event);
 		}
 
+		/// <summary>
+		/// Publishes the provided <paramref name="events"/> on the event bus.
+		/// </summary>
 		public void Publish<TEvent>(IEnumerable<TEvent> events)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
@@ -43,6 +75,9 @@ namespace Cqrs.EventStore.Bus
 
 		#endregion
 
+		/// <summary>
+		/// Reads the position the store was last within the stream and subscribes requesting all events prior to that position aren't replayed.
+		/// </summary>
 		protected void InitialiseCatchUpSubscription()
 		{
 			Position position = GetLastEventProcessedLocation();

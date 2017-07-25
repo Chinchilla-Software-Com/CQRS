@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.EventStore/EventStoreConnectionHelper.cs</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">Cqrs.EventStore</a> - EventStoreConnectionHelper.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System.Collections.Generic;
+<span class="lineNum">       2 </span>            : using System.Linq;
+<span class="lineNum">       3 </span>            : using System.Net;
+<span class="lineNum">       4 </span>            : using System.Threading.Tasks;
+<span class="lineNum">       5 </span>            : using Cqrs.Configuration;
+<span class="lineNum">       6 </span>            : using EventStore.ClientAPI;
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : namespace Cqrs.EventStore
+<span class="lineNum">       9 </span>            : {
+<span class="lineNum">      10 </span>            :         public class EventStoreConnectionHelper&lt;TAuthenticationToken&gt; : IEventStoreConnectionHelper
+<span class="lineNum">      11 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      12 </span>            :                 protected IEventBuilder&lt;TAuthenticationToken&gt; EventBuilder { get; private set; }
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span><span class="lineNoCov">          0 :                 public EventStoreConnectionHelper(IEventBuilder&lt;TAuthenticationToken&gt; eventBuilder, IConfigurationManager configurationManager)</span>
+<span class="lineNum">      17 </span>            :                 {
+<span class="lineNum">      18 </span>            :                         EventBuilder = eventBuilder;
+<span class="lineNum">      19 </span>            :                         ConfigurationManager = configurationManager;
+<span class="lineNum">      20 </span>            :                 }
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span><span class="lineNoCov">          0 :                 public virtual IEventStoreConnection GetEventStoreConnection()</span>
+<span class="lineNum">      23 </span>            :                 {
+<span class="lineNum">      24 </span>            :                         ConnectionSettings settings = ConnectionSettings.Create();
+<span class="lineNum">      25 </span>            :                         IPEndPoint endPoint = GetEventStoreIpEndPoint();
+<span class="lineNum">      26 </span>            :                         IEventStoreConnection connection = EventStoreConnection.Create(settings, endPoint);
+<span class="lineNum">      27 </span>            :                         Task connecting = connection.ConnectAsync();
+<span class="lineNum">      28 </span>            :                         connecting.Wait();
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                         EventData connectionEvent = EventBuilder.CreateClientConnectedEvent(GetEventStoreClientName());
+<span class="lineNum">      31 </span>            :                         Task notify = connection.AppendToStreamAsync(GetEventStoreConnectionLogStreamName(), ExpectedVersion.Any, connectionEvent);
+<span class="lineNum">      32 </span>            :                         notify.Wait();
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                         return connection;
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 protected virtual string GetEventStoreClientName()
+<span class="lineNum">      38 </span>            :                 {
+<span class="lineNum">      39 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStoreClientName&quot;) ?? &quot;Cqrs Default Client&quot;;
+<span class="lineNum">      40 </span>            :                 }
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                 protected virtual string GetEventStoreConnectionLogStreamName()
+<span class="lineNum">      43 </span>            :                 {
+<span class="lineNum">      44 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStoreConnectionLogStreamName&quot;) ?? &quot;EventStore Connection Log Stream&quot;;
+<span class="lineNum">      45 </span>            :                 }
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :                 protected virtual IPEndPoint GetEventStoreIpEndPoint()
+<span class="lineNum">      48 </span>            :                 {
+<span class="lineNum">      49 </span>            :                         List&lt;byte&gt; eventStoreIp = (ConfigurationManager.GetSetting(&quot;Cqrs.EventStoreIp&quot;) ?? &quot;127.0.0.1&quot;).Split('.').Select(ipPart =&gt; (byte)int.Parse(ipPart)).ToList();
+<span class="lineNum">      50 </span>            :                         string eventStorePortValue = ConfigurationManager.GetSetting(&quot;Cqrs.EventStorePort&quot;);
+<span class="lineNum">      51 </span>            :                         int eventStorePort = 1113;
+<span class="lineNum">      52 </span>            :                         if (!string.IsNullOrWhiteSpace(eventStorePortValue))
+<span class="lineNum">      53 </span>            :                                 eventStorePort = int.Parse(eventStorePortValue);
+<span class="lineNum">      54 </span>            :                         return new IPEndPoint(new IPAddress(new[] { eventStoreIp[0], eventStoreIp[1], eventStoreIp[2], eventStoreIp[3] }), eventStorePort);
+<span class="lineNum">      55 </span>            :                 }
+<span class="lineNum">      56 </span>            :         }
+<span class="lineNum">      57 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

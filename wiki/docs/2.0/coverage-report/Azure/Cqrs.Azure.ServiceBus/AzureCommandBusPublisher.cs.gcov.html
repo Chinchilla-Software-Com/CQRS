@@ -1,0 +1,392 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.ServiceBus</a> - AzureCommandBusPublisher.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntryLo">54.5 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;cdmdotnet Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright cdmdotnet Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Diagnostics;
+<span class="lineNum">      12 </span>            : using System.Linq;
+<span class="lineNum">      13 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      14 </span>            : using Cqrs.Commands;
+<span class="lineNum">      15 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      16 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      17 </span>            : using Cqrs.Bus;
+<span class="lineNum">      18 </span>            : using Cqrs.Events;
+<span class="lineNum">      19 </span>            : using Cqrs.Infrastructure;
+<span class="lineNum">      20 </span>            : using Cqrs.Messages;
+<span class="lineNum">      21 </span>            : using Microsoft.ServiceBus.Messaging;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : namespace Cqrs.Azure.ServiceBus
+<span class="lineNum">      24 </span>            : {
+<span class="lineNum">      25 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      26 </span>            :         /// A &lt;see cref=&quot;ICommandPublisher{TAuthenticationToken}&quot;/&gt; that resolves handlers , executes the handler and then publishes the &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; on the public command bus.
+<span class="lineNum">      27 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      28 </span>            :         public class AzureCommandBusPublisher&lt;TAuthenticationToken&gt; : AzureCommandBus&lt;TAuthenticationToken&gt;, ISendAndWaitCommandSender&lt;TAuthenticationToken&gt;
+<span class="lineNum">      29 </span>            :         {
+<span class="lineNum">      30 </span><span class="lineNoCov">          0 :                 public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper, IBusHelper busHelper)</span>
+<span class="lineNum">      31 </span>            :                         : base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
+<span class="lineNum">      32 </span>            :                 {
+<span class="lineNum">      33 </span>            :                         TelemetryHelper = configurationManager.CreateTelemetryHelper(&quot;Cqrs.Azure.CommandBus.Publisher.UseApplicationInsightTelemetryHelper&quot;, correlationIdHelper);
+<span class="lineNum">      34 </span>            :                 }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 #region Implementation of ICommandSender&lt;TAuthenticationToken&gt;
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span><span class="lineNoCov">          0 :                 public virtual void Publish&lt;TCommand&gt;(TCommand command)</span>
+<span class="lineNum">      39 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">      40 </span>            :                 {
+<span class="lineNum">      41 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+<span class="lineNum">      42 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
+<span class="lineNum">      43 </span>            :                         string responseCode = &quot;200&quot;;
+<span class="lineNum">      44 </span>            :                         bool wasSuccessfull = false;
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Servicebus&quot; } };
+<span class="lineNum">      47 </span>            :                         string telemetryName = string.Format(&quot;{0}/{1}&quot;, command.GetType().FullName, command.Id);
+<span class="lineNum">      48 </span>            :                         var telemeteredCommand = command as ITelemeteredMessage;
+<span class="lineNum">      49 </span>            :                         if (telemeteredCommand != null)
+<span class="lineNum">      50 </span>            :                                 telemetryName = telemeteredCommand.TelemetryName;
+<span class="lineNum">      51 </span>            :                         telemetryName = string.Format(&quot;Command/{0}&quot;, telemetryName);
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            :                         try
+<span class="lineNum">      54 </span>            :                         {
+<span class="lineNum">      55 </span>            :                                 if (!AzureBusHelper.PrepareAndValidateCommand(command, &quot;Azure-ServiceBus&quot;))
+<span class="lineNum">      56 </span>            :                                         return;
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                                 try
+<span class="lineNum">      59 </span>            :                                 {
+<span class="lineNum">      60 </span>            :                                         var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
+<span class="lineNum">      61 </span>            :                                         {
+<span class="lineNum">      62 </span>            :                                                 CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
+<span class="lineNum">      63 </span>            :                                         };
+<span class="lineNum">      64 </span>            :                                         brokeredMessage.Properties.Add(&quot;Type&quot;, command.GetType().FullName);
+<span class="lineNum">      65 </span>            :                                         PrivateServiceBusPublisher.Send(brokeredMessage);
+<span class="lineNum">      66 </span>            :                                 }
+<span class="lineNum">      67 </span>            :                                 catch (QuotaExceededException exception)
+<span class="lineNum">      68 </span>            :                                 {
+<span class="lineNum">      69 </span>            :                                         responseCode = &quot;429&quot;;
+<span class="lineNum">      70 </span>            :                                         Logger.LogError(&quot;The size of the command being sent was too large.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Command&quot;, command } });
+<span class="lineNum">      71 </span>            :                                         throw;
+<span class="lineNum">      72 </span>            :                                 }
+<span class="lineNum">      73 </span>            :                                 catch (Exception exception)
+<span class="lineNum">      74 </span>            :                                 {
+<span class="lineNum">      75 </span>            :                                         responseCode = &quot;500&quot;;
+<span class="lineNum">      76 </span>            :                                         Logger.LogError(&quot;An issue occurred while trying to publish a command.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Command&quot;, command } });
+<span class="lineNum">      77 </span>            :                                         throw;
+<span class="lineNum">      78 </span>            :                                 }
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :                                 Logger.LogInfo(string.Format(&quot;A command was sent of type {0}.&quot;, command.GetType().FullName));
+<span class="lineNum">      81 </span>            :                                 wasSuccessfull = true;
+<span class="lineNum">      82 </span>            :                         }
+<span class="lineNum">      83 </span>            :                         finally
+<span class="lineNum">      84 </span>            :                         {
+<span class="lineNum">      85 </span>            :                                 mainStopWatch.Stop();
+<span class="lineNum">      86 </span>            :                                 TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/CommandBus&quot;, &quot;Command&quot;, telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">      87 </span>            :                         }
+<span class="lineNum">      88 </span>            :                 }
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :                 public virtual void Send&lt;TCommand&gt;(TCommand command)</span>
+<span class="lineNum">      91 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">      92 </span>            :                 {
+<span class="lineNum">      93 </span>            :                         Publish(command);
+<span class="lineNum">      94 </span>            :                 }
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                 public virtual void Publish&lt;TCommand&gt;(IEnumerable&lt;TCommand&gt; commands)</span>
+<span class="lineNum">      97 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">      98 </span>            :                 {
+<span class="lineNum">      99 </span>            :                         IList&lt;TCommand&gt; sourceCommands = commands.ToList();
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+<span class="lineNum">     102 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
+<span class="lineNum">     103 </span>            :                         string responseCode = &quot;200&quot;;
+<span class="lineNum">     104 </span>            :                         bool wasSuccessfull = false;
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Servicebus&quot; } };
+<span class="lineNum">     107 </span>            :                         string telemetryName = &quot;Commands&quot;;
+<span class="lineNum">     108 </span>            :                         string telemetryNames = string.Empty;
+<span class="lineNum">     109 </span>            :                         foreach (TCommand command in sourceCommands)
+<span class="lineNum">     110 </span>            :                         {
+<span class="lineNum">     111 </span>            :                                 string subTelemetryName = string.Format(&quot;{0}/{1}&quot;, command.GetType().FullName, command.Id);
+<span class="lineNum">     112 </span>            :                                 var telemeteredCommand = command as ITelemeteredMessage;
+<span class="lineNum">     113 </span>            :                                 if (telemeteredCommand != null)
+<span class="lineNum">     114 </span>            :                                         subTelemetryName = telemeteredCommand.TelemetryName;
+<span class="lineNum">     115 </span>            :                                 telemetryNames = string.Format(&quot;{0}{1},&quot;, telemetryNames, subTelemetryName);
+<span class="lineNum">     116 </span>            :                         }
+<span class="lineNum">     117 </span>            :                         if (telemetryNames.Length &gt; 0)
+<span class="lineNum">     118 </span>            :                                 telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
+<span class="lineNum">     119 </span>            :                         telemetryProperties.Add(&quot;Commands&quot;, telemetryNames);
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :                         try
+<span class="lineNum">     122 </span>            :                         {
+<span class="lineNum">     123 </span>            :                                 IList&lt;string&gt; sourceCommandMessages = new List&lt;string&gt;();
+<span class="lineNum">     124 </span>            :                                 IList&lt;BrokeredMessage&gt; brokeredMessages = new List&lt;BrokeredMessage&gt;(sourceCommands.Count);
+<span class="lineNum">     125 </span>            :                                 foreach (TCommand command in sourceCommands)
+<span class="lineNum">     126 </span>            :                                 {
+<span class="lineNum">     127 </span>            :                                         if (!AzureBusHelper.PrepareAndValidateCommand(command, &quot;Azure-ServiceBus&quot;))
+<span class="lineNum">     128 </span>            :                                                 continue;
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :                                         var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
+<span class="lineNum">     131 </span>            :                                         {
+<span class="lineNum">     132 </span>            :                                                 CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
+<span class="lineNum">     133 </span>            :                                         };
+<span class="lineNum">     134 </span>            :                                         brokeredMessage.Properties.Add(&quot;Type&quot;, command.GetType().FullName);
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :                                         brokeredMessages.Add(brokeredMessage);
+<span class="lineNum">     137 </span>            :                                         sourceCommandMessages.Add(string.Format(&quot;A command was sent of type {0}.&quot;, command.GetType().FullName));
+<span class="lineNum">     138 </span>            :                                 }
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span>            :                                 try
+<span class="lineNum">     141 </span>            :                                 {
+<span class="lineNum">     142 </span>            :                                         PrivateServiceBusPublisher.SendBatch(brokeredMessages);
+<span class="lineNum">     143 </span>            :                                 }
+<span class="lineNum">     144 </span>            :                                 catch (QuotaExceededException exception)
+<span class="lineNum">     145 </span>            :                                 {
+<span class="lineNum">     146 </span>            :                                         responseCode = &quot;429&quot;;
+<span class="lineNum">     147 </span>            :                                         Logger.LogError(&quot;The size of the command being sent was too large.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Commands&quot;, sourceCommands } });
+<span class="lineNum">     148 </span>            :                                         throw;
+<span class="lineNum">     149 </span>            :                                 }
+<span class="lineNum">     150 </span>            :                                 catch (Exception exception)
+<span class="lineNum">     151 </span>            :                                 {
+<span class="lineNum">     152 </span>            :                                         responseCode = &quot;500&quot;;
+<span class="lineNum">     153 </span>            :                                         Logger.LogError(&quot;An issue occurred while trying to publish a command.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Commands&quot;, sourceCommands } });
+<span class="lineNum">     154 </span>            :                                         throw;
+<span class="lineNum">     155 </span>            :                                 }
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            :                                 foreach (string message in sourceCommandMessages)
+<span class="lineNum">     158 </span>            :                                         Logger.LogInfo(message);
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span>            :                                 wasSuccessfull = true;
+<span class="lineNum">     161 </span>            :                         }
+<span class="lineNum">     162 </span>            :                         finally
+<span class="lineNum">     163 </span>            :                         {
+<span class="lineNum">     164 </span>            :                                 mainStopWatch.Stop();
+<span class="lineNum">     165 </span>            :                                 TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/CommandBus&quot;, &quot;Command&quot;, telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     166 </span>            :                         }
+<span class="lineNum">     167 </span>            :                 }
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :                 public virtual void Send&lt;TCommand&gt;(IEnumerable&lt;TCommand&gt; commands)</span>
+<span class="lineNum">     170 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     171 </span>            :                 {
+<span class="lineNum">     172 </span>            :                         Publish(commands);
+<span class="lineNum">     173 </span>            :                 }
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     176 </span>            :                 /// Sends the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt;
+<span class="lineNum">     177 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     178 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     179 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     180 </span><span class="lineCov">          1 :                 public virtual TEvent SendAndWait&lt;TCommand, TEvent&gt;(TCommand command, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     181 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     182 </span>            :                 {
+<span class="lineNum">     183 </span>            :                         return SendAndWait&lt;TCommand, TEvent&gt;(command, -1, eventReceiver);
+<span class="lineNum">     184 </span>            :                 }
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     187 </span>            :                 /// Sends the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     188 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     189 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     190 </span>            :                 /// &lt;param name=&quot;millisecondsTimeout&quot;&gt;The number of milliseconds to wait, or &lt;see cref=&quot;F:System.Threading.Timeout.Infinite&quot;/&gt; (-1) to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     191 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     192 </span><span class="lineCov">          1 :                 public virtual TEvent SendAndWait&lt;TCommand, TEvent&gt;(TCommand command, int millisecondsTimeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     193 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     194 </span>            :                 {
+<span class="lineNum">     195 </span>            :                         return SendAndWait(command, events =&gt; (TEvent)events.SingleOrDefault(@event =&gt; @events is TEvent), millisecondsTimeout, eventReceiver);
+<span class="lineNum">     196 </span>            :                 }
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     199 </span>            :                 /// Sends the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     200 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     201 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     202 </span>            :                 /// &lt;param name=&quot;timeout&quot;&gt;A &lt;see cref=&quot;T:System.TimeSpan&quot;/&gt; that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     203 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     204 </span><span class="lineCov">          1 :                 public virtual TEvent SendAndWait&lt;TCommand, TEvent&gt;(TCommand command, TimeSpan timeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     205 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     206 </span>            :                 {
+<span class="lineNum">     207 </span>            :                         long num = (long)timeout.TotalMilliseconds;
+<span class="lineNum">     208 </span>            :                         if (num &lt; -1L || num &gt; int.MaxValue)
+<span class="lineNum">     209 </span>            :                                 throw new ArgumentOutOfRangeException(&quot;timeout&quot;, timeout, &quot;SpinWait_SpinUntil_TimeoutWrong&quot;);
+<span class="lineNum">     210 </span>            :                         return SendAndWait&lt;TCommand, TEvent&gt;(command, (int)timeout.TotalMilliseconds, eventReceiver);
+<span class="lineNum">     211 </span>            :                 }
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     214 </span>            :                 /// Sends the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits until the specified condition is satisfied an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt;
+<span class="lineNum">     215 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     216 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     217 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
+<span class="lineNum">     218 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     219 </span><span class="lineCov">          1 :                 public virtual TEvent SendAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     220 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     221 </span>            :                 {
+<span class="lineNum">     222 </span>            :                         return SendAndWait(command, condition, -1, eventReceiver);
+<span class="lineNum">     223 </span>            :                 }
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     226 </span>            :                 /// Sends the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     227 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     228 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     229 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
+<span class="lineNum">     230 </span>            :                 /// &lt;param name=&quot;millisecondsTimeout&quot;&gt;The number of milliseconds to wait, or &lt;see cref=&quot;F:System.Threading.Timeout.Infinite&quot;/&gt; (-1) to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     231 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     232 </span><span class="lineCov">          1 :                 public virtual TEvent SendAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, int millisecondsTimeout,</span>
+<span class="lineNum">     233 </span>            :                         IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null) where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     234 </span>            :                 {
+<span class="lineNum">     235 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+<span class="lineNum">     236 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
+<span class="lineNum">     237 </span>            :                         string responseCode = &quot;200&quot;;
+<span class="lineNum">     238 </span>            :                         bool wasSuccessfull = false;
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Servicebus&quot; } };
+<span class="lineNum">     241 </span>            :                         string telemetryName = string.Format(&quot;{0}/{1}&quot;, command.GetType().FullName, command.Id);
+<span class="lineNum">     242 </span>            :                         var telemeteredCommand = command as ITelemeteredMessage;
+<span class="lineNum">     243 </span>            :                         if (telemeteredCommand != null)
+<span class="lineNum">     244 </span>            :                                 telemetryName = telemeteredCommand.TelemetryName;
+<span class="lineNum">     245 </span>            :                         telemetryName = string.Format(&quot;Command/{0}&quot;, telemetryName);
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span>            :                         TEvent result;
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            :                         try
+<span class="lineNum">     250 </span>            :                         {
+<span class="lineNum">     251 </span>            :                                 if (eventReceiver != null)
+<span class="lineNum">     252 </span>            :                                         throw new NotSupportedException(&quot;Specifying a different event receiver is not yet supported.&quot;);
+<span class="lineNum">     253 </span>            :                                 if (!AzureBusHelper.PrepareAndValidateCommand(command, &quot;Azure-ServiceBus&quot;))
+<span class="lineNum">     254 </span>            :                                         return (TEvent)(object)null;
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span>            :                                 result = (TEvent)(object)null;
+<span class="lineNum">     257 </span>            :                                 EventWaits.Add(command.CorrelationId, new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;());
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span>            :                                 try
+<span class="lineNum">     260 </span>            :                                 {
+<span class="lineNum">     261 </span>            :                                         var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
+<span class="lineNum">     262 </span>            :                                         {
+<span class="lineNum">     263 </span>            :                                                 CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
+<span class="lineNum">     264 </span>            :                                         };
+<span class="lineNum">     265 </span>            :                                         brokeredMessage.Properties.Add(&quot;Type&quot;, command.GetType().FullName);
+<span class="lineNum">     266 </span>            :                                         PrivateServiceBusPublisher.Send(brokeredMessage);
+<span class="lineNum">     267 </span>            :                                 }
+<span class="lineNum">     268 </span>            :                                 catch (QuotaExceededException exception)
+<span class="lineNum">     269 </span>            :                                 {
+<span class="lineNum">     270 </span>            :                                         responseCode = &quot;429&quot;;
+<span class="lineNum">     271 </span>            :                                         Logger.LogError(&quot;The size of the command being sent was too large.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Command&quot;, command } });
+<span class="lineNum">     272 </span>            :                                         throw;
+<span class="lineNum">     273 </span>            :                                 }
+<span class="lineNum">     274 </span>            :                                 catch (Exception exception)
+<span class="lineNum">     275 </span>            :                                 {
+<span class="lineNum">     276 </span>            :                                         responseCode = &quot;500&quot;;
+<span class="lineNum">     277 </span>            :                                         Logger.LogError(&quot;An issue occurred while trying to publish a command.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Command&quot;, command } });
+<span class="lineNum">     278 </span>            :                                         throw;
+<span class="lineNum">     279 </span>            :                                 }
+<span class="lineNum">     280 </span>            :                                 Logger.LogInfo(string.Format(&quot;A command was sent of type {0}.&quot;, command.GetType().FullName));
+<span class="lineNum">     281 </span>            :                                 wasSuccessfull = true;
+<span class="lineNum">     282 </span>            :                         }
+<span class="lineNum">     283 </span>            :                         finally
+<span class="lineNum">     284 </span>            :                         {
+<span class="lineNum">     285 </span>            :                                 mainStopWatch.Stop();
+<span class="lineNum">     286 </span>            :                                 TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/CommandBus&quot;, &quot;Command&quot;, telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     287 </span>            :                         }
+<span class="lineNum">     288 </span>            : 
+<span class="lineNum">     289 </span>            :                         SpinWait.SpinUntil(() =&gt;
+<span class="lineNum">     290 </span>            :                         {
+<span class="lineNum">     291 </span>            :                                 IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = EventWaits[command.CorrelationId];
+<span class="lineNum">     292 </span>            : 
+<span class="lineNum">     293 </span>            :                                 result = condition(events);
+<span class="lineNum">     294 </span>            : 
+<span class="lineNum">     295 </span>            :                                 return result != null;
+<span class="lineNum">     296 </span>            :                         }, millisecondsTimeout, sleepInMilliseconds: 1000);
+<span class="lineNum">     297 </span>            : 
+<span class="lineNum">     298 </span>            :                         TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/CommandBus&quot;, &quot;Command/AndWait&quot;, string.Format(&quot;Command/AndWait{0}&quot;, telemetryName.Substring(7)), null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     299 </span>            :                         return result;
+<span class="lineNum">     300 </span>            :                 }
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     303 </span>            :                 /// Sends the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     304 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     305 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     306 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
+<span class="lineNum">     307 </span>            :                 /// &lt;param name=&quot;timeout&quot;&gt;A &lt;see cref=&quot;T:System.TimeSpan&quot;/&gt; that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     308 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     309 </span><span class="lineCov">          1 :                 public virtual TEvent SendAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, TimeSpan timeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     310 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     311 </span>            :                 {
+<span class="lineNum">     312 </span>            :                         long num = (long)timeout.TotalMilliseconds;
+<span class="lineNum">     313 </span>            :                         if (num &lt; -1L || num &gt; int.MaxValue)
+<span class="lineNum">     314 </span>            :                                 throw new ArgumentOutOfRangeException(&quot;timeout&quot;, timeout, &quot;SpinWait_SpinUntil_TimeoutWrong&quot;);
+<span class="lineNum">     315 </span>            :                         return SendAndWait(command, condition, (int)timeout.TotalMilliseconds, eventReceiver);
+<span class="lineNum">     316 </span>            :                 }
+<span class="lineNum">     317 </span>            : 
+<span class="lineNum">     318 </span>            :                 #endregion
+<span class="lineNum">     319 </span>            :         }
+<span class="lineNum">     320 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

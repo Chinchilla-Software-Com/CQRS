@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Ninject/Cqrs.Ninject.Akka/Configuration/AkkaModule.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Ninject/Cqrs.Ninject.Akka/Configuration</a> - AkkaModule.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;cdmdotnet Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright cdmdotnet Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Linq;
+<span class="lineNum">      11 </span>            : using System.Reflection;
+<span class="lineNum">      12 </span>            : using Cqrs.Akka.Commands;
+<span class="lineNum">      13 </span>            : using Cqrs.Akka.Domain;
+<span class="lineNum">      14 </span>            : using Cqrs.Akka.Events;
+<span class="lineNum">      15 </span>            : using Cqrs.Bus;
+<span class="lineNum">      16 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      17 </span>            : using Ninject.Modules;
+<span class="lineNum">      18 </span>            : using Ninject.Parameters;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : namespace Cqrs.Ninject.Akka.Configuration
+<span class="lineNum">      21 </span>            : {
+<span class="lineNum">      22 </span>            :         public class AkkaModule&lt;TAuthenticationToken&gt; : NinjectModule
+<span class="lineNum">      23 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      24 </span>            :                 #region Overrides of NinjectModule
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// Loads the module into the kernel.
+<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      29 </span><span class="lineCov">          1 :                 public override void Load()</span>
+<span class="lineNum">      30 </span>            :                 {
+<span class="lineNum">      31 </span>            :                         Bind&lt;IAkkaRepository&lt;TAuthenticationToken&gt;&gt;().To&lt;AkkaRepository&lt;TAuthenticationToken&gt;&gt;().InSingletonScope();
+<span class="lineNum">      32 </span>            :                         Bind&lt;IAkkaEventPublisher&lt;TAuthenticationToken&gt;&gt;().To&lt;AkkaEventBus&lt;TAuthenticationToken&gt;&gt;().InSingletonScope();
+<span class="lineNum">      33 </span>            :                         Bind&lt;IAkkaEventPublisherProxy&lt;TAuthenticationToken&gt;&gt;().To&lt;AkkaEventBusProxy&lt;TAuthenticationToken&gt;&gt;().InSingletonScope();
+<span class="lineNum">      34 </span>            :                         Bind&lt;IAkkaCommandSender&lt;TAuthenticationToken&gt;&gt;().To&lt;AkkaCommandBus&lt;TAuthenticationToken&gt;&gt;().InSingletonScope();
+<span class="lineNum">      35 </span>            :                         Bind&lt;IAkkaCommandSenderProxy&lt;TAuthenticationToken&gt;&gt;().To&lt;AkkaCommandBusProxy&lt;TAuthenticationToken&gt;&gt;().InSingletonScope();
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                         BusRegistrar.GetEventHandlerRegistrar = (messageType, handlerDelegateTargetedType) =&gt;
+<span class="lineNum">      38 </span>            :                         {
+<span class="lineNum">      39 </span>            :                                 bool isAnActor = messageType != null &amp;&amp; messageType.GetNestedTypes().Any(type =&gt; type.Name == &quot;Actor&quot;);
+<span class="lineNum">      40 </span>            :                                 IEventHandlerRegistrar eventHandlerRegistrar = null;
+<span class="lineNum">      41 </span>            :                                 if (isAnActor)
+<span class="lineNum">      42 </span>            :                                         eventHandlerRegistrar = Resolve&lt;IAkkaEventPublisher&lt;TAuthenticationToken&gt;&gt;() as IEventHandlerRegistrar;
+<span class="lineNum">      43 </span>            :                                 return eventHandlerRegistrar ?? Resolve&lt;IEventHandlerRegistrar&gt;();
+<span class="lineNum">      44 </span>            :                         };
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                         BusRegistrar.GetCommandHandlerRegistrar = (messageType, handlerDelegateTargetedType) =&gt;
+<span class="lineNum">      47 </span>            :                         {
+<span class="lineNum">      48 </span>            :                                 bool isAnActor = handlerDelegateTargetedType != null &amp;&amp; handlerDelegateTargetedType.GetProperty(&quot;AggregateResolver&quot;, BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.NonPublic | BindingFlags.Public) != null;
+<span class="lineNum">      49 </span>            :                                 ICommandHandlerRegistrar commandHandlerRegistrar = null;
+<span class="lineNum">      50 </span>            :                                 if (isAnActor)
+<span class="lineNum">      51 </span>            :                                         commandHandlerRegistrar = Resolve&lt;IAkkaCommandSender&lt;TAuthenticationToken&gt;&gt;() as ICommandHandlerRegistrar;
+<span class="lineNum">      52 </span>            :                                 return commandHandlerRegistrar ?? Resolve&lt;ICommandHandlerRegistrar&gt;();
+<span class="lineNum">      53 </span>            :                         };
+<span class="lineNum">      54 </span>            :                 }
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 #endregion
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                 protected T Resolve&lt;T&gt;()
+<span class="lineNum">      59 </span>            :                 {
+<span class="lineNum">      60 </span>            :                         return (T)Resolve(typeof(T));
+<span class="lineNum">      61 </span>            :                 }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                 protected object Resolve(Type serviceType)
+<span class="lineNum">      64 </span>            :                 {
+<span class="lineNum">      65 </span>            :                         return Kernel.Resolve(Kernel.CreateRequest(serviceType, null, new Parameter[0], true, true)).SingleOrDefault();
+<span class="lineNum">      66 </span>            :                 }
+<span class="lineNum">      67 </span>            :         }
+<span class="lineNum">      68 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

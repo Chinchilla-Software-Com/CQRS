@@ -27,6 +27,7 @@ namespace Cqrs.MongoDB.Events
 	/// <summary>
 	/// A MongoDB based <see cref="EventStore{TAuthenticationToken}"/>.
 	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class MongoDbEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken> 
 	{
 		protected IMongoCollection<MongoDbEventData> MongoCollection { get; private set; }

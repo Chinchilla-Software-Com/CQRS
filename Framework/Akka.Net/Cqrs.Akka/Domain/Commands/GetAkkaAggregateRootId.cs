@@ -5,6 +5,7 @@
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
+
 namespace Cqrs.Akka.Domain.Commands
 {
 	public class GetAkkaAggregateRootId

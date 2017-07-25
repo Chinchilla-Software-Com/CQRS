@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Akka.Net/Cqrs.Akka.Tests.Unit/Sagas/ConversationReportProcessManager.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Akka.Net/Cqrs.Akka.Tests.Unit/Sagas</a> - ConversationReportProcessManager.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntryLo">6.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using Akka.Actor;
+<span class="lineNum">      11 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      12 </span>            : using Cqrs.Akka.Domain;
+<span class="lineNum">      13 </span>            : using Cqrs.Akka.Tests.Unit.Commands;
+<span class="lineNum">      14 </span>            : using Cqrs.Akka.Tests.Unit.Events;
+<span class="lineNum">      15 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      16 </span>            : using Cqrs.Commands;
+<span class="lineNum">      17 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      18 </span>            : using Cqrs.Domain;
+<span class="lineNum">      19 </span>            : using Cqrs.Events;
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : namespace Cqrs.Akka.Tests.Unit.Sagas
+<span class="lineNum">      22 </span>            : {
+<span class="lineNum">      23 </span>            :         public class ConversationReportProcessManagerEventHandlers
+<span class="lineNum">      24 </span>            :                 : IEventHandler&lt;Guid, HelloWorldSaid&gt;
+<span class="lineNum">      25 </span>            :                 , IEventHandler&lt;Guid, HelloWorldRepliedTo&gt;
+<span class="lineNum">      26 </span>            :                 , IEventHandler&lt;Guid, ConversationEnded&gt;
+<span class="lineNum">      27 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      28 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      29 </span>            :                 /// Instantiates the &lt;see cref=&quot;ConversationReportProcessManagerEventHandlers&quot;/&gt; class registering any &lt;see cref=&quot;ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})&quot;/&gt; required.
+<span class="lineNum">      30 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      31 </span><span class="lineCov">          1 :                 public ConversationReportProcessManagerEventHandlers(IAkkaSagaResolver sagaResolver)</span>
+<span class="lineNum">      32 </span>            :                 {
+<span class="lineNum">      33 </span>            :                         SagaResolver = sagaResolver;
+<span class="lineNum">      34 </span>            :                 }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 protected IAkkaSagaResolver SagaResolver { get; private set; }
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 #region Implementation of IMessageHandler&lt;in HelloWorldRepliedTo&gt;
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 :                 protected virtual void HandleEvent(IEvent&lt;Guid&gt; message)</span>
+<span class="lineNum">      41 </span>            :                 {
+<span class="lineNum">      42 </span>            :                         // Resolve and locate the instance of the Saga to pass the message to
+<span class="lineNum">      43 </span>            :                         IActorRef item = SagaResolver.ResolveActor&lt;ConversationReportProcessManager, Guid&gt;(message.Id);
+<span class="lineNum">      44 </span>            :                         // Pass the message to it (and wait?)
+<span class="lineNum">      45 </span>            :                         bool result = item.Ask&lt;bool&gt;(message).Result;
+<span class="lineNum">      46 </span>            :                         // item.Tell(message);
+<span class="lineNum">      47 </span>            :                 }
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :                 public void Handle(HelloWorldRepliedTo message)</span>
+<span class="lineNum">      50 </span>            :                 {
+<span class="lineNum">      51 </span>            :                         HandleEvent(message);
+<span class="lineNum">      52 </span>            :                 }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                 #endregion
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 #region Implementation of IMessageHandler&lt;in HelloWorldSaid&gt;
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :                 public void Handle(HelloWorldSaid message)</span>
+<span class="lineNum">      59 </span>            :                 {
+<span class="lineNum">      60 </span>            :                         HandleEvent(message);
+<span class="lineNum">      61 </span>            :                 }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                 #endregion
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                 #region Implementation of IMessageHandler&lt;in ConversationEnded&gt;
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :                 public void Handle(ConversationEnded message)</span>
+<span class="lineNum">      68 </span>            :                 {
+<span class="lineNum">      69 </span>            :                         HandleEvent(message);
+<span class="lineNum">      70 </span>            :                 }
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            :                 #endregion
+<span class="lineNum">      73 </span>            :         }
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :         public class ConversationReportProcessManager : AkkaSaga&lt;Guid&gt;
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      77 </span>            :                 public Guid Rsn
+<span class="lineNum">      78 </span>            :                 {
+<span class="lineNum">      79 </span>            :                         get { return Id; }
+<span class="lineNum">      80 </span>            :                         private set { Id = value; }
+<span class="lineNum">      81 </span>            :                 }
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :                 public bool IsLogicallyDeleted {get; set;}
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                 protected IDependencyResolver DependencyResolver { get; private set; }
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :                 private bool HelloWorldWasSaid { get; set; }
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :                 private bool HelloWorldWasRepliedTo { get; set; }
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            :                 private bool ConversationWasEnded { get; set; }
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            : // ReSharper disable UnusedMember.Local
+<span class="lineNum">      94 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      95 </span>            :                 /// A constructor for the &lt;see cref=&quot;Cqrs.Domain.Factories.IAggregateFactory&quot;/&gt;
+<span class="lineNum">      96 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      97 </span>            :                 private ConversationReportProcessManager()
+<span class="lineNum">      98 </span>            :                         : base(null, null, null, null, null, null)
+<span class="lineNum">      99 </span>            :                 {
+<span class="lineNum">     100 </span>            :                         Receive&lt;HelloWorldSaid&gt;(@event =&gt; Execute(Handle, @event));
+<span class="lineNum">     101 </span>            :                         Receive&lt;HelloWorldRepliedTo&gt;(@event =&gt; Execute(Handle, @event));
+<span class="lineNum">     102 </span>            :                         Receive&lt;ConversationEnded&gt;(@event =&gt; Execute(Handle, @event));
+<span class="lineNum">     103 </span>            :                 }
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     106 </span>            :                 /// A constructor for the &lt;see cref=&quot;Cqrs.Domain.Factories.IAggregateFactory&quot;/&gt;
+<span class="lineNum">     107 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     108 </span>            :                 private ConversationReportProcessManager(IDependencyResolver dependencyResolver, ILogger logger)
+<span class="lineNum">     109 </span>            :                         : this()
+<span class="lineNum">     110 </span>            :                 {
+<span class="lineNum">     111 </span>            :                         DependencyResolver = dependencyResolver;
+<span class="lineNum">     112 </span>            :                         Logger = logger;
+<span class="lineNum">     113 </span>            :                         CommandPublisher = DependencyResolver.Resolve&lt;ICommandPublisher&lt;Guid&gt;&gt;();
+<span class="lineNum">     114 </span>            :                         UnitOfWork = DependencyResolver.Resolve&lt;ISagaUnitOfWork&lt;Guid&gt;&gt;();
+<span class="lineNum">     115 </span>            :                         Repository = DependencyResolver.Resolve&lt;IAkkaSagaRepository&lt;Guid&gt;&gt;();
+<span class="lineNum">     116 </span>            :                         CorrelationIdHelper = DependencyResolver.Resolve&lt;ICorrelationIdHelper&gt;();
+<span class="lineNum">     117 </span>            :                         AuthenticationTokenHelper = DependencyResolver.Resolve&lt;IAuthenticationTokenHelper&lt;Guid&gt;&gt;();
+<span class="lineNum">     118 </span>            :                 }
+<span class="lineNum">     119 </span>            : // ReSharper restore UnusedMember.Local
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :                 public ConversationReportProcessManager(IDependencyResolver dependencyResolver, ILogger logger, Guid rsn)</span>
+<span class="lineNum">     122 </span>            :                         : this(dependencyResolver, logger)
+<span class="lineNum">     123 </span>            :                 {
+<span class="lineNum">     124 </span>            :                         Rsn = rsn;
+<span class="lineNum">     125 </span>            :                 }
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :                 public virtual void Handle(HelloWorldSaid @event)</span>
+<span class="lineNum">     128 </span>            :                 {
+<span class="lineNum">     129 </span>            :                         ApplyChange(@event);
+<span class="lineNum">     130 </span>            :                         GenerateCommand();
+<span class="lineNum">     131 </span>            :                 }
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 public virtual void Handle(HelloWorldRepliedTo @event)</span>
+<span class="lineNum">     134 </span>            :                 {
+<span class="lineNum">     135 </span>            :                         ApplyChange(@event);
+<span class="lineNum">     136 </span>            :                         GenerateCommand();
+<span class="lineNum">     137 </span>            :                 }
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span><span class="lineNoCov">          0 :                 public virtual void Handle(ConversationEnded @event)</span>
+<span class="lineNum">     140 </span>            :                 {
+<span class="lineNum">     141 </span>            :                         ApplyChange(@event);
+<span class="lineNum">     142 </span>            :                         GenerateCommand();
+<span class="lineNum">     143 </span>            :                 }
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :                 protected virtual void GenerateCommand()</span>
+<span class="lineNum">     146 </span>            :                 {
+<span class="lineNum">     147 </span>            :                         if (HelloWorldWasSaid &amp;&amp; HelloWorldWasRepliedTo &amp;&amp; ConversationWasEnded)
+<span class="lineNum">     148 </span>            :                         {
+<span class="lineNum">     149 </span>            :                                 CommandPublisher.Publish
+<span class="lineNum">     150 </span>            :                                 (
+<span class="lineNum">     151 </span>            :                                         new UpdateCompletedConversationReportCommand()
+<span class="lineNum">     152 </span>            :                                 );
+<span class="lineNum">     153 </span>            :                         }
+<span class="lineNum">     154 </span>            :                 }
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :                 public virtual void Apply(HelloWorldSaid @event)</span>
+<span class="lineNum">     157 </span>            :                 {
+<span class="lineNum">     158 </span>            :                         HelloWorldWasSaid = true;
+<span class="lineNum">     159 </span>            :                 }
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :                 public virtual void Apply(HelloWorldRepliedTo @event)</span>
+<span class="lineNum">     162 </span>            :                 {
+<span class="lineNum">     163 </span>            :                         HelloWorldWasRepliedTo = true;
+<span class="lineNum">     164 </span>            :                 }
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :                 public virtual void Apply(ConversationEnded @event)</span>
+<span class="lineNum">     167 </span>            :                 {
+<span class="lineNum">     168 </span>            :                         ConversationWasEnded = true;
+<span class="lineNum">     169 </span>            :                 }
+<span class="lineNum">     170 </span>            :         }
+<span class="lineNum">     171 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

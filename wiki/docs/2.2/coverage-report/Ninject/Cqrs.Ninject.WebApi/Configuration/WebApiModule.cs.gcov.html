@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Ninject/Cqrs.Ninject.WebApi/Configuration/WebApiModule.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Ninject/Cqrs.Ninject.WebApi/Configuration</a> - WebApiModule.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Web;
+<span class="lineNum">      11 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      12 </span>            : using Cqrs.WebApi.SignalR.Hubs;
+<span class="lineNum">      13 </span>            : using Ninject;
+<span class="lineNum">      14 </span>            : using Ninject.Modules;
+<span class="lineNum">      15 </span>            : using Ninject.Web.Common;
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : namespace Cqrs.Ninject.WebApi.Configuration
+<span class="lineNum">      18 </span>            : {
+<span class="lineNum">      19 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      20 </span>            :         /// A &lt;see cref=&quot;INinjectModule&quot;/&gt; that sets up default WebApi.
+<span class="lineNum">      21 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      22 </span>            :         public class WebApiModule : NinjectModule
+<span class="lineNum">      23 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      24 </span>            :                 #region Overrides of NinjectModule
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// Loads the module into the kernel.
+<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      29 </span><span class="lineCov">          1 :                 public override void Load()</span>
+<span class="lineNum">      30 </span>            :                 {
+<span class="lineNum">      31 </span>            :                         Bind&lt;IConfigurationManager&gt;()
+<span class="lineNum">      32 </span>            :                                 .To&lt;ConfigurationManager&gt;()
+<span class="lineNum">      33 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            :                         RegisterWebApi();
+<span class="lineNum">      36 </span>            :                 }
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 #endregion
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      41 </span>            :                 /// Register the some WebAPI and SignalR requirements
+<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      43 </span><span class="lineCov">          1 :                 protected virtual void RegisterWebApi()</span>
+<span class="lineNum">      44 </span>            :                 {
+<span class="lineNum">      45 </span>            :                         Bind&lt;Func&lt;IKernel&gt;&gt;().ToMethod(ctx =&gt; () =&gt; new Bootstrapper().Kernel);
+<span class="lineNum">      46 </span>            :                         Bind&lt;IHttpModule&gt;().To&lt;HttpApplicationInitializationHttpModule&gt;();
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                         Bind&lt;INotificationHub&gt;()
+<span class="lineNum">      49 </span>            :                                 .To&lt;NotificationHub&gt;()
+<span class="lineNum">      50 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      51 </span>            :                 }
+<span class="lineNum">      52 </span>            :         }
+<span class="lineNum">      53 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.Tests.Extensions/TestHelpers/Specification.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs.Tests.Extensions/TestHelpers</a> - Specification.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System;
+<span class="lineNum">       2 </span>            : using System.Collections.Generic;
+<span class="lineNum">       3 </span>            : using System.Linq;
+<span class="lineNum">       4 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">       5 </span>            : using cdmdotnet.Logging.Configuration;
+<span class="lineNum">       6 </span>            : using cdmdotnet.StateManagement.Threaded;
+<span class="lineNum">       7 </span>            : using Cqrs.Commands;
+<span class="lineNum">       8 </span>            : using Cqrs.Domain;
+<span class="lineNum">       9 </span>            : using Cqrs.Domain.Factories;
+<span class="lineNum">      10 </span>            : using Cqrs.Events;
+<span class="lineNum">      11 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      12 </span>            : using Cqrs.Snapshots;
+<span class="lineNum">      13 </span>            : using NUnit.Framework;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : namespace Cqrs.Tests.Extensions.TestHelpers
+<span class="lineNum">      16 </span>            : {
+<span class="lineNum">      17 </span>            :         [TestFixture]
+<span class="lineNum">      18 </span>            :         public abstract class Specification&lt;TAggregate, THandler, TCommand&gt;
+<span class="lineNum">      19 </span>            :                 where TAggregate : AggregateRoot&lt;ISingleSignOnToken&gt;
+<span class="lineNum">      20 </span>            :                 where THandler : class, ICommandHandler&lt;ISingleSignOnToken, TCommand&gt;
+<span class="lineNum">      21 </span>            :                 where TCommand : ICommand&lt;ISingleSignOnToken&gt;
+<span class="lineNum">      22 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            :                 protected TAggregate Aggregate { get; set; }
+<span class="lineNum">      25 </span>            :                 protected IUnitOfWork&lt;ISingleSignOnToken&gt; UnitOfWork { get; set; }
+<span class="lineNum">      26 </span>            :                 protected abstract IEnumerable&lt;IEvent&lt;ISingleSignOnToken&gt;&gt; Given();
+<span class="lineNum">      27 </span>            :                 protected abstract TCommand When();
+<span class="lineNum">      28 </span>            :                 protected abstract THandler BuildHandler();
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 protected Snapshot Snapshot { get; set; }
+<span class="lineNum">      31 </span>            :                 protected IList&lt;IEvent&lt;ISingleSignOnToken&gt;&gt; EventDescriptors { get; set; }
+<span class="lineNum">      32 </span>            :                 protected IList&lt;IEvent&lt;ISingleSignOnToken&gt;&gt; PublishedEvents { get; set; }
+<span class="lineNum">      33 </span>            :                 
+<span class="lineNum">      34 </span>            :                 [SetUp]
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 :                 public void Run()</span>
+<span class="lineNum">      36 </span>            :                 {
+<span class="lineNum">      37 </span>            :                         var eventstorage = new SpecEventStorage(Given().ToList());
+<span class="lineNum">      38 </span>            :                         var snapshotstorage = new SpecSnapShotStorage(Snapshot);
+<span class="lineNum">      39 </span>            :                         var eventpublisher = new SpecEventPublisher();
+<span class="lineNum">      40 </span>            :                         var aggregateFactory = new AggregateFactory(null, new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ThreadedContextItemCollectionFactory())));
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                         var snapshotStrategy = new DefaultSnapshotStrategy&lt;ISingleSignOnToken&gt;();
+<span class="lineNum">      43 </span>            :                         var repository = new SnapshotRepository&lt;ISingleSignOnToken&gt;(snapshotstorage, snapshotStrategy, new Repository&lt;ISingleSignOnToken&gt;(aggregateFactory, eventstorage, eventpublisher, new NullCorrelationIdHelper()), eventstorage, aggregateFactory);
+<span class="lineNum">      44 </span>            :                         UnitOfWork = new UnitOfWork&lt;ISingleSignOnToken&gt;(repository);
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                         Aggregate = UnitOfWork.Get&lt;TAggregate&gt;(Guid.Empty);
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                         var handler = BuildHandler();
+<span class="lineNum">      49 </span>            :                         handler.Handle(When());
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                         Snapshot = snapshotstorage.Snapshot;
+<span class="lineNum">      52 </span>            :                         PublishedEvents = eventpublisher.PublishedEvents;
+<span class="lineNum">      53 </span>            :                         EventDescriptors = eventstorage.Events;
+<span class="lineNum">      54 </span>            :                 }
+<span class="lineNum">      55 </span>            :         }
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :         internal class SpecSnapShotStorage : ISnapshotStore
+<span class="lineNum">      58 </span>            :         {
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 :                 public SpecSnapShotStorage(Snapshot snapshot)</span>
+<span class="lineNum">      60 </span>            :                 {
+<span class="lineNum">      61 </span>            :                         Snapshot = snapshot;
+<span class="lineNum">      62 </span>            :                 }
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :                 public Snapshot Snapshot { get; set; }
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :                 public Snapshot Get(Guid id)</span>
+<span class="lineNum">      67 </span>            :                 {
+<span class="lineNum">      68 </span>            :                         return Snapshot;
+<span class="lineNum">      69 </span>            :                 }
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :                 public void Save(Snapshot snapshot)</span>
+<span class="lineNum">      72 </span>            :                 {
+<span class="lineNum">      73 </span>            :                         Snapshot = snapshot;
+<span class="lineNum">      74 </span>            :                 }
+<span class="lineNum">      75 </span>            :         }
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :         internal class SpecEventPublisher : IEventPublisher&lt;ISingleSignOnToken&gt;
+<span class="lineNum">      78 </span>            :         {
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :                 public SpecEventPublisher()</span>
+<span class="lineNum">      80 </span>            :                 {
+<span class="lineNum">      81 </span>            :                         PublishedEvents = new List&lt;IEvent&lt;ISingleSignOnToken&gt;&gt;();
+<span class="lineNum">      82 </span>            :                 }
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :                 public void Publish&lt;T&gt;(T @event)</span>
+<span class="lineNum">      85 </span>            :                         where T : IEvent&lt;ISingleSignOnToken&gt;
+<span class="lineNum">      86 </span>            :                 {
+<span class="lineNum">      87 </span>            :                         PublishedEvents.Add(@event);
+<span class="lineNum">      88 </span>            :                 }
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :                 public void Publish&lt;TEvent&gt;(IEnumerable&lt;TEvent&gt; events)</span>
+<span class="lineNum">      91 </span>            :                         where TEvent : IEvent&lt;ISingleSignOnToken&gt;
+<span class="lineNum">      92 </span>            :                 {
+<span class="lineNum">      93 </span>            :                         foreach (TEvent @event in events)
+<span class="lineNum">      94 </span>            :                                 PublishedEvents.Add(@event);
+<span class="lineNum">      95 </span>            :                 }
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :                 public IList&lt;IEvent&lt;ISingleSignOnToken&gt;&gt; PublishedEvents { get; set; }
+<span class="lineNum">      98 </span>            :         }
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :         internal class SpecEventStorage : IEventStore&lt;ISingleSignOnToken&gt;
+<span class="lineNum">     101 </span>            :         {
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :                 public SpecEventStorage(IList&lt;IEvent&lt;ISingleSignOnToken&gt;&gt; events)</span>
+<span class="lineNum">     103 </span>            :                 {
+<span class="lineNum">     104 </span>            :                         Events = events;
+<span class="lineNum">     105 </span>            :                 }
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            :                 public IList&lt;IEvent&lt;ISingleSignOnToken&gt;&gt; Events { get; set; }
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 public void Save&lt;T&gt;(IEvent&lt;ISingleSignOnToken&gt; @event)</span>
+<span class="lineNum">     110 </span>            :                 {
+<span class="lineNum">     111 </span>            :                         Events.Add(@event);
+<span class="lineNum">     112 </span>            :                 }
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :                 public void Save(Type aggregateRootType, IEvent&lt;ISingleSignOnToken&gt; @event)</span>
+<span class="lineNum">     115 </span>            :                 {
+<span class="lineNum">     116 </span>            :                         Events.Add(@event);
+<span class="lineNum">     117 </span>            :                 }
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :                 public IEnumerable&lt;IEvent&lt;ISingleSignOnToken&gt;&gt; Get&lt;T&gt;(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
+<span class="lineNum">     120 </span>            :                 {
+<span class="lineNum">     121 </span>            :                         return Get(typeof(T), aggregateId, useLastEventOnly, fromVersion);
+<span class="lineNum">     122 </span>            :                 }
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :                 public IEnumerable&lt;IEvent&lt;ISingleSignOnToken&gt;&gt; Get(Type aggregateType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
+<span class="lineNum">     125 </span>            :                 {
+<span class="lineNum">     126 </span>            :                         return Events.Where(x =&gt; x.Version &gt; fromVersion);
+<span class="lineNum">     127 </span>            :                 }
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span><span class="lineNoCov">          0 :                 public IEnumerable&lt;EventData&gt; Get(Guid correlationId)</span>
+<span class="lineNum">     130 </span>            :                 {
+<span class="lineNum">     131 </span>            :                         return Enumerable.Empty&lt;EventData&gt;();
+<span class="lineNum">     132 </span>            :                 }
+<span class="lineNum">     133 </span>            :         }
+<span class="lineNum">     134 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

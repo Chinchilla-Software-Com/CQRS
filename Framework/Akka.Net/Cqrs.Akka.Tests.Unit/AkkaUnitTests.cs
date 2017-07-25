@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using cdmdotnet.Logging;
@@ -21,7 +29,6 @@ using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
 using Cqrs.Ninject.Akka;
-using Cqrs.Ninject.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ninject;
 
@@ -65,10 +72,9 @@ namespace Cqrs.Akka.Tests.Unit
 			kernel.Bind<ICorrelationIdHelper>().ToConstant(correlationIdHelper).InSingletonScope();
 			kernel.Bind<IAkkaEventPublisher<Guid>>().To<AkkaEventBus<Guid>>().InSingletonScope();
 			kernel.Bind<IAkkaEventPublisherProxy<Guid>>().To<AkkaEventBusProxy<Guid>>().InSingletonScope();
-			kernel.Bind<IAkkaCommandSender<Guid>>().To<AkkaCommandBus<Guid>>().InSingletonScope();
+			kernel.Bind<IAkkaCommandPublisher<Guid>>().To<AkkaCommandBus<Guid>>().InSingletonScope();
 			kernel.Bind<ICommandHandlerRegistrar>().To<AkkaCommandBus<Guid>>().InSingletonScope();
 			kernel.Bind<IEventHandlerRegistrar>().To<AkkaEventBus<Guid>>().InSingletonScope();
-			kernel.Bind<ICommandSender<Guid>>().To<InProcessBus<Guid>>().InSingletonScope();
 			kernel.Bind<ICommandPublisher<Guid>>().To<InProcessBus<Guid>>().InSingletonScope();
 			kernel.Bind<ICommandReceiver<Guid>>().To<InProcessBus<Guid>>().InSingletonScope();
 			kernel.Bind<IConfigurationManager>().ToConstant(configurationManager).InSingletonScope();
@@ -77,7 +83,7 @@ namespace Cqrs.Akka.Tests.Unit
 			kernel.Bind<IContextItemCollectionFactory>().To<WebContextItemCollectionFactory>().InSingletonScope();
 
 			AkkaNinjectDependencyResolver.Start(kernel);
-			var dependencyResolver = (AkkaNinjectDependencyResolver)NinjectDependencyResolver.Current;
+			var dependencyResolver = (AkkaNinjectDependencyResolver)DependencyResolver.Current;
 
 			var commandBus = dependencyResolver.Resolve<ICommandHandlerRegistrar>();
 			var eventBus = dependencyResolver.Resolve<IEventHandlerRegistrar>();
@@ -93,8 +99,8 @@ namespace Cqrs.Akka.Tests.Unit
 			inProcessBus.RegisterHandler<UpdateCompletedConversationReportCommand>(new UpdateCompletedConversationReportCommandHandler(dependencyResolver).Handle);
 
 			// Events in process
-			inProcessBus.RegisterHandler<HelloWorldSaid>(new HelloWorldSaidEventHandler(dependencyResolver.Resolve<IAkkaCommandSender<Guid>>()).Handle);
-			inProcessBus.RegisterHandler<ConversationEnded>(new ConversationEndedEventHandler(dependencyResolver.Resolve<IAkkaCommandSender<Guid>>()).Handle);
+			inProcessBus.RegisterHandler<HelloWorldSaid>(new HelloWorldSaidEventHandler(dependencyResolver.Resolve<IAkkaCommandPublisher<Guid>>()).Handle);
+			inProcessBus.RegisterHandler<ConversationEnded>(new ConversationEndedEventHandler(dependencyResolver.Resolve<IAkkaCommandPublisher<Guid>>()).Handle);
 
 			// events handled by Akka.net
 			eventBus.RegisterHandler<HelloWorldRepliedTo>(new HelloWorldRepliedToEventHandler(dependencyResolver).Handle);

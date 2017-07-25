@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Ninject/Azure/Cqrs.Ninject.Azure.ServiceBus.CommandBus/Configuration/AzureCommandBusReceiverModule.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">Ninject/Azure/Cqrs.Ninject.Azure.ServiceBus.CommandBus/Configuration</a> - AzureCommandBusReceiverModule.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryMed">83.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System.Linq;
+<span class="lineNum">       2 </span>            : using Cqrs.Azure.ServiceBus;
+<span class="lineNum">       3 </span>            : using Cqrs.Bus;
+<span class="lineNum">       4 </span>            : using Cqrs.Commands;
+<span class="lineNum">       5 </span>            : using Ninject;
+<span class="lineNum">       6 </span>            : using Ninject.Modules;
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
+<span class="lineNum">       9 </span>            : {
+<span class="lineNum">      10 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      11 </span>            :         /// The &lt;see cref=&quot;INinjectModule&quot;/&gt; for use with the Cqrs package.
+<span class="lineNum">      12 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      13 </span>            :         public class AzureCommandBusReceiverModule&lt;TAuthenticationToken&gt; : NinjectModule
+<span class="lineNum">      14 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      15 </span>            :                 #region Overrides of NinjectModule
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      18 </span>            :                 /// Loads the module into the kernel.
+<span class="lineNum">      19 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      20 </span><span class="lineCov">          1 :                 public override void Load()</span>
+<span class="lineNum">      21 </span>            :                 {
+<span class="lineNum">      22 </span>            :                         bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IAzureBusHelper&lt;TAuthenticationToken&gt;)).Any();
+<span class="lineNum">      23 </span>            :                         if (!isMessageSerialiserBound)
+<span class="lineNum">      24 </span>            :                         {
+<span class="lineNum">      25 </span>            :                                 Bind&lt;IAzureBusHelper&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      26 </span>            :                                         .To&lt;AzureBusHelper&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      27 </span>            :                                         .InSingletonScope();
+<span class="lineNum">      28 </span>            :                         }
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                         RegisterCommandMessageSerialiser();
+<span class="lineNum">      31 </span>            :                         var bus = GetOrCreateBus&lt;AzureCommandBusReceiver&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            :                         RegisterCommandReceiver(bus);
+<span class="lineNum">      34 </span>            :                         RegisterCommandHandlerRegistrar(bus);
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 #endregion
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 :                 public virtual TBus GetOrCreateBus&lt;TBus&gt;()</span>
+<span class="lineNum">      40 </span>            :                         where TBus : ICommandReceiver&lt;TAuthenticationToken&gt;, ICommandHandlerRegistrar
+<span class="lineNum">      41 </span>            :                 {
+<span class="lineNum">      42 </span>            :                         bool isBusBound = Kernel.GetBindings(typeof(TBus)).Any();
+<span class="lineNum">      43 </span>            :                         TBus bus;
+<span class="lineNum">      44 </span>            :                         if (!isBusBound)
+<span class="lineNum">      45 </span>            :                         {
+<span class="lineNum">      46 </span>            :                                 bus = Kernel.Get&lt;TBus&gt;();
+<span class="lineNum">      47 </span>            :                                 Bind&lt;TBus&gt;()
+<span class="lineNum">      48 </span>            :                                         .ToConstant(bus)
+<span class="lineNum">      49 </span>            :                                         .InSingletonScope();
+<span class="lineNum">      50 </span>            :                         }
+<span class="lineNum">      51 </span>            :                         else
+<span class="lineNum">      52 </span>            :                                 bus = Kernel.Get&lt;TBus&gt;();
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                         return bus;
+<span class="lineNum">      55 </span>            :                 }
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      58 </span>            :                 /// Register the Cqrs command receiver
+<span class="lineNum">      59 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      60 </span><span class="lineCov">          1 :                 public virtual void RegisterCommandReceiver&lt;TBus&gt;(TBus bus)</span>
+<span class="lineNum">      61 </span>            :                         where TBus : ICommandReceiver&lt;TAuthenticationToken&gt;, ICommandHandlerRegistrar
+<span class="lineNum">      62 </span>            :                 {
+<span class="lineNum">      63 </span>            :                         Bind&lt;ICommandReceiver&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      64 </span>            :                                 .ToConstant(bus)
+<span class="lineNum">      65 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      66 </span>            :                 }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      69 </span>            :                 /// Register the Cqrs command handler registrar
+<span class="lineNum">      70 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      71 </span><span class="lineCov">          1 :                 public virtual void RegisterCommandHandlerRegistrar&lt;TBus&gt;(TBus bus)</span>
+<span class="lineNum">      72 </span>            :                         where TBus : ICommandReceiver&lt;TAuthenticationToken&gt;, ICommandHandlerRegistrar
+<span class="lineNum">      73 </span>            :                 {
+<span class="lineNum">      74 </span>            :                         Bind&lt;ICommandHandlerRegistrar&gt;()
+<span class="lineNum">      75 </span>            :                                         .ToConstant(bus)
+<span class="lineNum">      76 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      77 </span>            :                 }
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      80 </span>            :                 /// Register the Cqrs command handler message serialiser
+<span class="lineNum">      81 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      82 </span><span class="lineCov">          1 :                 public virtual void RegisterCommandMessageSerialiser()</span>
+<span class="lineNum">      83 </span>            :                 {
+<span class="lineNum">      84 </span>            :                         bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IMessageSerialiser&lt;TAuthenticationToken&gt;)).Any();
+<span class="lineNum">      85 </span>            :                         if (!isMessageSerialiserBound)
+<span class="lineNum">      86 </span>            :                         {
+<span class="lineNum">      87 </span>            :                                 Bind&lt;IMessageSerialiser&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      88 </span>            :                                         .To&lt;MessageSerialiser&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      89 </span>            :                                         .InSingletonScope();
+<span class="lineNum">      90 </span>            :                         }
+<span class="lineNum">      91 </span>            :                 }
+<span class="lineNum">      92 </span>            :         }
+<span class="lineNum">      93 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
