@@ -21,6 +21,10 @@ using Microsoft.Azure.Documents.Linq;
 
 namespace Cqrs.Azure.DocumentDb.DataStores
 {
+	/// <summary>
+	/// A <see cref="IDataStore{TData}"/> that uses Azure DocumentDB (CosmosDB) for storage.
+	/// </summary>
+	/// <typeparam name="TData">The <see cref="Type"/> of <see cref="IEntity"/> the <see cref="IDataStore{TData}"/> will contain.</typeparam>
 	public class AzureDocumentDbDataStore<TData> : IDataStore<TData>
 		where TData : AzureDocumentDbEntity
 	{
@@ -36,6 +40,9 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Instantiates and Initialises a new instance of the <see cref="AzureDocumentDbDataStore{TData}"/> class.
+		/// </summary>
 		public AzureDocumentDbDataStore(ILogger logger, DocumentClient azureDocumentDbClient, Database azureDocumentDbDatabase, DocumentCollection azureDocumentDbCollection, IOrderedQueryable<TData> azureDocumentDbQuery, IAzureDocumentDbHelper azureDocumentDbHelper)
 		{
 			Logger = logger;

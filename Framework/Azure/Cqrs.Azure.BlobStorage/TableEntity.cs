@@ -1,9 +1,15 @@
-using System.Collections.Generic;
+#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
 using System.IO;
 using Cqrs.Events;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Cqrs.Azure.BlobStorage
 {

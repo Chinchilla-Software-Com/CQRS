@@ -508,11 +508,21 @@ namespace Microsoft.WindowsAzure.Storage.Table
 		/// </summary>
 		private class ObjectReferenceEqualityComparer : IEqualityComparer<object>
 		{
+			/// <summary>
+			/// Determines whether the specified object instances are considered equal.
+			/// </summary>
+			/// <param name="x">The first object to compare.</param>
+			/// <param name="y">The second object to compare.</param>
+			/// <returns>true if the objects are considered equal; otherwise, false. If both objA and objB are null, the method returns true.</returns>
 			public new bool Equals(object x, object y)
 			{
 				return ReferenceEquals(x, y);
 			}
 
+			/// <summary>
+			/// Serves as a hash function for a particular type.
+			/// </summary>
+			/// <returns>A hash code for the current <see cref="object"/>.</returns>
 			public int GetHashCode(object obj)
 			{
 				return RuntimeHelpers.GetHashCode(obj);

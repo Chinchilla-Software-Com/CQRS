@@ -10,10 +10,13 @@ using Cqrs.Authentication;
 using Cqrs.Ninject.Azure.WebJobs;
 
 /// <summary>
-/// Starts the Webjob
+/// Starts the WebJob.
 /// </summary>
 public partial class CqrsWebJobProgram : CqrsNinjectJobHost<SingleSignOnToken, DefaultAuthenticationTokenHelper>
 {
+	/// <summary>
+	/// Instantiate a new instance of <see cref="CqrsWebJobProgram"/>
+	/// </summary>
 	public CqrsWebJobProgram()
 	{
 		System.Type commandOrEventType = null;

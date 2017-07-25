@@ -18,6 +18,10 @@ using Cqrs.Entities;
 
 namespace Cqrs.MongoDB.DataStores
 {
+	/// <summary>
+	/// A <see cref="IDataStore{TData}"/> that uses MongoDB for storage.
+	/// </summary>
+	/// <typeparam name="TData">The <see cref="Type"/> of <see cref="IEntity"/> the <see cref="IDataStore{TData}"/> will contain.</typeparam>
 	public class MongoDbDataStore<TData> : IDataStore<TData>
 		where TData : Entity
 	{
@@ -25,6 +29,9 @@ namespace Cqrs.MongoDB.DataStores
 
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Instantiates and Initialises a new instance of the <see cref="MongoDbDataStore{TData}"/> class.
+		/// </summary>
 		public MongoDbDataStore(ILogger logger, IMongoCollection<TData> mongoCollection)
 		{
 			Logger = logger;

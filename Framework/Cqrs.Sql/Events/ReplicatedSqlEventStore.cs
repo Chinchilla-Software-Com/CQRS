@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
@@ -13,10 +21,14 @@ namespace Cqrs.Sql.Events
 	/// <summary>
 	/// A simplified SqlServer based <see cref="EventStore{TAuthenticationToken}"/> that uses LinqToSql and follows a rigid schema that also replicates to multiple connections, but only reads from one connection.
 	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class ReplicatedSqlEventStore<TAuthenticationToken> : SqlEventStore<TAuthenticationToken>
 	{
 		protected IEnumerable<string> WritableConnectionStrings { get; private set; }
 
+		/// <summary>
+		/// Instantiates and Initialises a new instance of the <see cref="ReplicatedSqlEventStore{TAuthenticationToken}"/> class.
+		/// </summary>
 		public ReplicatedSqlEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)
 			: base(eventBuilder, eventDeserialiser, logger, configurationManager)
 		{
