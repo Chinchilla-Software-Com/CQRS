@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="classCqrs_1_1Azure_1_1ServiceBus_1_1DefaultEventProcessor" kind="class" prot="package">
+    <compoundname>Cqrs::Azure::ServiceBus::DefaultEventProcessor</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">IEventProcessor</basecompoundref>
+      <sectiondef kind="property">
+      <memberdef kind="property" id="classCqrs_1_1Azure_1_1ServiceBus_1_1DefaultEventProcessor_aadb41525dafd10ad3103773c6d52de28_1aadb41525dafd10ad3103773c6d52de28" prot="protected" static="no" readable="no" writable="no" gettable="yes" settable="yes">
+        <type>ILogger</type>
+        <definition>ILogger Cqrs.Azure.ServiceBus.DefaultEventProcessor.Logger</definition>
+        <argsstring></argsstring>
+        <name>Logger</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" line="19" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Azure_1_1ServiceBus_1_1DefaultEventProcessor_a1a8c05269bcc1cf0541ab94ef81d2ae9_1a1a8c05269bcc1cf0541ab94ef81d2ae9" prot="protected" static="no" readable="no" writable="no" gettable="yes" settable="yes">
+        <type>Action&lt; PartitionContext, EventData &gt;</type>
+        <definition>Action&lt;PartitionContext, EventData&gt; Cqrs.Azure.ServiceBus.DefaultEventProcessor.ReceiverMessageHandler</definition>
+        <argsstring></argsstring>
+        <name>ReceiverMessageHandler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" line="21" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classCqrs_1_1Azure_1_1ServiceBus_1_1DefaultEventProcessor_a21a53e359e4c4efdcff36e587b91a231_1a21a53e359e4c4efdcff36e587b91a231" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Cqrs.Azure.ServiceBus.DefaultEventProcessor.DefaultEventProcessor</definition>
+        <argsstring>(ILogger logger, Action&lt; PartitionContext, EventData &gt; receiverMessageHandler)</argsstring>
+        <name>DefaultEventProcessor</name>
+        <param>
+          <type>ILogger</type>
+          <declname>logger</declname>
+        </param>
+        <param>
+          <type>Action&lt; PartitionContext, EventData &gt;</type>
+          <declname>receiverMessageHandler</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" line="23" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" bodystart="23" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Azure_1_1ServiceBus_1_1DefaultEventProcessor_a72277f84219d5aebdfd437f2330c5a71_1a72277f84219d5aebdfd437f2330c5a71" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Task</type>
+        <definition>Task Cqrs.Azure.ServiceBus.DefaultEventProcessor.OpenAsync</definition>
+        <argsstring>(PartitionContext context)</argsstring>
+        <name>OpenAsync</name>
+        <param>
+          <type>PartitionContext</type>
+          <declname>context</declname>
+        </param>
+        <briefdescription>
+<para>Initializes the Event Hub processor instance. This method is called before any event data is passed to this processor instance. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>context</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Ownership information for the partition on which this processor instance works. Any attempt to call M:Microsoft.ServiceBus.Messaging.PartitionContext.CheckpointAsync will fail during the Open operation.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The task that indicates that the Open operation is complete. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" line="38" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" bodystart="38" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Azure_1_1ServiceBus_1_1DefaultEventProcessor_a07ea1b73ddec804da03ebd642b54410a_1a07ea1b73ddec804da03ebd642b54410a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Task</type>
+        <definition>Task Cqrs.Azure.ServiceBus.DefaultEventProcessor.ProcessEventsAsync</definition>
+        <argsstring>(PartitionContext context, IEnumerable&lt; EventData &gt; messages)</argsstring>
+        <name>ProcessEventsAsync</name>
+        <param>
+          <type>PartitionContext</type>
+          <declname>context</declname>
+        </param>
+        <param>
+          <type>IEnumerable&lt; EventData &gt;</type>
+          <declname>messages</declname>
+        </param>
+        <briefdescription>
+<para>Asynchronously processes the specified context and messages. This method is called when there are new messages in the Event Hubs stream. Make sure to checkpoint only when you are finished processing all the events in each batch. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>context</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Ownership information for the partition on which this processor instance works.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>messages</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A batch of Event Hubs events.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The task that indicates that M:Microsoft.ServiceBus.Messaging.IEventProcessor.ProcessEventsAsync(Microsoft.ServiceBus.Messaging.PartitionContext,System.Collections.Generic.IEnumerable{Microsoft.ServiceBus.Messaging.EventData}) is complete. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" line="52" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" bodystart="52" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Azure_1_1ServiceBus_1_1DefaultEventProcessor_a5372ff8a6f6c9d0e34a9721f875e0cea_1a5372ff8a6f6c9d0e34a9721f875e0cea" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Task</type>
+        <definition>Task Cqrs.Azure.ServiceBus.DefaultEventProcessor.CloseAsync</definition>
+        <argsstring>(PartitionContext context, CloseReason reason)</argsstring>
+        <name>CloseAsync</name>
+        <param>
+          <type>PartitionContext</type>
+          <declname>context</declname>
+        </param>
+        <param>
+          <type>CloseReason</type>
+          <declname>reason</declname>
+        </param>
+        <briefdescription>
+<para>Called when the ownership of partition moves to a different node for load-balancing purpose, or when the host is shutting down. Called in response to M:Microsoft.ServiceBus.Messaging.EventHubConsumerGroup.UnregisterProcessorAsync(Microsoft.ServiceBus.Messaging.Lease,Microsoft.ServiceBus.Messaging.CloseReason). </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>context</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Partition ownership information for the partition on which this processor instance works. You can call M:Microsoft.ServiceBus.Messaging.PartitionContext.CheckpointAsync to checkpoint progress in the processing of messages from Event Hub streams.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>reason</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The reason for calling M:Microsoft.ServiceBus.Messaging.IEventProcessor.CloseAsync(Microsoft.ServiceBus.Messaging.PartitionContext,Microsoft.ServiceBus.Messaging.CloseReason).</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A task indicating that the Close operation is complete. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" line="71" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" bodystart="71" bodyend="74"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="986">
+        <label>Cqrs.Azure.ServiceBus.DefaultEventProcessor</label>
+        <childnode refid="987" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="987">
+        <label>IEventProcessor</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="988">
+        <label>Cqrs.Azure.ServiceBus.DefaultEventProcessor</label>
+        <childnode refid="989" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="989">
+        <label>IEventProcessor</label>
+      </node>
+    </collaborationgraph>
+    <location file="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" line="18" column="1" bodyfile="/mnt/c/code/git/cqrs/Framework/Azure/Cqrs.Azure.EventHub/DefaultEventProcessor.cs" bodystart="17" bodyend="77"/>
+    <listofallmembers>
+      <member refid="classCqrs_1_1Azure_1_1ServiceBus_1_1DefaultEventProcessor_a5372ff8a6f6c9d0e34a9721f875e0cea_1a5372ff8a6f6c9d0e34a9721f875e0cea" prot="public" virt="non-virtual"><scope>Cqrs::Azure::ServiceBus::DefaultEventProcessor</scope><name>CloseAsync</name></member>
+      <member refid="classCqrs_1_1Azure_1_1ServiceBus_1_1DefaultEventProcessor_a21a53e359e4c4efdcff36e587b91a231_1a21a53e359e4c4efdcff36e587b91a231" prot="public" virt="non-virtual"><scope>Cqrs::Azure::ServiceBus::DefaultEventProcessor</scope><name>DefaultEventProcessor</name></member>
+      <member refid="classCqrs_1_1Azure_1_1ServiceBus_1_1DefaultEventProcessor_aadb41525dafd10ad3103773c6d52de28_1aadb41525dafd10ad3103773c6d52de28" prot="protected" virt="non-virtual"><scope>Cqrs::Azure::ServiceBus::DefaultEventProcessor</scope><name>Logger</name></member>
+      <member refid="classCqrs_1_1Azure_1_1ServiceBus_1_1DefaultEventProcessor_a72277f84219d5aebdfd437f2330c5a71_1a72277f84219d5aebdfd437f2330c5a71" prot="public" virt="non-virtual"><scope>Cqrs::Azure::ServiceBus::DefaultEventProcessor</scope><name>OpenAsync</name></member>
+      <member refid="classCqrs_1_1Azure_1_1ServiceBus_1_1DefaultEventProcessor_a07ea1b73ddec804da03ebd642b54410a_1a07ea1b73ddec804da03ebd642b54410a" prot="public" virt="non-virtual"><scope>Cqrs::Azure::ServiceBus::DefaultEventProcessor</scope><name>ProcessEventsAsync</name></member>
+      <member refid="classCqrs_1_1Azure_1_1ServiceBus_1_1DefaultEventProcessor_a1a8c05269bcc1cf0541ab94ef81d2ae9_1a1a8c05269bcc1cf0541ab94ef81d2ae9" prot="protected" virt="non-virtual"><scope>Cqrs::Azure::ServiceBus::DefaultEventProcessor</scope><name>ReceiverMessageHandler</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Exceptions/MissingApplicationSettingException.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Exceptions</a> - MissingApplicationSettingException.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Configuration;
+<span class="lineNum">      11 </span>            : using System.Runtime.Serialization;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : namespace Cqrs.Exceptions
+<span class="lineNum">      14 </span>            : {
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :         /// An app setting is missing from &lt;see cref=&quot;ConfigurationManager.AppSettings&quot;/&gt;.
+<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      18 </span>            :         [Serializable]
+<span class="lineNum">      19 </span>            :         public class MissingApplicationSettingException : Exception
+<span class="lineNum">      20 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      21 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;MissingApplicationSettingException&quot;/&gt;.
+<span class="lineNum">      23 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      24 </span>            :                 /// &lt;param name=&quot;appSettingKey&quot;&gt;The key of the app setting that is missing.&lt;/param&gt;
+<span class="lineNum">      25 </span><span class="lineCov">          1 :                 public MissingApplicationSettingException(string appSettingKey)</span>
+<span class="lineNum">      26 </span>            :                         : this(appSettingKey, false)
+<span class="lineNum">      27 </span>            :                 {
+<span class="lineNum">      28 </span>            :                 }
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;MissingApplicationSettingException&quot;/&gt;.
+<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      33 </span>            :                 /// &lt;param name=&quot;appSettingKey&quot;&gt;The key of the app setting that is missing.&lt;/param&gt;
+<span class="lineNum">      34 </span>            :                 /// &lt;param name=&quot;settingLocatesConnectionString&quot;&gt;If true, this missing app setting points to a connection string.&lt;/param&gt;
+<span class="lineNum">      35 </span>            :                 protected MissingApplicationSettingException(string appSettingKey, bool settingLocatesConnectionString)
+<span class="lineNum">      36 </span>            :                         : base(string.Format(settingLocatesConnectionString ? &quot;No app setting with the key '{0}' was found in the configuration file with the name of a connection string to look for.&quot; : &quot;No app setting with the key '{0}' was found in the configuration file.&quot;, appSettingKey))
+<span class="lineNum">      37 </span>            :                 {
+<span class="lineNum">      38 </span>            :                         AppSettingKey = appSettingKey;
+<span class="lineNum">      39 </span>            :                 }
+<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      41 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;MissingApplicationSettingException&quot;/&gt; and a reference to the inner &lt;paramref name=&quot;exception&quot;/&gt; that is the cause of this &lt;see cref=&quot;Exception&quot;/&gt;.
+<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      43 </span>            :                 /// &lt;param name=&quot;appSettingKey&quot;&gt;The key of the app setting that is missing.&lt;/param&gt;
+<span class="lineNum">      44 </span>            :                 /// &lt;param name=&quot;exception&quot;&gt;The &lt;see cref=&quot;Exception&quot;/&gt; that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner &lt;see cref=&quot;Exception&quot;/&gt; is specified.&lt;/param&gt;
+<span class="lineNum">      45 </span><span class="lineCov">          1 :                 public MissingApplicationSettingException(string appSettingKey, Exception exception)</span>
+<span class="lineNum">      46 </span>            :                         : this(appSettingKey, false, exception)
+<span class="lineNum">      47 </span>            :                 {
+<span class="lineNum">      48 </span>            :                 }
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      51 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;MissingApplicationSettingException&quot;/&gt; and a reference to the inner &lt;paramref name=&quot;exception&quot;/&gt; that is the cause of this &lt;see cref=&quot;Exception&quot;/&gt;.
+<span class="lineNum">      52 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      53 </span>            :                 /// &lt;param name=&quot;appSettingKey&quot;&gt;The key of the app setting that is missing.&lt;/param&gt;
+<span class="lineNum">      54 </span>            :                 /// &lt;param name=&quot;settingLocatesConnectionString&quot;&gt;If true, this missing app setting points to a connection string.&lt;/param&gt;
+<span class="lineNum">      55 </span>            :                 /// &lt;param name=&quot;exception&quot;&gt;The &lt;see cref=&quot;Exception&quot;/&gt; that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner &lt;see cref=&quot;Exception&quot;/&gt; is specified.&lt;/param&gt;
+<span class="lineNum">      56 </span>            :                 protected MissingApplicationSettingException(string appSettingKey, bool settingLocatesConnectionString, Exception exception)
+<span class="lineNum">      57 </span>            :                         : base(string.Format(settingLocatesConnectionString ? &quot;No app setting with the key '{0}' was found in the configuration file with the name of a connection string to look for.&quot; : &quot;No app setting with the key '{0}' was found in the configuration file.&quot;, appSettingKey), exception)
+<span class="lineNum">      58 </span>            :                 {
+<span class="lineNum">      59 </span>            :                         AppSettingKey = appSettingKey;
+<span class="lineNum">      60 </span>            :                 }
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      63 </span>            :                 /// The key of the app setting that is missing.
+<span class="lineNum">      64 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      65 </span>            :                 [DataMember]
+<span class="lineNum">      66 </span>            :                 public string AppSettingKey { get; set; }
+<span class="lineNum">      67 </span>            :         }
+<span class="lineNum">      68 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

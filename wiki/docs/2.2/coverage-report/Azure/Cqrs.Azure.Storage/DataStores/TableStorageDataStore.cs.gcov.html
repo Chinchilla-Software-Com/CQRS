@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.Storage/DataStores/TableStorageDataStore.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.Storage/DataStores</a> - TableStorageDataStore.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryLo">20.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      12 </span>            : using Cqrs.Azure.BlobStorage;
+<span class="lineNum">      13 </span>            : using Cqrs.Azure.BlobStorage.DataStores;
+<span class="lineNum">      14 </span>            : using Cqrs.Entities;
+<span class="lineNum">      15 </span>            : using Microsoft.WindowsAzure.Storage;
+<span class="lineNum">      16 </span>            : using Microsoft.WindowsAzure.Storage.Table;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : namespace Cqrs.Azure.Storage.DataStores
+<span class="lineNum">      19 </span>            : {
+<span class="lineNum">      20 </span>            :         public class TableStorageDataStore&lt;TData&gt;
+<span class="lineNum">      21 </span>            :                 : BlobStorage.DataStores.TableStorageDataStore&lt;TData&gt;
+<span class="lineNum">      22 </span>            :                 where TData : Entity
+<span class="lineNum">      23 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      24 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      25 </span>            :                 /// Initializes a new instance of the &lt;see cref=&quot;BlobStorage&quot;/&gt; class using the specified container.
+<span class="lineNum">      26 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      27 </span><span class="lineCov">          1 :                 public TableStorageDataStore(ILogger logger, ITableStorageDataStoreConnectionStringFactory tableStorageDataStoreConnectionStringFactory)</span>
+<span class="lineNum">      28 </span>            :                         : base(logger, tableStorageDataStoreConnectionStringFactory)
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                 }
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :                 #region Overrides of TableStorageStore&lt;TData&gt;
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                 protected override ITableEntity CreateTableEntity(TData data)
+<span class="lineNum">      35 </span>            :                 {
+<span class="lineNum">      36 </span>            :                         var tableEntity = new EntityTableEntity&lt;TData&gt;(data);
+<span class="lineNum">      37 </span>            :                         //Flatten object of type TData and convert it to EntityProperty Dictionary
+<span class="lineNum">      38 </span>            :                         Dictionary&lt;string, EntityProperty&gt; flattenedProperties = EntityPropertyConverter.Flatten(data, new OperationContext());
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :                         // Create a DynamicTableEntity and set its PK and RK
+<span class="lineNum">      41 </span>            :                         DynamicTableEntity dynamicTableEntity = new DynamicTableEntity(tableEntity.PartitionKey, tableEntity.RowKey)
+<span class="lineNum">      42 </span>            :                         {
+<span class="lineNum">      43 </span>            :                                 Properties = flattenedProperties
+<span class="lineNum">      44 </span>            :                         };
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                         return dynamicTableEntity;
+<span class="lineNum">      47 </span>            :                 }
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                 protected override TableOperation GetUpdatableTableEntity(TData data)
+<span class="lineNum">      50 </span>            :                 {
+<span class="lineNum">      51 </span>            :                         return TableOperation.Retrieve&lt;DynamicTableEntity&gt;(data.GetType().FullName, data.Rsn.ToString(&quot;N&quot;));
+<span class="lineNum">      52 </span>            :                 }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                 #endregion
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 #region Overrides of TableStorageStore&lt;EntityTableEntity&lt;TData&gt;,TData&gt;
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                 protected override ITableEntity ReplaceValues(TableResult retrievedResult, EntityTableEntity&lt;TData&gt; data)
+<span class="lineNum">      59 </span>            :                 {
+<span class="lineNum">      60 </span>            :                         ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
+<span class="lineNum">      61 </span>            :                         // Events aren't updated
+<span class="lineNum">      62 </span>            :                         var dynamicTableEntity = tableEntity as DynamicTableEntity;
+<span class="lineNum">      63 </span>            :                         if (dynamicTableEntity == null)
+<span class="lineNum">      64 </span>            :                         {
+<span class="lineNum">      65 </span>            :                                 base.ReplaceValues(retrievedResult, data);
+<span class="lineNum">      66 </span>            :                                 return tableEntity;
+<span class="lineNum">      67 </span>            :                         }
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :                         //Flatten object of type TData and convert it to EntityProperty Dictionary
+<span class="lineNum">      70 </span>            :                         Dictionary&lt;string, EntityProperty&gt; flattenedProperties = EntityPropertyConverter.Flatten(data.Entity, new OperationContext());
+<span class="lineNum">      71 </span>            :                         dynamicTableEntity.Properties = flattenedProperties;
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                         return dynamicTableEntity;
+<span class="lineNum">      74 </span>            :                 }
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :                 public override EntityTableEntity&lt;TData&gt; GetByKeyAndRow(Guid rsn)</span>
+<span class="lineNum">      77 </span>            :                 {
+<span class="lineNum">      78 </span>            :                         TableOperation searchQuery = TableOperation.Retrieve&lt;DynamicTableEntity&gt;(typeof(TData).FullName, rsn.ToString(&quot;N&quot;));
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :                         TableResult searchResult = ReadableSource.Execute(searchQuery);
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                         var dynamicTableEntity = searchResult.Result as DynamicTableEntity;
+<span class="lineNum">      83 </span>            :                         if (dynamicTableEntity == null)
+<span class="lineNum">      84 </span>            :                                 return base.GetByKeyAndRow(rsn);
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :                         //Convert the DynamicTableEntity back to original complex object.
+<span class="lineNum">      87 </span>            :                         TData result = EntityPropertyConverter.ConvertBack&lt;TData&gt;(dynamicTableEntity.Properties, new OperationContext());
+<span class="lineNum">      88 </span>            :                         return new EntityTableEntity&lt;TData&gt;(result);
+<span class="lineNum">      89 </span>            :                 }
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :                 public override IEnumerable&lt;EntityTableEntity&lt;TData&gt;&gt; GetByKey()</span>
+<span class="lineNum">      92 </span>            :                 {
+<span class="lineNum">      93 </span>            :                         // Create the table query.
+<span class="lineNum">      94 </span>            :                         var rangeQuery = Collection.Where
+<span class="lineNum">      95 </span>            :                         (
+<span class="lineNum">      96 </span>            :                                 TableQuery.GenerateFilterCondition(&quot;PartitionKey&quot;, QueryComparisons.Equal, StorageStore&lt;object, object&gt;.GetSafeStorageKey(typeof(TData).FullName))
+<span class="lineNum">      97 </span>            :                         );
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span>            :                         IEnumerable&lt;EntityTableEntity&lt;TData&gt;&gt; results = ReadableSource.ExecuteQuery(rangeQuery);
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            :                         return results;
+<span class="lineNum">     102 </span>            :                 }
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            :                 #endregion
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :                 public override void Update(TData data)</span>
+<span class="lineNum">     107 </span>            :                 {
+<span class="lineNum">     108 </span>            :                         DynamicTableEntity dynamicTableEntity = CreateTableEntity(data) as DynamicTableEntity;
+<span class="lineNum">     109 </span>            :                         if (dynamicTableEntity == null)
+<span class="lineNum">     110 </span>            :                         {
+<span class="lineNum">     111 </span>            :                                 base.Update(data);
+<span class="lineNum">     112 </span>            :                                 return;
+<span class="lineNum">     113 </span>            :                         }
+<span class="lineNum">     114 </span>            :                         //Convert the DynamicTableEntity back to original complex object.
+<span class="lineNum">     115 </span>            :                         TData result = EntityPropertyConverter.ConvertBack&lt;TData&gt;(dynamicTableEntity.Properties, new OperationContext());
+<span class="lineNum">     116 </span>            :                         Update(new EntityTableEntity&lt;TData&gt;(result));
+<span class="lineNum">     117 </span>            :                 }
+<span class="lineNum">     118 </span>            :         }
+<span class="lineNum">     119 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.Sql/DataStores/ExpressionTreeConverter.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs.Sql/DataStores</a> - ExpressionTreeConverter.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : using System;
+<span class="lineNum">       2 </span>            : using System.Collections.Generic;
+<span class="lineNum">       3 </span>            : using System.Linq;
+<span class="lineNum">       4 </span>            : using System.Linq.Expressions;
+<span class="lineNum">       5 </span>            : using System.Reflection;
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span>            : namespace Cqrs.Sql.DataStores
+<span class="lineNum">       8 </span>            : {
+<span class="lineNum">       9 </span>            :         public abstract class ExpressionTreeConverter&lt;TA, TB&gt; : ExpressionVisitor, IExpressionTreeConverter
+<span class="lineNum">      10 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      11 </span>            :                 private readonly Dictionary&lt;ParameterExpression, ParameterExpression&gt; _parameters = new Dictionary&lt;ParameterExpression, ParameterExpression&gt;();
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            :                 private readonly Dictionary&lt;MemberInfo, LambdaExpression&gt; _mappings;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            :                 protected ExpressionTreeConverter(Dictionary&lt;MemberInfo, LambdaExpression&gt; mappings)
+<span class="lineNum">      16 </span>            :                 {
+<span class="lineNum">      17 </span>            :                         _mappings = mappings;
+<span class="lineNum">      18 </span>            :                 }
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            :                 protected ExpressionTreeConverter()
+<span class="lineNum">      21 </span>            :                 {
+<span class="lineNum">      22 </span>            :                         _mappings = GetMappings();
+<span class="lineNum">      23 </span>            :                 }
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span><span class="lineNoCov">          0 :                 public abstract Dictionary&lt;MemberInfo, LambdaExpression&gt; GetMappings();</span>
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :                 protected override Expression VisitParameter(ParameterExpression node)
+<span class="lineNum">      28 </span>            :                 {
+<span class="lineNum">      29 </span>            :                         if (node.Type == typeof(TA))
+<span class="lineNum">      30 </span>            :                         {
+<span class="lineNum">      31 </span>            :                                 ParameterExpression parameter;
+<span class="lineNum">      32 </span>            :                                 if (!_parameters.TryGetValue(node, out parameter))
+<span class="lineNum">      33 </span>            :                                 {
+<span class="lineNum">      34 </span>            :                                         _parameters.Add(node, parameter = Expression.Parameter(typeof(TB), node.Name));
+<span class="lineNum">      35 </span>            :                                 }
+<span class="lineNum">      36 </span>            :                                 return parameter;
+<span class="lineNum">      37 </span>            :                         }
+<span class="lineNum">      38 </span>            :                         return node;
+<span class="lineNum">      39 </span>            :                 }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 protected override Expression VisitMember(MemberExpression node)
+<span class="lineNum">      42 </span>            :                 {
+<span class="lineNum">      43 </span>            :                         if (node.Expression == null || node.Expression.Type != typeof(TA))
+<span class="lineNum">      44 </span>            :                                 return base.VisitMember(node);
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                         Expression expression = Visit(node.Expression);
+<span class="lineNum">      47 </span>            :                         if (expression.Type != typeof(TB))
+<span class="lineNum">      48 </span>            :                                 throw new Exception(&quot;Whoops&quot;);
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :                         LambdaExpression lambdaExpression;
+<span class="lineNum">      51 </span>            :                         if (_mappings.TryGetValue(node.Member, out lambdaExpression))
+<span class="lineNum">      52 </span>            :                                 return new SimpleExpressionReplacer(lambdaExpression.Parameters.Single(), expression).Visit(lambdaExpression.Body);
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                         return Expression.Property(expression, node.Member.Name);
+<span class="lineNum">      55 </span>            :                 }
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 protected override Expression VisitLambda&lt;T&gt;(Expression&lt;T&gt; node)
+<span class="lineNum">      58 </span>            :                 {
+<span class="lineNum">      59 </span>            :                         return Expression.Lambda(
+<span class="lineNum">      60 </span>            :                                 Visit(node.Body),
+<span class="lineNum">      61 </span>            :                                 node.Parameters.Select(Visit).Cast&lt;ParameterExpression&gt;()
+<span class="lineNum">      62 </span>            :                                 );
+<span class="lineNum">      63 </span>            :                 }
+<span class="lineNum">      64 </span>            :         }
+<span class="lineNum">      65 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

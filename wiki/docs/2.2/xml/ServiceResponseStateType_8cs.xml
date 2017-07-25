@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
+  <compounddef id="ServiceResponseStateType_8cs" kind="file">
+    <compoundname>ServiceResponseStateType.cs</compoundname>
+    <innernamespace refid="namespaceCqrs_1_1Services">Cqrs::Services</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#region<sp/>Copyright</highlight></codeline>
+<codeline lineno="2"><highlight class="preprocessor"></highlight><highlight class="comment">//<sp/>-----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>&lt;copyright<sp/>company=&quot;Chinchilla<sp/>Software<sp/>Limited&quot;&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/>Copyright<sp/>Chinchilla<sp/>Software<sp/>Limited.<sp/>All<sp/>rights<sp/>reserved.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>&lt;/copyright&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>-----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#endregion</highlight></codeline>
+<codeline lineno="8"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>System;</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>System.Runtime.Serialization;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Cqrs.Domain;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Cqrs.Entities;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Cqrs.Services</highlight></codeline>
+<codeline lineno="15"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>[Serializable]</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>[DataContract]</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="namespaceCqrs_1_1Services_a41411b784c4fcb7eed0cef2a5b522de0_1a41411b784c4fcb7eed0cef2a5b522de0" kindref="member">ServiceResponseStateType</ref></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[EnumMember]</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceCqrs_1_1Events_a2a32e13adeac92f5a93966cd8ee2d39a_1a2a32e13adeac92f5a93966cd8ee2d39aa88183b946cc5f0e8c96b2e66e1c74a7e" kindref="member">Unknown</ref><sp/>=<sp/>0,</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[EnumMember(Value<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Succeeded&quot;</highlight><highlight class="normal">)]</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceCqrs_1_1Services_a41411b784c4fcb7eed0cef2a5b522de0_1a41411b784c4fcb7eed0cef2a5b522de0a66d02c2f8a582446f8dd8752366002b5" kindref="member">Succeeded</ref><sp/>=<sp/>1,</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[EnumMember]</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceCqrs_1_1Services_a41411b784c4fcb7eed0cef2a5b522de0_1a41411b784c4fcb7eed0cef2a5b522de0adf356d2a26b9021bbf29a4c477ba6534" kindref="member">FailedWithAFatalException</ref><sp/>=<sp/>2,</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[EnumMember]</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceCqrs_1_1Services_a41411b784c4fcb7eed0cef2a5b522de0_1a41411b784c4fcb7eed0cef2a5b522de0a485362764734183da5fc0c43da6d4648" kindref="member">FailedWithAnUnexpectedException</ref><sp/>=<sp/>3,</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[EnumMember]</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceCqrs_1_1Services_a41411b784c4fcb7eed0cef2a5b522de0_1a41411b784c4fcb7eed0cef2a5b522de0a0e67fb99f2a0d54965191d09312d347a" kindref="member">FailedAuthentication</ref><sp/>=<sp/>11,</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[EnumMember]</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceCqrs_1_1Services_a41411b784c4fcb7eed0cef2a5b522de0_1a41411b784c4fcb7eed0cef2a5b522de0ad80139b7a01b796769d7d7e9744b656c" kindref="member">FailedAuthorisation</ref><sp/>=<sp/>12,</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[EnumMember]</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceCqrs_1_1Services_a41411b784c4fcb7eed0cef2a5b522de0_1a41411b784c4fcb7eed0cef2a5b522de0ab200ca8ee3861d3b22d05cf046935d62" kindref="member">FailedValidation</ref><sp/>=<sp/>21,</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[EnumMember]</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceCqrs_1_1Services_a41411b784c4fcb7eed0cef2a5b522de0_1a41411b784c4fcb7eed0cef2a5b522de0ace476dac8be7afb33ba2dae45bc65ea1" kindref="member">AggregateNotFound</ref><sp/>=<sp/>31,</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[EnumMember]</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceCqrs_1_1Services_a41411b784c4fcb7eed0cef2a5b522de0_1a41411b784c4fcb7eed0cef2a5b522de0a5f190a8ae233f14fa32f38fce84aed7e" kindref="member">EntityNotFound</ref><sp/>=<sp/>32,</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[EnumMember]</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceCqrs_1_1Services_a41411b784c4fcb7eed0cef2a5b522de0_1a41411b784c4fcb7eed0cef2a5b522de0ac3ccc686dc56ccffeeec7d6d670c8a46" kindref="member">SagaNotFound</ref><sp/>=<sp/>33</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/mnt/c/code/git/CQRS.XsamX/Framework/Cqrs/Services/ServiceResponseStateType.cs"/>
+  </compounddef>
+</doxygen>

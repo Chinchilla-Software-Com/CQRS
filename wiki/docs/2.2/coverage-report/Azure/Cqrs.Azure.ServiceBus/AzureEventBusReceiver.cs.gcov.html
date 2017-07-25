@@ -1,0 +1,467 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.ServiceBus/AzureEventBusReceiver.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.ServiceBus</a> - AzureEventBusReceiver.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryMed">83.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Diagnostics;
+<span class="lineNum">      12 </span>            : using System.Globalization;
+<span class="lineNum">      13 </span>            : using System.Linq;
+<span class="lineNum">      14 </span>            : using System.Threading;
+<span class="lineNum">      15 </span>            : using System.Threading.Tasks;
+<span class="lineNum">      16 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      17 </span>            : using Cqrs.Bus;
+<span class="lineNum">      18 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      19 </span>            : using Cqrs.Events;
+<span class="lineNum">      20 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      21 </span>            : using Cqrs.Messages;
+<span class="lineNum">      22 </span>            : using Microsoft.ServiceBus;
+<span class="lineNum">      23 </span>            : using Microsoft.ServiceBus.Messaging;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : namespace Cqrs.Azure.ServiceBus
+<span class="lineNum">      26 </span>            : {
+<span class="lineNum">      27 </span>            :         // The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
+<span class="lineNum">      28 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      29 </span>            :         [DebuggerDisplay(&quot;{DebuggerDisplay,nq}&quot;)]
+<span class="lineNum">      30 </span>            :         public class AzureEventBusReceiver&lt;TAuthenticationToken&gt;
+<span class="lineNum">      31 </span>            :                 : AzureEventBus&lt;TAuthenticationToken&gt;
+<span class="lineNum">      32 </span>            :                 , IEventHandlerRegistrar
+<span class="lineNum">      33 </span>            :                 , IEventReceiver&lt;TAuthenticationToken&gt;
+<span class="lineNum">      34 </span>            :         {
+<span class="lineNum">      35 </span>            :                 protected virtual string NumberOfReceiversCountConfigurationKey
+<span class="lineNum">      36 </span>            :                 {
+<span class="lineNum">      37 </span>            :                         get { return &quot;Cqrs.Azure.EventBus.NumberOfReceiversCount&quot;; }
+<span class="lineNum">      38 </span>            :                 }
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :                 protected virtual string MaximumConcurrentReceiverProcessesCountConfigurationKey
+<span class="lineNum">      41 </span>            :                 {
+<span class="lineNum">      42 </span>            :                         get { return &quot;Cqrs.Azure.EventBus.MaximumConcurrentReceiverProcessesCount&quot;; }
+<span class="lineNum">      43 </span>            :                 }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 protected virtual string FilterKeyConfigurationKey
+<span class="lineNum">      46 </span>            :                 {
+<span class="lineNum">      47 </span>            :                         get { return &quot;Cqrs.Azure.EventBus.TopicName.SubscriptionName.Filter&quot;; }
+<span class="lineNum">      48 </span>            :                 }
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :                 protected string FilterKey { get; set; }
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :                 // ReSharper disable StaticMemberInGenericType
+<span class="lineNum">      53 </span>            :                 protected static RouteManager Routes { get; private set; }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 protected static long CurrentHandles { get; set; }
+<span class="lineNum">      56 </span>            :                 // ReSharper restore StaticMemberInGenericType
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                 static AzureEventBusReceiver()
+<span class="lineNum">      59 </span>            :                 {
+<span class="lineNum">      60 </span>            :                         Routes = new RouteManager();
+<span class="lineNum">      61 </span>            :                 }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :                 public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper, IBusHelper busHelper)</span>
+<span class="lineNum">      64 </span>            :                         : base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, false)
+<span class="lineNum">      65 </span>            :                 {
+<span class="lineNum">      66 </span>            :                         TelemetryHelper = configurationManager.CreateTelemetryHelper(&quot;Cqrs.Azure.EventBus.Receiver.UseApplicationInsightTelemetryHelper&quot;, correlationIdHelper);
+<span class="lineNum">      67 </span>            :                 }
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :                 internal string DebuggerDisplay
+<span class="lineNum">      70 </span>            :                 {
+<span class="lineNum">      71 </span>            :                         get
+<span class="lineNum">      72 </span>            :                         {
+<span class="lineNum">      73 </span>            :                                 string connectionString = string.Format(&quot;ConnectionString : {0}&quot;, MessageBusConnectionStringConfigurationKey);
+<span class="lineNum">      74 </span>            :                                 try
+<span class="lineNum">      75 </span>            :                                 {
+<span class="lineNum">      76 </span>            :                                         connectionString = string.Concat(connectionString, &quot;=&quot;, GetConnectionString());
+<span class="lineNum">      77 </span>            :                                 }
+<span class="lineNum">      78 </span>            :                                 catch { /**/ }
+<span class="lineNum">      79 </span>            :                                 return string.Format(CultureInfo.InvariantCulture, &quot;{0}, PrivateTopicName : {1}, PrivateTopicSubscriptionName : {2}, PublicTopicName : {3}, PublicTopicSubscriptionName : {4}, FilterKey : {5}, NumberOfReceiversCount : {6}&quot;,
+<span class="lineNum">      80 </span>            :                                         connectionString, PrivateTopicName, PrivateTopicSubscriptionName, PublicTopicName, PublicTopicSubscriptionName, FilterKey, NumberOfReceiversCount);
+<span class="lineNum">      81 </span>            :                         }
+<span class="lineNum">      82 </span>            :                 }
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineCov">          1 :                 public void Start()</span>
+<span class="lineNum">      85 </span>            :                 {
+<span class="lineNum">      86 </span>            :                         InstantiateReceiving();
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :                         // Configure the callback options
+<span class="lineNum">      89 </span>            :                         OnMessageOptions options = new OnMessageOptions
+<span class="lineNum">      90 </span>            :                         {
+<span class="lineNum">      91 </span>            :                                 AutoComplete = false,
+<span class="lineNum">      92 </span>            :                                 AutoRenewTimeout = TimeSpan.FromMinutes(1),
+<span class="lineNum">      93 </span>            :                                 MaxConcurrentCalls = MaximumConcurrentReceiverProcessesCount
+<span class="lineNum">      94 </span>            :                         };
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            :                         // Callback to handle received messages
+<span class="lineNum">      97 </span>            :                         RegisterReceiverMessageHandler(ReceiveEvent, options);
+<span class="lineNum">      98 </span>            :                 }
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :                 #region Overrides of AzureServiceBus&lt;TAuthenticationToken&gt;
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            :                 protected override void InstantiateReceiving(NamespaceManager namespaceManager, IDictionary&lt;int, SubscriptionClient&gt; serviceBusReceivers, string topicName, string topicSubscriptionName)
+<span class="lineNum">     103 </span>            :                 {
+<span class="lineNum">     104 </span>            :                         base.InstantiateReceiving(namespaceManager, serviceBusReceivers, topicName, topicSubscriptionName);
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :                         Task.Factory.StartNewSafely
+<span class="lineNum">     107 </span>            :                         (() =&gt;
+<span class="lineNum">     108 </span>            :                         {
+<span class="lineNum">     109 </span>            :                                 // Because refreshing the rule can take a while, we only want to do this when the value changes
+<span class="lineNum">     110 </span>            :                                 string filter;
+<span class="lineNum">     111 </span>            :                                 if (!ConfigurationManager.TryGetSetting(FilterKeyConfigurationKey, out filter))
+<span class="lineNum">     112 </span>            :                                         return;
+<span class="lineNum">     113 </span>            :                                 if (FilterKey == filter)
+<span class="lineNum">     114 </span>            :                                         return;
+<span class="lineNum">     115 </span>            :                                 FilterKey = filter;
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span>            :                                 // https://docs.microsoft.com/en-us/azure/application-insights/app-insights-analytics-reference#summarize-operator
+<span class="lineNum">     118 </span>            :                                 // http://www.summa.com/blog/business-blog/everything-you-need-to-know-about-azure-service-bus-brokered-messaging-part-2#rulesfiltersactions
+<span class="lineNum">     119 </span>            :                                 // https://github.com/Azure-Samples/azure-servicebus-messaging-samples/tree/master/TopicFilters
+<span class="lineNum">     120 </span>            :                                 SubscriptionClient client = serviceBusReceivers[0];
+<span class="lineNum">     121 </span>            :                                 bool reAddRule = false;
+<span class="lineNum">     122 </span>            :                                 try
+<span class="lineNum">     123 </span>            :                                 {
+<span class="lineNum">     124 </span>            :                                         IEnumerable&lt;RuleDescription&gt; rules = namespaceManager.GetRules(client.TopicPath, client.Name).ToList();
+<span class="lineNum">     125 </span>            :                                         RuleDescription ruleDescription = rules.SingleOrDefault(rule =&gt; rule.Name == &quot;CqrsConfiguredFilter&quot;);
+<span class="lineNum">     126 </span>            :                                         if (ruleDescription != null)
+<span class="lineNum">     127 </span>            :                                         {
+<span class="lineNum">     128 </span>            :                                                 var sqlFilter = ruleDescription.Filter as SqlFilter;
+<span class="lineNum">     129 </span>            :                                                 if (sqlFilter == null &amp;&amp; !string.IsNullOrWhiteSpace(filter))
+<span class="lineNum">     130 </span>            :                                                         reAddRule = true;
+<span class="lineNum">     131 </span>            :                                                 else if (sqlFilter != null &amp;&amp; sqlFilter.SqlExpression != filter)
+<span class="lineNum">     132 </span>            :                                                         reAddRule = true;
+<span class="lineNum">     133 </span>            :                                                 if (sqlFilter != null &amp;&amp; reAddRule)
+<span class="lineNum">     134 </span>            :                                                         client.RemoveRule(&quot;CqrsConfiguredFilter&quot;);
+<span class="lineNum">     135 </span>            :                                         }
+<span class="lineNum">     136 </span>            :                                         else if (!string.IsNullOrWhiteSpace(filter))
+<span class="lineNum">     137 </span>            :                                                 reAddRule = true;
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :                                         ruleDescription = rules.SingleOrDefault(rule =&gt; rule.Name == &quot;$Default&quot;);
+<span class="lineNum">     140 </span>            :                                         // If there is a default rule and we have a rule, it will cause issues
+<span class="lineNum">     141 </span>            :                                         if (!string.IsNullOrWhiteSpace(filter) &amp;&amp; ruleDescription != null)
+<span class="lineNum">     142 </span>            :                                                 client.RemoveRule(&quot;$Default&quot;);
+<span class="lineNum">     143 </span>            :                                         // If we don't have a rule and there is no longer a default rule, it will cause issues
+<span class="lineNum">     144 </span>            :                                         else if (string.IsNullOrWhiteSpace(filter) &amp;&amp; !rules.Any())
+<span class="lineNum">     145 </span>            :                                         {
+<span class="lineNum">     146 </span>            :                                                 ruleDescription = new RuleDescription
+<span class="lineNum">     147 </span>            :                                                 (
+<span class="lineNum">     148 </span>            :                                                         &quot;$Default&quot;,
+<span class="lineNum">     149 </span>            :                                                         new SqlFilter(&quot;1=1&quot;)
+<span class="lineNum">     150 </span>            :                                                 );
+<span class="lineNum">     151 </span>            :                                                 client.AddRule(ruleDescription);
+<span class="lineNum">     152 </span>            :                                         }
+<span class="lineNum">     153 </span>            :                                 }
+<span class="lineNum">     154 </span>            :                                 catch (MessagingEntityNotFoundException)
+<span class="lineNum">     155 </span>            :                                 {
+<span class="lineNum">     156 </span>            :                                 }
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span>            :                                 if (!reAddRule)
+<span class="lineNum">     159 </span>            :                                         return;
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            :                                 int loopCounter = 0;
+<span class="lineNum">     162 </span>            :                                 while (loopCounter &lt; 10)
+<span class="lineNum">     163 </span>            :                                 {
+<span class="lineNum">     164 </span>            :                                         try
+<span class="lineNum">     165 </span>            :                                         {
+<span class="lineNum">     166 </span>            :                                                 RuleDescription ruleDescription = new RuleDescription
+<span class="lineNum">     167 </span>            :                                                 (
+<span class="lineNum">     168 </span>            :                                                         &quot;CqrsConfiguredFilter&quot;,
+<span class="lineNum">     169 </span>            :                                                         new SqlFilter(filter)
+<span class="lineNum">     170 </span>            :                                                 );
+<span class="lineNum">     171 </span>            :                                                 client.AddRule(ruleDescription);
+<span class="lineNum">     172 </span>            :                                                 break;
+<span class="lineNum">     173 </span>            :                                         }
+<span class="lineNum">     174 </span>            :                                         catch (MessagingEntityAlreadyExistsException exception)
+<span class="lineNum">     175 </span>            :                                         {
+<span class="lineNum">     176 </span>            :                                                 loopCounter++;
+<span class="lineNum">     177 </span>            :                                                 // Still waiting for the delete to complete
+<span class="lineNum">     178 </span>            :                                                 Thread.Sleep(1000);
+<span class="lineNum">     179 </span>            :                                                 if (loopCounter == 9)
+<span class="lineNum">     180 </span>            :                                                 {
+<span class="lineNum">     181 </span>            :                                                         Logger.LogError(&quot;Setting the filter failed as it already exists.&quot;, exception: exception);
+<span class="lineNum">     182 </span>            :                                                         TelemetryHelper.TrackException(exception);
+<span class="lineNum">     183 </span>            :                                                 }
+<span class="lineNum">     184 </span>            :                                         }
+<span class="lineNum">     185 </span>            :                                         catch (Exception exception)
+<span class="lineNum">     186 </span>            :                                         {
+<span class="lineNum">     187 </span>            :                                                 Logger.LogError(&quot;Setting the filter failed.&quot;, exception: exception);
+<span class="lineNum">     188 </span>            :                                                 TelemetryHelper.TrackException(exception);
+<span class="lineNum">     189 </span>            :                                                 break;
+<span class="lineNum">     190 </span>            :                                         }
+<span class="lineNum">     191 </span>            :                                 }
+<span class="lineNum">     192 </span>            :                         });
+<span class="lineNum">     193 </span>            :                 }
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span>            :                 #endregion
+<span class="lineNum">     196 </span>            : 
+<span class="lineNum">     197 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     198 </span>            :                 /// Register an event or command handler that will listen and respond to events or commands.
+<span class="lineNum">     199 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     200 </span><span class="lineCov">          1 :                 public virtual void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
+<span class="lineNum">     201 </span>            :                         where TMessage : IMessage
+<span class="lineNum">     202 </span>            :                 {
+<span class="lineNum">     203 </span>            :                         AzureBusHelper.RegisterHandler(TelemetryHelper, Routes, handler, targetedType, holdMessageLock);
+<span class="lineNum">     204 </span>            :                 }
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     207 </span>            :                 /// Register an event or command handler that will listen and respond to events or commands.
+<span class="lineNum">     208 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     209 </span><span class="lineCov">          1 :                 public void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = false)</span>
+<span class="lineNum">     210 </span>            :                         where TMessage : IMessage
+<span class="lineNum">     211 </span>            :                 {
+<span class="lineNum">     212 </span>            :                         RegisterHandler(handler, null, holdMessageLock);
+<span class="lineNum">     213 </span>            :                 }
+<span class="lineNum">     214 </span>            : 
+<span class="lineNum">     215 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     216 </span>            :                 /// Register an event handler that will listen and respond to all events.
+<span class="lineNum">     217 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     218 </span><span class="lineCov">          1 :                 public void RegisterGlobalEventHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = true) where TMessage : IMessage</span>
+<span class="lineNum">     219 </span>            :                 {
+<span class="lineNum">     220 </span>            :                         AzureBusHelper.RegisterGlobalEventHandler(TelemetryHelper, Routes, handler, holdMessageLock);
+<span class="lineNum">     221 </span>            :                 }
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span>            :                 protected virtual void ReceiveEvent(BrokeredMessage message)
+<span class="lineNum">     224 </span>            :                 {
+<span class="lineNum">     225 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+<span class="lineNum">     226 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
+<span class="lineNum">     227 </span>            :                         string responseCode = &quot;200&quot;;
+<span class="lineNum">     228 </span>            :                         // Null means it was skipped
+<span class="lineNum">     229 </span>            :                         bool? wasSuccessfull = true;
+<span class="lineNum">     230 </span>            :                         string telemetryName = string.Format(&quot;Cqrs/Handle/Event/{0}&quot;, message.MessageId);
+<span class="lineNum">     231 </span>            :                         ISingleSignOnToken authenticationToken = null;
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Servicebus&quot; } };
+<span class="lineNum">     234 </span>            :                         object value;
+<span class="lineNum">     235 </span>            :                         if (message.Properties.TryGetValue(&quot;Type&quot;, out value))
+<span class="lineNum">     236 </span>            :                                 telemetryProperties.Add(&quot;MessageType&quot;, value.ToString());
+<span class="lineNum">     237 </span>            :                         TelemetryHelper.TrackMetric(&quot;Cqrs/Handle/Event&quot;, CurrentHandles++, telemetryProperties);
+<span class="lineNum">     238 </span>            :                         var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
+<span class="lineNum">     239 </span>            :                         try
+<span class="lineNum">     240 </span>            :                         {
+<span class="lineNum">     241 </span>            :                                 Logger.LogDebug(string.Format(&quot;An event message arrived with the id '{0}'.&quot;, message.MessageId));
+<span class="lineNum">     242 </span>            :                                 string messageBody = message.GetBody&lt;string&gt;();
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span>            :                                 IEvent&lt;TAuthenticationToken&gt; @event = AzureBusHelper.ReceiveEvent(messageBody, ReceiveEvent,
+<span class="lineNum">     245 </span>            :                                         string.Format(&quot;id '{0}'&quot;, message.MessageId),
+<span class="lineNum">     246 </span>            :                                         () =&gt;
+<span class="lineNum">     247 </span>            :                                         {
+<span class="lineNum">     248 </span>            :                                                 wasSuccessfull = null;
+<span class="lineNum">     249 </span>            :                                                 telemetryName = string.Format(&quot;Cqrs/Handle/Event/Skipped/{0}&quot;, message.MessageId);
+<span class="lineNum">     250 </span>            :                                                 responseCode = &quot;204&quot;;
+<span class="lineNum">     251 </span>            :                                                 // Remove message from queue
+<span class="lineNum">     252 </span>            :                                                 try
+<span class="lineNum">     253 </span>            :                                                 {
+<span class="lineNum">     254 </span>            :                                                         message.Complete();
+<span class="lineNum">     255 </span>            :                                                 }
+<span class="lineNum">     256 </span>            :                                                 catch (MessageLockLostException exception)
+<span class="lineNum">     257 </span>            :                                                 {
+<span class="lineNum">     258 </span>            :                                                         throw new MessageLockLostException(string.Format(&quot;The lock supplied for the skipped event message '{0}' is invalid.&quot;, message.MessageId), exception);
+<span class="lineNum">     259 </span>            :                                                 }
+<span class="lineNum">     260 </span>            :                                                 Logger.LogDebug(string.Format(&quot;An event message arrived with the id '{0}' but processing was skipped due to event settings.&quot;, message.MessageId));
+<span class="lineNum">     261 </span>            :                                                 TelemetryHelper.TrackEvent(&quot;Cqrs/Handle/Event/Skipped&quot;, telemetryProperties);
+<span class="lineNum">     262 </span>            :                                         },
+<span class="lineNum">     263 </span>            :                                         () =&gt;
+<span class="lineNum">     264 </span>            :                                         {
+<span class="lineNum">     265 </span>            :                                                 AzureBusHelper.RefreshLock(brokeredMessageRenewCancellationTokenSource, message, &quot;event&quot;);
+<span class="lineNum">     266 </span>            :                                         }
+<span class="lineNum">     267 </span>            :                                 );
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span>            :                                 if (wasSuccessfull != null)
+<span class="lineNum">     270 </span>            :                                 {
+<span class="lineNum">     271 </span>            :                                         if (@event != null)
+<span class="lineNum">     272 </span>            :                                         {
+<span class="lineNum">     273 </span>            :                                                 telemetryName = string.Format(&quot;{0}/{1}&quot;, @event.GetType().FullName, @event.Id);
+<span class="lineNum">     274 </span>            :                                                 authenticationToken = @event.AuthenticationToken as ISingleSignOnToken;
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span>            :                                                 var telemeteredMessage = @event as ITelemeteredMessage;
+<span class="lineNum">     277 </span>            :                                                 if (telemeteredMessage != null)
+<span class="lineNum">     278 </span>            :                                                         telemetryName = telemeteredMessage.TelemetryName;
+<span class="lineNum">     279 </span>            : 
+<span class="lineNum">     280 </span>            :                                                 telemetryName = string.Format(&quot;Cqrs/Handle/Event/{0}&quot;, telemetryName);
+<span class="lineNum">     281 </span>            :                                         }
+<span class="lineNum">     282 </span>            :                                         // Remove message from queue
+<span class="lineNum">     283 </span>            :                                         try
+<span class="lineNum">     284 </span>            :                                         {
+<span class="lineNum">     285 </span>            :                                                 message.Complete();
+<span class="lineNum">     286 </span>            :                                         }
+<span class="lineNum">     287 </span>            :                                         catch (MessageLockLostException exception)
+<span class="lineNum">     288 </span>            :                                         {
+<span class="lineNum">     289 </span>            :                                                 throw new MessageLockLostException(string.Format(&quot;The lock supplied for event '{0}' of type {1} is invalid.&quot;, @event.Id, @event.GetType().Name), exception);
+<span class="lineNum">     290 </span>            :                                         }
+<span class="lineNum">     291 </span>            :                                 }
+<span class="lineNum">     292 </span>            :                                 Logger.LogDebug(string.Format(&quot;An event message arrived and was processed with the id '{0}'.&quot;, message.MessageId));
+<span class="lineNum">     293 </span>            : 
+<span class="lineNum">     294 </span>            :                                 IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events;
+<span class="lineNum">     295 </span>            :                                 if (EventWaits.TryGetValue(@event.CorrelationId, out events))
+<span class="lineNum">     296 </span>            :                                         events.Add(@event);
+<span class="lineNum">     297 </span>            :                         }
+<span class="lineNum">     298 </span>            :                         catch (MessageLockLostException exception)
+<span class="lineNum">     299 </span>            :                         {
+<span class="lineNum">     300 </span>            :                                 IDictionary&lt;string, string&gt; subTelemetryProperties = new Dictionary&lt;string, string&gt;(telemetryProperties);
+<span class="lineNum">     301 </span>            :                                 subTelemetryProperties.Add(&quot;TimeTaken&quot;, mainStopWatch.Elapsed.ToString());
+<span class="lineNum">     302 </span>            :                                 TelemetryHelper.TrackException(exception, null, subTelemetryProperties);
+<span class="lineNum">     303 </span>            :                                 if (ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete)
+<span class="lineNum">     304 </span>            :                                 {
+<span class="lineNum">     305 </span>            :                                         Logger.LogError(exception.Message, exception: exception);
+<span class="lineNum">     306 </span>            :                                         // Indicates a problem, unlock message in queue
+<span class="lineNum">     307 </span>            :                                         message.Abandon();
+<span class="lineNum">     308 </span>            :                                         wasSuccessfull = false;
+<span class="lineNum">     309 </span>            :                                 }
+<span class="lineNum">     310 </span>            :                                 else
+<span class="lineNum">     311 </span>            :                                 {
+<span class="lineNum">     312 </span>            :                                         Logger.LogWarning(exception.Message, exception: exception);
+<span class="lineNum">     313 </span>            :                                         try
+<span class="lineNum">     314 </span>            :                                         {
+<span class="lineNum">     315 </span>            :                                                 message.DeadLetter(&quot;LockLostButHandled&quot;, &quot;The message was handled but the lock was lost.&quot;);
+<span class="lineNum">     316 </span>            :                                         }
+<span class="lineNum">     317 </span>            :                                         catch (Exception)
+<span class="lineNum">     318 </span>            :                                         {
+<span class="lineNum">     319 </span>            :                                                 // Oh well, move on.
+<span class="lineNum">     320 </span>            :                                                 message.Abandon();
+<span class="lineNum">     321 </span>            :                                         }
+<span class="lineNum">     322 </span>            :                                 }
+<span class="lineNum">     323 </span>            :                                 responseCode = &quot;599&quot;;
+<span class="lineNum">     324 </span>            :                         }
+<span class="lineNum">     325 </span>            :                         catch (Exception exception)
+<span class="lineNum">     326 </span>            :                         {
+<span class="lineNum">     327 </span>            :                                 TelemetryHelper.TrackException(exception, null, telemetryProperties);
+<span class="lineNum">     328 </span>            :                                 // Indicates a problem, unlock message in queue
+<span class="lineNum">     329 </span>            :                                 Logger.LogError(string.Format(&quot;An event message arrived with the id '{0}' but failed to be process.&quot;, message.MessageId), exception: exception);
+<span class="lineNum">     330 </span>            :                                 message.Abandon();
+<span class="lineNum">     331 </span>            :                                 wasSuccessfull = false;
+<span class="lineNum">     332 </span>            :                                 responseCode = &quot;500&quot;;
+<span class="lineNum">     333 </span>            :                                 telemetryProperties.Add(&quot;ExceptionType&quot;, exception.GetType().FullName);
+<span class="lineNum">     334 </span>            :                                 telemetryProperties.Add(&quot;ExceptionMessage&quot;, exception.Message);
+<span class="lineNum">     335 </span>            :                         }
+<span class="lineNum">     336 </span>            :                         finally
+<span class="lineNum">     337 </span>            :                         {
+<span class="lineNum">     338 </span>            :                                 // Cancel the lock of renewing the task
+<span class="lineNum">     339 </span>            :                                 brokeredMessageRenewCancellationTokenSource.Cancel();
+<span class="lineNum">     340 </span>            :                                 TelemetryHelper.TrackMetric(&quot;Cqrs/Handle/Event&quot;, CurrentHandles--, telemetryProperties);
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span>            :                                 mainStopWatch.Stop();
+<span class="lineNum">     343 </span>            :                                 TelemetryHelper.TrackRequest
+<span class="lineNum">     344 </span>            :                                 (
+<span class="lineNum">     345 </span>            :                                         telemetryName,
+<span class="lineNum">     346 </span>            :                                         authenticationToken,
+<span class="lineNum">     347 </span>            :                                         startedAt,
+<span class="lineNum">     348 </span>            :                                         mainStopWatch.Elapsed,
+<span class="lineNum">     349 </span>            :                                         responseCode,
+<span class="lineNum">     350 </span>            :                                         wasSuccessfull == null || wasSuccessfull.Value,
+<span class="lineNum">     351 </span>            :                                         telemetryProperties
+<span class="lineNum">     352 </span>            :                                 );
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span>            :                                 TelemetryHelper.Flush();
+<span class="lineNum">     355 </span>            :                         }
+<span class="lineNum">     356 </span>            :                 }
+<span class="lineNum">     357 </span>            : 
+<span class="lineNum">     358 </span><span class="lineCov">          1 :                 public virtual bool? ReceiveEvent(IEvent&lt;TAuthenticationToken&gt; @event)</span>
+<span class="lineNum">     359 </span>            :                 {
+<span class="lineNum">     360 </span>            :                         return AzureBusHelper.DefaultReceiveEvent(@event, Routes, &quot;Azure-ServiceBus&quot;);
+<span class="lineNum">     361 </span>            :                 }
+<span class="lineNum">     362 </span>            : 
+<span class="lineNum">     363 </span>            :                 #region Overrides of AzureServiceBus&lt;TAuthenticationToken&gt;
+<span class="lineNum">     364 </span>            : 
+<span class="lineNum">     365 </span>            :                 protected override int GetCurrentNumberOfReceiversCount()
+<span class="lineNum">     366 </span>            :                 {
+<span class="lineNum">     367 </span>            :                         string numberOfReceiversCountValue;
+<span class="lineNum">     368 </span>            :                         int numberOfReceiversCount;
+<span class="lineNum">     369 </span>            :                         if (ConfigurationManager.TryGetSetting(NumberOfReceiversCountConfigurationKey, out numberOfReceiversCountValue) &amp;&amp; !string.IsNullOrWhiteSpace(numberOfReceiversCountValue))
+<span class="lineNum">     370 </span>            :                         {
+<span class="lineNum">     371 </span>            :                                 if (!int.TryParse(numberOfReceiversCountValue, out numberOfReceiversCount))
+<span class="lineNum">     372 </span>            :                                         numberOfReceiversCount = DefaultNumberOfReceiversCount;
+<span class="lineNum">     373 </span>            :                         }
+<span class="lineNum">     374 </span>            :                         else
+<span class="lineNum">     375 </span>            :                                 numberOfReceiversCount = DefaultNumberOfReceiversCount;
+<span class="lineNum">     376 </span>            :                         return numberOfReceiversCount;
+<span class="lineNum">     377 </span>            :                 }
+<span class="lineNum">     378 </span>            : 
+<span class="lineNum">     379 </span>            :                 protected override int GetCurrentMaximumConcurrentReceiverProcessesCount()
+<span class="lineNum">     380 </span>            :                 {
+<span class="lineNum">     381 </span>            :                         string maximumConcurrentReceiverProcessesCountValue;
+<span class="lineNum">     382 </span>            :                         int maximumConcurrentReceiverProcessesCount;
+<span class="lineNum">     383 </span>            :                         if (ConfigurationManager.TryGetSetting(MaximumConcurrentReceiverProcessesCountConfigurationKey, out maximumConcurrentReceiverProcessesCountValue) &amp;&amp; !string.IsNullOrWhiteSpace(maximumConcurrentReceiverProcessesCountValue))
+<span class="lineNum">     384 </span>            :                         {
+<span class="lineNum">     385 </span>            :                                 if (!int.TryParse(maximumConcurrentReceiverProcessesCountValue, out maximumConcurrentReceiverProcessesCount))
+<span class="lineNum">     386 </span>            :                                         maximumConcurrentReceiverProcessesCount = DefaultMaximumConcurrentReceiverProcessesCount;
+<span class="lineNum">     387 </span>            :                         }
+<span class="lineNum">     388 </span>            :                         else
+<span class="lineNum">     389 </span>            :                                 maximumConcurrentReceiverProcessesCount = DefaultMaximumConcurrentReceiverProcessesCount;
+<span class="lineNum">     390 </span>            :                         return maximumConcurrentReceiverProcessesCount;
+<span class="lineNum">     391 </span>            :                 }
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span>            :                 #endregion
+<span class="lineNum">     394 </span>            :         }
+<span class="lineNum">     395 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

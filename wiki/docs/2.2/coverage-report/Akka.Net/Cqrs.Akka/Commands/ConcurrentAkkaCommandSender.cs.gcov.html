@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Akka.Net/Cqrs.Akka/Commands</a> - ConcurrentAkkaCommandSender.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryMed">75.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Linq;
+<span class="lineNum">      12 </span>            : using Akka.Actor;
+<span class="lineNum">      13 </span>            : using Cqrs.Commands;
+<span class="lineNum">      14 </span>            : using Cqrs.Events;
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : namespace Cqrs.Akka.Commands
+<span class="lineNum">      17 </span>            : {
+<span class="lineNum">      18 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      19 </span>            :         /// A &lt;see cref=&quot;IAkkaCommandPublisher{TAuthenticationToken}&quot;/&gt; that ensure concurrency regardless of what it passes the command onto as it is a &lt;see cref=&quot;ReceiveActor&quot;/&gt;
+<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      21 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      22 </span>            :         /// &lt;typeparam name=&quot;TTarget&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the object that is targeted that needs concurrency.&lt;/typeparam&gt;
+<span class="lineNum">      23 </span>            :         public class ConcurrentAkkaCommandPublisher&lt;TAuthenticationToken, TTarget&gt;
+<span class="lineNum">      24 </span>            :                 : ReceiveActor
+<span class="lineNum">      25 </span>            :                 , IConcurrentAkkaCommandPublisher&lt;TAuthenticationToken, TTarget&gt;
+<span class="lineNum">      26 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      27 </span>            :                 protected IActorRef ActorReference { get; private set; }
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                 protected ICommandReceiver&lt;TAuthenticationToken&gt; CommandReceiver { get; private set; }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span><span class="lineNoCov">          0 :                 public ConcurrentAkkaCommandPublisher(IActorRef actorReference, ICommandReceiver&lt;TAuthenticationToken&gt; commandReceiver)</span>
+<span class="lineNum">      32 </span>            :                 {
+<span class="lineNum">      33 </span>            :                         ActorReference = actorReference;
+<span class="lineNum">      34 </span>            :                         CommandReceiver = commandReceiver;
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 #region Implementation of ICommandPublisher&lt;TAuthenticationToken&gt;
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span><span class="lineCov">          1 :                 public void Publish&lt;TCommand&gt;(TCommand command)</span>
+<span class="lineNum">      40 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">      41 </span>            :                 {
+<span class="lineNum">      42 </span>            :                         // This will trigger the Akka cycle back publishing... It looks weird, but trust it
+<span class="lineNum">      43 </span>            :                         // This is for when a command originated outside Akka and now needs to be pushed into Akka
+<span class="lineNum">      44 </span>            :                         CommandReceiver.ReceiveCommand(command);
+<span class="lineNum">      45 </span>            :                 }
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :                 public void Send&lt;TCommand&gt;(TCommand command)</span>
+<span class="lineNum">      48 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">      49 </span>            :                 {
+<span class="lineNum">      50 </span>            :                         Publish(command);
+<span class="lineNum">      51 </span>            :                 }
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span><span class="lineCov">          1 :                 public void Publish&lt;TCommand&gt;(IEnumerable&lt;TCommand&gt; commands)</span>
+<span class="lineNum">      54 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">      55 </span>            :                 {
+<span class="lineNum">      56 </span>            :                         // This will trigger the Akka cycle back publishing... It looks weird, but trust it
+<span class="lineNum">      57 </span>            :                         // This is for when a command originated outside Akka and now needs to be pushed into Akka
+<span class="lineNum">      58 </span>            :                         foreach (TCommand command in commands)
+<span class="lineNum">      59 </span>            :                                 CommandReceiver.ReceiveCommand(command);
+<span class="lineNum">      60 </span>            :                 }
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :                 public void Send&lt;TCommand&gt;(IEnumerable&lt;TCommand&gt; commands)</span>
+<span class="lineNum">      63 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">      64 </span>            :                 {
+<span class="lineNum">      65 </span>            :                         Publish(commands);
+<span class="lineNum">      66 </span>            :                 }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      69 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt;
+<span class="lineNum">      70 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      71 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to publish.&lt;/param&gt;
+<span class="lineNum">      72 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">      73 </span><span class="lineCov">          1 :                 public virtual TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">      74 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">      75 </span>            :                 {
+<span class="lineNum">      76 </span>            :                         return PublishAndWait&lt;TCommand, TEvent&gt;(command, -1, eventReceiver);
+<span class="lineNum">      77 </span>            :                 }
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      80 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">      81 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      82 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to publish.&lt;/param&gt;
+<span class="lineNum">      83 </span>            :                 /// &lt;param name=&quot;millisecondsTimeout&quot;&gt;The number of milliseconds to wait, or &lt;see cref=&quot;F:System.Threading.Timeout.Infinite&quot;/&gt; (-1) to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">      84 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">      85 </span><span class="lineCov">          1 :                 public TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, int millisecondsTimeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">      86 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">      87 </span>            :                 {
+<span class="lineNum">      88 </span>            :                         return PublishAndWait(command, events =&gt; (TEvent)events.SingleOrDefault(@event =&gt; @event is TEvent), millisecondsTimeout, eventReceiver);
+<span class="lineNum">      89 </span>            :                 }
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      92 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">      93 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      94 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to publish.&lt;/param&gt;
+<span class="lineNum">      95 </span>            :                 /// &lt;param name=&quot;timeout&quot;&gt;A &lt;see cref=&quot;T:System.TimeSpan&quot;/&gt; that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">      96 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">      97 </span><span class="lineCov">          1 :                 public TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, TimeSpan timeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">      98 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">      99 </span>            :                 {
+<span class="lineNum">     100 </span>            :                         long num = (long)timeout.TotalMilliseconds;
+<span class="lineNum">     101 </span>            :                         if (num &lt; -1L || num &gt; int.MaxValue)
+<span class="lineNum">     102 </span>            :                                 throw new ArgumentOutOfRangeException(&quot;timeout&quot;, timeout, &quot;SpinWait_SpinUntil_TimeoutWrong&quot;);
+<span class="lineNum">     103 </span>            :                         return PublishAndWait&lt;TCommand, TEvent&gt;(command, (int)timeout.TotalMilliseconds, eventReceiver);
+<span class="lineNum">     104 </span>            :                 }
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     107 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits until the specified condition is satisfied an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt;
+<span class="lineNum">     108 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     109 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to publish.&lt;/param&gt;
+<span class="lineNum">     110 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
+<span class="lineNum">     111 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     112 </span><span class="lineCov">          1 :                 public TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     113 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     114 </span>            :                 {
+<span class="lineNum">     115 </span>            :                         return PublishAndWait(command, condition, -1, eventReceiver);
+<span class="lineNum">     116 </span>            :                 }
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     119 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     120 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     121 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to publish.&lt;/param&gt;
+<span class="lineNum">     122 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
+<span class="lineNum">     123 </span>            :                 /// &lt;param name=&quot;millisecondsTimeout&quot;&gt;The number of milliseconds to wait, or &lt;see cref=&quot;F:System.Threading.Timeout.Infinite&quot;/&gt; (-1) to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     124 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     125 </span><span class="lineCov">          1 :                 public TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, int millisecondsTimeout,</span>
+<span class="lineNum">     126 </span>            :                         IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null) where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     127 </span>            :                 {
+<span class="lineNum">     128 </span>            :                         throw new NotImplementedException(&quot;This is a proxy so this wouldn't happen here.&quot;);
+<span class="lineNum">     129 </span>            :                 }
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     132 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     133 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     134 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to publish.&lt;/param&gt;
+<span class="lineNum">     135 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
+<span class="lineNum">     136 </span>            :                 /// &lt;param name=&quot;timeout&quot;&gt;A &lt;see cref=&quot;T:System.TimeSpan&quot;/&gt; that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     137 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     138 </span><span class="lineCov">          1 :                 public TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, TimeSpan timeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     139 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     140 </span>            :                 {
+<span class="lineNum">     141 </span>            :                         long num = (long)timeout.TotalMilliseconds;
+<span class="lineNum">     142 </span>            :                         if (num &lt; -1L || num &gt; int.MaxValue)
+<span class="lineNum">     143 </span>            :                                 throw new ArgumentOutOfRangeException(&quot;timeout&quot;, timeout, &quot;SpinWait_SpinUntil_TimeoutWrong&quot;);
+<span class="lineNum">     144 </span>            :                         return PublishAndWait(command, condition, (int)timeout.TotalMilliseconds, eventReceiver);
+<span class="lineNum">     145 </span>            :                 }
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            :                 #endregion
+<span class="lineNum">     148 </span>            :         }
+<span class="lineNum">     149 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

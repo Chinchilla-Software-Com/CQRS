@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.WebApi/Formatters/FormMultipart/Converters/ObjectToMultipartDataByteArrayConverter.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">Cqrs.WebApi/Formatters/FormMultipart/Converters</a> - ObjectToMultipartDataByteArrayConverter.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System;
+<span class="lineNum">       2 </span>            : using System.Collections;
+<span class="lineNum">       3 </span>            : using System.Collections.Generic;
+<span class="lineNum">       4 </span>            : using System.Linq;
+<span class="lineNum">       5 </span>            : using System.Runtime.Serialization;
+<span class="lineNum">       6 </span>            : using System.Text;
+<span class="lineNum">       7 </span>            : using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure;
+<span class="lineNum">       8 </span>            : using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Extensions;
+<span class="lineNum">       9 </span>            : 
+<span class="lineNum">      10 </span>            : namespace Cqrs.WebApi.Formatters.FormMultipart.Converters
+<span class="lineNum">      11 </span>            : {
+<span class="lineNum">      12 </span>            :         public class ObjectToMultipartDataByteArrayConverter
+<span class="lineNum">      13 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      14 </span>            :                 private MultipartFormatterSettings Settings { get; set; }
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span><span class="lineNoCov">          0 :                 public ObjectToMultipartDataByteArrayConverter(MultipartFormatterSettings settings)</span>
+<span class="lineNum">      17 </span>            :                 {
+<span class="lineNum">      18 </span>            :                         if (settings == null)
+<span class="lineNum">      19 </span>            :                                 throw new ArgumentNullException(&quot;settings&quot;);
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            :                         Settings = settings;
+<span class="lineNum">      22 </span>            :                 }
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span><span class="lineNoCov">          0 :                 public byte[] Convert(object value, string boundary)</span>
+<span class="lineNum">      25 </span>            :                 {
+<span class="lineNum">      26 </span>            :                         if(value == null)
+<span class="lineNum">      27 </span>            :                                 throw new ArgumentNullException(&quot;value&quot;);
+<span class="lineNum">      28 </span>            :                         if (String.IsNullOrWhiteSpace(boundary))
+<span class="lineNum">      29 </span>            :                                 throw new ArgumentNullException(&quot;boundary&quot;);
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                         List&lt;KeyValuePair&lt;string, object&gt;&gt; propertiesList = ConvertObjectToFlatPropertiesList(value);
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            :                         byte[] buffer = GetMultipartFormDataBytes(propertiesList, boundary);
+<span class="lineNum">      34 </span>            :                         return buffer;
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 private List&lt;KeyValuePair&lt;string, object&gt;&gt; ConvertObjectToFlatPropertiesList(object value)
+<span class="lineNum">      38 </span>            :                 {
+<span class="lineNum">      39 </span>            :                         var propertiesList = new List&lt;KeyValuePair&lt;string, object&gt;&gt;();
+<span class="lineNum">      40 </span>            :                         if (value is FormData)
+<span class="lineNum">      41 </span>            :                         {
+<span class="lineNum">      42 </span>            :                                 FillFlatPropertiesListFromFormData((FormData) value, propertiesList);
+<span class="lineNum">      43 </span>            :                         }
+<span class="lineNum">      44 </span>            :                         else
+<span class="lineNum">      45 </span>            :                         {
+<span class="lineNum">      46 </span>            :                                 FillFlatPropertiesListFromObject(value, &quot;&quot;, propertiesList);   
+<span class="lineNum">      47 </span>            :                         }
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                         return propertiesList;
+<span class="lineNum">      50 </span>            :                 }
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :                 private void FillFlatPropertiesListFromFormData(FormData formData, List&lt;KeyValuePair&lt;string, object&gt;&gt; propertiesList)
+<span class="lineNum">      53 </span>            :                 {
+<span class="lineNum">      54 </span>            :                         foreach (var field in formData.Fields)
+<span class="lineNum">      55 </span>            :                         {
+<span class="lineNum">      56 </span>            :                                 propertiesList.Add(new KeyValuePair&lt;string, object&gt;(field.Name, field.Value));
+<span class="lineNum">      57 </span>            :                         }
+<span class="lineNum">      58 </span>            :                         foreach (var field in formData.Files)
+<span class="lineNum">      59 </span>            :                         {
+<span class="lineNum">      60 </span>            :                                 propertiesList.Add(new KeyValuePair&lt;string, object&gt;(field.Name, field.Value));
+<span class="lineNum">      61 </span>            :                         }
+<span class="lineNum">      62 </span>            :                 }
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :                 private void FillFlatPropertiesListFromObject(object obj, string prefix, List&lt;KeyValuePair&lt;string, object&gt;&gt; propertiesList)
+<span class="lineNum">      65 </span>            :                 {
+<span class="lineNum">      66 </span>            :                         if (obj != null)
+<span class="lineNum">      67 </span>            :                         {
+<span class="lineNum">      68 </span>            :                                 Type type = obj.GetType();
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :                                 if (obj is IDictionary)
+<span class="lineNum">      71 </span>            :                                 {
+<span class="lineNum">      72 </span>            :                                         var dict = obj as IDictionary;
+<span class="lineNum">      73 </span>            :                                         int index = 0;
+<span class="lineNum">      74 </span>            :                                         foreach (var key in dict.Keys)
+<span class="lineNum">      75 </span>            :                                         {
+<span class="lineNum">      76 </span>            :                                                 string indexedKeyPropName = String.Format(&quot;{0}[{1}].Key&quot;, prefix, index);
+<span class="lineNum">      77 </span>            :                                                 FillFlatPropertiesListFromObject(key, indexedKeyPropName, propertiesList);
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :                                                 string indexedValuePropName = String.Format(&quot;{0}[{1}].Value&quot;, prefix, index);
+<span class="lineNum">      80 </span>            :                                                 FillFlatPropertiesListFromObject(dict[key], indexedValuePropName, propertiesList);
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                                                 index++;
+<span class="lineNum">      83 </span>            :                                         }
+<span class="lineNum">      84 </span>            :                                 }
+<span class="lineNum">      85 </span>            :                                 else if (obj is ICollection &amp;&amp; !IsByteArrayConvertableToHttpFile(obj))
+<span class="lineNum">      86 </span>            :                                 {
+<span class="lineNum">      87 </span>            :                                         var list = obj as ICollection;
+<span class="lineNum">      88 </span>            :                                         int index = 0;
+<span class="lineNum">      89 </span>            :                                         foreach (var indexedPropValue in list)
+<span class="lineNum">      90 </span>            :                                         {
+<span class="lineNum">      91 </span>            :                                                 string indexedPropName = String.Format(&quot;{0}[{1}]&quot;, prefix, index);
+<span class="lineNum">      92 </span>            :                                                 FillFlatPropertiesListFromObject(indexedPropValue, indexedPropName, propertiesList);
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span>            :                                                 index++;
+<span class="lineNum">      95 </span>            :                                         }
+<span class="lineNum">      96 </span>            :                                 }
+<span class="lineNum">      97 </span>            :                                 else if (type.IsCustomNonEnumerableType())
+<span class="lineNum">      98 </span>            :                                 {
+<span class="lineNum">      99 </span>            :                                         foreach (var propertyInfo in type.GetProperties())
+<span class="lineNum">     100 </span>            :                                         {
+<span class="lineNum">     101 </span>            :                                                 if (propertyInfo.CustomAttributes.Any(attribute =&gt; attribute.AttributeType == typeof(IgnoreDataMemberAttribute)))
+<span class="lineNum">     102 </span>            :                                                         continue;
+<span class="lineNum">     103 </span>            :                                                 string propName = string.IsNullOrWhiteSpace(prefix)
+<span class="lineNum">     104 </span>            :                                                         ? propertyInfo.Name
+<span class="lineNum">     105 </span>            :                                                         : String.Format(&quot;{0}.{1}&quot;, prefix, propertyInfo.Name);
+<span class="lineNum">     106 </span>            :                                                 object propValue = propertyInfo.GetValue(obj);
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :                                                 FillFlatPropertiesListFromObject(propValue, propName, propertiesList);
+<span class="lineNum">     109 </span>            :                                         }
+<span class="lineNum">     110 </span>            :                                 }
+<span class="lineNum">     111 </span>            :                                 else
+<span class="lineNum">     112 </span>            :                                 {
+<span class="lineNum">     113 </span>            :                                         propertiesList.Add(new KeyValuePair&lt;string, object&gt;(prefix, obj));
+<span class="lineNum">     114 </span>            :                                 }
+<span class="lineNum">     115 </span>            :                         }
+<span class="lineNum">     116 </span>            :                 }
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span>            :                 private byte[] GetMultipartFormDataBytes(List&lt;KeyValuePair&lt;string, object&gt;&gt; postParameters, string boundary)
+<span class="lineNum">     119 </span>            :                 {
+<span class="lineNum">     120 </span>            :                         if (postParameters == null || !postParameters.Any())
+<span class="lineNum">     121 </span>            :                                 throw new Exception(&quot;Cannot convert data to multipart/form-data format. No data found.&quot;);
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :                         Encoding encoding = Encoding.UTF8;
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :                         using (var formDataStream = new System.IO.MemoryStream())
+<span class="lineNum">     126 </span>            :                         {
+<span class="lineNum">     127 </span>            :                                 bool needsClrf = false;
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            :                                 foreach (var param in postParameters)
+<span class="lineNum">     130 </span>            :                                 {
+<span class="lineNum">     131 </span>            :                                         // Add a CRLF to allow multiple parameters to be added.
+<span class="lineNum">     132 </span>            :                                         // Skip it on the first parameter, add it to subsequent parameters.
+<span class="lineNum">     133 </span>            :                                         if (needsClrf)
+<span class="lineNum">     134 </span>            :                                                 formDataStream.Write(encoding.GetBytes(&quot;\r\n&quot;), 0, encoding.GetByteCount(&quot;\r\n&quot;));
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :                                         needsClrf = true;
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span>            :                                         if (param.Value is HttpFile || IsByteArrayConvertableToHttpFile(param.Value))
+<span class="lineNum">     139 </span>            :                                         {
+<span class="lineNum">     140 </span>            :                                                 HttpFile httpFileToUpload = param.Value is HttpFile
+<span class="lineNum">     141 </span>            :                                                         ? (HttpFile) param.Value
+<span class="lineNum">     142 </span>            :                                                         : new HttpFile(null, null, (byte[]) param.Value);
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            :                                                 // Add just the first part of this param, since we will write the file data directly to the Stream
+<span class="lineNum">     145 </span>            :                                                 string header = string.Format
+<span class="lineNum">     146 </span>            :                                                 (
+<span class="lineNum">     147 </span>            :                                                         &quot;--{0}\r\nContent-Disposition: form-data; name=\&quot;{1}\&quot;; filename=\&quot;{2}\&quot;\r\nContent-Type: {3}\r\n\r\n&quot;,
+<span class="lineNum">     148 </span>            :                                                         boundary,
+<span class="lineNum">     149 </span>            :                                                         param.Key,
+<span class="lineNum">     150 </span>            :                                                         httpFileToUpload.FileName ?? param.Key,
+<span class="lineNum">     151 </span>            :                                                         httpFileToUpload.MediaType ?? &quot;application/octet-stream&quot;
+<span class="lineNum">     152 </span>            :                                                 );
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span>            :                                                 formDataStream.Write(encoding.GetBytes(header), 0, encoding.GetByteCount(header));
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span>            :                                                 // Write the file data directly to the Stream, rather than serializing it to a string.
+<span class="lineNum">     157 </span>            :                                                 formDataStream.Write(httpFileToUpload.Buffer, 0, httpFileToUpload.Buffer.Length);
+<span class="lineNum">     158 </span>            :                                         }
+<span class="lineNum">     159 </span>            :                                         else
+<span class="lineNum">     160 </span>            :                                         {
+<span class="lineNum">     161 </span>            :                                                 string objString = &quot;&quot;;
+<span class="lineNum">     162 </span>            :                                                 if (param.Value != null)
+<span class="lineNum">     163 </span>            :                                                 {
+<span class="lineNum">     164 </span>            :                                                         var typeConverter = param.Value.GetType().GetToStringConverter();
+<span class="lineNum">     165 </span>            :                                                         if (typeConverter != null)
+<span class="lineNum">     166 </span>            :                                                         {
+<span class="lineNum">     167 </span>            :                                                                 objString = typeConverter.ConvertToString(null, Settings.CultureInfo, param.Value);
+<span class="lineNum">     168 </span>            :                                                         }
+<span class="lineNum">     169 </span>            :                                                         else
+<span class="lineNum">     170 </span>            :                                                         {
+<span class="lineNum">     171 </span>            :                                                                 throw new Exception(String.Format(&quot;Type \&quot;{0}\&quot; cannot be converted to string&quot;, param.Value.GetType().FullName));
+<span class="lineNum">     172 </span>            :                                                         }
+<span class="lineNum">     173 </span>            :                                                 }
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            :                                                 string postData = string.Format
+<span class="lineNum">     176 </span>            :                                                 (
+<span class="lineNum">     177 </span>            :                                                         &quot;--{0}\r\nContent-Disposition: form-data; name=\&quot;{1}\&quot;\r\n\r\n{2}&quot;,
+<span class="lineNum">     178 </span>            :                                                         boundary,
+<span class="lineNum">     179 </span>            :                                                         param.Key,
+<span class="lineNum">     180 </span>            :                                                         objString
+<span class="lineNum">     181 </span>            :                                                 );
+<span class="lineNum">     182 </span>            :                                                 formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
+<span class="lineNum">     183 </span>            :                                         }
+<span class="lineNum">     184 </span>            :                                 }
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span>            :                                 // Add the end of the request.  Start with a newline
+<span class="lineNum">     187 </span>            :                                 string footer = &quot;\r\n--&quot; + boundary + &quot;--\r\n&quot;;
+<span class="lineNum">     188 </span>            :                                 formDataStream.Write(encoding.GetBytes(footer), 0, encoding.GetByteCount(footer));
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            :                                 byte[] formData = formDataStream.ToArray();
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            :                                 return formData;
+<span class="lineNum">     193 </span>            :                         }
+<span class="lineNum">     194 </span>            :                 }
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span>            :                 private bool IsByteArrayConvertableToHttpFile(object value)
+<span class="lineNum">     197 </span>            :                 {
+<span class="lineNum">     198 </span>            :                         return value is byte[] &amp;&amp; Settings.SerializeByteArrayAsHttpFile;
+<span class="lineNum">     199 </span>            :                 }
+<span class="lineNum">     200 </span>            :         }
+<span class="lineNum">     201 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

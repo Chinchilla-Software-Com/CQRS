@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.EventStore/EventStore.cs</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">Cqrs.EventStore</a> - EventStore.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryLo">12.5 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System;
+<span class="lineNum">       2 </span>            : using System.Collections.Generic;
+<span class="lineNum">       3 </span>            : using System.Linq;
+<span class="lineNum">       4 </span>            : using Cqrs.Events;
+<span class="lineNum">       5 </span>            : using EventStore.ClientAPI;
+<span class="lineNum">       6 </span><span class="lineNoCov">          0 : using EventData = EventStore.ClientAPI.EventData;</span>
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : namespace Cqrs.EventStore
+<span class="lineNum">       9 </span>            : {
+<span class="lineNum">      10 </span>            :         public class EventStore&lt;TAuthenticationToken&gt; : IEventStore&lt;TAuthenticationToken&gt;
+<span class="lineNum">      11 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      12 </span>            :                 protected const string CqrsEventStoreStreamNamePattern = &quot;{0}/{1}&quot;;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            :                 protected IEventBuilder&lt;TAuthenticationToken&gt; EventBuilder { get; set; }
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            :                 protected IEventDeserialiser&lt;TAuthenticationToken&gt; EventDeserialiser { get; set; }
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            :                 protected IEventStoreConnection EventStoreConnection { get; set; }
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span><span class="lineNoCov">          0 :                 public EventStore(IEventBuilder&lt;TAuthenticationToken&gt; eventBuilder, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser, IEventStoreConnectionHelper eventStoreConnectionHelper)</span>
+<span class="lineNum">      21 </span>            :                 {
+<span class="lineNum">      22 </span>            :                         EventBuilder = eventBuilder;
+<span class="lineNum">      23 </span>            :                         EventDeserialiser = eventDeserialiser;
+<span class="lineNum">      24 </span>            :                         EventStoreConnection = eventStoreConnectionHelper.GetEventStoreConnection();
+<span class="lineNum">      25 </span>            :                 }
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :                 #region Implementation of IEventStore
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span><span class="lineNoCov">          0 :                 public void Save&lt;T&gt;(IEvent&lt;TAuthenticationToken&gt; @event)</span>
+<span class="lineNum">      30 </span>            :                 {
+<span class="lineNum">      31 </span>            :                         Save(typeof (T), @event);
+<span class="lineNum">      32 </span>            :                 }
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span><span class="lineNoCov">          0 :                 public void Save(Type aggregateRootType, IEvent&lt;TAuthenticationToken&gt; @event)</span>
+<span class="lineNum">      35 </span>            :                 {
+<span class="lineNum">      36 </span>            :                         EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
+<span class="lineNum">      37 </span>            :                         string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id);
+<span class="lineNum">      38 </span>            :                         using (EventStoreTransaction transaction = EventStoreConnection.StartTransactionAsync(streamName, ExpectedVersion.Any).Result)
+<span class="lineNum">      39 </span>            :                         {
+<span class="lineNum">      40 </span>            :                                 WriteResult saveResult = EventStoreConnection.AppendToStreamAsync(streamName, ExpectedVersion.Any, new[] {eventData}).Result;
+<span class="lineNum">      41 </span>            :                                 WriteResult commitResult = transaction.CommitAsync().Result;
+<span class="lineNum">      42 </span>            :                         }
+<span class="lineNum">      43 </span>            :                 }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;remarks&gt;
+<span class="lineNum">      46 </span>            :                 /// The value of &lt;paramref name=&quot;fromVersion&quot;/&gt; is zero based but the internals indexing of the EventStore is offset by &lt;see cref=&quot;StreamPosition.Start&quot;/&gt;.
+<span class="lineNum">      47 </span>            :                 /// Adjust the value of &lt;paramref name=&quot;fromVersion&quot;/&gt; by &lt;see cref=&quot;StreamPosition.Start&quot;/&gt;
+<span class="lineNum">      48 </span>            :                 /// &lt;/remarks&gt;
+<span class="lineNum">      49 </span><span class="lineCov">          1 :                 public IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get&lt;T&gt;(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
+<span class="lineNum">      50 </span>            :                 {
+<span class="lineNum">      51 </span>            :                         return Get(typeof (T), aggregateId, useLastEventOnly, fromVersion);
+<span class="lineNum">      52 </span>            :                 }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :                 public IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get(Type aggregateType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
+<span class="lineNum">      55 </span>            :                 {
+<span class="lineNum">      56 </span>            :                         int startPosition = StreamPosition.Start;
+<span class="lineNum">      57 </span>            :                         if (fromVersion &gt; -1)
+<span class="lineNum">      58 </span>            :                                 startPosition = fromVersion + StreamPosition.Start;
+<span class="lineNum">      59 </span>            :                         StreamEventsSlice eventCollection;
+<span class="lineNum">      60 </span>            :                         string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateType.FullName, aggregateId);
+<span class="lineNum">      61 </span>            :                         if (useLastEventOnly)
+<span class="lineNum">      62 </span>            :                                 eventCollection = EventStoreConnection.ReadStreamEventsBackwardAsync(streamName, startPosition, 1, false).Result;
+<span class="lineNum">      63 </span>            :                         else
+<span class="lineNum">      64 </span>            :                                 eventCollection = EventStoreConnection.ReadStreamEventsForwardAsync(streamName, startPosition, 200, false).Result;
+<span class="lineNum">      65 </span>            :                         return eventCollection.Events.Select(EventDeserialiser.Deserialise);
+<span class="lineNum">      66 </span>            :                 }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :                 public IEnumerable&lt;Events.EventData&gt; Get(Guid correlationId)</span>
+<span class="lineNum">      69 </span>            :                 {
+<span class="lineNum">      70 </span>            :                         throw new NotImplementedException();
+<span class="lineNum">      71 </span>            :                 }
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                 #endregion
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :                 protected virtual void ListenForNotificationsOnConnection(IEventStoreConnection connection)
+<span class="lineNum">      76 </span>            :                 {
+<span class="lineNum">      77 </span>            :                         connection.SubscribeToAllAsync(true, DisplayNotificationArrival, DisplaySubscriptionDropped).RunSynchronously();
+<span class="lineNum">      78 </span>            :                 }
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :                 private void DisplayNotificationArrival(EventStoreSubscription subscription, ResolvedEvent notification)
+<span class="lineNum">      81 </span>            :                 {
+<span class="lineNum">      82 </span>            :                         RecordedEvent @event = notification.Event;
+<span class="lineNum">      83 </span>            :                         string eventTypePrefix = @event.Data.GetType().AssemblyQualifiedName;
+<span class="lineNum">      84 </span>            :                         if (string.IsNullOrWhiteSpace(@event.EventType) || @event.EventType != eventTypePrefix)
+<span class="lineNum">      85 </span>            :                                 return;
+<span class="lineNum">      86 </span>            :                         Console.WriteLine(&quot;{0} : {1}&quot;, eventTypePrefix, @event.EventType);
+<span class="lineNum">      87 </span>            :                 }
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :                 private void DisplaySubscriptionDropped(EventStoreSubscription subscription, SubscriptionDropReason reasonDropped, Exception exception)
+<span class="lineNum">      90 </span>            :                 {
+<span class="lineNum">      91 </span>            :                         Console.WriteLine(&quot;Opps&quot;);
+<span class="lineNum">      92 </span>            :                 }
+<span class="lineNum">      93 </span>            :         }
+<span class="lineNum">      94 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Akka.Net/Cqrs.Akka/Events/AkkaEventBusProxy.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Akka.Net/Cqrs.Akka/Events</a> - AkkaEventBusProxy.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryLo">16.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;cdmdotnet Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright cdmdotnet Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System.Collections.Generic;
+<span class="lineNum">      10 </span>            : using Akka.Actor;
+<span class="lineNum">      11 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      12 </span>            : using Cqrs.Akka.Domain;
+<span class="lineNum">      13 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      14 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      15 </span>            : using Cqrs.Events;
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : namespace Cqrs.Akka.Events
+<span class="lineNum">      18 </span>            : {
+<span class="lineNum">      19 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      20 </span>            :         /// A &lt;see cref=&quot;IEventPublisher{TAuthenticationToken}&quot;/&gt; that proxies &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to the &lt;see cref=&quot;IActorRef&quot;/&gt; which acts as a single point of all handler resolutions.
+<span class="lineNum">      21 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      22 </span>            :         public class AkkaEventBusProxy&lt;TAuthenticationToken&gt;
+<span class="lineNum">      23 </span>            :                 : IAkkaEventPublisherProxy&lt;TAuthenticationToken&gt;
+<span class="lineNum">      24 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      25 </span><span class="lineNoCov">          0 :                 public AkkaEventBusProxy(IDependencyResolver dependencyResolver, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper)</span>
+<span class="lineNum">      26 </span>            :                 {
+<span class="lineNum">      27 </span>            :                         CorrelationIdHelper = correlationIdHelper;
+<span class="lineNum">      28 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
+<span class="lineNum">      29 </span>            :                         EventHandlerResolver = ((IAkkaAggregateResolver)dependencyResolver).ResolveActor&lt;BusActor&gt;();
+<span class="lineNum">      30 </span>            :                 }
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :                 protected IActorRef EventHandlerResolver { get; private set; }
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                 protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 protected IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; AuthenticationTokenHelper { get; private set; }
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 #region Implementation of IEventPublisher&lt;TAuthenticationToken&gt;
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 :                 public virtual void Publish&lt;TEvent&gt;(TEvent @event)</span>
+<span class="lineNum">      41 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
+<span class="lineNum">      42 </span>            :                 {
+<span class="lineNum">      43 </span>            :                         // We only set these two properties as they are not going to be available across the thread/task
+<span class="lineNum">      44 </span>            :                         if (@event.AuthenticationToken == null || @event.AuthenticationToken.Equals(default(TAuthenticationToken)))
+<span class="lineNum">      45 </span>            :                                 @event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+<span class="lineNum">      46 </span>            :                         @event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                         bool result = EventHandlerResolver.Ask&lt;bool&gt;(@event).Result;
+<span class="lineNum">      49 </span>            :                 }
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :                 public virtual void Publish&lt;TEvent&gt;(IEnumerable&lt;TEvent&gt; events)</span>
+<span class="lineNum">      52 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
+<span class="lineNum">      53 </span>            :                 {
+<span class="lineNum">      54 </span>            :                         foreach (TEvent @event in events)
+<span class="lineNum">      55 </span>            :                                 Publish(@event);
+<span class="lineNum">      56 </span>            :                 }
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                 #endregion
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :                 public class BusActor
+<span class="lineNum">      61 </span>            :                         : ReceiveActor
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :                 {</span>
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :                         public BusActor(IAkkaEventPublisher&lt;TAuthenticationToken&gt; eventHandlerResolver, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper)</span>
+<span class="lineNum">      64 </span>            :                         {
+<span class="lineNum">      65 </span>            :                                 EventHandlerResolver = eventHandlerResolver;
+<span class="lineNum">      66 </span>            :                                 CorrelationIdHelper = correlationIdHelper;
+<span class="lineNum">      67 </span>            :                                 AuthenticationTokenHelper = authenticationTokenHelper;
+<span class="lineNum">      68 </span>            :                                 Receive&lt;IEvent&lt;TAuthenticationToken&gt;&gt;(@event =&gt; ExecuteReceive(@event));
+<span class="lineNum">      69 </span>            :                         }
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                         protected IAkkaEventPublisher&lt;TAuthenticationToken&gt; EventHandlerResolver { get; private set; }
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                         protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :                         protected IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; AuthenticationTokenHelper { get; private set; }
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :                         protected virtual void ExecuteReceive(IEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">      78 </span>            :                         {
+<span class="lineNum">      79 </span>            :                                 try
+<span class="lineNum">      80 </span>            :                                 {
+<span class="lineNum">      81 </span>            :                                         AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
+<span class="lineNum">      82 </span>            :                                         CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
+<span class="lineNum">      83 </span>            :                                         EventHandlerResolver.Publish(@event);
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                                         Sender.Tell(true);
+<span class="lineNum">      86 </span>            :                                 }
+<span class="lineNum">      87 </span>            :                                 catch
+<span class="lineNum">      88 </span>            :                                 {
+<span class="lineNum">      89 </span>            :                                         Sender.Tell(false);
+<span class="lineNum">      90 </span>            :                                         throw;
+<span class="lineNum">      91 </span>            :                                 }
+<span class="lineNum">      92 </span>            :                         }
+<span class="lineNum">      93 </span>            :                 }
+<span class="lineNum">      94 </span>            :         }
+<span class="lineNum">      95 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

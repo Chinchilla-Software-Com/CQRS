@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Domain/AggregateRoot.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Domain</a> - AggregateRoot.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;cdmdotnet Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright cdmdotnet Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Collections.ObjectModel;
+<span class="lineNum">      12 </span>            : using System.Linq;
+<span class="lineNum">      13 </span>            : using System.Threading;
+<span class="lineNum">      14 </span>            : using Cqrs.Domain.Exceptions;
+<span class="lineNum">      15 </span>            : using Cqrs.Events;
+<span class="lineNum">      16 </span>            : using Cqrs.Infrastructure;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : namespace Cqrs.Domain
+<span class="lineNum">      19 </span>            : {
+<span class="lineNum">      20 </span>            :         public abstract class AggregateRoot&lt;TAuthenticationToken&gt; : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">      21 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      22 </span>            :                 private ReaderWriterLockSlim Lock { get; set; }
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            :                 private ICollection&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Changes { get; set; }
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                 public Guid Id { get; protected set; }
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            :                 public int Version { get; protected set; }
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 protected AggregateRoot()
+<span class="lineNum">      31 </span>            :                 {
+<span class="lineNum">      32 </span>            :                         Lock = new ReaderWriterLockSlim();
+<span class="lineNum">      33 </span>            :                         Changes = new ReadOnlyCollection&lt;IEvent&lt;TAuthenticationToken&gt;&gt;(new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;());
+<span class="lineNum">      34 </span>            :                 }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span><span class="lineNoCov">          0 :                 public IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges()</span>
+<span class="lineNum">      37 </span>            :                 {
+<span class="lineNum">      38 </span>            :                         return Changes;
+<span class="lineNum">      39 </span>            :                 }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span><span class="lineNoCov">          0 :                 public virtual void MarkChangesAsCommitted()</span>
+<span class="lineNum">      42 </span>            :                 {
+<span class="lineNum">      43 </span>            :                         Lock.EnterWriteLock();
+<span class="lineNum">      44 </span>            :                         try
+<span class="lineNum">      45 </span>            :                         {
+<span class="lineNum">      46 </span>            :                                 Version = Version + Changes.Count;
+<span class="lineNum">      47 </span>            :                                 Changes = new ReadOnlyCollection&lt;IEvent&lt;TAuthenticationToken&gt;&gt;(new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;());
+<span class="lineNum">      48 </span>            :                         }
+<span class="lineNum">      49 </span>            :                         finally
+<span class="lineNum">      50 </span>            :                         {
+<span class="lineNum">      51 </span>            :                                 Lock.ExitWriteLock();
+<span class="lineNum">      52 </span>            :                         }
+<span class="lineNum">      53 </span>            :                 }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :                 public virtual void LoadFromHistory(IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; history)</span>
+<span class="lineNum">      56 </span>            :                 {
+<span class="lineNum">      57 </span>            :                         Type aggregateType = GetType();
+<span class="lineNum">      58 </span>            :                         foreach (IEvent&lt;TAuthenticationToken&gt; @event in history.OrderBy(e =&gt; e.Version))
+<span class="lineNum">      59 </span>            :                         {
+<span class="lineNum">      60 </span>            :                                 if (@event.Version != Version + 1)
+<span class="lineNum">      61 </span>            :                                         throw new EventsOutOfOrderException(@event.Id, aggregateType, Version + 1, @event.Version);
+<span class="lineNum">      62 </span>            :                                 ApplyChange(@event, true);
+<span class="lineNum">      63 </span>            :                         }
+<span class="lineNum">      64 </span>            :                 }
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            :                 protected virtual void ApplyChange(IEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">      67 </span>            :                 {
+<span class="lineNum">      68 </span>            :                         ApplyChange(@event, false);
+<span class="lineNum">      69 </span>            :                 }
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                 private void ApplyChange(IEvent&lt;TAuthenticationToken&gt; @event, bool isEventReplay)
+<span class="lineNum">      72 </span>            :                 {
+<span class="lineNum">      73 </span>            :                         Lock.EnterWriteLock();
+<span class="lineNum">      74 </span>            :                         try
+<span class="lineNum">      75 </span>            :                         {
+<span class="lineNum">      76 </span>            :                                 this.AsDynamic().Apply(@event);
+<span class="lineNum">      77 </span>            :                                 if (!isEventReplay)
+<span class="lineNum">      78 </span>            :                                 {
+<span class="lineNum">      79 </span>            :                                         Changes = new ReadOnlyCollection&lt;IEvent&lt;TAuthenticationToken&gt;&gt;(new []{@event}.Concat(Changes).ToList());
+<span class="lineNum">      80 </span>            :                                 }
+<span class="lineNum">      81 </span>            :                                 else
+<span class="lineNum">      82 </span>            :                                 {
+<span class="lineNum">      83 </span>            :                                         Id = @event.Id;
+<span class="lineNum">      84 </span>            :                                         Version++;
+<span class="lineNum">      85 </span>            :                                 }
+<span class="lineNum">      86 </span>            :                         }
+<span class="lineNum">      87 </span>            :                         finally
+<span class="lineNum">      88 </span>            :                         {
+<span class="lineNum">      89 </span>            :                                 Lock.ExitWriteLock();
+<span class="lineNum">      90 </span>            :                         }
+<span class="lineNum">      91 </span>            :                 }
+<span class="lineNum">      92 </span>            :         }
+<span class="lineNum">      93 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

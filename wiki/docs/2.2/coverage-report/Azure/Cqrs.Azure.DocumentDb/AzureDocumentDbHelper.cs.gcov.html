@@ -1,0 +1,400 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.DocumentDb/AzureDocumentDbHelper.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.DocumentDb</a> - AzureDocumentDbHelper.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Linq;
+<span class="lineNum">      12 </span>            : using System.Text;
+<span class="lineNum">      13 </span>            : using System.Threading;
+<span class="lineNum">      14 </span>            : using System.Threading.Tasks;
+<span class="lineNum">      15 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      16 </span>            : using Cqrs.Domain.Exceptions;
+<span class="lineNum">      17 </span>            : using Microsoft.Azure.Documents;
+<span class="lineNum">      18 </span>            : using Microsoft.Azure.Documents.Client;
+<span class="lineNum">      19 </span>            : using Microsoft.Azure.Documents.Linq;
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : namespace Cqrs.Azure.DocumentDb
+<span class="lineNum">      22 </span>            : {
+<span class="lineNum">      23 </span>            :         public class AzureDocumentDbHelper : IAzureDocumentDbHelper
+<span class="lineNum">      24 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      25 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :                 protected IAzureDocumentDbConnectionCache AzureDocumentDbConnectionCache { get; private set; }
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span><span class="lineNoCov">          0 :                 public AzureDocumentDbHelper(ILogger logger, IAzureDocumentDbConnectionCache azureDocumentDbConnectionCache)</span>
+<span class="lineNum">      30 </span>            :                 {
+<span class="lineNum">      31 </span>            :                         Logger = logger;
+<span class="lineNum">      32 </span>            :                         AzureDocumentDbConnectionCache = azureDocumentDbConnectionCache;
+<span class="lineNum">      33 </span>            :                 }
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 :                 public async Task&lt;Database&gt; CreateOrReadDatabase(DocumentClient client, string databaseName)</span>
+<span class="lineNum">      36 </span>            :                 {
+<span class="lineNum">      37 </span>            :                         Logger.LogDebug(&quot;Getting Azure database&quot;, &quot;AzureDocumentDbHelper\\CreateOrReadDatabase&quot;);
+<span class="lineNum">      38 </span>            :                         DateTime start = DateTime.Now;
+<span class="lineNum">      39 </span>            :                         Database result;
+<span class="lineNum">      40 </span>            :                         string databaseCacheKey = string.Format(&quot;AzureDocumentDbDatabase::{0}&quot;, databaseName);
+<span class="lineNum">      41 </span>            :                         if (AzureDocumentDbConnectionCache.TryGetDatabase(databaseCacheKey, out result))
+<span class="lineNum">      42 </span>            :                         {
+<span class="lineNum">      43 </span>            :                                 Logger.LogDebug(string.Format(&quot;Returning cached database took {0}&quot;, DateTime.Now - start), &quot;AzureDocumentDbHelper\\CreateOrReadDatabase&quot;);
+<span class="lineNum">      44 </span>            :                                 try
+<span class="lineNum">      45 </span>            :                                 {
+<span class="lineNum">      46 </span>            :                                         return result;
+<span class="lineNum">      47 </span>            :                                 }
+<span class="lineNum">      48 </span>            :                                 finally
+<span class="lineNum">      49 </span>            :                                 {
+<span class="lineNum">      50 </span>            :                                         Logger.LogDebug(string.Format(&quot;Returning cached database took... Done&quot;), &quot;AzureDocumentDbHelper\\CreateOrReadDatabase&quot;);
+<span class="lineNum">      51 </span>            :                                 }
+<span class="lineNum">      52 </span>            :                         }
+<span class="lineNum">      53 </span>            :                         try
+<span class="lineNum">      54 </span>            :                         {
+<span class="lineNum">      55 </span>            :                                 IEnumerable&lt;Database&gt; query = client.CreateDatabaseQuery()
+<span class="lineNum">      56 </span>            :                                         .Where(database =&gt; database.Id == databaseName)
+<span class="lineNum">      57 </span>            :                                         .AsEnumerable();
+<span class="lineNum">      58 </span>            :                                 Logger.LogDebug(&quot;Checking if the database exists&quot;, &quot;AzureDocumentDbHelper\\CreateOrReadDatabase&quot;);
+<span class="lineNum">      59 </span>            :                                 start = DateTime.Now;
+<span class="lineNum">      60 </span>            :                                 result = query.SingleOrDefault();
+<span class="lineNum">      61 </span>            :                                 if (result != null)
+<span class="lineNum">      62 </span>            :                                 {
+<span class="lineNum">      63 </span>            :                                         Logger.LogDebug(string.Format(&quot;Returning the existing database took {0}&quot;, DateTime.Now - start), &quot;AzureDocumentDbHelper\\CreateOrReadDatabase&quot;);
+<span class="lineNum">      64 </span>            :                                         try
+<span class="lineNum">      65 </span>            :                                         {
+<span class="lineNum">      66 </span>            :                                                 AzureDocumentDbConnectionCache.SetDatabase(databaseCacheKey, result);
+<span class="lineNum">      67 </span>            :                                                 return result;
+<span class="lineNum">      68 </span>            :                                         }
+<span class="lineNum">      69 </span>            :                                         finally
+<span class="lineNum">      70 </span>            :                                         {
+<span class="lineNum">      71 </span>            :                                                 Logger.LogDebug(string.Format(&quot;Returning the existing database... Done&quot;), &quot;AzureDocumentDbHelper\\CreateOrReadDatabase&quot;);
+<span class="lineNum">      72 </span>            :                                         }
+<span class="lineNum">      73 </span>            :                                 }
+<span class="lineNum">      74 </span>            :                                 Logger.LogDebug(&quot;Creating and returning a new database&quot;, &quot;AzureDocumentDbHelper\\CreateOrReadDatabase&quot;);
+<span class="lineNum">      75 </span>            :                                 start = DateTime.Now;
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :                                 result = ExecuteFaultTollerantFunction(() =&gt; client.CreateDatabaseAsync(new Database { Id = databaseName }).Result);
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :                                 Logger.LogDebug(string.Format(&quot;Getting Azure database took {0}&quot;, DateTime.Now - start), &quot;AzureDocumentDbHelper\\CreateOrReadDatabase&quot;);
+<span class="lineNum">      80 </span>            :                                 AzureDocumentDbConnectionCache.SetDatabase(databaseCacheKey, result);
+<span class="lineNum">      81 </span>            :                                 return result;
+<span class="lineNum">      82 </span>            :                         }
+<span class="lineNum">      83 </span>            :                         finally
+<span class="lineNum">      84 </span>            :                         {
+<span class="lineNum">      85 </span>            :                                 Logger.LogDebug(&quot;Getting Azure database... Done&quot;, &quot;AzureDocumentDbHelper\\CreateOrReadDatabase&quot;);
+<span class="lineNum">      86 </span>            :                         }
+<span class="lineNum">      87 </span>            :                 }
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :                 public async Task&lt;DocumentCollection&gt; CreateOrReadCollection(DocumentClient client, Database database, string collectionName, string[] uniqiueIndexPropertyNames = null)</span>
+<span class="lineNum">      90 </span>            :                 {
+<span class="lineNum">      91 </span>            :                         Logger.LogDebug(&quot;Getting Azure collection&quot;, &quot;AzureDocumentDbHelper\\CreateOrReadCollection&quot;);
+<span class="lineNum">      92 </span>            :                         DateTime start = DateTime.Now;
+<span class="lineNum">      93 </span>            :                         DocumentCollection result;
+<span class="lineNum">      94 </span>            :                         string documentCollectionCacheKey = string.Format(&quot;AzureDocumentDbDocumentCollection::{0}&quot;, collectionName);
+<span class="lineNum">      95 </span>            :                         if (AzureDocumentDbConnectionCache.TryGetDocumentCollection(documentCollectionCacheKey, out result))
+<span class="lineNum">      96 </span>            :                         {
+<span class="lineNum">      97 </span>            :                                 Logger.LogDebug(string.Format(&quot;Returning cached collection took {0}&quot;, DateTime.Now - start), &quot;AzureDocumentDbHelper\\CreateOrReadCollection&quot;);
+<span class="lineNum">      98 </span>            :                                 try
+<span class="lineNum">      99 </span>            :                                 {
+<span class="lineNum">     100 </span>            :                                         return result;
+<span class="lineNum">     101 </span>            :                                 }
+<span class="lineNum">     102 </span>            :                                 finally
+<span class="lineNum">     103 </span>            :                                 {
+<span class="lineNum">     104 </span>            :                                         Logger.LogDebug(string.Format(&quot;Returning cached collection took... Done&quot;), &quot;AzureDocumentDbHelper\\CreateOrReadCollection&quot;);
+<span class="lineNum">     105 </span>            :                                 }
+<span class="lineNum">     106 </span>            :                         }
+<span class="lineNum">     107 </span>            :                         try
+<span class="lineNum">     108 </span>            :                         {
+<span class="lineNum">     109 </span>            :                                 IEnumerable&lt;DocumentCollection&gt; query = client.CreateDocumentCollectionQuery(database.SelfLink)
+<span class="lineNum">     110 </span>            :                                         .Where(documentCollection =&gt; documentCollection.Id == collectionName)
+<span class="lineNum">     111 </span>            :                                         .AsEnumerable();
+<span class="lineNum">     112 </span>            :                                 Logger.LogDebug(&quot;Checking if the collection exists&quot;, &quot;AzureDocumentDbHelper\\CreateOrReadCollection&quot;);
+<span class="lineNum">     113 </span>            :                                 start = DateTime.Now;
+<span class="lineNum">     114 </span>            :                                 result = query.SingleOrDefault();
+<span class="lineNum">     115 </span>            :                                 if (result != null)
+<span class="lineNum">     116 </span>            :                                 {
+<span class="lineNum">     117 </span>            :                                         Logger.LogDebug(string.Format(&quot;Returning the existing document collection took {0}&quot;, DateTime.Now - start), &quot;AzureDocumentDbHelper\\CreateOrReadCollection&quot;);
+<span class="lineNum">     118 </span>            :                                         try
+<span class="lineNum">     119 </span>            :                                         {
+<span class="lineNum">     120 </span>            :                                                 // AzureDocumentDbConnectionCache.SetDocumentCollection(documentCollectionCacheKey, result);
+<span class="lineNum">     121 </span>            :                                                 return result;
+<span class="lineNum">     122 </span>            :                                         }
+<span class="lineNum">     123 </span>            :                                         finally
+<span class="lineNum">     124 </span>            :                                         {
+<span class="lineNum">     125 </span>            :                                                 Logger.LogDebug(string.Format(&quot;Returning the existing document collection... Done&quot;), &quot;AzureDocumentDbHelper\\CreateOrReadCollection&quot;);
+<span class="lineNum">     126 </span>            :                                         }
+<span class="lineNum">     127 </span>            :                                 }
+<span class="lineNum">     128 </span>            :                                 Logger.LogDebug(&quot;Creating and returning a new collection&quot;, &quot;AzureDocumentDbHelper\\CreateOrReadCollection&quot;);
+<span class="lineNum">     129 </span>            :                                 start = DateTime.Now;
+<span class="lineNum">     130 </span>            :                                 result = ExecuteFaultTollerantFunction(() =&gt; client.CreateDocumentCollectionAsync(database.SelfLink, new DocumentCollection { Id = collectionName }).Result);
+<span class="lineNum">     131 </span>            :                                 if (uniqiueIndexPropertyNames != null)
+<span class="lineNum">     132 </span>            :                                 {
+<span class="lineNum">     133 </span>            :                                         StringBuilder body = new StringBuilder(@&quot;
+<span class="lineNum">     134 </span>            : function()
+<span class="lineNum">     135 </span>            : {
+<span class="lineNum">     136 </span>            :         var context = getContext();
+<span class="lineNum">     137 </span>            :         var collection = context.getCollection();
+<span class="lineNum">     138 </span>            :         var request = context.getRequest();
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span>            :         // document to be created in the current operation
+<span class="lineNum">     141 </span>            :         var documentToCreate = request.getBody();
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span>            :         function lookForDuplicates(propertyNames, propertyValues, continuation)
+<span class="lineNum">     144 </span>            :         {
+<span class="lineNum">     145 </span>            :                 var queryString = 'SELECT * FROM c WHERE ';
+<span class="lineNum">     146 </span>            :                 var queryParameters = [];
+<span class="lineNum">     147 </span>            :                 for (index = 0; index &lt; propertyNames.length; index++)
+<span class="lineNum">     148 </span>            :                 {
+<span class="lineNum">     149 </span>            :                         if (index &gt; 0)
+<span class="lineNum">     150 </span>            :                                 queryString = queryString + ' AND';
+<span class="lineNum">     151 </span>            :                         queryString = queryString + ' c.' + propertyNames[index] + ' = @property' + index;
+<span class="lineNum">     152 </span>            :                         queryParameters.push({ name: '@property' + index, value: propertyValues[index] });
+<span class="lineNum">     153 </span>            :                 }
+<span class="lineNum">     154 </span>            :                 var query =
+<span class="lineNum">     155 </span>            :                 {
+<span class="lineNum">     156 </span>            :                         query: queryString,
+<span class="lineNum">     157 </span>            :                         parameters: queryParameters
+<span class="lineNum">     158 </span>            :                 };
+<span class="lineNum">     159 </span>            :                 var requestOptions =
+<span class="lineNum">     160 </span>            :                 {
+<span class="lineNum">     161 </span>            :                         continuation: continuation
+<span class="lineNum">     162 </span>            :                 };
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span>            :                 var isAccepted = collection.queryDocuments(collection.getSelfLink(), query, requestOptions,
+<span class="lineNum">     165 </span>            :                         function(err, results, responseOptions)
+<span class="lineNum">     166 </span>            :                         {
+<span class="lineNum">     167 </span>            :                                 if (err)
+<span class="lineNum">     168 </span>            :                                 {
+<span class="lineNum">     169 </span>            :                                         throw new Error('Error querying for documents with duplicate: ' + err.message);
+<span class="lineNum">     170 </span>            :                                 }
+<span class="lineNum">     171 </span>            :                                 if (results.length &gt; 0)
+<span class="lineNum">     172 </span>            :                                 {
+<span class="lineNum">     173 </span>            :                                         // At least one document with property exists.
+<span class="lineNum">     174 </span>            :                                         throw new Error('Document with the property: ' + JSON.stringify(propertyNames) + ' and value: ' + JSON.stringify(propertyValues) + ', already exists: ' + JSON.stringify(results[0]));
+<span class="lineNum">     175 </span>            :                                 }
+<span class="lineNum">     176 </span>            :                                 else if (responseOptions.continuation)
+<span class="lineNum">     177 </span>            :                                 {
+<span class="lineNum">     178 </span>            :                                         // Else if the query came back empty, but with a continuation token; repeat the query w/ the token.
+<span class="lineNum">     179 </span>            :                                         // This is highly unlikely; but is included to serve as an example for larger queries.
+<span class="lineNum">     180 </span>            :                                         lookForDuplicates(propertyNames, propertyValues, responseOptions.continuation);
+<span class="lineNum">     181 </span>            :                                 }
+<span class="lineNum">     182 </span>            :                                 else
+<span class="lineNum">     183 </span>            :                                 {
+<span class="lineNum">     184 </span>            :                                         // Success, no duplicates found! Do nothing.
+<span class="lineNum">     185 </span>            :                                 }
+<span class="lineNum">     186 </span>            :                         }
+<span class="lineNum">     187 </span>            :                 );
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span>            :                 // If we hit execution bounds - throw an exception.
+<span class="lineNum">     190 </span>            :                 // This is highly unlikely; but is included to serve as an example for more complex operations.
+<span class="lineNum">     191 </span>            :                 if (!isAccepted)
+<span class="lineNum">     192 </span>            :                 {
+<span class="lineNum">     193 </span>            :                         throw new Error('Timeout querying for document with duplicates.');
+<span class="lineNum">     194 </span>            :                 }
+<span class="lineNum">     195 </span>            :         }
+<span class="lineNum">     196 </span>            : 
+<span class="lineNum">     197 </span>            : &quot;);
+<span class="lineNum">     198 </span>            :                                         string propertyNames = uniqiueIndexPropertyNames.Aggregate(&quot;&quot;, (current, uniqiueIndexPropertyName) =&gt; string.Format(&quot;{0}{1}\&quot;{2}\&quot;&quot;, current, string.IsNullOrWhiteSpace(current) ? string.Empty : &quot;, &quot;, uniqiueIndexPropertyName));
+<span class="lineNum">     199 </span>            :                                         string propertyValues = uniqiueIndexPropertyNames.Aggregate(&quot;&quot;, (current, uniqiueIndexPropertyName) =&gt; string.Format(&quot;{0}{1}documentToCreate[\&quot;{2}\&quot;]&quot;, current, string.IsNullOrWhiteSpace(current) ? string.Empty : &quot;, &quot;, uniqiueIndexPropertyName));
+<span class="lineNum">     200 </span>            :                                         foreach (string uniqiueIndexPropertyName in uniqiueIndexPropertyNames)
+<span class="lineNum">     201 </span>            :                                         {
+<span class="lineNum">     202 </span>            :                                                 /*
+<span class="lineNum">     203 </span>            :                                                 if (uniqiueIndexPropertyName.Contains(&quot;::&quot;))
+<span class="lineNum">     204 </span>            :                                                 {
+<span class="lineNum">     205 </span>            :                                                         string[] values = uniqiueIndexPropertyName.Split(new[] { &quot;::&quot; }, StringSplitOptions.RemoveEmptyEntries);
+<span class="lineNum">     206 </span>            :                                                         string preFilter = null;
+<span class="lineNum">     207 </span>            :                                                         string propertyName = values[0];
+<span class="lineNum">     208 </span>            :                                                         string subPropertyName = values[1];
+<span class="lineNum">     209 </span>            :                                                         if (values.Length == 3)
+<span class="lineNum">     210 </span>            :                                                         {
+<span class="lineNum">     211 </span>            :                                                                 preFilter = values[0];
+<span class="lineNum">     212 </span>            :                                                                 propertyName = values[1];
+<span class="lineNum">     213 </span>            :                                                                 subPropertyName = values[2];
+<span class="lineNum">     214 </span>            :                                                         }
+<span class="lineNum">     215 </span>            :                                                         body.Append(@&quot;
+<span class="lineNum">     216 </span>            :         if (!(&quot;&quot;&quot; + propertyName + @&quot;&quot;&quot; in documentToCreate)) {
+<span class="lineNum">     217 </span>            :                 throw new Error('Document must include a &quot;&quot;&quot; + propertyName + @&quot;&quot;&quot; property.');
+<span class="lineNum">     218 </span>            :         }
+<span class="lineNum">     219 </span>            :         // get property
+<span class="lineNum">     220 </span>            :         var propertyData = documentToCreate[&quot;&quot;&quot; + propertyName + @&quot;&quot;&quot;];
+<span class="lineNum">     221 </span>            :         var property = JSON.parse(propertyData);
+<span class="lineNum">     222 </span>            : &quot;);
+<span class="lineNum">     223 </span>            :                                                 }
+<span class="lineNum">     224 </span>            :                                                 else
+<span class="lineNum">     225 </span>            :                                                 {
+<span class="lineNum">     226 </span>            :                                                         body.Append(@&quot;
+<span class="lineNum">     227 </span>            :         if (!(&quot;&quot;&quot; + uniqiueIndexPropertyName + @&quot;&quot;&quot; in documentToCreate)) {
+<span class="lineNum">     228 </span>            :                 throw new Error('Document must include a &quot;&quot;&quot; + uniqiueIndexPropertyName + @&quot;&quot;&quot; property.');
+<span class="lineNum">     229 </span>            :         lookForDuplicates(&quot;&quot;&quot; + uniqiueIndexPropertyName + @&quot;&quot;&quot;, documentToCreate[&quot;&quot;&quot; + uniqiueIndexPropertyName + @&quot;&quot;&quot;]);&quot;);
+<span class="lineNum">     230 </span>            :                                                 }
+<span class="lineNum">     231 </span>            :                                                 */
+<span class="lineNum">     232 </span>            :                                                         body.Append(@&quot;
+<span class="lineNum">     233 </span>            :         if (!(&quot;&quot;&quot; + uniqiueIndexPropertyName + @&quot;&quot;&quot; in documentToCreate))
+<span class="lineNum">     234 </span>            :                 throw new Error('Document must include a &quot;&quot;&quot; + uniqiueIndexPropertyName + @&quot;&quot;&quot; property.');&quot;);
+<span class="lineNum">     235 </span>            :                                         }
+<span class="lineNum">     236 </span>            : 
+<span class="lineNum">     237 </span>            :                                         body.Append(@&quot;
+<span class="lineNum">     238 </span>            :         lookForDuplicates([&quot; + propertyNames + @&quot;], [&quot; + propertyValues + @&quot;]);
+<span class="lineNum">     239 </span>            : }&quot;);
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span>            :                                         var trigger = new Trigger
+<span class="lineNum">     242 </span>            :                                         {
+<span class="lineNum">     243 </span>            :                                                 Id = &quot;ValidateUniqueConstraints&quot;,
+<span class="lineNum">     244 </span>            :                                                 Body = body.ToString(),
+<span class="lineNum">     245 </span>            :                                                 TriggerOperation = TriggerOperation.Create,
+<span class="lineNum">     246 </span>            :                                                 TriggerType = TriggerType.Pre
+<span class="lineNum">     247 </span>            :                                         };
+<span class="lineNum">     248 </span>            :                                         ExecuteFaultTollerantFunction(() =&gt; client.CreateTriggerAsync(result.SelfLink, trigger).Result);
+<span class="lineNum">     249 </span>            :                                 }
+<span class="lineNum">     250 </span>            :                                 Logger.LogDebug(string.Format(&quot;Getting Azure document collection took {0}&quot;, DateTime.Now - start), &quot;AzureDocumentDbHelper\\CreateOrReadCollection&quot;);
+<span class="lineNum">     251 </span>            :                                 // AzureDocumentDbConnectionCache.SetDocumentCollection(documentCollectionCacheKey, result);
+<span class="lineNum">     252 </span>            :                                 return result;
+<span class="lineNum">     253 </span>            :                         }
+<span class="lineNum">     254 </span>            :                         finally
+<span class="lineNum">     255 </span>            :                         {
+<span class="lineNum">     256 </span>            :                                 Logger.LogDebug(&quot;Getting Azure collection... Done&quot;, &quot;AzureDocumentDbHelper\\CreateOrReadCollection&quot;);
+<span class="lineNum">     257 </span>            :                         }
+<span class="lineNum">     258 </span>            :                 }
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span>            :                 protected virtual void ProcessFaultTollerantExceptions(DocumentClientException documentClientException)
+<span class="lineNum">     261 </span>            :                 {
+<span class="lineNum">     262 </span>            :                         var statusCode = (int)documentClientException.StatusCode;
+<span class="lineNum">     263 </span>            :                         if (statusCode == 429 || statusCode == 503)
+<span class="lineNum">     264 </span>            :                                 Thread.Sleep(documentClientException.RetryAfter);
+<span class="lineNum">     265 </span>            :                         else
+<span class="lineNum">     266 </span>            :                         {
+<span class="lineNum">     267 </span>            :                                 Logger.LogWarning(&quot;Non-fault tolerant exception raised via DocumentClientException.&quot;, &quot;AzureDocumentDbDataStore\\ProcessFaultTollerantExceptions&quot;);
+<span class="lineNum">     268 </span>            :                                 if (documentClientException.Error.Message == &quot;Resource with specified id or name already exists.&quot;)
+<span class="lineNum">     269 </span>            :                                         throw new DuplicateCreateCommandException(documentClientException);
+<span class="lineNum">     270 </span>            :                                 throw new DocumentDbException(&quot;Non-fault tolerant exception raised.&quot;, documentClientException);
+<span class="lineNum">     271 </span>            :                         }
+<span class="lineNum">     272 </span>            :                 }
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :                 public virtual T ExecuteFaultTollerantFunction&lt;T&gt;(Func&lt;T&gt; func)</span>
+<span class="lineNum">     275 </span>            :                 {
+<span class="lineNum">     276 </span>            :                         while (true)
+<span class="lineNum">     277 </span>            :                         {
+<span class="lineNum">     278 </span>            :                                 try
+<span class="lineNum">     279 </span>            :                                 {
+<span class="lineNum">     280 </span>            :                                         return func();
+<span class="lineNum">     281 </span>            :                                 }
+<span class="lineNum">     282 </span>            :                                 catch (DocumentClientException documentClientException)
+<span class="lineNum">     283 </span>            :                                 {
+<span class="lineNum">     284 </span>            :                                         Logger.LogWarning(&quot;DocumentClientException thrown.&quot;, &quot;AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction&quot;);
+<span class="lineNum">     285 </span>            :                                         ProcessFaultTollerantExceptions(documentClientException);
+<span class="lineNum">     286 </span>            :                                 }
+<span class="lineNum">     287 </span>            :                                 catch (AggregateException aggregateException)
+<span class="lineNum">     288 </span>            :                                 {
+<span class="lineNum">     289 </span>            :                                         var documentClientException = aggregateException.InnerException as DocumentClientException;
+<span class="lineNum">     290 </span>            :                                         if (documentClientException != null)
+<span class="lineNum">     291 </span>            :                                         {
+<span class="lineNum">     292 </span>            :                                                 Logger.LogWarning(&quot;DocumentClientException thrown via AggregateException.&quot;, &quot;AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction&quot;, documentClientException);
+<span class="lineNum">     293 </span>            :                                                 ProcessFaultTollerantExceptions(documentClientException);
+<span class="lineNum">     294 </span>            :                                         }
+<span class="lineNum">     295 </span>            :                                         else
+<span class="lineNum">     296 </span>            :                                                 Logger.LogWarning(&quot;Non DocumentClientException raised via AggregateException.&quot;, &quot;AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction&quot;, aggregateException);
+<span class="lineNum">     297 </span>            :                                 }
+<span class="lineNum">     298 </span>            :                         }
+<span class="lineNum">     299 </span>            :                 }
+<span class="lineNum">     300 </span>            : 
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 :                 public virtual void ExecuteFaultTollerantFunction(Action func)</span>
+<span class="lineNum">     302 </span>            :                 {
+<span class="lineNum">     303 </span>            :                         while (true)
+<span class="lineNum">     304 </span>            :                         {
+<span class="lineNum">     305 </span>            :                                 try
+<span class="lineNum">     306 </span>            :                                 {
+<span class="lineNum">     307 </span>            :                                         func();
+<span class="lineNum">     308 </span>            :                                         return;
+<span class="lineNum">     309 </span>            :                                 }
+<span class="lineNum">     310 </span>            :                                 catch (DocumentClientException documentClientException)
+<span class="lineNum">     311 </span>            :                                 {
+<span class="lineNum">     312 </span>            :                                         ProcessFaultTollerantExceptions(documentClientException);
+<span class="lineNum">     313 </span>            :                                 }
+<span class="lineNum">     314 </span>            :                                 catch (AggregateException aggregateException)
+<span class="lineNum">     315 </span>            :                                 {
+<span class="lineNum">     316 </span>            :                                         var documentClientException = aggregateException.InnerException as DocumentClientException;
+<span class="lineNum">     317 </span>            :                                         if (documentClientException != null)
+<span class="lineNum">     318 </span>            :                                         {
+<span class="lineNum">     319 </span>            :                                                 Logger.LogWarning(&quot;DocumentClientException thrown via AggregateException.&quot;, &quot;AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction&quot;, documentClientException);
+<span class="lineNum">     320 </span>            :                                                 ProcessFaultTollerantExceptions(documentClientException);
+<span class="lineNum">     321 </span>            :                                         }
+<span class="lineNum">     322 </span>            :                                         else
+<span class="lineNum">     323 </span>            :                                                 Logger.LogWarning(&quot;Non DocumentClientException raised via AggregateException.&quot;, &quot;AzureDocumentDbDataStore\\ExecuteFaultTollerantFunction&quot;, aggregateException);
+<span class="lineNum">     324 </span>            :                                 }
+<span class="lineNum">     325 </span>            :                         }
+<span class="lineNum">     326 </span>            :                 }
+<span class="lineNum">     327 </span>            :         }
+<span class="lineNum">     328 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

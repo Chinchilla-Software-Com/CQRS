@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.DocumentDb/Factories/AzureDocumentDbDataStoreConnectionStringFactory.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.DocumentDb/Factories</a> - AzureDocumentDbDataStoreConnectionStringFactory.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryLo">16.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System;
+<span class="lineNum">       2 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">       3 </span>            : using Cqrs.Configuration;
+<span class="lineNum">       4 </span>            : using Cqrs.DataStores;
+<span class="lineNum">       5 </span>            : using Cqrs.Entities;
+<span class="lineNum">       6 </span>            : using Microsoft.Azure.Documents.Client;
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : namespace Cqrs.Azure.DocumentDb.Factories
+<span class="lineNum">       9 </span>            : {
+<span class="lineNum">      10 </span>            :         public class AzureDocumentDbDataStoreConnectionStringFactory : IAzureDocumentDbDataStoreConnectionStringFactory
+<span class="lineNum">      11 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      12 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span><span class="lineNoCov">          0 :                 public AzureDocumentDbDataStoreConnectionStringFactory(ILogger logger, IConfigurationManager configurationManager)</span>
+<span class="lineNum">      17 </span>            :                 {
+<span class="lineNum">      18 </span>            :                         Logger = logger;
+<span class="lineNum">      19 </span>            :                         ConfigurationManager = configurationManager;
+<span class="lineNum">      20 </span>            :                 }
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span><span class="lineNoCov">          0 :                 public virtual DocumentClient GetAzureDocumentDbConnectionClient()</span>
+<span class="lineNum">      23 </span>            :                 {
+<span class="lineNum">      24 </span>            :                         Logger.LogDebug(&quot;Getting Azure document client&quot;, &quot;AzureDocumentDbDataStoreConnectionStringFactory\\GetAzureDocumentDbConnectionClient&quot;);
+<span class="lineNum">      25 </span>            :                         try
+<span class="lineNum">      26 </span>            :                         {
+<span class="lineNum">      27 </span>            :                                 return new DocumentClient(GetAzureDocumentDbConnectionUrl(), GetAzureDocumentDbAuthorisationKey());
+<span class="lineNum">      28 </span>            :                         }
+<span class="lineNum">      29 </span>            :                         finally
+<span class="lineNum">      30 </span>            :                         {
+<span class="lineNum">      31 </span>            :                                 Logger.LogDebug(&quot;Getting Azure document client... Done&quot;, &quot;AzureDocumentDbDataStoreConnectionStringFactory\\GetAzureDocumentDbConnectionClient&quot;);
+<span class="lineNum">      32 </span>            :                         }
+<span class="lineNum">      33 </span>            :                 }
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 :                 public virtual string GetAzureDocumentDbDatabaseName()</span>
+<span class="lineNum">      36 </span>            :                 {
+<span class="lineNum">      37 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.Azure.DocumentDb.DatabaseName&quot;) ?? &quot;CqrsStore&quot;;
+<span class="lineNum">      38 </span>            :                 }
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 :                 public virtual string GetAzureDocumentDbCollectionName()</span>
+<span class="lineNum">      41 </span>            :                 {
+<span class="lineNum">      42 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.Azure.DocumentDb.CollectionName&quot;) ?? &quot;CqrsDataStore&quot;;
+<span class="lineNum">      43 </span>            :                 }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      46 </span>            :                 /// Indicates if a different collection should be used per &lt;see cref=&quot;IEntity&quot;/&gt;/&lt;see cref=&quot;IDataStore{TData}&quot;/&gt; or a single collection used for all instances of &lt;see cref=&quot;IDataStore{TData}&quot;/&gt; and &lt;see cref=&quot;IDataStore{TData}&quot;/&gt;.
+<span class="lineNum">      47 </span>            :                 /// Setting this to true can become expensive as each &lt;see cref=&quot;IEntity&quot;/&gt; will have it's own collection. Check the relevant SDK/pricing models.
+<span class="lineNum">      48 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      49 </span><span class="lineCov">          1 :                 public virtual bool UseSingleCollectionForAllDataStores()</span>
+<span class="lineNum">      50 </span>            :                 {
+<span class="lineNum">      51 </span>            :                         bool value;
+<span class="lineNum">      52 </span>            :                         if (!bool.TryParse(ConfigurationManager.GetSetting(&quot;Cqrs.Azure.DocumentDb.UseSingleCollectionForAllDataStores&quot;), out value))
+<span class="lineNum">      53 </span>            :                                 value = true;
+<span class="lineNum">      54 </span>            :                         return value;
+<span class="lineNum">      55 </span>            :                 }
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 protected virtual Uri GetAzureDocumentDbConnectionUrl()
+<span class="lineNum">      58 </span>            :                 {
+<span class="lineNum">      59 </span>            :                         return new Uri(ConfigurationManager.GetSetting(&quot;Cqrs.Azure.DocumentDb.Url&quot;));
+<span class="lineNum">      60 </span>            :                 }
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :                 protected virtual string GetAzureDocumentDbAuthorisationKey()
+<span class="lineNum">      63 </span>            :                 {
+<span class="lineNum">      64 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.Azure.DocumentDb.AuthorisationKey&quot;);
+<span class="lineNum">      65 </span>            :                 }
+<span class="lineNum">      66 </span>            :         }
+<span class="lineNum">      67 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

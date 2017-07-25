@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.MongoDB.Tests.Integration/MongoDbEventStoreTests.cs</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">Cqrs.MongoDB.Tests.Integration</a> - MongoDbEventStoreTests.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">doc-coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryLo">14.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-07-25</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System;
+<span class="lineNum">       2 </span>            : using System.Collections.Generic;
+<span class="lineNum">       3 </span>            : using System.Diagnostics;
+<span class="lineNum">       4 </span>            : using System.Linq;
+<span class="lineNum">       5 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">       6 </span>            : using cdmdotnet.Logging.Configuration;
+<span class="lineNum">       7 </span>            : using cdmdotnet.StateManagement.Threaded;
+<span class="lineNum">       8 </span>            : using Cqrs.Azure.ServiceBus.Tests.Unit;
+<span class="lineNum">       9 </span>            : using Cqrs.Events;
+<span class="lineNum">      10 </span>            : using Cqrs.MongoDB.Events;
+<span class="lineNum">      11 </span>            : using Cqrs.MongoDB.Serialisers;
+<span class="lineNum">      12 </span>            : using MongoDB.Driver;
+<span class="lineNum">      13 </span>            : using NUnit.Framework;
+<span class="lineNum">      14 </span><span class="lineNoCov">          0 : using TestClass = NUnit.Framework.TestFixtureAttribute;</span>
+<span class="lineNum">      15 </span><span class="lineNoCov">          0 : using TestMethod = NUnit.Framework.TestAttribute;</span>
+<span class="lineNum">      16 </span><span class="lineNoCov">          0 : using TestInitialize = NUnit.Framework.SetUpAttribute;</span>
+<span class="lineNum">      17 </span><span class="lineNoCov">          0 : using TestCleanup = NUnit.Framework.TearDownAttribute;</span>
+<span class="lineNum">      18 </span><span class="lineNoCov">          0 : using TestContext = System.Object;</span>
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : namespace Cqrs.MongoDB.Tests.Integration
+<span class="lineNum">      21 </span>            : {
+<span class="lineNum">      22 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :         /// A series of tests on the &lt;see cref=&quot;MongoDbEventStore{TAuthenticationToken}&quot;/&gt; class
+<span class="lineNum">      24 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      25 </span>            :         [TestClass]
+<span class="lineNum">      26 </span>            :         public class MongoDbEventStoreTests
+<span class="lineNum">      27 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      28 </span>            :                 [TestMethod]
+<span class="lineNum">      29 </span><span class="lineNoCov">          0 :                 public void Save_ValidEvent_EventCanBeRetreived()</span>
+<span class="lineNum">      30 </span>            :                 {
+<span class="lineNum">      31 </span>            :                         // Arrange
+<span class="lineNum">      32 </span>            :                         var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
+<span class="lineNum">      33 </span>            :                         correlationIdHelper.SetCorrelationId(Guid.NewGuid());
+<span class="lineNum">      34 </span>            :                         var logger = new ConsoleLogger(new LoggerSettings(), correlationIdHelper);
+<span class="lineNum">      35 </span>            :                         try
+<span class="lineNum">      36 </span>            :                         {
+<span class="lineNum">      37 </span>            :                                 // Arrange
+<span class="lineNum">      38 </span>            :                                 var connectionStringFactory = new TestMongoEventStoreConnectionStringFactory();
+<span class="lineNum">      39 </span>            :                                 TestMongoEventStoreConnectionStringFactory.DatabaseName = string.Format(&quot;Test-{0}&quot;, new Random().Next(0, 9999));
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                                 var eventStore = new MongoDbEventStore&lt;Guid&gt;(new MongoDbEventBuilder&lt;Guid&gt;(), new MongoDbEventDeserialiser&lt;Guid&gt;(), logger, connectionStringFactory);
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                                 var event1 = new TestEvent
+<span class="lineNum">      44 </span>            :                                 {
+<span class="lineNum">      45 </span>            :                                         Rsn = Guid.NewGuid(),
+<span class="lineNum">      46 </span>            :                                         Id = Guid.NewGuid(),
+<span class="lineNum">      47 </span>            :                                         CorrelationId = correlationIdHelper.GetCorrelationId(),
+<span class="lineNum">      48 </span>            :                                         Frameworks = new List&lt;string&gt; { &quot;Test 1&quot; },
+<span class="lineNum">      49 </span>            :                                         TimeStamp = DateTimeOffset.UtcNow
+<span class="lineNum">      50 </span>            :                                 };
+<span class="lineNum">      51 </span>            :                                 var event2 = new TestEvent
+<span class="lineNum">      52 </span>            :                                 {
+<span class="lineNum">      53 </span>            :                                         Rsn = Guid.NewGuid(),
+<span class="lineNum">      54 </span>            :                                         Id = Guid.NewGuid(),
+<span class="lineNum">      55 </span>            :                                         CorrelationId = correlationIdHelper.GetCorrelationId(),
+<span class="lineNum">      56 </span>            :                                         Frameworks = new List&lt;string&gt; { &quot;Test 2&quot; },
+<span class="lineNum">      57 </span>            :                                         TimeStamp = DateTimeOffset.UtcNow
+<span class="lineNum">      58 </span>            :                                 };
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :                                 // Act
+<span class="lineNum">      61 </span>            :                                 eventStore.Save&lt;TestEvent&gt;(event1);
+<span class="lineNum">      62 </span>            :                                 eventStore.Save&lt;TestEvent&gt;(event2);
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :                                 // Assert
+<span class="lineNum">      65 </span>            :                                 var timer = new Stopwatch();
+<span class="lineNum">      66 </span>            :                                 IList&lt;IEvent&lt;Guid&gt;&gt; events = eventStore.Get&lt;TestEvent&gt;(event1.Id).ToList();
+<span class="lineNum">      67 </span>            :                                 timer.Stop();
+<span class="lineNum">      68 </span>            :                                 Console.WriteLine(&quot;Load one operation took {0}&quot;, timer.Elapsed);
+<span class="lineNum">      69 </span>            :                                 Assert.AreEqual(1, events.Count);
+<span class="lineNum">      70 </span>            :                                 Assert.AreEqual(event1.Id, events.Single().Id);
+<span class="lineNum">      71 </span>            :                                 Assert.AreEqual(event1.Frameworks.Single(), events.Single().Frameworks.Single());
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                                 timer.Restart();
+<span class="lineNum">      74 </span>            :                                 events = eventStore.Get&lt;TestEvent&gt;(event2.Id).ToList();
+<span class="lineNum">      75 </span>            :                                 timer.Stop();
+<span class="lineNum">      76 </span>            :                                 Console.WriteLine(&quot;Load one operation took {0}&quot;, timer.Elapsed);
+<span class="lineNum">      77 </span>            :                                 Assert.AreEqual(1, events.Count);
+<span class="lineNum">      78 </span>            :                                 Assert.AreEqual(event2.Id, events.Single().Id);
+<span class="lineNum">      79 </span>            :                                 Assert.AreEqual(event2.Frameworks.Single(), events.Single().Frameworks.Single());
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :                                 timer.Restart();
+<span class="lineNum">      82 </span>            :                                 IList&lt;EventData&gt; correlatedEvents = eventStore.Get(event1.CorrelationId).ToList();
+<span class="lineNum">      83 </span>            :                                 timer.Stop();
+<span class="lineNum">      84 </span>            :                                 Console.WriteLine(&quot;Load several correlated operation took {0}&quot;, timer.Elapsed);
+<span class="lineNum">      85 </span>            :                                 Assert.AreEqual(2, correlatedEvents.Count);
+<span class="lineNum">      86 </span>            :                         }
+<span class="lineNum">      87 </span>            :                         finally
+<span class="lineNum">      88 </span>            :                         {
+<span class="lineNum">      89 </span>            :                                 // Clean-up
+<span class="lineNum">      90 </span>            :                                 TestMongoDataStoreConnectionStringFactory.DatabaseName = TestMongoEventStoreConnectionStringFactory.DatabaseName;
+<span class="lineNum">      91 </span>            :                                 var factory = new TestMongoDbDataStoreFactory(logger, new TestMongoDataStoreConnectionStringFactory());
+<span class="lineNum">      92 </span>            :                                 IMongoCollection&lt;TestEvent&gt; collection = factory.GetTestEventCollection();
+<span class="lineNum">      93 </span>            :                                 collection.Database.Client.DropDatabase(TestMongoDataStoreConnectionStringFactory.DatabaseName);
+<span class="lineNum">      94 </span>            :                         }
+<span class="lineNum">      95 </span>            :                 }
+<span class="lineNum">      96 </span>            :         }
+<span class="lineNum">      97 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
