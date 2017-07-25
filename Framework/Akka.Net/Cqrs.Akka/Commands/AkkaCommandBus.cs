@@ -24,6 +24,7 @@ namespace Cqrs.Akka.Commands
 	/// <summary>
 	/// A <see cref="ICommandPublisher{TAuthenticationToken}"/> that resolves handlers , executes the handler and then publishes the <see cref="ICommand{TAuthenticationToken}"/> on the public command bus.
 	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AkkaCommandBus<TAuthenticationToken>
 		: IAkkaCommandPublisher<TAuthenticationToken>
 		, ICommandHandlerRegistrar

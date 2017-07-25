@@ -22,6 +22,7 @@ using Cqrs.Messages;
 namespace Cqrs.Azure.ServiceBus
 {
 	// The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public class AzureEventBusPublisher<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IEventPublisher<TAuthenticationToken>
 	{

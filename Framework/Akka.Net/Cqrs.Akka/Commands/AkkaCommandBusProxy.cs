@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using System.Collections.Generic;
 using Akka.Actor;
 using cdmdotnet.Logging;
@@ -19,6 +20,7 @@ namespace Cqrs.Akka.Commands
 	/// <summary>
 	/// A <see cref="ICommandPublisher{TAuthenticationToken}"/> that proxies <see cref="ICommand{TAuthenticationToken}"/> to the <see cref="IActorRef"/> which acts as a single point of all handler resolutions.
 	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AkkaCommandBusProxy<TAuthenticationToken>
 		: IAkkaCommandPublisherProxy<TAuthenticationToken>
 	{
