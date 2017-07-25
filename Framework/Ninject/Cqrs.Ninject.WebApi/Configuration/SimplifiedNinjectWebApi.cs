@@ -56,6 +56,9 @@ namespace Cqrs.Ninject.WebApi.Configuration
 
 		private class WebApiStartUp : SimplifiedNinjectStartUp<WebApiModule>
 		{
+			/// <summary>
+			/// Instantiate a new instance of <see cref="WebApiStartUp"/>
+			/// </summary>
 			public WebApiStartUp(IConfigurationManager configurationManager)
 				: base(configurationManager)
 			{
@@ -63,6 +66,9 @@ namespace Cqrs.Ninject.WebApi.Configuration
 
 			#region Overrides of SimplifiedNinjectStartUp<WebHostModule>
 
+			/// <summary>
+			/// Adds the <see cref="SimplifiedSqlModule{TAuthenticationToken}"/> into <see cref="NinjectDependencyResolver.ModulesToLoad"/>.
+			/// </summary>
 			protected override void AddSupplementryModules()
 			{
 				NinjectDependencyResolver.ModulesToLoad.Insert(2, new SimplifiedSqlModule<SingleSignOnToken>());

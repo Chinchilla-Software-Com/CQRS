@@ -57,6 +57,9 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 
 		private class WcfStartUp : SimplifiedNinjectStartUp<WebHostModule>
 		{
+			/// <summary>
+			/// Instantiate a new instance of <see cref="WcfStartUp"/>
+			/// </summary>
 			public WcfStartUp(IConfigurationManager configurationManager)
 				: base(configurationManager)
 			{
@@ -64,6 +67,9 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 
 			#region Overrides of SimplifiedNinjectStartUp<WebHostModule>
 
+			/// <summary>
+			/// Adds the <see cref="SimplifiedSqlModule{TAuthenticationToken}"/> into <see cref="NinjectDependencyResolver.ModulesToLoad"/>.
+			/// </summary>
 			protected override void AddSupplementryModules()
 			{
 				NinjectDependencyResolver.ModulesToLoad.Insert(2, new SimplifiedSqlModule<SingleSignOnToken>());

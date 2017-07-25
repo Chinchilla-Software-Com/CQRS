@@ -7,18 +7,14 @@
 #endregion
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data.Common;
 using System.Data.Linq;
-using System.Linq;
-using System.Linq.Expressions;
-using cdmdotnet.Logging;
-using Cqrs.Configuration;
 using Cqrs.Entities;
 
 namespace Cqrs.DataStores
 {
+	/// <summary>
+	/// A collection of extension methods for <see cref="Table{TData}"/>
+	/// </summary>
 	public static class SqlDataStoreExtension
 	{
 		/*
@@ -51,6 +47,11 @@ namespace Cqrs.DataStores
 		}
 		*/
 
+		/// <summary>
+		/// Calls the TRUNCATE SQL command on the <see cref="Table{TEntity}"/>.
+		/// </summary>
+		/// <typeparam name="TEntity">The <see cref="Type"/> of <see cref="IEntity"/> to truncate all data of.</typeparam>
+		/// <param name="table">The <see cref="Table{TEntity}"/> to truncate all data of.</param>
 		public static void Truncate<TEntity>(this Table<TEntity> table) where TEntity : class
 		{
 			Type rowType = table.GetType().GetGenericArguments()[0];

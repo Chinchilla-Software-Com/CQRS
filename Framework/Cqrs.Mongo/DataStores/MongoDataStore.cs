@@ -20,6 +20,10 @@ using MongoDB.Driver.Builders;
 
 namespace Cqrs.Mongo.DataStores
 {
+	/// <summary>
+	/// A <see cref="IDataStore{TData}"/> that uses MongoDB for storage.
+	/// </summary>
+	/// <typeparam name="TData">The <see cref="Type"/> of <see cref="IEntity"/> the <see cref="IDataStore{TData}"/> will contain.</typeparam>
 	public class MongoDataStore<TData> : IDataStore<TData>
 		where TData : Entity
 	{
@@ -27,6 +31,9 @@ namespace Cqrs.Mongo.DataStores
 
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Instantiates and Initialises a new instance of the <see cref="MongoDataStore{TData}"/> class.
+		/// </summary>
 		public MongoDataStore(ILogger logger, MongoCollection<TData> mongoCollection)
 		{
 			Logger = logger;
