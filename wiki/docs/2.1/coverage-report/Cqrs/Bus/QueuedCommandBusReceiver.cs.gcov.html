@@ -31,13 +31,13 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryLo">66.7 %</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -95,7 +95,7 @@
 <span class="lineNum">      37 </span>            : 
 <span class="lineNum">      38 </span>            :                 protected abstract IDictionary&lt;Type, IList&lt;Action&lt;IMessage&gt;&gt;&gt; Routes { get; }
 <span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span>            :                 protected QueuedCommandBusReceiver(IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IConfigurationManager configurationManager, IBusHelper busHelper)
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 :                 protected QueuedCommandBusReceiver(IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IConfigurationManager configurationManager, IBusHelper busHelper)</span>
 <span class="lineNum">      41 </span>            :                 {
 <span class="lineNum">      42 </span>            :                         QueueTracker = new ConcurrentDictionary&lt;string, ConcurrentQueue&lt;ICommand&lt;TAuthenticationToken&gt;&gt;&gt;();
 <span class="lineNum">      43 </span>            :                         QueueTrackerLock = new ReaderWriterLockSlim();
@@ -106,13 +106,13 @@
 <span class="lineNum">      48 </span>            :                         BusHelper = busHelper;
 <span class="lineNum">      49 </span>            :                 }
 <span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span>            :                 protected virtual void EnqueueCommand(string targetQueueName, ICommand&lt;TAuthenticationToken&gt; command)
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :                 protected virtual void EnqueueCommand(string targetQueueName, ICommand&lt;TAuthenticationToken&gt; command)</span>
 <span class="lineNum">      52 </span>            :                 {
 <span class="lineNum">      53 </span>            :                         var queue = QueueTracker.GetOrAdd(targetQueueName, new ConcurrentQueue&lt;ICommand&lt;TAuthenticationToken&gt;&gt;());
 <span class="lineNum">      54 </span>            :                         queue.Enqueue(command);
 <span class="lineNum">      55 </span>            :                 }
 <span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span>            :                 protected virtual void CreateQueueAndAttachListenerIfNotExist(string queueName)
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :                 protected virtual void CreateQueueAndAttachListenerIfNotExist(string queueName)</span>
 <span class="lineNum">      58 </span>            :                 {
 <span class="lineNum">      59 </span>            :                         if (!QueueTracker.ContainsKey(queueName))
 <span class="lineNum">      60 </span>            :                         {
@@ -140,7 +140,7 @@
 <span class="lineNum">      82 </span>            :                         }
 <span class="lineNum">      83 </span>            :                 }
 <span class="lineNum">      84 </span>            : 
-<span class="lineNum">      85 </span>            :                 protected virtual void DequeuAndProcessCommand(string queueName)
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 :                 protected virtual void DequeuAndProcessCommand(string queueName)</span>
 <span class="lineNum">      86 </span>            :                 {
 <span class="lineNum">      87 </span>            :                         long loop = long.MinValue;
 <span class="lineNum">      88 </span>            :                         while (true)
@@ -234,7 +234,7 @@
 <span class="lineNum">     176 </span>            :                         }
 <span class="lineNum">     177 </span>            :                 }
 <span class="lineNum">     178 </span>            : 
-<span class="lineNum">     179 </span><span class="lineCov">          1 :                 public virtual bool? ReceiveCommand(ICommand&lt;TAuthenticationToken&gt; command)</span>
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :                 public virtual bool? ReceiveCommand(ICommand&lt;TAuthenticationToken&gt; command)</span>
 <span class="lineNum">     180 </span>            :                 {
 <span class="lineNum">     181 </span>            :                         CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
 <span class="lineNum">     182 </span>            :                         AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
@@ -272,7 +272,7 @@
 <span class="lineNum">     214 </span>            : 
 <span class="lineNum">     215 </span>            :                 #region Implementation of ICommandReceiver
 <span class="lineNum">     216 </span>            : 
-<span class="lineNum">     217 </span><span class="lineCov">          1 :                 public abstract void Start();</span>
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :                 public abstract void Start();</span>
 <span class="lineNum">     218 </span>            : 
 <span class="lineNum">     219 </span>            :                 #endregion
 <span class="lineNum">     220 </span>            :         }

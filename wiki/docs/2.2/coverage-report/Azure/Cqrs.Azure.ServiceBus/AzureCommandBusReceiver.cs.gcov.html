@@ -31,13 +31,13 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntry">9</td>
-            <td class="headerCovTableEntryLo">44.4 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryLo">20.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -87,7 +87,7 @@
 <span class="lineNum">      29 </span>            :                 : AzureCommandBus&lt;TAuthenticationToken&gt;
 <span class="lineNum">      30 </span>            :                 , ICommandHandlerRegistrar
 <span class="lineNum">      31 </span>            :                 , ICommandReceiver&lt;TAuthenticationToken&gt;
-<span class="lineNum">      32 </span>            :         {
+<span class="lineNum">      32 </span><span class="lineNoCov">          0 :         {</span>
 <span class="lineNum">      33 </span>            :                 protected virtual string NumberOfReceiversCountConfigurationKey
 <span class="lineNum">      34 </span>            :                 {
 <span class="lineNum">      35 </span>            :                         get { return &quot;Cqrs.Azure.CommandBus.NumberOfReceiversCount&quot;; }
@@ -235,7 +235,7 @@
 <span class="lineNum">     177 </span>            : 
 <span class="lineNum">     178 </span>            :                 #endregion
 <span class="lineNum">     179 </span>            : 
-<span class="lineNum">     180 </span><span class="lineCov">          1 :                 public virtual void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
+<span class="lineNum">     180 </span><span class="lineCov">          2 :                 public virtual void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
 <span class="lineNum">     181 </span>            :                         where TMessage : IMessage
 <span class="lineNum">     182 </span>            :                 {
 <span class="lineNum">     183 </span>            :                         AzureBusHelper.RegisterHandler(TelemetryHelper, Routes, handler, targetedType, holdMessageLock);
@@ -244,7 +244,7 @@
 <span class="lineNum">     186 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     187 </span>            :                 /// Register an event or command handler that will listen and respond to events or commands.
 <span class="lineNum">     188 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     189 </span><span class="lineCov">          1 :                 public void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = true)</span>
+<span class="lineNum">     189 </span><span class="lineCov">          2 :                 public void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = true)</span>
 <span class="lineNum">     190 </span>            :                         where TMessage : IMessage
 <span class="lineNum">     191 </span>            :                 {
 <span class="lineNum">     192 </span>            :                         RegisterHandler(handler, null, holdMessageLock);
@@ -382,7 +382,7 @@
 <span class="lineNum">     324 </span>            :                         }
 <span class="lineNum">     325 </span>            :                 }
 <span class="lineNum">     326 </span>            : 
-<span class="lineNum">     327 </span><span class="lineCov">          1 :                 public virtual bool? ReceiveCommand(ICommand&lt;TAuthenticationToken&gt; command)</span>
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :                 public virtual bool? ReceiveCommand(ICommand&lt;TAuthenticationToken&gt; command)</span>
 <span class="lineNum">     328 </span>            :                 {
 <span class="lineNum">     329 </span>            :                         return AzureBusHelper.DefaultReceiveCommand(command, Routes, &quot;Azure-ServiceBus&quot;);
 <span class="lineNum">     330 </span>            :                 }
@@ -425,7 +425,7 @@
 <span class="lineNum">     367 </span>            : 
 <span class="lineNum">     368 </span>            :                 #region Implementation of ICommandReceiver
 <span class="lineNum">     369 </span>            : 
-<span class="lineNum">     370 </span><span class="lineCov">          1 :                 public void Start()</span>
+<span class="lineNum">     370 </span><span class="lineNoCov">          0 :                 public void Start()</span>
 <span class="lineNum">     371 </span>            :                 {
 <span class="lineNum">     372 </span>            :                         InstantiateReceiving();
 <span class="lineNum">     373 </span>            : 

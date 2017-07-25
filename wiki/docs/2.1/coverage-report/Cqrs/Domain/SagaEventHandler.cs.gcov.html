@@ -31,13 +31,13 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryLo">25.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -82,19 +82,19 @@
 <span class="lineNum">      24 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      25 </span>            :                 /// A constructor for the &lt;see cref=&quot;Cqrs.Domain.Factories.IAggregateFactory&quot;/&gt;
 <span class="lineNum">      26 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      27 </span>            :                 protected SagaEventHandler(IDependencyResolver dependencyResolver, ILogger logger)
+<span class="lineNum">      27 </span><span class="lineCov">          1 :                 protected SagaEventHandler(IDependencyResolver dependencyResolver, ILogger logger)</span>
 <span class="lineNum">      28 </span>            :                         : this(dependencyResolver, logger, dependencyResolver.Resolve&lt;ISagaUnitOfWork&lt;TAuthenticationToken&gt;&gt;())
 <span class="lineNum">      29 </span>            :                 {
 <span class="lineNum">      30 </span>            :                 }
 <span class="lineNum">      31 </span>            : 
-<span class="lineNum">      32 </span>            :                 protected SagaEventHandler(IDependencyResolver dependencyResolver, ILogger logger, ISagaUnitOfWork&lt;TAuthenticationToken&gt; sagaUnitOfWork)
+<span class="lineNum">      32 </span><span class="lineNoCov">          0 :                 protected SagaEventHandler(IDependencyResolver dependencyResolver, ILogger logger, ISagaUnitOfWork&lt;TAuthenticationToken&gt; sagaUnitOfWork)</span>
 <span class="lineNum">      33 </span>            :                 {
 <span class="lineNum">      34 </span>            :                         DependencyResolver = dependencyResolver;
 <span class="lineNum">      35 </span>            :                         Logger = logger;
 <span class="lineNum">      36 </span>            :                         SagaUnitOfWork = sagaUnitOfWork;
 <span class="lineNum">      37 </span>            :                 }
 <span class="lineNum">      38 </span>            : 
-<span class="lineNum">      39 </span>            :                 protected virtual TSaga GetSaga(Guid id)
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 :                 protected virtual TSaga GetSaga(Guid id)</span>
 <span class="lineNum">      40 </span>            :                 {
 <span class="lineNum">      41 </span>            :                         return SagaUnitOfWork.Get&lt;TSaga&gt;(id);
 <span class="lineNum">      42 </span>            :                 }

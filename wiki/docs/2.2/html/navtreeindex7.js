@@ -53,8 +53,10 @@ var NAVTREEINDEX7 =
 "classCqrs_1_1Ninject_1_1Configuration_1_1NinjectDependencyResolver_ab9da7f1556cc1ef205d03d3ff62017c0.html#ab9da7f1556cc1ef205d03d3ff62017c0":[1,0,0,18,2,6,3],
 "classCqrs_1_1Ninject_1_1Configuration_1_1NinjectDependencyResolver_adc6171ed45679dcbaa67782770ba5083.html#adc6171ed45679dcbaa67782770ba5083":[1,0,0,18,2,6,5],
 "classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule.html":[1,0,0,18,2,7],
-"classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule_a182fa5666c70e6871aa371fc81fb788d.html#a182fa5666c70e6871aa371fc81fb788d":[1,0,0,18,2,7,0],
-"classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule_a41a1826cee70c7627e6ec1ef0053f1ea.html#a41a1826cee70c7627e6ec1ef0053f1ea":[1,0,0,18,2,7,1],
+"classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule_a182fa5666c70e6871aa371fc81fb788d.html#a182fa5666c70e6871aa371fc81fb788d":[1,0,0,18,2,7,2],
+"classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule_a41a1826cee70c7627e6ec1ef0053f1ea.html#a41a1826cee70c7627e6ec1ef0053f1ea":[1,0,0,18,2,7,3],
+"classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule_a622339cf7b08ce97d23c9b2f00cedea3.html#a622339cf7b08ce97d23c9b2f00cedea3":[1,0,0,18,2,7,1],
+"classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule_ae5b77cb7b9b0b826a603fea25609a1ac.html#ae5b77cb7b9b0b826a603fea25609a1ac":[1,0,0,18,2,7,0],
 "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp.html":[1,0,0,18,2,8],
 "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp_a481f691fbc1eec3f793a3b5769d83e5c.html#a481f691fbc1eec3f793a3b5769d83e5c":[1,0,0,18,2,8,1],
 "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp_a4a503b092601f347cfe320e3b6f1d26e.html#a4a503b092601f347cfe320e3b6f1d26e":[1,0,0,18,2,8,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX7 =
 "classCqrs_1_1Services_1_1ServiceResponse_a889c3d406ffbac960699e13616f9f38b.html#a889c3d406ffbac960699e13616f9f38b":[1,0,0,20,16,0],
 "classCqrs_1_1Services_1_1ServiceResponse_aa6a35305c2d6e7921679e1222293b58b.html#aa6a35305c2d6e7921679e1222293b58b":[1,0,0,20,16,3],
 "classCqrs_1_1Services_1_1ServiceResponse_ab93fe1cf6395706bc77ee3d670854f24.html#ab93fe1cf6395706bc77ee3d670854f24":[1,0,0,20,16,2],
-"classCqrs_1_1Services_1_1ServiceResponse_ad6b80b1b6d1122bcbac201f41ee37124.html#ad6b80b1b6d1122bcbac201f41ee37124":[1,0,0,20,16,1],
-"classCqrs_1_1Services_1_1UnitOfWorkService.html":[1,0,0,20,18],
-"classCqrs_1_1Services_1_1UnitOfWorkService_a187b3f612490a8316770bb7c6a9aa25f.html#a187b3f612490a8316770bb7c6a9aa25f":[1,0,0,20,18,0]
+"classCqrs_1_1Services_1_1ServiceResponse_ad6b80b1b6d1122bcbac201f41ee37124.html#ad6b80b1b6d1122bcbac201f41ee37124":[1,0,0,20,16,1]
 };

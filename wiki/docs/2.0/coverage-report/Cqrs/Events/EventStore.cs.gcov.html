@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">10</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -83,7 +83,7 @@
 <span class="lineNum">      25 </span>            : 
 <span class="lineNum">      26 </span>            :                 protected ILogger Logger { get; private set; }
 <span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span>            :                 protected EventStore(IEventBuilder&lt;TAuthenticationToken&gt; eventBuilder, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser, ILogger logger)
+<span class="lineNum">      28 </span><span class="lineNoCov">          0 :                 protected EventStore(IEventBuilder&lt;TAuthenticationToken&gt; eventBuilder, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser, ILogger logger)</span>
 <span class="lineNum">      29 </span>            :                 {
 <span class="lineNum">      30 </span>            :                         EventBuilder = eventBuilder;
 <span class="lineNum">      31 </span>            :                         EventDeserialiser = eventDeserialiser;
@@ -96,12 +96,12 @@
 <span class="lineNum">      38 </span>            :                         Save(typeof(T), @event);
 <span class="lineNum">      39 </span>            :                 }
 <span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span>            :                 protected virtual string GenerateStreamName(Type aggregateRootType, IEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">      41 </span><span class="lineNoCov">          0 :                 protected virtual string GenerateStreamName(Type aggregateRootType, IEvent&lt;TAuthenticationToken&gt; @event)</span>
 <span class="lineNum">      42 </span>            :                 {
 <span class="lineNum">      43 </span>            :                         return GenerateStreamName(aggregateRootType, @event.Id);
 <span class="lineNum">      44 </span>            :                 }
 <span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span>            :                 protected virtual string GenerateStreamName(Type aggregateRootType, Guid aggregateId)
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 :                 protected virtual string GenerateStreamName(Type aggregateRootType, Guid aggregateId)</span>
 <span class="lineNum">      47 </span>            :                 {
 <span class="lineNum">      48 </span>            :                         return string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 <span class="lineNum">      49 </span>            :                 }
@@ -132,7 +132,7 @@
 <span class="lineNum">      74 </span>            : 
 <span class="lineNum">      75 </span><span class="lineNoCov">          0 :                 public abstract IEnumerable&lt;EventData&gt; Get(Guid correlationId);</span>
 <span class="lineNum">      76 </span>            : 
-<span class="lineNum">      77 </span>            :                 protected abstract void PersistEvent(EventData eventData);
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :                 protected abstract void PersistEvent(EventData eventData);</span>
 <span class="lineNum">      78 </span>            :         }
 <span class="lineNum">      79 </span>            : }
 </pre>

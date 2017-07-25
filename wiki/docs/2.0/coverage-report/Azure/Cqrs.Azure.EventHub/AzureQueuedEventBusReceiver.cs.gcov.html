@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -74,13 +74,13 @@
 <span class="lineNum">      16 </span>            : using Cqrs.Configuration;
 <span class="lineNum">      17 </span>            : using Cqrs.Events;
 <span class="lineNum">      18 </span>            : using Microsoft.ServiceBus.Messaging;
-<span class="lineNum">      19 </span><span class="lineNoCov">          0 : using EventData = Microsoft.ServiceBus.Messaging.EventData;</span>
-<span class="lineNum">      20 </span><span class="lineNoCov">          0 : using SpinWait = Cqrs.Infrastructure.SpinWait;</span>
+<span class="lineNum">      19 </span>            : using EventData = Microsoft.ServiceBus.Messaging.EventData;
+<span class="lineNum">      20 </span>            : using SpinWait = Cqrs.Infrastructure.SpinWait;
 <span class="lineNum">      21 </span>            : 
 <span class="lineNum">      22 </span>            : namespace Cqrs.Azure.ServiceBus
 <span class="lineNum">      23 </span>            : {
 <span class="lineNum">      24 </span>            :         public class AzureQueuedEventBusReceiver&lt;TAuthenticationToken&gt; : AzureEventBusReceiver&lt;TAuthenticationToken&gt;
-<span class="lineNum">      25 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      25 </span>            :         {
 <span class="lineNum">      26 </span>            :                 protected static ConcurrentDictionary&lt;string, ConcurrentQueue&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt; QueueTracker { get; private set; }
 <span class="lineNum">      27 </span>            : 
 <span class="lineNum">      28 </span>            :                 protected ReaderWriterLockSlim QueueTrackerLock { get; private set; }
@@ -92,7 +92,7 @@
 <span class="lineNum">      34 </span>            :                         QueueTrackerLock = new ReaderWriterLockSlim();
 <span class="lineNum">      35 </span>            :                 }
 <span class="lineNum">      36 </span>            : 
-<span class="lineNum">      37 </span>            :                 protected override void ReceiveEvent(PartitionContext context, EventData eventData)
+<span class="lineNum">      37 </span><span class="lineNoCov">          0 :                 protected override void ReceiveEvent(PartitionContext context, EventData eventData)</span>
 <span class="lineNum">      38 </span>            :                 {
 <span class="lineNum">      39 </span>            :                         // Do a manual 10 try attempt with back-off
 <span class="lineNum">      40 </span>            :                         for (int i = 0; i &lt; 10; i++)
@@ -172,7 +172,7 @@
 <span class="lineNum">     114 </span>            :                         queue.Enqueue(@event);
 <span class="lineNum">     115 </span>            :                 }
 <span class="lineNum">     116 </span>            : 
-<span class="lineNum">     117 </span>            :                 protected void CreateQueueAndAttachListenerIfNotExist(string queueName)
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                 protected void CreateQueueAndAttachListenerIfNotExist(string queueName)</span>
 <span class="lineNum">     118 </span>            :                 {
 <span class="lineNum">     119 </span>            :                         if (!QueueTracker.ContainsKey(queueName))
 <span class="lineNum">     120 </span>            :                         {
@@ -200,7 +200,7 @@
 <span class="lineNum">     142 </span>            :                         }
 <span class="lineNum">     143 </span>            :                 }
 <span class="lineNum">     144 </span>            : 
-<span class="lineNum">     145 </span>            :                 protected void DequeuAndProcessEvent(string queueName)
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :                 protected void DequeuAndProcessEvent(string queueName)</span>
 <span class="lineNum">     146 </span>            :                 {
 <span class="lineNum">     147 </span>            :                         SpinWait.SpinUntil
 <span class="lineNum">     148 </span>            :                         (

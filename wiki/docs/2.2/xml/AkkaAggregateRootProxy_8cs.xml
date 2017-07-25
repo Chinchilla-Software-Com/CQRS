@@ -1,43 +1,43 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
-  <compounddef id="AkkaAggregateRootProxy_8cs" kind="file">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="AkkaAggregateRootProxy_8cs" kind="file" language="C#">
     <compoundname>AkkaAggregateRootProxy.cs</compoundname>
-    <innerclass refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRootProxy_3_01TAuthenticationToken_00_01TAggregateRoot_01_4" prot="public">Cqrs::Akka::Domain::AkkaAggregateRootProxy&lt; TAuthenticationToken, TAggregateRoot &gt;</innerclass>
+    <innerclass refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRootProxy" prot="public">Cqrs::Akka::Domain::AkkaAggregateRootProxy</innerclass>
     <innernamespace refid="namespaceCqrs_1_1Akka_1_1Domain">Cqrs::Akka::Domain</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
     <programlisting>
-<codeline lineno="1"><highlight class="preprocessor">#region<sp/>Copyright</highlight></codeline>
-<codeline lineno="2"><highlight class="preprocessor"></highlight><highlight class="comment">//<sp/>//<sp/>-----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="1"><highlight class="preprocessor">#region<sp/>Copyright</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>-----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>&lt;copyright<sp/>company=&quot;Chinchilla<sp/>Software<sp/>Limited&quot;&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/><sp/><sp/>Copyright<sp/>Chinchilla<sp/>Software<sp/>Limited.<sp/>All<sp/>rights<sp/>reserved.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>&lt;/copyright&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>-----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#endregion</highlight></codeline>
-<codeline lineno="8"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>System;</highlight></codeline>
-<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>System.Collections.Generic;</highlight></codeline>
-<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Akka.Actor;</highlight></codeline>
-<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Cqrs.Akka.Domain.Commands;</highlight></codeline>
-<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Cqrs.Domain;</highlight></codeline>
-<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Cqrs.Events;</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#endregion</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceSystem" kindref="compound">System</ref>;</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceSystem" kindref="compound">System</ref>.Collections.Generic;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceCqrs_1_1Messages_af06a7e6cd2609043d0f2f5f3419f81e3_1af06a7e6cd2609043d0f2f5f3419f81e3a1565c979ff6d5255fd3c81f57219fffc" kindref="member">Akka</ref>.Actor;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceCqrs" kindref="compound">Cqrs</ref>.<ref refid="namespaceCqrs_1_1Akka" kindref="compound">Akka</ref>.<ref refid="namespaceCqrs_1_1Akka_1_1Domain" kindref="compound">Domain</ref>.<ref refid="namespaceCqrs_1_1Akka_1_1Domain_1_1Commands" kindref="compound">Commands</ref>;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceCqrs" kindref="compound">Cqrs</ref>.<ref refid="namespaceCqrs_1_1Domain" kindref="compound">Domain</ref>;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceCqrs" kindref="compound">Cqrs</ref>.<ref refid="namespaceCqrs_1_1Events" kindref="compound">Events</ref>;</highlight></codeline>
 <codeline lineno="15"><highlight class="normal"></highlight></codeline>
-<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Cqrs.<ref refid="namespaceCqrs_1_1Messages_af06a7e6cd2609043d0f2f5f3419f81e3_1af06a7e6cd2609043d0f2f5f3419f81e3a1565c979ff6d5255fd3c81f57219fffc" kindref="member">Akka</ref>.Domain</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceCqrs" kindref="compound">Cqrs</ref>.<ref refid="namespaceCqrs_1_1Messages_af06a7e6cd2609043d0f2f5f3419f81e3_1af06a7e6cd2609043d0f2f5f3419f81e3a1565c979ff6d5255fd3c81f57219fffc" kindref="member">Akka</ref>.Domain</highlight></codeline>
 <codeline lineno="17"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="18" refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRootProxy_3_01TAuthenticationToken_00_01TAggregateRoot_01_4" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">AkkaAggregateRootProxy&lt;TAuthenticationToken,<sp/>TAggregateRoot&gt;</highlight></codeline>
-<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>IAkkaAggregateRootProxy&lt;TAggregateRoot&gt;</highlight></codeline>
-<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>IAggregateRoot&lt;TAuthenticationToken&gt;</highlight></codeline>
+<codeline lineno="18" refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRootProxy" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRootProxy" kindref="compound">AkkaAggregateRootProxy</ref>&lt;TAuthenticationToken,<sp/>TAggregateRoot&gt;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRootProxy" kindref="compound">IAkkaAggregateRootProxy</ref>&lt;TAggregateRoot&gt;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/><ref refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot" kindref="compound">IAggregateRoot</ref>&lt;TAuthenticationToken&gt;</highlight></codeline>
 <codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TODO<sp/>think<sp/>about<sp/>if<sp/>this<sp/>is<sp/>necessary<sp/>again.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>where<sp/>TAggregateRoot<sp/>:<sp/>IAggregateRoot&lt;TAuthenticationToken&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>IActorRef<sp/>ActorReference<sp/>{<sp/></highlight><highlight class="keyword">get</highlight><highlight class="normal">;<sp/></highlight><highlight class="keyword">internal</highlight><highlight class="normal"><sp/>set;<sp/>}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>IActorRef<sp/>ActorReference<sp/>{<sp/></highlight><highlight class="keyword">get</highlight><highlight class="normal">;<sp/></highlight><highlight class="keyword">internal</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">set</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
 <codeline lineno="25"><highlight class="normal"></highlight></codeline>
-<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>TAggregateRoot<sp/>Aggregate<sp/>{<sp/></highlight><highlight class="keyword">get</highlight><highlight class="normal">;<sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal"><sp/>set;<sp/>}</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>TAggregateRoot<sp/>Aggregate<sp/>{<sp/></highlight><highlight class="keyword">get</highlight><highlight class="normal">;<sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">set</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
 <codeline lineno="27"><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#region<sp/>Implementation<sp/>of<sp/>IAggregateRoot&lt;TAuthenticationToken&gt;</highlight></codeline>
-<codeline lineno="29"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#region<sp/>Implementation<sp/>of<sp/>IAggregateRoot&lt;TAuthenticationToken&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
 <codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>Guid<sp/>Id</highlight></codeline>
 <codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">get</highlight><highlight class="normal"><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ActorReference.Ask&lt;Guid&gt;(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classCqrs_1_1Akka_1_1Domain_1_1Commands_1_1GetAkkaAggregateRootId" kindref="compound">GetAkkaAggregateRootId</ref>()).Result;<sp/>}</highlight></codeline>
@@ -50,23 +50,23 @@
 <codeline lineno="39"><highlight class="normal"></highlight></codeline>
 <codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;<sp/>GetUncommittedChanges()</highlight></codeline>
 <codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>((<ref refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot_3_01TAuthenticationToken_01_4" kindref="compound">IAggregateRoot&lt;TAuthenticationToken&gt;</ref>)Aggregate).GetUncommittedChanges();</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>((<ref refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot" kindref="compound">IAggregateRoot&lt;TAuthenticationToken&gt;</ref>)Aggregate).<ref refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot_a22fda414613f5ac0d4371554d7d6473b_1a22fda414613f5ac0d4371554d7d6473b" kindref="member">GetUncommittedChanges</ref>();</highlight></codeline>
 <codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="44"><highlight class="normal"></highlight></codeline>
 <codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>MarkChangesAsCommitted()</highlight></codeline>
 <codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>((<ref refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot_3_01TAuthenticationToken_01_4" kindref="compound">IAggregateRoot&lt;TAuthenticationToken&gt;</ref>)Aggregate).MarkChangesAsCommitted();</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>((<ref refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot" kindref="compound">IAggregateRoot&lt;TAuthenticationToken&gt;</ref>)Aggregate).MarkChangesAsCommitted();</highlight></codeline>
 <codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="49"><highlight class="normal"></highlight></codeline>
-<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>LoadFromHistory(IEnumerable&lt;<ref refid="interfaceCqrs_1_1Events_1_1IEvent_3_01TAuthenticationToken_01_4" kindref="compound">IEvent&lt;TAuthenticationToken&gt;</ref>&gt;<sp/>history)</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>LoadFromHistory(IEnumerable&lt;<ref refid="interfaceCqrs_1_1Events_1_1IEvent" kindref="compound">IEvent&lt;TAuthenticationToken&gt;</ref>&gt;<sp/>history)</highlight></codeline>
 <codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>((<ref refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot_3_01TAuthenticationToken_01_4" kindref="compound">IAggregateRoot&lt;TAuthenticationToken&gt;</ref>)Aggregate).LoadFromHistory(history);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>((<ref refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot" kindref="compound">IAggregateRoot&lt;TAuthenticationToken&gt;</ref>)Aggregate).LoadFromHistory(history);</highlight></codeline>
 <codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="54"><highlight class="normal"></highlight></codeline>
-<codeline lineno="55"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#endregion</highlight></codeline>
-<codeline lineno="56"><highlight class="preprocessor"></highlight><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#endregion</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="57"><highlight class="normal">}</highlight></codeline>
     </programlisting>
-    <location file="/mnt/c/code/git/CQRS.XsamX/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaAggregateRootProxy.cs"/>
+    <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaAggregateRootProxy.cs"/>
   </compounddef>
 </doxygen>

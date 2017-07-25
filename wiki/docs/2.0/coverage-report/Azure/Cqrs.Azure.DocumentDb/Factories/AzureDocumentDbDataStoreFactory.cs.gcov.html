@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">50.0 %</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryLo">16.7 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -90,14 +90,14 @@
 <span class="lineNum">      32 </span>            :                         Logger = logger;
 <span class="lineNum">      33 </span>            :                 }
 <span class="lineNum">      34 </span>            : 
-<span class="lineNum">      35 </span>            :                 protected virtual DocumentClient GetClient()
+<span class="lineNum">      35 </span><span class="lineNoCov">          0 :                 protected virtual DocumentClient GetClient()</span>
 <span class="lineNum">      36 </span>            :                 {
 <span class="lineNum">      37 </span>            :                         DocumentClient client = AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbConnectionClient();
 <span class="lineNum">      38 </span>            : 
 <span class="lineNum">      39 </span>            :                         return client;
 <span class="lineNum">      40 </span>            :                 }
 <span class="lineNum">      41 </span>            : 
-<span class="lineNum">      42 </span>            :                 protected virtual DocumentCollection GetCollection&lt;TEntity&gt;(DocumentClient client, Database database)
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 :                 protected virtual DocumentCollection GetCollection&lt;TEntity&gt;(DocumentClient client, Database database)</span>
 <span class="lineNum">      43 </span>            :                 {
 <span class="lineNum">      44 </span>            :                         string collectionName = string.Format(AzureDocumentDbDataStoreConnectionStringFactory.UseOneCollectionPerDataStore() ? &quot;{0}&quot; : &quot;{0}_{1}&quot;, AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbCollectionName(), typeof(TEntity).FullName);
 <span class="lineNum">      45 </span>            :                         DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName).Result;
@@ -105,7 +105,7 @@
 <span class="lineNum">      47 </span>            :                         return collection;
 <span class="lineNum">      48 </span>            :                 }
 <span class="lineNum">      49 </span>            : 
-<span class="lineNum">      50 </span>            :                 protected virtual IOrderedQueryable&lt;TEntity&gt; GetQuery&lt;TEntity&gt;(DocumentClient client, DocumentCollection collection)
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :                 protected virtual IOrderedQueryable&lt;TEntity&gt; GetQuery&lt;TEntity&gt;(DocumentClient client, DocumentCollection collection)</span>
 <span class="lineNum">      51 </span>            :                 {
 <span class="lineNum">      52 </span>            :                         Logger.LogDebug(&quot;Getting Azure query&quot;, &quot;AzureDocumentDbDataStoreFactory\\GetQuery&quot;);
 <span class="lineNum">      53 </span>            :                         try
@@ -120,7 +120,7 @@
 <span class="lineNum">      62 </span>            :                         }
 <span class="lineNum">      63 </span>            :                 }
 <span class="lineNum">      64 </span>            : 
-<span class="lineNum">      65 </span>            :                 protected virtual Database GetDatabase(DocumentClient client)
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :                 protected virtual Database GetDatabase(DocumentClient client)</span>
 <span class="lineNum">      66 </span>            :                 {
 <span class="lineNum">      67 </span>            :                         return AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbDatabaseName()).Result;
 <span class="lineNum">      68 </span>            :                 }

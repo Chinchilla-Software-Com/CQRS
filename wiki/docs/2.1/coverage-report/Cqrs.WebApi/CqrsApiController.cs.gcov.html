@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryLo">10.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -86,7 +86,7 @@
 <span class="lineNum">      28 </span>            :         public abstract class CqrsApiController
 <span class="lineNum">      29 </span>            :                 : ApiController
 <span class="lineNum">      30 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      31 </span>            :                 protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper)
+<span class="lineNum">      31 </span><span class="lineNoCov">          0 :                 protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper)</span>
 <span class="lineNum">      32 </span>            :                 {
 <span class="lineNum">      33 </span>            :                         CorrelationIdHelper = correlationIdHelper;
 <span class="lineNum">      34 </span>            :                         Logger = logger;
@@ -96,7 +96,7 @@
 <span class="lineNum">      38 </span>            : 
 <span class="lineNum">      39 </span>            :                 protected ILogger Logger { get; private set; }
 <span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span>            :                 protected virtual string GetToken()
+<span class="lineNum">      41 </span><span class="lineNoCov">          0 :                 protected virtual string GetToken()</span>
 <span class="lineNum">      42 </span>            :                 {
 <span class="lineNum">      43 </span>            :                         string token = null;
 <span class="lineNum">      44 </span>            :                         IEnumerable&lt;string&gt; tokenValue;
@@ -112,7 +112,7 @@
 <span class="lineNum">      54 </span>            :                         return token;
 <span class="lineNum">      55 </span>            :                 }
 <span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span>            :                 protected virtual IServiceRequest&lt;TSingleSignOnToken&gt; CreateRequest&lt;TSingleSignOnToken&gt;()
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :                 protected virtual IServiceRequest&lt;TSingleSignOnToken&gt; CreateRequest&lt;TSingleSignOnToken&gt;()</span>
 <span class="lineNum">      58 </span>            :                         where TSingleSignOnToken : ISingleSignOnToken, new()
 <span class="lineNum">      59 </span>            :                 {
 <span class="lineNum">      60 </span>            :                         return new ServiceRequest&lt;TSingleSignOnToken&gt;
@@ -122,7 +122,7 @@
 <span class="lineNum">      64 </span>            :                         };
 <span class="lineNum">      65 </span>            :                 }
 <span class="lineNum">      66 </span>            : 
-<span class="lineNum">      67 </span>            :                 protected virtual IServiceRequestWithData&lt;TSingleSignOnToken, TParameters&gt; CreateRequestWithData&lt;TSingleSignOnToken, TParameters&gt;(Func&lt;TParameters&gt; createParameterDelegate = null)
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :                 protected virtual IServiceRequestWithData&lt;TSingleSignOnToken, TParameters&gt; CreateRequestWithData&lt;TSingleSignOnToken, TParameters&gt;(Func&lt;TParameters&gt; createParameterDelegate = null)</span>
 <span class="lineNum">      68 </span>            :                         where TSingleSignOnToken : ISingleSignOnToken, new()
 <span class="lineNum">      69 </span>            :                         where TParameters : new()
 <span class="lineNum">      70 </span>            :                 {
@@ -134,7 +134,7 @@
 <span class="lineNum">      76 </span>            :                         };
 <span class="lineNum">      77 </span>            :                 }
 <span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span>            :                 protected virtual TSingleSignOnToken CreateAuthenticationToken&lt;TSingleSignOnToken&gt;()
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :                 protected virtual TSingleSignOnToken CreateAuthenticationToken&lt;TSingleSignOnToken&gt;()</span>
 <span class="lineNum">      80 </span>            :                         where TSingleSignOnToken : ISingleSignOnToken, new()
 <span class="lineNum">      81 </span>            :                 {
 <span class="lineNum">      82 </span>            :                         return new TSingleSignOnToken
@@ -145,23 +145,23 @@
 <span class="lineNum">      87 </span>            :                         };
 <span class="lineNum">      88 </span>            :                 }
 <span class="lineNum">      89 </span>            : 
-<span class="lineNum">      90 </span>            :                 protected virtual TParameters CreateParameter&lt;TParameters&gt;()
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :                 protected virtual TParameters CreateParameter&lt;TParameters&gt;()</span>
 <span class="lineNum">      91 </span>            :                         where TParameters : new()
 <span class="lineNum">      92 </span>            :                 {
 <span class="lineNum">      93 </span>            :                         return new TParameters();
 <span class="lineNum">      94 </span>            :                 }
 <span class="lineNum">      95 </span>            : 
-<span class="lineNum">      96 </span>            :                 protected virtual DateTime GetDateTokenIssued()
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                 protected virtual DateTime GetDateTokenIssued()</span>
 <span class="lineNum">      97 </span>            :                 {
 <span class="lineNum">      98 </span>            :                         return default(DateTime);
 <span class="lineNum">      99 </span>            :                 }
 <span class="lineNum">     100 </span>            : 
-<span class="lineNum">     101 </span>            :                 protected virtual DateTime GetTokenTimeOfExpiry()
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :                 protected virtual DateTime GetTokenTimeOfExpiry()</span>
 <span class="lineNum">     102 </span>            :                 {
 <span class="lineNum">     103 </span>            :                         return default(DateTime);
 <span class="lineNum">     104 </span>            :                 }
 <span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span>            :                 protected virtual TServiceResponse CompleteResponse&lt;TServiceResponse&gt;(TServiceResponse serviceResponse)
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :                 protected virtual TServiceResponse CompleteResponse&lt;TServiceResponse&gt;(TServiceResponse serviceResponse)</span>
 <span class="lineNum">     107 </span>            :                         where TServiceResponse : IServiceResponse
 <span class="lineNum">     108 </span>            :                 {
 <span class="lineNum">     109 </span>            :                         serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();

@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomething_ac9a5ee87be68aa399f3a9d62e1e4e7ae.html#ac9a5ee87be68aa399f3a9d62e1e4e7ae":[1,0,0,23,6,3,5],
+"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomething_af609de5278f3842a61a727bd20a4f22f.html#af609de5278f3842a61a727bd20a4f22f":[1,0,0,23,6,3,7],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomething_af7f1de240f8dc7b1191a08f8f26b61e9.html#af7f1de240f8dc7b1191a08f8f26b61e9":[1,0,0,23,6,3,4],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomething.html":[1,0,0,23,6,7],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomething2.html":[1,0,0,23,6,8],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "classCqrs_1_1WebApi_1_1HelpPageConfig_a9015771102b0ab21da20a0684fe6a88a.html#a9015771102b0ab21da20a0684fe6a88a":[1,0,0,25,8,3],
 "classCqrs_1_1WebApi_1_1HelpPageConfig_a9dc5b7b2b644637cd8216ffaac68d545.html#a9dc5b7b2b644637cd8216ffaac68d545":[1,0,0,25,8,1],
 "classCqrs_1_1WebApi_1_1HelpPageConfig_afc36e0fcbf46ecda7770656373dbd46c.html#afc36e0fcbf46ecda7770656373dbd46c":[1,0,0,25,8,2],
-"classCqrs_1_1WebApi_1_1HttpResponseMessage.html":[1,0,0,25,9],
-"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub.html":[1,0,0,25,4,0,2],
-"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a0188fd4fea68476ffc3b375482c7b56c.html#a0188fd4fea68476ffc3b375482c7b56c":[1,0,0,25,4,0,2,5]
+"classCqrs_1_1WebApi_1_1HttpResponseMessage.html":[1,0,0,25,9]
 };

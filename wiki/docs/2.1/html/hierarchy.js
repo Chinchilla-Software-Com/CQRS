@@ -573,6 +573,9 @@ var hierarchy =
       [ "Cqrs.WebApi.SignalR.Hubs.NotificationHub", "classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub.html", null ]
     ] ],
     [ "Cqrs.WebApi.SignalR.Hubs.SignalRStartUp", "classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1SignalRStartUp.html", null ],
+    [ "CqrsNinjectJobHost", null, [
+      [ "CqrsWebJobProgram", "classCqrsWebJobProgram.html", null ]
+    ] ],
     [ "DataContractResolver", null, [
       [ "Cqrs.Services.ServiceParameterResolver< TServiceParameter, TSingleSignOnTokenResolver >", "classCqrs_1_1Services_1_1ServiceParameterResolver.html", null ]
     ] ],

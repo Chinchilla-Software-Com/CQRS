@@ -1,34 +1,34 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.6">
-  <compounddef id="ExpressionTreeConverter_8cs" kind="file">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="ExpressionTreeConverter_8cs" kind="file" language="C#">
     <compoundname>ExpressionTreeConverter.cs</compoundname>
-    <innerclass refid="classCqrs_1_1Sql_1_1DataStores_1_1ExpressionTreeConverter_3_01TA_00_01TB_01_4" prot="public">Cqrs::Sql::DataStores::ExpressionTreeConverter&lt; TA, TB &gt;</innerclass>
+    <innerclass refid="classCqrs_1_1Sql_1_1DataStores_1_1ExpressionTreeConverter" prot="public">Cqrs::Sql::DataStores::ExpressionTreeConverter</innerclass>
     <innernamespace refid="namespaceCqrs_1_1Sql_1_1DataStores">Cqrs::Sql::DataStores</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
     <programlisting>
-<codeline lineno="1"><highlight class="keyword">using</highlight><highlight class="normal"><sp/>System;</highlight></codeline>
-<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>System.Collections.Generic;</highlight></codeline>
-<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>System.Linq;</highlight></codeline>
-<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>System.Linq.Expressions;</highlight></codeline>
-<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>System.Reflection;</highlight></codeline>
+<codeline lineno="1"><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceSystem" kindref="compound">System</ref>;</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceSystem" kindref="compound">System</ref>.Collections.Generic;</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceSystem" kindref="compound">System</ref>.<ref refid="namespaceSystem_1_1Linq" kindref="compound">Linq</ref>;</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceSystem" kindref="compound">System</ref>.<ref refid="namespaceSystem_1_1Linq" kindref="compound">Linq</ref>.Expressions;</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceSystem" kindref="compound">System</ref>.Reflection;</highlight></codeline>
 <codeline lineno="6"><highlight class="normal"></highlight></codeline>
-<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Cqrs.Sql.DataStores</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceCqrs" kindref="compound">Cqrs</ref>.Sql.DataStores</highlight></codeline>
 <codeline lineno="8"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="9" refid="classCqrs_1_1Sql_1_1DataStores_1_1ExpressionTreeConverter_3_01TA_00_01TB_01_4" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">abstract</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">ExpressionTreeConverter&lt;TA,<sp/>TB&gt;<sp/>:<sp/>ExpressionVisitor,<sp/><ref refid="interfaceCqrs_1_1Sql_1_1DataStores_1_1IExpressionTreeConverter" kindref="compound">IExpressionTreeConverter</ref></highlight></codeline>
+<codeline lineno="9" refid="classCqrs_1_1Sql_1_1DataStores_1_1ExpressionTreeConverter" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">abstract</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classCqrs_1_1Sql_1_1DataStores_1_1ExpressionTreeConverter" kindref="compound">ExpressionTreeConverter</ref>&lt;TA,<sp/>TB&gt;<sp/>:<sp/>ExpressionVisitor,<sp/><ref refid="interfaceCqrs_1_1Sql_1_1DataStores_1_1IExpressionTreeConverter" kindref="compound">IExpressionTreeConverter</ref></highlight></codeline>
 <codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal"><sp/>readonly<sp/>Dictionary&lt;ParameterExpression,<sp/>ParameterExpression&gt;<sp/>_parameters<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>Dictionary&lt;ParameterExpression,<sp/>ParameterExpression&gt;();</highlight></codeline>
 <codeline lineno="12"><highlight class="normal"></highlight></codeline>
 <codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal"><sp/>readonly<sp/>Dictionary&lt;MemberInfo,<sp/>LambdaExpression&gt;<sp/>_mappings;</highlight></codeline>
 <codeline lineno="14"><highlight class="normal"></highlight></codeline>
-<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal"><sp/>ExpressionTreeConverter(Dictionary&lt;MemberInfo,<sp/>LambdaExpression&gt;<sp/>mappings)</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal"><sp/><ref refid="classCqrs_1_1Sql_1_1DataStores_1_1ExpressionTreeConverter" kindref="compound">ExpressionTreeConverter</ref>(Dictionary&lt;MemberInfo,<sp/>LambdaExpression&gt;<sp/>mappings)</highlight></codeline>
 <codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_mappings<sp/>=<sp/>mappings;</highlight></codeline>
 <codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="19"><highlight class="normal"></highlight></codeline>
-<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal"><sp/>ExpressionTreeConverter()</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal"><sp/><ref refid="classCqrs_1_1Sql_1_1DataStores_1_1ExpressionTreeConverter" kindref="compound">ExpressionTreeConverter</ref>()</highlight></codeline>
 <codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_mappings<sp/>=<sp/>GetMappings();</highlight></codeline>
 <codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
@@ -75,6 +75,6 @@
 <codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="65"><highlight class="normal">}</highlight></codeline>
     </programlisting>
-    <location file="/mnt/c/code/git/cqrs/Framework/Cqrs.Sql/DataStores/ExpressionTreeConverter.cs"/>
+    <location file="/mnt/y/cdmdotnet/cqrs/Framework/Cqrs.Sql/DataStores/ExpressionTreeConverter.cs"/>
   </compounddef>
 </doxygen>

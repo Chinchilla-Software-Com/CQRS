@@ -31,13 +31,13 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">2</td>
             <td class="headerCovTableEntry">7</td>
-            <td class="headerCovTableEntryLo">57.1 %</td>
+            <td class="headerCovTableEntryLo">28.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -76,7 +76,7 @@
 <span class="lineNum">      18 </span>            : using Cqrs.Events;
 <span class="lineNum">      19 </span>            : using Cqrs.Messages;
 <span class="lineNum">      20 </span>            : using Microsoft.ServiceBus.Messaging;
-<span class="lineNum">      21 </span><span class="lineNoCov">          0 : using EventData = Microsoft.ServiceBus.Messaging.EventData;</span>
+<span class="lineNum">      21 </span>            : using EventData = Microsoft.ServiceBus.Messaging.EventData;
 <span class="lineNum">      22 </span>            : 
 <span class="lineNum">      23 </span>            : namespace Cqrs.Azure.ServiceBus
 <span class="lineNum">      24 </span>            : {
@@ -84,7 +84,7 @@
 <span class="lineNum">      26 </span>            :                 : AzureEventHubBus&lt;TAuthenticationToken&gt;
 <span class="lineNum">      27 </span>            :                 , IEventHandlerRegistrar
 <span class="lineNum">      28 </span>            :                 , IEventReceiver&lt;TAuthenticationToken&gt;
-<span class="lineNum">      29 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      29 </span>            :         {
 <span class="lineNum">      30 </span>            :                 protected virtual string NumberOfReceiversCountConfigurationKey
 <span class="lineNum">      31 </span>            :                 {
 <span class="lineNum">      32 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.EventBus.NumberOfReceiversCount&quot;; }
@@ -107,7 +107,7 @@
 <span class="lineNum">      49 </span>            :                         TelemetryHelper = configurationManager.CreateTelemetryHelper(&quot;Cqrs.Azure.EventHub.EventBus.Receiver.UseApplicationInsightTelemetryHelper&quot;, correlationIdHelper);
 <span class="lineNum">      50 </span>            :                 }
 <span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span><span class="lineCov">          1 :                 public void Start()</span>
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :                 public void Start()</span>
 <span class="lineNum">      53 </span>            :                 {
 <span class="lineNum">      54 </span>            :                         InstantiateReceiving();
 <span class="lineNum">      55 </span>            : 
@@ -118,7 +118,7 @@
 <span class="lineNum">      60 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      61 </span>            :                 /// Register an event or command handler that will listen and respond to events or commands.
 <span class="lineNum">      62 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      63 </span><span class="lineCov">          1 :                 public virtual void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
+<span class="lineNum">      63 </span><span class="lineCov">          2 :                 public virtual void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
 <span class="lineNum">      64 </span>            :                         where TMessage : IMessage
 <span class="lineNum">      65 </span>            :                 {
 <span class="lineNum">      66 </span>            :                         AzureBusHelper.RegisterHandler(TelemetryHelper, Routes, handler, targetedType, holdMessageLock);
@@ -127,13 +127,13 @@
 <span class="lineNum">      69 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      70 </span>            :                 /// Register an event or command handler that will listen and respond to events or commands.
 <span class="lineNum">      71 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      72 </span><span class="lineCov">          1 :                 public void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = false)</span>
+<span class="lineNum">      72 </span><span class="lineCov">          2 :                 public void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = false)</span>
 <span class="lineNum">      73 </span>            :                         where TMessage : IMessage
 <span class="lineNum">      74 </span>            :                 {
 <span class="lineNum">      75 </span>            :                         RegisterHandler(handler, null, holdMessageLock);
 <span class="lineNum">      76 </span>            :                 }
 <span class="lineNum">      77 </span>            : 
-<span class="lineNum">      78 </span>            :                 protected virtual void ReceiveEvent(PartitionContext context, EventData eventData)
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :                 protected virtual void ReceiveEvent(PartitionContext context, EventData eventData)</span>
 <span class="lineNum">      79 </span>            :                 {
 <span class="lineNum">      80 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 <span class="lineNum">      81 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
@@ -256,14 +256,14 @@
 <span class="lineNum">     198 </span>            :                         }
 <span class="lineNum">     199 </span>            :                 }
 <span class="lineNum">     200 </span>            : 
-<span class="lineNum">     201 </span><span class="lineCov">          1 :                 public virtual bool? ReceiveEvent(IEvent&lt;TAuthenticationToken&gt; @event)</span>
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 :                 public virtual bool? ReceiveEvent(IEvent&lt;TAuthenticationToken&gt; @event)</span>
 <span class="lineNum">     202 </span>            :                 {
 <span class="lineNum">     203 </span>            :                         return AzureBusHelper.DefaultReceiveEvent(@event, Routes, &quot;Azure-EventHub&quot;);
 <span class="lineNum">     204 </span>            :                 }
 <span class="lineNum">     205 </span>            : 
 <span class="lineNum">     206 </span>            :                 #region Overrides of AzureServiceBus&lt;TAuthenticationToken&gt;
 <span class="lineNum">     207 </span>            : 
-<span class="lineNum">     208 </span>            :                 protected override int GetCurrentNumberOfReceiversCount()
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :                 protected override int GetCurrentNumberOfReceiversCount()</span>
 <span class="lineNum">     209 </span>            :                 {
 <span class="lineNum">     210 </span>            :                         string numberOfReceiversCountValue;
 <span class="lineNum">     211 </span>            :                         int numberOfReceiversCount;

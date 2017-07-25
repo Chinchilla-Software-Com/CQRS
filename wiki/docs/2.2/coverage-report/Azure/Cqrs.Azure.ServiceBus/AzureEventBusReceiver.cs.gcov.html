@@ -31,13 +31,13 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntry">10</td>
-            <td class="headerCovTableEntryLo">50.0 %</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntryLo">36.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -89,7 +89,7 @@
 <span class="lineNum">      31 </span>            :                 : AzureEventBus&lt;TAuthenticationToken&gt;
 <span class="lineNum">      32 </span>            :                 , IEventHandlerRegistrar
 <span class="lineNum">      33 </span>            :                 , IEventReceiver&lt;TAuthenticationToken&gt;
-<span class="lineNum">      34 </span>            :         {
+<span class="lineNum">      34 </span><span class="lineCov">          2 :         {</span>
 <span class="lineNum">      35 </span>            :                 protected virtual string NumberOfReceiversCountConfigurationKey
 <span class="lineNum">      36 </span>            :                 {
 <span class="lineNum">      37 </span>            :                         get { return &quot;Cqrs.Azure.EventBus.NumberOfReceiversCount&quot;; }
@@ -139,7 +139,7 @@
 <span class="lineNum">      81 </span>            :                         }
 <span class="lineNum">      82 </span>            :                 }
 <span class="lineNum">      83 </span>            : 
-<span class="lineNum">      84 </span><span class="lineCov">          1 :                 public void Start()</span>
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :                 public void Start()</span>
 <span class="lineNum">      85 </span>            :                 {
 <span class="lineNum">      86 </span>            :                         InstantiateReceiving();
 <span class="lineNum">      87 </span>            : 
@@ -255,7 +255,7 @@
 <span class="lineNum">     197 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     198 </span>            :                 /// Register an event or command handler that will listen and respond to events or commands.
 <span class="lineNum">     199 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     200 </span><span class="lineCov">          1 :                 public virtual void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
+<span class="lineNum">     200 </span><span class="lineCov">          2 :                 public virtual void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
 <span class="lineNum">     201 </span>            :                         where TMessage : IMessage
 <span class="lineNum">     202 </span>            :                 {
 <span class="lineNum">     203 </span>            :                         AzureBusHelper.RegisterHandler(TelemetryHelper, Routes, handler, targetedType, holdMessageLock);
@@ -264,7 +264,7 @@
 <span class="lineNum">     206 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     207 </span>            :                 /// Register an event or command handler that will listen and respond to events or commands.
 <span class="lineNum">     208 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     209 </span><span class="lineCov">          1 :                 public void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = false)</span>
+<span class="lineNum">     209 </span><span class="lineCov">          2 :                 public void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = false)</span>
 <span class="lineNum">     210 </span>            :                         where TMessage : IMessage
 <span class="lineNum">     211 </span>            :                 {
 <span class="lineNum">     212 </span>            :                         RegisterHandler(handler, null, holdMessageLock);
@@ -273,7 +273,7 @@
 <span class="lineNum">     215 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     216 </span>            :                 /// Register an event handler that will listen and respond to all events.
 <span class="lineNum">     217 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     218 </span><span class="lineCov">          1 :                 public void RegisterGlobalEventHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = true) where TMessage : IMessage</span>
+<span class="lineNum">     218 </span><span class="lineCov">          2 :                 public void RegisterGlobalEventHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = true) where TMessage : IMessage</span>
 <span class="lineNum">     219 </span>            :                 {
 <span class="lineNum">     220 </span>            :                         AzureBusHelper.RegisterGlobalEventHandler(TelemetryHelper, Routes, handler, holdMessageLock);
 <span class="lineNum">     221 </span>            :                 }
@@ -413,7 +413,7 @@
 <span class="lineNum">     355 </span>            :                         }
 <span class="lineNum">     356 </span>            :                 }
 <span class="lineNum">     357 </span>            : 
-<span class="lineNum">     358 </span><span class="lineCov">          1 :                 public virtual bool? ReceiveEvent(IEvent&lt;TAuthenticationToken&gt; @event)</span>
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :                 public virtual bool? ReceiveEvent(IEvent&lt;TAuthenticationToken&gt; @event)</span>
 <span class="lineNum">     359 </span>            :                 {
 <span class="lineNum">     360 </span>            :                         return AzureBusHelper.DefaultReceiveEvent(@event, Routes, &quot;Azure-ServiceBus&quot;);
 <span class="lineNum">     361 </span>            :                 }

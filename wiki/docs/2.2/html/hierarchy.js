@@ -46,8 +46,8 @@ var hierarchy =
     [ "ChannelFactory", null, [
       [ "Cqrs.Services.ServiceChannelFactory< TService >", "classCqrs_1_1Services_1_1ServiceChannelFactory.html", null ]
     ] ],
-    [ "Cqrs.Akka.Commands.IConcurrentAkkaCommandSender< TAuthenticationToken, TTarget >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IConcurrentAkkaCommandSender.html", [
-      [ "Cqrs.Akka.Commands.ConcurrentAkkaCommandSender< TAuthenticationToken, TTarget >", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandSender.html", null ]
+    [ "Cqrs.Akka.Commands.IConcurrentAkkaCommandPublisher< TAuthenticationToken, TTarget >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IConcurrentAkkaCommandPublisher.html", [
+      [ "Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher< TAuthenticationToken, TTarget >", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher.html", null ]
     ] ],
     [ "Cqrs.Akka.Configuration.IHandlerResolver", "interfaceCqrs_1_1Akka_1_1Configuration_1_1IHandlerResolver.html", [
       [ "Cqrs.Ninject.Akka.AkkaNinjectDependencyResolver", "classCqrs_1_1Ninject_1_1Akka_1_1AkkaNinjectDependencyResolver.html", null ]
@@ -212,21 +212,21 @@ var hierarchy =
     [ "Cqrs.Bus.Route", "classCqrs_1_1Bus_1_1Route.html", null ],
     [ "Cqrs.Bus.RouteHandlerDelegate", "classCqrs_1_1Bus_1_1RouteHandlerDelegate.html", null ],
     [ "Cqrs.Commands.ICommandPublisher< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ICommandPublisher.html", [
+      [ "Cqrs.Akka.Commands.IAkkaCommandPublisherProxy< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IAkkaCommandPublisherProxy.html", [
+        [ "Cqrs.Akka.Commands.AkkaCommandBusProxy< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBusProxy.html", null ]
+      ] ],
       [ "Cqrs.Commands.ICommandSender< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ICommandSender.html", [
-        [ "Cqrs.Akka.Commands.IAkkaCommandSenderProxy< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IAkkaCommandSenderProxy.html", [
-          [ "Cqrs.Akka.Commands.AkkaCommandBusProxy< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBusProxy.html", null ]
-        ] ],
         [ "Cqrs.Commands.ISendAndWaitCommandSender< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ISendAndWaitCommandSender.html", [
-          [ "Cqrs.Akka.Commands.IAkkaCommandSender< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IAkkaCommandSender.html", [
-            [ "Cqrs.Akka.Commands.AkkaCommandBus< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus.html", null ],
-            [ "Cqrs.Akka.Commands.IConcurrentAkkaCommandSender< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IConcurrentAkkaCommandSender.html", null ]
-          ] ],
-          [ "Cqrs.Azure.ServiceBus.AzureCommandBusPublisher< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBusPublisher.html", null ],
-          [ "Cqrs.Azure.ServiceBus.AzureCommandBusPublisher< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBusPublisher.html", null ],
           [ "Cqrs.Bus.InProcessBus< TAuthenticationToken >", "classCqrs_1_1Bus_1_1InProcessBus.html", null ]
         ] ]
       ] ],
       [ "Cqrs.Commands.IPublishAndWaitCommandPublisher< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1IPublishAndWaitCommandPublisher.html", [
+        [ "Cqrs.Akka.Commands.IAkkaCommandPublisher< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IAkkaCommandPublisher.html", [
+          [ "Cqrs.Akka.Commands.AkkaCommandBus< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus.html", null ],
+          [ "Cqrs.Akka.Commands.IConcurrentAkkaCommandPublisher< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IConcurrentAkkaCommandPublisher.html", null ]
+        ] ],
+        [ "Cqrs.Azure.ServiceBus.AzureCommandBusPublisher< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBusPublisher.html", null ],
+        [ "Cqrs.Azure.ServiceBus.AzureCommandBusPublisher< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBusPublisher.html", null ],
         [ "Cqrs.Bus.InProcessBus< TAuthenticationToken >", "classCqrs_1_1Bus_1_1InProcessBus.html", null ]
       ] ]
     ] ],
@@ -566,7 +566,6 @@ var hierarchy =
     [ "Cqrs.Tests.Snapshots.When_saving_a_snapshotable_aggregate", "classCqrs_1_1Tests_1_1Snapshots_1_1When__saving__a__snapshotable__aggregate.html", null ],
     [ "Cqrs.Tests.Snapshots.When_saving_a_snapshotable_aggregate_for_each_change", "classCqrs_1_1Tests_1_1Snapshots_1_1When__saving__a__snapshotable__aggregate__for__each__change.html", null ],
     [ "Cqrs.Tests.Substitutes.TestHandlerListItem", "classCqrs_1_1Tests_1_1Substitutes_1_1TestHandlerListItem.html", null ],
-    [ "Cqrs.Web.AspNet.WebApi.Class1", "classCqrs_1_1Web_1_1AspNet_1_1WebApi_1_1Class1.html", null ],
     [ "Cqrs.WebApi.Configuration.WebApiConfig", "classCqrs_1_1WebApi_1_1Configuration_1_1WebApiConfig.html", null ],
     [ "Cqrs.WebApi.Controllers.ClientController.ApiMethodModel", "classCqrs_1_1WebApi_1_1Controllers_1_1ClientController_1_1ApiMethodModel.html", null ],
     [ "Cqrs.WebApi.Controllers.ClientController.ApiParameterModel", "classCqrs_1_1WebApi_1_1Controllers_1_1ClientController_1_1ApiParameterModel.html", null ],
@@ -639,6 +638,7 @@ var hierarchy =
       [ "Cqrs.Domain.Exceptions.MissingParameterLessConstructorException", "classCqrs_1_1Domain_1_1Exceptions_1_1MissingParameterLessConstructorException.html", null ],
       [ "Cqrs.Domain.Exceptions.SagaNotFoundException< TSaga, TAuthenticationToken >", "classCqrs_1_1Domain_1_1Exceptions_1_1SagaNotFoundException.html", null ],
       [ "Cqrs.EventStore.Bus.InvalidLastEventProcessedException", "classCqrs_1_1EventStore_1_1Bus_1_1InvalidLastEventProcessedException.html", null ],
+      [ "Cqrs.Exceptions.InvalidConfigurationException", "classCqrs_1_1Exceptions_1_1InvalidConfigurationException.html", null ],
       [ "Cqrs.Exceptions.MissingApplicationSettingException", "classCqrs_1_1Exceptions_1_1MissingApplicationSettingException.html", [
         [ "Cqrs.Exceptions.MissingApplicationSettingForConnectionStringException", "classCqrs_1_1Exceptions_1_1MissingApplicationSettingForConnectionStringException.html", null ]
       ] ],
@@ -754,8 +754,8 @@ var hierarchy =
     [ "IComparable", null, [
       [ "Cqrs.Repositories.Queries.QueryParameter", "classCqrs_1_1Repositories_1_1Queries_1_1QueryParameter.html", null ]
     ] ],
-    [ "Cqrs.Akka.Commands.IConcurrentAkkaCommandSender< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IConcurrentAkkaCommandSender.html", [
-      [ "Cqrs.Akka.Commands.IConcurrentAkkaCommandSender< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IConcurrentAkkaCommandSender.html", null ]
+    [ "Cqrs.Akka.Commands.IConcurrentAkkaCommandPublisher< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IConcurrentAkkaCommandPublisher.html", [
+      [ "Cqrs.Akka.Commands.IConcurrentAkkaCommandPublisher< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IConcurrentAkkaCommandPublisher.html", null ]
     ] ],
     [ "Cqrs.DataStores.IDataStore< TCollectionItemData >", "interfaceCqrs_1_1DataStores_1_1IDataStore.html", [
       [ "Cqrs.Azure.BlobStorage.TableStorageStore< TData, TCollectionItemData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore.html", null ]
@@ -982,7 +982,7 @@ var hierarchy =
     ] ],
     [ "ReceiveActor", null, [
       [ "Cqrs.Akka.Commands.AkkaCommandBusProxy< TAuthenticationToken >.BusActor", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBusProxy_1_1BusActor.html", null ],
-      [ "Cqrs.Akka.Commands.ConcurrentAkkaCommandSender< TAuthenticationToken, TTarget >", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandSender.html", null ],
+      [ "Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher< TAuthenticationToken, TTarget >", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher.html", null ],
       [ "Cqrs.Akka.Domain.AkkaAggregateRoot< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot.html", null ],
       [ "Cqrs.Akka.Domain.AkkaSaga< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga.html", null ],
       [ "Cqrs.Akka.Events.AkkaEventBusProxy< TAuthenticationToken >.BusActor", "classCqrs_1_1Akka_1_1Events_1_1AkkaEventBusProxy_1_1BusActor.html", null ],

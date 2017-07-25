@@ -1,5 +1,8 @@
 var NAVTREEINDEX8 =
 {
+"classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga_ac3706bb8233efa4d428ab3f282c1d61d.html#ac3706bb8233efa4d428ab3f282c1d61d":[1,0,0,21,3,0,0,6],
+"classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga_ad01cf3fdca0367e26a5529c1158f8b41.html#ad01cf3fdca0367e26a5529c1158f8b41":[1,0,0,21,3,0,0,0],
+"classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga_afb09f2b59a54e698723fce8d1171c6c7.html#afb09f2b59a54e698723fce8d1171c6c7":[1,0,0,21,3,0,0,2],
 "classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga_afb825714d424b2c24ef89ec6d457b323.html#afb825714d424b2c24ef89ec6d457b323":[1,0,0,21,3,0,0,8],
 "classCqrs_1_1Tests_1_1Domain_1_1When__adding__aggregates__to__repository.html":[1,0,0,21,3,1],
 "classCqrs_1_1Tests_1_1Domain_1_1When__adding__aggregates__to__repository_a1a5d4bd19f137780df70bc6a4dae350c.html#a1a5d4bd19f137780df70bc6a4dae350c":[1,0,0,21,3,1,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX8 =
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore_afcd205610fd1bcb6c02884200f1c95f4.html#afcd205610fd1bcb6c02884200f1c95f4":[1,0,0,21,6,29,4],
 "classCqrs_1_1WebApi_1_1Configuration_1_1WebApiConfig.html":[1,0,0,23,0,0],
 "classCqrs_1_1WebApi_1_1Configuration_1_1WebApiConfig_a65d94167bd8c0e38ae6492adf3e56f5a.html#a65d94167bd8c0e38ae6492adf3e56f5a":[1,0,0,23,0,0,0],
-"classCqrs_1_1WebApi_1_1Controllers_1_1ClientController.html":[1,0,0,23,1,0],
-"classCqrs_1_1WebApi_1_1Controllers_1_1ClientController_1_1ApiMethodModel.html":[1,0,0,23,1,0,0],
-"classCqrs_1_1WebApi_1_1Controllers_1_1ClientController_1_1ApiMethodModel_a0da38a890013a8363ae1a2361de1c45b.html#a0da38a890013a8363ae1a2361de1c45b":[1,0,0,23,1,0,0,4],
-"classCqrs_1_1WebApi_1_1Controllers_1_1ClientController_1_1ApiMethodModel_a3d87deeca069fb2c77a65d7f554e8a53.html#a3d87deeca069fb2c77a65d7f554e8a53":[1,0,0,23,1,0,0,2]
+"classCqrs_1_1WebApi_1_1Controllers_1_1ClientController.html":[1,0,0,23,1,0]
 };
