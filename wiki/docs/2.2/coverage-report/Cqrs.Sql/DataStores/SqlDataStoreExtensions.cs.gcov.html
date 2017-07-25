@@ -31,9 +31,9 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">2</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryLo">66.7 %</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -56,57 +56,68 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       1 </span>            : ﻿using System;
-<span class="lineNum">       2 </span>            : using System.Collections.Generic;
-<span class="lineNum">       3 </span>            : using System.Linq;
-<span class="lineNum">       4 </span>            : using System.Linq.Expressions;
-<span class="lineNum">       5 </span>            : using Cqrs.DataStores;
-<span class="lineNum">       6 </span>            : 
-<span class="lineNum">       7 </span>            : namespace Cqrs.Sql.DataStores
-<span class="lineNum">       8 </span>            : {
-<span class="lineNum">       9 </span>            :         public static class SqlDataStoreExtensions
-<span class="lineNum">      10 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      11 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      12 </span>            :                 /// Use this one
-<span class="lineNum">      13 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      14 </span><span class="lineCov">          1 :                 public static IQueryable&lt;TEntity&gt; Where&lt;TEntity, TDbEntity&gt;(this IDataStore&lt;TEntity&gt; dataStore, Expression&lt;Func&lt;TEntity, bool&gt;&gt; predicate)</span>
-<span class="lineNum">      15 </span>            :                         where TDbEntity : class, new()
-<span class="lineNum">      16 </span>            :                 {
-<span class="lineNum">      17 </span>            :                         var sqlDataStore = dataStore as SqlDataStore&lt;TEntity, TDbEntity&gt;;
-<span class="lineNum">      18 </span>            :                         if (sqlDataStore != null)
-<span class="lineNum">      19 </span>            :                         {
-<span class="lineNum">      20 </span>            :                                 Expression expression = sqlDataStore.ExpressionConverter.Visit(predicate);
-<span class="lineNum">      21 </span>            : 
-<span class="lineNum">      22 </span>            :                                 return new SqlDataStore&lt;TEntity, TDbEntity&gt;
-<span class="lineNum">      23 </span>            :                                 (
-<span class="lineNum">      24 </span>            :                                         sqlDataStore.DataContext,
-<span class="lineNum">      25 </span>            :                                         sqlDataStore.DataTable,
-<span class="lineNum">      26 </span>            :                                         sqlDataStore.DbEntityQuery.Where((Expression&lt;Func&lt;TDbEntity, bool&gt;&gt;)expression),
-<span class="lineNum">      27 </span>            :                                         sqlDataStore.EntityQuery.Where(predicate)
-<span class="lineNum">      28 </span>            :                                 );
-<span class="lineNum">      29 </span>            :                         }
-<span class="lineNum">      30 </span>            : 
-<span class="lineNum">      31 </span>            :                         return dataStore.Where(predicate);
-<span class="lineNum">      32 </span>            :                 }
-<span class="lineNum">      33 </span>            : 
-<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      35 </span>            :                 /// Use this one
-<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      37 </span><span class="lineCov">          1 :                 public static TEntity Single&lt;TEntity, TDbEntity&gt;(this IEnumerable&lt;TEntity&gt; dataStore)</span>
-<span class="lineNum">      38 </span>            :                         where TDbEntity : class, new()
-<span class="lineNum">      39 </span>            :                         where TEntity : new()
-<span class="lineNum">      40 </span>            :                 {
-<span class="lineNum">      41 </span>            :                         var sqlDataStore = dataStore as SqlDataStore&lt;TEntity, TDbEntity&gt;;
-<span class="lineNum">      42 </span>            :                         if (sqlDataStore != null)
-<span class="lineNum">      43 </span>            :                         {
-<span class="lineNum">      44 </span>            :                                 TDbEntity result = sqlDataStore.DbEntityQuery.Single();
-<span class="lineNum">      45 </span>            :                                 var convertedResult = Converters.ConvertTo&lt;TEntity&gt;(result);
-<span class="lineNum">      46 </span>            :                                 return convertedResult;
-<span class="lineNum">      47 </span>            :                         }
-<span class="lineNum">      48 </span>            :                         return dataStore.Single();
-<span class="lineNum">      49 </span>            :                 }
-<span class="lineNum">      50 </span>            :         }
-<span class="lineNum">      51 </span>            : }
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Linq;
+<span class="lineNum">      12 </span>            : using System.Linq.Expressions;
+<span class="lineNum">      13 </span>            : using Cqrs.DataStores;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : namespace Cqrs.Sql.DataStores
+<span class="lineNum">      16 </span>            : {
+<span class="lineNum">      17 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      18 </span>            :         /// A collection of extension methods for &lt;see cref=&quot;IDataStore{TData}&quot;/&gt;
+<span class="lineNum">      19 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      20 </span>            :         public static class SqlDataStoreExtensions
+<span class="lineNum">      21 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      22 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :                 /// Use this one... Filters a sequence of values based on a predicate.
+<span class="lineNum">      24 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      25 </span><span class="lineCov">          1 :                 public static IQueryable&lt;TEntity&gt; Where&lt;TEntity, TDbEntity&gt;(this IDataStore&lt;TEntity&gt; dataStore, Expression&lt;Func&lt;TEntity, bool&gt;&gt; predicate)</span>
+<span class="lineNum">      26 </span>            :                         where TDbEntity : class, new()
+<span class="lineNum">      27 </span>            :                 {
+<span class="lineNum">      28 </span>            :                         var sqlDataStore = dataStore as SqlDataStore&lt;TEntity, TDbEntity&gt;;
+<span class="lineNum">      29 </span>            :                         if (sqlDataStore != null)
+<span class="lineNum">      30 </span>            :                         {
+<span class="lineNum">      31 </span>            :                                 Expression expression = sqlDataStore.ExpressionConverter.Visit(predicate);
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            :                                 return new SqlDataStore&lt;TEntity, TDbEntity&gt;
+<span class="lineNum">      34 </span>            :                                 (
+<span class="lineNum">      35 </span>            :                                         sqlDataStore.DataContext,
+<span class="lineNum">      36 </span>            :                                         sqlDataStore.DataTable,
+<span class="lineNum">      37 </span>            :                                         sqlDataStore.DbEntityQuery.Where((Expression&lt;Func&lt;TDbEntity, bool&gt;&gt;)expression),
+<span class="lineNum">      38 </span>            :                                         sqlDataStore.EntityQuery.Where(predicate)
+<span class="lineNum">      39 </span>            :                                 );
+<span class="lineNum">      40 </span>            :                         }
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                         return dataStore.Where(predicate);
+<span class="lineNum">      43 </span>            :                 }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      46 </span>            :                 /// Use this one... Returns the only element of a sequence, and throws an exception if there is not exactly one element in the sequence.
+<span class="lineNum">      47 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      48 </span><span class="lineCov">          1 :                 public static TEntity Single&lt;TEntity, TDbEntity&gt;(this IEnumerable&lt;TEntity&gt; dataStore)</span>
+<span class="lineNum">      49 </span>            :                         where TDbEntity : class, new()
+<span class="lineNum">      50 </span>            :                         where TEntity : new()
+<span class="lineNum">      51 </span>            :                 {
+<span class="lineNum">      52 </span>            :                         var sqlDataStore = dataStore as SqlDataStore&lt;TEntity, TDbEntity&gt;;
+<span class="lineNum">      53 </span>            :                         if (sqlDataStore != null)
+<span class="lineNum">      54 </span>            :                         {
+<span class="lineNum">      55 </span>            :                                 TDbEntity result = sqlDataStore.DbEntityQuery.Single();
+<span class="lineNum">      56 </span>            :                                 var convertedResult = Converters.ConvertTo&lt;TEntity&gt;(result);
+<span class="lineNum">      57 </span>            :                                 return convertedResult;
+<span class="lineNum">      58 </span>            :                         }
+<span class="lineNum">      59 </span>            :                         return dataStore.Single();
+<span class="lineNum">      60 </span>            :                 }
+<span class="lineNum">      61 </span>            :         }
+<span class="lineNum">      62 </span>            : }
 </pre>
       </td>
     </tr>

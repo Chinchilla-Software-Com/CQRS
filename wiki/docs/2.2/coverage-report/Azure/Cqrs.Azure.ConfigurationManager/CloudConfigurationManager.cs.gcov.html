@@ -31,9 +31,9 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -58,22 +58,30 @@
 <pre class="source">
 <span class="lineNum">       1 </span>            : ﻿namespace Cqrs.Azure.ConfigurationManager
 <span class="lineNum">       2 </span>            : {
-<span class="lineNum">       3 </span>            :         public class CloudConfigurationManager : Configuration.ConfigurationManager
-<span class="lineNum">       4 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">       5 </span>            :                 #region Implementation of IConfigurationManager
-<span class="lineNum">       6 </span>            : 
-<span class="lineNum">       7 </span><span class="lineNoCov">          0 :                 public override string GetSetting(string key)</span>
-<span class="lineNum">       8 </span>            :                 {
-<span class="lineNum">       9 </span>            : #if DEBUG
-<span class="lineNum">      10 </span>            :                         return Microsoft.Azure.CloudConfigurationManager.GetSetting(key, true);
-<span class="lineNum">      11 </span>            : #else
-<span class="lineNum">      12 </span>            :                         return Microsoft.Azure.CloudConfigurationManager.GetSetting(key, false);
-<span class="lineNum">      13 </span>            : #endif
-<span class="lineNum">      14 </span>            :                 }
-<span class="lineNum">      15 </span>            : 
-<span class="lineNum">      16 </span>            :                 #endregion
-<span class="lineNum">      17 </span>            :         }
-<span class="lineNum">      18 </span>            : }
+<span class="lineNum">       3 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">       4 </span>            :         /// Provides access to configuration settings from the Azure Portal application settings. If no value is stored there it falls back to reading 
+<span class="lineNum">       5 </span>            :         /// app settings of an app.config or web.config... i.e. &lt;see cref=&quot;System.Configuration.ConfigurationManager.AppSettings&quot;/&gt;
+<span class="lineNum">       6 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">       7 </span>            :         public class CloudConfigurationManager : Configuration.ConfigurationManager
+<span class="lineNum">       8 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">       9 </span>            :                 #region Implementation of IConfigurationManager
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      12 </span>            :                 /// Read the setting named &lt;paramref name=&quot;key&quot;/&gt;.
+<span class="lineNum">      13 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      14 </span>            :                 /// &lt;param name=&quot;key&quot;&gt;The key (or name) of the setting to read.&lt;/param&gt;
+<span class="lineNum">      15 </span><span class="lineCov">          1 :                 public override string GetSetting(string key)</span>
+<span class="lineNum">      16 </span>            :                 {
+<span class="lineNum">      17 </span>            : #if DEBUG
+<span class="lineNum">      18 </span>            :                         return Microsoft.Azure.CloudConfigurationManager.GetSetting(key, true);
+<span class="lineNum">      19 </span>            : #else
+<span class="lineNum">      20 </span>            :                         return Microsoft.Azure.CloudConfigurationManager.GetSetting(key, false);
+<span class="lineNum">      21 </span>            : #endif
+<span class="lineNum">      22 </span>            :                 }
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            :                 #endregion
+<span class="lineNum">      25 </span>            :         }
+<span class="lineNum">      26 </span>            : }
 </pre>
       </td>
     </tr>

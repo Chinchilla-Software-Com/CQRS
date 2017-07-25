@@ -31,9 +31,9 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryLo">25.0 %</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntryLo">33.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -119,7 +119,7 @@
 <span class="lineNum">      61 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      62 </span>            :                 /// A constructor for the &lt;see cref=&quot;Cqrs.Domain.Factories.IAggregateFactory&quot;/&gt;
 <span class="lineNum">      63 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      64 </span>            :                 protected Saga()
+<span class="lineNum">      64 </span><span class="lineCov">          1 :                 protected Saga()</span>
 <span class="lineNum">      65 </span>            :                 {
 <span class="lineNum">      66 </span>            :                         Lock = new ReaderWriterLockSlim();
 <span class="lineNum">      67 </span>            :                         Changes = new ReadOnlyCollection&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt;(new List&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt;());
@@ -128,7 +128,7 @@
 <span class="lineNum">      70 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      71 </span>            :                 /// A constructor for the &lt;see cref=&quot;Cqrs.Domain.Factories.IAggregateFactory&quot;/&gt;
 <span class="lineNum">      72 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      73 </span>            :                 protected Saga(IDependencyResolver dependencyResolver, ILogger logger)
+<span class="lineNum">      73 </span><span class="lineCov">          1 :                 protected Saga(IDependencyResolver dependencyResolver, ILogger logger)</span>
 <span class="lineNum">      74 </span>            :                         : this()
 <span class="lineNum">      75 </span>            :                 {
 <span class="lineNum">      76 </span>            :                         DependencyResolver = dependencyResolver;
@@ -136,7 +136,7 @@
 <span class="lineNum">      78 </span>            :                         CommandPublisher = DependencyResolver.Resolve&lt;ICommandPublisher&lt;TAuthenticationToken&gt;&gt;();
 <span class="lineNum">      79 </span>            :                 }
 <span class="lineNum">      80 </span>            : 
-<span class="lineNum">      81 </span>            :                 protected Saga(IDependencyResolver dependencyResolver, ILogger logger, Guid rsn)
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :                 protected Saga(IDependencyResolver dependencyResolver, ILogger logger, Guid rsn)</span>
 <span class="lineNum">      82 </span>            :                         : this(dependencyResolver, logger)
 <span class="lineNum">      83 </span>            :                 {
 <span class="lineNum">      84 </span>            :                         Rsn = rsn;
@@ -172,12 +172,12 @@
 <span class="lineNum">     114 </span>            :                         }
 <span class="lineNum">     115 </span>            :                 }
 <span class="lineNum">     116 </span>            : 
-<span class="lineNum">     117 </span>            :                 protected virtual void ApplyChange(ISagaEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                 protected virtual void ApplyChange(ISagaEvent&lt;TAuthenticationToken&gt; @event)</span>
 <span class="lineNum">     118 </span>            :                 {
 <span class="lineNum">     119 </span>            :                         ApplyChange(@event, false);
 <span class="lineNum">     120 </span>            :                 }
 <span class="lineNum">     121 </span>            : 
-<span class="lineNum">     122 </span>            :                 protected virtual void ApplyChange(IEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :                 protected virtual void ApplyChange(IEvent&lt;TAuthenticationToken&gt; @event)</span>
 <span class="lineNum">     123 </span>            :                 {
 <span class="lineNum">     124 </span>            :                         var sagaEvent = new SagaEvent&lt;TAuthenticationToken&gt;(@event);
 <span class="lineNum">     125 </span>            :                         // Set ID

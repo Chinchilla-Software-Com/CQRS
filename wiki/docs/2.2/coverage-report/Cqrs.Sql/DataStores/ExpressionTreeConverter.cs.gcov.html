@@ -32,7 +32,7 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">7</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
@@ -70,19 +70,19 @@
 <span class="lineNum">      12 </span>            : 
 <span class="lineNum">      13 </span>            :                 private readonly Dictionary&lt;MemberInfo, LambdaExpression&gt; _mappings;
 <span class="lineNum">      14 </span>            : 
-<span class="lineNum">      15 </span>            :                 protected ExpressionTreeConverter(Dictionary&lt;MemberInfo, LambdaExpression&gt; mappings)
+<span class="lineNum">      15 </span><span class="lineNoCov">          0 :                 protected ExpressionTreeConverter(Dictionary&lt;MemberInfo, LambdaExpression&gt; mappings)</span>
 <span class="lineNum">      16 </span>            :                 {
 <span class="lineNum">      17 </span>            :                         _mappings = mappings;
 <span class="lineNum">      18 </span>            :                 }
 <span class="lineNum">      19 </span>            : 
-<span class="lineNum">      20 </span>            :                 protected ExpressionTreeConverter()
+<span class="lineNum">      20 </span><span class="lineNoCov">          0 :                 protected ExpressionTreeConverter()</span>
 <span class="lineNum">      21 </span>            :                 {
 <span class="lineNum">      22 </span>            :                         _mappings = GetMappings();
 <span class="lineNum">      23 </span>            :                 }
 <span class="lineNum">      24 </span>            : 
 <span class="lineNum">      25 </span><span class="lineNoCov">          0 :                 public abstract Dictionary&lt;MemberInfo, LambdaExpression&gt; GetMappings();</span>
 <span class="lineNum">      26 </span>            : 
-<span class="lineNum">      27 </span>            :                 protected override Expression VisitParameter(ParameterExpression node)
+<span class="lineNum">      27 </span><span class="lineNoCov">          0 :                 protected override Expression VisitParameter(ParameterExpression node)</span>
 <span class="lineNum">      28 </span>            :                 {
 <span class="lineNum">      29 </span>            :                         if (node.Type == typeof(TA))
 <span class="lineNum">      30 </span>            :                         {
@@ -96,7 +96,7 @@
 <span class="lineNum">      38 </span>            :                         return node;
 <span class="lineNum">      39 </span>            :                 }
 <span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span>            :                 protected override Expression VisitMember(MemberExpression node)
+<span class="lineNum">      41 </span><span class="lineNoCov">          0 :                 protected override Expression VisitMember(MemberExpression node)</span>
 <span class="lineNum">      42 </span>            :                 {
 <span class="lineNum">      43 </span>            :                         if (node.Expression == null || node.Expression.Type != typeof(TA))
 <span class="lineNum">      44 </span>            :                                 return base.VisitMember(node);
@@ -112,7 +112,7 @@
 <span class="lineNum">      54 </span>            :                         return Expression.Property(expression, node.Member.Name);
 <span class="lineNum">      55 </span>            :                 }
 <span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span>            :                 protected override Expression VisitLambda&lt;T&gt;(Expression&lt;T&gt; node)
+<span class="lineNum">      57 </span><span class="lineNoCov">          0 :                 protected override Expression VisitLambda&lt;T&gt;(Expression&lt;T&gt; node)</span>
 <span class="lineNum">      58 </span>            :                 {
 <span class="lineNum">      59 </span>            :                         return Expression.Lambda(
 <span class="lineNum">      60 </span>            :                                 Visit(node.Body),

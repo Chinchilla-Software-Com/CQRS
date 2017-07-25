@@ -31,9 +31,9 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryLo">12.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -99,7 +99,7 @@
 <span class="lineNum">      41 </span>            : 
 <span class="lineNum">      42 </span>            :                 public int Version { get; protected set; }
 <span class="lineNum">      43 </span>            : 
-<span class="lineNum">      44 </span>            :                 protected AkkaAggregateRoot(IUnitOfWork&lt;TAuthenticationToken&gt; unitOfWork, ILogger logger, IAkkaAggregateRepository&lt;TAuthenticationToken&gt; repository, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper)
+<span class="lineNum">      44 </span><span class="lineNoCov">          0 :                 protected AkkaAggregateRoot(IUnitOfWork&lt;TAuthenticationToken&gt; unitOfWork, ILogger logger, IAkkaAggregateRepository&lt;TAuthenticationToken&gt; repository, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper)</span>
 <span class="lineNum">      45 </span>            :                 {
 <span class="lineNum">      46 </span>            :                         UnitOfWork = unitOfWork;
 <span class="lineNum">      47 </span>            :                         Logger = logger;
@@ -118,7 +118,7 @@
 <span class="lineNum">      60 </span>            :                 ///                 Actors are automatically started asynchronously when created.
 <span class="lineNum">      61 </span>            :                 ///                 Empty default implementation.
 <span class="lineNum">      62 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      63 </span>            :                 protected override void PreStart()
+<span class="lineNum">      63 </span><span class="lineCov">          1 :                 protected override void PreStart()</span>
 <span class="lineNum">      64 </span>            :                 {
 <span class="lineNum">      65 </span>            :                         base.PreStart();
 <span class="lineNum">      66 </span>            :                         Repository.LoadAggregateHistory(this, throwExceptionOnNoEvents: false);
@@ -126,7 +126,7 @@
 <span class="lineNum">      68 </span>            : 
 <span class="lineNum">      69 </span>            :                 #endregion
 <span class="lineNum">      70 </span>            : 
-<span class="lineNum">      71 </span>            :                 protected virtual void Execute&lt;TCommand&gt;(Action&lt;TCommand&gt; action, TCommand command)
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :                 protected virtual void Execute&lt;TCommand&gt;(Action&lt;TCommand&gt; action, TCommand command)</span>
 <span class="lineNum">      72 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
 <span class="lineNum">      73 </span>            :                 {
 <span class="lineNum">      74 </span>            :                         UnitOfWork.Add(this);
@@ -170,7 +170,7 @@
 <span class="lineNum">     112 </span>            :                         }
 <span class="lineNum">     113 </span>            :                 }
 <span class="lineNum">     114 </span>            : 
-<span class="lineNum">     115 </span>            :                 protected virtual void ApplyChange(IEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                 protected virtual void ApplyChange(IEvent&lt;TAuthenticationToken&gt; @event)</span>
 <span class="lineNum">     116 </span>            :                 {
 <span class="lineNum">     117 </span>            :                         ApplyChange(@event, false);
 <span class="lineNum">     118 </span>            :                 }

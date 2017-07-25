@@ -31,9 +31,9 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">16</td>
-            <td class="headerCovTableEntryLo">12.5 %</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntryLo">16.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -86,14 +86,14 @@
 <span class="lineNum">      28 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      29 </span>            :                 /// Initializes a new instance of the &lt;see cref=&quot;TableStorageStore{TData,TCollectionItemData}&quot;/&gt; class using the specified container.
 <span class="lineNum">      30 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      31 </span>            :                 protected TableStorageStore(ILogger logger)
+<span class="lineNum">      31 </span><span class="lineCov">          1 :                 protected TableStorageStore(ILogger logger)</span>
 <span class="lineNum">      32 </span>            :                         : base(logger)
 <span class="lineNum">      33 </span>            :                 {
 <span class="lineNum">      34 </span>            :                 }
 <span class="lineNum">      35 </span>            : 
 <span class="lineNum">      36 </span>            :                 #region Overrides of StorageStore&lt;TData,CloudTable&gt;
 <span class="lineNum">      37 </span>            : 
-<span class="lineNum">      38 </span>            :                 protected override void Initialise(IStorageStoreConnectionStringFactory tableStorageDataStoreConnectionStringFactory)
+<span class="lineNum">      38 </span><span class="lineNoCov">          0 :                 protected override void Initialise(IStorageStoreConnectionStringFactory tableStorageDataStoreConnectionStringFactory)</span>
 <span class="lineNum">      39 </span>            :                 {
 <span class="lineNum">      40 </span>            :                         base.Initialise(tableStorageDataStoreConnectionStringFactory);
 <span class="lineNum">      41 </span>            :                         Collection = new TableQuery&lt;TData&gt;();
@@ -173,7 +173,7 @@
 <span class="lineNum">     115 </span>            : 
 <span class="lineNum">     116 </span>            :                 #endregion
 <span class="lineNum">     117 </span>            : 
-<span class="lineNum">     118 </span>            :                 protected virtual void AsyncSaveData&lt;TSaveData, TResult&gt;(TSaveData data, Func&lt;TSaveData, CloudTable, TResult&gt; function, Func&lt;TSaveData, string&gt; customFilenameFunction = null)
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :                 protected virtual void AsyncSaveData&lt;TSaveData, TResult&gt;(TSaveData data, Func&lt;TSaveData, CloudTable, TResult&gt; function, Func&lt;TSaveData, string&gt; customFilenameFunction = null)</span>
 <span class="lineNum">     119 </span>            :                 {
 <span class="lineNum">     120 </span>            :                         IList&lt;Task&gt; persistTasks = new List&lt;Task&gt;();
 <span class="lineNum">     121 </span>            :                         foreach (Tuple&lt;CloudStorageAccount, CloudTable&gt; tuple in WritableCollection)
@@ -198,7 +198,7 @@
 <span class="lineNum">     140 </span>            :                                 throw new AggregateException(&quot;Persisting data to table storage failed. Check the logs for more details.&quot;);
 <span class="lineNum">     141 </span>            :                 }
 <span class="lineNum">     142 </span>            : 
-<span class="lineNum">     143 </span>            :                 protected abstract ITableEntity CreateTableEntity(TCollectionItemData data);
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :                 protected abstract ITableEntity CreateTableEntity(TCollectionItemData data);</span>
 <span class="lineNum">     144 </span>            : 
 <span class="lineNum">     145 </span>            :                 #region Implementation of IDataStore&lt;TData&gt;
 <span class="lineNum">     146 </span>            : 
@@ -398,9 +398,9 @@
 <span class="lineNum">     340 </span>            : 
 <span class="lineNum">     341 </span>            :                 #endregion
 <span class="lineNum">     342 </span>            : 
-<span class="lineNum">     343 </span>            :                 protected abstract TableOperation GetUpdatableTableEntity(TCollectionItemData data);
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :                 protected abstract TableOperation GetUpdatableTableEntity(TCollectionItemData data);</span>
 <span class="lineNum">     344 </span>            : 
-<span class="lineNum">     345 </span>            :                 protected abstract TableOperation GetUpdatableTableEntity(TData data);
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :                 protected abstract TableOperation GetUpdatableTableEntity(TData data);</span>
 <span class="lineNum">     346 </span>            : 
 <span class="lineNum">     347 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     348 </span>            :                 /// Creates a &lt;see cref=&quot;CloudTable&quot;/&gt; with the specified name &lt;paramref name=&quot;sourceName&quot;/&gt; if it doesn't already exist.
@@ -408,7 +408,7 @@
 <span class="lineNum">     350 </span>            :                 /// &lt;param name=&quot;storageAccount&quot;&gt;The storage account to create the &lt;see cref=&quot;CloudTable&quot;/&gt; is&lt;/param&gt;
 <span class="lineNum">     351 </span>            :                 /// &lt;param name=&quot;sourceName&quot;&gt;The name of the &lt;see cref=&quot;CloudTable&quot;/&gt;.&lt;/param&gt;
 <span class="lineNum">     352 </span>            :                 /// &lt;param name=&quot;isPublic&quot;&gt;Whether or not this &lt;see cref=&quot;CloudTable&quot;/&gt; is publicly accessible.&lt;/param&gt;
-<span class="lineNum">     353 </span>            :                 protected override CloudTable CreateSource(CloudStorageAccount storageAccount, string sourceName, bool isPublic = true)
+<span class="lineNum">     353 </span><span class="lineCov">          1 :                 protected override CloudTable CreateSource(CloudStorageAccount storageAccount, string sourceName, bool isPublic = true)</span>
 <span class="lineNum">     354 </span>            :                 {
 <span class="lineNum">     355 </span>            :                         // Create the table client.
 <span class="lineNum">     356 </span>            :                         CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
@@ -466,7 +466,7 @@
 <span class="lineNum">     408 </span>            :                         return ReadableSource.ExecuteQuery(rangeQuery);
 <span class="lineNum">     409 </span>            :                 }
 <span class="lineNum">     410 </span>            : 
-<span class="lineNum">     411 </span>            :                 protected virtual ITableEntity ReplaceValues(TableResult retrievedResult, TData data)
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 :                 protected virtual ITableEntity ReplaceValues(TableResult retrievedResult, TData data)</span>
 <span class="lineNum">     412 </span>            :                 {
 <span class="lineNum">     413 </span>            :                         ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
 <span class="lineNum">     414 </span>            :                         var eventTableEntity = tableEntity as IEventDataTableEntity&lt;TData&gt;;
@@ -480,7 +480,7 @@
 <span class="lineNum">     422 </span>            : 
 <span class="lineNum">     423 </span>            :                 #region Overrides of StorageStore&lt;TData,CloudTable&gt;
 <span class="lineNum">     424 </span>            : 
-<span class="lineNum">     425 </span>            :                 protected override string GetSafeSourceName(string sourceName)
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :                 protected override string GetSafeSourceName(string sourceName)</span>
 <span class="lineNum">     426 </span>            :                 {
 <span class="lineNum">     427 </span>            :                         return GetSafeSourceName(sourceName, false);
 <span class="lineNum">     428 </span>            :                 }

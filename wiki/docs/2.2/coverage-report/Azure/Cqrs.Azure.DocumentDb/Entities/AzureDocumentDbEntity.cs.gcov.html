@@ -31,9 +31,9 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -56,47 +56,76 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       1 </span>            : ﻿using System;
-<span class="lineNum">       2 </span>            : using System.ComponentModel.DataAnnotations;
-<span class="lineNum">       3 </span>            : using System.Runtime.Serialization;
-<span class="lineNum">       4 </span>            : 
-<span class="lineNum">       5 </span>            : namespace Cqrs.Azure.DocumentDb.Entities
-<span class="lineNum">       6 </span>            : {
-<span class="lineNum">       7 </span>            :         [Serializable]
-<span class="lineNum">       8 </span>            :         [DataContract]
-<span class="lineNum">       9 </span>            :         public abstract class AzureDocumentDbEntity : Cqrs.Entities.Entity
-<span class="lineNum">      10 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      11 </span>            :                 [Required]
-<span class="lineNum">      12 </span>            :                 [DataMember]
-<span class="lineNum">      13 </span>            :                 public override Guid Rsn { get; set; }
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.ComponentModel.DataAnnotations;
+<span class="lineNum">      11 </span>            : using System.Runtime.Serialization;
+<span class="lineNum">      12 </span>            : using Cqrs.DataStores;
+<span class="lineNum">      13 </span>            : using Cqrs.Entities;
 <span class="lineNum">      14 </span>            : 
-<span class="lineNum">      15 </span>            :                 [Required]
-<span class="lineNum">      16 </span>            :                 [DataMember]
-<span class="lineNum">      17 </span>            :                 public virtual string id
-<span class="lineNum">      18 </span>            :                 {
-<span class="lineNum">      19 </span>            :                         get { return string.Format(&quot;{0}/{1:N}&quot;, GetType().FullName, Rsn); }
-<span class="lineNum">      20 </span>            :                         set
-<span class="lineNum">      21 </span>            :                         {
-<span class="lineNum">      22 </span>            :                                 Rsn = new Guid(value.Split('/')[1]);
-<span class="lineNum">      23 </span>            :                         }
-<span class="lineNum">      24 </span>            :                 }
-<span class="lineNum">      25 </span>            : 
-<span class="lineNum">      26 </span>            :                 [Required]
-<span class="lineNum">      27 </span>            :                 [DataMember]
-<span class="lineNum">      28 </span>            :                 public virtual string type
-<span class="lineNum">      29 </span>            :                 {
-<span class="lineNum">      30 </span>            :                         get { return GetType().FullName; }
-<span class="lineNum">      31 </span>            :                         set{ }
-<span class="lineNum">      32 </span>            :                 }
-<span class="lineNum">      33 </span>            : 
-<span class="lineNum">      34 </span>            :                 [DataMember]
-<span class="lineNum">      35 </span>            :                 public override int SortingOrder { get; set; }
-<span class="lineNum">      36 </span>            : 
-<span class="lineNum">      37 </span>            :                 [Required]
-<span class="lineNum">      38 </span>            :                 [DataMember]
-<span class="lineNum">      39 </span>            :                 public override bool IsLogicallyDeleted { get; set; }
-<span class="lineNum">      40 </span>            :         }
-<span class="lineNum">      41 </span>            : }
+<span class="lineNum">      15 </span>            : namespace Cqrs.Azure.DocumentDb.Entities
+<span class="lineNum">      16 </span>            : {
+<span class="lineNum">      17 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      18 </span>            :         /// A projection/entity especially designed to work with Azure DocumentDB (CosmosDB).
+<span class="lineNum">      19 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      20 </span>            :         [Serializable]
+<span class="lineNum">      21 </span>            :         [DataContract]
+<span class="lineNum">      22 </span>            :         public abstract class AzureDocumentDbEntity : Entity
+<span class="lineNum">      23 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      24 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      25 </span>            :                 /// The identifier of the &lt;see cref=&quot;IEntity&quot;/&gt;.
+<span class="lineNum">      26 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      27 </span>            :                 [Required]
+<span class="lineNum">      28 </span>            :                 [DataMember]
+<span class="lineNum">      29 </span>            :                 public override Guid Rsn { get; set; }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// The internal identifier of the &lt;see cref=&quot;IEntity&quot;/&gt; used within Azure DocumentDB (CosmosDB).
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :                 [Required]
+<span class="lineNum">      35 </span>            :                 [DataMember]
+<span class="lineNum">      36 </span>            :                 public virtual string id
+<span class="lineNum">      37 </span>            :                 {
+<span class="lineNum">      38 </span>            :                         get { return string.Format(&quot;{0}/{1:N}&quot;, GetType().FullName, Rsn); }
+<span class="lineNum">      39 </span>            :                         set
+<span class="lineNum">      40 </span>            :                         {
+<span class="lineNum">      41 </span>            :                                 Rsn = new Guid(value.Split('/')[1]);
+<span class="lineNum">      42 </span>            :                         }
+<span class="lineNum">      43 </span>            :                 }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      46 </span>            :                 /// The name of the &lt;see cref=&quot;Type&quot;/&gt; of this &lt;see cref=&quot;IEntity&quot;/&gt;.
+<span class="lineNum">      47 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      48 </span>            :                 [Required]
+<span class="lineNum">      49 </span>            :                 [DataMember]
+<span class="lineNum">      50 </span>            :                 public virtual string type
+<span class="lineNum">      51 </span>            :                 {
+<span class="lineNum">      52 </span>            :                         get { return GetType().FullName; }
+<span class="lineNum">      53 </span>            :                         set{ }
+<span class="lineNum">      54 </span>            :                 }
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      57 </span>            :                 /// The order of this &lt;see cref=&quot;IEntity&quot;/&gt; to sort by, by default.
+<span class="lineNum">      58 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      59 </span>            :                 [DataMember]
+<span class="lineNum">      60 </span>            :                 public override int SortingOrder { get; set; }
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      63 </span>            :                 /// Indicates if this &lt;see cref=&quot;IEntity&quot;/&gt; has been deleted, but not removed from the &lt;see cref=&quot;IDataStore{TData}&quot;/&gt;,
+<span class="lineNum">      64 </span>            :                 /// this way entities can be retrieved so an un-deleted operation can be triggered.
+<span class="lineNum">      65 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      66 </span>            :                 [Required]
+<span class="lineNum">      67 </span>            :                 [DataMember]
+<span class="lineNum">      68 </span>            :                 public override bool IsLogicallyDeleted { get; set; }
+<span class="lineNum">      69 </span>            :         }
+<span class="lineNum">      70 </span>            : }
 </pre>
       </td>
     </tr>

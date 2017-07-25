@@ -31,9 +31,9 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">6</td>
-            <td class="headerCovTableEntry">6</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryLo">70.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -98,7 +98,7 @@
 <span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      41 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;EventStore{TAuthenticationToken}&quot;/&gt;.
 <span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      43 </span>            :                 protected EventStore(IEventBuilder&lt;TAuthenticationToken&gt; eventBuilder, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser, ILogger logger)
+<span class="lineNum">      43 </span><span class="lineCov">          1 :                 protected EventStore(IEventBuilder&lt;TAuthenticationToken&gt; eventBuilder, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser, ILogger logger)</span>
 <span class="lineNum">      44 </span>            :                 {
 <span class="lineNum">      45 </span>            :                         EventBuilder = eventBuilder;
 <span class="lineNum">      46 </span>            :                         EventDeserialiser = eventDeserialiser;
@@ -116,12 +116,12 @@
 <span class="lineNum">      58 </span>            :                         Save(typeof(T), @event);
 <span class="lineNum">      59 </span>            :                 }
 <span class="lineNum">      60 </span>            : 
-<span class="lineNum">      61 </span>            :                 protected virtual string GenerateStreamName(Type aggregateRootType, IEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :                 protected virtual string GenerateStreamName(Type aggregateRootType, IEvent&lt;TAuthenticationToken&gt; @event)</span>
 <span class="lineNum">      62 </span>            :                 {
 <span class="lineNum">      63 </span>            :                         return GenerateStreamName(aggregateRootType, @event.Id);
 <span class="lineNum">      64 </span>            :                 }
 <span class="lineNum">      65 </span>            : 
-<span class="lineNum">      66 </span>            :                 protected virtual string GenerateStreamName(Type aggregateRootType, Guid aggregateId)
+<span class="lineNum">      66 </span><span class="lineNoCov">          0 :                 protected virtual string GenerateStreamName(Type aggregateRootType, Guid aggregateId)</span>
 <span class="lineNum">      67 </span>            :                 {
 <span class="lineNum">      68 </span>            :                         return string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 <span class="lineNum">      69 </span>            :                 }
@@ -175,7 +175,7 @@
 <span class="lineNum">     117 </span>            :                 /// &lt;param name=&quot;correlationId&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances to retrieve.&lt;/param&gt;
 <span class="lineNum">     118 </span><span class="lineCov">          1 :                 public abstract IEnumerable&lt;EventData&gt; Get(Guid correlationId);</span>
 <span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span>            :                 protected abstract void PersistEvent(EventData eventData);
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :                 protected abstract void PersistEvent(EventData eventData);</span>
 <span class="lineNum">     121 </span>            :         }
 <span class="lineNum">     122 </span>            : }
 </pre>

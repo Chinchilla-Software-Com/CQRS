@@ -31,8 +31,8 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">4</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
@@ -92,7 +92,7 @@
 <span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      35 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;ProjectionReader{TAuthenticationToken}&quot;/&gt;.
 <span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      37 </span>            :                 protected ProjectionReader(IEventStoreConnectionHelper eventStoreConnectionHelper, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser)
+<span class="lineNum">      37 </span><span class="lineCov">          1 :                 protected ProjectionReader(IEventStoreConnectionHelper eventStoreConnectionHelper, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser)</span>
 <span class="lineNum">      38 </span>            :                 {
 <span class="lineNum">      39 </span>            :                         EventStoreConnectionHelper = eventStoreConnectionHelper;
 <span class="lineNum">      40 </span>            :                         EventDeserialiser = eventDeserialiser;
@@ -102,7 +102,7 @@
 <span class="lineNum">      44 </span>            :                 /// Get a collection of data objects from a stream with the provided &lt;paramref name=&quot;streamName&quot;/&gt;.
 <span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">      46 </span>            :                 /// &lt;param name=&quot;streamName&quot;&gt;The name of the stream to read events from.&lt;/param&gt;
-<span class="lineNum">      47 </span>            :                 protected IEnumerable&lt;dynamic&gt; GetDataByStreamName(string streamName)
+<span class="lineNum">      47 </span><span class="lineCov">          1 :                 protected IEnumerable&lt;dynamic&gt; GetDataByStreamName(string streamName)</span>
 <span class="lineNum">      48 </span>            :                 {
 <span class="lineNum">      49 </span>            :                         StreamEventsSlice eventCollection;
 <span class="lineNum">      50 </span>            :                         using (IEventStoreConnection connection = EventStoreConnectionHelper.GetEventStoreConnection())
@@ -130,7 +130,7 @@
 <span class="lineNum">      72 </span>            :                 /// Get a collection of &lt;typeparamref name=&quot;TData&quot;/&gt; from a stream with the provided &lt;paramref name=&quot;streamName&quot;/&gt;.
 <span class="lineNum">      73 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">      74 </span>            :                 /// &lt;param name=&quot;streamName&quot;&gt;The name of the stream to read events from.&lt;/param&gt;
-<span class="lineNum">      75 </span>            :                 protected IEnumerable&lt;TData&gt; GetDataByStreamName&lt;TData&gt;(string streamName)
+<span class="lineNum">      75 </span><span class="lineCov">          1 :                 protected IEnumerable&lt;TData&gt; GetDataByStreamName&lt;TData&gt;(string streamName)</span>
 <span class="lineNum">      76 </span>            :                 {
 <span class="lineNum">      77 </span>            :                         IList&lt;TData&gt; data = GetDataByStreamName(streamName)
 <span class="lineNum">      78 </span>            :                                 .Select(e =&gt; JsonConvert.DeserializeObject&lt;TData&gt;(e.ToString()))

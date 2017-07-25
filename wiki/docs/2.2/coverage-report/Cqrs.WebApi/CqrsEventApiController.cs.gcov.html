@@ -31,9 +31,9 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryLo">40.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -82,7 +82,7 @@
 <span class="lineNum">      24 </span>            :                 , IEventService&lt;TSingleSignOnToken&gt;
 <span class="lineNum">      25 </span>            :                 where TSingleSignOnToken : ISingleSignOnToken, new()
 <span class="lineNum">      26 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      27 </span>            :                 protected CqrsEventApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper&lt;TSingleSignOnToken&gt; authenticationTokenHelper, IEventStore&lt;TSingleSignOnToken&gt; eventStore, IConfigurationManager configurationManager)
+<span class="lineNum">      27 </span><span class="lineNoCov">          0 :                 protected CqrsEventApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper&lt;TSingleSignOnToken&gt; authenticationTokenHelper, IEventStore&lt;TSingleSignOnToken&gt; eventStore, IConfigurationManager configurationManager)</span>
 <span class="lineNum">      28 </span>            :                         : base(logger, correlationIdHelper, configurationManager)
 <span class="lineNum">      29 </span>            :                 {
 <span class="lineNum">      30 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
@@ -106,7 +106,7 @@
 <span class="lineNum">      48 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">      49 </span>            :                 /// &lt;param name=&quot;serviceRequest&quot;&gt;A &lt;see cref=&quot;IServiceRequestWithData{TAuthenticationToken,TData}&quot;&gt;service-request&lt;/see&gt; that contains the CorrelationId.&lt;/param&gt;
 <span class="lineNum">      50 </span>            :                 /// &lt;returns&gt;A collection of &lt;see cref=&quot;EventData&quot;&gt;event data&lt;/see&gt;&lt;/returns&gt;
-<span class="lineNum">      51 </span>            :                 protected virtual IServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt; GetEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest)
+<span class="lineNum">      51 </span><span class="lineCov">          1 :                 protected virtual IServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt; GetEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest)</span>
 <span class="lineNum">      52 </span>            :                 {
 <span class="lineNum">      53 </span>            :                         AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
 <span class="lineNum">      54 </span>            :                         CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
@@ -125,9 +125,9 @@
 <span class="lineNum">      67 </span>            : 
 <span class="lineNum">      68 </span>            :                 #endregion
 <span class="lineNum">      69 </span>            : 
-<span class="lineNum">      70 </span>            :                 protected virtual void OnGetEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest) { }
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :                 protected virtual void OnGetEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest) { }</span>
 <span class="lineNum">      71 </span>            : 
-<span class="lineNum">      72 </span>            :                 protected virtual IEnumerable&lt;EventData&gt; OnGotEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest, IEnumerable&lt;EventData&gt; results)
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :                 protected virtual IEnumerable&lt;EventData&gt; OnGotEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest, IEnumerable&lt;EventData&gt; results)</span>
 <span class="lineNum">      73 </span>            :                 {
 <span class="lineNum">      74 </span>            :                         return results;
 <span class="lineNum">      75 </span>            :                 }

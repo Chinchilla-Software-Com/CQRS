@@ -31,9 +31,9 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">9</td>
             <td class="headerCovTableEntry">11</td>
-            <td class="headerCovTableEntryMed">81.8 %</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -78,209 +78,216 @@
 <span class="lineNum">      20 </span>            : 
 <span class="lineNum">      21 </span>            : namespace Cqrs.Mongo.DataStores
 <span class="lineNum">      22 </span>            : {
-<span class="lineNum">      23 </span>            :         public class MongoDataStore&lt;TData&gt; : IDataStore&lt;TData&gt;
-<span class="lineNum">      24 </span>            :                 where TData : Entity
-<span class="lineNum">      25 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      26 </span>            :                 protected MongoCollection&lt;TData&gt; MongoCollection { get; private set; }
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span>            :                 protected ILogger Logger { get; private set; }
-<span class="lineNum">      29 </span>            : 
-<span class="lineNum">      30 </span><span class="lineNoCov">          0 :                 public MongoDataStore(ILogger logger, MongoCollection&lt;TData&gt; mongoCollection)</span>
-<span class="lineNum">      31 </span>            :                 {
-<span class="lineNum">      32 </span>            :                         Logger = logger;
-<span class="lineNum">      33 </span>            :                         MongoCollection = mongoCollection;
-<span class="lineNum">      34 </span>            :                         MongoCollection.Database.RequestStart();
-<span class="lineNum">      35 </span>            :                 }
-<span class="lineNum">      36 </span>            : 
-<span class="lineNum">      37 </span>            :                 #region Implementation of IEnumerable
-<span class="lineNum">      38 </span>            : 
-<span class="lineNum">      39 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      40 </span>            :                 /// Returns an enumerator that iterates through the collection.
-<span class="lineNum">      41 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      42 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">      43 </span>            :                 /// A &lt;see cref=&quot;T:System.Collections.Generic.IEnumerator`1&quot;/&gt; that can be used to iterate through the collection.
-<span class="lineNum">      44 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">      45 </span>            :                 /// &lt;filterpriority&gt;1&lt;/filterpriority&gt;
-<span class="lineNum">      46 </span><span class="lineCov">          1 :                 public IEnumerator&lt;TData&gt; GetEnumerator()</span>
-<span class="lineNum">      47 </span>            :                 {
-<span class="lineNum">      48 </span>            :                         return MongoCollection.AsQueryable().GetEnumerator();
-<span class="lineNum">      49 </span>            :                 }
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      52 </span>            :                 /// Returns an enumerator that iterates through a collection.
-<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      54 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">      55 </span>            :                 /// An &lt;see cref=&quot;T:System.Collections.IEnumerator&quot;/&gt; object that can be used to iterate through the collection.
-<span class="lineNum">      56 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">      57 </span>            :                 /// &lt;filterpriority&gt;2&lt;/filterpriority&gt;
-<span class="lineNum">      58 </span>            :                 IEnumerator IEnumerable.GetEnumerator()
-<span class="lineNum">      59 </span>            :                 {
-<span class="lineNum">      60 </span>            :                         return GetEnumerator();
-<span class="lineNum">      61 </span>            :                 }
-<span class="lineNum">      62 </span>            : 
-<span class="lineNum">      63 </span>            :                 #endregion
-<span class="lineNum">      64 </span>            : 
-<span class="lineNum">      65 </span>            :                 #region Implementation of IQueryable
-<span class="lineNum">      66 </span>            : 
-<span class="lineNum">      67 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      68 </span>            :                 /// Gets the expression tree that is associated with the instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
-<span class="lineNum">      69 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      70 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">      71 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.Expressions.Expression&quot;/&gt; that is associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
-<span class="lineNum">      72 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">      73 </span>            :                 public Expression Expression
-<span class="lineNum">      74 </span>            :                 {
-<span class="lineNum">      75 </span>            :                         get { return MongoCollection.AsQueryable().Expression; }
-<span class="lineNum">      76 </span>            :                 }
-<span class="lineNum">      77 </span>            : 
-<span class="lineNum">      78 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      79 </span>            :                 /// Gets the type of the element(s) that are returned when the expression tree associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt; is executed.
-<span class="lineNum">      80 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      81 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">      82 </span>            :                 /// A &lt;see cref=&quot;T:System.Type&quot;/&gt; that represents the type of the element(s) that are returned when the expression tree associated with this object is executed.
-<span class="lineNum">      83 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">      84 </span>            :                 public Type ElementType
-<span class="lineNum">      85 </span>            :                 {
-<span class="lineNum">      86 </span>            :                         get { return MongoCollection.AsQueryable().ElementType; }
-<span class="lineNum">      87 </span>            :                 }
-<span class="lineNum">      88 </span>            : 
-<span class="lineNum">      89 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      90 </span>            :                 /// Gets the singleResultQuery provider that is associated with this data source.
-<span class="lineNum">      91 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      92 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">      93 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.IQueryProvider&quot;/&gt; that is associated with this data source.
-<span class="lineNum">      94 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">      95 </span>            :                 public IQueryProvider Provider
-<span class="lineNum">      96 </span>            :                 {
-<span class="lineNum">      97 </span>            :                         get { return MongoCollection.AsQueryable().Provider; }
-<span class="lineNum">      98 </span>            :                 }
-<span class="lineNum">      99 </span>            : 
-<span class="lineNum">     100 </span>            :                 #endregion
-<span class="lineNum">     101 </span>            : 
-<span class="lineNum">     102 </span>            :                 #region Implementation of IDataStore&lt;TData&gt;
-<span class="lineNum">     103 </span>            : 
-<span class="lineNum">     104 </span><span class="lineCov">          1 :                 public virtual void Add(TData data)</span>
-<span class="lineNum">     105 </span>            :                 {
-<span class="lineNum">     106 </span>            :                         Logger.LogDebug(&quot;Adding data to the Mongo database&quot;, &quot;MongoDataStore\\Add&quot;);
-<span class="lineNum">     107 </span>            :                         try
-<span class="lineNum">     108 </span>            :                         {
-<span class="lineNum">     109 </span>            :                                 DateTime start = DateTime.Now;
-<span class="lineNum">     110 </span>            :                                 MongoCollection.Insert(data);
-<span class="lineNum">     111 </span>            :                                 DateTime end = DateTime.Now;
-<span class="lineNum">     112 </span>            :                                 Logger.LogDebug(string.Format(&quot;Adding data in the Mongo database took {0}.&quot;, end - start), &quot;MongoDataStore\\Add&quot;);
-<span class="lineNum">     113 </span>            :                         }
-<span class="lineNum">     114 </span>            :                         finally
+<span class="lineNum">      23 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      24 </span>            :         /// A &lt;see cref=&quot;IDataStore{TData}&quot;/&gt; that uses MongoDB for storage.
+<span class="lineNum">      25 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      26 </span>            :         /// &lt;typeparam name=&quot;TData&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IEntity&quot;/&gt; the &lt;see cref=&quot;IDataStore{TData}&quot;/&gt; will contain.&lt;/typeparam&gt;
+<span class="lineNum">      27 </span>            :         public class MongoDataStore&lt;TData&gt; : IDataStore&lt;TData&gt;
+<span class="lineNum">      28 </span>            :                 where TData : Entity
+<span class="lineNum">      29 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      30 </span>            :                 protected MongoCollection&lt;TData&gt; MongoCollection { get; private set; }
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      35 </span>            :                 /// Instantiates and Initialises a new instance of the &lt;see cref=&quot;MongoDataStore{TData}&quot;/&gt; class.
+<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      37 </span><span class="lineCov">          1 :                 public MongoDataStore(ILogger logger, MongoCollection&lt;TData&gt; mongoCollection)</span>
+<span class="lineNum">      38 </span>            :                 {
+<span class="lineNum">      39 </span>            :                         Logger = logger;
+<span class="lineNum">      40 </span>            :                         MongoCollection = mongoCollection;
+<span class="lineNum">      41 </span>            :                         MongoCollection.Database.RequestStart();
+<span class="lineNum">      42 </span>            :                 }
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :                 #region Implementation of IEnumerable
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      47 </span>            :                 /// Returns an enumerator that iterates through the collection.
+<span class="lineNum">      48 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      49 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">      50 </span>            :                 /// A &lt;see cref=&quot;T:System.Collections.Generic.IEnumerator`1&quot;/&gt; that can be used to iterate through the collection.
+<span class="lineNum">      51 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">      52 </span>            :                 /// &lt;filterpriority&gt;1&lt;/filterpriority&gt;
+<span class="lineNum">      53 </span><span class="lineCov">          1 :                 public IEnumerator&lt;TData&gt; GetEnumerator()</span>
+<span class="lineNum">      54 </span>            :                 {
+<span class="lineNum">      55 </span>            :                         return MongoCollection.AsQueryable().GetEnumerator();
+<span class="lineNum">      56 </span>            :                 }
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      59 </span>            :                 /// Returns an enumerator that iterates through a collection.
+<span class="lineNum">      60 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      61 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">      62 </span>            :                 /// An &lt;see cref=&quot;T:System.Collections.IEnumerator&quot;/&gt; object that can be used to iterate through the collection.
+<span class="lineNum">      63 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">      64 </span>            :                 /// &lt;filterpriority&gt;2&lt;/filterpriority&gt;
+<span class="lineNum">      65 </span>            :                 IEnumerator IEnumerable.GetEnumerator()
+<span class="lineNum">      66 </span>            :                 {
+<span class="lineNum">      67 </span>            :                         return GetEnumerator();
+<span class="lineNum">      68 </span>            :                 }
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :                 #endregion
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            :                 #region Implementation of IQueryable
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      75 </span>            :                 /// Gets the expression tree that is associated with the instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
+<span class="lineNum">      76 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      77 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">      78 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.Expressions.Expression&quot;/&gt; that is associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
+<span class="lineNum">      79 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">      80 </span>            :                 public Expression Expression
+<span class="lineNum">      81 </span>            :                 {
+<span class="lineNum">      82 </span>            :                         get { return MongoCollection.AsQueryable().Expression; }
+<span class="lineNum">      83 </span>            :                 }
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      86 </span>            :                 /// Gets the type of the element(s) that are returned when the expression tree associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt; is executed.
+<span class="lineNum">      87 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      88 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">      89 </span>            :                 /// A &lt;see cref=&quot;T:System.Type&quot;/&gt; that represents the type of the element(s) that are returned when the expression tree associated with this object is executed.
+<span class="lineNum">      90 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">      91 </span>            :                 public Type ElementType
+<span class="lineNum">      92 </span>            :                 {
+<span class="lineNum">      93 </span>            :                         get { return MongoCollection.AsQueryable().ElementType; }
+<span class="lineNum">      94 </span>            :                 }
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      97 </span>            :                 /// Gets the singleResultQuery provider that is associated with this data source.
+<span class="lineNum">      98 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      99 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     100 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.IQueryProvider&quot;/&gt; that is associated with this data source.
+<span class="lineNum">     101 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     102 </span>            :                 public IQueryProvider Provider
+<span class="lineNum">     103 </span>            :                 {
+<span class="lineNum">     104 </span>            :                         get { return MongoCollection.AsQueryable().Provider; }
+<span class="lineNum">     105 </span>            :                 }
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            :                 #endregion
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span>            :                 #region Implementation of IDataStore&lt;TData&gt;
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineCov">          1 :                 public virtual void Add(TData data)</span>
+<span class="lineNum">     112 </span>            :                 {
+<span class="lineNum">     113 </span>            :                         Logger.LogDebug(&quot;Adding data to the Mongo database&quot;, &quot;MongoDataStore\\Add&quot;);
+<span class="lineNum">     114 </span>            :                         try
 <span class="lineNum">     115 </span>            :                         {
-<span class="lineNum">     116 </span>            :                                 Logger.LogDebug(&quot;Adding data to the Mongo database... Done&quot;, &quot;MongoDataStore\\Add&quot;);
-<span class="lineNum">     117 </span>            :                         }
-<span class="lineNum">     118 </span>            :                 }
-<span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span><span class="lineCov">          1 :                 public virtual void Add(IEnumerable&lt;TData&gt; data)</span>
-<span class="lineNum">     121 </span>            :                 {
-<span class="lineNum">     122 </span>            :                         Logger.LogDebug(&quot;Adding data collection to the Mongo database&quot;, &quot;MongoDataStore\\Add&quot;);
-<span class="lineNum">     123 </span>            :                         try
-<span class="lineNum">     124 </span>            :                         {
-<span class="lineNum">     125 </span>            :                                 MongoCollection.InsertBatch(data);
-<span class="lineNum">     126 </span>            :                         }
-<span class="lineNum">     127 </span>            :                         finally
-<span class="lineNum">     128 </span>            :                         {
-<span class="lineNum">     129 </span>            :                                 Logger.LogDebug(&quot;Adding data collection to the Mongo database... Done&quot;, &quot;MongoDataStore\\Add&quot;);
-<span class="lineNum">     130 </span>            :                         }
-<span class="lineNum">     131 </span>            :                 }
-<span class="lineNum">     132 </span>            : 
-<span class="lineNum">     133 </span><span class="lineCov">          1 :                 public virtual void Remove(TData data)</span>
-<span class="lineNum">     134 </span>            :                 {
-<span class="lineNum">     135 </span>            :                         Logger.LogDebug(&quot;Removing data from the Mongo database&quot;, &quot;MongoDataStore\\Remove&quot;);
-<span class="lineNum">     136 </span>            :                         try
-<span class="lineNum">     137 </span>            :                         {
-<span class="lineNum">     138 </span>            :                                 data.IsLogicallyDeleted = true;
-<span class="lineNum">     139 </span>            :                                 Update(data);
-<span class="lineNum">     140 </span>            :                         }
-<span class="lineNum">     141 </span>            :                         finally
-<span class="lineNum">     142 </span>            :                         {
-<span class="lineNum">     143 </span>            :                                 Logger.LogDebug(&quot;Removing data from the Mongo database... Done&quot;, &quot;MongoDataStore\\Remove&quot;);
-<span class="lineNum">     144 </span>            :                         }
-<span class="lineNum">     145 </span>            :                 }
-<span class="lineNum">     146 </span>            : 
-<span class="lineNum">     147 </span><span class="lineCov">          1 :                 public void Destroy(TData data)</span>
-<span class="lineNum">     148 </span>            :                 {
-<span class="lineNum">     149 </span>            :                         Logger.LogDebug(&quot;Destroying data in the Mongo database&quot;, &quot;MongoDataStore\\Destroy&quot;);
-<span class="lineNum">     150 </span>            :                         try
-<span class="lineNum">     151 </span>            :                         {
-<span class="lineNum">     152 </span>            :                                 DateTime start = DateTime.Now;
-<span class="lineNum">     153 </span>            :                                 MongoCollection.Remove(Query.EQ(&quot;Rsn&quot;, data.Rsn));
-<span class="lineNum">     154 </span>            :                                 DateTime end = DateTime.Now;
-<span class="lineNum">     155 </span>            :                                 Logger.LogDebug(string.Format(&quot;Destroying data in the Mongo database took {0}.&quot;, end - start), &quot;MongoDataStore\\Destroy&quot;);
-<span class="lineNum">     156 </span>            :                         }
-<span class="lineNum">     157 </span>            :                         finally
+<span class="lineNum">     116 </span>            :                                 DateTime start = DateTime.Now;
+<span class="lineNum">     117 </span>            :                                 MongoCollection.Insert(data);
+<span class="lineNum">     118 </span>            :                                 DateTime end = DateTime.Now;
+<span class="lineNum">     119 </span>            :                                 Logger.LogDebug(string.Format(&quot;Adding data in the Mongo database took {0}.&quot;, end - start), &quot;MongoDataStore\\Add&quot;);
+<span class="lineNum">     120 </span>            :                         }
+<span class="lineNum">     121 </span>            :                         finally
+<span class="lineNum">     122 </span>            :                         {
+<span class="lineNum">     123 </span>            :                                 Logger.LogDebug(&quot;Adding data to the Mongo database... Done&quot;, &quot;MongoDataStore\\Add&quot;);
+<span class="lineNum">     124 </span>            :                         }
+<span class="lineNum">     125 </span>            :                 }
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span><span class="lineCov">          1 :                 public virtual void Add(IEnumerable&lt;TData&gt; data)</span>
+<span class="lineNum">     128 </span>            :                 {
+<span class="lineNum">     129 </span>            :                         Logger.LogDebug(&quot;Adding data collection to the Mongo database&quot;, &quot;MongoDataStore\\Add&quot;);
+<span class="lineNum">     130 </span>            :                         try
+<span class="lineNum">     131 </span>            :                         {
+<span class="lineNum">     132 </span>            :                                 MongoCollection.InsertBatch(data);
+<span class="lineNum">     133 </span>            :                         }
+<span class="lineNum">     134 </span>            :                         finally
+<span class="lineNum">     135 </span>            :                         {
+<span class="lineNum">     136 </span>            :                                 Logger.LogDebug(&quot;Adding data collection to the Mongo database... Done&quot;, &quot;MongoDataStore\\Add&quot;);
+<span class="lineNum">     137 </span>            :                         }
+<span class="lineNum">     138 </span>            :                 }
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span><span class="lineCov">          1 :                 public virtual void Remove(TData data)</span>
+<span class="lineNum">     141 </span>            :                 {
+<span class="lineNum">     142 </span>            :                         Logger.LogDebug(&quot;Removing data from the Mongo database&quot;, &quot;MongoDataStore\\Remove&quot;);
+<span class="lineNum">     143 </span>            :                         try
+<span class="lineNum">     144 </span>            :                         {
+<span class="lineNum">     145 </span>            :                                 data.IsLogicallyDeleted = true;
+<span class="lineNum">     146 </span>            :                                 Update(data);
+<span class="lineNum">     147 </span>            :                         }
+<span class="lineNum">     148 </span>            :                         finally
+<span class="lineNum">     149 </span>            :                         {
+<span class="lineNum">     150 </span>            :                                 Logger.LogDebug(&quot;Removing data from the Mongo database... Done&quot;, &quot;MongoDataStore\\Remove&quot;);
+<span class="lineNum">     151 </span>            :                         }
+<span class="lineNum">     152 </span>            :                 }
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span><span class="lineCov">          1 :                 public void Destroy(TData data)</span>
+<span class="lineNum">     155 </span>            :                 {
+<span class="lineNum">     156 </span>            :                         Logger.LogDebug(&quot;Destroying data in the Mongo database&quot;, &quot;MongoDataStore\\Destroy&quot;);
+<span class="lineNum">     157 </span>            :                         try
 <span class="lineNum">     158 </span>            :                         {
-<span class="lineNum">     159 </span>            :                                 Logger.LogDebug(&quot;Destroying data to the Mongo database... Done&quot;, &quot;MongoDataStore\\Destroy&quot;);
-<span class="lineNum">     160 </span>            :                         }
-<span class="lineNum">     161 </span>            :                 }
-<span class="lineNum">     162 </span>            : 
-<span class="lineNum">     163 </span><span class="lineCov">          1 :                 public virtual void RemoveAll()</span>
-<span class="lineNum">     164 </span>            :                 {
-<span class="lineNum">     165 </span>            :                         Logger.LogDebug(&quot;Removing all from the Mongo database&quot;, &quot;MongoDataStore\\RemoveAll&quot;);
-<span class="lineNum">     166 </span>            :                         try
-<span class="lineNum">     167 </span>            :                         {
-<span class="lineNum">     168 </span>            :                                 MongoCollection.RemoveAll();
-<span class="lineNum">     169 </span>            :                         }
-<span class="lineNum">     170 </span>            :                         finally
-<span class="lineNum">     171 </span>            :                         {
-<span class="lineNum">     172 </span>            :                                 Logger.LogDebug(&quot;Removing all from the Mongo database... Done&quot;, &quot;MongoDataStore\\RemoveAll&quot;);
-<span class="lineNum">     173 </span>            :                         }
-<span class="lineNum">     174 </span>            :                 }
-<span class="lineNum">     175 </span>            : 
-<span class="lineNum">     176 </span><span class="lineCov">          1 :                 public virtual void Update(TData data)</span>
-<span class="lineNum">     177 </span>            :                 {
-<span class="lineNum">     178 </span>            :                         Logger.LogDebug(&quot;Updating data in the Mongo database&quot;, &quot;MongoDataStore\\Update&quot;);
-<span class="lineNum">     179 </span>            :                         try
-<span class="lineNum">     180 </span>            :                         {
-<span class="lineNum">     181 </span>            :                                 DateTime start = DateTime.Now;
-<span class="lineNum">     182 </span>            :                                 MongoCollection.Save(data);
-<span class="lineNum">     183 </span>            :                                 DateTime end = DateTime.Now;
-<span class="lineNum">     184 </span>            :                                 Logger.LogDebug(string.Format(&quot;Updating data in the Mongo database took {0}.&quot;, end - start), &quot;MongoDataStore\\Update&quot;);
-<span class="lineNum">     185 </span>            :                         }
-<span class="lineNum">     186 </span>            :                         finally
+<span class="lineNum">     159 </span>            :                                 DateTime start = DateTime.Now;
+<span class="lineNum">     160 </span>            :                                 MongoCollection.Remove(Query.EQ(&quot;Rsn&quot;, data.Rsn));
+<span class="lineNum">     161 </span>            :                                 DateTime end = DateTime.Now;
+<span class="lineNum">     162 </span>            :                                 Logger.LogDebug(string.Format(&quot;Destroying data in the Mongo database took {0}.&quot;, end - start), &quot;MongoDataStore\\Destroy&quot;);
+<span class="lineNum">     163 </span>            :                         }
+<span class="lineNum">     164 </span>            :                         finally
+<span class="lineNum">     165 </span>            :                         {
+<span class="lineNum">     166 </span>            :                                 Logger.LogDebug(&quot;Destroying data to the Mongo database... Done&quot;, &quot;MongoDataStore\\Destroy&quot;);
+<span class="lineNum">     167 </span>            :                         }
+<span class="lineNum">     168 </span>            :                 }
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span><span class="lineCov">          1 :                 public virtual void RemoveAll()</span>
+<span class="lineNum">     171 </span>            :                 {
+<span class="lineNum">     172 </span>            :                         Logger.LogDebug(&quot;Removing all from the Mongo database&quot;, &quot;MongoDataStore\\RemoveAll&quot;);
+<span class="lineNum">     173 </span>            :                         try
+<span class="lineNum">     174 </span>            :                         {
+<span class="lineNum">     175 </span>            :                                 MongoCollection.RemoveAll();
+<span class="lineNum">     176 </span>            :                         }
+<span class="lineNum">     177 </span>            :                         finally
+<span class="lineNum">     178 </span>            :                         {
+<span class="lineNum">     179 </span>            :                                 Logger.LogDebug(&quot;Removing all from the Mongo database... Done&quot;, &quot;MongoDataStore\\RemoveAll&quot;);
+<span class="lineNum">     180 </span>            :                         }
+<span class="lineNum">     181 </span>            :                 }
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span><span class="lineCov">          1 :                 public virtual void Update(TData data)</span>
+<span class="lineNum">     184 </span>            :                 {
+<span class="lineNum">     185 </span>            :                         Logger.LogDebug(&quot;Updating data in the Mongo database&quot;, &quot;MongoDataStore\\Update&quot;);
+<span class="lineNum">     186 </span>            :                         try
 <span class="lineNum">     187 </span>            :                         {
-<span class="lineNum">     188 </span>            :                                 Logger.LogDebug(&quot;Updating data to the Mongo database... Done&quot;, &quot;MongoDataStore\\Update&quot;);
-<span class="lineNum">     189 </span>            :                         }
-<span class="lineNum">     190 </span>            :                 }
-<span class="lineNum">     191 </span>            : 
-<span class="lineNum">     192 </span>            :                 #endregion
-<span class="lineNum">     193 </span>            : 
-<span class="lineNum">     194 </span>            :                 #region Implementation of IDisposable
-<span class="lineNum">     195 </span>            : 
-<span class="lineNum">     196 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     197 </span>            :                 /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-<span class="lineNum">     198 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     199 </span><span class="lineCov">          1 :                 public virtual void Dispose()</span>
-<span class="lineNum">     200 </span>            :                 {
-<span class="lineNum">     201 </span>            :                         MongoCollection.Database.RequestDone();
-<span class="lineNum">     202 </span>            :                 }
-<span class="lineNum">     203 </span>            : 
-<span class="lineNum">     204 </span>            :                 #endregion
-<span class="lineNum">     205 </span>            : 
-<span class="lineNum">     206 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     207 </span>            :                 /// Executes the &quot;repairDatabase&quot; command on the current database.
-<span class="lineNum">     208 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     209 </span><span class="lineCov">          1 :                 public void Repair()</span>
-<span class="lineNum">     210 </span>            :                 {
-<span class="lineNum">     211 </span>            :                         Logger.LogDebug(&quot;Repairing the Mongo database&quot;, &quot;MongoDataStore\\Repair&quot;);
-<span class="lineNum">     212 </span>            :                         try
-<span class="lineNum">     213 </span>            :                         {
-<span class="lineNum">     214 </span>            :                                 DateTime start = DateTime.Now;
-<span class="lineNum">     215 </span>            :                                 MongoCollection.Database.RunCommand(new CommandDocument(&quot;repairDatabase&quot;, 1));
-<span class="lineNum">     216 </span>            :                                 DateTime end = DateTime.Now;
-<span class="lineNum">     217 </span>            :                                 Logger.LogDebug(string.Format(&quot;Repairing the Mongo database took {0}.&quot;, end - start), &quot;MongoDataStore\\Repair&quot;);
-<span class="lineNum">     218 </span>            :                         }
-<span class="lineNum">     219 </span>            :                         finally
+<span class="lineNum">     188 </span>            :                                 DateTime start = DateTime.Now;
+<span class="lineNum">     189 </span>            :                                 MongoCollection.Save(data);
+<span class="lineNum">     190 </span>            :                                 DateTime end = DateTime.Now;
+<span class="lineNum">     191 </span>            :                                 Logger.LogDebug(string.Format(&quot;Updating data in the Mongo database took {0}.&quot;, end - start), &quot;MongoDataStore\\Update&quot;);
+<span class="lineNum">     192 </span>            :                         }
+<span class="lineNum">     193 </span>            :                         finally
+<span class="lineNum">     194 </span>            :                         {
+<span class="lineNum">     195 </span>            :                                 Logger.LogDebug(&quot;Updating data to the Mongo database... Done&quot;, &quot;MongoDataStore\\Update&quot;);
+<span class="lineNum">     196 </span>            :                         }
+<span class="lineNum">     197 </span>            :                 }
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span>            :                 #endregion
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span>            :                 #region Implementation of IDisposable
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     204 </span>            :                 /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+<span class="lineNum">     205 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     206 </span><span class="lineCov">          1 :                 public virtual void Dispose()</span>
+<span class="lineNum">     207 </span>            :                 {
+<span class="lineNum">     208 </span>            :                         MongoCollection.Database.RequestDone();
+<span class="lineNum">     209 </span>            :                 }
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            :                 #endregion
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     214 </span>            :                 /// Executes the &quot;repairDatabase&quot; command on the current database.
+<span class="lineNum">     215 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     216 </span><span class="lineCov">          1 :                 public void Repair()</span>
+<span class="lineNum">     217 </span>            :                 {
+<span class="lineNum">     218 </span>            :                         Logger.LogDebug(&quot;Repairing the Mongo database&quot;, &quot;MongoDataStore\\Repair&quot;);
+<span class="lineNum">     219 </span>            :                         try
 <span class="lineNum">     220 </span>            :                         {
-<span class="lineNum">     221 </span>            :                                 Logger.LogDebug(&quot;Repairing the Mongo database... Done&quot;, &quot;MongoDataStore\\Repair&quot;);
-<span class="lineNum">     222 </span>            :                         }
-<span class="lineNum">     223 </span>            :                 }
-<span class="lineNum">     224 </span>            :         }
-<span class="lineNum">     225 </span>            : }
+<span class="lineNum">     221 </span>            :                                 DateTime start = DateTime.Now;
+<span class="lineNum">     222 </span>            :                                 MongoCollection.Database.RunCommand(new CommandDocument(&quot;repairDatabase&quot;, 1));
+<span class="lineNum">     223 </span>            :                                 DateTime end = DateTime.Now;
+<span class="lineNum">     224 </span>            :                                 Logger.LogDebug(string.Format(&quot;Repairing the Mongo database took {0}.&quot;, end - start), &quot;MongoDataStore\\Repair&quot;);
+<span class="lineNum">     225 </span>            :                         }
+<span class="lineNum">     226 </span>            :                         finally
+<span class="lineNum">     227 </span>            :                         {
+<span class="lineNum">     228 </span>            :                                 Logger.LogDebug(&quot;Repairing the Mongo database... Done&quot;, &quot;MongoDataStore\\Repair&quot;);
+<span class="lineNum">     229 </span>            :                         }
+<span class="lineNum">     230 </span>            :                 }
+<span class="lineNum">     231 </span>            :         }
+<span class="lineNum">     232 </span>            : }
 </pre>
       </td>
     </tr>

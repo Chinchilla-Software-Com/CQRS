@@ -31,8 +31,8 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
@@ -122,7 +122,7 @@
 <span class="lineNum">      64 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      65 </span>            :                 /// Get the client name from the &lt;see cref=&quot;ConfigurationManager&quot;/&gt; that describes the client that will connect to the server.
 <span class="lineNum">      66 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      67 </span>            :                 protected virtual string GetEventStoreClientName()
+<span class="lineNum">      67 </span><span class="lineCov">          1 :                 protected virtual string GetEventStoreClientName()</span>
 <span class="lineNum">      68 </span>            :                 {
 <span class="lineNum">      69 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStoreClientName&quot;) ?? &quot;Cqrs Default Client&quot;;
 <span class="lineNum">      70 </span>            :                 }
@@ -130,7 +130,7 @@
 <span class="lineNum">      72 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      73 </span>            :                 /// Get the connection stream name from the &lt;see cref=&quot;ConfigurationManager&quot;/&gt;.
 <span class="lineNum">      74 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      75 </span>            :                 protected virtual string GetEventStoreConnectionLogStreamName()
+<span class="lineNum">      75 </span><span class="lineCov">          1 :                 protected virtual string GetEventStoreConnectionLogStreamName()</span>
 <span class="lineNum">      76 </span>            :                 {
 <span class="lineNum">      77 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStoreConnectionLogStreamName&quot;) ?? &quot;EventStore Connection Log Stream&quot;;
 <span class="lineNum">      78 </span>            :                 }
@@ -138,7 +138,7 @@
 <span class="lineNum">      80 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      81 </span>            :                 /// Get the IP address of the server from the &lt;see cref=&quot;ConfigurationManager&quot;/&gt;.
 <span class="lineNum">      82 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      83 </span>            :                 protected virtual IPEndPoint GetEventStoreIpEndPoint()
+<span class="lineNum">      83 </span><span class="lineCov">          1 :                 protected virtual IPEndPoint GetEventStoreIpEndPoint()</span>
 <span class="lineNum">      84 </span>            :                 {
 <span class="lineNum">      85 </span>            :                         List&lt;byte&gt; eventStoreIp = (ConfigurationManager.GetSetting(&quot;Cqrs.EventStoreIp&quot;) ?? &quot;127.0.0.1&quot;).Split('.').Select(ipPart =&gt; (byte)int.Parse(ipPart)).ToList();
 <span class="lineNum">      86 </span>            :                         string eventStorePortValue = ConfigurationManager.GetSetting(&quot;Cqrs.EventStorePort&quot;);

@@ -31,8 +31,8 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">11</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
@@ -120,7 +120,7 @@
 <span class="lineNum">      62 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      63 </span>            :                 /// Instantiate a new instance of a &lt;see cref=&quot;CoreHost{TAuthenticationToken}&quot;/&gt;
 <span class="lineNum">      64 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      65 </span>            :                 protected CoreHost()
+<span class="lineNum">      65 </span><span class="lineCov">          1 :                 protected CoreHost()</span>
 <span class="lineNum">      66 </span>            :                 {
 <span class="lineNum">      67 </span>            :                         HandlerTypes = new Type[]{};
 <span class="lineNum">      68 </span>            :                         bool pauseAndWait;
@@ -148,7 +148,7 @@
 <span class="lineNum">      90 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      91 </span>            :                 /// When overridden, allows you to configure Telemetry
 <span class="lineNum">      92 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      93 </span>            :                 protected virtual void ConfigureTelemetry()
+<span class="lineNum">      93 </span><span class="lineCov">          1 :                 protected virtual void ConfigureTelemetry()</span>
 <span class="lineNum">      94 </span>            :                 {
 <span class="lineNum">      95 </span>            :                 }
 <span class="lineNum">      96 </span>            : 
@@ -167,7 +167,7 @@
 <span class="lineNum">     109 </span>            :                 /// Sets the &lt;see cref=&quot;ServicePointManager.SecurityProtocol&quot;/&gt; to &lt;see cref=&quot;SecurityProtocolType.Tls&quot;/&gt;.
 <span class="lineNum">     110 </span>            :                 /// You might want to override this to .net 4.5 and above to SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls
 <span class="lineNum">     111 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     112 </span>            :                 protected virtual void PrepareSecurityProtocol()
+<span class="lineNum">     112 </span><span class="lineCov">          1 :                 protected virtual void PrepareSecurityProtocol()</span>
 <span class="lineNum">     113 </span>            :                 {
 <span class="lineNum">     114 </span>            :                         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
 <span class="lineNum">     115 </span>            :                 }
@@ -175,7 +175,7 @@
 <span class="lineNum">     117 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     118 </span>            :                 /// Prepare the host before registering handlers and starting the host.
 <span class="lineNum">     119 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     120 </span>            :                 protected virtual void Prepare()
+<span class="lineNum">     120 </span><span class="lineCov">          1 :                 protected virtual void Prepare()</span>
 <span class="lineNum">     121 </span>            :                 {
 <span class="lineNum">     122 </span>            :                         PrepareSecurityProtocol();
 <span class="lineNum">     123 </span>            :                         // https://alexandrebrisebois.wordpress.com/2013/03/24/why-are-webrequests-throttled-i-want-more-throughput/
@@ -195,12 +195,12 @@
 <span class="lineNum">     137 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     138 </span>            :                 /// Configure the &lt;see cref=&quot;DependencyResolver&quot;/&gt;.
 <span class="lineNum">     139 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     140 </span>            :                 protected abstract void ConfigureDefaultDependencyResolver();
+<span class="lineNum">     140 </span><span class="lineCov">          1 :                 protected abstract void ConfigureDefaultDependencyResolver();</span>
 <span class="lineNum">     141 </span>            : 
 <span class="lineNum">     142 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     143 </span>            :                 /// Start the host post preparing and registering handlers.
 <span class="lineNum">     144 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     145 </span>            :                 protected virtual void Start()
+<span class="lineNum">     145 </span><span class="lineCov">          1 :                 protected virtual void Start()</span>
 <span class="lineNum">     146 </span>            :                 {
 <span class="lineNum">     147 </span>            :                         StartBusRegistrar();
 <span class="lineNum">     148 </span>            : 
@@ -221,7 +221,7 @@
 <span class="lineNum">     163 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     164 </span>            :                 /// &lt;param name=&quot;eventHandler&quot;&gt;The event handler to call&lt;/param&gt;
 <span class="lineNum">     165 </span>            :                 /// &lt;param name=&quot;holdMessageLock&quot;&gt;If false, this will spin off another thread. This is a bad performance impact. Strongly suggest you use lock renewing instead... which is configuration based... so even better.&lt;/param&gt;
-<span class="lineNum">     166 </span>            :                 protected virtual void ManuallyRegisterEventHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; eventHandler, bool holdMessageLock = true)
+<span class="lineNum">     166 </span><span class="lineCov">          1 :                 protected virtual void ManuallyRegisterEventHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; eventHandler, bool holdMessageLock = true)</span>
 <span class="lineNum">     167 </span>            :                         where TMessage : IMessage
 <span class="lineNum">     168 </span>            :                 {
 <span class="lineNum">     169 </span>            :                         var eventHandlerRegistrar = DependencyResolver.Current.Resolve&lt;IEventHandlerRegistrar&gt;();
@@ -233,7 +233,7 @@
 <span class="lineNum">     175 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     176 </span>            :                 /// &lt;param name=&quot;commandHandler&quot;&gt;The command handler to call&lt;/param&gt;
 <span class="lineNum">     177 </span>            :                 /// &lt;param name=&quot;holdMessageLock&quot;&gt;If false, this will spin off another thread. This is a bad performance impact. Strongly suggest you use lock renewing instead... which is configuration based... so even better.&lt;/param&gt;
-<span class="lineNum">     178 </span>            :                 protected virtual void ManuallyRegisterCommandHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; commandHandler, bool holdMessageLock = true)
+<span class="lineNum">     178 </span><span class="lineCov">          1 :                 protected virtual void ManuallyRegisterCommandHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; commandHandler, bool holdMessageLock = true)</span>
 <span class="lineNum">     179 </span>            :                         where TMessage : IMessage
 <span class="lineNum">     180 </span>            :                 {
 <span class="lineNum">     181 </span>            :                         var eventHandlerRegistrar = DependencyResolver.Current.Resolve&lt;IEventHandlerRegistrar&gt;();
@@ -243,7 +243,7 @@
 <span class="lineNum">     185 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     186 </span>            :                 /// Start the &lt;see cref=&quot;BusRegistrar&quot;/&gt; by calling &lt;see cref=&quot;BusRegistrar.Register(System.Type[])&quot;/&gt; passing &lt;see cref=&quot;HandlerTypes&quot;/&gt;
 <span class="lineNum">     187 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     188 </span>            :                 protected virtual void StartBusRegistrar()
+<span class="lineNum">     188 </span><span class="lineCov">          1 :                 protected virtual void StartBusRegistrar()</span>
 <span class="lineNum">     189 </span>            :                 {
 <span class="lineNum">     190 </span>            :                         var registrar = new BusRegistrar(DependencyResolver.Current);
 <span class="lineNum">     191 </span>            :                         registrar.Register(HandlerTypes);

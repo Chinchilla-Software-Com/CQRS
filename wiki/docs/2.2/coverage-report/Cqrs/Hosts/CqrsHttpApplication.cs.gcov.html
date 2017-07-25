@@ -31,8 +31,8 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntry">18</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
@@ -104,7 +104,7 @@
 <span class="lineNum">      46 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      47 </span>            :                 /// Instantiate a new instance of a &lt;see cref=&quot;CqrsHttpApplication&quot;/&gt;
 <span class="lineNum">      48 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      49 </span>            :                 protected CqrsHttpApplication()
+<span class="lineNum">      49 </span><span class="lineCov">          1 :                 protected CqrsHttpApplication()</span>
 <span class="lineNum">      50 </span>            :                 {
 <span class="lineNum">      51 </span>            :                         HandlerTypes = new Type[]{};
 <span class="lineNum">      52 </span>            :                 }
@@ -114,7 +114,7 @@
 <span class="lineNum">      56 </span>            :                 /// Gets executed once during the life cycle of the application when the first request for any resource in the application is made. A resource can be a page or an image in the application. 
 <span class="lineNum">      57 </span>            :                 /// If the server where the application is hosted is restarted then this is fired once again upon the first request for any resource in the application.
 <span class="lineNum">      58 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      59 </span>            :                 protected virtual void Application_Start(object sender, EventArgs e)
+<span class="lineNum">      59 </span><span class="lineCov">          1 :                 protected virtual void Application_Start(object sender, EventArgs e)</span>
 <span class="lineNum">      60 </span>            :                 {
 <span class="lineNum">      61 </span>            :                         SetBuses();
 <span class="lineNum">      62 </span>            : 
@@ -129,12 +129,12 @@
 <span class="lineNum">      71 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      72 </span>            :                 /// Set &lt;see cref=&quot;EventBus&quot;/&gt; and &lt;see cref=&quot;CommandBus&quot;/&gt;.
 <span class="lineNum">      73 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      74 </span>            :                 protected abstract void SetBuses();
+<span class="lineNum">      74 </span><span class="lineCov">          1 :                 protected abstract void SetBuses();</span>
 <span class="lineNum">      75 </span>            : 
 <span class="lineNum">      76 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      77 </span>            :                 /// Start the &lt;see cref=&quot;BusRegistrar&quot;/&gt; by calling &lt;see cref=&quot;BusRegistrar.Register(System.Type[])&quot;/&gt; passing &lt;see cref=&quot;HandlerTypes&quot;/&gt;
 <span class="lineNum">      78 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      79 </span>            :                 protected virtual BusRegistrar RegisterCommandAndEventHandlers()
+<span class="lineNum">      79 </span><span class="lineCov">          1 :                 protected virtual BusRegistrar RegisterCommandAndEventHandlers()</span>
 <span class="lineNum">      80 </span>            :                 {
 <span class="lineNum">      81 </span>            :                         var registrar = new BusRegistrar(DependencyResolver.Current);
 <span class="lineNum">      82 </span>            :                         registrar.Register(HandlerTypes);
@@ -145,7 +145,7 @@
 <span class="lineNum">      87 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      88 </span>            :                 /// Call the static &quot;RegisterDataContracts&quot; method on any &lt;see cref=&quot;IServiceParameterResolver&quot;/&gt; we can find in the &lt;see cref=&quot;Assembly&quot;/&gt; of any &lt;see cref=&quot;Type&quot;/&gt; in &lt;see cref=&quot;HandlerTypes&quot;/&gt;
 <span class="lineNum">      89 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      90 </span>            :                 protected virtual void RegisterServiceParameterResolver()
+<span class="lineNum">      90 </span><span class="lineCov">          1 :                 protected virtual void RegisterServiceParameterResolver()</span>
 <span class="lineNum">      91 </span>            :                 {
 <span class="lineNum">      92 </span>            :                         foreach (Type handlerType in HandlerTypes)
 <span class="lineNum">      93 </span>            :                         {
@@ -166,7 +166,7 @@
 <span class="lineNum">     108 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     109 </span>            :                 /// Starts the command bus and event bus receivers depending on configuration settings
 <span class="lineNum">     110 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     111 </span>            :                 protected virtual void StartBuses()
+<span class="lineNum">     111 </span><span class="lineCov">          1 :                 protected virtual void StartBuses()</span>
 <span class="lineNum">     112 </span>            :                 {
 <span class="lineNum">     113 </span>            : 
 <span class="lineNum">     114 </span>            :                         var configurationManager = DependencyResolver.Current.Resolve&lt;IConfigurationManager&gt;();
@@ -184,7 +184,7 @@
 <span class="lineNum">     126 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     127 </span>            :                 /// Log that the application has started
 <span class="lineNum">     128 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     129 </span>            :                 protected virtual void LogApplicationStarted()
+<span class="lineNum">     129 </span><span class="lineCov">          1 :                 protected virtual void LogApplicationStarted()</span>
 <span class="lineNum">     130 </span>            :                 {
 <span class="lineNum">     131 </span>            :                         try
 <span class="lineNum">     132 </span>            :                         {
@@ -203,7 +203,7 @@
 <span class="lineNum">     145 </span>            :                 /// Gets executed once during the life cycle of the application when it is unloaded.
 <span class="lineNum">     146 </span>            :                 /// This is normally fired when the application is taken off-line or when the server is stopped.
 <span class="lineNum">     147 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     148 </span>            :                 protected virtual void Application_End(object sender, EventArgs e)
+<span class="lineNum">     148 </span><span class="lineCov">          1 :                 protected virtual void Application_End(object sender, EventArgs e)</span>
 <span class="lineNum">     149 </span>            :                 {
 <span class="lineNum">     150 </span>            :                         try
 <span class="lineNum">     151 </span>            :                         {
@@ -222,7 +222,7 @@
 <span class="lineNum">     164 </span>            :                 /// Logs all error via &lt;see cref=&quot;ILogger.LogError&quot;/&gt; unless the execution is &lt;see cref=&quot;SecurityException&quot;/&gt;, in which case &lt;see cref=&quot;ILogger.LogWarning&quot;/&gt; is used.
 <span class="lineNum">     165 </span>            :                 /// Gets executed when any un-handled &lt;see cref=&quot;Exception&quot;/&gt;/error occurs anywhere in the application. Any un-handled &lt;see cref=&quot;Exception&quot;/&gt; here means exception which are not caught using try catch block. Also if you have custom errors enabled in your application i.e. in web.config file then the configuration in web.config takes precedence and all errors will be directed to the file mentioned in the tag.
 <span class="lineNum">     166 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     167 </span>            :                 protected virtual void Application_Error(object sender, EventArgs e)
+<span class="lineNum">     167 </span><span class="lineCov">          1 :                 protected virtual void Application_Error(object sender, EventArgs e)</span>
 <span class="lineNum">     168 </span>            :                 {
 <span class="lineNum">     169 </span>            :                         try
 <span class="lineNum">     170 </span>            :                         {
@@ -242,7 +242,7 @@
 <span class="lineNum">     184 </span>            :                 /// Gets executed for each and every request which comes to the application to generate a new CorrelationId and then sets the generated CorrelationId via &lt;see cref=&quot;ICorrelationIdHelper.SetCorrelationId&quot;/&gt;.
 <span class="lineNum">     185 </span>            :                 /// The generated CorrelationId is also set in the &lt;see cref=&quot;HttpResponse.Headers&quot;/&gt;.
 <span class="lineNum">     186 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     187 </span>            :                 protected virtual void Application_BeginRequest(object sender, EventArgs e)
+<span class="lineNum">     187 </span><span class="lineCov">          1 :                 protected virtual void Application_BeginRequest(object sender, EventArgs e)</span>
 <span class="lineNum">     188 </span>            :                 {
 <span class="lineNum">     189 </span>            :                         try
 <span class="lineNum">     190 </span>            :                         {
@@ -256,7 +256,7 @@
 <span class="lineNum">     198 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     199 </span>            :                 /// Gets executed after &lt;see cref=&quot;Application_BeginRequest&quot;/&gt; and before the stream starts getting sent to the client.
 <span class="lineNum">     200 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     201 </span>            :                 protected virtual void Application_EndRequest(object sender, EventArgs e)
+<span class="lineNum">     201 </span><span class="lineCov">          1 :                 protected virtual void Application_EndRequest(object sender, EventArgs e)</span>
 <span class="lineNum">     202 </span>            :                 {
 <span class="lineNum">     203 </span>            :                 }
 <span class="lineNum">     204 </span>            : 
@@ -264,7 +264,7 @@
 <span class="lineNum">     206 </span>            :                 /// Gets executed after &lt;see cref=&quot;Application_BeginRequest&quot;/&gt;.
 <span class="lineNum">     207 </span>            :                 /// Override this method to extract any authentication token from the request and then call &lt;see cref=&quot;IAuthenticationTokenHelper{TAuthenticationToken}.SetAuthenticationToken&quot;/&gt;.
 <span class="lineNum">     208 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     209 </span>            :                 protected virtual void Application_AuthenticateRequest(object sender, EventArgs e)
+<span class="lineNum">     209 </span><span class="lineCov">          1 :                 protected virtual void Application_AuthenticateRequest(object sender, EventArgs e)</span>
 <span class="lineNum">     210 </span>            :                 {
 <span class="lineNum">     211 </span>            :                 }
 <span class="lineNum">     212 </span>            : 
@@ -274,7 +274,7 @@
 <span class="lineNum">     216 </span>            :                 /// Gets executed after &lt;see cref=&quot;Application_AuthenticateRequest&quot;/&gt; when a new session for a &quot;user&quot; starts such as a first request or after a session has expired.
 <span class="lineNum">     217 </span>            :                 /// This event doesn't get triggered if you are not using sessions which can be disabled in the web.config.
 <span class="lineNum">     218 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     219 </span>            :                 protected virtual void Session_Start(object sender, EventArgs e)
+<span class="lineNum">     219 </span><span class="lineCov">          1 :                 protected virtual void Session_Start(object sender, EventArgs e)</span>
 <span class="lineNum">     220 </span>            :                 {
 <span class="lineNum">     221 </span>            :                         // This is required otherwise the first call per new session will fail due to a WCF issue. This forces the SessionID to be created now, not after the response has been flushed on the pipeline.
 <span class="lineNum">     222 </span>            :                         // ReSharper disable UnusedVariable
@@ -286,7 +286,7 @@
 <span class="lineNum">     228 </span>            :                 /// Whenever a user's session in the application expires this gets executed. The session is no longer available or accessible. 
 <span class="lineNum">     229 </span>            :                 /// The session expiration time can be set in web.config file. By default session time out is set to 20 mins.
 <span class="lineNum">     230 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     231 </span>            :                 protected virtual void Session_End(object sender, EventArgs e)
+<span class="lineNum">     231 </span><span class="lineCov">          1 :                 protected virtual void Session_End(object sender, EventArgs e)</span>
 <span class="lineNum">     232 </span>            :                 {
 <span class="lineNum">     233 </span>            :                 }
 <span class="lineNum">     234 </span>            :         }
@@ -308,7 +308,7 @@
 <span class="lineNum">     250 </span>            :                 /// &lt;see cref=&quot;HttpRequest.Cookies&quot;/&gt;, &lt;see cref=&quot;HttpRequest.Form&quot;/&gt; or &lt;see cref=&quot;HttpRequest.QueryString&quot;/&gt;; then
 <span class="lineNum">     251 </span>            :                 /// calls &lt;see cref=&quot;IAuthenticationTokenHelper{TAuthenticationToken}.SetAuthenticationToken&quot;/&gt; to make it accessible to others parts of the system if one is found.
 <span class="lineNum">     252 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     253 </span>            :                 protected override void Application_AuthenticateRequest(object sender, EventArgs e)
+<span class="lineNum">     253 </span><span class="lineCov">          1 :                 protected override void Application_AuthenticateRequest(object sender, EventArgs e)</span>
 <span class="lineNum">     254 </span>            :                 {
 <span class="lineNum">     255 </span>            :                         if (typeof (TAuthenticationToken) != typeof (Guid) &amp;&amp; typeof (TAuthenticationToken) != typeof (string) &amp;&amp; typeof (TAuthenticationToken) != typeof (int))
 <span class="lineNum">     256 </span>            :                                 return;
@@ -351,7 +351,7 @@
 <span class="lineNum">     293 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     294 </span>            :                 /// Set &lt;see cref=&quot;CqrsHttpApplication.EventBus&quot;/&gt; and &lt;see cref=&quot;CqrsHttpApplication.CommandBus&quot;/&gt;.
 <span class="lineNum">     295 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     296 </span>            :                 protected override void SetBuses()
+<span class="lineNum">     296 </span><span class="lineCov">          1 :                 protected override void SetBuses()</span>
 <span class="lineNum">     297 </span>            :                 {
 <span class="lineNum">     298 </span>            :                         EventBus = DependencyResolver.Current.Resolve&lt;IEventReceiver&lt;TAuthenticationToken&gt;&gt;();
 <span class="lineNum">     299 </span>            :                         CommandBus = DependencyResolver.Current.Resolve&lt;ICommandReceiver&lt;TAuthenticationToken&gt;&gt;();

@@ -31,9 +31,9 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -67,27 +67,42 @@
 <span class="lineNum">       9 </span>            : using System;
 <span class="lineNum">      10 </span>            : using System.ComponentModel.DataAnnotations;
 <span class="lineNum">      11 </span>            : using System.Runtime.Serialization;
-<span class="lineNum">      12 </span>            : using MongoDB.Bson.Serialization.Attributes;
-<span class="lineNum">      13 </span>            : 
-<span class="lineNum">      14 </span>            : namespace Cqrs.MongoDB.Entities
-<span class="lineNum">      15 </span>            : {
-<span class="lineNum">      16 </span>            :         [Serializable]
-<span class="lineNum">      17 </span>            :         [DataContract]
-<span class="lineNum">      18 </span>            :         public abstract class MongoEntity : Cqrs.Entities.Entity
-<span class="lineNum">      19 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      20 </span>            :                 [Required]
-<span class="lineNum">      21 </span>            :                 [BsonId]
-<span class="lineNum">      22 </span>            :                 [DataMember]
-<span class="lineNum">      23 </span>            :                 public override Guid Rsn { get; set; }
-<span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span>            :                 [DataMember]
-<span class="lineNum">      26 </span>            :                 public override int SortingOrder { get; set; }
-<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      12 </span>            : using Cqrs.DataStores;
+<span class="lineNum">      13 </span>            : using Cqrs.Entities;
+<span class="lineNum">      14 </span>            : using MongoDB.Bson.Serialization.Attributes;
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : namespace Cqrs.MongoDB.Entities
+<span class="lineNum">      17 </span>            : {
+<span class="lineNum">      18 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      19 </span>            :         /// A projection/entity especially designed to work with MongoDB.
+<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      21 </span>            :         [Serializable]
+<span class="lineNum">      22 </span>            :         [DataContract]
+<span class="lineNum">      23 </span>            :         public abstract class MongoEntity : Entity
+<span class="lineNum">      24 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      25 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      26 </span>            :                 /// The identifier of the &lt;see cref=&quot;IEntity&quot;/&gt;.
+<span class="lineNum">      27 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">      28 </span>            :                 [Required]
-<span class="lineNum">      29 </span>            :                 [DataMember]
-<span class="lineNum">      30 </span>            :                 public override bool IsLogicallyDeleted { get; set; }
-<span class="lineNum">      31 </span>            :         }
-<span class="lineNum">      32 </span>            : }
+<span class="lineNum">      29 </span>            :                 [BsonId]
+<span class="lineNum">      30 </span>            :                 [DataMember]
+<span class="lineNum">      31 </span>            :                 public override Guid Rsn { get; set; }
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      34 </span>            :                 /// The order of this &lt;see cref=&quot;IEntity&quot;/&gt; to sort by, by default.
+<span class="lineNum">      35 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      36 </span>            :                 [DataMember]
+<span class="lineNum">      37 </span>            :                 public override int SortingOrder { get; set; }
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      40 </span>            :                 /// Indicates if this &lt;see cref=&quot;IEntity&quot;/&gt; has been deleted, but not removed from the &lt;see cref=&quot;IDataStore{TData}&quot;/&gt;,
+<span class="lineNum">      41 </span>            :                 /// this way entities can be retrieved so an un-deleted operation can be triggered.
+<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      43 </span>            :                 [Required]
+<span class="lineNum">      44 </span>            :                 [DataMember]
+<span class="lineNum">      45 </span>            :                 public override bool IsLogicallyDeleted { get; set; }
+<span class="lineNum">      46 </span>            :         }
+<span class="lineNum">      47 </span>            : }
 </pre>
       </td>
     </tr>
