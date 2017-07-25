@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -83,7 +83,7 @@
 <span class="lineNum">      25 </span>            :                 : AzureCommandBus&lt;TAuthenticationToken&gt;
 <span class="lineNum">      26 </span>            :                 , ICommandHandlerRegistrar
 <span class="lineNum">      27 </span>            :                 , ICommandReceiver&lt;TAuthenticationToken&gt;
-<span class="lineNum">      28 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      28 </span>            :         {
 <span class="lineNum">      29 </span>            :                 // ReSharper disable StaticMemberInGenericType
 <span class="lineNum">      30 </span>            :                 private static RouteManager Routes { get; set; }
 <span class="lineNum">      31 </span>            : 
@@ -101,7 +101,7 @@
 <span class="lineNum">      43 </span>            :                         TelemetryHelper = configurationManager.CreateTelemetryHelper(&quot;Cqrs.Azure.EventHub.CommandBus.Receiver.UseApplicationInsightTelemetryHelper&quot;, correlationIdHelper);
 <span class="lineNum">      44 </span>            :                 }
 <span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span><span class="lineCov">          1 :                 public virtual void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
+<span class="lineNum">      46 </span><span class="lineCov">          2 :                 public virtual void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
 <span class="lineNum">      47 </span>            :                         where TMessage : IMessage
 <span class="lineNum">      48 </span>            :                 {
 <span class="lineNum">      49 </span>            :                         AzureBusHelper.RegisterHandler(TelemetryHelper, Routes, handler, targetedType, holdMessageLock);
@@ -110,13 +110,13 @@
 <span class="lineNum">      52 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      53 </span>            :                 /// Register an event or command handler that will listen and respond to events or commands.
 <span class="lineNum">      54 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      55 </span><span class="lineCov">          1 :                 public void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = true)</span>
+<span class="lineNum">      55 </span><span class="lineCov">          2 :                 public void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = true)</span>
 <span class="lineNum">      56 </span>            :                         where TMessage : IMessage
 <span class="lineNum">      57 </span>            :                 {
 <span class="lineNum">      58 </span>            :                         RegisterHandler(handler, null, holdMessageLock);
 <span class="lineNum">      59 </span>            :                 }
 <span class="lineNum">      60 </span>            : 
-<span class="lineNum">      61 </span>            :                 protected virtual void ReceiveCommand(PartitionContext context, EventData eventData)
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :                 protected virtual void ReceiveCommand(PartitionContext context, EventData eventData)</span>
 <span class="lineNum">      62 </span>            :                 {
 <span class="lineNum">      63 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 <span class="lineNum">      64 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();

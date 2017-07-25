@@ -1,5 +1,8 @@
 var NAVTREEINDEX6 =
 {
+"classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore_a38c242b255dc17cf8d19470fdf5a99bf.html#a38c242b255dc17cf8d19470fdf5a99bf":[1,0,0,14,0,1,2],
+"classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore_a39f738d53074a548e6932bacdc4a4e3a.html#a39f738d53074a548e6932bacdc4a4e3a":[1,0,0,14,0,1,0],
+"classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore_a3eeaf3e59a540025ff2aa0f62b5dd465.html#a3eeaf3e59a540025ff2aa0f62b5dd465":[1,0,0,14,0,1,5],
 "classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore_a4af729196a5fa4962961c9ce38b74891.html#a4af729196a5fa4962961c9ce38b74891":[1,0,0,14,0,1,4],
 "classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore_a64003d01de3ac6ffd0e41bb7f572bf96.html#a64003d01de3ac6ffd0e41bb7f572bf96":[1,0,0,14,0,1,6],
 "classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore_a878966ea796321cae54c3c619e3178d5.html#a878966ea796321cae54c3c619e3178d5":[1,0,0,14,0,1,7],
@@ -246,8 +249,5 @@ var NAVTREEINDEX6 =
 "classCqrs_1_1Repositories_1_1Queries_1_1CollectionResultQuery_a717d2ce71c0849008a96f80ba58cd032.html#a717d2ce71c0849008a96f80ba58cd032":[1,0,0,17,0,1,0],
 "classCqrs_1_1Repositories_1_1Queries_1_1CollectionResultQuery_af2542c8b63668ddb39c2195c3280cd89.html#af2542c8b63668ddb39c2195c3280cd89":[1,0,0,17,0,1,1],
 "classCqrs_1_1Repositories_1_1Queries_1_1OrQueryPredicate.html":[1,0,0,17,0,13],
-"classCqrs_1_1Repositories_1_1Queries_1_1OrQueryPredicate_ae1a81d19657bee8735a977b247fef4d0.html#ae1a81d19657bee8735a977b247fef4d0":[1,0,0,17,0,13,1],
-"classCqrs_1_1Repositories_1_1Queries_1_1OrQueryPredicate_afd9d98db1920b798bded515a27f0eeb6.html#afd9d98db1920b798bded515a27f0eeb6":[1,0,0,17,0,13,0],
-"classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder.html":[1,0,0,17,0,14],
-"classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder_a0228422245afb7fe388114236bb1aefa.html#a0228422245afb7fe388114236bb1aefa":[1,0,0,17,0,14,17]
+"classCqrs_1_1Repositories_1_1Queries_1_1OrQueryPredicate_ae1a81d19657bee8735a977b247fef4d0.html#ae1a81d19657bee8735a977b247fef4d0":[1,0,0,17,0,13,1]
 };

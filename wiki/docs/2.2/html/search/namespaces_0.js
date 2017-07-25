@@ -2,7 +2,6 @@ var searchData=
 [
   ['aggregates',['Aggregates',['../namespaceCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Aggregates.html',1,'Cqrs::Akka::Tests::Unit']]],
   ['akka',['Akka',['../namespaceCqrs_1_1Akka.html',1,'Cqrs.Akka'],['../namespaceCqrs_1_1Ninject_1_1Akka.html',1,'Cqrs.Ninject.Akka']]],
-  ['aspnet',['AspNet',['../namespaceCqrs_1_1Web_1_1AspNet.html',1,'Cqrs::Web']]],
   ['authentication',['Authentication',['../namespaceCqrs_1_1Authentication.html',1,'Cqrs.Authentication'],['../namespaceCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1Authentication.html',1,'Cqrs.Azure.DocumentDb.Repositories.Authentication'],['../namespaceCqrs_1_1Mongo_1_1Repositories_1_1Authentication.html',1,'Cqrs.Mongo.Repositories.Authentication'],['../namespaceCqrs_1_1MongoDB_1_1Repositories_1_1Authentication.html',1,'Cqrs.MongoDB.Repositories.Authentication']]],
   ['azure',['Azure',['../namespaceCqrs_1_1Azure.html',1,'Cqrs.Azure'],['../namespaceCqrs_1_1Ninject_1_1Azure.html',1,'Cqrs.Ninject.Azure']]],
   ['blobstorage',['BlobStorage',['../namespaceCqrs_1_1Azure_1_1BlobStorage.html',1,'Cqrs.Azure.BlobStorage'],['../namespaceCqrs_1_1Ninject_1_1Azure_1_1BlobStorage.html',1,'Cqrs.Ninject.Azure.BlobStorage']]],
@@ -61,6 +60,6 @@ var searchData=
   ['unit',['Unit',['../namespaceCqrs_1_1Akka_1_1Tests_1_1Unit.html',1,'Cqrs.Akka.Tests.Unit'],['../namespaceCqrs_1_1Azure_1_1ServiceBus_1_1Tests_1_1Unit.html',1,'Cqrs.Azure.ServiceBus.Tests.Unit']]],
   ['wcf',['Wcf',['../namespaceCqrs_1_1Ninject_1_1Azure_1_1Wcf.html',1,'Cqrs::Ninject::Azure']]],
   ['web',['Web',['../namespaceCqrs_1_1Web.html',1,'Cqrs']]],
-  ['webapi',['WebApi',['../namespaceCqrs_1_1Ninject_1_1WebApi.html',1,'Cqrs.Ninject.WebApi'],['../namespaceCqrs_1_1Web_1_1AspNet_1_1WebApi.html',1,'Cqrs.Web.AspNet.WebApi'],['../namespaceCqrs_1_1WebApi.html',1,'Cqrs.WebApi']]],
+  ['webapi',['WebApi',['../namespaceCqrs_1_1Ninject_1_1WebApi.html',1,'Cqrs.Ninject.WebApi'],['../namespaceCqrs_1_1WebApi.html',1,'Cqrs.WebApi']]],
   ['webjobs',['WebJobs',['../namespaceCqrs_1_1Azure_1_1WebJobs.html',1,'Cqrs.Azure.WebJobs'],['../namespaceCqrs_1_1Ninject_1_1Azure_1_1WebJobs.html',1,'Cqrs.Ninject.Azure.WebJobs']]]
 ];

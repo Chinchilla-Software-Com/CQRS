@@ -1,7 +1,7 @@
 var classCqrs_1_1EventStore_1_1EventStore =
 [
     [ "EventStore", "classCqrs_1_1EventStore_1_1EventStore_ab48ad2c9d72780ae3a662e213498f194.html#ab48ad2c9d72780ae3a662e213498f194", null ],
-    [ "Get", "classCqrs_1_1EventStore_1_1EventStore_a9d7b3a3ebcf110fe02d53e2ada19933d.html#a9d7b3a3ebcf110fe02d53e2ada19933d", null ],
+    [ "Get", "classCqrs_1_1EventStore_1_1EventStore_a60e5974f82d907cad6e74ea29fb13e71.html#a60e5974f82d907cad6e74ea29fb13e71", null ],
     [ "Get", "classCqrs_1_1EventStore_1_1EventStore_a898b51899af27db8aa0fb0c0dc75b25d.html#a898b51899af27db8aa0fb0c0dc75b25d", null ],
     [ "Get< T >", "classCqrs_1_1EventStore_1_1EventStore_aaa4ebd61c84124425380ce31e3a67600.html#aaa4ebd61c84124425380ce31e3a67600", null ],
     [ "ListenForNotificationsOnConnection", "classCqrs_1_1EventStore_1_1EventStore_add7396a800fe8f64c61406311e8fee1d.html#add7396a800fe8f64c61406311e8fee1d", null ],

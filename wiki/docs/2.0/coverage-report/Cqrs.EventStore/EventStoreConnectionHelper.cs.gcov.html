@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">6</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -92,17 +92,17 @@
 <span class="lineNum">      34 </span>            :                         return connection;
 <span class="lineNum">      35 </span>            :                 }
 <span class="lineNum">      36 </span>            : 
-<span class="lineNum">      37 </span>            :                 protected virtual string GetEventStoreClientName()
+<span class="lineNum">      37 </span><span class="lineNoCov">          0 :                 protected virtual string GetEventStoreClientName()</span>
 <span class="lineNum">      38 </span>            :                 {
 <span class="lineNum">      39 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStoreClientName&quot;) ?? &quot;Cqrs Default Client&quot;;
 <span class="lineNum">      40 </span>            :                 }
 <span class="lineNum">      41 </span>            : 
-<span class="lineNum">      42 </span>            :                 protected virtual string GetEventStoreConnectionLogStreamName()
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 :                 protected virtual string GetEventStoreConnectionLogStreamName()</span>
 <span class="lineNum">      43 </span>            :                 {
 <span class="lineNum">      44 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStoreConnectionLogStreamName&quot;) ?? &quot;EventStore Connection Log Stream&quot;;
 <span class="lineNum">      45 </span>            :                 }
 <span class="lineNum">      46 </span>            : 
-<span class="lineNum">      47 </span>            :                 protected virtual IPEndPoint GetEventStoreIpEndPoint()
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :                 protected virtual IPEndPoint GetEventStoreIpEndPoint()</span>
 <span class="lineNum">      48 </span>            :                 {
 <span class="lineNum">      49 </span>            :                         List&lt;byte&gt; eventStoreIp = (ConfigurationManager.GetSetting(&quot;Cqrs.EventStoreIp&quot;) ?? &quot;127.0.0.1&quot;).Split('.').Select(ipPart =&gt; (byte)int.Parse(ipPart)).ToList();
 <span class="lineNum">      50 </span>            :                         string eventStorePortValue = ConfigurationManager.GetSetting(&quot;Cqrs.EventStorePort&quot;);

@@ -19,5 +19,6 @@ var searchData=
   ['cqrseventapicontroller',['CqrsEventApiController',['../classCqrs_1_1WebApi_1_1CqrsEventApiController.html',1,'Cqrs::WebApi']]],
   ['cqrshttpapplication',['CqrsHttpApplication',['../classCqrs_1_1WebApi_1_1CqrsHttpApplication.html',1,'Cqrs::WebApi']]],
   ['cqrsmodule',['CqrsModule',['../classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule.html',1,'Cqrs::Ninject::Configuration']]],
+  ['cqrswebjobprogram',['CqrsWebJobProgram',['../classCqrsWebJobProgram.html',1,'']]],
   ['crud_5foperations',['CRUD_operations',['../classCqrs_1_1Tests_1_1DataStores_1_1CRUD__operations.html',1,'Cqrs::Tests::DataStores']]]
 ];

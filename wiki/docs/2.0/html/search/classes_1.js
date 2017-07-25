@@ -16,7 +16,7 @@ var searchData=
   ['blobstoragestoreextensions',['BlobStorageStoreExtensions',['../classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStoreExtensions.html',1,'Cqrs::Azure::BlobStorage']]],
   ['blobstorageventstoremodule',['BlobStoragEventStoreModule',['../classCqrs_1_1Ninject_1_1Azure_1_1BlobStorage_1_1Configuration_1_1BlobStoragEventStoreModule.html',1,'Cqrs::Ninject::Azure::BlobStorage::Configuration']]],
   ['booleanconverterex',['BooleanConverterEx',['../classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1BooleanConverterEx.html',1,'Cqrs::WebApi::Formatters::FormMultipart::Infrastructure::TypeConverters']]],
-  ['busactor',['BusActor',['../classCqrs_1_1Akka_1_1Events_1_1AkkaEventBusProxy_1_1BusActor.html',1,'Cqrs.Akka.Events.AkkaEventBusProxy&lt; TAuthenticationToken &gt;.BusActor'],['../classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBusProxy_1_1BusActor.html',1,'Cqrs.Akka.Commands.AkkaCommandBusProxy&lt; TAuthenticationToken &gt;.BusActor']]],
+  ['busactor',['BusActor',['../classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBusProxy_1_1BusActor.html',1,'Cqrs.Akka.Commands.AkkaCommandBusProxy&lt; TAuthenticationToken &gt;.BusActor'],['../classCqrs_1_1Akka_1_1Events_1_1AkkaEventBusProxy_1_1BusActor.html',1,'Cqrs.Akka.Events.AkkaEventBusProxy&lt; TAuthenticationToken &gt;.BusActor']]],
   ['bushelper',['BusHelper',['../classCqrs_1_1Bus_1_1BusHelper.html',1,'Cqrs::Bus']]],
   ['busregistrar',['BusRegistrar',['../classCqrs_1_1Configuration_1_1BusRegistrar.html',1,'Cqrs::Configuration']]],
   ['byaggregateidandversionmongodbindex',['ByAggregateIdAndVersionMongoDbIndex',['../classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByAggregateIdAndVersionMongoDbIndex.html',1,'Cqrs::MongoDB::Events::Indexes']]],

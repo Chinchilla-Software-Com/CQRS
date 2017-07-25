@@ -1,5 +1,10 @@
 \hypertarget{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher}{}\section{Cqrs.\+Event\+Store.\+Bus.\+Event\+Store\+Event\+Publisher$<$ T\+Authentication\+Token $>$ Class Template Reference}
 \label{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher}\index{Cqrs.\+Event\+Store.\+Bus.\+Event\+Store\+Event\+Publisher$<$ T\+Authentication\+Token $>$@{Cqrs.\+Event\+Store.\+Bus.\+Event\+Store\+Event\+Publisher$<$ T\+Authentication\+Token $>$}}
+
+
+A I\+Event\+Publisher$<$\+T\+Authentication\+Token$>$ that uses Greg Young\textquotesingle{}s Event Store.  
+
+
 Inheritance diagram for Cqrs.\+Event\+Store.\+Bus.\+Event\+Store\+Event\+Publisher$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -10,25 +15,35 @@ Inheritance diagram for Cqrs.\+Event\+Store.\+Bus.\+Event\+Store\+Event\+Publish
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a4ca16479fe387fae0135865ae3f889d7_a4ca16479fe387fae0135865ae3f889d7}{Event\+Store\+Event\+Publisher} (\hyperlink{interfaceCqrs_1_1EventStore_1_1IEventStoreConnectionHelper}{I\+Event\+Store\+Connection\+Helper} event\+Store\+Connection\+Helper, \hyperlink{interfaceCqrs_1_1Bus_1_1IStoreLastEventProcessed}{I\+Store\+Last\+Event\+Processed} last\+Event\+Processed\+Store)
-\item 
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a4ca16479fe387fae0135865ae3f889d7_a4ca16479fe387fae0135865ae3f889d7}{Event\+Store\+Event\+Publisher$<$\+T\+Authentication\+Token$>$} \end{DoxyCompactList}\item 
 void \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a1ebb6f08648bdfd5c5bd29fcc12adfea_a1ebb6f08648bdfd5c5bd29fcc12adfea}{Publish$<$ T\+Event $>$} (T\+Event @event)
-\begin{DoxyCompactList}\small\item\em Publishes the provided {\itshape @event}  on the event bus. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Publishes the provided {\itshape event}  on the event bus. \end{DoxyCompactList}\item 
 void \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a85b4922ff01b088b01b39463681c6eb6_a85b4922ff01b088b01b39463681c6eb6}{Publish$<$ T\+Event $>$} (I\+Enumerable$<$ T\+Event $>$ events)
 \begin{DoxyCompactList}\small\item\em Publishes the provided {\itshape events}  on the event bus. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 void \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a145dd61678031747b4c1768e68937181_a145dd61678031747b4c1768e68937181}{Initialise\+Catch\+Up\+Subscription} ()
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Reads the position the store was last within the stream and subscribes requesting all events prior to that position aren\textquotesingle{}t replayed. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
 Dictionary$<$ Type, List$<$ Action$<$ \hyperlink{interfaceCqrs_1_1Messages_1_1IMessage}{I\+Message} $>$ $>$ $>$ \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a89bf01d1921bc517ea8b385c0ee724ee_a89bf01d1921bc517ea8b385c0ee724ee}{Routes}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em The actions to execute per Type \end{DoxyCompactList}\item 
 I\+Event\+Store\+Connection \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a16df48a7203bc3bcde5f5a12f1d47934_a16df48a7203bc3bcde5f5a12f1d47934}{Event\+Store\+Connection}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em The I\+Event\+Store\+Connection used to read and write streams in the Greg Young Event Store. \end{DoxyCompactList}\item 
 \hyperlink{interfaceCqrs_1_1Bus_1_1IStoreLastEventProcessed}{I\+Store\+Last\+Event\+Processed} \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a552a16f86c52837bf81200778e3a9fe4_a552a16f86c52837bf81200778e3a9fe4}{Last\+Event\+Processed\+Store}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em The store that hold stream position information. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A I\+Event\+Publisher$<$\+T\+Authentication\+Token$>$ that uses Greg Young\textquotesingle{}s Event Store. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of the authentication token.\\
+\hline
+\end{DoxyTemplParams}
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -40,12 +55,27 @@ I\+Event\+Store\+Connection \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventSt
 
 
 
+Instantiates a new instance of \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a4ca16479fe387fae0135865ae3f889d7_a4ca16479fe387fae0135865ae3f889d7}{Event\+Store\+Event\+Publisher$<$\+T\+Authentication\+Token$>$} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event\+Store\+Connection\+Helper} & The I\+Event\+Store\+Connection used to read and write streams in the Greg Young Event Store.\\
+\hline
+{\em last\+Event\+Processed\+Store} & The store that hold stream position information.\\
+\hline
+\end{DoxyParams}
+
+
 \subsection{Member Function Documentation}
 \mbox{\Hypertarget{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a145dd61678031747b4c1768e68937181_a145dd61678031747b4c1768e68937181}\label{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a145dd61678031747b4c1768e68937181_a145dd61678031747b4c1768e68937181}} 
 \index{Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher@{Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher}!Initialise\+Catch\+Up\+Subscription@{Initialise\+Catch\+Up\+Subscription}}
 \index{Initialise\+Catch\+Up\+Subscription@{Initialise\+Catch\+Up\+Subscription}!Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher@{Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher}}
 \subsubsection{\texorpdfstring{Initialise\+Catch\+Up\+Subscription()}{InitialiseCatchUpSubscription()}}
 {\footnotesize\ttfamily void \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher}{Cqrs.\+Event\+Store.\+Bus.\+Event\+Store\+Event\+Publisher}$<$ T\+Authentication\+Token $>$.Initialise\+Catch\+Up\+Subscription (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Reads the position the store was last within the stream and subscribes requesting all events prior to that position aren\textquotesingle{}t replayed. 
 
 \mbox{\Hypertarget{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a1ebb6f08648bdfd5c5bd29fcc12adfea_a1ebb6f08648bdfd5c5bd29fcc12adfea}\label{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a1ebb6f08648bdfd5c5bd29fcc12adfea_a1ebb6f08648bdfd5c5bd29fcc12adfea}} 
 \index{Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher@{Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher}!Publish$<$ T\+Event $>$@{Publish$<$ T\+Event $>$}}
@@ -55,7 +85,7 @@ I\+Event\+Store\+Connection \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventSt
 
 
 
-Publishes the provided {\itshape @event}  on the event bus. 
+Publishes the provided {\itshape event}  on the event bus. 
 
 
 
@@ -92,15 +122,27 @@ Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventPublisher_a2cbcc3d2c24d01
 \subsubsection{\texorpdfstring{Event\+Store\+Connection}{EventStoreConnection}}
 {\footnotesize\ttfamily I\+Event\+Store\+Connection \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher}{Cqrs.\+Event\+Store.\+Bus.\+Event\+Store\+Event\+Publisher}$<$ T\+Authentication\+Token $>$.Event\+Store\+Connection\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+The I\+Event\+Store\+Connection used to read and write streams in the Greg Young Event Store. 
+
 \mbox{\Hypertarget{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a552a16f86c52837bf81200778e3a9fe4_a552a16f86c52837bf81200778e3a9fe4}\label{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a552a16f86c52837bf81200778e3a9fe4_a552a16f86c52837bf81200778e3a9fe4}} 
 \index{Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher@{Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher}!Last\+Event\+Processed\+Store@{Last\+Event\+Processed\+Store}}
 \index{Last\+Event\+Processed\+Store@{Last\+Event\+Processed\+Store}!Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher@{Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher}}
 \subsubsection{\texorpdfstring{Last\+Event\+Processed\+Store}{LastEventProcessedStore}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Bus_1_1IStoreLastEventProcessed}{I\+Store\+Last\+Event\+Processed} \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher}{Cqrs.\+Event\+Store.\+Bus.\+Event\+Store\+Event\+Publisher}$<$ T\+Authentication\+Token $>$.Last\+Event\+Processed\+Store\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+The store that hold stream position information. 
+
 \mbox{\Hypertarget{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a89bf01d1921bc517ea8b385c0ee724ee_a89bf01d1921bc517ea8b385c0ee724ee}\label{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a89bf01d1921bc517ea8b385c0ee724ee_a89bf01d1921bc517ea8b385c0ee724ee}} 
 \index{Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher@{Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher}!Routes@{Routes}}
 \index{Routes@{Routes}!Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher@{Cqrs\+::\+Event\+Store\+::\+Bus\+::\+Event\+Store\+Event\+Publisher}}
 \subsubsection{\texorpdfstring{Routes}{Routes}}
 {\footnotesize\ttfamily Dictionary$<$Type, List$<$Action$<$\hyperlink{interfaceCqrs_1_1Messages_1_1IMessage}{I\+Message}$>$ $>$ $>$ \hyperlink{classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher}{Cqrs.\+Event\+Store.\+Bus.\+Event\+Store\+Event\+Publisher}$<$ T\+Authentication\+Token $>$.Routes\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The actions to execute per Type 
 

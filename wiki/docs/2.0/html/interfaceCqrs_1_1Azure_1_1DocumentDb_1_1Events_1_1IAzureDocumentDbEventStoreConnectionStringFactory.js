@@ -1,6 +1,6 @@
 var interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1IAzureDocumentDbEventStoreConnectionStringFactory =
 [
-    [ "GetEventStoreConnectionClient", "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1IAzureDocumentDbEventStoreConnectionStringFactory.html#a2b5e3449d906b74736fee450975ad358", null ],
-    [ "GetEventStoreConnectionCollectionName", "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1IAzureDocumentDbEventStoreConnectionStringFactory.html#a4268ad0884bad88528a5eb10292d9d3b", null ],
-    [ "GetEventStoreConnectionDatabaseName", "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1IAzureDocumentDbEventStoreConnectionStringFactory.html#a826c95e8dab31be9ef97cf3bea92d95d", null ]
+    [ "GetEventStoreConnectionClient", "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1IAzureDocumentDbEventStoreConnectionStringFactory_a2b5e3449d906b74736fee450975ad358.html#a2b5e3449d906b74736fee450975ad358", null ],
+    [ "GetEventStoreConnectionCollectionName", "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1IAzureDocumentDbEventStoreConnectionStringFactory_a4268ad0884bad88528a5eb10292d9d3b.html#a4268ad0884bad88528a5eb10292d9d3b", null ],
+    [ "GetEventStoreConnectionDatabaseName", "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1IAzureDocumentDbEventStoreConnectionStringFactory_a826c95e8dab31be9ef97cf3bea92d95d.html#a826c95e8dab31be9ef97cf3bea92d95d", null ]
 ];

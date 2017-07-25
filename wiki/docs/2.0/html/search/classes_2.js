@@ -14,5 +14,6 @@ var searchData=
   ['converters',['Converters',['../classCqrs_1_1Sql_1_1DataStores_1_1Converters.html',1,'Cqrs::Sql::DataStores']]],
   ['cqrsapicontroller',['CqrsApiController',['../classCqrs_1_1WebApi_1_1CqrsApiController.html',1,'Cqrs::WebApi']]],
   ['cqrseventapicontroller',['CqrsEventApiController',['../classCqrs_1_1WebApi_1_1CqrsEventApiController.html',1,'Cqrs::WebApi']]],
-  ['cqrsmodule',['CqrsModule',['../classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule.html',1,'Cqrs::Ninject::Configuration']]]
+  ['cqrsmodule',['CqrsModule',['../classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule.html',1,'Cqrs::Ninject::Configuration']]],
+  ['cqrswebjobprogram',['CqrsWebJobProgram',['../classCqrsWebJobProgram.html',1,'']]]
 ];

@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryLo">25.0 %</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryLo">12.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -120,7 +120,7 @@
 <span class="lineNum">      62 </span>            :                         // ReSharper restore DoNotCallOverridableMethodsInConstructor
 <span class="lineNum">      63 </span>            :                 }
 <span class="lineNum">      64 </span>            : 
-<span class="lineNum">      65 </span>            :                 protected virtual IMongoCollection&lt;MongoDbEventData&gt; GetCollection()
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :                 protected virtual IMongoCollection&lt;MongoDbEventData&gt; GetCollection()</span>
 <span class="lineNum">      66 </span>            :                 {
 <span class="lineNum">      67 </span>            :                         var mongoClient = new MongoClient(MongoDbEventStoreConnectionStringFactory.GetEventStoreConnectionString());
 <span class="lineNum">      68 </span>            :                         IMongoDatabase mongoDatabase = mongoClient.GetDatabase(MongoDbEventStoreConnectionStringFactory.GetEventStoreDatabaseName());
@@ -128,7 +128,7 @@
 <span class="lineNum">      70 </span>            :                         return mongoDatabase.GetCollection&lt;MongoDbEventData&gt;(MongoDbEventStoreConnectionStringFactory.GetEventStoreDatabaseName());
 <span class="lineNum">      71 </span>            :                 }
 <span class="lineNum">      72 </span>            : 
-<span class="lineNum">      73 </span>            :                 protected virtual void VerifyIndexes()
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :                 protected virtual void VerifyIndexes()</span>
 <span class="lineNum">      74 </span>            :                 {
 <span class="lineNum">      75 </span>            :                         VerifyIndex(new ByCorrelationIdMongoDbIndex());
 <span class="lineNum">      76 </span>            :                         VerifyIndex(new ByAggregateIdAndVersionMongoDbIndex());
@@ -136,7 +136,7 @@
 <span class="lineNum">      78 </span>            :                         VerifyIndex(new ByTimestampAndEventTypeMongoDbIndex());
 <span class="lineNum">      79 </span>            :                 }
 <span class="lineNum">      80 </span>            : 
-<span class="lineNum">      81 </span>            :                 protected virtual void VerifyIndex(MongoDbIndex&lt;MongoDbEventData&gt; mongoIndex)
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :                 protected virtual void VerifyIndex(MongoDbIndex&lt;MongoDbEventData&gt; mongoIndex)</span>
 <span class="lineNum">      82 </span>            :                 {
 <span class="lineNum">      83 </span>            :                         IndexKeysDefinitionBuilder&lt;MongoDbEventData&gt; indexKeysBuilder = Builders&lt;MongoDbEventData&gt;.IndexKeys;
 <span class="lineNum">      84 </span>            :                         IndexKeysDefinition&lt;MongoDbEventData&gt; indexKey = null;
@@ -201,7 +201,7 @@
 <span class="lineNum">     143 </span>            :                         return query.ToList();
 <span class="lineNum">     144 </span>            :                 }
 <span class="lineNum">     145 </span>            : 
-<span class="lineNum">     146 </span>            :                 protected override void PersistEvent(EventData eventData)
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :                 protected override void PersistEvent(EventData eventData)</span>
 <span class="lineNum">     147 </span>            :                 {
 <span class="lineNum">     148 </span>            :                         var safeEventData = eventData as MongoDbEventData;
 <span class="lineNum">     149 </span>            :                         if (safeEventData == null)

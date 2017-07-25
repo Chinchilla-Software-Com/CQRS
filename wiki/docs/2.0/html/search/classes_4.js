@@ -14,7 +14,7 @@ var searchData=
   ['eventfactory',['EventFactory',['../classCqrs_1_1EventStore_1_1EventFactory.html',1,'Cqrs::EventStore']]],
   ['eventservice',['EventService',['../classCqrs_1_1Services_1_1EventService.html',1,'Cqrs::Services']]],
   ['eventsoutoforderexception',['EventsOutOfOrderException',['../classCqrs_1_1Domain_1_1Exceptions_1_1EventsOutOfOrderException.html',1,'Cqrs::Domain::Exceptions']]],
-  ['eventstore',['EventStore',['../classCqrs_1_1EventStore_1_1EventStore.html',1,'Cqrs.EventStore.EventStore&lt; TAuthenticationToken &gt;'],['../classCqrs_1_1Events_1_1EventStore.html',1,'Cqrs.Events.EventStore&lt; TAuthenticationToken &gt;']]],
+  ['eventstore',['EventStore',['../classCqrs_1_1Events_1_1EventStore.html',1,'Cqrs.Events.EventStore&lt; TAuthenticationToken &gt;'],['../classCqrs_1_1EventStore_1_1EventStore.html',1,'Cqrs.EventStore.EventStore&lt; TAuthenticationToken &gt;']]],
   ['eventstorebasedlasteventprocessedstore',['EventStoreBasedLastEventProcessedStore',['../classCqrs_1_1EventStore_1_1Bus_1_1EventStoreBasedLastEventProcessedStore.html',1,'Cqrs::EventStore::Bus']]],
   ['eventstoreconnectionhelper',['EventStoreConnectionHelper',['../classCqrs_1_1EventStore_1_1EventStoreConnectionHelper.html',1,'Cqrs::EventStore']]],
   ['eventstoreeventpublisher',['EventStoreEventPublisher',['../classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher.html',1,'Cqrs::EventStore::Bus']]],

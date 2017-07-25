@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryLo">66.7 %</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -79,7 +79,7 @@
 <span class="lineNum">      21 </span>            : namespace Cqrs.Azure.ServiceBus
 <span class="lineNum">      22 </span>            : {
 <span class="lineNum">      23 </span>            :         public class AzureEventBusPublisher&lt;TAuthenticationToken&gt; : AzureEventBus&lt;TAuthenticationToken&gt;, IEventPublisher&lt;TAuthenticationToken&gt;
-<span class="lineNum">      24 </span>            :         {
+<span class="lineNum">      24 </span><span class="lineNoCov">          0 :         {</span>
 <span class="lineNum">      25 </span><span class="lineNoCov">          0 :                 public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper, IBusHelper busHelper)</span>
 <span class="lineNum">      26 </span>            :                         : base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
 <span class="lineNum">      27 </span>            :                 {
@@ -88,7 +88,7 @@
 <span class="lineNum">      30 </span>            : 
 <span class="lineNum">      31 </span>            :                 #region Implementation of IEventPublisher&lt;TAuthenticationToken&gt;
 <span class="lineNum">      32 </span>            : 
-<span class="lineNum">      33 </span><span class="lineCov">          1 :                 public virtual void Publish&lt;TEvent&gt;(TEvent @event)</span>
+<span class="lineNum">      33 </span><span class="lineCov">          2 :                 public virtual void Publish&lt;TEvent&gt;(TEvent @event)</span>
 <span class="lineNum">      34 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
 <span class="lineNum">      35 </span>            :                 {
 <span class="lineNum">      36 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
@@ -228,7 +228,7 @@
 <span class="lineNum">     170 </span>            :                         }
 <span class="lineNum">     171 </span>            :                 }
 <span class="lineNum">     172 </span>            : 
-<span class="lineNum">     173 </span><span class="lineCov">          1 :                 public virtual void Publish&lt;TEvent&gt;(IEnumerable&lt;TEvent&gt; events)</span>
+<span class="lineNum">     173 </span><span class="lineCov">          2 :                 public virtual void Publish&lt;TEvent&gt;(IEnumerable&lt;TEvent&gt; events)</span>
 <span class="lineNum">     174 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
 <span class="lineNum">     175 </span>            :                 {
 <span class="lineNum">     176 </span>            :                         IList&lt;TEvent&gt; sourceEvents = events.ToList();

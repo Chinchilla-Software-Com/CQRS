@@ -17,15 +17,15 @@ Inheritance diagram for Cqrs.\+Events.\+In\+Process\+Event\+Store$<$ T\+Authenti
 \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a81534fc0086e307f46051c26111c47ab_a81534fc0086e307f46051c26111c47ab}{In\+Process\+Event\+Store} ()
 \begin{DoxyCompactList}\small\item\em Instantiate a new instance of the \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a81534fc0086e307f46051c26111c47ab_a81534fc0086e307f46051c26111c47ab}{In\+Process\+Event\+Store$<$\+T\+Authentication\+Token$>$} class. \end{DoxyCompactList}\item 
 void \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a93e6d7dc5b81ffba6a89cf22b273d0c9_a93e6d7dc5b81ffba6a89cf22b273d0c9}{Save} (Type aggregate\+Root\+Type, \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @event)
-\item 
+\begin{DoxyCompactList}\small\item\em Saves the provided {\itshape event} . \end{DoxyCompactList}\item 
 I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a425206c170ac3d000652dfdab181b340_a425206c170ac3d000652dfdab181b340}{Get$<$ T $>$} (Guid aggregate\+Id, bool use\+Last\+Event\+Only=false, int from\+Version=-\/1)
-\item 
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id} . \end{DoxyCompactList}\item 
 I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_ac588cacc020921c5120b290b95c641e7_ac588cacc020921c5120b290b95c641e7}{Get} (Type aggregate\+Type, Guid aggregate\+Id, bool use\+Last\+Event\+Only=false, int from\+Version=-\/1)
-\item 
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id} . \end{DoxyCompactList}\item 
 I\+Enumerable$<$ \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} $>$ \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_aeff2bd8064eb4a1501d723e2aa9f8cfd_aeff2bd8064eb4a1501d723e2aa9f8cfd}{Get} (Guid correlation\+Id)
-\item 
+\begin{DoxyCompactList}\small\item\em Get all I\+Event$<$\+T\+Authentication\+Token$>$ instances for the given {\itshape correlation\+Id} . \end{DoxyCompactList}\item 
 void \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_ace191a5083a6ddd308dbbc302dc5bd8e_ace191a5083a6ddd308dbbc302dc5bd8e}{Save$<$ T $>$} (\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @event)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Saves the provided {\itshape event} . \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
@@ -61,8 +61,23 @@ Instantiate a new instance of the \hyperlink{classCqrs_1_1Events_1_1InProcessEve
 \index{Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store@{Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store}!Get@{Get}}
 \index{Get@{Get}!Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store@{Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store}}
 \subsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore}{Cqrs.\+Events.\+In\+Process\+Event\+Store}$<$ T\+Authentication\+Token $>$.Get (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{bool}]{use\+Last\+Event\+Only = {\ttfamily false},  }\item[{int}]{from\+Version = {\ttfamily -\/1} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore}{Cqrs.\+Events.\+In\+Process\+Event\+Store}$<$ T\+Authentication\+Token $>$.Get (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{bool}]{use\+Last\+Event\+Only = {\ttfamily false},  }\item[{int}]{from\+Version = {\ttfamily -\/1} }\end{DoxyParamCaption})}
 
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em use\+Last\+Event\+Only} & Loads only the last eventI\+Event$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em from\+Version} & Load events starting from this version\\
+\hline
+\end{DoxyParams}
 
 
 Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_ae02ef6c804d0c4a92705a447bc4b2214_ae02ef6c804d0c4a92705a447bc4b2214}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}.
@@ -75,6 +90,15 @@ Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_ae02ef6c804d0c4a927
 
 
 
+Get all I\+Event$<$\+T\+Authentication\+Token$>$ instances for the given {\itshape correlation\+Id} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em correlation\+Id} & The I\+Message.\+Correlation\+Id of the I\+Event$<$\+T\+Authentication\+Token$>$ instances to retrieve.\\
+\hline
+\end{DoxyParams}
+
+
 Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_af398bb6768fa661ad97a9fa9ecfbd9fb_af398bb6768fa661ad97a9fa9ecfbd9fb}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}.
 
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1InProcessEventStore_a425206c170ac3d000652dfdab181b340_a425206c170ac3d000652dfdab181b340}\label{classCqrs_1_1Events_1_1InProcessEventStore_a425206c170ac3d000652dfdab181b340_a425206c170ac3d000652dfdab181b340}} 
@@ -83,6 +107,24 @@ Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_af398bb6768fa661ad9
 \subsubsection{\texorpdfstring{Get$<$ T $>$()}{Get< T >()}}
 {\footnotesize\ttfamily I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore}{Cqrs.\+Events.\+In\+Process\+Event\+Store}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_ac588cacc020921c5120b290b95c641e7_ac588cacc020921c5120b290b95c641e7}{Get}$<$ T $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{bool}]{use\+Last\+Event\+Only = {\ttfamily false},  }\item[{int}]{from\+Version = {\ttfamily -\/1} }\end{DoxyParamCaption})}
 
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em use\+Last\+Event\+Only} & Loads only the last eventI\+Event$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em from\+Version} & Load events starting from this version\\
+\hline
+\end{DoxyParams}
 
 
 Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_add6227e2978ff8656aad79b1a51bf34c_add6227e2978ff8656aad79b1a51bf34c}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}.
@@ -95,6 +137,17 @@ Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_add6227e2978ff8656a
 
 
 
+Saves the provided {\itshape event} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em event} & The I\+Event$<$\+T\+Authentication\+Token$>$ to be saved.\\
+\hline
+\end{DoxyParams}
+
+
 Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a81fb586703e7c6dea6b23d9a95f3887a_a81fb586703e7c6dea6b23d9a95f3887a}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}.
 
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1InProcessEventStore_ace191a5083a6ddd308dbbc302dc5bd8e_ace191a5083a6ddd308dbbc302dc5bd8e}\label{classCqrs_1_1Events_1_1InProcessEventStore_ace191a5083a6ddd308dbbc302dc5bd8e_ace191a5083a6ddd308dbbc302dc5bd8e}} 
@@ -103,6 +156,20 @@ Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a81fb586703e7c6dea6
 \subsubsection{\texorpdfstring{Save$<$ T $>$()}{Save< T >()}}
 {\footnotesize\ttfamily void \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore}{Cqrs.\+Events.\+In\+Process\+Event\+Store}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a93e6d7dc5b81ffba6a89cf22b273d0c9_a93e6d7dc5b81ffba6a89cf22b273d0c9}{Save}$<$ T $>$ (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @}]{event }\end{DoxyParamCaption})}
 
+
+
+Saves the provided {\itshape event} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The I\+Event$<$\+T\+Authentication\+Token$>$ to be saved.\\
+\hline
+\end{DoxyParams}
 
 
 Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a92e768243d6602d09b786bbd06811ce6_a92e768243d6602d09b786bbd06811ce6}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}.

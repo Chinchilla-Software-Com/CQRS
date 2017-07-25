@@ -1,5 +1,8 @@
 var NAVTREEINDEX7 =
 {
+"classCqrs_1_1Repositories_1_1Queries_1_1OrQueryPredicate_afd9d98db1920b798bded515a27f0eeb6.html#afd9d98db1920b798bded515a27f0eeb6":[1,0,0,17,0,13,0],
+"classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder.html":[1,0,0,17,0,14],
+"classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder_a0228422245afb7fe388114236bb1aefa.html#a0228422245afb7fe388114236bb1aefa":[1,0,0,17,0,14,17],
 "classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder_a027cb88563991a842002c219d7589426.html#a027cb88563991a842002c219d7589426":[1,0,0,17,0,14,10],
 "classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder_a09b5db1f6e86d02c04f132080e88aa38.html#a09b5db1f6e86d02c04f132080e88aa38":[1,0,0,17,0,14,18],
 "classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder_a1f036fd121ef5181f846e6da72dddbad.html#a1f036fd121ef5181f846e6da72dddbad":[1,0,0,17,0,14,21],
@@ -246,8 +249,5 @@ var NAVTREEINDEX7 =
 "classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga_a33c41340c5049e3e9a1be0c3eb3ae8c1.html#a33c41340c5049e3e9a1be0c3eb3ae8c1":[1,0,0,21,3,0,0,1],
 "classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga_a9be27ce999d88a72caa898836e3670e5.html#a9be27ce999d88a72caa898836e3670e5":[1,0,0,21,3,0,0,4],
 "classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga_aadae2b84d67626fc8740e74a89617250.html#aadae2b84d67626fc8740e74a89617250":[1,0,0,21,3,0,0,3],
-"classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga_ab99df993d199a3cebe52c546bbb39bf0.html#ab99df993d199a3cebe52c546bbb39bf0":[1,0,0,21,3,0,0,10],
-"classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga_ac3706bb8233efa4d428ab3f282c1d61d.html#ac3706bb8233efa4d428ab3f282c1d61d":[1,0,0,21,3,0,0,6],
-"classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga_ad01cf3fdca0367e26a5529c1158f8b41.html#ad01cf3fdca0367e26a5529c1158f8b41":[1,0,0,21,3,0,0,0],
-"classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga_afb09f2b59a54e698723fce8d1171c6c7.html#afb09f2b59a54e698723fce8d1171c6c7":[1,0,0,21,3,0,0,2]
+"classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga_ab99df993d199a3cebe52c546bbb39bf0.html#ab99df993d199a3cebe52c546bbb39bf0":[1,0,0,21,3,0,0,10]
 };

@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntryLo">40.0 %</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryLo">20.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -85,7 +85,7 @@
 <span class="lineNum">      27 </span>            :                 : AzureEventBus&lt;TAuthenticationToken&gt;
 <span class="lineNum">      28 </span>            :                 , IEventHandlerRegistrar
 <span class="lineNum">      29 </span>            :                 , IEventReceiver&lt;TAuthenticationToken&gt;
-<span class="lineNum">      30 </span>            :         {
+<span class="lineNum">      30 </span><span class="lineNoCov">          0 :         {</span>
 <span class="lineNum">      31 </span>            :                 protected virtual string NumberOfReceiversCountConfigurationKey
 <span class="lineNum">      32 </span>            :                 {
 <span class="lineNum">      33 </span>            :                         get { return &quot;Cqrs.Azure.EventBus.NumberOfReceiversCount&quot;; }
@@ -138,7 +138,7 @@
 <span class="lineNum">      80 </span>            : 
 <span class="lineNum">      81 </span>            :                 #region Overrides of AzureServiceBus&lt;TAuthenticationToken&gt;
 <span class="lineNum">      82 </span>            : 
-<span class="lineNum">      83 </span>            :                 protected override void InstantiateReceiving(NamespaceManager namespaceManager, IDictionary&lt;int, SubscriptionClient&gt; serviceBusReceivers, string topicName, string topicSubscriptionName)
+<span class="lineNum">      83 </span><span class="lineNoCov">          0 :                 protected override void InstantiateReceiving(NamespaceManager namespaceManager, IDictionary&lt;int, SubscriptionClient&gt; serviceBusReceivers, string topicName, string topicSubscriptionName)</span>
 <span class="lineNum">      84 </span>            :                 {
 <span class="lineNum">      85 </span>            :                         base.InstantiateReceiving(namespaceManager, serviceBusReceivers, topicName, topicSubscriptionName);
 <span class="lineNum">      86 </span>            : 
@@ -236,7 +236,7 @@
 <span class="lineNum">     178 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     179 </span>            :                 /// Register an event or command handler that will listen and respond to events or commands.
 <span class="lineNum">     180 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     181 </span><span class="lineCov">          1 :                 public virtual void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
+<span class="lineNum">     181 </span><span class="lineCov">          2 :                 public virtual void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
 <span class="lineNum">     182 </span>            :                         where TMessage : IMessage
 <span class="lineNum">     183 </span>            :                 {
 <span class="lineNum">     184 </span>            :                         AzureBusHelper.RegisterHandler(TelemetryHelper, Routes, handler, targetedType, holdMessageLock);
@@ -245,13 +245,13 @@
 <span class="lineNum">     187 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     188 </span>            :                 /// Register an event or command handler that will listen and respond to events or commands.
 <span class="lineNum">     189 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     190 </span><span class="lineCov">          1 :                 public void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = false)</span>
+<span class="lineNum">     190 </span><span class="lineCov">          2 :                 public void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = false)</span>
 <span class="lineNum">     191 </span>            :                         where TMessage : IMessage
 <span class="lineNum">     192 </span>            :                 {
 <span class="lineNum">     193 </span>            :                         RegisterHandler(handler, null, holdMessageLock);
 <span class="lineNum">     194 </span>            :                 }
 <span class="lineNum">     195 </span>            : 
-<span class="lineNum">     196 </span>            :                 protected virtual void ReceiveEvent(BrokeredMessage message)
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :                 protected virtual void ReceiveEvent(BrokeredMessage message)</span>
 <span class="lineNum">     197 </span>            :                 {
 <span class="lineNum">     198 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 <span class="lineNum">     199 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
@@ -393,7 +393,7 @@
 <span class="lineNum">     335 </span>            : 
 <span class="lineNum">     336 </span>            :                 #region Overrides of AzureServiceBus&lt;TAuthenticationToken&gt;
 <span class="lineNum">     337 </span>            : 
-<span class="lineNum">     338 </span>            :                 protected override int GetCurrentNumberOfReceiversCount()
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :                 protected override int GetCurrentNumberOfReceiversCount()</span>
 <span class="lineNum">     339 </span>            :                 {
 <span class="lineNum">     340 </span>            :                         string numberOfReceiversCountValue;
 <span class="lineNum">     341 </span>            :                         int numberOfReceiversCount;
@@ -407,7 +407,7 @@
 <span class="lineNum">     349 </span>            :                         return numberOfReceiversCount;
 <span class="lineNum">     350 </span>            :                 }
 <span class="lineNum">     351 </span>            : 
-<span class="lineNum">     352 </span>            :                 protected override int GetCurrentMaximumConcurrentReceiverProcessesCount()
+<span class="lineNum">     352 </span><span class="lineNoCov">          0 :                 protected override int GetCurrentMaximumConcurrentReceiverProcessesCount()</span>
 <span class="lineNum">     353 </span>            :                 {
 <span class="lineNum">     354 </span>            :                         string maximumConcurrentReceiverProcessesCountValue;
 <span class="lineNum">     355 </span>            :                         int maximumConcurrentReceiverProcessesCount;

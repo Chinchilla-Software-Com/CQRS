@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntry">11</td>
-            <td class="headerCovTableEntryLo">18.2 %</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryLo">16.7 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -88,7 +88,7 @@
 <span class="lineNum">      30 </span>            : namespace Cqrs.Azure.ServiceBus
 <span class="lineNum">      31 </span>            : {
 <span class="lineNum">      32 </span>            :         public class AzureBusHelper&lt;TAuthenticationToken&gt; : IAzureBusHelper&lt;TAuthenticationToken&gt;
-<span class="lineNum">      33 </span>            :         {
+<span class="lineNum">      33 </span><span class="lineNoCov">          0 :         {</span>
 <span class="lineNum">      34 </span><span class="lineNoCov">          0 :                 public AzureBusHelper(IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IBusHelper busHelper, IConfigurationManager configurationManager, IDependencyResolver dependencyResolver)</span>
 <span class="lineNum">      35 </span>            :                 {
 <span class="lineNum">      36 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
@@ -238,7 +238,7 @@
 <span class="lineNum">     180 </span>            :                 /// False indicates the &lt;paramref name=&quot;command&quot;/&gt; wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
 <span class="lineNum">     181 </span>            :                 /// Null indicates the command&lt;paramref name=&quot;command&quot;/&gt; wasn't handled as it was already handled.
 <span class="lineNum">     182 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">     183 </span><span class="lineCov">          1 :                 public virtual bool? DefaultReceiveCommand(ICommand&lt;TAuthenticationToken&gt; command, RouteManager routeManager, string framework)</span>
+<span class="lineNum">     183 </span><span class="lineCov">          2 :                 public virtual bool? DefaultReceiveCommand(ICommand&lt;TAuthenticationToken&gt; command, RouteManager routeManager, string framework)</span>
 <span class="lineNum">     184 </span>            :                 {
 <span class="lineNum">     185 </span>            :                         Type commandType = command.GetType();
 <span class="lineNum">     186 </span>            : 
@@ -459,7 +459,7 @@
 <span class="lineNum">     401 </span>            :                 /// False indicates the &lt;paramref name=&quot;event&quot;/&gt; wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
 <span class="lineNum">     402 </span>            :                 /// Null indicates the &lt;paramref name=&quot;event&quot;/&gt; wasn't handled as it was already handled.
 <span class="lineNum">     403 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">     404 </span><span class="lineCov">          1 :                 public virtual bool? DefaultReceiveEvent(IEvent&lt;TAuthenticationToken&gt; @event, RouteManager routeManager, string framework)</span>
+<span class="lineNum">     404 </span><span class="lineCov">          2 :                 public virtual bool? DefaultReceiveEvent(IEvent&lt;TAuthenticationToken&gt; @event, RouteManager routeManager, string framework)</span>
 <span class="lineNum">     405 </span>            :                 {
 <span class="lineNum">     406 </span>            :                         Type eventType = @event.GetType();
 <span class="lineNum">     407 </span>            : 

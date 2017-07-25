@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">50.0 %</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryLo">25.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-25</td>
+            <td class="headerValue">2017-07-26</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -93,7 +93,7 @@
 <span class="lineNum">      35 </span>            : 
 <span class="lineNum">      36 </span>            :                 #region Overrides of BusRegistrar
 <span class="lineNum">      37 </span>            : 
-<span class="lineNum">      38 </span>            :                 protected override HandlerDelegate BuildDelegateAction(Type executorType, Func&lt;Type, IEnumerable&lt;Type&gt;&gt; resolveMessageHandlerInterface)
+<span class="lineNum">      38 </span><span class="lineNoCov">          0 :                 protected override HandlerDelegate BuildDelegateAction(Type executorType, Func&lt;Type, IEnumerable&lt;Type&gt;&gt; resolveMessageHandlerInterface)</span>
 <span class="lineNum">      39 </span>            :                 {
 <span class="lineNum">      40 </span>            :                         Type targetedType = executorType;
 <span class="lineNum">      41 </span>            :                         Type @interface = resolveMessageHandlerInterface(executorType).FirstOrDefault();
@@ -134,7 +134,7 @@
 <span class="lineNum">      76 </span>            :                         return new HandlerDelegate { Delegate = handlerDelegate, TargetedType = targetedType };
 <span class="lineNum">      77 </span>            :                 }
 <span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span>            :                 protected override void InvokeHandlerDelegate(MethodInfo registerExecutorMethod, bool trueForEventsFalseForCommands, HandlerDelegate handlerDelegate)
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :                 protected override void InvokeHandlerDelegate(MethodInfo registerExecutorMethod, bool trueForEventsFalseForCommands, HandlerDelegate handlerDelegate)</span>
 <span class="lineNum">      80 </span>            :                 {
 <span class="lineNum">      81 </span>            :                         base.InvokeHandlerDelegate(registerExecutorMethod, trueForEventsFalseForCommands, handlerDelegate);
 <span class="lineNum">      82 </span>            :                         registerExecutorMethod.Invoke(DependencyResolver.Resolve&lt;IAkkaEventPublisher&lt;TAuthenticationToken&gt;&gt;(), new object[] { handlerDelegate.Delegate, handlerDelegate.TargetedType });

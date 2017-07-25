@@ -17,9 +17,9 @@ class \hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventSto
 \hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_af9497418dd323ce2a9d8615ebc7da054_af9497418dd323ce2a9d8615ebc7da054}{Table\+Storage\+Event\+Store} (\hyperlink{interfaceCqrs_1_1Events_1_1IEventBuilder}{I\+Event\+Builder}$<$ T\+Authentication\+Token $>$ event\+Builder, \hyperlink{interfaceCqrs_1_1Events_1_1IEventDeserialiser}{I\+Event\+Deserialiser}$<$ T\+Authentication\+Token $>$ event\+Deserialiser, I\+Logger logger, \hyperlink{interfaceCqrs_1_1Azure_1_1BlobStorage_1_1ITableStorageStoreConnectionStringFactory}{I\+Table\+Storage\+Store\+Connection\+String\+Factory} table\+Storage\+Event\+Store\+Connection\+String\+Factory)
 \begin{DoxyCompactList}\small\item\em Initializes a new instance of the \hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_af9497418dd323ce2a9d8615ebc7da054_af9497418dd323ce2a9d8615ebc7da054}{Table\+Storage\+Event\+Store$<$\+T\+Authentication\+Token$>$} class using the specified container. \end{DoxyCompactList}\item 
 override I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a089514182da7a70f35f9237c521c49f0_a089514182da7a70f35f9237c521c49f0}{Get} (Type aggregate\+Root\+Type, Guid aggregate\+Id, bool use\+Last\+Event\+Only=false, int from\+Version=-\/1)
-\item 
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id} . \end{DoxyCompactList}\item 
 override I\+Enumerable$<$ \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} $>$ \hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a1b436bbb111b14b85ee6ba7f90fb1a35_a1b436bbb111b14b85ee6ba7f90fb1a35}{Get} (Guid correlation\+Id)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get all I\+Event$<$\+T\+Authentication\+Token$>$ instances for the given {\itshape correlation\+Id} . \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
 
@@ -45,6 +45,21 @@ Initializes a new instance of the \hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Ev
 
 
 
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em use\+Last\+Event\+Only} & Loads only the last eventI\+Event$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em from\+Version} & Load events starting from this version\\
+\hline
+\end{DoxyParams}
+
+
 Reimplemented from \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a420c94c86d8d1c2959aee8602f43c0c0_a420c94c86d8d1c2959aee8602f43c0c0}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}.
 
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a1b436bbb111b14b85ee6ba7f90fb1a35_a1b436bbb111b14b85ee6ba7f90fb1a35}\label{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a1b436bbb111b14b85ee6ba7f90fb1a35_a1b436bbb111b14b85ee6ba7f90fb1a35}} 
@@ -53,6 +68,15 @@ Reimplemented from \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1Tab
 \subsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily override I\+Enumerable$<$\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}$>$ \hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore}{Cqrs.\+Azure.\+Storage.\+Events.\+Table\+Storage\+Event\+Store}$<$ T\+Authentication\+Token $>$.Get (\begin{DoxyParamCaption}\item[{Guid}]{correlation\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
+
+
+Get all I\+Event$<$\+T\+Authentication\+Token$>$ instances for the given {\itshape correlation\+Id} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em correlation\+Id} & The I\+Message.\+Correlation\+Id of the I\+Event$<$\+T\+Authentication\+Token$>$ instances to retrieve.\\
+\hline
+\end{DoxyParams}
 
 
 Reimplemented from \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a9b952a9257dc6f458b98eba87684412e_a9b952a9257dc6f458b98eba87684412e}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}.
