@@ -11,9 +11,13 @@ using Akka.Actor;
 using Cqrs.Akka.Domain;
 using Cqrs.Akka.Tests.Unit.Aggregates;
 using Cqrs.Commands;
+using Cqrs.Domain;
 
 namespace Cqrs.Akka.Tests.Unit.Commands.Handlers
 {
+	/// <summary>
+	/// Handles the <see cref="ReplyToHelloWorldCommand"/>.
+	/// </summary>
 	public class ReplyToHelloWorldCommandHandler
 		: ICommandHandler<Guid, ReplyToHelloWorldCommand>
 	{
@@ -25,10 +29,17 @@ namespace Cqrs.Akka.Tests.Unit.Commands.Handlers
 			AggregateResolver = aggregateResolver;
 		}
 
+		/// <summary>
+		/// Resolves Akka.Net actor based <see cref="IAggregateRoot{TAuthenticationToken}"/>
+		/// </summary>
 		protected IAkkaAggregateResolver AggregateResolver { get; private set; }
 
 		#region Implementation of IMessageHandler<in ReplyToHelloWorldCommand>
 
+		/// <summary>
+		/// Responds to the provided <paramref name="command"/>.
+		/// </summary>
+		/// <param name="command">The <see cref="ReplyToHelloWorldCommand"/> to respond to or "handle"</param>
 		public void Handle(ReplyToHelloWorldCommand command)
 		{
 			IActorRef item = AggregateResolver.ResolveActor<HelloWorld, Guid>(command.Id);

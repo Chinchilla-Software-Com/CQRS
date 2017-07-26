@@ -33,6 +33,10 @@ namespace Cqrs.Authentication
 		[DataMember]
 		public Guid UserRsn { get; set; }
 
+		/// <summary>
+		/// Returns <see cref="CompanyRsn"/> and <see cref="UserRsn"/>.
+		/// </summary>
+		/// <returns><see cref="CompanyRsn"/> and <see cref="UserRsn"/>.</returns>
 		public override string Serialise()
 		{
 			return string.Format("{0:N}/{1:N}", CompanyRsn, UserRsn);

@@ -92,6 +92,9 @@ $(document).ready(function(){initNavTree('interfaceCqrs_1_1Commands_1_1ICommandH
 <div class="title">Cqrs.Commands.ICommandHandle Interface Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>An ICommandHandler&lt;TAuthenticationToken,TCommand&gt; receives an ICommand&lt;TAuthenticationToken&gt; and brokers a result from the appropriate IAggregateRoot&lt;TAuthenticationToken&gt;. "A result" is either a successful application of the command, or an exception. This is the common sequence of steps an ICommandHandler&lt;TAuthenticationToken,TCommand&gt; might follow:  
+ <a href="interfaceCqrs_1_1Commands_1_1ICommandHandle.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for Cqrs.Commands.ICommandHandle:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -100,11 +103,28 @@ $(document).ready(function(){initNavTree('interfaceCqrs_1_1Commands_1_1ICommandH
  <div class="center">
   <img src="interfaceCqrs_1_1Commands_1_1ICommandHandle.png" usemap="#Cqrs.Commands.ICommandHandle_map" alt=""/>
   <map id="Cqrs.Commands.ICommandHandle_map" name="Cqrs.Commands.ICommandHandle_map">
-<area href="interfaceCqrs_1_1Messages_1_1IHandler.html" alt="Cqrs.Messages.IHandler" shape="rect" coords="0,0,456,24"/>
+<area href="interfaceCqrs_1_1Messages_1_1IHandler.html" title="Responds to or &quot;Handles&quot; things. " alt="Cqrs.Messages.IHandler" shape="rect" coords="0,0,456,24"/>
 <area href="interfaceCqrs_1_1Commands_1_1ICommandHandler.html" title="An ICommandHandler&lt;TAuthenticationToken,TCommand&gt; receives an ICommand&lt;TAuthenticationToken&gt; and brok..." alt="Cqrs.Commands.ICommandHandler&lt; TAuthenticationToken, in in TCommand &gt;" shape="rect" coords="0,112,456,136"/>
 </map>
  </div></div>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>An ICommandHandler&lt;TAuthenticationToken,TCommand&gt; receives an ICommand&lt;TAuthenticationToken&gt; and brokers a result from the appropriate IAggregateRoot&lt;TAuthenticationToken&gt;. "A result" is either a successful application of the command, or an exception. This is the common sequence of steps an ICommandHandler&lt;TAuthenticationToken,TCommand&gt; might follow: </p>
+<p>Validate the ICommand&lt;TAuthenticationToken&gt; on its own merits. Ask an IAggregateRoot&lt;TAuthenticationToken&gt; to handle the ICommand&lt;TAuthenticationToken&gt;. If validation is successful, 0..n IEvent&lt;TAuthenticationToken&gt; artefacts (1 is common) are queued for publishing. Attempt to persist the new IEvent&lt;TAuthenticationToken&gt; artefacts. If there's a concurrency conflict during this step, either give up, or retry things. Dispatch the queued IEvent&lt;TAuthenticationToken&gt; artefacts. </p>
+<p>Should a ICommandHandler&lt;TAuthenticationToken,TCommand&gt; affect one or several IAggregateRoot&lt;TAuthenticationToken&gt;s?</p>
+<p>Only one.</p>
+<p>Do I put logic in ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</p>
+<p>Yes. Exactly what logic depends on your factoring. The logic for validating the ICommand&lt;TAuthenticationToken&gt; on its own merits always gets executed in the ICommandHandler&lt;TAuthenticationToken,TCommand&gt;, although we recommend refactoring these into an ICommandValidator&lt;TAuthenticationToken,TCommand&gt;. Provided validation is successful we recommend a more functional factoring, where the IAggregateRoot&lt;TAuthenticationToken&gt; exists independently of the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; and the next step would be to load the IAggregateRoot&lt;TAuthenticationToken&gt; from the IUnitOfWork&lt;TAuthenticationToken&gt; and request the IAggregateRoot&lt;TAuthenticationToken&gt; handle the ICommand&lt;TAuthenticationToken&gt; itself. The IUnitOfWork&lt;TAuthenticationToken&gt; should then have uncommitted IEvent&lt;TAuthenticationToken&gt; artefacts as a results of asking the IAggregateRoot&lt;TAuthenticationToken&gt; to handle the ICommand&lt;TAuthenticationToken&gt;. Finally the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; should instruct the IUnitOfWork&lt;TAuthenticationToken&gt; to IUnitOfWork&lt;TAuthenticationToken&gt;.Commit all uncommited IEvent&lt;TAuthenticationToken&gt; artefacts.</p>
+<p>However you have it, the logic boils down to validation and some sequence of steps that lead to the ICommand&lt;TAuthenticationToken&gt; becoming an Exception or IEvent&lt;TAuthenticationToken&gt;(s). If you're tempted to go beyond this, see the rest of the remarks.</p>
+<p>Can I call a read side (such as a read store, data store or IAggregateRepository&lt;TAuthenticationToken&gt;) from my ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</p>
+<p>No.</p>
+<p>Can I do logging, security, or auditing in my ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</p>
+<p>Yes. The decorator pattern comes in handy here to separate those concerns neatly.</p>
+<p>How are conflicts between concurrent ICommand&lt;TAuthenticationToken&gt;s handled in the ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</p>
+<p>The place where the new IEvent&lt;TAuthenticationToken&gt; artefacts for the IAggregateRoot&lt;TAuthenticationToken&gt; are persisted is the only place in the system where we need to worry about concurrency conflicts. The IEventStore&lt;TAuthenticationToken&gt; knows the sequence number of the latest IEvent&lt;TAuthenticationToken&gt; applied on that IAggregateRoot&lt;TAuthenticationToken&gt;, and the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; knows the sequence number of the last IEvent&lt;TAuthenticationToken&gt; it read. If these numbers do not agree, it means some other thread or process got there first. The ICommandHandler&lt;TAuthenticationToken,TCommand&gt; can then load up the events again and make a new attempt.</p>
+<p>Should I do things that have side-effects in the outside world (such as sending email) directly in a ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</p>
+<p>No, since a concurrency conflict will mean the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; logic will be run again. Do such things in an Apply IEvent&lt;TAuthenticationToken&gt; method in an IAggregateRoot&lt;TAuthenticationToken&gt;. </p><hr/>
+<p> Also see <a href="http://cqrs.nu/Faq/command-handlers">http://cqrs.nu/Faq/command-handlers</a>. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

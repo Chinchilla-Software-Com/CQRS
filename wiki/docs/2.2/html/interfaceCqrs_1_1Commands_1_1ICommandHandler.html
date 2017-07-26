@@ -106,8 +106,8 @@ $(document).ready(function(){initNavTree('interfaceCqrs_1_1Commands_1_1ICommandH
   <img src="interfaceCqrs_1_1Commands_1_1ICommandHandler.png" usemap="#Cqrs.Commands.ICommandHandler_3C_20TAuthenticationToken_2C_20in_20in_20TCommand_20_3E_map" alt=""/>
   <map id="Cqrs.Commands.ICommandHandler_3C_20TAuthenticationToken_2C_20in_20in_20TCommand_20_3E_map" name="Cqrs.Commands.ICommandHandler_3C_20TAuthenticationToken_2C_20in_20in_20TCommand_20_3E_map">
 <area href="interfaceCqrs_1_1Messages_1_1IMessageHandler.html" alt="Cqrs.Messages.IMessageHandler&lt; TCommand &gt;" shape="rect" coords="0,56,456,80"/>
-<area href="interfaceCqrs_1_1Commands_1_1ICommandHandle.html" alt="Cqrs.Commands.ICommandHandle" shape="rect" coords="466,56,922,80"/>
-<area href="interfaceCqrs_1_1Messages_1_1IHandler.html" alt="Cqrs.Messages.IHandler" shape="rect" coords="466,0,922,24"/>
+<area href="interfaceCqrs_1_1Commands_1_1ICommandHandle.html" title="An ICommandHandler&lt;TAuthenticationToken,TCommand&gt; receives an ICommand&lt;TAuthenticationToken&gt; and brok..." alt="Cqrs.Commands.ICommandHandle" shape="rect" coords="466,56,922,80"/>
+<area href="interfaceCqrs_1_1Messages_1_1IHandler.html" title="Responds to or &quot;Handles&quot; things. " alt="Cqrs.Messages.IHandler" shape="rect" coords="466,0,922,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -115,6 +115,7 @@ $(document).ready(function(){initNavTree('interfaceCqrs_1_1Commands_1_1ICommandH
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_methods_interfaceCqrs_1_1Messages_1_1IMessageHandler"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_interfaceCqrs_1_1Messages_1_1IMessageHandler')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="interfaceCqrs_1_1Messages_1_1IMessageHandler.html">Cqrs.Messages.IMessageHandler&lt; TCommand &gt;</a></td></tr>
 <tr class="memitem:a4d68d2c919afce06ce893caabd73f424 inherit pub_methods_interfaceCqrs_1_1Messages_1_1IMessageHandler"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceCqrs_1_1Messages_1_1IMessageHandler_a4d68d2c919afce06ce893caabd73f424.html#a4d68d2c919afce06ce893caabd73f424">Handle</a> (TMessage message)</td></tr>
+<tr class="memdesc:a4d68d2c919afce06ce893caabd73f424 inherit pub_methods_interfaceCqrs_1_1Messages_1_1IMessageHandler"><td class="mdescLeft">&#160;</td><td class="mdescRight">Responds to the provided <em>message</em> .  <a href="interfaceCqrs_1_1Messages_1_1IMessageHandler_a4d68d2c919afce06ce893caabd73f424.html#a4d68d2c919afce06ce893caabd73f424">More...</a><br /></td></tr>
 <tr class="separator:a4d68d2c919afce06ce893caabd73f424 inherit pub_methods_interfaceCqrs_1_1Messages_1_1IMessageHandler"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -125,7 +126,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Do I put logic in ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</p>
 <p>Yes. Exactly what logic depends on your factoring. The logic for validating the ICommand&lt;TAuthenticationToken&gt; on its own merits always gets executed in the ICommandHandler&lt;TAuthenticationToken,TCommand&gt;, although we recommend refactoring these into an ICommandValidator&lt;TAuthenticationToken,TCommand&gt;. Provided validation is successful we recommend a more functional factoring, where the IAggregateRoot&lt;TAuthenticationToken&gt; exists independently of the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; and the next step would be to load the IAggregateRoot&lt;TAuthenticationToken&gt; from the IUnitOfWork&lt;TAuthenticationToken&gt; and request the IAggregateRoot&lt;TAuthenticationToken&gt; handle the ICommand&lt;TAuthenticationToken&gt; itself. The IUnitOfWork&lt;TAuthenticationToken&gt; should then have uncommitted IEvent&lt;TAuthenticationToken&gt; artefacts as a results of asking the IAggregateRoot&lt;TAuthenticationToken&gt; to handle the ICommand&lt;TAuthenticationToken&gt;. Finally the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; should instruct the IUnitOfWork&lt;TAuthenticationToken&gt; to IUnitOfWork&lt;TAuthenticationToken&gt;.Commit all uncommited IEvent&lt;TAuthenticationToken&gt; artefacts.</p>
 <p>However you have it, the logic boils down to validation and some sequence of steps that lead to the ICommand&lt;TAuthenticationToken&gt; becoming an Exception or IEvent&lt;TAuthenticationToken&gt;(s). If you're tempted to go beyond this, see the rest of the remarks.</p>
-<p>Can I call a read side (such as a read store, data store or IRepository&lt;TAuthenticationToken&gt;) from my ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</p>
+<p>Can I call a read side (such as a read store, data store or IAggregateRepository&lt;TAuthenticationToken&gt;) from my ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</p>
 <p>No.</p>
 <p>Can I do logging, security, or auditing in my ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</p>
 <p>Yes. The decorator pattern comes in handy here to separate those concerns neatly.</p>

@@ -31,9 +31,9 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -71,26 +71,39 @@
 <span class="lineNum">      13 </span>            : 
 <span class="lineNum">      14 </span>            : namespace Cqrs.Akka.Tests.Unit.Events.Handlers
 <span class="lineNum">      15 </span>            : {
-<span class="lineNum">      16 </span>            :         public class ConversationEndedEventHandler
-<span class="lineNum">      17 </span>            :                 : IEventHandler&lt;Guid, ConversationEnded&gt;
-<span class="lineNum">      18 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      19 </span><span class="lineNoCov">          0 :                 public ConversationEndedEventHandler(IAkkaCommandPublisher&lt;Guid&gt; commandBus)</span>
-<span class="lineNum">      20 </span>            :                 {
-<span class="lineNum">      21 </span>            :                         CommandBus = commandBus;
-<span class="lineNum">      22 </span>            :                 }
-<span class="lineNum">      23 </span>            : 
-<span class="lineNum">      24 </span>            :                 protected ICommandPublisher&lt;Guid&gt; CommandBus { get; private set; }
-<span class="lineNum">      25 </span>            : 
-<span class="lineNum">      26 </span>            :                 #region Implementation of IMessageHandler&lt;in ConversationEnded&gt;
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span><span class="lineNoCov">          0 :                 public void Handle(ConversationEnded message)</span>
-<span class="lineNum">      29 </span>            :                 {
-<span class="lineNum">      30 </span>            :                         AkkaUnitTests.Step4Reached[message.CorrelationId] = true;
-<span class="lineNum">      31 </span>            :                 }
-<span class="lineNum">      32 </span>            : 
-<span class="lineNum">      33 </span>            :                 #endregion
-<span class="lineNum">      34 </span>            :         }
-<span class="lineNum">      35 </span>            : }
+<span class="lineNum">      16 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      17 </span>            :         /// Handles the &lt;see cref=&quot;ConversationEnded&quot;/&gt;.
+<span class="lineNum">      18 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      19 </span>            :         public class ConversationEndedEventHandler
+<span class="lineNum">      20 </span>            :                 : IEventHandler&lt;Guid, ConversationEnded&gt;
+<span class="lineNum">      21 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      22 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;ConversationEndedEventHandler&quot;/&gt;.
+<span class="lineNum">      24 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      25 </span><span class="lineCov">          1 :                 public ConversationEndedEventHandler(IAkkaCommandPublisher&lt;Guid&gt; commandBus)</span>
+<span class="lineNum">      26 </span>            :                 {
+<span class="lineNum">      27 </span>            :                         CommandBus = commandBus;
+<span class="lineNum">      28 </span>            :                 }
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// Publish any &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; instances that you want to send with this.
+<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      33 </span>            :                 protected ICommandPublisher&lt;Guid&gt; CommandBus { get; private set; }
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            :                 #region Implementation of IMessageHandler&lt;in ConversationEnded&gt;
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :                 /// Responds to the provided &lt;paramref name=&quot;message&quot;/&gt;.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span>            :                 /// &lt;param name=&quot;message&quot;&gt;The &lt;see cref=&quot;ConversationEnded&quot;/&gt; to respond to or &quot;handle&quot;&lt;/param&gt;
+<span class="lineNum">      41 </span><span class="lineCov">          1 :                 public void Handle(ConversationEnded message)</span>
+<span class="lineNum">      42 </span>            :                 {
+<span class="lineNum">      43 </span>            :                         AkkaUnitTests.Step4Reached[message.CorrelationId] = true;
+<span class="lineNum">      44 </span>            :                 }
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                 #endregion
+<span class="lineNum">      47 </span>            :         }
+<span class="lineNum">      48 </span>            : }
 </pre>
       </td>
     </tr>

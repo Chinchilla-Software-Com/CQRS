@@ -199,19 +199,25 @@
 <span class="lineNum">     141 </span>            :         /// &lt;/remarks&gt;
 <span class="lineNum">     142 </span>            :         public interface IAggregateRoot&lt;TAuthenticationToken&gt;
 <span class="lineNum">     143 </span>            :         {
-<span class="lineNum">     144 </span>            :                 [DataMember]
-<span class="lineNum">     145 </span>            :                 Guid Id { get; }
-<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     144 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     145 </span>            :                 /// The identifier of this &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     146 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     147 </span>            :                 [DataMember]
-<span class="lineNum">     148 </span>            :                 int Version { get; }
+<span class="lineNum">     148 </span>            :                 Guid Id { get; }
 <span class="lineNum">     149 </span>            : 
-<span class="lineNum">     150 </span><span class="lineNoCov">          0 :                 IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges();</span>
-<span class="lineNum">     151 </span>            : 
-<span class="lineNum">     152 </span><span class="lineNoCov">          0 :                 void MarkChangesAsCommitted();</span>
-<span class="lineNum">     153 </span>            : 
-<span class="lineNum">     154 </span><span class="lineNoCov">          0 :                 void LoadFromHistory(IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; history);</span>
-<span class="lineNum">     155 </span>            :         }
-<span class="lineNum">     156 </span>            : }
+<span class="lineNum">     150 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     151 </span>            :                 /// The current version of this &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     152 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     153 </span>            :                 [DataMember]
+<span class="lineNum">     154 </span>            :                 int Version { get; }
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :                 IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges();</span>
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :                 void MarkChangesAsCommitted();</span>
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :                 void LoadFromHistory(IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; history);</span>
+<span class="lineNum">     161 </span>            :         }
+<span class="lineNum">     162 </span>            : }
 </pre>
       </td>
     </tr>

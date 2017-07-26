@@ -17,16 +17,28 @@ using Cqrs.Domain;
 
 namespace Cqrs.Akka.Tests.Unit.Aggregates
 {
+	/// <summary>
+	/// An Akka.Net actor based <see cref="IAggregateRoot{TAuthenticationToken}"/> that represents a conversation.
+	/// </summary>
 	public class HelloWorld : AkkaAggregateRoot<Guid>
 	{
+		/// <summary>
+		/// The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/>.
+		/// </summary>
 		public Guid Rsn
 		{
 			get { return Id; }
 			private set { Id = value; }
 		}
 
-		public bool IsLogicallyDeleted {get; set;}
+		/// <summary>
+		/// Indicates if this <see cref="ISaga{TAuthenticationToken}"/> has been deleted.
+		/// </summary>
+		public bool IsLogicallyDeleted { get; set; }
 
+		/// <summary>
+		/// The <see cref="IDependencyResolver"/> that resolves things.
+		/// </summary>
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
 // ReSharper disable UnusedMember.Local
@@ -56,37 +68,58 @@ namespace Cqrs.Akka.Tests.Unit.Aggregates
 		}
 // ReSharper restore UnusedMember.Local
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="HelloWorld"/>.
+		/// </summary>
 		public HelloWorld(IDependencyResolver dependencyResolver, ILogger logger, Guid rsn)
 			: this(dependencyResolver, logger)
 		{
 			Rsn = rsn;
 		}
 
+		/// <summary>
+		/// Raises a <see cref="HelloWorldSaid"/>.
+		/// </summary>
 		public virtual void SayHello(SayHelloWorldCommand command)
 		{
 			SayHello();
 		}
 
+		/// <summary>
+		/// Raises a <see cref="HelloWorldRepliedTo"/>.
+		/// </summary>
 		public virtual void ReplyToHelloWorld(ReplyToHelloWorldCommand command)
 		{
 			ReplyToHelloWorld();
 		}
 
+		/// <summary>
+		/// Raises a <see cref="ConversationEnded"/>.
+		/// </summary>
 		public virtual void EndConversation(EndConversationCommand command)
 		{
 			EndConversation();
 		}
 
+		/// <summary>
+		/// Raises a <see cref="HelloWorldSaid"/>.
+		/// </summary>
 		public virtual void SayHello()
 		{
 			ApplyChange(new HelloWorldSaid { Id = Id });
 		}
 
+		/// <summary>
+		/// Raises a <see cref="HelloWorldRepliedTo"/>.
+		/// </summary>
 		public virtual void ReplyToHelloWorld()
 		{
 			ApplyChange(new HelloWorldRepliedTo { Id = Id });
 		}
 
+		/// <summary>
+		/// Raises a <see cref="ConversationEnded"/>.
+		/// </summary>
 		public virtual void EndConversation()
 		{
 			ApplyChange(new ConversationEnded { Id = Id });

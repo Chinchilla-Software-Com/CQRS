@@ -37,8 +37,14 @@ namespace Cqrs.Akka.Domain
 
 		private ICollection<IEvent<TAuthenticationToken>> Changes { get; set; }
 
+		/// <summary>
+		/// The identifier of this <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// </summary>
 		public Guid Id { get; protected set; }
 
+		/// <summary>
+		/// The current version of this <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// </summary>
 		public int Version { get; protected set; }
 
 		protected AkkaAggregateRoot(IUnitOfWork<TAuthenticationToken> unitOfWork, ILogger logger, IAkkaAggregateRepository<TAuthenticationToken> repository, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)

@@ -7,7 +7,6 @@
 #endregion
 
 using System;
-using Akka.Actor;
 using cdmdotnet.Logging;
 using Cqrs.Akka.Domain;
 using Cqrs.Akka.Tests.Unit.Commands;
@@ -16,72 +15,31 @@ using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Domain;
-using Cqrs.Events;
 
 namespace Cqrs.Akka.Tests.Unit.Sagas
 {
-	public class ConversationReportProcessManagerEventHandlers
-		: IEventHandler<Guid, HelloWorldSaid>
-		, IEventHandler<Guid, HelloWorldRepliedTo>
-		, IEventHandler<Guid, ConversationEnded>
-	{
-		/// <summary>
-		/// Instantiates the <see cref="ConversationReportProcessManagerEventHandlers"/> class registering any <see cref="ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
-		/// </summary>
-		public ConversationReportProcessManagerEventHandlers(IAkkaSagaResolver sagaResolver)
-		{
-			SagaResolver = sagaResolver;
-		}
-
-		protected IAkkaSagaResolver SagaResolver { get; private set; }
-
-		#region Implementation of IMessageHandler<in HelloWorldRepliedTo>
-
-		protected virtual void HandleEvent(IEvent<Guid> message)
-		{
-			// Resolve and locate the instance of the Saga to pass the message to
-			IActorRef item = SagaResolver.ResolveActor<ConversationReportProcessManager, Guid>(message.Id);
-			// Pass the message to it (and wait?)
-			bool result = item.Ask<bool>(message).Result;
-			// item.Tell(message);
-		}
-
-		public void Handle(HelloWorldRepliedTo message)
-		{
-			HandleEvent(message);
-		}
-
-		#endregion
-
-		#region Implementation of IMessageHandler<in HelloWorldSaid>
-
-		public void Handle(HelloWorldSaid message)
-		{
-			HandleEvent(message);
-		}
-
-		#endregion
-
-		#region Implementation of IMessageHandler<in ConversationEnded>
-
-		public void Handle(ConversationEnded message)
-		{
-			HandleEvent(message);
-		}
-
-		#endregion
-	}
-
+	/// <summary>
+	/// A <see cref="ISaga{TAuthenticationToken}"/> that acts as a process manager responding to several events and raising a command when a certain criteria is met.
+	/// </summary>
 	public class ConversationReportProcessManager : AkkaSaga<Guid>
 	{
+		/// <summary>
+		/// The <see cref="ISaga{TAuthenticationToken}.Id"/>
+		/// </summary>
 		public Guid Rsn
 		{
 			get { return Id; }
 			private set { Id = value; }
 		}
 
-		public bool IsLogicallyDeleted {get; set;}
+		/// <summary>
+		/// Indicates if this <see cref="ISaga{TAuthenticationToken}"/> has been deleted.
+		/// </summary>
+		public bool IsLogicallyDeleted { get; set; }
 
+		/// <summary>
+		/// The <see cref="IDependencyResolver"/> that resolves things.
+		/// </summary>
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
 		private bool HelloWorldWasSaid { get; set; }
@@ -118,30 +76,48 @@ namespace Cqrs.Akka.Tests.Unit.Sagas
 		}
 // ReSharper restore UnusedMember.Local
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="ConversationReportProcessManager"/>.
+		/// </summary>
 		public ConversationReportProcessManager(IDependencyResolver dependencyResolver, ILogger logger, Guid rsn)
 			: this(dependencyResolver, logger)
 		{
 			Rsn = rsn;
 		}
 
+		/// <summary>
+		/// Responds to the provided <paramref name="event"/>.
+		/// </summary>
+		/// <param name="event">The <see cref="HelloWorldSaid"/> to respond to or "handle"</param>
 		public virtual void Handle(HelloWorldSaid @event)
 		{
 			ApplyChange(@event);
 			GenerateCommand();
 		}
 
+		/// <summary>
+		/// Responds to the provided <paramref name="event"/>.
+		/// </summary>
+		/// <param name="event">The <see cref="HelloWorldRepliedTo"/> to respond to or "handle"</param>
 		public virtual void Handle(HelloWorldRepliedTo @event)
 		{
 			ApplyChange(@event);
 			GenerateCommand();
 		}
 
+		/// <summary>
+		/// Responds to the provided <paramref name="event"/>.
+		/// </summary>
+		/// <param name="event">The <see cref="ConversationEnded"/> to respond to or "handle"</param>
 		public virtual void Handle(ConversationEnded @event)
 		{
 			ApplyChange(@event);
 			GenerateCommand();
 		}
 
+		/// <summary>
+		/// Generates and publishes a <see cref="ICommand{TAuthenticationToken}"/>.
+		/// </summary>
 		protected virtual void GenerateCommand()
 		{
 			if (HelloWorldWasSaid && HelloWorldWasRepliedTo && ConversationWasEnded)
@@ -153,16 +129,28 @@ namespace Cqrs.Akka.Tests.Unit.Sagas
 			}
 		}
 
+		/// <summary>
+		/// Applies the <paramref name="event"/> to itself.
+		/// </summary>
+		/// <param name="event">The <see cref="HelloWorldSaid"/> to apply</param>
 		public virtual void Apply(HelloWorldSaid @event)
 		{
 			HelloWorldWasSaid = true;
 		}
 
+		/// <summary>
+		/// Applies the <paramref name="event"/> to itself.
+		/// </summary>
+		/// <param name="event">The <see cref="HelloWorldRepliedTo"/> to apply</param>
 		public virtual void Apply(HelloWorldRepliedTo @event)
 		{
 			HelloWorldWasRepliedTo = true;
 		}
 
+		/// <summary>
+		/// Applies the <paramref name="event"/> to itself.
+		/// </summary>
+		/// <param name="event">The <see cref="ConversationEnded"/> to apply</param>
 		public virtual void Apply(ConversationEnded @event)
 		{
 			ConversationWasEnded = true;

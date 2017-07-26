@@ -141,9 +141,15 @@ namespace Cqrs.Domain
 	/// </remarks>
 	public interface IAggregateRoot<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The identifier of this <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// </summary>
 		[DataMember]
 		Guid Id { get; }
 
+		/// <summary>
+		/// The current version of this <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// </summary>
 		[DataMember]
 		int Version { get; }
 
