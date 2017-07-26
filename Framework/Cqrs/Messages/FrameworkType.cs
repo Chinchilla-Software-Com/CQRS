@@ -10,6 +10,9 @@ using System;
 
 namespace Cqrs.Messages
 {
+	/// <summary>
+	/// Indicates a framework system or type.
+	/// </summary>
 	[Obsolete]
 	public enum FrameworkType
 	{

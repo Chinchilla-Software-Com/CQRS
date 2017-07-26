@@ -67,8 +67,15 @@ namespace Cqrs.Commands
 	/// </remarks>
 	public interface ICommand<TAuthenticationToken> : IMessageWithAuthenticationToken<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The identifier of the command itself.
+		/// In some cases this may be the <see cref="IAggregateRoot{TAuthenticationToken}"/> or <see cref="ISaga{TAuthenticationToken}"/> this command targets.
+		/// </summary>
 		Guid Id { get; set; }
 
+		/// <summary>
+		/// The expected version number the targeted <see cref="IAggregateRoot{TAuthenticationToken}"/> or <see cref="ISaga{TAuthenticationToken}"/> is expected to be.
+		/// </summary>
 		int ExpectedVersion { get; set; }
 	}
 }

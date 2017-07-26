@@ -8,6 +8,9 @@
 
 namespace Cqrs.Messages
 {
+	/// <summary>
+	/// Responds to or "Handles" things.
+	/// </summary>
 	public interface IHandler
 	{
 	}

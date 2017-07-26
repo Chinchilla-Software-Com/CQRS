@@ -34,6 +34,9 @@ using Ninject;
 
 namespace Cqrs.Akka.Tests.Unit
 {
+	/// <summary>
+	/// A series of tests on Akka.net
+	/// </summary>
 	[TestClass]
 	public class AkkaUnitTests
 	{
@@ -43,6 +46,9 @@ namespace Cqrs.Akka.Tests.Unit
 		internal static IDictionary<Guid, bool> Step4Reached = new Dictionary<Guid, bool>();
 		internal static IDictionary<Guid, bool> FinalCommandReached = new Dictionary<Guid, bool>();
 
+		/// <summary>
+		/// AkkaSystem_ATestSayHelloWorldCommand_5PointsAreReached
+		/// </summary>
 		[TestMethod]
 		public void SendingCommandsAndEvents_AcrossBusesInMultipleWays_AllWork()
 		{

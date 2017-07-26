@@ -31,9 +31,9 @@
             <td class="headerValue">doc-coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -66,44 +66,69 @@
 <span class="lineNum">       8 </span>            : 
 <span class="lineNum">       9 </span>            : using System;
 <span class="lineNum">      10 </span>            : using System.Collections.Generic;
-<span class="lineNum">      11 </span>            : using Cqrs.Commands;
-<span class="lineNum">      12 </span>            : using Cqrs.Messages;
-<span class="lineNum">      13 </span>            : 
-<span class="lineNum">      14 </span>            : namespace Cqrs.Akka.Tests.Unit.Commands
-<span class="lineNum">      15 </span>            : {
-<span class="lineNum">      16 </span>            :         public class UpdateCompletedConversationReportCommand : ICommand&lt;Guid&gt;
-<span class="lineNum">      17 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      18 </span>            :                 #region Implementation of IMessage
-<span class="lineNum">      19 </span>            : 
-<span class="lineNum">      20 </span>            :                 public Guid CorrelationId { get; set; }
-<span class="lineNum">      21 </span>            : 
-<span class="lineNum">      22 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      23 </span>            :                 /// The originating framework this message was sent from.
-<span class="lineNum">      24 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      25 </span>            :                 public string OriginatingFramework { get; set; }
-<span class="lineNum">      26 </span>            : 
-<span class="lineNum">      27 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      28 </span>            :                 /// The frameworks this &lt;see cref=&quot;IMessage&quot;/&gt; has been delivered to/sent via already.
-<span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      30 </span>            :                 public IEnumerable&lt;string&gt; Frameworks { get; set; }
+<span class="lineNum">      11 </span>            : using System.Runtime.Serialization;
+<span class="lineNum">      12 </span>            : using Cqrs.Commands;
+<span class="lineNum">      13 </span>            : using Cqrs.Domain;
+<span class="lineNum">      14 </span>            : using Cqrs.Messages;
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : namespace Cqrs.Akka.Tests.Unit.Commands
+<span class="lineNum">      17 </span>            : {
+<span class="lineNum">      18 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      19 </span>            :         /// Instruct the system to update the Completed Conversation report.
+<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      21 </span>            :         [Serializable]
+<span class="lineNum">      22 </span>            :         public class UpdateCompletedConversationReportCommand : ICommand&lt;Guid&gt;
+<span class="lineNum">      23 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      24 </span>            :                 #region Implementation of IMessage
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// An identifier used to group together several &lt;see cref=&quot;IMessage&quot;/&gt;. Any &lt;see cref=&quot;IMessage&quot;/&gt; with the same &lt;see cref=&quot;CorrelationId&quot;/&gt; were triggered by the same initiating request.
+<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      29 </span>            :                 [DataMember]
+<span class="lineNum">      30 </span>            :                 public Guid CorrelationId { get; set; }
 <span class="lineNum">      31 </span>            : 
-<span class="lineNum">      32 </span>            :                 #endregion
-<span class="lineNum">      33 </span>            : 
-<span class="lineNum">      34 </span>            :                 #region Implementation of IMessageWithAuthenticationToken&lt;Guid&gt;
-<span class="lineNum">      35 </span>            : 
-<span class="lineNum">      36 </span>            :                 public Guid AuthenticationToken { get; set; }
+<span class="lineNum">      32 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      33 </span>            :                 /// The originating framework this message was sent from.
+<span class="lineNum">      34 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      35 </span>            :                 [DataMember]
+<span class="lineNum">      36 </span>            :                 public string OriginatingFramework { get; set; }
 <span class="lineNum">      37 </span>            : 
-<span class="lineNum">      38 </span>            :                 #endregion
-<span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span>            :                 #region Implementation of ICommand&lt;Guid&gt;
-<span class="lineNum">      41 </span>            : 
-<span class="lineNum">      42 </span>            :                 public Guid Id { get; set; }
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// The frameworks this &lt;see cref=&quot;IMessage&quot;/&gt; has been delivered to/sent via already.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span>            :                 [DataMember]
+<span class="lineNum">      42 </span>            :                 public IEnumerable&lt;string&gt; Frameworks { get; set; }
 <span class="lineNum">      43 </span>            : 
-<span class="lineNum">      44 </span>            :                 public int ExpectedVersion { get; set; }
+<span class="lineNum">      44 </span>            :                 #endregion
 <span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span>            :                 #endregion
-<span class="lineNum">      47 </span>            :         }
-<span class="lineNum">      48 </span>            : }
+<span class="lineNum">      46 </span>            :                 #region Implementation of IMessageWithAuthenticationToken&lt;Guid&gt;
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      49 </span>            :                 /// The authentication token of the entity that triggered the event to be raised.
+<span class="lineNum">      50 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      51 </span>            :                 [DataMember]
+<span class="lineNum">      52 </span>            :                 public Guid AuthenticationToken { get; set; }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                 #endregion
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 #region Implementation of ICommand&lt;Guid&gt;
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      59 </span>            :                 /// The identifier of the command itself.
+<span class="lineNum">      60 </span>            :                 /// In some cases this may be the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; or &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; this command targets.
+<span class="lineNum">      61 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      62 </span>            :                 [DataMember]
+<span class="lineNum">      63 </span>            :                 public Guid Id { get; set; }
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      66 </span>            :                 /// The expected version number the targeted &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; or &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; is expected to be.
+<span class="lineNum">      67 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      68 </span>            :                 [DataMember]
+<span class="lineNum">      69 </span>            :                 public int ExpectedVersion { get; set; }
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                 #endregion
+<span class="lineNum">      72 </span>            :         }
+<span class="lineNum">      73 </span>            : }
 </pre>
       </td>
     </tr>

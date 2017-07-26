@@ -32,9 +32,15 @@ namespace Cqrs.Domain
 	/// </remarks>
 	public interface ISaga<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The identifier of the <see cref="ISaga{TAuthenticationToken}"/>.
+		/// </summary>
 		[DataMember]
 		Guid Id { get; }
 
+		/// <summary>
+		/// The current version of this <see cref="ISaga{TAuthenticationToken}"/>.
+		/// </summary>
 		[DataMember]
 		int Version { get; }
 

@@ -6,12 +6,22 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
+
 namespace Cqrs.Messages
 {
+	/// <summary>
+	/// Responds to or "Handles" a <see cref="IMessage"/>.
+	/// </summary>
+	/// <typeparam name="TMessage">The <see cref="Type"/> of <see cref="IMessage"/>.</typeparam>
 	public interface IMessageHandler<in TMessage>
 		: IHandler
 		where TMessage: IMessage
 	{
+		/// <summary>
+		/// Responds to the provided <paramref name="message"/>.
+		/// </summary>
+		/// <param name="message">The <typeparamref name="TMessage"/> to respond to or "handle"</param>
 		void Handle(TMessage message);
 	}
 }

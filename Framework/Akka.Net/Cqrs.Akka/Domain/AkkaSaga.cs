@@ -37,8 +37,14 @@ namespace Cqrs.Akka.Domain
 
 		private ICollection<ISagaEvent<TAuthenticationToken>> Changes { get; set; }
 
+		/// <summary>
+		/// The identifier of the <see cref="ISaga{TAuthenticationToken}"/>.
+		/// </summary>
 		public Guid Id { get; protected set; }
 
+		/// <summary>
+		/// The current version of this <see cref="ISaga{TAuthenticationToken}"/>.
+		/// </summary>
 		public int Version { get; protected set; }
 
 		protected ICommandPublisher<TAuthenticationToken> CommandPublisher { get; set; }
