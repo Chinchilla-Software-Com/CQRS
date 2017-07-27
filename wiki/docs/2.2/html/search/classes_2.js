@@ -15,7 +15,7 @@ var searchData=
   ['conversationreportprocessmanagereventhandlers',['ConversationReportProcessManagerEventHandlers',['../classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessManagerEventHandlers.html',1,'Cqrs::Akka::Tests::Unit::Sagas']]],
   ['converters',['Converters',['../classCqrs_1_1Sql_1_1DataStores_1_1Converters.html',1,'Cqrs::Sql::DataStores']]],
   ['corehost',['CoreHost',['../classCqrs_1_1Hosts_1_1CoreHost.html',1,'Cqrs::Hosts']]],
-  ['cqrsapicontroller',['CqrsApiController',['../classCqrs_1_1WebApi_1_1CqrsApiController.html',1,'Cqrs.WebApi.CqrsApiController&lt; TAuthenticationToken &gt;'],['../classCqrs_1_1WebApi_1_1CqrsApiController.html',1,'Cqrs.WebApi.CqrsApiController']]],
+  ['cqrsapicontroller',['CqrsApiController',['../classCqrs_1_1WebApi_1_1CqrsApiController.html',1,'Cqrs.WebApi.CqrsApiController'],['../classCqrs_1_1WebApi_1_1CqrsApiController.html',1,'Cqrs.WebApi.CqrsApiController&lt; TAuthenticationToken &gt;']]],
   ['cqrseventapicontroller',['CqrsEventApiController',['../classCqrs_1_1WebApi_1_1CqrsEventApiController.html',1,'Cqrs::WebApi']]],
   ['cqrshttpapplication',['CqrsHttpApplication',['../classCqrs_1_1Hosts_1_1CqrsHttpApplication.html',1,'Cqrs.Hosts.CqrsHttpApplication'],['../classCqrs_1_1Hosts_1_1CqrsHttpApplication.html',1,'Cqrs.Hosts.CqrsHttpApplication&lt; TAuthenticationToken &gt;']]],
   ['cqrshttpapplication_3c_20tauthenticationtoken_20_3e',['CqrsHttpApplication&lt; TAuthenticationToken &gt;',['../classCqrs_1_1Hosts_1_1CqrsHttpApplication.html',1,'Cqrs::Hosts']]],

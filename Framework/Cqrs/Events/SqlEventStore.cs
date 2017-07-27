@@ -13,7 +13,9 @@ using System.Linq;
 using cdmdotnet.Logging;
 using Cqrs.Configuration;
 using Cqrs.DataStores;
+using Cqrs.Domain;
 using Cqrs.Entities;
+using Cqrs.Messages;
 
 namespace Cqrs.Events
 {
@@ -44,6 +46,13 @@ namespace Cqrs.Events
 
 		#region Overrides of EventStore<TAuthenticationToken>
 
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
+		/// <param name="fromVersion">Load events starting from this version</param>
 		public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
@@ -64,6 +73,10 @@ namespace Cqrs.Events
 			}
 		}
 
+		/// <summary>
+		/// Get all <see cref="IEvent{TAuthenticationToken}"/> instances for the given <paramref name="correlationId"/>.
+		/// </summary>
+		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
 		public override IEnumerable<EventData> Get(Guid correlationId)
 		{
 			using (DataContext dbDataContext = CreateDbDataContext())
@@ -85,6 +98,10 @@ namespace Cqrs.Events
 			}
 		}
 
+		/// <summary>
+		/// Persist the provided <paramref name="eventData"/> into SQL Server.
+		/// </summary>
+		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
 		protected override void PersistEvent(EventData eventData)
 		{
 			using (DataContext dbDataContext = CreateDbDataContext())

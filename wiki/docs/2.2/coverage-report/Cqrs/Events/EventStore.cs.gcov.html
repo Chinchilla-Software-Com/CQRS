@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">7</td>
             <td class="headerCovTableEntry">10</td>
-            <td class="headerCovTableEntryLo">70.0 %</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-27</td>
+            <td class="headerValue">2017-07-28</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -79,105 +79,128 @@
 <span class="lineNum">      21 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
 <span class="lineNum">      22 </span>            :         public abstract class EventStore&lt;TAuthenticationToken&gt; : IEventStore&lt;TAuthenticationToken&gt;
 <span class="lineNum">      23 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      24 </span>            :                 protected const string CqrsEventStoreStreamNamePattern = &quot;{0}/{1}&quot;;
-<span class="lineNum">      25 </span>            : 
-<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      27 </span>            :                 /// The &lt;see cref=&quot;IEventBuilder{TAuthenticationToken}&quot;/&gt; used to build events.
-<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      29 </span>            :                 protected IEventBuilder&lt;TAuthenticationToken&gt; EventBuilder { get; set; }
-<span class="lineNum">      30 </span>            : 
-<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      32 </span>            :                 /// The &lt;see cref=&quot;IEventDeserialiser{TAuthenticationToken}&quot;/&gt; used to deserialise events.
-<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      34 </span>            :                 protected IEventDeserialiser&lt;TAuthenticationToken&gt; EventDeserialiser { get; set; }
-<span class="lineNum">      35 </span>            : 
-<span class="lineNum">      36 </span>            :                 protected ITelemetryHelper TelemetryHelper { get; set; }
-<span class="lineNum">      37 </span>            : 
-<span class="lineNum">      38 </span>            :                 protected ILogger Logger { get; private set; }
-<span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      41 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;EventStore{TAuthenticationToken}&quot;/&gt;.
-<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      43 </span><span class="lineCov">          1 :                 protected EventStore(IEventBuilder&lt;TAuthenticationToken&gt; eventBuilder, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser, ILogger logger)</span>
-<span class="lineNum">      44 </span>            :                 {
-<span class="lineNum">      45 </span>            :                         EventBuilder = eventBuilder;
-<span class="lineNum">      46 </span>            :                         EventDeserialiser = eventDeserialiser;
-<span class="lineNum">      47 </span>            :                         Logger = logger;
-<span class="lineNum">      48 </span>            :                         TelemetryHelper = new NullTelemetryHelper();
-<span class="lineNum">      49 </span>            :                 }
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      52 </span>            :                 /// Saves the provided &lt;paramref name=&quot;event&quot;/&gt;.
-<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      54 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
-<span class="lineNum">      55 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to be saved.&lt;/param&gt;
-<span class="lineNum">      56 </span><span class="lineCov">          1 :                 public virtual void Save&lt;T&gt;(IEvent&lt;TAuthenticationToken&gt; @event)</span>
-<span class="lineNum">      57 </span>            :                 {
-<span class="lineNum">      58 </span>            :                         Save(typeof(T), @event);
-<span class="lineNum">      59 </span>            :                 }
-<span class="lineNum">      60 </span>            : 
-<span class="lineNum">      61 </span><span class="lineNoCov">          0 :                 protected virtual string GenerateStreamName(Type aggregateRootType, IEvent&lt;TAuthenticationToken&gt; @event)</span>
-<span class="lineNum">      62 </span>            :                 {
-<span class="lineNum">      63 </span>            :                         return GenerateStreamName(aggregateRootType, @event.Id);
-<span class="lineNum">      64 </span>            :                 }
-<span class="lineNum">      65 </span>            : 
-<span class="lineNum">      66 </span><span class="lineNoCov">          0 :                 protected virtual string GenerateStreamName(Type aggregateRootType, Guid aggregateId)</span>
-<span class="lineNum">      67 </span>            :                 {
-<span class="lineNum">      68 </span>            :                         return string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
-<span class="lineNum">      69 </span>            :                 }
-<span class="lineNum">      70 </span>            : 
-<span class="lineNum">      71 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      72 </span>            :                 /// Saves the provided &lt;paramref name=&quot;event&quot;/&gt;.
-<span class="lineNum">      73 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      74 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
-<span class="lineNum">      75 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to be saved.&lt;/param&gt;
-<span class="lineNum">      76 </span><span class="lineCov">          1 :                 public virtual void Save(Type aggregateRootType, IEvent&lt;TAuthenticationToken&gt; @event)</span>
-<span class="lineNum">      77 </span>            :                 {
-<span class="lineNum">      78 </span>            :                         Logger.LogDebug(string.Format(&quot;Saving aggregate root event type '{0}'&quot;, @event.GetType().FullName), string.Format(&quot;{0}\\Save&quot;, GetType().Name));
-<span class="lineNum">      79 </span>            :                         EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
-<span class="lineNum">      80 </span>            :                         string streamName = GenerateStreamName(aggregateRootType, @event);
-<span class="lineNum">      81 </span>            :                         eventData.AggregateId = streamName;
-<span class="lineNum">      82 </span>            :                         eventData.AggregateRsn = @event.Id;
-<span class="lineNum">      83 </span>            :                         eventData.Version = @event.Version;
-<span class="lineNum">      84 </span>            :                         eventData.CorrelationId = @event.CorrelationId;
-<span class="lineNum">      85 </span>            :                         PersistEvent(eventData);
-<span class="lineNum">      86 </span>            :                         Logger.LogInfo(string.Format(&quot;Saving aggregate root event type '{0}'... done&quot;, @event.GetType().FullName), string.Format(&quot;{0}\\Save&quot;, GetType().Name));
-<span class="lineNum">      87 </span>            :                         TelemetryHelper.TrackMetric(string.Format(&quot;Cqrs/EventStore/Save/{0}&quot;, streamName), 1);
+<span class="lineNum">      24 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      25 </span>            :                 /// The pattern used to generate the stream name.
+<span class="lineNum">      26 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      27 </span>            :                 protected const string CqrsEventStoreStreamNamePattern = &quot;{0}/{1}&quot;;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      30 </span>            :                 /// The &lt;see cref=&quot;IEventBuilder{TAuthenticationToken}&quot;/&gt; used to build events.
+<span class="lineNum">      31 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      32 </span>            :                 protected IEventBuilder&lt;TAuthenticationToken&gt; EventBuilder { get; set; }
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      35 </span>            :                 /// The &lt;see cref=&quot;IEventDeserialiser{TAuthenticationToken}&quot;/&gt; used to deserialise events.
+<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      37 </span>            :                 protected IEventDeserialiser&lt;TAuthenticationToken&gt; EventDeserialiser { get; set; }
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      40 </span>            :                 /// The &lt;see cref=&quot;ITelemetryHelper&quot;/&gt; to use.
+<span class="lineNum">      41 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      42 </span>            :                 protected ITelemetryHelper TelemetryHelper { get; set; }
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      45 </span>            :                 /// The &lt;see cref=&quot;ILogger&quot;/&gt; to use.
+<span class="lineNum">      46 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      47 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      50 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;EventStore{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      51 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      52 </span><span class="lineCov">          1 :                 protected EventStore(IEventBuilder&lt;TAuthenticationToken&gt; eventBuilder, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser, ILogger logger)</span>
+<span class="lineNum">      53 </span>            :                 {
+<span class="lineNum">      54 </span>            :                         EventBuilder = eventBuilder;
+<span class="lineNum">      55 </span>            :                         EventDeserialiser = eventDeserialiser;
+<span class="lineNum">      56 </span>            :                         Logger = logger;
+<span class="lineNum">      57 </span>            :                         TelemetryHelper = new NullTelemetryHelper();
+<span class="lineNum">      58 </span>            :                 }
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      61 </span>            :                 /// Saves the provided &lt;paramref name=&quot;event&quot;/&gt;.
+<span class="lineNum">      62 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      63 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">      64 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to be saved.&lt;/param&gt;
+<span class="lineNum">      65 </span><span class="lineCov">          1 :                 public virtual void Save&lt;T&gt;(IEvent&lt;TAuthenticationToken&gt; @event)</span>
+<span class="lineNum">      66 </span>            :                 {
+<span class="lineNum">      67 </span>            :                         Save(typeof(T), @event);
+<span class="lineNum">      68 </span>            :                 }
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      71 </span>            :                 /// Generate a unique stream name based on the provided &lt;paramref name=&quot;aggregateRootType&quot;/&gt; and the &lt;see cref=&quot;IEvent{TAuthenticationToken}.Id&quot;/&gt; from the provided &lt;paramref name=&quot;event&quot;/&gt;.
+<span class="lineNum">      72 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      73 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      74 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to extract information from.&lt;/param&gt;
+<span class="lineNum">      75 </span><span class="lineCov">          1 :                 protected virtual string GenerateStreamName(Type aggregateRootType, IEvent&lt;TAuthenticationToken&gt; @event)</span>
+<span class="lineNum">      76 </span>            :                 {
+<span class="lineNum">      77 </span>            :                         return GenerateStreamName(aggregateRootType, @event.Id);
+<span class="lineNum">      78 </span>            :                 }
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      81 </span>            :                 /// Generate a unique stream name based on the provided &lt;paramref name=&quot;aggregateRootType&quot;/&gt; and the &lt;paramref name=&quot;aggregateId&quot;/&gt;.
+<span class="lineNum">      82 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      83 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      84 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The ID of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      85 </span><span class="lineCov">          1 :                 protected virtual string GenerateStreamName(Type aggregateRootType, Guid aggregateId)</span>
+<span class="lineNum">      86 </span>            :                 {
+<span class="lineNum">      87 </span>            :                         return string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 <span class="lineNum">      88 </span>            :                 }
 <span class="lineNum">      89 </span>            : 
 <span class="lineNum">      90 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      91 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;typeparamref name=&quot;T&quot;&gt;aggregate root&lt;/typeparamref&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
+<span class="lineNum">      91 </span>            :                 /// Saves the provided &lt;paramref name=&quot;event&quot;/&gt;.
 <span class="lineNum">      92 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      93 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
-<span class="lineNum">      94 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">      95 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">      96 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
-<span class="lineNum">      97 </span><span class="lineCov">          1 :                 public virtual IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get&lt;T&gt;(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
-<span class="lineNum">      98 </span>            :                 {
-<span class="lineNum">      99 </span>            :                         IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; results = Get(typeof (T), aggregateId, useLastEventOnly, fromVersion);
-<span class="lineNum">     100 </span>            :                         TelemetryHelper.TrackMetric(string.Format(&quot;Cqrs/EventStore/Get/{0}&quot;, GenerateStreamName(typeof(T), aggregateId)), results.Count());
-<span class="lineNum">     101 </span>            : 
-<span class="lineNum">     102 </span>            :                         return results;
-<span class="lineNum">     103 </span>            :                 }
-<span class="lineNum">     104 </span>            : 
-<span class="lineNum">     105 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     106 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
-<span class="lineNum">     107 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     108 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
-<span class="lineNum">     109 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">     110 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">     111 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
-<span class="lineNum">     112 </span><span class="lineCov">          1 :                 public abstract IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1);</span>
-<span class="lineNum">     113 </span>            : 
-<span class="lineNum">     114 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     115 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances for the given &lt;paramref name=&quot;correlationId&quot;/&gt;.
-<span class="lineNum">     116 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     117 </span>            :                 /// &lt;param name=&quot;correlationId&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances to retrieve.&lt;/param&gt;
-<span class="lineNum">     118 </span><span class="lineCov">          1 :                 public abstract IEnumerable&lt;EventData&gt; Get(Guid correlationId);</span>
-<span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span><span class="lineNoCov">          0 :                 protected abstract void PersistEvent(EventData eventData);</span>
-<span class="lineNum">     121 </span>            :         }
-<span class="lineNum">     122 </span>            : }
+<span class="lineNum">      93 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">      94 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to be saved.&lt;/param&gt;
+<span class="lineNum">      95 </span><span class="lineCov">          1 :                 public virtual void Save(Type aggregateRootType, IEvent&lt;TAuthenticationToken&gt; @event)</span>
+<span class="lineNum">      96 </span>            :                 {
+<span class="lineNum">      97 </span>            :                         Logger.LogDebug(string.Format(&quot;Saving aggregate root event type '{0}'&quot;, @event.GetType().FullName), string.Format(&quot;{0}\\Save&quot;, GetType().Name));
+<span class="lineNum">      98 </span>            :                         EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
+<span class="lineNum">      99 </span>            :                         string streamName = GenerateStreamName(aggregateRootType, @event);
+<span class="lineNum">     100 </span>            :                         eventData.AggregateId = streamName;
+<span class="lineNum">     101 </span>            :                         eventData.AggregateRsn = @event.Id;
+<span class="lineNum">     102 </span>            :                         eventData.Version = @event.Version;
+<span class="lineNum">     103 </span>            :                         eventData.CorrelationId = @event.CorrelationId;
+<span class="lineNum">     104 </span>            :                         PersistEvent(eventData);
+<span class="lineNum">     105 </span>            :                         Logger.LogInfo(string.Format(&quot;Saving aggregate root event type '{0}'... done&quot;, @event.GetType().FullName), string.Format(&quot;{0}\\Save&quot;, GetType().Name));
+<span class="lineNum">     106 </span>            :                         TelemetryHelper.TrackMetric(string.Format(&quot;Cqrs/EventStore/Save/{0}&quot;, streamName), 1);
+<span class="lineNum">     107 </span>            :                 }
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     110 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;typeparamref name=&quot;T&quot;&gt;aggregate root&lt;/typeparamref&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
+<span class="lineNum">     111 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     112 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">     113 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     114 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     115 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
+<span class="lineNum">     116 </span><span class="lineCov">          1 :                 public virtual IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get&lt;T&gt;(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
+<span class="lineNum">     117 </span>            :                 {
+<span class="lineNum">     118 </span>            :                         IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; results = Get(typeof (T), aggregateId, useLastEventOnly, fromVersion);
+<span class="lineNum">     119 </span>            :                         TelemetryHelper.TrackMetric(string.Format(&quot;Cqrs/EventStore/Get/{0}&quot;, GenerateStreamName(typeof(T), aggregateId)), results.Count());
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :                         return results;
+<span class="lineNum">     122 </span>            :                 }
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     125 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
+<span class="lineNum">     126 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     127 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">     128 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     129 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     130 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
+<span class="lineNum">     131 </span><span class="lineCov">          1 :                 public abstract IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1);</span>
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     134 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances for the given &lt;paramref name=&quot;correlationId&quot;/&gt;.
+<span class="lineNum">     135 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     136 </span>            :                 /// &lt;param name=&quot;correlationId&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances to retrieve.&lt;/param&gt;
+<span class="lineNum">     137 </span><span class="lineCov">          1 :                 public abstract IEnumerable&lt;EventData&gt; Get(Guid correlationId);</span>
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     140 </span>            :                 /// Persist the provided &lt;paramref name=&quot;eventData&quot;/&gt; into storage.
+<span class="lineNum">     141 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     142 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;EventData&quot;/&gt; to persist.&lt;/param&gt;
+<span class="lineNum">     143 </span><span class="lineCov">          1 :                 protected abstract void PersistEvent(EventData eventData);</span>
+<span class="lineNum">     144 </span>            :         }
+<span class="lineNum">     145 </span>            : }
 </pre>
       </td>
     </tr>

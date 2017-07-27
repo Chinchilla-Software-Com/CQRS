@@ -21,6 +21,9 @@ namespace Cqrs.Events
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public abstract class EventStore<TAuthenticationToken> : IEventStore<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The pattern used to generate the stream name.
+		/// </summary>
 		protected const string CqrsEventStoreStreamNamePattern = "{0}/{1}";
 
 		/// <summary>
@@ -33,8 +36,14 @@ namespace Cqrs.Events
 		/// </summary>
 		protected IEventDeserialiser<TAuthenticationToken> EventDeserialiser { get; set; }
 
+		/// <summary>
+		/// The <see cref="ITelemetryHelper"/> to use.
+		/// </summary>
 		protected ITelemetryHelper TelemetryHelper { get; set; }
 
+		/// <summary>
+		/// The <see cref="ILogger"/> to use.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
 		/// <summary>
@@ -58,11 +67,21 @@ namespace Cqrs.Events
 			Save(typeof(T), @event);
 		}
 
+		/// <summary>
+		/// Generate a unique stream name based on the provided <paramref name="aggregateRootType"/> and the <see cref="IEvent{TAuthenticationToken}.Id"/> from the provided <paramref name="event"/>.
+		/// </summary>
+		/// <param name="aggregateRootType">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to extract information from.</param>
 		protected virtual string GenerateStreamName(Type aggregateRootType, IEvent<TAuthenticationToken> @event)
 		{
 			return GenerateStreamName(aggregateRootType, @event.Id);
 		}
 
+		/// <summary>
+		/// Generate a unique stream name based on the provided <paramref name="aggregateRootType"/> and the <paramref name="aggregateId"/>.
+		/// </summary>
+		/// <param name="aggregateRootType">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="aggregateId">The ID of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		protected virtual string GenerateStreamName(Type aggregateRootType, Guid aggregateId)
 		{
 			return string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
@@ -117,6 +136,10 @@ namespace Cqrs.Events
 		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
 		public abstract IEnumerable<EventData> Get(Guid correlationId);
 
+		/// <summary>
+		/// Persist the provided <paramref name="eventData"/> into storage.
+		/// </summary>
+		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
 		protected abstract void PersistEvent(EventData eventData);
 	}
 }

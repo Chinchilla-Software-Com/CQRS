@@ -14,9 +14,8 @@ using System.Threading.Tasks;
 using System.Transactions;
 using cdmdotnet.Logging;
 using Cqrs.Configuration;
-using Cqrs.Events;
 
-namespace Cqrs.Sql.Events
+namespace Cqrs.Events
 {
 	/// <summary>
 	/// A simplified SqlServer based <see cref="EventStore{TAuthenticationToken}"/> that uses LinqToSql and follows a rigid schema that also replicates to multiple connections, but only reads from one connection.
@@ -24,6 +23,9 @@ namespace Cqrs.Sql.Events
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class ReplicatedSqlEventStore<TAuthenticationToken> : SqlEventStore<TAuthenticationToken>
 	{
+		/// <summary>
+		/// A collection of connection strings that are used to write to the database.
+		/// </summary>
 		protected IEnumerable<string> WritableConnectionStrings { get; private set; }
 
 		/// <summary>
@@ -58,6 +60,11 @@ namespace Cqrs.Sql.Events
 			WritableConnectionStrings = writableConnectionStrings;
 		}
 
+		/// <summary>
+		/// Persist the provided <paramref name="eventData"/> into each SQL Server in <see cref="WritableConnectionStrings"/>.
+		/// A single <see cref="TransactionScope"/> wraps all SQL servers, so all must complete successfully, or they will ALL roll back.
+		/// </summary>
+		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
 		protected override void PersistEvent(EventData eventData)
 		{
 			try
