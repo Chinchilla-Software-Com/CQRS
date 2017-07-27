@@ -14,22 +14,44 @@ using System.Data.Linq;
 using System.Linq;
 using System.Linq.Expressions;
 using Cqrs.DataStores;
+using Cqrs.Entities;
 
 namespace Cqrs.Sql.DataStores
 {
+	/// <summary>
+	/// A <see cref="IDataStore{TData}"/> that uses EntityFramework to support complex data structures with SQL Server.s
+	/// </summary>
 	public class SqlDataStore<TEntity, TDbEntity> : IDataStore<TEntity>
 		where TDbEntity : class, new()
 	{
+		/// <summary>
+		/// Gets or sets the DataContext.
+		/// </summary>
 		internal DataContext DataContext { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the readable Table
+		/// </summary>
 		internal Table<TDbEntity> DataTable { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the EntityQuery
+		/// </summary>
 		internal IQueryable<TEntity> EntityQuery { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the DbEntityQuery
+		/// </summary>
 		internal IQueryable<TDbEntity> DbEntityQuery { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the ExpressionConverter
+		/// </summary>
 		internal IExpressionTreeConverter ExpressionConverter { get; set; }
 
+		/// <summary>
+		/// Instantiates a new instance of the <see cref="SqlDataStore{TEntity,TDbEntity}"/> class
+		/// </summary>
 		public SqlDataStore(IExpressionTreeConverter expressionConverter, DataContext dataContext)
 		{
 			ExpressionConverter = expressionConverter;
@@ -49,6 +71,9 @@ namespace Cqrs.Sql.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Instantiates a new instance of the <see cref="SqlDataStore{TEntity,TDbEntity}"/> class
+		/// </summary>
 		internal SqlDataStore(DataContext dataContext, Table<TDbEntity> dataTable, IQueryable<TDbEntity> dbEntityQuery, IQueryable<TEntity> entityQuery)
 		{
 			DataContext = dataContext;
@@ -133,34 +158,52 @@ namespace Cqrs.Sql.DataStores
 
 		#region Implementation of IDataStore<T>
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public void Add(TEntity data)
 		{
 			var converted = Converters.ConvertTo<TDbEntity>(data);
 			DataTable.InsertOnSubmit(converted);
 		}
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public void Add(IEnumerable<TEntity> data)
 		{
 			DataTable.InsertAllOnSubmit(data.Select(x => Converters.ConvertTo<TDbEntity>(x)));
 		}
 
+		/// <summary>
+		/// Will NOT mark the <paramref name="data"/> as logically (or soft) deleted. This will destroy and delete the row in the SQL Server.
+		/// </summary>
 		public void Remove(TEntity data)
 		{
 			Destroy(data);
 		}
 
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
 		public void Destroy(TEntity data)
 		{
 			var converted = Converters.ConvertTo<TDbEntity>(data);
 			DataTable.DeleteOnSubmit(converted);
 		}
 
+		/// <summary>
+		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+		/// </summary>
 		public void RemoveAll()
 		{
 			IList<TDbEntity> all = DataTable.ToList();
 			DataTable.DeleteAllOnSubmit(all);
 		}
 
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
 		public void Update(TEntity data)
 		{
 			var converted = Converters.ConvertTo<TDbEntity>(data);

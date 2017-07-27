@@ -1,5 +1,11 @@
 var NAVTREEINDEX6 =
 {
+"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByAggregateIdAndVersionMongoDbIndex.html":[1,0,0,17,2,0,0],
+"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByAggregateIdAndVersionMongoDbIndex_a084cc895e473e0e0ea2dbcf81bba4514.html#a084cc895e473e0e0ea2dbcf81bba4514":[1,0,0,17,2,0,0,0],
+"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByCorrelationIdMongoDbIndex.html":[1,0,0,17,2,0,1],
+"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByCorrelationIdMongoDbIndex_a7bfea0225205a97ffd3501ba5032b5b3.html#a7bfea0225205a97ffd3501ba5032b5b3":[1,0,0,17,2,0,1,0],
+"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampAndEventTypeMongoDbIndex.html":[1,0,0,17,2,0,2],
+"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampAndEventTypeMongoDbIndex_ac31e888bf88b4cabc9f7be0dd1fc3ffc.html#ac31e888bf88b4cabc9f7be0dd1fc3ffc":[1,0,0,17,2,0,2,0],
 "classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampMongoDbIndex.html":[1,0,0,17,2,0,3],
 "classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampMongoDbIndex_a642c97e253eaa259cb64b627701540c0.html#a642c97e253eaa259cb64b627701540c0":[1,0,0,17,2,0,3,0],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventData.html":[1,0,0,17,2,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX6 =
 "classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost_a9b7fb1deadaf625c21f1d7d55cd5752f.html#a9b7fb1deadaf625c21f1d7d55cd5752f":[1,0,0,18,1,4,1,0],
 "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule.html":[1,0,0,18,2,0],
 "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a10e7a8adbe03fc05ebb7003727cbe541.html#a10e7a8adbe03fc05ebb7003727cbe541":[1,0,0,18,2,0,12],
-"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a197055fca498bff31fd9a91a2a07292d.html#a197055fca498bff31fd9a91a2a07292d":[1,0,0,18,2,0,1],
-"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a31a1047d3940842b760ad2a796aa1606.html#a31a1047d3940842b760ad2a796aa1606":[1,0,0,18,2,0,0],
-"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a3437afb1ea306ff4e65eb2ca22a276d9.html#a3437afb1ea306ff4e65eb2ca22a276d9":[1,0,0,18,2,0,9],
-"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a5c3b6741270b2cb16aa1a1a84c57041b.html#a5c3b6741270b2cb16aa1a1a84c57041b":[1,0,0,18,2,0,3],
-"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a61a20168f5dc9dab74bb2f7fad7c0adb.html#a61a20168f5dc9dab74bb2f7fad7c0adb":[1,0,0,18,2,0,5],
-"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a6ca61a712ab7efc28eb38e7f74853e3e.html#a6ca61a712ab7efc28eb38e7f74853e3e":[1,0,0,18,2,0,4],
-"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a7bb448b4c38d7a4628a30ba709dc8a36.html#a7bb448b4c38d7a4628a30ba709dc8a36":[1,0,0,18,2,0,7]
+"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a197055fca498bff31fd9a91a2a07292d.html#a197055fca498bff31fd9a91a2a07292d":[1,0,0,18,2,0,1]
 };

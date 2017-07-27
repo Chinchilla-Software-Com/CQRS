@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">7</td>
             <td class="headerCovTableEntry">13</td>
-            <td class="headerCovTableEntryLo">38.5 %</td>
+            <td class="headerCovTableEntryLo">53.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-27</td>
+            <td class="headerValue">2017-07-28</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -96,7 +96,7 @@
 <span class="lineNum">      38 </span>            : 
 <span class="lineNum">      39 </span>            :                 #region Overrides of EventStore&lt;TAuthenticationToken&gt;
 <span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span><span class="lineNoCov">          0 :                 protected override string GenerateStreamName(Type aggregateRootType, Guid aggregateId)</span>
+<span class="lineNum">      41 </span><span class="lineCov">          1 :                 protected override string GenerateStreamName(Type aggregateRootType, Guid aggregateId)</span>
 <span class="lineNum">      42 </span>            :                 {
 <span class="lineNum">      43 </span>            :                         return string.Format(TableCqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 <span class="lineNum">      44 </span>            :                 }
@@ -139,7 +139,7 @@
 <span class="lineNum">      81 </span>            :                                 return query.ToList();
 <span class="lineNum">      82 </span>            :                 }
 <span class="lineNum">      83 </span>            : 
-<span class="lineNum">      84 </span><span class="lineNoCov">          0 :                 protected override void PersistEvent(EventData eventData)</span>
+<span class="lineNum">      84 </span><span class="lineCov">          1 :                 protected override void PersistEvent(EventData eventData)</span>
 <span class="lineNum">      85 </span>            :                 {
 <span class="lineNum">      86 </span>            :                         Logger.LogDebug(&quot;Adding data to the table storage event-store aggregate folder&quot;, &quot;TableStorageStore\\Add&quot;);
 <span class="lineNum">      87 </span>            :                         TableStorageStore.Add(eventData);

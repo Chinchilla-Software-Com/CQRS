@@ -30,16 +30,16 @@ abstract I\+Enumerable$<$ \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Da
 \hyperlink{classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_a6346cb2aea4c5b4e740dc6cfb15abab8}{Event\+Store} (\hyperlink{interfaceCqrs_1_1Events_1_1IEventBuilder}{I\+Event\+Builder}$<$ T\+Authentication\+Token $>$ event\+Builder, \hyperlink{interfaceCqrs_1_1Events_1_1IEventDeserialiser}{I\+Event\+Deserialiser}$<$ T\+Authentication\+Token $>$ event\+Deserialiser, I\+Logger logger)
 \begin{DoxyCompactList}\small\item\em Instantiates a new instance of \hyperlink{classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_a6346cb2aea4c5b4e740dc6cfb15abab8}{Event\+Store$<$\+T\+Authentication\+Token$>$}. \end{DoxyCompactList}\item 
 virtual string \hyperlink{classCqrs_1_1Events_1_1EventStore_a03df06d4ce9c6d16201c079f2de0a7f3_a03df06d4ce9c6d16201c079f2de0a7f3}{Generate\+Stream\+Name} (Type aggregate\+Root\+Type, \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @event)
-\item 
+\begin{DoxyCompactList}\small\item\em Generate a unique stream name based on the provided {\itshape aggregate\+Root\+Type}  and the \hyperlink{interfaceCqrs_1_1Events_1_1IEvent_a2974e13d307c62c5cc438d668ff1783b_a2974e13d307c62c5cc438d668ff1783b}{I\+Event$<$\+T\+Authentication\+Token$>$.\+Id} from the provided {\itshape event} . \end{DoxyCompactList}\item 
 virtual string \hyperlink{classCqrs_1_1Events_1_1EventStore_aba61739e47fdd0f7fce656f896cbe908_aba61739e47fdd0f7fce656f896cbe908}{Generate\+Stream\+Name} (Type aggregate\+Root\+Type, Guid aggregate\+Id)
-\item 
+\begin{DoxyCompactList}\small\item\em Generate a unique stream name based on the provided {\itshape aggregate\+Root\+Type}  and the {\itshape aggregate\+Id} . \end{DoxyCompactList}\item 
 abstract void \hyperlink{classCqrs_1_1Events_1_1EventStore_aedb71ca0ddf21220e323bc60ad7508cd_aedb71ca0ddf21220e323bc60ad7508cd}{Persist\+Event} (\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} event\+Data)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Persist the provided {\itshape event\+Data}  into storage. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
 const string \hyperlink{classCqrs_1_1Events_1_1EventStore_a1e6d87995d38d6fbb148388ec165a87e_a1e6d87995d38d6fbb148388ec165a87e}{Cqrs\+Event\+Store\+Stream\+Name\+Pattern} = \char`\"{}\{0\}/\{1\}\char`\"{}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em The pattern used to generate the stream name. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
@@ -48,9 +48,9 @@ const string \hyperlink{classCqrs_1_1Events_1_1EventStore_a1e6d87995d38d6fbb1483
 \hyperlink{interfaceCqrs_1_1Events_1_1IEventDeserialiser}{I\+Event\+Deserialiser}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Events_1_1EventStore_a24f17302c069058e5814dedfb614d599_a24f17302c069058e5814dedfb614d599}{Event\+Deserialiser}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
 \begin{DoxyCompactList}\small\item\em The I\+Event\+Deserialiser$<$\+T\+Authentication\+Token$>$ used to deserialise events. \end{DoxyCompactList}\item 
 I\+Telemetry\+Helper \hyperlink{classCqrs_1_1Events_1_1EventStore_a75d6d3ad3a26fb9b511e2a98e72260f9_a75d6d3ad3a26fb9b511e2a98e72260f9}{Telemetry\+Helper}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em The I\+Telemetry\+Helper to use. \end{DoxyCompactList}\item 
 I\+Logger \hyperlink{classCqrs_1_1Events_1_1EventStore_a99506f7136a658364f8b74ef6a779a3f_a99506f7136a658364f8b74ef6a779a3f}{Logger}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em The I\+Logger to use. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -83,12 +83,34 @@ Instantiates a new instance of \hyperlink{classCqrs_1_1Events_1_1EventStore_a634
 \subsubsection{\texorpdfstring{Generate\+Stream\+Name()}{GenerateStreamName()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily virtual string \hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}$<$ T\+Authentication\+Token $>$.Generate\+Stream\+Name (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
 
+
+
+Generate a unique stream name based on the provided {\itshape aggregate\+Root\+Type}  and the \hyperlink{interfaceCqrs_1_1Events_1_1IEvent_a2974e13d307c62c5cc438d668ff1783b_a2974e13d307c62c5cc438d668ff1783b}{I\+Event$<$\+T\+Authentication\+Token$>$.\+Id} from the provided {\itshape event} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em event} & The I\+Event$<$\+T\+Authentication\+Token$>$ to extract information from.\\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_aba61739e47fdd0f7fce656f896cbe908_aba61739e47fdd0f7fce656f896cbe908}\label{classCqrs_1_1Events_1_1EventStore_aba61739e47fdd0f7fce656f896cbe908_aba61739e47fdd0f7fce656f896cbe908}} 
 \index{Cqrs\+::\+Events\+::\+Event\+Store@{Cqrs\+::\+Events\+::\+Event\+Store}!Generate\+Stream\+Name@{Generate\+Stream\+Name}}
 \index{Generate\+Stream\+Name@{Generate\+Stream\+Name}!Cqrs\+::\+Events\+::\+Event\+Store@{Cqrs\+::\+Events\+::\+Event\+Store}}
 \subsubsection{\texorpdfstring{Generate\+Stream\+Name()}{GenerateStreamName()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily virtual string \hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}$<$ T\+Authentication\+Token $>$.Generate\+Stream\+Name (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
 
+
+
+Generate a unique stream name based on the provided {\itshape aggregate\+Root\+Type}  and the {\itshape aggregate\+Id} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em aggregate\+Id} & The ID of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyParams}
 
 
 Reimplemented in \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a5cee1f388c1a03d9cfea5ee1a9f42657_a5cee1f388c1a03d9cfea5ee1a9f42657}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}.
@@ -120,7 +142,7 @@ Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_ae02ef6c804d0c4a927
 
 
 
-Implemented in \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a7a1ac8e59dc5bff0bb6562fb4f43e8df_a7a1ac8e59dc5bff0bb6562fb4f43e8df}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a1391c260f52f5cf18058cf88ad2d16de_a1391c260f52f5cf18058cf88ad2d16de}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1SqlEventStore_a7e32a08a015642a5bc1cefa6998e6f11_a7e32a08a015642a5bc1cefa6998e6f11}{Cqrs.\+Events.\+Sql\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a420c94c86d8d1c2959aee8602f43c0c0_a420c94c86d8d1c2959aee8602f43c0c0}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a54f298fdde141166e23f01e4911bf188_a54f298fdde141166e23f01e4911bf188}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_ab68b594c54ae5a79e3b8d5db1902752d_ab68b594c54ae5a79e3b8d5db1902752d}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a089514182da7a70f35f9237c521c49f0_a089514182da7a70f35f9237c521c49f0}{Cqrs.\+Azure.\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}.
+Implemented in \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a7a1ac8e59dc5bff0bb6562fb4f43e8df_a7a1ac8e59dc5bff0bb6562fb4f43e8df}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1SqlEventStore_a7e32a08a015642a5bc1cefa6998e6f11_a7e32a08a015642a5bc1cefa6998e6f11}{Cqrs.\+Events.\+Sql\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a1391c260f52f5cf18058cf88ad2d16de_a1391c260f52f5cf18058cf88ad2d16de}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a420c94c86d8d1c2959aee8602f43c0c0_a420c94c86d8d1c2959aee8602f43c0c0}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a54f298fdde141166e23f01e4911bf188_a54f298fdde141166e23f01e4911bf188}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_ab68b594c54ae5a79e3b8d5db1902752d_ab68b594c54ae5a79e3b8d5db1902752d}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a089514182da7a70f35f9237c521c49f0_a089514182da7a70f35f9237c521c49f0}{Cqrs.\+Azure.\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}.
 
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a0096646f5dff730b0041b9469719c420_a0096646f5dff730b0041b9469719c420}\label{classCqrs_1_1Events_1_1EventStore_a0096646f5dff730b0041b9469719c420_a0096646f5dff730b0041b9469719c420}} 
 \index{Cqrs\+::\+Events\+::\+Event\+Store@{Cqrs\+::\+Events\+::\+Event\+Store}!Get@{Get}}
@@ -143,7 +165,7 @@ Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_af398bb6768fa661ad9
 
 
 
-Implemented in \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_ac886ca0a57ad86cb99ef0a3767db9280_ac886ca0a57ad86cb99ef0a3767db9280}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a2a93a3f10423f608527fbc41a7ce8cef_a2a93a3f10423f608527fbc41a7ce8cef}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a9b952a9257dc6f458b98eba87684412e_a9b952a9257dc6f458b98eba87684412e}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1SqlEventStore_ac1fb2bdec07cbeec57fb3d985e7a8b31_ac1fb2bdec07cbeec57fb3d985e7a8b31}{Cqrs.\+Events.\+Sql\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a1b436bbb111b14b85ee6ba7f90fb1a35_a1b436bbb111b14b85ee6ba7f90fb1a35}{Cqrs.\+Azure.\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_a660c786205693ee34a11e205c6d136ad_a660c786205693ee34a11e205c6d136ad}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_ac59ce599b768ce047869b8ac135f4e22_ac59ce599b768ce047869b8ac135f4e22}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}.
+Implemented in \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_ac886ca0a57ad86cb99ef0a3767db9280_ac886ca0a57ad86cb99ef0a3767db9280}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a2a93a3f10423f608527fbc41a7ce8cef_a2a93a3f10423f608527fbc41a7ce8cef}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1SqlEventStore_ac1fb2bdec07cbeec57fb3d985e7a8b31_ac1fb2bdec07cbeec57fb3d985e7a8b31}{Cqrs.\+Events.\+Sql\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a9b952a9257dc6f458b98eba87684412e_a9b952a9257dc6f458b98eba87684412e}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a1b436bbb111b14b85ee6ba7f90fb1a35_a1b436bbb111b14b85ee6ba7f90fb1a35}{Cqrs.\+Azure.\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_a660c786205693ee34a11e205c6d136ad_a660c786205693ee34a11e205c6d136ad}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_ac59ce599b768ce047869b8ac135f4e22_ac59ce599b768ce047869b8ac135f4e22}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}.
 
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_aa6ffed5d7dd365600669149da29f9e89_aa6ffed5d7dd365600669149da29f9e89}\label{classCqrs_1_1Events_1_1EventStore_aa6ffed5d7dd365600669149da29f9e89_aa6ffed5d7dd365600669149da29f9e89}} 
 \index{Cqrs\+::\+Events\+::\+Event\+Store@{Cqrs\+::\+Events\+::\+Event\+Store}!Get$<$ T $>$@{Get$<$ T $>$}}
@@ -181,7 +203,16 @@ Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_add6227e2978ff8656a
 
 
 
-Implemented in \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a13f6823671d7cb9c042d8f7156a51b89_a13f6823671d7cb9c042d8f7156a51b89}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a9b1a1aaab34770bd68ebcedca0fc40b0_a9b1a1aaab34770bd68ebcedca0fc40b0}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_afe494469614082cf667f5cf4b6c4a97b_afe494469614082cf667f5cf4b6c4a97b}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1SqlEventStore_a8d67570d50a97050cbce5a29d7a4b9f6_a8d67570d50a97050cbce5a29d7a4b9f6}{Cqrs.\+Events.\+Sql\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_ae63921d0ace265b1b269c865080b5712_ae63921d0ace265b1b269c865080b5712}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_aa27a352076b8967498407d24814f7c83_aa27a352076b8967498407d24814f7c83}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Sql_1_1Events_1_1ReplicatedSqlEventStore_a51c9b1329327e456a251aa2d910fc7ae_a51c9b1329327e456a251aa2d910fc7ae}{Cqrs.\+Sql.\+Events.\+Replicated\+Sql\+Event\+Store$<$ T\+Authentication\+Token $>$}.
+Persist the provided {\itshape event\+Data}  into storage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event\+Data} & The \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} to persist.\\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a13f6823671d7cb9c042d8f7156a51b89_a13f6823671d7cb9c042d8f7156a51b89}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a9b1a1aaab34770bd68ebcedca0fc40b0_a9b1a1aaab34770bd68ebcedca0fc40b0}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1SqlEventStore_a8d67570d50a97050cbce5a29d7a4b9f6_a8d67570d50a97050cbce5a29d7a4b9f6}{Cqrs.\+Events.\+Sql\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_afe494469614082cf667f5cf4b6c4a97b_afe494469614082cf667f5cf4b6c4a97b}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_ae63921d0ace265b1b269c865080b5712_ae63921d0ace265b1b269c865080b5712}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1ReplicatedSqlEventStore_aedff93a62c275a18d45ede6576fe2840_aedff93a62c275a18d45ede6576fe2840}{Cqrs.\+Events.\+Replicated\+Sql\+Event\+Store$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_aa27a352076b8967498407d24814f7c83_aa27a352076b8967498407d24814f7c83}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}.
 
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a3ba5ba04a36382b6d36a6ad8867dc766_a3ba5ba04a36382b6d36a6ad8867dc766}\label{classCqrs_1_1Events_1_1EventStore_a3ba5ba04a36382b6d36a6ad8867dc766_a3ba5ba04a36382b6d36a6ad8867dc766}} 
 \index{Cqrs\+::\+Events\+::\+Event\+Store@{Cqrs\+::\+Events\+::\+Event\+Store}!Save@{Save}}
@@ -239,6 +270,10 @@ Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a92e768243d6602d09b
 
 
 
+The pattern used to generate the stream name. 
+
+
+
 \subsection{Property Documentation}
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a05393aedf2eae4b2eeae3977e7f1c6f9_a05393aedf2eae4b2eeae3977e7f1c6f9}\label{classCqrs_1_1Events_1_1EventStore_a05393aedf2eae4b2eeae3977e7f1c6f9_a05393aedf2eae4b2eeae3977e7f1c6f9}} 
 \index{Cqrs\+::\+Events\+::\+Event\+Store@{Cqrs\+::\+Events\+::\+Event\+Store}!Event\+Builder@{Event\+Builder}}
@@ -266,9 +301,17 @@ The I\+Event\+Deserialiser$<$\+T\+Authentication\+Token$>$ used to deserialise e
 \subsubsection{\texorpdfstring{Logger}{Logger}}
 {\footnotesize\ttfamily I\+Logger \hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}$<$ T\+Authentication\+Token $>$.Logger\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+The I\+Logger to use. 
+
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a75d6d3ad3a26fb9b511e2a98e72260f9_a75d6d3ad3a26fb9b511e2a98e72260f9}\label{classCqrs_1_1Events_1_1EventStore_a75d6d3ad3a26fb9b511e2a98e72260f9_a75d6d3ad3a26fb9b511e2a98e72260f9}} 
 \index{Cqrs\+::\+Events\+::\+Event\+Store@{Cqrs\+::\+Events\+::\+Event\+Store}!Telemetry\+Helper@{Telemetry\+Helper}}
 \index{Telemetry\+Helper@{Telemetry\+Helper}!Cqrs\+::\+Events\+::\+Event\+Store@{Cqrs\+::\+Events\+::\+Event\+Store}}
 \subsubsection{\texorpdfstring{Telemetry\+Helper}{TelemetryHelper}}
 {\footnotesize\ttfamily I\+Telemetry\+Helper \hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}$<$ T\+Authentication\+Token $>$.Telemetry\+Helper\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+The I\+Telemetry\+Helper to use. 
 

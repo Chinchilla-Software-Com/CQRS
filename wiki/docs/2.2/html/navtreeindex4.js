@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"classCqrs_1_1Cache_1_1CacheRepository.html#a8dd4fdf4d8b0143578a5b118d8864471":[1,0,0,4,0,5],
+"classCqrs_1_1Cache_1_1CacheRepository.html#ac68ae9dc475a8599964c2e9fe7bd8663":[1,0,0,4,0,6],
 "classCqrs_1_1Cache_1_1CacheRepository_a037acba636aedf23ff376ac0b749ec0c.html#a037acba636aedf23ff376ac0b749ec0c":[1,0,0,4,0,1],
 "classCqrs_1_1Cache_1_1CacheRepository_a69df7ee1dc2e4cd38431ab987655eab3.html#a69df7ee1dc2e4cd38431ab987655eab3":[1,0,0,4,0,2],
 "classCqrs_1_1Cache_1_1CacheRepository_a6c567e999a85f5803a920ce4912833a9.html#a6c567e999a85f5803a920ce4912833a9":[1,0,0,4,0,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a16df48a7203bc3bcde5f5a12f1d47934.html#a16df48a7203bc3bcde5f5a12f1d47934":[1,0,0,11,0,2,4],
 "classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a1ebb6f08648bdfd5c5bd29fcc12adfea.html#a1ebb6f08648bdfd5c5bd29fcc12adfea":[1,0,0,11,0,2,2],
 "classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a4ca16479fe387fae0135865ae3f889d7.html#a4ca16479fe387fae0135865ae3f889d7":[1,0,0,11,0,2,0],
-"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a552a16f86c52837bf81200778e3a9fe4.html#a552a16f86c52837bf81200778e3a9fe4":[1,0,0,11,0,2,5],
-"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a85b4922ff01b088b01b39463681c6eb6.html#a85b4922ff01b088b01b39463681c6eb6":[1,0,0,11,0,2,3],
-"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a89bf01d1921bc517ea8b385c0ee724ee.html#a89bf01d1921bc517ea8b385c0ee724ee":[1,0,0,11,0,2,6]
+"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreEventPublisher_a552a16f86c52837bf81200778e3a9fe4.html#a552a16f86c52837bf81200778e3a9fe4":[1,0,0,11,0,2,5]
 };

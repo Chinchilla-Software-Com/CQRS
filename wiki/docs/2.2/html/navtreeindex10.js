@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_acaadcc7cc9f00c184e12b6bb725a2167.html#acaadcc7cc9f00c184e12b6bb725a2167":[1,0,0,25,4,0,2,6],
+"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_ae5915026e53a6d7b9929f703688ce90c.html#ae5915026e53a6d7b9929f703688ce90c":[1,0,0,25,4,0,2,4],
 "classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_aeb3d9f4d90baeb103231c5c47a13e00d.html#aeb3d9f4d90baeb103231c5c47a13e00d":[1,0,0,25,4,0,2,0],
 "classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1SignalRStartUp.html":[1,0,0,25,4,0,3],
 "classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1SignalRStartUp_a0c137e0c86431dc944d7a3415de011bb.html#a0c137e0c86431dc944d7a3415de011bb":[1,0,0,25,4,0,3,3],
@@ -48,8 +50,8 @@ var NAVTREEINDEX10 =
 "classSystem_1_1Web_1_1Helpers_1_1Json_ab39872b59b78d9c417d2d81504768849.html#ab39872b59b78d9c417d2d81504768849":[1,0,2,1,0,2,1],
 "classSystem_1_1Web_1_1Helpers_1_1Json_abd82655d76fcb16522303f1da4ced6c0.html#abd82655d76fcb16522303f1da4ced6c0":[1,0,2,1,0,2,2],
 "classes.html":[1,1],
-"functions.html":[1,3,0],
 "functions.html":[1,3,0,0],
+"functions.html":[1,3,0],
 "functions_a.html":[1,3,0,1],
 "functions_b.html":[1,3,0,2],
 "functions_c.html":[1,3,0,3],
@@ -57,8 +59,8 @@ var NAVTREEINDEX10 =
 "functions_e.html":[1,3,0,5],
 "functions_enum.html":[1,3,3],
 "functions_f.html":[1,3,0,6],
-"functions_func.html":[1,3,1,0],
 "functions_func.html":[1,3,1],
+"functions_func.html":[1,3,1,0],
 "functions_func_b.html":[1,3,1,1],
 "functions_func_c.html":[1,3,1,2],
 "functions_func_d.html":[1,3,1,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX10 =
 "interfaceCqrs_1_1Commands_1_1ICommandValidator_a8ac558179848dcb0ee56d2c3e7ad8cd9.html#a8ac558179848dcb0ee56d2c3e7ad8cd9":[1,0,0,5,8,0],
 "interfaceCqrs_1_1Commands_1_1ICommand_a79acca2013a08295cef32f1917d97e96.html#a79acca2013a08295cef32f1917d97e96":[1,0,0,5,2,1],
 "interfaceCqrs_1_1Commands_1_1ICommand_a8b207da81f36bd4426e83e2ec948eb49.html#a8b207da81f36bd4426e83e2ec948eb49":[1,0,0,5,2,0],
-"interfaceCqrs_1_1Commands_1_1IPublishAndWaitCommandPublisher.html":[1,0,0,5,9],
-"interfaceCqrs_1_1Commands_1_1IPublishAndWaitCommandPublisher_a02ef39482cb50e6e15e06144adca1ed5.html#a02ef39482cb50e6e15e06144adca1ed5":[1,0,0,5,9,2],
-"interfaceCqrs_1_1Commands_1_1IPublishAndWaitCommandPublisher_a0460fc2091d52ba3463973fea5028bc6.html#a0460fc2091d52ba3463973fea5028bc6":[1,0,0,5,9,5]
+"interfaceCqrs_1_1Commands_1_1IPublishAndWaitCommandPublisher.html":[1,0,0,5,9]
 };
