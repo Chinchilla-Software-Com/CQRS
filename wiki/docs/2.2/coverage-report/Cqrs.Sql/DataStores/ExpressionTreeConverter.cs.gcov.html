@@ -11,7 +11,7 @@
 <body>
 
   <table width="100%" border=0 cellspacing=0 cellpadding=0>
-    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
     <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
 
     <tr>
@@ -27,17 +27,17 @@
             <td width="15%" class="headerCovTableHead">Coverage</td>
           </tr>
           <tr>
-            <td class="headerItem">Test:</td>
-            <td class="headerValue">doc-coverage.info</td>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
             <td></td>
-            <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerItem">Artefacts:</td>
             <td class="headerCovTableEntry">7</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-26</td>
+            <td class="headerValue">2017-07-28</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -56,71 +56,102 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       1 </span>            : using System;
-<span class="lineNum">       2 </span>            : using System.Collections.Generic;
-<span class="lineNum">       3 </span>            : using System.Linq;
-<span class="lineNum">       4 </span>            : using System.Linq.Expressions;
-<span class="lineNum">       5 </span>            : using System.Reflection;
-<span class="lineNum">       6 </span>            : 
-<span class="lineNum">       7 </span>            : namespace Cqrs.Sql.DataStores
-<span class="lineNum">       8 </span>            : {
-<span class="lineNum">       9 </span>            :         public abstract class ExpressionTreeConverter&lt;TA, TB&gt; : ExpressionVisitor, IExpressionTreeConverter
-<span class="lineNum">      10 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      11 </span>            :                 private readonly Dictionary&lt;ParameterExpression, ParameterExpression&gt; _parameters = new Dictionary&lt;ParameterExpression, ParameterExpression&gt;();
-<span class="lineNum">      12 </span>            : 
-<span class="lineNum">      13 </span>            :                 private readonly Dictionary&lt;MemberInfo, LambdaExpression&gt; _mappings;
+<span class="lineNum">       1 </span>            : #region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Linq;
+<span class="lineNum">      12 </span>            : using System.Linq.Expressions;
+<span class="lineNum">      13 </span>            : using System.Reflection;
 <span class="lineNum">      14 </span>            : 
-<span class="lineNum">      15 </span><span class="lineNoCov">          0 :                 protected ExpressionTreeConverter(Dictionary&lt;MemberInfo, LambdaExpression&gt; mappings)</span>
-<span class="lineNum">      16 </span>            :                 {
-<span class="lineNum">      17 </span>            :                         _mappings = mappings;
-<span class="lineNum">      18 </span>            :                 }
-<span class="lineNum">      19 </span>            : 
-<span class="lineNum">      20 </span><span class="lineNoCov">          0 :                 protected ExpressionTreeConverter()</span>
-<span class="lineNum">      21 </span>            :                 {
-<span class="lineNum">      22 </span>            :                         _mappings = GetMappings();
-<span class="lineNum">      23 </span>            :                 }
-<span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span><span class="lineNoCov">          0 :                 public abstract Dictionary&lt;MemberInfo, LambdaExpression&gt; GetMappings();</span>
-<span class="lineNum">      26 </span>            : 
-<span class="lineNum">      27 </span><span class="lineNoCov">          0 :                 protected override Expression VisitParameter(ParameterExpression node)</span>
-<span class="lineNum">      28 </span>            :                 {
-<span class="lineNum">      29 </span>            :                         if (node.Type == typeof(TA))
-<span class="lineNum">      30 </span>            :                         {
-<span class="lineNum">      31 </span>            :                                 ParameterExpression parameter;
-<span class="lineNum">      32 </span>            :                                 if (!_parameters.TryGetValue(node, out parameter))
-<span class="lineNum">      33 </span>            :                                 {
-<span class="lineNum">      34 </span>            :                                         _parameters.Add(node, parameter = Expression.Parameter(typeof(TB), node.Name));
-<span class="lineNum">      35 </span>            :                                 }
-<span class="lineNum">      36 </span>            :                                 return parameter;
-<span class="lineNum">      37 </span>            :                         }
-<span class="lineNum">      38 </span>            :                         return node;
-<span class="lineNum">      39 </span>            :                 }
-<span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span><span class="lineNoCov">          0 :                 protected override Expression VisitMember(MemberExpression node)</span>
-<span class="lineNum">      42 </span>            :                 {
-<span class="lineNum">      43 </span>            :                         if (node.Expression == null || node.Expression.Type != typeof(TA))
-<span class="lineNum">      44 </span>            :                                 return base.VisitMember(node);
-<span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span>            :                         Expression expression = Visit(node.Expression);
-<span class="lineNum">      47 </span>            :                         if (expression.Type != typeof(TB))
-<span class="lineNum">      48 </span>            :                                 throw new Exception(&quot;Whoops&quot;);
-<span class="lineNum">      49 </span>            : 
-<span class="lineNum">      50 </span>            :                         LambdaExpression lambdaExpression;
-<span class="lineNum">      51 </span>            :                         if (_mappings.TryGetValue(node.Member, out lambdaExpression))
-<span class="lineNum">      52 </span>            :                                 return new SimpleExpressionReplacer(lambdaExpression.Parameters.Single(), expression).Visit(lambdaExpression.Body);
-<span class="lineNum">      53 </span>            : 
-<span class="lineNum">      54 </span>            :                         return Expression.Property(expression, node.Member.Name);
-<span class="lineNum">      55 </span>            :                 }
-<span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span><span class="lineNoCov">          0 :                 protected override Expression VisitLambda&lt;T&gt;(Expression&lt;T&gt; node)</span>
-<span class="lineNum">      58 </span>            :                 {
-<span class="lineNum">      59 </span>            :                         return Expression.Lambda(
-<span class="lineNum">      60 </span>            :                                 Visit(node.Body),
-<span class="lineNum">      61 </span>            :                                 node.Parameters.Select(Visit).Cast&lt;ParameterExpression&gt;()
-<span class="lineNum">      62 </span>            :                                 );
+<span class="lineNum">      15 </span>            : namespace Cqrs.Sql.DataStores
+<span class="lineNum">      16 </span>            : {
+<span class="lineNum">      17 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      18 </span>            :         /// Converts &lt;see cref=&quot;Expression&quot;/&gt; trees.
+<span class="lineNum">      19 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      20 </span>            :         public abstract class ExpressionTreeConverter&lt;TA, TB&gt; : ExpressionVisitor, IExpressionTreeConverter
+<span class="lineNum">      21 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      22 </span>            :                 private readonly Dictionary&lt;ParameterExpression, ParameterExpression&gt; _parameters = new Dictionary&lt;ParameterExpression, ParameterExpression&gt;();
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            :                 private readonly Dictionary&lt;MemberInfo, LambdaExpression&gt; _mappings;
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// Instantiates a new instance of the &lt;see cref=&quot;ExpressionTreeConverter{TA,TB}&quot;/&gt; class
+<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      29 </span><span class="lineCov">          1 :                 protected ExpressionTreeConverter(Dictionary&lt;MemberInfo, LambdaExpression&gt; mappings)</span>
+<span class="lineNum">      30 </span>            :                 {
+<span class="lineNum">      31 </span>            :                         _mappings = mappings;
+<span class="lineNum">      32 </span>            :                 }
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      35 </span>            :                 /// Instantiates a new instance of the &lt;see cref=&quot;ExpressionTreeConverter{TA,TB}&quot;/&gt; class
+<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      37 </span><span class="lineCov">          1 :                 protected ExpressionTreeConverter()</span>
+<span class="lineNum">      38 </span>            :                 {
+<span class="lineNum">      39 </span>            :                         _mappings = GetMappings();
+<span class="lineNum">      40 </span>            :                 }
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      43 </span>            :                 /// A collection of &lt;see cref=&quot;LambdaExpression&quot;/&gt; grouped by &lt;see cref=&quot;MemberInfo&quot;/&gt;.
+<span class="lineNum">      44 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      45 </span><span class="lineCov">          1 :                 public abstract Dictionary&lt;MemberInfo, LambdaExpression&gt; GetMappings();</span>
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      48 </span>            :                 /// If the &lt;paramref name=&quot;node&quot;/&gt; if of &lt;see cref=&quot;Type&quot;/&gt; &lt;typeparamref name=&quot;TA&quot;/&gt;
+<span class="lineNum">      49 </span>            :                 /// A &lt;see cref=&quot;ParameterExpression&quot;/&gt; of &lt;see cref=&quot;Type&quot;/&gt; &lt;typeparamref name=&quot;TB&quot;/&gt; will to created with the same name.
+<span class="lineNum">      50 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      51 </span><span class="lineCov">          1 :                 protected override Expression VisitParameter(ParameterExpression node)</span>
+<span class="lineNum">      52 </span>            :                 {
+<span class="lineNum">      53 </span>            :                         if (node.Type == typeof(TA))
+<span class="lineNum">      54 </span>            :                         {
+<span class="lineNum">      55 </span>            :                                 ParameterExpression parameter;
+<span class="lineNum">      56 </span>            :                                 if (!_parameters.TryGetValue(node, out parameter))
+<span class="lineNum">      57 </span>            :                                 {
+<span class="lineNum">      58 </span>            :                                         _parameters.Add(node, parameter = Expression.Parameter(typeof(TB), node.Name));
+<span class="lineNum">      59 </span>            :                                 }
+<span class="lineNum">      60 </span>            :                                 return parameter;
+<span class="lineNum">      61 </span>            :                         }
+<span class="lineNum">      62 </span>            :                         return node;
 <span class="lineNum">      63 </span>            :                 }
-<span class="lineNum">      64 </span>            :         }
-<span class="lineNum">      65 </span>            : }
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      66 </span>            :                 /// If the &lt;see cref=&quot;MemberExpression.Member&quot;/&gt; of the provided &lt;paramref name=&quot;node&quot;/&gt; matches a mapping in 
+<span class="lineNum">      67 </span>            :                 /// &lt;see cref=&quot;GetMappings&quot;/&gt;, then that mapping is executed.
+<span class="lineNum">      68 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      69 </span><span class="lineCov">          1 :                 protected override Expression VisitMember(MemberExpression node)</span>
+<span class="lineNum">      70 </span>            :                 {
+<span class="lineNum">      71 </span>            :                         if (node.Expression == null || node.Expression.Type != typeof(TA))
+<span class="lineNum">      72 </span>            :                                 return base.VisitMember(node);
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :                         Expression expression = Visit(node.Expression);
+<span class="lineNum">      75 </span>            :                         if (expression.Type != typeof(TB))
+<span class="lineNum">      76 </span>            :                                 throw new Exception(&quot;Whoops&quot;);
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                         LambdaExpression lambdaExpression;
+<span class="lineNum">      79 </span>            :                         if (_mappings.TryGetValue(node.Member, out lambdaExpression))
+<span class="lineNum">      80 </span>            :                                 return new SimpleExpressionReplacer(lambdaExpression.Parameters.Single(), expression).Visit(lambdaExpression.Body);
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                         return Expression.Property(expression, node.Member.Name);
+<span class="lineNum">      83 </span>            :                 }
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      86 </span>            :                 /// Visits the children of the &lt;paramref name=&quot;node&quot;/&gt;.
+<span class="lineNum">      87 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      88 </span><span class="lineCov">          1 :                 protected override Expression VisitLambda&lt;T&gt;(Expression&lt;T&gt; node)</span>
+<span class="lineNum">      89 </span>            :                 {
+<span class="lineNum">      90 </span>            :                         return Expression.Lambda(
+<span class="lineNum">      91 </span>            :                                 Visit(node.Body),
+<span class="lineNum">      92 </span>            :                                 node.Parameters.Select(Visit).Cast&lt;ParameterExpression&gt;()
+<span class="lineNum">      93 </span>            :                                 );
+<span class="lineNum">      94 </span>            :                 }
+<span class="lineNum">      95 </span>            :         }
+<span class="lineNum">      96 </span>            : }
 </pre>
       </td>
     </tr>

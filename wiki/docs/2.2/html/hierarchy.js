@@ -364,7 +364,7 @@ var hierarchy =
         [ "Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore< TAuthenticationToken >", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore.html", null ],
         [ "Cqrs.Events.MemoryCacheEventStore< TAuthenticationToken >", "classCqrs_1_1Events_1_1MemoryCacheEventStore.html", null ],
         [ "Cqrs.Events.SqlEventStore< TAuthenticationToken >", "classCqrs_1_1Events_1_1SqlEventStore.html", [
-          [ "Cqrs.Sql.Events.ReplicatedSqlEventStore< TAuthenticationToken >", "classCqrs_1_1Sql_1_1Events_1_1ReplicatedSqlEventStore.html", null ]
+          [ "Cqrs.Events.ReplicatedSqlEventStore< TAuthenticationToken >", "classCqrs_1_1Events_1_1ReplicatedSqlEventStore.html", null ]
         ] ],
         [ "Cqrs.MongoDB.Events.MongoDbEventStore< TAuthenticationToken >", "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore.html", null ]
       ] ],

@@ -11,7 +11,7 @@
 <body>
 
   <table width="100%" border=0 cellspacing=0 cellpadding=0>
-    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
     <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
 
     <tr>
@@ -27,17 +27,17 @@
             <td width="15%" class="headerCovTableHead">Coverage</td>
           </tr>
           <tr>
-            <td class="headerItem">Test:</td>
-            <td class="headerValue">doc-coverage.info</td>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
             <td></td>
-            <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerItem">Artefacts:</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-26</td>
+            <td class="headerValue">2017-07-28</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -56,28 +56,45 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       1 </span>            : using System.Linq.Expressions;
-<span class="lineNum">       2 </span>            : 
-<span class="lineNum">       3 </span>            : namespace Cqrs.Sql.DataStores
-<span class="lineNum">       4 </span>            : {
-<span class="lineNum">       5 </span>            :         public class SimpleExpressionReplacer : ExpressionVisitor
-<span class="lineNum">       6 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">       7 </span>            :                 private readonly Expression _replacement;
+<span class="lineNum">       1 </span>            : #region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
 <span class="lineNum">       8 </span>            : 
-<span class="lineNum">       9 </span>            :                 private readonly Expression _toFind;
+<span class="lineNum">       9 </span>            : using System.Linq.Expressions;
 <span class="lineNum">      10 </span>            : 
-<span class="lineNum">      11 </span><span class="lineNoCov">          0 :                 public override Expression Visit(Expression node)</span>
-<span class="lineNum">      12 </span>            :                 {
-<span class="lineNum">      13 </span>            :                         return node == _toFind ? _replacement : base.Visit(node);
-<span class="lineNum">      14 </span>            :                 }
-<span class="lineNum">      15 </span>            : 
-<span class="lineNum">      16 </span><span class="lineNoCov">          0 :                 public SimpleExpressionReplacer(Expression toFind, Expression replacement)</span>
-<span class="lineNum">      17 </span>            :                 {
-<span class="lineNum">      18 </span>            :                         _toFind = toFind;
-<span class="lineNum">      19 </span>            :                         _replacement = replacement;
-<span class="lineNum">      20 </span>            :                 }
-<span class="lineNum">      21 </span>            :         }
-<span class="lineNum">      22 </span>            : }
+<span class="lineNum">      11 </span>            : namespace Cqrs.Sql.DataStores
+<span class="lineNum">      12 </span>            : {
+<span class="lineNum">      13 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      14 </span>            :         /// Replaces or rewriter expression trees.
+<span class="lineNum">      15 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      16 </span>            :         public class SimpleExpressionReplacer : ExpressionVisitor
+<span class="lineNum">      17 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      18 </span>            :                 private readonly Expression _replacement;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            :                 private readonly Expression _toFind;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :                 /// If the &lt;see cref=&quot;Expression&quot;/&gt; to find (in the constructor) returns true, then the replacement &lt;see cref=&quot;Expression&quot;/&gt; is returned.
+<span class="lineNum">      24 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      25 </span><span class="lineCov">          1 :                 public override Expression Visit(Expression node)</span>
+<span class="lineNum">      26 </span>            :                 {
+<span class="lineNum">      27 </span>            :                         return node == _toFind ? _replacement : base.Visit(node);
+<span class="lineNum">      28 </span>            :                 }
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// Instantiates a new instance of the &lt;see cref=&quot;SimpleExpressionReplacer&quot;/&gt; class
+<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      33 </span><span class="lineCov">          1 :                 public SimpleExpressionReplacer(Expression toFind, Expression replacement)</span>
+<span class="lineNum">      34 </span>            :                 {
+<span class="lineNum">      35 </span>            :                         _toFind = toFind;
+<span class="lineNum">      36 </span>            :                         _replacement = replacement;
+<span class="lineNum">      37 </span>            :                 }
+<span class="lineNum">      38 </span>            :         }
+<span class="lineNum">      39 </span>            : }
 </pre>
       </td>
     </tr>

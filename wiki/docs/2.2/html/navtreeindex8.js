@@ -1,5 +1,9 @@
 var NAVTREEINDEX8 =
 {
+"classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration.html":[1,0,0,20,19],
+"classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_a22cf32559867b0a067950c4ce35504b2.html#a22cf32559867b0a067950c4ce35504b2":[1,0,0,20,19,4],
+"classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_a3f0ed5ca3b65b2ca5a6c31c1e4d5e4ba.html#a3f0ed5ca3b65b2ca5a6c31c1e4d5e4ba":[1,0,0,20,19,3],
+"classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_a7e9e65b16d8f64da60e160ce60628e90.html#a7e9e65b16d8f64da60e160ce60628e90":[1,0,0,20,19,2],
 "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_a8a764a7cebaf9ebdcdc1176a9fba0b3a.html#a8a764a7cebaf9ebdcdc1176a9fba0b3a":[1,0,0,20,19,5],
 "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_ac6853a244c867a60a64a223f6bcb6a55.html#ac6853a244c867a60a64a223f6bcb6a55":[1,0,0,20,19,1],
 "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_acf6a145eb88c5d98b31a541cfb1fb152.html#acf6a145eb88c5d98b31a541cfb1fb152":[1,0,0,20,19,0],
@@ -59,10 +63,6 @@ var NAVTREEINDEX8 =
 "classCqrs_1_1Sql_1_1DataStores_1_1SqlDataStore_ac142d009f768519891ca12185a2e6191.html#ac142d009f768519891ca12185a2e6191":[1,0,0,22,0,4,4],
 "classCqrs_1_1Sql_1_1DataStores_1_1SqlDataStore_ada15bdc873b3e4be8ff9a734d84562fb.html#ada15bdc873b3e4be8ff9a734d84562fb":[1,0,0,22,0,4,6],
 "classCqrs_1_1Sql_1_1DataStores_1_1SqlDataStore_af732efd5901590c769e2ace2a4f4f913.html#af732efd5901590c769e2ace2a4f4f913":[1,0,0,22,0,4,16],
-"classCqrs_1_1Sql_1_1Events_1_1ReplicatedSqlEventStore.html":[1,0,0,22,1,0],
-"classCqrs_1_1Sql_1_1Events_1_1ReplicatedSqlEventStore_a51c9b1329327e456a251aa2d910fc7ae.html#a51c9b1329327e456a251aa2d910fc7ae":[1,0,0,22,1,0,1],
-"classCqrs_1_1Sql_1_1Events_1_1ReplicatedSqlEventStore_aa00d17e2b147ebf7d2aff5ef1a543c07.html#aa00d17e2b147ebf7d2aff5ef1a543c07":[1,0,0,22,1,0,0],
-"classCqrs_1_1Sql_1_1Events_1_1ReplicatedSqlEventStore_af7275b09a11b2c7da447019636a5e0f9.html#af7275b09a11b2c7da447019636a5e0f9":[1,0,0,22,1,0,2],
 "classCqrs_1_1Tests_1_1Bus_1_1When__publishing__events.html":[1,0,0,23,0,0],
 "classCqrs_1_1Tests_1_1Bus_1_1When__publishing__events_a61de6fab7f7e2c3b972dba53308ec8ef.html#a61de6fab7f7e2c3b972dba53308ec8ef":[1,0,0,23,0,0,1],
 "classCqrs_1_1Tests_1_1Bus_1_1When__publishing__events_addb2aa584a2bfe5c309e23bea1294fd8.html#addb2aa584a2bfe5c309e23bea1294fd8":[1,0,0,23,0,0,0],

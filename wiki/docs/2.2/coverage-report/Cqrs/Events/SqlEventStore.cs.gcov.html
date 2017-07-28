@@ -11,7 +11,7 @@
 <body>
 
   <table width="100%" border=0 cellspacing=0 cellpadding=0>
-    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
     <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
 
     <tr>
@@ -27,17 +27,17 @@
             <td width="15%" class="headerCovTableHead">Coverage</td>
           </tr>
           <tr>
-            <td class="headerItem">Test:</td>
-            <td class="headerValue">doc-coverage.info</td>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
             <td></td>
-            <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">4</td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">5</td>
             <td class="headerCovTableEntry">8</td>
-            <td class="headerCovTableEntryLo">50.0 %</td>
+            <td class="headerCovTableEntryLo">62.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-26</td>
+            <td class="headerValue">2017-07-28</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -71,145 +71,162 @@
 <span class="lineNum">      13 </span>            : using cdmdotnet.Logging;
 <span class="lineNum">      14 </span>            : using Cqrs.Configuration;
 <span class="lineNum">      15 </span>            : using Cqrs.DataStores;
-<span class="lineNum">      16 </span>            : using Cqrs.Entities;
-<span class="lineNum">      17 </span>            : 
-<span class="lineNum">      18 </span>            : namespace Cqrs.Events
-<span class="lineNum">      19 </span>            : {
-<span class="lineNum">      20 </span>            :         /// &lt;summary&gt;
-<span class="lineNum">      21 </span>            :         /// A simplified SqlServer based &lt;see cref=&quot;EventStore{TAuthenticationToken}&quot;/&gt; that uses LinqToSql and follows a rigid schema.
-<span class="lineNum">      22 </span>            :         /// &lt;/summary&gt;
-<span class="lineNum">      23 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
-<span class="lineNum">      24 </span>            :         public class SqlEventStore&lt;TAuthenticationToken&gt; : EventStore&lt;TAuthenticationToken&gt; 
-<span class="lineNum">      25 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      26 </span>            :                 internal const string SqlEventStoreDbFileOrServerOrConnectionApplicationKey = @&quot;SqlEventStoreDbFileOrServerOrConnection&quot;;
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span>            :                 internal const string SqlEventStoreConnectionNameApplicationKey = @&quot;Cqrs.SqlEventStore.ConnectionStringName&quot;;
+<span class="lineNum">      16 </span>            : using Cqrs.Domain;
+<span class="lineNum">      17 </span>            : using Cqrs.Entities;
+<span class="lineNum">      18 </span>            : using Cqrs.Messages;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : namespace Cqrs.Events
+<span class="lineNum">      21 </span>            : {
+<span class="lineNum">      22 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :         /// A simplified SqlServer based &lt;see cref=&quot;EventStore{TAuthenticationToken}&quot;/&gt; that uses LinqToSql and follows a rigid schema.
+<span class="lineNum">      24 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      25 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      26 </span>            :         public class SqlEventStore&lt;TAuthenticationToken&gt; : EventStore&lt;TAuthenticationToken&gt; 
+<span class="lineNum">      27 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      28 </span>            :                 internal const string SqlEventStoreDbFileOrServerOrConnectionApplicationKey = @&quot;SqlEventStoreDbFileOrServerOrConnection&quot;;
 <span class="lineNum">      29 </span>            : 
-<span class="lineNum">      30 </span>            :                 internal const string OldSqlEventStoreGetByCorrelationIdCommandTimeout = @&quot;SqlEventStoreGetByCorrelationIdCommandTimeout&quot;;
+<span class="lineNum">      30 </span>            :                 internal const string SqlEventStoreConnectionNameApplicationKey = @&quot;Cqrs.SqlEventStore.ConnectionStringName&quot;;
 <span class="lineNum">      31 </span>            : 
-<span class="lineNum">      32 </span>            :                 internal const string SqlEventStoreGetByCorrelationIdCommandTimeout = @&quot;Cqrs.SqlEventStore.GetByCorrelationId.CommandTimeout&quot;;
+<span class="lineNum">      32 </span>            :                 internal const string OldSqlEventStoreGetByCorrelationIdCommandTimeout = @&quot;SqlEventStoreGetByCorrelationIdCommandTimeout&quot;;
 <span class="lineNum">      33 </span>            : 
-<span class="lineNum">      34 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      34 </span>            :                 internal const string SqlEventStoreGetByCorrelationIdCommandTimeout = @&quot;Cqrs.SqlEventStore.GetByCorrelationId.CommandTimeout&quot;;
 <span class="lineNum">      35 </span>            : 
-<span class="lineNum">      36 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      37 </span>            :                 /// Instantiate a new instance of the &lt;see cref=&quot;SqlEventStore{TAuthenticationToken}&quot;/&gt; class.
-<span class="lineNum">      38 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      39 </span><span class="lineCov">          1 :                 public SqlEventStore(IEventBuilder&lt;TAuthenticationToken&gt; eventBuilder, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)</span>
-<span class="lineNum">      40 </span>            :                         : base(eventBuilder, eventDeserialiser, logger)
-<span class="lineNum">      41 </span>            :                 {
-<span class="lineNum">      42 </span>            :                         ConfigurationManager = configurationManager;
-<span class="lineNum">      43 </span>            :                 }
-<span class="lineNum">      44 </span>            : 
-<span class="lineNum">      45 </span>            :                 #region Overrides of EventStore&lt;TAuthenticationToken&gt;
+<span class="lineNum">      36 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// Instantiate a new instance of the &lt;see cref=&quot;SqlEventStore{TAuthenticationToken}&quot;/&gt; class.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span><span class="lineCov">          1 :                 public SqlEventStore(IEventBuilder&lt;TAuthenticationToken&gt; eventBuilder, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)</span>
+<span class="lineNum">      42 </span>            :                         : base(eventBuilder, eventDeserialiser, logger)
+<span class="lineNum">      43 </span>            :                 {
+<span class="lineNum">      44 </span>            :                         ConfigurationManager = configurationManager;
+<span class="lineNum">      45 </span>            :                 }
 <span class="lineNum">      46 </span>            : 
-<span class="lineNum">      47 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
-<span class="lineNum">      48 </span>            :                 {
-<span class="lineNum">      49 </span>            :                         string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span>            :                         using (DataContext dbDataContext = CreateDbDataContext())
-<span class="lineNum">      52 </span>            :                         {
-<span class="lineNum">      53 </span>            :                                 IEnumerable&lt;EventData&gt; query = GetEventStoreTable(dbDataContext)
-<span class="lineNum">      54 </span>            :                                         .AsQueryable()
-<span class="lineNum">      55 </span>            :                                         .Where(eventData =&gt; eventData.AggregateId == streamName &amp;&amp; eventData.Version &gt; fromVersion)
-<span class="lineNum">      56 </span>            :                                         .OrderByDescending(eventData =&gt; eventData.Version);
-<span class="lineNum">      57 </span>            : 
-<span class="lineNum">      58 </span>            :                                 if (useLastEventOnly)
-<span class="lineNum">      59 </span>            :                                         query = query.AsQueryable().Take(1);
-<span class="lineNum">      60 </span>            : 
-<span class="lineNum">      61 </span>            :                                 return query
-<span class="lineNum">      62 </span>            :                                         .Select(EventDeserialiser.Deserialise)
-<span class="lineNum">      63 </span>            :                                         .ToList();
-<span class="lineNum">      64 </span>            :                         }
-<span class="lineNum">      65 </span>            :                 }
+<span class="lineNum">      47 </span>            :                 #region Overrides of EventStore&lt;TAuthenticationToken&gt;
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      50 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
+<span class="lineNum">      51 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      52 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">      53 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      54 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      55 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
+<span class="lineNum">      56 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
+<span class="lineNum">      57 </span>            :                 {
+<span class="lineNum">      58 </span>            :                         string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :                         using (DataContext dbDataContext = CreateDbDataContext())
+<span class="lineNum">      61 </span>            :                         {
+<span class="lineNum">      62 </span>            :                                 IEnumerable&lt;EventData&gt; query = GetEventStoreTable(dbDataContext)
+<span class="lineNum">      63 </span>            :                                         .AsQueryable()
+<span class="lineNum">      64 </span>            :                                         .Where(eventData =&gt; eventData.AggregateId == streamName &amp;&amp; eventData.Version &gt; fromVersion)
+<span class="lineNum">      65 </span>            :                                         .OrderByDescending(eventData =&gt; eventData.Version);
 <span class="lineNum">      66 </span>            : 
-<span class="lineNum">      67 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;EventData&gt; Get(Guid correlationId)</span>
-<span class="lineNum">      68 </span>            :                 {
-<span class="lineNum">      69 </span>            :                         using (DataContext dbDataContext = CreateDbDataContext())
-<span class="lineNum">      70 </span>            :                         {
-<span class="lineNum">      71 </span>            :                                 string commandTimeoutValue;
-<span class="lineNum">      72 </span>            :                                 int commandTimeout;
-<span class="lineNum">      73 </span>            :                                 bool found = ConfigurationManager.TryGetSetting(SqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue);
-<span class="lineNum">      74 </span>            :                                 if (!found)
-<span class="lineNum">      75 </span>            :                                         found = ConfigurationManager.TryGetSetting(OldSqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue);
-<span class="lineNum">      76 </span>            :                                 if (found &amp;&amp; int.TryParse(commandTimeoutValue, out commandTimeout))
-<span class="lineNum">      77 </span>            :                                         dbDataContext.CommandTimeout = commandTimeout;
-<span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span>            :                                 IEnumerable&lt;EventData&gt; query = GetEventStoreTable(dbDataContext)
-<span class="lineNum">      80 </span>            :                                         .AsQueryable()
-<span class="lineNum">      81 </span>            :                                         .Where(eventData =&gt; eventData.CorrelationId == correlationId)
-<span class="lineNum">      82 </span>            :                                         .OrderBy(eventData =&gt; eventData.Timestamp);
-<span class="lineNum">      83 </span>            : 
-<span class="lineNum">      84 </span>            :                                 return query.ToList();
-<span class="lineNum">      85 </span>            :                         }
-<span class="lineNum">      86 </span>            :                 }
-<span class="lineNum">      87 </span>            : 
-<span class="lineNum">      88 </span><span class="lineNoCov">          0 :                 protected override void PersistEvent(EventData eventData)</span>
-<span class="lineNum">      89 </span>            :                 {
-<span class="lineNum">      90 </span>            :                         using (DataContext dbDataContext = CreateDbDataContext())
-<span class="lineNum">      91 </span>            :                         {
-<span class="lineNum">      92 </span>            :                                 Add(dbDataContext, eventData);
-<span class="lineNum">      93 </span>            :                         }
-<span class="lineNum">      94 </span>            :                 }
-<span class="lineNum">      95 </span>            : 
-<span class="lineNum">      96 </span>            :                 #endregion
-<span class="lineNum">      97 </span>            : 
-<span class="lineNum">      98 </span><span class="lineNoCov">          0 :                 protected virtual DataContext CreateDbDataContext()</span>
-<span class="lineNum">      99 </span>            :                 {
-<span class="lineNum">     100 </span>            :                         string connectionStringKey;
-<span class="lineNum">     101 </span>            :                         string applicationKey;
-<span class="lineNum">     102 </span>            :                         if (!ConfigurationManager.TryGetSetting(SqlEventStoreConnectionNameApplicationKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
-<span class="lineNum">     103 </span>            :                         {
-<span class="lineNum">     104 </span>            :                                 if (!ConfigurationManager.TryGetSetting(SqlEventStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
-<span class="lineNum">     105 </span>            :                                 {
-<span class="lineNum">     106 </span>            :                                         if (!ConfigurationManager.TryGetSetting(SqlDataStore&lt;Entity&gt;.SqlDataStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
-<span class="lineNum">     107 </span>            :                                         {
-<span class="lineNum">     108 </span>            :                                                 throw new NullReferenceException(string.Format(&quot;No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.&quot;, SqlEventStoreConnectionNameApplicationKey));
-<span class="lineNum">     109 </span>            :                                         }
-<span class="lineNum">     110 </span>            :                                 }
-<span class="lineNum">     111 </span>            :                         }
-<span class="lineNum">     112 </span>            :                         else
-<span class="lineNum">     113 </span>            :                         {
-<span class="lineNum">     114 </span>            :                                 try
-<span class="lineNum">     115 </span>            :                                 {
-<span class="lineNum">     116 </span>            :                                         connectionStringKey = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey].ConnectionString;
-<span class="lineNum">     117 </span>            :                                 }
-<span class="lineNum">     118 </span>            :                                 catch (NullReferenceException exception)
-<span class="lineNum">     119 </span>            :                                 {
-<span class="lineNum">     120 </span>            :                                         throw new NullReferenceException(string.Format(&quot;No connection string setting named '{0}' was found in the configuration file with the SQL Event Store connection string.&quot;, applicationKey), exception);
-<span class="lineNum">     121 </span>            :                                 }
-<span class="lineNum">     122 </span>            :                         }
-<span class="lineNum">     123 </span>            :                         return new DataContext(connectionStringKey);
-<span class="lineNum">     124 </span>            :                 }
-<span class="lineNum">     125 </span>            : 
-<span class="lineNum">     126 </span><span class="lineNoCov">          0 :                 protected virtual Table&lt;EventData&gt; GetEventStoreTable(DataContext dbDataContext)</span>
-<span class="lineNum">     127 </span>            :                 {
-<span class="lineNum">     128 </span>            :                         // Get a typed table to run queries.
-<span class="lineNum">     129 </span>            :                         return dbDataContext.GetTable&lt;EventData&gt;();
-<span class="lineNum">     130 </span>            :                 }
-<span class="lineNum">     131 </span>            : 
-<span class="lineNum">     132 </span><span class="lineNoCov">          0 :                 protected virtual void Add(DataContext dbDataContext, EventData data)</span>
-<span class="lineNum">     133 </span>            :                 {
-<span class="lineNum">     134 </span>            :                         Logger.LogDebug(&quot;Adding data to the SQL eventstore database&quot;, &quot;SqlEventStore\\Add&quot;);
-<span class="lineNum">     135 </span>            :                         try
-<span class="lineNum">     136 </span>            :                         {
-<span class="lineNum">     137 </span>            :                                 DateTime start = DateTime.Now;
-<span class="lineNum">     138 </span>            :                                 GetEventStoreTable(dbDataContext).InsertOnSubmit(data);
-<span class="lineNum">     139 </span>            :                                 dbDataContext.SubmitChanges();
-<span class="lineNum">     140 </span>            :                                 DateTime end = DateTime.Now;
-<span class="lineNum">     141 </span>            :                                 Logger.LogDebug(string.Format(&quot;Adding data in the SQL eventstore database took {0}.&quot;, end - start), &quot;SqlEventStore\\Add&quot;);
-<span class="lineNum">     142 </span>            :                         }
-<span class="lineNum">     143 </span>            :                         catch (Exception exception)
-<span class="lineNum">     144 </span>            :                         {
-<span class="lineNum">     145 </span>            :                                 Logger.LogError(&quot;There was an issue persisting data to the SQL event store.&quot;, exception: exception);
-<span class="lineNum">     146 </span>            :                                 throw;
-<span class="lineNum">     147 </span>            :                         }
-<span class="lineNum">     148 </span>            :                         finally
-<span class="lineNum">     149 </span>            :                         {
-<span class="lineNum">     150 </span>            :                                 Logger.LogDebug(&quot;Adding data to the SQL eventstore database... Done&quot;, &quot;SqlEventStore\\Add&quot;);
-<span class="lineNum">     151 </span>            :                         }
-<span class="lineNum">     152 </span>            :                 }
-<span class="lineNum">     153 </span>            :         }
-<span class="lineNum">     154 </span>            : }
+<span class="lineNum">      67 </span>            :                                 if (useLastEventOnly)
+<span class="lineNum">      68 </span>            :                                         query = query.AsQueryable().Take(1);
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :                                 return query
+<span class="lineNum">      71 </span>            :                                         .Select(EventDeserialiser.Deserialise)
+<span class="lineNum">      72 </span>            :                                         .ToList();
+<span class="lineNum">      73 </span>            :                         }
+<span class="lineNum">      74 </span>            :                 }
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      77 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances for the given &lt;paramref name=&quot;correlationId&quot;/&gt;.
+<span class="lineNum">      78 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      79 </span>            :                 /// &lt;param name=&quot;correlationId&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances to retrieve.&lt;/param&gt;
+<span class="lineNum">      80 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;EventData&gt; Get(Guid correlationId)</span>
+<span class="lineNum">      81 </span>            :                 {
+<span class="lineNum">      82 </span>            :                         using (DataContext dbDataContext = CreateDbDataContext())
+<span class="lineNum">      83 </span>            :                         {
+<span class="lineNum">      84 </span>            :                                 string commandTimeoutValue;
+<span class="lineNum">      85 </span>            :                                 int commandTimeout;
+<span class="lineNum">      86 </span>            :                                 bool found = ConfigurationManager.TryGetSetting(SqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue);
+<span class="lineNum">      87 </span>            :                                 if (!found)
+<span class="lineNum">      88 </span>            :                                         found = ConfigurationManager.TryGetSetting(OldSqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue);
+<span class="lineNum">      89 </span>            :                                 if (found &amp;&amp; int.TryParse(commandTimeoutValue, out commandTimeout))
+<span class="lineNum">      90 </span>            :                                         dbDataContext.CommandTimeout = commandTimeout;
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            :                                 IEnumerable&lt;EventData&gt; query = GetEventStoreTable(dbDataContext)
+<span class="lineNum">      93 </span>            :                                         .AsQueryable()
+<span class="lineNum">      94 </span>            :                                         .Where(eventData =&gt; eventData.CorrelationId == correlationId)
+<span class="lineNum">      95 </span>            :                                         .OrderBy(eventData =&gt; eventData.Timestamp);
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :                                 return query.ToList();
+<span class="lineNum">      98 </span>            :                         }
+<span class="lineNum">      99 </span>            :                 }
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     102 </span>            :                 /// Persist the provided &lt;paramref name=&quot;eventData&quot;/&gt; into SQL Server.
+<span class="lineNum">     103 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     104 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;EventData&quot;/&gt; to persist.&lt;/param&gt;
+<span class="lineNum">     105 </span><span class="lineCov">          1 :                 protected override void PersistEvent(EventData eventData)</span>
+<span class="lineNum">     106 </span>            :                 {
+<span class="lineNum">     107 </span>            :                         using (DataContext dbDataContext = CreateDbDataContext())
+<span class="lineNum">     108 </span>            :                         {
+<span class="lineNum">     109 </span>            :                                 Add(dbDataContext, eventData);
+<span class="lineNum">     110 </span>            :                         }
+<span class="lineNum">     111 </span>            :                 }
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :                 #endregion
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                 protected virtual DataContext CreateDbDataContext()</span>
+<span class="lineNum">     116 </span>            :                 {
+<span class="lineNum">     117 </span>            :                         string connectionStringKey;
+<span class="lineNum">     118 </span>            :                         string applicationKey;
+<span class="lineNum">     119 </span>            :                         if (!ConfigurationManager.TryGetSetting(SqlEventStoreConnectionNameApplicationKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
+<span class="lineNum">     120 </span>            :                         {
+<span class="lineNum">     121 </span>            :                                 if (!ConfigurationManager.TryGetSetting(SqlEventStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
+<span class="lineNum">     122 </span>            :                                 {
+<span class="lineNum">     123 </span>            :                                         if (!ConfigurationManager.TryGetSetting(SqlDataStore&lt;Entity&gt;.SqlDataStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
+<span class="lineNum">     124 </span>            :                                         {
+<span class="lineNum">     125 </span>            :                                                 throw new NullReferenceException(string.Format(&quot;No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.&quot;, SqlEventStoreConnectionNameApplicationKey));
+<span class="lineNum">     126 </span>            :                                         }
+<span class="lineNum">     127 </span>            :                                 }
+<span class="lineNum">     128 </span>            :                         }
+<span class="lineNum">     129 </span>            :                         else
+<span class="lineNum">     130 </span>            :                         {
+<span class="lineNum">     131 </span>            :                                 try
+<span class="lineNum">     132 </span>            :                                 {
+<span class="lineNum">     133 </span>            :                                         connectionStringKey = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey].ConnectionString;
+<span class="lineNum">     134 </span>            :                                 }
+<span class="lineNum">     135 </span>            :                                 catch (NullReferenceException exception)
+<span class="lineNum">     136 </span>            :                                 {
+<span class="lineNum">     137 </span>            :                                         throw new NullReferenceException(string.Format(&quot;No connection string setting named '{0}' was found in the configuration file with the SQL Event Store connection string.&quot;, applicationKey), exception);
+<span class="lineNum">     138 </span>            :                                 }
+<span class="lineNum">     139 </span>            :                         }
+<span class="lineNum">     140 </span>            :                         return new DataContext(connectionStringKey);
+<span class="lineNum">     141 </span>            :                 }
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineNoCov">          0 :                 protected virtual Table&lt;EventData&gt; GetEventStoreTable(DataContext dbDataContext)</span>
+<span class="lineNum">     144 </span>            :                 {
+<span class="lineNum">     145 </span>            :                         // Get a typed table to run queries.
+<span class="lineNum">     146 </span>            :                         return dbDataContext.GetTable&lt;EventData&gt;();
+<span class="lineNum">     147 </span>            :                 }
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :                 protected virtual void Add(DataContext dbDataContext, EventData data)</span>
+<span class="lineNum">     150 </span>            :                 {
+<span class="lineNum">     151 </span>            :                         Logger.LogDebug(&quot;Adding data to the SQL eventstore database&quot;, &quot;SqlEventStore\\Add&quot;);
+<span class="lineNum">     152 </span>            :                         try
+<span class="lineNum">     153 </span>            :                         {
+<span class="lineNum">     154 </span>            :                                 DateTime start = DateTime.Now;
+<span class="lineNum">     155 </span>            :                                 GetEventStoreTable(dbDataContext).InsertOnSubmit(data);
+<span class="lineNum">     156 </span>            :                                 dbDataContext.SubmitChanges();
+<span class="lineNum">     157 </span>            :                                 DateTime end = DateTime.Now;
+<span class="lineNum">     158 </span>            :                                 Logger.LogDebug(string.Format(&quot;Adding data in the SQL eventstore database took {0}.&quot;, end - start), &quot;SqlEventStore\\Add&quot;);
+<span class="lineNum">     159 </span>            :                         }
+<span class="lineNum">     160 </span>            :                         catch (Exception exception)
+<span class="lineNum">     161 </span>            :                         {
+<span class="lineNum">     162 </span>            :                                 Logger.LogError(&quot;There was an issue persisting data to the SQL event store.&quot;, exception: exception);
+<span class="lineNum">     163 </span>            :                                 throw;
+<span class="lineNum">     164 </span>            :                         }
+<span class="lineNum">     165 </span>            :                         finally
+<span class="lineNum">     166 </span>            :                         {
+<span class="lineNum">     167 </span>            :                                 Logger.LogDebug(&quot;Adding data to the SQL eventstore database... Done&quot;, &quot;SqlEventStore\\Add&quot;);
+<span class="lineNum">     168 </span>            :                         }
+<span class="lineNum">     169 </span>            :                 }
+<span class="lineNum">     170 </span>            :         }
+<span class="lineNum">     171 </span>            : }
 </pre>
       </td>
     </tr>
