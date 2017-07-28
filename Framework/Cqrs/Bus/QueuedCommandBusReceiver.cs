@@ -15,6 +15,7 @@ using Cqrs.Authentication;
 using Cqrs.Commands;
 using cdmdotnet.Logging;
 using Cqrs.Configuration;
+using Cqrs.Exceptions;
 using Cqrs.Messages;
 
 namespace Cqrs.Bus

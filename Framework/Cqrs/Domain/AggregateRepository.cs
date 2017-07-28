@@ -16,16 +16,36 @@ using Cqrs.Events;
 
 namespace Cqrs.Domain
 {
+	/// <summary>
+	/// Provides basic repository methods for operations with instances of <see cref="IAggregateRoot{TAuthenticationToken}"/> using an <see cref="IEventStore{TAuthenticationToken}"/>
+	/// that also publishes events once saved.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of authentication token.</typeparam>
 	public class AggregateRepository<TAuthenticationToken> : IAggregateRepository<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="IEventStore{TAuthenticationToken}"/> used to store and retrieve events from.
+		/// </summary>
 		protected IEventStore<TAuthenticationToken> EventStore { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the Publisher used to publish events on once saved into the <see cref="EventStore"/>.
+		/// </summary>
 		protected IEventPublisher<TAuthenticationToken> Publisher { get; private set; }
 
+		/// <summary>
+		/// Gets or set the <see cref="IAggregateFactory"/>.
+		/// </summary>
 		protected IAggregateFactory AggregateFactory { get; private set; }
 
+		/// <summary>
+		/// Gets or set the <see cref="ICorrelationIdHelper"/>.
+		/// </summary>
 		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AggregateRepository{TAuthenticationToken}"/>
+		/// </summary>
 		public AggregateRepository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICorrelationIdHelper correlationIdHelper)
 		{
 			EventStore = eventStore;
@@ -34,6 +54,12 @@ namespace Cqrs.Domain
 			AggregateFactory = aggregateFactory;
 		}
 
+		/// <summary>
+		/// Save and persist the provided <paramref name="aggregate"/>, optionally providing the version number the <see cref="IAggregateRoot{TAuthenticationToken}"/> is expected to be at.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
+		/// <param name="aggregate">The <see cref="IAggregateRoot{TAuthenticationToken}"/> to save and persist.</param>
+		/// <param name="expectedVersion">The version number the <see cref="IAggregateRoot{TAuthenticationToken}"/> is expected to be at.</param>
 		public virtual void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
@@ -74,17 +100,34 @@ namespace Cqrs.Domain
 				PublishEvent(@event);
 		}
 
+		/// <summary>
+		/// Publish the saved <paramref name="event"/>.
+		/// </summary>
 		protected virtual void PublishEvent(IEvent<TAuthenticationToken> @event)
 		{
 			Publisher.Publish(@event);
 		}
 
+		/// <summary>
+		/// Retrieves an <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <typeparamref name="TAggregateRoot"/>.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
+		/// <param name="aggregateId">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to retrieve.</param>
+		/// <param name="events">
+		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
+		/// </param>
 		public virtual TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			return LoadAggregate<TAggregateRoot>(aggregateId, events);
 		}
 
+		/// <summary>
+		/// Calls <see cref="IAggregateFactory.Create"/> to get a, <typeparamref name="TAggregateRoot"/>.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
+		/// <param name="id">The id of the <typeparamref name="TAggregateRoot"/> to create.</param>
 		protected virtual TAggregateRoot CreateAggregate<TAggregateRoot>(Guid id)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
@@ -93,6 +136,15 @@ namespace Cqrs.Domain
 			return aggregate;
 		}
 
+		/// <summary>
+		/// Calls <see cref="IAggregateFactory.Create"/> to get a, <typeparamref name="TAggregateRoot"/> and then calls <see cref="LoadAggregateHistory{TAggregateRoot}"/>.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
+		/// <param name="id">The id of the <typeparamref name="TAggregateRoot"/> to create.</param>
+		/// <param name="events">
+		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
+		/// </param>
 		protected virtual TAggregateRoot LoadAggregate<TAggregateRoot>(Guid id, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
@@ -102,6 +154,17 @@ namespace Cqrs.Domain
 			return aggregate;
 		}
 
+		/// <summary>
+		/// if <paramref name="events"/> is null, loads the events from <see cref="EventStore"/>, checks for duplicates and then
+		/// rehydrates the <paramref name="aggregate"/> with the events.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
+		/// <param name="aggregate">The <typeparamref name="TAggregateRoot"/> to rehydrate.</param>
+		/// <param name="events">
+		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
+		/// </param>
+		/// <param name="throwExceptionOnNoEvents">If true with throw an instance of <see cref="AggregateNotFoundException{TAggregateRoot,TAuthenticationToken}"/> if no aggregate events or provided or found in the <see cref="EventStore"/>.</param>
 		public virtual void LoadAggregateHistory<TAggregateRoot>(TAggregateRoot aggregate, IList<IEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{

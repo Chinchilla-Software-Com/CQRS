@@ -6,6 +6,7 @@ using cdmdotnet.Logging.Configuration;
 using cdmdotnet.StateManagement.Threaded;
 using Cqrs.Commands;
 using Cqrs.Configuration;
+using Cqrs.Exceptions;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
 

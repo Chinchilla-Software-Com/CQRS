@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cqrs.Commands;
 using Cqrs.Events;
+using Cqrs.Exceptions;
 using Cqrs.Infrastructure;
 using Cqrs.Messages;
 

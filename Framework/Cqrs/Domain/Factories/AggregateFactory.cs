@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Reflection;
 using cdmdotnet.Logging;
 using Cqrs.Configuration;
@@ -6,23 +14,47 @@ using Cqrs.Domain.Exceptions;
 
 namespace Cqrs.Domain.Factories
 {
+	/// <summary>
+	/// A factory for creating instances of aggregates.
+	/// </summary>
 	public class AggregateFactory : IAggregateFactory
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="IDependencyResolver"/> used.
+		/// </summary>
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/> used.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AggregateFactory"/>.
+		/// </summary>
 		public AggregateFactory(IDependencyResolver dependencyResolver, ILogger logger)
 		{
 			DependencyResolver = dependencyResolver;
 			Logger = logger;
 		}
 
+		/// <summary>
+		/// Creates instance of <typeparamref name="TAggregate"/>.
+		/// </summary>
+		/// <typeparam name="TAggregate">The <see cref="Type"/> of the aggregate to create.</typeparam>
+		/// <param name="rsn">The identifier of the aggregate to create an instance of if an existing aggregate.</param>
+		/// <param name="tryDependencyResolutionFirst">Indicates the use of <see cref="IDependencyResolver"/> should be tried first.</param>
 		public virtual TAggregate Create<TAggregate>(Guid? rsn = null, bool tryDependencyResolutionFirst = true)
 		{
 			return (TAggregate)Create(typeof (TAggregate), rsn);
 		}
 
+		/// <summary>
+		/// Creates instance of type <paramref name="aggregateType"/>
+		/// </summary>
+		/// <param name="aggregateType">The <see cref="Type"/> of the aggregate to create.</param>
+		/// <param name="rsn">The identifier of the aggregate to create an instance of if an existing aggregate.</param>
+		/// <param name="tryDependencyResolutionFirst">Indicates the use of <see cref="IDependencyResolver"/> should be tried first.</param>
 		public object Create(Type aggregateType, Guid? rsn = null, bool tryDependencyResolutionFirst = true)
 		{
 			if (tryDependencyResolutionFirst)

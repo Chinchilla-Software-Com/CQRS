@@ -16,12 +16,24 @@ namespace Cqrs.Messages
 	[Obsolete]
 	public enum FrameworkType
 	{
+		/// <summary>
+		/// An unknown framework.
+		/// </summary>
 		Unknown = -2,
 
+		/// <summary>
+		/// An external framework.
+		/// </summary>
 		External = -1,
 
+		/// <summary>
+		/// The built-in framework
+		/// </summary>
 		BuiltIn = 0,
 
+		/// <summary>
+		/// The CQRS Akka.NET framework
+		/// </summary>
 		Akka = 1
 	}
 }
