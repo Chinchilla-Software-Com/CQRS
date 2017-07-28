@@ -16,6 +16,5 @@ var namespaceCqrs_1_1Authentication =
     [ "SingleSignOnTokenResolver", "classCqrs_1_1Authentication_1_1SingleSignOnTokenResolver.html", "classCqrs_1_1Authentication_1_1SingleSignOnTokenResolver" ],
     [ "SingleSignOnTokenWithCompanyRsn", "classCqrs_1_1Authentication_1_1SingleSignOnTokenWithCompanyRsn.html", "classCqrs_1_1Authentication_1_1SingleSignOnTokenWithCompanyRsn" ],
     [ "SingleSignOnTokenWithUserRsn", "classCqrs_1_1Authentication_1_1SingleSignOnTokenWithUserRsn.html", "classCqrs_1_1Authentication_1_1SingleSignOnTokenWithUserRsn" ],
-    [ "SingleSignOnTokenWithUserRsnAndCompanyRsn", "classCqrs_1_1Authentication_1_1SingleSignOnTokenWithUserRsnAndCompanyRsn.html", "classCqrs_1_1Authentication_1_1SingleSignOnTokenWithUserRsnAndCompanyRsn" ],
-    [ "WebSingleSignOnTokenValueHelper", "classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper.html", "classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper" ]
+    [ "SingleSignOnTokenWithUserRsnAndCompanyRsn", "classCqrs_1_1Authentication_1_1SingleSignOnTokenWithUserRsnAndCompanyRsn.html", "classCqrs_1_1Authentication_1_1SingleSignOnTokenWithUserRsnAndCompanyRsn" ]
 ];

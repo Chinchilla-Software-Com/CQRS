@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,8 +22,14 @@ using Cqrs.Messages;
 
 namespace Cqrs.Bus
 {
+	/// <summary>
+	/// A helper for command and event buses that also caches <see cref="IConfigurationManager"/> look ups.
+	/// </summary>
 	public class BusHelper : IBusHelper
 	{
+		/// <summary>
+		/// Instantiates a new instance of <see cref="BusHelper"/>
+		/// </summary>
 		public BusHelper(IConfigurationManager configurationManager)
 		{
 			ConfigurationManager = configurationManager;
@@ -27,12 +41,25 @@ namespace Cqrs.Bus
 			StartRefreshCachedChecks();
 		}
 
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
+		/// <summary>
+		/// A collection of <see cref="Tuple{T1, T2}"/> holding the configurations value (always a <see cref="bool"/>) and the <see cref="DateTime"/>
+		/// The value was last checked, keyed by it's configuration key.
+		/// </summary>
 		protected IDictionary<string, Tuple<bool, DateTime>> CachedChecks { get; private set; }
 
+		/// <summary>
+		/// The current value of "Cqrs.MessageBus.BlackListProcessing" from <see cref="ConfigurationManager"/>.
+		/// </summary>
 		protected bool EventBlackListProcessing { get; private set; }
 
+		/// <summary>
+		/// Refreshes <see cref="EventBlackListProcessing"/> and every item currently in <see cref="CachedChecks"/>.
+		/// </summary>
 		protected virtual void RefreshCachedChecks()
 		{
 			// First refresh the EventBlackListProcessing property
@@ -59,6 +86,9 @@ namespace Cqrs.Bus
 			}
 		}
 
+		/// <summary>
+		/// Starts <see cref="RefreshCachedChecks"/> in a <see cref="Task"/> on a one second loop.
+		/// </summary>
 		protected virtual void StartRefreshCachedChecks()
 		{
 			Task.Factory.StartNewSafely(() =>

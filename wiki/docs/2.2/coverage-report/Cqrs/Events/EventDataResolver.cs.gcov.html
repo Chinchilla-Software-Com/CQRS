@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">2</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryLo">66.7 %</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -72,58 +72,69 @@
 <span class="lineNum">      14 </span>            : 
 <span class="lineNum">      15 </span>            : namespace Cqrs.Events
 <span class="lineNum">      16 </span>            : {
-<span class="lineNum">      17 </span>            :         public class EventDataResolver&lt;TAuthenticationToken&gt; : IEventDataResolver
-<span class="lineNum">      18 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      19 </span>            :                 #region Implementation of IServiceParameterResolver
-<span class="lineNum">      20 </span>            : 
-<span class="lineNum">      21 </span><span class="lineCov">          1 :                 public virtual bool TryResolveType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace)</span>
-<span class="lineNum">      22 </span>            :                 {
-<span class="lineNum">      23 </span>            :                         if (dataContractType == typeof(EventData))
-<span class="lineNum">      24 </span>            :                         {
-<span class="lineNum">      25 </span>            :                                 XmlDictionary dictionary = new XmlDictionary();
-<span class="lineNum">      26 </span>            :                                 typeName = dictionary.Add(&quot;EventData&quot;);
-<span class="lineNum">      27 </span>            :                                 typeNamespace = dictionary.Add(&quot;https://getcqrs.net&quot;);
-<span class="lineNum">      28 </span>            :                                 return true;
-<span class="lineNum">      29 </span>            :                         }
-<span class="lineNum">      30 </span>            : 
-<span class="lineNum">      31 </span>            :                         if (dataContractType == typeof(ServiceRequestWithData&lt;TAuthenticationToken, Guid&gt;))
-<span class="lineNum">      32 </span>            :                         {
-<span class="lineNum">      33 </span>            :                                 XmlDictionary dictionary = new XmlDictionary();
-<span class="lineNum">      34 </span>            :                                 typeName = dictionary.Add(&quot;EventDataGetRequest&quot;);
-<span class="lineNum">      35 </span>            :                                 typeNamespace = dictionary.Add(&quot;https://getcqrs.net&quot;);
-<span class="lineNum">      36 </span>            :                                 return true;
-<span class="lineNum">      37 </span>            :                         }
-<span class="lineNum">      38 </span>            : 
-<span class="lineNum">      39 </span>            :                         if (dataContractType == typeof(ServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt;))
-<span class="lineNum">      40 </span>            :                         {
-<span class="lineNum">      41 </span>            :                                 XmlDictionary dictionary = new XmlDictionary();
-<span class="lineNum">      42 </span>            :                                 typeName = dictionary.Add(&quot;EventDataGetResponse&quot;);
-<span class="lineNum">      43 </span>            :                                 typeNamespace = dictionary.Add(&quot;https://getcqrs.net&quot;);
-<span class="lineNum">      44 </span>            :                                 return true;
-<span class="lineNum">      45 </span>            :                         }
-<span class="lineNum">      46 </span>            : 
-<span class="lineNum">      47 </span>            :                         typeName = null;
-<span class="lineNum">      48 </span>            :                         typeNamespace = null;
-<span class="lineNum">      49 </span>            :                         return false;
-<span class="lineNum">      50 </span>            :                 }
-<span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span><span class="lineCov">          1 :                 public virtual Type ResolveName(string typeName, string typeNamespace, Type declaredType, DataContractResolver knownTypeResolver)</span>
-<span class="lineNum">      53 </span>            :                 {
-<span class="lineNum">      54 </span>            :                         if (typeName == &quot;EventData&quot; &amp;&amp; typeNamespace == &quot;https://getcqrs.net&quot;)
-<span class="lineNum">      55 </span>            :                                 return typeof(EventData);
-<span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span>            :                         if (typeName == &quot;EventDataGetRequest&quot; &amp;&amp; typeNamespace == &quot;https://getcqrs.net&quot;)
-<span class="lineNum">      58 </span>            :                                 return typeof(ServiceRequestWithData&lt;TAuthenticationToken, Guid&gt;);
-<span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span>            :                         if (typeName == &quot;EventDataGetResponse&quot; &amp;&amp; typeNamespace == &quot;https://getcqrs.net&quot;)
-<span class="lineNum">      61 </span>            :                                 return typeof(ServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt;);
-<span class="lineNum">      62 </span>            : 
-<span class="lineNum">      63 </span>            :                         return null;
-<span class="lineNum">      64 </span>            :                 }
-<span class="lineNum">      65 </span>            : 
-<span class="lineNum">      66 </span>            :                 #endregion
-<span class="lineNum">      67 </span>            :         }
-<span class="lineNum">      68 </span>            : }
+<span class="lineNum">      17 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      18 </span>            :         /// Resolves &lt;see cref=&quot;EventData&quot;/&gt;, &lt;see cref=&quot;ServiceRequestWithData{TAuthenticationToken, Guid}&quot; /&gt; and &lt;see cref=&quot;ServiceResponseWithResultData{IEnumerableEventData}&quot;/&gt; parameter types when serialising with WCF.
+<span class="lineNum">      19 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      20 </span>            :         public class EventDataResolver&lt;TAuthenticationToken&gt; : IEventDataResolver
+<span class="lineNum">      21 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      22 </span>            :                 #region Implementation of IServiceParameterResolver
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      25 </span>            :                 /// Indicates if the provided &lt;paramref name=&quot;dataContractType&quot;/&gt; is of type &lt;see cref=&quot;EventData&quot;/&gt;, &lt;see cref=&quot;ServiceRequestWithData{TAuthenticationToken, Guid}&quot; /&gt;, &lt;see cref=&quot;ServiceResponseWithResultData{IEnumerableEventData}&quot;/&gt;0
+<span class="lineNum">      26 </span>            :                 /// OR if it is other resolvable.
+<span class="lineNum">      27 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      28 </span><span class="lineCov">          1 :                 public virtual bool TryResolveType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace)</span>
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                         if (dataContractType == typeof(EventData))
+<span class="lineNum">      31 </span>            :                         {
+<span class="lineNum">      32 </span>            :                                 XmlDictionary dictionary = new XmlDictionary();
+<span class="lineNum">      33 </span>            :                                 typeName = dictionary.Add(&quot;EventData&quot;);
+<span class="lineNum">      34 </span>            :                                 typeNamespace = dictionary.Add(&quot;https://getcqrs.net&quot;);
+<span class="lineNum">      35 </span>            :                                 return true;
+<span class="lineNum">      36 </span>            :                         }
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                         if (dataContractType == typeof(ServiceRequestWithData&lt;TAuthenticationToken, Guid&gt;))
+<span class="lineNum">      39 </span>            :                         {
+<span class="lineNum">      40 </span>            :                                 XmlDictionary dictionary = new XmlDictionary();
+<span class="lineNum">      41 </span>            :                                 typeName = dictionary.Add(&quot;EventDataGetRequest&quot;);
+<span class="lineNum">      42 </span>            :                                 typeNamespace = dictionary.Add(&quot;https://getcqrs.net&quot;);
+<span class="lineNum">      43 </span>            :                                 return true;
+<span class="lineNum">      44 </span>            :                         }
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                         if (dataContractType == typeof(ServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt;))
+<span class="lineNum">      47 </span>            :                         {
+<span class="lineNum">      48 </span>            :                                 XmlDictionary dictionary = new XmlDictionary();
+<span class="lineNum">      49 </span>            :                                 typeName = dictionary.Add(&quot;EventDataGetResponse&quot;);
+<span class="lineNum">      50 </span>            :                                 typeNamespace = dictionary.Add(&quot;https://getcqrs.net&quot;);
+<span class="lineNum">      51 </span>            :                                 return true;
+<span class="lineNum">      52 </span>            :                         }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                         typeName = null;
+<span class="lineNum">      55 </span>            :                         typeNamespace = null;
+<span class="lineNum">      56 </span>            :                         return false;
+<span class="lineNum">      57 </span>            :                 }
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      60 </span>            :                 /// Returns the &lt;see cref=&quot;Type&quot;/&gt; if the &lt;paramref name=&quot;typeName&quot;/&gt; is resolvable or if it is 
+<span class="lineNum">      61 </span>            :                 /// of type &lt;paramref name=&quot;typeName&quot;/&gt; is of type &lt;see cref=&quot;EventData&quot;/&gt;, &lt;see cref=&quot;ServiceRequestWithData{TAuthenticationToken, Guid}&quot; /&gt;, &lt;see cref=&quot;ServiceResponseWithResultData{IEnumerableEventData}&quot;/&gt;
+<span class="lineNum">      62 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      63 </span><span class="lineCov">          1 :                 public virtual Type ResolveName(string typeName, string typeNamespace, Type declaredType, DataContractResolver knownTypeResolver)</span>
+<span class="lineNum">      64 </span>            :                 {
+<span class="lineNum">      65 </span>            :                         if (typeName == &quot;EventData&quot; &amp;&amp; typeNamespace == &quot;https://getcqrs.net&quot;)
+<span class="lineNum">      66 </span>            :                                 return typeof(EventData);
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                         if (typeName == &quot;EventDataGetRequest&quot; &amp;&amp; typeNamespace == &quot;https://getcqrs.net&quot;)
+<span class="lineNum">      69 </span>            :                                 return typeof(ServiceRequestWithData&lt;TAuthenticationToken, Guid&gt;);
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                         if (typeName == &quot;EventDataGetResponse&quot; &amp;&amp; typeNamespace == &quot;https://getcqrs.net&quot;)
+<span class="lineNum">      72 </span>            :                                 return typeof(ServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt;);
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :                         return null;
+<span class="lineNum">      75 </span>            :                 }
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :                 #endregion
+<span class="lineNum">      78 </span>            :         }
+<span class="lineNum">      79 </span>            : }
 </pre>
       </td>
     </tr>

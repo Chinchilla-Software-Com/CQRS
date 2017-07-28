@@ -1,5 +1,10 @@
 \hypertarget{classCqrs_1_1Bus_1_1BusHelper}{}\section{Cqrs.\+Bus.\+Bus\+Helper Class Reference}
 \label{classCqrs_1_1Bus_1_1BusHelper}\index{Cqrs.\+Bus.\+Bus\+Helper@{Cqrs.\+Bus.\+Bus\+Helper}}
+
+
+A helper for command and event buses that also caches I\+Configuration\+Manager look ups.  
+
+
 Inheritance diagram for Cqrs.\+Bus.\+Bus\+Helper\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -10,7 +15,7 @@ Inheritance diagram for Cqrs.\+Bus.\+Bus\+Helper\+:\begin{figure}[H]
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classCqrs_1_1Bus_1_1BusHelper_a7799db8bc78bdd9ec25be5bd301d0b8a_a7799db8bc78bdd9ec25be5bd301d0b8a}{Bus\+Helper} (\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} configuration\+Manager)
-\item 
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \hyperlink{classCqrs_1_1Bus_1_1BusHelper}{Bus\+Helper} \end{DoxyCompactList}\item 
 virtual bool \hyperlink{classCqrs_1_1Bus_1_1BusHelper_a28c675e976adbf348637ec6ff6410c1a_a28c675e976adbf348637ec6ff6410c1a}{Is\+Event\+Required} (Type message\+Type)
 \begin{DoxyCompactList}\small\item\em Checks if a white-\/list or black-\/list approach is taken, then checks the I\+Configuration\+Manager to see if a key exists defining if the event is required or not. If the event is required and it cannot be resolved, an error will be raised. Otherwise the event will be marked as processed. \end{DoxyCompactList}\item 
 virtual bool \hyperlink{classCqrs_1_1Bus_1_1BusHelper_a60a9603d5c6b7f29ee42491475714895_a60a9603d5c6b7f29ee42491475714895}{Is\+Event\+Required} (string configuration\+Key)
@@ -23,18 +28,23 @@ virtual Action$<$ T\+Message $>$ \hyperlink{classCqrs_1_1Bus_1_1BusHelper_a6dc1f
 \begin{DoxyCompactItemize}
 \item 
 virtual void \hyperlink{classCqrs_1_1Bus_1_1BusHelper_ad589391a51cd61673d2403ee8012e713_ad589391a51cd61673d2403ee8012e713}{Refresh\+Cached\+Checks} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Refreshes \hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b_ae8d3525369ee9572de06f935cc09510b}{Event\+Black\+List\+Processing} and every item currently in \hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae29e80bd315b6284509c9fd0b977d2a0_ae29e80bd315b6284509c9fd0b977d2a0}{Cached\+Checks}. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Bus_1_1BusHelper_a23bfab1be70af651cc48033fcdf4ce2c_a23bfab1be70af651cc48033fcdf4ce2c}{Start\+Refresh\+Cached\+Checks} ()
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Starts \hyperlink{classCqrs_1_1Bus_1_1BusHelper_ad589391a51cd61673d2403ee8012e713_ad589391a51cd61673d2403ee8012e713}{Refresh\+Cached\+Checks} in a Task on a one second loop. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} \hyperlink{classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8_aff0eaa0679d808e268ab4b5fb669bac8}{Configuration\+Manager}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Configuration\+Manager. \end{DoxyCompactList}\item 
 I\+Dictionary$<$ string, Tuple$<$ bool, Date\+Time $>$ $>$ \hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae29e80bd315b6284509c9fd0b977d2a0_ae29e80bd315b6284509c9fd0b977d2a0}{Cached\+Checks}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em A collection of Tuple$<$\+T1, T2$>$ holding the configurations value (always a bool) and the Date\+Time The value was last checked, keyed by it\textquotesingle{}s configuration key. \end{DoxyCompactList}\item 
 bool \hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b_ae8d3525369ee9572de06f935cc09510b}{Event\+Black\+List\+Processing}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em The current value of \char`\"{}\+Cqrs.\+Message\+Bus.\+Black\+List\+Processing\char`\"{} from \hyperlink{classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8_aff0eaa0679d808e268ab4b5fb669bac8}{Configuration\+Manager}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A helper for command and event buses that also caches I\+Configuration\+Manager look ups. 
+
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -43,6 +53,10 @@ bool \hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b_
 \index{Bus\+Helper@{Bus\+Helper}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
 \subsubsection{\texorpdfstring{Bus\+Helper()}{BusHelper()}}
 {\footnotesize\ttfamily Cqrs.\+Bus.\+Bus\+Helper.\+Bus\+Helper (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}}]{configuration\+Manager }\end{DoxyParamCaption})}
+
+
+
+Instantiates a new instance of \hyperlink{classCqrs_1_1Bus_1_1BusHelper}{Bus\+Helper} 
 
 
 
@@ -127,11 +141,19 @@ Implements \hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_af73d0d2aa8e98566acb4b2
 \subsubsection{\texorpdfstring{Refresh\+Cached\+Checks()}{RefreshCachedChecks()}}
 {\footnotesize\ttfamily virtual void Cqrs.\+Bus.\+Bus\+Helper.\+Refresh\+Cached\+Checks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
 
+
+
+Refreshes \hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b_ae8d3525369ee9572de06f935cc09510b}{Event\+Black\+List\+Processing} and every item currently in \hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae29e80bd315b6284509c9fd0b977d2a0_ae29e80bd315b6284509c9fd0b977d2a0}{Cached\+Checks}. 
+
 \mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a23bfab1be70af651cc48033fcdf4ce2c_a23bfab1be70af651cc48033fcdf4ce2c}\label{classCqrs_1_1Bus_1_1BusHelper_a23bfab1be70af651cc48033fcdf4ce2c_a23bfab1be70af651cc48033fcdf4ce2c}} 
 \index{Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}!Start\+Refresh\+Cached\+Checks@{Start\+Refresh\+Cached\+Checks}}
 \index{Start\+Refresh\+Cached\+Checks@{Start\+Refresh\+Cached\+Checks}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
 \subsubsection{\texorpdfstring{Start\+Refresh\+Cached\+Checks()}{StartRefreshCachedChecks()}}
 {\footnotesize\ttfamily virtual void Cqrs.\+Bus.\+Bus\+Helper.\+Start\+Refresh\+Cached\+Checks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Starts \hyperlink{classCqrs_1_1Bus_1_1BusHelper_ad589391a51cd61673d2403ee8012e713_ad589391a51cd61673d2403ee8012e713}{Refresh\+Cached\+Checks} in a Task on a one second loop. 
 
 
 
@@ -142,15 +164,27 @@ Implements \hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_af73d0d2aa8e98566acb4b2
 \subsubsection{\texorpdfstring{Cached\+Checks}{CachedChecks}}
 {\footnotesize\ttfamily I\+Dictionary$<$string, Tuple$<$bool, Date\+Time$>$ $>$ Cqrs.\+Bus.\+Bus\+Helper.\+Cached\+Checks\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+A collection of Tuple$<$\+T1, T2$>$ holding the configurations value (always a bool) and the Date\+Time The value was last checked, keyed by it\textquotesingle{}s configuration key. 
+
 \mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8_aff0eaa0679d808e268ab4b5fb669bac8}\label{classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8_aff0eaa0679d808e268ab4b5fb669bac8}} 
 \index{Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}!Configuration\+Manager@{Configuration\+Manager}}
 \index{Configuration\+Manager@{Configuration\+Manager}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
 \subsubsection{\texorpdfstring{Configuration\+Manager}{ConfigurationManager}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} Cqrs.\+Bus.\+Bus\+Helper.\+Configuration\+Manager\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+Gets or sets the I\+Configuration\+Manager. 
+
 \mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b_ae8d3525369ee9572de06f935cc09510b}\label{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b_ae8d3525369ee9572de06f935cc09510b}} 
 \index{Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}!Event\+Black\+List\+Processing@{Event\+Black\+List\+Processing}}
 \index{Event\+Black\+List\+Processing@{Event\+Black\+List\+Processing}!Cqrs\+::\+Bus\+::\+Bus\+Helper@{Cqrs\+::\+Bus\+::\+Bus\+Helper}}
 \subsubsection{\texorpdfstring{Event\+Black\+List\+Processing}{EventBlackListProcessing}}
 {\footnotesize\ttfamily bool Cqrs.\+Bus.\+Bus\+Helper.\+Event\+Black\+List\+Processing\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The current value of \char`\"{}\+Cqrs.\+Message\+Bus.\+Black\+List\+Processing\char`\"{} from \hyperlink{classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8_aff0eaa0679d808e268ab4b5fb669bac8}{Configuration\+Manager}. 
 

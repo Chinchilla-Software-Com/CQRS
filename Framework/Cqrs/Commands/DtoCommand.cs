@@ -15,7 +15,7 @@ using Cqrs.Messages;
 namespace Cqrs.Commands
 {
 	/// <summary>
-	/// A <see cref="ICommand{TPermissionToken}"/> for <see cref="IDto"/> objects
+	/// A <see cref="ICommand{TAuthenticationToken}"/> for <see cref="IDto"/> objects
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of authentication token.</typeparam>
 	/// <typeparam name="TDto">The <see cref="Type"/> of <see cref="IDto"/> this command targets.</typeparam>

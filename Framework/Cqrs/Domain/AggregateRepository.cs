@@ -155,7 +155,7 @@ namespace Cqrs.Domain
 		}
 
 		/// <summary>
-		/// if <paramref name="events"/> is null, loads the events from <see cref="EventStore"/>, checks for duplicates and then
+		/// If <paramref name="events"/> is null, loads the events from <see cref="EventStore"/>, checks for duplicates and then
 		/// rehydrates the <paramref name="aggregate"/> with the events.
 		/// </summary>
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>

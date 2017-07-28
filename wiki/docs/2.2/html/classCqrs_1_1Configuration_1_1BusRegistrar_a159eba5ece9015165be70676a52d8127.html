@@ -134,9 +134,12 @@ $(document).ready(function(){initNavTree('classCqrs_1_1Configuration_1_1BusRegis
 </table>
 </div><div class="memdoc">
 
-<p>Extract the IHandlerRegistrar.RegisterHandler&lt;TMessage&gt; method from the provided <em>bus</em>  Create an Action around the provided <em>executorType</em>  Then register the created Action using the extracted IHandlerRegistrar.RegisterHandler&lt;TMessage&gt; method </p>
+<p>Extract the IHandlerRegistrar.RegisterHandler&lt;TMessage&gt;(System.Action&lt;TMessage&gt;,System.Type,bool) method of <a class="el" href="classCqrs_1_1Configuration_1_1BusRegistrar_adaab0236b3ce39214ce60b2272e5ab19.html#adaab0236b3ce39214ce60b2272e5ab19" title="A Func&lt;Type, Type, THandlerRegistrar&gt; to use in-place of IEventHandlerRegistrar ">GetEventHandlerRegistrar</a> or <a class="el" href="classCqrs_1_1Configuration_1_1BusRegistrar_a5ac56d73af9d550c70ee722daed7dce8.html#a5ac56d73af9d550c70ee722daed7dce8" title="A Func&lt;Type, Type, THandlerRegistrar&gt; to use in-place of ICommandHandlerRegistrar ...">GetCommandHandlerRegistrar</a>. Create an Action around the provided <em>executorType</em>  Then register the created Action using the extracted IHandlerRegistrar.RegisterHandler&lt;TMessage&gt;(System.Action&lt;TMessage&gt;,System.Type,bool) method </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">interface</td><td>The Type of IHandler</td></tr>
+    <tr><td class="paramname">trueForEventsFalseForCommands</td><td>Indicates if this is registers IEventHandler or ICommandHandler&lt;TAuthenticationToken,TCommand&gt;.</td></tr>
+    <tr><td class="paramname">resolveMessageHandlerInterface</td><td><a class="el" href="classCqrs_1_1Configuration_1_1BusRegistrar_a0af1844a5f7f1c4adfde2499b054aaae.html#a0af1844a5f7f1c4adfde2499b054aaae" title="Finds all Type that implement IEventHandler&lt;TAuthenticationToken,TEvent&gt; that are implemented by type...">ResolveEventHandlerInterface</a> or <a class="el" href="classCqrs_1_1Configuration_1_1BusRegistrar_a0e118c57c7e804df1d810750befb25df.html#a0e118c57c7e804df1d810750befb25df" title="Finds all Type that implement ICommandHandler&lt;TAuthenticationToken,TCommand&gt; that are implemented by ...">ResolveCommandHandlerInterface</a></td></tr>
     <tr><td class="paramname">executorType</td><td>The Type of the event handler that will do the handling</td></tr>
   </table>
   </dd>

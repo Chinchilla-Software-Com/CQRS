@@ -15,6 +15,7 @@ using cdmdotnet.Logging;
 using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Events;
+using Cqrs.Messages;
 
 namespace Cqrs.Configuration
 {
@@ -23,12 +24,24 @@ namespace Cqrs.Configuration
 	/// </summary>
 	public class BusRegistrar
 	{
+		/// <summary>
+		/// Gets or set the <see cref="IDependencyResolver"/>.
+		/// </summary>
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
+		/// <summary>
+		/// A <see cref="Func{Type, Type, THandlerRegistrar}"/> to use in-place of <see cref="IEventHandlerRegistrar"/>
+		/// </summary>
 		public static Func<Type, Type, IHandlerRegistrar> GetEventHandlerRegistrar { get; set; }
 
+		/// <summary>
+		/// A <see cref="Func{Type, Type, THandlerRegistrar}"/> to use in-place of <see cref="ICommandHandlerRegistrar"/>
+		/// </summary>
 		public static Func<Type, Type, IHandlerRegistrar> GetCommandHandlerRegistrar { get; set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="BusRegistrar"/>.
+		/// </summary>
 		public BusRegistrar(IDependencyResolver dependencyResolver)
 		{
 			if(dependencyResolver == null)
@@ -41,6 +54,10 @@ namespace Cqrs.Configuration
 				GetCommandHandlerRegistrar = (messageType, handlerDelegateTargetedType) => DependencyResolver.Resolve<ICommandHandlerRegistrar>();
 		}
 
+		/// <summary>
+		/// Registers all <see cref="IEventHandler"/> and <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/> instances found in the <see cref="Assembly"/> for each <see cref="Type"/> in <paramref name="typesFromAssemblyContainingMessages"/>.
+		/// </summary>
+		/// <param name="typesFromAssemblyContainingMessages">A collection of <see cref="Type"/> to track back to their containing <see cref="Assembly"/> and scan.</param>
 		public virtual void Register(params Type[] typesFromAssemblyContainingMessages)
 		{
 			var eventHandlerRegistrar = DependencyResolver.Resolve<IEventHandlerRegistrar>();
@@ -52,6 +69,13 @@ namespace Cqrs.Configuration
 				Register(false, ResolveCommandHandlerInterface, false, typesFromAssemblyContainingMessages);
 		}
 
+		/// <summary>
+		/// Registers all <see cref="IHandler"/> instances found in the <see cref="Assembly"/> for each <see cref="Type"/> in <paramref name="typesFromAssemblyContainingMessages"/>.
+		/// </summary>
+		/// <param name="trueForEventsFalseForCommands">Indicates if this is registers <see cref="IEventHandler"/> or <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/>.</param>
+		/// <param name="resolveMessageHandlerInterface"><see cref="ResolveEventHandlerInterface"/> or <see cref="ResolveCommandHandlerInterface"/></param>
+		/// <param name="skipCommandHandlers">Indicates if registering of <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/> is enabled.</param>
+		/// <param name="typesFromAssemblyContainingMessages">A collection of <see cref="Type"/> to track back to their containing <see cref="Assembly"/> and scan.</param>
 		public virtual void Register(bool trueForEventsFalseForCommands, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, bool skipCommandHandlers, params Type[] typesFromAssemblyContainingMessages)
 		{
 			foreach (Type typesFromAssemblyContainingMessage in typesFromAssemblyContainingMessages)
@@ -81,10 +105,13 @@ namespace Cqrs.Configuration
 		}
 
 		/// <summary>
-		/// Extract the <see cref="IHandlerRegistrar.RegisterHandler{TMessage}"/> method from the provided <paramref name="bus"/>
+		/// Extract the <see cref="IHandlerRegistrar.RegisterHandler{TMessage}(System.Action{TMessage},System.Type,bool)"/> method of <see cref="GetEventHandlerRegistrar"/> or <see cref="GetCommandHandlerRegistrar"/>.
 		/// Create an <see cref="Action"/> around the provided <paramref name="executorType"/>
-		/// Then register the created <see cref="Action"/> using the extracted <see cref="IHandlerRegistrar.RegisterHandler{TMessage}"/> method
+		/// Then register the created <see cref="Action"/> using the extracted <see cref="IHandlerRegistrar.RegisterHandler{TMessage}(System.Action{TMessage},System.Type,bool)"/> method
 		/// </summary>
+		/// <param name="interface">The <see cref="Type"/> of <see cref="IHandler"/></param>
+		/// <param name="trueForEventsFalseForCommands">Indicates if this is registers <see cref="IEventHandler"/> or <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/>.</param>
+		/// <param name="resolveMessageHandlerInterface"><see cref="ResolveEventHandlerInterface"/> or <see cref="ResolveCommandHandlerInterface"/></param>
 		/// <param name="executorType">The <see cref="Type"/> of the event handler that will do the handling</param>
 		protected virtual void InvokeHandler(Type @interface, bool trueForEventsFalseForCommands, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, Type executorType)
 		{
@@ -135,6 +162,12 @@ namespace Cqrs.Configuration
 			InvokeHandlerDelegate(registerExecutorMethod, trueForEventsFalseForCommands, handlerDelegate);
 		}
 
+		/// <summary>
+		/// Invokes <paramref name="handlerDelegate"/>, fetching the corresponding "HoldMessageLock" configuration setting 
+		/// </summary>
+		/// <param name="registerExecutorMethod">The <see cref="MethodInfo"/> to use to invoke <paramref name="handlerDelegate"/>.</param>
+		/// <param name="trueForEventsFalseForCommands">Indicates if this is registers <see cref="IEventHandler"/> or <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/>.</param>
+		/// <param name="handlerDelegate">The actual <see cref="HandlerDelegate"/> that gets executed.</param>
 		protected virtual void InvokeHandlerDelegate(MethodInfo registerExecutorMethod, bool trueForEventsFalseForCommands, HandlerDelegate handlerDelegate)
 		{
 			Type messageType = null;
@@ -155,6 +188,11 @@ namespace Cqrs.Configuration
 			registerExecutorMethod.Invoke(trueForEventsFalseForCommands ? GetEventHandlerRegistrar(messageType, handlerDelegate.TargetedType) : GetCommandHandlerRegistrar(messageType, handlerDelegate.TargetedType), new object[] { handlerDelegate.Delegate, handlerDelegate.TargetedType, holdMessageLock });
 		}
 
+		/// <summary>
+		/// Builds a <see cref="HandlerDelegate"/> that will resolve the provided <paramref name="executorType"/> and invoke the Handle method, when executed.
+		/// </summary>
+		/// <param name="executorType">The type of <see cref="IHandler"/> to resolve.></param>
+		/// <param name="resolveMessageHandlerInterface">Not used.</param>
 		protected virtual HandlerDelegate BuildDelegateAction(Type executorType, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface)
 		{
 			Action<dynamic> handlerDelegate = x =>
@@ -174,6 +212,9 @@ namespace Cqrs.Configuration
 			return new HandlerDelegate { Delegate = handlerDelegate, TargetedType = executorType };
 		}
 
+		/// <summary>
+		/// Builds a method replacing the generic type with <paramref name="commandType"/>.
+		/// </summary>
 		protected virtual MethodInfo BuildExecutorMethod(MethodInfo originalRegisterExecutorMethod, Type executorType, Type commandType)
 		{
 			Type safeCommandType = commandType;
@@ -186,6 +227,10 @@ namespace Cqrs.Configuration
 			return originalRegisterExecutorMethod.MakeGenericMethod(safeCommandType);
 		}
 
+		/// <summary>
+		/// Finds all <see cref="Type"/> that implement <see cref="IEventHandler{TAuthenticationToken,TEvent}"/> that are implemented by <paramref name="type"/>.
+		/// </summary>
+		/// <param name="type">The <see cref="Type"/> to find all <see cref="IEventHandler{TAuthenticationToken,TEvent}"/> of.</param>
 		protected virtual IEnumerable<Type> ResolveEventHandlerInterface(Type type)
 		{
 			return type
@@ -200,6 +245,10 @@ namespace Cqrs.Configuration
 				);
 		}
 
+		/// <summary>
+		/// Finds all <see cref="Type"/> that implement <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/> that are implemented by <paramref name="type"/>.
+		/// </summary>
+		/// <param name="type">The <see cref="Type"/> to find all <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/> of.</param>
 		protected virtual IEnumerable<Type> ResolveCommandHandlerInterface(Type type)
 		{
 			return type

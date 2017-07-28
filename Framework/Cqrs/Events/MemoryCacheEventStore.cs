@@ -14,6 +14,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
 using Cqrs.Configuration;
+using Cqrs.Domain;
+using Cqrs.Messages;
 
 namespace Cqrs.Events
 {
@@ -23,16 +25,34 @@ namespace Cqrs.Events
 	public class MemoryCacheEventStore<TAuthenticationToken>
 		: EventStore<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="MemoryCache"/> of data grouped by event <see cref="Type"/>.
+		/// </summary>
 		protected MemoryCache EventStoreByType { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="MemoryCache"/> of data grouped by event <see cref="IMessage.CorrelationId"/>.
+		/// </summary>
 		protected MemoryCache EventStoreByCorrelationId { get; private set; }
 
+		/// <summary>
+		/// Gets of sets the SlidingExpirationValue, the value of "Cqrs.EventStore.MemoryCacheEventStore.SlidingExpiration" from <see cref="ConfigurationManager"/>.
+		/// </summary>
 		protected string SlidingExpirationValue { get; set; }
 
+		/// <summary>
+		/// Gets of sets the SlidingExpiration
+		/// </summary>
 		protected TimeSpan SlidingExpiration { get; set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="MemoryCacheEventStore{TAuthenticationToken}"/> and calls <see cref="StartRefreshSlidingExpirationValue"/>.
+		/// </summary>
 		public MemoryCacheEventStore(IConfigurationManager configurationManager, IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger)
 			: base(eventBuilder, eventDeserialiser, logger)
 		{
@@ -46,6 +66,13 @@ namespace Cqrs.Events
 
 		#region Overrides of EventStore<TAuthenticationToken>
 
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
+		/// <param name="fromVersion">Load events starting from this version</param>
 		public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
@@ -84,6 +111,10 @@ namespace Cqrs.Events
 				.ToList();
 		}
 
+		/// <summary>
+		/// Get all <see cref="IEvent{TAuthenticationToken}"/> instances for the given <paramref name="correlationId"/>.
+		/// </summary>
+		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
 		public override IEnumerable<EventData> Get(Guid correlationId)
 		{
 			if (!EventStoreByCorrelationId.Contains(correlationId.ToString("N")))
@@ -113,6 +144,10 @@ namespace Cqrs.Events
 			return query.ToList();
 		}
 
+		/// <summary>
+		/// Persist the provided <paramref name="eventData"/> into storage.
+		/// </summary>
+		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
 		protected override void PersistEvent(EventData eventData)
 		{
 			IList<EventData> events = new List<EventData>();
@@ -152,6 +187,10 @@ namespace Cqrs.Events
 
 		#endregion
 
+		/// <summary>
+		/// Reads "Cqrs.EventStore.MemoryCacheEventStore.SlidingExpiration" from <see cref="ConfigurationManager"/>, checks if it has changed and then
+		/// Update <see cref="SlidingExpiration"/> with the new value.
+		/// </summary>
 		protected virtual void RefreshSlidingExpirationValue()
 		{
 			// First refresh the EventBlackListProcessing property
@@ -187,6 +226,9 @@ namespace Cqrs.Events
 			}
 		}
 
+		/// <summary>
+		/// Start a <see cref="Task"/> that will call <see cref="RefreshSlidingExpirationValue"/> in a loop with a 1 second wait time between loops.
+		/// </summary>
 		protected virtual void StartRefreshSlidingExpirationValue()
 		{
 			Task.Factory.StartNewSafely(() =>

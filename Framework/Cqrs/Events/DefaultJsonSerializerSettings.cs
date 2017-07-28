@@ -12,8 +12,14 @@ using Newtonsoft.Json.Converters;
 
 namespace Cqrs.Events
 {
+	/// <summary>
+	/// Default settings for JSON serialisation  and deserialisation.
+	/// </summary>
 	public class DefaultJsonSerializerSettings
 	{
+		/// <summary>
+		/// System wide default <see cref="JsonSerializerSettings"/>.
+		/// </summary>
 		public static JsonSerializerSettings DefaultSettings { get; private set; }
 
 		static DefaultJsonSerializerSettings()

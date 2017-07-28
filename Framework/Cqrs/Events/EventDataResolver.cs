@@ -14,10 +14,17 @@ using Cqrs.Services;
 
 namespace Cqrs.Events
 {
+	/// <summary>
+	/// Resolves <see cref="EventData"/>, <see cref="ServiceRequestWithData{TAuthenticationToken, Guid}" /> and <see cref="ServiceResponseWithResultData{IEnumerableEventData}"/> parameter types when serialising with WCF.
+	/// </summary>
 	public class EventDataResolver<TAuthenticationToken> : IEventDataResolver
 	{
 		#region Implementation of IServiceParameterResolver
 
+		/// <summary>
+		/// Indicates if the provided <paramref name="dataContractType"/> is of type <see cref="EventData"/>, <see cref="ServiceRequestWithData{TAuthenticationToken, Guid}" />, <see cref="ServiceResponseWithResultData{IEnumerableEventData}"/>0
+		/// OR if it is other resolvable.
+		/// </summary>
 		public virtual bool TryResolveType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace)
 		{
 			if (dataContractType == typeof(EventData))
@@ -49,6 +56,10 @@ namespace Cqrs.Events
 			return false;
 		}
 
+		/// <summary>
+		/// Returns the <see cref="Type"/> if the <paramref name="typeName"/> is resolvable or if it is 
+		/// of type <paramref name="typeName"/> is of type <see cref="EventData"/>, <see cref="ServiceRequestWithData{TAuthenticationToken, Guid}" />, <see cref="ServiceResponseWithResultData{IEnumerableEventData}"/>
+		/// </summary>
 		public virtual Type ResolveName(string typeName, string typeNamespace, Type declaredType, DataContractResolver knownTypeResolver)
 		{
 			if (typeName == "EventData" && typeNamespace == "https://getcqrs.net")

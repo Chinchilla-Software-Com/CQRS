@@ -15,6 +15,7 @@ using Cqrs.Configuration;
 using Cqrs.DataStores;
 using Cqrs.Domain;
 using Cqrs.Entities;
+using Cqrs.Exceptions;
 using Cqrs.Messages;
 
 namespace Cqrs.Events
@@ -33,6 +34,9 @@ namespace Cqrs.Events
 
 		internal const string SqlEventStoreGetByCorrelationIdCommandTimeout = @"Cqrs.SqlEventStore.GetByCorrelationId.CommandTimeout";
 
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
 		/// <summary>
@@ -112,6 +116,9 @@ namespace Cqrs.Events
 
 		#endregion
 
+		/// <summary>
+		/// Creates a new <see cref="DataContext"/> using connection string settings from <see cref="ConfigurationManager"/>.
+		/// </summary>
 		protected virtual DataContext CreateDbDataContext()
 		{
 			string connectionStringKey;
@@ -122,7 +129,7 @@ namespace Cqrs.Events
 				{
 					if (!ConfigurationManager.TryGetSetting(SqlDataStore<Entity>.SqlDataStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
 					{
-						throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlEventStoreConnectionNameApplicationKey));
+						throw new MissingApplicationSettingForConnectionStringException(SqlEventStoreConnectionNameApplicationKey);
 					}
 				}
 			}
@@ -134,18 +141,25 @@ namespace Cqrs.Events
 				}
 				catch (NullReferenceException exception)
 				{
-					throw new NullReferenceException(string.Format("No connection string setting named '{0}' was found in the configuration file with the SQL Event Store connection string.", applicationKey), exception);
+					throw new MissingConnectionStringException(applicationKey, exception);
 				}
 			}
 			return new DataContext(connectionStringKey);
 		}
 
+		/// <summary>
+		/// Gets the <see cref="Table{TEntity}"/> of <see cref="EventData"/>.
+		/// </summary>
+		/// <param name="dbDataContext">The <see cref="DataContext"/> to use.</param>
 		protected virtual Table<EventData> GetEventStoreTable(DataContext dbDataContext)
 		{
 			// Get a typed table to run queries.
 			return dbDataContext.GetTable<EventData>();
 		}
 
+		/// <summary>
+		/// Persist the provided <paramref name="data"/> into SQL Server using the provided <paramref name="dbDataContext"/>.
+		/// </summary>
 		protected virtual void Add(DataContext dbDataContext, EventData data)
 		{
 			Logger.LogDebug("Adding data to the SQL eventstore database", "SqlEventStore\\Add");

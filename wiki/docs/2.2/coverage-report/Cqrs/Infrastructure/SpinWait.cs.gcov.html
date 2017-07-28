@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">6</td>
             <td class="headerCovTableEntry">8</td>
-            <td class="headerCovTableEntryMed">75.0 %</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -194,24 +194,30 @@
 <span class="lineNum">     136 </span>            : 
 <span class="lineNum">     137 </span>            :                 internal static class TimeoutHelper
 <span class="lineNum">     138 </span>            :                 {
-<span class="lineNum">     139 </span><span class="lineNoCov">          0 :                         public static uint GetTime()</span>
-<span class="lineNum">     140 </span>            :                         {
-<span class="lineNum">     141 </span>            :                                 return (uint)Environment.TickCount;
-<span class="lineNum">     142 </span>            :                         }
-<span class="lineNum">     143 </span>            : 
-<span class="lineNum">     144 </span><span class="lineNoCov">          0 :                         public static int UpdateTimeOut(uint startTime, int originalWaitMillisecondsTimeout)</span>
-<span class="lineNum">     145 </span>            :                         {
-<span class="lineNum">     146 </span>            :                                 uint num1 = GetTime() - startTime;
-<span class="lineNum">     147 </span>            :                                 if (num1 &gt; int.MaxValue)
-<span class="lineNum">     148 </span>            :                                         return 0;
-<span class="lineNum">     149 </span>            :                                 int num2 = originalWaitMillisecondsTimeout - (int)num1;
-<span class="lineNum">     150 </span>            :                                 if (num2 &lt;= 0)
-<span class="lineNum">     151 </span>            :                                         return 0;
-<span class="lineNum">     152 </span>            :                                 return num2;
-<span class="lineNum">     153 </span>            :                         }
-<span class="lineNum">     154 </span>            :                 }
-<span class="lineNum">     155 </span>            :         }
-<span class="lineNum">     156 </span>            : }
+<span class="lineNum">     139 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     140 </span>            :                         /// Gets the number of milliseconds elapsed since the system started.
+<span class="lineNum">     141 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     142 </span><span class="lineCov">          1 :                         public static uint GetTime()</span>
+<span class="lineNum">     143 </span>            :                         {
+<span class="lineNum">     144 </span>            :                                 return (uint)Environment.TickCount;
+<span class="lineNum">     145 </span>            :                         }
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     148 </span>            :                         /// Does some interesting maths.
+<span class="lineNum">     149 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     150 </span><span class="lineCov">          1 :                         public static int UpdateTimeOut(uint startTime, int originalWaitMillisecondsTimeout)</span>
+<span class="lineNum">     151 </span>            :                         {
+<span class="lineNum">     152 </span>            :                                 uint num1 = GetTime() - startTime;
+<span class="lineNum">     153 </span>            :                                 if (num1 &gt; int.MaxValue)
+<span class="lineNum">     154 </span>            :                                         return 0;
+<span class="lineNum">     155 </span>            :                                 int num2 = originalWaitMillisecondsTimeout - (int)num1;
+<span class="lineNum">     156 </span>            :                                 if (num2 &lt;= 0)
+<span class="lineNum">     157 </span>            :                                         return 0;
+<span class="lineNum">     158 </span>            :                                 return num2;
+<span class="lineNum">     159 </span>            :                         }
+<span class="lineNum">     160 </span>            :                 }
+<span class="lineNum">     161 </span>            :         }
+<span class="lineNum">     162 </span>            : }
 </pre>
       </td>
     </tr>

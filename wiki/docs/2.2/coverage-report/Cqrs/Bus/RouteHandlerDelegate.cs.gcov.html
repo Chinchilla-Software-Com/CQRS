@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -64,18 +64,19 @@
 <span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
 <span class="lineNum">       7 </span>            : #endregion
 <span class="lineNum">       8 </span>            : 
-<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">       9 </span>            : using Cqrs.Configuration;
 <span class="lineNum">      10 </span>            : using Cqrs.Messages;
 <span class="lineNum">      11 </span>            : 
 <span class="lineNum">      12 </span>            : namespace Cqrs.Bus
 <span class="lineNum">      13 </span>            : {
-<span class="lineNum">      14 </span>            :         public class RouteHandlerDelegate
-<span class="lineNum">      15 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      16 </span>            :                 public Action&lt;IMessage&gt; Delegate { get; set; }
-<span class="lineNum">      17 </span>            : 
-<span class="lineNum">      18 </span>            :                 public Type TargetedType { get; set; }
-<span class="lineNum">      19 </span>            :         }
-<span class="lineNum">      20 </span>            : }
+<span class="lineNum">      14 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      15 </span>            :         /// Information about a &lt;see cref=&quot;Route&quot;/&gt; delegate.
+<span class="lineNum">      16 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      17 </span>            :         /// &lt;remarks&gt;Remarkably similar to &lt;see cref=&quot;HandlerDelegate&quot;/&gt;&lt;/remarks&gt;
+<span class="lineNum">      18 </span>            :         public class RouteHandlerDelegate : HandlerDelegate&lt;IMessage&gt;
+<span class="lineNum">      19 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      20 </span>            :         }
+<span class="lineNum">      21 </span>            : }
 </pre>
       </td>
     </tr>

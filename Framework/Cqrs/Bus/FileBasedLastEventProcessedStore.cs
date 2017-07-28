@@ -12,14 +12,29 @@ using Cqrs.Configuration;
 
 namespace Cqrs.Bus
 {
+	/// <summary>
+	/// Indicates the position in a store where the stream has been read up to by storing the value in a file.
+	/// </summary>
 	public class FileBasedLastEventProcessedStore : IStoreLastEventProcessed
 	{
-		public const string AppSettingsKey = "FileBasedLastEventProcessed.Location";
+		/// <summary>
+		/// The configuration setting that holds the location of file to store position information in.
+		/// </summary>
+		public const string AppSettingsKey = "Cqrs.FileBasedLastEventProcessed.Location";
 
+		/// <summary>
+		/// The default location of the file to store position information in.
+		/// </summary>
 		public const string AppSettingsDefaultValue = @"%EVENTSTORE_HOME%\LastEventProcessedLocation";
 
+		/// <summary>
+		/// The relative or absolute path of the file to store the current location in
+		/// </summary>
 		protected string FileName { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="FileBasedLastEventProcessedStore"/>.
+		/// </summary>
 		public FileBasedLastEventProcessedStore(IConfigurationManager configurationManager)
 		{
 			string location = configurationManager.GetSetting(AppSettingsKey);
@@ -31,6 +46,9 @@ namespace Cqrs.Bus
 			FileName = Environment.ExpandEnvironmentVariables(location);
 		}
 
+		/// <summary>
+		/// Reads and writes the location within the store where the stream has been read up to <see cref="FileName"/>.
+		/// </summary>
 		public string EventLocation
 		{
 			get

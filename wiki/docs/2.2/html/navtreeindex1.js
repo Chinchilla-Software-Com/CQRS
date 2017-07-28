@@ -81,12 +81,6 @@ var NAVTREEINDEX1 =
 "classCqrs_1_1Authentication_1_1SingleSignOnToken_a5e859c6c5db5aaa9ef4e8f2086df4604.html#a5e859c6c5db5aaa9ef4e8f2086df4604":[1,0,0,1,11,0],
 "classCqrs_1_1Authentication_1_1SingleSignOnToken_a7a704dd5d4f396e5c0b413b4b39e7406.html#a7a704dd5d4f396e5c0b413b4b39e7406":[1,0,0,1,11,3],
 "classCqrs_1_1Authentication_1_1SingleSignOnToken_aa0ea2d0654dd2aab23af98806663cd7c.html#aa0ea2d0654dd2aab23af98806663cd7c":[1,0,0,1,11,1],
-"classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper.html":[1,0,0,1,17],
-"classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper_a342055eafc9218e08d0e67bcccc912d5.html#a342055eafc9218e08d0e67bcccc912d5":[1,0,0,1,17,0],
-"classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper_a4e87135209dbc5325decf308e85408ed.html#a4e87135209dbc5325decf308e85408ed":[1,0,0,1,17,3],
-"classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper_a610771aef2e0c8e0513e76577da2a4c8.html#a610771aef2e0c8e0513e76577da2a4c8":[1,0,0,1,17,4],
-"classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper_a90608051ba881a8b7166db2f12d54b57.html#a90608051ba881a8b7166db2f12d54b57":[1,0,0,1,17,2],
-"classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper_af7ff2651f39af93b2b32a5a8646ce25a.html#af7ff2651f39af93b2b32a5a8646ce25a":[1,0,0,1,17,1],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore.html":[1,0,0,2,0,5],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore.html#a9873af524b8b81b9bf87c803ccf6ee1d":[1,0,0,2,0,5,14],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStoreExtensions.html":[1,0,0,2,0,6],
@@ -249,5 +243,11 @@ var NAVTREEINDEX1 =
 "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_af0e0bcba6758fda015f51b07eb464b14.html#af0e0bcba6758fda015f51b07eb464b14":[1,0,0,2,0,14,26],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_af298920154f31a7d0117facbb2f7cd54.html#af298920154f31a7d0117facbb2f7cd54":[1,0,0,2,0,14,19],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_af56bdbd7fa6650aaef5c0bab9ed55f1a.html#af56bdbd7fa6650aaef5c0bab9ed55f1a":[1,0,0,2,0,14,1],
-"classCqrs_1_1Azure_1_1BlobStorage_1_1TableEntity.html":[1,0,0,2,0,15]
+"classCqrs_1_1Azure_1_1BlobStorage_1_1TableEntity.html":[1,0,0,2,0,15],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1TableEntity_a18d1b7ecf408a921cd0e2e6a8d0f6c74.html#a18d1b7ecf408a921cd0e2e6a8d0f6c74":[1,0,0,2,0,15,2],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1TableEntity_a5a5b53a3a2427a368f2ebe404f04f4ff.html#a5a5b53a3a2427a368f2ebe404f04f4ff":[1,0,0,2,0,15,0],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1TableEntity_aa36736f412df5a1667d7b0e5c0bd3035.html#aa36736f412df5a1667d7b0e5c0bd3035":[1,0,0,2,0,15,1],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1TableEntity_ab7a9041c7d8e5237cfb81ad98b6b3980.html#ab7a9041c7d8e5237cfb81ad98b6b3980":[1,0,0,2,0,15,4],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1TableEntity_af7467b1194756dd32029dc40f690c4ad.html#af7467b1194756dd32029dc40f690c4ad":[1,0,0,2,0,15,3],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore.html":[1,0,0,2,0,16]
 };

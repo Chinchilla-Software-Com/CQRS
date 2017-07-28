@@ -212,15 +212,12 @@ var hierarchy =
       [ "Cqrs.EventStore.Bus.EventStoreBasedLastEventProcessedStore", "classCqrs_1_1EventStore_1_1Bus_1_1EventStoreBasedLastEventProcessedStore.html", null ]
     ] ],
     [ "Cqrs.Bus.Route", "classCqrs_1_1Bus_1_1Route.html", null ],
-    [ "Cqrs.Bus.RouteHandlerDelegate", "classCqrs_1_1Bus_1_1RouteHandlerDelegate.html", null ],
     [ "Cqrs.Commands.ICommandPublisher< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ICommandPublisher.html", [
       [ "Cqrs.Akka.Commands.IAkkaCommandPublisherProxy< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IAkkaCommandPublisherProxy.html", [
         [ "Cqrs.Akka.Commands.AkkaCommandBusProxy< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBusProxy.html", null ]
       ] ],
       [ "Cqrs.Commands.ICommandSender< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ICommandSender.html", [
-        [ "Cqrs.Commands.ISendAndWaitCommandSender< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ISendAndWaitCommandSender.html", [
-          [ "Cqrs.Bus.InProcessBus< TAuthenticationToken >", "classCqrs_1_1Bus_1_1InProcessBus.html", null ]
-        ] ]
+        [ "Cqrs.Commands.ISendAndWaitCommandSender< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ISendAndWaitCommandSender.html", null ]
       ] ],
       [ "Cqrs.Commands.IPublishAndWaitCommandPublisher< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1IPublishAndWaitCommandPublisher.html", [
         [ "Cqrs.Akka.Commands.IAkkaCommandPublisher< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IAkkaCommandPublisher.html", [
@@ -241,6 +238,7 @@ var hierarchy =
     ] ],
     [ "Cqrs.Configuration.ConfigurationExtensions", "classCqrs_1_1Configuration_1_1ConfigurationExtensions.html", null ],
     [ "Cqrs.Configuration.HandlerDelegate", "classCqrs_1_1Configuration_1_1HandlerDelegate.html", null ],
+    [ "Cqrs.Configuration.HandlerDelegate< T >", "classCqrs_1_1Configuration_1_1HandlerDelegate.html", null ],
     [ "Cqrs.Configuration.IConfigurationManager", "interfaceCqrs_1_1Configuration_1_1IConfigurationManager.html", [
       [ "Cqrs.Configuration.ConfigurationManager", "classCqrs_1_1Configuration_1_1ConfigurationManager.html", [
         [ "Cqrs.Azure.ConfigurationManager.CloudConfigurationManager", "classCqrs_1_1Azure_1_1ConfigurationManager_1_1CloudConfigurationManager.html", null ]
@@ -651,6 +649,9 @@ var hierarchy =
       [ "Cqrs.Sql.DataStores.ExpressionTreeConverter< TA, TB >", "classCqrs_1_1Sql_1_1DataStores_1_1ExpressionTreeConverter.html", null ],
       [ "Cqrs.Sql.DataStores.SimpleExpressionReplacer", "classCqrs_1_1Sql_1_1DataStores_1_1SimpleExpressionReplacer.html", null ]
     ] ],
+    [ "Cqrs.Configuration.HandlerDelegate< IMessage >", "classCqrs_1_1Configuration_1_1HandlerDelegate.html", [
+      [ "Cqrs.Bus.RouteHandlerDelegate", "classCqrs_1_1Bus_1_1RouteHandlerDelegate.html", null ]
+    ] ],
     [ "HttpApplication", null, [
       [ "Cqrs.Hosts.CqrsHttpApplication< TAuthenticationToken >", "classCqrs_1_1Hosts_1_1CqrsHttpApplication.html", null ]
     ] ],
@@ -676,20 +677,14 @@ var hierarchy =
     [ "Cqrs.Authentication.IAuthenticationTokenHelper< int >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", [
       [ "Cqrs.Authentication.DefaultAuthenticationTokenHelper", "classCqrs_1_1Authentication_1_1DefaultAuthenticationTokenHelper.html", null ]
     ] ],
-    [ "Cqrs.Authentication.IAuthenticationTokenHelper< ISingleSignOnToken >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", [
-      [ "Cqrs.Authentication.WebSingleSignOnTokenValueHelper", "classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper.html", null ]
-    ] ],
     [ "Cqrs.Authentication.IAuthenticationTokenHelper< ISingleSignOnTokenWithCompanyRsn >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", [
-      [ "Cqrs.Authentication.AuthenticationTokenHelper< TAuthenticationToken >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ],
-      [ "Cqrs.Authentication.WebSingleSignOnTokenValueHelper", "classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper.html", null ]
+      [ "Cqrs.Authentication.AuthenticationTokenHelper< TAuthenticationToken >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ]
     ] ],
     [ "Cqrs.Authentication.IAuthenticationTokenHelper< ISingleSignOnTokenWithUserRsn >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", [
-      [ "Cqrs.Authentication.AuthenticationTokenHelper< TAuthenticationToken >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ],
-      [ "Cqrs.Authentication.WebSingleSignOnTokenValueHelper", "classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper.html", null ]
+      [ "Cqrs.Authentication.AuthenticationTokenHelper< TAuthenticationToken >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ]
     ] ],
     [ "Cqrs.Authentication.IAuthenticationTokenHelper< ISingleSignOnTokenWithUserRsnAndCompanyRsn >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", [
-      [ "Cqrs.Authentication.AuthenticationTokenHelper< TAuthenticationToken >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ],
-      [ "Cqrs.Authentication.WebSingleSignOnTokenValueHelper", "classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper.html", null ]
+      [ "Cqrs.Authentication.AuthenticationTokenHelper< TAuthenticationToken >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ]
     ] ],
     [ "Cqrs.Authentication.IAuthenticationTokenHelper< SingleSignOnTokenWithCompanyRsn >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", [
       [ "Cqrs.Authentication.DefaultAuthenticationTokenHelper", "classCqrs_1_1Authentication_1_1DefaultAuthenticationTokenHelper.html", null ]

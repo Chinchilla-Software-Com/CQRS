@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -64,16 +64,21 @@
 <span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
 <span class="lineNum">       7 </span>            : #endregion
 <span class="lineNum">       8 </span>            : 
-<span class="lineNum">       9 </span>            : namespace Cqrs.Infrastructure
-<span class="lineNum">      10 </span>            : {
-<span class="lineNum">      11 </span>            :         internal static class PrivateReflectionDynamicObjectExtensions
-<span class="lineNum">      12 </span>            :         {
-<span class="lineNum">      13 </span><span class="lineNoCov">          0 :                 public static dynamic AsDynamic(this object @object)</span>
-<span class="lineNum">      14 </span>            :                 {
-<span class="lineNum">      15 </span>            :                         return PrivateReflectionDynamicObject.WrapObjectIfNeeded(@object);
-<span class="lineNum">      16 </span>            :                 }
-<span class="lineNum">      17 </span>            :         }
-<span class="lineNum">      18 </span>            : }
+<span class="lineNum">       9 </span>            : using System.Dynamic;
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : namespace Cqrs.Infrastructure
+<span class="lineNum">      12 </span>            : {
+<span class="lineNum">      13 </span>            :         internal static class PrivateReflectionDynamicObjectExtensions
+<span class="lineNum">      14 </span>            :         {
+<span class="lineNum">      15 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :                 /// Convert the provided &lt;paramref name=&quot;object&quot;/&gt; into a safe to use &lt;see cref=&quot;DynamicObject&quot;/&gt;.
+<span class="lineNum">      17 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      18 </span><span class="lineCov">          1 :                 public static dynamic AsDynamic(this object @object)</span>
+<span class="lineNum">      19 </span>            :                 {
+<span class="lineNum">      20 </span>            :                         return PrivateReflectionDynamicObject.WrapObjectIfNeeded(@object);
+<span class="lineNum">      21 </span>            :                 }
+<span class="lineNum">      22 </span>            :         }
+<span class="lineNum">      23 </span>            : }
 </pre>
       </td>
     </tr>

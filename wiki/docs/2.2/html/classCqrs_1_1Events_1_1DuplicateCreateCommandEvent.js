@@ -4,8 +4,6 @@ var classCqrs_1_1Events_1_1DuplicateCreateCommandEvent =
     [ "AggregateType", "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent_ab08eddd7b1f812bdd62103017fd64f7e.html#ab08eddd7b1f812bdd62103017fd64f7e", null ],
     [ "AuthenticationToken", "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent_ab9737d0d029bb3f4b37d2a628ea98d04.html#ab9737d0d029bb3f4b37d2a628ea98d04", null ],
     [ "CorrelationId", "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent_a7a47624fa44952499c87458257184079.html#a7a47624fa44952499c87458257184079", null ],
-    [ "CorrolationId", "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent_a09f55bcafebdc68ef2440031d558da0a.html#a09f55bcafebdc68ef2440031d558da0a", null ],
-    [ "Framework", "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent_af22f0d27a301ca163314550b8991d922.html#af22f0d27a301ca163314550b8991d922", null ],
     [ "Frameworks", "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent_a9cef5da3d0b1481cd3ec9fd448d501af.html#a9cef5da3d0b1481cd3ec9fd448d501af", null ],
     [ "Id", "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent_a6b837c04369ac127fc34f84799c3d70a.html#a6b837c04369ac127fc34f84799c3d70a", null ],
     [ "OriginatingFramework", "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent_a9f3b0ffe268a9be9895009b3f8894727.html#a9f3b0ffe268a9be9895009b3f8894727", null ],
