@@ -8,10 +8,14 @@
 
 using System;
 using System.Collections.Generic;
+using Cqrs.DataStores;
 using Cqrs.Repositories.Queries;
 
 namespace Cqrs.Repositories
 {
+	/// <summary>
+	/// Provides basic repository methods for operations with an <see cref="IDataStore{TData}"/>.
+	/// </summary>
 	public interface IRepository<TQueryStrategy, TData>
 		where TQueryStrategy : IQueryStrategy
 	{

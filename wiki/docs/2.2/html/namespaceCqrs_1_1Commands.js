@@ -10,6 +10,5 @@ var namespaceCqrs_1_1Commands =
     [ "ICommandSender", "interfaceCqrs_1_1Commands_1_1ICommandSender.html", "interfaceCqrs_1_1Commands_1_1ICommandSender" ],
     [ "ICommandValidator", "interfaceCqrs_1_1Commands_1_1ICommandValidator.html", "interfaceCqrs_1_1Commands_1_1ICommandValidator" ],
     [ "IPublishAndWaitCommandPublisher", "interfaceCqrs_1_1Commands_1_1IPublishAndWaitCommandPublisher.html", "interfaceCqrs_1_1Commands_1_1IPublishAndWaitCommandPublisher" ],
-    [ "ISendAndWaitCommandSender", "interfaceCqrs_1_1Commands_1_1ISendAndWaitCommandSender.html", "interfaceCqrs_1_1Commands_1_1ISendAndWaitCommandSender" ],
-    [ "NoCommandHandlerRegisteredException", "classCqrs_1_1Commands_1_1NoCommandHandlerRegisteredException.html", "classCqrs_1_1Commands_1_1NoCommandHandlerRegisteredException" ]
+    [ "ISendAndWaitCommandSender", "interfaceCqrs_1_1Commands_1_1ISendAndWaitCommandSender.html", "interfaceCqrs_1_1Commands_1_1ISendAndWaitCommandSender" ]
 ];

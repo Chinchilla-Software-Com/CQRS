@@ -8,6 +8,9 @@
 
 namespace Cqrs.Services
 {
+	/// <summary>
+	/// Resolves parameter type when serialising with WCF.
+	/// </summary>
 	public interface ISingleSignOnTokenResolver : IServiceParameterResolver
 	{
 	}

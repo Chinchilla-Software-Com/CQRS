@@ -1,5 +1,10 @@
 \hypertarget{classCqrs_1_1Cache_1_1CacheRepository}{}\section{Cqrs.\+Cache.\+Cache\+Repository$<$ T\+Authentication\+Token $>$ Class Template Reference}
 \label{classCqrs_1_1Cache_1_1CacheRepository}\index{Cqrs.\+Cache.\+Cache\+Repository$<$ T\+Authentication\+Token $>$@{Cqrs.\+Cache.\+Cache\+Repository$<$ T\+Authentication\+Token $>$}}
+
+
+Uses Memory\+Cache.\+Default to provide a caching mechanism to improve performance of a I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.  
+
+
 Inheritance diagram for Cqrs.\+Cache.\+Cache\+Repository$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -10,11 +15,21 @@ Inheritance diagram for Cqrs.\+Cache.\+Cache\+Repository$<$ T\+Authentication\+T
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classCqrs_1_1Cache_1_1CacheRepository_a6c567e999a85f5803a920ce4912833a9_a6c567e999a85f5803a920ce4912833a9}{Cache\+Repository} (\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository}{I\+Aggregate\+Repository}$<$ T\+Authentication\+Token $>$ repository, \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}$<$ T\+Authentication\+Token $>$ event\+Store)
-\item 
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \hyperlink{classCqrs_1_1Cache_1_1CacheRepository_a6c567e999a85f5803a920ce4912833a9_a6c567e999a85f5803a920ce4912833a9}{Cache\+Repository$<$\+T\+Authentication\+Token$>$}. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Cache_1_1CacheRepository_a69df7ee1dc2e4cd38431ab987655eab3_a69df7ee1dc2e4cd38431ab987655eab3}{Save$<$ T\+Aggregate\+Root $>$} (T\+Aggregate\+Root aggregate, int? expected\+Version=null)
-\item 
+\begin{DoxyCompactList}\small\item\em Locks the cache, adds the provided {\itshape aggregate}  to the cache if not already in it, then calls I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Save$<$\+T\+Aggregate\+Root$>$ on Repository. In the event of an Exception the {\itshape aggregate}  is always ejected out of the \hyperlink{namespaceCqrs_1_1Cache}{Cache}. \end{DoxyCompactList}\item 
 virtual T\+Aggregate\+Root \hyperlink{classCqrs_1_1Cache_1_1CacheRepository_a037acba636aedf23ff376ac0b749ec0c_a037acba636aedf23ff376ac0b749ec0c}{Get$<$ T\+Aggregate\+Root $>$} (Guid aggregate\+Id, I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ events=null)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Locks the cache, checks if the aggregate is tracked in the \hyperlink{namespaceCqrs_1_1Cache}{Cache}, if it is retrieves the aggregate from the \hyperlink{namespaceCqrs_1_1Cache}{Cache} and then uses either the provided {\itshape events}  or makes a call I\+Event\+Store$<$\+T\+Authentication\+Token$>$.\+Get(\+System.\+Type,\+System.\+Guid,bool,int) on the \hyperlink{namespaceCqrs_1_1EventStore}{Event\+Store} and rehydrates the cached aggregate with any new events from it\textquotesingle{}s cached version. If the aggregate is not in the \hyperlink{namespaceCqrs_1_1Cache}{Cache} I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Get$<$\+T\+Aggregate\+Root$>$ is called on the Repository. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Uses Memory\+Cache.\+Default to provide a caching mechanism to improve performance of a I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of authentication token.\\
+\hline
+\end{DoxyTemplParams}
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -26,6 +41,10 @@ virtual T\+Aggregate\+Root \hyperlink{classCqrs_1_1Cache_1_1CacheRepository_a037
 
 
 
+Instantiates a new instance of \hyperlink{classCqrs_1_1Cache_1_1CacheRepository_a6c567e999a85f5803a920ce4912833a9_a6c567e999a85f5803a920ce4912833a9}{Cache\+Repository$<$\+T\+Authentication\+Token$>$}. 
+
+
+
 \subsection{Member Function Documentation}
 \mbox{\Hypertarget{classCqrs_1_1Cache_1_1CacheRepository_a037acba636aedf23ff376ac0b749ec0c_a037acba636aedf23ff376ac0b749ec0c}\label{classCqrs_1_1Cache_1_1CacheRepository_a037acba636aedf23ff376ac0b749ec0c_a037acba636aedf23ff376ac0b749ec0c}} 
 \index{Cqrs\+::\+Cache\+::\+Cache\+Repository@{Cqrs\+::\+Cache\+::\+Cache\+Repository}!Get$<$ T\+Aggregate\+Root $>$@{Get$<$ T\+Aggregate\+Root $>$}}
@@ -33,6 +52,22 @@ virtual T\+Aggregate\+Root \hyperlink{classCqrs_1_1Cache_1_1CacheRepository_a037
 \subsubsection{\texorpdfstring{Get$<$ T\+Aggregate\+Root $>$()}{Get< TAggregateRoot >()}}
 {\footnotesize\ttfamily virtual T\+Aggregate\+Root \hyperlink{classCqrs_1_1Cache_1_1CacheRepository}{Cqrs.\+Cache.\+Cache\+Repository}$<$ T\+Authentication\+Token $>$.Get$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{events = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
+
+
+Locks the cache, checks if the aggregate is tracked in the \hyperlink{namespaceCqrs_1_1Cache}{Cache}, if it is retrieves the aggregate from the \hyperlink{namespaceCqrs_1_1Cache}{Cache} and then uses either the provided {\itshape events}  or makes a call I\+Event\+Store$<$\+T\+Authentication\+Token$>$.\+Get(\+System.\+Type,\+System.\+Guid,bool,int) on the \hyperlink{namespaceCqrs_1_1EventStore}{Event\+Store} and rehydrates the cached aggregate with any new events from it\textquotesingle{}s cached version. If the aggregate is not in the \hyperlink{namespaceCqrs_1_1Cache}{Cache} I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Get$<$\+T\+Aggregate\+Root$>$ is called on the Repository. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The ID of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to get.\\
+\hline
+{\em events} & A collection of I\+Event$<$\+T\+Authentication\+Token$>$ to replay on the retrieved I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. If null, the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ will be used to retrieve a list of I\+Event$<$\+T\+Authentication\+Token$>$ for you. \\
+\hline
+\end{DoxyParams}
 
 
 Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a890633fddbd05bd3b9e9968a2de095bb_a890633fddbd05bd3b9e9968a2de095bb}{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}.
@@ -47,6 +82,22 @@ Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a890633fdd
 \subsubsection{\texorpdfstring{Save$<$ T\+Aggregate\+Root $>$()}{Save< TAggregateRoot >()}}
 {\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Cache_1_1CacheRepository}{Cqrs.\+Cache.\+Cache\+Repository}$<$ T\+Authentication\+Token $>$.Save$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{T\+Aggregate\+Root}]{aggregate,  }\item[{int?}]{expected\+Version = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
+
+
+Locks the cache, adds the provided {\itshape aggregate}  to the cache if not already in it, then calls I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Save$<$\+T\+Aggregate\+Root$>$ on Repository. In the event of an Exception the {\itshape aggregate}  is always ejected out of the \hyperlink{namespaceCqrs_1_1Cache}{Cache}. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to save and persist.\\
+\hline
+{\em expected\+Version} & The version number the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is expected to be at.\\
+\hline
+\end{DoxyParams}
 
 
 Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a306baf8aa6faabe893f93e5db5d3517d_a306baf8aa6faabe893f93e5db5d3517d}{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}.

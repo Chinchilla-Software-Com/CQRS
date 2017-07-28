@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -67,16 +67,26 @@
 <span class="lineNum">       9 </span>            : using System;
 <span class="lineNum">      10 </span>            : using System.Runtime.Serialization;
 <span class="lineNum">      11 </span>            : using System.Xml;
-<span class="lineNum">      12 </span>            : 
-<span class="lineNum">      13 </span>            : namespace Cqrs.Services
-<span class="lineNum">      14 </span>            : {
-<span class="lineNum">      15 </span>            :         public interface IServiceParameterResolver
-<span class="lineNum">      16 </span>            :         {
-<span class="lineNum">      17 </span><span class="lineNoCov">          0 :                 Type ResolveName(string typeName, string typeNamespace, Type declaredType, DataContractResolver knownTypeResolver);</span>
-<span class="lineNum">      18 </span>            : 
-<span class="lineNum">      19 </span><span class="lineNoCov">          0 :                 bool TryResolveType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace);</span>
-<span class="lineNum">      20 </span>            :         }
-<span class="lineNum">      21 </span>            : }
+<span class="lineNum">      12 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : namespace Cqrs.Services
+<span class="lineNum">      15 </span>            : {
+<span class="lineNum">      16 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      17 </span>            :         /// Resolves &lt;see cref=&quot;ISingleSignOnToken&quot;/&gt; parameter types when serialising with WCF.
+<span class="lineNum">      18 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      19 </span>            :         public interface IServiceParameterResolver
+<span class="lineNum">      20 </span>            :         {
+<span class="lineNum">      21 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :                 /// Indicates if the provided &lt;paramref name=&quot;typeName&quot;/&gt; is resolvable.
+<span class="lineNum">      23 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      24 </span><span class="lineCov">          1 :                 Type ResolveName(string typeName, string typeNamespace, Type declaredType, DataContractResolver knownTypeResolver);</span>
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// Returns the &lt;see cref=&quot;Type&quot;/&gt; if the &lt;paramref name=&quot;typeName&quot;/&gt; is resolvable.
+<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      29 </span><span class="lineCov">          1 :                 bool TryResolveType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace);</span>
+<span class="lineNum">      30 </span>            :         }
+<span class="lineNum">      31 </span>            : }
 </pre>
       </td>
     </tr>

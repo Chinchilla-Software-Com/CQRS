@@ -12,9 +12,9 @@ Inheritance diagram for Cqrs.\+Snapshots.\+Snapshot\+Repository$<$ T\+Authentica
 \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_afb7a64a747064d1f1fa1f58e36d05d78_afb7a64a747064d1f1fa1f58e36d05d78}{Snapshot\+Repository} (\hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStore}{I\+Snapshot\+Store} snapshot\+Store, \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy}{I\+Snapshot\+Strategy}$<$ T\+Authentication\+Token $>$ snapshot\+Strategy, \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository}{I\+Aggregate\+Repository}$<$ T\+Authentication\+Token $>$ repository, \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}$<$ T\+Authentication\+Token $>$ event\+Store, \hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{I\+Aggregate\+Factory} aggregate\+Factory)
 \item 
 void \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_a4a7484e7754cae876f0c04e640eb80ff_a4a7484e7754cae876f0c04e640eb80ff}{Save$<$ T\+Aggregate\+Root $>$} (T\+Aggregate\+Root aggregate, int? exected\+Version=null)
-\item 
+\begin{DoxyCompactList}\small\item\em Save and persist the provided {\itshape aggregate} , optionally providing the version number the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is expected to be at. \end{DoxyCompactList}\item 
 T\+Aggregate\+Root \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_acdbea47afc87de1da613a6eff3ceef0f_acdbea47afc87de1da613a6eff3ceef0f}{Get$<$ T\+Aggregate\+Root $>$} (Guid aggregate\+Id, I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ events=null)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root} . \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -35,6 +35,22 @@ T\+Aggregate\+Root \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_acdbe
 
 
 
+Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The identifier of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to retrieve.\\
+\hline
+{\em events} & A collection of I\+Event$<$\+T\+Authentication\+Token$>$ to replay on the retrieved I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. If null, the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ will be used to retrieve a list of I\+Event$<$\+T\+Authentication\+Token$>$ for you. \\
+\hline
+\end{DoxyParams}
+
+
 Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a890633fddbd05bd3b9e9968a2de095bb_a890633fddbd05bd3b9e9968a2de095bb}{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}.
 
 \begin{Desc}
@@ -45,8 +61,24 @@ Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a890633fdd
 \index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Repository@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Repository}!Save$<$ T\+Aggregate\+Root $>$@{Save$<$ T\+Aggregate\+Root $>$}}
 \index{Save$<$ T\+Aggregate\+Root $>$@{Save$<$ T\+Aggregate\+Root $>$}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Repository@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Repository}}
 \subsubsection{\texorpdfstring{Save$<$ T\+Aggregate\+Root $>$()}{Save< TAggregateRoot >()}}
-{\footnotesize\ttfamily void \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository}{Cqrs.\+Snapshots.\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.Save$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{T\+Aggregate\+Root}]{aggregate,  }\item[{int?}]{exected\+Version = {\ttfamily null} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository}{Cqrs.\+Snapshots.\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.Save$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{T\+Aggregate\+Root}]{aggregate,  }\item[{int?}]{expected\+Version = {\ttfamily null} }\end{DoxyParamCaption})}
 
+
+
+Save and persist the provided {\itshape aggregate} , optionally providing the version number the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is expected to be at. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to save and persist.\\
+\hline
+{\em expected\+Version} & The version number the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is expected to be at.\\
+\hline
+\end{DoxyParams}
 
 
 Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a306baf8aa6faabe893f93e5db5d3517d_a306baf8aa6faabe893f93e5db5d3517d}{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}.

@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -62,28 +62,37 @@
 <span class="lineNum">       4 </span>            : 
 <span class="lineNum">       5 </span>            : namespace Cqrs.Configuration
 <span class="lineNum">       6 </span>            : {
-<span class="lineNum">       7 </span>            :         public static class ConfigurationExtensions
-<span class="lineNum">       8 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">       9 </span><span class="lineNoCov">          0 :                 public static ITelemetryHelper CreateTelemetryHelper(this IConfigurationManager configurationManager, string configurationKey, IDependencyResolver dependencyResolver)</span>
-<span class="lineNum">      10 </span>            :                 {
-<span class="lineNum">      11 </span>            :                         return CreateTelemetryHelper(configurationManager, configurationKey, dependencyResolver.Resolve&lt;ICorrelationIdHelper&gt;());
-<span class="lineNum">      12 </span>            :                 }
-<span class="lineNum">      13 </span>            : 
-<span class="lineNum">      14 </span><span class="lineNoCov">          0 :                 public static ITelemetryHelper CreateTelemetryHelper(this IConfigurationManager configurationManager, string configurationKey, ICorrelationIdHelper correlationIdHelper)</span>
-<span class="lineNum">      15 </span>            :                 {
-<span class="lineNum">      16 </span>            :                         bool useApplicationInsightTelemetryHelper;
-<span class="lineNum">      17 </span>            :                         if (!bool.TryParse(configurationManager.GetSetting(configurationKey), out useApplicationInsightTelemetryHelper))
-<span class="lineNum">      18 </span>            :                                 useApplicationInsightTelemetryHelper = false;
+<span class="lineNum">       7 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">       8 </span>            :         /// A collection of extension methods for &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">       9 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      10 </span>            :         public static class ConfigurationExtensions
+<span class="lineNum">      11 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      12 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      13 </span>            :                 /// Creates an instance of &lt;see cref=&quot;ITelemetryHelper&quot;/&gt; if the value for &lt;paramref name=&quot;configurationKey&quot;/&gt; is true.
+<span class="lineNum">      14 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      15 </span><span class="lineCov">          1 :                 public static ITelemetryHelper CreateTelemetryHelper(this IConfigurationManager configurationManager, string configurationKey, IDependencyResolver dependencyResolver)</span>
+<span class="lineNum">      16 </span>            :                 {
+<span class="lineNum">      17 </span>            :                         return CreateTelemetryHelper(configurationManager, configurationKey, dependencyResolver.Resolve&lt;ICorrelationIdHelper&gt;());
+<span class="lineNum">      18 </span>            :                 }
 <span class="lineNum">      19 </span>            : 
-<span class="lineNum">      20 </span>            :                         if (useApplicationInsightTelemetryHelper)
-<span class="lineNum">      21 </span>            :                         {
-<span class="lineNum">      22 </span>            :                                 var helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format(&quot;{0}\\cdmdotnet.Logging.Azure.ApplicationInsights.dll&quot;, AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), &quot;cdmdotnet.Logging.Azure.ApplicationInsights.TelemetryHelper&quot;, false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper }, null, null).Unwrap();
-<span class="lineNum">      23 </span>            :                                 return helper;
-<span class="lineNum">      24 </span>            :                         }
-<span class="lineNum">      25 </span>            :                         return new NullTelemetryHelper();
-<span class="lineNum">      26 </span>            :                 }
-<span class="lineNum">      27 </span>            :         }
-<span class="lineNum">      28 </span>            : }
+<span class="lineNum">      20 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :                 /// Creates an instance of &lt;see cref=&quot;ITelemetryHelper&quot;/&gt; if the value for &lt;paramref name=&quot;configurationKey&quot;/&gt; is true.
+<span class="lineNum">      22 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      23 </span><span class="lineCov">          1 :                 public static ITelemetryHelper CreateTelemetryHelper(this IConfigurationManager configurationManager, string configurationKey, ICorrelationIdHelper correlationIdHelper)</span>
+<span class="lineNum">      24 </span>            :                 {
+<span class="lineNum">      25 </span>            :                         bool useApplicationInsightTelemetryHelper;
+<span class="lineNum">      26 </span>            :                         if (!bool.TryParse(configurationManager.GetSetting(configurationKey), out useApplicationInsightTelemetryHelper))
+<span class="lineNum">      27 </span>            :                                 useApplicationInsightTelemetryHelper = false;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                         if (useApplicationInsightTelemetryHelper)
+<span class="lineNum">      30 </span>            :                         {
+<span class="lineNum">      31 </span>            :                                 var helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format(&quot;{0}\\cdmdotnet.Logging.Azure.ApplicationInsights.dll&quot;, AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), &quot;cdmdotnet.Logging.Azure.ApplicationInsights.TelemetryHelper&quot;, false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper }, null, null).Unwrap();
+<span class="lineNum">      32 </span>            :                                 return helper;
+<span class="lineNum">      33 </span>            :                         }
+<span class="lineNum">      34 </span>            :                         return new NullTelemetryHelper();
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            :         }
+<span class="lineNum">      37 </span>            : }
 </pre>
       </td>
     </tr>

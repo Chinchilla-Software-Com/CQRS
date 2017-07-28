@@ -39,6 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
     <DocumentationFile>bin\Debug\Cqrs.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -47,6 +48,7 @@
     <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
     <DocumentationFile>bin\Release\Cqrs.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="cdmdotnet.Logging, Version=1.2.91.71, Culture=neutral, processorArchitecture=MSIL">
@@ -94,9 +96,8 @@
     <Compile Include="Authentication\SingleSignOnTokenResolver.cs" />
     <Compile Include="Bus\BusHelper.cs" />
     <Compile Include="Bus\IBusHelper.cs" />
-    <Compile Include="Bus\NoHandlersRegisteredException.cs" />
-    <Compile Include="Bus\MultipleHandlersRegisteredException.cs" />
-    <Compile Include="Bus\NoHandlerRegisteredException.cs" />
+    <Compile Include="Exceptions\NoHandlersRegisteredException.cs" />
+    <Compile Include="Exceptions\MultipleHandlersRegisteredException.cs" />
     <Compile Include="Bus\QueuedCommandBusReceiver.cs" />
     <Compile Include="Bus\ICommandHandlerRegistrar.cs" />
     <Compile Include="Bus\IEventHandlerRegistrar.cs" />
@@ -113,8 +114,9 @@
     <Compile Include="Commands\IPublishAndWaitCommandPublisher.cs" />
     <Compile Include="Commands\ISendAndWaitCommandSender.cs" />
     <Compile Include="Commands\ICommandValidator.cs" />
-    <Compile Include="Commands\MultipleHandlersRegisteredException.cs" />
-    <Compile Include="Commands\NoCommandHandlerRegisteredException.cs" />
+    <Compile Include="Exceptions\MultipleCommandHandlersRegisteredException.cs" />
+    <Compile Include="Exceptions\NoHandlerRegisteredException.cs" />
+    <Compile Include="Exceptions\NoCommandHandlerRegisteredException.cs" />
     <Compile Include="Configuration\ConfigurationExtensions.cs" />
     <Compile Include="Configuration\ConfigurationManager.cs" />
     <Compile Include="Configuration\DependencyResolver.cs" />
@@ -196,7 +198,7 @@
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Events\IEventHandler.cs" />
     <Compile Include="Events\DtoAggregateEvent.cs" />
-    <Compile Include="Events\NoEventHandlerRegisteredException.cs" />
+    <Compile Include="Exceptions\NoEventHandlerRegisteredException.cs" />
     <Compile Include="Events\PublicEventAttribute.cs" />
     <Compile Include="Events\SqlEventStore.cs" />
     <Compile Include="Exceptions\InvalidConfigurationException.cs" />

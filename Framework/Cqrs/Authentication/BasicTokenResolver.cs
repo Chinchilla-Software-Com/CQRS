@@ -13,10 +13,17 @@ using Cqrs.Services;
 
 namespace Cqrs.Authentication
 {
+	/// <summary>
+	/// Resolves basic, known parameter types when serialising with WCF.
+	/// </summary>
 	public class BasicTokenResolver : IServiceParameterResolver
 	{
 		#region Implementation of IServiceParameterResolver
 
+		/// <summary>
+		/// Indicates if the provided <paramref name="dataContractType"/> is of type <see cref="Guid"/>, <see cref="Nullable{Guid}"/>, <see cref="int"/>, <see cref="Nullable{integer}"/>, <see cref="string"/>
+		/// OR if it is other resolvable.
+		/// </summary>
 		public virtual bool TryResolveType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace)
 		{
 			if (dataContractType == typeof(Guid))
@@ -64,6 +71,10 @@ namespace Cqrs.Authentication
 			return false;
 		}
 
+		/// <summary>
+		/// Returns the <see cref="Type"/> if the <paramref name="typeName"/> is resolvable or if it is 
+		/// of type <see cref="Guid"/>, <see cref="Nullable{Guid}"/>, <see cref="int"/>, <see cref="Nullable{integer}"/> and <see cref="string"/>
+		/// </summary>
 		public virtual Type ResolveName(string typeName, string typeNamespace, Type declaredType, DataContractResolver knownTypeResolver)
 		{
 			switch (typeNamespace)

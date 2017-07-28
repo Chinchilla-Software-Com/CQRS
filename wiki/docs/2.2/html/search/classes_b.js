@@ -29,6 +29,6 @@ var searchData=
   ['mongoindex',['MongoIndex',['../classCqrs_1_1Mongo_1_1DataStores_1_1Indexes_1_1MongoIndex.html',1,'Cqrs::Mongo::DataStores::Indexes']]],
   ['mongomodule',['MongoModule',['../classCqrs_1_1Ninject_1_1Mongo_1_1Configuration_1_1MongoModule.html',1,'Cqrs::Ninject::Mongo::Configuration']]],
   ['multipartformattersettings',['MultipartFormatterSettings',['../classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings.html',1,'Cqrs::WebApi::Formatters::FormMultipart::Infrastructure']]],
-  ['multiplecommandhandlersregisteredexception',['MultipleCommandHandlersRegisteredException',['../classCqrs_1_1Bus_1_1MultipleCommandHandlersRegisteredException.html',1,'Cqrs::Bus']]],
-  ['multiplehandlersregisteredexception',['MultipleHandlersRegisteredException',['../classCqrs_1_1Bus_1_1MultipleHandlersRegisteredException.html',1,'Cqrs::Bus']]]
+  ['multiplecommandhandlersregisteredexception',['MultipleCommandHandlersRegisteredException',['../classCqrs_1_1Exceptions_1_1MultipleCommandHandlersRegisteredException.html',1,'Cqrs::Exceptions']]],
+  ['multiplehandlersregisteredexception',['MultipleHandlersRegisteredException',['../classCqrs_1_1Exceptions_1_1MultipleHandlersRegisteredException.html',1,'Cqrs::Exceptions']]]
 ];

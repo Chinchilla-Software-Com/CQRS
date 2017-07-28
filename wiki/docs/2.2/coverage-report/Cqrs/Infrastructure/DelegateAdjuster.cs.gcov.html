@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -69,27 +69,37 @@
 <span class="lineNum">      11 </span>            : 
 <span class="lineNum">      12 </span>            : namespace Cqrs.Infrastructure
 <span class="lineNum">      13 </span>            : {
-<span class="lineNum">      14 </span>            :         public static class DelegateAdjuster
-<span class="lineNum">      15 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      16 </span><span class="lineNoCov">          0 :                 public static Action&lt;TBase&gt; CastArgument&lt;TBase, TDerived&gt;(Expression&lt;Action&lt;TDerived&gt;&gt; source)</span>
-<span class="lineNum">      17 </span>            :                         where TDerived : TBase
-<span class="lineNum">      18 </span>            :                 {
-<span class="lineNum">      19 </span>            :                         if (typeof(TDerived) == typeof(TBase))
-<span class="lineNum">      20 </span>            :                         {
-<span class="lineNum">      21 </span>            :                                 return (Action&lt;TBase&gt;)((Delegate)source.Compile());
-<span class="lineNum">      22 </span>            :                         }
-<span class="lineNum">      23 </span>            : 
-<span class="lineNum">      24 </span>            :                         ParameterExpression sourceParameter = Expression.Parameter(typeof(TBase), &quot;source&quot;);
-<span class="lineNum">      25 </span>            :                         Expression&lt;Action&lt;TBase&gt;&gt; result = Expression.Lambda&lt;Action&lt;TBase&gt;&gt;
-<span class="lineNum">      26 </span>            :                         (
-<span class="lineNum">      27 </span>            :                                 Expression.Invoke(source, Expression.Convert(sourceParameter, typeof(TDerived))),
-<span class="lineNum">      28 </span>            :                                 sourceParameter
-<span class="lineNum">      29 </span>            :                         );
-<span class="lineNum">      30 </span>            :                         return result.Compile();
-<span class="lineNum">      31 </span>            :                 }
-<span class="lineNum">      32 </span>            :         }
-<span class="lineNum">      33 </span>            : }
-<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      14 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      15 </span>            :         /// Adjusts &lt;see cref=&quot;Expression&quot;/&gt; using &lt;see cref=&quot;Expression.Convert(System.Linq.Expressions.Expression,System.Type)&quot;/&gt;
+<span class="lineNum">      16 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      17 </span>            :         public static class DelegateAdjuster
+<span class="lineNum">      18 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      19 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      20 </span>            :                 /// If &lt;typeparamref name=&quot;TDerived&quot;/&gt; equals &lt;typeparamref name=&quot;TBase&quot;/&gt; then &lt;paramref name=&quot;source&quot;/&gt; is compiled using &lt;see cref=&quot;Expression{TDelegate}.Compile()&quot;/&gt;
+<span class="lineNum">      21 </span>            :                 /// Otherwise &lt;paramref name=&quot;source&quot;/&gt; is converted to type &lt;typeparamref name=&quot;TDerived&quot;/&gt; from &lt;typeparamref name=&quot;TBase&quot;/&gt;
+<span class="lineNum">      22 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      23 </span>            :                 /// &lt;typeparam name=&quot;TBase&quot;&gt;The source &lt;see cref=&quot;Type&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      24 </span>            :                 /// &lt;typeparam name=&quot;TDerived&quot;&gt;The target &lt;see cref=&quot;Type&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      25 </span>            :                 /// &lt;param name=&quot;source&quot;&gt;The delegate to adjust.&lt;/param&gt;
+<span class="lineNum">      26 </span><span class="lineCov">          1 :                 public static Action&lt;TBase&gt; CastArgument&lt;TBase, TDerived&gt;(Expression&lt;Action&lt;TDerived&gt;&gt; source)</span>
+<span class="lineNum">      27 </span>            :                         where TDerived : TBase
+<span class="lineNum">      28 </span>            :                 {
+<span class="lineNum">      29 </span>            :                         if (typeof(TDerived) == typeof(TBase))
+<span class="lineNum">      30 </span>            :                         {
+<span class="lineNum">      31 </span>            :                                 return (Action&lt;TBase&gt;)((Delegate)source.Compile());
+<span class="lineNum">      32 </span>            :                         }
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                         ParameterExpression sourceParameter = Expression.Parameter(typeof(TBase), &quot;source&quot;);
+<span class="lineNum">      35 </span>            :                         Expression&lt;Action&lt;TBase&gt;&gt; result = Expression.Lambda&lt;Action&lt;TBase&gt;&gt;
+<span class="lineNum">      36 </span>            :                         (
+<span class="lineNum">      37 </span>            :                                 Expression.Invoke(source, Expression.Convert(sourceParameter, typeof(TDerived))),
+<span class="lineNum">      38 </span>            :                                 sourceParameter
+<span class="lineNum">      39 </span>            :                         );
+<span class="lineNum">      40 </span>            :                         return result.Compile();
+<span class="lineNum">      41 </span>            :                 }
+<span class="lineNum">      42 </span>            :         }
+<span class="lineNum">      43 </span>            : }
+<span class="lineNum">      44 </span>            : 
 </pre>
       </td>
     </tr>

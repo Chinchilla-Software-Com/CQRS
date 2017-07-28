@@ -20,7 +20,6 @@ var namespaceCqrs_1_1Events =
     [ "InProcessEventStore", "classCqrs_1_1Events_1_1InProcessEventStore.html", "classCqrs_1_1Events_1_1InProcessEventStore" ],
     [ "ISagaEvent", "interfaceCqrs_1_1Events_1_1ISagaEvent.html", "interfaceCqrs_1_1Events_1_1ISagaEvent" ],
     [ "MemoryCacheEventStore", "classCqrs_1_1Events_1_1MemoryCacheEventStore.html", "classCqrs_1_1Events_1_1MemoryCacheEventStore" ],
-    [ "NoEventHandlerRegisteredException", "classCqrs_1_1Events_1_1NoEventHandlerRegisteredException.html", "classCqrs_1_1Events_1_1NoEventHandlerRegisteredException" ],
     [ "NotifyCallerEventAttribute", "classCqrs_1_1Events_1_1NotifyCallerEventAttribute.html", null ],
     [ "NotifyEveryoneEventAttribute", "classCqrs_1_1Events_1_1NotifyEveryoneEventAttribute.html", null ],
     [ "NotifyEveryoneExceptCallerEventAttribute", "classCqrs_1_1Events_1_1NotifyEveryoneExceptCallerEventAttribute.html", null ],
