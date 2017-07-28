@@ -4,13 +4,22 @@ using System.Reflection;
 
 namespace Cqrs.Configuration
 {
+	/// <summary>
+	/// A collection of extension methods for <see cref="IConfigurationManager"/>.
+	/// </summary>
 	public static class ConfigurationExtensions
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="ITelemetryHelper"/> if the value for <paramref name="configurationKey"/> is true.
+		/// </summary>
 		public static ITelemetryHelper CreateTelemetryHelper(this IConfigurationManager configurationManager, string configurationKey, IDependencyResolver dependencyResolver)
 		{
 			return CreateTelemetryHelper(configurationManager, configurationKey, dependencyResolver.Resolve<ICorrelationIdHelper>());
 		}
 
+		/// <summary>
+		/// Creates an instance of <see cref="ITelemetryHelper"/> if the value for <paramref name="configurationKey"/> is true.
+		/// </summary>
 		public static ITelemetryHelper CreateTelemetryHelper(this IConfigurationManager configurationManager, string configurationKey, ICorrelationIdHelper correlationIdHelper)
 		{
 			bool useApplicationInsightTelemetryHelper;
