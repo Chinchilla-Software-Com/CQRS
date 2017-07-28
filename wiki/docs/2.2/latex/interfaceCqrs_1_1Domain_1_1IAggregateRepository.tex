@@ -1,5 +1,10 @@
 \hypertarget{interfaceCqrs_1_1Domain_1_1IAggregateRepository}{}\section{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$ Interface Template Reference}
 \label{interfaceCqrs_1_1Domain_1_1IAggregateRepository}\index{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$@{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}}
+
+
+Provides basic repository methods for operations with instances of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.  
+
+
 Inheritance diagram for Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -10,9 +15,19 @@ Inheritance diagram for Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentic
 \begin{DoxyCompactItemize}
 \item 
 void \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a306baf8aa6faabe893f93e5db5d3517d_a306baf8aa6faabe893f93e5db5d3517d}{Save$<$ T\+Aggregate\+Root $>$} (T\+Aggregate\+Root aggregate, int? expected\+Version=null)
-\item 
+\begin{DoxyCompactList}\small\item\em Save and persist the provided {\itshape aggregate} , optionally providing the version number the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is expected to be at. \end{DoxyCompactList}\item 
 T\+Aggregate\+Root \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a890633fddbd05bd3b9e9968a2de095bb_a890633fddbd05bd3b9e9968a2de095bb}{Get$<$ T\+Aggregate\+Root $>$} (Guid aggregate\+Id, I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ events=null)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Provides basic repository methods for operations with instances of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of authentication token.\\
+\hline
+\end{DoxyTemplParams}
 
 
 \subsection{Member Function Documentation}
@@ -22,6 +37,22 @@ T\+Aggregate\+Root \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a8
 \subsubsection{\texorpdfstring{Get$<$ T\+Aggregate\+Root $>$()}{Get< TAggregateRoot >()}}
 {\footnotesize\ttfamily T\+Aggregate\+Root \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository}{Cqrs.\+Domain.\+I\+Aggregate\+Repository}$<$ T\+Authentication\+Token $>$.Get$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{events = {\ttfamily null} }\end{DoxyParamCaption})}
 
+
+
+Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The identifier of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to retrieve.\\
+\hline
+{\em events} & A collection of I\+Event$<$\+T\+Authentication\+Token$>$ to replay on the retrieved I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. If null, the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ will be used to retrieve a list of I\+Event$<$\+T\+Authentication\+Token$>$ for you. \\
+\hline
+\end{DoxyParams}
 
 
 Implemented in \hyperlink{classCqrs_1_1Domain_1_1AggregateRepository_a0e55881812d463129df34189d29544b6_a0e55881812d463129df34189d29544b6}{Cqrs.\+Domain.\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Cache_1_1CacheRepository_a037acba636aedf23ff376ac0b749ec0c_a037acba636aedf23ff376ac0b749ec0c}{Cqrs.\+Cache.\+Cache\+Repository$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_acdbea47afc87de1da613a6eff3ceef0f_acdbea47afc87de1da613a6eff3ceef0f}{Cqrs.\+Snapshots.\+Snapshot\+Repository$<$ T\+Authentication\+Token $>$}.
@@ -38,7 +69,23 @@ Implemented in \hyperlink{classCqrs_1_1Domain_1_1AggregateRepository_a0e55881812
 
 
 
-Implemented in \hyperlink{classCqrs_1_1Cache_1_1CacheRepository_a69df7ee1dc2e4cd38431ab987655eab3_a69df7ee1dc2e4cd38431ab987655eab3}{Cqrs.\+Cache.\+Cache\+Repository$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_a4a7484e7754cae876f0c04e640eb80ff_a4a7484e7754cae876f0c04e640eb80ff}{Cqrs.\+Snapshots.\+Snapshot\+Repository$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Domain_1_1AggregateRepository_aff9e828d19a091a4275f635bee4b3c9b_aff9e828d19a091a4275f635bee4b3c9b}{Cqrs.\+Domain.\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}.
+Save and persist the provided {\itshape aggregate} , optionally providing the version number the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is expected to be at. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to save and persist.\\
+\hline
+{\em expected\+Version} & The version number the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is expected to be at.\\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classCqrs_1_1Cache_1_1CacheRepository_a69df7ee1dc2e4cd38431ab987655eab3_a69df7ee1dc2e4cd38431ab987655eab3}{Cqrs.\+Cache.\+Cache\+Repository$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Domain_1_1AggregateRepository_aff9e828d19a091a4275f635bee4b3c9b_aff9e828d19a091a4275f635bee4b3c9b}{Cqrs.\+Domain.\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_a4a7484e7754cae876f0c04e640eb80ff_a4a7484e7754cae876f0c04e640eb80ff}{Cqrs.\+Snapshots.\+Snapshot\+Repository$<$ T\+Authentication\+Token $>$}.
 
 \begin{Desc}
 \item[Type Constraints]\begin{description}

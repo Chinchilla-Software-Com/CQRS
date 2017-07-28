@@ -28,7 +28,6 @@ var searchData=
   ['iauthenticationtokenhelper_3c_20singlesignontokenwithuserrsn_20_3e',['IAuthenticationTokenHelper&lt; SingleSignOnTokenWithUserRsn &gt;',['../interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],
   ['iauthenticationtokenhelper_3c_20singlesignontokenwithuserrsnandcompanyrsn_20_3e',['IAuthenticationTokenHelper&lt; SingleSignOnTokenWithUserRsnAndCompanyRsn &gt;',['../interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],
   ['iauthenticationtokenhelper_3c_20string_20_3e',['IAuthenticationTokenHelper&lt; string &gt;',['../interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],
-  ['iauthenticationtokenhelper_3c_20ttoken1_20_3e',['IAuthenticationTokenHelper&lt; TToken1 &gt;',['../interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],
   ['iazurebushelper',['IAzureBusHelper',['../interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper.html',1,'Cqrs::Azure::ServiceBus']]],
   ['iazuredocumentdbconnectioncache',['IAzureDocumentDbConnectionCache',['../interfaceCqrs_1_1Azure_1_1DocumentDb_1_1IAzureDocumentDbConnectionCache.html',1,'Cqrs::Azure::DocumentDb']]],
   ['iazuredocumentdbdatastoreconnectionstringfactory',['IAzureDocumentDbDataStoreConnectionStringFactory',['../interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1IAzureDocumentDbDataStoreConnectionStringFactory.html',1,'Cqrs::Azure::DocumentDb::Factories']]],

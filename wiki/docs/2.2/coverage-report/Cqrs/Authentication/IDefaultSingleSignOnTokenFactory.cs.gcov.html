@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -64,17 +64,26 @@
 <span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
 <span class="lineNum">       7 </span>            : #endregion
 <span class="lineNum">       8 </span>            : 
-<span class="lineNum">       9 </span>            : using System.ServiceModel;
-<span class="lineNum">      10 </span>            : 
-<span class="lineNum">      11 </span>            : namespace Cqrs.Authentication
-<span class="lineNum">      12 </span>            : {
-<span class="lineNum">      13 </span>            :         [ServiceContract(Namespace = &quot;https://getcqrs.net/SingleSignOn/TokenFactory&quot;)]
-<span class="lineNum">      14 </span>            :         public interface IDefaultSingleSignOnTokenFactory : ISingleSignOnTokenFactory&lt;SingleSignOnToken&gt;
-<span class="lineNum">      15 </span>            :         {
-<span class="lineNum">      16 </span>            :                 [OperationContract]
-<span class="lineNum">      17 </span><span class="lineNoCov">          0 :                 ISingleSignOnToken RenewTokenExpiry(ISingleSignOnToken token, int timeoutInMinutes = 360);</span>
-<span class="lineNum">      18 </span>            :         }
-<span class="lineNum">      19 </span>            : }
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.ServiceModel;
+<span class="lineNum">      11 </span>            : 
+<span class="lineNum">      12 </span>            : namespace Cqrs.Authentication
+<span class="lineNum">      13 </span>            : {
+<span class="lineNum">      14 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      15 </span>            :         /// A Factory for creating new authentication tokens of type &lt;see cref=&quot;SingleSignOnToken&quot;/&gt;
+<span class="lineNum">      16 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      17 </span>            :         [ServiceContract(Namespace = &quot;https://getcqrs.net/SingleSignOn/TokenFactory&quot;)]
+<span class="lineNum">      18 </span>            :         public interface IDefaultSingleSignOnTokenFactory : ISingleSignOnTokenFactory&lt;SingleSignOnToken&gt;
+<span class="lineNum">      19 </span>            :         {
+<span class="lineNum">      20 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :                 /// Renew the value of &lt;see cref=&quot;ISingleSignOnToken.TimeOfExpiry&quot;/&gt;.
+<span class="lineNum">      22 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      23 </span>            :                 /// &lt;param name=&quot;token&quot;&gt;The &lt;see cref=&quot;ISingleSignOnToken&quot;/&gt; to renew.&lt;/param&gt;
+<span class="lineNum">      24 </span>            :                 /// &lt;param name=&quot;timeoutInMinutes&quot;&gt;The amount of time in minutes to set the &lt;see cref=&quot;ISingleSignOnToken.TimeOfExpiry&quot;/&gt; to. This is from &lt;see cref=&quot;DateTime.UtcNow&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">      25 </span>            :                 [OperationContract]
+<span class="lineNum">      26 </span><span class="lineCov">          1 :                 ISingleSignOnToken RenewTokenExpiry(ISingleSignOnToken token, int timeoutInMinutes = 360);</span>
+<span class="lineNum">      27 </span>            :         }
+<span class="lineNum">      28 </span>            : }
 </pre>
       </td>
     </tr>

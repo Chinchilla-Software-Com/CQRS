@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -65,16 +65,26 @@
 <span class="lineNum">       7 </span>            : #endregion
 <span class="lineNum">       8 </span>            : 
 <span class="lineNum">       9 </span>            : using System;
-<span class="lineNum">      10 </span>            : 
-<span class="lineNum">      11 </span>            : namespace Cqrs.Configuration
-<span class="lineNum">      12 </span>            : {
-<span class="lineNum">      13 </span>            :         public class HandlerDelegate
-<span class="lineNum">      14 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      15 </span>            :                 public Action&lt;dynamic&gt; Delegate { get; set; }
-<span class="lineNum">      16 </span>            : 
-<span class="lineNum">      17 </span>            :                 public Type TargetedType { get; set; }
-<span class="lineNum">      18 </span>            :         }
-<span class="lineNum">      19 </span>            : }
+<span class="lineNum">      10 </span>            : using Cqrs.Messages;
+<span class="lineNum">      11 </span>            : 
+<span class="lineNum">      12 </span>            : namespace Cqrs.Configuration
+<span class="lineNum">      13 </span>            : {
+<span class="lineNum">      14 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      15 </span>            :         /// Information about a &lt;see cref=&quot;IHandler&quot;/&gt; delegate.
+<span class="lineNum">      16 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      17 </span>            :         public class HandlerDelegate
+<span class="lineNum">      18 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      19 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      20 </span>            :                 /// The delegate that gets executed.
+<span class="lineNum">      21 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      22 </span>            :                 public Action&lt;dynamic&gt; Delegate { get; set; }
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      25 </span>            :                 /// The &lt;see cref=&quot;Type&quot;/&gt; of the targeted object that &lt;see cref=&quot;Delegate&quot;/&gt; operates on.
+<span class="lineNum">      26 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      27 </span>            :                 public Type TargetedType { get; set; }
+<span class="lineNum">      28 </span>            :         }
+<span class="lineNum">      29 </span>            : }
 </pre>
       </td>
     </tr>

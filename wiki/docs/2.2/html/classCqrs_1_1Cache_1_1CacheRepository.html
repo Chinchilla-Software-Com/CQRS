@@ -95,6 +95,9 @@ $(document).ready(function(){initNavTree('classCqrs_1_1Cache_1_1CacheRepository.
 <div class="title">Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Uses MemoryCache.Default to provide a caching mechanism to improve performance of a IAggregateRepository&lt;TAuthenticationToken&gt;.  
+ <a href="classCqrs_1_1Cache_1_1CacheRepository.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -103,20 +106,31 @@ $(document).ready(function(){initNavTree('classCqrs_1_1Cache_1_1CacheRepository.
  <div class="center">
   <img src="classCqrs_1_1Cache_1_1CacheRepository.png" usemap="#Cqrs.Cache.CacheRepository_3C_20TAuthenticationToken_20_3E_map" alt=""/>
   <map id="Cqrs.Cache.CacheRepository_3C_20TAuthenticationToken_20_3E_map" name="Cqrs.Cache.CacheRepository_3C_20TAuthenticationToken_20_3E_map">
-<area href="interfaceCqrs_1_1Domain_1_1IAggregateRepository.html" alt="Cqrs.Domain.IAggregateRepository&lt; TAuthenticationToken &gt;" shape="rect" coords="0,0,359,24"/>
+<area href="interfaceCqrs_1_1Domain_1_1IAggregateRepository.html" title="Provides basic repository methods for operations with instances of IAggregateRoot&lt;TAuthenticationToke..." alt="Cqrs.Domain.IAggregateRepository&lt; TAuthenticationToken &gt;" shape="rect" coords="0,0,359,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6c567e999a85f5803a920ce4912833a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCqrs_1_1Cache_1_1CacheRepository_a6c567e999a85f5803a920ce4912833a9.html#a6c567e999a85f5803a920ce4912833a9">CacheRepository</a> (<a class="el" href="interfaceCqrs_1_1Domain_1_1IAggregateRepository.html">IAggregateRepository</a>&lt; TAuthenticationToken &gt; repository, <a class="el" href="interfaceCqrs_1_1Events_1_1IEventStore.html">IEventStore</a>&lt; TAuthenticationToken &gt; eventStore)</td></tr>
+<tr class="memdesc:a6c567e999a85f5803a920ce4912833a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new instance of <a class="el" href="classCqrs_1_1Cache_1_1CacheRepository_a6c567e999a85f5803a920ce4912833a9.html#a6c567e999a85f5803a920ce4912833a9" title="Instantiates a new instance of CacheRepository&lt;TAuthenticationToken&gt;. ">CacheRepository&lt;TAuthenticationToken&gt;</a>.  <a href="classCqrs_1_1Cache_1_1CacheRepository_a6c567e999a85f5803a920ce4912833a9.html#a6c567e999a85f5803a920ce4912833a9">More...</a><br /></td></tr>
 <tr class="separator:a6c567e999a85f5803a920ce4912833a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69df7ee1dc2e4cd38431ab987655eab3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCqrs_1_1Cache_1_1CacheRepository_a69df7ee1dc2e4cd38431ab987655eab3.html#a69df7ee1dc2e4cd38431ab987655eab3">Save&lt; TAggregateRoot &gt;</a> (TAggregateRoot aggregate, int? expectedVersion=null)</td></tr>
+<tr class="memdesc:a69df7ee1dc2e4cd38431ab987655eab3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks the cache, adds the provided <em>aggregate</em>  to the cache if not already in it, then calls IAggregateRepository&lt;TAuthenticationToken&gt;.Save&lt;TAggregateRoot&gt; on Repository. In the event of an Exception the <em>aggregate</em>  is always ejected out of the <a class="el" href="namespaceCqrs_1_1Cache.html">Cache</a>.  <a href="classCqrs_1_1Cache_1_1CacheRepository_a69df7ee1dc2e4cd38431ab987655eab3.html#a69df7ee1dc2e4cd38431ab987655eab3">More...</a><br /></td></tr>
 <tr class="separator:a69df7ee1dc2e4cd38431ab987655eab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a037acba636aedf23ff376ac0b749ec0c"><td class="memItemLeft" align="right" valign="top">virtual TAggregateRoot&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCqrs_1_1Cache_1_1CacheRepository_a037acba636aedf23ff376ac0b749ec0c.html#a037acba636aedf23ff376ac0b749ec0c">Get&lt; TAggregateRoot &gt;</a> (Guid aggregateId, IList&lt; <a class="el" href="interfaceCqrs_1_1Events_1_1IEvent.html">IEvent</a>&lt; TAuthenticationToken &gt;&gt; events=null)</td></tr>
+<tr class="memdesc:a037acba636aedf23ff376ac0b749ec0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks the cache, checks if the aggregate is tracked in the <a class="el" href="namespaceCqrs_1_1Cache.html">Cache</a>, if it is retrieves the aggregate from the <a class="el" href="namespaceCqrs_1_1Cache.html">Cache</a> and then uses either the provided <em>events</em>  or makes a call IEventStore&lt;TAuthenticationToken&gt;.Get(System.Type,System.Guid,bool,int) on the <a class="el" href="namespaceCqrs_1_1EventStore.html">EventStore</a> and rehydrates the cached aggregate with any new events from it's cached version. If the aggregate is not in the <a class="el" href="namespaceCqrs_1_1Cache.html">Cache</a> IAggregateRepository&lt;TAuthenticationToken&gt;.Get&lt;TAggregateRoot&gt; is called on the Repository.  <a href="classCqrs_1_1Cache_1_1CacheRepository_a037acba636aedf23ff376ac0b749ec0c.html#a037acba636aedf23ff376ac0b749ec0c">More...</a><br /></td></tr>
 <tr class="separator:a037acba636aedf23ff376ac0b749ec0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Uses MemoryCache.Default to provide a caching mechanism to improve performance of a IAggregateRepository&lt;TAuthenticationToken&gt;. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TAuthenticationToken</td><td>The Type of authentication token.</td></tr>
+  </table>
+  </dd>
+</dl>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

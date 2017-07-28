@@ -66,7 +66,9 @@ var hierarchy =
     ] ],
     [ "Cqrs.Akka.Tests.Unit.AkkaUnitTests", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1AkkaUnitTests.html", null ],
     [ "Cqrs.Authentication.AuthenticationTokenHelper", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ],
-    [ "Cqrs.Authentication.IAuthenticationTokenHelper< TAuthenticationToken >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", null ],
+    [ "Cqrs.Authentication.IAuthenticationTokenHelper< TAuthenticationToken >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", [
+      [ "Cqrs.Authentication.AuthenticationTokenHelper< TAuthenticationToken >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ]
+    ] ],
     [ "Cqrs.Authentication.ISingleSignOnToken", "interfaceCqrs_1_1Authentication_1_1ISingleSignOnToken.html", [
       [ "Cqrs.Authentication.ISingleSignOnTokenWithCompanyRsn", "interfaceCqrs_1_1Authentication_1_1ISingleSignOnTokenWithCompanyRsn.html", [
         [ "Cqrs.Authentication.ISingleSignOnTokenWithUserRsnAndCompanyRsn", "interfaceCqrs_1_1Authentication_1_1ISingleSignOnTokenWithUserRsnAndCompanyRsn.html", [
@@ -678,15 +680,15 @@ var hierarchy =
       [ "Cqrs.Authentication.WebSingleSignOnTokenValueHelper", "classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper.html", null ]
     ] ],
     [ "Cqrs.Authentication.IAuthenticationTokenHelper< ISingleSignOnTokenWithCompanyRsn >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", [
-      [ "Cqrs.Authentication.AuthenticationTokenHelper< TToken1 >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ],
+      [ "Cqrs.Authentication.AuthenticationTokenHelper< TAuthenticationToken >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ],
       [ "Cqrs.Authentication.WebSingleSignOnTokenValueHelper", "classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper.html", null ]
     ] ],
     [ "Cqrs.Authentication.IAuthenticationTokenHelper< ISingleSignOnTokenWithUserRsn >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", [
-      [ "Cqrs.Authentication.AuthenticationTokenHelper< TToken1 >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ],
+      [ "Cqrs.Authentication.AuthenticationTokenHelper< TAuthenticationToken >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ],
       [ "Cqrs.Authentication.WebSingleSignOnTokenValueHelper", "classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper.html", null ]
     ] ],
     [ "Cqrs.Authentication.IAuthenticationTokenHelper< ISingleSignOnTokenWithUserRsnAndCompanyRsn >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", [
-      [ "Cqrs.Authentication.AuthenticationTokenHelper< TToken1 >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ],
+      [ "Cqrs.Authentication.AuthenticationTokenHelper< TAuthenticationToken >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ],
       [ "Cqrs.Authentication.WebSingleSignOnTokenValueHelper", "classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper.html", null ]
     ] ],
     [ "Cqrs.Authentication.IAuthenticationTokenHelper< SingleSignOnTokenWithCompanyRsn >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", [
@@ -700,9 +702,6 @@ var hierarchy =
     ] ],
     [ "Cqrs.Authentication.IAuthenticationTokenHelper< string >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", [
       [ "Cqrs.Authentication.DefaultAuthenticationTokenHelper", "classCqrs_1_1Authentication_1_1DefaultAuthenticationTokenHelper.html", null ]
-    ] ],
-    [ "Cqrs.Authentication.IAuthenticationTokenHelper< TToken1 >", "interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html", [
-      [ "Cqrs.Authentication.AuthenticationTokenHelper< TToken1 >", "classCqrs_1_1Authentication_1_1AuthenticationTokenHelper.html", null ]
     ] ],
     [ "IBsonSerializer", null, [
       [ "Cqrs.Mongo.Serialisers.TypeSerialiser", "classCqrs_1_1Mongo_1_1Serialisers_1_1TypeSerialiser.html", null ],
@@ -852,14 +851,14 @@ var hierarchy =
     ] ],
     [ "Cqrs.Bus.InProcessBus< ISingleSignOnToken >", "classCqrs_1_1Bus_1_1InProcessBus.html", null ],
     [ "InvalidOperationException", null, [
-      [ "Cqrs.Bus.MultipleHandlersRegisteredException", "classCqrs_1_1Bus_1_1MultipleHandlersRegisteredException.html", [
-        [ "Cqrs.Bus.MultipleCommandHandlersRegisteredException", "classCqrs_1_1Bus_1_1MultipleCommandHandlersRegisteredException.html", null ]
+      [ "Cqrs.Exceptions.MultipleHandlersRegisteredException", "classCqrs_1_1Exceptions_1_1MultipleHandlersRegisteredException.html", [
+        [ "Cqrs.Exceptions.MultipleCommandHandlersRegisteredException", "classCqrs_1_1Exceptions_1_1MultipleCommandHandlersRegisteredException.html", null ]
       ] ],
-      [ "Cqrs.Bus.NoHandlerRegisteredException", "classCqrs_1_1Bus_1_1NoHandlerRegisteredException.html", [
-        [ "Cqrs.Commands.NoCommandHandlerRegisteredException", "classCqrs_1_1Commands_1_1NoCommandHandlerRegisteredException.html", null ],
-        [ "Cqrs.Events.NoEventHandlerRegisteredException", "classCqrs_1_1Events_1_1NoEventHandlerRegisteredException.html", null ]
+      [ "Cqrs.Exceptions.NoHandlerRegisteredException", "classCqrs_1_1Exceptions_1_1NoHandlerRegisteredException.html", [
+        [ "Cqrs.Exceptions.NoCommandHandlerRegisteredException", "classCqrs_1_1Exceptions_1_1NoCommandHandlerRegisteredException.html", null ],
+        [ "Cqrs.Exceptions.NoEventHandlerRegisteredException", "classCqrs_1_1Exceptions_1_1NoEventHandlerRegisteredException.html", null ]
       ] ],
-      [ "Cqrs.Bus.NoHandlersRegisteredException", "classCqrs_1_1Bus_1_1NoHandlersRegisteredException.html", null ]
+      [ "Cqrs.Exceptions.NoHandlersRegisteredException", "classCqrs_1_1Exceptions_1_1NoHandlersRegisteredException.html", null ]
     ] ],
     [ "IOrderedQueryable", null, [
       [ "Cqrs.DataStores.IDataStore< TData >", "interfaceCqrs_1_1DataStores_1_1IDataStore.html", null ]

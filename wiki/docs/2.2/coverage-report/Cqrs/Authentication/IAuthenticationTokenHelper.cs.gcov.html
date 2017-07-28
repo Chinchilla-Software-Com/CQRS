@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -64,20 +64,31 @@
 <span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
 <span class="lineNum">       7 </span>            : #endregion
 <span class="lineNum">       8 </span>            : 
-<span class="lineNum">       9 </span>            : using System.ServiceModel;
-<span class="lineNum">      10 </span>            : 
-<span class="lineNum">      11 </span>            : namespace Cqrs.Authentication
-<span class="lineNum">      12 </span>            : {
-<span class="lineNum">      13 </span>            :         [ServiceContract(Namespace = &quot;https://getcqrs.net/SingleSignOn/TokenHelper&quot;)]
-<span class="lineNum">      14 </span>            :         public interface IAuthenticationTokenHelper&lt;TAuthenticationToken&gt;
-<span class="lineNum">      15 </span>            :         {
-<span class="lineNum">      16 </span>            :                 [OperationContract]
-<span class="lineNum">      17 </span><span class="lineNoCov">          0 :                 TAuthenticationToken GetAuthenticationToken();</span>
-<span class="lineNum">      18 </span>            : 
-<span class="lineNum">      19 </span>            :                 [OperationContract]
-<span class="lineNum">      20 </span><span class="lineNoCov">          0 :                 TAuthenticationToken SetAuthenticationToken(TAuthenticationToken token);</span>
-<span class="lineNum">      21 </span>            :         }
-<span class="lineNum">      22 </span>            : }
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.ServiceModel;
+<span class="lineNum">      11 </span>            : 
+<span class="lineNum">      12 </span>            : namespace Cqrs.Authentication
+<span class="lineNum">      13 </span>            : {
+<span class="lineNum">      14 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      15 </span>            :         /// A helper for setting and retrieving authentication tokens of type &lt;typeparamref name=&quot;TAuthenticationToken&quot;/&gt;.
+<span class="lineNum">      16 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      17 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      18 </span>            :         [ServiceContract(Namespace = &quot;https://getcqrs.net/SingleSignOn/TokenHelper&quot;)]
+<span class="lineNum">      19 </span>            :         public interface IAuthenticationTokenHelper&lt;TAuthenticationToken&gt;
+<span class="lineNum">      20 </span>            :         {
+<span class="lineNum">      21 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :                 /// Get the current &lt;typeparamref name=&quot;TAuthenticationToken&quot;&gt;authentication token&lt;/typeparamref&gt; for the current context/request.
+<span class="lineNum">      23 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      24 </span>            :                 [OperationContract]
+<span class="lineNum">      25 </span><span class="lineCov">          1 :                 TAuthenticationToken GetAuthenticationToken();</span>
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      28 </span>            :                 /// Set the provided &lt;paramref name=&quot;token&quot;/&gt; for the current context/request.
+<span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      30 </span>            :                 [OperationContract]
+<span class="lineNum">      31 </span><span class="lineCov">          1 :                 TAuthenticationToken SetAuthenticationToken(TAuthenticationToken token);</span>
+<span class="lineNum">      32 </span>            :         }
+<span class="lineNum">      33 </span>            : }
 </pre>
       </td>
     </tr>
