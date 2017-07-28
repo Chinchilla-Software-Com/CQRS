@@ -5,7 +5,6 @@ var searchData=
   ['webapimodule',['WebApiModule',['../classCqrs_1_1Ninject_1_1WebApi_1_1Configuration_1_1WebApiModule.html',1,'Cqrs::Ninject::WebApi::Configuration']]],
   ['webhostmodule',['WebHostModule',['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule.html',1,'Cqrs::Ninject::Azure::Wcf::Configuration']]],
   ['webjobhostmodule',['WebJobHostModule',['../classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1Configuration_1_1WebJobHostModule.html',1,'Cqrs::Ninject::Azure::WebJobs::Configuration']]],
-  ['websinglesignontokenvaluehelper',['WebSingleSignOnTokenValueHelper',['../classCqrs_1_1Authentication_1_1WebSingleSignOnTokenValueHelper.html',1,'Cqrs::Authentication']]],
   ['when',['When',['../classCqrs_1_1Tests_1_1Extensions_1_1TestHelpers_1_1Specification_a1adc4d52947bd3613ea40559fe9c8a11.html#a1adc4d52947bd3613ea40559fe9c8a11',1,'Cqrs::Tests::Extensions::TestHelpers::Specification']]],
   ['when_5fadding_5faggregates_5fto_5frepository',['When_adding_aggregates_to_repository',['../classCqrs_1_1Tests_1_1Domain_1_1When__adding__aggregates__to__repository.html',1,'Cqrs::Tests::Domain']]],
   ['when_5fgetting_5fa_5fsaga',['When_getting_a_saga',['../classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga.html',1,'Cqrs::Tests::Domain::Saga']]],

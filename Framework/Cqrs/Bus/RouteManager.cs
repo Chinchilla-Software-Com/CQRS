@@ -17,6 +17,9 @@ using Cqrs.Messages;
 
 namespace Cqrs.Bus
 {
+	/// <summary>
+	/// Manages <see cref="Route">routes</see>.
+	/// </summary>
 	public class RouteManager
 		: IHandlerRegistrar
 	{
@@ -34,6 +37,9 @@ namespace Cqrs.Bus
 
 		private static Type EventType { get; set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="RouteManager"/>.
+		/// </summary>
 		public RouteManager()
 		{
 			Routes = new Dictionary<Type, Route>();
@@ -99,6 +105,16 @@ namespace Cqrs.Bus
 
 		#endregion
 
+		/// <summary>
+		/// Gets the single <see cref="RouteHandlerDelegate"/> expected for handling <typeparamref name="TMessage"/>.
+		/// </summary>
+		/// <typeparam name="TMessage">The <see cref="Type"/> of <see cref="IMessage"/> to find a <see cref="RouteHandlerDelegate"/> for.</typeparam>
+		/// <param name="throwExceptionOnNoRouteHandlers">If true will throw an <see cref="Exception"/> if no <see cref="RouteHandlerDelegate"/> found.</param>
+		/// <exception cref="MultipleCommandHandlersRegisteredException">If more than one <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is an <see cref="ICommand{TAuthenticationToken}"/>.</exception>
+		/// <exception cref="NoCommandHandlerRegisteredException">If no <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is an <see cref="ICommand{TAuthenticationToken}"/> and <paramref name="throwExceptionOnNoRouteHandlers"/> is true.</exception>
+		/// <exception cref="InvalidOperationException">
+		/// If more than one <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is not an <see cref="ICommand{TAuthenticationToken}"/> OR
+		/// If no <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is not an <see cref="ICommand{TAuthenticationToken}"/> and <paramref name="throwExceptionOnNoRouteHandlers"/> is true.</exception>
 		public RouteHandlerDelegate GetSingleHandler<TMessage>(bool throwExceptionOnNoRouteHandlers = true)
 			where TMessage : IMessage
 		{
@@ -127,6 +143,17 @@ namespace Cqrs.Bus
 			return null;
 		}
 
+		/// <summary>
+		/// Gets the single <see cref="RouteHandlerDelegate"/> expected for handling <typeparamref name="TMessage"/>.
+		/// </summary>
+		/// <typeparam name="TMessage">The <see cref="Type"/> of <see cref="IMessage"/> to find a <see cref="RouteHandlerDelegate"/> for.</typeparam>
+		/// <param name="message">The <typeparamref name="TMessage"/> to find a <see cref="RouteHandlerDelegate"/> for. </param>
+		/// <param name="throwExceptionOnNoRouteHandlers">If true will throw an <see cref="Exception"/> if no <see cref="RouteHandlerDelegate"/> found.</param>
+		/// <exception cref="MultipleCommandHandlersRegisteredException">If more than one <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is an <see cref="ICommand{TAuthenticationToken}"/>.</exception>
+		/// <exception cref="NoCommandHandlerRegisteredException">If no <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is an <see cref="ICommand{TAuthenticationToken}"/> and <paramref name="throwExceptionOnNoRouteHandlers"/> is true.</exception>
+		/// <exception cref="InvalidOperationException">
+		/// If more than one <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is not an <see cref="ICommand{TAuthenticationToken}"/> OR
+		/// If no <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is not an <see cref="ICommand{TAuthenticationToken}"/> and <paramref name="throwExceptionOnNoRouteHandlers"/> is true.</exception>
 		public RouteHandlerDelegate GetSingleHandler<TMessage>(TMessage message, bool throwExceptionOnNoRouteHandlers = true)
 			where TMessage : IMessage
 		{
@@ -159,6 +186,15 @@ namespace Cqrs.Bus
 			return null;
 		}
 
+		/// <summary>
+		/// Gets the collection <see cref="RouteHandlerDelegate"/> that are expected for handling <typeparamref name="TMessage"/>.
+		/// </summary>
+		/// <typeparam name="TMessage">The <see cref="Type"/> of <see cref="IMessage"/> to find a <see cref="RouteHandlerDelegate"/> for.</typeparam>
+		/// <param name="message">The <typeparamref name="TMessage"/> to find a <see cref="RouteHandlerDelegate"/> for. </param>
+		/// <param name="throwExceptionOnNoRouteHandlers">If true will throw an <see cref="Exception"/> if no <see cref="RouteHandlerDelegate"/> found.</param>
+		/// <exception cref="NoCommandHandlerRegisteredException">If no <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is an <see cref="ICommand{TAuthenticationToken}"/> and <paramref name="throwExceptionOnNoRouteHandlers"/> is true.</exception>
+		/// <exception cref="NoEventHandlerRegisteredException"> If no <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is an <see cref="IEvent{TAuthenticationToken}"/> and <paramref name="throwExceptionOnNoRouteHandlers"/> is true.</exception>
+		/// <exception cref="NoHandlerRegisteredException"> If no <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is not either an <see cref="ICommand{TAuthenticationToken}"/> or an <see cref="IEvent{TAuthenticationToken}"/> and <paramref name="throwExceptionOnNoRouteHandlers"/> is true.</exception>
 		public IEnumerable<RouteHandlerDelegate> GetHandlers<TMessage>(TMessage message, bool throwExceptionOnNoRouteHandlers = true)
 			where TMessage : IMessage
 		{
@@ -189,12 +225,23 @@ namespace Cqrs.Bus
 			return routeHandlers;
 		}
 
+		/// <summary>
+		/// Checks if the provided <paramref name="message"/> is an <see cref="ICommand{TAuthenticationToken}"/>.
+		/// </summary>
+		/// <typeparam name="TMessage">The <see cref="Type"/> of <see cref="IMessage"/> to check.</typeparam>
+		/// <param name="message">The <typeparamref name="TMessage"/> to check. </param>
+		/// <returns>true if <paramref name="message"/> is an <see cref="ICommand{TAuthenticationToken}"/>.</returns>
 		protected virtual bool IsACommand<TMessage>(TMessage message)
 		{
 			Type messageType = message.GetType();
 			return IsACommand(messageType);
 		}
 
+		/// <summary>
+		/// Checks if the provided <paramref name="messageType"/> implements <see cref="ICommand{TAuthenticationToken}"/>.
+		/// </summary>
+		/// <param name="messageType">The <see cref="Type"/> of object to check.</param>
+		/// <returns>true if <paramref name="messageType"/> implements <see cref="ICommand{TAuthenticationToken}"/>.</returns>
 		protected virtual bool IsACommand(Type messageType)
 		{
 			bool isACommand = false;
@@ -209,19 +256,30 @@ namespace Cqrs.Bus
 			return isACommand;
 		}
 
+		/// <summary>
+		/// Checks if the provided <paramref name="message"/> is an <see cref="IEvent{TAuthenticationToken}"/>.
+		/// </summary>
+		/// <typeparam name="TMessage">The <see cref="Type"/> of <see cref="IMessage"/> to check.</typeparam>
+		/// <param name="message">The <typeparamref name="TMessage"/> to check. </param>
+		/// <returns>true if <paramref name="message"/> is an <see cref="IEvent{TAuthenticationToken}"/>.</returns>
 		protected virtual bool IsAnEvent<TMessage>(TMessage message)
 		{
 			Type messageType = message.GetType();
-			return IsACommand(messageType);
+			return IsAnEvent(messageType);
 		}
 
+		/// <summary>
+		/// Checks if the provided <paramref name="messageType"/> implements <see cref="IEvent{TAuthenticationToken}"/>.
+		/// </summary>
+		/// <param name="messageType">The <see cref="Type"/> of object to check.</param>
+		/// <returns>true if <paramref name="messageType"/> implements <see cref="IEvent{TAuthenticationToken}"/>.</returns>
 		protected virtual bool IsAnEvent(Type messageType)
 		{
 			bool isAnEvent = false;
-			Type messageCommandInterface = messageType.GetInterfaces().FirstOrDefault(type => type.FullName.StartsWith(EventType.FullName));
-			if (messageCommandInterface != null)
+			Type messageEventInterface = messageType.GetInterfaces().FirstOrDefault(type => type.FullName.StartsWith(EventType.FullName));
+			if (messageEventInterface != null)
 			{
-				Type[] genericArguments = messageCommandInterface.GetGenericArguments();
+				Type[] genericArguments = messageEventInterface.GetGenericArguments();
 				if (genericArguments.Length == 1)
 					isAnEvent = EventType.MakeGenericType(genericArguments.Single()).IsAssignableFrom(messageType);
 			}

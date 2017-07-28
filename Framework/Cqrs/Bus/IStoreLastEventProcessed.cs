@@ -11,7 +11,7 @@ using System.ServiceModel;
 namespace Cqrs.Bus
 {
 	/// <summary>
-	/// Indicates the position in store where the stream has been read up to.
+	/// Indicates the position in a store where the stream has been read up to.
 	/// </summary>
 	[ServiceContract(Namespace = "https://getcqrs.net/Bus/StoreLastEventProcessed")]
 	public interface IStoreLastEventProcessed

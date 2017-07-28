@@ -13,6 +13,9 @@ using Cqrs.Messages;
 
 namespace Cqrs.Bus
 {
+	/// <summary>
+	/// A helper for command and event buses.
+	/// </summary>
 	public interface IBusHelper
 	{
 		/// <summary>

@@ -64,30 +64,33 @@
 <span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
 <span class="lineNum">       7 </span>            : #endregion
 <span class="lineNum">       8 </span>            : 
-<span class="lineNum">       9 </span>            : namespace Cqrs.Commands
-<span class="lineNum">      10 </span>            : {
-<span class="lineNum">      11 </span>            :         /// &lt;summary&gt;
-<span class="lineNum">      12 </span>            :         /// Receives instances of a &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; from the command bus.
-<span class="lineNum">      13 </span>            :         /// &lt;/summary&gt;
-<span class="lineNum">      14 </span>            :         public interface ICommandReceiver
-<span class="lineNum">      15 </span>            :         {
-<span class="lineNum">      16 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      17 </span>            :                 /// Starts listening and processing instances of &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; from the command bus.
-<span class="lineNum">      18 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      19 </span><span class="lineCov">          2 :                 void Start();</span>
-<span class="lineNum">      20 </span>            :         }
-<span class="lineNum">      21 </span>            : 
-<span class="lineNum">      22 </span>            :         /// &lt;summary&gt;
-<span class="lineNum">      23 </span>            :         /// Receives instances of a &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; from the command bus
-<span class="lineNum">      24 </span>            :         /// &lt;/summary&gt;
-<span class="lineNum">      25 </span>            :         public interface ICommandReceiver&lt;TAuthenticationToken&gt; : ICommandReceiver
-<span class="lineNum">      26 </span>            :         {
-<span class="lineNum">      27 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      28 </span>            :                 /// Receives a &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; from the command bus.
-<span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      30 </span><span class="lineCov">          2 :                 bool? ReceiveCommand(ICommand&lt;TAuthenticationToken&gt; command);</span>
-<span class="lineNum">      31 </span>            :         }
-<span class="lineNum">      32 </span>            : }
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : namespace Cqrs.Commands
+<span class="lineNum">      12 </span>            : {
+<span class="lineNum">      13 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      14 </span>            :         /// Receives instances of a &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; from the command bus.
+<span class="lineNum">      15 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      16 </span>            :         public interface ICommandReceiver
+<span class="lineNum">      17 </span>            :         {
+<span class="lineNum">      18 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      19 </span>            :                 /// Starts listening and processing instances of &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; from the command bus.
+<span class="lineNum">      20 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      21 </span><span class="lineCov">          2 :                 void Start();</span>
+<span class="lineNum">      22 </span>            :         }
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      25 </span>            :         /// Receives instances of a &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; from the command bus.
+<span class="lineNum">      26 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      27 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      28 </span>            :         public interface ICommandReceiver&lt;TAuthenticationToken&gt; : ICommandReceiver
+<span class="lineNum">      29 </span>            :         {
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// Receives a &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; from the command bus.
+<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      33 </span><span class="lineCov">          2 :                 bool? ReceiveCommand(ICommand&lt;TAuthenticationToken&gt; command);</span>
+<span class="lineNum">      34 </span>            :         }
+<span class="lineNum">      35 </span>            : }
 </pre>
       </td>
     </tr>

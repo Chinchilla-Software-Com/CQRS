@@ -15,7 +15,7 @@ Inheritance diagram for Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authen
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a4de9139e05d35cb62ba295569a1dc94f_a4de9139e05d35cb62ba295569a1dc94f}{Memory\+Cache\+Event\+Store} (\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} configuration\+Manager, \hyperlink{interfaceCqrs_1_1Events_1_1IEventBuilder}{I\+Event\+Builder}$<$ T\+Authentication\+Token $>$ event\+Builder, \hyperlink{interfaceCqrs_1_1Events_1_1IEventDeserialiser}{I\+Event\+Deserialiser}$<$ T\+Authentication\+Token $>$ event\+Deserialiser, I\+Logger logger)
-\item 
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a4de9139e05d35cb62ba295569a1dc94f_a4de9139e05d35cb62ba295569a1dc94f}{Memory\+Cache\+Event\+Store$<$\+T\+Authentication\+Token$>$} and calls \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_ac2a6da8b2faac7bd5f333bff592fc8f2_ac2a6da8b2faac7bd5f333bff592fc8f2}{Start\+Refresh\+Sliding\+Expiration\+Value}. \end{DoxyCompactList}\item 
 override I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a1391c260f52f5cf18058cf88ad2d16de_a1391c260f52f5cf18058cf88ad2d16de}{Get} (Type aggregate\+Root\+Type, Guid aggregate\+Id, bool use\+Last\+Event\+Only=false, int from\+Version=-\/1)
 \begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id} . \end{DoxyCompactList}\item 
 override I\+Enumerable$<$ \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} $>$ \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a2a93a3f10423f608527fbc41a7ce8cef_a2a93a3f10423f608527fbc41a7ce8cef}{Get} (Guid correlation\+Id)
@@ -26,24 +26,24 @@ override I\+Enumerable$<$ \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Da
 override void \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a9b1a1aaab34770bd68ebcedca0fc40b0_a9b1a1aaab34770bd68ebcedca0fc40b0}{Persist\+Event} (\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} event\+Data)
 \begin{DoxyCompactList}\small\item\em Persist the provided {\itshape event\+Data}  into storage. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a4cac39acb87d9e25c4c090a384515d11_a4cac39acb87d9e25c4c090a384515d11}{Refresh\+Sliding\+Expiration\+Value} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Reads \char`\"{}\+Cqrs.\+Event\+Store.\+Memory\+Cache\+Event\+Store.\+Sliding\+Expiration\char`\"{} from \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a8a4fc4fa5d767e4d15344daf1ba7ea01_a8a4fc4fa5d767e4d15344daf1ba7ea01}{Configuration\+Manager}, checks if it has changed and then Update \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a93423872cdd702ee6257c0cc704c0c06_a93423872cdd702ee6257c0cc704c0c06}{Sliding\+Expiration} with the new value. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_ac2a6da8b2faac7bd5f333bff592fc8f2_ac2a6da8b2faac7bd5f333bff592fc8f2}{Start\+Refresh\+Sliding\+Expiration\+Value} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Start a Task that will call \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a4cac39acb87d9e25c4c090a384515d11_a4cac39acb87d9e25c4c090a384515d11}{Refresh\+Sliding\+Expiration\+Value} in a loop with a 1 second wait time between loops. \end{DoxyCompactList}\item 
 virtual Cache\+Item\+Policy \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a2dddf1e1c4c737ad393655ee990953b3_a2dddf1e1c4c737ad393655ee990953b3}{Get\+Detault\+Cache\+Item\+Policy} ()
 \begin{DoxyCompactList}\small\item\em Get\textquotesingle{}s a Cache\+Item\+Policy with the Cache\+Item\+Policy.\+Sliding\+Expiration set to 15 minutes \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a8a4fc4fa5d767e4d15344daf1ba7ea01_a8a4fc4fa5d767e4d15344daf1ba7ea01}{Configuration\+Manager}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Configuration\+Manager. \end{DoxyCompactList}\item 
 Memory\+Cache \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_afc04a822655f1e23a1cce8ed1a40627f_afc04a822655f1e23a1cce8ed1a40627f}{Event\+Store\+By\+Type}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or sets the Memory\+Cache of data grouped by event Type. \end{DoxyCompactList}\item 
 Memory\+Cache \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a6f317c9f46dfd65d7398b010f484b687_a6f317c9f46dfd65d7398b010f484b687}{Event\+Store\+By\+Correlation\+Id}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or sets the Memory\+Cache of data grouped by event I\+Message.\+Correlation\+Id. \end{DoxyCompactList}\item 
 string \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_af45012b233f4f4c8ef3c00bf8fba7a80_af45012b233f4f4c8ef3c00bf8fba7a80}{Sliding\+Expiration\+Value}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets of sets the Sliding\+Expiration\+Value, the value of \char`\"{}\+Cqrs.\+Event\+Store.\+Memory\+Cache\+Event\+Store.\+Sliding\+Expiration\char`\"{} from \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a8a4fc4fa5d767e4d15344daf1ba7ea01_a8a4fc4fa5d767e4d15344daf1ba7ea01}{Configuration\+Manager}. \end{DoxyCompactList}\item 
 Time\+Span \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a93423872cdd702ee6257c0cc704c0c06_a93423872cdd702ee6257c0cc704c0c06}{Sliding\+Expiration}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Gets of sets the Sliding\+Expiration \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
 
@@ -58,6 +58,10 @@ A, \hyperlink{classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab
 \index{Memory\+Cache\+Event\+Store@{Memory\+Cache\+Event\+Store}!Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store@{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store}}
 \subsubsection{\texorpdfstring{Memory\+Cache\+Event\+Store()}{MemoryCacheEventStore()}}
 {\footnotesize\ttfamily \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore}{Memory\+Cache\+Event\+Store} (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}}]{configuration\+Manager,  }\item[{\hyperlink{interfaceCqrs_1_1Events_1_1IEventBuilder}{I\+Event\+Builder}$<$ T\+Authentication\+Token $>$}]{event\+Builder,  }\item[{\hyperlink{interfaceCqrs_1_1Events_1_1IEventDeserialiser}{I\+Event\+Deserialiser}$<$ T\+Authentication\+Token $>$}]{event\+Deserialiser,  }\item[{I\+Logger}]{logger }\end{DoxyParamCaption})}
+
+
+
+Instantiates a new instance of \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a4de9139e05d35cb62ba295569a1dc94f_a4de9139e05d35cb62ba295569a1dc94f}{Memory\+Cache\+Event\+Store$<$\+T\+Authentication\+Token$>$} and calls \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_ac2a6da8b2faac7bd5f333bff592fc8f2_ac2a6da8b2faac7bd5f333bff592fc8f2}{Start\+Refresh\+Sliding\+Expiration\+Value}. 
 
 
 
@@ -141,11 +145,19 @@ Implements \hyperlink{classCqrs_1_1Events_1_1EventStore_aedb71ca0ddf21220e323bc6
 \subsubsection{\texorpdfstring{Refresh\+Sliding\+Expiration\+Value()}{RefreshSlidingExpirationValue()}}
 {\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store}$<$ T\+Authentication\+Token $>$.Refresh\+Sliding\+Expiration\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
 
+
+
+Reads \char`\"{}\+Cqrs.\+Event\+Store.\+Memory\+Cache\+Event\+Store.\+Sliding\+Expiration\char`\"{} from \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a8a4fc4fa5d767e4d15344daf1ba7ea01_a8a4fc4fa5d767e4d15344daf1ba7ea01}{Configuration\+Manager}, checks if it has changed and then Update \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a93423872cdd702ee6257c0cc704c0c06_a93423872cdd702ee6257c0cc704c0c06}{Sliding\+Expiration} with the new value. 
+
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1MemoryCacheEventStore_ac2a6da8b2faac7bd5f333bff592fc8f2_ac2a6da8b2faac7bd5f333bff592fc8f2}\label{classCqrs_1_1Events_1_1MemoryCacheEventStore_ac2a6da8b2faac7bd5f333bff592fc8f2_ac2a6da8b2faac7bd5f333bff592fc8f2}} 
 \index{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store@{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store}!Start\+Refresh\+Sliding\+Expiration\+Value@{Start\+Refresh\+Sliding\+Expiration\+Value}}
 \index{Start\+Refresh\+Sliding\+Expiration\+Value@{Start\+Refresh\+Sliding\+Expiration\+Value}!Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store@{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store}}
 \subsubsection{\texorpdfstring{Start\+Refresh\+Sliding\+Expiration\+Value()}{StartRefreshSlidingExpirationValue()}}
 {\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store}$<$ T\+Authentication\+Token $>$.Start\+Refresh\+Sliding\+Expiration\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Start a Task that will call \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a4cac39acb87d9e25c4c090a384515d11_a4cac39acb87d9e25c4c090a384515d11}{Refresh\+Sliding\+Expiration\+Value} in a loop with a 1 second wait time between loops. 
 
 
 
@@ -156,11 +168,19 @@ Implements \hyperlink{classCqrs_1_1Events_1_1EventStore_aedb71ca0ddf21220e323bc6
 \subsubsection{\texorpdfstring{Configuration\+Manager}{ConfigurationManager}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Configuration_1_1ConfigurationManager}{Configuration\+Manager}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+Gets or sets the I\+Configuration\+Manager. 
+
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1MemoryCacheEventStore_a6f317c9f46dfd65d7398b010f484b687_a6f317c9f46dfd65d7398b010f484b687}\label{classCqrs_1_1Events_1_1MemoryCacheEventStore_a6f317c9f46dfd65d7398b010f484b687_a6f317c9f46dfd65d7398b010f484b687}} 
 \index{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store@{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store}!Event\+Store\+By\+Correlation\+Id@{Event\+Store\+By\+Correlation\+Id}}
 \index{Event\+Store\+By\+Correlation\+Id@{Event\+Store\+By\+Correlation\+Id}!Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store@{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store}}
 \subsubsection{\texorpdfstring{Event\+Store\+By\+Correlation\+Id}{EventStoreByCorrelationId}}
 {\footnotesize\ttfamily Memory\+Cache \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store}$<$ T\+Authentication\+Token $>$.Event\+Store\+By\+Correlation\+Id\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the Memory\+Cache of data grouped by event I\+Message.\+Correlation\+Id. 
 
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1MemoryCacheEventStore_afc04a822655f1e23a1cce8ed1a40627f_afc04a822655f1e23a1cce8ed1a40627f}\label{classCqrs_1_1Events_1_1MemoryCacheEventStore_afc04a822655f1e23a1cce8ed1a40627f_afc04a822655f1e23a1cce8ed1a40627f}} 
 \index{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store@{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store}!Event\+Store\+By\+Type@{Event\+Store\+By\+Type}}
@@ -168,15 +188,27 @@ Implements \hyperlink{classCqrs_1_1Events_1_1EventStore_aedb71ca0ddf21220e323bc6
 \subsubsection{\texorpdfstring{Event\+Store\+By\+Type}{EventStoreByType}}
 {\footnotesize\ttfamily Memory\+Cache \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store}$<$ T\+Authentication\+Token $>$.Event\+Store\+By\+Type\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+Gets or sets the Memory\+Cache of data grouped by event Type. 
+
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1MemoryCacheEventStore_a93423872cdd702ee6257c0cc704c0c06_a93423872cdd702ee6257c0cc704c0c06}\label{classCqrs_1_1Events_1_1MemoryCacheEventStore_a93423872cdd702ee6257c0cc704c0c06_a93423872cdd702ee6257c0cc704c0c06}} 
 \index{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store@{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store}!Sliding\+Expiration@{Sliding\+Expiration}}
 \index{Sliding\+Expiration@{Sliding\+Expiration}!Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store@{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store}}
 \subsubsection{\texorpdfstring{Sliding\+Expiration}{SlidingExpiration}}
 {\footnotesize\ttfamily Time\+Span \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store}$<$ T\+Authentication\+Token $>$.Sliding\+Expiration\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
 
+
+
+Gets of sets the Sliding\+Expiration 
+
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1MemoryCacheEventStore_af45012b233f4f4c8ef3c00bf8fba7a80_af45012b233f4f4c8ef3c00bf8fba7a80}\label{classCqrs_1_1Events_1_1MemoryCacheEventStore_af45012b233f4f4c8ef3c00bf8fba7a80_af45012b233f4f4c8ef3c00bf8fba7a80}} 
 \index{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store@{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store}!Sliding\+Expiration\+Value@{Sliding\+Expiration\+Value}}
 \index{Sliding\+Expiration\+Value@{Sliding\+Expiration\+Value}!Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store@{Cqrs\+::\+Events\+::\+Memory\+Cache\+Event\+Store}}
 \subsubsection{\texorpdfstring{Sliding\+Expiration\+Value}{SlidingExpirationValue}}
 {\footnotesize\ttfamily string \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store}$<$ T\+Authentication\+Token $>$.Sliding\+Expiration\+Value\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+Gets of sets the Sliding\+Expiration\+Value, the value of \char`\"{}\+Cqrs.\+Event\+Store.\+Memory\+Cache\+Event\+Store.\+Sliding\+Expiration\char`\"{} from \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a8a4fc4fa5d767e4d15344daf1ba7ea01_a8a4fc4fa5d767e4d15344daf1ba7ea01}{Configuration\+Manager}. 
 

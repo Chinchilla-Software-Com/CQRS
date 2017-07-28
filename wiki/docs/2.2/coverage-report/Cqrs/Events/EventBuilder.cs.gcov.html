@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">2</td>
             <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntryLo">40.0 %</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -69,35 +69,56 @@
 <span class="lineNum">      11 </span>            : 
 <span class="lineNum">      12 </span>            : namespace Cqrs.Events
 <span class="lineNum">      13 </span>            : {
-<span class="lineNum">      14 </span>            :         public abstract class EventBuilder&lt;TAuthenticationToken&gt; : IEventBuilder&lt;TAuthenticationToken&gt;
-<span class="lineNum">      15 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      16 </span>            :                 #region Implementation of IEventBuilder
-<span class="lineNum">      17 </span>            : 
-<span class="lineNum">      18 </span><span class="lineCov">          1 :                 public virtual EventData CreateFrameworkEvent(string type, IEvent&lt;TAuthenticationToken&gt; eventData)</span>
-<span class="lineNum">      19 </span>            :                 {
-<span class="lineNum">      20 </span>            :                         return new EventData
-<span class="lineNum">      21 </span>            :                         {
-<span class="lineNum">      22 </span>            :                                 EventId = Guid.NewGuid(),
-<span class="lineNum">      23 </span>            :                                 EventType = type,
-<span class="lineNum">      24 </span>            :                                 Data = SerialiseEventDataToString(eventData)
-<span class="lineNum">      25 </span>            :                         };
-<span class="lineNum">      26 </span>            :                 }
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span><span class="lineCov">          1 :                 public virtual EventData CreateFrameworkEvent(IEvent&lt;TAuthenticationToken&gt; eventData)</span>
-<span class="lineNum">      29 </span>            :                 {
-<span class="lineNum">      30 </span>            :                         return CreateFrameworkEvent(eventData.GetType().AssemblyQualifiedName, eventData);
-<span class="lineNum">      31 </span>            :                 }
-<span class="lineNum">      32 </span>            : 
-<span class="lineNum">      33 </span>            :                 #endregion
-<span class="lineNum">      34 </span>            : 
-<span class="lineNum">      35 </span><span class="lineNoCov">          0 :                 protected virtual byte[] SerialiseEventData(IEvent&lt;TAuthenticationToken&gt; eventData)</span>
-<span class="lineNum">      36 </span>            :                 {
-<span class="lineNum">      37 </span>            :                         return new UTF8Encoding().GetBytes(SerialiseEventDataToString(eventData));
-<span class="lineNum">      38 </span>            :                 }
-<span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span><span class="lineNoCov">          0 :                 protected abstract string SerialiseEventDataToString(IEvent&lt;TAuthenticationToken&gt; eventData);</span>
-<span class="lineNum">      41 </span>            :         }
-<span class="lineNum">      42 </span>            : }
+<span class="lineNum">      14 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      15 </span>            :         /// Builds &lt;see cref=&quot;EventData&quot;/&gt; from various input formats.
+<span class="lineNum">      16 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      17 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      18 </span>            :         public abstract class EventBuilder&lt;TAuthenticationToken&gt; : IEventBuilder&lt;TAuthenticationToken&gt;
+<span class="lineNum">      19 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      20 </span>            :                 #region Implementation of IEventBuilder&lt;TAuthenticationToken&gt;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :                 /// Create an &lt;see cref=&quot;EventData&quot;&gt;framework event&lt;/see&gt; with the provided &lt;paramref name=&quot;eventData&quot;/&gt;.
+<span class="lineNum">      24 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      25 </span>            :                 /// &lt;param name=&quot;type&quot;&gt;The name of the &lt;see cref=&quot;Type&quot;/&gt; of the target object the serialised data is.&lt;/param&gt;
+<span class="lineNum">      26 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to add to the &lt;see cref=&quot;EventData&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      27 </span><span class="lineCov">          1 :                 public virtual EventData CreateFrameworkEvent(string type, IEvent&lt;TAuthenticationToken&gt; eventData)</span>
+<span class="lineNum">      28 </span>            :                 {
+<span class="lineNum">      29 </span>            :                         return new EventData
+<span class="lineNum">      30 </span>            :                         {
+<span class="lineNum">      31 </span>            :                                 EventId = Guid.NewGuid(),
+<span class="lineNum">      32 </span>            :                                 EventType = type,
+<span class="lineNum">      33 </span>            :                                 Data = SerialiseEventDataToString(eventData)
+<span class="lineNum">      34 </span>            :                         };
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :                 /// Create an &lt;see cref=&quot;EventData&quot;&gt;framework event&lt;/see&gt; with the provided &lt;paramref name=&quot;eventData&quot;/&gt;.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to add to the &lt;see cref=&quot;EventData&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      41 </span><span class="lineCov">          1 :                 public virtual EventData CreateFrameworkEvent(IEvent&lt;TAuthenticationToken&gt; eventData)</span>
+<span class="lineNum">      42 </span>            :                 {
+<span class="lineNum">      43 </span>            :                         return CreateFrameworkEvent(eventData.GetType().AssemblyQualifiedName, eventData);
+<span class="lineNum">      44 </span>            :                 }
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                 #endregion
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      49 </span>            :                 /// Serialise the provided &lt;paramref name=&quot;eventData&quot;/&gt; into a &lt;see cref=&quot;byte&quot;/&gt; &lt;see cref=&quot;Array&quot;/&gt;.
+<span class="lineNum">      50 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      51 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to serialise.&lt;/param&gt;
+<span class="lineNum">      52 </span><span class="lineCov">          1 :                 protected virtual byte[] SerialiseEventData(IEvent&lt;TAuthenticationToken&gt; eventData)</span>
+<span class="lineNum">      53 </span>            :                 {
+<span class="lineNum">      54 </span>            :                         return new UTF8Encoding().GetBytes(SerialiseEventDataToString(eventData));
+<span class="lineNum">      55 </span>            :                 }
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      58 </span>            :                 /// Serialise the provided &lt;paramref name=&quot;eventData&quot;/&gt; into a &lt;see cref=&quot;string&quot;/&gt;.
+<span class="lineNum">      59 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      60 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to serialise.&lt;/param&gt;
+<span class="lineNum">      61 </span><span class="lineCov">          1 :                 protected abstract string SerialiseEventDataToString(IEvent&lt;TAuthenticationToken&gt; eventData);</span>
+<span class="lineNum">      62 </span>            :         }
+<span class="lineNum">      63 </span>            : }
 </pre>
       </td>
     </tr>

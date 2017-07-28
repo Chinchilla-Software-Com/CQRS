@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">2</td>
             <td class="headerCovTableEntry">6</td>
-            <td class="headerCovTableEntryLo">16.7 %</td>
+            <td class="headerCovTableEntryLo">33.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -95,70 +95,73 @@
 <span class="lineNum">      37 </span>            : 
 <span class="lineNum">      38 </span>            :                 public int Version { get; protected set; }
 <span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span><span class="lineNoCov">          0 :                 protected AggregateRoot()</span>
-<span class="lineNum">      41 </span>            :                 {
-<span class="lineNum">      42 </span>            :                         Lock = new ReaderWriterLockSlim();
-<span class="lineNum">      43 </span>            :                         Changes = new ReadOnlyCollection&lt;IEvent&lt;TAuthenticationToken&gt;&gt;(new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;());
-<span class="lineNum">      44 </span>            :                 }
-<span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span><span class="lineNoCov">          0 :                 public IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges()</span>
-<span class="lineNum">      47 </span>            :                 {
-<span class="lineNum">      48 </span>            :                         return Changes;
-<span class="lineNum">      49 </span>            :                 }
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span><span class="lineNoCov">          0 :                 public virtual void MarkChangesAsCommitted()</span>
-<span class="lineNum">      52 </span>            :                 {
-<span class="lineNum">      53 </span>            :                         Lock.EnterWriteLock();
-<span class="lineNum">      54 </span>            :                         try
-<span class="lineNum">      55 </span>            :                         {
-<span class="lineNum">      56 </span>            :                                 Version = Version + Changes.Count;
-<span class="lineNum">      57 </span>            :                                 Changes = new ReadOnlyCollection&lt;IEvent&lt;TAuthenticationToken&gt;&gt;(new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;());
-<span class="lineNum">      58 </span>            :                         }
-<span class="lineNum">      59 </span>            :                         finally
-<span class="lineNum">      60 </span>            :                         {
-<span class="lineNum">      61 </span>            :                                 Lock.ExitWriteLock();
-<span class="lineNum">      62 </span>            :                         }
-<span class="lineNum">      63 </span>            :                 }
-<span class="lineNum">      64 </span>            : 
-<span class="lineNum">      65 </span><span class="lineNoCov">          0 :                 public virtual void LoadFromHistory(IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; history)</span>
-<span class="lineNum">      66 </span>            :                 {
-<span class="lineNum">      67 </span>            :                         Type aggregateType = GetType();
-<span class="lineNum">      68 </span>            :                         foreach (IEvent&lt;TAuthenticationToken&gt; @event in history.OrderBy(e =&gt; e.Version))
-<span class="lineNum">      69 </span>            :                         {
-<span class="lineNum">      70 </span>            :                                 if (@event.Version != Version + 1)
-<span class="lineNum">      71 </span>            :                                         throw new EventsOutOfOrderException(@event.Id, aggregateType, Version + 1, @event.Version);
-<span class="lineNum">      72 </span>            :                                 ApplyChange(@event, true);
-<span class="lineNum">      73 </span>            :                         }
-<span class="lineNum">      74 </span>            :                 }
-<span class="lineNum">      75 </span>            : 
-<span class="lineNum">      76 </span><span class="lineNoCov">          0 :                 protected virtual void ApplyChange(IEvent&lt;TAuthenticationToken&gt; @event)</span>
-<span class="lineNum">      77 </span>            :                 {
-<span class="lineNum">      78 </span>            :                         ApplyChange(@event, false);
-<span class="lineNum">      79 </span>            :                 }
-<span class="lineNum">      80 </span>            : 
-<span class="lineNum">      81 </span>            :                 private void ApplyChange(IEvent&lt;TAuthenticationToken&gt; @event, bool isEventReplay)
-<span class="lineNum">      82 </span>            :                 {
-<span class="lineNum">      83 </span>            :                         Lock.EnterWriteLock();
-<span class="lineNum">      84 </span>            :                         try
-<span class="lineNum">      85 </span>            :                         {
-<span class="lineNum">      86 </span>            :                                 this.AsDynamic().Apply(@event);
-<span class="lineNum">      87 </span>            :                                 if (!isEventReplay)
-<span class="lineNum">      88 </span>            :                                 {
-<span class="lineNum">      89 </span>            :                                         Changes = new ReadOnlyCollection&lt;IEvent&lt;TAuthenticationToken&gt;&gt;(Changes.Concat(new[] { @event }).ToList());
-<span class="lineNum">      90 </span>            :                                 }
-<span class="lineNum">      91 </span>            :                                 else
-<span class="lineNum">      92 </span>            :                                 {
-<span class="lineNum">      93 </span>            :                                         Id = @event.Id;
-<span class="lineNum">      94 </span>            :                                         Version++;
-<span class="lineNum">      95 </span>            :                                 }
-<span class="lineNum">      96 </span>            :                         }
-<span class="lineNum">      97 </span>            :                         finally
-<span class="lineNum">      98 </span>            :                         {
-<span class="lineNum">      99 </span>            :                                 Lock.ExitWriteLock();
-<span class="lineNum">     100 </span>            :                         }
-<span class="lineNum">     101 </span>            :                 }
-<span class="lineNum">     102 </span>            :         }
-<span class="lineNum">     103 </span>            : }
+<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      41 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      43 </span><span class="lineCov">          1 :                 protected AggregateRoot()</span>
+<span class="lineNum">      44 </span>            :                 {
+<span class="lineNum">      45 </span>            :                         Lock = new ReaderWriterLockSlim();
+<span class="lineNum">      46 </span>            :                         Changes = new ReadOnlyCollection&lt;IEvent&lt;TAuthenticationToken&gt;&gt;(new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;());
+<span class="lineNum">      47 </span>            :                 }
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :                 public IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges()</span>
+<span class="lineNum">      50 </span>            :                 {
+<span class="lineNum">      51 </span>            :                         return Changes;
+<span class="lineNum">      52 </span>            :                 }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :                 public virtual void MarkChangesAsCommitted()</span>
+<span class="lineNum">      55 </span>            :                 {
+<span class="lineNum">      56 </span>            :                         Lock.EnterWriteLock();
+<span class="lineNum">      57 </span>            :                         try
+<span class="lineNum">      58 </span>            :                         {
+<span class="lineNum">      59 </span>            :                                 Version = Version + Changes.Count;
+<span class="lineNum">      60 </span>            :                                 Changes = new ReadOnlyCollection&lt;IEvent&lt;TAuthenticationToken&gt;&gt;(new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;());
+<span class="lineNum">      61 </span>            :                         }
+<span class="lineNum">      62 </span>            :                         finally
+<span class="lineNum">      63 </span>            :                         {
+<span class="lineNum">      64 </span>            :                                 Lock.ExitWriteLock();
+<span class="lineNum">      65 </span>            :                         }
+<span class="lineNum">      66 </span>            :                 }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :                 public virtual void LoadFromHistory(IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; history)</span>
+<span class="lineNum">      69 </span>            :                 {
+<span class="lineNum">      70 </span>            :                         Type aggregateType = GetType();
+<span class="lineNum">      71 </span>            :                         foreach (IEvent&lt;TAuthenticationToken&gt; @event in history.OrderBy(e =&gt; e.Version))
+<span class="lineNum">      72 </span>            :                         {
+<span class="lineNum">      73 </span>            :                                 if (@event.Version != Version + 1)
+<span class="lineNum">      74 </span>            :                                         throw new EventsOutOfOrderException(@event.Id, aggregateType, Version + 1, @event.Version);
+<span class="lineNum">      75 </span>            :                                 ApplyChange(@event, true);
+<span class="lineNum">      76 </span>            :                         }
+<span class="lineNum">      77 </span>            :                 }
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span><span class="lineNoCov">          0 :                 protected virtual void ApplyChange(IEvent&lt;TAuthenticationToken&gt; @event)</span>
+<span class="lineNum">      80 </span>            :                 {
+<span class="lineNum">      81 </span>            :                         ApplyChange(@event, false);
+<span class="lineNum">      82 </span>            :                 }
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            :                 private void ApplyChange(IEvent&lt;TAuthenticationToken&gt; @event, bool isEventReplay)
+<span class="lineNum">      85 </span>            :                 {
+<span class="lineNum">      86 </span>            :                         Lock.EnterWriteLock();
+<span class="lineNum">      87 </span>            :                         try
+<span class="lineNum">      88 </span>            :                         {
+<span class="lineNum">      89 </span>            :                                 this.AsDynamic().Apply(@event);
+<span class="lineNum">      90 </span>            :                                 if (!isEventReplay)
+<span class="lineNum">      91 </span>            :                                 {
+<span class="lineNum">      92 </span>            :                                         Changes = new ReadOnlyCollection&lt;IEvent&lt;TAuthenticationToken&gt;&gt;(Changes.Concat(new[] { @event }).ToList());
+<span class="lineNum">      93 </span>            :                                 }
+<span class="lineNum">      94 </span>            :                                 else
+<span class="lineNum">      95 </span>            :                                 {
+<span class="lineNum">      96 </span>            :                                         Id = @event.Id;
+<span class="lineNum">      97 </span>            :                                         Version++;
+<span class="lineNum">      98 </span>            :                                 }
+<span class="lineNum">      99 </span>            :                         }
+<span class="lineNum">     100 </span>            :                         finally
+<span class="lineNum">     101 </span>            :                         {
+<span class="lineNum">     102 </span>            :                                 Lock.ExitWriteLock();
+<span class="lineNum">     103 </span>            :                         }
+<span class="lineNum">     104 </span>            :                 }
+<span class="lineNum">     105 </span>            :         }
+<span class="lineNum">     106 </span>            : }
 </pre>
       </td>
     </tr>

@@ -13,9 +13,16 @@ using System.Reflection;
 
 namespace Cqrs.Infrastructure
 {
+	/// <summary>
+	/// A universal wrapper around complex and primitive objects.
+	/// </summary>
 	internal class PrivateReflectionDynamicObject : DynamicObject
 	{
+		/// <summary>
+		/// The original/real <see cref="object"/> this wraps.
+		/// </summary>
 		public object RealObject { get; set; }
+
 		private const BindingFlags BindingFlags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
 
 		internal static object WrapObjectIfNeeded(object @object)
@@ -27,7 +34,10 @@ namespace Cqrs.Infrastructure
 			return new PrivateReflectionDynamicObject { RealObject = @object };
 		}
 
-		// Called when a method is called
+		/// <summary>
+		/// Calls <see cref="InvokeMemberOnType"/> then passes the response to <see cref="WrapObjectIfNeeded"/>.
+		/// </summary>
+		/// <remarks>Called when a method is called.</remarks>
 		public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
 		{
 			result = InvokeMemberOnType(RealObject.GetType(), RealObject, binder.Name, args);

@@ -136,11 +136,17 @@ namespace Cqrs.Infrastructure
 
 		internal static class TimeoutHelper
 		{
+			/// <summary>
+			/// Gets the number of milliseconds elapsed since the system started.
+			/// </summary>
 			public static uint GetTime()
 			{
 				return (uint)Environment.TickCount;
 			}
 
+			/// <summary>
+			/// Does some interesting maths.
+			/// </summary>
 			public static int UpdateTimeOut(uint startTime, int originalWaitMillisecondsTimeout)
 			{
 				uint num1 = GetTime() - startTime;

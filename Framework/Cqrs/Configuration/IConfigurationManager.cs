@@ -19,8 +19,20 @@ namespace Cqrs.Configuration
 		/// <param name="key">The key (or name) of the setting to read.</param>
 		string GetSetting(string key);
 
+		/// <summary>
+		/// Read the setting named <paramref name="key"/>.
+		/// </summary>
+		/// <param name="key">The key (or name) of the setting to read.</param>
+		/// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter. This parameter is passed uninitialized.</param>
+		/// <returns>true if the an element with the specified key exists; otherwise, false.</returns>
 		bool TryGetSetting(string key, out string value);
 
+		/// <summary>
+		/// Read the setting named <paramref name="key"/>.
+		/// </summary>
+		/// <param name="key">The key (or name) of the setting to read.</param>
+		/// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter. This parameter is passed uninitialized.</param>
+		/// <returns>true if the an element with the specified key exists; otherwise, false.</returns>
 		bool TryGetSetting(string key, out bool value);
 	}
 }

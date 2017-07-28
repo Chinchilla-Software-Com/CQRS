@@ -27,6 +27,9 @@ namespace Cqrs.Repositories
 			Database = new ConcurrentDictionary<Type, object>();
 		}
 
+		/// <summary>
+		/// Gets all instances of the specific <typeparamref name="TEntity"/> grouped by their ID.
+		/// </summary>
 		public IDictionary<Guid, TEntity> Get<TEntity>()
 			where TEntity : Entity
 		{
@@ -44,6 +47,9 @@ namespace Cqrs.Repositories
 			return result;
 		}
 
+		/// <summary>
+		/// Gets all instances of the specific <typeparamref name="TEntity"/>
+		/// </summary>
 		public IList<TEntity> GetAll<TEntity>()
 			where TEntity : Entity
 		{
@@ -57,6 +63,9 @@ namespace Cqrs.Repositories
 		{
 			IDictionary<Guid, TEntity> Source { get; set; }
 
+			/// <summary>
+			/// Instantiates a new instance of <see cref="CollectionWrapper{TEntity}"/>
+			/// </summary>
 			public CollectionWrapper(IDictionary<Guid, TEntity> source)
 			{
 				Source = source;
@@ -123,7 +132,11 @@ namespace Cqrs.Repositories
 			/// <summary>
 			/// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.
 			/// </summary>
-			/// <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param><param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param><exception cref="T:System.ArgumentNullException"><paramref name="array"/> is null.</exception><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception><exception cref="T:System.ArgumentException"><paramref name="array"/> is multidimensional.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.-or-Type <paramref name="TEntity"/> cannot be cast automatically to the type of the destination <paramref name="array"/>.</exception>
+			/// <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param>
+			/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+			/// <exception cref="T:System.ArgumentNullException"><paramref name="array"/> is null.</exception>
+			/// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception>
+			/// <exception cref="T:System.ArgumentException"><paramref name="array"/> is multidimensional.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.-or-Type <typeparamref name="TEntity"/> cannot be cast automatically to the type of the destination <paramref name="array"/>.</exception>
 			public void CopyTo(TEntity[] array, int arrayIndex)
 			{
 				Source.Values.CopyTo(array, arrayIndex);

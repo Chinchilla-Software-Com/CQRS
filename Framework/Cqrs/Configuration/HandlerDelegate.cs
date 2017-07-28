@@ -7,13 +7,30 @@
 #endregion
 
 using System;
+using Cqrs.Messages;
 
 namespace Cqrs.Configuration
 {
-	public class HandlerDelegate
+	/// <summary>
+	/// Information about a <see cref="IHandler"/> delegate.
+	/// </summary>
+	public class HandlerDelegate : HandlerDelegate<dynamic>
 	{
-		public Action<dynamic> Delegate { get; set; }
+	}
 
+	/// <summary>
+	/// Information about a delegate.
+	/// </summary>
+	public class HandlerDelegate<T>
+	{
+		/// <summary>
+		/// The delegate that gets executed.
+		/// </summary>
+		public Action<T> Delegate { get; set; }
+
+		/// <summary>
+		/// The <see cref="Type"/> of the targeted object that <see cref="Delegate"/> operates on.
+		/// </summary>
 		public Type TargetedType { get; set; }
 	}
 }

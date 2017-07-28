@@ -1,13 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classCqrs_1_1Commands_1_1DtoCommand_a67471c7e64228ee832343be7b89aa708.html#a67471c7e64228ee832343be7b89aa708":[1,0,0,5,0,7],
-"classCqrs_1_1Commands_1_1DtoCommand_a705b7bdee6a242dd56821c60b4040b23.html#a705b7bdee6a242dd56821c60b4040b23":[1,0,0,5,0,0],
-"classCqrs_1_1Commands_1_1DtoCommand_a7272fbc4acb35942a1c5fb22cd3a6b9b.html#a7272fbc4acb35942a1c5fb22cd3a6b9b":[1,0,0,5,0,8],
-"classCqrs_1_1Commands_1_1DtoCommand_a9429ca1b2c6576c36d46912a18e5dc18.html#a9429ca1b2c6576c36d46912a18e5dc18":[1,0,0,5,0,3],
-"classCqrs_1_1Commands_1_1DtoCommand_a9664c5705a6de37478bdb627590363e5.html#a9664c5705a6de37478bdb627590363e5":[1,0,0,5,0,6],
-"classCqrs_1_1Commands_1_1DtoCommand_aeb60eb40f2a201fd63e846d728768cdf.html#aeb60eb40f2a201fd63e846d728768cdf":[1,0,0,5,0,2],
-"classCqrs_1_1Commands_1_1DtoCommand_aedf535bfbf04e3532c90e69548b85c32.html#aedf535bfbf04e3532c90e69548b85c32":[1,0,0,5,0,1],
-"classCqrs_1_1Configuration_1_1BusRegistrar.html":[1,0,0,6,0],
 "classCqrs_1_1Configuration_1_1BusRegistrar_a03ecf12389b8f55b75c887e113520ac7.html#a03ecf12389b8f55b75c887e113520ac7":[1,0,0,6,0,2],
 "classCqrs_1_1Configuration_1_1BusRegistrar_a07d27088739f2ae0ac7c551fc6a72ac9.html#a07d27088739f2ae0ac7c551fc6a72ac9":[1,0,0,6,0,1],
 "classCqrs_1_1Configuration_1_1BusRegistrar_a0af1844a5f7f1c4adfde2499b054aaae.html#a0af1844a5f7f1c4adfde2499b054aaae":[1,0,0,6,0,8],
@@ -32,8 +24,6 @@ var NAVTREEINDEX4 =
 "classCqrs_1_1Configuration_1_1DependencyResolver_aaede4bbd564000f2becf65e8be863fff.html#aaede4bbd564000f2becf65e8be863fff":[1,0,0,6,3,2],
 "classCqrs_1_1Configuration_1_1DependencyResolver_aaeeb3ad2e0ef44bd98469d843210205c.html#aaeeb3ad2e0ef44bd98469d843210205c":[1,0,0,6,3,0],
 "classCqrs_1_1Configuration_1_1HandlerDelegate.html":[1,0,0,6,4],
-"classCqrs_1_1Configuration_1_1HandlerDelegate_a67fe9f218e3202af02319f33483edb20.html#a67fe9f218e3202af02319f33483edb20":[1,0,0,6,4,0],
-"classCqrs_1_1Configuration_1_1HandlerDelegate_ac88ee4620ae81fa214a562be2ce867f1.html#ac88ee4620ae81fa214a562be2ce867f1":[1,0,0,6,4,1],
 "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions.html":[1,0,0,6,7],
 "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions_a2e4bf3f56dbd0d10acac587499aca7ba.html#a2e4bf3f56dbd0d10acac587499aca7ba":[1,0,0,6,7,3],
 "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions_a4a954213d1a2e3782de2bd4ebe1ec2e9.html#a4a954213d1a2e3782de2bd4ebe1ec2e9":[1,0,0,6,7,1],
@@ -249,5 +239,15 @@ var NAVTREEINDEX4 =
 "classCqrs_1_1EventStore_1_1EventFactory_a1be7f3c4014991bc4b9619eaa2e8b9a4.html#a1be7f3c4014991bc4b9619eaa2e8b9a4":[1,0,0,11,1,6],
 "classCqrs_1_1EventStore_1_1EventFactory_a237daf998b545d170ab9f30187a0b8e7.html#a237daf998b545d170ab9f30187a0b8e7":[1,0,0,11,1,0],
 "classCqrs_1_1EventStore_1_1EventFactory_a4e52c4fd639d1af97b1ecc5052189783.html#a4e52c4fd639d1af97b1ecc5052189783":[1,0,0,11,1,7],
-"classCqrs_1_1EventStore_1_1EventFactory_a91394437675f3185d2105c6a79f7b5aa.html#a91394437675f3185d2105c6a79f7b5aa":[1,0,0,11,1,1]
+"classCqrs_1_1EventStore_1_1EventFactory_a91394437675f3185d2105c6a79f7b5aa.html#a91394437675f3185d2105c6a79f7b5aa":[1,0,0,11,1,1],
+"classCqrs_1_1EventStore_1_1EventFactory_a9e04e262a8af8f60bdde7b4bf3eafebb.html#a9e04e262a8af8f60bdde7b4bf3eafebb":[1,0,0,11,1,4],
+"classCqrs_1_1EventStore_1_1EventFactory_abfd04f6833e4f010234d84a591f6eb6b.html#abfd04f6833e4f010234d84a591f6eb6b":[1,0,0,11,1,5],
+"classCqrs_1_1EventStore_1_1EventFactory_adbcf9f3c67cfef3fe894e5fb53e8b800.html#adbcf9f3c67cfef3fe894e5fb53e8b800":[1,0,0,11,1,3],
+"classCqrs_1_1EventStore_1_1EventFactory_ae514998a8368283f882014cc0db5b2b2.html#ae514998a8368283f882014cc0db5b2b2":[1,0,0,11,1,2],
+"classCqrs_1_1EventStore_1_1EventStore.html":[1,0,0,11,2],
+"classCqrs_1_1EventStore_1_1EventStoreConnectionHelper.html":[1,0,0,11,3],
+"classCqrs_1_1EventStore_1_1EventStoreConnectionHelper_a0658657c13dd7edfaca4837e39fd86dd.html#a0658657c13dd7edfaca4837e39fd86dd":[1,0,0,11,3,6],
+"classCqrs_1_1EventStore_1_1EventStoreConnectionHelper_a36c7ef0505319af9f8ae02da0050ab30.html#a36c7ef0505319af9f8ae02da0050ab30":[1,0,0,11,3,2],
+"classCqrs_1_1EventStore_1_1EventStoreConnectionHelper_a8c018b324a38ce67ab73e637b1aa7bec.html#a8c018b324a38ce67ab73e637b1aa7bec":[1,0,0,11,3,3],
+"classCqrs_1_1EventStore_1_1EventStoreConnectionHelper_aa518bbaa1cd7d75a57429c3cf4dd4f96.html#aa518bbaa1cd7d75a57429c3cf4dd4f96":[1,0,0,11,3,5]
 };

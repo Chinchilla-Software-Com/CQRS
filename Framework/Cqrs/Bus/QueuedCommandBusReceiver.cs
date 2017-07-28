@@ -20,24 +20,55 @@ using Cqrs.Messages;
 
 namespace Cqrs.Bus
 {
+	/// <summary>
+	/// Receives instances of a <see cref="ICommand{TAuthenticationToken}"/> from the command bus, places them into one of several internal concurrent queues and then processes the commands one at a time per queue.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of authentication token.</typeparam>
 	public abstract class QueuedCommandBusReceiver<TAuthenticationToken> : ICommandReceiver<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The queues keyed by an identifier.
+		/// </summary>
 		protected static ConcurrentDictionary<string, ConcurrentQueue<ICommand<TAuthenticationToken>>> QueueTracker { get; private set; }
 
+		/// <summary>
+		/// A <see cref="ReaderWriterLockSlim"/> for providing a lock mechanism around the main <see cref="QueueTracker"/>.
+		/// </summary>
 		protected ReaderWriterLockSlim QueueTrackerLock { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IAuthenticationTokenHelper{TAuthenticationToken}"/>
+		/// </summary>
 		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ICorrelationIdHelper"/>
+		/// </summary>
 		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>
+		/// </summary>
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IBusHelper"/>
+		/// </summary>
 		protected IBusHelper BusHelper { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the routes or handlers that will be executed as the commands arrive.
+		/// </summary>
 		protected abstract IDictionary<Type, IList<Action<IMessage>>> Routes { get; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="QueuedCommandBusReceiver{TAuthenticationToken}"/>.
+		/// </summary>
 		protected QueuedCommandBusReceiver(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IConfigurationManager configurationManager, IBusHelper busHelper)
 		{
 			QueueTracker = new ConcurrentDictionary<string, ConcurrentQueue<ICommand<TAuthenticationToken>>>();
@@ -49,12 +80,21 @@ namespace Cqrs.Bus
 			BusHelper = busHelper;
 		}
 
+		/// <summary>
+		/// Places the provided <paramref name="command"/> into the appropriate queue in the <see cref="QueueTracker"/>.
+		/// </summary>
+		/// <param name="targetQueueName">The name of the target queue to place the command into</param>
+		/// <param name="command">The <see cref="ICommand{TAuthenticationToken}"/> to handle.</param>
 		protected virtual void EnqueueCommand(string targetQueueName, ICommand<TAuthenticationToken> command)
 		{
 			var queue = QueueTracker.GetOrAdd(targetQueueName, new ConcurrentQueue<ICommand<TAuthenticationToken>>());
 			queue.Enqueue(command);
 		}
 
+		/// <summary>
+		/// Checks if the queue exists, if it doesn't it creates a new queue in <see cref="QueueTracker"/> and then starts a separate <see cref="Thread"/> running <see cref="DequeuAndProcessCommand"/>.
+		/// </summary>
+		/// <param name="queueName">The name of the queue.</param>
 		protected virtual void CreateQueueAndAttachListenerIfNotExist(string queueName)
 		{
 			if (!QueueTracker.ContainsKey(queueName))
@@ -83,6 +123,11 @@ namespace Cqrs.Bus
 			}
 		}
 
+		/// <summary>
+		/// Infinitely runs a loop checking if the queue exists in <see cref="QueueTracker"/>
+		/// and then dequeues <see cref="ICommand{TAuthenticationToken}"/> one at a time, pausing for 0.1 seconds between loops.
+		/// </summary>
+		/// <param name="queueName">The name of the queue.</param>
 		protected virtual void DequeuAndProcessCommand(string queueName)
 		{
 			long loop = long.MinValue;
@@ -145,6 +190,9 @@ namespace Cqrs.Bus
 			}
 		}
 
+		/// <summary>
+		/// The current number of queues in <see cref="QueueTracker"/>.
+		/// </summary>
 		public int QueueCount
 		{
 			get
@@ -161,6 +209,9 @@ namespace Cqrs.Bus
 			}
 		}
 
+		/// <summary>
+		/// Gets the names of all queues in <see cref="QueueTracker"/>.
+		/// </summary>
 		public ICollection<string> QueueNames
 		{
 			get
@@ -177,6 +228,11 @@ namespace Cqrs.Bus
 			}
 		}
 
+		#region Implementation of ICommandReceiver<TAuthenticationToken>
+
+		/// <summary>
+		/// Receives a <see cref="ICommand{TAuthenticationToken}"/> from the command bus.
+		/// </summary>
 		public virtual bool? ReceiveCommand(ICommand<TAuthenticationToken> command)
 		{
 			CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
@@ -213,8 +269,13 @@ namespace Cqrs.Bus
 			return response;
 		}
 
+		#endregion
+
 		#region Implementation of ICommandReceiver
 
+		/// <summary>
+		/// Starts listening and processing instances of <see cref="ICommand{TAuthenticationToken}"/> from the command bus.
+		/// </summary>
 		public abstract void Start();
 
 		#endregion

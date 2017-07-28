@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -67,72 +67,87 @@
 <span class="lineNum">       9 </span>            : using System;
 <span class="lineNum">      10 </span>            : using System.Collections.Generic;
 <span class="lineNum">      11 </span>            : using System.Runtime.Serialization;
-<span class="lineNum">      12 </span>            : using Cqrs.Messages;
-<span class="lineNum">      13 </span>            : 
-<span class="lineNum">      14 </span>            : namespace Cqrs.Events
-<span class="lineNum">      15 </span>            : {
-<span class="lineNum">      16 </span>            :         [Serializable]
-<span class="lineNum">      17 </span>            :         [DataContract]
-<span class="lineNum">      18 </span>            :         public class DuplicateCreateCommandEvent&lt;TAuthenticationToken&gt; : IEvent&lt;TAuthenticationToken&gt;
-<span class="lineNum">      19 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      20 </span>            :                 #region Implementation of IMessage
-<span class="lineNum">      21 </span>            : 
-<span class="lineNum">      22 </span>            :                 [DataMember]
-<span class="lineNum">      23 </span>            :                 public Guid CorrelationId { get; set; }
-<span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span>            :                 [DataMember]
-<span class="lineNum">      26 </span>            :                 [Obsolete(&quot;Use Frameworks, It's far more flexible and OriginatingFramework&quot;)]
-<span class="lineNum">      27 </span>            :                 public FrameworkType Framework { get; set; }
-<span class="lineNum">      28 </span>            : 
-<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      30 </span>            :                 /// The originating framework this message was sent from.
-<span class="lineNum">      31 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      32 </span>            :                 [DataMember]
-<span class="lineNum">      33 </span>            :                 public string OriginatingFramework { get; set; }
-<span class="lineNum">      34 </span>            : 
-<span class="lineNum">      35 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      36 </span>            :                 /// The frameworks this &lt;see cref=&quot;IMessage&quot;/&gt; has been delivered to/sent via already.
-<span class="lineNum">      37 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      38 </span>            :                 [DataMember]
-<span class="lineNum">      39 </span>            :                 public IEnumerable&lt;string&gt; Frameworks { get; set; }
-<span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span>            :                 [Obsolete(&quot;Use CorrelationId&quot;)]
+<span class="lineNum">      12 </span>            : using Cqrs.Domain;
+<span class="lineNum">      13 </span>            : using Cqrs.Messages;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : namespace Cqrs.Events
+<span class="lineNum">      16 </span>            : {
+<span class="lineNum">      17 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      18 </span>            :         /// An &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; that informs the system that an operation resulted in a duplicate.
+<span class="lineNum">      19 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      20 </span>            :         [Serializable]
+<span class="lineNum">      21 </span>            :         [DataContract]
+<span class="lineNum">      22 </span>            :         public class DuplicateCreateCommandEvent&lt;TAuthenticationToken&gt; : IEvent&lt;TAuthenticationToken&gt;
+<span class="lineNum">      23 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      24 </span>            :                 #region Implementation of IMessage
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// The identifier of the command itself.
+<span class="lineNum">      28 </span>            :                 /// In some cases this may be the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; or &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; this command targets.
+<span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      30 </span>            :                 [DataMember]
+<span class="lineNum">      31 </span>            :                 public Guid Id { get; set; }
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      34 </span>            :                 /// The new version number the targeted &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; or &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; that raised this.
+<span class="lineNum">      35 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      36 </span>            :                 [DataMember]
+<span class="lineNum">      37 </span>            :                 public int Version { get; set; }
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      40 </span>            :                 /// The date and time the event was raised or published.
+<span class="lineNum">      41 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">      42 </span>            :                 [DataMember]
-<span class="lineNum">      43 </span>            :                 public Guid CorrolationId
-<span class="lineNum">      44 </span>            :                 {
-<span class="lineNum">      45 </span>            :                         get { return CorrelationId; }
-<span class="lineNum">      46 </span>            :                         set { CorrelationId = value; }
-<span class="lineNum">      47 </span>            :                 }
-<span class="lineNum">      48 </span>            : 
-<span class="lineNum">      49 </span>            :                 #endregion
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span>            :                 #region Implementation of IMessageWithAuthenticationToken&lt;TAuthenticationToken&gt;
-<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      43 </span>            :                 public DateTimeOffset TimeStamp { get; set; }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                 #endregion
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                 #region Implementation of IMessageWithAuthenticationToken&lt;TAuthenticationToken&gt;
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      51 </span>            :                 /// The &lt;typeparamref name=&quot;TAuthenticationToken&quot;/&gt; of the entity that triggered the event to be raised.
+<span class="lineNum">      52 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">      53 </span>            :                 [DataMember]
 <span class="lineNum">      54 </span>            :                 public TAuthenticationToken AuthenticationToken { get; set; }
 <span class="lineNum">      55 </span>            : 
 <span class="lineNum">      56 </span>            :                 #endregion
 <span class="lineNum">      57 </span>            : 
-<span class="lineNum">      58 </span>            :                 #region Implementation of IEvent&lt;TAuthenticationToken&gt;
+<span class="lineNum">      58 </span>            :                 #region Implementation of IMessage
 <span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span>            :                 [DataMember]
-<span class="lineNum">      61 </span>            :                 public Guid Id { get; set; }
-<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      60 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      61 </span>            :                 /// An identifier used to group together several &lt;see cref=&quot;IMessage&quot;/&gt;. Any &lt;see cref=&quot;IMessage&quot;/&gt; with the same &lt;see cref=&quot;CorrelationId&quot;/&gt; were triggered by the same initiating request.
+<span class="lineNum">      62 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">      63 </span>            :                 [DataMember]
-<span class="lineNum">      64 </span>            :                 public int Version { get; set; }
+<span class="lineNum">      64 </span>            :                 public Guid CorrelationId { get; set; }
 <span class="lineNum">      65 </span>            : 
-<span class="lineNum">      66 </span>            :                 [DataMember]
-<span class="lineNum">      67 </span>            :                 public DateTimeOffset TimeStamp { get; set; }
-<span class="lineNum">      68 </span>            : 
-<span class="lineNum">      69 </span>            :                 #endregion
-<span class="lineNum">      70 </span>            : 
-<span class="lineNum">      71 </span>            :                 [DataMember]
-<span class="lineNum">      72 </span>            :                 public Type AggregateType { get; set; }
-<span class="lineNum">      73 </span>            : 
-<span class="lineNum">      74 </span>            :                 [DataMember]
-<span class="lineNum">      75 </span>            :                 public Guid AggregateRsn { get; set; }
-<span class="lineNum">      76 </span>            :         }
-<span class="lineNum">      77 </span>            : }
+<span class="lineNum">      66 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      67 </span>            :                 /// The originating framework this message was sent from.
+<span class="lineNum">      68 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      69 </span>            :                 [DataMember]
+<span class="lineNum">      70 </span>            :                 public string OriginatingFramework { get; set; }
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      73 </span>            :                 /// The frameworks this &lt;see cref=&quot;IMessage&quot;/&gt; has been delivered to/sent via already.
+<span class="lineNum">      74 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      75 </span>            :                 [DataMember]
+<span class="lineNum">      76 </span>            :                 public IEnumerable&lt;string&gt; Frameworks { get; set; }
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                 #endregion
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      81 </span>            :                 /// The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; that already exists, but had another &lt;see cref=&quot;DtoAggregateEventType.Created&quot;/&gt; event raised.
+<span class="lineNum">      82 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      83 </span>            :                 [DataMember]
+<span class="lineNum">      84 </span>            :                 public Type AggregateType { get; set; }
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      87 </span>            :                 /// The identifier of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; that already exists, but had another &lt;see cref=&quot;DtoAggregateEventType.Created&quot;/&gt; event raised.
+<span class="lineNum">      88 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      89 </span>            :                 [DataMember]
+<span class="lineNum">      90 </span>            :                 public Guid AggregateRsn { get; set; }
+<span class="lineNum">      91 </span>            :         }
+<span class="lineNum">      92 </span>            : }
 </pre>
       </td>
     </tr>

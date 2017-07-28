@@ -20,7 +20,6 @@ var searchData=
   ['iauthenticationtokenhelper',['IAuthenticationTokenHelper',['../interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],
   ['iauthenticationtokenhelper_3c_20guid_20_3e',['IAuthenticationTokenHelper&lt; Guid &gt;',['../interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],
   ['iauthenticationtokenhelper_3c_20int_20_3e',['IAuthenticationTokenHelper&lt; int &gt;',['../interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],
-  ['iauthenticationtokenhelper_3c_20isinglesignontoken_20_3e',['IAuthenticationTokenHelper&lt; ISingleSignOnToken &gt;',['../interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],
   ['iauthenticationtokenhelper_3c_20isinglesignontokenwithcompanyrsn_20_3e',['IAuthenticationTokenHelper&lt; ISingleSignOnTokenWithCompanyRsn &gt;',['../interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],
   ['iauthenticationtokenhelper_3c_20isinglesignontokenwithuserrsn_20_3e',['IAuthenticationTokenHelper&lt; ISingleSignOnTokenWithUserRsn &gt;',['../interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],
   ['iauthenticationtokenhelper_3c_20isinglesignontokenwithuserrsnandcompanyrsn_20_3e',['IAuthenticationTokenHelper&lt; ISingleSignOnTokenWithUserRsnAndCompanyRsn &gt;',['../interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],

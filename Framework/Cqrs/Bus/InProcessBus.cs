@@ -30,8 +30,7 @@ namespace Cqrs.Bus
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class InProcessBus<TAuthenticationToken>
-		: ISendAndWaitCommandSender<TAuthenticationToken>
-		, IPublishAndWaitCommandPublisher<TAuthenticationToken>
+		: IPublishAndWaitCommandPublisher<TAuthenticationToken>
 		, IEventPublisher<TAuthenticationToken>
 		, IEventHandlerRegistrar
 		, ICommandHandlerRegistrar
@@ -107,7 +106,7 @@ namespace Cqrs.Bus
 		/// Sets the
 		/// <see cref="IMessageWithAuthenticationToken{TAuthenticationToken}.AuthenticationToken"/>,
 		/// <see cref="IMessage.CorrelationId"/>,
-		/// <see cref="ICommand{TAuthenticationToken}.OriginatingFramework"/> to "Built-In" and
+		/// <see cref="IMessage.OriginatingFramework"/> to "Built-In" and
 		/// adds a value of "Built-In" to the <see cref="IMessage.Frameworks"/>
 		/// if not already done so
 		/// </summary>
@@ -375,7 +374,7 @@ namespace Cqrs.Bus
 		#region Implementation of IEventPublisher<TAuthenticationToken>
 
 		/// <summary>
-		/// Publishes the provided <paramref name="@event"/> on the event bus.
+		/// Publishes the provided <paramref name="event"/> on the event bus.
 		/// </summary>
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>

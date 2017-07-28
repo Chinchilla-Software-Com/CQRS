@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -70,39 +70,57 @@
 <span class="lineNum">      12 </span>            : 
 <span class="lineNum">      13 </span>            : namespace Cqrs.Bus
 <span class="lineNum">      14 </span>            : {
-<span class="lineNum">      15 </span>            :         public class FileBasedLastEventProcessedStore : IStoreLastEventProcessed
-<span class="lineNum">      16 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      17 </span>            :                 public const string AppSettingsKey = &quot;FileBasedLastEventProcessed.Location&quot;;
-<span class="lineNum">      18 </span>            : 
-<span class="lineNum">      19 </span>            :                 public const string AppSettingsDefaultValue = @&quot;%EVENTSTORE_HOME%\LastEventProcessedLocation&quot;;
-<span class="lineNum">      20 </span>            : 
-<span class="lineNum">      21 </span>            :                 protected string FileName { get; private set; }
-<span class="lineNum">      22 </span>            : 
-<span class="lineNum">      23 </span><span class="lineNoCov">          0 :                 public FileBasedLastEventProcessedStore(IConfigurationManager configurationManager)</span>
-<span class="lineNum">      24 </span>            :                 {
-<span class="lineNum">      25 </span>            :                         string location = configurationManager.GetSetting(AppSettingsKey);
-<span class="lineNum">      26 </span>            :                         if (string.IsNullOrEmpty(location))
-<span class="lineNum">      27 </span>            :                         {
-<span class="lineNum">      28 </span>            :                                 location = AppSettingsDefaultValue;
-<span class="lineNum">      29 </span>            :                         }
-<span class="lineNum">      30 </span>            : 
-<span class="lineNum">      31 </span>            :                         FileName = Environment.ExpandEnvironmentVariables(location);
-<span class="lineNum">      32 </span>            :                 }
-<span class="lineNum">      33 </span>            : 
-<span class="lineNum">      34 </span>            :                 public string EventLocation
-<span class="lineNum">      35 </span>            :                 {
-<span class="lineNum">      36 </span>            :                         get
-<span class="lineNum">      37 </span>            :                         {
-<span class="lineNum">      38 </span>            :                                 return File.Exists(FileName) ? File.ReadAllText(FileName) : string.Empty;
-<span class="lineNum">      39 </span>            :                         }
-<span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span>            :                         set
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :         /// Indicates the position in a store where the stream has been read up to by storing the value in a file.
+<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      18 </span>            :         public class FileBasedLastEventProcessedStore : IStoreLastEventProcessed
+<span class="lineNum">      19 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      20 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :                 /// The configuration setting that holds the location of file to store position information in.
+<span class="lineNum">      22 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      23 </span>            :                 public const string AppSettingsKey = &quot;Cqrs.FileBasedLastEventProcessed.Location&quot;;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      26 </span>            :                 /// The default location of the file to store position information in.
+<span class="lineNum">      27 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      28 </span>            :                 public const string AppSettingsDefaultValue = @&quot;%EVENTSTORE_HOME%\LastEventProcessedLocation&quot;;
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// The relative or absolute path of the file to store the current location in
+<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      33 </span>            :                 protected string FileName { get; private set; }
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      36 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;FileBasedLastEventProcessedStore&quot;/&gt;.
+<span class="lineNum">      37 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      38 </span><span class="lineCov">          1 :                 public FileBasedLastEventProcessedStore(IConfigurationManager configurationManager)</span>
+<span class="lineNum">      39 </span>            :                 {
+<span class="lineNum">      40 </span>            :                         string location = configurationManager.GetSetting(AppSettingsKey);
+<span class="lineNum">      41 </span>            :                         if (string.IsNullOrEmpty(location))
 <span class="lineNum">      42 </span>            :                         {
-<span class="lineNum">      43 </span>            :                                 File.WriteAllText(FileName, value);
+<span class="lineNum">      43 </span>            :                                 location = AppSettingsDefaultValue;
 <span class="lineNum">      44 </span>            :                         }
-<span class="lineNum">      45 </span>            :                 }
-<span class="lineNum">      46 </span>            :         }
-<span class="lineNum">      47 </span>            : }
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                         FileName = Environment.ExpandEnvironmentVariables(location);
+<span class="lineNum">      47 </span>            :                 }
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      50 </span>            :                 /// Reads and writes the location within the store where the stream has been read up to &lt;see cref=&quot;FileName&quot;/&gt;.
+<span class="lineNum">      51 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      52 </span>            :                 public string EventLocation
+<span class="lineNum">      53 </span>            :                 {
+<span class="lineNum">      54 </span>            :                         get
+<span class="lineNum">      55 </span>            :                         {
+<span class="lineNum">      56 </span>            :                                 return File.Exists(FileName) ? File.ReadAllText(FileName) : string.Empty;
+<span class="lineNum">      57 </span>            :                         }
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :                         set
+<span class="lineNum">      60 </span>            :                         {
+<span class="lineNum">      61 </span>            :                                 File.WriteAllText(FileName, value);
+<span class="lineNum">      62 </span>            :                         }
+<span class="lineNum">      63 </span>            :                 }
+<span class="lineNum">      64 </span>            :         }
+<span class="lineNum">      65 </span>            : }
 </pre>
       </td>
     </tr>

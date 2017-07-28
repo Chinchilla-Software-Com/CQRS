@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -71,52 +71,62 @@
 <span class="lineNum">      13 </span>            : 
 <span class="lineNum">      14 </span>            : namespace Cqrs.Infrastructure
 <span class="lineNum">      15 </span>            : {
-<span class="lineNum">      16 </span>            :         internal class PrivateReflectionDynamicObject : DynamicObject
-<span class="lineNum">      17 </span>            :         {
-<span class="lineNum">      18 </span>            :                 public object RealObject { get; set; }
-<span class="lineNum">      19 </span>            :                 private const BindingFlags BindingFlags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
-<span class="lineNum">      20 </span>            : 
-<span class="lineNum">      21 </span>            :                 internal static object WrapObjectIfNeeded(object @object)
-<span class="lineNum">      22 </span>            :                 {
-<span class="lineNum">      23 </span>            :                         // Don't wrap primitive types, which don't have many interesting internal APIs
-<span class="lineNum">      24 </span>            :                         if (@object == null || @object.GetType().IsPrimitive || @object is string)
-<span class="lineNum">      25 </span>            :                                 return @object;
-<span class="lineNum">      26 </span>            : 
-<span class="lineNum">      27 </span>            :                         return new PrivateReflectionDynamicObject { RealObject = @object };
-<span class="lineNum">      28 </span>            :                 }
-<span class="lineNum">      29 </span>            : 
-<span class="lineNum">      30 </span>            :                 // Called when a method is called
-<span class="lineNum">      31 </span><span class="lineNoCov">          0 :                 public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)</span>
-<span class="lineNum">      32 </span>            :                 {
-<span class="lineNum">      33 </span>            :                         result = InvokeMemberOnType(RealObject.GetType(), RealObject, binder.Name, args);
-<span class="lineNum">      34 </span>            : 
-<span class="lineNum">      35 </span>            :                         // Wrap the sub object if necessary. This allows nested anonymous objects to work.
-<span class="lineNum">      36 </span>            :                         result = WrapObjectIfNeeded(result);
-<span class="lineNum">      37 </span>            : 
-<span class="lineNum">      38 </span>            :                         return true;
-<span class="lineNum">      39 </span>            :                 }
-<span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span>            :                 private static object InvokeMemberOnType(Type type, object target, string name, object[] args)
+<span class="lineNum">      16 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      17 </span>            :         /// A universal wrapper around complex and primitive objects.
+<span class="lineNum">      18 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      19 </span>            :         internal class PrivateReflectionDynamicObject : DynamicObject
+<span class="lineNum">      20 </span>            :         {
+<span class="lineNum">      21 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :                 /// The original/real &lt;see cref=&quot;object&quot;/&gt; this wraps.
+<span class="lineNum">      23 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      24 </span>            :                 public object RealObject { get; set; }
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                 private const BindingFlags BindingFlags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            :                 internal static object WrapObjectIfNeeded(object @object)
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                         // Don't wrap primitive types, which don't have many interesting internal APIs
+<span class="lineNum">      31 </span>            :                         if (@object == null || @object.GetType().IsPrimitive || @object is string)
+<span class="lineNum">      32 </span>            :                                 return @object;
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                         return new PrivateReflectionDynamicObject { RealObject = @object };
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :                 /// Calls &lt;see cref=&quot;InvokeMemberOnType&quot;/&gt; then passes the response to &lt;see cref=&quot;WrapObjectIfNeeded&quot;/&gt;.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span>            :                 /// &lt;remarks&gt;Called when a method is called.&lt;/remarks&gt;
+<span class="lineNum">      41 </span><span class="lineCov">          1 :                 public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)</span>
 <span class="lineNum">      42 </span>            :                 {
-<span class="lineNum">      43 </span>            :                         try
-<span class="lineNum">      44 </span>            :                         {
-<span class="lineNum">      45 </span>            :                                 if (type.GetMember(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Any())
-<span class="lineNum">      46 </span>            :                                         return type.InvokeMember(name, BindingFlags.InvokeMethod | BindingFlags, null, target, args);
-<span class="lineNum">      47 </span>            :                                 // If we couldn't find the method, try on the base class
-<span class="lineNum">      48 </span>            :                                 if (type.BaseType != null)
-<span class="lineNum">      49 </span>            :                                         return InvokeMemberOnType(type.BaseType, target, name, args);
-<span class="lineNum">      50 </span>            :                         }
-<span class="lineNum">      51 </span>            :                         catch (MissingMethodException)
-<span class="lineNum">      52 </span>            :                         {
-<span class="lineNum">      53 </span>            :                                 // If we couldn't find the method, try on the base class
-<span class="lineNum">      54 </span>            :                                 if (type.BaseType != null)
-<span class="lineNum">      55 </span>            :                                         return InvokeMemberOnType(type.BaseType, target, name, args);
-<span class="lineNum">      56 </span>            :                         }
-<span class="lineNum">      57 </span>            :                                 // Don't care if the method don't exist.
-<span class="lineNum">      58 </span>            :                         return null;
-<span class="lineNum">      59 </span>            :                 }
-<span class="lineNum">      60 </span>            :         }
-<span class="lineNum">      61 </span>            : }
+<span class="lineNum">      43 </span>            :                         result = InvokeMemberOnType(RealObject.GetType(), RealObject, binder.Name, args);
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                         // Wrap the sub object if necessary. This allows nested anonymous objects to work.
+<span class="lineNum">      46 </span>            :                         result = WrapObjectIfNeeded(result);
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                         return true;
+<span class="lineNum">      49 </span>            :                 }
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                 private static object InvokeMemberOnType(Type type, object target, string name, object[] args)
+<span class="lineNum">      52 </span>            :                 {
+<span class="lineNum">      53 </span>            :                         try
+<span class="lineNum">      54 </span>            :                         {
+<span class="lineNum">      55 </span>            :                                 if (type.GetMember(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Any())
+<span class="lineNum">      56 </span>            :                                         return type.InvokeMember(name, BindingFlags.InvokeMethod | BindingFlags, null, target, args);
+<span class="lineNum">      57 </span>            :                                 // If we couldn't find the method, try on the base class
+<span class="lineNum">      58 </span>            :                                 if (type.BaseType != null)
+<span class="lineNum">      59 </span>            :                                         return InvokeMemberOnType(type.BaseType, target, name, args);
+<span class="lineNum">      60 </span>            :                         }
+<span class="lineNum">      61 </span>            :                         catch (MissingMethodException)
+<span class="lineNum">      62 </span>            :                         {
+<span class="lineNum">      63 </span>            :                                 // If we couldn't find the method, try on the base class
+<span class="lineNum">      64 </span>            :                                 if (type.BaseType != null)
+<span class="lineNum">      65 </span>            :                                         return InvokeMemberOnType(type.BaseType, target, name, args);
+<span class="lineNum">      66 </span>            :                         }
+<span class="lineNum">      67 </span>            :                                 // Don't care if the method don't exist.
+<span class="lineNum">      68 </span>            :                         return null;
+<span class="lineNum">      69 </span>            :                 }
+<span class="lineNum">      70 </span>            :         }
+<span class="lineNum">      71 </span>            : }
 </pre>
       </td>
     </tr>

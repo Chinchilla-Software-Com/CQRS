@@ -37,6 +37,9 @@ namespace Cqrs.Domain
 
 		public int Version { get; protected set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AggregateRoot{TAuthenticationToken}"/>.
+		/// </summary>
 		protected AggregateRoot()
 		{
 			Lock = new ReaderWriterLockSlim();

@@ -11,24 +11,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using cdmdotnet.Logging;
-using Cqrs.Configuration;
 using Cqrs.Entities;
 using Cqrs.DataStores;
 using Cqrs.Repositories.Queries;
 
 namespace Cqrs.Repositories
 {
+	/// <summary>
+	/// Provides basic repository methods for operations with an <see cref="IDataStore{TData}"/>.
+	/// </summary>
+	/// <typeparam name="TQueryStrategy">The <see cref="Type"/> of <see cref="IQueryStrategy"/>.</typeparam>
+	/// <typeparam name="TQueryBuilder">The <see cref="Type"/> of the <see cref="QueryBuilder"/> that will be used to build queries.</typeparam>
+	/// <typeparam name="TData">The <see cref="Type"/> of data held in storage.</typeparam>
 	public abstract class Repository<TQueryStrategy, TQueryBuilder, TData> : IRepository<TQueryStrategy, TData>
 		where TQueryStrategy : IQueryStrategy
 		where TQueryBuilder : QueryBuilder<TQueryStrategy, TData>
 		where TData : Entity
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="Func{TResult}"/> that is used to create new instances of <see cref="IDataStore{TData}"/>.
+		/// </summary>
 		protected Func<IDataStore<TData>> CreateDataStoreFunction { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <typeparamref name="TQueryBuilder"/> that will be used to build queries.
+		/// </summary>
 		protected TQueryBuilder QueryBuilder { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ITelemetryHelper"/>.
+		/// </summary>
 		protected ITelemetryHelper TelemetryHelper { get; set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="Repository{TQueryStrategy,TQueryBuilder,TData}"/>
+		/// </summary>
 		protected Repository(Func<IDataStore<TData>> createDataStoreFunction, TQueryBuilder queryBuilder)
 		{
 			CreateDataStoreFunction = createDataStoreFunction;
@@ -38,18 +55,29 @@ namespace Cqrs.Repositories
 
 		#region Implementation of IRepository<TData>
 
+		/// <summary>
+		/// Create the newly provided <paramref name="data"/> to storage.
+		/// </summary>
 		public virtual void Create(TData data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
 				dataStore.Add(data);
 		}
 
+		/// <summary>
+		/// Create the newly provided <paramref name="data"/> to storage.
+		/// </summary>
 		public virtual void Create(IEnumerable<TData> data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
 				dataStore.Add(data);
 		}
 
+		/// <summary>
+		/// Builds and executes the provided <paramref name="singleResultQuery"/>.
+		/// </summary>
+		/// <param name="singleResultQuery">The <see cref="ISingleResultQuery{TQueryStrategy,TData}"/> to build and execute.</param>
+		/// <param name="throwExceptionWhenNoQueryResults">If true will throw an <see cref="Exception"/> if no data is found in storage.</param>
 		public virtual ISingleResultQuery<TQueryStrategy, TData> Retrieve(ISingleResultQuery<TQueryStrategy, TData> singleResultQuery, bool throwExceptionWhenNoQueryResults = true)
 		{
 			// The .Select(i => i) is necessary due to inheritance
@@ -85,6 +113,10 @@ namespace Cqrs.Repositories
 			}
 		}
 
+		/// <summary>
+		/// Builds and executes the provided <paramref name="resultQuery"/>.
+		/// </summary>
+		/// <param name="resultQuery">The <see cref="ICollectionResultQuery{TQueryStrategy,TData}"/> to build and execute.</param>
 		public virtual ICollectionResultQuery<TQueryStrategy, TData> Retrieve(ICollectionResultQuery<TQueryStrategy, TData> resultQuery)
 		{
 			// The .Select(i => i) is necessary due to inheritance
@@ -113,6 +145,9 @@ namespace Cqrs.Repositories
 			}
 		}
 
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in storage.
+		/// </summary>
 		public virtual void Update(TData data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
@@ -128,18 +163,29 @@ namespace Cqrs.Repositories
 				dataStore.Remove(data);
 		}
 
+		/// <summary>
+		/// Delete all contents (normally by use of a truncate operation) in storage.
+		/// </summary>
 		public virtual void DeleteAll()
 		{
 			using (var dataStore = CreateDataStoreFunction())
 				dataStore.RemoveAll();
 		}
 
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> from storage.
+		/// </summary>
 		public void Destroy(TData data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
 				dataStore.Destroy(data);
 		}
 
+		/// <summary>
+		/// Load the <typeparamref name="TData"/> from storage identified by the provided <paramref name="rsn"/>.
+		/// </summary>
+		/// <param name="rsn">The identifier if the <typeparamref name="TData"/> to load.</param>
+		/// <param name="throwExceptionOnMissingEntity">If true will throw an <see cref="Exception"/> if no data is found in storage.</param>
 		public virtual TData Load(Guid rsn, bool throwExceptionOnMissingEntity = true)
 		{
 			using (IDataStore<TData> dataStore = CreateDataStoreFunction())
@@ -171,6 +217,10 @@ namespace Cqrs.Repositories
 
 		#endregion
 
+		/// <summary>
+		/// Calls <see cref="CreateDataStoreFunction"/> passing the <paramref name="predicate"/>.
+		/// </summary>
+		/// <param name="predicate">A function defining a filter if required.</param>
 		protected virtual IQueryable<TData> CreateQueryable(Expression<Func<TData, bool>> predicate)
 		{
 			return CreateDataStoreFunction().Where(predicate);

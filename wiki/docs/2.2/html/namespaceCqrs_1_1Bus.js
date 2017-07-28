@@ -10,6 +10,6 @@ var namespaceCqrs_1_1Bus =
     [ "IStoreLastEventProcessed", "interfaceCqrs_1_1Bus_1_1IStoreLastEventProcessed.html", "interfaceCqrs_1_1Bus_1_1IStoreLastEventProcessed" ],
     [ "QueuedCommandBusReceiver", "classCqrs_1_1Bus_1_1QueuedCommandBusReceiver.html", "classCqrs_1_1Bus_1_1QueuedCommandBusReceiver" ],
     [ "Route", "classCqrs_1_1Bus_1_1Route.html", "classCqrs_1_1Bus_1_1Route" ],
-    [ "RouteHandlerDelegate", "classCqrs_1_1Bus_1_1RouteHandlerDelegate.html", "classCqrs_1_1Bus_1_1RouteHandlerDelegate" ],
+    [ "RouteHandlerDelegate", "classCqrs_1_1Bus_1_1RouteHandlerDelegate.html", null ],
     [ "RouteManager", "classCqrs_1_1Bus_1_1RouteManager.html", "classCqrs_1_1Bus_1_1RouteManager" ]
 ];

@@ -16,7 +16,7 @@ namespace Cqrs.Events
 	public interface IEventPublisher<TAuthenticationToken>
 	{
 		/// <summary>
-		/// Publishes the provided <paramref name="@event"/> on the event bus.
+		/// Publishes the provided <paramref name="event"/> on the event bus.
 		/// </summary>
 		void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>;

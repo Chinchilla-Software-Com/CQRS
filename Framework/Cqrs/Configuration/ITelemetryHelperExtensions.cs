@@ -5,6 +5,9 @@ using Cqrs.Authentication;
 
 namespace Cqrs.Configuration
 {
+	/// <summary>
+	/// A collection of extension methods for <see cref="ITelemetryHelper"/>.
+	/// </summary>
 	public static class ITelemetryHelperExtensions
 	{
 		/// <summary>

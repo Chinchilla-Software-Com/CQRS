@@ -3,7 +3,6 @@
   <compounddef id="interfaceCqrs_1_1Commands_1_1ISendAndWaitCommandSender" kind="interface" language="C#" prot="public">
     <compoundname>Cqrs::Commands::ISendAndWaitCommandSender</compoundname>
     <basecompoundref refid="interfaceCqrs_1_1Commands_1_1ICommandSender" prot="public" virt="non-virtual">Cqrs::Commands::ICommandSender&lt; TAuthenticationToken &gt;</basecompoundref>
-    <derivedcompoundref refid="classCqrs_1_1Bus_1_1InProcessBus" prot="public" virt="non-virtual">Cqrs.Bus.InProcessBus&lt; TAuthenticationToken &gt;</derivedcompoundref>
     <templateparamlist>
       <param>
         <type>TAuthenticationToken</type>
@@ -15,7 +14,6 @@
         <definition>TEvent Cqrs.Commands.ISendAndWaitCommandSender&lt; TAuthenticationToken &gt;.SendAndWait&lt; TCommand, TEvent &gt;</definition>
         <argsstring>(TCommand command, IEventReceiver&lt; TAuthenticationToken &gt; eventReceiver=null)</argsstring>
         <name>SendAndWait&lt; TCommand, TEvent &gt;</name>
-        <reimplementedby refid="classCqrs_1_1Bus_1_1InProcessBus_a506d617dc7ec3838791a91e09b73b8ce_1a506d617dc7ec3838791a91e09b73b8ce">SendAndWait&lt; TCommand, TEvent &gt;</reimplementedby>
         <param>
           <type>TCommand</type>
           <declname>command</declname>
@@ -53,7 +51,6 @@
         <definition>TEvent Cqrs.Commands.ISendAndWaitCommandSender&lt; TAuthenticationToken &gt;.SendAndWait&lt; TCommand, TEvent &gt;</definition>
         <argsstring>(TCommand command, int millisecondsTimeout, IEventReceiver&lt; TAuthenticationToken &gt; eventReceiver=null)</argsstring>
         <name>SendAndWait&lt; TCommand, TEvent &gt;</name>
-        <reimplementedby refid="classCqrs_1_1Bus_1_1InProcessBus_a1b3540fe06b60cd601eaff4ea53f5465_1a1b3540fe06b60cd601eaff4ea53f5465">SendAndWait&lt; TCommand, TEvent &gt;</reimplementedby>
         <param>
           <type>TCommand</type>
           <declname>command</declname>
@@ -102,7 +99,6 @@
         <definition>TEvent Cqrs.Commands.ISendAndWaitCommandSender&lt; TAuthenticationToken &gt;.SendAndWait&lt; TCommand, TEvent &gt;</definition>
         <argsstring>(TCommand command, TimeSpan timeout, IEventReceiver&lt; TAuthenticationToken &gt; eventReceiver=null)</argsstring>
         <name>SendAndWait&lt; TCommand, TEvent &gt;</name>
-        <reimplementedby refid="classCqrs_1_1Bus_1_1InProcessBus_a6d49efcd657ed029f97fac292e6296b0_1a6d49efcd657ed029f97fac292e6296b0">SendAndWait&lt; TCommand, TEvent &gt;</reimplementedby>
         <param>
           <type>TCommand</type>
           <declname>command</declname>
@@ -151,7 +147,6 @@
         <definition>TEvent Cqrs.Commands.ISendAndWaitCommandSender&lt; TAuthenticationToken &gt;.SendAndWait&lt; TCommand, TEvent &gt;</definition>
         <argsstring>(TCommand command, Func&lt; IEnumerable&lt; IEvent&lt; TAuthenticationToken &gt;&gt;, TEvent &gt; condition, IEventReceiver&lt; TAuthenticationToken &gt; eventReceiver=null)</argsstring>
         <name>SendAndWait&lt; TCommand, TEvent &gt;</name>
-        <reimplementedby refid="classCqrs_1_1Bus_1_1InProcessBus_ac8c4a77edc761f15e16c638624424443_1ac8c4a77edc761f15e16c638624424443">SendAndWait&lt; TCommand, TEvent &gt;</reimplementedby>
         <param>
           <type>TCommand</type>
           <declname>command</declname>
@@ -200,7 +195,6 @@
         <definition>TEvent Cqrs.Commands.ISendAndWaitCommandSender&lt; TAuthenticationToken &gt;.SendAndWait&lt; TCommand, TEvent &gt;</definition>
         <argsstring>(TCommand command, Func&lt; IEnumerable&lt; IEvent&lt; TAuthenticationToken &gt;&gt;, TEvent &gt; condition, int millisecondsTimeout, IEventReceiver&lt; TAuthenticationToken &gt; eventReceiver=null)</argsstring>
         <name>SendAndWait&lt; TCommand, TEvent &gt;</name>
-        <reimplementedby refid="classCqrs_1_1Bus_1_1InProcessBus_af3ed033471e85b2943a470c1a635f9c4_1af3ed033471e85b2943a470c1a635f9c4">SendAndWait&lt; TCommand, TEvent &gt;</reimplementedby>
         <param>
           <type>TCommand</type>
           <declname>command</declname>
@@ -260,7 +254,6 @@
         <definition>TEvent Cqrs.Commands.ISendAndWaitCommandSender&lt; TAuthenticationToken &gt;.SendAndWait&lt; TCommand, TEvent &gt;</definition>
         <argsstring>(TCommand command, Func&lt; IEnumerable&lt; IEvent&lt; TAuthenticationToken &gt;&gt;, TEvent &gt; condition, TimeSpan timeout, IEventReceiver&lt; TAuthenticationToken &gt; eventReceiver=null)</argsstring>
         <name>SendAndWait&lt; TCommand, TEvent &gt;</name>
-        <reimplementedby refid="classCqrs_1_1Bus_1_1InProcessBus_aae598cbe7ec6f4238e5a5b966df1157c_1aae598cbe7ec6f4238e5a5b966df1157c">SendAndWait&lt; TCommand, TEvent &gt;</reimplementedby>
         <param>
           <type>TCommand</type>
           <declname>command</declname>
@@ -329,44 +322,38 @@
 </parameterlist>
 </para>    </detaileddescription>
     <inheritancegraph>
-      <node id="1159">
-        <label>Cqrs::Bus::InProcessBus&lt; TAuthenticationToken &gt;</label>
-        <link refid="classCqrs_1_1Bus_1_1InProcessBus"/>
-        <childnode refid="1156" relation="public-inheritance">
-        </childnode>
-      </node>
-      <node id="1158">
+      <node id="1145">
         <label>ICommandPublisher&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Commands_1_1ICommandPublisher"/>
       </node>
-      <node id="1157">
+      <node id="1144">
         <label>ICommandSender&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Commands_1_1ICommandSender"/>
-        <childnode refid="1158" relation="public-inheritance">
+        <childnode refid="1145" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1156">
+      <node id="1143">
         <label>Cqrs.Commands.ISendAndWaitCommandSender&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Commands_1_1ISendAndWaitCommandSender"/>
-        <childnode refid="1157" relation="public-inheritance">
+        <childnode refid="1144" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="1162">
+      <node id="1148">
         <label>ICommandPublisher&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Commands_1_1ICommandPublisher"/>
       </node>
-      <node id="1161">
+      <node id="1147">
         <label>ICommandSender&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Commands_1_1ICommandSender"/>
-        <childnode refid="1162" relation="public-inheritance">
+        <childnode refid="1148" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1160">
+      <node id="1146">
         <label>Cqrs.Commands.ISendAndWaitCommandSender&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Commands_1_1ISendAndWaitCommandSender"/>
-        <childnode refid="1161" relation="public-inheritance">
+        <childnode refid="1147" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>
