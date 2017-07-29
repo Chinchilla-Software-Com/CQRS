@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading;
 using cdmdotnet.Logging;
 using Cqrs.Commands;
@@ -42,20 +43,40 @@ namespace Cqrs.Domain
 
 		private ICollection<ISagaEvent<TAuthenticationToken>> Changes { get; set; }
 
+		/// <summary>
+		/// The identifier of this <see cref="ISaga{TAuthenticationToken}"/>.
+		/// </summary>
+		[DataMember]
 		public Guid Rsn
 		{
 			get { return Id; }
 			private set { Id = value; }
 		}
 
+		/// <summary>
+		/// The identifier of this <see cref="ISaga{TAuthenticationToken}"/>.
+		/// </summary>
+		[DataMember]
 		public Guid Id { get; protected set; }
 
+		/// <summary>
+		/// The current version of this <see cref="ISaga{TAuthenticationToken}"/>.
+		/// </summary>
 		public int Version { get; protected set; }
 
+		/// <summary>
+		/// Gets or set the <see cref="ICommandPublisher{TAuthenticationToken}"/>.
+		/// </summary>
 		protected ICommandPublisher<TAuthenticationToken> CommandPublisher { get; private set; }
 
+		/// <summary>
+		/// Gets or set the <see cref="IDependencyResolver"/>.
+		/// </summary>
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
+		/// <summary>
+		/// Gets or set the <see cref="ILogger"/>.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
 		/// <summary>
@@ -78,17 +99,26 @@ namespace Cqrs.Domain
 			CommandPublisher = DependencyResolver.Resolve<ICommandPublisher<TAuthenticationToken>>();
 		}
 
+		/// <summary>
+		/// A constructor for the <see cref="Cqrs.Domain.Factories.IAggregateFactory"/>
+		/// </summary>
 		protected Saga(IDependencyResolver dependencyResolver, ILogger logger, Guid rsn)
 			: this(dependencyResolver, logger)
 		{
 			Rsn = rsn;
 		}
 
-		public IEnumerable<ISagaEvent<TAuthenticationToken>> GetUncommittedChanges()
+		/// <summary>
+		/// Get all applied changes that haven't yet been committed.
+		/// </summary>
+		public virtual IEnumerable<ISagaEvent<TAuthenticationToken>> GetUncommittedChanges()
 		{
 			return Changes;
 		}
 
+		/// <summary>
+		/// Mark all applied changes as committed, increment <see cref="Version"/> and flush the <see cref="Changes">internal collection of changes</see>.
+		/// </summary>
 		public virtual void MarkChangesAsCommitted()
 		{
 			Lock.EnterWriteLock();
@@ -103,6 +133,10 @@ namespace Cqrs.Domain
 			}
 		}
 
+		/// <summary>
+		/// Apply all the <see cref="IEvent{TAuthenticationToken}">events</see> in <paramref name="history"/>
+		/// using event replay to this instance.
+		/// </summary>
 		public virtual void LoadFromHistory(IEnumerable<ISagaEvent<TAuthenticationToken>> history)
 		{
 			Type sagaType = GetType();
@@ -114,11 +148,22 @@ namespace Cqrs.Domain
 			}
 		}
 
+		/// <summary>
+		/// Call the "Apply" method with a signature matching the provided <paramref name="event"/> without using event replay to this instance.
+		/// </summary>
+		/// <remarks>
+		/// This means a method named "Apply", with return type void and one parameter must exist to be applied.
+		/// If no method exists, nothing is applied
+		/// The parameter type must match exactly the <see cref="Type"/> of the provided <paramref name="event"/>.
+		/// </remarks>
 		protected virtual void ApplyChange(ISagaEvent<TAuthenticationToken> @event)
 		{
 			ApplyChange(@event, false);
 		}
 
+		/// <summary>
+		/// Calls the "SetId" method dynamically if the method exists, then calls <see cref="ApplyChange(Cqrs.Events.ISagaEvent{TAuthenticationToken})"/>
+		/// </summary>
 		protected virtual void ApplyChange(IEvent<TAuthenticationToken> @event)
 		{
 			var sagaEvent = new SagaEvent<TAuthenticationToken>(@event);

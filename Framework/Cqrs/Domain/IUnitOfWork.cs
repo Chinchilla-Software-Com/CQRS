@@ -7,11 +7,12 @@
 #endregion
 
 using System;
+using Cqrs.Events;
 
 namespace Cqrs.Domain
 {
 	/// <summary>
-	/// This is a Unit of Work
+	/// Provides a basic container to control when <see cref="IEvent{TAuthenticationToken}">events</see> are store in an <see cref="IEventStore{TAuthenticationToken}"/> and then published on an <see cref="IEventPublisher{TAuthenticationToken}"/>.
 	/// </summary>
 	public interface IUnitOfWork<TAuthenticationToken>
 	{

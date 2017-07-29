@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-28</td>
+            <td class="headerValue">2017-07-29</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -127,34 +127,28 @@
 <span class="lineNum">      69 </span>            :                         else
 <span class="lineNum">      70 </span>            :                                 inProcessBus = Kernel.Get&lt;InProcessBus&lt;TAuthenticationToken&gt;&gt;();
 <span class="lineNum">      71 </span>            : 
-<span class="lineNum">      72 </span>            : #pragma warning disable 618
-<span class="lineNum">      73 </span>            :                         Bind&lt;ICommandSender&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">      74 </span>            :                                 .ToConstant(inProcessBus)
-<span class="lineNum">      75 </span>            :                                 .InSingletonScope();
-<span class="lineNum">      76 </span>            : #pragma warning restore 618
-<span class="lineNum">      77 </span>            : 
-<span class="lineNum">      78 </span>            :                         Bind&lt;ICommandPublisher&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">      79 </span>            :                                 .ToConstant(inProcessBus)
-<span class="lineNum">      80 </span>            :                                 .InSingletonScope();
-<span class="lineNum">      81 </span>            : 
-<span class="lineNum">      82 </span>            :                         Bind&lt;IPublishAndWaitCommandPublisher&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">      83 </span>            :                                 .ToConstant(inProcessBus)
-<span class="lineNum">      84 </span>            :                                 .InSingletonScope();
-<span class="lineNum">      85 </span>            : 
-<span class="lineNum">      86 </span>            :                         Bind&lt;ICommandReceiver&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">      87 </span>            :                                 .ToConstant(inProcessBus)
-<span class="lineNum">      88 </span>            :                                 .InSingletonScope();
-<span class="lineNum">      89 </span>            : 
-<span class="lineNum">      90 </span>            :                         bool isHandlerRegistrationBound = Kernel.GetBindings(typeof(ICommandHandlerRegistrar)).Any();
-<span class="lineNum">      91 </span>            :                         if (!isHandlerRegistrationBound)
-<span class="lineNum">      92 </span>            :                         {
-<span class="lineNum">      93 </span>            :                                 Bind&lt;ICommandHandlerRegistrar&gt;()
-<span class="lineNum">      94 </span>            :                                         .ToConstant(inProcessBus)
-<span class="lineNum">      95 </span>            :                                         .InSingletonScope();
-<span class="lineNum">      96 </span>            :                         }
-<span class="lineNum">      97 </span>            :                 }
-<span class="lineNum">      98 </span>            :         }
-<span class="lineNum">      99 </span>            : }
+<span class="lineNum">      72 </span>            :                         Bind&lt;ICommandPublisher&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      73 </span>            :                                 .ToConstant(inProcessBus)
+<span class="lineNum">      74 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span>            :                         Bind&lt;IPublishAndWaitCommandPublisher&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      77 </span>            :                                 .ToConstant(inProcessBus)
+<span class="lineNum">      78 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :                         Bind&lt;ICommandReceiver&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      81 </span>            :                                 .ToConstant(inProcessBus)
+<span class="lineNum">      82 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            :                         bool isHandlerRegistrationBound = Kernel.GetBindings(typeof(ICommandHandlerRegistrar)).Any();
+<span class="lineNum">      85 </span>            :                         if (!isHandlerRegistrationBound)
+<span class="lineNum">      86 </span>            :                         {
+<span class="lineNum">      87 </span>            :                                 Bind&lt;ICommandHandlerRegistrar&gt;()
+<span class="lineNum">      88 </span>            :                                         .ToConstant(inProcessBus)
+<span class="lineNum">      89 </span>            :                                         .InSingletonScope();
+<span class="lineNum">      90 </span>            :                         }
+<span class="lineNum">      91 </span>            :                 }
+<span class="lineNum">      92 </span>            :         }
+<span class="lineNum">      93 </span>            : }
 </pre>
       </td>
     </tr>

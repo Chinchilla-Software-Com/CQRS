@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">50.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-28</td>
+            <td class="headerValue">2017-07-29</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -64,30 +64,25 @@
 <span class="lineNum">       6 </span>            : // -----------------------------------------------------------------------
 <span class="lineNum">       7 </span>            : #endregion
 <span class="lineNum">       8 </span>            : 
-<span class="lineNum">       9 </span>            : using System;
-<span class="lineNum">      10 </span>            : using System.Runtime.Serialization;
-<span class="lineNum">      11 </span>            : using Cqrs.Authentication;
-<span class="lineNum">      12 </span>            : 
-<span class="lineNum">      13 </span>            : namespace Cqrs.Services
-<span class="lineNum">      14 </span>            : {
-<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
-<span class="lineNum">      16 </span>            :         /// A &lt;see cref=&quot;DataContractResolver&quot;/&gt; for use via WCF
-<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
-<span class="lineNum">      18 </span>            :         public abstract class ServiceParameterResolver&lt;TServiceParameter, TSingleSignOnTokenResolver&gt; : BasicServiceParameterResolver&lt;TServiceParameter, TSingleSignOnTokenResolver&gt;
-<span class="lineNum">      19 </span>            :                 where TSingleSignOnTokenResolver : ISingleSignOnToken
-<span class="lineNum">      20 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      21 </span><span class="lineNoCov">          0 :                 protected ServiceParameterResolver(ISingleSignOnTokenResolver tokenResolver, IEventDataResolver eventDataResolver)</span>
-<span class="lineNum">      22 </span>            :                         : base(tokenResolver, eventDataResolver)
-<span class="lineNum">      23 </span>            :                 {
-<span class="lineNum">      24 </span>            :                 }
-<span class="lineNum">      25 </span>            : 
-<span class="lineNum">      26 </span>            :                 [Obsolete(&quot;Use TokenResolver.&quot;)]
-<span class="lineNum">      27 </span>            :                 protected ISingleSignOnTokenResolver SingleSignOnTokenResolver
-<span class="lineNum">      28 </span>            :                 {
-<span class="lineNum">      29 </span>            :                         get { return (ISingleSignOnTokenResolver)TokenResolver; }
-<span class="lineNum">      30 </span>            :                 }
-<span class="lineNum">      31 </span>            :         }
-<span class="lineNum">      32 </span>            : }
+<span class="lineNum">       9 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : namespace Cqrs.Services
+<span class="lineNum">      12 </span>            : {
+<span class="lineNum">      13 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      14 </span>            :         /// A &lt;see cref=&quot;BasicServiceParameterResolver{TServiceParameter,TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      15 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      16 </span>            :         public abstract class ServiceParameterResolver&lt;TServiceParameter, TSingleSignOnTokenResolver&gt; : BasicServiceParameterResolver&lt;TServiceParameter, TSingleSignOnTokenResolver&gt;
+<span class="lineNum">      17 </span>            :                 where TSingleSignOnTokenResolver : ISingleSignOnToken
+<span class="lineNum">      18 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      19 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      20 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;ServiceParameterResolver{TServiceParameter,TSingleSignOnTokenResolver}&quot;/&gt;
+<span class="lineNum">      21 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      22 </span><span class="lineCov">          1 :                 protected ServiceParameterResolver(ISingleSignOnTokenResolver tokenResolver, IEventDataResolver eventDataResolver)</span>
+<span class="lineNum">      23 </span>            :                         : base(tokenResolver, eventDataResolver)
+<span class="lineNum">      24 </span>            :                 {
+<span class="lineNum">      25 </span>            :                 }
+<span class="lineNum">      26 </span>            :         }
+<span class="lineNum">      27 </span>            : }
 </pre>
       </td>
     </tr>

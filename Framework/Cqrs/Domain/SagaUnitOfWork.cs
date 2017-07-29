@@ -9,18 +9,25 @@
 using System;
 using System.Collections.Generic;
 using Cqrs.Domain.Exceptions;
+using Cqrs.Events;
 
 namespace Cqrs.Domain
 {
 	/// <summary>
-	/// This is a Unit of Work. This shouldn't normally be used as a singleton.
+	/// Provides a basic container to control when <see cref="IEvent{TAuthenticationToken}">events</see> are store in an <see cref="IEventStore{TAuthenticationToken}"/> and then published on an <see cref="IEventPublisher{TAuthenticationToken}"/>.
 	/// </summary>
+	/// <remarks>
+	/// This shouldn't normally be used as a singleton.
+	/// </remarks>
 	public class SagaUnitOfWork<TAuthenticationToken> : ISagaUnitOfWork<TAuthenticationToken>
 	{
 		private ISagaRepository<TAuthenticationToken> Repository { get; set; }
 
 		private Dictionary<Guid, ISagaDescriptor<TAuthenticationToken>> TrackedSagas { get; set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="SagaUnitOfWork{TAuthenticationToken}"/>
+		/// </summary>
 		public SagaUnitOfWork(ISagaRepository<TAuthenticationToken> repository)
 		{
 			if(repository == null)
@@ -50,7 +57,7 @@ namespace Cqrs.Domain
 		}
 
 		/// <summary>
-		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> if it has already been loaded or get it from the <see cref="IRepository{TAuthenticationToken}"/>.
+		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> if it has already been loaded or get it from the <see cref="ISagaRepository{TAuthenticationToken}"/>.
 		/// </summary>
 		public TSaga Get<TSaga>(Guid id, int? expectedVersion = null)
 			where TSaga : ISaga<TAuthenticationToken>
@@ -78,7 +85,7 @@ namespace Cqrs.Domain
 
 		/// <summary>
 		/// Commit any changed <see cref="Saga{TAuthenticationToken}"/> added to this <see cref="IUnitOfWork{TAuthenticationToken}"/> via <see cref="Add{T}"/>
-		/// into the <see cref="IRepository{TAuthenticationToken}"/>
+		/// into the <see cref="ISagaRepository{TAuthenticationToken}"/>
 		/// </summary>
 		public void Commit()
 		{

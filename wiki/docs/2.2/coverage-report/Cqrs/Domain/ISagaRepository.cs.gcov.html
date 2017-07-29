@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-28</td>
+            <td class="headerValue">2017-07-29</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -70,15 +70,34 @@
 <span class="lineNum">      12 </span>            : 
 <span class="lineNum">      13 </span>            : namespace Cqrs.Domain
 <span class="lineNum">      14 </span>            : {
-<span class="lineNum">      15 </span>            :         public interface ISagaRepository&lt;TAuthenticationToken&gt;
-<span class="lineNum">      16 </span>            :         {
-<span class="lineNum">      17 </span><span class="lineNoCov">          0 :                 void Save&lt;TSaga&gt;(TSaga saga, int? expectedVersion = null)</span>
-<span class="lineNum">      18 </span>            :                         where TSaga : ISaga&lt;TAuthenticationToken&gt;;
-<span class="lineNum">      19 </span>            : 
-<span class="lineNum">      20 </span><span class="lineNoCov">          0 :                 TSaga Get&lt;TSaga&gt;(Guid sagaId, IList&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; events = null)</span>
-<span class="lineNum">      21 </span>            :                         where TSaga : ISaga&lt;TAuthenticationToken&gt;;
-<span class="lineNum">      22 </span>            :         }
-<span class="lineNum">      23 </span>            : }
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :         /// Provides basic repository methods for operations with instances of &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      18 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      19 </span>            :         public interface ISagaRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      20 </span>            :         {
+<span class="lineNum">      21 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :                 /// Save and persist the provided &lt;paramref name=&quot;saga&quot;/&gt;, optionally providing the version number the &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; is expected to be at.
+<span class="lineNum">      23 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      24 </span>            :                 /// &lt;typeparam name=&quot;TSaga&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      25 </span>            :                 /// &lt;param name=&quot;saga&quot;&gt;The &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; to save and persist.&lt;/param&gt;
+<span class="lineNum">      26 </span>            :                 /// &lt;param name=&quot;expectedVersion&quot;&gt;The version number the &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; is expected to be at.&lt;/param&gt;
+<span class="lineNum">      27 </span><span class="lineCov">          1 :                 void Save&lt;TSaga&gt;(TSaga saga, int? expectedVersion = null)</span>
+<span class="lineNum">      28 </span>            :                         where TSaga : ISaga&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// Retrieves an &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;TSaga&quot;/&gt;.
+<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      33 </span>            :                 /// &lt;typeparam name=&quot;TSaga&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      34 </span>            :                 /// &lt;param name=&quot;sagaId&quot;&gt;The identifier of the &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; to retrieve.&lt;/param&gt;
+<span class="lineNum">      35 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">      36 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      37 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">      38 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">      39 </span><span class="lineCov">          1 :                 TSaga Get&lt;TSaga&gt;(Guid sagaId, IList&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; events = null)</span>
+<span class="lineNum">      40 </span>            :                         where TSaga : ISaga&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      41 </span>            :         }
+<span class="lineNum">      42 </span>            : }
 </pre>
       </td>
     </tr>

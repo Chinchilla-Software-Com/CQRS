@@ -7,7 +7,7 @@ var classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration =
     ] ],
     [ "WcfDataContractResolverConfiguration", "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_ac6853a244c867a60a64a223f6bcb6a55.html#ac6853a244c867a60a64a223f6bcb6a55", null ],
     [ "GetDataContracts< TService >", "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_a7e9e65b16d8f64da60e160ce60628e90.html#a7e9e65b16d8f64da60e160ce60628e90", null ],
-    [ "RegisterDataContract< TService, TDataContract >", "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_a3f0ed5ca3b65b2ca5a6c31c1e4d5e4ba.html#a3f0ed5ca3b65b2ca5a6c31c1e4d5e4ba", null ],
+    [ "RegisterDataContract< TService, TDataContract >", "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_aac76dda08a5dc83bb006d1c2ac0f0180.html#aac76dda08a5dc83bb006d1c2ac0f0180", null ],
     [ "Current", "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_a22cf32559867b0a067950c4ce35504b2.html#a22cf32559867b0a067950c4ce35504b2", null ],
     [ "DataContracts", "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_a8a764a7cebaf9ebdcdc1176a9fba0b3a.html#a8a764a7cebaf9ebdcdc1176a9fba0b3a", null ]
 ];

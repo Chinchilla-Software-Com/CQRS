@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">4</td>
             <td class="headerCovTableEntry">11</td>
-            <td class="headerCovTableEntryLo">9.1 %</td>
+            <td class="headerCovTableEntryLo">36.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-28</td>
+            <td class="headerValue">2017-07-29</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -157,18 +157,18 @@
 <span class="lineNum">      99 </span>            :                         }
 <span class="lineNum">     100 </span>            :                 }
 <span class="lineNum">     101 </span>            : 
-<span class="lineNum">     102 </span><span class="lineNoCov">          0 :                 public IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges()</span>
+<span class="lineNum">     102 </span><span class="lineCov">          1 :                 public IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges()</span>
 <span class="lineNum">     103 </span>            :                 {
 <span class="lineNum">     104 </span>            :                         return Changes;
 <span class="lineNum">     105 </span>            :                 }
 <span class="lineNum">     106 </span>            : 
-<span class="lineNum">     107 </span><span class="lineNoCov">          0 :                 public virtual void MarkChangesAsCommitted()</span>
+<span class="lineNum">     107 </span><span class="lineCov">          1 :                 public virtual void MarkChangesAsCommitted()</span>
 <span class="lineNum">     108 </span>            :                 {
 <span class="lineNum">     109 </span>            :                         Version = Version + Changes.Count;
 <span class="lineNum">     110 </span>            :                         Changes = new ReadOnlyCollection&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt;(new List&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt;());
 <span class="lineNum">     111 </span>            :                 }
 <span class="lineNum">     112 </span>            : 
-<span class="lineNum">     113 </span><span class="lineNoCov">          0 :                 public virtual void LoadFromHistory(IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; history)</span>
+<span class="lineNum">     113 </span><span class="lineCov">          1 :                 public virtual void LoadFromHistory(IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; history)</span>
 <span class="lineNum">     114 </span>            :                 {
 <span class="lineNum">     115 </span>            :                         Type sagaType = GetType();
 <span class="lineNum">     116 </span>            :                         foreach (ISagaEvent&lt;TAuthenticationToken&gt; @event in history.OrderBy(e =&gt; e.Version))

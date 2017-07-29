@@ -1,10 +1,5 @@
 var NAVTREEINDEX9 =
 {
-"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregate_a402ed6555ed4e80deb4cdccfd8d3bde8.html#a402ed6555ed4e80deb4cdccfd8d3bde8":[1,0,0,23,6,1,3],
-"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregate_a589a358905081830d8be4b5c118d0e8b.html#a589a358905081830d8be4b5c118d0e8b":[1,0,0,23,6,1,4],
-"classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregate_acb912c64b9ed2184e998448ab5fe524b.html#acb912c64b9ed2184e998448ab5fe524b":[1,0,0,23,6,1,2],
-"classCqrs_1_1Tests_1_1Substitutes_1_1TestCommandPublisher.html":[1,0,0,23,6,14],
-"classCqrs_1_1Tests_1_1Substitutes_1_1TestCommandPublisher_a233f543ee8eca6fdea42b351da517fa1.html#a233f543ee8eca6fdea42b351da517fa1":[1,0,0,23,6,14,2],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestCommandPublisher_a4160ec853871961906b604ed9d505fee.html#a4160ec853871961906b604ed9d505fee":[1,0,0,23,6,14,1],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestCommandPublisher_a4bb33381cc8c0e51c7e24d8369364f6c.html#a4bb33381cc8c0e51c7e24d8369364f6c":[1,0,0,23,6,14,0],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestCommandPublisher_a55e6aeb09f05f73131be61b984bc5e8c.html#a55e6aeb09f05f73131be61b984bc5e8c":[1,0,0,23,6,14,4],
@@ -53,7 +48,7 @@ var NAVTREEINDEX9 =
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestInMemoryEventStore_ad55933a4b148cef3d59c5552038af878.html#ad55933a4b148cef3d59c5552038af878":[1,0,0,23,6,21,3],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestInMemoryEventStore_add97988e933c2316c445bf4611c2d0ba.html#add97988e933c2316c445bf4611c2d0ba":[1,0,0,23,6,21,5],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestInMemorySnapshotStore.html":[1,0,0,23,6,22],
-"classCqrs_1_1Tests_1_1Substitutes_1_1TestInMemorySnapshotStore_a4e149196381a80cc9c53cdbb67b8dcaa.html#a4e149196381a80cc9c53cdbb67b8dcaa":[1,0,0,23,6,22,0],
+"classCqrs_1_1Tests_1_1Substitutes_1_1TestInMemorySnapshotStore_a8600a3211dd09e9fe2e2292a031f0d47.html#a8600a3211dd09e9fe2e2292a031f0d47":[1,0,0,23,6,22,0],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestInMemorySnapshotStore_a8e78ba4aad268910f35df0eb083d9883.html#a8e78ba4aad268910f35df0eb083d9883":[1,0,0,23,6,22,2],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestInMemorySnapshotStore_a9924a25c49a5aca8fa2f29ca84ad0d11.html#a9924a25c49a5aca8fa2f29ca84ad0d11":[1,0,0,23,6,22,3],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestInMemorySnapshotStore_afec5ba3ed2b39625b3ccfb002d1c935e.html#afec5ba3ed2b39625b3ccfb002d1c935e":[1,0,0,23,6,22,1],
@@ -98,7 +93,7 @@ var NAVTREEINDEX9 =
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore_a223dbc9583120dec1469c1f84b863eae.html#a223dbc9583120dec1469c1f84b863eae":[1,0,0,23,6,29,1],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore_a30735e964f5ebe4502f4e3b6740b94e5.html#a30735e964f5ebe4502f4e3b6740b94e5":[1,0,0,23,6,29,3],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore_a6fd401fb82c4f82d32ef38c8fd964fb5.html#a6fd401fb82c4f82d32ef38c8fd964fb5":[1,0,0,23,6,29,2],
-"classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore_a8f07b513e21a7ed7ea0f52a41c9586ba.html#a8f07b513e21a7ed7ea0f52a41c9586ba":[1,0,0,23,6,29,0],
+"classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore_adc420bde9bd2e180a89a3a914e72691a.html#adc420bde9bd2e180a89a3a914e72691a":[1,0,0,23,6,29,0],
 "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore_afcd205610fd1bcb6c02884200f1c95f4.html#afcd205610fd1bcb6c02884200f1c95f4":[1,0,0,23,6,29,4],
 "classCqrs_1_1WebApi_1_1Configuration_1_1WebApiConfig.html":[1,0,0,25,0,0],
 "classCqrs_1_1WebApi_1_1Configuration_1_1WebApiConfig_a65d94167bd8c0e38ae6492adf3e56f5a.html#a65d94167bd8c0e38ae6492adf3e56f5a":[1,0,0,25,0,0,0],
@@ -249,5 +244,10 @@ var NAVTREEINDEX9 =
 "classMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table_1_1EntityPropertyConverter_a3beb7c8638a8f6a84bd16c0f0a00521d.html#a3beb7c8638a8f6a84bd16c0f0a00521d":[1,0,1,0,0,0,0,1],
 "classMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table_1_1EntityPropertyConverter_a45373e2614d05c18ecb74bdcafc572b6.html#a45373e2614d05c18ecb74bdcafc572b6":[1,0,1,0,0,0,0,3],
 "classMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table_1_1EntityPropertyConverter_ab1aaabbbfb7723aa066a418ca312a565.html#ab1aaabbbfb7723aa066a418ca312a565":[1,0,1,0,0,0,0,2],
-"classMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table_1_1EntityPropertyConverter_ae422716e2356233ae6dda2bd9e73f250.html#ae422716e2356233ae6dda2bd9e73f250":[1,0,1,0,0,0,0,5]
+"classMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table_1_1EntityPropertyConverter_ae422716e2356233ae6dda2bd9e73f250.html#ae422716e2356233ae6dda2bd9e73f250":[1,0,1,0,0,0,0,5],
+"classMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table_1_1EntityPropertyConverter_afb4edd95dfd79d576091119b5ac13ad7.html#afb4edd95dfd79d576091119b5ac13ad7":[1,0,1,0,0,0,0,0],
+"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions.html":[1,0,2,0,0],
+"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_a0db5f545a8b606324451bfec69db7862.html#a0db5f545a8b606324451bfec69db7862":[1,0,2,0,0,4],
+"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_a37c11caa4a5e82f4761bf3b910ee0f15.html#a37c11caa4a5e82f4761bf3b910ee0f15":[1,0,2,0,0,7],
+"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_a5508e54e8c57884a4d220f6943dd356d.html#a5508e54e8c57884a4d220f6943dd356d":[1,0,2,0,0,2]
 };

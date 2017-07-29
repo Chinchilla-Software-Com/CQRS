@@ -9,12 +9,11 @@
 using System;
 using System.Runtime.Serialization;
 using System.Xml;
-using Cqrs.Authentication;
 
 namespace Cqrs.Services
 {
 	/// <summary>
-	/// Resolves <see cref="ISingleSignOnToken"/> parameter types when serialising with WCF.
+	/// Resolves parameter types when serialising with WCF.
 	/// </summary>
 	public interface IServiceParameterResolver
 	{

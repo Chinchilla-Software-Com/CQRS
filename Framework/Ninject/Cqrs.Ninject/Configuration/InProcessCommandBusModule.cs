@@ -69,12 +69,6 @@ namespace Cqrs.Ninject.Configuration
 			else
 				inProcessBus = Kernel.Get<InProcessBus<TAuthenticationToken>>();
 
-#pragma warning disable 618
-			Bind<ICommandSender<TAuthenticationToken>>()
-				.ToConstant(inProcessBus)
-				.InSingletonScope();
-#pragma warning restore 618
-
 			Bind<ICommandPublisher<TAuthenticationToken>>()
 				.ToConstant(inProcessBus)
 				.InSingletonScope();

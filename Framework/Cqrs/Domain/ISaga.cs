@@ -44,10 +44,20 @@ namespace Cqrs.Domain
 		[DataMember]
 		int Version { get; }
 
+		/// <summary>
+		/// Get all applied changes that haven't yet been committed.
+		/// </summary>
 		IEnumerable<ISagaEvent<TAuthenticationToken>> GetUncommittedChanges();
 
+		/// <summary>
+		/// Mark all applied changes as committed, increment <see cref="Version"/> and flush the internal collection of changes.
+		/// </summary>
 		void MarkChangesAsCommitted();
 
+		/// <summary>
+		/// Apply all the <see cref="IEvent{TAuthenticationToken}">events</see> in <paramref name="history"/>
+		/// using event replay to this instance.
+		/// </summary>
 		void LoadFromHistory(IEnumerable<ISagaEvent<TAuthenticationToken>> history);
 	}
 }

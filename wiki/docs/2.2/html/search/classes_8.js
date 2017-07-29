@@ -129,7 +129,7 @@ var searchData=
   ['iquerywithresults',['IQueryWithResults',['../interfaceCqrs_1_1Repositories_1_1Queries_1_1IQueryWithResults.html',1,'Cqrs::Repositories::Queries']]],
   ['iquerywithresults_3c_20tdata_20_3e',['IQueryWithResults&lt; TData &gt;',['../interfaceCqrs_1_1Repositories_1_1Queries_1_1IQueryWithResults.html',1,'Cqrs::Repositories::Queries']]],
   ['iquerywithstrategy',['IQueryWithStrategy',['../interfaceCqrs_1_1Repositories_1_1Queries_1_1IQueryWithStrategy.html',1,'Cqrs::Repositories::Queries']]],
-  ['irepository',['IRepository',['../interfaceCqrs_1_1Domain_1_1IRepository.html',1,'Cqrs.Domain.IRepository&lt; TAuthenticationToken &gt;'],['../interfaceCqrs_1_1Repositories_1_1IRepository.html',1,'Cqrs.Repositories.IRepository&lt; TQueryStrategy, TData &gt;']]],
+  ['irepository',['IRepository',['../interfaceCqrs_1_1Repositories_1_1IRepository.html',1,'Cqrs::Repositories']]],
   ['isaga',['ISaga',['../interfaceCqrs_1_1Domain_1_1ISaga.html',1,'Cqrs::Domain']]],
   ['isagaevent',['ISagaEvent',['../interfaceCqrs_1_1Events_1_1ISagaEvent.html',1,'Cqrs::Events']]],
   ['isagarepository',['ISagaRepository',['../interfaceCqrs_1_1Domain_1_1ISagaRepository.html',1,'Cqrs::Domain']]],

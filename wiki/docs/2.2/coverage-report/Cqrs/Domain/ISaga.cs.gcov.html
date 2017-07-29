@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-28</td>
+            <td class="headerValue">2017-07-29</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -102,13 +102,23 @@
 <span class="lineNum">      44 </span>            :                 [DataMember]
 <span class="lineNum">      45 </span>            :                 int Version { get; }
 <span class="lineNum">      46 </span>            : 
-<span class="lineNum">      47 </span><span class="lineNoCov">          0 :                 IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges();</span>
-<span class="lineNum">      48 </span>            : 
-<span class="lineNum">      49 </span><span class="lineNoCov">          0 :                 void MarkChangesAsCommitted();</span>
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span><span class="lineNoCov">          0 :                 void LoadFromHistory(IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; history);</span>
-<span class="lineNum">      52 </span>            :         }
-<span class="lineNum">      53 </span>            : }
+<span class="lineNum">      47 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      48 </span>            :                 /// Get all applied changes that haven't yet been committed.
+<span class="lineNum">      49 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      50 </span><span class="lineCov">          1 :                 IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges();</span>
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      53 </span>            :                 /// Mark all applied changes as committed, increment &lt;see cref=&quot;Version&quot;/&gt; and flush the internal collection of changes.
+<span class="lineNum">      54 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      55 </span><span class="lineCov">          1 :                 void MarkChangesAsCommitted();</span>
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      58 </span>            :                 /// Apply all the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; in &lt;paramref name=&quot;history&quot;/&gt;
+<span class="lineNum">      59 </span>            :                 /// using event replay to this instance.
+<span class="lineNum">      60 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      61 </span><span class="lineCov">          1 :                 void LoadFromHistory(IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; history);</span>
+<span class="lineNum">      62 </span>            :         }
+<span class="lineNum">      63 </span>            : }
 </pre>
       </td>
     </tr>
