@@ -5,7 +5,7 @@ namespace Cqrs.Tests.Substitutes
 {
     public class TestInMemorySnapshotStore : ISnapshotStore 
     {
-        public Snapshot Get(Guid id)
+		public Snapshot Get<TAggregateRoot>(Guid id)
         {
             return _snapshot;
         }

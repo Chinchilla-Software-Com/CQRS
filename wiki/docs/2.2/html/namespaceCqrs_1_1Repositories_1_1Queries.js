@@ -1,7 +1,7 @@
 var namespaceCqrs_1_1Repositories_1_1Queries =
 [
     [ "AndQueryPredicate", "classCqrs_1_1Repositories_1_1Queries_1_1AndQueryPredicate.html", "classCqrs_1_1Repositories_1_1Queries_1_1AndQueryPredicate" ],
-    [ "CollectionResultQuery", "classCqrs_1_1Repositories_1_1Queries_1_1CollectionResultQuery.html", "classCqrs_1_1Repositories_1_1Queries_1_1CollectionResultQuery" ],
+    [ "CollectionResultQuery", "classCqrs_1_1Repositories_1_1Queries_1_1CollectionResultQuery.html", null ],
     [ "IAndQueryPredicate", "interfaceCqrs_1_1Repositories_1_1Queries_1_1IAndQueryPredicate.html", "interfaceCqrs_1_1Repositories_1_1Queries_1_1IAndQueryPredicate" ],
     [ "ICollectionResultQuery", "interfaceCqrs_1_1Repositories_1_1Queries_1_1ICollectionResultQuery.html", null ],
     [ "IOrQueryPredicate", "interfaceCqrs_1_1Repositories_1_1Queries_1_1IOrQueryPredicate.html", "interfaceCqrs_1_1Repositories_1_1Queries_1_1IOrQueryPredicate" ],
@@ -20,6 +20,7 @@ var namespaceCqrs_1_1Repositories_1_1Queries =
     [ "QueryPredicate", "classCqrs_1_1Repositories_1_1Queries_1_1QueryPredicate.html", "classCqrs_1_1Repositories_1_1Queries_1_1QueryPredicate" ],
     [ "QueryPredicateExtensions", "classCqrs_1_1Repositories_1_1Queries_1_1QueryPredicateExtensions.html", "classCqrs_1_1Repositories_1_1Queries_1_1QueryPredicateExtensions" ],
     [ "QueryStrategy", "classCqrs_1_1Repositories_1_1Queries_1_1QueryStrategy.html", "classCqrs_1_1Repositories_1_1Queries_1_1QueryStrategy" ],
-    [ "SingleResultQuery", "classCqrs_1_1Repositories_1_1Queries_1_1SingleResultQuery.html", "classCqrs_1_1Repositories_1_1Queries_1_1SingleResultQuery" ],
+    [ "ResultQuery", "classCqrs_1_1Repositories_1_1Queries_1_1ResultQuery.html", "classCqrs_1_1Repositories_1_1Queries_1_1ResultQuery" ],
+    [ "SingleResultQuery", "classCqrs_1_1Repositories_1_1Queries_1_1SingleResultQuery.html", null ],
     [ "SortParameter", "classCqrs_1_1Repositories_1_1Queries_1_1SortParameter.html", "classCqrs_1_1Repositories_1_1Queries_1_1SortParameter" ]
 ];

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Events;
@@ -27,14 +28,23 @@ namespace Cqrs.Domain
 	/// 
 	/// Because they are (reasonably) globally unique, and can be generated either by the server or by the client.
 	/// </remarks>
+	[Serializable]
 	public abstract class AggregateRoot<TAuthenticationToken> : IAggregateRoot<TAuthenticationToken>
 	{
 		private ReaderWriterLockSlim Lock { get; set; }
 
 		private ICollection<IEvent<TAuthenticationToken>> Changes { get; set; }
 
+		/// <summary>
+		/// The identifier of this <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// </summary>
+		[DataMember]
 		public Guid Id { get; protected set; }
 
+		/// <summary>
+		/// The current version of this <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// </summary>
+		[DataMember]
 		public int Version { get; protected set; }
 
 		/// <summary>
@@ -46,11 +56,17 @@ namespace Cqrs.Domain
 			Changes = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(new List<IEvent<TAuthenticationToken>>());
 		}
 
+		/// <summary>
+		/// Get all applied changes that haven't yet been committed.
+		/// </summary>
 		public IEnumerable<IEvent<TAuthenticationToken>> GetUncommittedChanges()
 		{
 			return Changes;
 		}
 
+		/// <summary>
+		/// Mark all applied changes as committed, increment <see cref="Version"/> and flush the <see cref="Changes">internal collection of changes</see>.
+		/// </summary>
 		public virtual void MarkChangesAsCommitted()
 		{
 			Lock.EnterWriteLock();
@@ -65,6 +81,10 @@ namespace Cqrs.Domain
 			}
 		}
 
+		/// <summary>
+		/// Apply all the <see cref="IEvent{TAuthenticationToken}">events</see> in <paramref name="history"/>
+		/// using event replay to this instance.
+		/// </summary>
 		public virtual void LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>> history)
 		{
 			Type aggregateType = GetType();
@@ -76,6 +96,14 @@ namespace Cqrs.Domain
 			}
 		}
 
+		/// <summary>
+		/// Call the "Apply" method with a signature matching the provided <paramref name="event"/> without using event replay to this instance.
+		/// </summary>
+		/// <remarks>
+		/// This means a method named "Apply", with return type void and one parameter must exist to be applied.
+		/// If no method exists, nothing is applied
+		/// The parameter type must match exactly the <see cref="Type"/> of the provided <paramref name="event"/>.
+		/// </remarks>
 		protected virtual void ApplyChange(IEvent<TAuthenticationToken> @event)
 		{
 			ApplyChange(@event, false);

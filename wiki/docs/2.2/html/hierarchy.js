@@ -265,11 +265,7 @@ var hierarchy =
       ] ],
       [ "Cqrs.Cache.CacheRepository< TAuthenticationToken >", "classCqrs_1_1Cache_1_1CacheRepository.html", null ],
       [ "Cqrs.Domain.AggregateRepository< TAuthenticationToken >", "classCqrs_1_1Domain_1_1AggregateRepository.html", [
-        [ "Cqrs.Akka.Domain.AkkaAggregateRepository< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository.html", null ],
-        [ "Cqrs.Domain.Repository< TAuthenticationToken >", "classCqrs_1_1Domain_1_1Repository.html", null ]
-      ] ],
-      [ "Cqrs.Domain.IRepository< TAuthenticationToken >", "interfaceCqrs_1_1Domain_1_1IRepository.html", [
-        [ "Cqrs.Domain.Repository< TAuthenticationToken >", "classCqrs_1_1Domain_1_1Repository.html", null ]
+        [ "Cqrs.Akka.Domain.AkkaAggregateRepository< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository.html", null ]
       ] ],
       [ "Cqrs.Snapshots.SnapshotRepository< TAuthenticationToken >", "classCqrs_1_1Snapshots_1_1SnapshotRepository.html", null ]
     ] ],
@@ -487,7 +483,10 @@ var hierarchy =
     [ "Cqrs.Repositories.Queries.IQueryWithResults< out out TResult >", "interfaceCqrs_1_1Repositories_1_1Queries_1_1IQueryWithResults.html", null ],
     [ "Cqrs.Repositories.Queries.IQueryWithStrategy< TQueryStrategy >", "interfaceCqrs_1_1Repositories_1_1Queries_1_1IQueryWithStrategy.html", [
       [ "Cqrs.Repositories.Queries.ICollectionResultQuery< TQueryStrategy, out out TData >", "interfaceCqrs_1_1Repositories_1_1Queries_1_1ICollectionResultQuery.html", null ],
-      [ "Cqrs.Repositories.Queries.ISingleResultQuery< TQueryStrategy, out out TData >", "interfaceCqrs_1_1Repositories_1_1Queries_1_1ISingleResultQuery.html", null ]
+      [ "Cqrs.Repositories.Queries.ISingleResultQuery< TQueryStrategy, out out TData >", "interfaceCqrs_1_1Repositories_1_1Queries_1_1ISingleResultQuery.html", null ],
+      [ "Cqrs.Repositories.Queries.ResultQuery< TQueryStrategy, TData >", "classCqrs_1_1Repositories_1_1Queries_1_1ResultQuery.html", [
+        [ "Cqrs.Repositories.Queries.SingleResultQuery< TQueryStrategy, TData >", "classCqrs_1_1Repositories_1_1Queries_1_1SingleResultQuery.html", null ]
+      ] ]
     ] ],
     [ "Cqrs.Repositories.Queries.QueryPredicateExtensions", "classCqrs_1_1Repositories_1_1Queries_1_1QueryPredicateExtensions.html", null ],
     [ "Cqrs.Repositories.Queries.SortParameter< TSortBy >", "classCqrs_1_1Repositories_1_1Queries_1_1SortParameter.html", null ],
@@ -862,7 +861,8 @@ var hierarchy =
       [ "Cqrs.Repositories.Queries.ICollectionResultQuery< TQueryStrategy, out out TData >", "interfaceCqrs_1_1Repositories_1_1Queries_1_1ICollectionResultQuery.html", null ]
     ] ],
     [ "Cqrs.Repositories.Queries.IQueryWithResults< TData >", "interfaceCqrs_1_1Repositories_1_1Queries_1_1IQueryWithResults.html", [
-      [ "Cqrs.Repositories.Queries.ISingleResultQuery< TQueryStrategy, out out TData >", "interfaceCqrs_1_1Repositories_1_1Queries_1_1ISingleResultQuery.html", null ]
+      [ "Cqrs.Repositories.Queries.ISingleResultQuery< TQueryStrategy, out out TData >", "interfaceCqrs_1_1Repositories_1_1Queries_1_1ISingleResultQuery.html", null ],
+      [ "Cqrs.Repositories.Queries.ResultQuery< TQueryStrategy, TData >", "classCqrs_1_1Repositories_1_1Queries_1_1ResultQuery.html", null ]
     ] ],
     [ "Cqrs.Domain.ISagaUnitOfWork< Guid >", "interfaceCqrs_1_1Domain_1_1ISagaUnitOfWork.html", [
       [ "Cqrs.Tests.Substitutes.TestSagaUnitOfWork", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSagaUnitOfWork.html", null ]
@@ -982,6 +982,9 @@ var hierarchy =
       [ "Cqrs.Akka.Domain.AkkaSaga< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga.html", null ],
       [ "Cqrs.Akka.Events.AkkaEventBusProxy< TAuthenticationToken >.BusActor", "classCqrs_1_1Akka_1_1Events_1_1AkkaEventBusProxy_1_1BusActor.html", null ],
       [ "Cqrs.Akka.Events.AkkaEventHandler< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Events_1_1AkkaEventHandler.html", null ]
+    ] ],
+    [ "ResultQuery< TQueryStrategy, IEnumerable< TData >>", null, [
+      [ "Cqrs.Repositories.Queries.CollectionResultQuery< TQueryStrategy, TData >", "classCqrs_1_1Repositories_1_1Queries_1_1CollectionResultQuery.html", null ]
     ] ],
     [ "Cqrs.Domain.Saga< ISingleSignOnToken >", "classCqrs_1_1Domain_1_1Saga.html", [
       [ "Cqrs.Tests.Substitutes.TestSaga", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSaga.html", null ]

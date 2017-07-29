@@ -1,7 +1,6 @@
 using cdmdotnet.Logging;
 using cdmdotnet.Logging.Configuration;
 using CQRSCode.ReadModel;
-using CQRSCode.WriteModel;
 using Cqrs.Bus;
 using Cqrs.Cache;
 using Cqrs.Commands;
@@ -10,7 +9,6 @@ using Cqrs.Domain.Factories;
 using Cqrs.Events;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
-using Cqrs.DataStores;
 using StructureMap;
 using StructureMap.Graph;
 
@@ -26,7 +24,6 @@ namespace CQRSWeb {
 							x.For<InProcessBus<ISingleSignOnToken>>().Singleton().Use<InProcessBus<ISingleSignOnToken>>();
 							x.For<IAggregateFactory>().Singleton().Use<AggregateFactory>();
 							x.For<ICommandPublisher<ISingleSignOnToken>>().Use(y => y.GetInstance<InProcessBus<ISingleSignOnToken>>());
-							x.For<ICommandSender<ISingleSignOnToken>>().Use(y => y.GetInstance<InProcessBus<ISingleSignOnToken>>());
 							x.For<IEventPublisher<ISingleSignOnToken>>().Use(y => y.GetInstance<InProcessBus<ISingleSignOnToken>>());
 							x.For<IHandlerRegistrar>().Use(y => y.GetInstance<InProcessBus<ISingleSignOnToken>>());
 							x.For<IUnitOfWork<ISingleSignOnToken>>().HybridHttpOrThreadLocalScoped().Use<UnitOfWork<ISingleSignOnToken>>();

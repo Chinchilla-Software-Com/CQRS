@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">11</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-28</td>
+            <td class="headerValue">2017-07-29</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -56,124 +56,172 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       1 </span>            : ﻿using System;
-<span class="lineNum">       2 </span>            : using System.Collections.Generic;
-<span class="lineNum">       3 </span>            : using System.Reflection;
-<span class="lineNum">       4 </span>            : 
-<span class="lineNum">       5 </span>            : namespace Cqrs.Repositories.Queries
-<span class="lineNum">       6 </span>            : {
-<span class="lineNum">       7 </span>            :         public abstract class QueryStrategy : IQueryStrategy
-<span class="lineNum">       8 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">       9 </span>            :                 #region Implementation of IQueryStrategy
-<span class="lineNum">      10 </span>            : 
-<span class="lineNum">      11 </span>            :                 public IQueryPredicate QueryPredicate { get; protected set; }
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Reflection;
 <span class="lineNum">      12 </span>            : 
-<span class="lineNum">      13 </span>            :                 #endregion
-<span class="lineNum">      14 </span>            : 
-<span class="lineNum">      15 </span><span class="lineNoCov">          0 :                 public virtual IQueryPredicate IsNotLogicallyDeleted()</span>
-<span class="lineNum">      16 </span>            :                 {
-<span class="lineNum">      17 </span>            :                         return BuildQueryPredicate(IsNotLogicallyDeleted);
-<span class="lineNum">      18 </span>            :                 }
-<span class="lineNum">      19 </span>            : 
-<span class="lineNum">      20 </span><span class="lineNoCov">          0 :                 public virtual IQueryPredicate WithPermissionScopeAny&lt;TAuthenticationToken&gt;(TAuthenticationToken authenticationToken)</span>
-<span class="lineNum">      21 </span>            :                 {
-<span class="lineNum">      22 </span>            :                         return BuildQueryPredicate(WithPermissionScopeAny, authenticationToken);
-<span class="lineNum">      23 </span>            :                 }
-<span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span><span class="lineNoCov">          0 :                 public virtual IQueryPredicate WithPermissionScopeUser&lt;TAuthenticationToken&gt;(TAuthenticationToken authenticationToken)</span>
-<span class="lineNum">      26 </span>            :                 {
-<span class="lineNum">      27 </span>            :                         return BuildQueryPredicate(WithPermissionScopeUser, authenticationToken);
-<span class="lineNum">      28 </span>            :                 }
-<span class="lineNum">      29 </span>            : 
-<span class="lineNum">      30 </span><span class="lineNoCov">          0 :                 public virtual IQueryPredicate WithPermissionScopeCompany&lt;TAuthenticationToken&gt;(TAuthenticationToken authenticationToken)</span>
-<span class="lineNum">      31 </span>            :                 {
-<span class="lineNum">      32 </span>            :                         return BuildQueryPredicate(WithPermissionScopeCompany, authenticationToken);
-<span class="lineNum">      33 </span>            :                 }
-<span class="lineNum">      34 </span>            : 
-<span class="lineNum">      35 </span><span class="lineNoCov">          0 :                 public virtual IQueryPredicate WithPermissionScopeCompanyAndUser&lt;TAuthenticationToken&gt;(TAuthenticationToken authenticationToken)</span>
-<span class="lineNum">      36 </span>            :                 {
-<span class="lineNum">      37 </span>            :                         return BuildQueryPredicate(WithPermissionScopeCompanyAndUser, authenticationToken);
-<span class="lineNum">      38 </span>            :                 }
-<span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span><span class="lineNoCov">          0 :                 protected virtual IQueryPredicate BuildQueryPredicate&lt;TData&gt;(Func&lt;TData&gt; func)</span>
+<span class="lineNum">      13 </span>            : namespace Cqrs.Repositories.Queries
+<span class="lineNum">      14 </span>            : {
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :         /// A specification for a query to execute.
+<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      18 </span>            :         public abstract class QueryStrategy : IQueryStrategy
+<span class="lineNum">      19 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      20 </span>            :                 #region Implementation of IQueryStrategy
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :                 /// The predicate that will be evaluated.
+<span class="lineNum">      24 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      25 </span>            :                 public IQueryPredicate QueryPredicate { get; protected set; }
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :                 #endregion
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      30 </span>            :                 /// Filter to all items not logically deleted.
+<span class="lineNum">      31 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      32 </span><span class="lineCov">          1 :                 public virtual IQueryPredicate IsNotLogicallyDeleted()</span>
+<span class="lineNum">      33 </span>            :                 {
+<span class="lineNum">      34 </span>            :                         return BuildQueryPredicate(IsNotLogicallyDeleted);
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :                 /// Filter to all items with any permission scope.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span><span class="lineCov">          1 :                 public virtual IQueryPredicate WithPermissionScopeAny&lt;TAuthenticationToken&gt;(TAuthenticationToken authenticationToken)</span>
 <span class="lineNum">      41 </span>            :                 {
-<span class="lineNum">      42 </span>            :                         var queryPredicate = new QueryPredicate
-<span class="lineNum">      43 </span>            :                         {
-<span class="lineNum">      44 </span>            :                                 Name = func.Method.Name,
-<span class="lineNum">      45 </span>            :                                 Parameters = new SortedSet&lt;QueryParameter&gt;()
-<span class="lineNum">      46 </span>            :                         };
-<span class="lineNum">      47 </span>            : 
-<span class="lineNum">      48 </span>            :                         return queryPredicate;
-<span class="lineNum">      49 </span>            :                 }
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span><span class="lineNoCov">          0 :                 protected virtual IQueryPredicate BuildQueryPredicate&lt;TParameter1, TData&gt;(Func&lt;TParameter1, TData&gt; func, TParameter1 parameter1)</span>
-<span class="lineNum">      52 </span>            :                 {
-<span class="lineNum">      53 </span>            :                         var queryPredicate = new QueryPredicate
-<span class="lineNum">      54 </span>            :                         {
-<span class="lineNum">      55 </span>            :                                 Name = func.Method.Name,
-<span class="lineNum">      56 </span>            :                                 Parameters = new SortedSet&lt;QueryParameter&gt;()
-<span class="lineNum">      57 </span>            :                         };
-<span class="lineNum">      58 </span>            : 
-<span class="lineNum">      59 </span>            :                         foreach (ParameterInfo parameterInfo in func.Method.GetParameters())
-<span class="lineNum">      60 </span>            :                         {
-<span class="lineNum">      61 </span>            :                                 queryPredicate.Parameters.Add(new QueryParameter(parameterInfo.Name, parameter1));
-<span class="lineNum">      62 </span>            :                         }
-<span class="lineNum">      63 </span>            : 
-<span class="lineNum">      64 </span>            :                         return queryPredicate;
-<span class="lineNum">      65 </span>            :                 }
-<span class="lineNum">      66 </span>            : 
-<span class="lineNum">      67 </span><span class="lineNoCov">          0 :                 protected virtual IQueryPredicate BuildQueryPredicate&lt;TParameter1, TParameter2, TData&gt;(Func&lt;TParameter1, TParameter2, TData&gt; func, TParameter1 parameter1, TParameter2 parameter2)</span>
-<span class="lineNum">      68 </span>            :                 {
-<span class="lineNum">      69 </span>            :                         var queryPredicate = new QueryPredicate
-<span class="lineNum">      70 </span>            :                         {
-<span class="lineNum">      71 </span>            :                                 Name = func.Method.Name,
-<span class="lineNum">      72 </span>            :                                 Parameters = new SortedSet&lt;QueryParameter&gt;()
-<span class="lineNum">      73 </span>            :                         };
-<span class="lineNum">      74 </span>            : 
-<span class="lineNum">      75 </span>            :                         int parameterIndex = 1;
-<span class="lineNum">      76 </span>            :                         foreach (ParameterInfo parameterInfo in func.Method.GetParameters())
-<span class="lineNum">      77 </span>            :                         {
-<span class="lineNum">      78 </span>            :                                 object parameter;
-<span class="lineNum">      79 </span>            :                                 switch (parameterIndex)
-<span class="lineNum">      80 </span>            :                                 {
-<span class="lineNum">      81 </span>            :                                         case 1:
-<span class="lineNum">      82 </span>            :                                                 parameter = parameter1;
-<span class="lineNum">      83 </span>            :                                                 break;
-<span class="lineNum">      84 </span>            :                                         case 2:
-<span class="lineNum">      85 </span>            :                                                 parameter = parameter2;
-<span class="lineNum">      86 </span>            :                                                 break;
-<span class="lineNum">      87 </span>            :                                         default:
-<span class="lineNum">      88 </span>            :                                                 throw new InvalidOperationException();
-<span class="lineNum">      89 </span>            :                                 }
-<span class="lineNum">      90 </span>            :                                 queryPredicate.Parameters.Add(new QueryParameter(parameterInfo.Name, parameter));
-<span class="lineNum">      91 </span>            :                                 parameterIndex++;
-<span class="lineNum">      92 </span>            :                         }
-<span class="lineNum">      93 </span>            : 
-<span class="lineNum">      94 </span>            :                         return queryPredicate;
-<span class="lineNum">      95 </span>            :                 }
-<span class="lineNum">      96 </span>            : 
-<span class="lineNum">      97 </span><span class="lineNoCov">          0 :                 protected virtual IQueryPredicate And(IQueryPredicate queryPredicate)</span>
-<span class="lineNum">      98 </span>            :                 {
-<span class="lineNum">      99 </span>            :                         if (QueryPredicate == null)
-<span class="lineNum">     100 </span>            :                                 return queryPredicate;
-<span class="lineNum">     101 </span>            : 
-<span class="lineNum">     102 </span>            :                         return new AndQueryPredicate
-<span class="lineNum">     103 </span>            :                         {
-<span class="lineNum">     104 </span>            :                                 LeftQueryPredicate = QueryPredicate,
-<span class="lineNum">     105 </span>            :                                 RightQueryPredicate = queryPredicate
-<span class="lineNum">     106 </span>            :                         };
-<span class="lineNum">     107 </span>            :                 }
-<span class="lineNum">     108 </span>            : 
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 protected virtual IQueryPredicate Or(IQueryPredicate queryPredicate)</span>
-<span class="lineNum">     110 </span>            :                 {
-<span class="lineNum">     111 </span>            :                         return new OrQueryPredicate
-<span class="lineNum">     112 </span>            :                         {
-<span class="lineNum">     113 </span>            :                                 LeftQueryPredicate = QueryPredicate,
-<span class="lineNum">     114 </span>            :                                 RightQueryPredicate = queryPredicate
-<span class="lineNum">     115 </span>            :                         };
-<span class="lineNum">     116 </span>            :                 }
-<span class="lineNum">     117 </span>            :         }
-<span class="lineNum">     118 </span>            : }
+<span class="lineNum">      42 </span>            :                         return BuildQueryPredicate(WithPermissionScopeAny, authenticationToken);
+<span class="lineNum">      43 </span>            :                 }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      46 </span>            :                 /// Filter to any items the authenticated user can view.
+<span class="lineNum">      47 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      48 </span><span class="lineCov">          1 :                 public virtual IQueryPredicate WithPermissionScopeUser&lt;TAuthenticationToken&gt;(TAuthenticationToken authenticationToken)</span>
+<span class="lineNum">      49 </span>            :                 {
+<span class="lineNum">      50 </span>            :                         return BuildQueryPredicate(WithPermissionScopeUser, authenticationToken);
+<span class="lineNum">      51 </span>            :                 }
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      54 </span>            :                 /// Filter to any items the company the authenticated user can view.
+<span class="lineNum">      55 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      56 </span><span class="lineCov">          1 :                 public virtual IQueryPredicate WithPermissionScopeCompany&lt;TAuthenticationToken&gt;(TAuthenticationToken authenticationToken)</span>
+<span class="lineNum">      57 </span>            :                 {
+<span class="lineNum">      58 </span>            :                         return BuildQueryPredicate(WithPermissionScopeCompany, authenticationToken);
+<span class="lineNum">      59 </span>            :                 }
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      62 </span>            :                 /// Filter to any items the company the authenticated user can view and then filter the results to any items the authenticated user can see.
+<span class="lineNum">      63 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      64 </span><span class="lineCov">          1 :                 public virtual IQueryPredicate WithPermissionScopeCompanyAndUser&lt;TAuthenticationToken&gt;(TAuthenticationToken authenticationToken)</span>
+<span class="lineNum">      65 </span>            :                 {
+<span class="lineNum">      66 </span>            :                         return BuildQueryPredicate(WithPermissionScopeCompanyAndUser, authenticationToken);
+<span class="lineNum">      67 </span>            :                 }
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      70 </span>            :                 /// Builds a &lt;see cref=&quot;IQueryPredicate&quot;/&gt; from the provided &lt;paramref name=&quot;func&quot;/&gt;.
+<span class="lineNum">      71 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      72 </span><span class="lineCov">          1 :                 protected virtual IQueryPredicate BuildQueryPredicate&lt;TData&gt;(Func&lt;TData&gt; func)</span>
+<span class="lineNum">      73 </span>            :                 {
+<span class="lineNum">      74 </span>            :                         var queryPredicate = new QueryPredicate
+<span class="lineNum">      75 </span>            :                         {
+<span class="lineNum">      76 </span>            :                                 Name = func.Method.Name,
+<span class="lineNum">      77 </span>            :                                 Parameters = new SortedSet&lt;QueryParameter&gt;()
+<span class="lineNum">      78 </span>            :                         };
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :                         return queryPredicate;
+<span class="lineNum">      81 </span>            :                 }
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      84 </span>            :                 /// Builds a &lt;see cref=&quot;IQueryPredicate&quot;/&gt; from the provided &lt;paramref name=&quot;func&quot;/&gt;
+<span class="lineNum">      85 </span>            :                 /// storing the provided &lt;paramref name=&quot;parameter1&quot;/&gt;.
+<span class="lineNum">      86 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      87 </span><span class="lineCov">          1 :                 protected virtual IQueryPredicate BuildQueryPredicate&lt;TParameter1, TData&gt;(Func&lt;TParameter1, TData&gt; func, TParameter1 parameter1)</span>
+<span class="lineNum">      88 </span>            :                 {
+<span class="lineNum">      89 </span>            :                         var queryPredicate = new QueryPredicate
+<span class="lineNum">      90 </span>            :                         {
+<span class="lineNum">      91 </span>            :                                 Name = func.Method.Name,
+<span class="lineNum">      92 </span>            :                                 Parameters = new SortedSet&lt;QueryParameter&gt;()
+<span class="lineNum">      93 </span>            :                         };
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :                         foreach (ParameterInfo parameterInfo in func.Method.GetParameters())
+<span class="lineNum">      96 </span>            :                         {
+<span class="lineNum">      97 </span>            :                                 queryPredicate.Parameters.Add(new QueryParameter(parameterInfo.Name, parameter1));
+<span class="lineNum">      98 </span>            :                         }
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :                         return queryPredicate;
+<span class="lineNum">     101 </span>            :                 }
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     104 </span>            :                 /// Builds a &lt;see cref=&quot;IQueryPredicate&quot;/&gt; from the provided &lt;paramref name=&quot;func&quot;/&gt;
+<span class="lineNum">     105 </span>            :                 /// storing the provided &lt;paramref name=&quot;parameter1&quot;/&gt; and &lt;paramref name=&quot;parameter2&quot;/&gt;.
+<span class="lineNum">     106 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     107 </span><span class="lineCov">          1 :                 protected virtual IQueryPredicate BuildQueryPredicate&lt;TParameter1, TParameter2, TData&gt;(Func&lt;TParameter1, TParameter2, TData&gt; func, TParameter1 parameter1, TParameter2 parameter2)</span>
+<span class="lineNum">     108 </span>            :                 {
+<span class="lineNum">     109 </span>            :                         var queryPredicate = new QueryPredicate
+<span class="lineNum">     110 </span>            :                         {
+<span class="lineNum">     111 </span>            :                                 Name = func.Method.Name,
+<span class="lineNum">     112 </span>            :                                 Parameters = new SortedSet&lt;QueryParameter&gt;()
+<span class="lineNum">     113 </span>            :                         };
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            :                         int parameterIndex = 1;
+<span class="lineNum">     116 </span>            :                         foreach (ParameterInfo parameterInfo in func.Method.GetParameters())
+<span class="lineNum">     117 </span>            :                         {
+<span class="lineNum">     118 </span>            :                                 object parameter;
+<span class="lineNum">     119 </span>            :                                 switch (parameterIndex)
+<span class="lineNum">     120 </span>            :                                 {
+<span class="lineNum">     121 </span>            :                                         case 1:
+<span class="lineNum">     122 </span>            :                                                 parameter = parameter1;
+<span class="lineNum">     123 </span>            :                                                 break;
+<span class="lineNum">     124 </span>            :                                         case 2:
+<span class="lineNum">     125 </span>            :                                                 parameter = parameter2;
+<span class="lineNum">     126 </span>            :                                                 break;
+<span class="lineNum">     127 </span>            :                                         default:
+<span class="lineNum">     128 </span>            :                                                 throw new InvalidOperationException();
+<span class="lineNum">     129 </span>            :                                 }
+<span class="lineNum">     130 </span>            :                                 queryPredicate.Parameters.Add(new QueryParameter(parameterInfo.Name, parameter));
+<span class="lineNum">     131 </span>            :                                 parameterIndex++;
+<span class="lineNum">     132 </span>            :                         }
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span>            :                         return queryPredicate;
+<span class="lineNum">     135 </span>            :                 }
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     138 </span>            :                 /// Builds an &lt;see cref=&quot;IAndQueryPredicate&quot;/&gt; between &lt;see cref=&quot;QueryPredicate&quot;/&gt;
+<span class="lineNum">     139 </span>            :                 /// and the provided &lt;paramref name=&quot;queryPredicate&quot;/&gt;
+<span class="lineNum">     140 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     141 </span><span class="lineCov">          1 :                 protected virtual IQueryPredicate And(IQueryPredicate queryPredicate)</span>
+<span class="lineNum">     142 </span>            :                 {
+<span class="lineNum">     143 </span>            :                         if (QueryPredicate == null)
+<span class="lineNum">     144 </span>            :                                 return queryPredicate;
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            :                         return new AndQueryPredicate
+<span class="lineNum">     147 </span>            :                         {
+<span class="lineNum">     148 </span>            :                                 LeftQueryPredicate = QueryPredicate,
+<span class="lineNum">     149 </span>            :                                 RightQueryPredicate = queryPredicate
+<span class="lineNum">     150 </span>            :                         };
+<span class="lineNum">     151 </span>            :                 }
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     154 </span>            :                 /// Builds an &lt;see cref=&quot;IOrQueryPredicate&quot;/&gt; between &lt;see cref=&quot;QueryPredicate&quot;/&gt;
+<span class="lineNum">     155 </span>            :                 /// and the provided &lt;paramref name=&quot;queryPredicate&quot;/&gt;
+<span class="lineNum">     156 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     157 </span><span class="lineCov">          1 :                 protected virtual IQueryPredicate Or(IQueryPredicate queryPredicate)</span>
+<span class="lineNum">     158 </span>            :                 {
+<span class="lineNum">     159 </span>            :                         return new OrQueryPredicate
+<span class="lineNum">     160 </span>            :                         {
+<span class="lineNum">     161 </span>            :                                 LeftQueryPredicate = QueryPredicate,
+<span class="lineNum">     162 </span>            :                                 RightQueryPredicate = queryPredicate
+<span class="lineNum">     163 </span>            :                         };
+<span class="lineNum">     164 </span>            :                 }
+<span class="lineNum">     165 </span>            :         }
+<span class="lineNum">     166 </span>            : }
 </pre>
       </td>
     </tr>

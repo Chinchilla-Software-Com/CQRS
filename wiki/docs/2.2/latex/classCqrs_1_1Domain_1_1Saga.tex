@@ -14,12 +14,12 @@ Inheritance diagram for Cqrs.\+Domain.\+Saga$<$ T\+Authentication\+Token $>$\+:\
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Domain_1_1Saga_a043e8e21e7550c34f5848af7a87e33cd_a043e8e21e7550c34f5848af7a87e33cd}{Get\+Uncommitted\+Changes} ()
-\item 
+virtual I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Domain_1_1Saga_a759b30b518c7fa5037ec4041054f349c_a759b30b518c7fa5037ec4041054f349c}{Get\+Uncommitted\+Changes} ()
+\begin{DoxyCompactList}\small\item\em Get all applied changes that haven\textquotesingle{}t yet been committed. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga_a9caac842ea6e88d6e502b63ca1820fe4_a9caac842ea6e88d6e502b63ca1820fe4}{Mark\+Changes\+As\+Committed} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Mark all applied changes as committed, increment \hyperlink{classCqrs_1_1Domain_1_1Saga_a581e88da4e3e76d3704586f97866a7a6_a581e88da4e3e76d3704586f97866a7a6}{Version} and flush the \hyperlink{}{internal collection of changes}. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga_a6029fc09445e2093f7fb40e304a04ff8_a6029fc09445e2093f7fb40e304a04ff8}{Load\+From\+History} (I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$ T\+Authentication\+Token $>$$>$ history)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Apply all the \hyperlink{}{events} in {\itshape history}  using event replay to this instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -28,26 +28,26 @@ virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga_a6029fc09445e2093f7fb40e304a
 \hyperlink{classCqrs_1_1Domain_1_1Saga_affa39972d1946ab9f5d2474b17acbdd4_affa39972d1946ab9f5d2474b17acbdd4}{Saga} (\hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver} dependency\+Resolver, I\+Logger logger)
 \begin{DoxyCompactList}\small\item\em A constructor for the \hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{Cqrs.\+Domain.\+Factories.\+I\+Aggregate\+Factory} \end{DoxyCompactList}\item 
 \hyperlink{classCqrs_1_1Domain_1_1Saga_acba7142c5e3ad568a60dc365fb7e8733_acba7142c5e3ad568a60dc365fb7e8733}{Saga} (\hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver} dependency\+Resolver, I\+Logger logger, Guid rsn)
-\item 
+\begin{DoxyCompactList}\small\item\em A constructor for the \hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{Cqrs.\+Domain.\+Factories.\+I\+Aggregate\+Factory} \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga_af8a1eddbadc8fc3fb69f18691f3b08ac_af8a1eddbadc8fc3fb69f18691f3b08ac}{Apply\+Change} (\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$ T\+Authentication\+Token $>$ @event)
-\item 
+\begin{DoxyCompactList}\small\item\em Call the \char`\"{}\+Apply\char`\"{} method with a signature matching the provided {\itshape event}  without using event replay to this instance. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga_a25462563492d834e297388e0648a57ac_a25462563492d834e297388e0648a57ac}{Apply\+Change} (\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @event)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Calls the \char`\"{}\+Set\+Id\char`\"{} method dynamically if the method exists, then calls Apply\+Change(\+Cqrs.\+Events.\+I\+Saga\+Event$<$\+T\+Authentication\+Token$>$) \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
 Guid \hyperlink{classCqrs_1_1Domain_1_1Saga_a2a7053e3d31629aa8a25cb38a238aca5_a2a7053e3d31629aa8a25cb38a238aca5}{Rsn}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em The identifier of this I\+Saga$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
 Guid \hyperlink{classCqrs_1_1Domain_1_1Saga_af6b9552a90fcbe5c101c413126256565_af6b9552a90fcbe5c101c413126256565}{Id}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em The identifier of this I\+Saga$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
 int \hyperlink{classCqrs_1_1Domain_1_1Saga_a581e88da4e3e76d3704586f97866a7a6_a581e88da4e3e76d3704586f97866a7a6}{Version}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em The current version of this I\+Saga$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
 \hyperlink{interfaceCqrs_1_1Commands_1_1ICommandPublisher}{I\+Command\+Publisher}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Domain_1_1Saga_a944fc264b716dcd60a2e51c9897766fa_a944fc264b716dcd60a2e51c9897766fa}{Command\+Publisher}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or set the I\+Command\+Publisher$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
 \hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver} \hyperlink{classCqrs_1_1Domain_1_1Saga_afd8b9bae392272e1651f2ea53c65db12_afd8b9bae392272e1651f2ea53c65db12}{Dependency\+Resolver}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or set the I\+Dependency\+Resolver. \end{DoxyCompactList}\item 
 I\+Logger \hyperlink{classCqrs_1_1Domain_1_1Saga_aafb1c7c3c83211709322470a8fd150b5_aafb1c7c3c83211709322470a8fd150b5}{Logger}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Gets or set the I\+Logger. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -90,6 +90,10 @@ A constructor for the \hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggreg
 
 
 
+A constructor for the \hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{Cqrs.\+Domain.\+Factories.\+I\+Aggregate\+Factory} 
+
+
+
 \subsection{Member Function Documentation}
 \mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_af8a1eddbadc8fc3fb69f18691f3b08ac_af8a1eddbadc8fc3fb69f18691f3b08ac}\label{classCqrs_1_1Domain_1_1Saga_af8a1eddbadc8fc3fb69f18691f3b08ac_af8a1eddbadc8fc3fb69f18691f3b08ac}} 
 \index{Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}!Apply\+Change@{Apply\+Change}}
@@ -97,17 +101,29 @@ A constructor for the \hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggreg
 \subsubsection{\texorpdfstring{Apply\+Change()}{ApplyChange()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga}{Cqrs.\+Domain.\+Saga}$<$ T\+Authentication\+Token $>$.Apply\+Change (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$ T\+Authentication\+Token $>$ @}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
 
-\mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_a25462563492d834e297388e0648a57ac_a25462563492d834e297388e0648a57ac}\label{classCqrs_1_1Domain_1_1Saga_a25462563492d834e297388e0648a57ac_a25462563492d834e297388e0648a57ac}} 
+
+
+Call the \char`\"{}\+Apply\char`\"{} method with a signature matching the provided {\itshape event}  without using event replay to this instance. 
+
+This means a method named \char`\"{}\+Apply\char`\"{}, with return type void and one parameter must exist to be applied. If no method exists, nothing is applied The parameter type must match exactly the Type of the provided {\itshape event} . \mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_a25462563492d834e297388e0648a57ac_a25462563492d834e297388e0648a57ac}\label{classCqrs_1_1Domain_1_1Saga_a25462563492d834e297388e0648a57ac_a25462563492d834e297388e0648a57ac}} 
 \index{Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}!Apply\+Change@{Apply\+Change}}
 \index{Apply\+Change@{Apply\+Change}!Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}}
 \subsubsection{\texorpdfstring{Apply\+Change()}{ApplyChange()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga}{Cqrs.\+Domain.\+Saga}$<$ T\+Authentication\+Token $>$.Apply\+Change (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
 
-\mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_a043e8e21e7550c34f5848af7a87e33cd_a043e8e21e7550c34f5848af7a87e33cd}\label{classCqrs_1_1Domain_1_1Saga_a043e8e21e7550c34f5848af7a87e33cd_a043e8e21e7550c34f5848af7a87e33cd}} 
+
+
+Calls the \char`\"{}\+Set\+Id\char`\"{} method dynamically if the method exists, then calls Apply\+Change(\+Cqrs.\+Events.\+I\+Saga\+Event$<$\+T\+Authentication\+Token$>$) 
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_a759b30b518c7fa5037ec4041054f349c_a759b30b518c7fa5037ec4041054f349c}\label{classCqrs_1_1Domain_1_1Saga_a759b30b518c7fa5037ec4041054f349c_a759b30b518c7fa5037ec4041054f349c}} 
 \index{Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}!Get\+Uncommitted\+Changes@{Get\+Uncommitted\+Changes}}
 \index{Get\+Uncommitted\+Changes@{Get\+Uncommitted\+Changes}!Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}}
 \subsubsection{\texorpdfstring{Get\+Uncommitted\+Changes()}{GetUncommittedChanges()}}
-{\footnotesize\ttfamily I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1Domain_1_1Saga}{Cqrs.\+Domain.\+Saga}$<$ T\+Authentication\+Token $>$.Get\+Uncommitted\+Changes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily virtual I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1Domain_1_1Saga}{Cqrs.\+Domain.\+Saga}$<$ T\+Authentication\+Token $>$.Get\+Uncommitted\+Changes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Get all applied changes that haven\textquotesingle{}t yet been committed. 
 
 
 
@@ -121,6 +137,10 @@ Implements \hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_abb77811b4f7d19adb61f9d33
 
 
 
+Apply all the \hyperlink{}{events} in {\itshape history}  using event replay to this instance. 
+
+
+
 Implements \hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a2714804684bc65cf4dec79b4697b9b21_a2714804684bc65cf4dec79b4697b9b21}{Cqrs.\+Domain.\+I\+Saga$<$ T\+Authentication\+Token $>$}.
 
 \mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_a9caac842ea6e88d6e502b63ca1820fe4_a9caac842ea6e88d6e502b63ca1820fe4}\label{classCqrs_1_1Domain_1_1Saga_a9caac842ea6e88d6e502b63ca1820fe4_a9caac842ea6e88d6e502b63ca1820fe4}} 
@@ -128,6 +148,10 @@ Implements \hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a2714804684bc65cf4dec79b4
 \index{Mark\+Changes\+As\+Committed@{Mark\+Changes\+As\+Committed}!Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}}
 \subsubsection{\texorpdfstring{Mark\+Changes\+As\+Committed()}{MarkChangesAsCommitted()}}
 {\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga}{Cqrs.\+Domain.\+Saga}$<$ T\+Authentication\+Token $>$.Mark\+Changes\+As\+Committed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Mark all applied changes as committed, increment \hyperlink{classCqrs_1_1Domain_1_1Saga_a581e88da4e3e76d3704586f97866a7a6_a581e88da4e3e76d3704586f97866a7a6}{Version} and flush the \hyperlink{}{internal collection of changes}. 
 
 
 
@@ -142,11 +166,19 @@ Implements \hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a85c75f80bc5be4bad7f1d9f1
 \subsubsection{\texorpdfstring{Command\+Publisher}{CommandPublisher}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Commands_1_1ICommandPublisher}{I\+Command\+Publisher}$<$T\+Authentication\+Token$>$ \hyperlink{classCqrs_1_1Domain_1_1Saga}{Cqrs.\+Domain.\+Saga}$<$ T\+Authentication\+Token $>$.Command\+Publisher\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+Gets or set the I\+Command\+Publisher$<$\+T\+Authentication\+Token$>$. 
+
 \mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_afd8b9bae392272e1651f2ea53c65db12_afd8b9bae392272e1651f2ea53c65db12}\label{classCqrs_1_1Domain_1_1Saga_afd8b9bae392272e1651f2ea53c65db12_afd8b9bae392272e1651f2ea53c65db12}} 
 \index{Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}!Dependency\+Resolver@{Dependency\+Resolver}}
 \index{Dependency\+Resolver@{Dependency\+Resolver}!Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}}
 \subsubsection{\texorpdfstring{Dependency\+Resolver}{DependencyResolver}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver} \hyperlink{classCqrs_1_1Domain_1_1Saga}{Cqrs.\+Domain.\+Saga}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Configuration_1_1DependencyResolver}{Dependency\+Resolver}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or set the I\+Dependency\+Resolver. 
 
 \mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_af6b9552a90fcbe5c101c413126256565_af6b9552a90fcbe5c101c413126256565}\label{classCqrs_1_1Domain_1_1Saga_af6b9552a90fcbe5c101c413126256565_af6b9552a90fcbe5c101c413126256565}} 
 \index{Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}!Id@{Id}}
@@ -154,11 +186,19 @@ Implements \hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a85c75f80bc5be4bad7f1d9f1
 \subsubsection{\texorpdfstring{Id}{Id}}
 {\footnotesize\ttfamily Guid \hyperlink{classCqrs_1_1Domain_1_1Saga}{Cqrs.\+Domain.\+Saga}$<$ T\+Authentication\+Token $>$.Id\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected set]}}
 
+
+
+The identifier of this I\+Saga$<$\+T\+Authentication\+Token$>$. 
+
 \mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_aafb1c7c3c83211709322470a8fd150b5_aafb1c7c3c83211709322470a8fd150b5}\label{classCqrs_1_1Domain_1_1Saga_aafb1c7c3c83211709322470a8fd150b5_aafb1c7c3c83211709322470a8fd150b5}} 
 \index{Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}!Logger@{Logger}}
 \index{Logger@{Logger}!Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}}
 \subsubsection{\texorpdfstring{Logger}{Logger}}
 {\footnotesize\ttfamily I\+Logger \hyperlink{classCqrs_1_1Domain_1_1Saga}{Cqrs.\+Domain.\+Saga}$<$ T\+Authentication\+Token $>$.Logger\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or set the I\+Logger. 
 
 \mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_a2a7053e3d31629aa8a25cb38a238aca5_a2a7053e3d31629aa8a25cb38a238aca5}\label{classCqrs_1_1Domain_1_1Saga_a2a7053e3d31629aa8a25cb38a238aca5_a2a7053e3d31629aa8a25cb38a238aca5}} 
 \index{Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}!Rsn@{Rsn}}
@@ -166,9 +206,17 @@ Implements \hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a85c75f80bc5be4bad7f1d9f1
 \subsubsection{\texorpdfstring{Rsn}{Rsn}}
 {\footnotesize\ttfamily Guid \hyperlink{classCqrs_1_1Domain_1_1Saga}{Cqrs.\+Domain.\+Saga}$<$ T\+Authentication\+Token $>$.Rsn\hspace{0.3cm}{\ttfamily [get]}}
 
+
+
+The identifier of this I\+Saga$<$\+T\+Authentication\+Token$>$. 
+
 \mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_a581e88da4e3e76d3704586f97866a7a6_a581e88da4e3e76d3704586f97866a7a6}\label{classCqrs_1_1Domain_1_1Saga_a581e88da4e3e76d3704586f97866a7a6_a581e88da4e3e76d3704586f97866a7a6}} 
 \index{Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}!Version@{Version}}
 \index{Version@{Version}!Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}}
 \subsubsection{\texorpdfstring{Version}{Version}}
 {\footnotesize\ttfamily int \hyperlink{classCqrs_1_1Domain_1_1Saga}{Cqrs.\+Domain.\+Saga}$<$ T\+Authentication\+Token $>$.Version\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected set]}}
+
+
+
+The current version of this I\+Saga$<$\+T\+Authentication\+Token$>$. 
 

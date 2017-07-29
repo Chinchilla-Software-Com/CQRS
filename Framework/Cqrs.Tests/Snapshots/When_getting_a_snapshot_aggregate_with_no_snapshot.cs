@@ -34,11 +34,17 @@ namespace Cqrs.Tests.Snapshots
 
 		private class NullSnapshotStore : ISnapshotStore
 		{
-			public Snapshot Get(Guid id)
+			/// <summary>
+			/// Returns null.
+			/// </summary>
+			public Snapshot Get<TAggregateRoot>(Guid id)
 			{
 				return null;
 			}
 
+			/// <summary>
+			/// Does absolutely nothing.
+			/// </summary>
 			public void Save(Snapshot snapshot)
 			{
 			}

@@ -13,10 +13,14 @@ using System.ServiceModel.Description;
 
 namespace Cqrs.Services
 {
+	/// <summary>
+	/// A factory that creates channels of different types that are used by clients to send messages to variously configured service endpoints.
+	/// </summary>
+	/// <typeparam name="TService">The <see cref="Type"/> of service this <see cref="ChannelFactory"/> is for.</typeparam>
 	public class ServiceChannelFactory<TService> : ChannelFactory<TService>
 	{
 		/// <summary>
-		/// Instanciates a new instance of the <see cref="ServiceChannelFactory{TService}"/> class with a specified endpoint configuration name.
+		/// Instantiates a new instance of the <see cref="ServiceChannelFactory{TService}"/> class with a specified endpoint configuration name.
 		/// </summary>
 		/// <param name="endpointConfigurationName">The configuration name used for the endpoint.</param>
 		public ServiceChannelFactory(string endpointConfigurationName)
@@ -26,6 +30,11 @@ namespace Cqrs.Services
 			AttachDataContractResolver(Endpoint);
 		}
 
+		/// <summary>
+		/// Uses <see cref="WcfDataContractResolverConfiguration.GetDataContracts{TService}"/>
+		/// to find <see cref="DataContractResolver">resolvers</see> to automatically attach to each
+		/// <see cref="OperationDescription"/> in <see cref="ContractDescription.Operations"/> of <see cref="ServiceEndpoint.Contract"/> of the provided <paramref name="endpoint"/>.
+		/// </summary>
 		protected virtual void AttachDataContractResolver(ServiceEndpoint endpoint)
 		{
 			ContractDescription contractDescription = endpoint.Contract;
@@ -42,6 +51,9 @@ namespace Cqrs.Services
 			}
 		}
 
+		/// <summary>
+		/// Register any additional <see cref="DataContractResolver">resolvers</see>.
+		/// </summary>
 		protected virtual void RegisterDataContracts() { }
 	}
 }

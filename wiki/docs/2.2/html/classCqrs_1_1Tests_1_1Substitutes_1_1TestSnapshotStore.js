@@ -1,6 +1,6 @@
 var classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore =
 [
-    [ "Get", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore_a8f07b513e21a7ed7ea0f52a41c9586ba.html#a8f07b513e21a7ed7ea0f52a41c9586ba", null ],
+    [ "Get< TAggregateRoot >", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore_adc420bde9bd2e180a89a3a914e72691a.html#adc420bde9bd2e180a89a3a914e72691a", null ],
     [ "Save", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore_a223dbc9583120dec1469c1f84b863eae.html#a223dbc9583120dec1469c1f84b863eae", null ],
     [ "SavedVersion", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore_a6fd401fb82c4f82d32ef38c8fd964fb5.html#a6fd401fb82c4f82d32ef38c8fd964fb5", null ],
     [ "VerifyGet", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore_a30735e964f5ebe4502f4e3b6740b94e5.html#a30735e964f5ebe4502f4e3b6740b94e5", null ],

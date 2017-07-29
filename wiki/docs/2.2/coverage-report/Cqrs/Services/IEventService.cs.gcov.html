@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-28</td>
+            <td class="headerValue">2017-07-29</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -68,16 +68,27 @@
 <span class="lineNum">      10 </span>            : using System.Collections.Generic;
 <span class="lineNum">      11 </span>            : using System.ServiceModel;
 <span class="lineNum">      12 </span>            : using Cqrs.Events;
-<span class="lineNum">      13 </span>            : 
-<span class="lineNum">      14 </span>            : namespace Cqrs.Services
-<span class="lineNum">      15 </span>            : {
-<span class="lineNum">      16 </span>            :         [ServiceContract(Namespace = &quot;https://getcqrs.net/Domain/1001/&quot;)]
-<span class="lineNum">      17 </span>            :         public interface IEventService&lt;TAuthenticationToken&gt;
-<span class="lineNum">      18 </span>            :         {
-<span class="lineNum">      19 </span>            :                 [OperationContract]
-<span class="lineNum">      20 </span><span class="lineNoCov">          0 :                 IServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt; GetEventData(IServiceRequestWithData&lt;TAuthenticationToken, Guid&gt; serviceRequest);</span>
-<span class="lineNum">      21 </span>            :         }
-<span class="lineNum">      22 </span>            : }
+<span class="lineNum">      13 </span>            : using Cqrs.Messages;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : namespace Cqrs.Services
+<span class="lineNum">      16 </span>            : {
+<span class="lineNum">      17 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      18 </span>            :         /// A WCF &lt;see cref=&quot;ServiceContractAttribute&quot;&gt;ServiceContract&lt;/see&gt; that provides read-only access to &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt;
+<span class="lineNum">      19 </span>            :         /// raised with the same &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt;.
+<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      21 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      22 </span>            :         [ServiceContract(Namespace = &quot;https://getcqrs.net/Domain/1001/&quot;)]
+<span class="lineNum">      23 </span>            :         public interface IEventService&lt;TAuthenticationToken&gt;
+<span class="lineNum">      24 </span>            :         {
+<span class="lineNum">      25 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      26 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt;
+<span class="lineNum">      27 </span>            :                 /// raised with the same &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt;.
+<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      29 </span>            :                 /// &lt;param name=&quot;serviceRequest&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; to find.&lt;/param&gt;
+<span class="lineNum">      30 </span>            :                 [OperationContract]
+<span class="lineNum">      31 </span><span class="lineCov">          1 :                 IServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt; GetEventData(IServiceRequestWithData&lt;TAuthenticationToken, Guid&gt; serviceRequest);</span>
+<span class="lineNum">      32 </span>            :         }
+<span class="lineNum">      33 </span>            : }
 </pre>
       </td>
     </tr>

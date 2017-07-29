@@ -233,11 +233,6 @@ namespace Cqrs.Ninject.Configuration
 			Bind<IAggregateRepository<TAuthenticationToken>>()
 				.To<AggregateRepository<TAuthenticationToken>>()
 				.InSingletonScope();
-#pragma warning disable 618
-			Bind<IRepository<TAuthenticationToken>>()
-				.To<Repository<TAuthenticationToken>>()
-				.InSingletonScope();
-#pragma warning restore 618
 			Bind<ISagaRepository<TAuthenticationToken>>()
 				.To<SagaRepository<TAuthenticationToken>>()
 				.InSingletonScope();

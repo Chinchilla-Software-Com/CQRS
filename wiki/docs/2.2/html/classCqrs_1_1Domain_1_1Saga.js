@@ -5,7 +5,7 @@ var classCqrs_1_1Domain_1_1Saga =
     [ "Saga", "classCqrs_1_1Domain_1_1Saga_acba7142c5e3ad568a60dc365fb7e8733.html#acba7142c5e3ad568a60dc365fb7e8733", null ],
     [ "ApplyChange", "classCqrs_1_1Domain_1_1Saga_af8a1eddbadc8fc3fb69f18691f3b08ac.html#af8a1eddbadc8fc3fb69f18691f3b08ac", null ],
     [ "ApplyChange", "classCqrs_1_1Domain_1_1Saga_a25462563492d834e297388e0648a57ac.html#a25462563492d834e297388e0648a57ac", null ],
-    [ "GetUncommittedChanges", "classCqrs_1_1Domain_1_1Saga_a043e8e21e7550c34f5848af7a87e33cd.html#a043e8e21e7550c34f5848af7a87e33cd", null ],
+    [ "GetUncommittedChanges", "classCqrs_1_1Domain_1_1Saga_a759b30b518c7fa5037ec4041054f349c.html#a759b30b518c7fa5037ec4041054f349c", null ],
     [ "LoadFromHistory", "classCqrs_1_1Domain_1_1Saga_a6029fc09445e2093f7fb40e304a04ff8.html#a6029fc09445e2093f7fb40e304a04ff8", null ],
     [ "MarkChangesAsCommitted", "classCqrs_1_1Domain_1_1Saga_a9caac842ea6e88d6e502b63ca1820fe4.html#a9caac842ea6e88d6e502b63ca1820fe4", null ],
     [ "Changes", "classCqrs_1_1Domain_1_1Saga.html#aa6ce2573f18c8ca115fc675ab3e9c1df", null ],

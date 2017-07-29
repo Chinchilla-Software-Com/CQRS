@@ -6,8 +6,13 @@
 // -----------------------------------------------------------------------
 #endregion
 
+using Cqrs.Domain;
+
 namespace Cqrs.Services
 {
+	/// <summary>
+	/// Provides a basic container to control how the <see cref="IUnitOfWork{TAuthenticationToken}"/> is accessed.
+	/// </summary>
 	public interface IUnitOfWorkService
 	{
 		/// <summary>

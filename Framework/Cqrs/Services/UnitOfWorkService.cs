@@ -10,12 +10,25 @@ using Cqrs.Domain;
 
 namespace Cqrs.Services
 {
+	/// <summary>
+	/// Provides a basic container to control how the <see cref="IUnitOfWork{TAuthenticationToken}"/> is accessed.
+	/// </summary>
 	public class UnitOfWorkService<TAuthenticationToken> : IUnitOfWorkService
 	{
+		/// <summary>
+		/// Gets or set the <see cref="IUnitOfWork{TAuthenticationToken}"/>.
+		/// </summary>
 		protected IUnitOfWork<TAuthenticationToken> UnitOfWork { get; private set; }
 
+		/// <summary>
+		/// Gets or set the object that wants to control the <see cref="UnitOfWork"/>.
+		/// </summary>
 		protected object Committer { get; private set; }
 
+		/// <summary>
+		/// Instantiate a new instance of <see cref="UnitOfWorkService{TAuthenticationToken}"/>.
+		/// </summary>
+		/// <param name="unitOfWork"></param>
 		public UnitOfWorkService(IUnitOfWork<TAuthenticationToken> unitOfWork)
 		{
 			UnitOfWork = unitOfWork;

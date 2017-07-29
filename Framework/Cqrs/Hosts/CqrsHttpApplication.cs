@@ -138,7 +138,7 @@ namespace Cqrs.Hosts
 					logger.LogInfo("Application started.");
 				}
 			}
-			catch { /**/ }
+			catch { /* */ }
 		}
 
 		/// <summary>
@@ -157,7 +157,7 @@ namespace Cqrs.Hosts
 					logger.LogInfo("Application stopped.");
 				}
 			}
-			catch { /**/ }
+			catch { /* */ }
 		}
 
 		/// <summary>
@@ -177,7 +177,7 @@ namespace Cqrs.Hosts
 
 				loggerFunction("An error occurred.", null, ex, null, null);
 			}
-			catch { /**/ }
+			catch { /* */ }
 		}
 
 		/// <summary>

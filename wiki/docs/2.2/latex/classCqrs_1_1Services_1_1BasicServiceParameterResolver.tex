@@ -2,7 +2,7 @@
 \label{classCqrs_1_1Services_1_1BasicServiceParameterResolver}\index{Cqrs.\+Services.\+Basic\+Service\+Parameter\+Resolver$<$ T\+Service\+Parameter, T\+Authentication\+Token $>$@{Cqrs.\+Services.\+Basic\+Service\+Parameter\+Resolver$<$ T\+Service\+Parameter, T\+Authentication\+Token $>$}}
 
 
-A Data\+Contract\+Resolver for use via W\+CF  
+A Data\+Contract\+Resolver for use via W\+CF that ensures basic support for \hyperlink{classCqrs_1_1Services_1_1ServiceResponse}{Service\+Response}, Service\+Request$<$\+T\+Authentication\+Token$>$ and anything \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a0ed208048d0f925dfa1e14fb73d82f0b_a0ed208048d0f925dfa1e14fb73d82f0b}{Token\+Resolver} and \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a49d548e272010a9047bac9671e5b1f70_a49d548e272010a9047bac9671e5b1f70}{Event\+Data\+Resolver} support.  
 
 
 Inheritance diagram for Cqrs.\+Services.\+Basic\+Service\+Parameter\+Resolver$<$ T\+Service\+Parameter, T\+Authentication\+Token $>$\+:\begin{figure}[H]
@@ -15,34 +15,41 @@ Inheritance diagram for Cqrs.\+Services.\+Basic\+Service\+Parameter\+Resolver$<$
 \begin{DoxyCompactItemize}
 \item 
 override bool \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_adbc4b10f8931db30768d7ca84bdb0260_adbc4b10f8931db30768d7ca84bdb0260}{Try\+Resolve\+Type} (Type data\+Contract\+Type, Type declared\+Type, Data\+Contract\+Resolver known\+Type\+Resolver, out Xml\+Dictionary\+String type\+Name, out Xml\+Dictionary\+String type\+Namespace)
-\begin{DoxyCompactList}\small\item\em Returns the Type if the {\itshape type\+Name}  is resolvable. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Maps a data contract type to an xsi\+:type name and namespace during serialization. \end{DoxyCompactList}\item 
 override Type \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a8c598f2f49a83190c315afc88e5630d5_a8c598f2f49a83190c315afc88e5630d5}{Resolve\+Name} (string type\+Name, string type\+Namespace, Type declared\+Type, Data\+Contract\+Resolver known\+Type\+Resolver)
-\begin{DoxyCompactList}\small\item\em Override this method to map the specified xsi\+:type name and namespace to a data contract type during deserialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Maps the specified xsi\+:type name and namespace to a data contract type during deserialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_af82f43a2f64aa5c33a3692a2a689367b_af82f43a2f64aa5c33a3692a2a689367b}{Basic\+Service\+Parameter\+Resolver} (\hyperlink{interfaceCqrs_1_1Services_1_1ISingleSignOnTokenResolver}{I\+Single\+Sign\+On\+Token\+Resolver} token\+Resolver, \hyperlink{interfaceCqrs_1_1Services_1_1IEventDataResolver}{I\+Event\+Data\+Resolver} event\+Data\+Resolver)
-\item 
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_af82f43a2f64aa5c33a3692a2a689367b_af82f43a2f64aa5c33a3692a2a689367b}{Basic\+Service\+Parameter\+Resolver$<$\+T\+Service\+Parameter,\+T\+Authentication\+Token$>$}. \end{DoxyCompactList}\item 
 \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a74e001363a0226b4fbf5d3796e1230a9_a74e001363a0226b4fbf5d3796e1230a9}{Basic\+Service\+Parameter\+Resolver} (\hyperlink{interfaceCqrs_1_1Services_1_1IEventDataResolver}{I\+Event\+Data\+Resolver} event\+Data\+Resolver)
-\item 
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_af82f43a2f64aa5c33a3692a2a689367b_af82f43a2f64aa5c33a3692a2a689367b}{Basic\+Service\+Parameter\+Resolver$<$\+T\+Service\+Parameter,\+T\+Authentication\+Token$>$} defaulting \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a0ed208048d0f925dfa1e14fb73d82f0b_a0ed208048d0f925dfa1e14fb73d82f0b}{Token\+Resolver} to Basic\+Token\+Resolver. \end{DoxyCompactList}\item 
 abstract bool \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_ab1de06b3744da74df0708545666c9f6f_ab1de06b3744da74df0708545666c9f6f}{Try\+Resolve\+Un\+Resolved\+Type} (Type data\+Contract\+Type, Type declared\+Type, Data\+Contract\+Resolver known\+Type\+Resolver, ref Xml\+Dictionary\+String type\+Name, ref Xml\+Dictionary\+String type\+Namespace)
-\item 
+\begin{DoxyCompactList}\small\item\em Try to resolve an types \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_adbc4b10f8931db30768d7ca84bdb0260_adbc4b10f8931db30768d7ca84bdb0260}{Try\+Resolve\+Type} fails to. \end{DoxyCompactList}\item 
 abstract Type \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a2815cb9d0647e0b019d3f148a0c8e9cc_a2815cb9d0647e0b019d3f148a0c8e9cc}{Resolve\+Un\+Resolved\+Name} (string type\+Name, string type\+Namespace, Type declared\+Type, Data\+Contract\+Resolver known\+Type\+Resolver)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Try to resolve an types \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a8c598f2f49a83190c315afc88e5630d5_a8c598f2f49a83190c315afc88e5630d5}{Resolve\+Name} fails to. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{interfaceCqrs_1_1Services_1_1IServiceParameterResolver}{I\+Service\+Parameter\+Resolver} \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a0ed208048d0f925dfa1e14fb73d82f0b_a0ed208048d0f925dfa1e14fb73d82f0b}{Token\+Resolver}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em The \hyperlink{interfaceCqrs_1_1Services_1_1IServiceParameterResolver}{I\+Service\+Parameter\+Resolver} that has information about resolving authentication tokens such as {\itshape T\+Authentication\+Token} . \end{DoxyCompactList}\item 
 \hyperlink{interfaceCqrs_1_1Services_1_1IEventDataResolver}{I\+Event\+Data\+Resolver} \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a49d548e272010a9047bac9671e5b1f70_a49d548e272010a9047bac9671e5b1f70}{Event\+Data\+Resolver}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or sets the \hyperlink{interfaceCqrs_1_1Services_1_1IEventDataResolver}{I\+Event\+Data\+Resolver}. \end{DoxyCompactList}\item 
 string \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a78d53a2ee367086bca9f2d2118746836_a78d53a2ee367086bca9f2d2118746836}{Service\+Namespace}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em The Service Name included in all Type resolution information. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-A Data\+Contract\+Resolver for use via W\+CF 
+A Data\+Contract\+Resolver for use via W\+CF that ensures basic support for \hyperlink{classCqrs_1_1Services_1_1ServiceResponse}{Service\+Response}, Service\+Request$<$\+T\+Authentication\+Token$>$ and anything \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a0ed208048d0f925dfa1e14fb73d82f0b_a0ed208048d0f925dfa1e14fb73d82f0b}{Token\+Resolver} and \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a49d548e272010a9047bac9671e5b1f70_a49d548e272010a9047bac9671e5b1f70}{Event\+Data\+Resolver} support. 
 
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Service\+Parameter} & The Type of the service to include in the \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a78d53a2ee367086bca9f2d2118746836_a78d53a2ee367086bca9f2d2118746836}{Service\+Namespace}.\\
+\hline
+{\em T\+Authentication\+Token} & The Type of authentication token.\\
+\hline
+\end{DoxyTemplParams}
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -52,11 +59,19 @@ A Data\+Contract\+Resolver for use via W\+CF
 \subsubsection{\texorpdfstring{Basic\+Service\+Parameter\+Resolver()}{BasicServiceParameterResolver()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver}{Cqrs.\+Services.\+Basic\+Service\+Parameter\+Resolver}$<$ T\+Service\+Parameter, T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver}{Basic\+Service\+Parameter\+Resolver} (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Services_1_1ISingleSignOnTokenResolver}{I\+Single\+Sign\+On\+Token\+Resolver}}]{token\+Resolver,  }\item[{\hyperlink{interfaceCqrs_1_1Services_1_1IEventDataResolver}{I\+Event\+Data\+Resolver}}]{event\+Data\+Resolver }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
+
+
+Instantiates a new instance of \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_af82f43a2f64aa5c33a3692a2a689367b_af82f43a2f64aa5c33a3692a2a689367b}{Basic\+Service\+Parameter\+Resolver$<$\+T\+Service\+Parameter,\+T\+Authentication\+Token$>$}. 
+
 \mbox{\Hypertarget{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a74e001363a0226b4fbf5d3796e1230a9_a74e001363a0226b4fbf5d3796e1230a9}\label{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a74e001363a0226b4fbf5d3796e1230a9_a74e001363a0226b4fbf5d3796e1230a9}} 
 \index{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver@{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver}!Basic\+Service\+Parameter\+Resolver@{Basic\+Service\+Parameter\+Resolver}}
 \index{Basic\+Service\+Parameter\+Resolver@{Basic\+Service\+Parameter\+Resolver}!Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver@{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver}}
 \subsubsection{\texorpdfstring{Basic\+Service\+Parameter\+Resolver()}{BasicServiceParameterResolver()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver}{Cqrs.\+Services.\+Basic\+Service\+Parameter\+Resolver}$<$ T\+Service\+Parameter, T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver}{Basic\+Service\+Parameter\+Resolver} (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Services_1_1IEventDataResolver}{I\+Event\+Data\+Resolver}}]{event\+Data\+Resolver }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Instantiates a new instance of \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_af82f43a2f64aa5c33a3692a2a689367b_af82f43a2f64aa5c33a3692a2a689367b}{Basic\+Service\+Parameter\+Resolver$<$\+T\+Service\+Parameter,\+T\+Authentication\+Token$>$} defaulting \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a0ed208048d0f925dfa1e14fb73d82f0b_a0ed208048d0f925dfa1e14fb73d82f0b}{Token\+Resolver} to Basic\+Token\+Resolver. 
 
 
 
@@ -69,7 +84,7 @@ A Data\+Contract\+Resolver for use via W\+CF
 
 
 
-Override this method to map the specified xsi\+:type name and namespace to a data contract type during deserialization. 
+Maps the specified xsi\+:type name and namespace to a data contract type during deserialization. 
 
 \begin{DoxyReturn}{Returns}
 The type the xsi\+:type name and namespace is mapped to. 
@@ -95,6 +110,24 @@ Implements \hyperlink{interfaceCqrs_1_1Services_1_1IServiceParameterResolver_a37
 \subsubsection{\texorpdfstring{Resolve\+Un\+Resolved\+Name()}{ResolveUnResolvedName()}}
 {\footnotesize\ttfamily abstract Type \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver}{Cqrs.\+Services.\+Basic\+Service\+Parameter\+Resolver}$<$ T\+Service\+Parameter, T\+Authentication\+Token $>$.Resolve\+Un\+Resolved\+Name (\begin{DoxyParamCaption}\item[{string}]{type\+Name,  }\item[{string}]{type\+Namespace,  }\item[{Type}]{declared\+Type,  }\item[{Data\+Contract\+Resolver}]{known\+Type\+Resolver }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
 
+
+
+Try to resolve an types \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a8c598f2f49a83190c315afc88e5630d5_a8c598f2f49a83190c315afc88e5630d5}{Resolve\+Name} fails to. 
+
+\begin{DoxyReturn}{Returns}
+The type the xsi\+:type name and namespace is mapped to. 
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em type\+Name} & The xsi\+:type name to map.\\
+\hline
+{\em type\+Namespace} & The xsi\+:type namespace to map.\\
+\hline
+{\em declared\+Type} & The type declared in the data contract.\\
+\hline
+{\em known\+Type\+Resolver} & The known type resolver.\\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classCqrs_1_1Services_1_1BasicServiceParameterResolver_adbc4b10f8931db30768d7ca84bdb0260_adbc4b10f8931db30768d7ca84bdb0260}\label{classCqrs_1_1Services_1_1BasicServiceParameterResolver_adbc4b10f8931db30768d7ca84bdb0260_adbc4b10f8931db30768d7ca84bdb0260}} 
 \index{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver@{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver}!Try\+Resolve\+Type@{Try\+Resolve\+Type}}
 \index{Try\+Resolve\+Type@{Try\+Resolve\+Type}!Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver@{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver}}
@@ -103,8 +136,24 @@ Implements \hyperlink{interfaceCqrs_1_1Services_1_1IServiceParameterResolver_a37
 
 
 
-Returns the Type if the {\itshape type\+Name}  is resolvable. 
+Maps a data contract type to an xsi\+:type name and namespace during serialization. 
 
+
+\begin{DoxyParams}{Parameters}
+{\em data\+Contract\+Type} & The type to map.\\
+\hline
+{\em declared\+Type} & The type declared in the data contract.\\
+\hline
+{\em known\+Type\+Resolver} & The known type resolver.\\
+\hline
+{\em type\+Name} & The xsi\+:type name.\\
+\hline
+{\em type\+Namespace} & The xsi\+:type namespace.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if mapping succeeded; otherwise, false.
+\end{DoxyReturn}
 
 
 Implements \hyperlink{interfaceCqrs_1_1Services_1_1IServiceParameterResolver_a31c82a00b192b877faff6df99e1b689b_a31c82a00b192b877faff6df99e1b689b}{Cqrs.\+Services.\+I\+Service\+Parameter\+Resolver}.
@@ -117,6 +166,26 @@ Implements \hyperlink{interfaceCqrs_1_1Services_1_1IServiceParameterResolver_a31
 
 
 
+Try to resolve an types \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver_adbc4b10f8931db30768d7ca84bdb0260_adbc4b10f8931db30768d7ca84bdb0260}{Try\+Resolve\+Type} fails to. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data\+Contract\+Type} & The type to map.\\
+\hline
+{\em declared\+Type} & The type declared in the data contract.\\
+\hline
+{\em known\+Type\+Resolver} & The known type resolver.\\
+\hline
+{\em type\+Name} & The xsi\+:type name.\\
+\hline
+{\em type\+Namespace} & The xsi\+:type namespace.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if mapping succeeded; otherwise, false.
+\end{DoxyReturn}
+
+
 \subsection{Property Documentation}
 \mbox{\Hypertarget{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a49d548e272010a9047bac9671e5b1f70_a49d548e272010a9047bac9671e5b1f70}\label{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a49d548e272010a9047bac9671e5b1f70_a49d548e272010a9047bac9671e5b1f70}} 
 \index{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver@{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver}!Event\+Data\+Resolver@{Event\+Data\+Resolver}}
@@ -124,15 +193,27 @@ Implements \hyperlink{interfaceCqrs_1_1Services_1_1IServiceParameterResolver_a31
 \subsubsection{\texorpdfstring{Event\+Data\+Resolver}{EventDataResolver}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Services_1_1IEventDataResolver}{I\+Event\+Data\+Resolver} \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver}{Cqrs.\+Services.\+Basic\+Service\+Parameter\+Resolver}$<$ T\+Service\+Parameter, T\+Authentication\+Token $>$.Event\+Data\+Resolver\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+Gets or sets the \hyperlink{interfaceCqrs_1_1Services_1_1IEventDataResolver}{I\+Event\+Data\+Resolver}. 
+
 \mbox{\Hypertarget{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a78d53a2ee367086bca9f2d2118746836_a78d53a2ee367086bca9f2d2118746836}\label{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a78d53a2ee367086bca9f2d2118746836_a78d53a2ee367086bca9f2d2118746836}} 
 \index{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver@{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver}!Service\+Namespace@{Service\+Namespace}}
 \index{Service\+Namespace@{Service\+Namespace}!Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver@{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver}}
 \subsubsection{\texorpdfstring{Service\+Namespace}{ServiceNamespace}}
 {\footnotesize\ttfamily string \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver}{Cqrs.\+Services.\+Basic\+Service\+Parameter\+Resolver}$<$ T\+Service\+Parameter, T\+Authentication\+Token $>$.Service\+Namespace\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+The Service Name included in all Type resolution information. 
+
 \mbox{\Hypertarget{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a0ed208048d0f925dfa1e14fb73d82f0b_a0ed208048d0f925dfa1e14fb73d82f0b}\label{classCqrs_1_1Services_1_1BasicServiceParameterResolver_a0ed208048d0f925dfa1e14fb73d82f0b_a0ed208048d0f925dfa1e14fb73d82f0b}} 
 \index{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver@{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver}!Token\+Resolver@{Token\+Resolver}}
 \index{Token\+Resolver@{Token\+Resolver}!Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver@{Cqrs\+::\+Services\+::\+Basic\+Service\+Parameter\+Resolver}}
 \subsubsection{\texorpdfstring{Token\+Resolver}{TokenResolver}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Services_1_1IServiceParameterResolver}{I\+Service\+Parameter\+Resolver} \hyperlink{classCqrs_1_1Services_1_1BasicServiceParameterResolver}{Cqrs.\+Services.\+Basic\+Service\+Parameter\+Resolver}$<$ T\+Service\+Parameter, T\+Authentication\+Token $>$.Token\+Resolver\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The \hyperlink{interfaceCqrs_1_1Services_1_1IServiceParameterResolver}{I\+Service\+Parameter\+Resolver} that has information about resolving authentication tokens such as {\itshape T\+Authentication\+Token} . 
 

@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Artefacts:</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntryLo">6.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-28</td>
+            <td class="headerValue">2017-07-29</td>
             <td></td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -87,8 +87,8 @@
 <span class="lineNum">      29 </span>            :         /// &lt;/remarks&gt;
 <span class="lineNum">      30 </span>            :         public abstract class CqrsApiController
 <span class="lineNum">      31 </span>            :                 : ApiController
-<span class="lineNum">      32 </span><span class="lineCov">          2 :         {</span>
-<span class="lineNum">      33 </span>            :                 protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager)
+<span class="lineNum">      32 </span>            :         {
+<span class="lineNum">      33 </span><span class="lineNoCov">          0 :                 protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager)</span>
 <span class="lineNum">      34 </span>            :                 {
 <span class="lineNum">      35 </span>            :                         CorrelationIdHelper = correlationIdHelper;
 <span class="lineNum">      36 </span>            :                         ConfigurationManager = configurationManager;
@@ -101,7 +101,7 @@
 <span class="lineNum">      43 </span>            : 
 <span class="lineNum">      44 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
 <span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span>            :                 protected virtual string GetToken()
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 :                 protected virtual string GetToken()</span>
 <span class="lineNum">      47 </span>            :                 {
 <span class="lineNum">      48 </span>            :                         string authenticationTokenName = ConfigurationManager.GetSetting(&quot;Cqrs.Web.AuthenticationTokenName&quot;) ?? &quot;X-Token&quot;;
 <span class="lineNum">      49 </span>            : 
@@ -119,7 +119,7 @@
 <span class="lineNum">      61 </span>            :                         return xToken;
 <span class="lineNum">      62 </span>            :                 }
 <span class="lineNum">      63 </span>            : 
-<span class="lineNum">      64 </span>            :                 protected virtual IServiceRequest&lt;TSingleSignOnToken&gt; CreateRequest&lt;TSingleSignOnToken&gt;()
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :                 protected virtual IServiceRequest&lt;TSingleSignOnToken&gt; CreateRequest&lt;TSingleSignOnToken&gt;()</span>
 <span class="lineNum">      65 </span>            :                         where TSingleSignOnToken : ISingleSignOnToken, new()
 <span class="lineNum">      66 </span>            :                 {
 <span class="lineNum">      67 </span>            :                         return new ServiceRequest&lt;TSingleSignOnToken&gt;
@@ -129,7 +129,7 @@
 <span class="lineNum">      71 </span>            :                         };
 <span class="lineNum">      72 </span>            :                 }
 <span class="lineNum">      73 </span>            : 
-<span class="lineNum">      74 </span>            :                 protected virtual IServiceRequestWithData&lt;TSingleSignOnToken, TParameters&gt; CreateRequestWithData&lt;TSingleSignOnToken, TParameters&gt;(Func&lt;TParameters&gt; createParameterDelegate = null)
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :                 protected virtual IServiceRequestWithData&lt;TSingleSignOnToken, TParameters&gt; CreateRequestWithData&lt;TSingleSignOnToken, TParameters&gt;(Func&lt;TParameters&gt; createParameterDelegate = null)</span>
 <span class="lineNum">      75 </span>            :                         where TSingleSignOnToken : ISingleSignOnToken, new()
 <span class="lineNum">      76 </span>            :                         where TParameters : new()
 <span class="lineNum">      77 </span>            :                 {
@@ -141,7 +141,7 @@
 <span class="lineNum">      83 </span>            :                         };
 <span class="lineNum">      84 </span>            :                 }
 <span class="lineNum">      85 </span>            : 
-<span class="lineNum">      86 </span>            :                 protected virtual TSingleSignOnToken CreateAuthenticationToken&lt;TSingleSignOnToken&gt;()
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :                 protected virtual TSingleSignOnToken CreateAuthenticationToken&lt;TSingleSignOnToken&gt;()</span>
 <span class="lineNum">      87 </span>            :                         where TSingleSignOnToken : ISingleSignOnToken, new()
 <span class="lineNum">      88 </span>            :                 {
 <span class="lineNum">      89 </span>            :                         return new TSingleSignOnToken
@@ -152,23 +152,23 @@
 <span class="lineNum">      94 </span>            :                         };
 <span class="lineNum">      95 </span>            :                 }
 <span class="lineNum">      96 </span>            : 
-<span class="lineNum">      97 </span>            :                 protected virtual TParameters CreateParameter&lt;TParameters&gt;()
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :                 protected virtual TParameters CreateParameter&lt;TParameters&gt;()</span>
 <span class="lineNum">      98 </span>            :                         where TParameters : new()
 <span class="lineNum">      99 </span>            :                 {
 <span class="lineNum">     100 </span>            :                         return new TParameters();
 <span class="lineNum">     101 </span>            :                 }
 <span class="lineNum">     102 </span>            : 
-<span class="lineNum">     103 </span>            :                 protected virtual DateTime GetDateTokenIssued()
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                 protected virtual DateTime GetDateTokenIssued()</span>
 <span class="lineNum">     104 </span>            :                 {
 <span class="lineNum">     105 </span>            :                         return default(DateTime);
 <span class="lineNum">     106 </span>            :                 }
 <span class="lineNum">     107 </span>            : 
-<span class="lineNum">     108 </span>            :                 protected virtual DateTime GetTokenTimeOfExpiry()
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :                 protected virtual DateTime GetTokenTimeOfExpiry()</span>
 <span class="lineNum">     109 </span>            :                 {
 <span class="lineNum">     110 </span>            :                         return default(DateTime);
 <span class="lineNum">     111 </span>            :                 }
 <span class="lineNum">     112 </span>            : 
-<span class="lineNum">     113 </span>            :                 protected virtual HttpResponseMessage CompleteResponse&lt;TServiceResponse&gt;(HttpResponseMessage response, TServiceResponse serviceResponse)
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :                 protected virtual HttpResponseMessage CompleteResponse&lt;TServiceResponse&gt;(HttpResponseMessage response, TServiceResponse serviceResponse)</span>
 <span class="lineNum">     114 </span>            :                         where TServiceResponse : IServiceResponse
 <span class="lineNum">     115 </span>            :                 {
 <span class="lineNum">     116 </span>            :                         serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
@@ -210,7 +210,7 @@
 <span class="lineNum">     152 </span>            :                         return response;
 <span class="lineNum">     153 </span>            :                 }
 <span class="lineNum">     154 </span>            : 
-<span class="lineNum">     155 </span>            :                 protected virtual HttpResponseMessage CompleteResponse&lt;TServiceResponse&gt;(TServiceResponse serviceResponse)
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :                 protected virtual HttpResponseMessage CompleteResponse&lt;TServiceResponse&gt;(TServiceResponse serviceResponse)</span>
 <span class="lineNum">     156 </span>            :                         where TServiceResponse : IServiceResponse
 <span class="lineNum">     157 </span>            :                 {
 <span class="lineNum">     158 </span>            :                         var response = new HttpResponseMessage();
@@ -218,7 +218,7 @@
 <span class="lineNum">     160 </span>            :                         return CompleteResponse(response, serviceResponse);
 <span class="lineNum">     161 </span>            :                 }
 <span class="lineNum">     162 </span>            : 
-<span class="lineNum">     163 </span>            :                 protected virtual HttpResponseMessage&lt;TServiceResponse&gt; CompleteResponseWithData&lt;TServiceResponse&gt;(TServiceResponse serviceResponse)
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :                 protected virtual HttpResponseMessage&lt;TServiceResponse&gt; CompleteResponseWithData&lt;TServiceResponse&gt;(TServiceResponse serviceResponse)</span>
 <span class="lineNum">     164 </span>            :                         where TServiceResponse : IServiceResponse
 <span class="lineNum">     165 </span>            :                 {
 <span class="lineNum">     166 </span>            :                         var response = new HttpResponseMessage&lt;TServiceResponse&gt;();
@@ -237,8 +237,8 @@
 <span class="lineNum">     179 </span>            :         /// &lt;/remarks&gt;
 <span class="lineNum">     180 </span>            :         public abstract class CqrsApiController&lt;TAuthenticationToken&gt;
 <span class="lineNum">     181 </span>            :                 : CqrsApiController
-<span class="lineNum">     182 </span>            :         {
-<span class="lineNum">     183 </span>            :                 protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper)
+<span class="lineNum">     182 </span><span class="lineCov">          2 :         {</span>
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :                 protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper)</span>
 <span class="lineNum">     184 </span>            :                         : base(logger, correlationIdHelper, configurationManager)
 <span class="lineNum">     185 </span>            :                 {
 <span class="lineNum">     186 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
@@ -246,7 +246,7 @@
 <span class="lineNum">     188 </span>            : 
 <span class="lineNum">     189 </span>            :                 protected IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; AuthenticationTokenHelper { get; private set; }
 <span class="lineNum">     190 </span>            : 
-<span class="lineNum">     191 </span>            :                 protected override string GetToken()
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :                 protected override string GetToken()</span>
 <span class="lineNum">     192 </span>            :                 {
 <span class="lineNum">     193 </span>            :                         TAuthenticationToken token = AuthenticationTokenHelper.GetAuthenticationToken();
 <span class="lineNum">     194 </span>            :                         if (token != null)
@@ -254,7 +254,7 @@
 <span class="lineNum">     196 </span>            :                         return null;
 <span class="lineNum">     197 </span>            :                 }
 <span class="lineNum">     198 </span>            : 
-<span class="lineNum">     199 </span>            :                 protected virtual IServiceRequest&lt;TAuthenticationToken&gt; CreateRequest()
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :                 protected virtual IServiceRequest&lt;TAuthenticationToken&gt; CreateRequest()</span>
 <span class="lineNum">     200 </span>            :                 {
 <span class="lineNum">     201 </span>            :                         TAuthenticationToken token = AuthenticationTokenHelper.GetAuthenticationToken();
 <span class="lineNum">     202 </span>            :                         return new ServiceRequest&lt;TAuthenticationToken&gt;
@@ -264,7 +264,7 @@
 <span class="lineNum">     206 </span>            :                         };
 <span class="lineNum">     207 </span>            :                 }
 <span class="lineNum">     208 </span>            : 
-<span class="lineNum">     209 </span>            :                 protected virtual IServiceRequestWithData&lt;TAuthenticationToken, TParameters&gt; CreateRequestWithData&lt;TParameters&gt;(Func&lt;TParameters&gt; createParameterDelegate = null)
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :                 protected virtual IServiceRequestWithData&lt;TAuthenticationToken, TParameters&gt; CreateRequestWithData&lt;TParameters&gt;(Func&lt;TParameters&gt; createParameterDelegate = null)</span>
 <span class="lineNum">     210 </span>            :                         where TParameters : new()
 <span class="lineNum">     211 </span>            :                 {
 <span class="lineNum">     212 </span>            :                         TAuthenticationToken token = AuthenticationTokenHelper.GetAuthenticationToken();
