@@ -1,0 +1,626 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  id: IAggregateRoot`1
+  parent: Cqrs.Domain
+  children:
+  - Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges
+  - Cqrs.Domain.IAggregateRoot`1.Id
+  - Cqrs.Domain.IAggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+  - Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted
+  - Cqrs.Domain.IAggregateRoot`1.Version
+  langs:
+  - csharp
+  - vb
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  type: Interface
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/IAggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: IAggregateRoot
+    path: Framework/Cqrs/Domain/IAggregateRoot.cs
+    startLine: 141
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nAn <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> is a larger unit of encapsulation than just a class. Every transaction is scoped to a single aggregate. The lifetimes of the components of an <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> are bounded by the lifetime of the entire <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n\n<p></p>Concretely, an <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> will handle <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>s, apply <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>s, and have a state model encapsulated within it that allows it to implement the required command validation, thus upholding the invariants (business rules) of the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  remarks: "\nI know <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> are transaction boundaries, but I really need to transactionally update two <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> in the same transaction. What should I do?\n\n<p></p>You should re-think the following:\n<p></p>* Your <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> boundaries.\n<p></p>* The responsibilities of each <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n<p></p>* What you can get away with doing in a read side or in a saga.\n<p></p>* The actual non-functional requirements of your domain.\n<p></p>\n<p></p>If you write a solution where two or more <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> are transactionally coupled, you have not understood <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n<p></p>\n<p></p>\n<p></p>Why is the use of <xref href=\"System.Guid\" data-throw-if-not-resolved=\"false\"></xref> as identifiers a good practice?\n<p></p>\n<p></p>Because they are (reasonably) globally unique, and can be generated either by the server or by the client.\n<p></p>\n<p></p>\n<p></p>What is an Rsn and what is an Id?\n<p></p>\n<p></p>Because few systems are truely green field and there is usually some existing system to operate with our framework identifies\n<p></p>Id properties as <xref href=\"System.Int32\" data-throw-if-not-resolved=\"false\"></xref> typed properties from an external system\n<p></p>and Rsn properties as <xref href=\"System.Guid\" data-throw-if-not-resolved=\"false\"></xref> typed properties for internal use.\n<p></p>\n<p></p>An example might be\n<p></p>{\n<p></p>	Guid Rsn\n<p></p>	string Name\n<p></p>	Guid CategoryRsn\n<p></p>	int CategoryId\n<p></p>}\n<p></p>\n<p></p>Here the category can be referenced within the CQRS framework by it&apos;s Rsn <xref href=\"System.Guid\" data-throw-if-not-resolved=\"false\"></xref> typed identifier, but still has a reference to the external systems <xref href=\"System.Int32\" data-throw-if-not-resolved=\"false\"></xref> typed identifier value.\n<p></p>\n<p></p>\n<p></p>How can I get the Rsn for newly created <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>?\n<p></p>\n<p></p>It&apos;s an important insight that the client can generate its own Rsns.\n<p></p>\n<p></p>If the client generates a <xref href=\"System.Guid\" data-throw-if-not-resolved=\"false\"></xref> and places it in the create-the-aggregate <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>, this is a non-issue. Otherwise, you have to listen to the the appropriate the-aggregate-was-created <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>, where the Rsn will appear be populated.\n<p></p>\n<p></p>\n<p></p>Should I allow references between <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>?\n<p></p>\n<p></p>In the sense of an actual &quot;memory reference&quot;, absolutely not.\n<p></p>\n<p></p>On the write side, an actual memory reference from one <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> to another is forbidden and wrong, since <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> by definition are not allowed to reach outside of themselves. (Allowing this would mean an <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> is no longer a transaction boundary, meaning we can no longer sanely reason about its ability to uphold its invariants; it would also preclude sharding of <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.)\n<p></p>\n<p></p>Referring to another <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> using an identifier is fine. It is useless on the write side (since the identifier must be treated as an opaque value, since <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> can not reach outside of themselves). Read sides may freely use such information, however, to do interesting correlations.\n<p></p>\n<p></p>\n<p></p>How can I validate a <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> across a group of <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>?\n<p></p>\n<p></p>This is a common reaction to not being able to query across <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> anymore. There are several answers:\n<p></p>\n<p></p>* Do client-side validation.\n<p></p>* Use a read side.\n<p></p>* Use a saga.\n<p></p>* If those are all completely impractical, then it&apos;s time to consider if you got your <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> boundaries correct.\n<p></p>\n<p></p>\n<p></p>How can I guarantee referential integrity across <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>?\n<p></p>\n<p></p>You&apos;re still thinking in terms of foreign relations, not <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>. See last question. Also, remember that just because something would be in two tables in a relational design does not in any way suggest it should be two <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>. Designing an <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> is different.\n<p></p>\n<p></p>\n<p></p>How can I make sure a newly created user has a unique user name?\n<p></p>\n<p></p>This is a commonly occurring question since we&apos;re explicitly not performing cross-aggregate operations on the write side. We do, however, have a number of options:\n<p></p>\n<p></p>* Create a read-side of already allocated user names. Make the client query the read-side interactively as the user types in a name.\n<p></p>* Create a reactive saga to flag down and inactivate accounts that were nevertheless created with a duplicate user name. (Whether by extreme coincidence or maliciously or because of a faulty client.)\n<p></p>\n<p></p>\n<p></p>How can I verify that a customer identifier really exists when I place an order?\n<p></p>\n<p></p>Assuming customer and order are <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> here, it&apos;s clear that the order <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> cannot really validate this, since that would mean reaching out of the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n<p></p>\n<p></p>Checking up on it after the fact, in a saga or just in a read side that records &quot;broken&quot; orders, is one option. After all, the most important thing about an order is actually recording it, and presumably any interesting data about the recipient of the order is being copied into the order <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> (referring to the customer to find the address is bad design; the order was always made to be deliverd to a particular address, whether or not that customer changes their address in the future).\n<p></p>\n<p></p>Being able to use what data was recorded in this broken order means you&apos;ve got a chance to rescue it and rectify the situation - which makes a good bit more business sense rather than dropping the order on the floor because a foreign key constraint was violated!\n<p></p>\n<p></p>\n<p></p>How can I update a set of <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> with a single <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>?\n<p></p>\n<p></p>A single <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> can&apos;t act on a set of <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>. It just can&apos;t.\n<p></p>\n<p></p>First off, ask yourself whether you really need to update several <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> using just one <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>. What in the situation makes this a requirement?\n<p></p>\n<p></p>However, here&apos;s what you could do. Allow a new kind of &quot;bulk command&quot;, conceptually containing the command you want to issue, and a set of <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> (specified either explicitly or implicitly) that you want to issue it on. The write side isn&apos;t powerful enough to make the bulk action, but it&apos;s able to create a corresponding &quot;bulk event&quot;. A saga captures the event, and issues the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> on each of the specified <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>s. The saga can do rollback or send an email, as appropriate, if some of the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> fail.\n<p></p>\n<p></p>There are some advantages to this approach: we store the intent of the bulk action in the event store. The saga automates rollback or equivalent.\n<p></p>\n<p></p>Still, having to resort to this solution is a strong indication that your <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> boundaries are not drawn correctly. You might want to consider changing your <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> boundaries rather than building a saga for this.\n<p></p>\n<p></p>\n<p></p>What is sharding?\n<p></p>\n<p></p>A way to distribute large amounts of <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> on several write-side nodes. We can shard <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> easily because they are completely self-reliant.\n<p></p>\n<p></p>We can shard <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> easily because they don&apos;t have any external references.\n<p></p>\n<p></p>\n<p></p>Can an <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> send an <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> to another <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>?\n<p></p>\n<p></p>No.\n<p></p>\n<p></p>The factoring of your <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> will typically already make this idea impossible to express in code. But there&apos;s a deeper philosophical reason: go back and re-read the first sentence in the answer to &quot;What is an <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>?&quot;. If you manage to circumvent the <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> and just push <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> into another <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> somehow, you will have taken away that <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>&apos;s chance to participate in validation of changes. That&apos;s ultimately why we only allow <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> to be created as a result of <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>s validated by a <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> on an <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n<p></p>\n<p></p>\n<p></p>Can I call a read side from my <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>?\n<p></p>\n<p></p>No.\n<p></p>\n<p></p>\n<p></p>How do I send e-mail in a CQRS system?\n<p></p>\n<p></p>In an <xref href=\"Cqrs.Events.IEventHandler%602\" data-throw-if-not-resolved=\"false\"></xref> outside of the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>. Do not do it in the <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref>, as if the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> artefacts are not persisted due to losing a race with another <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> then the email will have been sent on a false premise.\n<p></p>********************************************\n<p></p>Also see http://cqrs.nu/Faq/aggregates.\n"
+  example: []
+  syntax:
+    content: public interface IAggregateRoot<TAuthenticationToken>
+    typeParameters:
+    - id: TAuthenticationToken
+    content.vb: Public Interface IAggregateRoot(Of TAuthenticationToken)
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+- uid: Cqrs.Domain.IAggregateRoot`1.Id
+  commentId: P:Cqrs.Domain.IAggregateRoot`1.Id
+  id: Id
+  parent: Cqrs.Domain.IAggregateRoot`1
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: IAggregateRoot<TAuthenticationToken>.Id
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.Id
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/IAggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Id
+    path: Framework/Cqrs/Domain/IAggregateRoot.cs
+    startLine: 146
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nThe identifier of this <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      Guid Id { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: >-
+      <DataMember>
+
+      ReadOnly Property Id As Guid
+  overload: Cqrs.Domain.IAggregateRoot`1.Id*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).Id
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).Id
+- uid: Cqrs.Domain.IAggregateRoot`1.Version
+  commentId: P:Cqrs.Domain.IAggregateRoot`1.Version
+  id: Version
+  parent: Cqrs.Domain.IAggregateRoot`1
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: IAggregateRoot<TAuthenticationToken>.Version
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.Version
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/IAggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Version
+    path: Framework/Cqrs/Domain/IAggregateRoot.cs
+    startLine: 152
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nThe current version of this <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      int Version { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <DataMember>
+
+      ReadOnly Property Version As Integer
+  overload: Cqrs.Domain.IAggregateRoot`1.Version*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).Version
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).Version
+- uid: Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges
+  commentId: M:Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges
+  id: GetUncommittedChanges
+  parent: Cqrs.Domain.IAggregateRoot`1
+  langs:
+  - csharp
+  - vb
+  name: GetUncommittedChanges()
+  nameWithType: IAggregateRoot<TAuthenticationToken>.GetUncommittedChanges()
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.GetUncommittedChanges()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/IAggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GetUncommittedChanges
+    path: Framework/Cqrs/Domain/IAggregateRoot.cs
+    startLine: 158
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nGet all applied changes that haven&apos;t yet been committed.\n"
+  example: []
+  syntax:
+    content: IEnumerable<IEvent<TAuthenticationToken>> GetUncommittedChanges()
+    return:
+      type: System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}}
+    content.vb: Function GetUncommittedChanges As IEnumerable(Of IEvent(Of TAuthenticationToken))
+  overload: Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges*
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).GetUncommittedChanges()
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).GetUncommittedChanges()
+- uid: Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted
+  commentId: M:Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted
+  id: MarkChangesAsCommitted
+  parent: Cqrs.Domain.IAggregateRoot`1
+  langs:
+  - csharp
+  - vb
+  name: MarkChangesAsCommitted()
+  nameWithType: IAggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted()
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/IAggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: MarkChangesAsCommitted
+    path: Framework/Cqrs/Domain/IAggregateRoot.cs
+    startLine: 163
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nMark all applied changes as committed, increment <xref href=\"Cqrs.Domain.IAggregateRoot%601.Version\" data-throw-if-not-resolved=\"false\"></xref> and flush the internal collection of changes.\n"
+  example: []
+  syntax:
+    content: void MarkChangesAsCommitted()
+    content.vb: Sub MarkChangesAsCommitted
+  overload: Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted*
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted()
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted()
+- uid: Cqrs.Domain.IAggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+  commentId: M:Cqrs.Domain.IAggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+  id: LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+  parent: Cqrs.Domain.IAggregateRoot`1
+  langs:
+  - csharp
+  - vb
+  name: LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>>)
+  nameWithType: IAggregateRoot<TAuthenticationToken>.LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>>)
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.LoadFromHistory(System.Collections.Generic.IEnumerable<Cqrs.Events.IEvent<TAuthenticationToken>>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/IAggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: LoadFromHistory
+    path: Framework/Cqrs/Domain/IAggregateRoot.cs
+    startLine: 169
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nApply all the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> in <span class=\"paramref\">history</span>\nusing event replay to this instance.\n"
+  example: []
+  syntax:
+    content: void LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>> history)
+    parameters:
+    - id: history
+      type: System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}}
+    content.vb: Sub LoadFromHistory(history As IEnumerable(Of IEvent(Of TAuthenticationToken)))
+  overload: Cqrs.Domain.IAggregateRoot`1.LoadFromHistory*
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).LoadFromHistory(IEnumerable(Of IEvent(Of TAuthenticationToken)))
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).LoadFromHistory(System.Collections.Generic.IEnumerable(Of Cqrs.Events.IEvent(Of TAuthenticationToken)))
+  name.vb: LoadFromHistory(IEnumerable(Of IEvent(Of TAuthenticationToken)))
+references:
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  isExternal: false
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Commands.ICommand`1
+  commentId: T:Cqrs.Commands.ICommand`1
+  isExternal: false
+  name: ICommand<TAuthenticationToken>
+  nameWithType: ICommand<TAuthenticationToken>
+  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>
+  nameWithType.vb: ICommand(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken)
+  name.vb: ICommand(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: Cqrs.Commands.ICommandHandler`2
+  commentId: T:Cqrs.Commands.ICommandHandler`2
+  isExternal: false
+  name: ICommandHandler<TAuthenticationToken, TCommand>
+  nameWithType: ICommandHandler<TAuthenticationToken, TCommand>
+  fullName: Cqrs.Commands.ICommandHandler<TAuthenticationToken, TCommand>
+  nameWithType.vb: ICommandHandler(Of TAuthenticationToken, TCommand)
+  fullName.vb: Cqrs.Commands.ICommandHandler(Of TAuthenticationToken, TCommand)
+  name.vb: ICommandHandler(Of TAuthenticationToken, TCommand)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommandHandler`2
+    name: ICommandHandler
+    nameWithType: ICommandHandler
+    fullName: Cqrs.Commands.ICommandHandler
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommandHandler`2
+    name: ICommandHandler
+    nameWithType: ICommandHandler
+    fullName: Cqrs.Commands.ICommandHandler
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEventHandler`2
+  commentId: T:Cqrs.Events.IEventHandler`2
+  isExternal: false
+  name: IEventHandler<TAuthenticationToken, TEvent>
+  nameWithType: IEventHandler<TAuthenticationToken, TEvent>
+  fullName: Cqrs.Events.IEventHandler<TAuthenticationToken, TEvent>
+  nameWithType.vb: IEventHandler(Of TAuthenticationToken, TEvent)
+  fullName.vb: Cqrs.Events.IEventHandler(Of TAuthenticationToken, TEvent)
+  name.vb: IEventHandler(Of TAuthenticationToken, TEvent)
+  spec.csharp:
+  - uid: Cqrs.Events.IEventHandler`2
+    name: IEventHandler
+    nameWithType: IEventHandler
+    fullName: Cqrs.Events.IEventHandler
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TEvent
+    nameWithType: TEvent
+    fullName: TEvent
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEventHandler`2
+    name: IEventHandler
+    nameWithType: IEventHandler
+    fullName: Cqrs.Events.IEventHandler
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TEvent
+    nameWithType: TEvent
+    fullName: TEvent
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain
+  commentId: N:Cqrs.Domain
+  isExternal: false
+  name: Cqrs.Domain
+  nameWithType: Cqrs.Domain
+  fullName: Cqrs.Domain
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Cqrs.Domain.IAggregateRoot`1.Id*
+  commentId: Overload:Cqrs.Domain.IAggregateRoot`1.Id
+  isExternal: false
+  name: Id
+  nameWithType: IAggregateRoot<TAuthenticationToken>.Id
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.Id
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).Id
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).Id
+- uid: Cqrs.Domain.IAggregateRoot`1.Version*
+  commentId: Overload:Cqrs.Domain.IAggregateRoot`1.Version
+  isExternal: false
+  name: Version
+  nameWithType: IAggregateRoot<TAuthenticationToken>.Version
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.Version
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).Version
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).Version
+- uid: Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges*
+  commentId: Overload:Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges
+  isExternal: false
+  name: GetUncommittedChanges
+  nameWithType: IAggregateRoot<TAuthenticationToken>.GetUncommittedChanges
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.GetUncommittedChanges
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).GetUncommittedChanges
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).GetUncommittedChanges
+- uid: System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}}
+  commentId: T:System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<IEvent<TAuthenticationToken>>
+  nameWithType: IEnumerable<IEvent<TAuthenticationToken>>
+  fullName: System.Collections.Generic.IEnumerable<Cqrs.Events.IEvent<TAuthenticationToken>>
+  nameWithType.vb: IEnumerable(Of IEvent(Of TAuthenticationToken))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Cqrs.Events.IEvent(Of TAuthenticationToken))
+  name.vb: IEnumerable(Of IEvent(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: false
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: Cqrs.Domain.IAggregateRoot`1.Version
+  commentId: P:Cqrs.Domain.IAggregateRoot`1.Version
+  isExternal: false
+  name: Version
+  nameWithType: IAggregateRoot<TAuthenticationToken>.Version
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.Version
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).Version
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).Version
+- uid: Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted*
+  commentId: Overload:Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted
+  isExternal: false
+  name: MarkChangesAsCommitted
+  nameWithType: IAggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted
+- uid: Cqrs.Domain.IAggregateRoot`1.LoadFromHistory*
+  commentId: Overload:Cqrs.Domain.IAggregateRoot`1.LoadFromHistory
+  isExternal: false
+  name: LoadFromHistory
+  nameWithType: IAggregateRoot<TAuthenticationToken>.LoadFromHistory
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.LoadFromHistory
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).LoadFromHistory
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).LoadFromHistory

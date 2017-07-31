@@ -1,0 +1,571 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Commands.ICommandHandler`2
+  commentId: T:Cqrs.Commands.ICommandHandler`2
+  id: ICommandHandler`2
+  parent: Cqrs.Commands
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: ICommandHandler<TAuthenticationToken, TCommand>
+  nameWithType: ICommandHandler<TAuthenticationToken, TCommand>
+  fullName: Cqrs.Commands.ICommandHandler<TAuthenticationToken, TCommand>
+  type: Interface
+  source:
+    remote:
+      path: Framework/Cqrs/Commands/ICommandHandler.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: ICommandHandler
+    path: Framework/Cqrs/Commands/ICommandHandler.cs
+    startLine: 64
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Commands
+  summary: "\nAn <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> receives an <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> and brokers a result from the appropriate <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n&quot;A result&quot; is either a successful application of the command, or an exception.\nThis is the common sequence of steps an <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> might follow:\n\nValidate the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> on its own merits.\nAsk an <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> to handle the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>.\nIf validation is successful, 0..n <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> artefacts (1 is common) are queued for publishing.\nAttempt to persist the new <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> artefacts. If there&apos;s a concurrency conflict during this step, either give up, or retry things.\nDispatch the queued <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> artefacts.\n"
+  remarks: "\nShould a <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> affect one or several <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>s?\n\nOnly one.\n\n\nDo I put logic in <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref>?\n\nYes. Exactly what logic depends on your factoring.\nThe logic for validating the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> on its own merits always gets executed in the <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref>, although we recommend refactoring these into an <xref href=\"Cqrs.Commands.ICommandValidator%602\" data-throw-if-not-resolved=\"false\"></xref>.\nProvided validation is successful we recommend a more functional factoring, where the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> exists independently of the <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> and the next step would be to load the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> from the <xref href=\"Cqrs.Domain.IUnitOfWork%601\" data-throw-if-not-resolved=\"false\"></xref> and request the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> handle the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> itself.\nThe <xref href=\"Cqrs.Domain.IUnitOfWork%601\" data-throw-if-not-resolved=\"false\"></xref> should then have uncommitted <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> artefacts as a results of asking the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> to handle the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>.\nFinally the <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> should instruct the <xref href=\"Cqrs.Domain.IUnitOfWork%601\" data-throw-if-not-resolved=\"false\"></xref> to <xref href=\"Cqrs.Domain.IUnitOfWork%601.Commit\" data-throw-if-not-resolved=\"false\"></xref> all uncommited <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> artefacts.\n\nHowever you have it, the logic boils down to validation and some sequence of steps that lead to the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> becoming an <xref href=\"System.Exception\" data-throw-if-not-resolved=\"false\"></xref> or <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>(s). If you&apos;re tempted to go beyond this, see the rest of the remarks.\n\n\nCan I call a read side (such as a read store, data store or <xref href=\"Cqrs.Domain.IAggregateRepository%601\" data-throw-if-not-resolved=\"false\"></xref>) from my <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref>?\n\nNo.\n\n\nCan I do logging, security, or auditing in my <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref>?\n\nYes. The decorator pattern comes in handy here to separate those concerns neatly.\n\n\nHow are conflicts between concurrent <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>s handled in the <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref>?\n\nThe place where the new <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> artefacts for the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> are persisted is the only place in the system where we need to worry about concurrency conflicts. The <xref href=\"Cqrs.Events.IEventStore%601\" data-throw-if-not-resolved=\"false\"></xref> knows the sequence number of the latest <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> applied on that <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>, and the <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> knows the sequence number of the last <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> it read. If these numbers do not agree, it means some other thread or process got there first. The <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> can then load up the events again and make a new attempt.\n\n\nShould I do things that have side-effects in the outside world (such as sending email) directly in a <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref>?\n\nNo, since a concurrency conflict will mean the <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> logic will be run again. Do such things in an Apply <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> method in an <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n********************************************\nAlso see http://cqrs.nu/Faq/command-handlers.\n"
+  example: []
+  syntax:
+    content: 'public interface ICommandHandler<TAuthenticationToken, in TCommand> : IMessageHandler<TCommand>, ICommandHandle, IHandler where TCommand : ICommand<TAuthenticationToken>'
+    typeParameters:
+    - id: TAuthenticationToken
+    - id: TCommand
+    content.vb: >-
+      Public Interface ICommandHandler(Of TAuthenticationToken, In TCommand As ICommand(Of TAuthenticationToken))
+          Inherits IMessageHandler(Of TCommand), ICommandHandle
+  inheritedMembers:
+  - Cqrs.Messages.IMessageHandler{{TCommand}}.Handle({TCommand})
+  nameWithType.vb: ICommandHandler(Of TAuthenticationToken, TCommand)
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+  fullName.vb: Cqrs.Commands.ICommandHandler(Of TAuthenticationToken, TCommand)
+  name.vb: ICommandHandler(Of TAuthenticationToken, TCommand)
+references:
+- uid: Cqrs.Commands.ICommandHandler`2
+  commentId: T:Cqrs.Commands.ICommandHandler`2
+  isExternal: false
+  name: ICommandHandler<TAuthenticationToken, TCommand>
+  nameWithType: ICommandHandler<TAuthenticationToken, TCommand>
+  fullName: Cqrs.Commands.ICommandHandler<TAuthenticationToken, TCommand>
+  nameWithType.vb: ICommandHandler(Of TAuthenticationToken, TCommand)
+  fullName.vb: Cqrs.Commands.ICommandHandler(Of TAuthenticationToken, TCommand)
+  name.vb: ICommandHandler(Of TAuthenticationToken, TCommand)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommandHandler`2
+    name: ICommandHandler
+    nameWithType: ICommandHandler
+    fullName: Cqrs.Commands.ICommandHandler
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommandHandler`2
+    name: ICommandHandler
+    nameWithType: ICommandHandler
+    fullName: Cqrs.Commands.ICommandHandler
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Commands.ICommand`1
+  commentId: T:Cqrs.Commands.ICommand`1
+  isExternal: false
+  name: ICommand<TAuthenticationToken>
+  nameWithType: ICommand<TAuthenticationToken>
+  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>
+  nameWithType.vb: ICommand(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken)
+  name.vb: ICommand(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  isExternal: false
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Commands.ICommandValidator`2
+  commentId: T:Cqrs.Commands.ICommandValidator`2
+  isExternal: false
+  name: ICommandValidator<TAuthenticationToken, TCommand>
+  nameWithType: ICommandValidator<TAuthenticationToken, TCommand>
+  fullName: Cqrs.Commands.ICommandValidator<TAuthenticationToken, TCommand>
+  nameWithType.vb: ICommandValidator(Of TAuthenticationToken, TCommand)
+  fullName.vb: Cqrs.Commands.ICommandValidator(Of TAuthenticationToken, TCommand)
+  name.vb: ICommandValidator(Of TAuthenticationToken, TCommand)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommandValidator`2
+    name: ICommandValidator
+    nameWithType: ICommandValidator
+    fullName: Cqrs.Commands.ICommandValidator
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommandValidator`2
+    name: ICommandValidator
+    nameWithType: ICommandValidator
+    fullName: Cqrs.Commands.ICommandValidator
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IUnitOfWork`1
+  commentId: T:Cqrs.Domain.IUnitOfWork`1
+  isExternal: false
+  name: IUnitOfWork<TAuthenticationToken>
+  nameWithType: IUnitOfWork<TAuthenticationToken>
+  fullName: Cqrs.Domain.IUnitOfWork<TAuthenticationToken>
+  nameWithType.vb: IUnitOfWork(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IUnitOfWork(Of TAuthenticationToken)
+  name.vb: IUnitOfWork(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IUnitOfWork`1
+    name: IUnitOfWork
+    nameWithType: IUnitOfWork
+    fullName: Cqrs.Domain.IUnitOfWork
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IUnitOfWork`1
+    name: IUnitOfWork
+    nameWithType: IUnitOfWork
+    fullName: Cqrs.Domain.IUnitOfWork
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IUnitOfWork`1.Commit
+  commentId: M:Cqrs.Domain.IUnitOfWork`1.Commit
+  isExternal: false
+  name: Commit()
+  nameWithType: IUnitOfWork<TAuthenticationToken>.Commit()
+  fullName: Cqrs.Domain.IUnitOfWork<TAuthenticationToken>.Commit()
+  nameWithType.vb: IUnitOfWork(Of TAuthenticationToken).Commit()
+  fullName.vb: Cqrs.Domain.IUnitOfWork(Of TAuthenticationToken).Commit()
+  spec.csharp:
+  - uid: Cqrs.Domain.IUnitOfWork`1.Commit
+    name: Commit
+    nameWithType: IUnitOfWork<TAuthenticationToken>.Commit
+    fullName: Cqrs.Domain.IUnitOfWork<TAuthenticationToken>.Commit
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Domain.IUnitOfWork`1.Commit
+    name: Commit
+    nameWithType: IUnitOfWork(Of TAuthenticationToken).Commit
+    fullName: Cqrs.Domain.IUnitOfWork(Of TAuthenticationToken).Commit
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: Cqrs.Domain.IAggregateRepository`1
+  commentId: T:Cqrs.Domain.IAggregateRepository`1
+  isExternal: false
+  name: IAggregateRepository<TAuthenticationToken>
+  nameWithType: IAggregateRepository<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRepository<TAuthenticationToken>
+  nameWithType.vb: IAggregateRepository(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRepository(Of TAuthenticationToken)
+  name.vb: IAggregateRepository(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRepository`1
+    name: IAggregateRepository
+    nameWithType: IAggregateRepository
+    fullName: Cqrs.Domain.IAggregateRepository
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRepository`1
+    name: IAggregateRepository
+    nameWithType: IAggregateRepository
+    fullName: Cqrs.Domain.IAggregateRepository
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEventStore`1
+  commentId: T:Cqrs.Events.IEventStore`1
+  isExternal: false
+  name: IEventStore<TAuthenticationToken>
+  nameWithType: IEventStore<TAuthenticationToken>
+  fullName: Cqrs.Events.IEventStore<TAuthenticationToken>
+  nameWithType.vb: IEventStore(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEventStore(Of TAuthenticationToken)
+  name.vb: IEventStore(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEventStore`1
+    name: IEventStore
+    nameWithType: IEventStore
+    fullName: Cqrs.Events.IEventStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEventStore`1
+    name: IEventStore
+    nameWithType: IEventStore
+    fullName: Cqrs.Events.IEventStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Commands
+  commentId: N:Cqrs.Commands
+  isExternal: false
+  name: Cqrs.Commands
+  nameWithType: Cqrs.Commands
+  fullName: Cqrs.Commands
+- uid: Cqrs.Messages.IMessageHandler{{TCommand}}.Handle({TCommand})
+  commentId: M:Cqrs.Messages.IMessageHandler{`1}.Handle(`1)
+  parent: Cqrs.Messages.IMessageHandler{{TCommand}}
+  definition: Cqrs.Messages.IMessageHandler`1.Handle(`0)
+  name: Handle(TCommand)
+  nameWithType: IMessageHandler<TCommand>.Handle(TCommand)
+  fullName: Cqrs.Messages.IMessageHandler<TCommand>.Handle(TCommand)
+  nameWithType.vb: IMessageHandler(Of TCommand).Handle(TCommand)
+  fullName.vb: Cqrs.Messages.IMessageHandler(Of TCommand).Handle(TCommand)
+  spec.csharp:
+  - uid: Cqrs.Messages.IMessageHandler`1.Handle(`0)
+    name: Handle
+    nameWithType: IMessageHandler<TCommand>.Handle
+    fullName: Cqrs.Messages.IMessageHandler<TCommand>.Handle
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Messages.IMessageHandler`1.Handle(`0)
+    name: Handle
+    nameWithType: IMessageHandler(Of TCommand).Handle
+    fullName: Cqrs.Messages.IMessageHandler(Of TCommand).Handle
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Cqrs.Messages.IMessageHandler`1.Handle(`0)
+  commentId: M:Cqrs.Messages.IMessageHandler`1.Handle(`0)
+  isExternal: false
+  name: Handle(TMessage)
+  nameWithType: IMessageHandler<TMessage>.Handle(TMessage)
+  fullName: Cqrs.Messages.IMessageHandler<TMessage>.Handle(TMessage)
+  nameWithType.vb: IMessageHandler(Of TMessage).Handle(TMessage)
+  fullName.vb: Cqrs.Messages.IMessageHandler(Of TMessage).Handle(TMessage)
+  spec.csharp:
+  - uid: Cqrs.Messages.IMessageHandler`1.Handle(`0)
+    name: Handle
+    nameWithType: IMessageHandler<TMessage>.Handle
+    fullName: Cqrs.Messages.IMessageHandler<TMessage>.Handle
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Messages.IMessageHandler`1.Handle(`0)
+    name: Handle
+    nameWithType: IMessageHandler(Of TMessage).Handle
+    fullName: Cqrs.Messages.IMessageHandler(Of TMessage).Handle
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Messages.IMessageHandler{{TCommand}}
+  commentId: T:Cqrs.Messages.IMessageHandler{`1}
+  parent: Cqrs.Messages
+  definition: Cqrs.Messages.IMessageHandler`1
+  name: IMessageHandler<TCommand>
+  nameWithType: IMessageHandler<TCommand>
+  fullName: Cqrs.Messages.IMessageHandler<TCommand>
+  nameWithType.vb: IMessageHandler(Of TCommand)
+  fullName.vb: Cqrs.Messages.IMessageHandler(Of TCommand)
+  name.vb: IMessageHandler(Of TCommand)
+  spec.csharp:
+  - uid: Cqrs.Messages.IMessageHandler`1
+    name: IMessageHandler
+    nameWithType: IMessageHandler
+    fullName: Cqrs.Messages.IMessageHandler
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Messages.IMessageHandler`1
+    name: IMessageHandler
+    nameWithType: IMessageHandler
+    fullName: Cqrs.Messages.IMessageHandler
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Messages.IMessageHandler`1
+  commentId: T:Cqrs.Messages.IMessageHandler`1
+  isExternal: false
+  name: IMessageHandler<TMessage>
+  nameWithType: IMessageHandler<TMessage>
+  fullName: Cqrs.Messages.IMessageHandler<TMessage>
+  nameWithType.vb: IMessageHandler(Of TMessage)
+  fullName.vb: Cqrs.Messages.IMessageHandler(Of TMessage)
+  name.vb: IMessageHandler(Of TMessage)
+  spec.csharp:
+  - uid: Cqrs.Messages.IMessageHandler`1
+    name: IMessageHandler
+    nameWithType: IMessageHandler
+    fullName: Cqrs.Messages.IMessageHandler
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Messages.IMessageHandler`1
+    name: IMessageHandler
+    nameWithType: IMessageHandler
+    fullName: Cqrs.Messages.IMessageHandler
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Messages
+  commentId: N:Cqrs.Messages
+  isExternal: false
+  name: Cqrs.Messages
+  nameWithType: Cqrs.Messages
+  fullName: Cqrs.Messages

@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace Cqrs.Domain
+   | CQRS.NET API Reference Documentation version 2.2 </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace Cqrs.Domain
+   | CQRS.NET API Reference Documentation version 2.2 ">
+    <meta name="generator" content="docfx 2.21.2.0">
+    
+    <link rel="shortcut icon" href="../../../../../favicon.ico">
+    <link rel="stylesheet" href="../../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:rel" content="../../../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../../index.html">
+                <img id="logo" class="svg" src="../../../../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Cqrs.Domain">
+  
+  <h1 id="Cqrs_Domain" data-uid="Cqrs.Domain" class="text-break">Namespace Cqrs.Domain
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="Cqrs.Domain.AggregateRepository-1.html">AggregateRepository&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>Provides basic repository methods for operations with instances of <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> using an <a class="xref" href="Cqrs.Events.IEventStore-1.html">IEventStore&lt;TAuthenticationToken&gt;</a>
+that also publishes events once saved.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Domain.AggregateRoot-1.html">AggregateRoot&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>A larger unit of encapsulation than just a class. Every transaction is scoped to a single aggregate. The lifetimes of the components of an aggregate are bounded by the lifetime of the entire aggregate.</p>
+<p>Concretely, an aggregate will handle commands, apply events, and have a state model encapsulated within it that allows it to implement the required command validation, thus upholding the invariants (business rules) of the aggregate.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Domain.DtoAggregateRoot-2.html">DtoAggregateRoot&lt;TAuthenticationToken, TDto&gt;</a></h4>
+      <section><p>An <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> for operating on <a class="xref" href="Cqrs.Domain.IDto.html">IDto</a> instances.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Domain.Saga-1.html">Saga&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>An independent component that reacts to domain <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> in a cross-<a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>, eventually consistent manner. Time can also be a trigger. A <a class="xref" href="Cqrs.Domain.Saga-1.html">Saga&lt;TAuthenticationToken&gt;</a> can sometimes be purely reactive, and sometimes represent workflows.</p>
+<p>From an implementation perspective, a <a class="xref" href="Cqrs.Domain.Saga-1.html">Saga&lt;TAuthenticationToken&gt;</a> is a state machine that is driven forward by incoming <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> (which may come from many <a class="xref" href="Cqrs.Domain.AggregateRoot-1.html">AggregateRoot&lt;TAuthenticationToken&gt;</a> or other <a class="xref" href="Cqrs.Domain.Saga-1.html">Saga&lt;TAuthenticationToken&gt;</a>). Some states will have side effects, such as sending <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>, talking to external web services, or sending emails.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Domain.SagaEventHandler-2.html">SagaEventHandler&lt;TAuthenticationToken, TSaga&gt;</a></h4>
+      <section><p>A process manager that you can implement <a class="xref" href="Cqrs.Events.IEventHandler.html">IEventHandler</a> instances on top of.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Domain.SagaRepository-1.html">SagaRepository&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>Provides basic repository methods for operations with instances of <a class="xref" href="Cqrs.Domain.ISaga-1.html">ISaga&lt;TAuthenticationToken&gt;</a>.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Domain.SagaUnitOfWork-1.html">SagaUnitOfWork&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>Provides a basic container to control when <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> are store in an <a class="xref" href="Cqrs.Events.IEventStore-1.html">IEventStore&lt;TAuthenticationToken&gt;</a> and then published on an <a class="xref" href="Cqrs.Events.IEventPublisher-1.html">IEventPublisher&lt;TAuthenticationToken&gt;</a>.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Domain.UnitOfWork-1.html">UnitOfWork&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>Provides a basic container to control when <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> are store in an <a class="xref" href="Cqrs.Events.IEventStore-1.html">IEventStore&lt;TAuthenticationToken&gt;</a> and then published on an <a class="xref" href="Cqrs.Events.IEventPublisher-1.html">IEventPublisher&lt;TAuthenticationToken&gt;</a>.</p>
+</section>
+    <h3 id="interfaces">Interfaces
+  </h3>
+      <h4><a class="xref" href="Cqrs.Domain.IAggregateRepository-1.html">IAggregateRepository&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>Provides basic repository methods for operations with instances of <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>An <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> is a larger unit of encapsulation than just a class. Every transaction is scoped to a single aggregate. The lifetimes of the components of an <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> are bounded by the lifetime of the entire <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.</p>
+<p><p>Concretely, an <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> will handle <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>s, apply <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a>s, and have a state model encapsulated within it that allows it to implement the required command validation, thus upholding the invariants (business rules) of the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Domain.IDto.html">IDto</a></h4>
+      <section><p>A basic data transfer object suitable for CRUD operations.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Domain.ISaga-1.html">ISaga&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>An independent component that reacts to domain <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> in a cross-<a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>, eventually consistent manner. Time can also be a trigger. A <a class="xref" href="Cqrs.Domain.Saga-1.html">Saga&lt;TAuthenticationToken&gt;</a> can sometimes be purely reactive, and sometimes represent workflows.</p>
+<p>From an implementation perspective, a <a class="xref" href="Cqrs.Domain.Saga-1.html">Saga&lt;TAuthenticationToken&gt;</a> is a state machine that is driven forward by incoming <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> (which may come from many <a class="xref" href="Cqrs.Domain.AggregateRoot-1.html">AggregateRoot&lt;TAuthenticationToken&gt;</a> or other <a class="xref" href="Cqrs.Domain.Saga-1.html">Saga&lt;TAuthenticationToken&gt;</a>). Some states will have side effects, such as sending <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>, talking to external web services, or sending emails.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Domain.ISagaRepository-1.html">ISagaRepository&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>Provides basic repository methods for operations with instances of <a class="xref" href="Cqrs.Domain.ISaga-1.html">ISaga&lt;TAuthenticationToken&gt;</a>.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Domain.ISagaUnitOfWork-1.html">ISagaUnitOfWork&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>This is a Unit of Work for sagas</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Domain.IUnitOfWork-1.html">IUnitOfWork&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>Provides a basic container to control when <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> are store in an <a class="xref" href="Cqrs.Events.IEventStore-1.html">IEventStore&lt;TAuthenticationToken&gt;</a> and then published on an <a class="xref" href="Cqrs.Events.IEventPublisher-1.html">IEventPublisher&lt;TAuthenticationToken&gt;</a>.</p>
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../../styles/main.js"></script>
+  </body>
+</html>

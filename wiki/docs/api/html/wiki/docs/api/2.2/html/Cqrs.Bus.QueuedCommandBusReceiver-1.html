@@ -1,0 +1,602 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class QueuedCommandBusReceiver&lt;TAuthenticationToken&gt;
+   | CQRS.NET API Reference Documentation version 2.2 </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class QueuedCommandBusReceiver&lt;TAuthenticationToken&gt;
+   | CQRS.NET API Reference Documentation version 2.2 ">
+    <meta name="generator" content="docfx 2.21.2.0">
+    
+    <link rel="shortcut icon" href="../../../../../favicon.ico">
+    <link rel="stylesheet" href="../../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:rel" content="../../../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../../index.html">
+                <img id="logo" class="svg" src="../../../../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1">
+  
+  
+  <h1 id="Cqrs_Bus_QueuedCommandBusReceiver_1" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1" class="text-break">Class QueuedCommandBusReceiver&lt;TAuthenticationToken&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Receives instances of a <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> from the command bus, places them into one of several internal concurrent queues and then processes the commands one at a time per queue.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">QueuedCommandBusReceiver&lt;TAuthenticationToken&gt;</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Cqrs.Bus.html">Cqrs.Bus</a></h6>
+  <h6><strong>Assembly</strong>: Cqrs.dll</h6>
+  <h5 id="Cqrs_Bus_QueuedCommandBusReceiver_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class QueuedCommandBusReceiver&lt;TAuthenticationToken&gt; : ICommandReceiver&lt;TAuthenticationToken&gt;, ICommandReceiver</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TAuthenticationToken</span></td>
+        <td><p>The <span class="xref">System.Type</span> of authentication token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1__ctor_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.#ctor*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1__ctor_Cqrs_Authentication_IAuthenticationTokenHelper__0__cdmdotnet_Logging_ICorrelationIdHelper_cdmdotnet_Logging_ILogger_Cqrs_Configuration_IConfigurationManager_Cqrs_Bus_IBusHelper_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.#ctor(Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,Cqrs.Configuration.IConfigurationManager,Cqrs.Bus.IBusHelper)">QueuedCommandBusReceiver(IAuthenticationTokenHelper&lt;TAuthenticationToken&gt;, ICorrelationIdHelper, ILogger, IConfigurationManager, IBusHelper)</h4>
+  <div class="markdown level1 summary"><p>Instantiates a new instance of <a class="xref" href="Cqrs.Bus.QueuedCommandBusReceiver-1.html">QueuedCommandBusReceiver&lt;TAuthenticationToken&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected QueuedCommandBusReceiver(IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IConfigurationManager configurationManager, IBusHelper busHelper)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Authentication.IAuthenticationTokenHelper-1.html">IAuthenticationTokenHelper</a>&lt;TAuthenticationToken&gt;</td>
+        <td><span class="parametername">authenticationTokenHelper</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">cdmdotnet.Logging.ICorrelationIdHelper</span></td>
+        <td><span class="parametername">correlationIdHelper</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">cdmdotnet.Logging.ILogger</span></td>
+        <td><span class="parametername">logger</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Cqrs.Configuration.IConfigurationManager.html">IConfigurationManager</a></td>
+        <td><span class="parametername">configurationManager</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Cqrs.Bus.IBusHelper.html">IBusHelper</a></td>
+        <td><span class="parametername">busHelper</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_AuthenticationTokenHelper_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.AuthenticationTokenHelper*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_AuthenticationTokenHelper" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.AuthenticationTokenHelper">AuthenticationTokenHelper</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="Cqrs.Authentication.IAuthenticationTokenHelper-1.html">IAuthenticationTokenHelper&lt;TAuthenticationToken&gt;</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; AuthenticationTokenHelper { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Authentication.IAuthenticationTokenHelper-1.html">IAuthenticationTokenHelper</a>&lt;TAuthenticationToken&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_BusHelper_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.BusHelper*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_BusHelper" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.BusHelper">BusHelper</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="Cqrs.Bus.IBusHelper.html">IBusHelper</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IBusHelper BusHelper { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Bus.IBusHelper.html">IBusHelper</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_ConfigurationManager_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.ConfigurationManager*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_ConfigurationManager" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.ConfigurationManager">ConfigurationManager</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="Cqrs.Configuration.IConfigurationManager.html">IConfigurationManager</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IConfigurationManager ConfigurationManager { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Configuration.IConfigurationManager.html">IConfigurationManager</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_CorrelationIdHelper_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.CorrelationIdHelper*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_CorrelationIdHelper" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.CorrelationIdHelper">CorrelationIdHelper</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">cdmdotnet.Logging.ICorrelationIdHelper</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ICorrelationIdHelper CorrelationIdHelper { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">cdmdotnet.Logging.ICorrelationIdHelper</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_Logger_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.Logger*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_Logger" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.Logger">Logger</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">cdmdotnet.Logging.ILogger</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ILogger Logger { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">cdmdotnet.Logging.ILogger</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_QueueCount_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.QueueCount*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_QueueCount" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.QueueCount">QueueCount</h4>
+  <div class="markdown level1 summary"><p>The current number of queues in <a class="xref" href="Cqrs.Bus.QueuedCommandBusReceiver-1.html#Cqrs_Bus_QueuedCommandBusReceiver_1_QueueTracker">QueueTracker</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int QueueCount { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_QueueNames_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.QueueNames*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_QueueNames" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.QueueNames">QueueNames</h4>
+  <div class="markdown level1 summary"><p>Gets the names of all queues in <a class="xref" href="Cqrs.Bus.QueuedCommandBusReceiver-1.html#Cqrs_Bus_QueuedCommandBusReceiver_1_QueueTracker">QueueTracker</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ICollection&lt;string&gt; QueueNames { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_QueueTracker_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTracker*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_QueueTracker" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTracker">QueueTracker</h4>
+  <div class="markdown level1 summary"><p>The queues keyed by an identifier.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static ConcurrentDictionary&lt;string, ConcurrentQueue&lt;ICommand&lt;TAuthenticationToken&gt;&gt;&gt; QueueTracker { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Concurrent.ConcurrentDictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Collections.Concurrent.ConcurrentQueue</span>&lt;<a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand</a>&lt;TAuthenticationToken&gt;&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_QueueTrackerLock_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTrackerLock*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_QueueTrackerLock" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTrackerLock">QueueTrackerLock</h4>
+  <div class="markdown level1 summary"><p>A <span class="xref">System.Threading.ReaderWriterLockSlim</span> for providing a lock mechanism around the main <a class="xref" href="Cqrs.Bus.QueuedCommandBusReceiver-1.html#Cqrs_Bus_QueuedCommandBusReceiver_1_QueueTracker">QueueTracker</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ReaderWriterLockSlim QueueTrackerLock { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.ReaderWriterLockSlim</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_Routes_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.Routes*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_Routes" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.Routes">Routes</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the routes or handlers that will be executed as the commands arrive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract IDictionary&lt;Type, IList&lt;Action&lt;IMessage&gt;&gt;&gt; Routes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IDictionary</span>&lt;<span class="xref">System.Type</span>, <span class="xref">System.Collections.Generic.IList</span>&lt;<span class="xref">System.Action</span>&lt;<a class="xref" href="Cqrs.Messages.IMessage.html">IMessage</a>&gt;&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_CreateQueueAndAttachListenerIfNotExist_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.CreateQueueAndAttachListenerIfNotExist*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_CreateQueueAndAttachListenerIfNotExist_System_String_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.CreateQueueAndAttachListenerIfNotExist(System.String)">CreateQueueAndAttachListenerIfNotExist(String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the queue exists, if it doesn&apos;t it creates a new queue in <a class="xref" href="Cqrs.Bus.QueuedCommandBusReceiver-1.html#Cqrs_Bus_QueuedCommandBusReceiver_1_QueueTracker">QueueTracker</a> and then starts a separate <span class="xref">System.Threading.Thread</span> running <a class="xref" href="Cqrs.Bus.QueuedCommandBusReceiver-1.html#Cqrs_Bus_QueuedCommandBusReceiver_1_DequeuAndProcessCommand_System_String_">DequeuAndProcessCommand(String)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void CreateQueueAndAttachListenerIfNotExist(string queueName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">queueName</span></td>
+        <td><p>The name of the queue.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_DequeuAndProcessCommand_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.DequeuAndProcessCommand*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_DequeuAndProcessCommand_System_String_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.DequeuAndProcessCommand(System.String)">DequeuAndProcessCommand(String)</h4>
+  <div class="markdown level1 summary"><p>Infinitely runs a loop checking if the queue exists in <a class="xref" href="Cqrs.Bus.QueuedCommandBusReceiver-1.html#Cqrs_Bus_QueuedCommandBusReceiver_1_QueueTracker">QueueTracker</a>
+and then dequeues <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> one at a time, pausing for 0.1 seconds between loops.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void DequeuAndProcessCommand(string queueName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">queueName</span></td>
+        <td><p>The name of the queue.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_EnqueueCommand_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.EnqueueCommand*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_EnqueueCommand_System_String_Cqrs_Commands_ICommand__0__" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.EnqueueCommand(System.String,Cqrs.Commands.ICommand{`0})">EnqueueCommand(String, ICommand&lt;TAuthenticationToken&gt;)</h4>
+  <div class="markdown level1 summary"><p>Places the provided <span class="paramref">command</span> into the appropriate queue in the <a class="xref" href="Cqrs.Bus.QueuedCommandBusReceiver-1.html#Cqrs_Bus_QueuedCommandBusReceiver_1_QueueTracker">QueueTracker</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void EnqueueCommand(string targetQueueName, ICommand&lt;TAuthenticationToken&gt; command)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">targetQueueName</span></td>
+        <td><p>The name of the target queue to place the command into</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand</a>&lt;TAuthenticationToken&gt;</td>
+        <td><span class="parametername">command</span></td>
+        <td><p>The <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> to handle.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_ReceiveCommand_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.ReceiveCommand*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_ReceiveCommand_Cqrs_Commands_ICommand__0__" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.ReceiveCommand(Cqrs.Commands.ICommand{`0})">ReceiveCommand(ICommand&lt;TAuthenticationToken&gt;)</h4>
+  <div class="markdown level1 summary"><p>Receives a <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> from the command bus.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool ? ReceiveCommand(ICommand&lt;TAuthenticationToken&gt; command)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand</a>&lt;TAuthenticationToken&gt;</td>
+        <td><span class="parametername">command</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="implements">Implements</h5>
+      <div><a class="xref" href="Cqrs.Commands.ICommandReceiver-1.html#Cqrs_Commands_ICommandReceiver_1_ReceiveCommand_Cqrs_Commands_ICommand__0__">ICommandReceiver&lt;TAuthenticationToken&gt;.ReceiveCommand(ICommand&lt;TAuthenticationToken&gt;)</a></div>
+  <a id="Cqrs_Bus_QueuedCommandBusReceiver_1_Start_" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.Start*"></a>
+  <h4 id="Cqrs_Bus_QueuedCommandBusReceiver_1_Start" data-uid="Cqrs.Bus.QueuedCommandBusReceiver`1.Start">Start()</h4>
+  <div class="markdown level1 summary"><p>Starts listening and processing instances of <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> from the command bus.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void Start()</code></pre>
+  </div>
+  <h5 class="implements">Implements</h5>
+      <div><a class="xref" href="Cqrs.Commands.ICommandReceiver.html#Cqrs_Commands_ICommandReceiver_Start">ICommandReceiver.Start()</a></div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../../styles/main.js"></script>
+  </body>
+</html>

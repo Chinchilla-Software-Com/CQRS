@@ -1,0 +1,673 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Entities.Entity
+  commentId: T:Cqrs.Entities.Entity
+  id: Entity
+  parent: Cqrs.Entities
+  children:
+  - Cqrs.Entities.Entity.IsLogicallyDeleted
+  - Cqrs.Entities.Entity.Rsn
+  - Cqrs.Entities.Entity.SortingOrder
+  langs:
+  - csharp
+  - vb
+  name: Entity
+  nameWithType: Entity
+  fullName: Cqrs.Entities.Entity
+  type: Class
+  source:
+    remote:
+      path: Framework/Cqrs/Entities/Entity.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Entity
+    path: Framework/Cqrs/Entities/Entity.cs
+    startLine: 19
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Entities
+  summary: "\nA projection/entity.\n"
+  example: []
+  syntax:
+    content: >-
+      [Serializable]
+
+      [DataContract]
+
+      public abstract class Entity : IEntity
+    content.vb: >-
+      <Serializable>
+
+      <DataContract>
+
+      Public MustInherit Class Entity
+          Implements IEntity
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - Cqrs.Azure.BlobStorage.Test.Integration.TestEntity
+  - Cqrs.Azure.DocumentDb.Entities.AzureDocumentDbEntity
+  - Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent
+  - Cqrs.Mongo.Entities.MongoEntity
+  - Cqrs.MongoDB.Entities.MongoEntity
+  - Cqrs.Tests.Substitutes.OrderEntity
+  implements:
+  - Cqrs.Entities.IEntity
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+  - type: System.Runtime.Serialization.DataContractAttribute
+    ctor: System.Runtime.Serialization.DataContractAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+- uid: Cqrs.Entities.Entity.Rsn
+  commentId: P:Cqrs.Entities.Entity.Rsn
+  id: Rsn
+  parent: Cqrs.Entities.Entity
+  langs:
+  - csharp
+  - vb
+  name: Rsn
+  nameWithType: Entity.Rsn
+  fullName: Cqrs.Entities.Entity.Rsn
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Entities/Entity.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Rsn
+    path: Framework/Cqrs/Entities/Entity.cs
+    startLine: 26
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Entities
+  summary: "\nThe identifier of the <xref href=\"Cqrs.Entities.IEntity\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: >-
+      [Required]
+
+      [DataMember]
+
+      [Column(IsPrimaryKey = true)]
+
+      public virtual Guid Rsn { get; set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: >-
+      <Required>
+
+      <DataMember>
+
+      <Column(IsPrimaryKey:=True)>
+
+      Public Overridable Property Rsn As Guid
+  overload: Cqrs.Entities.Entity.Rsn*
+  implements:
+  - Cqrs.Entities.IEntity.Rsn
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.RequiredAttribute
+    ctor: System.ComponentModel.DataAnnotations.RequiredAttribute.#ctor
+    arguments: []
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  - type: System.Data.Linq.Mapping.ColumnAttribute
+    ctor: System.Data.Linq.Mapping.ColumnAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: IsPrimaryKey
+      type: System.Boolean
+      value: true
+  modifiers.csharp:
+  - public
+  - virtual
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  - Overridable
+- uid: Cqrs.Entities.Entity.SortingOrder
+  commentId: P:Cqrs.Entities.Entity.SortingOrder
+  id: SortingOrder
+  parent: Cqrs.Entities.Entity
+  langs:
+  - csharp
+  - vb
+  name: SortingOrder
+  nameWithType: Entity.SortingOrder
+  fullName: Cqrs.Entities.Entity.SortingOrder
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Entities/Entity.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: SortingOrder
+    path: Framework/Cqrs/Entities/Entity.cs
+    startLine: 34
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Entities
+  summary: "\nThe order of this <xref href=\"Cqrs.Entities.IEntity\" data-throw-if-not-resolved=\"false\"></xref> to sort by, by default.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      [Column]
+
+      public virtual int SortingOrder { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <DataMember>
+
+      <Column>
+
+      Public Overridable Property SortingOrder As Integer
+  overload: Cqrs.Entities.Entity.SortingOrder*
+  implements:
+  - Cqrs.Entities.IEntity.SortingOrder
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  - type: System.Data.Linq.Mapping.ColumnAttribute
+    ctor: System.Data.Linq.Mapping.ColumnAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  - virtual
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  - Overridable
+- uid: Cqrs.Entities.Entity.IsLogicallyDeleted
+  commentId: P:Cqrs.Entities.Entity.IsLogicallyDeleted
+  id: IsLogicallyDeleted
+  parent: Cqrs.Entities.Entity
+  langs:
+  - csharp
+  - vb
+  name: IsLogicallyDeleted
+  nameWithType: Entity.IsLogicallyDeleted
+  fullName: Cqrs.Entities.Entity.IsLogicallyDeleted
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Entities/Entity.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: IsLogicallyDeleted
+    path: Framework/Cqrs/Entities/Entity.cs
+    startLine: 42
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Entities
+  summary: "\nIndicates if this <xref href=\"Cqrs.Entities.IEntity\" data-throw-if-not-resolved=\"false\"></xref> has been deleted, but not removed from the <xref href=\"Cqrs.DataStores.IDataStore%601\" data-throw-if-not-resolved=\"false\"></xref>,\nthis way entities can be retrieved so an un-deleted operation can be triggered.\n"
+  example: []
+  syntax:
+    content: >-
+      [Required]
+
+      [DataMember]
+
+      [Column]
+
+      public virtual bool IsLogicallyDeleted { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: >-
+      <Required>
+
+      <DataMember>
+
+      <Column>
+
+      Public Overridable Property IsLogicallyDeleted As Boolean
+  overload: Cqrs.Entities.Entity.IsLogicallyDeleted*
+  implements:
+  - Cqrs.Entities.IEntity.IsLogicallyDeleted
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.RequiredAttribute
+    ctor: System.ComponentModel.DataAnnotations.RequiredAttribute.#ctor
+    arguments: []
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  - type: System.Data.Linq.Mapping.ColumnAttribute
+    ctor: System.Data.Linq.Mapping.ColumnAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  - virtual
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  - Overridable
+references:
+- uid: Cqrs.Entities
+  commentId: N:Cqrs.Entities
+  isExternal: false
+  name: Cqrs.Entities
+  nameWithType: Cqrs.Entities
+  fullName: Cqrs.Entities
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: Cqrs.Entities.IEntity
+  commentId: T:Cqrs.Entities.IEntity
+  parent: Cqrs.Entities
+  isExternal: false
+  name: IEntity
+  nameWithType: IEntity
+  fullName: Cqrs.Entities.IEntity
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Cqrs.Entities.Entity.Rsn*
+  commentId: Overload:Cqrs.Entities.Entity.Rsn
+  isExternal: false
+  name: Rsn
+  nameWithType: Entity.Rsn
+  fullName: Cqrs.Entities.Entity.Rsn
+- uid: Cqrs.Entities.IEntity.Rsn
+  commentId: P:Cqrs.Entities.IEntity.Rsn
+  parent: Cqrs.Entities.IEntity
+  isExternal: false
+  name: Rsn
+  nameWithType: IEntity.Rsn
+  fullName: Cqrs.Entities.IEntity.Rsn
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: Cqrs.Entities.Entity.SortingOrder*
+  commentId: Overload:Cqrs.Entities.Entity.SortingOrder
+  isExternal: false
+  name: SortingOrder
+  nameWithType: Entity.SortingOrder
+  fullName: Cqrs.Entities.Entity.SortingOrder
+- uid: Cqrs.Entities.IEntity.SortingOrder
+  commentId: P:Cqrs.Entities.IEntity.SortingOrder
+  parent: Cqrs.Entities.IEntity
+  isExternal: false
+  name: SortingOrder
+  nameWithType: IEntity.SortingOrder
+  fullName: Cqrs.Entities.IEntity.SortingOrder
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: Cqrs.DataStores.IDataStore`1
+  commentId: T:Cqrs.DataStores.IDataStore`1
+  isExternal: false
+  name: IDataStore<TData>
+  nameWithType: IDataStore<TData>
+  fullName: Cqrs.DataStores.IDataStore<TData>
+  nameWithType.vb: IDataStore(Of TData)
+  fullName.vb: Cqrs.DataStores.IDataStore(Of TData)
+  name.vb: IDataStore(Of TData)
+  spec.csharp:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Entities.Entity.IsLogicallyDeleted*
+  commentId: Overload:Cqrs.Entities.Entity.IsLogicallyDeleted
+  isExternal: false
+  name: IsLogicallyDeleted
+  nameWithType: Entity.IsLogicallyDeleted
+  fullName: Cqrs.Entities.Entity.IsLogicallyDeleted
+- uid: Cqrs.Entities.IEntity.IsLogicallyDeleted
+  commentId: P:Cqrs.Entities.IEntity.IsLogicallyDeleted
+  parent: Cqrs.Entities.IEntity
+  isExternal: false
+  name: IsLogicallyDeleted
+  nameWithType: IEntity.IsLogicallyDeleted
+  fullName: Cqrs.Entities.IEntity.IsLogicallyDeleted
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean

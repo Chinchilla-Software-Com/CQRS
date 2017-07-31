@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface ICommandHandle
+   | CQRS.NET API Reference Documentation version 2.2 </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface ICommandHandle
+   | CQRS.NET API Reference Documentation version 2.2 ">
+    <meta name="generator" content="docfx 2.21.2.0">
+    
+    <link rel="shortcut icon" href="../../../../../favicon.ico">
+    <link rel="stylesheet" href="../../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:rel" content="../../../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../../index.html">
+                <img id="logo" class="svg" src="../../../../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Cqrs.Commands.ICommandHandle">
+  
+  
+  <h1 id="Cqrs_Commands_ICommandHandle" data-uid="Cqrs.Commands.ICommandHandle" class="text-break">Interface ICommandHandle
+  </h1>
+  <div class="markdown level0 summary"><p>An <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> receives an <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> and brokers a result from the appropriate <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.
+&quot;A result&quot; is either a successful application of the command, or an exception.
+This is the common sequence of steps an <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> might follow:</p>
+<p>Validate the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> on its own merits.
+Ask an <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> to handle the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>.
+If validation is successful, 0..n <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> artefacts (1 is common) are queued for publishing.
+Attempt to persist the new <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> artefacts. If there&apos;s a concurrency conflict during this step, either give up, or retry things.
+Dispatch the queued <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> artefacts.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Cqrs.Commands.html">Cqrs.Commands</a></h6>
+  <h6><strong>Assembly</strong>: Cqrs.dll</h6>
+  <h5 id="Cqrs_Commands_ICommandHandle_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface ICommandHandle : IHandler</code></pre>
+  </div>
+  <h5 id="Cqrs_Commands_ICommandHandle_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Should a <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> affect one or several <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>s?</p>
+<p>Only one.</p>
+<p>Do I put logic in <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a>?</p>
+<p>Yes. Exactly what logic depends on your factoring.
+The logic for validating the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> on its own merits always gets executed in the <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a>, although we recommend refactoring these into an <a class="xref" href="Cqrs.Commands.ICommandValidator-2.html">ICommandValidator&lt;TAuthenticationToken, TCommand&gt;</a>.
+Provided validation is successful we recommend a more functional factoring, where the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> exists independently of the <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> and the next step would be to load the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> from the <a class="xref" href="Cqrs.Domain.IUnitOfWork-1.html">IUnitOfWork&lt;TAuthenticationToken&gt;</a> and request the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> handle the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> itself.
+The <a class="xref" href="Cqrs.Domain.IUnitOfWork-1.html">IUnitOfWork&lt;TAuthenticationToken&gt;</a> should then have uncommitted <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> artefacts as a results of asking the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> to handle the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>.
+Finally the <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> should instruct the <a class="xref" href="Cqrs.Domain.IUnitOfWork-1.html">IUnitOfWork&lt;TAuthenticationToken&gt;</a> to <a class="xref" href="Cqrs.Domain.IUnitOfWork-1.html#Cqrs_Domain_IUnitOfWork_1_Commit">Commit()</a> all uncommited <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> artefacts.</p>
+<p>However you have it, the logic boils down to validation and some sequence of steps that lead to the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> becoming an <span class="xref">System.Exception</span> or <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a>(s). If you&apos;re tempted to go beyond this, see the rest of the remarks.</p>
+<p>Can I call a read side (such as a read store, data store or <a class="xref" href="Cqrs.Domain.IAggregateRepository-1.html">IAggregateRepository&lt;TAuthenticationToken&gt;</a>) from my <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a>?</p>
+<p>No.</p>
+<p>Can I do logging, security, or auditing in my <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a>?</p>
+<p>Yes. The decorator pattern comes in handy here to separate those concerns neatly.</p>
+<p>How are conflicts between concurrent <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>s handled in the <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a>?</p>
+<p>The place where the new <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> artefacts for the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> are persisted is the only place in the system where we need to worry about concurrency conflicts. The <a class="xref" href="Cqrs.Events.IEventStore-1.html">IEventStore&lt;TAuthenticationToken&gt;</a> knows the sequence number of the latest <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> applied on that <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>, and the <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> knows the sequence number of the last <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> it read. If these numbers do not agree, it means some other thread or process got there first. The <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> can then load up the events again and make a new attempt.</p>
+<p>Should I do things that have side-effects in the outside world (such as sending email) directly in a <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a>?</p>
+<p>No, since a concurrency conflict will mean the <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> logic will be run again. Do such things in an Apply <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> method in an <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.</p>
+<hr>
+<p>Also see <a href="http://cqrs.nu/Faq/command-handlers">http://cqrs.nu/Faq/command-handlers</a>.</p>
+</div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../../styles/main.js"></script>
+  </body>
+</html>

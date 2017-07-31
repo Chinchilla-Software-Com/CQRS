@@ -1,0 +1,2133 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1
+  commentId: T:Cqrs.Bus.QueuedCommandBusReceiver`1
+  id: QueuedCommandBusReceiver`1
+  parent: Cqrs.Bus
+  children:
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.#ctor(Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,Cqrs.Configuration.IConfigurationManager,Cqrs.Bus.IBusHelper)
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.AuthenticationTokenHelper
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.BusHelper
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.ConfigurationManager
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.CorrelationIdHelper
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.CreateQueueAndAttachListenerIfNotExist(System.String)
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.DequeuAndProcessCommand(System.String)
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.EnqueueCommand(System.String,Cqrs.Commands.ICommand{`0})
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.Logger
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.QueueCount
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.QueueNames
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTracker
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTrackerLock
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.ReceiveCommand(Cqrs.Commands.ICommand{`0})
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.Routes
+  - Cqrs.Bus.QueuedCommandBusReceiver`1.Start
+  langs:
+  - csharp
+  - vb
+  name: QueuedCommandBusReceiver<TAuthenticationToken>
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>
+  type: Class
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: QueuedCommandBusReceiver
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 26
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nReceives instances of a <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> from the command bus, places them into one of several internal concurrent queues and then processes the commands one at a time per queue.\n"
+  example: []
+  syntax:
+    content: 'public abstract class QueuedCommandBusReceiver<TAuthenticationToken> : ICommandReceiver<TAuthenticationToken>, ICommandReceiver'
+    typeParameters:
+    - id: TAuthenticationToken
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of authentication token.
+    content.vb: >-
+      Public MustInherit Class QueuedCommandBusReceiver(Of TAuthenticationToken)
+          Implements ICommandReceiver(Of TAuthenticationToken), ICommandReceiver
+  inheritance:
+  - System.Object
+  implements:
+  - Cqrs.Commands.ICommandReceiver{{TAuthenticationToken}}
+  - Cqrs.Commands.ICommandReceiver
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken)
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken)
+  name.vb: QueuedCommandBusReceiver(Of TAuthenticationToken)
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTracker
+  commentId: P:Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTracker
+  id: QueueTracker
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: QueueTracker
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.QueueTracker
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.QueueTracker
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: QueueTracker
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 31
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nThe queues keyed by an identifier.\n"
+  example: []
+  syntax:
+    content: protected static ConcurrentDictionary<string, ConcurrentQueue<ICommand<TAuthenticationToken>>> QueueTracker { get; }
+    parameters: []
+    return:
+      type: System.Collections.Concurrent.ConcurrentDictionary{System.String,System.Collections.Concurrent.ConcurrentQueue{Cqrs.Commands.ICommand{{TAuthenticationToken}}}}
+    content.vb: Protected Shared ReadOnly Property QueueTracker As ConcurrentDictionary(Of String, ConcurrentQueue(Of ICommand(Of TAuthenticationToken)))
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTracker*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).QueueTracker
+  modifiers.csharp:
+  - protected
+  - static
+  - get
+  modifiers.vb:
+  - Protected
+  - Shared
+  - ReadOnly
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).QueueTracker
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTrackerLock
+  commentId: P:Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTrackerLock
+  id: QueueTrackerLock
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: QueueTrackerLock
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.QueueTrackerLock
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.QueueTrackerLock
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: QueueTrackerLock
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 36
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nA <xref href=\"System.Threading.ReaderWriterLockSlim\" data-throw-if-not-resolved=\"false\"></xref> for providing a lock mechanism around the main <xref href=\"Cqrs.Bus.QueuedCommandBusReceiver%601.QueueTracker\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected ReaderWriterLockSlim QueueTrackerLock { get; }
+    parameters: []
+    return:
+      type: System.Threading.ReaderWriterLockSlim
+    content.vb: Protected ReadOnly Property QueueTrackerLock As ReaderWriterLockSlim
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTrackerLock*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).QueueTrackerLock
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).QueueTrackerLock
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.AuthenticationTokenHelper
+  commentId: P:Cqrs.Bus.QueuedCommandBusReceiver`1.AuthenticationTokenHelper
+  id: AuthenticationTokenHelper
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: AuthenticationTokenHelper
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.AuthenticationTokenHelper
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.AuthenticationTokenHelper
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: AuthenticationTokenHelper
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 41
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nGets or sets the <xref href=\"Cqrs.Authentication.IAuthenticationTokenHelper%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
+  syntax:
+    content: protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; }
+    parameters: []
+    return:
+      type: Cqrs.Authentication.IAuthenticationTokenHelper{{TAuthenticationToken}}
+    content.vb: Protected ReadOnly Property AuthenticationTokenHelper As IAuthenticationTokenHelper(Of TAuthenticationToken)
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.AuthenticationTokenHelper*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).AuthenticationTokenHelper
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).AuthenticationTokenHelper
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.CorrelationIdHelper
+  commentId: P:Cqrs.Bus.QueuedCommandBusReceiver`1.CorrelationIdHelper
+  id: CorrelationIdHelper
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: CorrelationIdHelper
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.CorrelationIdHelper
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.CorrelationIdHelper
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: CorrelationIdHelper
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 46
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nGets or sets the <xref href=\"cdmdotnet.Logging.ICorrelationIdHelper\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
+  syntax:
+    content: protected ICorrelationIdHelper CorrelationIdHelper { get; }
+    parameters: []
+    return:
+      type: cdmdotnet.Logging.ICorrelationIdHelper
+    content.vb: Protected ReadOnly Property CorrelationIdHelper As ICorrelationIdHelper
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.CorrelationIdHelper*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).CorrelationIdHelper
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).CorrelationIdHelper
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.Logger
+  commentId: P:Cqrs.Bus.QueuedCommandBusReceiver`1.Logger
+  id: Logger
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: Logger
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.Logger
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.Logger
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Logger
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 51
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nGets or sets the <xref href=\"cdmdotnet.Logging.ILogger\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
+  syntax:
+    content: protected ILogger Logger { get; }
+    parameters: []
+    return:
+      type: cdmdotnet.Logging.ILogger
+    content.vb: Protected ReadOnly Property Logger As ILogger
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.Logger*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).Logger
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).Logger
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.ConfigurationManager
+  commentId: P:Cqrs.Bus.QueuedCommandBusReceiver`1.ConfigurationManager
+  id: ConfigurationManager
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: ConfigurationManager
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.ConfigurationManager
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.ConfigurationManager
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: ConfigurationManager
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 56
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nGets or sets the <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
+  syntax:
+    content: protected IConfigurationManager ConfigurationManager { get; }
+    parameters: []
+    return:
+      type: Cqrs.Configuration.IConfigurationManager
+    content.vb: Protected ReadOnly Property ConfigurationManager As IConfigurationManager
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.ConfigurationManager*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).ConfigurationManager
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).ConfigurationManager
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.BusHelper
+  commentId: P:Cqrs.Bus.QueuedCommandBusReceiver`1.BusHelper
+  id: BusHelper
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: BusHelper
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.BusHelper
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.BusHelper
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: BusHelper
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 61
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nGets or sets the <xref href=\"Cqrs.Bus.IBusHelper\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
+  syntax:
+    content: protected IBusHelper BusHelper { get; }
+    parameters: []
+    return:
+      type: Cqrs.Bus.IBusHelper
+    content.vb: Protected ReadOnly Property BusHelper As IBusHelper
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.BusHelper*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).BusHelper
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).BusHelper
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.Routes
+  commentId: P:Cqrs.Bus.QueuedCommandBusReceiver`1.Routes
+  id: Routes
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: Routes
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.Routes
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.Routes
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Routes
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 66
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nGets or sets the routes or handlers that will be executed as the commands arrive.\n"
+  example: []
+  syntax:
+    content: protected abstract IDictionary<Type, IList<Action<IMessage>>> Routes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IDictionary{System.Type,System.Collections.Generic.IList{System.Action{Cqrs.Messages.IMessage}}}
+    content.vb: Protected MustOverride ReadOnly Property Routes As IDictionary(Of Type, IList(Of Action(Of IMessage)))
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.Routes*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).Routes
+  modifiers.csharp:
+  - protected
+  - abstract
+  - get
+  modifiers.vb:
+  - Protected
+  - MustOverride
+  - ReadOnly
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).Routes
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.#ctor(Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,Cqrs.Configuration.IConfigurationManager,Cqrs.Bus.IBusHelper)
+  commentId: M:Cqrs.Bus.QueuedCommandBusReceiver`1.#ctor(Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,Cqrs.Configuration.IConfigurationManager,Cqrs.Bus.IBusHelper)
+  id: '#ctor(Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,Cqrs.Configuration.IConfigurationManager,Cqrs.Bus.IBusHelper)'
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: QueuedCommandBusReceiver(IAuthenticationTokenHelper<TAuthenticationToken>, ICorrelationIdHelper, ILogger, IConfigurationManager, IBusHelper)
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.QueuedCommandBusReceiver(IAuthenticationTokenHelper<TAuthenticationToken>, ICorrelationIdHelper, ILogger, IConfigurationManager, IBusHelper)
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.QueuedCommandBusReceiver(Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>, cdmdotnet.Logging.ICorrelationIdHelper, cdmdotnet.Logging.ILogger, Cqrs.Configuration.IConfigurationManager, Cqrs.Bus.IBusHelper)
+  type: Constructor
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: .ctor
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 71
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Bus.QueuedCommandBusReceiver%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected QueuedCommandBusReceiver(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IConfigurationManager configurationManager, IBusHelper busHelper)
+    parameters:
+    - id: authenticationTokenHelper
+      type: Cqrs.Authentication.IAuthenticationTokenHelper{{TAuthenticationToken}}
+    - id: correlationIdHelper
+      type: cdmdotnet.Logging.ICorrelationIdHelper
+    - id: logger
+      type: cdmdotnet.Logging.ILogger
+    - id: configurationManager
+      type: Cqrs.Configuration.IConfigurationManager
+    - id: busHelper
+      type: Cqrs.Bus.IBusHelper
+    content.vb: Protected Sub New(authenticationTokenHelper As IAuthenticationTokenHelper(Of TAuthenticationToken), correlationIdHelper As ICorrelationIdHelper, logger As ILogger, configurationManager As IConfigurationManager, busHelper As IBusHelper)
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.#ctor*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).QueuedCommandBusReceiver(IAuthenticationTokenHelper(Of TAuthenticationToken), ICorrelationIdHelper, ILogger, IConfigurationManager, IBusHelper)
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).QueuedCommandBusReceiver(Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken), cdmdotnet.Logging.ICorrelationIdHelper, cdmdotnet.Logging.ILogger, Cqrs.Configuration.IConfigurationManager, Cqrs.Bus.IBusHelper)
+  name.vb: QueuedCommandBusReceiver(IAuthenticationTokenHelper(Of TAuthenticationToken), ICorrelationIdHelper, ILogger, IConfigurationManager, IBusHelper)
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.EnqueueCommand(System.String,Cqrs.Commands.ICommand{`0})
+  commentId: M:Cqrs.Bus.QueuedCommandBusReceiver`1.EnqueueCommand(System.String,Cqrs.Commands.ICommand{`0})
+  id: EnqueueCommand(System.String,Cqrs.Commands.ICommand{`0})
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: EnqueueCommand(String, ICommand<TAuthenticationToken>)
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.EnqueueCommand(String, ICommand<TAuthenticationToken>)
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.EnqueueCommand(System.String, Cqrs.Commands.ICommand<TAuthenticationToken>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: EnqueueCommand
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 87
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nPlaces the provided <span class=\"paramref\">command</span> into the appropriate queue in the <xref href=\"Cqrs.Bus.QueuedCommandBusReceiver%601.QueueTracker\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual void EnqueueCommand(string targetQueueName, ICommand<TAuthenticationToken> command)
+    parameters:
+    - id: targetQueueName
+      type: System.String
+      description: The name of the target queue to place the command into
+    - id: command
+      type: Cqrs.Commands.ICommand{{TAuthenticationToken}}
+      description: The <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> to handle.
+    content.vb: Protected Overridable Sub EnqueueCommand(targetQueueName As String, command As ICommand(Of TAuthenticationToken))
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.EnqueueCommand*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).EnqueueCommand(String, ICommand(Of TAuthenticationToken))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).EnqueueCommand(System.String, Cqrs.Commands.ICommand(Of TAuthenticationToken))
+  name.vb: EnqueueCommand(String, ICommand(Of TAuthenticationToken))
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.CreateQueueAndAttachListenerIfNotExist(System.String)
+  commentId: M:Cqrs.Bus.QueuedCommandBusReceiver`1.CreateQueueAndAttachListenerIfNotExist(System.String)
+  id: CreateQueueAndAttachListenerIfNotExist(System.String)
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: CreateQueueAndAttachListenerIfNotExist(String)
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.CreateQueueAndAttachListenerIfNotExist(String)
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.CreateQueueAndAttachListenerIfNotExist(System.String)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: CreateQueueAndAttachListenerIfNotExist
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 97
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nChecks if the queue exists, if it doesn&apos;t it creates a new queue in <xref href=\"Cqrs.Bus.QueuedCommandBusReceiver%601.QueueTracker\" data-throw-if-not-resolved=\"false\"></xref> and then starts a separate <xref href=\"System.Threading.Thread\" data-throw-if-not-resolved=\"false\"></xref> running <xref href=\"Cqrs.Bus.QueuedCommandBusReceiver%601.DequeuAndProcessCommand(System.String)\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual void CreateQueueAndAttachListenerIfNotExist(string queueName)
+    parameters:
+    - id: queueName
+      type: System.String
+      description: The name of the queue.
+    content.vb: Protected Overridable Sub CreateQueueAndAttachListenerIfNotExist(queueName As String)
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.CreateQueueAndAttachListenerIfNotExist*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).CreateQueueAndAttachListenerIfNotExist(String)
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).CreateQueueAndAttachListenerIfNotExist(System.String)
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.DequeuAndProcessCommand(System.String)
+  commentId: M:Cqrs.Bus.QueuedCommandBusReceiver`1.DequeuAndProcessCommand(System.String)
+  id: DequeuAndProcessCommand(System.String)
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: DequeuAndProcessCommand(String)
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.DequeuAndProcessCommand(String)
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.DequeuAndProcessCommand(System.String)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: DequeuAndProcessCommand
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 130
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nInfinitely runs a loop checking if the queue exists in <xref href=\"Cqrs.Bus.QueuedCommandBusReceiver%601.QueueTracker\" data-throw-if-not-resolved=\"false\"></xref>\nand then dequeues <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> one at a time, pausing for 0.1 seconds between loops.\n"
+  example: []
+  syntax:
+    content: protected virtual void DequeuAndProcessCommand(string queueName)
+    parameters:
+    - id: queueName
+      type: System.String
+      description: The name of the queue.
+    content.vb: Protected Overridable Sub DequeuAndProcessCommand(queueName As String)
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.DequeuAndProcessCommand*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).DequeuAndProcessCommand(String)
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).DequeuAndProcessCommand(System.String)
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.QueueCount
+  commentId: P:Cqrs.Bus.QueuedCommandBusReceiver`1.QueueCount
+  id: QueueCount
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: QueueCount
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.QueueCount
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.QueueCount
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: QueueCount
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 195
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nThe current number of queues in <xref href=\"Cqrs.Bus.QueuedCommandBusReceiver%601.QueueTracker\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: public int QueueCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property QueueCount As Integer
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.QueueCount*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).QueueCount
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).QueueCount
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.QueueNames
+  commentId: P:Cqrs.Bus.QueuedCommandBusReceiver`1.QueueNames
+  id: QueueNames
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: QueueNames
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.QueueNames
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.QueueNames
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: QueueNames
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 214
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nGets the names of all queues in <xref href=\"Cqrs.Bus.QueuedCommandBusReceiver%601.QueueTracker\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: public ICollection<string> QueueNames { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.ICollection{System.String}
+    content.vb: Public ReadOnly Property QueueNames As ICollection(Of String)
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.QueueNames*
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).QueueNames
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).QueueNames
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.ReceiveCommand(Cqrs.Commands.ICommand{`0})
+  commentId: M:Cqrs.Bus.QueuedCommandBusReceiver`1.ReceiveCommand(Cqrs.Commands.ICommand{`0})
+  id: ReceiveCommand(Cqrs.Commands.ICommand{`0})
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: ReceiveCommand(ICommand<TAuthenticationToken>)
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.ReceiveCommand(ICommand<TAuthenticationToken>)
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.ReceiveCommand(Cqrs.Commands.ICommand<TAuthenticationToken>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: ReceiveCommand
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 235
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nReceives a <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> from the command bus.\n"
+  example: []
+  syntax:
+    content: public virtual bool ? ReceiveCommand(ICommand<TAuthenticationToken> command)
+    parameters:
+    - id: command
+      type: Cqrs.Commands.ICommand{{TAuthenticationToken}}
+    return:
+      type: System.Nullable{System.Boolean}
+    content.vb: Public Overridable Function ReceiveCommand(command As ICommand(Of TAuthenticationToken)) As Boolean?
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.ReceiveCommand*
+  implements:
+  - Cqrs.Commands.ICommandReceiver{{TAuthenticationToken}}.ReceiveCommand(Cqrs.Commands.ICommand{{TAuthenticationToken}})
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).ReceiveCommand(ICommand(Of TAuthenticationToken))
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).ReceiveCommand(Cqrs.Commands.ICommand(Of TAuthenticationToken))
+  name.vb: ReceiveCommand(ICommand(Of TAuthenticationToken))
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.Start
+  commentId: M:Cqrs.Bus.QueuedCommandBusReceiver`1.Start
+  id: Start
+  parent: Cqrs.Bus.QueuedCommandBusReceiver`1
+  langs:
+  - csharp
+  - vb
+  name: Start()
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.Start()
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.Start()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Start
+    path: Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs
+    startLine: 278
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nStarts listening and processing instances of <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> from the command bus.\n"
+  example: []
+  syntax:
+    content: public abstract void Start()
+    content.vb: Public MustOverride Sub Start
+  overload: Cqrs.Bus.QueuedCommandBusReceiver`1.Start*
+  implements:
+  - Cqrs.Commands.ICommandReceiver.Start
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).Start()
+  modifiers.csharp:
+  - public
+  - abstract
+  modifiers.vb:
+  - Public
+  - MustOverride
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).Start()
+references:
+- uid: Cqrs.Commands.ICommand`1
+  commentId: T:Cqrs.Commands.ICommand`1
+  isExternal: false
+  name: ICommand<TAuthenticationToken>
+  nameWithType: ICommand<TAuthenticationToken>
+  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>
+  nameWithType.vb: ICommand(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken)
+  name.vb: ICommand(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: Cqrs.Bus
+  commentId: N:Cqrs.Bus
+  isExternal: false
+  name: Cqrs.Bus
+  nameWithType: Cqrs.Bus
+  fullName: Cqrs.Bus
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: Cqrs.Commands.ICommandReceiver{{TAuthenticationToken}}
+  commentId: T:Cqrs.Commands.ICommandReceiver{`0}
+  parent: Cqrs.Commands
+  definition: Cqrs.Commands.ICommandReceiver`1
+  name: ICommandReceiver<TAuthenticationToken>
+  nameWithType: ICommandReceiver<TAuthenticationToken>
+  fullName: Cqrs.Commands.ICommandReceiver<TAuthenticationToken>
+  nameWithType.vb: ICommandReceiver(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Commands.ICommandReceiver(Of TAuthenticationToken)
+  name.vb: ICommandReceiver(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommandReceiver`1
+    name: ICommandReceiver
+    nameWithType: ICommandReceiver
+    fullName: Cqrs.Commands.ICommandReceiver
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommandReceiver`1
+    name: ICommandReceiver
+    nameWithType: ICommandReceiver
+    fullName: Cqrs.Commands.ICommandReceiver
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Commands.ICommandReceiver
+  commentId: T:Cqrs.Commands.ICommandReceiver
+  parent: Cqrs.Commands
+  isExternal: false
+  name: ICommandReceiver
+  nameWithType: ICommandReceiver
+  fullName: Cqrs.Commands.ICommandReceiver
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Cqrs.Commands.ICommandReceiver`1
+  commentId: T:Cqrs.Commands.ICommandReceiver`1
+  isExternal: false
+  name: ICommandReceiver<TAuthenticationToken>
+  nameWithType: ICommandReceiver<TAuthenticationToken>
+  fullName: Cqrs.Commands.ICommandReceiver<TAuthenticationToken>
+  nameWithType.vb: ICommandReceiver(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Commands.ICommandReceiver(Of TAuthenticationToken)
+  name.vb: ICommandReceiver(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommandReceiver`1
+    name: ICommandReceiver
+    nameWithType: ICommandReceiver
+    fullName: Cqrs.Commands.ICommandReceiver
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommandReceiver`1
+    name: ICommandReceiver
+    nameWithType: ICommandReceiver
+    fullName: Cqrs.Commands.ICommandReceiver
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Commands
+  commentId: N:Cqrs.Commands
+  isExternal: false
+  name: Cqrs.Commands
+  nameWithType: Cqrs.Commands
+  fullName: Cqrs.Commands
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTracker*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTracker
+  isExternal: false
+  name: QueueTracker
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.QueueTracker
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.QueueTracker
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).QueueTracker
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).QueueTracker
+- uid: System.Collections.Concurrent.ConcurrentDictionary{System.String,System.Collections.Concurrent.ConcurrentQueue{Cqrs.Commands.ICommand{{TAuthenticationToken}}}}
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary{System.String,System.Collections.Concurrent.ConcurrentQueue{Cqrs.Commands.ICommand{`0}}}
+  parent: System.Collections.Concurrent
+  definition: System.Collections.Concurrent.ConcurrentDictionary`2
+  name: ConcurrentDictionary<String, ConcurrentQueue<ICommand<TAuthenticationToken>>>
+  nameWithType: ConcurrentDictionary<String, ConcurrentQueue<ICommand<TAuthenticationToken>>>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<System.String, System.Collections.Concurrent.ConcurrentQueue<Cqrs.Commands.ICommand<TAuthenticationToken>>>
+  nameWithType.vb: ConcurrentDictionary(Of String, ConcurrentQueue(Of ICommand(Of TAuthenticationToken)))
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of System.String, System.Collections.Concurrent.ConcurrentQueue(Of Cqrs.Commands.ICommand(Of TAuthenticationToken)))
+  name.vb: ConcurrentDictionary(Of String, ConcurrentQueue(Of ICommand(Of TAuthenticationToken)))
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    nameWithType: ConcurrentDictionary
+    fullName: System.Collections.Concurrent.ConcurrentDictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Concurrent.ConcurrentQueue`1
+    name: ConcurrentQueue
+    nameWithType: ConcurrentQueue
+    fullName: System.Collections.Concurrent.ConcurrentQueue
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    nameWithType: ConcurrentDictionary
+    fullName: System.Collections.Concurrent.ConcurrentDictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Concurrent.ConcurrentQueue`1
+    name: ConcurrentQueue
+    nameWithType: ConcurrentQueue
+    fullName: System.Collections.Concurrent.ConcurrentQueue
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Concurrent.ConcurrentDictionary`2
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary`2
+  isExternal: true
+  name: ConcurrentDictionary<TKey, TValue>
+  nameWithType: ConcurrentDictionary<TKey, TValue>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<TKey, TValue>
+  nameWithType.vb: ConcurrentDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of TKey, TValue)
+  name.vb: ConcurrentDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    nameWithType: ConcurrentDictionary
+    fullName: System.Collections.Concurrent.ConcurrentDictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    nameWithType: ConcurrentDictionary
+    fullName: System.Collections.Concurrent.ConcurrentDictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Concurrent
+  commentId: N:System.Collections.Concurrent
+  isExternal: false
+  name: System.Collections.Concurrent
+  nameWithType: System.Collections.Concurrent
+  fullName: System.Collections.Concurrent
+- uid: System.Threading.ReaderWriterLockSlim
+  commentId: T:System.Threading.ReaderWriterLockSlim
+  parent: System.Threading
+  isExternal: true
+  name: ReaderWriterLockSlim
+  nameWithType: ReaderWriterLockSlim
+  fullName: System.Threading.ReaderWriterLockSlim
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTracker
+  commentId: P:Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTracker
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTrackerLock*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.QueueTrackerLock
+  isExternal: false
+  name: QueueTrackerLock
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.QueueTrackerLock
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.QueueTrackerLock
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).QueueTrackerLock
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).QueueTrackerLock
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: false
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+- uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
+  commentId: T:Cqrs.Authentication.IAuthenticationTokenHelper`1
+  isExternal: false
+  name: IAuthenticationTokenHelper<TAuthenticationToken>
+  nameWithType: IAuthenticationTokenHelper<TAuthenticationToken>
+  fullName: Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>
+  nameWithType.vb: IAuthenticationTokenHelper(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken)
+  name.vb: IAuthenticationTokenHelper(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
+    name: IAuthenticationTokenHelper
+    nameWithType: IAuthenticationTokenHelper
+    fullName: Cqrs.Authentication.IAuthenticationTokenHelper
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
+    name: IAuthenticationTokenHelper
+    nameWithType: IAuthenticationTokenHelper
+    fullName: Cqrs.Authentication.IAuthenticationTokenHelper
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.AuthenticationTokenHelper*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.AuthenticationTokenHelper
+  isExternal: false
+  name: AuthenticationTokenHelper
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.AuthenticationTokenHelper
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.AuthenticationTokenHelper
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).AuthenticationTokenHelper
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).AuthenticationTokenHelper
+- uid: Cqrs.Authentication.IAuthenticationTokenHelper{{TAuthenticationToken}}
+  commentId: T:Cqrs.Authentication.IAuthenticationTokenHelper{`0}
+  parent: Cqrs.Authentication
+  definition: Cqrs.Authentication.IAuthenticationTokenHelper`1
+  name: IAuthenticationTokenHelper<TAuthenticationToken>
+  nameWithType: IAuthenticationTokenHelper<TAuthenticationToken>
+  fullName: Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>
+  nameWithType.vb: IAuthenticationTokenHelper(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken)
+  name.vb: IAuthenticationTokenHelper(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
+    name: IAuthenticationTokenHelper
+    nameWithType: IAuthenticationTokenHelper
+    fullName: Cqrs.Authentication.IAuthenticationTokenHelper
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
+    name: IAuthenticationTokenHelper
+    nameWithType: IAuthenticationTokenHelper
+    fullName: Cqrs.Authentication.IAuthenticationTokenHelper
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Authentication
+  commentId: N:Cqrs.Authentication
+  isExternal: false
+  name: Cqrs.Authentication
+  nameWithType: Cqrs.Authentication
+  fullName: Cqrs.Authentication
+- uid: cdmdotnet.Logging.ICorrelationIdHelper
+  commentId: T:cdmdotnet.Logging.ICorrelationIdHelper
+  parent: cdmdotnet.Logging
+  isExternal: true
+  name: ICorrelationIdHelper
+  nameWithType: ICorrelationIdHelper
+  fullName: cdmdotnet.Logging.ICorrelationIdHelper
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.CorrelationIdHelper*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.CorrelationIdHelper
+  isExternal: false
+  name: CorrelationIdHelper
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.CorrelationIdHelper
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.CorrelationIdHelper
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).CorrelationIdHelper
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).CorrelationIdHelper
+- uid: cdmdotnet.Logging
+  commentId: N:cdmdotnet.Logging
+  isExternal: false
+  name: cdmdotnet.Logging
+  nameWithType: cdmdotnet.Logging
+  fullName: cdmdotnet.Logging
+- uid: cdmdotnet.Logging.ILogger
+  commentId: T:cdmdotnet.Logging.ILogger
+  parent: cdmdotnet.Logging
+  isExternal: true
+  name: ILogger
+  nameWithType: ILogger
+  fullName: cdmdotnet.Logging.ILogger
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.Logger*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.Logger
+  isExternal: false
+  name: Logger
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.Logger
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.Logger
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).Logger
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).Logger
+- uid: Cqrs.Configuration.IConfigurationManager
+  commentId: T:Cqrs.Configuration.IConfigurationManager
+  parent: Cqrs.Configuration
+  isExternal: false
+  name: IConfigurationManager
+  nameWithType: IConfigurationManager
+  fullName: Cqrs.Configuration.IConfigurationManager
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.ConfigurationManager*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.ConfigurationManager
+  isExternal: false
+  name: ConfigurationManager
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.ConfigurationManager
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.ConfigurationManager
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).ConfigurationManager
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).ConfigurationManager
+- uid: Cqrs.Configuration
+  commentId: N:Cqrs.Configuration
+  isExternal: false
+  name: Cqrs.Configuration
+  nameWithType: Cqrs.Configuration
+  fullName: Cqrs.Configuration
+- uid: Cqrs.Bus.IBusHelper
+  commentId: T:Cqrs.Bus.IBusHelper
+  parent: Cqrs.Bus
+  isExternal: false
+  name: IBusHelper
+  nameWithType: IBusHelper
+  fullName: Cqrs.Bus.IBusHelper
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.BusHelper*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.BusHelper
+  isExternal: false
+  name: BusHelper
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.BusHelper
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.BusHelper
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).BusHelper
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).BusHelper
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.Routes*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.Routes
+  isExternal: false
+  name: Routes
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.Routes
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.Routes
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).Routes
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).Routes
+- uid: System.Collections.Generic.IDictionary{System.Type,System.Collections.Generic.IList{System.Action{Cqrs.Messages.IMessage}}}
+  commentId: T:System.Collections.Generic.IDictionary{System.Type,System.Collections.Generic.IList{System.Action{Cqrs.Messages.IMessage}}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IDictionary`2
+  name: IDictionary<Type, IList<Action<IMessage>>>
+  nameWithType: IDictionary<Type, IList<Action<IMessage>>>
+  fullName: System.Collections.Generic.IDictionary<System.Type, System.Collections.Generic.IList<System.Action<Cqrs.Messages.IMessage>>>
+  nameWithType.vb: IDictionary(Of Type, IList(Of Action(Of IMessage)))
+  fullName.vb: System.Collections.Generic.IDictionary(Of System.Type, System.Collections.Generic.IList(Of System.Action(Of Cqrs.Messages.IMessage)))
+  name.vb: IDictionary(Of Type, IList(Of Action(Of IMessage)))
+  spec.csharp:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    nameWithType: IDictionary
+    fullName: System.Collections.Generic.IDictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Messages.IMessage
+    name: IMessage
+    nameWithType: IMessage
+    fullName: Cqrs.Messages.IMessage
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    nameWithType: IDictionary
+    fullName: System.Collections.Generic.IDictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Messages.IMessage
+    name: IMessage
+    nameWithType: IMessage
+    fullName: Cqrs.Messages.IMessage
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IDictionary`2
+  commentId: T:System.Collections.Generic.IDictionary`2
+  isExternal: true
+  name: IDictionary<TKey, TValue>
+  nameWithType: IDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IDictionary<TKey, TValue>
+  nameWithType.vb: IDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IDictionary(Of TKey, TValue)
+  name.vb: IDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    nameWithType: IDictionary
+    fullName: System.Collections.Generic.IDictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    nameWithType: IDictionary
+    fullName: System.Collections.Generic.IDictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: false
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1
+  commentId: T:Cqrs.Bus.QueuedCommandBusReceiver`1
+  isExternal: false
+  name: QueuedCommandBusReceiver<TAuthenticationToken>
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken)
+  name.vb: QueuedCommandBusReceiver(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Bus.QueuedCommandBusReceiver`1
+    name: QueuedCommandBusReceiver
+    nameWithType: QueuedCommandBusReceiver
+    fullName: Cqrs.Bus.QueuedCommandBusReceiver
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Bus.QueuedCommandBusReceiver`1
+    name: QueuedCommandBusReceiver
+    nameWithType: QueuedCommandBusReceiver
+    fullName: Cqrs.Bus.QueuedCommandBusReceiver
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.#ctor*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.#ctor
+  isExternal: false
+  name: QueuedCommandBusReceiver
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.QueuedCommandBusReceiver
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.QueuedCommandBusReceiver
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).QueuedCommandBusReceiver
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).QueuedCommandBusReceiver
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.EnqueueCommand*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.EnqueueCommand
+  isExternal: false
+  name: EnqueueCommand
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.EnqueueCommand
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.EnqueueCommand
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).EnqueueCommand
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).EnqueueCommand
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: Cqrs.Commands.ICommand{{TAuthenticationToken}}
+  commentId: T:Cqrs.Commands.ICommand{`0}
+  parent: Cqrs.Commands
+  definition: Cqrs.Commands.ICommand`1
+  name: ICommand<TAuthenticationToken>
+  nameWithType: ICommand<TAuthenticationToken>
+  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>
+  nameWithType.vb: ICommand(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken)
+  name.vb: ICommand(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Threading.Thread
+  commentId: T:System.Threading.Thread
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.DequeuAndProcessCommand(System.String)
+  commentId: M:Cqrs.Bus.QueuedCommandBusReceiver`1.DequeuAndProcessCommand(System.String)
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.CreateQueueAndAttachListenerIfNotExist*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.CreateQueueAndAttachListenerIfNotExist
+  isExternal: false
+  name: CreateQueueAndAttachListenerIfNotExist
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.CreateQueueAndAttachListenerIfNotExist
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.CreateQueueAndAttachListenerIfNotExist
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).CreateQueueAndAttachListenerIfNotExist
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).CreateQueueAndAttachListenerIfNotExist
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.DequeuAndProcessCommand*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.DequeuAndProcessCommand
+  isExternal: false
+  name: DequeuAndProcessCommand
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.DequeuAndProcessCommand
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.DequeuAndProcessCommand
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).DequeuAndProcessCommand
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).DequeuAndProcessCommand
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.QueueCount*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.QueueCount
+  isExternal: false
+  name: QueueCount
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.QueueCount
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.QueueCount
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).QueueCount
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).QueueCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.QueueNames*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.QueueNames
+  isExternal: false
+  name: QueueNames
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.QueueNames
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.QueueNames
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).QueueNames
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).QueueNames
+- uid: System.Collections.Generic.ICollection{System.String}
+  commentId: T:System.Collections.Generic.ICollection{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.ICollection`1
+  name: ICollection<String>
+  nameWithType: ICollection<String>
+  fullName: System.Collections.Generic.ICollection<System.String>
+  nameWithType.vb: ICollection(Of String)
+  fullName.vb: System.Collections.Generic.ICollection(Of System.String)
+  name.vb: ICollection(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.ICollection`1
+  commentId: T:System.Collections.Generic.ICollection`1
+  isExternal: true
+  name: ICollection<T>
+  nameWithType: ICollection<T>
+  fullName: System.Collections.Generic.ICollection<T>
+  nameWithType.vb: ICollection(Of T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T)
+  name.vb: ICollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.ReceiveCommand*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.ReceiveCommand
+  isExternal: false
+  name: ReceiveCommand
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.ReceiveCommand
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.ReceiveCommand
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).ReceiveCommand
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).ReceiveCommand
+- uid: Cqrs.Commands.ICommandReceiver{{TAuthenticationToken}}.ReceiveCommand(Cqrs.Commands.ICommand{{TAuthenticationToken}})
+  commentId: M:Cqrs.Commands.ICommandReceiver{`0}.ReceiveCommand(Cqrs.Commands.ICommand{`0})
+  parent: Cqrs.Commands.ICommandReceiver{{TAuthenticationToken}}
+  definition: Cqrs.Commands.ICommandReceiver`1.ReceiveCommand(Cqrs.Commands.ICommand{`0})
+  name: ReceiveCommand(ICommand<TAuthenticationToken>)
+  nameWithType: ICommandReceiver<TAuthenticationToken>.ReceiveCommand(ICommand<TAuthenticationToken>)
+  fullName: Cqrs.Commands.ICommandReceiver<TAuthenticationToken>.ReceiveCommand(Cqrs.Commands.ICommand<TAuthenticationToken>)
+  nameWithType.vb: ICommandReceiver(Of TAuthenticationToken).ReceiveCommand(ICommand(Of TAuthenticationToken))
+  fullName.vb: Cqrs.Commands.ICommandReceiver(Of TAuthenticationToken).ReceiveCommand(Cqrs.Commands.ICommand(Of TAuthenticationToken))
+  name.vb: ReceiveCommand(ICommand(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommandReceiver`1.ReceiveCommand(Cqrs.Commands.ICommand{`0})
+    name: ReceiveCommand
+    nameWithType: ICommandReceiver<TAuthenticationToken>.ReceiveCommand
+    fullName: Cqrs.Commands.ICommandReceiver<TAuthenticationToken>.ReceiveCommand
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Commands.ICommandReceiver`1.ReceiveCommand(Cqrs.Commands.ICommand{`0})
+    name: ReceiveCommand
+    nameWithType: ICommandReceiver(Of TAuthenticationToken).ReceiveCommand
+    fullName: Cqrs.Commands.ICommandReceiver(Of TAuthenticationToken).ReceiveCommand
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Nullable{System.Boolean}
+  commentId: T:System.Nullable{System.Boolean}
+  parent: System
+  definition: System.Nullable`1
+  name: Nullable<Boolean>
+  nameWithType: Nullable<Boolean>
+  fullName: System.Nullable<System.Boolean>
+  nameWithType.vb: Nullable(Of Boolean)
+  fullName.vb: System.Nullable(Of System.Boolean)
+  name.vb: Nullable(Of Boolean)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Commands.ICommandReceiver`1.ReceiveCommand(Cqrs.Commands.ICommand{`0})
+  commentId: M:Cqrs.Commands.ICommandReceiver`1.ReceiveCommand(Cqrs.Commands.ICommand{`0})
+  isExternal: false
+  name: ReceiveCommand(ICommand<TAuthenticationToken>)
+  nameWithType: ICommandReceiver<TAuthenticationToken>.ReceiveCommand(ICommand<TAuthenticationToken>)
+  fullName: Cqrs.Commands.ICommandReceiver<TAuthenticationToken>.ReceiveCommand(Cqrs.Commands.ICommand<TAuthenticationToken>)
+  nameWithType.vb: ICommandReceiver(Of TAuthenticationToken).ReceiveCommand(ICommand(Of TAuthenticationToken))
+  fullName.vb: Cqrs.Commands.ICommandReceiver(Of TAuthenticationToken).ReceiveCommand(Cqrs.Commands.ICommand(Of TAuthenticationToken))
+  name.vb: ReceiveCommand(ICommand(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommandReceiver`1.ReceiveCommand(Cqrs.Commands.ICommand{`0})
+    name: ReceiveCommand
+    nameWithType: ICommandReceiver<TAuthenticationToken>.ReceiveCommand
+    fullName: Cqrs.Commands.ICommandReceiver<TAuthenticationToken>.ReceiveCommand
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Commands.ICommandReceiver`1.ReceiveCommand(Cqrs.Commands.ICommand{`0})
+    name: ReceiveCommand
+    nameWithType: ICommandReceiver(Of TAuthenticationToken).ReceiveCommand
+    fullName: Cqrs.Commands.ICommandReceiver(Of TAuthenticationToken).ReceiveCommand
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Bus.QueuedCommandBusReceiver`1.Start*
+  commentId: Overload:Cqrs.Bus.QueuedCommandBusReceiver`1.Start
+  isExternal: false
+  name: Start
+  nameWithType: QueuedCommandBusReceiver<TAuthenticationToken>.Start
+  fullName: Cqrs.Bus.QueuedCommandBusReceiver<TAuthenticationToken>.Start
+  nameWithType.vb: QueuedCommandBusReceiver(Of TAuthenticationToken).Start
+  fullName.vb: Cqrs.Bus.QueuedCommandBusReceiver(Of TAuthenticationToken).Start
+- uid: Cqrs.Commands.ICommandReceiver.Start
+  commentId: M:Cqrs.Commands.ICommandReceiver.Start
+  parent: Cqrs.Commands.ICommandReceiver
+  isExternal: false
+  name: Start()
+  nameWithType: ICommandReceiver.Start()
+  fullName: Cqrs.Commands.ICommandReceiver.Start()
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommandReceiver.Start
+    name: Start
+    nameWithType: ICommandReceiver.Start
+    fullName: Cqrs.Commands.ICommandReceiver.Start
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Commands.ICommandReceiver.Start
+    name: Start
+    nameWithType: ICommandReceiver.Start
+    fullName: Cqrs.Commands.ICommandReceiver.Start
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )

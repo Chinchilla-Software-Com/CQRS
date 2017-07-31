@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace Cqrs.Commands
+   | CQRS.NET API Reference Documentation version 2.2 </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace Cqrs.Commands
+   | CQRS.NET API Reference Documentation version 2.2 ">
+    <meta name="generator" content="docfx 2.21.2.0">
+    
+    <link rel="shortcut icon" href="../../../../../favicon.ico">
+    <link rel="stylesheet" href="../../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:rel" content="../../../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../../index.html">
+                <img id="logo" class="svg" src="../../../../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Cqrs.Commands">
+  
+  <h1 id="Cqrs_Commands" data-uid="Cqrs.Commands" class="text-break">Namespace Cqrs.Commands
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="Cqrs.Commands.DtoCommand-2.html">DtoCommand&lt;TAuthenticationToken, TDto&gt;</a></h4>
+      <section><p>A <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> for <a class="xref" href="Cqrs.Domain.IDto.html">IDto</a> objects</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Commands.DtoCommandHandler-2.html">DtoCommandHandler&lt;TAuthenticationToken, TDto&gt;</a></h4>
+      <section><p>A <a class="xref" href="Cqrs.Commands.ICommandHandle.html">ICommandHandle</a> for working with <a class="xref" href="Cqrs.Commands.DtoCommand-2.html">DtoCommand&lt;TAuthenticationToken, TDto&gt;</a>.</p>
+</section>
+    <h3 id="interfaces">Interfaces
+  </h3>
+      <h4><a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>People request changes to the domain by sending <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>s. They are named with a verb in the imperative mood plus and may include the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> type, for example ConfirmOrder. Unlike an <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a>, a <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> is not a statement of fact; it&apos;s only a request, and thus may be refused. (A typical way to convey refusal is to raise a specifically typed <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> stating the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> didn&apos;t happen for a specific reason).</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Commands.ICommandHandle.html">ICommandHandle</a></h4>
+      <section><p>An <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> receives an <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> and brokers a result from the appropriate <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.
+&quot;A result&quot; is either a successful application of the command, or an exception.
+This is the common sequence of steps an <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> might follow:</p>
+<p>Validate the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> on its own merits.
+Ask an <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> to handle the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>.
+If validation is successful, 0..n <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> artefacts (1 is common) are queued for publishing.
+Attempt to persist the new <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> artefacts. If there&apos;s a concurrency conflict during this step, either give up, or retry things.
+Dispatch the queued <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> artefacts.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a></h4>
+      <section><p>An <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> receives an <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> and brokers a result from the appropriate <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.
+&quot;A result&quot; is either a successful application of the command, or an exception.
+This is the common sequence of steps an <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> might follow:</p>
+<p>Validate the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> on its own merits.
+Ask an <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> to handle the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>.
+If validation is successful, 0..n <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> artefacts (1 is common) are queued for publishing.
+Attempt to persist the new <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> artefacts. If there&apos;s a concurrency conflict during this step, either give up, or retry things.
+Dispatch the queued <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> artefacts.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Commands.ICommandPublisher-1.html">ICommandPublisher&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>Publishes an <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a></p>
+</section>
+      <h4><a class="xref" href="Cqrs.Commands.ICommandReceiver.html">ICommandReceiver</a></h4>
+      <section><p>Receives instances of a <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> from the command bus.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Commands.ICommandReceiver-1.html">ICommandReceiver&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>Receives instances of a <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> from the command bus.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Commands.ICommandSender-1.html">ICommandSender&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>Sends an <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a></p>
+</section>
+      <h4><a class="xref" href="Cqrs.Commands.ICommandValidator-2.html">ICommandValidator&lt;TAuthenticationToken, TCommand&gt;</a></h4>
+      <section><p>Validates an <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> on its own merits.</p>
+</section>
+      <h4><a class="xref" href="Cqrs.Commands.IPublishAndWaitCommandPublisher-1.html">IPublishAndWaitCommandPublisher&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>Publishes an <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a></p>
+</section>
+      <h4><a class="xref" href="Cqrs.Commands.ISendAndWaitCommandSender-1.html">ISendAndWaitCommandSender&lt;TAuthenticationToken&gt;</a></h4>
+      <section><p>Sends an <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a></p>
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../../styles/main.js"></script>
+  </body>
+</html>

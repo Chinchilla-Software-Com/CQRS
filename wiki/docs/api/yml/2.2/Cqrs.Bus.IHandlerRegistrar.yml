@@ -1,0 +1,263 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Bus.IHandlerRegistrar
+  commentId: T:Cqrs.Bus.IHandlerRegistrar
+  id: IHandlerRegistrar
+  parent: Cqrs.Bus
+  children:
+  - Cqrs.Bus.IHandlerRegistrar.RegisterHandler``1(System.Action{``0},System.Boolean)
+  - Cqrs.Bus.IHandlerRegistrar.RegisterHandler``1(System.Action{``0},System.Type,System.Boolean)
+  langs:
+  - csharp
+  - vb
+  name: IHandlerRegistrar
+  nameWithType: IHandlerRegistrar
+  fullName: Cqrs.Bus.IHandlerRegistrar
+  type: Interface
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/IHandlerRegistrar.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: IHandlerRegistrar
+    path: Framework/Cqrs/Bus/IHandlerRegistrar.cs
+    startLine: 17
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nRegisters event or command handlers that listen and respond to events or commands.\n"
+  example: []
+  syntax:
+    content: >-
+      [ServiceContract(Namespace = "https://getcqrs.net/Bus/HandlerRegistrar")]
+
+      public interface IHandlerRegistrar
+    content.vb: >-
+      <ServiceContract(Namespace:="https://getcqrs.net/Bus/HandlerRegistrar")>
+
+      Public Interface IHandlerRegistrar
+  attributes:
+  - type: System.ServiceModel.ServiceContractAttribute
+    ctor: System.ServiceModel.ServiceContractAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: Namespace
+      type: System.String
+      value: https://getcqrs.net/Bus/HandlerRegistrar
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: Cqrs.Bus.IHandlerRegistrar.RegisterHandler``1(System.Action{``0},System.Type,System.Boolean)
+  commentId: M:Cqrs.Bus.IHandlerRegistrar.RegisterHandler``1(System.Action{``0},System.Type,System.Boolean)
+  id: RegisterHandler``1(System.Action{``0},System.Type,System.Boolean)
+  parent: Cqrs.Bus.IHandlerRegistrar
+  langs:
+  - csharp
+  - vb
+  name: RegisterHandler<TMessage>(Action<TMessage>, Type, Boolean)
+  nameWithType: IHandlerRegistrar.RegisterHandler<TMessage>(Action<TMessage>, Type, Boolean)
+  fullName: Cqrs.Bus.IHandlerRegistrar.RegisterHandler<TMessage>(System.Action<TMessage>, System.Type, System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/IHandlerRegistrar.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: RegisterHandler
+    path: Framework/Cqrs/Bus/IHandlerRegistrar.cs
+    startLine: 26
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nRegister an event or command handler that will listen and respond to events or commands.\n"
+  remarks: "\nIn many cases the <span class=\"paramref\">targetedType</span> will be the event handler class itself, what you actually want is the target of what is being updated\n"
+  example: []
+  syntax:
+    content: >-
+      [OperationContract]
+
+      void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)where TMessage : IMessage
+    parameters:
+    - id: handler
+      type: System.Action{{TMessage}}
+    - id: targetedType
+      type: System.Type
+    - id: holdMessageLock
+      type: System.Boolean
+    typeParameters:
+    - id: TMessage
+    content.vb: >-
+      <OperationContract>
+
+      Sub RegisterHandler(Of TMessage As IMessage)(handler As Action(Of TMessage), targetedType As Type, holdMessageLock As Boolean = True)
+  overload: Cqrs.Bus.IHandlerRegistrar.RegisterHandler*
+  attributes:
+  - type: System.ServiceModel.OperationContractAttribute
+    ctor: System.ServiceModel.OperationContractAttribute.#ctor
+    arguments: []
+  nameWithType.vb: IHandlerRegistrar.RegisterHandler(Of TMessage)(Action(Of TMessage), Type, Boolean)
+  fullName.vb: Cqrs.Bus.IHandlerRegistrar.RegisterHandler(Of TMessage)(System.Action(Of TMessage), System.Type, System.Boolean)
+  name.vb: RegisterHandler(Of TMessage)(Action(Of TMessage), Type, Boolean)
+- uid: Cqrs.Bus.IHandlerRegistrar.RegisterHandler``1(System.Action{``0},System.Boolean)
+  commentId: M:Cqrs.Bus.IHandlerRegistrar.RegisterHandler``1(System.Action{``0},System.Boolean)
+  id: RegisterHandler``1(System.Action{``0},System.Boolean)
+  parent: Cqrs.Bus.IHandlerRegistrar
+  langs:
+  - csharp
+  - vb
+  name: RegisterHandler<TMessage>(Action<TMessage>, Boolean)
+  nameWithType: IHandlerRegistrar.RegisterHandler<TMessage>(Action<TMessage>, Boolean)
+  fullName: Cqrs.Bus.IHandlerRegistrar.RegisterHandler<TMessage>(System.Action<TMessage>, System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/IHandlerRegistrar.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: RegisterHandler
+    path: Framework/Cqrs/Bus/IHandlerRegistrar.cs
+    startLine: 33
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nRegister an event or command handler that will listen and respond to events or commands.\n"
+  example: []
+  syntax:
+    content: >-
+      [OperationContract]
+
+      void RegisterHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)where TMessage : IMessage
+    parameters:
+    - id: handler
+      type: System.Action{{TMessage}}
+    - id: holdMessageLock
+      type: System.Boolean
+    typeParameters:
+    - id: TMessage
+    content.vb: >-
+      <OperationContract>
+
+      Sub RegisterHandler(Of TMessage As IMessage)(handler As Action(Of TMessage), holdMessageLock As Boolean = True)
+  overload: Cqrs.Bus.IHandlerRegistrar.RegisterHandler*
+  attributes:
+  - type: System.ServiceModel.OperationContractAttribute
+    ctor: System.ServiceModel.OperationContractAttribute.#ctor
+    arguments: []
+  nameWithType.vb: IHandlerRegistrar.RegisterHandler(Of TMessage)(Action(Of TMessage), Boolean)
+  fullName.vb: Cqrs.Bus.IHandlerRegistrar.RegisterHandler(Of TMessage)(System.Action(Of TMessage), System.Boolean)
+  name.vb: RegisterHandler(Of TMessage)(Action(Of TMessage), Boolean)
+references:
+- uid: Cqrs.Bus
+  commentId: N:Cqrs.Bus
+  isExternal: false
+  name: Cqrs.Bus
+  nameWithType: Cqrs.Bus
+  fullName: Cqrs.Bus
+- uid: Cqrs.Bus.IHandlerRegistrar.RegisterHandler*
+  commentId: Overload:Cqrs.Bus.IHandlerRegistrar.RegisterHandler
+  isExternal: false
+  name: RegisterHandler
+  nameWithType: IHandlerRegistrar.RegisterHandler
+  fullName: Cqrs.Bus.IHandlerRegistrar.RegisterHandler
+- uid: System.Action{{TMessage}}
+  commentId: T:System.Action{``0}
+  parent: System
+  definition: System.Action`1
+  name: Action<TMessage>
+  nameWithType: Action<TMessage>
+  fullName: System.Action<TMessage>
+  nameWithType.vb: Action(Of TMessage)
+  fullName.vb: System.Action(Of TMessage)
+  name.vb: Action(Of TMessage)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
