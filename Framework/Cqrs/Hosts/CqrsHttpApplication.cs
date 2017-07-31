@@ -52,7 +52,7 @@ namespace Cqrs.Hosts
 		}
 
 		/// <summary>
-		/// Calls <see cref="SetBuses"/>, <see cref="RegisterCommandAndEventHandlers"/> and finally <see cref="LogApplicationStarted"/>.
+		/// Calls <see cref="SetBuses"/>, <see cref="RegisterCommandAndEventHandlers"/>, <see cref="RegisterServiceParameterResolver"/>, <see cref="StartBuses"/> and finally <see cref="LogApplicationStarted"/>.
 		/// Gets executed once during the life cycle of the application when the first request for any resource in the application is made. A resource can be a page or an image in the application. 
 		/// If the server where the application is hosted is restarted then this is fired once again upon the first request for any resource in the application.
 		/// </summary>

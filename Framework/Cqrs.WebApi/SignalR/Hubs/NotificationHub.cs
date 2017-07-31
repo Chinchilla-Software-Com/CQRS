@@ -15,28 +15,47 @@ using cdmdotnet.Logging;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
 
 namespace Cqrs.WebApi.SignalR.Hubs
 {
+	/// <summary>
+	/// Sends <see cref="IEvent{TAuthenticationToken}">events</see> to different groups of users via a SignalR <see cref="Hub"/>.
+	/// </summary>
 	public class NotificationHub
 		: Hub
 		, INotificationHub
 		, ISingleSignOnTokenNotificationHub
 	{
+		/// <summary>
+		/// Instantiates a new instance of <see cref="NotificationHub"/>.
+		/// </summary>
 		public NotificationHub(ILogger logger, ICorrelationIdHelper correlationIdHelper)
 		{
 			Logger = logger;
 			CorrelationIdHelper = correlationIdHelper;
 		}
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="NotificationHub"/>.
+		/// </summary>
 		public NotificationHub()
 		{
 		}
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>.
+		/// </summary>
 		public ILogger Logger { get; set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ICorrelationIdHelper"/>.
+		/// </summary>
 		public ICorrelationIdHelper CorrelationIdHelper { get; set; }
 
+		/// <summary>
+		/// The <see cref="Func{String, Guid}"/> that can convert a <see cref="string"/> based authentication token into the <see cref="Guid"/> based user identifier.
+		/// </summary>
 		public Func<string, Guid> ConvertUserTokenToUserRsn { get; set; }
 
 		#region Overrides of HubBase
@@ -59,6 +78,11 @@ namespace Cqrs.WebApi.SignalR.Hubs
 
 		#endregion
 
+		/// <summary>
+		/// Gets the authentication token for the user from the incoming hub request looking at first the 
+		/// <see cref="HubCallerContext.RequestCookies"/> and then the <see cref="HubCallerContext.QueryString"/>.
+		/// The authentication token should have a name matching the value of "Cqrs.Web.AuthenticationTokenName" from <see cref="IConfigurationManager.GetSetting"/>.
+		/// </summary>
 		protected virtual string UserToken()
 		{
 			string userRsn;
@@ -74,6 +98,9 @@ namespace Cqrs.WebApi.SignalR.Hubs
 			return userRsn.Replace(".", string.Empty);
 		}
 
+		/// <summary>
+		/// Join the authenticated user to their relevant <see cref="IHubContext.Groups"/>.
+		/// </summary>
 		protected virtual Task Join()
 		{
 			string userToken = UserToken();
@@ -112,6 +139,9 @@ namespace Cqrs.WebApi.SignalR.Hubs
 			});
 		}
 
+		/// <summary>
+		/// Gets the current <see cref="IHubContext"/>.
+		/// </summary>
 		protected virtual IHubContext CurrentHub
 		{
 			get
@@ -257,6 +287,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 
 			return;
 
+			/*
 			try
 			{
 				var tokenSource = new CancellationTokenSource();
@@ -290,6 +321,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 			{
 				Logger.LogError("Queueing a message on the hub resulted in an error.", exception: exception, metaData: GetAdditionalDataForLogging(userToken));
 			}
+			*/
 		}
 
 		/// <summary>
@@ -324,11 +356,17 @@ namespace Cqrs.WebApi.SignalR.Hubs
 			((INotificationHub)this).SendUsersEvent(eventData, userRsnCollection);
 		}
 
+		/// <summary>
+		/// Create additional data containing the provided <paramref name="userRsn"/>.
+		/// </summary>
 		protected virtual IDictionary<string, object> GetAdditionalDataForLogging(Guid userRsn)
 		{
 			return new Dictionary<string, object> { { "UserRsn", userRsn } };
 		}
 
+		/// <summary>
+		/// Create additional data containing the provided <paramref name="userToken"/>.
+		/// </summary>
 		protected virtual IDictionary<string, object> GetAdditionalDataForLogging(string userToken)
 		{
 			return new Dictionary<string, object> { { "UserToken", userToken } };

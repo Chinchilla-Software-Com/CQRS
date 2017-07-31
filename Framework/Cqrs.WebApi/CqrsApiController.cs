@@ -17,6 +17,7 @@ using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Services;
 using System.Net.Http.Formatting;
+using System.Web;
 using Cqrs.Configuration;
 
 namespace Cqrs.WebApi
@@ -30,6 +31,9 @@ namespace Cqrs.WebApi
 	public abstract class CqrsApiController
 		: ApiController
 	{
+		/// <summary>
+		/// Instantiates a new instance of <see cref="CqrsApiController"/>.
+		/// </summary>
 		protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager)
 		{
 			CorrelationIdHelper = correlationIdHelper;
@@ -37,12 +41,25 @@ namespace Cqrs.WebApi
 			Logger = logger;
 		}
 
+		/// <summary>
+		/// Gets or set the <see cref="ICorrelationIdHelper"/>.
+		/// </summary>
 		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
+		/// <summary>
+		/// Gets or set the <see cref="ILogger"/>.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Gets or set the <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
+		/// <summary>
+		/// Extracts the authentication token looking for a <see cref="KeyValuePair{TKey,TValue}"/> where the key as defined by the <see cref="System.Configuration.ConfigurationManager.AppSettings"/> "Cqrs.Web.AuthenticationTokenName",
+		/// from the <see cref="HttpRequest.Headers"/>, if one isn't found we then try the <see cref="HttpRequest.Cookies"/>
+		/// </summary>
 		protected virtual string GetToken()
 		{
 			string authenticationTokenName = ConfigurationManager.GetSetting("Cqrs.Web.AuthenticationTokenName") ?? "X-Token";
@@ -61,6 +78,9 @@ namespace Cqrs.WebApi
 			return xToken;
 		}
 
+		/// <summary>
+		/// Create a <see cref="IServiceRequest{TAuthenticationToken}"/> setting header information.
+		/// </summary>
 		protected virtual IServiceRequest<TSingleSignOnToken> CreateRequest<TSingleSignOnToken>()
 			where TSingleSignOnToken : ISingleSignOnToken, new()
 		{
@@ -71,6 +91,10 @@ namespace Cqrs.WebApi
 			};
 		}
 
+		/// <summary>
+		/// Create a <see cref="IServiceRequestWithData{TAuthenticationToken,TData}"/> setting header information.
+		/// If <paramref name="createParameterDelegate"/> is not null, it is used to populate <see cref="IServiceRequestWithData{TAuthenticationToken,TData}.Data"/> otherwise <see cref="CreateParameter{TParameters}"/> is used.
+		/// </summary>
 		protected virtual IServiceRequestWithData<TSingleSignOnToken, TParameters> CreateRequestWithData<TSingleSignOnToken, TParameters>(Func<TParameters> createParameterDelegate = null)
 			where TSingleSignOnToken : ISingleSignOnToken, new()
 			where TParameters : new()
@@ -83,6 +107,10 @@ namespace Cqrs.WebApi
 			};
 		}
 
+		/// <summary>
+		/// Create an <typeparamref name="TSingleSignOnToken"/>.
+		/// </summary>
+		/// <typeparam name="TSingleSignOnToken">Th <see cref="Type"/> of <see cref="ISingleSignOnToken"/>.</typeparam>
 		protected virtual TSingleSignOnToken CreateAuthenticationToken<TSingleSignOnToken>()
 			where TSingleSignOnToken : ISingleSignOnToken, new()
 		{
@@ -94,22 +122,36 @@ namespace Cqrs.WebApi
 			};
 		}
 
+		/// <summary>
+		/// Creates a blank <typeparamref name="TParameters"/>
+		/// </summary>
 		protected virtual TParameters CreateParameter<TParameters>()
 			where TParameters : new()
 		{
 			return new TParameters();
 		}
 
+		/// <summary>
+		/// Get the <see cref="DateTime"/> the current authentication token was issued.
+		/// </summary>
+		/// <returns>default(DateTime)</returns>
 		protected virtual DateTime GetDateTokenIssued()
 		{
 			return default(DateTime);
 		}
 
+		/// <summary>
+		/// Get the <see cref="DateTime"/> the current authentication token will expire.
+		/// </summary>
+		/// <returns>default(DateTime)</returns>
 		protected virtual DateTime GetTokenTimeOfExpiry()
 		{
 			return default(DateTime);
 		}
 
+		/// <summary>
+		/// Completes the provided <paramref name="response"/> by setting the appropriate <see cref="HttpResponseMessage.StatusCode"/> and populating <see cref="HttpResponseMessage.Content"/> with <paramref name="serviceResponse"/>.
+		/// </summary>
 		protected virtual HttpResponseMessage CompleteResponse<TServiceResponse>(HttpResponseMessage response, TServiceResponse serviceResponse)
 			where TServiceResponse : IServiceResponse
 		{
@@ -152,6 +194,9 @@ namespace Cqrs.WebApi
 			return response;
 		}
 
+		/// <summary>
+		/// Creates a new <see cref="HttpResponseMessage"/> and completes the response by setting the appropriate <see cref="HttpResponseMessage.StatusCode"/> and populating <see cref="HttpResponseMessage.Content"/> with <paramref name="serviceResponse"/>.
+		/// </summary>
 		protected virtual HttpResponseMessage CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
 			where TServiceResponse : IServiceResponse
 		{
@@ -160,6 +205,9 @@ namespace Cqrs.WebApi
 			return CompleteResponse(response, serviceResponse);
 		}
 
+		/// <summary>
+		/// Creates a new <see cref="HttpResponseMessage"/> and completes the response by setting the appropriate <see cref="HttpResponseMessage.StatusCode"/> and populating <see cref="HttpResponseMessage.Content"/> with <paramref name="serviceResponse"/>.
+		/// </summary>
 		protected virtual HttpResponseMessage<TServiceResponse> CompleteResponseWithData<TServiceResponse>(TServiceResponse serviceResponse)
 			where TServiceResponse : IServiceResponse
 		{
@@ -180,14 +228,23 @@ namespace Cqrs.WebApi
 	public abstract class CqrsApiController<TAuthenticationToken>
 		: CqrsApiController
 	{
+		/// <summary>
+		/// Instantiates a new instance of <see cref="CqrsApiController"/>.
+		/// </summary>
 		protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
 			: base(logger, correlationIdHelper, configurationManager)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
 		}
 
+		/// <summary>
+		/// Gets or set the <see cref="IAuthenticationTokenHelper{TAuthenticationToken}"/>.
+		/// </summary>
 		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
 
+		/// <summary>
+		/// Reads the current authentication token for the request from <see cref="AuthenticationTokenHelper"/>.
+		/// </summary>
 		protected override string GetToken()
 		{
 			TAuthenticationToken token = AuthenticationTokenHelper.GetAuthenticationToken();
@@ -196,6 +253,9 @@ namespace Cqrs.WebApi
 			return null;
 		}
 
+		/// <summary>
+		/// Create a <see cref="IServiceRequest{TAuthenticationToken}"/> setting header information.
+		/// </summary>
 		protected virtual IServiceRequest<TAuthenticationToken> CreateRequest()
 		{
 			TAuthenticationToken token = AuthenticationTokenHelper.GetAuthenticationToken();
@@ -206,6 +266,10 @@ namespace Cqrs.WebApi
 			};
 		}
 
+		/// <summary>
+		/// Create a <see cref="IServiceRequestWithData{TAuthenticationToken,TData}"/> setting header information.
+		/// If <paramref name="createParameterDelegate"/> is not null, it is used to populate <see cref="IServiceRequestWithData{TAuthenticationToken,TData}.Data"/> otherwise <see cref="CqrsApiController.CreateParameter{TParameters}"/> is used.
+		/// </summary>
 		protected virtual IServiceRequestWithData<TAuthenticationToken, TParameters> CreateRequestWithData<TParameters>(Func<TParameters> createParameterDelegate = null)
 			where TParameters : new()
 		{
