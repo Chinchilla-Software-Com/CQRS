@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-29</td>
+            <td class="headerValue">2017-07-31</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -72,45 +72,68 @@
 <span class="lineNum">      14 </span>            : 
 <span class="lineNum">      15 </span>            : namespace Cqrs.WebApi.Events.Handlers
 <span class="lineNum">      16 </span>            : {
-<span class="lineNum">      17 </span>            :         public abstract class EventToHubProxy&lt;TAuthenticationToken&gt;
-<span class="lineNum">      18 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      19 </span><span class="lineNoCov">          0 :                 protected EventToHubProxy(ILogger logger, INotificationHub notificationHub, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper)</span>
-<span class="lineNum">      20 </span>            :                 {
-<span class="lineNum">      21 </span>            :                         Logger = logger;
-<span class="lineNum">      22 </span>            :                         NotificationHub = notificationHub;
-<span class="lineNum">      23 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
-<span class="lineNum">      24 </span>            :                 }
-<span class="lineNum">      25 </span>            : 
-<span class="lineNum">      26 </span>            :                 protected ILogger Logger { get; private set; }
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span>            :                 protected INotificationHub NotificationHub { get; private set; }
-<span class="lineNum">      29 </span>            : 
-<span class="lineNum">      30 </span>            :                 protected IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; AuthenticationTokenHelper { get; private set; }
-<span class="lineNum">      31 </span>            : 
-<span class="lineNum">      32 </span><span class="lineNoCov">          0 :                 protected virtual void HandleGenericEvent(IEvent&lt;TAuthenticationToken&gt; message)</span>
-<span class="lineNum">      33 </span>            :                 {
-<span class="lineNum">      34 </span>            :                         Type eventType = message.GetType();
-<span class="lineNum">      35 </span>            :                         var notifyCallerEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyCallerEventAttribute)) as NotifyCallerEventAttribute;
-<span class="lineNum">      36 </span>            :                         var notifyEveryoneEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyEveryoneEventAttribute)) as NotifyEveryoneEventAttribute;
-<span class="lineNum">      37 </span>            :                         var notifyEveryoneExceptCallerEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyEveryoneExceptCallerEventAttribute)) as NotifyEveryoneExceptCallerEventAttribute;
+<span class="lineNum">      17 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      18 </span>            :         /// Proxies &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; from the event bus to the &lt;see cref=&quot;INotificationHub&quot;/&gt;.
+<span class="lineNum">      19 </span>            :         /// This requires one or more &lt;see cref=&quot;IEventHandler&quot;/&gt; implementations in order to be triggered.
+<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      21 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      22 </span>            :         public abstract class EventToHubProxy&lt;TAuthenticationToken&gt;
+<span class="lineNum">      23 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      24 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      25 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;EventToHubProxy{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      26 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      27 </span><span class="lineCov">          1 :                 protected EventToHubProxy(ILogger logger, INotificationHub notificationHub, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper)</span>
+<span class="lineNum">      28 </span>            :                 {
+<span class="lineNum">      29 </span>            :                         Logger = logger;
+<span class="lineNum">      30 </span>            :                         NotificationHub = notificationHub;
+<span class="lineNum">      31 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
+<span class="lineNum">      32 </span>            :                 }
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      35 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ILogger&quot;/&gt;.
+<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      37 </span>            :                 protected ILogger Logger { get; private set; }
 <span class="lineNum">      38 </span>            : 
-<span class="lineNum">      39 </span>            :                         string userToken = ((object)AuthenticationTokenHelper.GetAuthenticationToken() ?? string.Empty).ToString().Replace(&quot;.&quot;, string.Empty);
-<span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span>            :                         if (notifyCallerEventAttribute != null)
-<span class="lineNum">      42 </span>            :                         {
-<span class="lineNum">      43 </span>            :                                 NotificationHub.SendUserEvent(message, userToken);
-<span class="lineNum">      44 </span>            :                         }
-<span class="lineNum">      45 </span>            :                         if (notifyEveryoneEventAttribute != null)
-<span class="lineNum">      46 </span>            :                         {
-<span class="lineNum">      47 </span>            :                                 NotificationHub.SendAllUsersEvent(message);
-<span class="lineNum">      48 </span>            :                         }
-<span class="lineNum">      49 </span>            :                         if (notifyEveryoneExceptCallerEventAttribute != null)
-<span class="lineNum">      50 </span>            :                         {
-<span class="lineNum">      51 </span>            :                                 NotificationHub.SendExceptThisUserEvent(message, userToken);
-<span class="lineNum">      52 </span>            :                         }
-<span class="lineNum">      53 </span>            :                 }
-<span class="lineNum">      54 </span>            :         }
-<span class="lineNum">      55 </span>            : }
+<span class="lineNum">      39 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      40 </span>            :                 /// The &lt;see cref=&quot;INotificationHub&quot;/&gt; to proxy &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; to.
+<span class="lineNum">      41 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      42 </span>            :                 protected INotificationHub NotificationHub { get; private set; }
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      45 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IAuthenticationTokenHelper{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      46 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      47 </span>            :                 protected IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; AuthenticationTokenHelper { get; private set; }
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      50 </span>            :                 /// Get the authentication token of the entity that triggered the request generating the provided &lt;paramref name=&quot;message&quot;/&gt;
+<span class="lineNum">      51 </span>            :                 /// Extract any proxy information attributes (&lt;see cref=&quot;NotifyCallerEventAttribute&quot;/&gt;, &lt;see cref=&quot;NotifyEveryoneEventAttribute&quot;/&gt; and &lt;see cref=&quot;NotifyEveryoneExceptCallerEventAttribute&quot;/&gt;)
+<span class="lineNum">      52 </span>            :                 /// then proxy the provided &lt;paramref name=&quot;message&quot;/&gt; to &lt;see cref=&quot;NotificationHub&quot;/&gt; if an attribute is present.
+<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      54 </span>            :                 /// &lt;param name=&quot;message&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to proxy.&lt;/param&gt;
+<span class="lineNum">      55 </span><span class="lineCov">          1 :                 protected virtual void HandleGenericEvent(IEvent&lt;TAuthenticationToken&gt; message)</span>
+<span class="lineNum">      56 </span>            :                 {
+<span class="lineNum">      57 </span>            :                         Type eventType = message.GetType();
+<span class="lineNum">      58 </span>            :                         var notifyCallerEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyCallerEventAttribute)) as NotifyCallerEventAttribute;
+<span class="lineNum">      59 </span>            :                         var notifyEveryoneEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyEveryoneEventAttribute)) as NotifyEveryoneEventAttribute;
+<span class="lineNum">      60 </span>            :                         var notifyEveryoneExceptCallerEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyEveryoneExceptCallerEventAttribute)) as NotifyEveryoneExceptCallerEventAttribute;
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :                         string userToken = ((object)AuthenticationTokenHelper.GetAuthenticationToken() ?? string.Empty).ToString().Replace(&quot;.&quot;, string.Empty);
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :                         if (notifyCallerEventAttribute != null)
+<span class="lineNum">      65 </span>            :                         {
+<span class="lineNum">      66 </span>            :                                 NotificationHub.SendUserEvent(message, userToken);
+<span class="lineNum">      67 </span>            :                         }
+<span class="lineNum">      68 </span>            :                         if (notifyEveryoneEventAttribute != null)
+<span class="lineNum">      69 </span>            :                         {
+<span class="lineNum">      70 </span>            :                                 NotificationHub.SendAllUsersEvent(message);
+<span class="lineNum">      71 </span>            :                         }
+<span class="lineNum">      72 </span>            :                         if (notifyEveryoneExceptCallerEventAttribute != null)
+<span class="lineNum">      73 </span>            :                         {
+<span class="lineNum">      74 </span>            :                                 NotificationHub.SendExceptThisUserEvent(message, userToken);
+<span class="lineNum">      75 </span>            :                         }
+<span class="lineNum">      76 </span>            :                 }
+<span class="lineNum">      77 </span>            :         }
+<span class="lineNum">      78 </span>            : }
 </pre>
       </td>
     </tr>

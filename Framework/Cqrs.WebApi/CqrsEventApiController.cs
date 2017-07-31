@@ -12,6 +12,7 @@ using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Cqrs.Events;
+using Cqrs.Messages;
 using Cqrs.Services;
 
 namespace Cqrs.WebApi
@@ -24,6 +25,9 @@ namespace Cqrs.WebApi
 		, IEventService<TSingleSignOnToken>
 		where TSingleSignOnToken : ISingleSignOnToken, new()
 	{
+		/// <summary>
+		/// Instantiates a new instance of <see cref="CqrsEventApiController{TSingleSignOnToken}"/>.
+		/// </summary>
 		protected CqrsEventApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TSingleSignOnToken> authenticationTokenHelper, IEventStore<TSingleSignOnToken> eventStore, IConfigurationManager configurationManager)
 			: base(logger, correlationIdHelper, configurationManager)
 		{
@@ -31,22 +35,35 @@ namespace Cqrs.WebApi
 			EventStore = eventStore;
 		}
 
+		/// <summary>
+		/// Gets or set the <see cref="IAuthenticationTokenHelper{TAuthenticationToken}"/>.
+		/// </summary>
 		protected IAuthenticationTokenHelper<TSingleSignOnToken> AuthenticationTokenHelper { get; private set; }
 
+		/// <summary>
+		/// Gets or set the <see cref="IEventStore{TAuthenticationToken}"/>.
+		/// </summary>
 		protected virtual IEventStore<TSingleSignOnToken> EventStore { get; private set; }
 
 
 		#region Implementation of IEventService<SingleSignOnToken>
 
+		/// <summary>
+		/// Get all <see cref="IEvent{TAuthenticationToken}">events</see>
+		/// raised with the same <see cref="IMessage.CorrelationId"/>.
+		/// </summary>
+		/// <param name="serviceRequest">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}">events</see> to find.</param>
+		/// <returns>A collection of <see cref="EventData">event data</see></returns>
 		IServiceResponseWithResultData<IEnumerable<EventData>> IEventService<TSingleSignOnToken>.GetEventData(IServiceRequestWithData<TSingleSignOnToken, Guid> serviceRequest)
 		{
 			return GetEventData(serviceRequest);
 		}
 
 		/// <summary>
-		/// Query for all the events that match the provided CorrelationId.
+		/// Get all <see cref="IEvent{TAuthenticationToken}">events</see>
+		/// raised with the same <see cref="IMessage.CorrelationId"/>.
 		/// </summary>
-		/// <param name="serviceRequest">A <see cref="IServiceRequestWithData{TAuthenticationToken,TData}">service-request</see> that contains the CorrelationId.</param>
+		/// <param name="serviceRequest">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}">events</see> to find.</param>
 		/// <returns>A collection of <see cref="EventData">event data</see></returns>
 		protected virtual IServiceResponseWithResultData<IEnumerable<EventData>> GetEventData(IServiceRequestWithData<TSingleSignOnToken, Guid> serviceRequest)
 		{
@@ -67,8 +84,19 @@ namespace Cqrs.WebApi
 
 		#endregion
 
+		/// <summary>
+		/// Executed before calling the <see cref="IEventStore{TAuthenticationToken}.Get(System.Type,System.Guid,bool,int)"/> method on <see cref="EventStore"/>
+		/// in <see cref="GetEventData"/>.
+		/// </summary>
+		/// <param name="serviceRequest">The original <see cref="IServiceRequestWithData{TAuthenticationToken,Guid}"/>.</param>
 		protected virtual void OnGetEventData(IServiceRequestWithData<TSingleSignOnToken, Guid> serviceRequest) { }
 
+		/// <summary>
+		/// Executed after calling the <see cref="IEventStore{TAuthenticationToken}.Get(System.Type,System.Guid,bool,int)"/> method on <see cref="EventStore"/>
+		/// in <see cref="GetEventData"/>.
+		/// </summary>
+		/// <param name="serviceRequest">The original <see cref="IServiceRequestWithData{TAuthenticationToken,Guid}"/>.</param>
+		/// <param name="results">The collection of <see cref="IEvent{TAuthenticationToken}">events</see> from the <see cref="EventStore"/>.</param>
 		protected virtual IEnumerable<EventData> OnGotEventData(IServiceRequestWithData<TSingleSignOnToken, Guid> serviceRequest, IEnumerable<EventData> results)
 		{
 			return results;

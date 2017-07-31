@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">2</td>
             <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntryLo">40.0 %</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-29</td>
+            <td class="headerValue">2017-07-31</td>
             <td></td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -70,69 +70,97 @@
 <span class="lineNum">      12 </span>            : using Cqrs.Authentication;
 <span class="lineNum">      13 </span>            : using Cqrs.Configuration;
 <span class="lineNum">      14 </span>            : using Cqrs.Events;
-<span class="lineNum">      15 </span>            : using Cqrs.Services;
-<span class="lineNum">      16 </span>            : 
-<span class="lineNum">      17 </span>            : namespace Cqrs.WebApi
-<span class="lineNum">      18 </span>            : {
-<span class="lineNum">      19 </span>            :         /// &lt;summary&gt;
-<span class="lineNum">      20 </span>            :         /// A &lt;see cref=&quot;CqrsApiController&quot;/&gt; that includes an implementation of the &lt;see cref=&quot;IEventService{TAuthenticationToken}.GetEventData&quot;/&gt; method
-<span class="lineNum">      21 </span>            :         /// &lt;/summary&gt;
-<span class="lineNum">      22 </span>            :         public abstract class CqrsEventApiController&lt;TSingleSignOnToken&gt;
-<span class="lineNum">      23 </span>            :                 : CqrsApiController
-<span class="lineNum">      24 </span>            :                 , IEventService&lt;TSingleSignOnToken&gt;
-<span class="lineNum">      25 </span>            :                 where TSingleSignOnToken : ISingleSignOnToken, new()
-<span class="lineNum">      26 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      27 </span><span class="lineNoCov">          0 :                 protected CqrsEventApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper&lt;TSingleSignOnToken&gt; authenticationTokenHelper, IEventStore&lt;TSingleSignOnToken&gt; eventStore, IConfigurationManager configurationManager)</span>
-<span class="lineNum">      28 </span>            :                         : base(logger, correlationIdHelper, configurationManager)
-<span class="lineNum">      29 </span>            :                 {
-<span class="lineNum">      30 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
-<span class="lineNum">      31 </span>            :                         EventStore = eventStore;
-<span class="lineNum">      32 </span>            :                 }
-<span class="lineNum">      33 </span>            : 
-<span class="lineNum">      34 </span>            :                 protected IAuthenticationTokenHelper&lt;TSingleSignOnToken&gt; AuthenticationTokenHelper { get; private set; }
-<span class="lineNum">      35 </span>            : 
-<span class="lineNum">      36 </span>            :                 protected virtual IEventStore&lt;TSingleSignOnToken&gt; EventStore { get; private set; }
+<span class="lineNum">      15 </span>            : using Cqrs.Messages;
+<span class="lineNum">      16 </span>            : using Cqrs.Services;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : namespace Cqrs.WebApi
+<span class="lineNum">      19 </span>            : {
+<span class="lineNum">      20 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :         /// A &lt;see cref=&quot;CqrsApiController&quot;/&gt; that includes an implementation of the &lt;see cref=&quot;IEventService{TAuthenticationToken}.GetEventData&quot;/&gt; method
+<span class="lineNum">      22 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      23 </span>            :         public abstract class CqrsEventApiController&lt;TSingleSignOnToken&gt;
+<span class="lineNum">      24 </span>            :                 : CqrsApiController
+<span class="lineNum">      25 </span>            :                 , IEventService&lt;TSingleSignOnToken&gt;
+<span class="lineNum">      26 </span>            :                 where TSingleSignOnToken : ISingleSignOnToken, new()
+<span class="lineNum">      27 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      28 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      29 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;CqrsEventApiController{TSingleSignOnToken}&quot;/&gt;.
+<span class="lineNum">      30 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      31 </span><span class="lineCov">          1 :                 protected CqrsEventApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper&lt;TSingleSignOnToken&gt; authenticationTokenHelper, IEventStore&lt;TSingleSignOnToken&gt; eventStore, IConfigurationManager configurationManager)</span>
+<span class="lineNum">      32 </span>            :                         : base(logger, correlationIdHelper, configurationManager)
+<span class="lineNum">      33 </span>            :                 {
+<span class="lineNum">      34 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
+<span class="lineNum">      35 </span>            :                         EventStore = eventStore;
+<span class="lineNum">      36 </span>            :                 }
 <span class="lineNum">      37 </span>            : 
-<span class="lineNum">      38 </span>            : 
-<span class="lineNum">      39 </span>            :                 #region Implementation of IEventService&lt;SingleSignOnToken&gt;
-<span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span>            :                 IServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt; IEventService&lt;TSingleSignOnToken&gt;.GetEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest)
-<span class="lineNum">      42 </span>            :                 {
-<span class="lineNum">      43 </span>            :                         return GetEventData(serviceRequest);
-<span class="lineNum">      44 </span>            :                 }
-<span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      47 </span>            :                 /// Query for all the events that match the provided CorrelationId.
-<span class="lineNum">      48 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      49 </span>            :                 /// &lt;param name=&quot;serviceRequest&quot;&gt;A &lt;see cref=&quot;IServiceRequestWithData{TAuthenticationToken,TData}&quot;&gt;service-request&lt;/see&gt; that contains the CorrelationId.&lt;/param&gt;
-<span class="lineNum">      50 </span>            :                 /// &lt;returns&gt;A collection of &lt;see cref=&quot;EventData&quot;&gt;event data&lt;/see&gt;&lt;/returns&gt;
-<span class="lineNum">      51 </span><span class="lineCov">          1 :                 protected virtual IServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt; GetEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest)</span>
-<span class="lineNum">      52 </span>            :                 {
-<span class="lineNum">      53 </span>            :                         AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
-<span class="lineNum">      54 </span>            :                         CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
-<span class="lineNum">      55 </span>            : 
-<span class="lineNum">      56 </span>            :                         OnGetEventData(serviceRequest);
-<span class="lineNum">      57 </span>            :                         IEnumerable&lt;EventData&gt; results = EventStore.Get(serviceRequest.Data);
-<span class="lineNum">      58 </span>            :                         results = OnGotEventData(serviceRequest, results);
-<span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span>            :                         return new ServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt;
-<span class="lineNum">      61 </span>            :                         {
-<span class="lineNum">      62 </span>            :                                 State = ServiceResponseStateType.Succeeded,
-<span class="lineNum">      63 </span>            :                                 ResultData = results,
-<span class="lineNum">      64 </span>            :                                 CorrelationId = CorrelationIdHelper.GetCorrelationId()
-<span class="lineNum">      65 </span>            :                         };
-<span class="lineNum">      66 </span>            :                 }
-<span class="lineNum">      67 </span>            : 
-<span class="lineNum">      68 </span>            :                 #endregion
-<span class="lineNum">      69 </span>            : 
-<span class="lineNum">      70 </span><span class="lineNoCov">          0 :                 protected virtual void OnGetEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest) { }</span>
-<span class="lineNum">      71 </span>            : 
-<span class="lineNum">      72 </span><span class="lineNoCov">          0 :                 protected virtual IEnumerable&lt;EventData&gt; OnGotEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest, IEnumerable&lt;EventData&gt; results)</span>
-<span class="lineNum">      73 </span>            :                 {
-<span class="lineNum">      74 </span>            :                         return results;
-<span class="lineNum">      75 </span>            :                 }
-<span class="lineNum">      76 </span>            :         }
-<span class="lineNum">      77 </span>            : }
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// Gets or set the &lt;see cref=&quot;IAuthenticationTokenHelper{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span>            :                 protected IAuthenticationTokenHelper&lt;TSingleSignOnToken&gt; AuthenticationTokenHelper { get; private set; }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      44 </span>            :                 /// Gets or set the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      46 </span>            :                 protected virtual IEventStore&lt;TSingleSignOnToken&gt; EventStore { get; private set; }
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                 #region Implementation of IEventService&lt;SingleSignOnToken&gt;
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      52 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt;
+<span class="lineNum">      53 </span>            :                 /// raised with the same &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt;.
+<span class="lineNum">      54 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      55 </span>            :                 /// &lt;param name=&quot;serviceRequest&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; to find.&lt;/param&gt;
+<span class="lineNum">      56 </span>            :                 /// &lt;returns&gt;A collection of &lt;see cref=&quot;EventData&quot;&gt;event data&lt;/see&gt;&lt;/returns&gt;
+<span class="lineNum">      57 </span>            :                 IServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt; IEventService&lt;TSingleSignOnToken&gt;.GetEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest)
+<span class="lineNum">      58 </span>            :                 {
+<span class="lineNum">      59 </span>            :                         return GetEventData(serviceRequest);
+<span class="lineNum">      60 </span>            :                 }
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      63 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt;
+<span class="lineNum">      64 </span>            :                 /// raised with the same &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt;.
+<span class="lineNum">      65 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      66 </span>            :                 /// &lt;param name=&quot;serviceRequest&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; to find.&lt;/param&gt;
+<span class="lineNum">      67 </span>            :                 /// &lt;returns&gt;A collection of &lt;see cref=&quot;EventData&quot;&gt;event data&lt;/see&gt;&lt;/returns&gt;
+<span class="lineNum">      68 </span><span class="lineCov">          1 :                 protected virtual IServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt; GetEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest)</span>
+<span class="lineNum">      69 </span>            :                 {
+<span class="lineNum">      70 </span>            :                         AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
+<span class="lineNum">      71 </span>            :                         CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                         OnGetEventData(serviceRequest);
+<span class="lineNum">      74 </span>            :                         IEnumerable&lt;EventData&gt; results = EventStore.Get(serviceRequest.Data);
+<span class="lineNum">      75 </span>            :                         results = OnGotEventData(serviceRequest, results);
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :                         return new ServiceResponseWithResultData&lt;IEnumerable&lt;EventData&gt;&gt;
+<span class="lineNum">      78 </span>            :                         {
+<span class="lineNum">      79 </span>            :                                 State = ServiceResponseStateType.Succeeded,
+<span class="lineNum">      80 </span>            :                                 ResultData = results,
+<span class="lineNum">      81 </span>            :                                 CorrelationId = CorrelationIdHelper.GetCorrelationId()
+<span class="lineNum">      82 </span>            :                         };
+<span class="lineNum">      83 </span>            :                 }
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                 #endregion
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      88 </span>            :                 /// Executed before calling the &lt;see cref=&quot;IEventStore{TAuthenticationToken}.Get(System.Type,System.Guid,bool,int)&quot;/&gt; method on &lt;see cref=&quot;EventStore&quot;/&gt;
+<span class="lineNum">      89 </span>            :                 /// in &lt;see cref=&quot;GetEventData&quot;/&gt;.
+<span class="lineNum">      90 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      91 </span>            :                 /// &lt;param name=&quot;serviceRequest&quot;&gt;The original &lt;see cref=&quot;IServiceRequestWithData{TAuthenticationToken,Guid}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      92 </span><span class="lineCov">          1 :                 protected virtual void OnGetEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest) { }</span>
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      95 </span>            :                 /// Executed after calling the &lt;see cref=&quot;IEventStore{TAuthenticationToken}.Get(System.Type,System.Guid,bool,int)&quot;/&gt; method on &lt;see cref=&quot;EventStore&quot;/&gt;
+<span class="lineNum">      96 </span>            :                 /// in &lt;see cref=&quot;GetEventData&quot;/&gt;.
+<span class="lineNum">      97 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      98 </span>            :                 /// &lt;param name=&quot;serviceRequest&quot;&gt;The original &lt;see cref=&quot;IServiceRequestWithData{TAuthenticationToken,Guid}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      99 </span>            :                 /// &lt;param name=&quot;results&quot;&gt;The collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; from the &lt;see cref=&quot;EventStore&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     100 </span><span class="lineCov">          1 :                 protected virtual IEnumerable&lt;EventData&gt; OnGotEventData(IServiceRequestWithData&lt;TSingleSignOnToken, Guid&gt; serviceRequest, IEnumerable&lt;EventData&gt; results)</span>
+<span class="lineNum">     101 </span>            :                 {
+<span class="lineNum">     102 </span>            :                         return results;
+<span class="lineNum">     103 </span>            :                 }
+<span class="lineNum">     104 </span>            :         }
+<span class="lineNum">     105 </span>            : }
 </pre>
       </td>
     </tr>

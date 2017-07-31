@@ -11,6 +11,9 @@ using Cqrs.Events;
 
 namespace Cqrs.WebApi.SignalR.Hubs
 {
+	/// <summary>
+	/// Sends <see cref="IEvent{TAuthenticationToken}">events</see> to different groups of users.
+	/// </summary>
 	public interface INotificationHub
 	{
 		/// <summary>

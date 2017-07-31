@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-29</td>
+            <td class="headerValue">2017-07-31</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -75,361 +75,363 @@
 <span class="lineNum">      17 </span>            : // ReSharper disable once CheckNamespace
 <span class="lineNum">      18 </span>            : namespace System.Web.Helpers
 <span class="lineNum">      19 </span>            : {
-<span class="lineNum">      20 </span>            :         public static class Json
-<span class="lineNum">      21 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      22 </span>            :                 private static readonly JavaScriptSerializer _serializer = CreateSerializer();
-<span class="lineNum">      23 </span>            : 
-<span class="lineNum">      24 </span><span class="lineNoCov">          0 :                 public static string Encode(object value)</span>
-<span class="lineNum">      25 </span>            :                 {
-<span class="lineNum">      26 </span>            :                         // Serialize our dynamic array type as an array
-<span class="lineNum">      27 </span>            :                         DynamicJsonArray jsonArray = value as DynamicJsonArray;
-<span class="lineNum">      28 </span>            :                         if (jsonArray != null)
-<span class="lineNum">      29 </span>            :                         {
-<span class="lineNum">      30 </span>            :                                 return _serializer.Serialize((object[])jsonArray);
-<span class="lineNum">      31 </span>            :                         }
-<span class="lineNum">      32 </span>            : 
-<span class="lineNum">      33 </span>            :                         return _serializer.Serialize(value);
-<span class="lineNum">      34 </span>            :                 }
-<span class="lineNum">      35 </span>            : 
-<span class="lineNum">      36 </span><span class="lineNoCov">          0 :                 public static void Write(object value, TextWriter writer)</span>
-<span class="lineNum">      37 </span>            :                 {
-<span class="lineNum">      38 </span>            :                         writer.Write(_serializer.Serialize(value));
-<span class="lineNum">      39 </span>            :                 }
-<span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span><span class="lineNoCov">          0 :                 public static dynamic Decode(string value)</span>
-<span class="lineNum">      42 </span>            :                 {
-<span class="lineNum">      43 </span>            :                         return WrapObject(_serializer.DeserializeObject(value));
-<span class="lineNum">      44 </span>            :                 }
-<span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span><span class="lineNoCov">          0 :                 public static dynamic Decode(string value, Type targetType)</span>
-<span class="lineNum">      47 </span>            :                 {
-<span class="lineNum">      48 </span>            :                         return WrapObject(_serializer.Deserialize(value, targetType));
-<span class="lineNum">      49 </span>            :                 }
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span><span class="lineNoCov">          0 :                 public static T Decode&lt;T&gt;(string value)</span>
-<span class="lineNum">      52 </span>            :                 {
-<span class="lineNum">      53 </span>            :                         return _serializer.Deserialize&lt;T&gt;(value);
-<span class="lineNum">      54 </span>            :                 }
-<span class="lineNum">      55 </span>            : 
-<span class="lineNum">      56 </span>            :                 private static JavaScriptSerializer CreateSerializer()
-<span class="lineNum">      57 </span>            :                 {
-<span class="lineNum">      58 </span>            :                         JavaScriptSerializer serializer = new JavaScriptSerializer();
-<span class="lineNum">      59 </span>            :                         serializer.RegisterConverters(new[] { new DynamicJavaScriptConverter() });
-<span class="lineNum">      60 </span>            :                         return serializer;
-<span class="lineNum">      61 </span>            :                 }
-<span class="lineNum">      62 </span>            : 
-<span class="lineNum">      63 </span>            :                 internal static dynamic WrapObject(object value)
-<span class="lineNum">      64 </span>            :                 {
-<span class="lineNum">      65 </span>            :                         // The JavaScriptSerializer returns IDictionary&lt;string, object&gt; for objects
-<span class="lineNum">      66 </span>            :                         // and object[] for arrays, so we wrap those in different dynamic objects
-<span class="lineNum">      67 </span>            :                         // so we can access the object graph using dynamic
-<span class="lineNum">      68 </span>            :                         var dictionaryValues = value as IDictionary&lt;string, object&gt;;
-<span class="lineNum">      69 </span>            :                         if (dictionaryValues != null)
-<span class="lineNum">      70 </span>            :                         {
-<span class="lineNum">      71 </span>            :                                 return new DynamicJsonObject(dictionaryValues);
-<span class="lineNum">      72 </span>            :                         }
-<span class="lineNum">      73 </span>            : 
-<span class="lineNum">      74 </span>            :                         var arrayValues = value as object[];
-<span class="lineNum">      75 </span>            :                         if (arrayValues != null)
-<span class="lineNum">      76 </span>            :                         {
-<span class="lineNum">      77 </span>            :                                 return new DynamicJsonArray(arrayValues);
-<span class="lineNum">      78 </span>            :                         }
-<span class="lineNum">      79 </span>            : 
-<span class="lineNum">      80 </span>            :                         return value;
-<span class="lineNum">      81 </span>            :                 }
-<span class="lineNum">      82 </span>            :         }
-<span class="lineNum">      83 </span>            : 
-<span class="lineNum">      84 </span>            :         // REVIEW: Consider implementing ICustomTypeDescriptor and IDictionary&lt;string, object&gt;
-<span class="lineNum">      85 </span>            :         public class DynamicJsonObject : DynamicObject
-<span class="lineNum">      86 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      87 </span>            :                 private readonly IDictionary&lt;string, object&gt; _values;
-<span class="lineNum">      88 </span>            : 
-<span class="lineNum">      89 </span><span class="lineNoCov">          0 :                 public DynamicJsonObject(IDictionary&lt;string, object&gt; values)</span>
-<span class="lineNum">      90 </span>            :                 {
-<span class="lineNum">      91 </span>            :                         Debug.Assert(values != null);
-<span class="lineNum">      92 </span>            :                         _values = values.ToDictionary(p =&gt; p.Key, p =&gt; Json.WrapObject(p.Value),
-<span class="lineNum">      93 </span>            :                                                                                   StringComparer.OrdinalIgnoreCase);
-<span class="lineNum">      94 </span>            :                 }
-<span class="lineNum">      95 </span>            : 
-<span class="lineNum">      96 </span><span class="lineNoCov">          0 :                 public override bool TryConvert(ConvertBinder binder, out object result)</span>
-<span class="lineNum">      97 </span>            :                 {
-<span class="lineNum">      98 </span>            :                         result = null;
-<span class="lineNum">      99 </span>            :                         if (binder.Type.IsAssignableFrom(_values.GetType()))
-<span class="lineNum">     100 </span>            :                         {
-<span class="lineNum">     101 </span>            :                                 result = _values;
-<span class="lineNum">     102 </span>            :                         }
-<span class="lineNum">     103 </span>            :                         else
-<span class="lineNum">     104 </span>            :                         {
-<span class="lineNum">     105 </span>            :                                 throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, HelpersResources.Json_UnableToConvertType, binder.Type));
-<span class="lineNum">     106 </span>            :                         }
-<span class="lineNum">     107 </span>            :                         return true;
-<span class="lineNum">     108 </span>            :                 }
-<span class="lineNum">     109 </span>            : 
-<span class="lineNum">     110 </span><span class="lineNoCov">          0 :                 public override bool TryGetMember(GetMemberBinder binder, out object result)</span>
-<span class="lineNum">     111 </span>            :                 {
-<span class="lineNum">     112 </span>            :                         result = GetValue(binder.Name);
-<span class="lineNum">     113 </span>            :                         return true;
-<span class="lineNum">     114 </span>            :                 }
-<span class="lineNum">     115 </span>            : 
-<span class="lineNum">     116 </span><span class="lineNoCov">          0 :                 public override bool TrySetMember(SetMemberBinder binder, object value)</span>
-<span class="lineNum">     117 </span>            :                 {
-<span class="lineNum">     118 </span>            :                         _values[binder.Name] = Json.WrapObject(value);
-<span class="lineNum">     119 </span>            :                         return true;
-<span class="lineNum">     120 </span>            :                 }
-<span class="lineNum">     121 </span>            : 
-<span class="lineNum">     122 </span><span class="lineNoCov">          0 :                 public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)</span>
-<span class="lineNum">     123 </span>            :                 {
-<span class="lineNum">     124 </span>            :                         string key = GetKey(indexes);
-<span class="lineNum">     125 </span>            :                         if (!String.IsNullOrEmpty(key))
-<span class="lineNum">     126 </span>            :                         {
-<span class="lineNum">     127 </span>            :                                 _values[key] = Json.WrapObject(value);
-<span class="lineNum">     128 </span>            :                         }
-<span class="lineNum">     129 </span>            :                         return true;
-<span class="lineNum">     130 </span>            :                 }
-<span class="lineNum">     131 </span>            : 
-<span class="lineNum">     132 </span><span class="lineNoCov">          0 :                 public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)</span>
-<span class="lineNum">     133 </span>            :                 {
-<span class="lineNum">     134 </span>            :                         string key = GetKey(indexes);
-<span class="lineNum">     135 </span>            :                         result = null;
-<span class="lineNum">     136 </span>            :                         if (!String.IsNullOrEmpty(key))
-<span class="lineNum">     137 </span>            :                         {
-<span class="lineNum">     138 </span>            :                                 result = GetValue(key);
-<span class="lineNum">     139 </span>            :                         }
-<span class="lineNum">     140 </span>            :                         return true;
-<span class="lineNum">     141 </span>            :                 }
-<span class="lineNum">     142 </span>            : 
-<span class="lineNum">     143 </span>            :                 private static string GetKey(object[] indexes)
-<span class="lineNum">     144 </span>            :                 {
-<span class="lineNum">     145 </span>            :                         if (indexes.Length == 1)
-<span class="lineNum">     146 </span>            :                         {
-<span class="lineNum">     147 </span>            :                                 return (string)indexes[0];
-<span class="lineNum">     148 </span>            :                         }
-<span class="lineNum">     149 </span>            :                         // REVIEW: Should this throw?
-<span class="lineNum">     150 </span>            :                         return null;
-<span class="lineNum">     151 </span>            :                 }
-<span class="lineNum">     152 </span>            : 
-<span class="lineNum">     153 </span><span class="lineNoCov">          0 :                 public override IEnumerable&lt;string&gt; GetDynamicMemberNames()</span>
-<span class="lineNum">     154 </span>            :                 {
-<span class="lineNum">     155 </span>            :                         return _values.Keys;
-<span class="lineNum">     156 </span>            :                 }
-<span class="lineNum">     157 </span>            : 
-<span class="lineNum">     158 </span>            :                 private object GetValue(string name)
-<span class="lineNum">     159 </span>            :                 {
-<span class="lineNum">     160 </span>            :                         object result;
-<span class="lineNum">     161 </span>            :                         if (_values.TryGetValue(name, out result))
-<span class="lineNum">     162 </span>            :                         {
-<span class="lineNum">     163 </span>            :                                 return result;
-<span class="lineNum">     164 </span>            :                         }
-<span class="lineNum">     165 </span>            :                         return null;
-<span class="lineNum">     166 </span>            :                 }
-<span class="lineNum">     167 </span>            :         }
-<span class="lineNum">     168 </span>            : 
-<span class="lineNum">     169 </span>            :         [SuppressMessage(&quot;Microsoft.Naming&quot;, &quot;CA1710:IdentifiersShouldHaveCorrectSuffix&quot;, Justification = &quot;This class isn't meant to be used directly&quot;)]
-<span class="lineNum">     170 </span>            :         public class DynamicJsonArray : DynamicObject, IEnumerable&lt;object&gt;
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">     172 </span>            :                 private readonly object[] _arrayValues;
-<span class="lineNum">     173 </span>            : 
-<span class="lineNum">     174 </span><span class="lineNoCov">          0 :                 public DynamicJsonArray(object[] arrayValues)</span>
-<span class="lineNum">     175 </span>            :                 {
-<span class="lineNum">     176 </span>            :                         Debug.Assert(arrayValues != null);
-<span class="lineNum">     177 </span>            :                         _arrayValues = arrayValues.Select(Json.WrapObject).ToArray();
-<span class="lineNum">     178 </span>            :                 }
-<span class="lineNum">     179 </span>            : 
-<span class="lineNum">     180 </span>            :                 public int Length
-<span class="lineNum">     181 </span>            :                 {
-<span class="lineNum">     182 </span>            :                         get { return _arrayValues.Length; }
-<span class="lineNum">     183 </span>            :                 }
-<span class="lineNum">     184 </span>            : 
-<span class="lineNum">     185 </span>            :                 public dynamic this[int index]
-<span class="lineNum">     186 </span>            :                 {
-<span class="lineNum">     187 </span>            :                         get { return _arrayValues[index]; }
-<span class="lineNum">     188 </span>            :                         set { _arrayValues[index] = Json.WrapObject(value); }
-<span class="lineNum">     189 </span>            :                 }
-<span class="lineNum">     190 </span>            : 
-<span class="lineNum">     191 </span><span class="lineNoCov">          0 :                 public override bool TryConvert(ConvertBinder binder, out object result)</span>
-<span class="lineNum">     192 </span>            :                 {
-<span class="lineNum">     193 </span>            :                         if (_arrayValues.GetType().IsAssignableFrom(binder.Type))
-<span class="lineNum">     194 </span>            :                         {
-<span class="lineNum">     195 </span>            :                                 result = _arrayValues;
-<span class="lineNum">     196 </span>            :                                 return true;
-<span class="lineNum">     197 </span>            :                         }
-<span class="lineNum">     198 </span>            :                         return base.TryConvert(binder, out result);
-<span class="lineNum">     199 </span>            :                 }
-<span class="lineNum">     200 </span>            : 
-<span class="lineNum">     201 </span><span class="lineNoCov">          0 :                 public override bool TryGetMember(GetMemberBinder binder, out object result)</span>
-<span class="lineNum">     202 </span>            :                 {
-<span class="lineNum">     203 </span>            :                         // Testing for members should never throw. This is important when dealing with
-<span class="lineNum">     204 </span>            :                         // services that return different json results. Testing for a member shouldn't throw,
-<span class="lineNum">     205 </span>            :                         // it should just return null (or undefined)
-<span class="lineNum">     206 </span>            :                         result = null;
-<span class="lineNum">     207 </span>            :                         return true;
-<span class="lineNum">     208 </span>            :                 }
-<span class="lineNum">     209 </span>            : 
-<span class="lineNum">     210 </span><span class="lineNoCov">          0 :                 public IEnumerator GetEnumerator()</span>
-<span class="lineNum">     211 </span>            :                 {
-<span class="lineNum">     212 </span>            :                         return _arrayValues.GetEnumerator();
-<span class="lineNum">     213 </span>            :                 }
-<span class="lineNum">     214 </span>            : 
-<span class="lineNum">     215 </span>            :                 private IEnumerable&lt;object&gt; GetEnumerable()
-<span class="lineNum">     216 </span>            :                 {
-<span class="lineNum">     217 </span>            :                         return _arrayValues.AsEnumerable();
-<span class="lineNum">     218 </span>            :                 }
-<span class="lineNum">     219 </span>            : 
-<span class="lineNum">     220 </span>            :                 IEnumerator&lt;object&gt; IEnumerable&lt;object&gt;.GetEnumerator()
-<span class="lineNum">     221 </span>            :                 {
-<span class="lineNum">     222 </span>            :                         return GetEnumerable().GetEnumerator();
-<span class="lineNum">     223 </span>            :                 }
-<span class="lineNum">     224 </span>            : 
-<span class="lineNum">     225 </span>            :                 [SuppressMessage(&quot;Microsoft.Usage&quot;, &quot;CA2225:OperatorOverloadsHaveNamedAlternates&quot;, Justification = &quot;This class isn't meant to be used directly&quot;)]
-<span class="lineNum">     226 </span><span class="lineNoCov">          0 :                 public static implicit operator object[](DynamicJsonArray obj)</span>
-<span class="lineNum">     227 </span>            :                 {
-<span class="lineNum">     228 </span>            :                         return obj._arrayValues;
-<span class="lineNum">     229 </span>            :                 }
-<span class="lineNum">     230 </span>            : 
-<span class="lineNum">     231 </span>            :                 [SuppressMessage(&quot;Microsoft.Usage&quot;, &quot;CA2225:OperatorOverloadsHaveNamedAlternates&quot;, Justification = &quot;This class isn't meant to be used directly&quot;)]
-<span class="lineNum">     232 </span><span class="lineNoCov">          0 :                 public static implicit operator Array(DynamicJsonArray obj)</span>
-<span class="lineNum">     233 </span>            :                 {
-<span class="lineNum">     234 </span>            :                         return obj._arrayValues;
-<span class="lineNum">     235 </span>            :                 }
-<span class="lineNum">     236 </span>            :         }
-<span class="lineNum">     237 </span>            : 
-<span class="lineNum">     238 </span>            :         /// &lt;summary&gt;
-<span class="lineNum">     239 </span>            :         /// Converter that knows how to get the member values from a dynamic object.
-<span class="lineNum">     240 </span>            :         /// &lt;/summary&gt;
-<span class="lineNum">     241 </span>            :         internal class DynamicJavaScriptConverter : JavaScriptConverter
-<span class="lineNum">     242 </span>            :         {
-<span class="lineNum">     243 </span>            :                 public override IEnumerable&lt;Type&gt; SupportedTypes
-<span class="lineNum">     244 </span>            :                 {
-<span class="lineNum">     245 </span>            :                         get
-<span class="lineNum">     246 </span>            :                         {
-<span class="lineNum">     247 </span>            :                                 // REVIEW: For some reason the converters don't pick up interfaces
-<span class="lineNum">     248 </span>            :                                 yield return typeof(IDynamicMetaObjectProvider);
-<span class="lineNum">     249 </span>            :                                 yield return typeof(DynamicObject);
-<span class="lineNum">     250 </span>            :                         }
-<span class="lineNum">     251 </span>            :                 }
-<span class="lineNum">     252 </span>            : 
-<span class="lineNum">     253 </span><span class="lineNoCov">          0 :                 public override object Deserialize(IDictionary&lt;string, object&gt; dictionary, Type type, JavaScriptSerializer serializer)</span>
-<span class="lineNum">     254 </span>            :                 {
-<span class="lineNum">     255 </span>            :                         throw new NotSupportedException();
-<span class="lineNum">     256 </span>            :                 }
-<span class="lineNum">     257 </span>            : 
-<span class="lineNum">     258 </span><span class="lineNoCov">          0 :                 public override IDictionary&lt;string, object&gt; Serialize(object obj, JavaScriptSerializer serializer)</span>
-<span class="lineNum">     259 </span>            :                 {
-<span class="lineNum">     260 </span>            :                         var values = new Dictionary&lt;string, object&gt;(StringComparer.OrdinalIgnoreCase);
-<span class="lineNum">     261 </span>            :                         var memberNames = DynamicHelper.GetMemberNames(obj);
-<span class="lineNum">     262 </span>            : 
-<span class="lineNum">     263 </span>            :                         // This should never happen
-<span class="lineNum">     264 </span>            :                         Debug.Assert(memberNames != null);
-<span class="lineNum">     265 </span>            : 
-<span class="lineNum">     266 </span>            :                         // Get the value for each member in the dynamic object
-<span class="lineNum">     267 </span>            :                         foreach (string memberName in memberNames)
-<span class="lineNum">     268 </span>            :                         {
-<span class="lineNum">     269 </span>            :                                 values[memberName] = DynamicHelper.GetMemberValue(obj, memberName);
-<span class="lineNum">     270 </span>            :                         }
-<span class="lineNum">     271 </span>            : 
-<span class="lineNum">     272 </span>            :                         return values;
-<span class="lineNum">     273 </span>            :                 }
-<span class="lineNum">     274 </span>            :         }
-<span class="lineNum">     275 </span>            : 
-<span class="lineNum">     276 </span>            :         /// &lt;summary&gt;
-<span class="lineNum">     277 </span>            :         /// Helper to evaluate different method on dynamic objects
-<span class="lineNum">     278 </span>            :         /// &lt;/summary&gt;
-<span class="lineNum">     279 </span>            :         internal static class DynamicHelper
-<span class="lineNum">     280 </span>            :         {
-<span class="lineNum">     281 </span>            :                 // We must pass in &quot;object&quot; instead of &quot;dynamic&quot; for the target dynamic object because if we use dynamic, the compiler will
-<span class="lineNum">     282 </span>            :                 // convert the call to this helper into a dynamic expression, even though we don't need it to be.  Since this class is internal,
-<span class="lineNum">     283 </span>            :                 // it cannot be accessed from a dynamic expression and thus we get errors.
-<span class="lineNum">     284 </span>            : 
-<span class="lineNum">     285 </span>            :                 // Dev10 Bug 914027 - Changed the first parameter from dynamic to object, see comment at top for details
-<span class="lineNum">     286 </span><span class="lineNoCov">          0 :                 public static bool TryGetMemberValue(object obj, string memberName, out object result)</span>
-<span class="lineNum">     287 </span>            :                 {
-<span class="lineNum">     288 </span>            :                         try
-<span class="lineNum">     289 </span>            :                         {
-<span class="lineNum">     290 </span>            :                                 result = GetMemberValue(obj, memberName);
-<span class="lineNum">     291 </span>            :                                 return true;
-<span class="lineNum">     292 </span>            :                         }
-<span class="lineNum">     293 </span>            :                         catch (RuntimeBinderException)
-<span class="lineNum">     294 </span>            :                         {
-<span class="lineNum">     295 </span>            :                         }
-<span class="lineNum">     296 </span>            :                         catch (RuntimeBinderInternalCompilerException)
-<span class="lineNum">     297 </span>            :                         {
-<span class="lineNum">     298 </span>            :                         }
-<span class="lineNum">     299 </span>            : 
-<span class="lineNum">     300 </span>            :                         // We catch the C# specific runtime binder exceptions since we're using the C# binder in this case
-<span class="lineNum">     301 </span>            :                         result = null;
-<span class="lineNum">     302 </span>            :                         return false;
-<span class="lineNum">     303 </span>            :                 }
-<span class="lineNum">     304 </span>            : 
-<span class="lineNum">     305 </span>            :                 // Dev10 Bug 914027 - Changed the first parameter from dynamic to object, see comment at top for details
-<span class="lineNum">     306 </span>            :                 [SuppressMessage(&quot;Microsoft.Design&quot;, &quot;CA1031:DoNotCatchGeneralExceptionTypes&quot;, Justification = &quot;We want to swallow exceptions that happen during runtime binding&quot;)]
-<span class="lineNum">     307 </span><span class="lineNoCov">          0 :                 public static bool TryGetMemberValue(object obj, GetMemberBinder binder, out object result)</span>
-<span class="lineNum">     308 </span>            :                 {
-<span class="lineNum">     309 </span>            :                         try
-<span class="lineNum">     310 </span>            :                         {
-<span class="lineNum">     311 </span>            :                                 // VB us an instance of GetBinderAdapter that does not implement FallbackGetMemeber. This causes lookup of property expressions on dynamic objects to fail.
-<span class="lineNum">     312 </span>            :                                 // Since all types are private to the assembly, we assume that as long as they belong to CSharp runtime, it is the right one. 
-<span class="lineNum">     313 </span>            :                                 if (typeof(Binder).Assembly.Equals(binder.GetType().Assembly))
-<span class="lineNum">     314 </span>            :                                 {
-<span class="lineNum">     315 </span>            :                                         // Only use the binder if its a C# binder.
-<span class="lineNum">     316 </span>            :                                         result = GetMemberValue(obj, binder);
-<span class="lineNum">     317 </span>            :                                 }
-<span class="lineNum">     318 </span>            :                                 else
-<span class="lineNum">     319 </span>            :                                 {
-<span class="lineNum">     320 </span>            :                                         result = GetMemberValue(obj, binder.Name);
-<span class="lineNum">     321 </span>            :                                 }
-<span class="lineNum">     322 </span>            :                                 return true;
-<span class="lineNum">     323 </span>            :                         }
-<span class="lineNum">     324 </span>            :                         catch
-<span class="lineNum">     325 </span>            :                         {
-<span class="lineNum">     326 </span>            :                                 result = null;
-<span class="lineNum">     327 </span>            :                                 return false;
-<span class="lineNum">     328 </span>            :                         }
-<span class="lineNum">     329 </span>            :                 }
-<span class="lineNum">     330 </span>            : 
-<span class="lineNum">     331 </span>            :                 // Dev10 Bug 914027 - Changed the first parameter from dynamic to object, see comment at top for details
-<span class="lineNum">     332 </span><span class="lineNoCov">          0 :                 public static object GetMemberValue(object obj, string memberName)</span>
-<span class="lineNum">     333 </span>            :                 {
-<span class="lineNum">     334 </span>            :                         var callSite = GetMemberAccessCallSite(memberName);
-<span class="lineNum">     335 </span>            :                         return callSite.Target(callSite, obj);
-<span class="lineNum">     336 </span>            :                 }
-<span class="lineNum">     337 </span>            : 
-<span class="lineNum">     338 </span>            :                 // Dev10 Bug 914027 - Changed the first parameter from dynamic to object, see comment at top for details
-<span class="lineNum">     339 </span><span class="lineNoCov">          0 :                 public static object GetMemberValue(object obj, GetMemberBinder binder)</span>
-<span class="lineNum">     340 </span>            :                 {
-<span class="lineNum">     341 </span>            :                         var callSite = GetMemberAccessCallSite(binder);
-<span class="lineNum">     342 </span>            :                         return callSite.Target(callSite, obj);
-<span class="lineNum">     343 </span>            :                 }
-<span class="lineNum">     344 </span>            : 
-<span class="lineNum">     345 </span>            :                 // dynamic d = new object();
-<span class="lineNum">     346 </span>            :                 // object s = d.Name;
-<span class="lineNum">     347 </span>            :                 // The following code gets generated for this expression:
-<span class="lineNum">     348 </span>            :                 // callSite = CallSite&lt;Func&lt;CallSite, object, object&gt;&gt;.Create(Binder.GetMember(CSharpBinderFlags.None, &quot;Name&quot;, typeof(Program), new CSharpArgumentInfo[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) }));
-<span class="lineNum">     349 </span>            :                 // callSite.Target(callSite, d);
-<span class="lineNum">     350 </span>            :                 // typeof(Program) is the containing type of the dynamic operation.
-<span class="lineNum">     351 </span>            :                 // Dev10 Bug 914027 - Changed the callsite's target parameter from dynamic to object, see comment at top for details
-<span class="lineNum">     352 </span><span class="lineNoCov">          0 :                 public static CallSite&lt;Func&lt;CallSite, object, object&gt;&gt; GetMemberAccessCallSite(string memberName)</span>
-<span class="lineNum">     353 </span>            :                 {
-<span class="lineNum">     354 </span>            :                         var binder = Binder.GetMember(CSharpBinderFlags.None, memberName, typeof(DynamicHelper), new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) });
-<span class="lineNum">     355 </span>            :                         return GetMemberAccessCallSite(binder);
-<span class="lineNum">     356 </span>            :                 }
-<span class="lineNum">     357 </span>            : 
-<span class="lineNum">     358 </span>            :                 // Dev10 Bug 914027 - Changed the callsite's target parameter from dynamic to object, see comment at top for details
-<span class="lineNum">     359 </span><span class="lineNoCov">          0 :                 public static CallSite&lt;Func&lt;CallSite, object, object&gt;&gt; GetMemberAccessCallSite(CallSiteBinder binder)</span>
-<span class="lineNum">     360 </span>            :                 {
-<span class="lineNum">     361 </span>            :                         return CallSite&lt;Func&lt;CallSite, object, object&gt;&gt;.Create(binder);
-<span class="lineNum">     362 </span>            :                 }
-<span class="lineNum">     363 </span>            : 
-<span class="lineNum">     364 </span>            :                 // Dev10 Bug 914027 - Changed the first parameter from dynamic to object, see comment at top for details
-<span class="lineNum">     365 </span><span class="lineNoCov">          0 :                 public static IEnumerable&lt;string&gt; GetMemberNames(object obj)</span>
-<span class="lineNum">     366 </span>            :                 {
-<span class="lineNum">     367 </span>            :                         var provider = obj as IDynamicMetaObjectProvider;
-<span class="lineNum">     368 </span>            :                         Debug.Assert(provider != null, &quot;obj doesn't implement IDynamicMetaObjectProvider&quot;);
-<span class="lineNum">     369 </span>            : 
-<span class="lineNum">     370 </span>            :                         Expression parameter = Expression.Parameter(typeof(object));
-<span class="lineNum">     371 </span>            :                         return provider.GetMetaObject(parameter).GetDynamicMemberNames();
-<span class="lineNum">     372 </span>            :                 }
-<span class="lineNum">     373 </span>            :         }
-<span class="lineNum">     374 </span>            : }
+<span class="lineNum">      20 </span>            : #pragma warning disable 1591
+<span class="lineNum">      21 </span>            :         public static class Json
+<span class="lineNum">      22 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      23 </span>            :                 private static readonly JavaScriptSerializer _serializer = CreateSerializer();
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span><span class="lineNoCov">          0 :                 public static string Encode(object value)</span>
+<span class="lineNum">      26 </span>            :                 {
+<span class="lineNum">      27 </span>            :                         // Serialize our dynamic array type as an array
+<span class="lineNum">      28 </span>            :                         DynamicJsonArray jsonArray = value as DynamicJsonArray;
+<span class="lineNum">      29 </span>            :                         if (jsonArray != null)
+<span class="lineNum">      30 </span>            :                         {
+<span class="lineNum">      31 </span>            :                                 return _serializer.Serialize((object[])jsonArray);
+<span class="lineNum">      32 </span>            :                         }
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                         return _serializer.Serialize(value);
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span><span class="lineNoCov">          0 :                 public static void Write(object value, TextWriter writer)</span>
+<span class="lineNum">      38 </span>            :                 {
+<span class="lineNum">      39 </span>            :                         writer.Write(_serializer.Serialize(value));
+<span class="lineNum">      40 </span>            :                 }
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span><span class="lineNoCov">          0 :                 public static dynamic Decode(string value)</span>
+<span class="lineNum">      43 </span>            :                 {
+<span class="lineNum">      44 </span>            :                         return WrapObject(_serializer.DeserializeObject(value));
+<span class="lineNum">      45 </span>            :                 }
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :                 public static dynamic Decode(string value, Type targetType)</span>
+<span class="lineNum">      48 </span>            :                 {
+<span class="lineNum">      49 </span>            :                         return WrapObject(_serializer.Deserialize(value, targetType));
+<span class="lineNum">      50 </span>            :                 }
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :                 public static T Decode&lt;T&gt;(string value)</span>
+<span class="lineNum">      53 </span>            :                 {
+<span class="lineNum">      54 </span>            :                         return _serializer.Deserialize&lt;T&gt;(value);
+<span class="lineNum">      55 </span>            :                 }
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 private static JavaScriptSerializer CreateSerializer()
+<span class="lineNum">      58 </span>            :                 {
+<span class="lineNum">      59 </span>            :                         JavaScriptSerializer serializer = new JavaScriptSerializer();
+<span class="lineNum">      60 </span>            :                         serializer.RegisterConverters(new[] { new DynamicJavaScriptConverter() });
+<span class="lineNum">      61 </span>            :                         return serializer;
+<span class="lineNum">      62 </span>            :                 }
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :                 internal static dynamic WrapObject(object value)
+<span class="lineNum">      65 </span>            :                 {
+<span class="lineNum">      66 </span>            :                         // The JavaScriptSerializer returns IDictionary&lt;string, object&gt; for objects
+<span class="lineNum">      67 </span>            :                         // and object[] for arrays, so we wrap those in different dynamic objects
+<span class="lineNum">      68 </span>            :                         // so we can access the object graph using dynamic
+<span class="lineNum">      69 </span>            :                         var dictionaryValues = value as IDictionary&lt;string, object&gt;;
+<span class="lineNum">      70 </span>            :                         if (dictionaryValues != null)
+<span class="lineNum">      71 </span>            :                         {
+<span class="lineNum">      72 </span>            :                                 return new DynamicJsonObject(dictionaryValues);
+<span class="lineNum">      73 </span>            :                         }
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :                         var arrayValues = value as object[];
+<span class="lineNum">      76 </span>            :                         if (arrayValues != null)
+<span class="lineNum">      77 </span>            :                         {
+<span class="lineNum">      78 </span>            :                                 return new DynamicJsonArray(arrayValues);
+<span class="lineNum">      79 </span>            :                         }
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :                         return value;
+<span class="lineNum">      82 </span>            :                 }
+<span class="lineNum">      83 </span>            :         }
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :         // REVIEW: Consider implementing ICustomTypeDescriptor and IDictionary&lt;string, object&gt;
+<span class="lineNum">      86 </span>            :         public class DynamicJsonObject : DynamicObject
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      88 </span>            :                 private readonly IDictionary&lt;string, object&gt; _values;
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :                 public DynamicJsonObject(IDictionary&lt;string, object&gt; values)</span>
+<span class="lineNum">      91 </span>            :                 {
+<span class="lineNum">      92 </span>            :                         Debug.Assert(values != null);
+<span class="lineNum">      93 </span>            :                         _values = values.ToDictionary(p =&gt; p.Key, p =&gt; Json.WrapObject(p.Value),
+<span class="lineNum">      94 </span>            :                                                                                   StringComparer.OrdinalIgnoreCase);
+<span class="lineNum">      95 </span>            :                 }
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :                 public override bool TryConvert(ConvertBinder binder, out object result)</span>
+<span class="lineNum">      98 </span>            :                 {
+<span class="lineNum">      99 </span>            :                         result = null;
+<span class="lineNum">     100 </span>            :                         if (binder.Type.IsAssignableFrom(_values.GetType()))
+<span class="lineNum">     101 </span>            :                         {
+<span class="lineNum">     102 </span>            :                                 result = _values;
+<span class="lineNum">     103 </span>            :                         }
+<span class="lineNum">     104 </span>            :                         else
+<span class="lineNum">     105 </span>            :                         {
+<span class="lineNum">     106 </span>            :                                 throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, HelpersResources.Json_UnableToConvertType, binder.Type));
+<span class="lineNum">     107 </span>            :                         }
+<span class="lineNum">     108 </span>            :                         return true;
+<span class="lineNum">     109 </span>            :                 }
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :                 public override bool TryGetMember(GetMemberBinder binder, out object result)</span>
+<span class="lineNum">     112 </span>            :                 {
+<span class="lineNum">     113 </span>            :                         result = GetValue(binder.Name);
+<span class="lineNum">     114 </span>            :                         return true;
+<span class="lineNum">     115 </span>            :                 }
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                 public override bool TrySetMember(SetMemberBinder binder, object value)</span>
+<span class="lineNum">     118 </span>            :                 {
+<span class="lineNum">     119 </span>            :                         _values[binder.Name] = Json.WrapObject(value);
+<span class="lineNum">     120 </span>            :                         return true;
+<span class="lineNum">     121 </span>            :                 }
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineNoCov">          0 :                 public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)</span>
+<span class="lineNum">     124 </span>            :                 {
+<span class="lineNum">     125 </span>            :                         string key = GetKey(indexes);
+<span class="lineNum">     126 </span>            :                         if (!String.IsNullOrEmpty(key))
+<span class="lineNum">     127 </span>            :                         {
+<span class="lineNum">     128 </span>            :                                 _values[key] = Json.WrapObject(value);
+<span class="lineNum">     129 </span>            :                         }
+<span class="lineNum">     130 </span>            :                         return true;
+<span class="lineNum">     131 </span>            :                 }
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)</span>
+<span class="lineNum">     134 </span>            :                 {
+<span class="lineNum">     135 </span>            :                         string key = GetKey(indexes);
+<span class="lineNum">     136 </span>            :                         result = null;
+<span class="lineNum">     137 </span>            :                         if (!String.IsNullOrEmpty(key))
+<span class="lineNum">     138 </span>            :                         {
+<span class="lineNum">     139 </span>            :                                 result = GetValue(key);
+<span class="lineNum">     140 </span>            :                         }
+<span class="lineNum">     141 </span>            :                         return true;
+<span class="lineNum">     142 </span>            :                 }
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            :                 private static string GetKey(object[] indexes)
+<span class="lineNum">     145 </span>            :                 {
+<span class="lineNum">     146 </span>            :                         if (indexes.Length == 1)
+<span class="lineNum">     147 </span>            :                         {
+<span class="lineNum">     148 </span>            :                                 return (string)indexes[0];
+<span class="lineNum">     149 </span>            :                         }
+<span class="lineNum">     150 </span>            :                         // REVIEW: Should this throw?
+<span class="lineNum">     151 </span>            :                         return null;
+<span class="lineNum">     152 </span>            :                 }
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :                 public override IEnumerable&lt;string&gt; GetDynamicMemberNames()</span>
+<span class="lineNum">     155 </span>            :                 {
+<span class="lineNum">     156 </span>            :                         return _values.Keys;
+<span class="lineNum">     157 </span>            :                 }
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span>            :                 private object GetValue(string name)
+<span class="lineNum">     160 </span>            :                 {
+<span class="lineNum">     161 </span>            :                         object result;
+<span class="lineNum">     162 </span>            :                         if (_values.TryGetValue(name, out result))
+<span class="lineNum">     163 </span>            :                         {
+<span class="lineNum">     164 </span>            :                                 return result;
+<span class="lineNum">     165 </span>            :                         }
+<span class="lineNum">     166 </span>            :                         return null;
+<span class="lineNum">     167 </span>            :                 }
+<span class="lineNum">     168 </span>            :         }
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            :         [SuppressMessage(&quot;Microsoft.Naming&quot;, &quot;CA1710:IdentifiersShouldHaveCorrectSuffix&quot;, Justification = &quot;This class isn't meant to be used directly&quot;)]
+<span class="lineNum">     171 </span>            :         public class DynamicJsonArray : DynamicObject, IEnumerable&lt;object&gt;
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">     173 </span>            :                 private readonly object[] _arrayValues;
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :                 public DynamicJsonArray(object[] arrayValues)</span>
+<span class="lineNum">     176 </span>            :                 {
+<span class="lineNum">     177 </span>            :                         Debug.Assert(arrayValues != null);
+<span class="lineNum">     178 </span>            :                         _arrayValues = arrayValues.Select(Json.WrapObject).ToArray();
+<span class="lineNum">     179 </span>            :                 }
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span>            :                 public int Length
+<span class="lineNum">     182 </span>            :                 {
+<span class="lineNum">     183 </span>            :                         get { return _arrayValues.Length; }
+<span class="lineNum">     184 </span>            :                 }
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span>            :                 public dynamic this[int index]
+<span class="lineNum">     187 </span>            :                 {
+<span class="lineNum">     188 </span>            :                         get { return _arrayValues[index]; }
+<span class="lineNum">     189 </span>            :                         set { _arrayValues[index] = Json.WrapObject(value); }
+<span class="lineNum">     190 </span>            :                 }
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :                 public override bool TryConvert(ConvertBinder binder, out object result)</span>
+<span class="lineNum">     193 </span>            :                 {
+<span class="lineNum">     194 </span>            :                         if (_arrayValues.GetType().IsAssignableFrom(binder.Type))
+<span class="lineNum">     195 </span>            :                         {
+<span class="lineNum">     196 </span>            :                                 result = _arrayValues;
+<span class="lineNum">     197 </span>            :                                 return true;
+<span class="lineNum">     198 </span>            :                         }
+<span class="lineNum">     199 </span>            :                         return base.TryConvert(binder, out result);
+<span class="lineNum">     200 </span>            :                 }
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :                 public override bool TryGetMember(GetMemberBinder binder, out object result)</span>
+<span class="lineNum">     203 </span>            :                 {
+<span class="lineNum">     204 </span>            :                         // Testing for members should never throw. This is important when dealing with
+<span class="lineNum">     205 </span>            :                         // services that return different json results. Testing for a member shouldn't throw,
+<span class="lineNum">     206 </span>            :                         // it should just return null (or undefined)
+<span class="lineNum">     207 </span>            :                         result = null;
+<span class="lineNum">     208 </span>            :                         return true;
+<span class="lineNum">     209 </span>            :                 }
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :                 public IEnumerator GetEnumerator()</span>
+<span class="lineNum">     212 </span>            :                 {
+<span class="lineNum">     213 </span>            :                         return _arrayValues.GetEnumerator();
+<span class="lineNum">     214 </span>            :                 }
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            :                 private IEnumerable&lt;object&gt; GetEnumerable()
+<span class="lineNum">     217 </span>            :                 {
+<span class="lineNum">     218 </span>            :                         return _arrayValues.AsEnumerable();
+<span class="lineNum">     219 </span>            :                 }
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span>            :                 IEnumerator&lt;object&gt; IEnumerable&lt;object&gt;.GetEnumerator()
+<span class="lineNum">     222 </span>            :                 {
+<span class="lineNum">     223 </span>            :                         return GetEnumerable().GetEnumerator();
+<span class="lineNum">     224 </span>            :                 }
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span>            :                 [SuppressMessage(&quot;Microsoft.Usage&quot;, &quot;CA2225:OperatorOverloadsHaveNamedAlternates&quot;, Justification = &quot;This class isn't meant to be used directly&quot;)]
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :                 public static implicit operator object[](DynamicJsonArray obj)</span>
+<span class="lineNum">     228 </span>            :                 {
+<span class="lineNum">     229 </span>            :                         return obj._arrayValues;
+<span class="lineNum">     230 </span>            :                 }
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span>            :                 [SuppressMessage(&quot;Microsoft.Usage&quot;, &quot;CA2225:OperatorOverloadsHaveNamedAlternates&quot;, Justification = &quot;This class isn't meant to be used directly&quot;)]
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :                 public static implicit operator Array(DynamicJsonArray obj)</span>
+<span class="lineNum">     234 </span>            :                 {
+<span class="lineNum">     235 </span>            :                         return obj._arrayValues;
+<span class="lineNum">     236 </span>            :                 }
+<span class="lineNum">     237 </span>            :         }
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">     240 </span>            :         /// Converter that knows how to get the member values from a dynamic object.
+<span class="lineNum">     241 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">     242 </span>            :         internal class DynamicJavaScriptConverter : JavaScriptConverter
+<span class="lineNum">     243 </span>            :         {
+<span class="lineNum">     244 </span>            :                 public override IEnumerable&lt;Type&gt; SupportedTypes
+<span class="lineNum">     245 </span>            :                 {
+<span class="lineNum">     246 </span>            :                         get
+<span class="lineNum">     247 </span>            :                         {
+<span class="lineNum">     248 </span>            :                                 // REVIEW: For some reason the converters don't pick up interfaces
+<span class="lineNum">     249 </span>            :                                 yield return typeof(IDynamicMetaObjectProvider);
+<span class="lineNum">     250 </span>            :                                 yield return typeof(DynamicObject);
+<span class="lineNum">     251 </span>            :                         }
+<span class="lineNum">     252 </span>            :                 }
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :                 public override object Deserialize(IDictionary&lt;string, object&gt; dictionary, Type type, JavaScriptSerializer serializer)</span>
+<span class="lineNum">     255 </span>            :                 {
+<span class="lineNum">     256 </span>            :                         throw new NotSupportedException();
+<span class="lineNum">     257 </span>            :                 }
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :                 public override IDictionary&lt;string, object&gt; Serialize(object obj, JavaScriptSerializer serializer)</span>
+<span class="lineNum">     260 </span>            :                 {
+<span class="lineNum">     261 </span>            :                         var values = new Dictionary&lt;string, object&gt;(StringComparer.OrdinalIgnoreCase);
+<span class="lineNum">     262 </span>            :                         var memberNames = DynamicHelper.GetMemberNames(obj);
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span>            :                         // This should never happen
+<span class="lineNum">     265 </span>            :                         Debug.Assert(memberNames != null);
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span>            :                         // Get the value for each member in the dynamic object
+<span class="lineNum">     268 </span>            :                         foreach (string memberName in memberNames)
+<span class="lineNum">     269 </span>            :                         {
+<span class="lineNum">     270 </span>            :                                 values[memberName] = DynamicHelper.GetMemberValue(obj, memberName);
+<span class="lineNum">     271 </span>            :                         }
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span>            :                         return values;
+<span class="lineNum">     274 </span>            :                 }
+<span class="lineNum">     275 </span>            :         }
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">     278 </span>            :         /// Helper to evaluate different method on dynamic objects
+<span class="lineNum">     279 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">     280 </span>            :         internal static class DynamicHelper
+<span class="lineNum">     281 </span>            :         {
+<span class="lineNum">     282 </span>            :                 // We must pass in &quot;object&quot; instead of &quot;dynamic&quot; for the target dynamic object because if we use dynamic, the compiler will
+<span class="lineNum">     283 </span>            :                 // convert the call to this helper into a dynamic expression, even though we don't need it to be.  Since this class is internal,
+<span class="lineNum">     284 </span>            :                 // it cannot be accessed from a dynamic expression and thus we get errors.
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span>            :                 // Dev10 Bug 914027 - Changed the first parameter from dynamic to object, see comment at top for details
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :                 public static bool TryGetMemberValue(object obj, string memberName, out object result)</span>
+<span class="lineNum">     288 </span>            :                 {
+<span class="lineNum">     289 </span>            :                         try
+<span class="lineNum">     290 </span>            :                         {
+<span class="lineNum">     291 </span>            :                                 result = GetMemberValue(obj, memberName);
+<span class="lineNum">     292 </span>            :                                 return true;
+<span class="lineNum">     293 </span>            :                         }
+<span class="lineNum">     294 </span>            :                         catch (RuntimeBinderException)
+<span class="lineNum">     295 </span>            :                         {
+<span class="lineNum">     296 </span>            :                         }
+<span class="lineNum">     297 </span>            :                         catch (RuntimeBinderInternalCompilerException)
+<span class="lineNum">     298 </span>            :                         {
+<span class="lineNum">     299 </span>            :                         }
+<span class="lineNum">     300 </span>            : 
+<span class="lineNum">     301 </span>            :                         // We catch the C# specific runtime binder exceptions since we're using the C# binder in this case
+<span class="lineNum">     302 </span>            :                         result = null;
+<span class="lineNum">     303 </span>            :                         return false;
+<span class="lineNum">     304 </span>            :                 }
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span>            :                 // Dev10 Bug 914027 - Changed the first parameter from dynamic to object, see comment at top for details
+<span class="lineNum">     307 </span>            :                 [SuppressMessage(&quot;Microsoft.Design&quot;, &quot;CA1031:DoNotCatchGeneralExceptionTypes&quot;, Justification = &quot;We want to swallow exceptions that happen during runtime binding&quot;)]
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 :                 public static bool TryGetMemberValue(object obj, GetMemberBinder binder, out object result)</span>
+<span class="lineNum">     309 </span>            :                 {
+<span class="lineNum">     310 </span>            :                         try
+<span class="lineNum">     311 </span>            :                         {
+<span class="lineNum">     312 </span>            :                                 // VB us an instance of GetBinderAdapter that does not implement FallbackGetMemeber. This causes lookup of property expressions on dynamic objects to fail.
+<span class="lineNum">     313 </span>            :                                 // Since all types are private to the assembly, we assume that as long as they belong to CSharp runtime, it is the right one. 
+<span class="lineNum">     314 </span>            :                                 if (typeof(Binder).Assembly.Equals(binder.GetType().Assembly))
+<span class="lineNum">     315 </span>            :                                 {
+<span class="lineNum">     316 </span>            :                                         // Only use the binder if its a C# binder.
+<span class="lineNum">     317 </span>            :                                         result = GetMemberValue(obj, binder);
+<span class="lineNum">     318 </span>            :                                 }
+<span class="lineNum">     319 </span>            :                                 else
+<span class="lineNum">     320 </span>            :                                 {
+<span class="lineNum">     321 </span>            :                                         result = GetMemberValue(obj, binder.Name);
+<span class="lineNum">     322 </span>            :                                 }
+<span class="lineNum">     323 </span>            :                                 return true;
+<span class="lineNum">     324 </span>            :                         }
+<span class="lineNum">     325 </span>            :                         catch
+<span class="lineNum">     326 </span>            :                         {
+<span class="lineNum">     327 </span>            :                                 result = null;
+<span class="lineNum">     328 </span>            :                                 return false;
+<span class="lineNum">     329 </span>            :                         }
+<span class="lineNum">     330 </span>            :                 }
+<span class="lineNum">     331 </span>            : 
+<span class="lineNum">     332 </span>            :                 // Dev10 Bug 914027 - Changed the first parameter from dynamic to object, see comment at top for details
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :                 public static object GetMemberValue(object obj, string memberName)</span>
+<span class="lineNum">     334 </span>            :                 {
+<span class="lineNum">     335 </span>            :                         var callSite = GetMemberAccessCallSite(memberName);
+<span class="lineNum">     336 </span>            :                         return callSite.Target(callSite, obj);
+<span class="lineNum">     337 </span>            :                 }
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span>            :                 // Dev10 Bug 914027 - Changed the first parameter from dynamic to object, see comment at top for details
+<span class="lineNum">     340 </span><span class="lineNoCov">          0 :                 public static object GetMemberValue(object obj, GetMemberBinder binder)</span>
+<span class="lineNum">     341 </span>            :                 {
+<span class="lineNum">     342 </span>            :                         var callSite = GetMemberAccessCallSite(binder);
+<span class="lineNum">     343 </span>            :                         return callSite.Target(callSite, obj);
+<span class="lineNum">     344 </span>            :                 }
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span>            :                 // dynamic d = new object();
+<span class="lineNum">     347 </span>            :                 // object s = d.Name;
+<span class="lineNum">     348 </span>            :                 // The following code gets generated for this expression:
+<span class="lineNum">     349 </span>            :                 // callSite = CallSite&lt;Func&lt;CallSite, object, object&gt;&gt;.Create(Binder.GetMember(CSharpBinderFlags.None, &quot;Name&quot;, typeof(Program), new CSharpArgumentInfo[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) }));
+<span class="lineNum">     350 </span>            :                 // callSite.Target(callSite, d);
+<span class="lineNum">     351 </span>            :                 // typeof(Program) is the containing type of the dynamic operation.
+<span class="lineNum">     352 </span>            :                 // Dev10 Bug 914027 - Changed the callsite's target parameter from dynamic to object, see comment at top for details
+<span class="lineNum">     353 </span><span class="lineNoCov">          0 :                 public static CallSite&lt;Func&lt;CallSite, object, object&gt;&gt; GetMemberAccessCallSite(string memberName)</span>
+<span class="lineNum">     354 </span>            :                 {
+<span class="lineNum">     355 </span>            :                         var binder = Binder.GetMember(CSharpBinderFlags.None, memberName, typeof(DynamicHelper), new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) });
+<span class="lineNum">     356 </span>            :                         return GetMemberAccessCallSite(binder);
+<span class="lineNum">     357 </span>            :                 }
+<span class="lineNum">     358 </span>            : 
+<span class="lineNum">     359 </span>            :                 // Dev10 Bug 914027 - Changed the callsite's target parameter from dynamic to object, see comment at top for details
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :                 public static CallSite&lt;Func&lt;CallSite, object, object&gt;&gt; GetMemberAccessCallSite(CallSiteBinder binder)</span>
+<span class="lineNum">     361 </span>            :                 {
+<span class="lineNum">     362 </span>            :                         return CallSite&lt;Func&lt;CallSite, object, object&gt;&gt;.Create(binder);
+<span class="lineNum">     363 </span>            :                 }
+<span class="lineNum">     364 </span>            : 
+<span class="lineNum">     365 </span>            :                 // Dev10 Bug 914027 - Changed the first parameter from dynamic to object, see comment at top for details
+<span class="lineNum">     366 </span><span class="lineNoCov">          0 :                 public static IEnumerable&lt;string&gt; GetMemberNames(object obj)</span>
+<span class="lineNum">     367 </span>            :                 {
+<span class="lineNum">     368 </span>            :                         var provider = obj as IDynamicMetaObjectProvider;
+<span class="lineNum">     369 </span>            :                         Debug.Assert(provider != null, &quot;obj doesn't implement IDynamicMetaObjectProvider&quot;);
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span>            :                         Expression parameter = Expression.Parameter(typeof(object));
+<span class="lineNum">     372 </span>            :                         return provider.GetMetaObject(parameter).GetDynamicMemberNames();
+<span class="lineNum">     373 </span>            :                 }
+<span class="lineNum">     374 </span>            :         }
+<span class="lineNum">     375 </span>            : #pragma warning restore 1591
+<span class="lineNum">     376 </span>            : }
 </pre>
       </td>
     </tr>

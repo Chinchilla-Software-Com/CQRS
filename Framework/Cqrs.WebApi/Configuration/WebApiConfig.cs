@@ -14,8 +14,14 @@ using Newtonsoft.Json;
 
 namespace Cqrs.WebApi.Configuration
 {
+	/// <summary>
+	/// A configuration class for WebAPI.
+	/// </summary>
 	public class WebApiConfig
 	{
+		/// <summary>
+		/// Registers the require routes, set relevant CORS settings and defines WebAPI relevant JSON serialisation settings.
+		/// </summary>
 		public static void Register(HttpConfiguration config)
 		{
 			var configurationManager = DependencyResolver.Current.Resolve<IConfigurationManager>();

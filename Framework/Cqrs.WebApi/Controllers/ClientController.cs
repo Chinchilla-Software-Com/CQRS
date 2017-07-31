@@ -185,14 +185,39 @@ $.each(window.api.metadata, function (i, action)
 			return response;
 		}
 
+		/// <summary>
+		/// A WebAPI action method.
+		/// </summary>
 		public class ApiMethodModel
 		{
+			/// <summary>
+			/// The type of the <see cref="HttpMethod"/>.
+			/// </summary>
 			public string Method { get; set; }
+
+			/// <summary>
+			/// The URL of the action method.
+			/// </summary>
 			public string Url { get; set; }
+
+			/// <summary>
+			/// The name of the <see cref="ApiController"/> this action method is in.
+			/// </summary>
 			public string ControllerName { get; set; }
+
+			/// <summary>
+			/// The name of the action method.
+			/// </summary>
 			public string ActionName { get; set; }
+
+			/// <summary>
+			/// The <see cref="ApiParameterModel">parameters</see> of this action method.
+			/// </summary>
 			public IEnumerable<ApiParameterModel> Parameters { get; set; }
 
+			/// <summary>
+			/// Instantiates a new instance of <see cref="ApiMethodModel"/> with the provided <paramref name="apiDescription"/>.
+			/// </summary>
 			public ApiMethodModel(ApiDescription apiDescription)
 			{
 				Method = apiDescription.HttpMethod.Method;
@@ -203,12 +228,29 @@ $.each(window.api.metadata, function (i, action)
 			}
 		}
 
+		/// <summary>
+		/// A parameter for a WebAPI action method.
+		/// </summary>
 		public class ApiParameterModel
 		{
+			/// <summary>
+			/// The name of the parameter.
+			/// </summary>
 			public string Name { get; set; }
+
+			/// <summary>
+			/// Indicates if the parameter is provided in the URL of the request or not.
+			/// </summary>
 			public bool IsUriParameter { get; set; }
+
+			/// <summary>
+			/// Indicates if the parameter is provided in the body of the request or not.
+			/// </summary>
 			public bool IsBodyParameter { get; set; }
 
+			/// <summary>
+			/// Instantiates a new instance of <see cref="ApiParameterModel"/> with the provided <paramref name="apiParameterDescription"/>.
+			/// </summary>
 			public ApiParameterModel(ApiParameterDescription apiParameterDescription)
 			{
 				Name = apiParameterDescription.Name;

@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">2</td>
             <td class="headerCovTableEntry">6</td>
-            <td class="headerCovTableEntryLo">33.3 %</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-29</td>
+            <td class="headerValue">2017-07-31</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -243,39 +243,81 @@
 <span class="lineNum">     185 </span>            :                         return response;
 <span class="lineNum">     186 </span>            :                 }
 <span class="lineNum">     187 </span>            : 
-<span class="lineNum">     188 </span>            :                 public class ApiMethodModel
-<span class="lineNum">     189 </span><span class="lineNoCov">          0 :                 {</span>
-<span class="lineNum">     190 </span>            :                         public string Method { get; set; }
-<span class="lineNum">     191 </span>            :                         public string Url { get; set; }
-<span class="lineNum">     192 </span>            :                         public string ControllerName { get; set; }
-<span class="lineNum">     193 </span>            :                         public string ActionName { get; set; }
-<span class="lineNum">     194 </span>            :                         public IEnumerable&lt;ApiParameterModel&gt; Parameters { get; set; }
-<span class="lineNum">     195 </span>            : 
-<span class="lineNum">     196 </span><span class="lineNoCov">          0 :                         public ApiMethodModel(ApiDescription apiDescription)</span>
-<span class="lineNum">     197 </span>            :                         {
-<span class="lineNum">     198 </span>            :                                 Method = apiDescription.HttpMethod.Method;
-<span class="lineNum">     199 </span>            :                                 Url = apiDescription.RelativePath;
-<span class="lineNum">     200 </span>            :                                 ControllerName = apiDescription.ActionDescriptor.ControllerDescriptor.ControllerName;
-<span class="lineNum">     201 </span>            :                                 ActionName = apiDescription.ActionDescriptor.ActionName;
-<span class="lineNum">     202 </span>            :                                 Parameters = apiDescription.ParameterDescriptions.Select(pd =&gt; new ApiParameterModel(pd));
-<span class="lineNum">     203 </span>            :                         }
-<span class="lineNum">     204 </span>            :                 }
-<span class="lineNum">     205 </span>            : 
-<span class="lineNum">     206 </span>            :                 public class ApiParameterModel
-<span class="lineNum">     207 </span><span class="lineNoCov">          0 :                 {</span>
-<span class="lineNum">     208 </span>            :                         public string Name { get; set; }
-<span class="lineNum">     209 </span>            :                         public bool IsUriParameter { get; set; }
-<span class="lineNum">     210 </span>            :                         public bool IsBodyParameter { get; set; }
-<span class="lineNum">     211 </span>            : 
-<span class="lineNum">     212 </span><span class="lineNoCov">          0 :                         public ApiParameterModel(ApiParameterDescription apiParameterDescription)</span>
-<span class="lineNum">     213 </span>            :                         {
-<span class="lineNum">     214 </span>            :                                 Name = apiParameterDescription.Name;
-<span class="lineNum">     215 </span>            :                                 IsUriParameter = apiParameterDescription.Source == ApiParameterSource.FromUri;
-<span class="lineNum">     216 </span>            :                                 IsBodyParameter = apiParameterDescription.Source == ApiParameterSource.FromBody;
-<span class="lineNum">     217 </span>            :                         }
-<span class="lineNum">     218 </span>            :                 }
-<span class="lineNum">     219 </span>            :         }
-<span class="lineNum">     220 </span>            : }
+<span class="lineNum">     188 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     189 </span>            :                 /// A WebAPI action method.
+<span class="lineNum">     190 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     191 </span>            :                 public class ApiMethodModel
+<span class="lineNum">     192 </span><span class="lineCov">          1 :                 {</span>
+<span class="lineNum">     193 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     194 </span>            :                         /// The type of the &lt;see cref=&quot;HttpMethod&quot;/&gt;.
+<span class="lineNum">     195 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     196 </span>            :                         public string Method { get; set; }
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     199 </span>            :                         /// The URL of the action method.
+<span class="lineNum">     200 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     201 </span>            :                         public string Url { get; set; }
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     204 </span>            :                         /// The name of the &lt;see cref=&quot;ApiController&quot;/&gt; this action method is in.
+<span class="lineNum">     205 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     206 </span>            :                         public string ControllerName { get; set; }
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     209 </span>            :                         /// The name of the action method.
+<span class="lineNum">     210 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     211 </span>            :                         public string ActionName { get; set; }
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     214 </span>            :                         /// The &lt;see cref=&quot;ApiParameterModel&quot;&gt;parameters&lt;/see&gt; of this action method.
+<span class="lineNum">     215 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     216 </span>            :                         public IEnumerable&lt;ApiParameterModel&gt; Parameters { get; set; }
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     219 </span>            :                         /// Instantiates a new instance of &lt;see cref=&quot;ApiMethodModel&quot;/&gt; with the provided &lt;paramref name=&quot;apiDescription&quot;/&gt;.
+<span class="lineNum">     220 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     221 </span><span class="lineCov">          1 :                         public ApiMethodModel(ApiDescription apiDescription)</span>
+<span class="lineNum">     222 </span>            :                         {
+<span class="lineNum">     223 </span>            :                                 Method = apiDescription.HttpMethod.Method;
+<span class="lineNum">     224 </span>            :                                 Url = apiDescription.RelativePath;
+<span class="lineNum">     225 </span>            :                                 ControllerName = apiDescription.ActionDescriptor.ControllerDescriptor.ControllerName;
+<span class="lineNum">     226 </span>            :                                 ActionName = apiDescription.ActionDescriptor.ActionName;
+<span class="lineNum">     227 </span>            :                                 Parameters = apiDescription.ParameterDescriptions.Select(pd =&gt; new ApiParameterModel(pd));
+<span class="lineNum">     228 </span>            :                         }
+<span class="lineNum">     229 </span>            :                 }
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     232 </span>            :                 /// A parameter for a WebAPI action method.
+<span class="lineNum">     233 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     234 </span>            :                 public class ApiParameterModel
+<span class="lineNum">     235 </span><span class="lineCov">          1 :                 {</span>
+<span class="lineNum">     236 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     237 </span>            :                         /// The name of the parameter.
+<span class="lineNum">     238 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     239 </span>            :                         public string Name { get; set; }
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     242 </span>            :                         /// Indicates if the parameter is provided in the URL of the request or not.
+<span class="lineNum">     243 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     244 </span>            :                         public bool IsUriParameter { get; set; }
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     247 </span>            :                         /// Indicates if the parameter is provided in the body of the request or not.
+<span class="lineNum">     248 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     249 </span>            :                         public bool IsBodyParameter { get; set; }
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     252 </span>            :                         /// Instantiates a new instance of &lt;see cref=&quot;ApiParameterModel&quot;/&gt; with the provided &lt;paramref name=&quot;apiParameterDescription&quot;/&gt;.
+<span class="lineNum">     253 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     254 </span><span class="lineCov">          1 :                         public ApiParameterModel(ApiParameterDescription apiParameterDescription)</span>
+<span class="lineNum">     255 </span>            :                         {
+<span class="lineNum">     256 </span>            :                                 Name = apiParameterDescription.Name;
+<span class="lineNum">     257 </span>            :                                 IsUriParameter = apiParameterDescription.Source == ApiParameterSource.FromUri;
+<span class="lineNum">     258 </span>            :                                 IsBodyParameter = apiParameterDescription.Source == ApiParameterSource.FromBody;
+<span class="lineNum">     259 </span>            :                         }
+<span class="lineNum">     260 </span>            :                 }
+<span class="lineNum">     261 </span>            :         }
+<span class="lineNum">     262 </span>            : }
 </pre>
       </td>
     </tr>

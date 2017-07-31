@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-29</td>
+            <td class="headerValue">2017-07-31</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -74,98 +74,113 @@
 <span class="lineNum">      16 </span>            : [assembly: OwinStartup(&quot;Cqrs.WebApi.SignalR.Hubs.SignalRStartUp&quot;, typeof(Cqrs.WebApi.SignalR.Hubs.SignalRStartUp))]
 <span class="lineNum">      17 </span>            : namespace Cqrs.WebApi.SignalR.Hubs
 <span class="lineNum">      18 </span>            : {
-<span class="lineNum">      19 </span>            :         public class SignalRStartUp
-<span class="lineNum">      20 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      21 </span>            :                 public IConfigurationManager ConfigurationManager { get; set; }
-<span class="lineNum">      22 </span>            : 
-<span class="lineNum">      23 </span><span class="lineNoCov">          0 :                 public SignalRStartUp()</span>
-<span class="lineNum">      24 </span>            :                         :this (new ConfigurationManager())
-<span class="lineNum">      25 </span>            :                 {
-<span class="lineNum">      26 </span>            :                 }
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span><span class="lineNoCov">          0 :                 public SignalRStartUp(IConfigurationManager configurationManager)</span>
-<span class="lineNum">      29 </span>            :                 {
-<span class="lineNum">      30 </span>            :                         ConfigurationManager = configurationManager;
-<span class="lineNum">      31 </span>            :                 }
-<span class="lineNum">      32 </span>            : 
-<span class="lineNum">      33 </span><span class="lineNoCov">          0 :                 public virtual void Configuration(IAppBuilder app)</span>
+<span class="lineNum">      19 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      20 </span>            :         /// A Start-up class for SignalR. wired in using &lt;see cref=&quot;OwinStartupAttribute&quot;&gt;OwinStartup&lt;/see&gt;.
+<span class="lineNum">      21 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      22 </span>            :         public class SignalRStartUp
+<span class="lineNum">      23 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      24 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      25 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      26 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      27 </span>            :                 public IConfigurationManager ConfigurationManager { get; set; }
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      30 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;SignalRStartUp&quot;/&gt; creating a new instance of &lt;see cref=&quot;ConfigurationManager&quot;/&gt;.
+<span class="lineNum">      31 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      32 </span><span class="lineCov">          1 :                 public SignalRStartUp()</span>
+<span class="lineNum">      33 </span>            :                         :this (new ConfigurationManager())
 <span class="lineNum">      34 </span>            :                 {
-<span class="lineNum">      35 </span>            :                         string url;
-<span class="lineNum">      36 </span>            :                         if (!ConfigurationManager.TryGetSetting(&quot;Cqrs.WebApi.SignalR.EndpointPath&quot;, out url) || string.IsNullOrWhiteSpace(url))
-<span class="lineNum">      37 </span>            :                                 url = &quot;/signalr&quot;;
-<span class="lineNum">      38 </span>            :                         // Branch the pipeline here for requests that start with &quot;/signalr&quot;
-<span class="lineNum">      39 </span>            :                         app.Map(url, map =&gt;
-<span class="lineNum">      40 </span>            :                         {
-<span class="lineNum">      41 </span>            :                                 // Setup the CORS middleware to run before SignalR.
-<span class="lineNum">      42 </span>            :                                 // By default this will allow all origins. You can 
-<span class="lineNum">      43 </span>            :                                 // configure the set of origins and/or http verbs by
-<span class="lineNum">      44 </span>            :                                 // providing a cors options with a different policy.
-<span class="lineNum">      45 </span>            :                                 map.UseCors(CorsOptions.AllowAll);
-<span class="lineNum">      46 </span>            :                                 var hubConfiguration = new HubConfiguration
-<span class="lineNum">      47 </span>            :                                 {
-<span class="lineNum">      48 </span>            :                                         // You can enable JSONP by un-commenting line below.
-<span class="lineNum">      49 </span>            :                                         // JSONP requests are insecure but some older browsers (and some
-<span class="lineNum">      50 </span>            :                                         // versions of IE) require JSONP to work cross domain
-<span class="lineNum">      51 </span>            :                                         // EnableJSONP = true
-<span class="lineNum">      52 </span>            :                                         EnableDetailedErrors = true,
-<span class="lineNum">      53 </span>            : //                                      Resolver = new SignalRResolver()
-<span class="lineNum">      54 </span>            :                                 };
-<span class="lineNum">      55 </span>            :                                 // Run the SignalR pipeline. We're not using MapSignalR
-<span class="lineNum">      56 </span>            :                                 // since this branch already runs under the &quot;/signalr&quot;
-<span class="lineNum">      57 </span>            :                                 // path.
-<span class="lineNum">      58 </span>            :                                 map.RunSignalR(hubConfiguration);
-<span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span>            :                                 // Instruct DI to resolve the Hub
-<span class="lineNum">      61 </span>            :                                 GlobalHost.DependencyResolver.Register
-<span class="lineNum">      62 </span>            :                                 (
-<span class="lineNum">      63 </span>            :                                         typeof(INotificationHub),
-<span class="lineNum">      64 </span>            :                                         () =&gt; DependencyResolver.Current.Resolve(typeof(INotificationHub))
-<span class="lineNum">      65 </span>            :                                 );
-<span class="lineNum">      66 </span>            :                                 GlobalHost.DependencyResolver.Register
-<span class="lineNum">      67 </span>            :                                 (
-<span class="lineNum">      68 </span>            :                                         typeof(NotificationHub),
-<span class="lineNum">      69 </span>            :                                         () =&gt; DependencyResolver.Current.Resolve(typeof(INotificationHub))
-<span class="lineNum">      70 </span>            :                                 );
-<span class="lineNum">      71 </span>            :                         });
-<span class="lineNum">      72 </span>            : 
-<span class="lineNum">      73 </span>            :                         JsonSerializer serializer = JsonSerializer.Create
-<span class="lineNum">      74 </span>            :                         (
-<span class="lineNum">      75 </span>            :                                 new JsonSerializerSettings
-<span class="lineNum">      76 </span>            :                                 {
-<span class="lineNum">      77 </span>            :                                         ContractResolver = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ContractResolver,
-<span class="lineNum">      78 </span>            :                                         StringEscapeHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.StringEscapeHandling,
-<span class="lineNum">      79 </span>            :                                         PreserveReferencesHandling = PreserveReferencesHandling.None,
-<span class="lineNum">      80 </span>            :                                         MissingMemberHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.MissingMemberHandling,
-<span class="lineNum">      81 </span>            :                                         Binder = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Binder,
-<span class="lineNum">      82 </span>            :                                         CheckAdditionalContent = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.CheckAdditionalContent,
-<span class="lineNum">      83 </span>            :                                         ConstructorHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ConstructorHandling,
-<span class="lineNum">      84 </span>            :                                         Context = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Context,
-<span class="lineNum">      85 </span>            :                                         Converters = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Converters,
-<span class="lineNum">      86 </span>            :                                         Culture = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Culture,
-<span class="lineNum">      87 </span>            :                                         DateFormatHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.DateFormatHandling,
-<span class="lineNum">      88 </span>            :                                         DateFormatString = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.DateFormatString,
-<span class="lineNum">      89 </span>            :                                         DateParseHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.DateParseHandling,
-<span class="lineNum">      90 </span>            :                                         DateTimeZoneHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.DateTimeZoneHandling,
-<span class="lineNum">      91 </span>            :                                         DefaultValueHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.DefaultValueHandling,
-<span class="lineNum">      92 </span>            :                                         Error = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Error,
-<span class="lineNum">      93 </span>            :                                         FloatFormatHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.FloatFormatHandling,
-<span class="lineNum">      94 </span>            :                                         FloatParseHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.FloatParseHandling,
-<span class="lineNum">      95 </span>            :                                         Formatting = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Formatting,
-<span class="lineNum">      96 </span>            :                                         MaxDepth = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.MaxDepth,
-<span class="lineNum">      97 </span>            :                                         MetadataPropertyHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.MetadataPropertyHandling,
-<span class="lineNum">      98 </span>            :                                         NullValueHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.NullValueHandling,
-<span class="lineNum">      99 </span>            :                                         ObjectCreationHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ObjectCreationHandling,
-<span class="lineNum">     100 </span>            :                                         ReferenceLoopHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ReferenceLoopHandling,
-<span class="lineNum">     101 </span>            :                                         ReferenceResolver = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ReferenceResolver,
-<span class="lineNum">     102 </span>            :                                         TraceWriter = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.TraceWriter,
-<span class="lineNum">     103 </span>            :                                         TypeNameAssemblyFormat = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.TypeNameAssemblyFormat,
-<span class="lineNum">     104 </span>            :                                         TypeNameHandling = TypeNameHandling.None
-<span class="lineNum">     105 </span>            :                                 }
-<span class="lineNum">     106 </span>            :                         );
-<span class="lineNum">     107 </span>            :                         GlobalHost.DependencyResolver.Register(typeof(JsonSerializer), () =&gt; serializer);
-<span class="lineNum">     108 </span>            :                 }
-<span class="lineNum">     109 </span>            :         }
-<span class="lineNum">     110 </span>            : }
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;SignalRStartUp&quot;/&gt; with the provided &lt;paramref name=&quot;configurationManager&quot;/&gt;.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span><span class="lineCov">          1 :                 public SignalRStartUp(IConfigurationManager configurationManager)</span>
+<span class="lineNum">      41 </span>            :                 {
+<span class="lineNum">      42 </span>            :                         ConfigurationManager = configurationManager;
+<span class="lineNum">      43 </span>            :                 }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      46 </span>            :                 /// Configure SignalR to run.
+<span class="lineNum">      47 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      48 </span><span class="lineCov">          1 :                 public virtual void Configuration(IAppBuilder app)</span>
+<span class="lineNum">      49 </span>            :                 {
+<span class="lineNum">      50 </span>            :                         string url;
+<span class="lineNum">      51 </span>            :                         if (!ConfigurationManager.TryGetSetting(&quot;Cqrs.WebApi.SignalR.EndpointPath&quot;, out url) || string.IsNullOrWhiteSpace(url))
+<span class="lineNum">      52 </span>            :                                 url = &quot;/signalr&quot;;
+<span class="lineNum">      53 </span>            :                         // Branch the pipeline here for requests that start with &quot;/signalr&quot;
+<span class="lineNum">      54 </span>            :                         app.Map(url, map =&gt;
+<span class="lineNum">      55 </span>            :                         {
+<span class="lineNum">      56 </span>            :                                 // Setup the CORS middleware to run before SignalR.
+<span class="lineNum">      57 </span>            :                                 // By default this will allow all origins. You can 
+<span class="lineNum">      58 </span>            :                                 // configure the set of origins and/or http verbs by
+<span class="lineNum">      59 </span>            :                                 // providing a cors options with a different policy.
+<span class="lineNum">      60 </span>            :                                 map.UseCors(CorsOptions.AllowAll);
+<span class="lineNum">      61 </span>            :                                 var hubConfiguration = new HubConfiguration
+<span class="lineNum">      62 </span>            :                                 {
+<span class="lineNum">      63 </span>            :                                         // You can enable JSONP by un-commenting line below.
+<span class="lineNum">      64 </span>            :                                         // JSONP requests are insecure but some older browsers (and some
+<span class="lineNum">      65 </span>            :                                         // versions of IE) require JSONP to work cross domain
+<span class="lineNum">      66 </span>            :                                         // EnableJSONP = true
+<span class="lineNum">      67 </span>            :                                         EnableDetailedErrors = true,
+<span class="lineNum">      68 </span>            : //                                      Resolver = new SignalRResolver()
+<span class="lineNum">      69 </span>            :                                 };
+<span class="lineNum">      70 </span>            :                                 // Run the SignalR pipeline. We're not using MapSignalR
+<span class="lineNum">      71 </span>            :                                 // since this branch already runs under the &quot;/signalr&quot;
+<span class="lineNum">      72 </span>            :                                 // path.
+<span class="lineNum">      73 </span>            :                                 map.RunSignalR(hubConfiguration);
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :                                 // Instruct DI to resolve the Hub
+<span class="lineNum">      76 </span>            :                                 GlobalHost.DependencyResolver.Register
+<span class="lineNum">      77 </span>            :                                 (
+<span class="lineNum">      78 </span>            :                                         typeof(INotificationHub),
+<span class="lineNum">      79 </span>            :                                         () =&gt; DependencyResolver.Current.Resolve(typeof(INotificationHub))
+<span class="lineNum">      80 </span>            :                                 );
+<span class="lineNum">      81 </span>            :                                 GlobalHost.DependencyResolver.Register
+<span class="lineNum">      82 </span>            :                                 (
+<span class="lineNum">      83 </span>            :                                         typeof(NotificationHub),
+<span class="lineNum">      84 </span>            :                                         () =&gt; DependencyResolver.Current.Resolve(typeof(INotificationHub))
+<span class="lineNum">      85 </span>            :                                 );
+<span class="lineNum">      86 </span>            :                         });
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :                         JsonSerializer serializer = JsonSerializer.Create
+<span class="lineNum">      89 </span>            :                         (
+<span class="lineNum">      90 </span>            :                                 new JsonSerializerSettings
+<span class="lineNum">      91 </span>            :                                 {
+<span class="lineNum">      92 </span>            :                                         ContractResolver = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ContractResolver,
+<span class="lineNum">      93 </span>            :                                         StringEscapeHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.StringEscapeHandling,
+<span class="lineNum">      94 </span>            :                                         PreserveReferencesHandling = PreserveReferencesHandling.None,
+<span class="lineNum">      95 </span>            :                                         MissingMemberHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.MissingMemberHandling,
+<span class="lineNum">      96 </span>            :                                         Binder = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Binder,
+<span class="lineNum">      97 </span>            :                                         CheckAdditionalContent = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.CheckAdditionalContent,
+<span class="lineNum">      98 </span>            :                                         ConstructorHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ConstructorHandling,
+<span class="lineNum">      99 </span>            :                                         Context = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Context,
+<span class="lineNum">     100 </span>            :                                         Converters = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Converters,
+<span class="lineNum">     101 </span>            :                                         Culture = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Culture,
+<span class="lineNum">     102 </span>            :                                         DateFormatHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.DateFormatHandling,
+<span class="lineNum">     103 </span>            :                                         DateFormatString = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.DateFormatString,
+<span class="lineNum">     104 </span>            :                                         DateParseHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.DateParseHandling,
+<span class="lineNum">     105 </span>            :                                         DateTimeZoneHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.DateTimeZoneHandling,
+<span class="lineNum">     106 </span>            :                                         DefaultValueHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.DefaultValueHandling,
+<span class="lineNum">     107 </span>            :                                         Error = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Error,
+<span class="lineNum">     108 </span>            :                                         FloatFormatHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.FloatFormatHandling,
+<span class="lineNum">     109 </span>            :                                         FloatParseHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.FloatParseHandling,
+<span class="lineNum">     110 </span>            :                                         Formatting = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Formatting,
+<span class="lineNum">     111 </span>            :                                         MaxDepth = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.MaxDepth,
+<span class="lineNum">     112 </span>            :                                         MetadataPropertyHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.MetadataPropertyHandling,
+<span class="lineNum">     113 </span>            :                                         NullValueHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.NullValueHandling,
+<span class="lineNum">     114 </span>            :                                         ObjectCreationHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ObjectCreationHandling,
+<span class="lineNum">     115 </span>            :                                         ReferenceLoopHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ReferenceLoopHandling,
+<span class="lineNum">     116 </span>            :                                         ReferenceResolver = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ReferenceResolver,
+<span class="lineNum">     117 </span>            :                                         TraceWriter = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.TraceWriter,
+<span class="lineNum">     118 </span>            :                                         TypeNameAssemblyFormat = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.TypeNameAssemblyFormat,
+<span class="lineNum">     119 </span>            :                                         TypeNameHandling = TypeNameHandling.None
+<span class="lineNum">     120 </span>            :                                 }
+<span class="lineNum">     121 </span>            :                         );
+<span class="lineNum">     122 </span>            :                         GlobalHost.DependencyResolver.Register(typeof(JsonSerializer), () =&gt; serializer);
+<span class="lineNum">     123 </span>            :                 }
+<span class="lineNum">     124 </span>            :         }
+<span class="lineNum">     125 </span>            : }
 </pre>
       </td>
     </tr>

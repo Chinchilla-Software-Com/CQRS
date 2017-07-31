@@ -15,14 +15,22 @@ using System.Web;
 using System.Xml;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
+using Cqrs.Domain;
 using Cqrs.Events;
 using Cqrs.Messages;
 using Cqrs.Services;
 
 namespace Cqrs.WebApi
 {
+	/// <summary>
+	/// A start-up configuration class for the auto documenting features.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public static class HelpPageConfig<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The list of relevant XML files to use with the auto documenting feature.
+		/// </summary>
 		public static IList<string> AssemblyXmlFileNames { get; set; }
 
 		static HelpPageConfig()
@@ -30,33 +38,18 @@ namespace Cqrs.WebApi
 			AssemblyXmlFileNames = new List<string>();
 		}
 
+		/// <summary>
+		/// A sample <see cref="IEvent{TAuthenticationToken}"/> used for API documentation generation.
+		/// </summary>
+		[Serializable]
+		[DataContract]
 		public class UserCreatedEvent : IEvent<TAuthenticationToken>
 		{
-			#region Implementation of IEvent
+			#region Implementation of IMessageWithAuthenticationToken<TAuthenticationToken>
 
-			[DataMember]
-			public Guid Id
-			{
-				get
-				{
-					return Rsn;
-				}
-				set
-				{
-					Rsn = value;
-				}
-			}
-
-			[DataMember]
-			public int Version { get; set; }
-
-			[DataMember]
-			public DateTimeOffset TimeStamp { get; set; }
-
-			#endregion
-
-			#region Implementation of IMessageWithAuthenticationToken<TSingleSignOnToken>
-
+			/// <summary>
+			/// The authentication token of the entity that triggered the event to be raised.
+			/// </summary>
 			[DataMember]
 			public TAuthenticationToken AuthenticationToken { get; set; }
 
@@ -64,12 +57,11 @@ namespace Cqrs.WebApi
 
 			#region Implementation of IMessage
 
+			/// <summary>
+			/// An identifier used to group together several <see cref="IMessage"/>. Any <see cref="IMessage"/> with the same <see cref="CorrelationId"/> were triggered by the same initiating request.
+			/// </summary>
 			[DataMember]
 			public Guid CorrelationId { get; set; }
-
-			[DataMember]
-			[Obsolete("Use Frameworks, It's far more flexible and OriginatingFramework")]
-			public FrameworkType Framework { get; set; }
 
 			/// <summary>
 			/// The originating framework this message was sent from.
@@ -83,20 +75,44 @@ namespace Cqrs.WebApi
 			[DataMember]
 			public IEnumerable<string> Frameworks { get; set; }
 
-			[Obsolete("Use CorrelationId")]
+			#endregion
+
+			#region Implementation of IMessage
+
+			/// <summary>
+			/// The identifier of the command itself.
+			/// In some cases this may be the <see cref="IAggregateRoot{TAuthenticationToken}"/> or <see cref="ISaga{TAuthenticationToken}"/> this command targets.
+			/// </summary>
 			[DataMember]
-			public Guid CorrolationId
-			{
-				get { return CorrelationId; }
-				set { CorrelationId = value; }
-			}
+			public Guid Id { get; set; }
+
+			/// <summary>
+			/// The new version number the targeted <see cref="IAggregateRoot{TAuthenticationToken}"/> or <see cref="ISaga{TAuthenticationToken}"/> that raised this.
+			/// </summary>
+			[DataMember]
+			public int Version { get; set; }
+
+			/// <summary>
+			/// The date and time the event was raised or published.
+			/// </summary>
+			[DataMember]
+			public DateTimeOffset TimeStamp { get; set; }
 
 			#endregion
 
+			/// <summary>
+			/// The identifier of the User to create.
+			/// </summary>
 			public Guid Rsn { get; set; }
 
+			/// <summary>
+			/// The name os the USer to create.
+			/// </summary>
 			public string Name { get; set; }
 
+			/// <summary>
+			/// The email address of the User to create.
+			/// </summary>
 			public string EmailAddress { get; set; }
 		}
 
@@ -150,6 +166,9 @@ namespace Cqrs.WebApi
 			return token;
 		}
 
+		/// <summary>
+		/// Get a collection of sample objects for the auto documenting features to use.
+		/// </summary>
 		public static IDictionary<Type, object> GetBasicSampleObjects()
 		{
 			var eventCorrelationId = Guid.NewGuid();
@@ -217,6 +236,9 @@ namespace Cqrs.WebApi
 			};
 		}
 
+		/// <summary>
+		/// Generate a list of relevant XML files to use with the auto documenting feature.
+		/// </summary>
 		public static void GenerateAssemblyXmlFileNames()
 		{
 			if (AssemblyXmlFileNames.Any())
@@ -239,6 +261,9 @@ namespace Cqrs.WebApi
 			catch (ArgumentOutOfRangeException) { }
 		}
 
+		/// <summary>
+		/// Generate the relevant XML file used by the auto documenting feature.
+		/// </summary>
 		public static void CreateXmlDocumentation()
 		{
 			GenerateAssemblyXmlFileNames();
