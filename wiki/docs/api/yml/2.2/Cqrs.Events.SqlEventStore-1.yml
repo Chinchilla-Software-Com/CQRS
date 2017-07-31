@@ -1,0 +1,2611 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Events.SqlEventStore`1
+  commentId: T:Cqrs.Events.SqlEventStore`1
+  id: SqlEventStore`1
+  parent: Cqrs.Events
+  children:
+  - Cqrs.Events.SqlEventStore`1.#ctor(Cqrs.Events.IEventBuilder{`0},Cqrs.Events.IEventDeserialiser{`0},cdmdotnet.Logging.ILogger,Cqrs.Configuration.IConfigurationManager)
+  - Cqrs.Events.SqlEventStore`1.Add(System.Data.Linq.DataContext,Cqrs.Events.EventData)
+  - Cqrs.Events.SqlEventStore`1.ConfigurationManager
+  - Cqrs.Events.SqlEventStore`1.CreateDbDataContext
+  - Cqrs.Events.SqlEventStore`1.Get(System.Guid)
+  - Cqrs.Events.SqlEventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+  - Cqrs.Events.SqlEventStore`1.GetEventStoreTable(System.Data.Linq.DataContext)
+  - Cqrs.Events.SqlEventStore`1.PersistEvent(Cqrs.Events.EventData)
+  langs:
+  - csharp
+  - vb
+  name: SqlEventStore<TAuthenticationToken>
+  nameWithType: SqlEventStore<TAuthenticationToken>
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>
+  type: Class
+  source:
+    remote:
+      path: Framework/Cqrs/Events/SqlEventStore.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: SqlEventStore
+    path: Framework/Cqrs/Events/SqlEventStore.cs
+    startLine: 26
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nA simplified SqlServer based <xref href=\"Cqrs.Events.EventStore%601\" data-throw-if-not-resolved=\"false\"></xref> that uses LinqToSql and follows a rigid schema.\n"
+  example: []
+  syntax:
+    content: 'public class SqlEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken>, IEventStore<TAuthenticationToken>'
+    typeParameters:
+    - id: TAuthenticationToken
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the authentication token.
+    content.vb: >-
+      Public Class SqlEventStore(Of TAuthenticationToken)
+          Inherits EventStore(Of TAuthenticationToken)
+          Implements IEventStore(Of TAuthenticationToken)
+  inheritance:
+  - System.Object
+  - Cqrs.Events.EventStore{{TAuthenticationToken}}
+  derivedClasses:
+  - Cqrs.Events.ReplicatedSqlEventStore`1
+  implements:
+  - Cqrs.Events.IEventStore{{TAuthenticationToken}}
+  inheritedMembers:
+  - Cqrs.Events.EventStore{{TAuthenticationToken}}.CqrsEventStoreStreamNamePattern
+  - Cqrs.Events.EventStore{{TAuthenticationToken}}.EventBuilder
+  - Cqrs.Events.EventStore{{TAuthenticationToken}}.EventDeserialiser
+  - Cqrs.Events.EventStore{{TAuthenticationToken}}.TelemetryHelper
+  - Cqrs.Events.EventStore{{TAuthenticationToken}}.Logger
+  - Cqrs.Events.EventStore{{TAuthenticationToken}}.Save``1(Cqrs.Events.IEvent{{TAuthenticationToken}})
+  - Cqrs.Events.EventStore{{TAuthenticationToken}}.GenerateStreamName(System.Type,Cqrs.Events.IEvent{{TAuthenticationToken}})
+  - Cqrs.Events.EventStore{{TAuthenticationToken}}.GenerateStreamName(System.Type,System.Guid)
+  - Cqrs.Events.EventStore{{TAuthenticationToken}}.Save(System.Type,Cqrs.Events.IEvent{{TAuthenticationToken}})
+  - Cqrs.Events.EventStore{{TAuthenticationToken}}.Get``1(System.Guid,System.Boolean,System.Int32)
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken)
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken)
+  name.vb: SqlEventStore(Of TAuthenticationToken)
+- uid: Cqrs.Events.SqlEventStore`1.ConfigurationManager
+  commentId: P:Cqrs.Events.SqlEventStore`1.ConfigurationManager
+  id: ConfigurationManager
+  parent: Cqrs.Events.SqlEventStore`1
+  langs:
+  - csharp
+  - vb
+  name: ConfigurationManager
+  nameWithType: SqlEventStore<TAuthenticationToken>.ConfigurationManager
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.ConfigurationManager
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Events/SqlEventStore.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: ConfigurationManager
+    path: Framework/Cqrs/Events/SqlEventStore.cs
+    startLine: 39
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nGets or sets the <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected IConfigurationManager ConfigurationManager { get; }
+    parameters: []
+    return:
+      type: Cqrs.Configuration.IConfigurationManager
+    content.vb: Protected ReadOnly Property ConfigurationManager As IConfigurationManager
+  overload: Cqrs.Events.SqlEventStore`1.ConfigurationManager*
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).ConfigurationManager
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).ConfigurationManager
+- uid: Cqrs.Events.SqlEventStore`1.#ctor(Cqrs.Events.IEventBuilder{`0},Cqrs.Events.IEventDeserialiser{`0},cdmdotnet.Logging.ILogger,Cqrs.Configuration.IConfigurationManager)
+  commentId: M:Cqrs.Events.SqlEventStore`1.#ctor(Cqrs.Events.IEventBuilder{`0},Cqrs.Events.IEventDeserialiser{`0},cdmdotnet.Logging.ILogger,Cqrs.Configuration.IConfigurationManager)
+  id: '#ctor(Cqrs.Events.IEventBuilder{`0},Cqrs.Events.IEventDeserialiser{`0},cdmdotnet.Logging.ILogger,Cqrs.Configuration.IConfigurationManager)'
+  parent: Cqrs.Events.SqlEventStore`1
+  langs:
+  - csharp
+  - vb
+  name: SqlEventStore(IEventBuilder<TAuthenticationToken>, IEventDeserialiser<TAuthenticationToken>, ILogger, IConfigurationManager)
+  nameWithType: SqlEventStore<TAuthenticationToken>.SqlEventStore(IEventBuilder<TAuthenticationToken>, IEventDeserialiser<TAuthenticationToken>, ILogger, IConfigurationManager)
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.SqlEventStore(Cqrs.Events.IEventBuilder<TAuthenticationToken>, Cqrs.Events.IEventDeserialiser<TAuthenticationToken>, cdmdotnet.Logging.ILogger, Cqrs.Configuration.IConfigurationManager)
+  type: Constructor
+  source:
+    remote:
+      path: Framework/Cqrs/Events/SqlEventStore.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: .ctor
+    path: Framework/Cqrs/Events/SqlEventStore.cs
+    startLine: 44
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nInstantiate a new instance of the <xref href=\"Cqrs.Events.SqlEventStore%601\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public SqlEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)
+    parameters:
+    - id: eventBuilder
+      type: Cqrs.Events.IEventBuilder{{TAuthenticationToken}}
+    - id: eventDeserialiser
+      type: Cqrs.Events.IEventDeserialiser{{TAuthenticationToken}}
+    - id: logger
+      type: cdmdotnet.Logging.ILogger
+    - id: configurationManager
+      type: Cqrs.Configuration.IConfigurationManager
+    content.vb: Public Sub New(eventBuilder As IEventBuilder(Of TAuthenticationToken), eventDeserialiser As IEventDeserialiser(Of TAuthenticationToken), logger As ILogger, configurationManager As IConfigurationManager)
+  overload: Cqrs.Events.SqlEventStore`1.#ctor*
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).SqlEventStore(IEventBuilder(Of TAuthenticationToken), IEventDeserialiser(Of TAuthenticationToken), ILogger, IConfigurationManager)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).SqlEventStore(Cqrs.Events.IEventBuilder(Of TAuthenticationToken), Cqrs.Events.IEventDeserialiser(Of TAuthenticationToken), cdmdotnet.Logging.ILogger, Cqrs.Configuration.IConfigurationManager)
+  name.vb: SqlEventStore(IEventBuilder(Of TAuthenticationToken), IEventDeserialiser(Of TAuthenticationToken), ILogger, IConfigurationManager)
+- uid: Cqrs.Events.SqlEventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+  commentId: M:Cqrs.Events.SqlEventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+  id: Get(System.Type,System.Guid,System.Boolean,System.Int32)
+  parent: Cqrs.Events.SqlEventStore`1
+  langs:
+  - csharp
+  - vb
+  name: Get(Type, Guid, Boolean, Int32)
+  nameWithType: SqlEventStore<TAuthenticationToken>.Get(Type, Guid, Boolean, Int32)
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.Get(System.Type, System.Guid, System.Boolean, System.Int32)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Events/SqlEventStore.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Get
+    path: Framework/Cqrs/Events/SqlEventStore.cs
+    startLine: 59
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nGets a collection of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> for the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> of type <span class=\"paramref\">aggregateRootType</span> with the ID matching the provided <span class=\"paramref\">aggregateId</span>.\n"
+  example: []
+  syntax:
+    content: public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+    parameters:
+    - id: aggregateRootType
+      type: System.Type
+      description: <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref> the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> was raised in.
+    - id: aggregateId
+      type: System.Guid
+      description: The <xref href="Cqrs.Domain.IAggregateRoot%601.Id" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref>.
+    - id: useLastEventOnly
+      type: System.Boolean
+      description: Loads only the last event<xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref>.
+    - id: fromVersion
+      type: System.Int32
+      description: Load events starting from this version
+    return:
+      type: System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}}
+    content.vb: Public Overrides Function Get(aggregateRootType As Type, aggregateId As Guid, useLastEventOnly As Boolean = False, fromVersion As Integer = -1) As IEnumerable(Of IEvent(Of TAuthenticationToken))
+  overridden: Cqrs.Events.EventStore{{TAuthenticationToken}}.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+  overload: Cqrs.Events.SqlEventStore`1.Get*
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).Get(Type, Guid, Boolean, Int32)
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).Get(System.Type, System.Guid, System.Boolean, System.Int32)
+- uid: Cqrs.Events.SqlEventStore`1.Get(System.Guid)
+  commentId: M:Cqrs.Events.SqlEventStore`1.Get(System.Guid)
+  id: Get(System.Guid)
+  parent: Cqrs.Events.SqlEventStore`1
+  langs:
+  - csharp
+  - vb
+  name: Get(Guid)
+  nameWithType: SqlEventStore<TAuthenticationToken>.Get(Guid)
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.Get(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Events/SqlEventStore.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Get
+    path: Framework/Cqrs/Events/SqlEventStore.cs
+    startLine: 83
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nGet all <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> instances for the given <span class=\"paramref\">correlationId</span>.\n"
+  example: []
+  syntax:
+    content: public override IEnumerable<EventData> Get(Guid correlationId)
+    parameters:
+    - id: correlationId
+      type: System.Guid
+      description: The <xref href="Cqrs.Messages.IMessage.CorrelationId" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> instances to retrieve.
+    return:
+      type: System.Collections.Generic.IEnumerable{Cqrs.Events.EventData}
+    content.vb: Public Overrides Function Get(correlationId As Guid) As IEnumerable(Of EventData)
+  overridden: Cqrs.Events.EventStore{{TAuthenticationToken}}.Get(System.Guid)
+  overload: Cqrs.Events.SqlEventStore`1.Get*
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).Get(Guid)
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).Get(System.Guid)
+- uid: Cqrs.Events.SqlEventStore`1.PersistEvent(Cqrs.Events.EventData)
+  commentId: M:Cqrs.Events.SqlEventStore`1.PersistEvent(Cqrs.Events.EventData)
+  id: PersistEvent(Cqrs.Events.EventData)
+  parent: Cqrs.Events.SqlEventStore`1
+  langs:
+  - csharp
+  - vb
+  name: PersistEvent(EventData)
+  nameWithType: SqlEventStore<TAuthenticationToken>.PersistEvent(EventData)
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.PersistEvent(Cqrs.Events.EventData)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Events/SqlEventStore.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: PersistEvent
+    path: Framework/Cqrs/Events/SqlEventStore.cs
+    startLine: 108
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nPersist the provided <span class=\"paramref\">eventData</span> into SQL Server.\n"
+  example: []
+  syntax:
+    content: protected override void PersistEvent(EventData eventData)
+    parameters:
+    - id: eventData
+      type: Cqrs.Events.EventData
+      description: The <xref href="Cqrs.Events.EventData" data-throw-if-not-resolved="false"></xref> to persist.
+    content.vb: Protected Overrides Sub PersistEvent(eventData As EventData)
+  overridden: Cqrs.Events.EventStore{{TAuthenticationToken}}.PersistEvent(Cqrs.Events.EventData)
+  overload: Cqrs.Events.SqlEventStore`1.PersistEvent*
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).PersistEvent(EventData)
+  modifiers.csharp:
+  - protected
+  - override
+  modifiers.vb:
+  - Protected
+  - Overrides
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).PersistEvent(Cqrs.Events.EventData)
+- uid: Cqrs.Events.SqlEventStore`1.CreateDbDataContext
+  commentId: M:Cqrs.Events.SqlEventStore`1.CreateDbDataContext
+  id: CreateDbDataContext
+  parent: Cqrs.Events.SqlEventStore`1
+  langs:
+  - csharp
+  - vb
+  name: CreateDbDataContext()
+  nameWithType: SqlEventStore<TAuthenticationToken>.CreateDbDataContext()
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.CreateDbDataContext()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Events/SqlEventStore.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: CreateDbDataContext
+    path: Framework/Cqrs/Events/SqlEventStore.cs
+    startLine: 121
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nCreates a new <xref href=\"System.Data.Linq.DataContext\" data-throw-if-not-resolved=\"false\"></xref> using connection string settings from <xref href=\"Cqrs.Events.SqlEventStore%601.ConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual DataContext CreateDbDataContext()
+    return:
+      type: System.Data.Linq.DataContext
+    content.vb: Protected Overridable Function CreateDbDataContext As DataContext
+  overload: Cqrs.Events.SqlEventStore`1.CreateDbDataContext*
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).CreateDbDataContext()
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).CreateDbDataContext()
+- uid: Cqrs.Events.SqlEventStore`1.GetEventStoreTable(System.Data.Linq.DataContext)
+  commentId: M:Cqrs.Events.SqlEventStore`1.GetEventStoreTable(System.Data.Linq.DataContext)
+  id: GetEventStoreTable(System.Data.Linq.DataContext)
+  parent: Cqrs.Events.SqlEventStore`1
+  langs:
+  - csharp
+  - vb
+  name: GetEventStoreTable(DataContext)
+  nameWithType: SqlEventStore<TAuthenticationToken>.GetEventStoreTable(DataContext)
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.GetEventStoreTable(System.Data.Linq.DataContext)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Events/SqlEventStore.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GetEventStoreTable
+    path: Framework/Cqrs/Events/SqlEventStore.cs
+    startLine: 153
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nGets the <xref href=\"System.Data.Linq.Table%601\" data-throw-if-not-resolved=\"false\"></xref> of <xref href=\"Cqrs.Events.EventData\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual Table<EventData> GetEventStoreTable(DataContext dbDataContext)
+    parameters:
+    - id: dbDataContext
+      type: System.Data.Linq.DataContext
+      description: The <xref href="System.Data.Linq.DataContext" data-throw-if-not-resolved="false"></xref> to use.
+    return:
+      type: System.Data.Linq.Table{Cqrs.Events.EventData}
+    content.vb: Protected Overridable Function GetEventStoreTable(dbDataContext As DataContext) As Table(Of EventData)
+  overload: Cqrs.Events.SqlEventStore`1.GetEventStoreTable*
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).GetEventStoreTable(DataContext)
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).GetEventStoreTable(System.Data.Linq.DataContext)
+- uid: Cqrs.Events.SqlEventStore`1.Add(System.Data.Linq.DataContext,Cqrs.Events.EventData)
+  commentId: M:Cqrs.Events.SqlEventStore`1.Add(System.Data.Linq.DataContext,Cqrs.Events.EventData)
+  id: Add(System.Data.Linq.DataContext,Cqrs.Events.EventData)
+  parent: Cqrs.Events.SqlEventStore`1
+  langs:
+  - csharp
+  - vb
+  name: Add(DataContext, EventData)
+  nameWithType: SqlEventStore<TAuthenticationToken>.Add(DataContext, EventData)
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.Add(System.Data.Linq.DataContext, Cqrs.Events.EventData)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Events/SqlEventStore.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Add
+    path: Framework/Cqrs/Events/SqlEventStore.cs
+    startLine: 162
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nPersist the provided <span class=\"paramref\">data</span> into SQL Server using the provided <span class=\"paramref\">dbDataContext</span>.\n"
+  example: []
+  syntax:
+    content: protected virtual void Add(DataContext dbDataContext, EventData data)
+    parameters:
+    - id: dbDataContext
+      type: System.Data.Linq.DataContext
+    - id: data
+      type: Cqrs.Events.EventData
+    content.vb: Protected Overridable Sub Add(dbDataContext As DataContext, data As EventData)
+  overload: Cqrs.Events.SqlEventStore`1.Add*
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).Add(DataContext, EventData)
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).Add(System.Data.Linq.DataContext, Cqrs.Events.EventData)
+references:
+- uid: Cqrs.Events.EventStore`1
+  commentId: T:Cqrs.Events.EventStore`1
+  isExternal: false
+  name: EventStore<TAuthenticationToken>
+  nameWithType: EventStore<TAuthenticationToken>
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>
+  nameWithType.vb: EventStore(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken)
+  name.vb: EventStore(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1
+    name: EventStore
+    nameWithType: EventStore
+    fullName: Cqrs.Events.EventStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1
+    name: EventStore
+    nameWithType: EventStore
+    fullName: Cqrs.Events.EventStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: Cqrs.Events
+  commentId: N:Cqrs.Events
+  isExternal: false
+  name: Cqrs.Events
+  nameWithType: Cqrs.Events
+  fullName: Cqrs.Events
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  commentId: T:Cqrs.Events.EventStore{`0}
+  parent: Cqrs.Events
+  definition: Cqrs.Events.EventStore`1
+  name: EventStore<TAuthenticationToken>
+  nameWithType: EventStore<TAuthenticationToken>
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>
+  nameWithType.vb: EventStore(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken)
+  name.vb: EventStore(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1
+    name: EventStore
+    nameWithType: EventStore
+    fullName: Cqrs.Events.EventStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1
+    name: EventStore
+    nameWithType: EventStore
+    fullName: Cqrs.Events.EventStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEventStore{{TAuthenticationToken}}
+  commentId: T:Cqrs.Events.IEventStore{`0}
+  parent: Cqrs.Events
+  definition: Cqrs.Events.IEventStore`1
+  name: IEventStore<TAuthenticationToken>
+  nameWithType: IEventStore<TAuthenticationToken>
+  fullName: Cqrs.Events.IEventStore<TAuthenticationToken>
+  nameWithType.vb: IEventStore(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEventStore(Of TAuthenticationToken)
+  name.vb: IEventStore(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEventStore`1
+    name: IEventStore
+    nameWithType: IEventStore
+    fullName: Cqrs.Events.IEventStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEventStore`1
+    name: IEventStore
+    nameWithType: IEventStore
+    fullName: Cqrs.Events.IEventStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.CqrsEventStoreStreamNamePattern
+  commentId: F:Cqrs.Events.EventStore{`0}.CqrsEventStoreStreamNamePattern
+  parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  definition: Cqrs.Events.EventStore`1.CqrsEventStoreStreamNamePattern
+  name: CqrsEventStoreStreamNamePattern
+  nameWithType: EventStore<TAuthenticationToken>.CqrsEventStoreStreamNamePattern
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.CqrsEventStoreStreamNamePattern
+  nameWithType.vb: EventStore(Of TAuthenticationToken).CqrsEventStoreStreamNamePattern
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).CqrsEventStoreStreamNamePattern
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.EventBuilder
+  commentId: P:Cqrs.Events.EventStore{`0}.EventBuilder
+  parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  definition: Cqrs.Events.EventStore`1.EventBuilder
+  name: EventBuilder
+  nameWithType: EventStore<TAuthenticationToken>.EventBuilder
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.EventBuilder
+  nameWithType.vb: EventStore(Of TAuthenticationToken).EventBuilder
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).EventBuilder
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.EventDeserialiser
+  commentId: P:Cqrs.Events.EventStore{`0}.EventDeserialiser
+  parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  definition: Cqrs.Events.EventStore`1.EventDeserialiser
+  name: EventDeserialiser
+  nameWithType: EventStore<TAuthenticationToken>.EventDeserialiser
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.EventDeserialiser
+  nameWithType.vb: EventStore(Of TAuthenticationToken).EventDeserialiser
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).EventDeserialiser
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.TelemetryHelper
+  commentId: P:Cqrs.Events.EventStore{`0}.TelemetryHelper
+  parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  definition: Cqrs.Events.EventStore`1.TelemetryHelper
+  name: TelemetryHelper
+  nameWithType: EventStore<TAuthenticationToken>.TelemetryHelper
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.TelemetryHelper
+  nameWithType.vb: EventStore(Of TAuthenticationToken).TelemetryHelper
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).TelemetryHelper
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.Logger
+  commentId: P:Cqrs.Events.EventStore{`0}.Logger
+  parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  definition: Cqrs.Events.EventStore`1.Logger
+  name: Logger
+  nameWithType: EventStore<TAuthenticationToken>.Logger
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Logger
+  nameWithType.vb: EventStore(Of TAuthenticationToken).Logger
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).Logger
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.Save``1(Cqrs.Events.IEvent{{TAuthenticationToken}})
+  commentId: M:Cqrs.Events.EventStore{`0}.Save``1(Cqrs.Events.IEvent{`0})
+  parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  definition: Cqrs.Events.EventStore`1.Save``1(Cqrs.Events.IEvent{`0})
+  name: Save<T>(IEvent<TAuthenticationToken>)
+  nameWithType: EventStore<TAuthenticationToken>.Save<T>(IEvent<TAuthenticationToken>)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Save<T>(Cqrs.Events.IEvent<TAuthenticationToken>)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).Save(Of T)(IEvent(Of TAuthenticationToken))
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).Save(Of T)(Cqrs.Events.IEvent(Of TAuthenticationToken))
+  name.vb: Save(Of T)(IEvent(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.Save``1(Cqrs.Events.IEvent{`0})
+    name: Save<T>
+    nameWithType: EventStore<TAuthenticationToken>.Save<T>
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Save<T>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.Save``1(Cqrs.Events.IEvent{`0})
+    name: Save(Of T)
+    nameWithType: EventStore(Of TAuthenticationToken).Save(Of T)
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).Save(Of T)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.GenerateStreamName(System.Type,Cqrs.Events.IEvent{{TAuthenticationToken}})
+  commentId: M:Cqrs.Events.EventStore{`0}.GenerateStreamName(System.Type,Cqrs.Events.IEvent{`0})
+  parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  definition: Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,Cqrs.Events.IEvent{`0})
+  name: GenerateStreamName(Type, IEvent<TAuthenticationToken>)
+  nameWithType: EventStore<TAuthenticationToken>.GenerateStreamName(Type, IEvent<TAuthenticationToken>)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.GenerateStreamName(System.Type, Cqrs.Events.IEvent<TAuthenticationToken>)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).GenerateStreamName(Type, IEvent(Of TAuthenticationToken))
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).GenerateStreamName(System.Type, Cqrs.Events.IEvent(Of TAuthenticationToken))
+  name.vb: GenerateStreamName(Type, IEvent(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,Cqrs.Events.IEvent{`0})
+    name: GenerateStreamName
+    nameWithType: EventStore<TAuthenticationToken>.GenerateStreamName
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.GenerateStreamName
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,Cqrs.Events.IEvent{`0})
+    name: GenerateStreamName
+    nameWithType: EventStore(Of TAuthenticationToken).GenerateStreamName
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).GenerateStreamName
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.GenerateStreamName(System.Type,System.Guid)
+  commentId: M:Cqrs.Events.EventStore{`0}.GenerateStreamName(System.Type,System.Guid)
+  parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  definition: Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,System.Guid)
+  name: GenerateStreamName(Type, Guid)
+  nameWithType: EventStore<TAuthenticationToken>.GenerateStreamName(Type, Guid)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.GenerateStreamName(System.Type, System.Guid)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).GenerateStreamName(Type, Guid)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).GenerateStreamName(System.Type, System.Guid)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,System.Guid)
+    name: GenerateStreamName
+    nameWithType: EventStore<TAuthenticationToken>.GenerateStreamName
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.GenerateStreamName
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,System.Guid)
+    name: GenerateStreamName
+    nameWithType: EventStore(Of TAuthenticationToken).GenerateStreamName
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).GenerateStreamName
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.Save(System.Type,Cqrs.Events.IEvent{{TAuthenticationToken}})
+  commentId: M:Cqrs.Events.EventStore{`0}.Save(System.Type,Cqrs.Events.IEvent{`0})
+  parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  definition: Cqrs.Events.EventStore`1.Save(System.Type,Cqrs.Events.IEvent{`0})
+  name: Save(Type, IEvent<TAuthenticationToken>)
+  nameWithType: EventStore<TAuthenticationToken>.Save(Type, IEvent<TAuthenticationToken>)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Save(System.Type, Cqrs.Events.IEvent<TAuthenticationToken>)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).Save(Type, IEvent(Of TAuthenticationToken))
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).Save(System.Type, Cqrs.Events.IEvent(Of TAuthenticationToken))
+  name.vb: Save(Type, IEvent(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.Save(System.Type,Cqrs.Events.IEvent{`0})
+    name: Save
+    nameWithType: EventStore<TAuthenticationToken>.Save
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Save
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.Save(System.Type,Cqrs.Events.IEvent{`0})
+    name: Save
+    nameWithType: EventStore(Of TAuthenticationToken).Save
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).Save
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.Get``1(System.Guid,System.Boolean,System.Int32)
+  commentId: M:Cqrs.Events.EventStore{`0}.Get``1(System.Guid,System.Boolean,System.Int32)
+  parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  definition: Cqrs.Events.EventStore`1.Get``1(System.Guid,System.Boolean,System.Int32)
+  name: Get<T>(Guid, Boolean, Int32)
+  nameWithType: EventStore<TAuthenticationToken>.Get<T>(Guid, Boolean, Int32)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Get<T>(System.Guid, System.Boolean, System.Int32)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).Get(Of T)(Guid, Boolean, Int32)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).Get(Of T)(System.Guid, System.Boolean, System.Int32)
+  name.vb: Get(Of T)(Guid, Boolean, Int32)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.Get``1(System.Guid,System.Boolean,System.Int32)
+    name: Get<T>
+    nameWithType: EventStore<TAuthenticationToken>.Get<T>
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Get<T>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.Get``1(System.Guid,System.Boolean,System.Int32)
+    name: Get(Of T)
+    nameWithType: EventStore(Of TAuthenticationToken).Get(Of T)
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).Get(Of T)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Cqrs.Events.IEventStore`1
+  commentId: T:Cqrs.Events.IEventStore`1
+  isExternal: false
+  name: IEventStore<TAuthenticationToken>
+  nameWithType: IEventStore<TAuthenticationToken>
+  fullName: Cqrs.Events.IEventStore<TAuthenticationToken>
+  nameWithType.vb: IEventStore(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEventStore(Of TAuthenticationToken)
+  name.vb: IEventStore(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEventStore`1
+    name: IEventStore
+    nameWithType: IEventStore
+    fullName: Cqrs.Events.IEventStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEventStore`1
+    name: IEventStore
+    nameWithType: IEventStore
+    fullName: Cqrs.Events.IEventStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.EventStore`1.CqrsEventStoreStreamNamePattern
+  commentId: F:Cqrs.Events.EventStore`1.CqrsEventStoreStreamNamePattern
+  isExternal: false
+  name: CqrsEventStoreStreamNamePattern
+  nameWithType: EventStore<TAuthenticationToken>.CqrsEventStoreStreamNamePattern
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.CqrsEventStoreStreamNamePattern
+  nameWithType.vb: EventStore(Of TAuthenticationToken).CqrsEventStoreStreamNamePattern
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).CqrsEventStoreStreamNamePattern
+- uid: Cqrs.Events.EventStore`1.EventBuilder
+  commentId: P:Cqrs.Events.EventStore`1.EventBuilder
+  isExternal: false
+  name: EventBuilder
+  nameWithType: EventStore<TAuthenticationToken>.EventBuilder
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.EventBuilder
+  nameWithType.vb: EventStore(Of TAuthenticationToken).EventBuilder
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).EventBuilder
+- uid: Cqrs.Events.EventStore`1.EventDeserialiser
+  commentId: P:Cqrs.Events.EventStore`1.EventDeserialiser
+  isExternal: false
+  name: EventDeserialiser
+  nameWithType: EventStore<TAuthenticationToken>.EventDeserialiser
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.EventDeserialiser
+  nameWithType.vb: EventStore(Of TAuthenticationToken).EventDeserialiser
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).EventDeserialiser
+- uid: Cqrs.Events.EventStore`1.TelemetryHelper
+  commentId: P:Cqrs.Events.EventStore`1.TelemetryHelper
+  isExternal: false
+  name: TelemetryHelper
+  nameWithType: EventStore<TAuthenticationToken>.TelemetryHelper
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.TelemetryHelper
+  nameWithType.vb: EventStore(Of TAuthenticationToken).TelemetryHelper
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).TelemetryHelper
+- uid: Cqrs.Events.EventStore`1.Logger
+  commentId: P:Cqrs.Events.EventStore`1.Logger
+  isExternal: false
+  name: Logger
+  nameWithType: EventStore<TAuthenticationToken>.Logger
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Logger
+  nameWithType.vb: EventStore(Of TAuthenticationToken).Logger
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).Logger
+- uid: Cqrs.Events.EventStore`1.Save``1(Cqrs.Events.IEvent{`0})
+  commentId: M:Cqrs.Events.EventStore`1.Save``1(Cqrs.Events.IEvent{`0})
+  isExternal: false
+  name: Save<T>(IEvent<TAuthenticationToken>)
+  nameWithType: EventStore<TAuthenticationToken>.Save<T>(IEvent<TAuthenticationToken>)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Save<T>(Cqrs.Events.IEvent<TAuthenticationToken>)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).Save(Of T)(IEvent(Of TAuthenticationToken))
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).Save(Of T)(Cqrs.Events.IEvent(Of TAuthenticationToken))
+  name.vb: Save(Of T)(IEvent(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.Save``1(Cqrs.Events.IEvent{`0})
+    name: Save<T>
+    nameWithType: EventStore<TAuthenticationToken>.Save<T>
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Save<T>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.Save``1(Cqrs.Events.IEvent{`0})
+    name: Save(Of T)
+    nameWithType: EventStore(Of TAuthenticationToken).Save(Of T)
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).Save(Of T)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,Cqrs.Events.IEvent{`0})
+  commentId: M:Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,Cqrs.Events.IEvent{`0})
+  isExternal: true
+  name: GenerateStreamName(Type, IEvent<TAuthenticationToken>)
+  nameWithType: EventStore<TAuthenticationToken>.GenerateStreamName(Type, IEvent<TAuthenticationToken>)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.GenerateStreamName(System.Type, Cqrs.Events.IEvent<TAuthenticationToken>)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).GenerateStreamName(Type, IEvent(Of TAuthenticationToken))
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).GenerateStreamName(System.Type, Cqrs.Events.IEvent(Of TAuthenticationToken))
+  name.vb: GenerateStreamName(Type, IEvent(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,Cqrs.Events.IEvent{`0})
+    name: GenerateStreamName
+    nameWithType: EventStore<TAuthenticationToken>.GenerateStreamName
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.GenerateStreamName
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,Cqrs.Events.IEvent{`0})
+    name: GenerateStreamName
+    nameWithType: EventStore(Of TAuthenticationToken).GenerateStreamName
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).GenerateStreamName
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,System.Guid)
+  commentId: M:Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,System.Guid)
+  isExternal: true
+  name: GenerateStreamName(Type, Guid)
+  nameWithType: EventStore<TAuthenticationToken>.GenerateStreamName(Type, Guid)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.GenerateStreamName(System.Type, System.Guid)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).GenerateStreamName(Type, Guid)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).GenerateStreamName(System.Type, System.Guid)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,System.Guid)
+    name: GenerateStreamName
+    nameWithType: EventStore<TAuthenticationToken>.GenerateStreamName
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.GenerateStreamName
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.GenerateStreamName(System.Type,System.Guid)
+    name: GenerateStreamName
+    nameWithType: EventStore(Of TAuthenticationToken).GenerateStreamName
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).GenerateStreamName
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.EventStore`1.Save(System.Type,Cqrs.Events.IEvent{`0})
+  commentId: M:Cqrs.Events.EventStore`1.Save(System.Type,Cqrs.Events.IEvent{`0})
+  isExternal: true
+  name: Save(Type, IEvent<TAuthenticationToken>)
+  nameWithType: EventStore<TAuthenticationToken>.Save(Type, IEvent<TAuthenticationToken>)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Save(System.Type, Cqrs.Events.IEvent<TAuthenticationToken>)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).Save(Type, IEvent(Of TAuthenticationToken))
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).Save(System.Type, Cqrs.Events.IEvent(Of TAuthenticationToken))
+  name.vb: Save(Type, IEvent(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.Save(System.Type,Cqrs.Events.IEvent{`0})
+    name: Save
+    nameWithType: EventStore<TAuthenticationToken>.Save
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Save
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.Save(System.Type,Cqrs.Events.IEvent{`0})
+    name: Save
+    nameWithType: EventStore(Of TAuthenticationToken).Save
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).Save
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.EventStore`1.Get``1(System.Guid,System.Boolean,System.Int32)
+  commentId: M:Cqrs.Events.EventStore`1.Get``1(System.Guid,System.Boolean,System.Int32)
+  isExternal: true
+  name: Get<T>(Guid, Boolean, Int32)
+  nameWithType: EventStore<TAuthenticationToken>.Get<T>(Guid, Boolean, Int32)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Get<T>(System.Guid, System.Boolean, System.Int32)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).Get(Of T)(Guid, Boolean, Int32)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).Get(Of T)(System.Guid, System.Boolean, System.Int32)
+  name.vb: Get(Of T)(Guid, Boolean, Int32)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.Get``1(System.Guid,System.Boolean,System.Int32)
+    name: Get<T>
+    nameWithType: EventStore<TAuthenticationToken>.Get<T>
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Get<T>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.Get``1(System.Guid,System.Boolean,System.Int32)
+    name: Get(Of T)
+    nameWithType: EventStore(Of TAuthenticationToken).Get(Of T)
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).Get(Of T)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Configuration.IConfigurationManager
+  commentId: T:Cqrs.Configuration.IConfigurationManager
+  parent: Cqrs.Configuration
+  isExternal: false
+  name: IConfigurationManager
+  nameWithType: IConfigurationManager
+  fullName: Cqrs.Configuration.IConfigurationManager
+- uid: Cqrs.Events.SqlEventStore`1.ConfigurationManager*
+  commentId: Overload:Cqrs.Events.SqlEventStore`1.ConfigurationManager
+  isExternal: false
+  name: ConfigurationManager
+  nameWithType: SqlEventStore<TAuthenticationToken>.ConfigurationManager
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.ConfigurationManager
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).ConfigurationManager
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).ConfigurationManager
+- uid: Cqrs.Configuration
+  commentId: N:Cqrs.Configuration
+  isExternal: false
+  name: Cqrs.Configuration
+  nameWithType: Cqrs.Configuration
+  fullName: Cqrs.Configuration
+- uid: Cqrs.Events.SqlEventStore`1
+  commentId: T:Cqrs.Events.SqlEventStore`1
+  isExternal: false
+  name: SqlEventStore<TAuthenticationToken>
+  nameWithType: SqlEventStore<TAuthenticationToken>
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken)
+  name.vb: SqlEventStore(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.SqlEventStore`1
+    name: SqlEventStore
+    nameWithType: SqlEventStore
+    fullName: Cqrs.Events.SqlEventStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.SqlEventStore`1
+    name: SqlEventStore
+    nameWithType: SqlEventStore
+    fullName: Cqrs.Events.SqlEventStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.SqlEventStore`1.#ctor*
+  commentId: Overload:Cqrs.Events.SqlEventStore`1.#ctor
+  isExternal: false
+  name: SqlEventStore
+  nameWithType: SqlEventStore<TAuthenticationToken>.SqlEventStore
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.SqlEventStore
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).SqlEventStore
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).SqlEventStore
+- uid: Cqrs.Events.IEventBuilder{{TAuthenticationToken}}
+  commentId: T:Cqrs.Events.IEventBuilder{`0}
+  parent: Cqrs.Events
+  definition: Cqrs.Events.IEventBuilder`1
+  name: IEventBuilder<TAuthenticationToken>
+  nameWithType: IEventBuilder<TAuthenticationToken>
+  fullName: Cqrs.Events.IEventBuilder<TAuthenticationToken>
+  nameWithType.vb: IEventBuilder(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEventBuilder(Of TAuthenticationToken)
+  name.vb: IEventBuilder(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEventBuilder`1
+    name: IEventBuilder
+    nameWithType: IEventBuilder
+    fullName: Cqrs.Events.IEventBuilder
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEventBuilder`1
+    name: IEventBuilder
+    nameWithType: IEventBuilder
+    fullName: Cqrs.Events.IEventBuilder
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEventDeserialiser{{TAuthenticationToken}}
+  commentId: T:Cqrs.Events.IEventDeserialiser{`0}
+  parent: Cqrs.Events
+  definition: Cqrs.Events.IEventDeserialiser`1
+  name: IEventDeserialiser<TAuthenticationToken>
+  nameWithType: IEventDeserialiser<TAuthenticationToken>
+  fullName: Cqrs.Events.IEventDeserialiser<TAuthenticationToken>
+  nameWithType.vb: IEventDeserialiser(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEventDeserialiser(Of TAuthenticationToken)
+  name.vb: IEventDeserialiser(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEventDeserialiser`1
+    name: IEventDeserialiser
+    nameWithType: IEventDeserialiser
+    fullName: Cqrs.Events.IEventDeserialiser
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEventDeserialiser`1
+    name: IEventDeserialiser
+    nameWithType: IEventDeserialiser
+    fullName: Cqrs.Events.IEventDeserialiser
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: cdmdotnet.Logging.ILogger
+  commentId: T:cdmdotnet.Logging.ILogger
+  parent: cdmdotnet.Logging
+  isExternal: true
+  name: ILogger
+  nameWithType: ILogger
+  fullName: cdmdotnet.Logging.ILogger
+- uid: Cqrs.Events.IEventBuilder`1
+  commentId: T:Cqrs.Events.IEventBuilder`1
+  isExternal: false
+  name: IEventBuilder<TAuthenticationToken>
+  nameWithType: IEventBuilder<TAuthenticationToken>
+  fullName: Cqrs.Events.IEventBuilder<TAuthenticationToken>
+  nameWithType.vb: IEventBuilder(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEventBuilder(Of TAuthenticationToken)
+  name.vb: IEventBuilder(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEventBuilder`1
+    name: IEventBuilder
+    nameWithType: IEventBuilder
+    fullName: Cqrs.Events.IEventBuilder
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEventBuilder`1
+    name: IEventBuilder
+    nameWithType: IEventBuilder
+    fullName: Cqrs.Events.IEventBuilder
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEventDeserialiser`1
+  commentId: T:Cqrs.Events.IEventDeserialiser`1
+  isExternal: false
+  name: IEventDeserialiser<TAuthenticationToken>
+  nameWithType: IEventDeserialiser<TAuthenticationToken>
+  fullName: Cqrs.Events.IEventDeserialiser<TAuthenticationToken>
+  nameWithType.vb: IEventDeserialiser(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEventDeserialiser(Of TAuthenticationToken)
+  name.vb: IEventDeserialiser(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEventDeserialiser`1
+    name: IEventDeserialiser
+    nameWithType: IEventDeserialiser
+    fullName: Cqrs.Events.IEventDeserialiser
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEventDeserialiser`1
+    name: IEventDeserialiser
+    nameWithType: IEventDeserialiser
+    fullName: Cqrs.Events.IEventDeserialiser
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: cdmdotnet.Logging
+  commentId: N:cdmdotnet.Logging
+  isExternal: false
+  name: cdmdotnet.Logging
+  nameWithType: cdmdotnet.Logging
+  fullName: cdmdotnet.Logging
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  isExternal: false
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1.Id
+  commentId: P:Cqrs.Domain.IAggregateRoot`1.Id
+  isExternal: false
+  name: Id
+  nameWithType: IAggregateRoot<TAuthenticationToken>.Id
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.Id
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).Id
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).Id
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+  commentId: M:Cqrs.Events.EventStore{`0}.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+  parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  definition: Cqrs.Events.EventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+  name: Get(Type, Guid, Boolean, Int32)
+  nameWithType: EventStore<TAuthenticationToken>.Get(Type, Guid, Boolean, Int32)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Get(System.Type, System.Guid, System.Boolean, System.Int32)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).Get(Type, Guid, Boolean, Int32)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).Get(System.Type, System.Guid, System.Boolean, System.Int32)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+    name: Get
+    nameWithType: EventStore<TAuthenticationToken>.Get
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Get
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+    name: Get
+    nameWithType: EventStore(Of TAuthenticationToken).Get
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).Get
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.SqlEventStore`1.Get*
+  commentId: Overload:Cqrs.Events.SqlEventStore`1.Get
+  isExternal: false
+  name: Get
+  nameWithType: SqlEventStore<TAuthenticationToken>.Get
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.Get
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).Get
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).Get
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}}
+  commentId: T:System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<IEvent<TAuthenticationToken>>
+  nameWithType: IEnumerable<IEvent<TAuthenticationToken>>
+  fullName: System.Collections.Generic.IEnumerable<Cqrs.Events.IEvent<TAuthenticationToken>>
+  nameWithType.vb: IEnumerable(Of IEvent(Of TAuthenticationToken))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Cqrs.Events.IEvent(Of TAuthenticationToken))
+  name.vb: IEnumerable(Of IEvent(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.EventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+  commentId: M:Cqrs.Events.EventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+  isExternal: true
+  name: Get(Type, Guid, Boolean, Int32)
+  nameWithType: EventStore<TAuthenticationToken>.Get(Type, Guid, Boolean, Int32)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Get(System.Type, System.Guid, System.Boolean, System.Int32)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).Get(Type, Guid, Boolean, Int32)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).Get(System.Type, System.Guid, System.Boolean, System.Int32)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+    name: Get
+    nameWithType: EventStore<TAuthenticationToken>.Get
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Get
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+    name: Get
+    nameWithType: EventStore(Of TAuthenticationToken).Get
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).Get
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: false
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: Cqrs.Messages.IMessage.CorrelationId
+  commentId: P:Cqrs.Messages.IMessage.CorrelationId
+  parent: Cqrs.Messages.IMessage
+  isExternal: false
+  name: CorrelationId
+  nameWithType: IMessage.CorrelationId
+  fullName: Cqrs.Messages.IMessage.CorrelationId
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.Get(System.Guid)
+  commentId: M:Cqrs.Events.EventStore{`0}.Get(System.Guid)
+  parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  definition: Cqrs.Events.EventStore`1.Get(System.Guid)
+  name: Get(Guid)
+  nameWithType: EventStore<TAuthenticationToken>.Get(Guid)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Get(System.Guid)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).Get(Guid)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).Get(System.Guid)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.Get(System.Guid)
+    name: Get
+    nameWithType: EventStore<TAuthenticationToken>.Get
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Get
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.Get(System.Guid)
+    name: Get
+    nameWithType: EventStore(Of TAuthenticationToken).Get
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).Get
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable{Cqrs.Events.EventData}
+  commentId: T:System.Collections.Generic.IEnumerable{Cqrs.Events.EventData}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<EventData>
+  nameWithType: IEnumerable<EventData>
+  fullName: System.Collections.Generic.IEnumerable<Cqrs.Events.EventData>
+  nameWithType.vb: IEnumerable(Of EventData)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Cqrs.Events.EventData)
+  name.vb: IEnumerable(Of EventData)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Events.EventData
+    name: EventData
+    nameWithType: EventData
+    fullName: Cqrs.Events.EventData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Events.EventData
+    name: EventData
+    nameWithType: EventData
+    fullName: Cqrs.Events.EventData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Messages.IMessage
+  commentId: T:Cqrs.Messages.IMessage
+  parent: Cqrs.Messages
+  isExternal: false
+  name: IMessage
+  nameWithType: IMessage
+  fullName: Cqrs.Messages.IMessage
+- uid: Cqrs.Events.EventStore`1.Get(System.Guid)
+  commentId: M:Cqrs.Events.EventStore`1.Get(System.Guid)
+  isExternal: true
+  name: Get(Guid)
+  nameWithType: EventStore<TAuthenticationToken>.Get(Guid)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Get(System.Guid)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).Get(Guid)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).Get(System.Guid)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.Get(System.Guid)
+    name: Get
+    nameWithType: EventStore<TAuthenticationToken>.Get
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.Get
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.Get(System.Guid)
+    name: Get
+    nameWithType: EventStore(Of TAuthenticationToken).Get
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).Get
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Messages
+  commentId: N:Cqrs.Messages
+  isExternal: false
+  name: Cqrs.Messages
+  nameWithType: Cqrs.Messages
+  fullName: Cqrs.Messages
+- uid: Cqrs.Events.EventData
+  commentId: T:Cqrs.Events.EventData
+  parent: Cqrs.Events
+  isExternal: false
+  name: EventData
+  nameWithType: EventData
+  fullName: Cqrs.Events.EventData
+- uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.PersistEvent(Cqrs.Events.EventData)
+  commentId: M:Cqrs.Events.EventStore{`0}.PersistEvent(Cqrs.Events.EventData)
+  parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
+  definition: Cqrs.Events.EventStore`1.PersistEvent(Cqrs.Events.EventData)
+  name: PersistEvent(EventData)
+  nameWithType: EventStore<TAuthenticationToken>.PersistEvent(EventData)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.PersistEvent(Cqrs.Events.EventData)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).PersistEvent(EventData)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).PersistEvent(Cqrs.Events.EventData)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.PersistEvent(Cqrs.Events.EventData)
+    name: PersistEvent
+    nameWithType: EventStore<TAuthenticationToken>.PersistEvent
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.PersistEvent
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Events.EventData
+    name: EventData
+    nameWithType: EventData
+    fullName: Cqrs.Events.EventData
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.PersistEvent(Cqrs.Events.EventData)
+    name: PersistEvent
+    nameWithType: EventStore(Of TAuthenticationToken).PersistEvent
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).PersistEvent
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Events.EventData
+    name: EventData
+    nameWithType: EventData
+    fullName: Cqrs.Events.EventData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.SqlEventStore`1.PersistEvent*
+  commentId: Overload:Cqrs.Events.SqlEventStore`1.PersistEvent
+  isExternal: false
+  name: PersistEvent
+  nameWithType: SqlEventStore<TAuthenticationToken>.PersistEvent
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.PersistEvent
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).PersistEvent
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).PersistEvent
+- uid: Cqrs.Events.EventStore`1.PersistEvent(Cqrs.Events.EventData)
+  commentId: M:Cqrs.Events.EventStore`1.PersistEvent(Cqrs.Events.EventData)
+  isExternal: false
+  name: PersistEvent(EventData)
+  nameWithType: EventStore<TAuthenticationToken>.PersistEvent(EventData)
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>.PersistEvent(Cqrs.Events.EventData)
+  nameWithType.vb: EventStore(Of TAuthenticationToken).PersistEvent(EventData)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken).PersistEvent(Cqrs.Events.EventData)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1.PersistEvent(Cqrs.Events.EventData)
+    name: PersistEvent
+    nameWithType: EventStore<TAuthenticationToken>.PersistEvent
+    fullName: Cqrs.Events.EventStore<TAuthenticationToken>.PersistEvent
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Events.EventData
+    name: EventData
+    nameWithType: EventData
+    fullName: Cqrs.Events.EventData
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1.PersistEvent(Cqrs.Events.EventData)
+    name: PersistEvent
+    nameWithType: EventStore(Of TAuthenticationToken).PersistEvent
+    fullName: Cqrs.Events.EventStore(Of TAuthenticationToken).PersistEvent
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Events.EventData
+    name: EventData
+    nameWithType: EventData
+    fullName: Cqrs.Events.EventData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Data.Linq.DataContext
+  commentId: T:System.Data.Linq.DataContext
+  parent: System.Data.Linq
+  isExternal: true
+  name: DataContext
+  nameWithType: DataContext
+  fullName: System.Data.Linq.DataContext
+- uid: Cqrs.Events.SqlEventStore`1.ConfigurationManager
+  commentId: P:Cqrs.Events.SqlEventStore`1.ConfigurationManager
+  isExternal: false
+  name: ConfigurationManager
+  nameWithType: SqlEventStore<TAuthenticationToken>.ConfigurationManager
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.ConfigurationManager
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).ConfigurationManager
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).ConfigurationManager
+- uid: Cqrs.Events.SqlEventStore`1.CreateDbDataContext*
+  commentId: Overload:Cqrs.Events.SqlEventStore`1.CreateDbDataContext
+  isExternal: false
+  name: CreateDbDataContext
+  nameWithType: SqlEventStore<TAuthenticationToken>.CreateDbDataContext
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.CreateDbDataContext
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).CreateDbDataContext
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).CreateDbDataContext
+- uid: System.Data.Linq
+  commentId: N:System.Data.Linq
+  isExternal: false
+  name: System.Data.Linq
+  nameWithType: System.Data.Linq
+  fullName: System.Data.Linq
+- uid: System.Data.Linq.Table`1
+  commentId: T:System.Data.Linq.Table`1
+  isExternal: true
+  name: Table<TEntity>
+  nameWithType: Table<TEntity>
+  fullName: System.Data.Linq.Table<TEntity>
+  nameWithType.vb: Table(Of TEntity)
+  fullName.vb: System.Data.Linq.Table(Of TEntity)
+  name.vb: Table(Of TEntity)
+  spec.csharp:
+  - uid: System.Data.Linq.Table`1
+    name: Table
+    nameWithType: Table
+    fullName: System.Data.Linq.Table
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Data.Linq.Table`1
+    name: Table
+    nameWithType: Table
+    fullName: System.Data.Linq.Table
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.SqlEventStore`1.GetEventStoreTable*
+  commentId: Overload:Cqrs.Events.SqlEventStore`1.GetEventStoreTable
+  isExternal: false
+  name: GetEventStoreTable
+  nameWithType: SqlEventStore<TAuthenticationToken>.GetEventStoreTable
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.GetEventStoreTable
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).GetEventStoreTable
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).GetEventStoreTable
+- uid: System.Data.Linq.Table{Cqrs.Events.EventData}
+  commentId: T:System.Data.Linq.Table{Cqrs.Events.EventData}
+  parent: System.Data.Linq
+  definition: System.Data.Linq.Table`1
+  name: Table<EventData>
+  nameWithType: Table<EventData>
+  fullName: System.Data.Linq.Table<Cqrs.Events.EventData>
+  nameWithType.vb: Table(Of EventData)
+  fullName.vb: System.Data.Linq.Table(Of Cqrs.Events.EventData)
+  name.vb: Table(Of EventData)
+  spec.csharp:
+  - uid: System.Data.Linq.Table`1
+    name: Table
+    nameWithType: Table
+    fullName: System.Data.Linq.Table
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Events.EventData
+    name: EventData
+    nameWithType: EventData
+    fullName: Cqrs.Events.EventData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Data.Linq.Table`1
+    name: Table
+    nameWithType: Table
+    fullName: System.Data.Linq.Table
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Events.EventData
+    name: EventData
+    nameWithType: EventData
+    fullName: Cqrs.Events.EventData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.SqlEventStore`1.Add*
+  commentId: Overload:Cqrs.Events.SqlEventStore`1.Add
+  isExternal: false
+  name: Add
+  nameWithType: SqlEventStore<TAuthenticationToken>.Add
+  fullName: Cqrs.Events.SqlEventStore<TAuthenticationToken>.Add
+  nameWithType.vb: SqlEventStore(Of TAuthenticationToken).Add
+  fullName.vb: Cqrs.Events.SqlEventStore(Of TAuthenticationToken).Add

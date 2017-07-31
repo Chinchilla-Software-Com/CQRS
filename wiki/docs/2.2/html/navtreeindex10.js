@@ -1,7 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_a88615fafe8c7bb0f9a0804eb4e4f0472.html#a88615fafe8c7bb0f9a0804eb4e4f0472":[1,0,2,0,0,5],
-"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_aa9bf7da64ecd097ff4270abc3592b56e.html#aa9bf7da64ecd097ff4270abc3592b56e":[1,0,2,0,0,1],
 "classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_ab0724b844d77e86bee14ce246161b6be.html#ab0724b844d77e86bee14ce246161b6be":[1,0,2,0,0,6],
 "classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_ae3870009eab2cb1bf22b447d9fa51ec8.html#ae3870009eab2cb1bf22b447d9fa51ec8":[1,0,2,0,0,3],
 "classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_af216b6d4045dc5bb33fc0c4c36b7a67e.html#af216b6d4045dc5bb33fc0c4c36b7a67e":[1,0,2,0,0,0],
@@ -29,8 +27,8 @@ var NAVTREEINDEX10 =
 "classSystem_1_1Web_1_1Helpers_1_1Json_ab39872b59b78d9c417d2d81504768849.html#ab39872b59b78d9c417d2d81504768849":[1,0,2,1,0,2,1],
 "classSystem_1_1Web_1_1Helpers_1_1Json_abd82655d76fcb16522303f1da4ced6c0.html#abd82655d76fcb16522303f1da4ced6c0":[1,0,2,1,0,2,2],
 "classes.html":[1,1],
-"functions.html":[1,3,0],
 "functions.html":[1,3,0,0],
+"functions.html":[1,3,0],
 "functions_a.html":[1,3,0,1],
 "functions_b.html":[1,3,0,2],
 "functions_c.html":[1,3,0,3],
@@ -38,8 +36,8 @@ var NAVTREEINDEX10 =
 "functions_e.html":[1,3,0,5],
 "functions_enum.html":[1,3,3],
 "functions_f.html":[1,3,0,6],
-"functions_func.html":[1,3,1,0],
 "functions_func.html":[1,3,1],
+"functions_func.html":[1,3,1,0],
 "functions_func_b.html":[1,3,1,1],
 "functions_func_c.html":[1,3,1,2],
 "functions_func_d.html":[1,3,1,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX10 =
 "interfaceCqrs_1_1Configuration_1_1IDependencyResolver.html":[1,0,0,6,6],
 "interfaceCqrs_1_1Configuration_1_1IDependencyResolver_a9dc7694a365209a5ef05270a7cfa7b6b.html#a9dc7694a365209a5ef05270a7cfa7b6b":[1,0,0,6,6,1],
 "interfaceCqrs_1_1Configuration_1_1IDependencyResolver_aa455096b7b94fc1d64904bc67830ec06.html#aa455096b7b94fc1d64904bc67830ec06":[1,0,0,6,6,0],
-"interfaceCqrs_1_1DataStores_1_1IDataStore.html":[1,0,0,7,0]
+"interfaceCqrs_1_1DataStores_1_1IDataStore.html":[1,0,0,7,0],
+"interfaceCqrs_1_1DataStores_1_1IDataStore_a114404daaf37fec9cc5547cd9a17858c.html#a114404daaf37fec9cc5547cd9a17858c":[1,0,0,7,0,0],
+"interfaceCqrs_1_1DataStores_1_1IDataStore_a6d5d4dd572de8db01ff0c48d37faefa7.html#a6d5d4dd572de8db01ff0c48d37faefa7":[1,0,0,7,0,5]
 };

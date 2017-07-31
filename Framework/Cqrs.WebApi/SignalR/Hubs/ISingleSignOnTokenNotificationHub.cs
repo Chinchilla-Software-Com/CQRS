@@ -12,6 +12,9 @@ using Cqrs.Events;
 
 namespace Cqrs.WebApi.SignalR.Hubs
 {
+	/// <summary>
+	/// Sends <see cref="IEvent{TSingleSignOnToken}">events</see> to different groups of users.
+	/// </summary>
 	public interface ISingleSignOnTokenNotificationHub
 	{
 		/// <summary>

@@ -1,0 +1,372 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IAggregateRoot&lt;TAuthenticationToken&gt;
+   | CQRS.NET API Reference Documentation version 2.2 </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IAggregateRoot&lt;TAuthenticationToken&gt;
+   | CQRS.NET API Reference Documentation version 2.2 ">
+    <meta name="generator" content="docfx 2.21.2.0">
+    
+    <link rel="shortcut icon" href="../../../../../favicon.ico">
+    <link rel="stylesheet" href="../../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:rel" content="../../../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../../index.html">
+                <img id="logo" class="svg" src="../../../../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Cqrs.Domain.IAggregateRoot`1">
+  
+  
+  <h1 id="Cqrs_Domain_IAggregateRoot_1" data-uid="Cqrs.Domain.IAggregateRoot`1" class="text-break">Interface IAggregateRoot&lt;TAuthenticationToken&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>An <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> is a larger unit of encapsulation than just a class. Every transaction is scoped to a single aggregate. The lifetimes of the components of an <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> are bounded by the lifetime of the entire <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.</p>
+<p><p>Concretely, an <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> will handle <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>s, apply <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a>s, and have a state model encapsulated within it that allows it to implement the required command validation, thus upholding the invariants (business rules) of the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Cqrs.Domain.html">Cqrs.Domain</a></h6>
+  <h6><strong>Assembly</strong>: Cqrs.dll</h6>
+  <h5 id="Cqrs_Domain_IAggregateRoot_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IAggregateRoot&lt;TAuthenticationToken&gt;</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TAuthenticationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Cqrs_Domain_IAggregateRoot_1_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>I know <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> are transaction boundaries, but I really need to transactionally update two <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> in the same transaction. What should I do?</p>
+<p><p>You should re-think the following:
+<p>* Your <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> boundaries.
+<p>* The responsibilities of each <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.
+<p>* What you can get away with doing in a read side or in a saga.
+<p>* The actual non-functional requirements of your domain.
+<p>
+<p>If you write a solution where two or more <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> are transactionally coupled, you have not understood <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.
+<p>
+<p>
+<p>Why is the use of <span class="xref">System.Guid</span> as identifiers a good practice?
+<p>
+<p>Because they are (reasonably) globally unique, and can be generated either by the server or by the client.
+<p>
+<p>
+<p>What is an Rsn and what is an Id?
+<p>
+<p>Because few systems are truely green field and there is usually some existing system to operate with our framework identifies
+<p>Id properties as <span class="xref">System.Int32</span> typed properties from an external system
+<p>and Rsn properties as <span class="xref">System.Guid</span> typed properties for internal use.
+<p>
+<p>An example might be
+<p>{
+<p> Guid Rsn
+<p> string Name
+<p> Guid CategoryRsn
+<p> int CategoryId
+<p>}
+<p>
+<p>Here the category can be referenced within the CQRS framework by it&apos;s Rsn <span class="xref">System.Guid</span> typed identifier, but still has a reference to the external systems <span class="xref">System.Int32</span> typed identifier value.
+<p>
+<p>
+<p>How can I get the Rsn for newly created <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>?
+<p>
+<p>It&apos;s an important insight that the client can generate its own Rsns.
+<p>
+<p>If the client generates a <span class="xref">System.Guid</span> and places it in the create-the-aggregate <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>, this is a non-issue. Otherwise, you have to listen to the the appropriate the-aggregate-was-created <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a>, where the Rsn will appear be populated.
+<p>
+<p>
+<p>Should I allow references between <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>?
+<p>
+<p>In the sense of an actual &quot;memory reference&quot;, absolutely not.
+<p>
+<p>On the write side, an actual memory reference from one <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> to another is forbidden and wrong, since <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> by definition are not allowed to reach outside of themselves. (Allowing this would mean an <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> is no longer a transaction boundary, meaning we can no longer sanely reason about its ability to uphold its invariants; it would also preclude sharding of <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.)
+<p>
+<p>Referring to another <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> using an identifier is fine. It is useless on the write side (since the identifier must be treated as an opaque value, since <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> can not reach outside of themselves). Read sides may freely use such information, however, to do interesting correlations.
+<p>
+<p>
+<p>How can I validate a <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> across a group of <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>?
+<p>
+<p>This is a common reaction to not being able to query across <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> anymore. There are several answers:
+<p>
+<p>* Do client-side validation.
+<p>* Use a read side.
+<p>* Use a saga.
+<p>* If those are all completely impractical, then it&apos;s time to consider if you got your <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> boundaries correct.
+<p>
+<p>
+<p>How can I guarantee referential integrity across <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>?
+<p>
+<p>You&apos;re still thinking in terms of foreign relations, not <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>. See last question. Also, remember that just because something would be in two tables in a relational design does not in any way suggest it should be two <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>. Designing an <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> is different.
+<p>
+<p>
+<p>How can I make sure a newly created user has a unique user name?
+<p>
+<p>This is a commonly occurring question since we&apos;re explicitly not performing cross-aggregate operations on the write side. We do, however, have a number of options:
+<p>
+<p>* Create a read-side of already allocated user names. Make the client query the read-side interactively as the user types in a name.
+<p>* Create a reactive saga to flag down and inactivate accounts that were nevertheless created with a duplicate user name. (Whether by extreme coincidence or maliciously or because of a faulty client.)
+<p>
+<p>
+<p>How can I verify that a customer identifier really exists when I place an order?
+<p>
+<p>Assuming customer and order are <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> here, it&apos;s clear that the order <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> cannot really validate this, since that would mean reaching out of the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.
+<p>
+<p>Checking up on it after the fact, in a saga or just in a read side that records &quot;broken&quot; orders, is one option. After all, the most important thing about an order is actually recording it, and presumably any interesting data about the recipient of the order is being copied into the order <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> (referring to the customer to find the address is bad design; the order was always made to be deliverd to a particular address, whether or not that customer changes their address in the future).
+<p>
+<p>Being able to use what data was recorded in this broken order means you&apos;ve got a chance to rescue it and rectify the situation - which makes a good bit more business sense rather than dropping the order on the floor because a foreign key constraint was violated!
+<p>
+<p>
+<p>How can I update a set of <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> with a single <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>?
+<p>
+<p>A single <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> can&apos;t act on a set of <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>. It just can&apos;t.
+<p>
+<p>First off, ask yourself whether you really need to update several <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> using just one <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>. What in the situation makes this a requirement?
+<p>
+<p>However, here&apos;s what you could do. Allow a new kind of &quot;bulk command&quot;, conceptually containing the command you want to issue, and a set of <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> (specified either explicitly or implicitly) that you want to issue it on. The write side isn&apos;t powerful enough to make the bulk action, but it&apos;s able to create a corresponding &quot;bulk event&quot;. A saga captures the event, and issues the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> on each of the specified <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>s. The saga can do rollback or send an email, as appropriate, if some of the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> fail.
+<p>
+<p>There are some advantages to this approach: we store the intent of the bulk action in the event store. The saga automates rollback or equivalent.
+<p>
+<p>Still, having to resort to this solution is a strong indication that your <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> boundaries are not drawn correctly. You might want to consider changing your <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> boundaries rather than building a saga for this.
+<p>
+<p>
+<p>What is sharding?
+<p>
+<p>A way to distribute large amounts of <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> on several write-side nodes. We can shard <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> easily because they are completely self-reliant.
+<p>
+<p>We can shard <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> easily because they don&apos;t have any external references.
+<p>
+<p>
+<p>Can an <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> send an <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> to another <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>?
+<p>
+<p>No.
+<p>
+<p>The factoring of your <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> and <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> will typically already make this idea impossible to express in code. But there&apos;s a deeper philosophical reason: go back and re-read the first sentence in the answer to &quot;What is an <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>?&quot;. If you manage to circumvent the <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> and just push <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> into another <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> somehow, you will have taken away that <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>&apos;s chance to participate in validation of changes. That&apos;s ultimately why we only allow <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> to be created as a result of <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a>s validated by a <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a> on an <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.
+<p>
+<p>
+<p>Can I call a read side from my <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>?
+<p>
+<p>No.
+<p>
+<p>
+<p>How do I send e-mail in a CQRS system?
+<p>
+<p>In an <a class="xref" href="Cqrs.Events.IEventHandler-2.html">IEventHandler&lt;TAuthenticationToken, TEvent&gt;</a> outside of the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>. Do not do it in the <a class="xref" href="Cqrs.Commands.ICommandHandler-2.html">ICommandHandler&lt;TAuthenticationToken, TCommand&gt;</a>, as if the <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> artefacts are not persisted due to losing a race with another <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> then the email will have been sent on a false premise.
+<p>********************************************
+<p>Also see <a href="http://cqrs.nu/Faq/aggregates">http://cqrs.nu/Faq/aggregates</a>.</p>
+</div>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Cqrs_Domain_IAggregateRoot_1_Id_" data-uid="Cqrs.Domain.IAggregateRoot`1.Id*"></a>
+  <h4 id="Cqrs_Domain_IAggregateRoot_1_Id" data-uid="Cqrs.Domain.IAggregateRoot`1.Id">Id</h4>
+  <div class="markdown level1 summary"><p>The identifier of this <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember]
+Guid Id { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Guid</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Domain_IAggregateRoot_1_Version_" data-uid="Cqrs.Domain.IAggregateRoot`1.Version*"></a>
+  <h4 id="Cqrs_Domain_IAggregateRoot_1_Version" data-uid="Cqrs.Domain.IAggregateRoot`1.Version">Version</h4>
+  <div class="markdown level1 summary"><p>The current version of this <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember]
+int Version { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <a id="Cqrs_Domain_IAggregateRoot_1_GetUncommittedChanges_" data-uid="Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges*"></a>
+  <h4 id="Cqrs_Domain_IAggregateRoot_1_GetUncommittedChanges" data-uid="Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges">GetUncommittedChanges()</h4>
+  <div class="markdown level1 summary"><p>Get all applied changes that haven&apos;t yet been committed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable&lt;Cqrs.Events.IEvent&lt;TAuthenticationToken&gt;&gt;</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Domain_IAggregateRoot_1_LoadFromHistory_" data-uid="Cqrs.Domain.IAggregateRoot`1.LoadFromHistory*"></a>
+  <h4 id="Cqrs_Domain_IAggregateRoot_1_LoadFromHistory_System_Collections_Generic_IEnumerable_Cqrs_Events_IEvent__0___" data-uid="Cqrs.Domain.IAggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})">LoadFromHistory(IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Apply all the <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> in <span class="paramref">history</span>
+using event replay to this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void LoadFromHistory(IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; history)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable&lt;Cqrs.Events.IEvent&lt;TAuthenticationToken&gt;&gt;</span></td>
+        <td><span class="parametername">history</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Domain_IAggregateRoot_1_MarkChangesAsCommitted_" data-uid="Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted*"></a>
+  <h4 id="Cqrs_Domain_IAggregateRoot_1_MarkChangesAsCommitted" data-uid="Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted">MarkChangesAsCommitted()</h4>
+  <div class="markdown level1 summary"><p>Mark all applied changes as committed, increment <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html#Cqrs_Domain_IAggregateRoot_1_Version">Version</a> and flush the internal collection of changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void MarkChangesAsCommitted()</code></pre>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../../styles/main.js"></script>
+  </body>
+</html>

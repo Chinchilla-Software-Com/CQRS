@@ -1,0 +1,1494 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class QueryBuilder&lt;TQueryStrategy, TData&gt;
+   | CQRS.NET API Reference Documentation version 2.2 </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class QueryBuilder&lt;TQueryStrategy, TData&gt;
+   | CQRS.NET API Reference Documentation version 2.2 ">
+    <meta name="generator" content="docfx 2.21.2.0">
+    
+    <link rel="shortcut icon" href="../../../../../favicon.ico">
+    <link rel="stylesheet" href="../../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:rel" content="../../../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../../index.html">
+                <img id="logo" class="svg" src="../../../../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2">
+  
+  
+  <h1 id="Cqrs_Repositories_Queries_QueryBuilder_2" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2" class="text-break">Class QueryBuilder&lt;TQueryStrategy, TData&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Builds an <span class="xref">System.Linq.IQueryable</span> from a <span class="typeparamref">TQueryStrategy</span>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">QueryBuilder&lt;TQueryStrategy, TData&gt;</span></div>
+  </div>
+      <div class="level2"><a class="xref" href="Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder-2.html">BlobStorageQueryBuilder&lt;TQueryStrategy, TData&gt;</a></div>
+      <div class="level2"><a class="xref" href="Cqrs.Azure.BlobStorage.Test.Integration.TableStorageDataStoreTests.TestQueryBuilder-1.html">TableStorageDataStoreTests.TestQueryBuilder&lt;TData&gt;</a></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Cqrs.Repositories.Queries.html">Cqrs.Repositories.Queries</a></h6>
+  <h6><strong>Assembly</strong>: Cqrs.dll</h6>
+  <h5 id="Cqrs_Repositories_Queries_QueryBuilder_2_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class QueryBuilder&lt;TQueryStrategy, TData&gt; : IQueryBuilder&lt;TQueryStrategy, TData&gt; where TQueryStrategy : IQueryStrategy where TData : Entity</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TQueryStrategy</span></td>
+        <td><p>The <span class="xref">System.Type</span> of the <a class="xref" href="Cqrs.Repositories.Queries.IQueryStrategy.html">IQueryStrategy</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TData</span></td>
+        <td><p>The <span class="xref">System.Type</span> of data to query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2__ctor_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.#ctor*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2__ctor_Cqrs_DataStores_IDataStore__1__Cqrs_Configuration_IDependencyResolver_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.#ctor(Cqrs.DataStores.IDataStore{`1},Cqrs.Configuration.IDependencyResolver)">QueryBuilder(IDataStore&lt;TData&gt;, IDependencyResolver)</h4>
+  <div class="markdown level1 summary"><p>Instantiates a new instance of <a class="xref" href="Cqrs.Repositories.Queries.QueryBuilder-2.html">QueryBuilder&lt;TQueryStrategy, TData&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected QueryBuilder(IDataStore&lt;TData&gt; dataStore, IDependencyResolver dependencyResolver)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.DataStores.IDataStore-1.html">IDataStore</a>&lt;TData&gt;</td>
+        <td><span class="parametername">dataStore</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Cqrs.Configuration.IDependencyResolver.html">IDependencyResolver</a></td>
+        <td><span class="parametername">dependencyResolver</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_DataStore_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.DataStore*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_DataStore" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.DataStore">DataStore</h4>
+  <div class="markdown level1 summary"><p>Gets or set the <a class="xref" href="Cqrs.DataStores.IDataStore-1.html">IDataStore&lt;TData&gt;</a> to use.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IDataStore&lt;TData&gt; DataStore { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.DataStores.IDataStore-1.html">IDataStore</a>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_DependencyResolver_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.DependencyResolver*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_DependencyResolver" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.DependencyResolver">DependencyResolver</h4>
+  <div class="markdown level1 summary"><p>Gets or set the <a class="xref" href="Cqrs.Configuration.IDependencyResolver.html">IDependencyResolver</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IDependencyResolver DependencyResolver { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Configuration.IDependencyResolver.html">IDependencyResolver</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_ApplySorting_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.ApplySorting*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_ApplySorting__0_System_Linq_IQueryable__1___" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.ApplySorting(`0,System.Linq.IQueryable{`1}@)">ApplySorting(TQueryStrategy, ref IQueryable&lt;TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Override to build or apply any sorting required to <span class="paramref">queryable</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void ApplySorting(TQueryStrategy queryStrategy, ref IQueryable&lt;TData&gt; queryable)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TQueryStrategy</span></td>
+        <td><span class="parametername">queryStrategy</span></td>
+        <td><p>The <span class="typeparamref">TQueryStrategy</span> with sorting information.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td><span class="parametername">queryable</span></td>
+        <td><p>The <span class="xref">System.Linq.IQueryable</span> to apply sorting to.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_CreateQueryable_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_CreateQueryable_Cqrs_Repositories_Queries_ICollectionResultQuery__0__1__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1})">CreateQueryable(ICollectionResultQuery&lt;TQueryStrategy, TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Create an <span class="xref">System.Linq.IQueryable</span> of <span class="typeparamref">TData</span>
+that expects a collection of <span class="typeparamref">TData</span> items.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IQueryable&lt;TData&gt; CreateQueryable(ICollectionResultQuery&lt;TQueryStrategy, TData&gt; collectionResultQuery)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Repositories.Queries.ICollectionResultQuery-2.html">ICollectionResultQuery</a>&lt;TQueryStrategy, TData&gt;</td>
+        <td><span class="parametername">collectionResultQuery</span></td>
+        <td><p>The query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="implements">Implements</h5>
+      <div><a class="xref" href="Cqrs.Repositories.Queries.IQueryBuilder-2.html#Cqrs_Repositories_Queries_IQueryBuilder_2_CreateQueryable_Cqrs_Repositories_Queries_ICollectionResultQuery__0__1__">IQueryBuilder&lt;TQueryStrategy, TData&gt;.CreateQueryable(ICollectionResultQuery&lt;TQueryStrategy, TData&gt;)</a></div>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_CreateQueryable_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_CreateQueryable_Cqrs_Repositories_Queries_ISingleResultQuery__0__1__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1})">CreateQueryable(ISingleResultQuery&lt;TQueryStrategy, TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Create an <span class="xref">System.Linq.IQueryable</span> of <span class="typeparamref">TData</span>
+that expects a single <span class="typeparamref">TData</span> item.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IQueryable&lt;TData&gt; CreateQueryable(ISingleResultQuery&lt;TQueryStrategy, TData&gt; singleResultQuery)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Repositories.Queries.ISingleResultQuery-2.html">ISingleResultQuery</a>&lt;TQueryStrategy, TData&gt;</td>
+        <td><span class="parametername">singleResultQuery</span></td>
+        <td><p>The query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="implements">Implements</h5>
+      <div><a class="xref" href="Cqrs.Repositories.Queries.IQueryBuilder-2.html#Cqrs_Repositories_Queries_IQueryBuilder_2_CreateQueryable_Cqrs_Repositories_Queries_ISingleResultQuery__0__1__">IQueryBuilder&lt;TQueryStrategy, TData&gt;.CreateQueryable(ISingleResultQuery&lt;TQueryStrategy, TData&gt;)</a></div>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicate_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicate_Cqrs_Repositories_Queries_IQueryPredicate_System_Linq_IQueryable__1__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate(Cqrs.Repositories.Queries.IQueryPredicate,System.Linq.IQueryable{`1})">GeneratePredicate(IQueryPredicate, IQueryable&lt;TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Builds an <span class="xref">System.Linq.IQueryable</span> from the <span class="paramref">queryPredicate</span> and an optional <span class="paramref">leftHandQueryable</span>.
+This recursively calls itself and may call <a class="xref" href="Cqrs.Repositories.Queries.QueryBuilder-2.html#Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicateIsNotLogicallyDeleted_Cqrs_Repositories_Queries_QueryPredicate_System_Linq_IQueryable__1__">GeneratePredicateIsNotLogicallyDeleted(QueryPredicate, IQueryable&lt;TData&gt;)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IQueryable&lt;TData&gt; GeneratePredicate(IQueryPredicate queryPredicate, IQueryable&lt;TData&gt; leftHandQueryable = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Repositories.Queries.IQueryPredicate.html">IQueryPredicate</a></td>
+        <td><span class="parametername">queryPredicate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td><span class="parametername">leftHandQueryable</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicate_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicate_Cqrs_Repositories_Queries_QueryPredicate_System_Linq_IQueryable__1__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})">GeneratePredicate(QueryPredicate, IQueryable&lt;TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Override to build an <span class="xref">System.Linq.IQueryable</span> from the <span class="paramref">queryPredicate</span> and an optional <span class="paramref">leftHandQueryable</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract IQueryable&lt;TData&gt; GeneratePredicate(QueryPredicate queryPredicate, IQueryable&lt;TData&gt; leftHandQueryable = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Repositories.Queries.QueryPredicate.html">QueryPredicate</a></td>
+        <td><span class="parametername">queryPredicate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td><span class="parametername">leftHandQueryable</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicateIsNotLogicallyDeleted_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateIsNotLogicallyDeleted*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicateIsNotLogicallyDeleted_Cqrs_Repositories_Queries_QueryPredicate_System_Linq_IQueryable__1__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})">GeneratePredicateIsNotLogicallyDeleted(QueryPredicate, IQueryable&lt;TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Builds the relevant <span class="xref">System.Linq.IQueryable</span> for <a class="xref" href="Cqrs.Repositories.Queries.QueryStrategy.html#Cqrs_Repositories_Queries_QueryStrategy_IsNotLogicallyDeleted">IsNotLogicallyDeleted()</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IQueryable&lt;TData&gt; GeneratePredicateIsNotLogicallyDeleted(QueryPredicate queryPredicate, IQueryable&lt;TData&gt; leftHandQueryable = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Repositories.Queries.QueryPredicate.html">QueryPredicate</a></td>
+        <td><span class="parametername">queryPredicate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td><span class="parametername">leftHandQueryable</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicateWithPermissionScopeAny_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeAny*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicateWithPermissionScopeAny__1_Cqrs_Repositories_Queries_QueryPredicate_System_Linq_IQueryable__1__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeAny``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})">GeneratePredicateWithPermissionScopeAny&lt;TAuthenticationToken&gt;(QueryPredicate, IQueryable&lt;TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Builds the relevant <span class="xref">System.Linq.IQueryable</span> for <a class="xref" href="Cqrs.Repositories.Queries.QueryStrategy.html#Cqrs_Repositories_Queries_QueryStrategy_WithPermissionScopeAny__1___0_">WithPermissionScopeAny&lt;TAuthenticationToken&gt;(TAuthenticationToken)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IQueryable&lt;TData&gt; GeneratePredicateWithPermissionScopeAny&lt;TAuthenticationToken&gt;(QueryPredicate queryPredicate, IQueryable&lt;TData&gt; leftHandQueryable)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Repositories.Queries.QueryPredicate.html">QueryPredicate</a></td>
+        <td><span class="parametername">queryPredicate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td><span class="parametername">leftHandQueryable</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TAuthenticationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicateWithPermissionScopeCompany_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompany*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicateWithPermissionScopeCompany__1_Cqrs_Repositories_Queries_QueryPredicate_System_Linq_IQueryable__1__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompany``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})">GeneratePredicateWithPermissionScopeCompany&lt;TAuthenticationToken&gt;(QueryPredicate, IQueryable&lt;TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Builds the relevant <span class="xref">System.Linq.IQueryable</span> for <a class="xref" href="Cqrs.Repositories.Queries.QueryStrategy.html#Cqrs_Repositories_Queries_QueryStrategy_WithPermissionScopeCompany__1___0_">WithPermissionScopeCompany&lt;TAuthenticationToken&gt;(TAuthenticationToken)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IQueryable&lt;TData&gt; GeneratePredicateWithPermissionScopeCompany&lt;TAuthenticationToken&gt;(QueryPredicate queryPredicate, IQueryable&lt;TData&gt; leftHandQueryable)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Repositories.Queries.QueryPredicate.html">QueryPredicate</a></td>
+        <td><span class="parametername">queryPredicate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td><span class="parametername">leftHandQueryable</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TAuthenticationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicateWithPermissionScopeCompanyAndUser_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompanyAndUser*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicateWithPermissionScopeCompanyAndUser__1_Cqrs_Repositories_Queries_QueryPredicate_System_Linq_IQueryable__1__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompanyAndUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})">GeneratePredicateWithPermissionScopeCompanyAndUser&lt;TAuthenticationToken&gt;(QueryPredicate, IQueryable&lt;TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Builds the relevant <span class="xref">System.Linq.IQueryable</span> for <a class="xref" href="Cqrs.Repositories.Queries.QueryStrategy.html#Cqrs_Repositories_Queries_QueryStrategy_WithPermissionScopeCompanyAndUser__1___0_">WithPermissionScopeCompanyAndUser&lt;TAuthenticationToken&gt;(TAuthenticationToken)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IQueryable&lt;TData&gt; GeneratePredicateWithPermissionScopeCompanyAndUser&lt;TAuthenticationToken&gt;(QueryPredicate queryPredicate, IQueryable&lt;TData&gt; leftHandQueryable)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Repositories.Queries.QueryPredicate.html">QueryPredicate</a></td>
+        <td><span class="parametername">queryPredicate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td><span class="parametername">leftHandQueryable</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TAuthenticationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicateWithPermissionScopeUser_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeUser*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GeneratePredicateWithPermissionScopeUser__1_Cqrs_Repositories_Queries_QueryPredicate_System_Linq_IQueryable__1__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})">GeneratePredicateWithPermissionScopeUser&lt;TAuthenticationToken&gt;(QueryPredicate, IQueryable&lt;TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Builds the relevant <span class="xref">System.Linq.IQueryable</span> for <a class="xref" href="Cqrs.Repositories.Queries.QueryStrategy.html#Cqrs_Repositories_Queries_QueryStrategy_WithPermissionScopeUser__1___0_">WithPermissionScopeUser&lt;TAuthenticationToken&gt;(TAuthenticationToken)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IQueryable&lt;TData&gt; GeneratePredicateWithPermissionScopeUser&lt;TAuthenticationToken&gt;(QueryPredicate queryPredicate, IQueryable&lt;TData&gt; leftHandQueryable)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Repositories.Queries.QueryPredicate.html">QueryPredicate</a></td>
+        <td><span class="parametername">queryPredicate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td><span class="parametername">leftHandQueryable</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TAuthenticationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GetEmptyQueryPredicate_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetEmptyQueryPredicate*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GetEmptyQueryPredicate" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetEmptyQueryPredicate">GetEmptyQueryPredicate()</h4>
+  <div class="markdown level1 summary"><p>Returns the <a class="xref" href="Cqrs.Repositories.Queries.QueryBuilder-2.html#Cqrs_Repositories_Queries_QueryBuilder_2_DataStore">DataStore</a> itself.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IQueryable&lt;TData&gt; GetEmptyQueryPredicate()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionName_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionName__1_System_Func___0__0__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``1(System.Func{``0,`0})">GetFunctionName&lt;TParameter1&gt;(Func&lt;TParameter1, TQueryStrategy&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the Name of the method in <span class="paramref">expression</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string GetFunctionName&lt;TParameter1&gt;(Func&lt;TParameter1, TQueryStrategy&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TParameter1, TQueryStrategy&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TParameter1</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionName_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionName__1_System_Func___0__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``1(System.Func{``0})">GetFunctionName&lt;T&gt;(Func&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the Name of the method in <span class="paramref">expression</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string GetFunctionName&lt;T&gt;(Func&lt;T&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;T&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionName_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionName__2_System_Func___0___1__0__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``2(System.Func{``0,``1,`0})">GetFunctionName&lt;TParameter1, TParameter2&gt;(Func&lt;TParameter1, TParameter2, TQueryStrategy&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the Name of the method in <span class="paramref">expression</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string GetFunctionName&lt;TParameter1, TParameter2&gt;(Func&lt;TParameter1, TParameter2, TQueryStrategy&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TParameter1, TParameter2, TQueryStrategy&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TParameter1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TParameter2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionName_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionName__3_System_Func___0___1___2__0__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``3(System.Func{``0,``1,``2,`0})">GetFunctionName&lt;TParameter1, TParameter2, TParameter3&gt;(Func&lt;TParameter1, TParameter2, TParameter3, TQueryStrategy&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the Name of the method in <span class="paramref">expression</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string GetFunctionName&lt;TParameter1, TParameter2, TParameter3&gt;(Func&lt;TParameter1, TParameter2, TParameter3, TQueryStrategy&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TParameter1, TParameter2, TParameter3, TQueryStrategy&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TParameter1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TParameter2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TParameter3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionName_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionName__4_System_Func___0___1___2___3__0__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``4(System.Func{``0,``1,``2,``3,`0})">GetFunctionName&lt;TParameter1, TParameter2, TParameter3, TParameter4&gt;(Func&lt;TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the Name of the method in <span class="paramref">expression</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string GetFunctionName&lt;TParameter1, TParameter2, TParameter3, TParameter4&gt;(Func&lt;TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TParameter1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TParameter2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TParameter3</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TParameter4</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionName_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionName__5_System_Func___0___1___2___3___4__0__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``5(System.Func{``0,``1,``2,``3,``4,`0})">GetFunctionName&lt;TParameter1, TParameter2, TParameter3, TParameter4, TParameter5&gt;(Func&lt;TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the Name of the method in <span class="paramref">expression</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string GetFunctionName&lt;TParameter1, TParameter2, TParameter3, TParameter4, TParameter5&gt;(Func&lt;TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TParameter1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TParameter2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TParameter3</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TParameter4</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TParameter5</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionNameOfType_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionNameOfType*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GetFunctionNameOfType__1_System_Func___0_Cqrs_Repositories_Queries_IQueryPredicate__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionNameOfType``1(System.Func{``0,Cqrs.Repositories.Queries.IQueryPredicate})">GetFunctionNameOfType&lt;TParameter1&gt;(Func&lt;TParameter1, IQueryPredicate&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the Name of the method in <span class="paramref">expression</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string GetFunctionNameOfType&lt;TParameter1&gt;(Func&lt;TParameter1, IQueryPredicate&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TParameter1, <a class="xref" href="Cqrs.Repositories.Queries.IQueryPredicate.html">IQueryPredicate</a>&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TParameter1</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_GetNullQueryStrategy_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetNullQueryStrategy*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_GetNullQueryStrategy" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.GetNullQueryStrategy">GetNullQueryStrategy()</h4>
+  <div class="markdown level1 summary"><p>Uses <span class="xref">System.Activator.CreateInstance``1</span> to create a new instance of <span class="typeparamref">TQueryStrategy</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual TQueryStrategy GetNullQueryStrategy()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TQueryStrategy</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_OnGeneratePredicateWithPermissionScopeAny_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeAny*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_OnGeneratePredicateWithPermissionScopeAny__1_Cqrs_Repositories_Queries_QueryPredicate_System_Linq_IQueryable__1__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeAny``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})">OnGeneratePredicateWithPermissionScopeAny&lt;TAuthenticationToken&gt;(QueryPredicate, IQueryable&lt;TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns <span class="paramref">leftHandQueryable</span> or calls <a class="xref" href="Cqrs.Repositories.Queries.QueryBuilder-2.html#Cqrs_Repositories_Queries_QueryBuilder_2_GetEmptyQueryPredicate">GetEmptyQueryPredicate()</a> if <span class="paramref">leftHandQueryable</span> is null.
+Override to build the relevant permission scope <span class="xref">System.Linq.IQueryable</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IQueryable&lt;TData&gt; OnGeneratePredicateWithPermissionScopeAny&lt;TAuthenticationToken&gt;(QueryPredicate queryPredicate, IQueryable&lt;TData&gt; leftHandQueryable)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Repositories.Queries.QueryPredicate.html">QueryPredicate</a></td>
+        <td><span class="parametername">queryPredicate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td><span class="parametername">leftHandQueryable</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TAuthenticationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_OnGeneratePredicateWithPermissionScopeCompany_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompany*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_OnGeneratePredicateWithPermissionScopeCompany__1_Cqrs_Repositories_Queries_QueryPredicate_System_Linq_IQueryable__1__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompany``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})">OnGeneratePredicateWithPermissionScopeCompany&lt;TAuthenticationToken&gt;(QueryPredicate, IQueryable&lt;TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns <span class="paramref">leftHandQueryable</span> or calls <a class="xref" href="Cqrs.Repositories.Queries.QueryBuilder-2.html#Cqrs_Repositories_Queries_QueryBuilder_2_GetEmptyQueryPredicate">GetEmptyQueryPredicate()</a> if <span class="paramref">leftHandQueryable</span> is null.
+Override to build the relevant permission scope <span class="xref">System.Linq.IQueryable</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IQueryable&lt;TData&gt; OnGeneratePredicateWithPermissionScopeCompany&lt;TAuthenticationToken&gt;(QueryPredicate queryPredicate, IQueryable&lt;TData&gt; leftHandQueryable)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Repositories.Queries.QueryPredicate.html">QueryPredicate</a></td>
+        <td><span class="parametername">queryPredicate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td><span class="parametername">leftHandQueryable</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TAuthenticationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_OnGeneratePredicateWithPermissionScopeCompanyAndUser_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompanyAndUser*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_OnGeneratePredicateWithPermissionScopeCompanyAndUser__1_Cqrs_Repositories_Queries_QueryPredicate_System_Linq_IQueryable__1__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompanyAndUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})">OnGeneratePredicateWithPermissionScopeCompanyAndUser&lt;TAuthenticationToken&gt;(QueryPredicate, IQueryable&lt;TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns <span class="paramref">leftHandQueryable</span> or calls <a class="xref" href="Cqrs.Repositories.Queries.QueryBuilder-2.html#Cqrs_Repositories_Queries_QueryBuilder_2_GetEmptyQueryPredicate">GetEmptyQueryPredicate()</a> if <span class="paramref">leftHandQueryable</span> is null.
+Override to build the relevant permission scope <span class="xref">System.Linq.IQueryable</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IQueryable&lt;TData&gt; OnGeneratePredicateWithPermissionScopeCompanyAndUser&lt;TAuthenticationToken&gt;(QueryPredicate queryPredicate, IQueryable&lt;TData&gt; leftHandQueryable)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Repositories.Queries.QueryPredicate.html">QueryPredicate</a></td>
+        <td><span class="parametername">queryPredicate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td><span class="parametername">leftHandQueryable</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TAuthenticationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Repositories_Queries_QueryBuilder_2_OnGeneratePredicateWithPermissionScopeUser_" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeUser*"></a>
+  <h4 id="Cqrs_Repositories_Queries_QueryBuilder_2_OnGeneratePredicateWithPermissionScopeUser__1_Cqrs_Repositories_Queries_QueryPredicate_System_Linq_IQueryable__1__" data-uid="Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})">OnGeneratePredicateWithPermissionScopeUser&lt;TAuthenticationToken&gt;(QueryPredicate, IQueryable&lt;TData&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns <span class="paramref">leftHandQueryable</span> or calls <a class="xref" href="Cqrs.Repositories.Queries.QueryBuilder-2.html#Cqrs_Repositories_Queries_QueryBuilder_2_GetEmptyQueryPredicate">GetEmptyQueryPredicate()</a> if <span class="paramref">leftHandQueryable</span> is null.
+Override to build the relevant permission scope <span class="xref">System.Linq.IQueryable</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IQueryable&lt;TData&gt; OnGeneratePredicateWithPermissionScopeUser&lt;TAuthenticationToken&gt;(QueryPredicate queryPredicate, IQueryable&lt;TData&gt; leftHandQueryable)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Cqrs.Repositories.Queries.QueryPredicate.html">QueryPredicate</a></td>
+        <td><span class="parametername">queryPredicate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td><span class="parametername">leftHandQueryable</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;TData&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TAuthenticationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../../styles/main.js"></script>
+  </body>
+</html>

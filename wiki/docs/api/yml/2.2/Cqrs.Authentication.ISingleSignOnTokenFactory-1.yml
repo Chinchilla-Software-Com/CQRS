@@ -1,0 +1,224 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1
+  commentId: T:Cqrs.Authentication.ISingleSignOnTokenFactory`1
+  id: ISingleSignOnTokenFactory`1
+  parent: Cqrs.Authentication
+  children:
+  - Cqrs.Authentication.ISingleSignOnTokenFactory`1.CreateNew(System.Int32)
+  - Cqrs.Authentication.ISingleSignOnTokenFactory`1.RenewTokenExpiry(`0,System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: ISingleSignOnTokenFactory<TSingleSignOnToken>
+  nameWithType: ISingleSignOnTokenFactory<TSingleSignOnToken>
+  fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<TSingleSignOnToken>
+  type: Interface
+  source:
+    remote:
+      path: Framework/Cqrs/Authentication/ISingleSignOnTokenFactory.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: ISingleSignOnTokenFactory
+    path: Framework/Cqrs/Authentication/ISingleSignOnTokenFactory.cs
+    startLine: 17
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Authentication
+  summary: "\nA factory for creating new authentication tokens of type <span class=\"typeparamref\">TSingleSignOnToken</span>.\n"
+  example: []
+  syntax:
+    content: >-
+      [ServiceContract(Namespace = "https://getcqrs.net/SingleSignOn/TokenFactory")]
+
+      public interface ISingleSignOnTokenFactory<TSingleSignOnToken>
+          where TSingleSignOnToken : ISingleSignOnToken, new ()
+    typeParameters:
+    - id: TSingleSignOnToken
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of <xref href="Cqrs.Authentication.ISingleSignOnToken" data-throw-if-not-resolved="false"></xref>.
+    content.vb: >-
+      <ServiceContract(Namespace:="https://getcqrs.net/SingleSignOn/TokenFactory")>
+
+      Public Interface ISingleSignOnTokenFactory(Of TSingleSignOnToken As {ISingleSignOnToken, New})
+  attributes:
+  - type: System.ServiceModel.ServiceContractAttribute
+    ctor: System.ServiceModel.ServiceContractAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: Namespace
+      type: System.String
+      value: https://getcqrs.net/SingleSignOn/TokenFactory
+  nameWithType.vb: ISingleSignOnTokenFactory(Of TSingleSignOnToken)
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+  fullName.vb: Cqrs.Authentication.ISingleSignOnTokenFactory(Of TSingleSignOnToken)
+  name.vb: ISingleSignOnTokenFactory(Of TSingleSignOnToken)
+- uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.CreateNew(System.Int32)
+  commentId: M:Cqrs.Authentication.ISingleSignOnTokenFactory`1.CreateNew(System.Int32)
+  id: CreateNew(System.Int32)
+  parent: Cqrs.Authentication.ISingleSignOnTokenFactory`1
+  langs:
+  - csharp
+  - vb
+  name: CreateNew(Int32)
+  nameWithType: ISingleSignOnTokenFactory<TSingleSignOnToken>.CreateNew(Int32)
+  fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<TSingleSignOnToken>.CreateNew(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Authentication/ISingleSignOnTokenFactory.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: CreateNew
+    path: Framework/Cqrs/Authentication/ISingleSignOnTokenFactory.cs
+    startLine: 25
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Authentication
+  summary: "\nCreate a new <span class=\"typeparamref\">TSingleSignOnToken</span>.\n"
+  example: []
+  syntax:
+    content: >-
+      [OperationContract]
+
+      TSingleSignOnToken CreateNew(int timeoutInMinutes = 360)
+    parameters:
+    - id: timeoutInMinutes
+      type: System.Int32
+      description: The amount of time in minutes to set the <xref href="Cqrs.Authentication.ISingleSignOnToken.TimeOfExpiry" data-throw-if-not-resolved="false"></xref> to. This is from <xref href="System.DateTime.UtcNow" data-throw-if-not-resolved="false"></xref>
+    return:
+      type: '{TSingleSignOnToken}'
+    content.vb: >-
+      <OperationContract>
+
+      Function CreateNew(timeoutInMinutes As Integer = 360) As TSingleSignOnToken
+  overload: Cqrs.Authentication.ISingleSignOnTokenFactory`1.CreateNew*
+  attributes:
+  - type: System.ServiceModel.OperationContractAttribute
+    ctor: System.ServiceModel.OperationContractAttribute.#ctor
+    arguments: []
+  nameWithType.vb: ISingleSignOnTokenFactory(Of TSingleSignOnToken).CreateNew(Int32)
+  fullName.vb: Cqrs.Authentication.ISingleSignOnTokenFactory(Of TSingleSignOnToken).CreateNew(System.Int32)
+- uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.RenewTokenExpiry(`0,System.Int32)
+  commentId: M:Cqrs.Authentication.ISingleSignOnTokenFactory`1.RenewTokenExpiry(`0,System.Int32)
+  id: RenewTokenExpiry(`0,System.Int32)
+  parent: Cqrs.Authentication.ISingleSignOnTokenFactory`1
+  langs:
+  - csharp
+  - vb
+  name: RenewTokenExpiry(TSingleSignOnToken, Int32)
+  nameWithType: ISingleSignOnTokenFactory<TSingleSignOnToken>.RenewTokenExpiry(TSingleSignOnToken, Int32)
+  fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<TSingleSignOnToken>.RenewTokenExpiry(TSingleSignOnToken, System.Int32)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Authentication/ISingleSignOnTokenFactory.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: RenewTokenExpiry
+    path: Framework/Cqrs/Authentication/ISingleSignOnTokenFactory.cs
+    startLine: 33
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Authentication
+  summary: "\nRenew the value of <xref href=\"Cqrs.Authentication.ISingleSignOnToken.TimeOfExpiry\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: >-
+      [OperationContract]
+
+      TSingleSignOnToken RenewTokenExpiry(TSingleSignOnToken token, int timeoutInMinutes = 360)
+    parameters:
+    - id: token
+      type: '{TSingleSignOnToken}'
+      description: The <xref href="Cqrs.Authentication.ISingleSignOnToken" data-throw-if-not-resolved="false"></xref> to renew.
+    - id: timeoutInMinutes
+      type: System.Int32
+      description: The amount of time in minutes to set the <xref href="Cqrs.Authentication.ISingleSignOnToken.TimeOfExpiry" data-throw-if-not-resolved="false"></xref> to. This is from <xref href="System.DateTime.UtcNow" data-throw-if-not-resolved="false"></xref>
+    return:
+      type: '{TSingleSignOnToken}'
+    content.vb: >-
+      <OperationContract>
+
+      Function RenewTokenExpiry(token As TSingleSignOnToken, timeoutInMinutes As Integer = 360) As TSingleSignOnToken
+  overload: Cqrs.Authentication.ISingleSignOnTokenFactory`1.RenewTokenExpiry*
+  attributes:
+  - type: System.ServiceModel.OperationContractAttribute
+    ctor: System.ServiceModel.OperationContractAttribute.#ctor
+    arguments: []
+  nameWithType.vb: ISingleSignOnTokenFactory(Of TSingleSignOnToken).RenewTokenExpiry(TSingleSignOnToken, Int32)
+  fullName.vb: Cqrs.Authentication.ISingleSignOnTokenFactory(Of TSingleSignOnToken).RenewTokenExpiry(TSingleSignOnToken, System.Int32)
+references:
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: Cqrs.Authentication.ISingleSignOnToken
+  commentId: T:Cqrs.Authentication.ISingleSignOnToken
+  parent: Cqrs.Authentication
+  isExternal: false
+  name: ISingleSignOnToken
+  nameWithType: ISingleSignOnToken
+  fullName: Cqrs.Authentication.ISingleSignOnToken
+- uid: Cqrs.Authentication
+  commentId: N:Cqrs.Authentication
+  isExternal: false
+  name: Cqrs.Authentication
+  nameWithType: Cqrs.Authentication
+  fullName: Cqrs.Authentication
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Cqrs.Authentication.ISingleSignOnToken.TimeOfExpiry
+  commentId: P:Cqrs.Authentication.ISingleSignOnToken.TimeOfExpiry
+  parent: Cqrs.Authentication.ISingleSignOnToken
+  isExternal: false
+  name: TimeOfExpiry
+  nameWithType: ISingleSignOnToken.TimeOfExpiry
+  fullName: Cqrs.Authentication.ISingleSignOnToken.TimeOfExpiry
+- uid: System.DateTime.UtcNow
+  commentId: P:System.DateTime.UtcNow
+- uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.CreateNew*
+  commentId: Overload:Cqrs.Authentication.ISingleSignOnTokenFactory`1.CreateNew
+  isExternal: false
+  name: CreateNew
+  nameWithType: ISingleSignOnTokenFactory<TSingleSignOnToken>.CreateNew
+  fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<TSingleSignOnToken>.CreateNew
+  nameWithType.vb: ISingleSignOnTokenFactory(Of TSingleSignOnToken).CreateNew
+  fullName.vb: Cqrs.Authentication.ISingleSignOnTokenFactory(Of TSingleSignOnToken).CreateNew
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: '{TSingleSignOnToken}'
+  commentId: '!:TSingleSignOnToken'
+  definition: TSingleSignOnToken
+  name: TSingleSignOnToken
+  nameWithType: TSingleSignOnToken
+  fullName: TSingleSignOnToken
+- uid: TSingleSignOnToken
+  isExternal: false
+  name: TSingleSignOnToken
+  nameWithType: TSingleSignOnToken
+  fullName: TSingleSignOnToken
+- uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.RenewTokenExpiry*
+  commentId: Overload:Cqrs.Authentication.ISingleSignOnTokenFactory`1.RenewTokenExpiry
+  isExternal: false
+  name: RenewTokenExpiry
+  nameWithType: ISingleSignOnTokenFactory<TSingleSignOnToken>.RenewTokenExpiry
+  fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<TSingleSignOnToken>.RenewTokenExpiry
+  nameWithType.vb: ISingleSignOnTokenFactory(Of TSingleSignOnToken).RenewTokenExpiry
+  fullName.vb: Cqrs.Authentication.ISingleSignOnTokenFactory(Of TSingleSignOnToken).RenewTokenExpiry

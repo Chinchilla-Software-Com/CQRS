@@ -27,6 +27,11 @@ namespace Cqrs.WebApi
 		: CqrsHttpApplication<TAuthenticationToken>
 		where TEventToHubProxy : EventToHubProxy<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Calls <see cref="CqrsHttpApplication.SetBuses"/>, <see cref="RegisterDefaultRoutes"/>, <see cref="CqrsHttpApplication.RegisterServiceParameterResolver"/>,
+		/// <see cref="ConfigureMvcOrWebApi"/>, <see cref="CqrsHttpApplication.RegisterCommandAndEventHandlers"/>, <see cref="RegisterSignalR"/>, 
+		/// <see cref="CqrsHttpApplication.StartBuses"/> and finally <see cref="CqrsHttpApplication.LogApplicationStarted"/>.
+		/// </summary>
 		protected override void Application_Start(object sender, EventArgs e)
 		{
 			SetBuses();

@@ -1,0 +1,4797 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2
+  commentId: T:Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2
+  id: CqrsHttpApplicationWithSignalR`2
+  parent: Cqrs.WebApi
+  children:
+  - Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.Application_Start(System.Object,System.EventArgs)
+  - Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.ConfigureMvcOrWebApi
+  - Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.RegisterDefaultRoutes
+  - Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.RegisterSignalR(Cqrs.Configuration.BusRegistrar)
+  langs:
+  - csharp
+  - vb
+  name: CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>
+  nameWithType: CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>
+  fullName: Cqrs.WebApi.CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>
+  type: Class
+  source:
+    remote:
+      path: Framework/Cqrs.WebApi/CqrsHttpApplicationWithSignalR.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: CqrsHttpApplicationWithSignalR
+    path: Framework/Cqrs.WebApi/CqrsHttpApplicationWithSignalR.cs
+    startLine: 25
+  assemblies:
+  - Cqrs.WebApi
+  namespace: Cqrs.WebApi
+  summary: "\nA <xref href=\"Cqrs.Hosts.CqrsHttpApplication\" data-throw-if-not-resolved=\"false\"></xref> that allows you to specify how <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> are sent to SignalR.\n"
+  example: []
+  syntax:
+    content: 'public abstract class CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy> : CqrsHttpApplication<TAuthenticationToken>, IComponent, IDisposable, IHttpAsyncHandler, IHttpHandler, IRequestCompletedNotifier, ISyncContext where TEventToHubProxy : EventToHubProxy<TAuthenticationToken>'
+    typeParameters:
+    - id: TAuthenticationToken
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the authentication token.
+    - id: TEventToHubProxy
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the proxy class that specifies how <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> are sent to SignalR.
+    content.vb: >-
+      Public MustInherit Class CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy As EventToHubProxy(Of TAuthenticationToken))
+          Inherits CqrsHttpApplication(Of TAuthenticationToken)
+          Implements IComponent, IDisposable, IHttpAsyncHandler, IHttpHandler, IRequestCompletedNotifier, ISyncContext
+  inheritance:
+  - System.Object
+  - System.Web.HttpApplication
+  - Cqrs.Hosts.CqrsHttpApplication
+  - Cqrs.Hosts.CqrsHttpApplication{{TAuthenticationToken}}
+  derivedClasses:
+  - Cqrs.WebApi.CqrsHttpApplicationWithSignalR`1
+  implements:
+  - System.ComponentModel.IComponent
+  - System.IDisposable
+  - System.Web.IHttpAsyncHandler
+  - System.Web.IHttpHandler
+  inheritedMembers:
+  - Cqrs.Hosts.CqrsHttpApplication{{TAuthenticationToken}}.Application_AuthenticateRequest(System.Object,System.EventArgs)
+  - Cqrs.Hosts.CqrsHttpApplication{{TAuthenticationToken}}.SetBuses
+  - Cqrs.Hosts.CqrsHttpApplication.HandlerTypes
+  - Cqrs.Hosts.CqrsHttpApplication.EventBus
+  - Cqrs.Hosts.CqrsHttpApplication.CommandBus
+  - Cqrs.Hosts.CqrsHttpApplication.RegisterCommandAndEventHandlers
+  - Cqrs.Hosts.CqrsHttpApplication.RegisterServiceParameterResolver
+  - Cqrs.Hosts.CqrsHttpApplication.StartBuses
+  - Cqrs.Hosts.CqrsHttpApplication.LogApplicationStarted
+  - Cqrs.Hosts.CqrsHttpApplication.Application_End(System.Object,System.EventArgs)
+  - Cqrs.Hosts.CqrsHttpApplication.Application_Error(System.Object,System.EventArgs)
+  - Cqrs.Hosts.CqrsHttpApplication.Application_BeginRequest(System.Object,System.EventArgs)
+  - Cqrs.Hosts.CqrsHttpApplication.Application_EndRequest(System.Object,System.EventArgs)
+  - Cqrs.Hosts.CqrsHttpApplication.Session_Start(System.Object,System.EventArgs)
+  - Cqrs.Hosts.CqrsHttpApplication.Session_End(System.Object,System.EventArgs)
+  - System.Web.HttpApplication.CompleteRequest
+  - System.Web.HttpApplication.AddOnBeginRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnBeginRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnPostLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnPostLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.AddOnEndRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  - System.Web.HttpApplication.AddOnEndRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  - System.Web.HttpApplication.Init
+  - System.Web.HttpApplication.Dispose
+  - System.Web.HttpApplication.GetVaryByCustomString(System.Web.HttpContext,System.String)
+  - System.Web.HttpApplication.GetOutputCacheProviderName(System.Web.HttpContext)
+  - System.Web.HttpApplication.System#Web#IHttpAsyncHandler#BeginProcessRequest(System.Web.HttpContext,System.AsyncCallback,System.Object)
+  - System.Web.HttpApplication.System#Web#IHttpAsyncHandler#EndProcessRequest(System.IAsyncResult)
+  - System.Web.HttpApplication.System#Web#IHttpHandler#ProcessRequest(System.Web.HttpContext)
+  - System.Web.HttpApplication.RegisterModule(System.Type)
+  - System.Web.HttpApplication.Context
+  - System.Web.HttpApplication.Events
+  - System.Web.HttpApplication.Request
+  - System.Web.HttpApplication.Response
+  - System.Web.HttpApplication.Session
+  - System.Web.HttpApplication.Application
+  - System.Web.HttpApplication.Server
+  - System.Web.HttpApplication.User
+  - System.Web.HttpApplication.Modules
+  - System.Web.HttpApplication.Site
+  - System.Web.HttpApplication.System#Web#IHttpHandler#IsReusable
+  - System.Web.HttpApplication.Disposed
+  - System.Web.HttpApplication.BeginRequest
+  - System.Web.HttpApplication.AuthenticateRequest
+  - System.Web.HttpApplication.PostAuthenticateRequest
+  - System.Web.HttpApplication.AuthorizeRequest
+  - System.Web.HttpApplication.PostAuthorizeRequest
+  - System.Web.HttpApplication.ResolveRequestCache
+  - System.Web.HttpApplication.PostResolveRequestCache
+  - System.Web.HttpApplication.MapRequestHandler
+  - System.Web.HttpApplication.PostMapRequestHandler
+  - System.Web.HttpApplication.AcquireRequestState
+  - System.Web.HttpApplication.PostAcquireRequestState
+  - System.Web.HttpApplication.PreRequestHandlerExecute
+  - System.Web.HttpApplication.PostRequestHandlerExecute
+  - System.Web.HttpApplication.ReleaseRequestState
+  - System.Web.HttpApplication.PostReleaseRequestState
+  - System.Web.HttpApplication.UpdateRequestCache
+  - System.Web.HttpApplication.PostUpdateRequestCache
+  - System.Web.HttpApplication.LogRequest
+  - System.Web.HttpApplication.PostLogRequest
+  - System.Web.HttpApplication.EndRequest
+  - System.Web.HttpApplication.Error
+  - System.Web.HttpApplication.RequestCompleted
+  - System.Web.HttpApplication.PreSendRequestHeaders
+  - System.Web.HttpApplication.PreSendRequestContent
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  nameWithType.vb: CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy)
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+  fullName.vb: Cqrs.WebApi.CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy)
+  name.vb: CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy)
+- uid: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.Application_Start(System.Object,System.EventArgs)
+  commentId: M:Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.Application_Start(System.Object,System.EventArgs)
+  id: Application_Start(System.Object,System.EventArgs)
+  parent: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2
+  langs:
+  - csharp
+  - vb
+  name: Application_Start(Object, EventArgs)
+  nameWithType: CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.Application_Start(Object, EventArgs)
+  fullName: Cqrs.WebApi.CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.Application_Start(System.Object, System.EventArgs)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs.WebApi/CqrsHttpApplicationWithSignalR.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Application_Start
+    path: Framework/Cqrs.WebApi/CqrsHttpApplicationWithSignalR.cs
+    startLine: 29
+  assemblies:
+  - Cqrs.WebApi
+  namespace: Cqrs.WebApi
+  syntax:
+    content: protected override void Application_Start(object sender, EventArgs e)
+    parameters:
+    - id: sender
+      type: System.Object
+    - id: e
+      type: System.EventArgs
+    content.vb: Protected Overrides Sub Application_Start(sender As Object, e As EventArgs)
+  overridden: Cqrs.Hosts.CqrsHttpApplication.Application_Start(System.Object,System.EventArgs)
+  overload: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.Application_Start*
+  nameWithType.vb: CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).Application_Start(Object, EventArgs)
+  modifiers.csharp:
+  - protected
+  - override
+  modifiers.vb:
+  - Protected
+  - Overrides
+  fullName.vb: Cqrs.WebApi.CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).Application_Start(System.Object, System.EventArgs)
+- uid: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.RegisterSignalR(Cqrs.Configuration.BusRegistrar)
+  commentId: M:Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.RegisterSignalR(Cqrs.Configuration.BusRegistrar)
+  id: RegisterSignalR(Cqrs.Configuration.BusRegistrar)
+  parent: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2
+  langs:
+  - csharp
+  - vb
+  name: RegisterSignalR(BusRegistrar)
+  nameWithType: CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.RegisterSignalR(BusRegistrar)
+  fullName: Cqrs.WebApi.CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.RegisterSignalR(Cqrs.Configuration.BusRegistrar)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs.WebApi/CqrsHttpApplicationWithSignalR.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: RegisterSignalR
+    path: Framework/Cqrs.WebApi/CqrsHttpApplicationWithSignalR.cs
+    startLine: 49
+  assemblies:
+  - Cqrs.WebApi
+  namespace: Cqrs.WebApi
+  summary: "\nRegister SignalR to the path /signalr\n"
+  example: []
+  syntax:
+    content: protected virtual void RegisterSignalR(BusRegistrar registrar)
+    parameters:
+    - id: registrar
+      type: Cqrs.Configuration.BusRegistrar
+    content.vb: Protected Overridable Sub RegisterSignalR(registrar As BusRegistrar)
+  overload: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.RegisterSignalR*
+  nameWithType.vb: CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).RegisterSignalR(BusRegistrar)
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.WebApi.CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).RegisterSignalR(Cqrs.Configuration.BusRegistrar)
+- uid: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.RegisterDefaultRoutes
+  commentId: M:Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.RegisterDefaultRoutes
+  id: RegisterDefaultRoutes
+  parent: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2
+  langs:
+  - csharp
+  - vb
+  name: RegisterDefaultRoutes()
+  nameWithType: CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.RegisterDefaultRoutes()
+  fullName: Cqrs.WebApi.CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.RegisterDefaultRoutes()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs.WebApi/CqrsHttpApplicationWithSignalR.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: RegisterDefaultRoutes
+    path: Framework/Cqrs.WebApi/CqrsHttpApplicationWithSignalR.cs
+    startLine: 58
+  assemblies:
+  - Cqrs.WebApi
+  namespace: Cqrs.WebApi
+  summary: "\nRegister default offered routes and controllers such as the Java-script Client\n"
+  example: []
+  syntax:
+    content: protected virtual void RegisterDefaultRoutes()
+    content.vb: Protected Overridable Sub RegisterDefaultRoutes
+  overload: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.RegisterDefaultRoutes*
+  nameWithType.vb: CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).RegisterDefaultRoutes()
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.WebApi.CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).RegisterDefaultRoutes()
+- uid: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.ConfigureMvcOrWebApi
+  commentId: M:Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.ConfigureMvcOrWebApi
+  id: ConfigureMvcOrWebApi
+  parent: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2
+  langs:
+  - csharp
+  - vb
+  name: ConfigureMvcOrWebApi()
+  nameWithType: CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.ConfigureMvcOrWebApi()
+  fullName: Cqrs.WebApi.CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.ConfigureMvcOrWebApi()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs.WebApi/CqrsHttpApplicationWithSignalR.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: ConfigureMvcOrWebApi
+    path: Framework/Cqrs.WebApi/CqrsHttpApplicationWithSignalR.cs
+    startLine: 66
+  assemblies:
+  - Cqrs.WebApi
+  namespace: Cqrs.WebApi
+  summary: "\nOverride to configure MVC or WebAPI components such as AreaRegistration.RegisterAllAreas();\n"
+  example: []
+  syntax:
+    content: protected virtual void ConfigureMvcOrWebApi()
+    content.vb: Protected Overridable Sub ConfigureMvcOrWebApi
+  overload: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.ConfigureMvcOrWebApi*
+  nameWithType.vb: CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).ConfigureMvcOrWebApi()
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.WebApi.CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).ConfigureMvcOrWebApi()
+references:
+- uid: Cqrs.Hosts.CqrsHttpApplication
+  commentId: T:Cqrs.Hosts.CqrsHttpApplication
+  parent: Cqrs.Hosts
+  isExternal: false
+  name: CqrsHttpApplication
+  nameWithType: CqrsHttpApplication
+  fullName: Cqrs.Hosts.CqrsHttpApplication
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: Cqrs.WebApi
+  commentId: N:Cqrs.WebApi
+  isExternal: false
+  name: Cqrs.WebApi
+  nameWithType: Cqrs.WebApi
+  fullName: Cqrs.WebApi
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Web.HttpApplication
+  commentId: T:System.Web.HttpApplication
+  parent: System.Web
+  isExternal: true
+  name: HttpApplication
+  nameWithType: HttpApplication
+  fullName: System.Web.HttpApplication
+- uid: Cqrs.Hosts.CqrsHttpApplication{{TAuthenticationToken}}
+  commentId: T:Cqrs.Hosts.CqrsHttpApplication{`0}
+  parent: Cqrs.Hosts
+  definition: Cqrs.Hosts.CqrsHttpApplication`1
+  name: CqrsHttpApplication<TAuthenticationToken>
+  nameWithType: CqrsHttpApplication<TAuthenticationToken>
+  fullName: Cqrs.Hosts.CqrsHttpApplication<TAuthenticationToken>
+  nameWithType.vb: CqrsHttpApplication(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Hosts.CqrsHttpApplication(Of TAuthenticationToken)
+  name.vb: CqrsHttpApplication(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication`1
+    name: CqrsHttpApplication
+    nameWithType: CqrsHttpApplication
+    fullName: Cqrs.Hosts.CqrsHttpApplication
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication`1
+    name: CqrsHttpApplication
+    nameWithType: CqrsHttpApplication
+    fullName: Cqrs.Hosts.CqrsHttpApplication
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ComponentModel.IComponent
+  commentId: T:System.ComponentModel.IComponent
+  parent: System.ComponentModel
+  isExternal: true
+  name: IComponent
+  nameWithType: IComponent
+  fullName: System.ComponentModel.IComponent
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Web.IHttpAsyncHandler
+  commentId: T:System.Web.IHttpAsyncHandler
+  parent: System.Web
+  isExternal: true
+  name: IHttpAsyncHandler
+  nameWithType: IHttpAsyncHandler
+  fullName: System.Web.IHttpAsyncHandler
+- uid: System.Web.IHttpHandler
+  commentId: T:System.Web.IHttpHandler
+  parent: System.Web
+  isExternal: true
+  name: IHttpHandler
+  nameWithType: IHttpHandler
+  fullName: System.Web.IHttpHandler
+- uid: Cqrs.Hosts.CqrsHttpApplication{{TAuthenticationToken}}.Application_AuthenticateRequest(System.Object,System.EventArgs)
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication{`0}.Application_AuthenticateRequest(System.Object,System.EventArgs)
+  parent: Cqrs.Hosts.CqrsHttpApplication{{TAuthenticationToken}}
+  definition: Cqrs.Hosts.CqrsHttpApplication`1.Application_AuthenticateRequest(System.Object,System.EventArgs)
+  name: Application_AuthenticateRequest(Object, EventArgs)
+  nameWithType: CqrsHttpApplication<TAuthenticationToken>.Application_AuthenticateRequest(Object, EventArgs)
+  fullName: Cqrs.Hosts.CqrsHttpApplication<TAuthenticationToken>.Application_AuthenticateRequest(System.Object, System.EventArgs)
+  nameWithType.vb: CqrsHttpApplication(Of TAuthenticationToken).Application_AuthenticateRequest(Object, EventArgs)
+  fullName.vb: Cqrs.Hosts.CqrsHttpApplication(Of TAuthenticationToken).Application_AuthenticateRequest(System.Object, System.EventArgs)
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication`1.Application_AuthenticateRequest(System.Object,System.EventArgs)
+    name: Application_AuthenticateRequest
+    nameWithType: CqrsHttpApplication<TAuthenticationToken>.Application_AuthenticateRequest
+    fullName: Cqrs.Hosts.CqrsHttpApplication<TAuthenticationToken>.Application_AuthenticateRequest
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication`1.Application_AuthenticateRequest(System.Object,System.EventArgs)
+    name: Application_AuthenticateRequest
+    nameWithType: CqrsHttpApplication(Of TAuthenticationToken).Application_AuthenticateRequest
+    fullName: Cqrs.Hosts.CqrsHttpApplication(Of TAuthenticationToken).Application_AuthenticateRequest
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts.CqrsHttpApplication{{TAuthenticationToken}}.SetBuses
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication{`0}.SetBuses
+  parent: Cqrs.Hosts.CqrsHttpApplication{{TAuthenticationToken}}
+  definition: Cqrs.Hosts.CqrsHttpApplication`1.SetBuses
+  name: SetBuses()
+  nameWithType: CqrsHttpApplication<TAuthenticationToken>.SetBuses()
+  fullName: Cqrs.Hosts.CqrsHttpApplication<TAuthenticationToken>.SetBuses()
+  nameWithType.vb: CqrsHttpApplication(Of TAuthenticationToken).SetBuses()
+  fullName.vb: Cqrs.Hosts.CqrsHttpApplication(Of TAuthenticationToken).SetBuses()
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication`1.SetBuses
+    name: SetBuses
+    nameWithType: CqrsHttpApplication<TAuthenticationToken>.SetBuses
+    fullName: Cqrs.Hosts.CqrsHttpApplication<TAuthenticationToken>.SetBuses
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication`1.SetBuses
+    name: SetBuses
+    nameWithType: CqrsHttpApplication(Of TAuthenticationToken).SetBuses
+    fullName: Cqrs.Hosts.CqrsHttpApplication(Of TAuthenticationToken).SetBuses
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts.CqrsHttpApplication.HandlerTypes
+  commentId: P:Cqrs.Hosts.CqrsHttpApplication.HandlerTypes
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: false
+  name: HandlerTypes
+  nameWithType: CqrsHttpApplication.HandlerTypes
+  fullName: Cqrs.Hosts.CqrsHttpApplication.HandlerTypes
+- uid: Cqrs.Hosts.CqrsHttpApplication.EventBus
+  commentId: P:Cqrs.Hosts.CqrsHttpApplication.EventBus
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: false
+  name: EventBus
+  nameWithType: CqrsHttpApplication.EventBus
+  fullName: Cqrs.Hosts.CqrsHttpApplication.EventBus
+- uid: Cqrs.Hosts.CqrsHttpApplication.CommandBus
+  commentId: P:Cqrs.Hosts.CqrsHttpApplication.CommandBus
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: false
+  name: CommandBus
+  nameWithType: CqrsHttpApplication.CommandBus
+  fullName: Cqrs.Hosts.CqrsHttpApplication.CommandBus
+- uid: Cqrs.Hosts.CqrsHttpApplication.RegisterCommandAndEventHandlers
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication.RegisterCommandAndEventHandlers
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: false
+  name: RegisterCommandAndEventHandlers()
+  nameWithType: CqrsHttpApplication.RegisterCommandAndEventHandlers()
+  fullName: Cqrs.Hosts.CqrsHttpApplication.RegisterCommandAndEventHandlers()
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.RegisterCommandAndEventHandlers
+    name: RegisterCommandAndEventHandlers
+    nameWithType: CqrsHttpApplication.RegisterCommandAndEventHandlers
+    fullName: Cqrs.Hosts.CqrsHttpApplication.RegisterCommandAndEventHandlers
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.RegisterCommandAndEventHandlers
+    name: RegisterCommandAndEventHandlers
+    nameWithType: CqrsHttpApplication.RegisterCommandAndEventHandlers
+    fullName: Cqrs.Hosts.CqrsHttpApplication.RegisterCommandAndEventHandlers
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts.CqrsHttpApplication.RegisterServiceParameterResolver
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication.RegisterServiceParameterResolver
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: false
+  name: RegisterServiceParameterResolver()
+  nameWithType: CqrsHttpApplication.RegisterServiceParameterResolver()
+  fullName: Cqrs.Hosts.CqrsHttpApplication.RegisterServiceParameterResolver()
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.RegisterServiceParameterResolver
+    name: RegisterServiceParameterResolver
+    nameWithType: CqrsHttpApplication.RegisterServiceParameterResolver
+    fullName: Cqrs.Hosts.CqrsHttpApplication.RegisterServiceParameterResolver
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.RegisterServiceParameterResolver
+    name: RegisterServiceParameterResolver
+    nameWithType: CqrsHttpApplication.RegisterServiceParameterResolver
+    fullName: Cqrs.Hosts.CqrsHttpApplication.RegisterServiceParameterResolver
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts.CqrsHttpApplication.StartBuses
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication.StartBuses
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: false
+  name: StartBuses()
+  nameWithType: CqrsHttpApplication.StartBuses()
+  fullName: Cqrs.Hosts.CqrsHttpApplication.StartBuses()
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.StartBuses
+    name: StartBuses
+    nameWithType: CqrsHttpApplication.StartBuses
+    fullName: Cqrs.Hosts.CqrsHttpApplication.StartBuses
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.StartBuses
+    name: StartBuses
+    nameWithType: CqrsHttpApplication.StartBuses
+    fullName: Cqrs.Hosts.CqrsHttpApplication.StartBuses
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts.CqrsHttpApplication.LogApplicationStarted
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication.LogApplicationStarted
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: false
+  name: LogApplicationStarted()
+  nameWithType: CqrsHttpApplication.LogApplicationStarted()
+  fullName: Cqrs.Hosts.CqrsHttpApplication.LogApplicationStarted()
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.LogApplicationStarted
+    name: LogApplicationStarted
+    nameWithType: CqrsHttpApplication.LogApplicationStarted
+    fullName: Cqrs.Hosts.CqrsHttpApplication.LogApplicationStarted
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.LogApplicationStarted
+    name: LogApplicationStarted
+    nameWithType: CqrsHttpApplication.LogApplicationStarted
+    fullName: Cqrs.Hosts.CqrsHttpApplication.LogApplicationStarted
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts.CqrsHttpApplication.Application_End(System.Object,System.EventArgs)
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication.Application_End(System.Object,System.EventArgs)
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: true
+  name: Application_End(Object, EventArgs)
+  nameWithType: CqrsHttpApplication.Application_End(Object, EventArgs)
+  fullName: Cqrs.Hosts.CqrsHttpApplication.Application_End(System.Object, System.EventArgs)
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Application_End(System.Object,System.EventArgs)
+    name: Application_End
+    nameWithType: CqrsHttpApplication.Application_End
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Application_End
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Application_End(System.Object,System.EventArgs)
+    name: Application_End
+    nameWithType: CqrsHttpApplication.Application_End
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Application_End
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts.CqrsHttpApplication.Application_Error(System.Object,System.EventArgs)
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication.Application_Error(System.Object,System.EventArgs)
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: true
+  name: Application_Error(Object, EventArgs)
+  nameWithType: CqrsHttpApplication.Application_Error(Object, EventArgs)
+  fullName: Cqrs.Hosts.CqrsHttpApplication.Application_Error(System.Object, System.EventArgs)
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Application_Error(System.Object,System.EventArgs)
+    name: Application_Error
+    nameWithType: CqrsHttpApplication.Application_Error
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Application_Error
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Application_Error(System.Object,System.EventArgs)
+    name: Application_Error
+    nameWithType: CqrsHttpApplication.Application_Error
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Application_Error
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts.CqrsHttpApplication.Application_BeginRequest(System.Object,System.EventArgs)
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication.Application_BeginRequest(System.Object,System.EventArgs)
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: true
+  name: Application_BeginRequest(Object, EventArgs)
+  nameWithType: CqrsHttpApplication.Application_BeginRequest(Object, EventArgs)
+  fullName: Cqrs.Hosts.CqrsHttpApplication.Application_BeginRequest(System.Object, System.EventArgs)
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Application_BeginRequest(System.Object,System.EventArgs)
+    name: Application_BeginRequest
+    nameWithType: CqrsHttpApplication.Application_BeginRequest
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Application_BeginRequest
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Application_BeginRequest(System.Object,System.EventArgs)
+    name: Application_BeginRequest
+    nameWithType: CqrsHttpApplication.Application_BeginRequest
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Application_BeginRequest
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts.CqrsHttpApplication.Application_EndRequest(System.Object,System.EventArgs)
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication.Application_EndRequest(System.Object,System.EventArgs)
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: true
+  name: Application_EndRequest(Object, EventArgs)
+  nameWithType: CqrsHttpApplication.Application_EndRequest(Object, EventArgs)
+  fullName: Cqrs.Hosts.CqrsHttpApplication.Application_EndRequest(System.Object, System.EventArgs)
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Application_EndRequest(System.Object,System.EventArgs)
+    name: Application_EndRequest
+    nameWithType: CqrsHttpApplication.Application_EndRequest
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Application_EndRequest
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Application_EndRequest(System.Object,System.EventArgs)
+    name: Application_EndRequest
+    nameWithType: CqrsHttpApplication.Application_EndRequest
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Application_EndRequest
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts.CqrsHttpApplication.Session_Start(System.Object,System.EventArgs)
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication.Session_Start(System.Object,System.EventArgs)
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: true
+  name: Session_Start(Object, EventArgs)
+  nameWithType: CqrsHttpApplication.Session_Start(Object, EventArgs)
+  fullName: Cqrs.Hosts.CqrsHttpApplication.Session_Start(System.Object, System.EventArgs)
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Session_Start(System.Object,System.EventArgs)
+    name: Session_Start
+    nameWithType: CqrsHttpApplication.Session_Start
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Session_Start
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Session_Start(System.Object,System.EventArgs)
+    name: Session_Start
+    nameWithType: CqrsHttpApplication.Session_Start
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Session_Start
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts.CqrsHttpApplication.Session_End(System.Object,System.EventArgs)
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication.Session_End(System.Object,System.EventArgs)
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: true
+  name: Session_End(Object, EventArgs)
+  nameWithType: CqrsHttpApplication.Session_End(Object, EventArgs)
+  fullName: Cqrs.Hosts.CqrsHttpApplication.Session_End(System.Object, System.EventArgs)
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Session_End(System.Object,System.EventArgs)
+    name: Session_End
+    nameWithType: CqrsHttpApplication.Session_End
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Session_End
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Session_End(System.Object,System.EventArgs)
+    name: Session_End
+    nameWithType: CqrsHttpApplication.Session_End
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Session_End
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.CompleteRequest
+  commentId: M:System.Web.HttpApplication.CompleteRequest
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: CompleteRequest()
+  nameWithType: HttpApplication.CompleteRequest()
+  fullName: System.Web.HttpApplication.CompleteRequest()
+  spec.csharp:
+  - uid: System.Web.HttpApplication.CompleteRequest
+    name: CompleteRequest
+    nameWithType: HttpApplication.CompleteRequest
+    fullName: System.Web.HttpApplication.CompleteRequest
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.CompleteRequest
+    name: CompleteRequest
+    nameWithType: HttpApplication.CompleteRequest
+    fullName: System.Web.HttpApplication.CompleteRequest
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnBeginRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnBeginRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnBeginRequestAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnBeginRequestAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnBeginRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnBeginRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnBeginRequestAsync
+    nameWithType: HttpApplication.AddOnBeginRequestAsync
+    fullName: System.Web.HttpApplication.AddOnBeginRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnBeginRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnBeginRequestAsync
+    nameWithType: HttpApplication.AddOnBeginRequestAsync
+    fullName: System.Web.HttpApplication.AddOnBeginRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnBeginRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnBeginRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnBeginRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnBeginRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnBeginRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnBeginRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnBeginRequestAsync
+    nameWithType: HttpApplication.AddOnBeginRequestAsync
+    fullName: System.Web.HttpApplication.AddOnBeginRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnBeginRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnBeginRequestAsync
+    nameWithType: HttpApplication.AddOnBeginRequestAsync
+    fullName: System.Web.HttpApplication.AddOnBeginRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnAuthenticateRequestAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnAuthenticateRequestAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnAuthenticateRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnAuthenticateRequestAsync
+    nameWithType: HttpApplication.AddOnAuthenticateRequestAsync
+    fullName: System.Web.HttpApplication.AddOnAuthenticateRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnAuthenticateRequestAsync
+    nameWithType: HttpApplication.AddOnAuthenticateRequestAsync
+    fullName: System.Web.HttpApplication.AddOnAuthenticateRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnAuthenticateRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnAuthenticateRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnAuthenticateRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnAuthenticateRequestAsync
+    nameWithType: HttpApplication.AddOnAuthenticateRequestAsync
+    fullName: System.Web.HttpApplication.AddOnAuthenticateRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnAuthenticateRequestAsync
+    nameWithType: HttpApplication.AddOnAuthenticateRequestAsync
+    fullName: System.Web.HttpApplication.AddOnAuthenticateRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostAuthenticateRequestAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnPostAuthenticateRequestAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostAuthenticateRequestAsync
+    nameWithType: HttpApplication.AddOnPostAuthenticateRequestAsync
+    fullName: System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostAuthenticateRequestAsync
+    nameWithType: HttpApplication.AddOnPostAuthenticateRequestAsync
+    fullName: System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostAuthenticateRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnPostAuthenticateRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostAuthenticateRequestAsync
+    nameWithType: HttpApplication.AddOnPostAuthenticateRequestAsync
+    fullName: System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostAuthenticateRequestAsync
+    nameWithType: HttpApplication.AddOnPostAuthenticateRequestAsync
+    fullName: System.Web.HttpApplication.AddOnPostAuthenticateRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnAuthorizeRequestAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnAuthorizeRequestAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnAuthorizeRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnAuthorizeRequestAsync
+    nameWithType: HttpApplication.AddOnAuthorizeRequestAsync
+    fullName: System.Web.HttpApplication.AddOnAuthorizeRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnAuthorizeRequestAsync
+    nameWithType: HttpApplication.AddOnAuthorizeRequestAsync
+    fullName: System.Web.HttpApplication.AddOnAuthorizeRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnAuthorizeRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnAuthorizeRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnAuthorizeRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnAuthorizeRequestAsync
+    nameWithType: HttpApplication.AddOnAuthorizeRequestAsync
+    fullName: System.Web.HttpApplication.AddOnAuthorizeRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnAuthorizeRequestAsync
+    nameWithType: HttpApplication.AddOnAuthorizeRequestAsync
+    fullName: System.Web.HttpApplication.AddOnAuthorizeRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostAuthorizeRequestAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnPostAuthorizeRequestAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostAuthorizeRequestAsync
+    nameWithType: HttpApplication.AddOnPostAuthorizeRequestAsync
+    fullName: System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostAuthorizeRequestAsync
+    nameWithType: HttpApplication.AddOnPostAuthorizeRequestAsync
+    fullName: System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostAuthorizeRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnPostAuthorizeRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostAuthorizeRequestAsync
+    nameWithType: HttpApplication.AddOnPostAuthorizeRequestAsync
+    fullName: System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostAuthorizeRequestAsync
+    nameWithType: HttpApplication.AddOnPostAuthorizeRequestAsync
+    fullName: System.Web.HttpApplication.AddOnPostAuthorizeRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnResolveRequestCacheAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnResolveRequestCacheAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnResolveRequestCacheAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnResolveRequestCacheAsync
+    nameWithType: HttpApplication.AddOnResolveRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnResolveRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnResolveRequestCacheAsync
+    nameWithType: HttpApplication.AddOnResolveRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnResolveRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnResolveRequestCacheAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnResolveRequestCacheAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnResolveRequestCacheAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnResolveRequestCacheAsync
+    nameWithType: HttpApplication.AddOnResolveRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnResolveRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnResolveRequestCacheAsync
+    nameWithType: HttpApplication.AddOnResolveRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnResolveRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostResolveRequestCacheAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnPostResolveRequestCacheAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostResolveRequestCacheAsync
+    nameWithType: HttpApplication.AddOnPostResolveRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostResolveRequestCacheAsync
+    nameWithType: HttpApplication.AddOnPostResolveRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostResolveRequestCacheAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnPostResolveRequestCacheAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostResolveRequestCacheAsync
+    nameWithType: HttpApplication.AddOnPostResolveRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostResolveRequestCacheAsync
+    nameWithType: HttpApplication.AddOnPostResolveRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnPostResolveRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnMapRequestHandlerAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnMapRequestHandlerAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnMapRequestHandlerAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnMapRequestHandlerAsync
+    nameWithType: HttpApplication.AddOnMapRequestHandlerAsync
+    fullName: System.Web.HttpApplication.AddOnMapRequestHandlerAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnMapRequestHandlerAsync
+    nameWithType: HttpApplication.AddOnMapRequestHandlerAsync
+    fullName: System.Web.HttpApplication.AddOnMapRequestHandlerAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnMapRequestHandlerAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnMapRequestHandlerAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnMapRequestHandlerAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnMapRequestHandlerAsync
+    nameWithType: HttpApplication.AddOnMapRequestHandlerAsync
+    fullName: System.Web.HttpApplication.AddOnMapRequestHandlerAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnMapRequestHandlerAsync
+    nameWithType: HttpApplication.AddOnMapRequestHandlerAsync
+    fullName: System.Web.HttpApplication.AddOnMapRequestHandlerAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostMapRequestHandlerAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnPostMapRequestHandlerAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostMapRequestHandlerAsync
+    nameWithType: HttpApplication.AddOnPostMapRequestHandlerAsync
+    fullName: System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostMapRequestHandlerAsync
+    nameWithType: HttpApplication.AddOnPostMapRequestHandlerAsync
+    fullName: System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostMapRequestHandlerAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnPostMapRequestHandlerAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostMapRequestHandlerAsync
+    nameWithType: HttpApplication.AddOnPostMapRequestHandlerAsync
+    fullName: System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostMapRequestHandlerAsync
+    nameWithType: HttpApplication.AddOnPostMapRequestHandlerAsync
+    fullName: System.Web.HttpApplication.AddOnPostMapRequestHandlerAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnAcquireRequestStateAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnAcquireRequestStateAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnAcquireRequestStateAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnAcquireRequestStateAsync
+    nameWithType: HttpApplication.AddOnAcquireRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnAcquireRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnAcquireRequestStateAsync
+    nameWithType: HttpApplication.AddOnAcquireRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnAcquireRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnAcquireRequestStateAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnAcquireRequestStateAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnAcquireRequestStateAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnAcquireRequestStateAsync
+    nameWithType: HttpApplication.AddOnAcquireRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnAcquireRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnAcquireRequestStateAsync
+    nameWithType: HttpApplication.AddOnAcquireRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnAcquireRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostAcquireRequestStateAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnPostAcquireRequestStateAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostAcquireRequestStateAsync
+    nameWithType: HttpApplication.AddOnPostAcquireRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostAcquireRequestStateAsync
+    nameWithType: HttpApplication.AddOnPostAcquireRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostAcquireRequestStateAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnPostAcquireRequestStateAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostAcquireRequestStateAsync
+    nameWithType: HttpApplication.AddOnPostAcquireRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostAcquireRequestStateAsync
+    nameWithType: HttpApplication.AddOnPostAcquireRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnPostAcquireRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPreRequestHandlerExecuteAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnPreRequestHandlerExecuteAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPreRequestHandlerExecuteAsync
+    nameWithType: HttpApplication.AddOnPreRequestHandlerExecuteAsync
+    fullName: System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPreRequestHandlerExecuteAsync
+    nameWithType: HttpApplication.AddOnPreRequestHandlerExecuteAsync
+    fullName: System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPreRequestHandlerExecuteAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnPreRequestHandlerExecuteAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPreRequestHandlerExecuteAsync
+    nameWithType: HttpApplication.AddOnPreRequestHandlerExecuteAsync
+    fullName: System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPreRequestHandlerExecuteAsync
+    nameWithType: HttpApplication.AddOnPreRequestHandlerExecuteAsync
+    fullName: System.Web.HttpApplication.AddOnPreRequestHandlerExecuteAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostRequestHandlerExecuteAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnPostRequestHandlerExecuteAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostRequestHandlerExecuteAsync
+    nameWithType: HttpApplication.AddOnPostRequestHandlerExecuteAsync
+    fullName: System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostRequestHandlerExecuteAsync
+    nameWithType: HttpApplication.AddOnPostRequestHandlerExecuteAsync
+    fullName: System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostRequestHandlerExecuteAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnPostRequestHandlerExecuteAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostRequestHandlerExecuteAsync
+    nameWithType: HttpApplication.AddOnPostRequestHandlerExecuteAsync
+    fullName: System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostRequestHandlerExecuteAsync
+    nameWithType: HttpApplication.AddOnPostRequestHandlerExecuteAsync
+    fullName: System.Web.HttpApplication.AddOnPostRequestHandlerExecuteAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnReleaseRequestStateAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnReleaseRequestStateAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnReleaseRequestStateAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnReleaseRequestStateAsync
+    nameWithType: HttpApplication.AddOnReleaseRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnReleaseRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnReleaseRequestStateAsync
+    nameWithType: HttpApplication.AddOnReleaseRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnReleaseRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnReleaseRequestStateAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnReleaseRequestStateAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnReleaseRequestStateAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnReleaseRequestStateAsync
+    nameWithType: HttpApplication.AddOnReleaseRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnReleaseRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnReleaseRequestStateAsync
+    nameWithType: HttpApplication.AddOnReleaseRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnReleaseRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostReleaseRequestStateAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnPostReleaseRequestStateAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostReleaseRequestStateAsync
+    nameWithType: HttpApplication.AddOnPostReleaseRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostReleaseRequestStateAsync
+    nameWithType: HttpApplication.AddOnPostReleaseRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostReleaseRequestStateAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnPostReleaseRequestStateAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostReleaseRequestStateAsync
+    nameWithType: HttpApplication.AddOnPostReleaseRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostReleaseRequestStateAsync
+    nameWithType: HttpApplication.AddOnPostReleaseRequestStateAsync
+    fullName: System.Web.HttpApplication.AddOnPostReleaseRequestStateAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnUpdateRequestCacheAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnUpdateRequestCacheAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnUpdateRequestCacheAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnUpdateRequestCacheAsync
+    nameWithType: HttpApplication.AddOnUpdateRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnUpdateRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnUpdateRequestCacheAsync
+    nameWithType: HttpApplication.AddOnUpdateRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnUpdateRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnUpdateRequestCacheAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnUpdateRequestCacheAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnUpdateRequestCacheAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnUpdateRequestCacheAsync
+    nameWithType: HttpApplication.AddOnUpdateRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnUpdateRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnUpdateRequestCacheAsync
+    nameWithType: HttpApplication.AddOnUpdateRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnUpdateRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostUpdateRequestCacheAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnPostUpdateRequestCacheAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostUpdateRequestCacheAsync
+    nameWithType: HttpApplication.AddOnPostUpdateRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostUpdateRequestCacheAsync
+    nameWithType: HttpApplication.AddOnPostUpdateRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostUpdateRequestCacheAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnPostUpdateRequestCacheAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostUpdateRequestCacheAsync
+    nameWithType: HttpApplication.AddOnPostUpdateRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostUpdateRequestCacheAsync
+    nameWithType: HttpApplication.AddOnPostUpdateRequestCacheAsync
+    fullName: System.Web.HttpApplication.AddOnPostUpdateRequestCacheAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnLogRequestAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnLogRequestAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnLogRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnLogRequestAsync
+    nameWithType: HttpApplication.AddOnLogRequestAsync
+    fullName: System.Web.HttpApplication.AddOnLogRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnLogRequestAsync
+    nameWithType: HttpApplication.AddOnLogRequestAsync
+    fullName: System.Web.HttpApplication.AddOnLogRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnLogRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnLogRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnLogRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnLogRequestAsync
+    nameWithType: HttpApplication.AddOnLogRequestAsync
+    fullName: System.Web.HttpApplication.AddOnLogRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnLogRequestAsync
+    nameWithType: HttpApplication.AddOnLogRequestAsync
+    fullName: System.Web.HttpApplication.AddOnLogRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnPostLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostLogRequestAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnPostLogRequestAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnPostLogRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostLogRequestAsync
+    nameWithType: HttpApplication.AddOnPostLogRequestAsync
+    fullName: System.Web.HttpApplication.AddOnPostLogRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnPostLogRequestAsync
+    nameWithType: HttpApplication.AddOnPostLogRequestAsync
+    fullName: System.Web.HttpApplication.AddOnPostLogRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnPostLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnPostLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnPostLogRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnPostLogRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnPostLogRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnPostLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostLogRequestAsync
+    nameWithType: HttpApplication.AddOnPostLogRequestAsync
+    fullName: System.Web.HttpApplication.AddOnPostLogRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnPostLogRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnPostLogRequestAsync
+    nameWithType: HttpApplication.AddOnPostLogRequestAsync
+    fullName: System.Web.HttpApplication.AddOnPostLogRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnEndRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  commentId: M:System.Web.HttpApplication.AddOnEndRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnEndRequestAsync(BeginEventHandler, EndEventHandler)
+  nameWithType: HttpApplication.AddOnEndRequestAsync(BeginEventHandler, EndEventHandler)
+  fullName: System.Web.HttpApplication.AddOnEndRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnEndRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnEndRequestAsync
+    nameWithType: HttpApplication.AddOnEndRequestAsync
+    fullName: System.Web.HttpApplication.AddOnEndRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnEndRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler)
+    name: AddOnEndRequestAsync
+    nameWithType: HttpApplication.AddOnEndRequestAsync
+    fullName: System.Web.HttpApplication.AddOnEndRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.AddOnEndRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  commentId: M:System.Web.HttpApplication.AddOnEndRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AddOnEndRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  nameWithType: HttpApplication.AddOnEndRequestAsync(BeginEventHandler, EndEventHandler, Object)
+  fullName: System.Web.HttpApplication.AddOnEndRequestAsync(System.Web.BeginEventHandler, System.Web.EndEventHandler, System.Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.AddOnEndRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnEndRequestAsync
+    nameWithType: HttpApplication.AddOnEndRequestAsync
+    fullName: System.Web.HttpApplication.AddOnEndRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.AddOnEndRequestAsync(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Object)
+    name: AddOnEndRequestAsync
+    nameWithType: HttpApplication.AddOnEndRequestAsync
+    fullName: System.Web.HttpApplication.AddOnEndRequestAsync
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.BeginEventHandler
+    name: BeginEventHandler
+    nameWithType: BeginEventHandler
+    fullName: System.Web.BeginEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Web.EndEventHandler
+    name: EndEventHandler
+    nameWithType: EndEventHandler
+    fullName: System.Web.EndEventHandler
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.Init
+  commentId: M:System.Web.HttpApplication.Init
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: Init()
+  nameWithType: HttpApplication.Init()
+  fullName: System.Web.HttpApplication.Init()
+  spec.csharp:
+  - uid: System.Web.HttpApplication.Init
+    name: Init
+    nameWithType: HttpApplication.Init
+    fullName: System.Web.HttpApplication.Init
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.Init
+    name: Init
+    nameWithType: HttpApplication.Init
+    fullName: System.Web.HttpApplication.Init
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.Dispose
+  commentId: M:System.Web.HttpApplication.Dispose
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: Dispose()
+  nameWithType: HttpApplication.Dispose()
+  fullName: System.Web.HttpApplication.Dispose()
+  spec.csharp:
+  - uid: System.Web.HttpApplication.Dispose
+    name: Dispose
+    nameWithType: HttpApplication.Dispose
+    fullName: System.Web.HttpApplication.Dispose
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.Dispose
+    name: Dispose
+    nameWithType: HttpApplication.Dispose
+    fullName: System.Web.HttpApplication.Dispose
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.GetVaryByCustomString(System.Web.HttpContext,System.String)
+  commentId: M:System.Web.HttpApplication.GetVaryByCustomString(System.Web.HttpContext,System.String)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: GetVaryByCustomString(HttpContext, String)
+  nameWithType: HttpApplication.GetVaryByCustomString(HttpContext, String)
+  fullName: System.Web.HttpApplication.GetVaryByCustomString(System.Web.HttpContext, System.String)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.GetVaryByCustomString(System.Web.HttpContext,System.String)
+    name: GetVaryByCustomString
+    nameWithType: HttpApplication.GetVaryByCustomString
+    fullName: System.Web.HttpApplication.GetVaryByCustomString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.HttpContext
+    name: HttpContext
+    nameWithType: HttpContext
+    fullName: System.Web.HttpContext
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.GetVaryByCustomString(System.Web.HttpContext,System.String)
+    name: GetVaryByCustomString
+    nameWithType: HttpApplication.GetVaryByCustomString
+    fullName: System.Web.HttpApplication.GetVaryByCustomString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.HttpContext
+    name: HttpContext
+    nameWithType: HttpContext
+    fullName: System.Web.HttpContext
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.GetOutputCacheProviderName(System.Web.HttpContext)
+  commentId: M:System.Web.HttpApplication.GetOutputCacheProviderName(System.Web.HttpContext)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: GetOutputCacheProviderName(HttpContext)
+  nameWithType: HttpApplication.GetOutputCacheProviderName(HttpContext)
+  fullName: System.Web.HttpApplication.GetOutputCacheProviderName(System.Web.HttpContext)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.GetOutputCacheProviderName(System.Web.HttpContext)
+    name: GetOutputCacheProviderName
+    nameWithType: HttpApplication.GetOutputCacheProviderName
+    fullName: System.Web.HttpApplication.GetOutputCacheProviderName
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.HttpContext
+    name: HttpContext
+    nameWithType: HttpContext
+    fullName: System.Web.HttpContext
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.GetOutputCacheProviderName(System.Web.HttpContext)
+    name: GetOutputCacheProviderName
+    nameWithType: HttpApplication.GetOutputCacheProviderName
+    fullName: System.Web.HttpApplication.GetOutputCacheProviderName
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.HttpContext
+    name: HttpContext
+    nameWithType: HttpContext
+    fullName: System.Web.HttpContext
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.System#Web#IHttpAsyncHandler#BeginProcessRequest(System.Web.HttpContext,System.AsyncCallback,System.Object)
+  commentId: M:System.Web.HttpApplication.System#Web#IHttpAsyncHandler#BeginProcessRequest(System.Web.HttpContext,System.AsyncCallback,System.Object)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: IHttpAsyncHandler.BeginProcessRequest(HttpContext, AsyncCallback, Object)
+  nameWithType: HttpApplication.IHttpAsyncHandler.BeginProcessRequest(HttpContext, AsyncCallback, Object)
+  fullName: System.Web.HttpApplication.System.Web.IHttpAsyncHandler.BeginProcessRequest(System.Web.HttpContext, System.AsyncCallback, System.Object)
+  nameWithType.vb: HttpApplication.System.Web.IHttpAsyncHandler.BeginProcessRequest(HttpContext, AsyncCallback, Object)
+  name.vb: System.Web.IHttpAsyncHandler.BeginProcessRequest(HttpContext, AsyncCallback, Object)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.System#Web#IHttpAsyncHandler#BeginProcessRequest(System.Web.HttpContext,System.AsyncCallback,System.Object)
+    name: IHttpAsyncHandler.BeginProcessRequest
+    nameWithType: HttpApplication.IHttpAsyncHandler.BeginProcessRequest
+    fullName: System.Web.HttpApplication.System.Web.IHttpAsyncHandler.BeginProcessRequest
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.HttpContext
+    name: HttpContext
+    nameWithType: HttpContext
+    fullName: System.Web.HttpContext
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.AsyncCallback
+    name: AsyncCallback
+    nameWithType: AsyncCallback
+    fullName: System.AsyncCallback
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.System#Web#IHttpAsyncHandler#BeginProcessRequest(System.Web.HttpContext,System.AsyncCallback,System.Object)
+    name: System.Web.IHttpAsyncHandler.BeginProcessRequest
+    nameWithType: HttpApplication.System.Web.IHttpAsyncHandler.BeginProcessRequest
+    fullName: System.Web.HttpApplication.System.Web.IHttpAsyncHandler.BeginProcessRequest
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.HttpContext
+    name: HttpContext
+    nameWithType: HttpContext
+    fullName: System.Web.HttpContext
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.AsyncCallback
+    name: AsyncCallback
+    nameWithType: AsyncCallback
+    fullName: System.AsyncCallback
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.System#Web#IHttpAsyncHandler#EndProcessRequest(System.IAsyncResult)
+  commentId: M:System.Web.HttpApplication.System#Web#IHttpAsyncHandler#EndProcessRequest(System.IAsyncResult)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: IHttpAsyncHandler.EndProcessRequest(IAsyncResult)
+  nameWithType: HttpApplication.IHttpAsyncHandler.EndProcessRequest(IAsyncResult)
+  fullName: System.Web.HttpApplication.System.Web.IHttpAsyncHandler.EndProcessRequest(System.IAsyncResult)
+  nameWithType.vb: HttpApplication.System.Web.IHttpAsyncHandler.EndProcessRequest(IAsyncResult)
+  name.vb: System.Web.IHttpAsyncHandler.EndProcessRequest(IAsyncResult)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.System#Web#IHttpAsyncHandler#EndProcessRequest(System.IAsyncResult)
+    name: IHttpAsyncHandler.EndProcessRequest
+    nameWithType: HttpApplication.IHttpAsyncHandler.EndProcessRequest
+    fullName: System.Web.HttpApplication.System.Web.IHttpAsyncHandler.EndProcessRequest
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.IAsyncResult
+    name: IAsyncResult
+    nameWithType: IAsyncResult
+    fullName: System.IAsyncResult
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.System#Web#IHttpAsyncHandler#EndProcessRequest(System.IAsyncResult)
+    name: System.Web.IHttpAsyncHandler.EndProcessRequest
+    nameWithType: HttpApplication.System.Web.IHttpAsyncHandler.EndProcessRequest
+    fullName: System.Web.HttpApplication.System.Web.IHttpAsyncHandler.EndProcessRequest
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.IAsyncResult
+    name: IAsyncResult
+    nameWithType: IAsyncResult
+    fullName: System.IAsyncResult
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.System#Web#IHttpHandler#ProcessRequest(System.Web.HttpContext)
+  commentId: M:System.Web.HttpApplication.System#Web#IHttpHandler#ProcessRequest(System.Web.HttpContext)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: IHttpHandler.ProcessRequest(HttpContext)
+  nameWithType: HttpApplication.IHttpHandler.ProcessRequest(HttpContext)
+  fullName: System.Web.HttpApplication.System.Web.IHttpHandler.ProcessRequest(System.Web.HttpContext)
+  nameWithType.vb: HttpApplication.System.Web.IHttpHandler.ProcessRequest(HttpContext)
+  name.vb: System.Web.IHttpHandler.ProcessRequest(HttpContext)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.System#Web#IHttpHandler#ProcessRequest(System.Web.HttpContext)
+    name: IHttpHandler.ProcessRequest
+    nameWithType: HttpApplication.IHttpHandler.ProcessRequest
+    fullName: System.Web.HttpApplication.System.Web.IHttpHandler.ProcessRequest
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.HttpContext
+    name: HttpContext
+    nameWithType: HttpContext
+    fullName: System.Web.HttpContext
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.System#Web#IHttpHandler#ProcessRequest(System.Web.HttpContext)
+    name: System.Web.IHttpHandler.ProcessRequest
+    nameWithType: HttpApplication.System.Web.IHttpHandler.ProcessRequest
+    fullName: System.Web.HttpApplication.System.Web.IHttpHandler.ProcessRequest
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Web.HttpContext
+    name: HttpContext
+    nameWithType: HttpContext
+    fullName: System.Web.HttpContext
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.RegisterModule(System.Type)
+  commentId: M:System.Web.HttpApplication.RegisterModule(System.Type)
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: RegisterModule(Type)
+  nameWithType: HttpApplication.RegisterModule(Type)
+  fullName: System.Web.HttpApplication.RegisterModule(System.Type)
+  spec.csharp:
+  - uid: System.Web.HttpApplication.RegisterModule(System.Type)
+    name: RegisterModule
+    nameWithType: HttpApplication.RegisterModule
+    fullName: System.Web.HttpApplication.RegisterModule
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Web.HttpApplication.RegisterModule(System.Type)
+    name: RegisterModule
+    nameWithType: HttpApplication.RegisterModule
+    fullName: System.Web.HttpApplication.RegisterModule
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Web.HttpApplication.Context
+  commentId: P:System.Web.HttpApplication.Context
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: Context
+  nameWithType: HttpApplication.Context
+  fullName: System.Web.HttpApplication.Context
+- uid: System.Web.HttpApplication.Events
+  commentId: P:System.Web.HttpApplication.Events
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: Events
+  nameWithType: HttpApplication.Events
+  fullName: System.Web.HttpApplication.Events
+- uid: System.Web.HttpApplication.Request
+  commentId: P:System.Web.HttpApplication.Request
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: Request
+  nameWithType: HttpApplication.Request
+  fullName: System.Web.HttpApplication.Request
+- uid: System.Web.HttpApplication.Response
+  commentId: P:System.Web.HttpApplication.Response
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: Response
+  nameWithType: HttpApplication.Response
+  fullName: System.Web.HttpApplication.Response
+- uid: System.Web.HttpApplication.Session
+  commentId: P:System.Web.HttpApplication.Session
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: Session
+  nameWithType: HttpApplication.Session
+  fullName: System.Web.HttpApplication.Session
+- uid: System.Web.HttpApplication.Application
+  commentId: P:System.Web.HttpApplication.Application
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: Application
+  nameWithType: HttpApplication.Application
+  fullName: System.Web.HttpApplication.Application
+- uid: System.Web.HttpApplication.Server
+  commentId: P:System.Web.HttpApplication.Server
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: Server
+  nameWithType: HttpApplication.Server
+  fullName: System.Web.HttpApplication.Server
+- uid: System.Web.HttpApplication.User
+  commentId: P:System.Web.HttpApplication.User
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: User
+  nameWithType: HttpApplication.User
+  fullName: System.Web.HttpApplication.User
+- uid: System.Web.HttpApplication.Modules
+  commentId: P:System.Web.HttpApplication.Modules
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: Modules
+  nameWithType: HttpApplication.Modules
+  fullName: System.Web.HttpApplication.Modules
+- uid: System.Web.HttpApplication.Site
+  commentId: P:System.Web.HttpApplication.Site
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: Site
+  nameWithType: HttpApplication.Site
+  fullName: System.Web.HttpApplication.Site
+- uid: System.Web.HttpApplication.System#Web#IHttpHandler#IsReusable
+  commentId: P:System.Web.HttpApplication.System#Web#IHttpHandler#IsReusable
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: IHttpHandler.IsReusable
+  nameWithType: HttpApplication.IHttpHandler.IsReusable
+  fullName: System.Web.HttpApplication.System.Web.IHttpHandler.IsReusable
+  nameWithType.vb: HttpApplication.System.Web.IHttpHandler.IsReusable
+  name.vb: System.Web.IHttpHandler.IsReusable
+- uid: System.Web.HttpApplication.Disposed
+  commentId: E:System.Web.HttpApplication.Disposed
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: Disposed
+  nameWithType: HttpApplication.Disposed
+  fullName: System.Web.HttpApplication.Disposed
+- uid: System.Web.HttpApplication.BeginRequest
+  commentId: E:System.Web.HttpApplication.BeginRequest
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: BeginRequest
+  nameWithType: HttpApplication.BeginRequest
+  fullName: System.Web.HttpApplication.BeginRequest
+- uid: System.Web.HttpApplication.AuthenticateRequest
+  commentId: E:System.Web.HttpApplication.AuthenticateRequest
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AuthenticateRequest
+  nameWithType: HttpApplication.AuthenticateRequest
+  fullName: System.Web.HttpApplication.AuthenticateRequest
+- uid: System.Web.HttpApplication.PostAuthenticateRequest
+  commentId: E:System.Web.HttpApplication.PostAuthenticateRequest
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: PostAuthenticateRequest
+  nameWithType: HttpApplication.PostAuthenticateRequest
+  fullName: System.Web.HttpApplication.PostAuthenticateRequest
+- uid: System.Web.HttpApplication.AuthorizeRequest
+  commentId: E:System.Web.HttpApplication.AuthorizeRequest
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AuthorizeRequest
+  nameWithType: HttpApplication.AuthorizeRequest
+  fullName: System.Web.HttpApplication.AuthorizeRequest
+- uid: System.Web.HttpApplication.PostAuthorizeRequest
+  commentId: E:System.Web.HttpApplication.PostAuthorizeRequest
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: PostAuthorizeRequest
+  nameWithType: HttpApplication.PostAuthorizeRequest
+  fullName: System.Web.HttpApplication.PostAuthorizeRequest
+- uid: System.Web.HttpApplication.ResolveRequestCache
+  commentId: E:System.Web.HttpApplication.ResolveRequestCache
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: ResolveRequestCache
+  nameWithType: HttpApplication.ResolveRequestCache
+  fullName: System.Web.HttpApplication.ResolveRequestCache
+- uid: System.Web.HttpApplication.PostResolveRequestCache
+  commentId: E:System.Web.HttpApplication.PostResolveRequestCache
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: PostResolveRequestCache
+  nameWithType: HttpApplication.PostResolveRequestCache
+  fullName: System.Web.HttpApplication.PostResolveRequestCache
+- uid: System.Web.HttpApplication.MapRequestHandler
+  commentId: E:System.Web.HttpApplication.MapRequestHandler
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: MapRequestHandler
+  nameWithType: HttpApplication.MapRequestHandler
+  fullName: System.Web.HttpApplication.MapRequestHandler
+- uid: System.Web.HttpApplication.PostMapRequestHandler
+  commentId: E:System.Web.HttpApplication.PostMapRequestHandler
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: PostMapRequestHandler
+  nameWithType: HttpApplication.PostMapRequestHandler
+  fullName: System.Web.HttpApplication.PostMapRequestHandler
+- uid: System.Web.HttpApplication.AcquireRequestState
+  commentId: E:System.Web.HttpApplication.AcquireRequestState
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: AcquireRequestState
+  nameWithType: HttpApplication.AcquireRequestState
+  fullName: System.Web.HttpApplication.AcquireRequestState
+- uid: System.Web.HttpApplication.PostAcquireRequestState
+  commentId: E:System.Web.HttpApplication.PostAcquireRequestState
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: PostAcquireRequestState
+  nameWithType: HttpApplication.PostAcquireRequestState
+  fullName: System.Web.HttpApplication.PostAcquireRequestState
+- uid: System.Web.HttpApplication.PreRequestHandlerExecute
+  commentId: E:System.Web.HttpApplication.PreRequestHandlerExecute
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: PreRequestHandlerExecute
+  nameWithType: HttpApplication.PreRequestHandlerExecute
+  fullName: System.Web.HttpApplication.PreRequestHandlerExecute
+- uid: System.Web.HttpApplication.PostRequestHandlerExecute
+  commentId: E:System.Web.HttpApplication.PostRequestHandlerExecute
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: PostRequestHandlerExecute
+  nameWithType: HttpApplication.PostRequestHandlerExecute
+  fullName: System.Web.HttpApplication.PostRequestHandlerExecute
+- uid: System.Web.HttpApplication.ReleaseRequestState
+  commentId: E:System.Web.HttpApplication.ReleaseRequestState
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: ReleaseRequestState
+  nameWithType: HttpApplication.ReleaseRequestState
+  fullName: System.Web.HttpApplication.ReleaseRequestState
+- uid: System.Web.HttpApplication.PostReleaseRequestState
+  commentId: E:System.Web.HttpApplication.PostReleaseRequestState
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: PostReleaseRequestState
+  nameWithType: HttpApplication.PostReleaseRequestState
+  fullName: System.Web.HttpApplication.PostReleaseRequestState
+- uid: System.Web.HttpApplication.UpdateRequestCache
+  commentId: E:System.Web.HttpApplication.UpdateRequestCache
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: UpdateRequestCache
+  nameWithType: HttpApplication.UpdateRequestCache
+  fullName: System.Web.HttpApplication.UpdateRequestCache
+- uid: System.Web.HttpApplication.PostUpdateRequestCache
+  commentId: E:System.Web.HttpApplication.PostUpdateRequestCache
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: PostUpdateRequestCache
+  nameWithType: HttpApplication.PostUpdateRequestCache
+  fullName: System.Web.HttpApplication.PostUpdateRequestCache
+- uid: System.Web.HttpApplication.LogRequest
+  commentId: E:System.Web.HttpApplication.LogRequest
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: LogRequest
+  nameWithType: HttpApplication.LogRequest
+  fullName: System.Web.HttpApplication.LogRequest
+- uid: System.Web.HttpApplication.PostLogRequest
+  commentId: E:System.Web.HttpApplication.PostLogRequest
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: PostLogRequest
+  nameWithType: HttpApplication.PostLogRequest
+  fullName: System.Web.HttpApplication.PostLogRequest
+- uid: System.Web.HttpApplication.EndRequest
+  commentId: E:System.Web.HttpApplication.EndRequest
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: EndRequest
+  nameWithType: HttpApplication.EndRequest
+  fullName: System.Web.HttpApplication.EndRequest
+- uid: System.Web.HttpApplication.Error
+  commentId: E:System.Web.HttpApplication.Error
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: Error
+  nameWithType: HttpApplication.Error
+  fullName: System.Web.HttpApplication.Error
+- uid: System.Web.HttpApplication.RequestCompleted
+  commentId: E:System.Web.HttpApplication.RequestCompleted
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: RequestCompleted
+  nameWithType: HttpApplication.RequestCompleted
+  fullName: System.Web.HttpApplication.RequestCompleted
+- uid: System.Web.HttpApplication.PreSendRequestHeaders
+  commentId: E:System.Web.HttpApplication.PreSendRequestHeaders
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: PreSendRequestHeaders
+  nameWithType: HttpApplication.PreSendRequestHeaders
+  fullName: System.Web.HttpApplication.PreSendRequestHeaders
+- uid: System.Web.HttpApplication.PreSendRequestContent
+  commentId: E:System.Web.HttpApplication.PreSendRequestContent
+  parent: System.Web.HttpApplication
+  isExternal: true
+  name: PreSendRequestContent
+  nameWithType: HttpApplication.PreSendRequestContent
+  fullName: System.Web.HttpApplication.PreSendRequestContent
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts
+  commentId: N:Cqrs.Hosts
+  isExternal: false
+  name: Cqrs.Hosts
+  nameWithType: Cqrs.Hosts
+  fullName: Cqrs.Hosts
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Web
+  commentId: N:System.Web
+  isExternal: false
+  name: System.Web
+  nameWithType: System.Web
+  fullName: System.Web
+- uid: Cqrs.Hosts.CqrsHttpApplication`1
+  commentId: T:Cqrs.Hosts.CqrsHttpApplication`1
+  isExternal: false
+  name: CqrsHttpApplication<TAuthenticationToken>
+  nameWithType: CqrsHttpApplication<TAuthenticationToken>
+  fullName: Cqrs.Hosts.CqrsHttpApplication<TAuthenticationToken>
+  nameWithType.vb: CqrsHttpApplication(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Hosts.CqrsHttpApplication(Of TAuthenticationToken)
+  name.vb: CqrsHttpApplication(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication`1
+    name: CqrsHttpApplication
+    nameWithType: CqrsHttpApplication
+    fullName: Cqrs.Hosts.CqrsHttpApplication
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication`1
+    name: CqrsHttpApplication
+    nameWithType: CqrsHttpApplication
+    fullName: Cqrs.Hosts.CqrsHttpApplication
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ComponentModel
+  commentId: N:System.ComponentModel
+  isExternal: false
+  name: System.ComponentModel
+  nameWithType: System.ComponentModel
+  fullName: System.ComponentModel
+- uid: Cqrs.Hosts.CqrsHttpApplication`1.Application_AuthenticateRequest(System.Object,System.EventArgs)
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication`1.Application_AuthenticateRequest(System.Object,System.EventArgs)
+  isExternal: true
+  name: Application_AuthenticateRequest(Object, EventArgs)
+  nameWithType: CqrsHttpApplication<TAuthenticationToken>.Application_AuthenticateRequest(Object, EventArgs)
+  fullName: Cqrs.Hosts.CqrsHttpApplication<TAuthenticationToken>.Application_AuthenticateRequest(System.Object, System.EventArgs)
+  nameWithType.vb: CqrsHttpApplication(Of TAuthenticationToken).Application_AuthenticateRequest(Object, EventArgs)
+  fullName.vb: Cqrs.Hosts.CqrsHttpApplication(Of TAuthenticationToken).Application_AuthenticateRequest(System.Object, System.EventArgs)
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication`1.Application_AuthenticateRequest(System.Object,System.EventArgs)
+    name: Application_AuthenticateRequest
+    nameWithType: CqrsHttpApplication<TAuthenticationToken>.Application_AuthenticateRequest
+    fullName: Cqrs.Hosts.CqrsHttpApplication<TAuthenticationToken>.Application_AuthenticateRequest
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication`1.Application_AuthenticateRequest(System.Object,System.EventArgs)
+    name: Application_AuthenticateRequest
+    nameWithType: CqrsHttpApplication(Of TAuthenticationToken).Application_AuthenticateRequest
+    fullName: Cqrs.Hosts.CqrsHttpApplication(Of TAuthenticationToken).Application_AuthenticateRequest
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts.CqrsHttpApplication`1.SetBuses
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication`1.SetBuses
+  isExternal: false
+  name: SetBuses()
+  nameWithType: CqrsHttpApplication<TAuthenticationToken>.SetBuses()
+  fullName: Cqrs.Hosts.CqrsHttpApplication<TAuthenticationToken>.SetBuses()
+  nameWithType.vb: CqrsHttpApplication(Of TAuthenticationToken).SetBuses()
+  fullName.vb: Cqrs.Hosts.CqrsHttpApplication(Of TAuthenticationToken).SetBuses()
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication`1.SetBuses
+    name: SetBuses
+    nameWithType: CqrsHttpApplication<TAuthenticationToken>.SetBuses
+    fullName: Cqrs.Hosts.CqrsHttpApplication<TAuthenticationToken>.SetBuses
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication`1.SetBuses
+    name: SetBuses
+    nameWithType: CqrsHttpApplication(Of TAuthenticationToken).SetBuses
+    fullName: Cqrs.Hosts.CqrsHttpApplication(Of TAuthenticationToken).SetBuses
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Hosts.CqrsHttpApplication.Application_Start(System.Object,System.EventArgs)
+  commentId: M:Cqrs.Hosts.CqrsHttpApplication.Application_Start(System.Object,System.EventArgs)
+  parent: Cqrs.Hosts.CqrsHttpApplication
+  isExternal: true
+  name: Application_Start(Object, EventArgs)
+  nameWithType: CqrsHttpApplication.Application_Start(Object, EventArgs)
+  fullName: Cqrs.Hosts.CqrsHttpApplication.Application_Start(System.Object, System.EventArgs)
+  spec.csharp:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Application_Start(System.Object,System.EventArgs)
+    name: Application_Start
+    nameWithType: CqrsHttpApplication.Application_Start
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Application_Start
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Hosts.CqrsHttpApplication.Application_Start(System.Object,System.EventArgs)
+    name: Application_Start
+    nameWithType: CqrsHttpApplication.Application_Start
+    fullName: Cqrs.Hosts.CqrsHttpApplication.Application_Start
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.EventArgs
+    name: EventArgs
+    nameWithType: EventArgs
+    fullName: System.EventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.Application_Start*
+  commentId: Overload:Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.Application_Start
+  isExternal: false
+  name: Application_Start
+  nameWithType: CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.Application_Start
+  fullName: Cqrs.WebApi.CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.Application_Start
+  nameWithType.vb: CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).Application_Start
+  fullName.vb: Cqrs.WebApi.CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).Application_Start
+- uid: System.EventArgs
+  commentId: T:System.EventArgs
+  parent: System
+  isExternal: true
+  name: EventArgs
+  nameWithType: EventArgs
+  fullName: System.EventArgs
+- uid: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.RegisterSignalR*
+  commentId: Overload:Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.RegisterSignalR
+  isExternal: false
+  name: RegisterSignalR
+  nameWithType: CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.RegisterSignalR
+  fullName: Cqrs.WebApi.CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.RegisterSignalR
+  nameWithType.vb: CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).RegisterSignalR
+  fullName.vb: Cqrs.WebApi.CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).RegisterSignalR
+- uid: Cqrs.Configuration.BusRegistrar
+  commentId: T:Cqrs.Configuration.BusRegistrar
+  parent: Cqrs.Configuration
+  isExternal: false
+  name: BusRegistrar
+  nameWithType: BusRegistrar
+  fullName: Cqrs.Configuration.BusRegistrar
+- uid: Cqrs.Configuration
+  commentId: N:Cqrs.Configuration
+  isExternal: false
+  name: Cqrs.Configuration
+  nameWithType: Cqrs.Configuration
+  fullName: Cqrs.Configuration
+- uid: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.RegisterDefaultRoutes*
+  commentId: Overload:Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.RegisterDefaultRoutes
+  isExternal: false
+  name: RegisterDefaultRoutes
+  nameWithType: CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.RegisterDefaultRoutes
+  fullName: Cqrs.WebApi.CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.RegisterDefaultRoutes
+  nameWithType.vb: CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).RegisterDefaultRoutes
+  fullName.vb: Cqrs.WebApi.CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).RegisterDefaultRoutes
+- uid: Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.ConfigureMvcOrWebApi*
+  commentId: Overload:Cqrs.WebApi.CqrsHttpApplicationWithSignalR`2.ConfigureMvcOrWebApi
+  isExternal: false
+  name: ConfigureMvcOrWebApi
+  nameWithType: CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.ConfigureMvcOrWebApi
+  fullName: Cqrs.WebApi.CqrsHttpApplicationWithSignalR<TAuthenticationToken, TEventToHubProxy>.ConfigureMvcOrWebApi
+  nameWithType.vb: CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).ConfigureMvcOrWebApi
+  fullName.vb: Cqrs.WebApi.CqrsHttpApplicationWithSignalR(Of TAuthenticationToken, TEventToHubProxy).ConfigureMvcOrWebApi

@@ -1,0 +1,389 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IEventStore&lt;TAuthenticationToken&gt;
+   | CQRS.NET API Reference Documentation version 2.2 </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IEventStore&lt;TAuthenticationToken&gt;
+   | CQRS.NET API Reference Documentation version 2.2 ">
+    <meta name="generator" content="docfx 2.21.2.0">
+    
+    <link rel="shortcut icon" href="../../../../../favicon.ico">
+    <link rel="stylesheet" href="../../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:rel" content="../../../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../../index.html">
+                <img id="logo" class="svg" src="../../../../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Cqrs.Events.IEventStore`1">
+  
+  
+  <h1 id="Cqrs_Events_IEventStore_1" data-uid="Cqrs.Events.IEventStore`1" class="text-break">Interface IEventStore&lt;TAuthenticationToken&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Stores instances of <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> for replay, <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> and <a class="xref" href="Cqrs.Domain.ISaga-1.html">ISaga&lt;TAuthenticationToken&gt;</a> rehydration.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Cqrs.Events.html">Cqrs.Events</a></h6>
+  <h6><strong>Assembly</strong>: Cqrs.dll</h6>
+  <h5 id="Cqrs_Events_IEventStore_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IEventStore&lt;TAuthenticationToken&gt;</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TAuthenticationToken</span></td>
+        <td><p>The <span class="xref">System.Type</span> of the authentication token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <a id="Cqrs_Events_IEventStore_1_Get_" data-uid="Cqrs.Events.IEventStore`1.Get*"></a>
+  <h4 id="Cqrs_Events_IEventStore_1_Get_System_Guid_" data-uid="Cqrs.Events.IEventStore`1.Get(System.Guid)">Get(Guid)</h4>
+  <div class="markdown level1 summary"><p>Get all <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> instances for the given <span class="paramref">correlationId</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;EventData&gt; Get(Guid correlationId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Guid</span></td>
+        <td><span class="parametername">correlationId</span></td>
+        <td><p>The <a class="xref" href="Cqrs.Messages.IMessage.html#Cqrs_Messages_IMessage_CorrelationId">CorrelationId</a> of the <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> instances to retrieve.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable&lt;Cqrs.Events.EventData&gt;</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Events_IEventStore_1_Get_" data-uid="Cqrs.Events.IEventStore`1.Get*"></a>
+  <h4 id="Cqrs_Events_IEventStore_1_Get_System_Type_System_Guid_System_Boolean_System_Int32_" data-uid="Cqrs.Events.IEventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)">Get(Type, Guid, Boolean, Int32)</h4>
+  <div class="markdown level1 summary"><p>Gets a collection of <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> for the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> of type <span class="paramref">aggregateRootType</span> with the ID matching the provided <span class="paramref">aggregateId</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">aggregateRootType</span></td>
+        <td><p><span class="xref">System.Type</span> of the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> the <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> was raised in.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Guid</span></td>
+        <td><span class="parametername">aggregateId</span></td>
+        <td><p>The <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html#Cqrs_Domain_IAggregateRoot_1_Id">Id</a> of the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">useLastEventOnly</span></td>
+        <td><p>Loads only the last event<a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">fromVersion</span></td>
+        <td><p>Load events starting from this version</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable&lt;Cqrs.Events.IEvent&lt;TAuthenticationToken&gt;&gt;</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Events_IEventStore_1_Get_" data-uid="Cqrs.Events.IEventStore`1.Get*"></a>
+  <h4 id="Cqrs_Events_IEventStore_1_Get__1_System_Guid_System_Boolean_System_Int32_" data-uid="Cqrs.Events.IEventStore`1.Get``1(System.Guid,System.Boolean,System.Int32)">Get&lt;T&gt;(Guid, Boolean, Int32)</h4>
+  <div class="markdown level1 summary"><p>Gets a collection of <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> for the <span class="typeparamref">T</span> with the ID matching the provided <span class="paramref">aggregateId</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get&lt;T&gt;(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Guid</span></td>
+        <td><span class="parametername">aggregateId</span></td>
+        <td><p>The <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html#Cqrs_Domain_IAggregateRoot_1_Id">Id</a> of the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">useLastEventOnly</span></td>
+        <td><p>Loads only the last event<a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">fromVersion</span></td>
+        <td><p>Load events starting from this version</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable&lt;Cqrs.Events.IEvent&lt;TAuthenticationToken&gt;&gt;</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <span class="xref">System.Type</span> of the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> the <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> was raised in.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Events_IEventStore_1_Save_" data-uid="Cqrs.Events.IEventStore`1.Save*"></a>
+  <h4 id="Cqrs_Events_IEventStore_1_Save_System_Type_Cqrs_Events_IEvent__0__" data-uid="Cqrs.Events.IEventStore`1.Save(System.Type,Cqrs.Events.IEvent{`0})">Save(Type, IEvent&lt;TAuthenticationToken&gt;)</h4>
+  <div class="markdown level1 summary"><p>Saves the provided <span class="paramref">event</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void Save(Type aggregateRootType, IEvent&lt;TAuthenticationToken&gt; event)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">aggregateRootType</span></td>
+        <td><p><span class="xref">System.Type</span> of the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> the <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> was raised in.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Cqrs.Events.IEvent&lt;TAuthenticationToken&gt;</span></td>
+        <td><span class="parametername">event</span></td>
+        <td><p>The <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> to be saved.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Cqrs_Events_IEventStore_1_Save_" data-uid="Cqrs.Events.IEventStore`1.Save*"></a>
+  <h4 id="Cqrs_Events_IEventStore_1_Save__1_Cqrs_Events_IEvent__0__" data-uid="Cqrs.Events.IEventStore`1.Save``1(Cqrs.Events.IEvent{`0})">Save&lt;T&gt;(IEvent&lt;TAuthenticationToken&gt;)</h4>
+  <div class="markdown level1 summary"><p>Saves the provided <span class="paramref">event</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void Save&lt;T&gt;(IEvent&lt;TAuthenticationToken&gt; event)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Cqrs.Events.IEvent&lt;TAuthenticationToken&gt;</span></td>
+        <td><span class="parametername">event</span></td>
+        <td><p>The <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> to be saved.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <span class="xref">System.Type</span> of the <a class="xref" href="Cqrs.Domain.IAggregateRoot-1.html">IAggregateRoot&lt;TAuthenticationToken&gt;</a> the <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> was raised in.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../../styles/main.js"></script>
+  </body>
+</html>

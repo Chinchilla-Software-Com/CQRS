@@ -1,0 +1,1377 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Domain.AggregateRoot`1
+  commentId: T:Cqrs.Domain.AggregateRoot`1
+  id: AggregateRoot`1
+  parent: Cqrs.Domain
+  children:
+  - Cqrs.Domain.AggregateRoot`1.#ctor
+  - Cqrs.Domain.AggregateRoot`1.ApplyChange(Cqrs.Events.IEvent{`0})
+  - Cqrs.Domain.AggregateRoot`1.GetUncommittedChanges
+  - Cqrs.Domain.AggregateRoot`1.Id
+  - Cqrs.Domain.AggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+  - Cqrs.Domain.AggregateRoot`1.MarkChangesAsCommitted
+  - Cqrs.Domain.AggregateRoot`1.Version
+  langs:
+  - csharp
+  - vb
+  name: AggregateRoot<TAuthenticationToken>
+  nameWithType: AggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>
+  type: Class
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/AggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: AggregateRoot
+    path: Framework/Cqrs/Domain/AggregateRoot.cs
+    startLine: 30
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nA larger unit of encapsulation than just a class. Every transaction is scoped to a single aggregate. The lifetimes of the components of an aggregate are bounded by the lifetime of the entire aggregate.\n\nConcretely, an aggregate will handle commands, apply events, and have a state model encapsulated within it that allows it to implement the required command validation, thus upholding the invariants (business rules) of the aggregate.\n"
+  remarks: "\nWhy is the use of GUID as IDs a good practice?\n\nBecause they are (reasonably) globally unique, and can be generated either by the server or by the client.\n"
+  example: []
+  syntax:
+    content: >-
+      [Serializable]
+
+      public abstract class AggregateRoot<TAuthenticationToken> : IAggregateRoot<TAuthenticationToken>
+    typeParameters:
+    - id: TAuthenticationToken
+    content.vb: >-
+      <Serializable>
+
+      Public MustInherit Class AggregateRoot(Of TAuthenticationToken)
+          Implements IAggregateRoot(Of TAuthenticationToken)
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - Cqrs.Domain.DtoAggregateRoot`2
+  - Cqrs.Snapshots.SnapshotAggregateRoot`2
+  - Cqrs.Tests.Substitutes.TestAggregate
+  - Cqrs.Tests.Substitutes.TestAggregateNoParameterLessConstructor
+  implements:
+  - Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken)
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken)
+  name.vb: AggregateRoot(Of TAuthenticationToken)
+- uid: Cqrs.Domain.AggregateRoot`1.Id
+  commentId: P:Cqrs.Domain.AggregateRoot`1.Id
+  id: Id
+  parent: Cqrs.Domain.AggregateRoot`1
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: AggregateRoot<TAuthenticationToken>.Id
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.Id
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/AggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Id
+    path: Framework/Cqrs/Domain/AggregateRoot.cs
+    startLine: 40
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nThe identifier of this <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      public Guid Id { get; protected set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: >-
+      <DataMember>
+
+      Public Property Id As Guid
+  overload: Cqrs.Domain.AggregateRoot`1.Id*
+  implements:
+  - Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}.Id
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).Id
+  modifiers.csharp:
+  - public
+  - get
+  - protected set
+  modifiers.vb:
+  - Public
+  - Get
+  - Protected Set
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).Id
+- uid: Cqrs.Domain.AggregateRoot`1.Version
+  commentId: P:Cqrs.Domain.AggregateRoot`1.Version
+  id: Version
+  parent: Cqrs.Domain.AggregateRoot`1
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: AggregateRoot<TAuthenticationToken>.Version
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.Version
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/AggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Version
+    path: Framework/Cqrs/Domain/AggregateRoot.cs
+    startLine: 46
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nThe current version of this <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      public int Version { get; protected set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <DataMember>
+
+      Public Property Version As Integer
+  overload: Cqrs.Domain.AggregateRoot`1.Version*
+  implements:
+  - Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}.Version
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).Version
+  modifiers.csharp:
+  - public
+  - get
+  - protected set
+  modifiers.vb:
+  - Public
+  - Get
+  - Protected Set
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).Version
+- uid: Cqrs.Domain.AggregateRoot`1.#ctor
+  commentId: M:Cqrs.Domain.AggregateRoot`1.#ctor
+  id: '#ctor'
+  parent: Cqrs.Domain.AggregateRoot`1
+  langs:
+  - csharp
+  - vb
+  name: AggregateRoot()
+  nameWithType: AggregateRoot<TAuthenticationToken>.AggregateRoot()
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.AggregateRoot()
+  type: Constructor
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/AggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: .ctor
+    path: Framework/Cqrs/Domain/AggregateRoot.cs
+    startLine: 52
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Domain.AggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected AggregateRoot()
+    content.vb: Protected Sub New
+  overload: Cqrs.Domain.AggregateRoot`1.#ctor*
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).AggregateRoot()
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).AggregateRoot()
+- uid: Cqrs.Domain.AggregateRoot`1.GetUncommittedChanges
+  commentId: M:Cqrs.Domain.AggregateRoot`1.GetUncommittedChanges
+  id: GetUncommittedChanges
+  parent: Cqrs.Domain.AggregateRoot`1
+  langs:
+  - csharp
+  - vb
+  name: GetUncommittedChanges()
+  nameWithType: AggregateRoot<TAuthenticationToken>.GetUncommittedChanges()
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.GetUncommittedChanges()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/AggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GetUncommittedChanges
+    path: Framework/Cqrs/Domain/AggregateRoot.cs
+    startLine: 61
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nGet all applied changes that haven&apos;t yet been committed.\n"
+  example: []
+  syntax:
+    content: public IEnumerable<IEvent<TAuthenticationToken>> GetUncommittedChanges()
+    return:
+      type: System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}}
+    content.vb: Public Function GetUncommittedChanges As IEnumerable(Of IEvent(Of TAuthenticationToken))
+  overload: Cqrs.Domain.AggregateRoot`1.GetUncommittedChanges*
+  implements:
+  - Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}.GetUncommittedChanges
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).GetUncommittedChanges()
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).GetUncommittedChanges()
+- uid: Cqrs.Domain.AggregateRoot`1.MarkChangesAsCommitted
+  commentId: M:Cqrs.Domain.AggregateRoot`1.MarkChangesAsCommitted
+  id: MarkChangesAsCommitted
+  parent: Cqrs.Domain.AggregateRoot`1
+  langs:
+  - csharp
+  - vb
+  name: MarkChangesAsCommitted()
+  nameWithType: AggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted()
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/AggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: MarkChangesAsCommitted
+    path: Framework/Cqrs/Domain/AggregateRoot.cs
+    startLine: 69
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nMark all applied changes as committed, increment <xref href=\"Cqrs.Domain.AggregateRoot%601.Version\" data-throw-if-not-resolved=\"false\"></xref> and flush the <xref href=\"Cqrs.Domain.AggregateRoot%601.Changes\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: public virtual void MarkChangesAsCommitted()
+    content.vb: Public Overridable Sub MarkChangesAsCommitted
+  overload: Cqrs.Domain.AggregateRoot`1.MarkChangesAsCommitted*
+  implements:
+  - Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}.MarkChangesAsCommitted
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted()
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted()
+- uid: Cqrs.Domain.AggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+  commentId: M:Cqrs.Domain.AggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+  id: LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+  parent: Cqrs.Domain.AggregateRoot`1
+  langs:
+  - csharp
+  - vb
+  name: LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>>)
+  nameWithType: AggregateRoot<TAuthenticationToken>.LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>>)
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.LoadFromHistory(System.Collections.Generic.IEnumerable<Cqrs.Events.IEvent<TAuthenticationToken>>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/AggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: LoadFromHistory
+    path: Framework/Cqrs/Domain/AggregateRoot.cs
+    startLine: 87
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nApply all the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> in <span class=\"paramref\">history</span>\nusing event replay to this instance.\n"
+  example: []
+  syntax:
+    content: public virtual void LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>> history)
+    parameters:
+    - id: history
+      type: System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}}
+    content.vb: Public Overridable Sub LoadFromHistory(history As IEnumerable(Of IEvent(Of TAuthenticationToken)))
+  overload: Cqrs.Domain.AggregateRoot`1.LoadFromHistory*
+  implements:
+  - Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}})
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).LoadFromHistory(IEnumerable(Of IEvent(Of TAuthenticationToken)))
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).LoadFromHistory(System.Collections.Generic.IEnumerable(Of Cqrs.Events.IEvent(Of TAuthenticationToken)))
+  name.vb: LoadFromHistory(IEnumerable(Of IEvent(Of TAuthenticationToken)))
+- uid: Cqrs.Domain.AggregateRoot`1.ApplyChange(Cqrs.Events.IEvent{`0})
+  commentId: M:Cqrs.Domain.AggregateRoot`1.ApplyChange(Cqrs.Events.IEvent{`0})
+  id: ApplyChange(Cqrs.Events.IEvent{`0})
+  parent: Cqrs.Domain.AggregateRoot`1
+  langs:
+  - csharp
+  - vb
+  name: ApplyChange(IEvent<TAuthenticationToken>)
+  nameWithType: AggregateRoot<TAuthenticationToken>.ApplyChange(IEvent<TAuthenticationToken>)
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.ApplyChange(Cqrs.Events.IEvent<TAuthenticationToken>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/AggregateRoot.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: ApplyChange
+    path: Framework/Cqrs/Domain/AggregateRoot.cs
+    startLine: 106
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nCall the &quot;Apply&quot; method with a signature matching the provided <span class=\"paramref\">event</span> without using event replay to this instance.\n"
+  remarks: "\nThis means a method named &quot;Apply&quot;, with return type void and one parameter must exist to be applied.\nIf no method exists, nothing is applied\nThe parameter type must match exactly the <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> of the provided <span class=\"paramref\">event</span>.\n"
+  example: []
+  syntax:
+    content: protected virtual void ApplyChange(IEvent<TAuthenticationToken> event)
+    parameters:
+    - id: event
+      type: Cqrs.Events.IEvent{{TAuthenticationToken}}
+    content.vb: Protected Overridable Sub ApplyChange(event As IEvent(Of TAuthenticationToken))
+  overload: Cqrs.Domain.AggregateRoot`1.ApplyChange*
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).ApplyChange(IEvent(Of TAuthenticationToken))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).ApplyChange(Cqrs.Events.IEvent(Of TAuthenticationToken))
+  name.vb: ApplyChange(IEvent(Of TAuthenticationToken))
+references:
+- uid: Cqrs.Domain
+  commentId: N:Cqrs.Domain
+  isExternal: false
+  name: Cqrs.Domain
+  nameWithType: Cqrs.Domain
+  fullName: Cqrs.Domain
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}
+  commentId: T:Cqrs.Domain.IAggregateRoot{`0}
+  parent: Cqrs.Domain
+  definition: Cqrs.Domain.IAggregateRoot`1
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  isExternal: false
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.AggregateRoot`1.Id*
+  commentId: Overload:Cqrs.Domain.AggregateRoot`1.Id
+  isExternal: false
+  name: Id
+  nameWithType: AggregateRoot<TAuthenticationToken>.Id
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.Id
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).Id
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).Id
+- uid: Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}.Id
+  commentId: P:Cqrs.Domain.IAggregateRoot{`0}.Id
+  parent: Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}
+  definition: Cqrs.Domain.IAggregateRoot`1.Id
+  name: Id
+  nameWithType: IAggregateRoot<TAuthenticationToken>.Id
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.Id
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).Id
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).Id
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: Cqrs.Domain.IAggregateRoot`1.Id
+  commentId: P:Cqrs.Domain.IAggregateRoot`1.Id
+  isExternal: false
+  name: Id
+  nameWithType: IAggregateRoot<TAuthenticationToken>.Id
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.Id
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).Id
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).Id
+- uid: Cqrs.Domain.AggregateRoot`1.Version*
+  commentId: Overload:Cqrs.Domain.AggregateRoot`1.Version
+  isExternal: false
+  name: Version
+  nameWithType: AggregateRoot<TAuthenticationToken>.Version
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.Version
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).Version
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).Version
+- uid: Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}.Version
+  commentId: P:Cqrs.Domain.IAggregateRoot{`0}.Version
+  parent: Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}
+  definition: Cqrs.Domain.IAggregateRoot`1.Version
+  name: Version
+  nameWithType: IAggregateRoot<TAuthenticationToken>.Version
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.Version
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).Version
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).Version
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: Cqrs.Domain.IAggregateRoot`1.Version
+  commentId: P:Cqrs.Domain.IAggregateRoot`1.Version
+  isExternal: false
+  name: Version
+  nameWithType: IAggregateRoot<TAuthenticationToken>.Version
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.Version
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).Version
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).Version
+- uid: Cqrs.Domain.AggregateRoot`1
+  commentId: T:Cqrs.Domain.AggregateRoot`1
+  isExternal: false
+  name: AggregateRoot<TAuthenticationToken>
+  nameWithType: AggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken)
+  name.vb: AggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.AggregateRoot`1
+    name: AggregateRoot
+    nameWithType: AggregateRoot
+    fullName: Cqrs.Domain.AggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.AggregateRoot`1
+    name: AggregateRoot
+    nameWithType: AggregateRoot
+    fullName: Cqrs.Domain.AggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.AggregateRoot`1.#ctor*
+  commentId: Overload:Cqrs.Domain.AggregateRoot`1.#ctor
+  isExternal: false
+  name: AggregateRoot
+  nameWithType: AggregateRoot<TAuthenticationToken>.AggregateRoot
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.AggregateRoot
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).AggregateRoot
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).AggregateRoot
+- uid: Cqrs.Domain.AggregateRoot`1.GetUncommittedChanges*
+  commentId: Overload:Cqrs.Domain.AggregateRoot`1.GetUncommittedChanges
+  isExternal: false
+  name: GetUncommittedChanges
+  nameWithType: AggregateRoot<TAuthenticationToken>.GetUncommittedChanges
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.GetUncommittedChanges
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).GetUncommittedChanges
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).GetUncommittedChanges
+- uid: Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}.GetUncommittedChanges
+  commentId: M:Cqrs.Domain.IAggregateRoot{`0}.GetUncommittedChanges
+  parent: Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}
+  definition: Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges
+  name: GetUncommittedChanges()
+  nameWithType: IAggregateRoot<TAuthenticationToken>.GetUncommittedChanges()
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.GetUncommittedChanges()
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).GetUncommittedChanges()
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).GetUncommittedChanges()
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges
+    name: GetUncommittedChanges
+    nameWithType: IAggregateRoot<TAuthenticationToken>.GetUncommittedChanges
+    fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.GetUncommittedChanges
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges
+    name: GetUncommittedChanges
+    nameWithType: IAggregateRoot(Of TAuthenticationToken).GetUncommittedChanges
+    fullName: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).GetUncommittedChanges
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}}
+  commentId: T:System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<IEvent<TAuthenticationToken>>
+  nameWithType: IEnumerable<IEvent<TAuthenticationToken>>
+  fullName: System.Collections.Generic.IEnumerable<Cqrs.Events.IEvent<TAuthenticationToken>>
+  nameWithType.vb: IEnumerable(Of IEvent(Of TAuthenticationToken))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Cqrs.Events.IEvent(Of TAuthenticationToken))
+  name.vb: IEnumerable(Of IEvent(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges
+  commentId: M:Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges
+  isExternal: false
+  name: GetUncommittedChanges()
+  nameWithType: IAggregateRoot<TAuthenticationToken>.GetUncommittedChanges()
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.GetUncommittedChanges()
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).GetUncommittedChanges()
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).GetUncommittedChanges()
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges
+    name: GetUncommittedChanges
+    nameWithType: IAggregateRoot<TAuthenticationToken>.GetUncommittedChanges
+    fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.GetUncommittedChanges
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1.GetUncommittedChanges
+    name: GetUncommittedChanges
+    nameWithType: IAggregateRoot(Of TAuthenticationToken).GetUncommittedChanges
+    fullName: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).GetUncommittedChanges
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: false
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: Cqrs.Domain.AggregateRoot`1.Version
+  commentId: P:Cqrs.Domain.AggregateRoot`1.Version
+  isExternal: false
+  name: Version
+  nameWithType: AggregateRoot<TAuthenticationToken>.Version
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.Version
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).Version
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).Version
+- uid: Cqrs.Domain.AggregateRoot`1.Changes
+  commentId: P:Cqrs.Domain.AggregateRoot`1.Changes
+- uid: Cqrs.Domain.AggregateRoot`1.MarkChangesAsCommitted*
+  commentId: Overload:Cqrs.Domain.AggregateRoot`1.MarkChangesAsCommitted
+  isExternal: false
+  name: MarkChangesAsCommitted
+  nameWithType: AggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted
+- uid: Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}.MarkChangesAsCommitted
+  commentId: M:Cqrs.Domain.IAggregateRoot{`0}.MarkChangesAsCommitted
+  parent: Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}
+  definition: Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted
+  name: MarkChangesAsCommitted()
+  nameWithType: IAggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted()
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted()
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted()
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted()
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted
+    name: MarkChangesAsCommitted
+    nameWithType: IAggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted
+    fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted
+    name: MarkChangesAsCommitted
+    nameWithType: IAggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted
+    fullName: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted
+  commentId: M:Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted
+  isExternal: false
+  name: MarkChangesAsCommitted()
+  nameWithType: IAggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted()
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted()
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted()
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted()
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted
+    name: MarkChangesAsCommitted
+    nameWithType: IAggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted
+    fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.MarkChangesAsCommitted
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1.MarkChangesAsCommitted
+    name: MarkChangesAsCommitted
+    nameWithType: IAggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted
+    fullName: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).MarkChangesAsCommitted
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.AggregateRoot`1.LoadFromHistory*
+  commentId: Overload:Cqrs.Domain.AggregateRoot`1.LoadFromHistory
+  isExternal: false
+  name: LoadFromHistory
+  nameWithType: AggregateRoot<TAuthenticationToken>.LoadFromHistory
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.LoadFromHistory
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).LoadFromHistory
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).LoadFromHistory
+- uid: Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}})
+  commentId: M:Cqrs.Domain.IAggregateRoot{`0}.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+  parent: Cqrs.Domain.IAggregateRoot{{TAuthenticationToken}}
+  definition: Cqrs.Domain.IAggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+  name: LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>>)
+  nameWithType: IAggregateRoot<TAuthenticationToken>.LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>>)
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.LoadFromHistory(System.Collections.Generic.IEnumerable<Cqrs.Events.IEvent<TAuthenticationToken>>)
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).LoadFromHistory(IEnumerable(Of IEvent(Of TAuthenticationToken)))
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).LoadFromHistory(System.Collections.Generic.IEnumerable(Of Cqrs.Events.IEvent(Of TAuthenticationToken)))
+  name.vb: LoadFromHistory(IEnumerable(Of IEvent(Of TAuthenticationToken)))
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+    name: LoadFromHistory
+    nameWithType: IAggregateRoot<TAuthenticationToken>.LoadFromHistory
+    fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.LoadFromHistory
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+    name: LoadFromHistory
+    nameWithType: IAggregateRoot(Of TAuthenticationToken).LoadFromHistory
+    fullName: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).LoadFromHistory
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+  commentId: M:Cqrs.Domain.IAggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+  isExternal: true
+  name: LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>>)
+  nameWithType: IAggregateRoot<TAuthenticationToken>.LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>>)
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.LoadFromHistory(System.Collections.Generic.IEnumerable<Cqrs.Events.IEvent<TAuthenticationToken>>)
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).LoadFromHistory(IEnumerable(Of IEvent(Of TAuthenticationToken)))
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).LoadFromHistory(System.Collections.Generic.IEnumerable(Of Cqrs.Events.IEvent(Of TAuthenticationToken)))
+  name.vb: LoadFromHistory(IEnumerable(Of IEvent(Of TAuthenticationToken)))
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+    name: LoadFromHistory
+    nameWithType: IAggregateRoot<TAuthenticationToken>.LoadFromHistory
+    fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.LoadFromHistory
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}})
+    name: LoadFromHistory
+    nameWithType: IAggregateRoot(Of TAuthenticationToken).LoadFromHistory
+    fullName: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).LoadFromHistory
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: Cqrs.Domain.AggregateRoot`1.ApplyChange*
+  commentId: Overload:Cqrs.Domain.AggregateRoot`1.ApplyChange
+  isExternal: false
+  name: ApplyChange
+  nameWithType: AggregateRoot<TAuthenticationToken>.ApplyChange
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>.ApplyChange
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken).ApplyChange
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken).ApplyChange
+- uid: Cqrs.Events.IEvent{{TAuthenticationToken}}
+  commentId: T:Cqrs.Events.IEvent{`0}
+  parent: Cqrs.Events
+  definition: Cqrs.Events.IEvent`1
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events
+  commentId: N:Cqrs.Events
+  isExternal: false
+  name: Cqrs.Events
+  nameWithType: Cqrs.Events
+  fullName: Cqrs.Events

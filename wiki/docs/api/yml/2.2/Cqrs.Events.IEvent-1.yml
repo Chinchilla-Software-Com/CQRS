@@ -1,0 +1,555 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  id: IEvent`1
+  parent: Cqrs.Events
+  children:
+  - Cqrs.Events.IEvent`1.Id
+  - Cqrs.Events.IEvent`1.TimeStamp
+  - Cqrs.Events.IEvent`1.Version
+  langs:
+  - csharp
+  - vb
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  type: Interface
+  source:
+    remote:
+      path: Framework/Cqrs/Events/IEvent.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: IEvent
+    path: Framework/Cqrs/Events/IEvent.cs
+    startLine: 72
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nAn <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> represents something that took place in the domain. They are always named with a past-participle verb, such as OrderConfirmed. It&apos;s not unusual, but not required, for an <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> to name an <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> or <xref href=\"Cqrs.Entities.IEntity\" data-throw-if-not-resolved=\"false\"></xref> that it relates to; let the domain language be your guide.\n\nSince an <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> represents something in the past, it can be considered a statement of fact and used to take decisions in other parts of the system.\n"
+  remarks: "\nWhat does a <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> or an <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> look like?\n\nAn <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> or <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> is simply a data structure that contain data for reading, and no behavior. We call such structures &quot;Data Transfer Objects&quot; (DTOs). The name indicates the purpose. In many languages they are represented as classes, but they are not true classes in the real OO sense.\n\n\nWhat is the difference between a <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> and an <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>?\n\nTheir intent.\n\n\nWhat is immutability? Why is a <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> or <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> immutable?\n\nFor the purpose of this question, immutability is not having any setters, or other methods which change internal state. The <xref href=\"System.String\" data-throw-if-not-resolved=\"false\"></xref> type in is a familiar example; you never actually change an existing <xref href=\"System.String\" data-throw-if-not-resolved=\"false\"></xref> value, you just create new <xref href=\"System.String\" data-throw-if-not-resolved=\"false\"></xref> values based on old ones.\n\nAn <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> is immutable because their expected usage is to be sent directly to the domain model side for processing. They do not need to change during their projected lifetime in traveling from client to server.\nSometimes however business logic dictates that a decision may be made to construct a <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> and local variables should be used.\n\nAn <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> is immutable because they represent domain actions that took place in the past. Unless you&apos;re Marty McFly, you can&apos;t change the past, and sometimes not even then.\n\n\nWhat is command upgrading?\n\nUpgrading an <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> becomes necessary when new requirements cause an existing <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> not to be sufficient. Maybe a new field needs to be added, for example, or maybe an existing field should really have been split into several different ones.\n\n\nHow do I upgrade my <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>s?\n\nHow you do the upgrade depends how much control you have over your clients. If you can deploy your client updates and server updates together, just change things in both and deploy the updates. Job done. If not, it&apos;s usually best to have the updated <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> be a new type and have the <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> accept both for a while.\n\n\nCould you give an example of names of some versioned <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>?\n\nSure.\n\nUploadFile\nUploadFile_v2\nUploadFile_v3\n\nIt&apos;s just a convention, but a sane one.\n********************************************\nAlso see http://cqrs.nu/Faq/commands-and-events.\n"
+  example:
+  - "\npublic class OrderConfirmed \n{\npublic Guid OrderRsn;\npublic DateTime ConfirmationDate;\n}\n"
+  syntax:
+    content: 'public interface IEvent<TAuthenticationToken> : IMessageWithAuthenticationToken<TAuthenticationToken>, IMessage'
+    typeParameters:
+    - id: TAuthenticationToken
+    content.vb: >-
+      Public Interface IEvent(Of TAuthenticationToken)
+          Inherits IMessageWithAuthenticationToken(Of TAuthenticationToken)
+  inheritedMembers:
+  - Cqrs.Messages.IMessageWithAuthenticationToken{{TAuthenticationToken}}.AuthenticationToken
+  - Cqrs.Messages.IMessage.CorrelationId
+  - Cqrs.Messages.IMessage.OriginatingFramework
+  - Cqrs.Messages.IMessage.Frameworks
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+- uid: Cqrs.Events.IEvent`1.Id
+  commentId: P:Cqrs.Events.IEvent`1.Id
+  id: Id
+  parent: Cqrs.Events.IEvent`1
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: IEvent<TAuthenticationToken>.Id
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>.Id
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Events/IEvent.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Id
+    path: Framework/Cqrs/Events/IEvent.cs
+    startLine: 77
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nThe ID of the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      Guid Id { get; set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: >-
+      <DataMember>
+
+      Property Id As Guid
+  overload: Cqrs.Events.IEvent`1.Id*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  nameWithType.vb: IEvent(Of TAuthenticationToken).Id
+  modifiers.csharp:
+  - get
+  - set
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken).Id
+- uid: Cqrs.Events.IEvent`1.Version
+  commentId: P:Cqrs.Events.IEvent`1.Version
+  id: Version
+  parent: Cqrs.Events.IEvent`1
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: IEvent<TAuthenticationToken>.Version
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>.Version
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Events/IEvent.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Version
+    path: Framework/Cqrs/Events/IEvent.cs
+    startLine: 83
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nThe version of the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      int Version { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <DataMember>
+
+      Property Version As Integer
+  overload: Cqrs.Events.IEvent`1.Version*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  nameWithType.vb: IEvent(Of TAuthenticationToken).Version
+  modifiers.csharp:
+  - get
+  - set
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken).Version
+- uid: Cqrs.Events.IEvent`1.TimeStamp
+  commentId: P:Cqrs.Events.IEvent`1.TimeStamp
+  id: TimeStamp
+  parent: Cqrs.Events.IEvent`1
+  langs:
+  - csharp
+  - vb
+  name: TimeStamp
+  nameWithType: IEvent<TAuthenticationToken>.TimeStamp
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>.TimeStamp
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Events/IEvent.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: TimeStamp
+    path: Framework/Cqrs/Events/IEvent.cs
+    startLine: 89
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nThe date and time the event was raised or published.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      DateTimeOffset TimeStamp { get; set; }
+    parameters: []
+    return:
+      type: System.DateTimeOffset
+    content.vb: >-
+      <DataMember>
+
+      Property TimeStamp As DateTimeOffset
+  overload: Cqrs.Events.IEvent`1.TimeStamp*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  nameWithType.vb: IEvent(Of TAuthenticationToken).TimeStamp
+  modifiers.csharp:
+  - get
+  - set
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken).TimeStamp
+references:
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  isExternal: false
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Entities.IEntity
+  commentId: T:Cqrs.Entities.IEntity
+  parent: Cqrs.Entities
+  isExternal: false
+  name: IEntity
+  nameWithType: IEntity
+  fullName: Cqrs.Entities.IEntity
+- uid: Cqrs.Commands.ICommand`1
+  commentId: T:Cqrs.Commands.ICommand`1
+  isExternal: false
+  name: ICommand<TAuthenticationToken>
+  nameWithType: ICommand<TAuthenticationToken>
+  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>
+  nameWithType.vb: ICommand(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken)
+  name.vb: ICommand(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: Cqrs.Commands.ICommandHandler`2
+  commentId: T:Cqrs.Commands.ICommandHandler`2
+  isExternal: false
+  name: ICommandHandler<TAuthenticationToken, TCommand>
+  nameWithType: ICommandHandler<TAuthenticationToken, TCommand>
+  fullName: Cqrs.Commands.ICommandHandler<TAuthenticationToken, TCommand>
+  nameWithType.vb: ICommandHandler(Of TAuthenticationToken, TCommand)
+  fullName.vb: Cqrs.Commands.ICommandHandler(Of TAuthenticationToken, TCommand)
+  name.vb: ICommandHandler(Of TAuthenticationToken, TCommand)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommandHandler`2
+    name: ICommandHandler
+    nameWithType: ICommandHandler
+    fullName: Cqrs.Commands.ICommandHandler
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommandHandler`2
+    name: ICommandHandler
+    nameWithType: ICommandHandler
+    fullName: Cqrs.Commands.ICommandHandler
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events
+  commentId: N:Cqrs.Events
+  isExternal: false
+  name: Cqrs.Events
+  nameWithType: Cqrs.Events
+  fullName: Cqrs.Events
+- uid: Cqrs.Messages.IMessageWithAuthenticationToken{{TAuthenticationToken}}.AuthenticationToken
+  commentId: P:Cqrs.Messages.IMessageWithAuthenticationToken{`0}.AuthenticationToken
+  parent: Cqrs.Messages.IMessageWithAuthenticationToken{{TAuthenticationToken}}
+  definition: Cqrs.Messages.IMessageWithAuthenticationToken`1.AuthenticationToken
+  name: AuthenticationToken
+  nameWithType: IMessageWithAuthenticationToken<TAuthenticationToken>.AuthenticationToken
+  fullName: Cqrs.Messages.IMessageWithAuthenticationToken<TAuthenticationToken>.AuthenticationToken
+  nameWithType.vb: IMessageWithAuthenticationToken(Of TAuthenticationToken).AuthenticationToken
+  fullName.vb: Cqrs.Messages.IMessageWithAuthenticationToken(Of TAuthenticationToken).AuthenticationToken
+- uid: Cqrs.Messages.IMessage.CorrelationId
+  commentId: P:Cqrs.Messages.IMessage.CorrelationId
+  parent: Cqrs.Messages.IMessage
+  isExternal: false
+  name: CorrelationId
+  nameWithType: IMessage.CorrelationId
+  fullName: Cqrs.Messages.IMessage.CorrelationId
+- uid: Cqrs.Messages.IMessage.OriginatingFramework
+  commentId: P:Cqrs.Messages.IMessage.OriginatingFramework
+  parent: Cqrs.Messages.IMessage
+  isExternal: false
+  name: OriginatingFramework
+  nameWithType: IMessage.OriginatingFramework
+  fullName: Cqrs.Messages.IMessage.OriginatingFramework
+- uid: Cqrs.Messages.IMessage.Frameworks
+  commentId: P:Cqrs.Messages.IMessage.Frameworks
+  parent: Cqrs.Messages.IMessage
+  isExternal: false
+  name: Frameworks
+  nameWithType: IMessage.Frameworks
+  fullName: Cqrs.Messages.IMessage.Frameworks
+- uid: Cqrs.Entities
+  commentId: N:Cqrs.Entities
+  isExternal: false
+  name: Cqrs.Entities
+  nameWithType: Cqrs.Entities
+  fullName: Cqrs.Entities
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Cqrs.Messages.IMessageWithAuthenticationToken`1.AuthenticationToken
+  commentId: P:Cqrs.Messages.IMessageWithAuthenticationToken`1.AuthenticationToken
+  isExternal: false
+  name: AuthenticationToken
+  nameWithType: IMessageWithAuthenticationToken<TAuthenticationToken>.AuthenticationToken
+  fullName: Cqrs.Messages.IMessageWithAuthenticationToken<TAuthenticationToken>.AuthenticationToken
+  nameWithType.vb: IMessageWithAuthenticationToken(Of TAuthenticationToken).AuthenticationToken
+  fullName.vb: Cqrs.Messages.IMessageWithAuthenticationToken(Of TAuthenticationToken).AuthenticationToken
+- uid: Cqrs.Messages.IMessageWithAuthenticationToken{{TAuthenticationToken}}
+  commentId: T:Cqrs.Messages.IMessageWithAuthenticationToken{`0}
+  parent: Cqrs.Messages
+  definition: Cqrs.Messages.IMessageWithAuthenticationToken`1
+  name: IMessageWithAuthenticationToken<TAuthenticationToken>
+  nameWithType: IMessageWithAuthenticationToken<TAuthenticationToken>
+  fullName: Cqrs.Messages.IMessageWithAuthenticationToken<TAuthenticationToken>
+  nameWithType.vb: IMessageWithAuthenticationToken(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Messages.IMessageWithAuthenticationToken(Of TAuthenticationToken)
+  name.vb: IMessageWithAuthenticationToken(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Messages.IMessageWithAuthenticationToken`1
+    name: IMessageWithAuthenticationToken
+    nameWithType: IMessageWithAuthenticationToken
+    fullName: Cqrs.Messages.IMessageWithAuthenticationToken
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Messages.IMessageWithAuthenticationToken`1
+    name: IMessageWithAuthenticationToken
+    nameWithType: IMessageWithAuthenticationToken
+    fullName: Cqrs.Messages.IMessageWithAuthenticationToken
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Messages.IMessage
+  commentId: T:Cqrs.Messages.IMessage
+  parent: Cqrs.Messages
+  isExternal: false
+  name: IMessage
+  nameWithType: IMessage
+  fullName: Cqrs.Messages.IMessage
+- uid: Cqrs.Messages.IMessageWithAuthenticationToken`1
+  commentId: T:Cqrs.Messages.IMessageWithAuthenticationToken`1
+  isExternal: false
+  name: IMessageWithAuthenticationToken<TAuthenticationToken>
+  nameWithType: IMessageWithAuthenticationToken<TAuthenticationToken>
+  fullName: Cqrs.Messages.IMessageWithAuthenticationToken<TAuthenticationToken>
+  nameWithType.vb: IMessageWithAuthenticationToken(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Messages.IMessageWithAuthenticationToken(Of TAuthenticationToken)
+  name.vb: IMessageWithAuthenticationToken(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Messages.IMessageWithAuthenticationToken`1
+    name: IMessageWithAuthenticationToken
+    nameWithType: IMessageWithAuthenticationToken
+    fullName: Cqrs.Messages.IMessageWithAuthenticationToken
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Messages.IMessageWithAuthenticationToken`1
+    name: IMessageWithAuthenticationToken
+    nameWithType: IMessageWithAuthenticationToken
+    fullName: Cqrs.Messages.IMessageWithAuthenticationToken
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Messages
+  commentId: N:Cqrs.Messages
+  isExternal: false
+  name: Cqrs.Messages
+  nameWithType: Cqrs.Messages
+  fullName: Cqrs.Messages
+- uid: Cqrs.Events.IEvent`1.Id*
+  commentId: Overload:Cqrs.Events.IEvent`1.Id
+  isExternal: false
+  name: Id
+  nameWithType: IEvent<TAuthenticationToken>.Id
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>.Id
+  nameWithType.vb: IEvent(Of TAuthenticationToken).Id
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken).Id
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: Cqrs.Events.IEvent`1.Version*
+  commentId: Overload:Cqrs.Events.IEvent`1.Version
+  isExternal: false
+  name: Version
+  nameWithType: IEvent<TAuthenticationToken>.Version
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>.Version
+  nameWithType.vb: IEvent(Of TAuthenticationToken).Version
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken).Version
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: Cqrs.Events.IEvent`1.TimeStamp*
+  commentId: Overload:Cqrs.Events.IEvent`1.TimeStamp
+  isExternal: false
+  name: TimeStamp
+  nameWithType: IEvent<TAuthenticationToken>.TimeStamp
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>.TimeStamp
+  nameWithType.vb: IEvent(Of TAuthenticationToken).TimeStamp
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken).TimeStamp
+- uid: System.DateTimeOffset
+  commentId: T:System.DateTimeOffset
+  parent: System
+  isExternal: true
+  name: DateTimeOffset
+  nameWithType: DateTimeOffset
+  fullName: System.DateTimeOffset

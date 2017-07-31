@@ -17,6 +17,7 @@ using Microsoft.CSharp.RuntimeBinder;
 // ReSharper disable once CheckNamespace
 namespace System.Web.Helpers
 {
+#pragma warning disable 1591
 	public static class Json
 	{
 		private static readonly JavaScriptSerializer _serializer = CreateSerializer();
@@ -371,4 +372,5 @@ namespace System.Web.Helpers
 			return provider.GetMetaObject(parameter).GetDynamicMemberNames();
 		}
 	}
+#pragma warning restore 1591
 }

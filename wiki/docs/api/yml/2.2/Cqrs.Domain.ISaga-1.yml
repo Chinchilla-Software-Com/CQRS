@@ -1,0 +1,639 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Domain.ISaga`1
+  commentId: T:Cqrs.Domain.ISaga`1
+  id: ISaga`1
+  parent: Cqrs.Domain
+  children:
+  - Cqrs.Domain.ISaga`1.GetUncommittedChanges
+  - Cqrs.Domain.ISaga`1.Id
+  - Cqrs.Domain.ISaga`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.ISagaEvent{`0}})
+  - Cqrs.Domain.ISaga`1.MarkChangesAsCommitted
+  - Cqrs.Domain.ISaga`1.Version
+  langs:
+  - csharp
+  - vb
+  name: ISaga<TAuthenticationToken>
+  nameWithType: ISaga<TAuthenticationToken>
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>
+  type: Interface
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/ISaga.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: ISaga
+    path: Framework/Cqrs/Domain/ISaga.cs
+    startLine: 32
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nAn independent component that reacts to domain <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> in a cross-<xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>, eventually consistent manner. Time can also be a trigger. A <xref href=\"Cqrs.Domain.Saga%601\" data-throw-if-not-resolved=\"false\"></xref> can sometimes be purely reactive, and sometimes represent workflows.\n\nFrom an implementation perspective, a <xref href=\"Cqrs.Domain.Saga%601\" data-throw-if-not-resolved=\"false\"></xref> is a state machine that is driven forward by incoming <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> (which may come from many <xref href=\"Cqrs.Domain.AggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> or other <xref href=\"Cqrs.Domain.Saga%601\" data-throw-if-not-resolved=\"false\"></xref>). Some states will have side effects, such as sending <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>, talking to external web services, or sending emails.\n"
+  remarks: "\nIsn&apos;t a <xref href=\"Cqrs.Domain.Saga%601\" data-throw-if-not-resolved=\"false\"></xref> just leaked domain logic?\nNo.\nA <xref href=\"Cqrs.Domain.Saga%601\" data-throw-if-not-resolved=\"false\"></xref> can doing things that no individual <xref href=\"Cqrs.Domain.AggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> can sensibly do. Thus, it&apos;s not a logic leak since the logic didn&apos;t belong in an <xref href=\"Cqrs.Domain.AggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> anyway. Furthermore, we&apos;re not breaking encapsulation in any way, since <xref href=\"Cqrs.Domain.Saga%601\" data-throw-if-not-resolved=\"false\"></xref> operate with <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>, which are part of the public API.\n\nHow can I make my <xref href=\"Cqrs.Domain.Saga%601\" data-throw-if-not-resolved=\"false\"></xref> react to an <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> that did not happen?\nThe <xref href=\"Cqrs.Domain.Saga%601\" data-throw-if-not-resolved=\"false\"></xref>, besides reacting to domain <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>, can be &quot;woken up&quot; by recurrent internal alarms. Implementing such alarms is easy. See cron in Unix, or triggered WebJobs in Azure for examples.\n\nHow does the <xref href=\"Cqrs.Domain.Saga%601\" data-throw-if-not-resolved=\"false\"></xref> interact with the write side?\nBy sending an <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> to it.\n"
+  example: []
+  syntax:
+    content: public interface ISaga<TAuthenticationToken>
+    typeParameters:
+    - id: TAuthenticationToken
+    content.vb: Public Interface ISaga(Of TAuthenticationToken)
+  nameWithType.vb: ISaga(Of TAuthenticationToken)
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken)
+  name.vb: ISaga(Of TAuthenticationToken)
+- uid: Cqrs.Domain.ISaga`1.Id
+  commentId: P:Cqrs.Domain.ISaga`1.Id
+  id: Id
+  parent: Cqrs.Domain.ISaga`1
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: ISaga<TAuthenticationToken>.Id
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>.Id
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/ISaga.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Id
+    path: Framework/Cqrs/Domain/ISaga.cs
+    startLine: 37
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nThe identifier of the <xref href=\"Cqrs.Domain.ISaga%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      Guid Id { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: >-
+      <DataMember>
+
+      ReadOnly Property Id As Guid
+  overload: Cqrs.Domain.ISaga`1.Id*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  nameWithType.vb: ISaga(Of TAuthenticationToken).Id
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken).Id
+- uid: Cqrs.Domain.ISaga`1.Version
+  commentId: P:Cqrs.Domain.ISaga`1.Version
+  id: Version
+  parent: Cqrs.Domain.ISaga`1
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: ISaga<TAuthenticationToken>.Version
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>.Version
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/ISaga.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Version
+    path: Framework/Cqrs/Domain/ISaga.cs
+    startLine: 43
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nThe current version of this <xref href=\"Cqrs.Domain.ISaga%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      int Version { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <DataMember>
+
+      ReadOnly Property Version As Integer
+  overload: Cqrs.Domain.ISaga`1.Version*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  nameWithType.vb: ISaga(Of TAuthenticationToken).Version
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken).Version
+- uid: Cqrs.Domain.ISaga`1.GetUncommittedChanges
+  commentId: M:Cqrs.Domain.ISaga`1.GetUncommittedChanges
+  id: GetUncommittedChanges
+  parent: Cqrs.Domain.ISaga`1
+  langs:
+  - csharp
+  - vb
+  name: GetUncommittedChanges()
+  nameWithType: ISaga<TAuthenticationToken>.GetUncommittedChanges()
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>.GetUncommittedChanges()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/ISaga.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GetUncommittedChanges
+    path: Framework/Cqrs/Domain/ISaga.cs
+    startLine: 49
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nGet all applied changes that haven&apos;t yet been committed.\n"
+  example: []
+  syntax:
+    content: IEnumerable<ISagaEvent<TAuthenticationToken>> GetUncommittedChanges()
+    return:
+      type: System.Collections.Generic.IEnumerable{Cqrs.Events.ISagaEvent{{TAuthenticationToken}}}
+    content.vb: Function GetUncommittedChanges As IEnumerable(Of ISagaEvent(Of TAuthenticationToken))
+  overload: Cqrs.Domain.ISaga`1.GetUncommittedChanges*
+  nameWithType.vb: ISaga(Of TAuthenticationToken).GetUncommittedChanges()
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken).GetUncommittedChanges()
+- uid: Cqrs.Domain.ISaga`1.MarkChangesAsCommitted
+  commentId: M:Cqrs.Domain.ISaga`1.MarkChangesAsCommitted
+  id: MarkChangesAsCommitted
+  parent: Cqrs.Domain.ISaga`1
+  langs:
+  - csharp
+  - vb
+  name: MarkChangesAsCommitted()
+  nameWithType: ISaga<TAuthenticationToken>.MarkChangesAsCommitted()
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>.MarkChangesAsCommitted()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/ISaga.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: MarkChangesAsCommitted
+    path: Framework/Cqrs/Domain/ISaga.cs
+    startLine: 54
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nMark all applied changes as committed, increment <xref href=\"Cqrs.Domain.ISaga%601.Version\" data-throw-if-not-resolved=\"false\"></xref> and flush the internal collection of changes.\n"
+  example: []
+  syntax:
+    content: void MarkChangesAsCommitted()
+    content.vb: Sub MarkChangesAsCommitted
+  overload: Cqrs.Domain.ISaga`1.MarkChangesAsCommitted*
+  nameWithType.vb: ISaga(Of TAuthenticationToken).MarkChangesAsCommitted()
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken).MarkChangesAsCommitted()
+- uid: Cqrs.Domain.ISaga`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.ISagaEvent{`0}})
+  commentId: M:Cqrs.Domain.ISaga`1.LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.ISagaEvent{`0}})
+  id: LoadFromHistory(System.Collections.Generic.IEnumerable{Cqrs.Events.ISagaEvent{`0}})
+  parent: Cqrs.Domain.ISaga`1
+  langs:
+  - csharp
+  - vb
+  name: LoadFromHistory(IEnumerable<ISagaEvent<TAuthenticationToken>>)
+  nameWithType: ISaga<TAuthenticationToken>.LoadFromHistory(IEnumerable<ISagaEvent<TAuthenticationToken>>)
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>.LoadFromHistory(System.Collections.Generic.IEnumerable<Cqrs.Events.ISagaEvent<TAuthenticationToken>>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Domain/ISaga.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: LoadFromHistory
+    path: Framework/Cqrs/Domain/ISaga.cs
+    startLine: 60
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Domain
+  summary: "\nApply all the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> in <span class=\"paramref\">history</span>\nusing event replay to this instance.\n"
+  example: []
+  syntax:
+    content: void LoadFromHistory(IEnumerable<ISagaEvent<TAuthenticationToken>> history)
+    parameters:
+    - id: history
+      type: System.Collections.Generic.IEnumerable{Cqrs.Events.ISagaEvent{{TAuthenticationToken}}}
+    content.vb: Sub LoadFromHistory(history As IEnumerable(Of ISagaEvent(Of TAuthenticationToken)))
+  overload: Cqrs.Domain.ISaga`1.LoadFromHistory*
+  nameWithType.vb: ISaga(Of TAuthenticationToken).LoadFromHistory(IEnumerable(Of ISagaEvent(Of TAuthenticationToken)))
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken).LoadFromHistory(System.Collections.Generic.IEnumerable(Of Cqrs.Events.ISagaEvent(Of TAuthenticationToken)))
+  name.vb: LoadFromHistory(IEnumerable(Of ISagaEvent(Of TAuthenticationToken)))
+references:
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  isExternal: false
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.Saga`1
+  commentId: T:Cqrs.Domain.Saga`1
+  isExternal: false
+  name: Saga<TAuthenticationToken>
+  nameWithType: Saga<TAuthenticationToken>
+  fullName: Cqrs.Domain.Saga<TAuthenticationToken>
+  nameWithType.vb: Saga(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.Saga(Of TAuthenticationToken)
+  name.vb: Saga(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.Saga`1
+    name: Saga
+    nameWithType: Saga
+    fullName: Cqrs.Domain.Saga
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.Saga`1
+    name: Saga
+    nameWithType: Saga
+    fullName: Cqrs.Domain.Saga
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.AggregateRoot`1
+  commentId: T:Cqrs.Domain.AggregateRoot`1
+  isExternal: false
+  name: AggregateRoot<TAuthenticationToken>
+  nameWithType: AggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.AggregateRoot<TAuthenticationToken>
+  nameWithType.vb: AggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.AggregateRoot(Of TAuthenticationToken)
+  name.vb: AggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.AggregateRoot`1
+    name: AggregateRoot
+    nameWithType: AggregateRoot
+    fullName: Cqrs.Domain.AggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.AggregateRoot`1
+    name: AggregateRoot
+    nameWithType: AggregateRoot
+    fullName: Cqrs.Domain.AggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Commands.ICommand`1
+  commentId: T:Cqrs.Commands.ICommand`1
+  isExternal: false
+  name: ICommand<TAuthenticationToken>
+  nameWithType: ICommand<TAuthenticationToken>
+  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>
+  nameWithType.vb: ICommand(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken)
+  name.vb: ICommand(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain
+  commentId: N:Cqrs.Domain
+  isExternal: false
+  name: Cqrs.Domain
+  nameWithType: Cqrs.Domain
+  fullName: Cqrs.Domain
+- uid: Cqrs.Domain.ISaga`1
+  commentId: T:Cqrs.Domain.ISaga`1
+  isExternal: false
+  name: ISaga<TAuthenticationToken>
+  nameWithType: ISaga<TAuthenticationToken>
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>
+  nameWithType.vb: ISaga(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken)
+  name.vb: ISaga(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.ISaga`1
+    name: ISaga
+    nameWithType: ISaga
+    fullName: Cqrs.Domain.ISaga
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.ISaga`1
+    name: ISaga
+    nameWithType: ISaga
+    fullName: Cqrs.Domain.ISaga
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.ISaga`1.Id*
+  commentId: Overload:Cqrs.Domain.ISaga`1.Id
+  isExternal: false
+  name: Id
+  nameWithType: ISaga<TAuthenticationToken>.Id
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>.Id
+  nameWithType.vb: ISaga(Of TAuthenticationToken).Id
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken).Id
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Cqrs.Domain.ISaga`1.Version*
+  commentId: Overload:Cqrs.Domain.ISaga`1.Version
+  isExternal: false
+  name: Version
+  nameWithType: ISaga<TAuthenticationToken>.Version
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>.Version
+  nameWithType.vb: ISaga(Of TAuthenticationToken).Version
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken).Version
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: Cqrs.Domain.ISaga`1.GetUncommittedChanges*
+  commentId: Overload:Cqrs.Domain.ISaga`1.GetUncommittedChanges
+  isExternal: false
+  name: GetUncommittedChanges
+  nameWithType: ISaga<TAuthenticationToken>.GetUncommittedChanges
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>.GetUncommittedChanges
+  nameWithType.vb: ISaga(Of TAuthenticationToken).GetUncommittedChanges
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken).GetUncommittedChanges
+- uid: System.Collections.Generic.IEnumerable{Cqrs.Events.ISagaEvent{{TAuthenticationToken}}}
+  commentId: T:System.Collections.Generic.IEnumerable{Cqrs.Events.ISagaEvent{`0}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<ISagaEvent<TAuthenticationToken>>
+  nameWithType: IEnumerable<ISagaEvent<TAuthenticationToken>>
+  fullName: System.Collections.Generic.IEnumerable<Cqrs.Events.ISagaEvent<TAuthenticationToken>>
+  nameWithType.vb: IEnumerable(Of ISagaEvent(Of TAuthenticationToken))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Cqrs.Events.ISagaEvent(Of TAuthenticationToken))
+  name.vb: IEnumerable(Of ISagaEvent(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Events.ISagaEvent`1
+    name: ISagaEvent
+    nameWithType: ISagaEvent
+    fullName: Cqrs.Events.ISagaEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Events.ISagaEvent`1
+    name: ISagaEvent
+    nameWithType: ISagaEvent
+    fullName: Cqrs.Events.ISagaEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: false
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: Cqrs.Domain.ISaga`1.Version
+  commentId: P:Cqrs.Domain.ISaga`1.Version
+  isExternal: false
+  name: Version
+  nameWithType: ISaga<TAuthenticationToken>.Version
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>.Version
+  nameWithType.vb: ISaga(Of TAuthenticationToken).Version
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken).Version
+- uid: Cqrs.Domain.ISaga`1.MarkChangesAsCommitted*
+  commentId: Overload:Cqrs.Domain.ISaga`1.MarkChangesAsCommitted
+  isExternal: false
+  name: MarkChangesAsCommitted
+  nameWithType: ISaga<TAuthenticationToken>.MarkChangesAsCommitted
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>.MarkChangesAsCommitted
+  nameWithType.vb: ISaga(Of TAuthenticationToken).MarkChangesAsCommitted
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken).MarkChangesAsCommitted
+- uid: Cqrs.Domain.ISaga`1.LoadFromHistory*
+  commentId: Overload:Cqrs.Domain.ISaga`1.LoadFromHistory
+  isExternal: false
+  name: LoadFromHistory
+  nameWithType: ISaga<TAuthenticationToken>.LoadFromHistory
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>.LoadFromHistory
+  nameWithType.vb: ISaga(Of TAuthenticationToken).LoadFromHistory
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken).LoadFromHistory

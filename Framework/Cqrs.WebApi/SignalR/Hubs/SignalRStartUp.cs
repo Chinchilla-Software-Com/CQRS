@@ -16,20 +16,35 @@ using Owin;
 [assembly: OwinStartup("Cqrs.WebApi.SignalR.Hubs.SignalRStartUp", typeof(Cqrs.WebApi.SignalR.Hubs.SignalRStartUp))]
 namespace Cqrs.WebApi.SignalR.Hubs
 {
+	/// <summary>
+	/// A Start-up class for SignalR. wired in using <see cref="OwinStartupAttribute">OwinStartup</see>.
+	/// </summary>
 	public class SignalRStartUp
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>.
+		/// </summary>
 		public IConfigurationManager ConfigurationManager { get; set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="SignalRStartUp"/> creating a new instance of <see cref="ConfigurationManager"/>.
+		/// </summary>
 		public SignalRStartUp()
 			:this (new ConfigurationManager())
 		{
 		}
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="SignalRStartUp"/> with the provided <paramref name="configurationManager"/>.
+		/// </summary>
 		public SignalRStartUp(IConfigurationManager configurationManager)
 		{
 			ConfigurationManager = configurationManager;
 		}
 
+		/// <summary>
+		/// Configure SignalR to run.
+		/// </summary>
 		public virtual void Configuration(IAppBuilder app)
 		{
 			string url;

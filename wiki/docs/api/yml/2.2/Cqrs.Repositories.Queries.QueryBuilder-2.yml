@@ -1,0 +1,3553 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2
+  commentId: T:Cqrs.Repositories.Queries.QueryBuilder`2
+  id: QueryBuilder`2
+  parent: Cqrs.Repositories.Queries
+  children:
+  - Cqrs.Repositories.Queries.QueryBuilder`2.#ctor(Cqrs.DataStores.IDataStore{`1},Cqrs.Configuration.IDependencyResolver)
+  - Cqrs.Repositories.Queries.QueryBuilder`2.ApplySorting(`0,System.Linq.IQueryable{`1}@)
+  - Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.DataStore
+  - Cqrs.Repositories.Queries.QueryBuilder`2.DependencyResolver
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate(Cqrs.Repositories.Queries.IQueryPredicate,System.Linq.IQueryable{`1})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeAny``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompany``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompanyAndUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GetEmptyQueryPredicate
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``1(System.Func{``0,`0})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``1(System.Func{``0})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``2(System.Func{``0,``1,`0})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``3(System.Func{``0,``1,``2,`0})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``4(System.Func{``0,``1,``2,``3,`0})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``5(System.Func{``0,``1,``2,``3,``4,`0})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionNameOfType``1(System.Func{``0,Cqrs.Repositories.Queries.IQueryPredicate})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.GetNullQueryStrategy
+  - Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeAny``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompany``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompanyAndUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  - Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  langs:
+  - csharp
+  - vb
+  name: QueryBuilder<TQueryStrategy, TData>
+  nameWithType: QueryBuilder<TQueryStrategy, TData>
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>
+  type: Class
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: QueryBuilder
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 21
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nBuilds an <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref> from a <span class=\"typeparamref\">TQueryStrategy</span>.\n"
+  example: []
+  syntax:
+    content: 'public abstract class QueryBuilder<TQueryStrategy, TData> : IQueryBuilder<TQueryStrategy, TData> where TQueryStrategy : IQueryStrategy where TData : Entity'
+    typeParameters:
+    - id: TQueryStrategy
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Repositories.Queries.IQueryStrategy" data-throw-if-not-resolved="false"></xref>.
+    - id: TData
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of data to query.
+    content.vb: >-
+      Public MustInherit Class QueryBuilder(Of TQueryStrategy As IQueryStrategy, TData As Entity)
+          Implements IQueryBuilder(Of TQueryStrategy, TData)
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder`2
+  - Cqrs.Azure.BlobStorage.Test.Integration.TableStorageDataStoreTests.TestQueryBuilder`1
+  implements:
+  - Cqrs.Repositories.Queries.IQueryBuilder{{TQueryStrategy},{TData}}
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData)
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData)
+  name.vb: QueryBuilder(Of TQueryStrategy, TData)
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.DataStore
+  commentId: P:Cqrs.Repositories.Queries.QueryBuilder`2.DataStore
+  id: DataStore
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: DataStore
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.DataStore
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.DataStore
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: DataStore
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 28
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nGets or set the <xref href=\"Cqrs.DataStores.IDataStore%601\" data-throw-if-not-resolved=\"false\"></xref> to use.\n"
+  example: []
+  syntax:
+    content: protected IDataStore<TData> DataStore { get; }
+    parameters: []
+    return:
+      type: Cqrs.DataStores.IDataStore{{TData}}
+    content.vb: Protected ReadOnly Property DataStore As IDataStore(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.DataStore*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).DataStore
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).DataStore
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.DependencyResolver
+  commentId: P:Cqrs.Repositories.Queries.QueryBuilder`2.DependencyResolver
+  id: DependencyResolver
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: DependencyResolver
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.DependencyResolver
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.DependencyResolver
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: DependencyResolver
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 33
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nGets or set the <xref href=\"Cqrs.Configuration.IDependencyResolver\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected IDependencyResolver DependencyResolver { get; }
+    parameters: []
+    return:
+      type: Cqrs.Configuration.IDependencyResolver
+    content.vb: Protected ReadOnly Property DependencyResolver As IDependencyResolver
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.DependencyResolver*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).DependencyResolver
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).DependencyResolver
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.#ctor(Cqrs.DataStores.IDataStore{`1},Cqrs.Configuration.IDependencyResolver)
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.#ctor(Cqrs.DataStores.IDataStore{`1},Cqrs.Configuration.IDependencyResolver)
+  id: '#ctor(Cqrs.DataStores.IDataStore{`1},Cqrs.Configuration.IDependencyResolver)'
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: QueryBuilder(IDataStore<TData>, IDependencyResolver)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.QueryBuilder(IDataStore<TData>, IDependencyResolver)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.QueryBuilder(Cqrs.DataStores.IDataStore<TData>, Cqrs.Configuration.IDependencyResolver)
+  type: Constructor
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: .ctor
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 38
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Repositories.Queries.QueryBuilder%602\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected QueryBuilder(IDataStore<TData> dataStore, IDependencyResolver dependencyResolver)
+    parameters:
+    - id: dataStore
+      type: Cqrs.DataStores.IDataStore{{TData}}
+    - id: dependencyResolver
+      type: Cqrs.Configuration.IDependencyResolver
+    content.vb: Protected Sub New(dataStore As IDataStore(Of TData), dependencyResolver As IDependencyResolver)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.#ctor*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).QueryBuilder(IDataStore(Of TData), IDependencyResolver)
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).QueryBuilder(Cqrs.DataStores.IDataStore(Of TData), Cqrs.Configuration.IDependencyResolver)
+  name.vb: QueryBuilder(IDataStore(Of TData), IDependencyResolver)
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1})
+  id: CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: CreateQueryable(ISingleResultQuery<TQueryStrategy, TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.CreateQueryable(ISingleResultQuery<TQueryStrategy, TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery<TQueryStrategy, TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: CreateQueryable
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 51
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nCreate an <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref> of <span class=\"typeparamref\">TData</span>\nthat expects a single <span class=\"typeparamref\">TData</span> item.\n"
+  example: []
+  syntax:
+    content: public virtual IQueryable<TData> CreateQueryable(ISingleResultQuery<TQueryStrategy, TData> singleResultQuery)
+    parameters:
+    - id: singleResultQuery
+      type: Cqrs.Repositories.Queries.ISingleResultQuery{{TQueryStrategy},{TData}}
+      description: The query.
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Public Overridable Function CreateQueryable(singleResultQuery As ISingleResultQuery(Of TQueryStrategy, TData)) As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable*
+  implements:
+  - Cqrs.Repositories.Queries.IQueryBuilder{{TQueryStrategy},{TData}}.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{{TQueryStrategy},{TData}})
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).CreateQueryable(ISingleResultQuery(Of TQueryStrategy, TData))
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery(Of TQueryStrategy, TData))
+  name.vb: CreateQueryable(ISingleResultQuery(Of TQueryStrategy, TData))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1})
+  id: CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: CreateQueryable(ICollectionResultQuery<TQueryStrategy, TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.CreateQueryable(ICollectionResultQuery<TQueryStrategy, TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery<TQueryStrategy, TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: CreateQueryable
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 63
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nCreate an <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref> of <span class=\"typeparamref\">TData</span>\nthat expects a collection of <span class=\"typeparamref\">TData</span> items.\n"
+  example: []
+  syntax:
+    content: public virtual IQueryable<TData> CreateQueryable(ICollectionResultQuery<TQueryStrategy, TData> collectionResultQuery)
+    parameters:
+    - id: collectionResultQuery
+      type: Cqrs.Repositories.Queries.ICollectionResultQuery{{TQueryStrategy},{TData}}
+      description: The query.
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Public Overridable Function CreateQueryable(collectionResultQuery As ICollectionResultQuery(Of TQueryStrategy, TData)) As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable*
+  implements:
+  - Cqrs.Repositories.Queries.IQueryBuilder{{TQueryStrategy},{TData}}.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{{TQueryStrategy},{TData}})
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).CreateQueryable(ICollectionResultQuery(Of TQueryStrategy, TData))
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery(Of TQueryStrategy, TData))
+  name.vb: CreateQueryable(ICollectionResultQuery(Of TQueryStrategy, TData))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetEmptyQueryPredicate
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GetEmptyQueryPredicate
+  id: GetEmptyQueryPredicate
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GetEmptyQueryPredicate()
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetEmptyQueryPredicate()
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetEmptyQueryPredicate()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GetEmptyQueryPredicate
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 75
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nReturns the <xref href=\"Cqrs.Repositories.Queries.QueryBuilder%602.DataStore\" data-throw-if-not-resolved=\"false\"></xref> itself.\n"
+  example: []
+  syntax:
+    content: protected virtual IQueryable<TData> GetEmptyQueryPredicate()
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Protected Overridable Function GetEmptyQueryPredicate As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GetEmptyQueryPredicate*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetEmptyQueryPredicate()
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetEmptyQueryPredicate()
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate(Cqrs.Repositories.Queries.IQueryPredicate,System.Linq.IQueryable{`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate(Cqrs.Repositories.Queries.IQueryPredicate,System.Linq.IQueryable{`1})
+  id: GeneratePredicate(Cqrs.Repositories.Queries.IQueryPredicate,System.Linq.IQueryable{`1})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GeneratePredicate(IQueryPredicate, IQueryable<TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicate(IQueryPredicate, IQueryable<TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicate(Cqrs.Repositories.Queries.IQueryPredicate, System.Linq.IQueryable<TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GeneratePredicate
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 84
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nBuilds an <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref> from the <span class=\"paramref\">queryPredicate</span> and an optional <span class=\"paramref\">leftHandQueryable</span>.\nThis recursively calls itself and may call <xref href=\"Cqrs.Repositories.Queries.QueryBuilder%602.GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate%2cSystem.Linq.IQueryable%7b%601%7d)\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual IQueryable<TData> GeneratePredicate(IQueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null)
+    parameters:
+    - id: queryPredicate
+      type: Cqrs.Repositories.Queries.IQueryPredicate
+    - id: leftHandQueryable
+      type: System.Linq.IQueryable{{TData}}
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Protected Overridable Function GeneratePredicate(queryPredicate As IQueryPredicate, leftHandQueryable As IQueryable(Of TData) = Nothing) As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicate(IQueryPredicate, IQueryable(Of TData))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicate(Cqrs.Repositories.Queries.IQueryPredicate, System.Linq.IQueryable(Of TData))
+  name.vb: GeneratePredicate(IQueryPredicate, IQueryable(Of TData))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  id: GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GeneratePredicateIsNotLogicallyDeleted(QueryPredicate, IQueryable<TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicateIsNotLogicallyDeleted(QueryPredicate, IQueryable<TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable<TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GeneratePredicateIsNotLogicallyDeleted
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 110
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nBuilds the relevant <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref> for <xref href=\"Cqrs.Repositories.Queries.QueryStrategy.IsNotLogicallyDeleted\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual IQueryable<TData> GeneratePredicateIsNotLogicallyDeleted(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null)
+    parameters:
+    - id: queryPredicate
+      type: Cqrs.Repositories.Queries.QueryPredicate
+    - id: leftHandQueryable
+      type: System.Linq.IQueryable{{TData}}
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Protected Overridable Function GeneratePredicateIsNotLogicallyDeleted(queryPredicate As QueryPredicate, leftHandQueryable As IQueryable(Of TData) = Nothing) As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateIsNotLogicallyDeleted*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateIsNotLogicallyDeleted(QueryPredicate, IQueryable(Of TData))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable(Of TData))
+  name.vb: GeneratePredicateIsNotLogicallyDeleted(QueryPredicate, IQueryable(Of TData))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeAny``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeAny``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  id: GeneratePredicateWithPermissionScopeAny``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GeneratePredicateWithPermissionScopeAny<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeAny<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeAny<TAuthenticationToken>(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable<TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GeneratePredicateWithPermissionScopeAny
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 129
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nBuilds the relevant <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref> for <xref href=\"Cqrs.Repositories.Queries.QueryStrategy.WithPermissionScopeAny%60%601(%60%600)\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeAny<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+    parameters:
+    - id: queryPredicate
+      type: Cqrs.Repositories.Queries.QueryPredicate
+    - id: leftHandQueryable
+      type: System.Linq.IQueryable{{TData}}
+    typeParameters:
+    - id: TAuthenticationToken
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Protected Overridable Function GeneratePredicateWithPermissionScopeAny(Of TAuthenticationToken)(queryPredicate As QueryPredicate, leftHandQueryable As IQueryable(Of TData)) As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeAny*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeAny(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeAny(Of TAuthenticationToken)(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable(Of TData))
+  name.vb: GeneratePredicateWithPermissionScopeAny(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeAny``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeAny``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  id: OnGeneratePredicateWithPermissionScopeAny``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: OnGeneratePredicateWithPermissionScopeAny<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeAny<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeAny<TAuthenticationToken>(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable<TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: OnGeneratePredicateWithPermissionScopeAny
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 146
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nReturns <span class=\"paramref\">leftHandQueryable</span> or calls <xref href=\"Cqrs.Repositories.Queries.QueryBuilder%602.GetEmptyQueryPredicate\" data-throw-if-not-resolved=\"false\"></xref> if <span class=\"paramref\">leftHandQueryable</span> is null.\nOverride to build the relevant permission scope <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeAny<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+    parameters:
+    - id: queryPredicate
+      type: Cqrs.Repositories.Queries.QueryPredicate
+    - id: leftHandQueryable
+      type: System.Linq.IQueryable{{TData}}
+    typeParameters:
+    - id: TAuthenticationToken
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Protected Overridable Function OnGeneratePredicateWithPermissionScopeAny(Of TAuthenticationToken)(queryPredicate As QueryPredicate, leftHandQueryable As IQueryable(Of TData)) As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeAny*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeAny(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeAny(Of TAuthenticationToken)(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable(Of TData))
+  name.vb: OnGeneratePredicateWithPermissionScopeAny(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  id: GeneratePredicateWithPermissionScopeUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GeneratePredicateWithPermissionScopeUser<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeUser<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeUser<TAuthenticationToken>(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable<TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GeneratePredicateWithPermissionScopeUser
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 154
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nBuilds the relevant <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref> for <xref href=\"Cqrs.Repositories.Queries.QueryStrategy.WithPermissionScopeUser%60%601(%60%600)\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeUser<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+    parameters:
+    - id: queryPredicate
+      type: Cqrs.Repositories.Queries.QueryPredicate
+    - id: leftHandQueryable
+      type: System.Linq.IQueryable{{TData}}
+    typeParameters:
+    - id: TAuthenticationToken
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Protected Overridable Function GeneratePredicateWithPermissionScopeUser(Of TAuthenticationToken)(queryPredicate As QueryPredicate, leftHandQueryable As IQueryable(Of TData)) As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeUser*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeUser(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeUser(Of TAuthenticationToken)(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable(Of TData))
+  name.vb: GeneratePredicateWithPermissionScopeUser(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  id: OnGeneratePredicateWithPermissionScopeUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: OnGeneratePredicateWithPermissionScopeUser<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeUser<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeUser<TAuthenticationToken>(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable<TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: OnGeneratePredicateWithPermissionScopeUser
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 171
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nReturns <span class=\"paramref\">leftHandQueryable</span> or calls <xref href=\"Cqrs.Repositories.Queries.QueryBuilder%602.GetEmptyQueryPredicate\" data-throw-if-not-resolved=\"false\"></xref> if <span class=\"paramref\">leftHandQueryable</span> is null.\nOverride to build the relevant permission scope <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeUser<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+    parameters:
+    - id: queryPredicate
+      type: Cqrs.Repositories.Queries.QueryPredicate
+    - id: leftHandQueryable
+      type: System.Linq.IQueryable{{TData}}
+    typeParameters:
+    - id: TAuthenticationToken
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Protected Overridable Function OnGeneratePredicateWithPermissionScopeUser(Of TAuthenticationToken)(queryPredicate As QueryPredicate, leftHandQueryable As IQueryable(Of TData)) As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeUser*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeUser(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeUser(Of TAuthenticationToken)(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable(Of TData))
+  name.vb: OnGeneratePredicateWithPermissionScopeUser(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompany``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompany``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  id: GeneratePredicateWithPermissionScopeCompany``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GeneratePredicateWithPermissionScopeCompany<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeCompany<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeCompany<TAuthenticationToken>(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable<TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GeneratePredicateWithPermissionScopeCompany
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 179
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nBuilds the relevant <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref> for <xref href=\"Cqrs.Repositories.Queries.QueryStrategy.WithPermissionScopeCompany%60%601(%60%600)\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompany<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+    parameters:
+    - id: queryPredicate
+      type: Cqrs.Repositories.Queries.QueryPredicate
+    - id: leftHandQueryable
+      type: System.Linq.IQueryable{{TData}}
+    typeParameters:
+    - id: TAuthenticationToken
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Protected Overridable Function GeneratePredicateWithPermissionScopeCompany(Of TAuthenticationToken)(queryPredicate As QueryPredicate, leftHandQueryable As IQueryable(Of TData)) As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompany*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeCompany(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeCompany(Of TAuthenticationToken)(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable(Of TData))
+  name.vb: GeneratePredicateWithPermissionScopeCompany(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompany``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompany``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  id: OnGeneratePredicateWithPermissionScopeCompany``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: OnGeneratePredicateWithPermissionScopeCompany<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeCompany<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeCompany<TAuthenticationToken>(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable<TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: OnGeneratePredicateWithPermissionScopeCompany
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 196
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nReturns <span class=\"paramref\">leftHandQueryable</span> or calls <xref href=\"Cqrs.Repositories.Queries.QueryBuilder%602.GetEmptyQueryPredicate\" data-throw-if-not-resolved=\"false\"></xref> if <span class=\"paramref\">leftHandQueryable</span> is null.\nOverride to build the relevant permission scope <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompany<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+    parameters:
+    - id: queryPredicate
+      type: Cqrs.Repositories.Queries.QueryPredicate
+    - id: leftHandQueryable
+      type: System.Linq.IQueryable{{TData}}
+    typeParameters:
+    - id: TAuthenticationToken
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Protected Overridable Function OnGeneratePredicateWithPermissionScopeCompany(Of TAuthenticationToken)(queryPredicate As QueryPredicate, leftHandQueryable As IQueryable(Of TData)) As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompany*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeCompany(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeCompany(Of TAuthenticationToken)(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable(Of TData))
+  name.vb: OnGeneratePredicateWithPermissionScopeCompany(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompanyAndUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompanyAndUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  id: GeneratePredicateWithPermissionScopeCompanyAndUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GeneratePredicateWithPermissionScopeCompanyAndUser<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeCompanyAndUser<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeCompanyAndUser<TAuthenticationToken>(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable<TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GeneratePredicateWithPermissionScopeCompanyAndUser
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 204
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nBuilds the relevant <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref> for <xref href=\"Cqrs.Repositories.Queries.QueryStrategy.WithPermissionScopeCompanyAndUser%60%601(%60%600)\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual IQueryable<TData> GeneratePredicateWithPermissionScopeCompanyAndUser<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+    parameters:
+    - id: queryPredicate
+      type: Cqrs.Repositories.Queries.QueryPredicate
+    - id: leftHandQueryable
+      type: System.Linq.IQueryable{{TData}}
+    typeParameters:
+    - id: TAuthenticationToken
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Protected Overridable Function GeneratePredicateWithPermissionScopeCompanyAndUser(Of TAuthenticationToken)(queryPredicate As QueryPredicate, leftHandQueryable As IQueryable(Of TData)) As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompanyAndUser*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeCompanyAndUser(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeCompanyAndUser(Of TAuthenticationToken)(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable(Of TData))
+  name.vb: GeneratePredicateWithPermissionScopeCompanyAndUser(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompanyAndUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompanyAndUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  id: OnGeneratePredicateWithPermissionScopeCompanyAndUser``1(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: OnGeneratePredicateWithPermissionScopeCompanyAndUser<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeCompanyAndUser<TAuthenticationToken>(QueryPredicate, IQueryable<TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeCompanyAndUser<TAuthenticationToken>(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable<TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: OnGeneratePredicateWithPermissionScopeCompanyAndUser
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 221
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nReturns <span class=\"paramref\">leftHandQueryable</span> or calls <xref href=\"Cqrs.Repositories.Queries.QueryBuilder%602.GetEmptyQueryPredicate\" data-throw-if-not-resolved=\"false\"></xref> if <span class=\"paramref\">leftHandQueryable</span> is null.\nOverride to build the relevant permission scope <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual IQueryable<TData> OnGeneratePredicateWithPermissionScopeCompanyAndUser<TAuthenticationToken>(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable)
+    parameters:
+    - id: queryPredicate
+      type: Cqrs.Repositories.Queries.QueryPredicate
+    - id: leftHandQueryable
+      type: System.Linq.IQueryable{{TData}}
+    typeParameters:
+    - id: TAuthenticationToken
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Protected Overridable Function OnGeneratePredicateWithPermissionScopeCompanyAndUser(Of TAuthenticationToken)(queryPredicate As QueryPredicate, leftHandQueryable As IQueryable(Of TData)) As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompanyAndUser*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeCompanyAndUser(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeCompanyAndUser(Of TAuthenticationToken)(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable(Of TData))
+  name.vb: OnGeneratePredicateWithPermissionScopeCompanyAndUser(Of TAuthenticationToken)(QueryPredicate, IQueryable(Of TData))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  id: GeneratePredicate(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GeneratePredicate(QueryPredicate, IQueryable<TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicate(QueryPredicate, IQueryable<TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicate(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable<TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GeneratePredicate
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 229
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nOverride to build an <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref> from the <span class=\"paramref\">queryPredicate</span> and an optional <span class=\"paramref\">leftHandQueryable</span>.\n"
+  example: []
+  syntax:
+    content: protected abstract IQueryable<TData> GeneratePredicate(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null)
+    parameters:
+    - id: queryPredicate
+      type: Cqrs.Repositories.Queries.QueryPredicate
+    - id: leftHandQueryable
+      type: System.Linq.IQueryable{{TData}}
+    return:
+      type: System.Linq.IQueryable{{TData}}
+    content.vb: Protected MustOverride Function GeneratePredicate(queryPredicate As QueryPredicate, leftHandQueryable As IQueryable(Of TData) = Nothing) As IQueryable(Of TData)
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicate(QueryPredicate, IQueryable(Of TData))
+  modifiers.csharp:
+  - protected
+  - abstract
+  modifiers.vb:
+  - Protected
+  - MustOverride
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicate(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable(Of TData))
+  name.vb: GeneratePredicate(QueryPredicate, IQueryable(Of TData))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionNameOfType``1(System.Func{``0,Cqrs.Repositories.Queries.IQueryPredicate})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionNameOfType``1(System.Func{``0,Cqrs.Repositories.Queries.IQueryPredicate})
+  id: GetFunctionNameOfType``1(System.Func{``0,Cqrs.Repositories.Queries.IQueryPredicate})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GetFunctionNameOfType<TParameter1>(Func<TParameter1, IQueryPredicate>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetFunctionNameOfType<TParameter1>(Func<TParameter1, IQueryPredicate>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetFunctionNameOfType<TParameter1>(System.Func<TParameter1, Cqrs.Repositories.Queries.IQueryPredicate>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GetFunctionNameOfType
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 234
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nGets the Name of the method in <span class=\"paramref\">expression</span>\n"
+  example: []
+  syntax:
+    content: protected virtual string GetFunctionNameOfType<TParameter1>(Func<TParameter1, IQueryPredicate> expression)
+    parameters:
+    - id: expression
+      type: System.Func{{TParameter1},Cqrs.Repositories.Queries.IQueryPredicate}
+    typeParameters:
+    - id: TParameter1
+    return:
+      type: System.String
+    content.vb: Protected Overridable Function GetFunctionNameOfType(Of TParameter1)(expression As Func(Of TParameter1, IQueryPredicate)) As String
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionNameOfType*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetFunctionNameOfType(Of TParameter1)(Func(Of TParameter1, IQueryPredicate))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetFunctionNameOfType(Of TParameter1)(System.Func(Of TParameter1, Cqrs.Repositories.Queries.IQueryPredicate))
+  name.vb: GetFunctionNameOfType(Of TParameter1)(Func(Of TParameter1, IQueryPredicate))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``1(System.Func{``0})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``1(System.Func{``0})
+  id: GetFunctionName``1(System.Func{``0})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GetFunctionName<T>(Func<T>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetFunctionName<T>(Func<T>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetFunctionName<T>(System.Func<T>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GetFunctionName
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 242
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nGets the Name of the method in <span class=\"paramref\">expression</span>\n"
+  example: []
+  syntax:
+    content: protected virtual string GetFunctionName<T>(Func<T> expression)
+    parameters:
+    - id: expression
+      type: System.Func{{T}}
+    typeParameters:
+    - id: T
+    return:
+      type: System.String
+    content.vb: Protected Overridable Function GetFunctionName(Of T)(expression As Func(Of T)) As String
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetFunctionName(Of T)(Func(Of T))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetFunctionName(Of T)(System.Func(Of T))
+  name.vb: GetFunctionName(Of T)(Func(Of T))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``1(System.Func{``0,`0})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``1(System.Func{``0,`0})
+  id: GetFunctionName``1(System.Func{``0,`0})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GetFunctionName<TParameter1>(Func<TParameter1, TQueryStrategy>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetFunctionName<TParameter1>(Func<TParameter1, TQueryStrategy>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetFunctionName<TParameter1>(System.Func<TParameter1, TQueryStrategy>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GetFunctionName
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 250
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nGets the Name of the method in <span class=\"paramref\">expression</span>\n"
+  example: []
+  syntax:
+    content: protected virtual string GetFunctionName<TParameter1>(Func<TParameter1, TQueryStrategy> expression)
+    parameters:
+    - id: expression
+      type: System.Func{{TParameter1},{TQueryStrategy}}
+    typeParameters:
+    - id: TParameter1
+    return:
+      type: System.String
+    content.vb: Protected Overridable Function GetFunctionName(Of TParameter1)(expression As Func(Of TParameter1, TQueryStrategy)) As String
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetFunctionName(Of TParameter1)(Func(Of TParameter1, TQueryStrategy))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetFunctionName(Of TParameter1)(System.Func(Of TParameter1, TQueryStrategy))
+  name.vb: GetFunctionName(Of TParameter1)(Func(Of TParameter1, TQueryStrategy))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``2(System.Func{``0,``1,`0})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``2(System.Func{``0,``1,`0})
+  id: GetFunctionName``2(System.Func{``0,``1,`0})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GetFunctionName<TParameter1, TParameter2>(Func<TParameter1, TParameter2, TQueryStrategy>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetFunctionName<TParameter1, TParameter2>(Func<TParameter1, TParameter2, TQueryStrategy>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetFunctionName<TParameter1, TParameter2>(System.Func<TParameter1, TParameter2, TQueryStrategy>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GetFunctionName
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 258
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nGets the Name of the method in <span class=\"paramref\">expression</span>\n"
+  example: []
+  syntax:
+    content: protected virtual string GetFunctionName<TParameter1, TParameter2>(Func<TParameter1, TParameter2, TQueryStrategy> expression)
+    parameters:
+    - id: expression
+      type: System.Func{{TParameter1},{TParameter2},{TQueryStrategy}}
+    typeParameters:
+    - id: TParameter1
+    - id: TParameter2
+    return:
+      type: System.String
+    content.vb: Protected Overridable Function GetFunctionName(Of TParameter1, TParameter2)(expression As Func(Of TParameter1, TParameter2, TQueryStrategy)) As String
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetFunctionName(Of TParameter1, TParameter2)(Func(Of TParameter1, TParameter2, TQueryStrategy))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetFunctionName(Of TParameter1, TParameter2)(System.Func(Of TParameter1, TParameter2, TQueryStrategy))
+  name.vb: GetFunctionName(Of TParameter1, TParameter2)(Func(Of TParameter1, TParameter2, TQueryStrategy))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``3(System.Func{``0,``1,``2,`0})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``3(System.Func{``0,``1,``2,`0})
+  id: GetFunctionName``3(System.Func{``0,``1,``2,`0})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GetFunctionName<TParameter1, TParameter2, TParameter3>(Func<TParameter1, TParameter2, TParameter3, TQueryStrategy>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetFunctionName<TParameter1, TParameter2, TParameter3>(Func<TParameter1, TParameter2, TParameter3, TQueryStrategy>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetFunctionName<TParameter1, TParameter2, TParameter3>(System.Func<TParameter1, TParameter2, TParameter3, TQueryStrategy>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GetFunctionName
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 266
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nGets the Name of the method in <span class=\"paramref\">expression</span>\n"
+  example: []
+  syntax:
+    content: protected virtual string GetFunctionName<TParameter1, TParameter2, TParameter3>(Func<TParameter1, TParameter2, TParameter3, TQueryStrategy> expression)
+    parameters:
+    - id: expression
+      type: System.Func{{TParameter1},{TParameter2},{TParameter3},{TQueryStrategy}}
+    typeParameters:
+    - id: TParameter1
+    - id: TParameter2
+    - id: TParameter3
+    return:
+      type: System.String
+    content.vb: Protected Overridable Function GetFunctionName(Of TParameter1, TParameter2, TParameter3)(expression As Func(Of TParameter1, TParameter2, TParameter3, TQueryStrategy)) As String
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetFunctionName(Of TParameter1, TParameter2, TParameter3)(Func(Of TParameter1, TParameter2, TParameter3, TQueryStrategy))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetFunctionName(Of TParameter1, TParameter2, TParameter3)(System.Func(Of TParameter1, TParameter2, TParameter3, TQueryStrategy))
+  name.vb: GetFunctionName(Of TParameter1, TParameter2, TParameter3)(Func(Of TParameter1, TParameter2, TParameter3, TQueryStrategy))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``4(System.Func{``0,``1,``2,``3,`0})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``4(System.Func{``0,``1,``2,``3,`0})
+  id: GetFunctionName``4(System.Func{``0,``1,``2,``3,`0})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GetFunctionName<TParameter1, TParameter2, TParameter3, TParameter4>(Func<TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetFunctionName<TParameter1, TParameter2, TParameter3, TParameter4>(Func<TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetFunctionName<TParameter1, TParameter2, TParameter3, TParameter4>(System.Func<TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GetFunctionName
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 274
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nGets the Name of the method in <span class=\"paramref\">expression</span>\n"
+  example: []
+  syntax:
+    content: protected virtual string GetFunctionName<TParameter1, TParameter2, TParameter3, TParameter4>(Func<TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy> expression)
+    parameters:
+    - id: expression
+      type: System.Func{{TParameter1},{TParameter2},{TParameter3},{TParameter4},{TQueryStrategy}}
+    typeParameters:
+    - id: TParameter1
+    - id: TParameter2
+    - id: TParameter3
+    - id: TParameter4
+    return:
+      type: System.String
+    content.vb: Protected Overridable Function GetFunctionName(Of TParameter1, TParameter2, TParameter3, TParameter4)(expression As Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy)) As String
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetFunctionName(Of TParameter1, TParameter2, TParameter3, TParameter4)(Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetFunctionName(Of TParameter1, TParameter2, TParameter3, TParameter4)(System.Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy))
+  name.vb: GetFunctionName(Of TParameter1, TParameter2, TParameter3, TParameter4)(Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``5(System.Func{``0,``1,``2,``3,``4,`0})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName``5(System.Func{``0,``1,``2,``3,``4,`0})
+  id: GetFunctionName``5(System.Func{``0,``1,``2,``3,``4,`0})
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GetFunctionName<TParameter1, TParameter2, TParameter3, TParameter4, TParameter5>(Func<TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetFunctionName<TParameter1, TParameter2, TParameter3, TParameter4, TParameter5>(Func<TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetFunctionName<TParameter1, TParameter2, TParameter3, TParameter4, TParameter5>(System.Func<TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GetFunctionName
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 282
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nGets the Name of the method in <span class=\"paramref\">expression</span>\n"
+  example: []
+  syntax:
+    content: protected virtual string GetFunctionName<TParameter1, TParameter2, TParameter3, TParameter4, TParameter5>(Func<TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy> expression)
+    parameters:
+    - id: expression
+      type: System.Func{{TParameter1},{TParameter2},{TParameter3},{TParameter4},{TParameter5},{TQueryStrategy}}
+    typeParameters:
+    - id: TParameter1
+    - id: TParameter2
+    - id: TParameter3
+    - id: TParameter4
+    - id: TParameter5
+    return:
+      type: System.String
+    content.vb: Protected Overridable Function GetFunctionName(Of TParameter1, TParameter2, TParameter3, TParameter4, TParameter5)(expression As Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy)) As String
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetFunctionName(Of TParameter1, TParameter2, TParameter3, TParameter4, TParameter5)(Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetFunctionName(Of TParameter1, TParameter2, TParameter3, TParameter4, TParameter5)(System.Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy))
+  name.vb: GetFunctionName(Of TParameter1, TParameter2, TParameter3, TParameter4, TParameter5)(Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy))
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetNullQueryStrategy
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GetNullQueryStrategy
+  id: GetNullQueryStrategy
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: GetNullQueryStrategy()
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetNullQueryStrategy()
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetNullQueryStrategy()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: GetNullQueryStrategy
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 290
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nUses <xref href=\"System.Activator.CreateInstance%60%601\" data-throw-if-not-resolved=\"false\"></xref> to create a new instance of <span class=\"typeparamref\">TQueryStrategy</span>.\n"
+  example: []
+  syntax:
+    content: protected virtual TQueryStrategy GetNullQueryStrategy()
+    return:
+      type: '{TQueryStrategy}'
+    content.vb: Protected Overridable Function GetNullQueryStrategy As TQueryStrategy
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.GetNullQueryStrategy*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetNullQueryStrategy()
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetNullQueryStrategy()
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.ApplySorting(`0,System.Linq.IQueryable{`1}@)
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.ApplySorting(`0,System.Linq.IQueryable{`1}@)
+  id: ApplySorting(`0,System.Linq.IQueryable{`1}@)
+  parent: Cqrs.Repositories.Queries.QueryBuilder`2
+  langs:
+  - csharp
+  - vb
+  name: ApplySorting(TQueryStrategy, ref IQueryable<TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.ApplySorting(TQueryStrategy, ref IQueryable<TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.ApplySorting(TQueryStrategy, ref System.Linq.IQueryable<TData>)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: ApplySorting
+    path: Framework/Cqrs/Repositories/Queries/QueryBuilder.cs
+    startLine: 300
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Repositories.Queries
+  summary: "\nOverride to build or apply any sorting required to <span class=\"paramref\">queryable</span>\n"
+  example: []
+  syntax:
+    content: protected virtual void ApplySorting(TQueryStrategy queryStrategy, ref IQueryable<TData> queryable)
+    parameters:
+    - id: queryStrategy
+      type: '{TQueryStrategy}'
+      description: The <span class="typeparamref">TQueryStrategy</span> with sorting information.
+    - id: queryable
+      type: System.Linq.IQueryable{{TData}}
+      description: The <xref href="System.Linq.IQueryable" data-throw-if-not-resolved="false"></xref> to apply sorting to.
+    content.vb: Protected Overridable Sub ApplySorting(queryStrategy As TQueryStrategy, ByRef queryable As IQueryable(Of TData))
+  overload: Cqrs.Repositories.Queries.QueryBuilder`2.ApplySorting*
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).ApplySorting(TQueryStrategy, ByRef IQueryable(Of TData))
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).ApplySorting(TQueryStrategy, ByRef System.Linq.IQueryable(Of TData))
+  name.vb: ApplySorting(TQueryStrategy, ByRef IQueryable(Of TData))
+references:
+- uid: System.Linq.IQueryable
+  commentId: T:System.Linq.IQueryable
+  parent: System.Linq
+  isExternal: true
+  name: IQueryable
+  nameWithType: IQueryable
+  fullName: System.Linq.IQueryable
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: Cqrs.Repositories.Queries.IQueryStrategy
+  commentId: T:Cqrs.Repositories.Queries.IQueryStrategy
+  parent: Cqrs.Repositories.Queries
+  isExternal: false
+  name: IQueryStrategy
+  nameWithType: IQueryStrategy
+  fullName: Cqrs.Repositories.Queries.IQueryStrategy
+- uid: Cqrs.Repositories.Queries
+  commentId: N:Cqrs.Repositories.Queries
+  isExternal: false
+  name: Cqrs.Repositories.Queries
+  nameWithType: Cqrs.Repositories.Queries
+  fullName: Cqrs.Repositories.Queries
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: Cqrs.Repositories.Queries.IQueryBuilder{{TQueryStrategy},{TData}}
+  commentId: T:Cqrs.Repositories.Queries.IQueryBuilder{`0,`1}
+  parent: Cqrs.Repositories.Queries
+  definition: Cqrs.Repositories.Queries.IQueryBuilder`2
+  name: IQueryBuilder<TQueryStrategy, TData>
+  nameWithType: IQueryBuilder<TQueryStrategy, TData>
+  fullName: Cqrs.Repositories.Queries.IQueryBuilder<TQueryStrategy, TData>
+  nameWithType.vb: IQueryBuilder(Of TQueryStrategy, TData)
+  fullName.vb: Cqrs.Repositories.Queries.IQueryBuilder(Of TQueryStrategy, TData)
+  name.vb: IQueryBuilder(Of TQueryStrategy, TData)
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.IQueryBuilder`2
+    name: IQueryBuilder
+    nameWithType: IQueryBuilder
+    fullName: Cqrs.Repositories.Queries.IQueryBuilder
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.IQueryBuilder`2
+    name: IQueryBuilder
+    nameWithType: IQueryBuilder
+    fullName: Cqrs.Repositories.Queries.IQueryBuilder
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Linq
+  commentId: N:System.Linq
+  isExternal: false
+  name: System.Linq
+  nameWithType: System.Linq
+  fullName: System.Linq
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Cqrs.Repositories.Queries.IQueryBuilder`2
+  commentId: T:Cqrs.Repositories.Queries.IQueryBuilder`2
+  isExternal: false
+  name: IQueryBuilder<TQueryStrategy, TData>
+  nameWithType: IQueryBuilder<TQueryStrategy, TData>
+  fullName: Cqrs.Repositories.Queries.IQueryBuilder<TQueryStrategy, TData>
+  nameWithType.vb: IQueryBuilder(Of TQueryStrategy, TData)
+  fullName.vb: Cqrs.Repositories.Queries.IQueryBuilder(Of TQueryStrategy, TData)
+  name.vb: IQueryBuilder(Of TQueryStrategy, TData)
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.IQueryBuilder`2
+    name: IQueryBuilder
+    nameWithType: IQueryBuilder
+    fullName: Cqrs.Repositories.Queries.IQueryBuilder
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.IQueryBuilder`2
+    name: IQueryBuilder
+    nameWithType: IQueryBuilder
+    fullName: Cqrs.Repositories.Queries.IQueryBuilder
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.DataStores.IDataStore`1
+  commentId: T:Cqrs.DataStores.IDataStore`1
+  isExternal: false
+  name: IDataStore<TData>
+  nameWithType: IDataStore<TData>
+  fullName: Cqrs.DataStores.IDataStore<TData>
+  nameWithType.vb: IDataStore(Of TData)
+  fullName.vb: Cqrs.DataStores.IDataStore(Of TData)
+  name.vb: IDataStore(Of TData)
+  spec.csharp:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.DataStore*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.DataStore
+  isExternal: false
+  name: DataStore
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.DataStore
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.DataStore
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).DataStore
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).DataStore
+- uid: Cqrs.DataStores.IDataStore{{TData}}
+  commentId: T:Cqrs.DataStores.IDataStore{`0}
+  parent: Cqrs.DataStores
+  definition: Cqrs.DataStores.IDataStore`1
+  name: IDataStore<TData>
+  nameWithType: IDataStore<TData>
+  fullName: Cqrs.DataStores.IDataStore<TData>
+  nameWithType.vb: IDataStore(Of TData)
+  fullName.vb: Cqrs.DataStores.IDataStore(Of TData)
+  name.vb: IDataStore(Of TData)
+  spec.csharp:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.DataStores
+  commentId: N:Cqrs.DataStores
+  isExternal: false
+  name: Cqrs.DataStores
+  nameWithType: Cqrs.DataStores
+  fullName: Cqrs.DataStores
+- uid: Cqrs.Configuration.IDependencyResolver
+  commentId: T:Cqrs.Configuration.IDependencyResolver
+  parent: Cqrs.Configuration
+  isExternal: false
+  name: IDependencyResolver
+  nameWithType: IDependencyResolver
+  fullName: Cqrs.Configuration.IDependencyResolver
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.DependencyResolver*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.DependencyResolver
+  isExternal: false
+  name: DependencyResolver
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.DependencyResolver
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.DependencyResolver
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).DependencyResolver
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).DependencyResolver
+- uid: Cqrs.Configuration
+  commentId: N:Cqrs.Configuration
+  isExternal: false
+  name: Cqrs.Configuration
+  nameWithType: Cqrs.Configuration
+  fullName: Cqrs.Configuration
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2
+  commentId: T:Cqrs.Repositories.Queries.QueryBuilder`2
+  isExternal: false
+  name: QueryBuilder<TQueryStrategy, TData>
+  nameWithType: QueryBuilder<TQueryStrategy, TData>
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData)
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData)
+  name.vb: QueryBuilder(Of TQueryStrategy, TData)
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.QueryBuilder`2
+    name: QueryBuilder
+    nameWithType: QueryBuilder
+    fullName: Cqrs.Repositories.Queries.QueryBuilder
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.QueryBuilder`2
+    name: QueryBuilder
+    nameWithType: QueryBuilder
+    fullName: Cqrs.Repositories.Queries.QueryBuilder
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.#ctor*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.#ctor
+  isExternal: false
+  name: QueryBuilder
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.QueryBuilder
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.QueryBuilder
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).QueryBuilder
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).QueryBuilder
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.CreateQueryable
+  isExternal: false
+  name: CreateQueryable
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.CreateQueryable
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.CreateQueryable
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).CreateQueryable
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).CreateQueryable
+- uid: Cqrs.Repositories.Queries.IQueryBuilder{{TQueryStrategy},{TData}}.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{{TQueryStrategy},{TData}})
+  commentId: M:Cqrs.Repositories.Queries.IQueryBuilder{`0,`1}.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1})
+  parent: Cqrs.Repositories.Queries.IQueryBuilder{{TQueryStrategy},{TData}}
+  definition: Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1})
+  name: CreateQueryable(ISingleResultQuery<TQueryStrategy, TData>)
+  nameWithType: IQueryBuilder<TQueryStrategy, TData>.CreateQueryable(ISingleResultQuery<TQueryStrategy, TData>)
+  fullName: Cqrs.Repositories.Queries.IQueryBuilder<TQueryStrategy, TData>.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery<TQueryStrategy, TData>)
+  nameWithType.vb: IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable(ISingleResultQuery(Of TQueryStrategy, TData))
+  fullName.vb: Cqrs.Repositories.Queries.IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery(Of TQueryStrategy, TData))
+  name.vb: CreateQueryable(ISingleResultQuery(Of TQueryStrategy, TData))
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1})
+    name: CreateQueryable
+    nameWithType: IQueryBuilder<TQueryStrategy, TData>.CreateQueryable
+    fullName: Cqrs.Repositories.Queries.IQueryBuilder<TQueryStrategy, TData>.CreateQueryable
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Repositories.Queries.ISingleResultQuery`2
+    name: ISingleResultQuery
+    nameWithType: ISingleResultQuery
+    fullName: Cqrs.Repositories.Queries.ISingleResultQuery
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1})
+    name: CreateQueryable
+    nameWithType: IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable
+    fullName: Cqrs.Repositories.Queries.IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Repositories.Queries.ISingleResultQuery`2
+    name: ISingleResultQuery
+    nameWithType: ISingleResultQuery
+    fullName: Cqrs.Repositories.Queries.ISingleResultQuery
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.ISingleResultQuery{{TQueryStrategy},{TData}}
+  commentId: T:Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1}
+  parent: Cqrs.Repositories.Queries
+  definition: Cqrs.Repositories.Queries.ISingleResultQuery`2
+  name: ISingleResultQuery<TQueryStrategy, TData>
+  nameWithType: ISingleResultQuery<TQueryStrategy, TData>
+  fullName: Cqrs.Repositories.Queries.ISingleResultQuery<TQueryStrategy, TData>
+  nameWithType.vb: ISingleResultQuery(Of TQueryStrategy, TData)
+  fullName.vb: Cqrs.Repositories.Queries.ISingleResultQuery(Of TQueryStrategy, TData)
+  name.vb: ISingleResultQuery(Of TQueryStrategy, TData)
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.ISingleResultQuery`2
+    name: ISingleResultQuery
+    nameWithType: ISingleResultQuery
+    fullName: Cqrs.Repositories.Queries.ISingleResultQuery
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.ISingleResultQuery`2
+    name: ISingleResultQuery
+    nameWithType: ISingleResultQuery
+    fullName: Cqrs.Repositories.Queries.ISingleResultQuery
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Linq.IQueryable{{TData}}
+  commentId: T:System.Linq.IQueryable{`0}
+  parent: System.Linq
+  definition: System.Linq.IQueryable`1
+  name: IQueryable<TData>
+  nameWithType: IQueryable<TData>
+  fullName: System.Linq.IQueryable<TData>
+  nameWithType.vb: IQueryable(Of TData)
+  fullName.vb: System.Linq.IQueryable(Of TData)
+  name.vb: IQueryable(Of TData)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    nameWithType: IQueryable
+    fullName: System.Linq.IQueryable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    nameWithType: IQueryable
+    fullName: System.Linq.IQueryable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1})
+  commentId: M:Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1})
+  isExternal: false
+  name: CreateQueryable(ISingleResultQuery<TQueryStrategy, TData>)
+  nameWithType: IQueryBuilder<TQueryStrategy, TData>.CreateQueryable(ISingleResultQuery<TQueryStrategy, TData>)
+  fullName: Cqrs.Repositories.Queries.IQueryBuilder<TQueryStrategy, TData>.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery<TQueryStrategy, TData>)
+  nameWithType.vb: IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable(ISingleResultQuery(Of TQueryStrategy, TData))
+  fullName.vb: Cqrs.Repositories.Queries.IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery(Of TQueryStrategy, TData))
+  name.vb: CreateQueryable(ISingleResultQuery(Of TQueryStrategy, TData))
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1})
+    name: CreateQueryable
+    nameWithType: IQueryBuilder<TQueryStrategy, TData>.CreateQueryable
+    fullName: Cqrs.Repositories.Queries.IQueryBuilder<TQueryStrategy, TData>.CreateQueryable
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Repositories.Queries.ISingleResultQuery`2
+    name: ISingleResultQuery
+    nameWithType: ISingleResultQuery
+    fullName: Cqrs.Repositories.Queries.ISingleResultQuery
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ISingleResultQuery{`0,`1})
+    name: CreateQueryable
+    nameWithType: IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable
+    fullName: Cqrs.Repositories.Queries.IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Repositories.Queries.ISingleResultQuery`2
+    name: ISingleResultQuery
+    nameWithType: ISingleResultQuery
+    fullName: Cqrs.Repositories.Queries.ISingleResultQuery
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.ISingleResultQuery`2
+  commentId: T:Cqrs.Repositories.Queries.ISingleResultQuery`2
+  isExternal: false
+  name: ISingleResultQuery<TQueryStrategy, TData>
+  nameWithType: ISingleResultQuery<TQueryStrategy, TData>
+  fullName: Cqrs.Repositories.Queries.ISingleResultQuery<TQueryStrategy, TData>
+  nameWithType.vb: ISingleResultQuery(Of TQueryStrategy, TData)
+  fullName.vb: Cqrs.Repositories.Queries.ISingleResultQuery(Of TQueryStrategy, TData)
+  name.vb: ISingleResultQuery(Of TQueryStrategy, TData)
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.ISingleResultQuery`2
+    name: ISingleResultQuery
+    nameWithType: ISingleResultQuery
+    fullName: Cqrs.Repositories.Queries.ISingleResultQuery
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.ISingleResultQuery`2
+    name: ISingleResultQuery
+    nameWithType: ISingleResultQuery
+    fullName: Cqrs.Repositories.Queries.ISingleResultQuery
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Linq.IQueryable`1
+  commentId: T:System.Linq.IQueryable`1
+  isExternal: true
+  name: IQueryable<T>
+  nameWithType: IQueryable<T>
+  fullName: System.Linq.IQueryable<T>
+  nameWithType.vb: IQueryable(Of T)
+  fullName.vb: System.Linq.IQueryable(Of T)
+  name.vb: IQueryable(Of T)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    nameWithType: IQueryable
+    fullName: System.Linq.IQueryable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    nameWithType: IQueryable
+    fullName: System.Linq.IQueryable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.IQueryBuilder{{TQueryStrategy},{TData}}.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{{TQueryStrategy},{TData}})
+  commentId: M:Cqrs.Repositories.Queries.IQueryBuilder{`0,`1}.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1})
+  parent: Cqrs.Repositories.Queries.IQueryBuilder{{TQueryStrategy},{TData}}
+  definition: Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1})
+  name: CreateQueryable(ICollectionResultQuery<TQueryStrategy, TData>)
+  nameWithType: IQueryBuilder<TQueryStrategy, TData>.CreateQueryable(ICollectionResultQuery<TQueryStrategy, TData>)
+  fullName: Cqrs.Repositories.Queries.IQueryBuilder<TQueryStrategy, TData>.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery<TQueryStrategy, TData>)
+  nameWithType.vb: IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable(ICollectionResultQuery(Of TQueryStrategy, TData))
+  fullName.vb: Cqrs.Repositories.Queries.IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery(Of TQueryStrategy, TData))
+  name.vb: CreateQueryable(ICollectionResultQuery(Of TQueryStrategy, TData))
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1})
+    name: CreateQueryable
+    nameWithType: IQueryBuilder<TQueryStrategy, TData>.CreateQueryable
+    fullName: Cqrs.Repositories.Queries.IQueryBuilder<TQueryStrategy, TData>.CreateQueryable
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Repositories.Queries.ICollectionResultQuery`2
+    name: ICollectionResultQuery
+    nameWithType: ICollectionResultQuery
+    fullName: Cqrs.Repositories.Queries.ICollectionResultQuery
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1})
+    name: CreateQueryable
+    nameWithType: IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable
+    fullName: Cqrs.Repositories.Queries.IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Repositories.Queries.ICollectionResultQuery`2
+    name: ICollectionResultQuery
+    nameWithType: ICollectionResultQuery
+    fullName: Cqrs.Repositories.Queries.ICollectionResultQuery
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.ICollectionResultQuery{{TQueryStrategy},{TData}}
+  commentId: T:Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1}
+  parent: Cqrs.Repositories.Queries
+  definition: Cqrs.Repositories.Queries.ICollectionResultQuery`2
+  name: ICollectionResultQuery<TQueryStrategy, TData>
+  nameWithType: ICollectionResultQuery<TQueryStrategy, TData>
+  fullName: Cqrs.Repositories.Queries.ICollectionResultQuery<TQueryStrategy, TData>
+  nameWithType.vb: ICollectionResultQuery(Of TQueryStrategy, TData)
+  fullName.vb: Cqrs.Repositories.Queries.ICollectionResultQuery(Of TQueryStrategy, TData)
+  name.vb: ICollectionResultQuery(Of TQueryStrategy, TData)
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.ICollectionResultQuery`2
+    name: ICollectionResultQuery
+    nameWithType: ICollectionResultQuery
+    fullName: Cqrs.Repositories.Queries.ICollectionResultQuery
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.ICollectionResultQuery`2
+    name: ICollectionResultQuery
+    nameWithType: ICollectionResultQuery
+    fullName: Cqrs.Repositories.Queries.ICollectionResultQuery
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1})
+  commentId: M:Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1})
+  isExternal: false
+  name: CreateQueryable(ICollectionResultQuery<TQueryStrategy, TData>)
+  nameWithType: IQueryBuilder<TQueryStrategy, TData>.CreateQueryable(ICollectionResultQuery<TQueryStrategy, TData>)
+  fullName: Cqrs.Repositories.Queries.IQueryBuilder<TQueryStrategy, TData>.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery<TQueryStrategy, TData>)
+  nameWithType.vb: IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable(ICollectionResultQuery(Of TQueryStrategy, TData))
+  fullName.vb: Cqrs.Repositories.Queries.IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery(Of TQueryStrategy, TData))
+  name.vb: CreateQueryable(ICollectionResultQuery(Of TQueryStrategy, TData))
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1})
+    name: CreateQueryable
+    nameWithType: IQueryBuilder<TQueryStrategy, TData>.CreateQueryable
+    fullName: Cqrs.Repositories.Queries.IQueryBuilder<TQueryStrategy, TData>.CreateQueryable
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Repositories.Queries.ICollectionResultQuery`2
+    name: ICollectionResultQuery
+    nameWithType: ICollectionResultQuery
+    fullName: Cqrs.Repositories.Queries.ICollectionResultQuery
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.IQueryBuilder`2.CreateQueryable(Cqrs.Repositories.Queries.ICollectionResultQuery{`0,`1})
+    name: CreateQueryable
+    nameWithType: IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable
+    fullName: Cqrs.Repositories.Queries.IQueryBuilder(Of TQueryStrategy, TData).CreateQueryable
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Repositories.Queries.ICollectionResultQuery`2
+    name: ICollectionResultQuery
+    nameWithType: ICollectionResultQuery
+    fullName: Cqrs.Repositories.Queries.ICollectionResultQuery
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.ICollectionResultQuery`2
+  commentId: T:Cqrs.Repositories.Queries.ICollectionResultQuery`2
+  isExternal: false
+  name: ICollectionResultQuery<TQueryStrategy, TData>
+  nameWithType: ICollectionResultQuery<TQueryStrategy, TData>
+  fullName: Cqrs.Repositories.Queries.ICollectionResultQuery<TQueryStrategy, TData>
+  nameWithType.vb: ICollectionResultQuery(Of TQueryStrategy, TData)
+  fullName.vb: Cqrs.Repositories.Queries.ICollectionResultQuery(Of TQueryStrategy, TData)
+  name.vb: ICollectionResultQuery(Of TQueryStrategy, TData)
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.ICollectionResultQuery`2
+    name: ICollectionResultQuery
+    nameWithType: ICollectionResultQuery
+    fullName: Cqrs.Repositories.Queries.ICollectionResultQuery
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.ICollectionResultQuery`2
+    name: ICollectionResultQuery
+    nameWithType: ICollectionResultQuery
+    fullName: Cqrs.Repositories.Queries.ICollectionResultQuery
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.DataStore
+  commentId: P:Cqrs.Repositories.Queries.QueryBuilder`2.DataStore
+  isExternal: false
+  name: DataStore
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.DataStore
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.DataStore
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).DataStore
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).DataStore
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetEmptyQueryPredicate*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.GetEmptyQueryPredicate
+  isExternal: false
+  name: GetEmptyQueryPredicate
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetEmptyQueryPredicate
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetEmptyQueryPredicate
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetEmptyQueryPredicate
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetEmptyQueryPredicate
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+  isExternal: true
+  name: GeneratePredicateIsNotLogicallyDeleted(QueryPredicate, IQueryable<TData>)
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicateIsNotLogicallyDeleted(QueryPredicate, IQueryable<TData>)
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable<TData>)
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateIsNotLogicallyDeleted(QueryPredicate, IQueryable(Of TData))
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate, System.Linq.IQueryable(Of TData))
+  name.vb: GeneratePredicateIsNotLogicallyDeleted(QueryPredicate, IQueryable(Of TData))
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+    name: GeneratePredicateIsNotLogicallyDeleted
+    nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicateIsNotLogicallyDeleted
+    fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicateIsNotLogicallyDeleted
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Repositories.Queries.QueryPredicate
+    name: QueryPredicate
+    nameWithType: QueryPredicate
+    fullName: Cqrs.Repositories.Queries.QueryPredicate
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    nameWithType: IQueryable
+    fullName: System.Linq.IQueryable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateIsNotLogicallyDeleted(Cqrs.Repositories.Queries.QueryPredicate,System.Linq.IQueryable{`1})
+    name: GeneratePredicateIsNotLogicallyDeleted
+    nameWithType: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateIsNotLogicallyDeleted
+    fullName: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateIsNotLogicallyDeleted
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Repositories.Queries.QueryPredicate
+    name: QueryPredicate
+    nameWithType: QueryPredicate
+    fullName: Cqrs.Repositories.Queries.QueryPredicate
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    nameWithType: IQueryable
+    fullName: System.Linq.IQueryable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicate
+  isExternal: false
+  name: GeneratePredicate
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicate
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicate
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicate
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicate
+- uid: Cqrs.Repositories.Queries.IQueryPredicate
+  commentId: T:Cqrs.Repositories.Queries.IQueryPredicate
+  parent: Cqrs.Repositories.Queries
+  isExternal: false
+  name: IQueryPredicate
+  nameWithType: IQueryPredicate
+  fullName: Cqrs.Repositories.Queries.IQueryPredicate
+- uid: Cqrs.Repositories.Queries.QueryStrategy.IsNotLogicallyDeleted
+  commentId: M:Cqrs.Repositories.Queries.QueryStrategy.IsNotLogicallyDeleted
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateIsNotLogicallyDeleted*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateIsNotLogicallyDeleted
+  isExternal: false
+  name: GeneratePredicateIsNotLogicallyDeleted
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicateIsNotLogicallyDeleted
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicateIsNotLogicallyDeleted
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateIsNotLogicallyDeleted
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateIsNotLogicallyDeleted
+- uid: Cqrs.Repositories.Queries.QueryPredicate
+  commentId: T:Cqrs.Repositories.Queries.QueryPredicate
+  parent: Cqrs.Repositories.Queries
+  isExternal: false
+  name: QueryPredicate
+  nameWithType: QueryPredicate
+  fullName: Cqrs.Repositories.Queries.QueryPredicate
+- uid: Cqrs.Repositories.Queries.QueryStrategy.WithPermissionScopeAny``1(``0)
+  commentId: M:Cqrs.Repositories.Queries.QueryStrategy.WithPermissionScopeAny``1(``0)
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeAny*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeAny
+  isExternal: false
+  name: GeneratePredicateWithPermissionScopeAny
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeAny
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeAny
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeAny
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeAny
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetEmptyQueryPredicate
+  commentId: M:Cqrs.Repositories.Queries.QueryBuilder`2.GetEmptyQueryPredicate
+  isExternal: false
+  name: GetEmptyQueryPredicate()
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetEmptyQueryPredicate()
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetEmptyQueryPredicate()
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetEmptyQueryPredicate()
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetEmptyQueryPredicate()
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetEmptyQueryPredicate
+    name: GetEmptyQueryPredicate
+    nameWithType: QueryBuilder<TQueryStrategy, TData>.GetEmptyQueryPredicate
+    fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetEmptyQueryPredicate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetEmptyQueryPredicate
+    name: GetEmptyQueryPredicate
+    nameWithType: QueryBuilder(Of TQueryStrategy, TData).GetEmptyQueryPredicate
+    fullName: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetEmptyQueryPredicate
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeAny*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeAny
+  isExternal: false
+  name: OnGeneratePredicateWithPermissionScopeAny
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeAny
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeAny
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeAny
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeAny
+- uid: Cqrs.Repositories.Queries.QueryStrategy.WithPermissionScopeUser``1(``0)
+  commentId: M:Cqrs.Repositories.Queries.QueryStrategy.WithPermissionScopeUser``1(``0)
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeUser*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeUser
+  isExternal: false
+  name: GeneratePredicateWithPermissionScopeUser
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeUser
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeUser
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeUser
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeUser
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeUser*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeUser
+  isExternal: false
+  name: OnGeneratePredicateWithPermissionScopeUser
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeUser
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeUser
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeUser
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeUser
+- uid: Cqrs.Repositories.Queries.QueryStrategy.WithPermissionScopeCompany``1(``0)
+  commentId: M:Cqrs.Repositories.Queries.QueryStrategy.WithPermissionScopeCompany``1(``0)
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompany*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompany
+  isExternal: false
+  name: GeneratePredicateWithPermissionScopeCompany
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeCompany
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeCompany
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeCompany
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeCompany
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompany*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompany
+  isExternal: false
+  name: OnGeneratePredicateWithPermissionScopeCompany
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeCompany
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeCompany
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeCompany
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeCompany
+- uid: Cqrs.Repositories.Queries.QueryStrategy.WithPermissionScopeCompanyAndUser``1(``0)
+  commentId: M:Cqrs.Repositories.Queries.QueryStrategy.WithPermissionScopeCompanyAndUser``1(``0)
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompanyAndUser*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.GeneratePredicateWithPermissionScopeCompanyAndUser
+  isExternal: false
+  name: GeneratePredicateWithPermissionScopeCompanyAndUser
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeCompanyAndUser
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GeneratePredicateWithPermissionScopeCompanyAndUser
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeCompanyAndUser
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GeneratePredicateWithPermissionScopeCompanyAndUser
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompanyAndUser*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.OnGeneratePredicateWithPermissionScopeCompanyAndUser
+  isExternal: false
+  name: OnGeneratePredicateWithPermissionScopeCompanyAndUser
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeCompanyAndUser
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.OnGeneratePredicateWithPermissionScopeCompanyAndUser
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeCompanyAndUser
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).OnGeneratePredicateWithPermissionScopeCompanyAndUser
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionNameOfType*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionNameOfType
+  isExternal: false
+  name: GetFunctionNameOfType
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetFunctionNameOfType
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetFunctionNameOfType
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetFunctionNameOfType
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetFunctionNameOfType
+- uid: System.Func{{TParameter1},Cqrs.Repositories.Queries.IQueryPredicate}
+  commentId: T:System.Func{``0,Cqrs.Repositories.Queries.IQueryPredicate}
+  parent: System
+  definition: System.Func`2
+  name: Func<TParameter1, IQueryPredicate>
+  nameWithType: Func<TParameter1, IQueryPredicate>
+  fullName: System.Func<TParameter1, Cqrs.Repositories.Queries.IQueryPredicate>
+  nameWithType.vb: Func(Of TParameter1, IQueryPredicate)
+  fullName.vb: System.Func(Of TParameter1, Cqrs.Repositories.Queries.IQueryPredicate)
+  name.vb: Func(Of TParameter1, IQueryPredicate)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TParameter1
+    nameWithType: TParameter1
+    fullName: TParameter1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Cqrs.Repositories.Queries.IQueryPredicate
+    name: IQueryPredicate
+    nameWithType: IQueryPredicate
+    fullName: Cqrs.Repositories.Queries.IQueryPredicate
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TParameter1
+    nameWithType: TParameter1
+    fullName: TParameter1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Cqrs.Repositories.Queries.IQueryPredicate
+    name: IQueryPredicate
+    nameWithType: IQueryPredicate
+    fullName: Cqrs.Repositories.Queries.IQueryPredicate
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.GetFunctionName
+  isExternal: false
+  name: GetFunctionName
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetFunctionName
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetFunctionName
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetFunctionName
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetFunctionName
+- uid: System.Func{{T}}
+  commentId: T:System.Func{``0}
+  parent: System
+  definition: System.Func`1
+  name: Func<T>
+  nameWithType: Func<T>
+  fullName: System.Func<T>
+  nameWithType.vb: Func(Of T)
+  fullName.vb: System.Func(Of T)
+  name.vb: Func(Of T)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Func{{TParameter1},{TQueryStrategy}}
+  commentId: T:System.Func{``0,`0}
+  parent: System
+  definition: System.Func`2
+  name: Func<TParameter1, TQueryStrategy>
+  nameWithType: Func<TParameter1, TQueryStrategy>
+  fullName: System.Func<TParameter1, TQueryStrategy>
+  nameWithType.vb: Func(Of TParameter1, TQueryStrategy)
+  fullName.vb: System.Func(Of TParameter1, TQueryStrategy)
+  name.vb: Func(Of TParameter1, TQueryStrategy)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TParameter1
+    nameWithType: TParameter1
+    fullName: TParameter1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TParameter1
+    nameWithType: TParameter1
+    fullName: TParameter1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Func{{TParameter1},{TParameter2},{TQueryStrategy}}
+  commentId: T:System.Func{``0,``1,`0}
+  parent: System
+  definition: System.Func`3
+  name: Func<TParameter1, TParameter2, TQueryStrategy>
+  nameWithType: Func<TParameter1, TParameter2, TQueryStrategy>
+  fullName: System.Func<TParameter1, TParameter2, TQueryStrategy>
+  nameWithType.vb: Func(Of TParameter1, TParameter2, TQueryStrategy)
+  fullName.vb: System.Func(Of TParameter1, TParameter2, TQueryStrategy)
+  name.vb: Func(Of TParameter1, TParameter2, TQueryStrategy)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TParameter1
+    nameWithType: TParameter1
+    fullName: TParameter1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter2
+    nameWithType: TParameter2
+    fullName: TParameter2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TParameter1
+    nameWithType: TParameter1
+    fullName: TParameter1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter2
+    nameWithType: TParameter2
+    fullName: TParameter2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Func`3
+  commentId: T:System.Func`3
+  isExternal: true
+  name: Func<T1, T2, TResult>
+  nameWithType: Func<T1, T2, TResult>
+  fullName: System.Func<T1, T2, TResult>
+  nameWithType.vb: Func(Of T1, T2, TResult)
+  fullName.vb: System.Func(Of T1, T2, TResult)
+  name.vb: Func(Of T1, T2, TResult)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Func{{TParameter1},{TParameter2},{TParameter3},{TQueryStrategy}}
+  commentId: T:System.Func{``0,``1,``2,`0}
+  parent: System
+  definition: System.Func`4
+  name: Func<TParameter1, TParameter2, TParameter3, TQueryStrategy>
+  nameWithType: Func<TParameter1, TParameter2, TParameter3, TQueryStrategy>
+  fullName: System.Func<TParameter1, TParameter2, TParameter3, TQueryStrategy>
+  nameWithType.vb: Func(Of TParameter1, TParameter2, TParameter3, TQueryStrategy)
+  fullName.vb: System.Func(Of TParameter1, TParameter2, TParameter3, TQueryStrategy)
+  name.vb: Func(Of TParameter1, TParameter2, TParameter3, TQueryStrategy)
+  spec.csharp:
+  - uid: System.Func`4
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TParameter1
+    nameWithType: TParameter1
+    fullName: TParameter1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter2
+    nameWithType: TParameter2
+    fullName: TParameter2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter3
+    nameWithType: TParameter3
+    fullName: TParameter3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`4
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TParameter1
+    nameWithType: TParameter1
+    fullName: TParameter1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter2
+    nameWithType: TParameter2
+    fullName: TParameter2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter3
+    nameWithType: TParameter3
+    fullName: TParameter3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Func`4
+  commentId: T:System.Func`4
+  isExternal: true
+  name: Func<T1, T2, T3, TResult>
+  nameWithType: Func<T1, T2, T3, TResult>
+  fullName: System.Func<T1, T2, T3, TResult>
+  nameWithType.vb: Func(Of T1, T2, T3, TResult)
+  fullName.vb: System.Func(Of T1, T2, T3, TResult)
+  name.vb: Func(Of T1, T2, T3, TResult)
+  spec.csharp:
+  - uid: System.Func`4
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T3
+    nameWithType: T3
+    fullName: T3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`4
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T3
+    nameWithType: T3
+    fullName: T3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Func{{TParameter1},{TParameter2},{TParameter3},{TParameter4},{TQueryStrategy}}
+  commentId: T:System.Func{``0,``1,``2,``3,`0}
+  parent: System
+  definition: System.Func`5
+  name: Func<TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy>
+  nameWithType: Func<TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy>
+  fullName: System.Func<TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy>
+  nameWithType.vb: Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy)
+  fullName.vb: System.Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy)
+  name.vb: Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TQueryStrategy)
+  spec.csharp:
+  - uid: System.Func`5
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TParameter1
+    nameWithType: TParameter1
+    fullName: TParameter1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter2
+    nameWithType: TParameter2
+    fullName: TParameter2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter3
+    nameWithType: TParameter3
+    fullName: TParameter3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter4
+    nameWithType: TParameter4
+    fullName: TParameter4
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`5
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TParameter1
+    nameWithType: TParameter1
+    fullName: TParameter1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter2
+    nameWithType: TParameter2
+    fullName: TParameter2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter3
+    nameWithType: TParameter3
+    fullName: TParameter3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter4
+    nameWithType: TParameter4
+    fullName: TParameter4
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Func`5
+  commentId: T:System.Func`5
+  isExternal: true
+  name: Func<T1, T2, T3, T4, TResult>
+  nameWithType: Func<T1, T2, T3, T4, TResult>
+  fullName: System.Func<T1, T2, T3, T4, TResult>
+  nameWithType.vb: Func(Of T1, T2, T3, T4, TResult)
+  fullName.vb: System.Func(Of T1, T2, T3, T4, TResult)
+  name.vb: Func(Of T1, T2, T3, T4, TResult)
+  spec.csharp:
+  - uid: System.Func`5
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T3
+    nameWithType: T3
+    fullName: T3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T4
+    nameWithType: T4
+    fullName: T4
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`5
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T3
+    nameWithType: T3
+    fullName: T3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T4
+    nameWithType: T4
+    fullName: T4
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Func{{TParameter1},{TParameter2},{TParameter3},{TParameter4},{TParameter5},{TQueryStrategy}}
+  commentId: T:System.Func{``0,``1,``2,``3,``4,`0}
+  parent: System
+  definition: System.Func`6
+  name: Func<TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy>
+  nameWithType: Func<TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy>
+  fullName: System.Func<TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy>
+  nameWithType.vb: Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy)
+  fullName.vb: System.Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy)
+  name.vb: Func(Of TParameter1, TParameter2, TParameter3, TParameter4, TParameter5, TQueryStrategy)
+  spec.csharp:
+  - uid: System.Func`6
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TParameter1
+    nameWithType: TParameter1
+    fullName: TParameter1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter2
+    nameWithType: TParameter2
+    fullName: TParameter2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter3
+    nameWithType: TParameter3
+    fullName: TParameter3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter4
+    nameWithType: TParameter4
+    fullName: TParameter4
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter5
+    nameWithType: TParameter5
+    fullName: TParameter5
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`6
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TParameter1
+    nameWithType: TParameter1
+    fullName: TParameter1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter2
+    nameWithType: TParameter2
+    fullName: TParameter2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter3
+    nameWithType: TParameter3
+    fullName: TParameter3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter4
+    nameWithType: TParameter4
+    fullName: TParameter4
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TParameter5
+    nameWithType: TParameter5
+    fullName: TParameter5
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Func`6
+  commentId: T:System.Func`6
+  isExternal: true
+  name: Func<T1, T2, T3, T4, T5, TResult>
+  nameWithType: Func<T1, T2, T3, T4, T5, TResult>
+  fullName: System.Func<T1, T2, T3, T4, T5, TResult>
+  nameWithType.vb: Func(Of T1, T2, T3, T4, T5, TResult)
+  fullName.vb: System.Func(Of T1, T2, T3, T4, T5, TResult)
+  name.vb: Func(Of T1, T2, T3, T4, T5, TResult)
+  spec.csharp:
+  - uid: System.Func`6
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T3
+    nameWithType: T3
+    fullName: T3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T4
+    nameWithType: T4
+    fullName: T4
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T5
+    nameWithType: T5
+    fullName: T5
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`6
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T3
+    nameWithType: T3
+    fullName: T3
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T4
+    nameWithType: T4
+    fullName: T4
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T5
+    nameWithType: T5
+    fullName: T5
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TResult
+    nameWithType: TResult
+    fullName: TResult
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Activator.CreateInstance``1
+  commentId: M:System.Activator.CreateInstance``1
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.GetNullQueryStrategy*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.GetNullQueryStrategy
+  isExternal: false
+  name: GetNullQueryStrategy
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.GetNullQueryStrategy
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.GetNullQueryStrategy
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).GetNullQueryStrategy
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).GetNullQueryStrategy
+- uid: '{TQueryStrategy}'
+  commentId: '!:TQueryStrategy'
+  definition: TQueryStrategy
+  name: TQueryStrategy
+  nameWithType: TQueryStrategy
+  fullName: TQueryStrategy
+- uid: TQueryStrategy
+  isExternal: false
+  name: TQueryStrategy
+  nameWithType: TQueryStrategy
+  fullName: TQueryStrategy
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2.ApplySorting*
+  commentId: Overload:Cqrs.Repositories.Queries.QueryBuilder`2.ApplySorting
+  isExternal: false
+  name: ApplySorting
+  nameWithType: QueryBuilder<TQueryStrategy, TData>.ApplySorting
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>.ApplySorting
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData).ApplySorting
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData).ApplySorting
