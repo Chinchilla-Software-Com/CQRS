@@ -1,4 +1,4 @@
 var classCqrs_1_1Azure_1_1Storage_1_1Test_1_1Integration_1_1TableStorageEventStoreTests =
 [
-    [ "CreateDataStore", "classCqrs_1_1Azure_1_1Storage_1_1Test_1_1Integration_1_1TableStorageEventStoreTests_a4e143d134a156e2ab0d044d7f6f15b5d.html#a4e143d134a156e2ab0d044d7f6f15b5d", null ]
+    [ "CreateEventStore", "classCqrs_1_1Azure_1_1Storage_1_1Test_1_1Integration_1_1TableStorageEventStoreTests_aa7c476f27ce9940048ac7abde7cfabcb.html#aa7c476f27ce9940048ac7abde7cfabcb", null ]
 ];

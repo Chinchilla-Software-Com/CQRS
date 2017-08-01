@@ -17,7 +17,5 @@ var searchData=
   ['duplicatecreatecommandevent',['DuplicateCreateCommandEvent',['../classCqrs_1_1Events_1_1DuplicateCreateCommandEvent.html',1,'Cqrs::Events']]],
   ['duplicatecreatecommandexception',['DuplicateCreateCommandException',['../classCqrs_1_1Domain_1_1Exceptions_1_1DuplicateCreateCommandException.html',1,'Cqrs::Domain::Exceptions']]],
   ['duplicateeventexception',['DuplicateEventException',['../classCqrs_1_1Domain_1_1Exceptions_1_1DuplicateEventException.html',1,'Cqrs::Domain::Exceptions']]],
-  ['duplicatesagaeventexception',['DuplicateSagaEventException',['../classCqrs_1_1Domain_1_1Exceptions_1_1DuplicateSagaEventException.html',1,'Cqrs::Domain::Exceptions']]],
-  ['dynamicjsonarray',['DynamicJsonArray',['../classSystem_1_1Web_1_1Helpers_1_1DynamicJsonArray.html',1,'System::Web::Helpers']]],
-  ['dynamicjsonobject',['DynamicJsonObject',['../classSystem_1_1Web_1_1Helpers_1_1DynamicJsonObject.html',1,'System::Web::Helpers']]]
+  ['duplicatesagaeventexception',['DuplicateSagaEventException',['../classCqrs_1_1Domain_1_1Exceptions_1_1DuplicateSagaEventException.html',1,'Cqrs::Domain::Exceptions']]]
 ];

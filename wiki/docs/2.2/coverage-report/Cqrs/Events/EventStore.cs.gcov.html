@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-31</td>
+            <td class="headerValue">2017-08-01</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -173,7 +173,7 @@
 <span class="lineNum">     115 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
 <span class="lineNum">     116 </span><span class="lineCov">          1 :                 public virtual IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get&lt;T&gt;(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
 <span class="lineNum">     117 </span>            :                 {
-<span class="lineNum">     118 </span>            :                         IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; results = Get(typeof (T), aggregateId, useLastEventOnly, fromVersion);
+<span class="lineNum">     118 </span>            :                         IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; results = Get(typeof (T), aggregateId, useLastEventOnly, fromVersion).ToList();
 <span class="lineNum">     119 </span>            :                         TelemetryHelper.TrackMetric(string.Format(&quot;Cqrs/EventStore/Get/{0}&quot;, GenerateStreamName(typeof(T), aggregateId)), results.Count());
 <span class="lineNum">     120 </span>            : 
 <span class="lineNum">     121 </span>            :                         return results;

@@ -9,6 +9,7 @@ genhtml --no-function-coverage --no-branch-coverage ./doc-coverage.info -o ./$1/
 
 for f in $(find ./$1/coverage-report/ -name '*.html')
 do
+	echo Cleaning up file $f
 	sed -i 's/<title>LCOV - doc-coverage\.info<\/title>/<title>Documentation Coverage Report<\/title>/' $f
 	sed -i 's/LCOV - code coverage report/Documentation Coverage Report/' $f
 	sed -i 's/<td class="headerItem">Test:<\/td>/<td class="headerItem">Version:<\/td>/' $f

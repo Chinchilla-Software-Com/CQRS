@@ -23,7 +23,6 @@ var namespaceCqrs =
     [ "Services", "namespaceCqrs_1_1Services.html", "namespaceCqrs_1_1Services" ],
     [ "Snapshots", "namespaceCqrs_1_1Snapshots.html", "namespaceCqrs_1_1Snapshots" ],
     [ "Sql", "namespaceCqrs_1_1Sql.html", "namespaceCqrs_1_1Sql" ],
-    [ "Tests", "namespaceCqrs_1_1Tests.html", "namespaceCqrs_1_1Tests" ],
     [ "Web", "namespaceCqrs_1_1Web.html", "namespaceCqrs_1_1Web" ],
     [ "WebApi", "namespaceCqrs_1_1WebApi.html", "namespaceCqrs_1_1WebApi" ]
 ];

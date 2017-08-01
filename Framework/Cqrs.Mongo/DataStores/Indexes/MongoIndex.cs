@@ -8,9 +8,14 @@
 
 using System;
 using System.Collections.Generic;
+using Cqrs.Entities;
 
 namespace Cqrs.Mongo.DataStores.Indexes
 {
+	/// <summary>
+	/// An index for MongoDB.
+	/// </summary>
+	/// <typeparam name="TEntity">The <see cref="Type"/> of <see cref="IEntity"/> this index is for.</typeparam>
 	public abstract class MongoIndex<TEntity>
 	{
 		/// <summary>
@@ -28,8 +33,14 @@ namespace Cqrs.Mongo.DataStores.Indexes
 		/// </summary>
 		public string Name { get; protected set; }
 
+		/// <summary>
+		/// The selectors that the index is comprised of.
+		/// </summary>
 		public IEnumerable<System.Linq.Expressions.Expression<Func<TEntity, object>>> Selectors { get; protected set; }
 
+		/// <summary>
+		/// Instantiate a new instance of <see cref="MongoIndex{TEntity}"/>.
+		/// </summary>
 		protected MongoIndex()
 		{
 			IsUnique = false;

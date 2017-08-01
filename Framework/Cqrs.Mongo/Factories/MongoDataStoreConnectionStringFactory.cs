@@ -14,26 +14,53 @@ using Cqrs.Exceptions;
 
 namespace Cqrs.Mongo.Factories
 {
+	/// <summary>
+	/// A factory for MongoDb related connection string settings.
+	/// </summary>
 	public class MongoDataStoreConnectionStringFactory : IMongoDataStoreConnectionStringFactory
 	{
+		/// <summary>
+		/// The name of the app setting in <see cref="IConfigurationManager"/> that will have the name of the connection string of the MongoDB server.
+		/// </summary>
 		public static string MongoDbConnectionStringKey = "Cqrs.MongoDb.DataStore.ConnectionStringName";
 
+		/// <summary>
+		/// Backwards compatibility with version 1.
+		/// </summary>
 		public static string OldMongoDbConnectionStringKey = "CqrsMongoDb";
 
+		/// <summary>
+		/// Backwards compatibility with version 1.
+		/// </summary>
 		public static string OldMongoDbDatabaseNameKey = "CqrsMongoDbDatabaseName";
 
+		/// <summary>
+		/// The name of the app setting in <see cref="IConfigurationManager"/> that will have the name of the database.
+		/// </summary>
 		public static string MongoDbDatabaseNameKey = "Cqrs.MongoDb.DataStore.DatabaseName";
 
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Instantiate a new instance of <see cref="MongoDataStoreConnectionStringFactory"/>.
+		/// </summary>
 		public MongoDataStoreConnectionStringFactory(IConfigurationManager configurationManager, ILogger logger)
 		{
 			ConfigurationManager = configurationManager;
 			Logger = logger;
 		}
 
+		/// <summary>
+		/// Get the connection string for the MongoDB server.
+		/// </summary>
 		public string GetMongoConnectionString()
 		{
 			Logger.LogInfo("Getting MongoDB connection string", "MongoDataStoreConnectionStringFactory\\GetMongoConnectionString");
@@ -63,6 +90,9 @@ namespace Cqrs.Mongo.Factories
 			}
 		}
 
+		/// <summary>
+		/// Get the name of database on the MongoDB server.
+		/// </summary>
 		public string GetMongoDatabaseName()
 		{
 			string databaseName = ConfigurationManager.GetSetting(MongoDbDatabaseNameKey) ?? ConfigurationManager.GetSetting(OldMongoDbDatabaseNameKey);

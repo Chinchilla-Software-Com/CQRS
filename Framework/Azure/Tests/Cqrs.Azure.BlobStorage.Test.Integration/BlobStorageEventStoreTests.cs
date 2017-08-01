@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -24,6 +32,11 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 	[TestClass]
 	public class BlobStorageEventStoreTests
 	{
+		/// <summary>
+		/// Tests the <see cref="IEventStore{TAuthenticationToken}.Save"/> method
+		/// Passing a valid test <see cref="IEvent{TAuthenticationToken}"/>
+		/// Expecting the test <see cref="IEvent{TAuthenticationToken}"/> is able to be read.
+		/// </summary>
 		[TestMethod]
 		public virtual void Save_ValidEvent_EventCanBeRetreived()
 		{

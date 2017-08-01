@@ -20,6 +20,9 @@ namespace Cqrs.Azure.ConfigurationManager
 	/// </summary>
 	public abstract class TelemetryCoreHost<TAuthenticationToken> : CoreHost<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected static readonly IConfigurationManager _configurationManager = new CloudConfigurationManager();
 
 		/// <summary>
@@ -30,6 +33,9 @@ namespace Cqrs.Azure.ConfigurationManager
 			get { return _configurationManager; }
 		}
 
+		/// <summary>
+		/// Gets or sets the <see cref="TelemetryClient"/>.
+		/// </summary>
 		public TelemetryClient TelemetryClient { get; private set; }
 
 		#region Overrides of CoreHost<TAuthenticationToken>

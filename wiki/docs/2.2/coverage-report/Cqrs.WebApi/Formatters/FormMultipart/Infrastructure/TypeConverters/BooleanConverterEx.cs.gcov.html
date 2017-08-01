@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-31</td>
+            <td class="headerValue">2017-08-01</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -70,25 +70,36 @@
 <span class="lineNum">      12 </span>            : 
 <span class="lineNum">      13 </span>            : namespace Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.TypeConverters
 <span class="lineNum">      14 </span>            : {
-<span class="lineNum">      15 </span>            :         public class BooleanConverterEx : BooleanConverter
-<span class="lineNum">      16 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      17 </span><span class="lineNoCov">          0 :                 public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)</span>
-<span class="lineNum">      18 </span>            :                 {
-<span class="lineNum">      19 </span>            :                         if (value != null)
-<span class="lineNum">      20 </span>            :                         {
-<span class="lineNum">      21 </span>            :                                 var str = value.ToString();
-<span class="lineNum">      22 </span>            : 
-<span class="lineNum">      23 </span>            :                                 if (String.Compare(str, &quot;on&quot;, culture, CompareOptions.IgnoreCase) == 0)
-<span class="lineNum">      24 </span>            :                                         return true;
-<span class="lineNum">      25 </span>            : 
-<span class="lineNum">      26 </span>            :                                 if (String.Compare(str, &quot;off&quot;, culture, CompareOptions.IgnoreCase) == 0)
-<span class="lineNum">      27 </span>            :                                         return false;
-<span class="lineNum">      28 </span>            :                         }
-<span class="lineNum">      29 </span>            : 
-<span class="lineNum">      30 </span>            :                         return base.ConvertFrom(context, culture, value);
-<span class="lineNum">      31 </span>            :                 }
-<span class="lineNum">      32 </span>            :         }
-<span class="lineNum">      33 </span>            : }
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :         /// Provides a &lt;see cref=&quot;TypeConverter&quot;/&gt; to convert &lt;see cref=&quot;bool&quot;/&gt; objects to and from various other representations
+<span class="lineNum">      17 </span>            :         /// with support for HTTP specification specific values such as ON or OFF.
+<span class="lineNum">      18 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      19 </span>            :         public class BooleanConverterEx : BooleanConverter
+<span class="lineNum">      20 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      21 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :                 /// Converts the given &lt;paramref name=&quot;value&quot;/&gt; object to a &lt;see cref=&quot;bool&quot;/&gt; object.
+<span class="lineNum">      23 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      24 </span>            :                 /// &lt;param name=&quot;context&quot;&gt;An &lt;see cref=&quot;ITypeDescriptorContext&quot;/&gt; that provides a format context.&lt;/param&gt;
+<span class="lineNum">      25 </span>            :                 /// &lt;param name=&quot;culture&quot;&gt;A &lt;see cref=&quot;CultureInfo&quot;/&gt; that specifies the culture to which to convert.&lt;/param&gt;
+<span class="lineNum">      26 </span>            :                 /// &lt;param name=&quot;value&quot;&gt;The &lt;see cref=&quot;object&quot;/&gt; to convert.&lt;/param&gt;
+<span class="lineNum">      27 </span>            :                 /// &lt;returns&gt;An &lt;see cref=&quot;object&quot;/&gt; that represents the converted &lt;paramref name=&quot;value&quot;/&gt;.&lt;/returns&gt;
+<span class="lineNum">      28 </span><span class="lineCov">          1 :                 public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)</span>
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                         if (value != null)
+<span class="lineNum">      31 </span>            :                         {
+<span class="lineNum">      32 </span>            :                                 var str = value.ToString();
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                                 if (String.Compare(str, &quot;on&quot;, culture, CompareOptions.IgnoreCase) == 0)
+<span class="lineNum">      35 </span>            :                                         return true;
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                                 if (String.Compare(str, &quot;off&quot;, culture, CompareOptions.IgnoreCase) == 0)
+<span class="lineNum">      38 </span>            :                                         return false;
+<span class="lineNum">      39 </span>            :                         }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                         return base.ConvertFrom(context, culture, value);
+<span class="lineNum">      42 </span>            :                 }
+<span class="lineNum">      43 </span>            :         }
+<span class="lineNum">      44 </span>            : }
 </pre>
       </td>
     </tr>

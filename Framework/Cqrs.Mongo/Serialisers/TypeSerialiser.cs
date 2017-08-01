@@ -13,14 +13,23 @@ using MongoDB.Bson.Serialization;
 
 namespace Cqrs.Mongo.Serialisers
 {
+	/// <summary>
+	/// A <see cref="IBsonSerializer"/> that stores <see cref="Type"/> information as well.
+	/// </summary>
 	public class TypeSerialiser : IBsonSerializer
 	{
+		/// <summary>
+		/// Deserialises a <see cref="Type"/> value, first reading the <see cref="Type"/> information from the provide <paramref name="reader"/>.
+		/// </summary>
 		public object Deserialize(BsonReader reader, Type nominalType, IBsonSerializationOptions options)
 		{
 			var actualType = nominalType;
 			return Deserialize(reader, nominalType, actualType, options);
 		}
 
+		/// <summary>
+		/// Deserialises a <see cref="Type"/> value, first reading the <see cref="Type"/> information from the provide <paramref name="reader"/>.
+		/// </summary>
 		public object Deserialize(BsonReader reader, Type nominalType, Type actualType, IBsonSerializationOptions options)
 		{
 			if (reader.CurrentBsonType == BsonType.Null)
@@ -42,6 +51,9 @@ namespace Cqrs.Mongo.Serialisers
 			return null;
 		}
 
+		/// <summary>
+		/// Serialises a <see cref="Type"/> value.
+		/// </summary>
 		public void Serialize(BsonWriter writer, Type nominalType, object value, IBsonSerializationOptions options)
 		{
 			if (value == null)

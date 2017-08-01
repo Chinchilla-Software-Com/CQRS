@@ -20,15 +20,28 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TestEntity
     path: Framework/Azure/Tests/Cqrs.Azure.BlobStorage.Test.Integration/TestEntity.cs
-    startLine: 5
+    startLine: 17
   assemblies:
   - Cqrs.Azure.BlobStorage.Test.Integration
   namespace: Cqrs.Azure.BlobStorage.Test.Integration
+  summary: "\nA Test <xref href=\"Cqrs.Entities.IEntity\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
-    content: 'public class TestEntity : Entity, IEntity'
+    content: >-
+      [Serializable]
+
+      [DataContract]
+
+      public class TestEntity : Entity, IEntity
     content.vb: >-
+      <Serializable>
+
+      <DataContract>
+
       Public Class TestEntity
+
           Inherits Entity
+
           Implements IEntity
   inheritance:
   - System.Object
@@ -46,6 +59,13 @@ items:
   - System.Object.GetHashCode
   - System.Object.GetType
   - System.Object.MemberwiseClone
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+  - type: System.Runtime.Serialization.DataContractAttribute
+    ctor: System.Runtime.Serialization.DataContractAttribute.#ctor
+    arguments: []
   modifiers.csharp:
   - public
   - class
@@ -70,10 +90,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Name
     path: Framework/Azure/Tests/Cqrs.Azure.BlobStorage.Test.Integration/TestEntity.cs
-    startLine: 7
+    startLine: 24
   assemblies:
   - Cqrs.Azure.BlobStorage.Test.Integration
   namespace: Cqrs.Azure.BlobStorage.Test.Integration
+  summary: "\nA Name property.\n"
+  example: []
   syntax:
     content: >-
       [DataMember]
@@ -98,6 +120,13 @@ items:
   modifiers.vb:
   - Public
 references:
+- uid: Cqrs.Entities.IEntity
+  commentId: T:Cqrs.Entities.IEntity
+  parent: Cqrs.Entities
+  isExternal: false
+  name: IEntity
+  nameWithType: IEntity
+  fullName: Cqrs.Entities.IEntity
 - uid: Cqrs.Azure.BlobStorage.Test.Integration
   commentId: N:Cqrs.Azure.BlobStorage.Test.Integration
   isExternal: false
@@ -118,13 +147,6 @@ references:
   name: Entity
   nameWithType: Entity
   fullName: Cqrs.Entities.Entity
-- uid: Cqrs.Entities.IEntity
-  commentId: T:Cqrs.Entities.IEntity
-  parent: Cqrs.Entities
-  isExternal: false
-  name: IEntity
-  nameWithType: IEntity
-  fullName: Cqrs.Entities.IEntity
 - uid: Cqrs.Entities.Entity.Rsn
   commentId: P:Cqrs.Entities.Entity.Rsn
   parent: Cqrs.Entities.Entity
@@ -425,18 +447,18 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System
-  commentId: N:System
-  isExternal: false
-  name: System
-  nameWithType: System
-  fullName: System
 - uid: Cqrs.Entities
   commentId: N:Cqrs.Entities
   isExternal: false
   name: Cqrs.Entities
   nameWithType: Cqrs.Entities
   fullName: Cqrs.Entities
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
 - uid: Cqrs.Azure.BlobStorage.Test.Integration.TestEntity.Name*
   commentId: Overload:Cqrs.Azure.BlobStorage.Test.Integration.TestEntity.Name
   isExternal: false

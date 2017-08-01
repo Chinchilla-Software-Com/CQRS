@@ -5,7 +5,7 @@ items:
   id: AzureBus`1
   parent: Cqrs.Azure.ServiceBus
   children:
-  - Cqrs.Azure.ServiceBus.AzureBus`1.#ctor(Cqrs.Configuration.IConfigurationManager,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,System.Boolean)
+  - Cqrs.Azure.ServiceBus.AzureBus`1.#ctor(Cqrs.Configuration.IConfigurationManager,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Authentication.IAuthenticationTokenHelper{`0},ICorrelationIdHelper,ILogger,System.Boolean)
   - Cqrs.Azure.ServiceBus.AzureBus`1.ApplyReceiverMessageHandler
   - Cqrs.Azure.ServiceBus.AzureBus`1.AuthenticationTokenHelper
   - Cqrs.Azure.ServiceBus.AzureBus`1.AzureServiceBusRetryPolicy
@@ -51,23 +51,18 @@ items:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
   syntax:
-    content: public abstract class AzureBus<TAuthenticationToken>
+    content: 'public abstract class AzureBus<TAuthenticationToken> : object'
     typeParameters:
     - id: TAuthenticationToken
-    content.vb: Public MustInherit Class AzureBus(Of TAuthenticationToken)
+    content.vb: >-
+      Public MustInherit Class AzureBus(Of TAuthenticationToken)
+
+          Inherits Object
   inheritance:
   - System.Object
   derivedClasses:
   - Cqrs.Azure.ServiceBus.AzureEventHub`1
   - Cqrs.Azure.ServiceBus.AzureServiceBus`1
-  inheritedMembers:
-  - System.Object.ToString
-  - System.Object.Equals(System.Object)
-  - System.Object.Equals(System.Object,System.Object)
-  - System.Object.ReferenceEquals(System.Object,System.Object)
-  - System.Object.GetHashCode
-  - System.Object.GetType
-  - System.Object.MemberwiseClone
   nameWithType.vb: AzureBus(Of TAuthenticationToken)
   modifiers.csharp:
   - public
@@ -216,7 +211,7 @@ items:
     content: protected ICorrelationIdHelper CorrelationIdHelper { get; }
     parameters: []
     return:
-      type: cdmdotnet.Logging.ICorrelationIdHelper
+      type: ICorrelationIdHelper
     content.vb: Protected ReadOnly Property CorrelationIdHelper As ICorrelationIdHelper
   overload: Cqrs.Azure.ServiceBus.AzureBus`1.CorrelationIdHelper*
   nameWithType.vb: AzureBus(Of TAuthenticationToken).CorrelationIdHelper
@@ -253,7 +248,7 @@ items:
     content: protected ILogger Logger { get; }
     parameters: []
     return:
-      type: cdmdotnet.Logging.ILogger
+      type: ILogger
     content.vb: Protected ReadOnly Property Logger As ILogger
   overload: Cqrs.Azure.ServiceBus.AzureBus`1.Logger*
   nameWithType.vb: AzureBus(Of TAuthenticationToken).Logger
@@ -327,7 +322,7 @@ items:
     content: protected IDictionary<Guid, IList<IEvent<TAuthenticationToken>>> EventWaits { get; }
     parameters: []
     return:
-      type: System.Collections.Generic.IDictionary{System.Guid,System.Collections.Generic.IList{Cqrs.Events.IEvent{{TAuthenticationToken}}}}
+      type: IDictionary{Guid,IList{Cqrs.Events.IEvent{{TAuthenticationToken}}}}
     content.vb: Protected ReadOnly Property EventWaits As IDictionary(Of Guid, IList(Of IEvent(Of TAuthenticationToken)))
   overload: Cqrs.Azure.ServiceBus.AzureBus`1.EventWaits*
   nameWithType.vb: AzureBus(Of TAuthenticationToken).EventWaits
@@ -361,10 +356,10 @@ items:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
   syntax:
-    content: protected const int DefaultNumberOfReceiversCount = 1
+    content: protected const int DefaultNumberOfReceiversCount = null
     return:
       type: System.Int32
-    content.vb: Protected Const DefaultNumberOfReceiversCount As Integer = 1
+    content.vb: Protected Const DefaultNumberOfReceiversCount As Integer = Nothing
   nameWithType.vb: AzureBus(Of TAuthenticationToken).DefaultNumberOfReceiversCount
   modifiers.csharp:
   - protected
@@ -433,10 +428,10 @@ items:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
   syntax:
-    content: protected const int DefaultMaximumConcurrentReceiverProcessesCount = 1
+    content: protected const int DefaultMaximumConcurrentReceiverProcessesCount = null
     return:
       type: System.Int32
-    content.vb: Protected Const DefaultMaximumConcurrentReceiverProcessesCount As Integer = 1
+    content.vb: Protected Const DefaultMaximumConcurrentReceiverProcessesCount As Integer = Nothing
   nameWithType.vb: AzureBus(Of TAuthenticationToken).DefaultMaximumConcurrentReceiverProcessesCount
   modifiers.csharp:
   - protected
@@ -482,16 +477,16 @@ items:
   modifiers.vb:
   - Protected
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).MaximumConcurrentReceiverProcessesCount
-- uid: Cqrs.Azure.ServiceBus.AzureBus`1.#ctor(Cqrs.Configuration.IConfigurationManager,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,System.Boolean)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.#ctor(Cqrs.Configuration.IConfigurationManager,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,System.Boolean)
-  id: '#ctor(Cqrs.Configuration.IConfigurationManager,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,System.Boolean)'
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.#ctor(Cqrs.Configuration.IConfigurationManager,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Authentication.IAuthenticationTokenHelper{`0},ICorrelationIdHelper,ILogger,System.Boolean)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.#ctor(Cqrs.Configuration.IConfigurationManager,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Authentication.IAuthenticationTokenHelper{`0},ICorrelationIdHelper,ILogger,System.Boolean)
+  id: '#ctor(Cqrs.Configuration.IConfigurationManager,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Authentication.IAuthenticationTokenHelper{`0},ICorrelationIdHelper,ILogger,System.Boolean)'
   parent: Cqrs.Azure.ServiceBus.AzureBus`1
   langs:
   - csharp
   - vb
   name: AzureBus(IConfigurationManager, IMessageSerialiser<TAuthenticationToken>, IAuthenticationTokenHelper<TAuthenticationToken>, ICorrelationIdHelper, ILogger, Boolean)
   nameWithType: AzureBus<TAuthenticationToken>.AzureBus(IConfigurationManager, IMessageSerialiser<TAuthenticationToken>, IAuthenticationTokenHelper<TAuthenticationToken>, ICorrelationIdHelper, ILogger, Boolean)
-  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.AzureBus(Cqrs.Configuration.IConfigurationManager, Cqrs.Azure.ServiceBus.IMessageSerialiser<TAuthenticationToken>, Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>, cdmdotnet.Logging.ICorrelationIdHelper, cdmdotnet.Logging.ILogger, System.Boolean)
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.AzureBus(Cqrs.Configuration.IConfigurationManager, Cqrs.Azure.ServiceBus.IMessageSerialiser<TAuthenticationToken>, Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>, ICorrelationIdHelper, ILogger, System.Boolean)
   type: Constructor
   source:
     remote:
@@ -514,9 +509,9 @@ items:
     - id: authenticationTokenHelper
       type: Cqrs.Authentication.IAuthenticationTokenHelper{{TAuthenticationToken}}
     - id: correlationIdHelper
-      type: cdmdotnet.Logging.ICorrelationIdHelper
+      type: ICorrelationIdHelper
     - id: logger
-      type: cdmdotnet.Logging.ILogger
+      type: ILogger
     - id: isAPublisher
       type: System.Boolean
     content.vb: Protected Sub New(configurationManager As IConfigurationManager, messageSerialiser As IMessageSerialiser(Of TAuthenticationToken), authenticationTokenHelper As IAuthenticationTokenHelper(Of TAuthenticationToken), correlationIdHelper As ICorrelationIdHelper, logger As ILogger, isAPublisher As Boolean)
@@ -526,7 +521,7 @@ items:
   - protected
   modifiers.vb:
   - Protected
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).AzureBus(Cqrs.Configuration.IConfigurationManager, Cqrs.Azure.ServiceBus.IMessageSerialiser(Of TAuthenticationToken), Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken), cdmdotnet.Logging.ICorrelationIdHelper, cdmdotnet.Logging.ILogger, System.Boolean)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).AzureBus(Cqrs.Configuration.IConfigurationManager, Cqrs.Azure.ServiceBus.IMessageSerialiser(Of TAuthenticationToken), Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken), ICorrelationIdHelper, ILogger, System.Boolean)
   name.vb: AzureBus(IConfigurationManager, IMessageSerialiser(Of TAuthenticationToken), IAuthenticationTokenHelper(Of TAuthenticationToken), ICorrelationIdHelper, ILogger, Boolean)
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
   commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
@@ -831,7 +826,7 @@ items:
   syntax:
     content: protected virtual NamespaceManager GetNamespaceManager()
     return:
-      type: Microsoft.ServiceBus.NamespaceManager
+      type: NamespaceManager
     content.vb: Protected Overridable Function GetNamespaceManager As NamespaceManager
   overload: Cqrs.Azure.ServiceBus.AzureBus`1.GetNamespaceManager*
   nameWithType.vb: AzureBus(Of TAuthenticationToken).GetNamespaceManager()
@@ -867,11 +862,11 @@ items:
   summary: "\nGets the default retry policy dedicated to handling transient conditions with Windows Azure Service Bus.\n"
   example: []
   syntax:
-    content: protected virtual RetryPolicy AzureServiceBusRetryPolicy { get; }
+    content: protected virtual Microsoft.Practices.TransientFaultHandling.RetryPolicy AzureServiceBusRetryPolicy { get; }
     parameters: []
     return:
       type: Microsoft.Practices.TransientFaultHandling.RetryPolicy
-    content.vb: Protected Overridable ReadOnly Property AzureServiceBusRetryPolicy As RetryPolicy
+    content.vb: Protected Overridable ReadOnly Property AzureServiceBusRetryPolicy As Microsoft.Practices.TransientFaultHandling.RetryPolicy
   overload: Cqrs.Azure.ServiceBus.AzureBus`1.AzureServiceBusRetryPolicy*
   nameWithType.vb: AzureBus(Of TAuthenticationToken).AzureServiceBusRetryPolicy
   modifiers.csharp:
@@ -1069,285 +1064,6 @@ references:
   name: Object
   nameWithType: Object
   fullName: System.Object
-- uid: System.Object.ToString
-  commentId: M:System.Object.ToString
-  parent: System.Object
-  isExternal: true
-  name: ToString()
-  nameWithType: Object.ToString()
-  fullName: System.Object.ToString()
-  spec.csharp:
-  - uid: System.Object.ToString
-    name: ToString
-    nameWithType: Object.ToString
-    fullName: System.Object.ToString
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.ToString
-    name: ToString
-    nameWithType: Object.ToString
-    fullName: System.Object.ToString
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.Equals(System.Object)
-  commentId: M:System.Object.Equals(System.Object)
-  parent: System.Object
-  isExternal: true
-  name: Equals(Object)
-  nameWithType: Object.Equals(Object)
-  fullName: System.Object.Equals(System.Object)
-  spec.csharp:
-  - uid: System.Object.Equals(System.Object)
-    name: Equals
-    nameWithType: Object.Equals
-    fullName: System.Object.Equals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.Equals(System.Object)
-    name: Equals
-    nameWithType: Object.Equals
-    fullName: System.Object.Equals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.Equals(System.Object,System.Object)
-  commentId: M:System.Object.Equals(System.Object,System.Object)
-  parent: System.Object
-  isExternal: true
-  name: Equals(Object, Object)
-  nameWithType: Object.Equals(Object, Object)
-  fullName: System.Object.Equals(System.Object, System.Object)
-  spec.csharp:
-  - uid: System.Object.Equals(System.Object,System.Object)
-    name: Equals
-    nameWithType: Object.Equals
-    fullName: System.Object.Equals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.Equals(System.Object,System.Object)
-    name: Equals
-    nameWithType: Object.Equals
-    fullName: System.Object.Equals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.ReferenceEquals(System.Object,System.Object)
-  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
-  parent: System.Object
-  isExternal: true
-  name: ReferenceEquals(Object, Object)
-  nameWithType: Object.ReferenceEquals(Object, Object)
-  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
-  spec.csharp:
-  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
-    name: ReferenceEquals
-    nameWithType: Object.ReferenceEquals
-    fullName: System.Object.ReferenceEquals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
-    name: ReferenceEquals
-    nameWithType: Object.ReferenceEquals
-    fullName: System.Object.ReferenceEquals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.GetHashCode
-  commentId: M:System.Object.GetHashCode
-  parent: System.Object
-  isExternal: true
-  name: GetHashCode()
-  nameWithType: Object.GetHashCode()
-  fullName: System.Object.GetHashCode()
-  spec.csharp:
-  - uid: System.Object.GetHashCode
-    name: GetHashCode
-    nameWithType: Object.GetHashCode
-    fullName: System.Object.GetHashCode
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.GetHashCode
-    name: GetHashCode
-    nameWithType: Object.GetHashCode
-    fullName: System.Object.GetHashCode
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.GetType
-  commentId: M:System.Object.GetType
-  parent: System.Object
-  isExternal: true
-  name: GetType()
-  nameWithType: Object.GetType()
-  fullName: System.Object.GetType()
-  spec.csharp:
-  - uid: System.Object.GetType
-    name: GetType
-    nameWithType: Object.GetType
-    fullName: System.Object.GetType
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.GetType
-    name: GetType
-    nameWithType: Object.GetType
-    fullName: System.Object.GetType
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.MemberwiseClone
-  commentId: M:System.Object.MemberwiseClone
-  parent: System.Object
-  isExternal: true
-  name: MemberwiseClone()
-  nameWithType: Object.MemberwiseClone()
-  fullName: System.Object.MemberwiseClone()
-  spec.csharp:
-  - uid: System.Object.MemberwiseClone
-    name: MemberwiseClone
-    nameWithType: Object.MemberwiseClone
-    fullName: System.Object.MemberwiseClone
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.MemberwiseClone
-    name: MemberwiseClone
-    nameWithType: Object.MemberwiseClone
-    fullName: System.Object.MemberwiseClone
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: System
   commentId: N:System
   isExternal: false
@@ -1549,19 +1265,11 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.CorrelationIdHelper
   nameWithType.vb: AzureBus(Of TAuthenticationToken).CorrelationIdHelper
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).CorrelationIdHelper
-- uid: cdmdotnet.Logging.ICorrelationIdHelper
-  commentId: T:cdmdotnet.Logging.ICorrelationIdHelper
-  parent: cdmdotnet.Logging
+- uid: ICorrelationIdHelper
   isExternal: true
   name: ICorrelationIdHelper
   nameWithType: ICorrelationIdHelper
-  fullName: cdmdotnet.Logging.ICorrelationIdHelper
-- uid: cdmdotnet.Logging
-  commentId: N:cdmdotnet.Logging
-  isExternal: false
-  name: cdmdotnet.Logging
-  nameWithType: cdmdotnet.Logging
-  fullName: cdmdotnet.Logging
+  fullName: ICorrelationIdHelper
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.Logger*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.Logger
   isExternal: false
@@ -1570,13 +1278,11 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.Logger
   nameWithType.vb: AzureBus(Of TAuthenticationToken).Logger
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).Logger
-- uid: cdmdotnet.Logging.ILogger
-  commentId: T:cdmdotnet.Logging.ILogger
-  parent: cdmdotnet.Logging
+- uid: ILogger
   isExternal: true
   name: ILogger
   nameWithType: ILogger
-  fullName: cdmdotnet.Logging.ILogger
+  fullName: ILogger
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.ConfigurationManager*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.ConfigurationManager
   isExternal: false
@@ -1606,37 +1312,36 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.EventWaits
   nameWithType.vb: AzureBus(Of TAuthenticationToken).EventWaits
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).EventWaits
-- uid: System.Collections.Generic.IDictionary{System.Guid,System.Collections.Generic.IList{Cqrs.Events.IEvent{{TAuthenticationToken}}}}
-  commentId: T:System.Collections.Generic.IDictionary{System.Guid,System.Collections.Generic.IList{Cqrs.Events.IEvent{`0}}}
-  parent: System.Collections.Generic
-  definition: System.Collections.Generic.IDictionary`2
+- uid: IDictionary{Guid,IList{Cqrs.Events.IEvent{{TAuthenticationToken}}}}
+  commentId: '!:IDictionary{Guid,IList{Cqrs.Events.IEvent{`0}}}'
+  definition: IDictionary`2
   name: IDictionary<Guid, IList<IEvent<TAuthenticationToken>>>
   nameWithType: IDictionary<Guid, IList<IEvent<TAuthenticationToken>>>
-  fullName: System.Collections.Generic.IDictionary<System.Guid, System.Collections.Generic.IList<Cqrs.Events.IEvent<TAuthenticationToken>>>
+  fullName: IDictionary<Guid, IList<Cqrs.Events.IEvent<TAuthenticationToken>>>
   nameWithType.vb: IDictionary(Of Guid, IList(Of IEvent(Of TAuthenticationToken)))
-  fullName.vb: System.Collections.Generic.IDictionary(Of System.Guid, System.Collections.Generic.IList(Of Cqrs.Events.IEvent(Of TAuthenticationToken)))
+  fullName.vb: IDictionary(Of Guid, IList(Of Cqrs.Events.IEvent(Of TAuthenticationToken)))
   name.vb: IDictionary(Of Guid, IList(Of IEvent(Of TAuthenticationToken)))
   spec.csharp:
-  - uid: System.Collections.Generic.IDictionary`2
+  - uid: IDictionary`2
     name: IDictionary
     nameWithType: IDictionary
-    fullName: System.Collections.Generic.IDictionary
+    fullName: IDictionary
     isExternal: true
   - name: <
     nameWithType: <
     fullName: <
-  - uid: System.Guid
+  - uid: Guid
     name: Guid
     nameWithType: Guid
-    fullName: System.Guid
+    fullName: Guid
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Collections.Generic.IList`1
+  - uid: IList`1
     name: IList
     nameWithType: IList
-    fullName: System.Collections.Generic.IList
+    fullName: IList
     isExternal: true
   - name: <
     nameWithType: <
@@ -1661,26 +1366,26 @@ references:
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: System.Collections.Generic.IDictionary`2
+  - uid: IDictionary`2
     name: IDictionary
     nameWithType: IDictionary
-    fullName: System.Collections.Generic.IDictionary
+    fullName: IDictionary
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - uid: System.Guid
+  - uid: Guid
     name: Guid
     nameWithType: Guid
-    fullName: System.Guid
+    fullName: Guid
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Collections.Generic.IList`1
+  - uid: IList`1
     name: IList
     nameWithType: IList
-    fullName: System.Collections.Generic.IList
+    fullName: IList
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
@@ -1704,63 +1409,56 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Collections.Generic.IDictionary`2
-  commentId: T:System.Collections.Generic.IDictionary`2
+- uid: IDictionary`2
   isExternal: true
-  name: IDictionary<TKey, TValue>
-  nameWithType: IDictionary<TKey, TValue>
-  fullName: System.Collections.Generic.IDictionary<TKey, TValue>
-  nameWithType.vb: IDictionary(Of TKey, TValue)
-  fullName.vb: System.Collections.Generic.IDictionary(Of TKey, TValue)
-  name.vb: IDictionary(Of TKey, TValue)
+  name: IDictionary<, >
+  nameWithType: IDictionary<, >
+  fullName: IDictionary<, >
+  nameWithType.vb: IDictionary(Of , )
+  fullName.vb: IDictionary(Of , )
+  name.vb: IDictionary(Of , )
   spec.csharp:
-  - uid: System.Collections.Generic.IDictionary`2
+  - uid: IDictionary`2
     name: IDictionary
     nameWithType: IDictionary
-    fullName: System.Collections.Generic.IDictionary
+    fullName: IDictionary
     isExternal: true
   - name: <
     nameWithType: <
     fullName: <
-  - name: TKey
-    nameWithType: TKey
-    fullName: TKey
+  - name: ''
+    nameWithType: ''
+    fullName: ''
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - name: TValue
-    nameWithType: TValue
-    fullName: TValue
+  - name: ''
+    nameWithType: ''
+    fullName: ''
   - name: '>'
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: System.Collections.Generic.IDictionary`2
+  - uid: IDictionary`2
     name: IDictionary
     nameWithType: IDictionary
-    fullName: System.Collections.Generic.IDictionary
+    fullName: IDictionary
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - name: TKey
-    nameWithType: TKey
-    fullName: TKey
+  - name: ''
+    nameWithType: ''
+    fullName: ''
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - name: TValue
-    nameWithType: TValue
-    fullName: TValue
+  - name: ''
+    nameWithType: ''
+    fullName: ''
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Collections.Generic
-  commentId: N:System.Collections.Generic
-  isExternal: false
-  name: System.Collections.Generic
-  nameWithType: System.Collections.Generic
-  fullName: System.Collections.Generic
 - uid: System.Int32
   commentId: T:System.Int32
   parent: System
@@ -1871,19 +1569,11 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.GetNamespaceManager
   nameWithType.vb: AzureBus(Of TAuthenticationToken).GetNamespaceManager
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).GetNamespaceManager
-- uid: Microsoft.ServiceBus.NamespaceManager
-  commentId: T:Microsoft.ServiceBus.NamespaceManager
-  parent: Microsoft.ServiceBus
+- uid: NamespaceManager
   isExternal: true
   name: NamespaceManager
   nameWithType: NamespaceManager
-  fullName: Microsoft.ServiceBus.NamespaceManager
-- uid: Microsoft.ServiceBus
-  commentId: N:Microsoft.ServiceBus
-  isExternal: false
-  name: Microsoft.ServiceBus
-  nameWithType: Microsoft.ServiceBus
-  fullName: Microsoft.ServiceBus
+  fullName: NamespaceManager
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.AzureServiceBusRetryPolicy*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.AzureServiceBusRetryPolicy
   isExternal: false
@@ -1896,8 +1586,8 @@ references:
   commentId: T:Microsoft.Practices.TransientFaultHandling.RetryPolicy
   parent: Microsoft.Practices.TransientFaultHandling
   isExternal: true
-  name: RetryPolicy
-  nameWithType: RetryPolicy
+  name: Microsoft.Practices.TransientFaultHandling.RetryPolicy
+  nameWithType: Microsoft.Practices.TransientFaultHandling.RetryPolicy
   fullName: Microsoft.Practices.TransientFaultHandling.RetryPolicy
 - uid: Microsoft.Practices.TransientFaultHandling
   commentId: N:Microsoft.Practices.TransientFaultHandling

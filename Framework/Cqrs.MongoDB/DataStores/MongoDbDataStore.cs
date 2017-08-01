@@ -25,8 +25,14 @@ namespace Cqrs.MongoDB.DataStores
 	public class MongoDbDataStore<TData> : IDataStore<TData>
 		where TData : Entity
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="IMongoCollection{TData}"/>
+		/// </summary>
 		protected IMongoCollection<TData> MongoCollection { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
 		/// <summary>
@@ -106,6 +112,9 @@ namespace Cqrs.MongoDB.DataStores
 
 		#region Implementation of IDataStore<TData>
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public virtual void Add(TData data)
 		{
 			Logger.LogDebug("Adding data to the Mongo database", "MongoDbDataStore\\Add");
@@ -122,6 +131,9 @@ namespace Cqrs.MongoDB.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public virtual void Add(IEnumerable<TData> data)
 		{
 			Logger.LogDebug("Adding data collection to the Mongo database", "MongoDbDataStore\\Add");
@@ -152,6 +164,9 @@ namespace Cqrs.MongoDB.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
 		public virtual void Destroy(TData data)
 		{
 			Logger.LogDebug("Removing data from the Mongo database", "MongoDbDataStore\\Destroy");
@@ -168,6 +183,9 @@ namespace Cqrs.MongoDB.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+		/// </summary>
 		public virtual void RemoveAll()
 		{
 			Logger.LogDebug("Removing all from the Mongo database", "MongoDbDataStore\\RemoveAll");
@@ -181,6 +199,9 @@ namespace Cqrs.MongoDB.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
 		public virtual void Update(TData data)
 		{
 			Logger.LogDebug("Updating data in the Mongo database", "MongoDbDataStore\\Update");

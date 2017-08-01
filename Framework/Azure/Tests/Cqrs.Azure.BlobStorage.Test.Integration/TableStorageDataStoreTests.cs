@@ -1,7 +1,14 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using cdmdotnet.Logging;
 using cdmdotnet.Logging.Configuration;
 using cdmdotnet.StateManagement.Threaded;
@@ -11,7 +18,6 @@ using Cqrs.Azure.ServiceBus.Tests.Unit;
 using Cqrs.Configuration;
 using Cqrs.DataStores;
 using Cqrs.Entities;
-using Cqrs.Repositories.Queries;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
@@ -27,6 +33,11 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 	[TestClass]
 	public class TableStorageDataStoreTests
 	{
+		/// <summary>
+		/// Tests the <see cref="IDataStore{TData}.Add(TData)"/> method
+		/// Passing a valid test <see cref="IEntity"/>
+		/// Expecting the test <see cref="IEntity"/> is able to be read.
+		/// </summary>
 		[TestMethod]
 		public virtual void Add_ValidProjectionView_ProjectionViewCanBeRetreived()
 		{
@@ -59,6 +70,11 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			Assert.AreEqual(event1.Id, view.Id);
 		}
 
+		/// <summary>
+		/// Tests the <see cref="IDataStore{TData}.Add(TData)"/> method
+		/// Passing a valid test <see cref="IEntity"/>
+		/// Expecting the test <see cref="IEntity"/> is able to be read.
+		/// </summary>
 		[TestMethod]
 		public virtual void Add_ValidProjectionEntityView_ProjectionEntityViewCanBeRetreived()
 		{
@@ -89,6 +105,11 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			Assert.AreEqual(event1.Name, view.Name);
 		}
 
+		/// <summary>
+		/// Tests the <see cref="IDataStore{TData}.Update(TData)"/> method
+		/// Passing a valid test <see cref="IEntity"/>
+		/// Expecting the test <see cref="IEntity"/> is able to be read with updated properties.
+		/// </summary>
 		[TestMethod]
 		public virtual void Update_ValidProjectionEntityView_ProjectionEntityViewCanBeRetreived()
 		{
@@ -107,7 +128,9 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 
 			// The repo disposes the datastore, so a copy is needed.
 			TableStorageDataStore<TestEntity> repoDataStore = CreateDataStore<TestEntity>(logger, new ConfigurationManager());
-			var repository = new TableStorageRepository<TestQueryStrategy, TestQueryBuilder<TestEntity>, TestEntity>(() => repoDataStore, null);
+			// DO NOT REMOVE/REFACTOR Closure modifier access thingee stuff...
+			var store = repoDataStore;
+			var repository = new TableStorageRepository<TestQueryStrategy, TestQueryBuilder<TestEntity>, TestEntity>(() => store, null);
 			TestEntity view = repository.Load(event1.Rsn);
 			view.Name = "Name2";
 
@@ -128,37 +151,13 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			Assert.AreEqual(event1.Name, view.Name);
 		}
 
+		/// <summary>
+		/// Create a <see cref="TableStorageDataStore{TData}"/> ready for testing.
+		/// </summary>
 		protected virtual TableStorageDataStore<TData> CreateDataStore<TData>(ILogger logger, IConfigurationManager configurationManager)
 			where TData : Entity
 		{
 			return new TableStorageDataStore<TData>(logger, new TableStorageDataStoreConnectionStringFactory(configurationManager, logger));
-		}
-
-		public class TestQueryStrategy : IQueryStrategy
-		{
-			#region Implementation of IQueryStrategy
-
-			public IQueryPredicate QueryPredicate { get; set; }
-
-			#endregion
-		}
-
-		public class TestQueryBuilder<TData> : QueryBuilder<TestQueryStrategy, TData>
-			where TData : Entity
-		{
-			public TestQueryBuilder(IDataStore<TData> dataStore, IDependencyResolver dependencyResolver)
-				: base(dataStore, dependencyResolver)
-			{
-			}
-
-			#region Overrides of QueryBuilder<TestQueryStrategy,TData>
-
-			protected override IQueryable<TData> GeneratePredicate(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null)
-			{
-				throw new NotImplementedException();
-			}
-
-			#endregion
 		}
 	}
 }

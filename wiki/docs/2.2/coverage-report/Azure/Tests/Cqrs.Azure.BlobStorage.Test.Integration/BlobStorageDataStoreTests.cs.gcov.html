@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">50.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-31</td>
+            <td class="headerValue">2017-08-01</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -56,62 +56,77 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       1 </span>            : ﻿using System;
-<span class="lineNum">       2 </span>            : using System.Collections.Generic;
-<span class="lineNum">       3 </span>            : using System.Diagnostics;
-<span class="lineNum">       4 </span>            : using cdmdotnet.Logging;
-<span class="lineNum">       5 </span>            : using cdmdotnet.Logging.Configuration;
-<span class="lineNum">       6 </span>            : using cdmdotnet.StateManagement.Threaded;
-<span class="lineNum">       7 </span>            : using Cqrs.Azure.BlobStorage.DataStores;
-<span class="lineNum">       8 </span>            : using Cqrs.Azure.ServiceBus.Tests.Unit;
-<span class="lineNum">       9 </span>            : using Cqrs.Configuration;
-<span class="lineNum">      10 </span>            : using NUnit.Framework;
-<span class="lineNum">      11 </span>            : using TestClass = NUnit.Framework.TestFixtureAttribute;
-<span class="lineNum">      12 </span>            : using TestMethod = NUnit.Framework.TestAttribute;
-<span class="lineNum">      13 </span>            : using TestInitialize = NUnit.Framework.SetUpAttribute;
-<span class="lineNum">      14 </span>            : using TestCleanup = NUnit.Framework.TearDownAttribute;
-<span class="lineNum">      15 </span>            : using TestContext = System.Object;
-<span class="lineNum">      16 </span>            : 
-<span class="lineNum">      17 </span>            : namespace Cqrs.Azure.BlobStorage.Test.Integration
-<span class="lineNum">      18 </span>            : {
-<span class="lineNum">      19 </span>            :         /// &lt;summary&gt;
-<span class="lineNum">      20 </span>            :         /// A series of tests on the &lt;see cref=&quot;BlobStorageDataStore{TData}&quot;/&gt; class
-<span class="lineNum">      21 </span>            :         /// &lt;/summary&gt;
-<span class="lineNum">      22 </span>            :         [TestClass]
-<span class="lineNum">      23 </span>            :         public class BlobStorageDataStoreTests
-<span class="lineNum">      24 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      25 </span>            :                 [TestMethod]
-<span class="lineNum">      26 </span><span class="lineNoCov">          0 :                 public virtual void Save_ValidProjectionView_ProjectionViewCanBeRetreived()</span>
-<span class="lineNum">      27 </span>            :                 {
-<span class="lineNum">      28 </span>            :                         // Arrange
-<span class="lineNum">      29 </span>            :                         var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
-<span class="lineNum">      30 </span>            :                         correlationIdHelper.SetCorrelationId(Guid.NewGuid());
-<span class="lineNum">      31 </span>            :                         var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
-<span class="lineNum">      32 </span>            :                         var dataStore = new BlobStorageDataStore&lt;TestEvent&gt;(logger, new BlobStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
-<span class="lineNum">      33 </span>            : 
-<span class="lineNum">      34 </span>            :                         var event1 = new TestEvent
-<span class="lineNum">      35 </span>            :                         {
-<span class="lineNum">      36 </span>            :                                 Rsn = Guid.NewGuid(),
-<span class="lineNum">      37 </span>            :                                 Id = Guid.NewGuid(),
-<span class="lineNum">      38 </span>            :                                 CorrelationId = correlationIdHelper.GetCorrelationId(),
-<span class="lineNum">      39 </span>            :                                 Frameworks = new List&lt;string&gt; { &quot;Test 1&quot; },
-<span class="lineNum">      40 </span>            :                                 TimeStamp = DateTimeOffset.UtcNow
-<span class="lineNum">      41 </span>            :                         };
-<span class="lineNum">      42 </span>            : 
-<span class="lineNum">      43 </span>            :                         // Act
-<span class="lineNum">      44 </span>            :                         dataStore.Add(event1);
-<span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span>            :                         // Assert
-<span class="lineNum">      47 </span>            :                         var timer = new Stopwatch();
-<span class="lineNum">      48 </span>            :                         timer.Start();
-<span class="lineNum">      49 </span>            :                         TestEvent view = dataStore.GetByName(event1.Rsn);
-<span class="lineNum">      50 </span>            :                         timer.Stop();
-<span class="lineNum">      51 </span>            :                         Console.WriteLine(&quot;Load operation took {0}&quot;, timer.Elapsed);
-<span class="lineNum">      52 </span>            :                         Assert.IsNotNull(view);
-<span class="lineNum">      53 </span>            :                         Assert.AreEqual(event1.Id, view.Id);
-<span class="lineNum">      54 </span>            :                 }
-<span class="lineNum">      55 </span>            :         }
-<span class="lineNum">      56 </span>            : }
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Diagnostics;
+<span class="lineNum">      12 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      13 </span>            : using cdmdotnet.Logging.Configuration;
+<span class="lineNum">      14 </span>            : using cdmdotnet.StateManagement.Threaded;
+<span class="lineNum">      15 </span>            : using Cqrs.Azure.BlobStorage.DataStores;
+<span class="lineNum">      16 </span>            : using Cqrs.Azure.ServiceBus.Tests.Unit;
+<span class="lineNum">      17 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      18 </span>            : using Cqrs.DataStores;
+<span class="lineNum">      19 </span>            : using Cqrs.Entities;
+<span class="lineNum">      20 </span>            : using NUnit.Framework;
+<span class="lineNum">      21 </span>            : using TestClass = NUnit.Framework.TestFixtureAttribute;
+<span class="lineNum">      22 </span>            : using TestMethod = NUnit.Framework.TestAttribute;
+<span class="lineNum">      23 </span>            : using TestInitialize = NUnit.Framework.SetUpAttribute;
+<span class="lineNum">      24 </span>            : using TestCleanup = NUnit.Framework.TearDownAttribute;
+<span class="lineNum">      25 </span>            : using TestContext = System.Object;
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : namespace Cqrs.Azure.BlobStorage.Test.Integration
+<span class="lineNum">      28 </span>            : {
+<span class="lineNum">      29 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      30 </span>            :         /// A series of tests on the &lt;see cref=&quot;BlobStorageDataStore{TData}&quot;/&gt; class
+<span class="lineNum">      31 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      32 </span>            :         [TestClass]
+<span class="lineNum">      33 </span>            :         public class BlobStorageDataStoreTests
+<span class="lineNum">      34 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      35 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      36 </span>            :                 /// Tests the &lt;see cref=&quot;IDataStore{TData}.Add(TData)&quot;/&gt; method
+<span class="lineNum">      37 </span>            :                 /// Passing a valid test &lt;see cref=&quot;IEntity&quot;/&gt;
+<span class="lineNum">      38 </span>            :                 /// Expecting the test &lt;see cref=&quot;IEntity&quot;/&gt; is able to be read.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span>            :                 [TestMethod]
+<span class="lineNum">      41 </span><span class="lineCov">          1 :                 public virtual void Save_ValidProjectionView_ProjectionViewCanBeRetreived()</span>
+<span class="lineNum">      42 </span>            :                 {
+<span class="lineNum">      43 </span>            :                         // Arrange
+<span class="lineNum">      44 </span>            :                         var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
+<span class="lineNum">      45 </span>            :                         correlationIdHelper.SetCorrelationId(Guid.NewGuid());
+<span class="lineNum">      46 </span>            :                         var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
+<span class="lineNum">      47 </span>            :                         var dataStore = new BlobStorageDataStore&lt;TestEvent&gt;(logger, new BlobStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                         var event1 = new TestEvent
+<span class="lineNum">      50 </span>            :                         {
+<span class="lineNum">      51 </span>            :                                 Rsn = Guid.NewGuid(),
+<span class="lineNum">      52 </span>            :                                 Id = Guid.NewGuid(),
+<span class="lineNum">      53 </span>            :                                 CorrelationId = correlationIdHelper.GetCorrelationId(),
+<span class="lineNum">      54 </span>            :                                 Frameworks = new List&lt;string&gt; { &quot;Test 1&quot; },
+<span class="lineNum">      55 </span>            :                                 TimeStamp = DateTimeOffset.UtcNow
+<span class="lineNum">      56 </span>            :                         };
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                         // Act
+<span class="lineNum">      59 </span>            :                         dataStore.Add(event1);
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            :                         // Assert
+<span class="lineNum">      62 </span>            :                         var timer = new Stopwatch();
+<span class="lineNum">      63 </span>            :                         timer.Start();
+<span class="lineNum">      64 </span>            :                         TestEvent view = dataStore.GetByName(event1.Rsn);
+<span class="lineNum">      65 </span>            :                         timer.Stop();
+<span class="lineNum">      66 </span>            :                         Console.WriteLine(&quot;Load operation took {0}&quot;, timer.Elapsed);
+<span class="lineNum">      67 </span>            :                         Assert.IsNotNull(view);
+<span class="lineNum">      68 </span>            :                         Assert.AreEqual(event1.Id, view.Id);
+<span class="lineNum">      69 </span>            :                 }
+<span class="lineNum">      70 </span>            :         }
+<span class="lineNum">      71 </span>            : }
 </pre>
       </td>
     </tr>

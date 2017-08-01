@@ -17,9 +17,19 @@ using MongoDB.Bson.Serialization.Serializers;
 
 namespace Cqrs.MongoDB.Serialisers
 {
+	/// <summary>
+	/// A <see cref="StructSerializerBase{TValue}"/> with reasonable level support for structs.
+	/// </summary>
+	/// <typeparam name="TStruct">The <see cref="Type"/> of struct.</typeparam>
 	public class BasicStructSerialiser<TStruct> : StructSerializerBase<TStruct>
 		where TStruct : struct
 	{
+		/// <summary>
+		/// Serializes the provide <paramref name="value"/> as a set of key/value pairs.
+		/// </summary>
+		/// <param name="context">The serialisation context.</param>
+		/// <param name="args">The serialisation arguments.</param>
+		/// <param name="value">The value.</param>
 		public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, TStruct value)
 		{
 			Type nominalType = args.NominalType;
@@ -46,6 +56,14 @@ namespace Cqrs.MongoDB.Serialisers
 			bsonWriter.WriteEndDocument();
 		}
 
+		/// <summary>
+		/// Deserialises a value from key/value pairs.
+		/// </summary>
+		/// <param name="context">The deserialisation context.</param>
+		/// <param name="args">The deserialisation arguments.</param>
+		/// <returns>
+		/// A deserialised value.
+		/// </returns>
 		public override TStruct Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
 		{
 			//boxing is required for SetValue to work

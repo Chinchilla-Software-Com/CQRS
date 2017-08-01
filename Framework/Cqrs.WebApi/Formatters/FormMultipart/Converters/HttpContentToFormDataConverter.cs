@@ -17,8 +17,14 @@ using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure;
 
 namespace Cqrs.WebApi.Formatters.FormMultipart.Converters
 {
+	/// <summary>
+	/// Converts content in a <see cref="HttpContent"/> to <see cref="FormData"/>.
+	/// </summary>
 	public class HttpContentToFormDataConverter
 	{
+		/// <summary>
+		/// Converts the provided <paramref name="content"/> to multi-part form-data.
+		/// </summary>
 		public async Task<FormData> Convert(HttpContent content)
 		{
 			if(content == null)
@@ -75,6 +81,9 @@ namespace Cqrs.WebApi.Formatters.FormMultipart.Converters
 			return multipartFormData;
 		}
 
+		/// <summary>
+		/// Converts the <see cref="MultipartStreamProvider.Contents"/> of the provided <paramref name="multipartProvider"/> to multi-part form-data.
+		/// </summary>
 		public async Task<FormData> Convert(MultipartMemoryStreamProvider multipartProvider)
 		{
 			var multipartFormData = new FormData();

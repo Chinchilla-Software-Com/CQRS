@@ -26,7 +26,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CqrsEventApiController
     path: Framework/Cqrs.WebApi/CqrsEventApiController.cs
-    startLine: 21
+    startLine: 22
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
@@ -38,7 +38,9 @@ items:
     - id: TSingleSignOnToken
     content.vb: >-
       Public MustInherit Class CqrsEventApiController(Of TSingleSignOnToken As {ISingleSignOnToken, New})
+
           Inherits CqrsApiController
+
           Implements IHttpController, IDisposable, IEventService(Of TSingleSignOnToken)
   inheritance:
   - System.Object
@@ -140,10 +142,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Cqrs.WebApi/CqrsEventApiController.cs
-    startLine: 26
+    startLine: 30
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.WebApi.CqrsEventApiController%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected CqrsEventApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TSingleSignOnToken> authenticationTokenHelper, IEventStore<TSingleSignOnToken> eventStore, IConfigurationManager configurationManager)
     parameters:
@@ -184,10 +188,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AuthenticationTokenHelper
     path: Framework/Cqrs.WebApi/CqrsEventApiController.cs
-    startLine: 33
+    startLine: 40
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
+  summary: "\nGets or set the <xref href=\"Cqrs.Authentication.IAuthenticationTokenHelper%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected IAuthenticationTokenHelper<TSingleSignOnToken> AuthenticationTokenHelper { get; }
     parameters: []
@@ -221,10 +227,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EventStore
     path: Framework/Cqrs.WebApi/CqrsEventApiController.cs
-    startLine: 35
+    startLine: 45
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
+  summary: "\nGets or set the <xref href=\"Cqrs.Events.IEventStore%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected virtual IEventStore<TSingleSignOnToken> EventStore { get; }
     parameters: []
@@ -261,17 +269,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Cqrs.Services.IEventService<TSingleSignOnToken>.GetEventData
     path: Framework/Cqrs.WebApi/CqrsEventApiController.cs
-    startLine: 40
+    startLine: 56
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
+  summary: "\nGet all <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>\nraised with the same <xref href=\"Cqrs.Messages.IMessage.CorrelationId\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: IServiceResponseWithResultData<IEnumerable<EventData>> IEventService<TSingleSignOnToken>.GetEventData(IServiceRequestWithData<TSingleSignOnToken, Guid> serviceRequest)
     parameters:
     - id: serviceRequest
       type: Cqrs.Services.IServiceRequestWithData{{TSingleSignOnToken},System.Guid}
+      description: The <xref href="Cqrs.Messages.IMessage.CorrelationId" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> to find.
     return:
       type: Cqrs.Services.IServiceResponseWithResultData{System.Collections.Generic.IEnumerable{Cqrs.Events.EventData}}
+      description: A collection of <xref href="Cqrs.Events.EventData" data-throw-if-not-resolved="false"></xref>
     content.vb: Function Cqrs.Services.IEventService<TSingleSignOnToken>.GetEventData(serviceRequest As IServiceRequestWithData(Of TSingleSignOnToken, Guid)) As IServiceResponseWithResultData(Of IEnumerable(Of EventData)) Implements IEventService(Of TSingleSignOnToken).GetEventData
   overload: Cqrs.WebApi.CqrsEventApiController`1.Cqrs#Services#IEventService{TSingleSignOnToken}#GetEventData*
   implements:
@@ -297,18 +309,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetEventData
     path: Framework/Cqrs.WebApi/CqrsEventApiController.cs
-    startLine: 50
+    startLine: 67
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
-  summary: "\nQuery for all the events that match the provided CorrelationId.\n"
+  summary: "\nGet all <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>\nraised with the same <xref href=\"Cqrs.Messages.IMessage.CorrelationId\" data-throw-if-not-resolved=\"false\"></xref>.\n"
   example: []
   syntax:
     content: protected virtual IServiceResponseWithResultData<IEnumerable<EventData>> GetEventData(IServiceRequestWithData<TSingleSignOnToken, Guid> serviceRequest)
     parameters:
     - id: serviceRequest
       type: Cqrs.Services.IServiceRequestWithData{{TSingleSignOnToken},System.Guid}
-      description: A <xref href="Cqrs.Services.IServiceRequestWithData%602" data-throw-if-not-resolved="false"></xref> that contains the CorrelationId.
+      description: The <xref href="Cqrs.Messages.IMessage.CorrelationId" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> to find.
     return:
       type: Cqrs.Services.IServiceResponseWithResultData{System.Collections.Generic.IEnumerable{Cqrs.Events.EventData}}
       description: A collection of <xref href="Cqrs.Events.EventData" data-throw-if-not-resolved="false"></xref>
@@ -341,15 +353,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: OnGetEventData
     path: Framework/Cqrs.WebApi/CqrsEventApiController.cs
-    startLine: 69
+    startLine: 91
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
+  summary: "\nExecuted before calling the <xref href=\"Cqrs.Events.IEventStore%601.Get(System.Type%2cSystem.Guid%2cSystem.Boolean%2cSystem.Int32)\" data-throw-if-not-resolved=\"false\"></xref> method on <xref href=\"Cqrs.WebApi.CqrsEventApiController%601.EventStore\" data-throw-if-not-resolved=\"false\"></xref>\nin <xref href=\"Cqrs.WebApi.CqrsEventApiController%601.GetEventData(Cqrs.Services.IServiceRequestWithData%7b%600%2cSystem.Guid%7d)\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected virtual void OnGetEventData(IServiceRequestWithData<TSingleSignOnToken, Guid> serviceRequest)
     parameters:
     - id: serviceRequest
       type: Cqrs.Services.IServiceRequestWithData{{TSingleSignOnToken},System.Guid}
+      description: The original <xref href="Cqrs.Services.IServiceRequestWithData%602" data-throw-if-not-resolved="false"></xref>.
     content.vb: Protected Overridable Sub OnGetEventData(serviceRequest As IServiceRequestWithData(Of TSingleSignOnToken, Guid))
   overload: Cqrs.WebApi.CqrsEventApiController`1.OnGetEventData*
   nameWithType.vb: CqrsEventApiController(Of TSingleSignOnToken).OnGetEventData(IServiceRequestWithData(Of TSingleSignOnToken, Guid))
@@ -379,17 +394,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: OnGotEventData
     path: Framework/Cqrs.WebApi/CqrsEventApiController.cs
-    startLine: 71
+    startLine: 99
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
+  summary: "\nExecuted after calling the <xref href=\"Cqrs.Events.IEventStore%601.Get(System.Type%2cSystem.Guid%2cSystem.Boolean%2cSystem.Int32)\" data-throw-if-not-resolved=\"false\"></xref> method on <xref href=\"Cqrs.WebApi.CqrsEventApiController%601.EventStore\" data-throw-if-not-resolved=\"false\"></xref>\nin <xref href=\"Cqrs.WebApi.CqrsEventApiController%601.GetEventData(Cqrs.Services.IServiceRequestWithData%7b%600%2cSystem.Guid%7d)\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected virtual IEnumerable<EventData> OnGotEventData(IServiceRequestWithData<TSingleSignOnToken, Guid> serviceRequest, IEnumerable<EventData> results)
     parameters:
     - id: serviceRequest
       type: Cqrs.Services.IServiceRequestWithData{{TSingleSignOnToken},System.Guid}
+      description: The original <xref href="Cqrs.Services.IServiceRequestWithData%602" data-throw-if-not-resolved="false"></xref>.
     - id: results
       type: System.Collections.Generic.IEnumerable{Cqrs.Events.EventData}
+      description: The collection of <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> from the <xref href="Cqrs.WebApi.CqrsEventApiController%601.EventStore" data-throw-if-not-resolved="false"></xref>.
     return:
       type: System.Collections.Generic.IEnumerable{Cqrs.Events.EventData}
     content.vb: Protected Overridable Function OnGotEventData(serviceRequest As IServiceRequestWithData(Of TSingleSignOnToken, Guid), results As IEnumerable(Of EventData)) As IEnumerable(Of EventData)
@@ -4205,6 +4224,43 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.WebApi.CqrsEventApiController`1
+  commentId: T:Cqrs.WebApi.CqrsEventApiController`1
+  isExternal: false
+  name: CqrsEventApiController<TSingleSignOnToken>
+  nameWithType: CqrsEventApiController<TSingleSignOnToken>
+  fullName: Cqrs.WebApi.CqrsEventApiController<TSingleSignOnToken>
+  nameWithType.vb: CqrsEventApiController(Of TSingleSignOnToken)
+  fullName.vb: Cqrs.WebApi.CqrsEventApiController(Of TSingleSignOnToken)
+  name.vb: CqrsEventApiController(Of TSingleSignOnToken)
+  spec.csharp:
+  - uid: Cqrs.WebApi.CqrsEventApiController`1
+    name: CqrsEventApiController
+    nameWithType: CqrsEventApiController
+    fullName: Cqrs.WebApi.CqrsEventApiController
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TSingleSignOnToken
+    nameWithType: TSingleSignOnToken
+    fullName: TSingleSignOnToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.WebApi.CqrsEventApiController`1
+    name: CqrsEventApiController
+    nameWithType: CqrsEventApiController
+    fullName: Cqrs.WebApi.CqrsEventApiController
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TSingleSignOnToken
+    nameWithType: TSingleSignOnToken
+    fullName: TSingleSignOnToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.WebApi.CqrsEventApiController`1.#ctor*
   commentId: Overload:Cqrs.WebApi.CqrsEventApiController`1.#ctor
   isExternal: false
@@ -4424,6 +4480,57 @@ references:
   fullName: Cqrs.WebApi.CqrsEventApiController<TSingleSignOnToken>.EventStore
   nameWithType.vb: CqrsEventApiController(Of TSingleSignOnToken).EventStore
   fullName.vb: Cqrs.WebApi.CqrsEventApiController(Of TSingleSignOnToken).EventStore
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Messages.IMessage.CorrelationId
+  commentId: P:Cqrs.Messages.IMessage.CorrelationId
+  parent: Cqrs.Messages.IMessage
+  isExternal: false
+  name: CorrelationId
+  nameWithType: IMessage.CorrelationId
+  fullName: Cqrs.Messages.IMessage.CorrelationId
+- uid: Cqrs.Events.EventData
+  commentId: T:Cqrs.Events.EventData
+  parent: Cqrs.Events
+  isExternal: false
+  name: EventData
+  nameWithType: EventData
+  fullName: Cqrs.Events.EventData
 - uid: Cqrs.WebApi.CqrsEventApiController`1.Cqrs#Services#IEventService{TSingleSignOnToken}#GetEventData*
   commentId: Overload:Cqrs.WebApi.CqrsEventApiController`1.Cqrs#Services#IEventService{TSingleSignOnToken}#GetEventData
   isExternal: false
@@ -4623,6 +4730,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Messages.IMessage
+  commentId: T:Cqrs.Messages.IMessage
+  parent: Cqrs.Messages
+  isExternal: false
+  name: IMessage
+  nameWithType: IMessage
+  fullName: Cqrs.Messages.IMessage
 - uid: Cqrs.Services.IServiceRequestWithData`2
   commentId: T:Cqrs.Services.IServiceRequestWithData`2
   isExternal: false
@@ -4709,13 +4823,12 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Events.EventData
-  commentId: T:Cqrs.Events.EventData
-  parent: Cqrs.Events
+- uid: Cqrs.Messages
+  commentId: N:Cqrs.Messages
   isExternal: false
-  name: EventData
-  nameWithType: EventData
-  fullName: Cqrs.Events.EventData
+  name: Cqrs.Messages
+  nameWithType: Cqrs.Messages
+  fullName: Cqrs.Messages
 - uid: Cqrs.WebApi.CqrsEventApiController`1.GetEventData*
   commentId: Overload:Cqrs.WebApi.CqrsEventApiController`1.GetEventData
   isExternal: false
@@ -4724,6 +4837,98 @@ references:
   fullName: Cqrs.WebApi.CqrsEventApiController<TSingleSignOnToken>.GetEventData
   nameWithType.vb: CqrsEventApiController(Of TSingleSignOnToken).GetEventData
   fullName.vb: Cqrs.WebApi.CqrsEventApiController(Of TSingleSignOnToken).GetEventData
+- uid: Cqrs.Events.IEventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+  commentId: M:Cqrs.Events.IEventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+  isExternal: true
+  name: Get(Type, Guid, Boolean, Int32)
+  nameWithType: IEventStore<TAuthenticationToken>.Get(Type, Guid, Boolean, Int32)
+  fullName: Cqrs.Events.IEventStore<TAuthenticationToken>.Get(System.Type, System.Guid, System.Boolean, System.Int32)
+  nameWithType.vb: IEventStore(Of TAuthenticationToken).Get(Type, Guid, Boolean, Int32)
+  fullName.vb: Cqrs.Events.IEventStore(Of TAuthenticationToken).Get(System.Type, System.Guid, System.Boolean, System.Int32)
+  spec.csharp:
+  - uid: Cqrs.Events.IEventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+    name: Get
+    nameWithType: IEventStore<TAuthenticationToken>.Get
+    fullName: Cqrs.Events.IEventStore<TAuthenticationToken>.Get
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.IEventStore`1.Get(System.Type,System.Guid,System.Boolean,System.Int32)
+    name: Get
+    nameWithType: IEventStore(Of TAuthenticationToken).Get
+    fullName: Cqrs.Events.IEventStore(Of TAuthenticationToken).Get
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.WebApi.CqrsEventApiController`1.EventStore
+  commentId: P:Cqrs.WebApi.CqrsEventApiController`1.EventStore
+- uid: Cqrs.WebApi.CqrsEventApiController`1.GetEventData(Cqrs.Services.IServiceRequestWithData{`0,System.Guid})
+  commentId: M:Cqrs.WebApi.CqrsEventApiController`1.GetEventData(Cqrs.Services.IServiceRequestWithData{`0,System.Guid})
 - uid: Cqrs.WebApi.CqrsEventApiController`1.OnGetEventData*
   commentId: Overload:Cqrs.WebApi.CqrsEventApiController`1.OnGetEventData
   isExternal: false

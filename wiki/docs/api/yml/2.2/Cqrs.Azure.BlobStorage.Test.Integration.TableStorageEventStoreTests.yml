@@ -5,7 +5,7 @@ items:
   id: TableStorageEventStoreTests
   parent: Cqrs.Azure.BlobStorage.Test.Integration
   children:
-  - Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateDataStore(Cqrs.Events.IEventBuilder{System.Guid},Cqrs.Events.IEventDeserialiser{System.Guid},cdmdotnet.Logging.ILogger,Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory)
+  - Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateEventStore(Cqrs.Events.IEventBuilder{System.Guid},Cqrs.Events.IEventDeserialiser{System.Guid},cdmdotnet.Logging.ILogger,Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory)
   - Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.Save_ValidEvent_EventCanBeRetreived
   langs:
   - csharp
@@ -21,7 +21,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TableStorageEventStoreTests
     path: Framework/Azure/Tests/Cqrs.Azure.BlobStorage.Test.Integration/TableStorageEventStoreTests.cs
-    startLine: 23
+    startLine: 31
   assemblies:
   - Cqrs.Azure.BlobStorage.Test.Integration
   namespace: Cqrs.Azure.BlobStorage.Test.Integration
@@ -76,10 +76,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Save_ValidEvent_EventCanBeRetreived
     path: Framework/Azure/Tests/Cqrs.Azure.BlobStorage.Test.Integration/TableStorageEventStoreTests.cs
-    startLine: 26
+    startLine: 39
   assemblies:
   - Cqrs.Azure.BlobStorage.Test.Integration
   namespace: Cqrs.Azure.BlobStorage.Test.Integration
+  summary: "\nTests the <xref href=\"Cqrs.Events.IEventStore%601.Save(System.Type%2cCqrs.Events.IEvent%7b%600%7d)\" data-throw-if-not-resolved=\"false\"></xref> method\nPassing a valid test <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>\nExpecting the test <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> is able to be read.\n"
+  example: []
   syntax:
     content: >-
       [Test]
@@ -100,30 +102,32 @@ items:
   modifiers.vb:
   - Public
   - Overridable
-- uid: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateDataStore(Cqrs.Events.IEventBuilder{System.Guid},Cqrs.Events.IEventDeserialiser{System.Guid},cdmdotnet.Logging.ILogger,Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory)
-  commentId: M:Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateDataStore(Cqrs.Events.IEventBuilder{System.Guid},Cqrs.Events.IEventDeserialiser{System.Guid},cdmdotnet.Logging.ILogger,Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory)
-  id: CreateDataStore(Cqrs.Events.IEventBuilder{System.Guid},Cqrs.Events.IEventDeserialiser{System.Guid},cdmdotnet.Logging.ILogger,Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory)
+- uid: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateEventStore(Cqrs.Events.IEventBuilder{System.Guid},Cqrs.Events.IEventDeserialiser{System.Guid},cdmdotnet.Logging.ILogger,Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory)
+  commentId: M:Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateEventStore(Cqrs.Events.IEventBuilder{System.Guid},Cqrs.Events.IEventDeserialiser{System.Guid},cdmdotnet.Logging.ILogger,Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory)
+  id: CreateEventStore(Cqrs.Events.IEventBuilder{System.Guid},Cqrs.Events.IEventDeserialiser{System.Guid},cdmdotnet.Logging.ILogger,Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory)
   parent: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests
   langs:
   - csharp
   - vb
-  name: CreateDataStore(IEventBuilder<Guid>, IEventDeserialiser<Guid>, ILogger, ITableStorageStoreConnectionStringFactory)
-  nameWithType: TableStorageEventStoreTests.CreateDataStore(IEventBuilder<Guid>, IEventDeserialiser<Guid>, ILogger, ITableStorageStoreConnectionStringFactory)
-  fullName: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateDataStore(Cqrs.Events.IEventBuilder<System.Guid>, Cqrs.Events.IEventDeserialiser<System.Guid>, cdmdotnet.Logging.ILogger, Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory)
+  name: CreateEventStore(IEventBuilder<Guid>, IEventDeserialiser<Guid>, ILogger, ITableStorageStoreConnectionStringFactory)
+  nameWithType: TableStorageEventStoreTests.CreateEventStore(IEventBuilder<Guid>, IEventDeserialiser<Guid>, ILogger, ITableStorageStoreConnectionStringFactory)
+  fullName: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateEventStore(Cqrs.Events.IEventBuilder<System.Guid>, Cqrs.Events.IEventDeserialiser<System.Guid>, cdmdotnet.Logging.ILogger, Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory)
   type: Method
   source:
     remote:
       path: Framework/Azure/Tests/Cqrs.Azure.BlobStorage.Test.Integration/TableStorageEventStoreTests.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
-    id: CreateDataStore
+    id: CreateEventStore
     path: Framework/Azure/Tests/Cqrs.Azure.BlobStorage.Test.Integration/TableStorageEventStoreTests.cs
-    startLine: 80
+    startLine: 96
   assemblies:
   - Cqrs.Azure.BlobStorage.Test.Integration
   namespace: Cqrs.Azure.BlobStorage.Test.Integration
+  summary: "\nCreate a <xref href=\"Cqrs.Azure.BlobStorage.Events.TableStorageEventStore%601\" data-throw-if-not-resolved=\"false\"></xref> ready for testing.\n"
+  example: []
   syntax:
-    content: protected virtual TableStorageEventStore<Guid> CreateDataStore(IEventBuilder<Guid> eventBuilder, IEventDeserialiser<Guid> eventDeserialiser, ILogger logger, ITableStorageStoreConnectionStringFactory tableStorageEventStoreConnectionStringFactory)
+    content: protected virtual TableStorageEventStore<Guid> CreateEventStore(IEventBuilder<Guid> eventBuilder, IEventDeserialiser<Guid> eventDeserialiser, ILogger logger, ITableStorageStoreConnectionStringFactory tableStorageEventStoreConnectionStringFactory)
     parameters:
     - id: eventBuilder
       type: Cqrs.Events.IEventBuilder{System.Guid}
@@ -135,17 +139,17 @@ items:
       type: Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory
     return:
       type: Cqrs.Azure.BlobStorage.Events.TableStorageEventStore{System.Guid}
-    content.vb: Protected Overridable Function CreateDataStore(eventBuilder As IEventBuilder(Of Guid), eventDeserialiser As IEventDeserialiser(Of Guid), logger As ILogger, tableStorageEventStoreConnectionStringFactory As ITableStorageStoreConnectionStringFactory) As TableStorageEventStore(Of Guid)
-  overload: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateDataStore*
-  nameWithType.vb: TableStorageEventStoreTests.CreateDataStore(IEventBuilder(Of Guid), IEventDeserialiser(Of Guid), ILogger, ITableStorageStoreConnectionStringFactory)
+    content.vb: Protected Overridable Function CreateEventStore(eventBuilder As IEventBuilder(Of Guid), eventDeserialiser As IEventDeserialiser(Of Guid), logger As ILogger, tableStorageEventStoreConnectionStringFactory As ITableStorageStoreConnectionStringFactory) As TableStorageEventStore(Of Guid)
+  overload: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateEventStore*
+  nameWithType.vb: TableStorageEventStoreTests.CreateEventStore(IEventBuilder(Of Guid), IEventDeserialiser(Of Guid), ILogger, ITableStorageStoreConnectionStringFactory)
   modifiers.csharp:
   - protected
   - virtual
   modifiers.vb:
   - Protected
   - Overridable
-  fullName.vb: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateDataStore(Cqrs.Events.IEventBuilder(Of System.Guid), Cqrs.Events.IEventDeserialiser(Of System.Guid), cdmdotnet.Logging.ILogger, Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory)
-  name.vb: CreateDataStore(IEventBuilder(Of Guid), IEventDeserialiser(Of Guid), ILogger, ITableStorageStoreConnectionStringFactory)
+  fullName.vb: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateEventStore(Cqrs.Events.IEventBuilder(Of System.Guid), Cqrs.Events.IEventDeserialiser(Of System.Guid), cdmdotnet.Logging.ILogger, Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory)
+  name.vb: CreateEventStore(IEventBuilder(Of Guid), IEventDeserialiser(Of Guid), ILogger, ITableStorageStoreConnectionStringFactory)
 references:
 - uid: Cqrs.Azure.BlobStorage.Events.TableStorageEventStore`1
   commentId: T:Cqrs.Azure.BlobStorage.Events.TableStorageEventStore`1
@@ -482,18 +486,128 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: Cqrs.Events.IEventStore`1.Save(System.Type,Cqrs.Events.IEvent{`0})
+  commentId: M:Cqrs.Events.IEventStore`1.Save(System.Type,Cqrs.Events.IEvent{`0})
+  isExternal: true
+  name: Save(Type, IEvent<TAuthenticationToken>)
+  nameWithType: IEventStore<TAuthenticationToken>.Save(Type, IEvent<TAuthenticationToken>)
+  fullName: Cqrs.Events.IEventStore<TAuthenticationToken>.Save(System.Type, Cqrs.Events.IEvent<TAuthenticationToken>)
+  nameWithType.vb: IEventStore(Of TAuthenticationToken).Save(Type, IEvent(Of TAuthenticationToken))
+  fullName.vb: Cqrs.Events.IEventStore(Of TAuthenticationToken).Save(System.Type, Cqrs.Events.IEvent(Of TAuthenticationToken))
+  name.vb: Save(Type, IEvent(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: Cqrs.Events.IEventStore`1.Save(System.Type,Cqrs.Events.IEvent{`0})
+    name: Save
+    nameWithType: IEventStore<TAuthenticationToken>.Save
+    fullName: Cqrs.Events.IEventStore<TAuthenticationToken>.Save
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Events.IEventStore`1.Save(System.Type,Cqrs.Events.IEvent{`0})
+    name: Save
+    nameWithType: IEventStore(Of TAuthenticationToken).Save
+    fullName: Cqrs.Events.IEventStore(Of TAuthenticationToken).Save
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.Save_ValidEvent_EventCanBeRetreived*
   commentId: Overload:Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.Save_ValidEvent_EventCanBeRetreived
   isExternal: false
   name: Save_ValidEvent_EventCanBeRetreived
   nameWithType: TableStorageEventStoreTests.Save_ValidEvent_EventCanBeRetreived
   fullName: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.Save_ValidEvent_EventCanBeRetreived
-- uid: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateDataStore*
-  commentId: Overload:Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateDataStore
+- uid: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateEventStore*
+  commentId: Overload:Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateEventStore
   isExternal: false
-  name: CreateDataStore
-  nameWithType: TableStorageEventStoreTests.CreateDataStore
-  fullName: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateDataStore
+  name: CreateEventStore
+  nameWithType: TableStorageEventStoreTests.CreateEventStore
+  fullName: Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests.CreateEventStore
 - uid: Cqrs.Events.IEventBuilder{System.Guid}
   commentId: T:Cqrs.Events.IEventBuilder{System.Guid}
   parent: Cqrs.Events

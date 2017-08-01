@@ -1,10 +1,5 @@
 var hierarchy =
 [
-    [ "Cqrs.Domain.AggregateRepository< ISingleSignOnToken >", "classCqrs_1_1Domain_1_1AggregateRepository.html", null ],
-    [ "Cqrs.Domain.AggregateRoot< ISingleSignOnToken >", "classCqrs_1_1Domain_1_1AggregateRoot.html", [
-      [ "Cqrs.Tests.Substitutes.TestAggregate", "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregate.html", null ],
-      [ "Cqrs.Tests.Substitutes.TestAggregateNoParameterLessConstructor", "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateNoParameterLessConstructor.html", null ]
-    ] ],
     [ "Cqrs.Akka.Domain.AkkaAggregateRoot< Guid >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot.html", [
       [ "Cqrs.Akka.Tests.Unit.Aggregates.HelloWorld", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Aggregates_1_1HelloWorld.html", null ]
     ] ],
@@ -42,7 +37,6 @@ var hierarchy =
     [ "BooleanConverter", null, [
       [ "Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.TypeConverters.BooleanConverterEx", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1BooleanConverterEx.html", null ]
     ] ],
-    [ "Cqrs.Cache.CacheRepository< ISingleSignOnToken >", "classCqrs_1_1Cache_1_1CacheRepository.html", null ],
     [ "ChannelFactory", null, [
       [ "Cqrs.Services.ServiceChannelFactory< TService >", "classCqrs_1_1Services_1_1ServiceChannelFactory.html", null ]
     ] ],
@@ -195,15 +189,13 @@ var hierarchy =
         [ "Cqrs.Akka.Commands.AkkaCommandBus< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus.html", null ],
         [ "Cqrs.Azure.ServiceBus.AzureCommandBusReceiver< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBusReceiver.html", null ],
         [ "Cqrs.Azure.ServiceBus.AzureCommandBusReceiver< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBusReceiver.html", null ],
-        [ "Cqrs.Bus.InProcessBus< TAuthenticationToken >", "classCqrs_1_1Bus_1_1InProcessBus.html", null ],
-        [ "Cqrs.Tests.Substitutes.TestHandleRegistrar", "classCqrs_1_1Tests_1_1Substitutes_1_1TestHandleRegistrar.html", null ]
+        [ "Cqrs.Bus.InProcessBus< TAuthenticationToken >", "classCqrs_1_1Bus_1_1InProcessBus.html", null ]
       ] ],
       [ "Cqrs.Bus.IEventHandlerRegistrar", "interfaceCqrs_1_1Bus_1_1IEventHandlerRegistrar.html", [
         [ "Cqrs.Akka.Events.AkkaEventBus< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Events_1_1AkkaEventBus.html", null ],
         [ "Cqrs.Azure.ServiceBus.AzureEventBusReceiver< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBusReceiver.html", null ],
         [ "Cqrs.Azure.ServiceBus.AzureEventBusReceiver< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBusReceiver.html", null ],
-        [ "Cqrs.Bus.InProcessBus< TAuthenticationToken >", "classCqrs_1_1Bus_1_1InProcessBus.html", null ],
-        [ "Cqrs.Tests.Substitutes.TestHandleRegistrar", "classCqrs_1_1Tests_1_1Substitutes_1_1TestHandleRegistrar.html", null ]
+        [ "Cqrs.Bus.InProcessBus< TAuthenticationToken >", "classCqrs_1_1Bus_1_1InProcessBus.html", null ]
       ] ],
       [ "Cqrs.Bus.RouteManager", "classCqrs_1_1Bus_1_1RouteManager.html", null ]
     ] ],
@@ -249,8 +241,7 @@ var hierarchy =
         [ "Cqrs.Ninject.Configuration.NinjectDependencyResolver", "classCqrs_1_1Ninject_1_1Configuration_1_1NinjectDependencyResolver.html", [
           [ "Cqrs.Ninject.Akka.AkkaNinjectDependencyResolver", "classCqrs_1_1Ninject_1_1Akka_1_1AkkaNinjectDependencyResolver.html", null ]
         ] ]
-      ] ],
-      [ "Cqrs.Tests.Substitutes.TestDependencyResolver", "classCqrs_1_1Tests_1_1Substitutes_1_1TestDependencyResolver.html", null ]
+      ] ]
     ] ],
     [ "Cqrs.Configuration.ITelemetryHelperExtensions", "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions.html", null ],
     [ "Cqrs.DataStores.SqlDataStoreExtension", "classCqrs_1_1DataStores_1_1SqlDataStoreExtension.html", null ],
@@ -310,8 +301,7 @@ var hierarchy =
         ] ],
         [ "Cqrs.MongoDB.Entities.MongoEntity", "classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity.html", [
           [ "Cqrs.MongoDB.Repositories.Authentication.SingleSignOnToken", "classCqrs_1_1MongoDB_1_1Repositories_1_1Authentication_1_1SingleSignOnToken.html", null ]
-        ] ],
-        [ "Cqrs.Tests.Substitutes.OrderEntity", "classCqrs_1_1Tests_1_1Substitutes_1_1OrderEntity.html", null ]
+        ] ]
       ] ]
     ] ],
     [ "Cqrs.Entities.Range< TPrimitive >", "classCqrs_1_1Entities_1_1Range.html", null ],
@@ -477,7 +467,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "Cqrs.Repositories.Queries.IQueryStrategy", "interfaceCqrs_1_1Repositories_1_1Queries_1_1IQueryStrategy.html", [
-      [ "Cqrs.Azure.BlobStorage.Test.Integration.TableStorageDataStoreTests.TestQueryStrategy", "classCqrs_1_1Azure_1_1BlobStorage_1_1Test_1_1Integration_1_1TableStorageDataStoreTests_1_1TestQueryStrategy.html", null ],
+      [ "Cqrs.Azure.BlobStorage.Test.Integration.TestQueryStrategy", "classCqrs_1_1Azure_1_1BlobStorage_1_1Test_1_1Integration_1_1TestQueryStrategy.html", null ],
       [ "Cqrs.Repositories.Queries.QueryStrategy", "classCqrs_1_1Repositories_1_1Queries_1_1QueryStrategy.html", null ]
     ] ],
     [ "Cqrs.Repositories.Queries.IQueryWithResults< out out TResult >", "interfaceCqrs_1_1Repositories_1_1Queries_1_1IQueryWithResults.html", null ],
@@ -525,46 +515,16 @@ var hierarchy =
       [ "Cqrs.Services.UnitOfWorkService< TAuthenticationToken >", "classCqrs_1_1Services_1_1UnitOfWorkService.html", null ]
     ] ],
     [ "Cqrs.Services.WcfDataContractResolverConfiguration", "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration.html", null ],
-    [ "Cqrs.Snapshots.ISnapshotStore", "interfaceCqrs_1_1Snapshots_1_1ISnapshotStore.html", [
-      [ "Cqrs.Tests.Substitutes.TestInMemorySnapshotStore", "classCqrs_1_1Tests_1_1Substitutes_1_1TestInMemorySnapshotStore.html", null ],
-      [ "Cqrs.Tests.Substitutes.TestSnapshotStore", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotStore.html", null ]
-    ] ],
+    [ "Cqrs.Snapshots.ISnapshotStore", "interfaceCqrs_1_1Snapshots_1_1ISnapshotStore.html", null ],
     [ "Cqrs.Snapshots.ISnapshotStrategy< TAuthenticationToken >", "interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy.html", [
       [ "Cqrs.Snapshots.DefaultSnapshotStrategy< TAuthenticationToken >", "classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy.html", null ]
     ] ],
-    [ "Cqrs.Snapshots.Snapshot", "classCqrs_1_1Snapshots_1_1Snapshot.html", [
-      [ "Cqrs.Tests.Substitutes.TestSnapshotAggregateSnapshot", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotAggregateSnapshot.html", null ]
-    ] ],
+    [ "Cqrs.Snapshots.Snapshot", "classCqrs_1_1Snapshots_1_1Snapshot.html", null ],
     [ "Cqrs.Sql.DataStores.Converters", "classCqrs_1_1Sql_1_1DataStores_1_1Converters.html", null ],
     [ "Cqrs.Sql.DataStores.IExpressionTreeConverter", "interfaceCqrs_1_1Sql_1_1DataStores_1_1IExpressionTreeConverter.html", [
       [ "Cqrs.Sql.DataStores.ExpressionTreeConverter< TA, TB >", "classCqrs_1_1Sql_1_1DataStores_1_1ExpressionTreeConverter.html", null ]
     ] ],
     [ "Cqrs.Sql.DataStores.SqlDataStoreExtensions", "classCqrs_1_1Sql_1_1DataStores_1_1SqlDataStoreExtensions.html", null ],
-    [ "Cqrs.Tests.Bus.When_publishing_events", "classCqrs_1_1Tests_1_1Bus_1_1When__publishing__events.html", null ],
-    [ "Cqrs.Tests.Bus.When_registering_handlers", "classCqrs_1_1Tests_1_1Bus_1_1When__registering__handlers.html", null ],
-    [ "Cqrs.Tests.Bus.When_sending_command", "classCqrs_1_1Tests_1_1Bus_1_1When__sending__command.html", null ],
-    [ "Cqrs.Tests.Cache.When_getting_aggregate", "classCqrs_1_1Tests_1_1Cache_1_1When__getting__aggregate.html", null ],
-    [ "Cqrs.Tests.Cache.When_getting_earlier_than_expected_events_from_event_store", "classCqrs_1_1Tests_1_1Cache_1_1When__getting__earlier__than__expected__events__from__event__store.html", null ],
-    [ "Cqrs.Tests.Cache.When_saving_aggregate", "classCqrs_1_1Tests_1_1Cache_1_1When__saving__aggregate.html", null ],
-    [ "Cqrs.Tests.Cache.When_saving_fails", "classCqrs_1_1Tests_1_1Cache_1_1When__saving__fails.html", null ],
-    [ "Cqrs.Tests.Cache.When_saving_same_aggregate_in_parallel", "classCqrs_1_1Tests_1_1Cache_1_1When__saving__same__aggregate__in__parallel.html", null ],
-    [ "Cqrs.Tests.Cache.When_saving_two_aggregates_in_parallel", "classCqrs_1_1Tests_1_1Cache_1_1When__saving__two__aggregates__in__parallel.html", null ],
-    [ "Cqrs.Tests.DataStores.CRUD_operations", "classCqrs_1_1Tests_1_1DataStores_1_1CRUD__operations.html", null ],
-    [ "Cqrs.Tests.Domain.Saga.When_getting_a_saga", "classCqrs_1_1Tests_1_1Domain_1_1Saga_1_1When__getting__a__saga.html", null ],
-    [ "Cqrs.Tests.Domain.When_adding_aggregates_to_repository", "classCqrs_1_1Tests_1_1Domain_1_1When__adding__aggregates__to__repository.html", null ],
-    [ "Cqrs.Tests.Domain.When_getting_aggregate_without_contructor", "classCqrs_1_1Tests_1_1Domain_1_1When__getting__aggregate__without__contructor.html", null ],
-    [ "Cqrs.Tests.Domain.When_getting_an_aggregate", "classCqrs_1_1Tests_1_1Domain_1_1When__getting__an__aggregate.html", null ],
-    [ "Cqrs.Tests.Domain.When_replaying_events", "classCqrs_1_1Tests_1_1Domain_1_1When__replaying__events.html", null ],
-    [ "Cqrs.Tests.Domain.When_saving", "classCqrs_1_1Tests_1_1Domain_1_1When__saving.html", null ],
-    [ "Cqrs.Tests.Domain.When_saving_events_without_id", "classCqrs_1_1Tests_1_1Domain_1_1When__saving__events__without__id.html", null ],
-    [ "Cqrs.Tests.Domain.When_saving_stale_data", "classCqrs_1_1Tests_1_1Domain_1_1When__saving__stale__data.html", null ],
-    [ "Cqrs.Tests.Extensions.TestHelpers.Specification< TAggregate, THandler, TCommand >", "classCqrs_1_1Tests_1_1Extensions_1_1TestHelpers_1_1Specification.html", null ],
-    [ "Cqrs.Tests.Snapshots.When_getting_a_snapshot_aggregate_with_no_snapshot", "classCqrs_1_1Tests_1_1Snapshots_1_1When__getting__a__snapshot__aggregate__with__no__snapshot.html", null ],
-    [ "Cqrs.Tests.Snapshots.When_getting_an_aggregate_with_snapshot", "classCqrs_1_1Tests_1_1Snapshots_1_1When__getting__an__aggregate__with__snapshot.html", null ],
-    [ "Cqrs.Tests.Snapshots.When_getting_snapshotable_aggreate", "classCqrs_1_1Tests_1_1Snapshots_1_1When__getting__snapshotable__aggreate.html", null ],
-    [ "Cqrs.Tests.Snapshots.When_saving_a_snapshotable_aggregate", "classCqrs_1_1Tests_1_1Snapshots_1_1When__saving__a__snapshotable__aggregate.html", null ],
-    [ "Cqrs.Tests.Snapshots.When_saving_a_snapshotable_aggregate_for_each_change", "classCqrs_1_1Tests_1_1Snapshots_1_1When__saving__a__snapshotable__aggregate__for__each__change.html", null ],
-    [ "Cqrs.Tests.Substitutes.TestHandlerListItem", "classCqrs_1_1Tests_1_1Substitutes_1_1TestHandlerListItem.html", null ],
     [ "Cqrs.WebApi.Configuration.WebApiConfig", "classCqrs_1_1WebApi_1_1Configuration_1_1WebApiConfig.html", null ],
     [ "Cqrs.WebApi.Controllers.ClientController.ApiMethodModel", "classCqrs_1_1WebApi_1_1Controllers_1_1ClientController_1_1ApiMethodModel.html", null ],
     [ "Cqrs.WebApi.Controllers.ClientController.ApiParameterModel", "classCqrs_1_1WebApi_1_1Controllers_1_1ClientController_1_1ApiParameterModel.html", null ],
@@ -621,10 +581,6 @@ var hierarchy =
     [ "DefaultModelBinder", null, [
       [ "Cqrs.Web.Mvc.NullableGuidBinder", "classCqrs_1_1Web_1_1Mvc_1_1NullableGuidBinder.html", null ]
     ] ],
-    [ "DynamicObject", null, [
-      [ "System.Web.Helpers.DynamicJsonArray", "classSystem_1_1Web_1_1Helpers_1_1DynamicJsonArray.html", null ],
-      [ "System.Web.Helpers.DynamicJsonObject", "classSystem_1_1Web_1_1Helpers_1_1DynamicJsonObject.html", null ]
-    ] ],
     [ "Exception", null, [
       [ "Cqrs.Azure.DocumentDb.DocumentDbException", "classCqrs_1_1Azure_1_1DocumentDb_1_1DocumentDbException.html", null ],
       [ "Cqrs.Domain.Exceptions.AggregateNotFoundException< TAggregateRoot, TAuthenticationToken >", "classCqrs_1_1Domain_1_1Exceptions_1_1AggregateNotFoundException.html", null ],
@@ -659,9 +615,6 @@ var hierarchy =
     ] ],
     [ "Hub", null, [
       [ "Cqrs.WebApi.SignalR.Hubs.NotificationHub", "classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub.html", null ]
-    ] ],
-    [ "Cqrs.Domain.IAggregateRepository< ISingleSignOnToken >", "interfaceCqrs_1_1Domain_1_1IAggregateRepository.html", [
-      [ "Cqrs.Tests.Substitutes.TestAggregateRepository", "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateRepository.html", null ]
     ] ],
     [ "Cqrs.Akka.Domain.IAkkaAggregateRootProxy< TAggregateRoot >", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRootProxy.html", [
       [ "Cqrs.Akka.Domain.AkkaAggregateRootProxy< TAuthenticationToken, TAggregateRoot >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRootProxy.html", null ]
@@ -711,12 +664,6 @@ var hierarchy =
       [ "Cqrs.Akka.Tests.Unit.Commands.UpdateCompletedConversationReportCommand", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1UpdateCompletedConversationReportCommand.html", null ],
       [ "Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand", "classCqrs_1_1Azure_1_1ServiceBus_1_1Tests_1_1Unit_1_1TestCommand.html", null ]
     ] ],
-    [ "Cqrs.Commands.ICommand< ISingleSignOnToken >", "interfaceCqrs_1_1Commands_1_1ICommand.html", [
-      [ "Cqrs.Tests.Substitutes.TestAggregateDoSomething", "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomething.html", [
-        [ "Cqrs.Tests.Substitutes.TestAggregateDoSomething2", "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomething2.html", null ],
-        [ "Cqrs.Tests.Substitutes.TestAggregateDoSomething3", "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomething3.html", null ]
-      ] ]
-    ] ],
     [ "Cqrs.Commands.ICommandHandler< Guid, EndConversationCommand >", "interfaceCqrs_1_1Commands_1_1ICommandHandler.html", [
       [ "Cqrs.Akka.Tests.Unit.Commands.Handlers.EndConversationCommandHandler", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1Handlers_1_1EndConversationCommandHandler.html", null ]
     ] ],
@@ -729,15 +676,8 @@ var hierarchy =
     [ "Cqrs.Commands.ICommandHandler< Guid, UpdateCompletedConversationReportCommand >", "interfaceCqrs_1_1Commands_1_1ICommandHandler.html", [
       [ "Cqrs.Akka.Tests.Unit.Commands.Handlers.UpdateCompletedConversationReportCommandHandler", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1Handlers_1_1UpdateCompletedConversationReportCommandHandler.html", null ]
     ] ],
-    [ "Cqrs.Commands.ICommandHandler< ISingleSignOnToken, TestAggregateDoSomething >", "interfaceCqrs_1_1Commands_1_1ICommandHandler.html", [
-      [ "Cqrs.Tests.Substitutes.TestAggregateDoSomethingElseHandler", "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomethingElseHandler.html", null ],
-      [ "Cqrs.Tests.Substitutes.TestAggregateDoSomethingHandler", "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDoSomethingHandler.html", null ]
-    ] ],
     [ "ICommandHandler< TAuthenticationToken, DtoCommand< TAuthenticationToken, TDto >>", null, [
       [ "Cqrs.Commands.DtoCommandHandler< TAuthenticationToken, TDto >", "classCqrs_1_1Commands_1_1DtoCommandHandler.html", null ]
-    ] ],
-    [ "Cqrs.Commands.ICommandPublisher< ISingleSignOnToken >", "interfaceCqrs_1_1Commands_1_1ICommandPublisher.html", [
-      [ "Cqrs.Tests.Substitutes.TestCommandPublisher", "classCqrs_1_1Tests_1_1Substitutes_1_1TestCommandPublisher.html", null ]
     ] ],
     [ "Cqrs.Commands.ICommandReceiver< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ICommandReceiver.html", [
       [ "Cqrs.Azure.ServiceBus.AzureCommandBusReceiver< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBusReceiver.html", null ],
@@ -768,21 +708,13 @@ var hierarchy =
       ] ]
     ] ],
     [ "IEnumerable", null, [
-      [ "Cqrs.Azure.BlobStorage.StorageStore< TData, TSource >", "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore.html", null ],
-      [ "System.Web.Helpers.DynamicJsonArray", "classSystem_1_1Web_1_1Helpers_1_1DynamicJsonArray.html", null ]
+      [ "Cqrs.Azure.BlobStorage.StorageStore< TData, TSource >", "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore.html", null ]
     ] ],
     [ "Cqrs.Events.IEvent< Guid >", "interfaceCqrs_1_1Events_1_1IEvent.html", [
       [ "Cqrs.Akka.Tests.Unit.Events.ConversationEnded", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded.html", null ],
       [ "Cqrs.Akka.Tests.Unit.Events.HelloWorldRepliedTo", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1HelloWorldRepliedTo.html", null ],
       [ "Cqrs.Akka.Tests.Unit.Events.HelloWorldSaid", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1HelloWorldSaid.html", null ],
       [ "Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent", "classCqrs_1_1Azure_1_1ServiceBus_1_1Tests_1_1Unit_1_1TestEvent.html", null ]
-    ] ],
-    [ "Cqrs.Events.IEvent< ISingleSignOnToken >", "interfaceCqrs_1_1Events_1_1IEvent.html", [
-      [ "Cqrs.Tests.Substitutes.TestAggregateCreated", "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateCreated.html", null ],
-      [ "Cqrs.Tests.Substitutes.TestAggregateDidSomething", "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomething.html", null ],
-      [ "Cqrs.Tests.Substitutes.TestAggregateDidSomethingElse", "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomethingElse.html", [
-        [ "Cqrs.Tests.Substitutes.TestAggregateDidSomethingElse2", "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomethingElse2.html", null ]
-      ] ]
     ] ],
     [ "Cqrs.Events.IEventHandler< Guid, ConversationEnded >", "interfaceCqrs_1_1Events_1_1IEventHandler.html", [
       [ "Cqrs.Akka.Tests.Unit.Events.Handlers.ConversationEndedEventHandler", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1Handlers_1_1ConversationEndedEventHandler.html", null ],
@@ -797,24 +729,11 @@ var hierarchy =
       [ "Cqrs.Akka.Tests.Unit.Events.Handlers.HelloWorldSaidEventHandler", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1Handlers_1_1HelloWorldSaidEventHandler.html", null ],
       [ "Cqrs.Akka.Tests.Unit.Sagas.ConversationReportProcessManagerEventHandlers", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessManagerEventHandlers.html", null ]
     ] ],
-    [ "Cqrs.Events.IEventHandler< ISingleSignOnToken, TestAggregateDidSomething >", "interfaceCqrs_1_1Events_1_1IEventHandler.html", [
-      [ "Cqrs.Tests.Substitutes.TestAggregateDidSomethingHandler", "classCqrs_1_1Tests_1_1Substitutes_1_1TestAggregateDidSomethingHandler.html", null ],
-      [ "Cqrs.Tests.Substitutes.TestSagaEventHandlers", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSagaEventHandlers.html", null ]
-    ] ],
-    [ "Cqrs.Events.IEventHandler< ISingleSignOnToken, TestAggregateDidSomethingElse >", "interfaceCqrs_1_1Events_1_1IEventHandler.html", [
-      [ "Cqrs.Tests.Substitutes.TestSagaEventHandlers", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSagaEventHandlers.html", null ]
-    ] ],
-    [ "Cqrs.Events.IEventHandler< ISingleSignOnToken, TestAggregateDidSomethingElse2 >", "interfaceCqrs_1_1Events_1_1IEventHandler.html", [
-      [ "Cqrs.Tests.Substitutes.TestSagaEventHandlers", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSagaEventHandlers.html", null ]
-    ] ],
     [ "IEventHandler< TAuthenticationToken, IEvent< TAuthenticationToken >>", null, [
       [ "Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy< TAuthenticationToken >", "classCqrs_1_1WebApi_1_1Events_1_1Handlers_1_1GlobalEventToHubProxy.html", null ]
     ] ],
     [ "Cqrs.Events.IEventHandler< TAuthenticationToken, TEvent >", "interfaceCqrs_1_1Events_1_1IEventHandler.html", [
       [ "Cqrs.Events.IEventHandler< TAuthenticationToken, in in TEvent >", "interfaceCqrs_1_1Events_1_1IEventHandler.html", null ]
-    ] ],
-    [ "Cqrs.Events.IEventPublisher< ISingleSignOnToken >", "interfaceCqrs_1_1Events_1_1IEventPublisher.html", [
-      [ "Cqrs.Tests.Substitutes.TestEventPublisher", "classCqrs_1_1Tests_1_1Substitutes_1_1TestEventPublisher.html", null ]
     ] ],
     [ "Cqrs.Events.IEventReceiver< TAuthenticationToken >", "interfaceCqrs_1_1Events_1_1IEventReceiver.html", [
       [ "Cqrs.Azure.ServiceBus.AzureEventBusReceiver< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBusReceiver.html", null ],
@@ -823,13 +742,6 @@ var hierarchy =
     ] ],
     [ "Cqrs.Services.IEventService< TSingleSignOnToken >", "interfaceCqrs_1_1Services_1_1IEventService.html", [
       [ "Cqrs.WebApi.CqrsEventApiController< TSingleSignOnToken >", "classCqrs_1_1WebApi_1_1CqrsEventApiController.html", null ]
-    ] ],
-    [ "Cqrs.Events.IEventStore< ISingleSignOnToken >", "interfaceCqrs_1_1Events_1_1IEventStore.html", [
-      [ "Cqrs.Tests.Substitutes.TestEventStore", "classCqrs_1_1Tests_1_1Substitutes_1_1TestEventStore.html", [
-        [ "Cqrs.Tests.Substitutes.TestSnapshotEventStore", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotEventStore.html", null ]
-      ] ],
-      [ "Cqrs.Tests.Substitutes.TestEventStoreWithBugs", "classCqrs_1_1Tests_1_1Substitutes_1_1TestEventStoreWithBugs.html", null ],
-      [ "Cqrs.Tests.Substitutes.TestInMemoryEventStore", "classCqrs_1_1Tests_1_1Substitutes_1_1TestInMemoryEventStore.html", null ]
     ] ],
     [ "Cqrs.Messages.IMessageHandler< TCommand >", "interfaceCqrs_1_1Messages_1_1IMessageHandler.html", [
       [ "Cqrs.Commands.ICommandHandler< TAuthenticationToken, in in TCommand >", "interfaceCqrs_1_1Commands_1_1ICommandHandler.html", null ]
@@ -843,7 +755,6 @@ var hierarchy =
     [ "Cqrs.Messages.IMessageHandler< TEvent >", "interfaceCqrs_1_1Messages_1_1IMessageHandler.html", [
       [ "Cqrs.Events.IEventHandler< TAuthenticationToken, in in TEvent >", "interfaceCqrs_1_1Events_1_1IEventHandler.html", null ]
     ] ],
-    [ "Cqrs.Bus.InProcessBus< ISingleSignOnToken >", "classCqrs_1_1Bus_1_1InProcessBus.html", null ],
     [ "InvalidOperationException", null, [
       [ "Cqrs.Exceptions.MultipleHandlersRegisteredException", "classCqrs_1_1Exceptions_1_1MultipleHandlersRegisteredException.html", [
         [ "Cqrs.Exceptions.MultipleCommandHandlersRegisteredException", "classCqrs_1_1Exceptions_1_1MultipleCommandHandlersRegisteredException.html", null ]
@@ -864,12 +775,6 @@ var hierarchy =
       [ "Cqrs.Repositories.Queries.ISingleResultQuery< TQueryStrategy, out out TData >", "interfaceCqrs_1_1Repositories_1_1Queries_1_1ISingleResultQuery.html", null ],
       [ "Cqrs.Repositories.Queries.ResultQuery< TQueryStrategy, TData >", "classCqrs_1_1Repositories_1_1Queries_1_1ResultQuery.html", null ]
     ] ],
-    [ "Cqrs.Domain.ISagaUnitOfWork< Guid >", "interfaceCqrs_1_1Domain_1_1ISagaUnitOfWork.html", [
-      [ "Cqrs.Tests.Substitutes.TestSagaUnitOfWork", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSagaUnitOfWork.html", null ]
-    ] ],
-    [ "Cqrs.Domain.ISagaUnitOfWork< ISingleSignOnToken >", "interfaceCqrs_1_1Domain_1_1ISagaUnitOfWork.html", [
-      [ "Cqrs.Tests.Substitutes.TestSagaUnitOfWork", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSagaUnitOfWork.html", null ]
-    ] ],
     [ "Cqrs.Repositories.Queries.ISingleResultQuery< TQueryStrategy, TData >", "interfaceCqrs_1_1Repositories_1_1Queries_1_1ISingleResultQuery.html", [
       [ "Cqrs.Repositories.Queries.SingleResultQuery< TQueryStrategy, TData >", "classCqrs_1_1Repositories_1_1Queries_1_1SingleResultQuery.html", null ]
     ] ],
@@ -878,7 +783,6 @@ var hierarchy =
         [ "Cqrs.Authentication.DefaultSingleSignOnTokenFactory", "classCqrs_1_1Authentication_1_1DefaultSingleSignOnTokenFactory.html", null ]
       ] ]
     ] ],
-    [ "Cqrs.Domain.IUnitOfWork< ISingleSignOnToken >", "interfaceCqrs_1_1Domain_1_1IUnitOfWork.html", null ],
     [ "MediaTypeFormatter", null, [
       [ "Cqrs.WebApi.Formatters.FormMultipart.FormMultipartEncodedMediaTypeFormatter", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1FormMultipartEncodedMediaTypeFormatter.html", null ]
     ] ],
@@ -964,7 +868,7 @@ var hierarchy =
       [ "Cqrs.Ninject.ServiceHost.NinjectWcfServiceHostFactory< TServiceType >", "classCqrs_1_1Ninject_1_1ServiceHost_1_1NinjectWcfServiceHostFactory.html", null ]
     ] ],
     [ "Cqrs.Repositories.Queries.QueryBuilder< TestQueryStrategy, TData >", "classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder.html", [
-      [ "Cqrs.Azure.BlobStorage.Test.Integration.TableStorageDataStoreTests.TestQueryBuilder< TData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1Test_1_1Integration_1_1TableStorageDataStoreTests_1_1TestQueryBuilder.html", null ]
+      [ "Cqrs.Azure.BlobStorage.Test.Integration.TestQueryBuilder< TData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1Test_1_1Integration_1_1TestQueryBuilder.html", null ]
     ] ],
     [ "Cqrs.Entities.Range< DateTime >", "classCqrs_1_1Entities_1_1Range.html", [
       [ "Cqrs.Entities.DateRange", "classCqrs_1_1Entities_1_1DateRange.html", null ]
@@ -986,19 +890,10 @@ var hierarchy =
     [ "ResultQuery< TQueryStrategy, IEnumerable< TData >>", null, [
       [ "Cqrs.Repositories.Queries.CollectionResultQuery< TQueryStrategy, TData >", "classCqrs_1_1Repositories_1_1Queries_1_1CollectionResultQuery.html", null ]
     ] ],
-    [ "Cqrs.Domain.Saga< ISingleSignOnToken >", "classCqrs_1_1Domain_1_1Saga.html", [
-      [ "Cqrs.Tests.Substitutes.TestSaga", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSaga.html", null ]
-    ] ],
-    [ "Cqrs.Domain.SagaEventHandler< ISingleSignOnToken, TestSaga >", "classCqrs_1_1Domain_1_1SagaEventHandler.html", [
-      [ "Cqrs.Tests.Substitutes.TestSagaEventHandlers", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSagaEventHandlers.html", null ]
-    ] ],
     [ "Cqrs.Ninject.Configuration.SimplifiedNinjectStartUp< WebApiModule >", "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp.html", null ],
     [ "Cqrs.Ninject.Configuration.SimplifiedNinjectStartUp< WebHostModule >", "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp.html", null ],
     [ "Cqrs.Authentication.SingleSignOnTokenFactory< SingleSignOnToken >", "classCqrs_1_1Authentication_1_1SingleSignOnTokenFactory.html", [
       [ "Cqrs.Authentication.DefaultSingleSignOnTokenFactory", "classCqrs_1_1Authentication_1_1DefaultSingleSignOnTokenFactory.html", null ]
-    ] ],
-    [ "Cqrs.Snapshots.SnapshotAggregateRoot< ISingleSignOnToken, TestSnapshotAggregateSnapshot >", "classCqrs_1_1Snapshots_1_1SnapshotAggregateRoot.html", [
-      [ "Cqrs.Tests.Substitutes.TestSnapshotAggregate", "classCqrs_1_1Tests_1_1Substitutes_1_1TestSnapshotAggregate.html", null ]
     ] ],
     [ "Cqrs.Azure.BlobStorage.StorageStore< TData, CloudBlobContainer >", "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore.html", [
       [ "Cqrs.Azure.BlobStorage.BlobStorageStore< TData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore.html", [
@@ -1012,7 +907,6 @@ var hierarchy =
       [ "Cqrs.MongoDB.Serialisers.BasicStructSerialiser< TStruct >", "classCqrs_1_1MongoDB_1_1Serialisers_1_1BasicStructSerialiser.html", null ]
     ] ],
     [ "System.Linq.AzureDocumentDbDataStoreExtensions", "classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions.html", null ],
-    [ "System.Web.Helpers.Json", "classSystem_1_1Web_1_1Helpers_1_1Json.html", null ],
     [ "TableEntity", null, [
       [ "Cqrs.Azure.BlobStorage.TableEntity< TData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1TableEntity.html", null ]
     ] ],
@@ -1029,9 +923,5 @@ var hierarchy =
     ] ],
     [ "Cqrs.Azure.BlobStorage.TableStorageStore< EventDataTableEntity< EventData >, EventData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore.html", [
       [ "Cqrs.Azure.BlobStorage.Events.TableStorageEventStore< TAuthenticationToken >.RawTableStorageEventStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStore.html", null ]
-    ] ],
-    [ "TestAttribute", null, [
-      [ "Cqrs.Tests.Extensions.TestHelpers.ThenAttribute", "classCqrs_1_1Tests_1_1Extensions_1_1TestHelpers_1_1ThenAttribute.html", null ]
-    ] ],
-    [ "Cqrs.Domain.UnitOfWork< ISingleSignOnToken >", "classCqrs_1_1Domain_1_1UnitOfWork.html", null ]
+    ] ]
 ];

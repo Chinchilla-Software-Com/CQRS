@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntryLo">20.0 %</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-31</td>
+            <td class="headerValue">2017-08-01</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -71,48 +71,60 @@
 <span class="lineNum">      13 </span>            : 
 <span class="lineNum">      14 </span>            : namespace Cqrs.Mongo.Serialisers
 <span class="lineNum">      15 </span>            : {
-<span class="lineNum">      16 </span>            :         public class TypeSerialiser : IBsonSerializer
-<span class="lineNum">      17 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      18 </span><span class="lineNoCov">          0 :                 public object Deserialize(BsonReader reader, Type nominalType, IBsonSerializationOptions options)</span>
-<span class="lineNum">      19 </span>            :                 {
-<span class="lineNum">      20 </span>            :                         var actualType = nominalType;
-<span class="lineNum">      21 </span>            :                         return Deserialize(reader, nominalType, actualType, options);
-<span class="lineNum">      22 </span>            :                 }
-<span class="lineNum">      23 </span>            : 
-<span class="lineNum">      24 </span><span class="lineNoCov">          0 :                 public object Deserialize(BsonReader reader, Type nominalType, Type actualType, IBsonSerializationOptions options)</span>
+<span class="lineNum">      16 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      17 </span>            :         /// A &lt;see cref=&quot;IBsonSerializer&quot;/&gt; that stores &lt;see cref=&quot;Type&quot;/&gt; information as well.
+<span class="lineNum">      18 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      19 </span>            :         public class TypeSerialiser : IBsonSerializer
+<span class="lineNum">      20 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      21 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :                 /// Deserialises a &lt;see cref=&quot;Type&quot;/&gt; value, first reading the &lt;see cref=&quot;Type&quot;/&gt; information from the provide &lt;paramref name=&quot;reader&quot;/&gt;.
+<span class="lineNum">      23 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      24 </span><span class="lineCov">          1 :                 public object Deserialize(BsonReader reader, Type nominalType, IBsonSerializationOptions options)</span>
 <span class="lineNum">      25 </span>            :                 {
-<span class="lineNum">      26 </span>            :                         if (reader.CurrentBsonType == BsonType.Null)
-<span class="lineNum">      27 </span>            :                         {
-<span class="lineNum">      28 </span>            :                                 return null;
-<span class="lineNum">      29 </span>            :                         }
-<span class="lineNum">      30 </span>            :                         string assemblyQualifiedName = reader.ReadString();
-<span class="lineNum">      31 </span>            :                         return Type.GetType(assemblyQualifiedName);
-<span class="lineNum">      32 </span>            :                 }
-<span class="lineNum">      33 </span>            : 
-<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      35 </span>            :                 /// Gets the default serialization options for this serializer.
-<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      37 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">      38 </span>            :                 /// The default serialization options for this serializer.
-<span class="lineNum">      39 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">      40 </span><span class="lineCov">          1 :                 public IBsonSerializationOptions GetDefaultSerializationOptions()</span>
-<span class="lineNum">      41 </span>            :                 {
-<span class="lineNum">      42 </span>            :                         return null;
-<span class="lineNum">      43 </span>            :                 }
-<span class="lineNum">      44 </span>            : 
-<span class="lineNum">      45 </span><span class="lineNoCov">          0 :                 public void Serialize(BsonWriter writer, Type nominalType, object value, IBsonSerializationOptions options)</span>
-<span class="lineNum">      46 </span>            :                 {
-<span class="lineNum">      47 </span>            :                         if (value == null)
-<span class="lineNum">      48 </span>            :                         {
-<span class="lineNum">      49 </span>            :                                 writer.WriteNull();
-<span class="lineNum">      50 </span>            :                         }
-<span class="lineNum">      51 </span>            :                         else
-<span class="lineNum">      52 </span>            :                         {
-<span class="lineNum">      53 </span>            :                                 writer.WriteString(((Type)value).AssemblyQualifiedName);
-<span class="lineNum">      54 </span>            :                         }
-<span class="lineNum">      55 </span>            :                 }
-<span class="lineNum">      56 </span>            :         }
-<span class="lineNum">      57 </span>            : }
+<span class="lineNum">      26 </span>            :                         var actualType = nominalType;
+<span class="lineNum">      27 </span>            :                         return Deserialize(reader, nominalType, actualType, options);
+<span class="lineNum">      28 </span>            :                 }
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// Deserialises a &lt;see cref=&quot;Type&quot;/&gt; value, first reading the &lt;see cref=&quot;Type&quot;/&gt; information from the provide &lt;paramref name=&quot;reader&quot;/&gt;.
+<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      33 </span><span class="lineCov">          1 :                 public object Deserialize(BsonReader reader, Type nominalType, Type actualType, IBsonSerializationOptions options)</span>
+<span class="lineNum">      34 </span>            :                 {
+<span class="lineNum">      35 </span>            :                         if (reader.CurrentBsonType == BsonType.Null)
+<span class="lineNum">      36 </span>            :                         {
+<span class="lineNum">      37 </span>            :                                 return null;
+<span class="lineNum">      38 </span>            :                         }
+<span class="lineNum">      39 </span>            :                         string assemblyQualifiedName = reader.ReadString();
+<span class="lineNum">      40 </span>            :                         return Type.GetType(assemblyQualifiedName);
+<span class="lineNum">      41 </span>            :                 }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      44 </span>            :                 /// Gets the default serialization options for this serializer.
+<span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      46 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">      47 </span>            :                 /// The default serialization options for this serializer.
+<span class="lineNum">      48 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">      49 </span><span class="lineCov">          1 :                 public IBsonSerializationOptions GetDefaultSerializationOptions()</span>
+<span class="lineNum">      50 </span>            :                 {
+<span class="lineNum">      51 </span>            :                         return null;
+<span class="lineNum">      52 </span>            :                 }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      55 </span>            :                 /// Serialises a &lt;see cref=&quot;Type&quot;/&gt; value.
+<span class="lineNum">      56 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      57 </span><span class="lineCov">          1 :                 public void Serialize(BsonWriter writer, Type nominalType, object value, IBsonSerializationOptions options)</span>
+<span class="lineNum">      58 </span>            :                 {
+<span class="lineNum">      59 </span>            :                         if (value == null)
+<span class="lineNum">      60 </span>            :                         {
+<span class="lineNum">      61 </span>            :                                 writer.WriteNull();
+<span class="lineNum">      62 </span>            :                         }
+<span class="lineNum">      63 </span>            :                         else
+<span class="lineNum">      64 </span>            :                         {
+<span class="lineNum">      65 </span>            :                                 writer.WriteString(((Type)value).AssemblyQualifiedName);
+<span class="lineNum">      66 </span>            :                         }
+<span class="lineNum">      67 </span>            :                 }
+<span class="lineNum">      68 </span>            :         }
+<span class="lineNum">      69 </span>            : }
 </pre>
       </td>
     </tr>

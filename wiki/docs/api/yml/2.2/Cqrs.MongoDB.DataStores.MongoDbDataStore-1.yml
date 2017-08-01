@@ -48,6 +48,7 @@ items:
       description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of <xref href="Cqrs.Entities.IEntity" data-throw-if-not-resolved="false"></xref> the <xref href="Cqrs.DataStores.IDataStore%601" data-throw-if-not-resolved="false"></xref> will contain.
     content.vb: >-
       Public Class MongoDbDataStore(Of TData As Entity)
+
           Implements IDataStore(Of TData), IOrderedQueryable(Of TData), IQueryable(Of TData), IEnumerable(Of TData), IOrderedQueryable, IQueryable, IEnumerable, IDisposable
   inheritance:
   - System.Object
@@ -102,10 +103,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MongoCollection
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 27
+    startLine: 30
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
+  summary: "\nGets or sets the <xref href=\"MongoDB.Driver.IMongoCollection%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected IMongoCollection<TData> MongoCollection { get; }
     parameters: []
@@ -139,10 +142,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Logger
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 29
+    startLine: 35
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
+  summary: "\nGets or sets the <xref href=\"cdmdotnet.Logging.ILogger\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected ILogger Logger { get; }
     parameters: []
@@ -176,7 +181,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 34
+    startLine: 40
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
@@ -216,7 +221,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetEnumerator
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 50
+    startLine: 56
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
@@ -256,7 +261,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: System.Collections.IEnumerable.GetEnumerator
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 62
+    startLine: 68
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
@@ -292,7 +297,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Expression
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 77
+    startLine: 83
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
@@ -334,7 +339,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ElementType
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 88
+    startLine: 94
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
@@ -376,7 +381,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Provider
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 99
+    startLine: 105
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
@@ -418,10 +423,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Add
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 108
+    startLine: 117
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
+  summary: "\nAdd the provided <span class=\"paramref\">data</span> to the data store and persist the change.\n"
+  example: []
   syntax:
     content: public virtual void Add(TData data)
     parameters:
@@ -457,10 +464,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Add
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 124
+    startLine: 136
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
+  summary: "\nAdd the provided <span class=\"paramref\">data</span> to the data store and persist the change.\n"
+  example: []
   syntax:
     content: public virtual void Add(IEnumerable<TData> data)
     parameters:
@@ -497,7 +506,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Remove
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 140
+    startLine: 152
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
@@ -538,10 +547,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Destroy
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 154
+    startLine: 169
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
+  summary: "\nRemove the provided <span class=\"paramref\">data</span> (normally by <xref href=\"Cqrs.Entities.IEntity.Rsn\" data-throw-if-not-resolved=\"false\"></xref>) from the data store and persist the change.\n"
+  example: []
   syntax:
     content: public virtual void Destroy(TData data)
     parameters:
@@ -577,10 +588,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: RemoveAll
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 170
+    startLine: 188
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
+  summary: "\nRemove all contents (normally by use of a truncate operation) from the data store and persist the change.\n"
+  example: []
   syntax:
     content: public virtual void RemoveAll()
     content.vb: Public Overridable Sub RemoveAll
@@ -613,10 +626,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Update
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 183
+    startLine: 204
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
+  summary: "\nUpdate the provided <span class=\"paramref\">data</span> in the data store and persist the change.\n"
+  example: []
   syntax:
     content: public virtual void Update(TData data)
     parameters:
@@ -652,7 +667,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Dispose
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 206
+    startLine: 227
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
@@ -690,7 +705,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Repair
     path: Framework/Cqrs.MongoDB/DataStores/MongoDbDataStore.cs
-    startLine: 216
+    startLine: 237
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.DataStores
@@ -2172,6 +2187,45 @@ references:
   name: Cqrs.Sql.DataStores
   nameWithType: Cqrs.Sql.DataStores
   fullName: Cqrs.Sql.DataStores
+- uid: MongoDB.Driver.IMongoCollection`1
+  commentId: T:MongoDB.Driver.IMongoCollection`1
+  isExternal: true
+  name: IMongoCollection<TDocument>
+  nameWithType: IMongoCollection<TDocument>
+  fullName: MongoDB.Driver.IMongoCollection<TDocument>
+  nameWithType.vb: IMongoCollection(Of TDocument)
+  fullName.vb: MongoDB.Driver.IMongoCollection(Of TDocument)
+  name.vb: IMongoCollection(Of TDocument)
+  spec.csharp:
+  - uid: MongoDB.Driver.IMongoCollection`1
+    name: IMongoCollection
+    nameWithType: IMongoCollection
+    fullName: MongoDB.Driver.IMongoCollection
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TDocument
+    nameWithType: TDocument
+    fullName: TDocument
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: MongoDB.Driver.IMongoCollection`1
+    name: IMongoCollection
+    nameWithType: IMongoCollection
+    fullName: MongoDB.Driver.IMongoCollection
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TDocument
+    nameWithType: TDocument
+    fullName: TDocument
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.MongoDB.DataStores.MongoDbDataStore`1.MongoCollection*
   commentId: Overload:Cqrs.MongoDB.DataStores.MongoDbDataStore`1.MongoCollection
   isExternal: false
@@ -2220,51 +2274,19 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: MongoDB.Driver.IMongoCollection`1
-  commentId: T:MongoDB.Driver.IMongoCollection`1
-  isExternal: true
-  name: IMongoCollection<TDocument>
-  nameWithType: IMongoCollection<TDocument>
-  fullName: MongoDB.Driver.IMongoCollection<TDocument>
-  nameWithType.vb: IMongoCollection(Of TDocument)
-  fullName.vb: MongoDB.Driver.IMongoCollection(Of TDocument)
-  name.vb: IMongoCollection(Of TDocument)
-  spec.csharp:
-  - uid: MongoDB.Driver.IMongoCollection`1
-    name: IMongoCollection
-    nameWithType: IMongoCollection
-    fullName: MongoDB.Driver.IMongoCollection
-    isExternal: true
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TDocument
-    nameWithType: TDocument
-    fullName: TDocument
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: MongoDB.Driver.IMongoCollection`1
-    name: IMongoCollection
-    nameWithType: IMongoCollection
-    fullName: MongoDB.Driver.IMongoCollection
-    isExternal: true
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TDocument
-    nameWithType: TDocument
-    fullName: TDocument
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: MongoDB.Driver
   commentId: N:MongoDB.Driver
   isExternal: false
   name: MongoDB.Driver
   nameWithType: MongoDB.Driver
   fullName: MongoDB.Driver
+- uid: cdmdotnet.Logging.ILogger
+  commentId: T:cdmdotnet.Logging.ILogger
+  parent: cdmdotnet.Logging
+  isExternal: true
+  name: ILogger
+  nameWithType: ILogger
+  fullName: cdmdotnet.Logging.ILogger
 - uid: Cqrs.MongoDB.DataStores.MongoDbDataStore`1.Logger*
   commentId: Overload:Cqrs.MongoDB.DataStores.MongoDbDataStore`1.Logger
   isExternal: false
@@ -2273,13 +2295,6 @@ references:
   fullName: Cqrs.MongoDB.DataStores.MongoDbDataStore<TData>.Logger
   nameWithType.vb: MongoDbDataStore(Of TData).Logger
   fullName.vb: Cqrs.MongoDB.DataStores.MongoDbDataStore(Of TData).Logger
-- uid: cdmdotnet.Logging.ILogger
-  commentId: T:cdmdotnet.Logging.ILogger
-  parent: cdmdotnet.Logging
-  isExternal: true
-  name: ILogger
-  nameWithType: ILogger
-  fullName: cdmdotnet.Logging.ILogger
 - uid: cdmdotnet.Logging
   commentId: N:cdmdotnet.Logging
   isExternal: false
@@ -2901,6 +2916,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Entities.IEntity.Rsn
+  commentId: P:Cqrs.Entities.IEntity.Rsn
+  parent: Cqrs.Entities.IEntity
+  isExternal: false
+  name: Rsn
+  nameWithType: IEntity.Rsn
+  fullName: Cqrs.Entities.IEntity.Rsn
 - uid: Cqrs.MongoDB.DataStores.MongoDbDataStore`1.Destroy*
   commentId: Overload:Cqrs.MongoDB.DataStores.MongoDbDataStore`1.Destroy
   isExternal: false

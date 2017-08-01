@@ -14,8 +14,14 @@ using MongoDB.Driver.Builders;
 
 namespace Cqrs.Mongo.Factories
 {
+	/// <summary>
+	/// A set of extension methods for <see cref="IndexKeysBuilder"/>.
+	/// </summary>
 	public static class IndexKeysBuilderExtension
 	{
+		/// <summary>
+		/// Define the index as ascending.
+		/// </summary>
 		public static IndexKeysBuilder Ascending<T>(this IndexKeysBuilder mongoIndexKeys, params Expression<Func<T, object>>[] selectors)
 		{
 			var properties = new List<string>();
@@ -37,6 +43,9 @@ namespace Cqrs.Mongo.Factories
 			return mongoIndexKeys.Ascending(properties.ToArray());
 		}
 
+		/// <summary>
+		/// Define the index as descending.
+		/// </summary>
 		public static IndexKeysBuilder Descending<T>(this IndexKeysBuilder mongoIndexKeys, params Expression<Func<T, object>>[] selectors)
 		{
 			var properties = new List<string>();
@@ -58,6 +67,9 @@ namespace Cqrs.Mongo.Factories
 			return mongoIndexKeys.Descending(properties.ToArray());
 		}
 
+		/// <summary>
+		/// Checks if the property name is a child and maps it appropriately.
+		/// </summary>
 		public static string CheckForChildProperty(MemberExpression selectorMemberExpression)
 		{
 			string memberName = selectorMemberExpression.Member.Name;

@@ -28,7 +28,7 @@ items:
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Factories
-  summary: "\nA factory for obtaining <xref href=\"Cqrs.DataStores.IDataStore%601\" data-throw-if-not-resolved=\"false\"></xref> collections from Mongo\n"
+  summary: "\nA factory for obtaining <xref href=\"Cqrs.DataStores.IDataStore%601\" data-throw-if-not-resolved=\"false\"></xref> collections from MongoDB\n"
   example: []
   syntax:
     content: public class MongoDbDataStoreFactory
@@ -69,10 +69,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Logger
     path: Framework/Cqrs.MongoDB/Factories/MongoDbDataStoreFactory.cs
-    startLine: 29
+    startLine: 32
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Factories
+  summary: "\nGets or sets the <xref href=\"cdmdotnet.Logging.ILogger\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected ILogger Logger { get; }
     parameters: []
@@ -104,10 +106,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MongoDbDataStoreConnectionStringFactory
     path: Framework/Cqrs.MongoDB/Factories/MongoDbDataStoreFactory.cs
-    startLine: 31
+    startLine: 37
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Factories
+  summary: "\nGets or sets the <xref href=\"Cqrs.MongoDB.Factories.IMongoDbDataStoreConnectionStringFactory\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected IMongoDbDataStoreConnectionStringFactory MongoDbDataStoreConnectionStringFactory { get; }
     parameters: []
@@ -139,10 +143,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Cqrs.MongoDB/Factories/MongoDbDataStoreFactory.cs
-    startLine: 33
+    startLine: 42
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Factories
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.MongoDB.Factories.MongoDbDataStoreFactory\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public MongoDbDataStoreFactory(ILogger logger, IMongoDbDataStoreConnectionStringFactory mongoDbDataStoreConnectionStringFactory)
     parameters:
@@ -174,10 +180,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetCollection
     path: Framework/Cqrs.MongoDB/Factories/MongoDbDataStoreFactory.cs
-    startLine: 108
+    startLine: 120
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Factories
+  summary: "\nGet a <xref href=\"MongoDB.Driver.IMongoCollection%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected virtual IMongoCollection<TEntity> GetCollection<TEntity>()
     typeParameters:
@@ -213,10 +221,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: VerifyIndexes
     path: Framework/Cqrs.MongoDB/Factories/MongoDbDataStoreFactory.cs
-    startLine: 116
+    startLine: 131
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Factories
+  summary: "\nVerify all required <xref href=\"Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex%601\" data-throw-if-not-resolved=\"false\"></xref> are defined and ready to go.\n"
+  example: []
   syntax:
     content: protected virtual void VerifyIndexes<TEntity>(IMongoCollection<TEntity> collection)
     parameters:
@@ -571,12 +581,6 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.Logger*
-  commentId: Overload:Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.Logger
-  isExternal: false
-  name: Logger
-  nameWithType: MongoDbDataStoreFactory.Logger
-  fullName: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.Logger
 - uid: cdmdotnet.Logging.ILogger
   commentId: T:cdmdotnet.Logging.ILogger
   parent: cdmdotnet.Logging
@@ -584,18 +588,18 @@ references:
   name: ILogger
   nameWithType: ILogger
   fullName: cdmdotnet.Logging.ILogger
+- uid: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.Logger*
+  commentId: Overload:Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.Logger
+  isExternal: false
+  name: Logger
+  nameWithType: MongoDbDataStoreFactory.Logger
+  fullName: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.Logger
 - uid: cdmdotnet.Logging
   commentId: N:cdmdotnet.Logging
   isExternal: false
   name: cdmdotnet.Logging
   nameWithType: cdmdotnet.Logging
   fullName: cdmdotnet.Logging
-- uid: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.MongoDbDataStoreConnectionStringFactory*
-  commentId: Overload:Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.MongoDbDataStoreConnectionStringFactory
-  isExternal: false
-  name: MongoDbDataStoreConnectionStringFactory
-  nameWithType: MongoDbDataStoreFactory.MongoDbDataStoreConnectionStringFactory
-  fullName: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.MongoDbDataStoreConnectionStringFactory
 - uid: Cqrs.MongoDB.Factories.IMongoDbDataStoreConnectionStringFactory
   commentId: T:Cqrs.MongoDB.Factories.IMongoDbDataStoreConnectionStringFactory
   parent: Cqrs.MongoDB.Factories
@@ -603,12 +607,64 @@ references:
   name: IMongoDbDataStoreConnectionStringFactory
   nameWithType: IMongoDbDataStoreConnectionStringFactory
   fullName: Cqrs.MongoDB.Factories.IMongoDbDataStoreConnectionStringFactory
+- uid: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.MongoDbDataStoreConnectionStringFactory*
+  commentId: Overload:Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.MongoDbDataStoreConnectionStringFactory
+  isExternal: false
+  name: MongoDbDataStoreConnectionStringFactory
+  nameWithType: MongoDbDataStoreFactory.MongoDbDataStoreConnectionStringFactory
+  fullName: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.MongoDbDataStoreConnectionStringFactory
+- uid: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory
+  commentId: T:Cqrs.MongoDB.Factories.MongoDbDataStoreFactory
+  parent: Cqrs.MongoDB.Factories
+  isExternal: false
+  name: MongoDbDataStoreFactory
+  nameWithType: MongoDbDataStoreFactory
+  fullName: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory
 - uid: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.#ctor*
   commentId: Overload:Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.#ctor
   isExternal: false
   name: MongoDbDataStoreFactory
   nameWithType: MongoDbDataStoreFactory.MongoDbDataStoreFactory
   fullName: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.MongoDbDataStoreFactory
+- uid: MongoDB.Driver.IMongoCollection`1
+  commentId: T:MongoDB.Driver.IMongoCollection`1
+  isExternal: true
+  name: IMongoCollection<TDocument>
+  nameWithType: IMongoCollection<TDocument>
+  fullName: MongoDB.Driver.IMongoCollection<TDocument>
+  nameWithType.vb: IMongoCollection(Of TDocument)
+  fullName.vb: MongoDB.Driver.IMongoCollection(Of TDocument)
+  name.vb: IMongoCollection(Of TDocument)
+  spec.csharp:
+  - uid: MongoDB.Driver.IMongoCollection`1
+    name: IMongoCollection
+    nameWithType: IMongoCollection
+    fullName: MongoDB.Driver.IMongoCollection
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TDocument
+    nameWithType: TDocument
+    fullName: TDocument
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: MongoDB.Driver.IMongoCollection`1
+    name: IMongoCollection
+    nameWithType: IMongoCollection
+    fullName: MongoDB.Driver.IMongoCollection
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TDocument
+    nameWithType: TDocument
+    fullName: TDocument
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.GetCollection*
   commentId: Overload:Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.GetCollection
   isExternal: false
@@ -655,51 +711,49 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: MongoDB.Driver.IMongoCollection`1
-  commentId: T:MongoDB.Driver.IMongoCollection`1
-  isExternal: true
-  name: IMongoCollection<TDocument>
-  nameWithType: IMongoCollection<TDocument>
-  fullName: MongoDB.Driver.IMongoCollection<TDocument>
-  nameWithType.vb: IMongoCollection(Of TDocument)
-  fullName.vb: MongoDB.Driver.IMongoCollection(Of TDocument)
-  name.vb: IMongoCollection(Of TDocument)
-  spec.csharp:
-  - uid: MongoDB.Driver.IMongoCollection`1
-    name: IMongoCollection
-    nameWithType: IMongoCollection
-    fullName: MongoDB.Driver.IMongoCollection
-    isExternal: true
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TDocument
-    nameWithType: TDocument
-    fullName: TDocument
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: MongoDB.Driver.IMongoCollection`1
-    name: IMongoCollection
-    nameWithType: IMongoCollection
-    fullName: MongoDB.Driver.IMongoCollection
-    isExternal: true
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TDocument
-    nameWithType: TDocument
-    fullName: TDocument
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: MongoDB.Driver
   commentId: N:MongoDB.Driver
   isExternal: false
   name: MongoDB.Driver
   nameWithType: MongoDB.Driver
   fullName: MongoDB.Driver
+- uid: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex`1
+  commentId: T:Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex`1
+  isExternal: false
+  name: MongoDbIndex<TEntity>
+  nameWithType: MongoDbIndex<TEntity>
+  fullName: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex<TEntity>
+  nameWithType.vb: MongoDbIndex(Of TEntity)
+  fullName.vb: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex(Of TEntity)
+  name.vb: MongoDbIndex(Of TEntity)
+  spec.csharp:
+  - uid: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex`1
+    name: MongoDbIndex
+    nameWithType: MongoDbIndex
+    fullName: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex`1
+    name: MongoDbIndex
+    nameWithType: MongoDbIndex
+    fullName: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.VerifyIndexes*
   commentId: Overload:Cqrs.MongoDB.Factories.MongoDbDataStoreFactory.VerifyIndexes
   isExternal: false

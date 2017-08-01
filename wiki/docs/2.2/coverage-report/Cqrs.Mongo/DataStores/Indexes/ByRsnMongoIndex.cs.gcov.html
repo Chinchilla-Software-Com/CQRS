@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-31</td>
+            <td class="headerValue">2017-08-01</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -66,23 +66,31 @@
 <span class="lineNum">       8 </span>            : 
 <span class="lineNum">       9 </span>            : using System;
 <span class="lineNum">      10 </span>            : using System.Linq.Expressions;
-<span class="lineNum">      11 </span>            : 
-<span class="lineNum">      12 </span>            : namespace Cqrs.Mongo.DataStores.Indexes
-<span class="lineNum">      13 </span>            : {
-<span class="lineNum">      14 </span>            :         public abstract class ByRsnMongoIndex&lt;TEntity&gt; : MongoIndex&lt;TEntity&gt;
-<span class="lineNum">      15 </span>            :                 where TEntity : Entities.MongoEntity
-<span class="lineNum">      16 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      17 </span><span class="lineNoCov">          0 :                 protected ByRsnMongoIndex()</span>
-<span class="lineNum">      18 </span>            :                 {
-<span class="lineNum">      19 </span>            :                         Selectors = new Expression&lt;Func&lt;TEntity, object&gt;&gt;[]
-<span class="lineNum">      20 </span>            :                         {
-<span class="lineNum">      21 </span>            :                                 entity =&gt; entity.Rsn
-<span class="lineNum">      22 </span>            :                         };
-<span class="lineNum">      23 </span>            : 
-<span class="lineNum">      24 </span>            :                         IsUnique = true;
-<span class="lineNum">      25 </span>            :                 }
-<span class="lineNum">      26 </span>            :         }
-<span class="lineNum">      27 </span>            : }
+<span class="lineNum">      11 </span>            : using Cqrs.Entities;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : namespace Cqrs.Mongo.DataStores.Indexes
+<span class="lineNum">      14 </span>            : {
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :         /// A &lt;see cref=&quot;MongoIndex{TEntity}&quot;/&gt; for &lt;see cref=&quot;IEntity.Rsn&quot;/&gt;
+<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      18 </span>            :         /// &lt;typeparam name=&quot;TEntity&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IEntity&quot;/&gt; this index is for.&lt;/typeparam&gt;
+<span class="lineNum">      19 </span>            :         public abstract class ByRsnMongoIndex&lt;TEntity&gt; : MongoIndex&lt;TEntity&gt;
+<span class="lineNum">      20 </span>            :                 where TEntity : Entities.MongoEntity
+<span class="lineNum">      21 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      22 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;ByRsnMongoIndex{TEntity}&quot;/&gt;.
+<span class="lineNum">      24 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      25 </span><span class="lineCov">          1 :                 protected ByRsnMongoIndex()</span>
+<span class="lineNum">      26 </span>            :                 {
+<span class="lineNum">      27 </span>            :                         Selectors = new Expression&lt;Func&lt;TEntity, object&gt;&gt;[]
+<span class="lineNum">      28 </span>            :                         {
+<span class="lineNum">      29 </span>            :                                 entity =&gt; entity.Rsn
+<span class="lineNum">      30 </span>            :                         };
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :                         IsUnique = true;
+<span class="lineNum">      33 </span>            :                 }
+<span class="lineNum">      34 </span>            :         }
+<span class="lineNum">      35 </span>            : }
 </pre>
       </td>
     </tr>

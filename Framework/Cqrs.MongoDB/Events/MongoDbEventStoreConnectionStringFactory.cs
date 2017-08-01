@@ -10,24 +10,49 @@ using System;
 using System.Configuration;
 using cdmdotnet.Logging;
 using Cqrs.Configuration;
+using Cqrs.Events;
 using Cqrs.Exceptions;
 
 namespace Cqrs.MongoDB.Events
 {
+	/// <summary>
+	/// A factory for getting connection strings and database names for <see cref="IEventStore{TAuthenticationToken}"/> access.
+	/// </summary>
 	public class MongoDbEventStoreConnectionStringFactory : IMongoDbEventStoreConnectionStringFactory
 	{
+		/// <summary>
+		/// Backwards compatibility with version 1.
+		/// </summary>
 		public static string MongoDbConnectionStringKey = "CqrsMongoDbEventStore";
 
+		/// <summary>
+		/// The name of the app setting in <see cref="IConfigurationManager"/> that will have the name of the connection string of the MongoDB server.
+		/// </summary>
 		public static string MongoDbConnectionNameApplicationKey = "Cqrs.MongoDb.EventStore.ConnectionStringName";
 
+		/// <summary>
+		/// Backwards compatibility with version 1.
+		/// </summary>
 		public static string MongoDbDatabaseNameKey = "CqrsMongoDbEventStoreDatabaseName";
 
+		/// <summary>
+		/// The name of the app setting in <see cref="IConfigurationManager"/> that will have the name of the database.
+		/// </summary>
 		public static string MongoDbDatabaseNameApplicationKey = "Cqrs.MongoDb.EventStore.DatabaseName";
 
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="MongoDbEventStoreConnectionStringFactory"/>.
+		/// </summary>
 		public MongoDbEventStoreConnectionStringFactory(IConfigurationManager configurationManager, ILogger logger)
 		{
 			ConfigurationManager = configurationManager;
@@ -36,6 +61,9 @@ namespace Cqrs.MongoDB.Events
 
 		#region Implementation of IMongoDbEventStoreConnectionStringFactory
 
+		/// <summary>
+		/// Gets the current connection string.
+		/// </summary>
 		public string GetEventStoreConnectionString()
 		{
 			Logger.LogDebug("Getting MongoDB connection string", "MongoDbEventStoreConnectionStringFactory\\GetEventStoreConnectionString");
@@ -68,6 +96,9 @@ namespace Cqrs.MongoDB.Events
 			}
 		}
 
+		/// <summary>
+		/// Gets the current database name.
+		/// </summary>
 		public string GetEventStoreDatabaseName()
 		{
 			string applicationKey;

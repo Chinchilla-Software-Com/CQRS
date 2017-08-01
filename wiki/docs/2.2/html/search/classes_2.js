@@ -1,7 +1,6 @@
 var searchData=
 [
   ['cacherepository',['CacheRepository',['../classCqrs_1_1Cache_1_1CacheRepository.html',1,'Cqrs::Cache']]],
-  ['cacherepository_3c_20isinglesignontoken_20_3e',['CacheRepository&lt; ISingleSignOnToken &gt;',['../classCqrs_1_1Cache_1_1CacheRepository.html',1,'Cqrs::Cache']]],
   ['clientcontroller',['ClientController',['../classCqrs_1_1WebApi_1_1Controllers_1_1ClientController.html',1,'Cqrs::WebApi::Controllers']]],
   ['cloudconfigurationmanager',['CloudConfigurationManager',['../classCqrs_1_1Azure_1_1ConfigurationManager_1_1CloudConfigurationManager.html',1,'Cqrs::Azure::ConfigurationManager']]],
   ['collectionresultquery',['CollectionResultQuery',['../classCqrs_1_1Repositories_1_1Queries_1_1CollectionResultQuery.html',1,'Cqrs::Repositories::Queries']]],
@@ -27,6 +26,5 @@ var searchData=
   ['cqrswebhost',['CqrsWebHost',['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html',1,'Cqrs.Ninject.Azure.Wcf.CqrsWebHost&lt; TAuthenticationToken, TAuthenticationTokenHelper &gt;'],['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html',1,'Cqrs.Ninject.Azure.Wcf.CqrsWebHost&lt; TAuthenticationToken, TAuthenticationTokenHelper, TWebHostModule &gt;']]],
   ['cqrswebhost_3c_20tauthenticationtoken_2c_20tauthenticationtokenhelper_2c_20webhostmodule_20_3e',['CqrsWebHost&lt; TAuthenticationToken, TAuthenticationTokenHelper, WebHostModule &gt;',['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html',1,'Cqrs::Ninject::Azure::Wcf']]],
   ['cqrswebhost_3c_20tauthenticationtoken_2c_20tauthenticationtokenhelper_2c_20webjobhostmodule_20_3e',['CqrsWebHost&lt; TAuthenticationToken, TAuthenticationTokenHelper, WebJobHostModule &gt;',['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html',1,'Cqrs::Ninject::Azure::Wcf']]],
-  ['cqrswebjobprogram',['CqrsWebJobProgram',['../classCqrsWebJobProgram.html',1,'']]],
-  ['crud_5foperations',['CRUD_operations',['../classCqrs_1_1Tests_1_1DataStores_1_1CRUD__operations.html',1,'Cqrs::Tests::DataStores']]]
+  ['cqrswebjobprogram',['CqrsWebJobProgram',['../classCqrsWebJobProgram.html',1,'']]]
 ];

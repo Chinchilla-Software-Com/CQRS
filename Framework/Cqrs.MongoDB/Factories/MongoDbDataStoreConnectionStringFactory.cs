@@ -20,24 +20,48 @@ namespace Cqrs.MongoDB.Factories
 	/// </summary>
 	public class MongoDbDataStoreConnectionStringFactory : IMongoDbDataStoreConnectionStringFactory
 	{
+		/// <summary>
+		/// The name of the app setting in <see cref="IConfigurationManager"/> that will have the name of the connection string of the MongoDB server.
+		/// </summary>
 		public static string MongoDbConnectionStringKey = "Cqrs.MongoDb.DataStore.ConnectionStringName";
 
+		/// <summary>
+		/// Backwards compatibility with version 1.
+		/// </summary>
 		public static string OldMongoDbConnectionStringKey = "CqrsMongoDb";
 
+		/// <summary>
+		/// Backwards compatibility with version 1.
+		/// </summary>
 		public static string OldMongoDbDatabaseNameKey = "CqrsMongoDbDatabaseName";
 
+		/// <summary>
+		/// The name of the app setting in <see cref="IConfigurationManager"/> that will have the name of the database.
+		/// </summary>
 		public static string MongoDbDatabaseNameKey = "Cqrs.MongoDb.DataStore.DatabaseName";
 
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="MongoDbDataStoreConnectionStringFactory"/>.
+		/// </summary>
 		public MongoDbDataStoreConnectionStringFactory(IConfigurationManager configurationManager, ILogger logger)
 		{
 			ConfigurationManager = configurationManager;
 			Logger = logger;
 		}
 
+		/// <summary>
+		/// Gets the current connection string.
+		/// </summary>
 		public string GetDataStoreConnectionString()
 		{
 			Logger.LogDebug("Getting MongoDB connection string", "MongoDbDataStoreConnectionStringFactory\\GetDataStoreConnectionString");
@@ -67,6 +91,9 @@ namespace Cqrs.MongoDB.Factories
 			}
 		}
 
+		/// <summary>
+		/// Gets the current database name.
+		/// </summary>
 		public string GetDataStoreDatabaseName()
 		{
 			string databaseName = ConfigurationManager.GetSetting(MongoDbDatabaseNameKey) ?? ConfigurationManager.GetSetting(OldMongoDbDatabaseNameKey);

@@ -28,16 +28,34 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 	public class AzureDocumentDbDataStore<TData> : IDataStore<TData>
 		where TData : AzureDocumentDbEntity
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="DocumentClient"/>
+		/// </summary>
 		protected DocumentClient AzureDocumentDbClient { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="Database"/>
+		/// </summary>
 		protected Database AzureDocumentDbDatabase { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="DocumentCollection"/>
+		/// </summary>
 		protected DocumentCollection AzureDocumentDbCollection { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IOrderedQueryable{T}"/>
+		/// </summary>
 		protected IOrderedQueryable<TData> AzureDocumentDbQuery { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IAzureDocumentDbHelper"/>
+		/// </summary>
 		protected IAzureDocumentDbHelper AzureDocumentDbHelper { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
 		/// <summary>
@@ -132,6 +150,9 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		#region Implementation of IDataStore<TData>
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public void Add(TData data)
 		{
 			Logger.LogDebug("Adding data to the Azure database", "AzureDocumentDbDataStore\\Add");
@@ -148,6 +169,9 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public void Add(IEnumerable<TData> data)
 		{
 			Logger.LogDebug("Adding data collection to the Azure database", "AzureDocumentDbDataStore\\Add");
@@ -181,6 +205,9 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
 		public void Destroy(TData data)
 		{
 			Logger.LogDebug("Destroying data from the Azure database", "AzureDocumentDbDataStore\\Destroy");
@@ -205,6 +232,9 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+		/// </summary>
 		public void RemoveAll()
 		{
 			Logger.LogDebug("Removing all from the Azure database", "AzureDocumentDbDataStore\\RemoveAll");
@@ -218,6 +248,9 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
 		public void Update(TData data)
 		{
 			Logger.LogDebug("Updating data in the Azure database", "AzureDocumentDbDataStore\\Update");

@@ -21,17 +21,22 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: BasicStructSerialiser
     path: Framework/Cqrs.MongoDB/Serialisers/BasicStructSerialiser.cs
-    startLine: 19
+    startLine: 23
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Serialisers
+  summary: "\nA <xref href=\"MongoDB.Bson.Serialization.Serializers.StructSerializerBase%601\" data-throw-if-not-resolved=\"false\"></xref> with reasonable level support for structs.\n"
+  example: []
   syntax:
     content: 'public class BasicStructSerialiser<TStruct> : StructSerializerBase<TStruct>, IBsonSerializer<TStruct>, IBsonSerializer where TStruct : struct'
     typeParameters:
     - id: TStruct
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of struct.
     content.vb: >-
       Public Class BasicStructSerialiser(Of TStruct As Structure)
+
           Inherits StructSerializerBase(Of TStruct)
+
           Implements IBsonSerializer(Of TStruct), IBsonSerializer
   inheritance:
   - System.Object
@@ -82,19 +87,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Serialize
     path: Framework/Cqrs.MongoDB/Serialisers/BasicStructSerialiser.cs
-    startLine: 22
+    startLine: 32
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Serialisers
+  summary: "\nSerializes the provide <span class=\"paramref\">value</span> as a set of key/value pairs.\n"
+  example: []
   syntax:
     content: public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, TStruct value)
     parameters:
     - id: context
       type: MongoDB.Bson.Serialization.BsonSerializationContext
+      description: The serialisation context.
     - id: args
       type: MongoDB.Bson.Serialization.BsonSerializationArgs
+      description: The serialisation arguments.
     - id: value
       type: '{TStruct}'
+      description: The value.
     content.vb: Public Overrides Sub Serialize(context As BsonSerializationContext, args As BsonSerializationArgs, value As TStruct)
   overridden: MongoDB.Bson.Serialization.Serializers.SerializerBase{{TStruct}}.Serialize(MongoDB.Bson.Serialization.BsonSerializationContext,MongoDB.Bson.Serialization.BsonSerializationArgs,{TStruct})
   overload: Cqrs.MongoDB.Serialisers.BasicStructSerialiser`1.Serialize*
@@ -124,19 +134,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Deserialize
     path: Framework/Cqrs.MongoDB/Serialisers/BasicStructSerialiser.cs
-    startLine: 48
+    startLine: 66
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Serialisers
+  summary: "\nDeserialises a value from key/value pairs.\n"
+  example: []
   syntax:
     content: public override TStruct Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
     parameters:
     - id: context
       type: MongoDB.Bson.Serialization.BsonDeserializationContext
+      description: The deserialisation context.
     - id: args
       type: MongoDB.Bson.Serialization.BsonDeserializationArgs
+      description: The deserialisation arguments.
     return:
       type: '{TStruct}'
+      description: "\nA deserialised value.\n"
     content.vb: Public Overrides Function Deserialize(context As BsonDeserializationContext, args As BsonDeserializationArgs) As TStruct
   overridden: MongoDB.Bson.Serialization.Serializers.SerializerBase{{TStruct}}.Deserialize(MongoDB.Bson.Serialization.BsonDeserializationContext,MongoDB.Bson.Serialization.BsonDeserializationArgs)
   overload: Cqrs.MongoDB.Serialisers.BasicStructSerialiser`1.Deserialize*
@@ -149,6 +164,52 @@ items:
   - Overrides
   fullName.vb: Cqrs.MongoDB.Serialisers.BasicStructSerialiser(Of TStruct).Deserialize(MongoDB.Bson.Serialization.BsonDeserializationContext, MongoDB.Bson.Serialization.BsonDeserializationArgs)
 references:
+- uid: MongoDB.Bson.Serialization.Serializers.StructSerializerBase`1
+  commentId: T:MongoDB.Bson.Serialization.Serializers.StructSerializerBase`1
+  isExternal: true
+  name: StructSerializerBase<TValue>
+  nameWithType: StructSerializerBase<TValue>
+  fullName: MongoDB.Bson.Serialization.Serializers.StructSerializerBase<TValue>
+  nameWithType.vb: StructSerializerBase(Of TValue)
+  fullName.vb: MongoDB.Bson.Serialization.Serializers.StructSerializerBase(Of TValue)
+  name.vb: StructSerializerBase(Of TValue)
+  spec.csharp:
+  - uid: MongoDB.Bson.Serialization.Serializers.StructSerializerBase`1
+    name: StructSerializerBase
+    nameWithType: StructSerializerBase
+    fullName: MongoDB.Bson.Serialization.Serializers.StructSerializerBase
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: MongoDB.Bson.Serialization.Serializers.StructSerializerBase`1
+    name: StructSerializerBase
+    nameWithType: StructSerializerBase
+    fullName: MongoDB.Bson.Serialization.Serializers.StructSerializerBase
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: Cqrs.MongoDB.Serialisers
   commentId: N:Cqrs.MongoDB.Serialisers
   isExternal: false
@@ -932,45 +993,6 @@ references:
   name: MongoDB.Bson.Serialization.Serializers
   nameWithType: MongoDB.Bson.Serialization.Serializers
   fullName: MongoDB.Bson.Serialization.Serializers
-- uid: MongoDB.Bson.Serialization.Serializers.StructSerializerBase`1
-  commentId: T:MongoDB.Bson.Serialization.Serializers.StructSerializerBase`1
-  isExternal: true
-  name: StructSerializerBase<TValue>
-  nameWithType: StructSerializerBase<TValue>
-  fullName: MongoDB.Bson.Serialization.Serializers.StructSerializerBase<TValue>
-  nameWithType.vb: StructSerializerBase(Of TValue)
-  fullName.vb: MongoDB.Bson.Serialization.Serializers.StructSerializerBase(Of TValue)
-  name.vb: StructSerializerBase(Of TValue)
-  spec.csharp:
-  - uid: MongoDB.Bson.Serialization.Serializers.StructSerializerBase`1
-    name: StructSerializerBase
-    nameWithType: StructSerializerBase
-    fullName: MongoDB.Bson.Serialization.Serializers.StructSerializerBase
-    isExternal: true
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TValue
-    nameWithType: TValue
-    fullName: TValue
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: MongoDB.Bson.Serialization.Serializers.StructSerializerBase`1
-    name: StructSerializerBase
-    nameWithType: StructSerializerBase
-    fullName: MongoDB.Bson.Serialization.Serializers.StructSerializerBase
-    isExternal: true
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TValue
-    nameWithType: TValue
-    fullName: TValue
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: MongoDB.Bson.Serialization.IBsonSerializer`1
   commentId: T:MongoDB.Bson.Serialization.IBsonSerializer`1
   isExternal: true

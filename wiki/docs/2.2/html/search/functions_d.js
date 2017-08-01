@@ -10,7 +10,5 @@ var searchData=
   ['ongoteventdata',['OnGotEventData',['../classCqrs_1_1Services_1_1EventService_a16030e800b05cea77fd2183db7296804.html#a16030e800b05cea77fd2183db7296804',1,'Cqrs.Services.EventService.OnGotEventData()'],['../classCqrs_1_1WebApi_1_1CqrsEventApiController_a9f0147c846a7fd7628d199ff268d178e.html#a9f0147c846a7fd7628d199ff268d178e',1,'Cqrs.WebApi.CqrsEventApiController.OnGotEventData()']]],
   ['onreconnected',['OnReconnected',['../classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_acaadcc7cc9f00c184e12b6bb725a2167.html#acaadcc7cc9f00c184e12b6bb725a2167',1,'Cqrs::WebApi::SignalR::Hubs::NotificationHub']]],
   ['openstreamsforreading',['OpenStreamsForReading',['../classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a6a916e23890ba65048e449353bbd17c2.html#a6a916e23890ba65048e449353bbd17c2',1,'Cqrs::Azure::BlobStorage::BlobStorageStore']]],
-  ['operator_20array',['operator Array',['../classSystem_1_1Web_1_1Helpers_1_1DynamicJsonArray_a4f1b74ac91d5f8f3a2b95475e05c4ad7.html#a4f1b74ac91d5f8f3a2b95475e05c4ad7',1,'System::Web::Helpers::DynamicJsonArray']]],
-  ['operator_20object_5b_5d',['operator object[]',['../classSystem_1_1Web_1_1Helpers_1_1DynamicJsonArray_aa4bc62411aa6ec4bed9c8551a110d62a.html#aa4bc62411aa6ec4bed9c8551a110d62a',1,'System::Web::Helpers::DynamicJsonArray']]],
   ['or',['Or',['../classCqrs_1_1Repositories_1_1Queries_1_1QueryStrategy_a96f4657370c8cd0d20465d2855ea2fd7.html#a96f4657370c8cd0d20465d2855ea2fd7',1,'Cqrs::Repositories::Queries::QueryStrategy']]]
 ];

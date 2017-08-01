@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">50.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-31</td>
+            <td class="headerValue">2017-08-01</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -56,36 +56,46 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       1 </span>            : ﻿using System;
-<span class="lineNum">       2 </span>            : using cdmdotnet.Logging;
-<span class="lineNum">       3 </span>            : using Cqrs.Azure.BlobStorage;
-<span class="lineNum">       4 </span>            : using Cqrs.Azure.BlobStorage.Events;
-<span class="lineNum">       5 </span>            : using Cqrs.Events;
-<span class="lineNum">       6 </span>            : using TestClass = NUnit.Framework.TestFixtureAttribute;
-<span class="lineNum">       7 </span>            : using TestMethod = NUnit.Framework.TestAttribute;
-<span class="lineNum">       8 </span>            : using TestInitialize = NUnit.Framework.SetUpAttribute;
-<span class="lineNum">       9 </span>            : using TestCleanup = NUnit.Framework.TearDownAttribute;
-<span class="lineNum">      10 </span>            : using TestContext = System.Object;
-<span class="lineNum">      11 </span>            : 
-<span class="lineNum">      12 </span>            : namespace Cqrs.Azure.Storage.Test.Integration
-<span class="lineNum">      13 </span>            : {
-<span class="lineNum">      14 </span>            :         /// &lt;summary&gt;
-<span class="lineNum">      15 </span>            :         /// A series of tests on the &lt;see cref=&quot;TableStorageEventStore{TAuthenticationToken}&quot;/&gt; class
-<span class="lineNum">      16 </span>            :         /// &lt;/summary&gt;
-<span class="lineNum">      17 </span>            :         [TestClass]
-<span class="lineNum">      18 </span>            :         public class TableStorageEventStoreTests : BlobStorage.Test.Integration.TableStorageEventStoreTests
-<span class="lineNum">      19 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      20 </span>            :                 #region Overrides of TableStorageDataStoreTests
-<span class="lineNum">      21 </span>            : 
-<span class="lineNum">      22 </span><span class="lineNoCov">          0 :                 protected override TableStorageEventStore&lt;Guid&gt; CreateDataStore(IEventBuilder&lt;Guid&gt; eventBuilder, IEventDeserialiser&lt;Guid&gt; eventDeserialiser, ILogger logger, ITableStorageStoreConnectionStringFactory tableStorageEventStoreConnectionStringFactory)</span>
-<span class="lineNum">      23 </span>            :                 {
-<span class="lineNum">      24 </span>            :                         return new Events.TableStorageEventStore&lt;Guid&gt;(eventBuilder, eventDeserialiser, logger, tableStorageEventStoreConnectionStringFactory);
-<span class="lineNum">      25 </span>            :                 }
-<span class="lineNum">      26 </span>            : 
-<span class="lineNum">      27 </span>            :                 #endregion
-<span class="lineNum">      28 </span>            : 
-<span class="lineNum">      29 </span>            :         }
-<span class="lineNum">      30 </span>            : }
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      11 </span>            : using Cqrs.Azure.BlobStorage;
+<span class="lineNum">      12 </span>            : using Cqrs.Azure.BlobStorage.Events;
+<span class="lineNum">      13 </span>            : using Cqrs.Events;
+<span class="lineNum">      14 </span>            : using TestClass = NUnit.Framework.TestFixtureAttribute;
+<span class="lineNum">      15 </span>            : using TestMethod = NUnit.Framework.TestAttribute;
+<span class="lineNum">      16 </span>            : using TestInitialize = NUnit.Framework.SetUpAttribute;
+<span class="lineNum">      17 </span>            : using TestCleanup = NUnit.Framework.TearDownAttribute;
+<span class="lineNum">      18 </span>            : using TestContext = System.Object;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : namespace Cqrs.Azure.Storage.Test.Integration
+<span class="lineNum">      21 </span>            : {
+<span class="lineNum">      22 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :         /// A series of tests on the &lt;see cref=&quot;TableStorageEventStore{TAuthenticationToken}&quot;/&gt; class
+<span class="lineNum">      24 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      25 </span>            :         [TestClass]
+<span class="lineNum">      26 </span>            :         public class TableStorageEventStoreTests : BlobStorage.Test.Integration.TableStorageEventStoreTests
+<span class="lineNum">      27 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      28 </span>            :                 #region Overrides of TableStorageDataStoreTests
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// Create a &lt;see cref=&quot;TableStorageEventStore{TAuthenticationToken}&quot;/&gt; ready for testing.
+<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      33 </span><span class="lineCov">          1 :                 protected override TableStorageEventStore&lt;Guid&gt; CreateEventStore(IEventBuilder&lt;Guid&gt; eventBuilder, IEventDeserialiser&lt;Guid&gt; eventDeserialiser, ILogger logger, ITableStorageStoreConnectionStringFactory tableStorageEventStoreConnectionStringFactory)</span>
+<span class="lineNum">      34 </span>            :                 {
+<span class="lineNum">      35 </span>            :                         return new Events.TableStorageEventStore&lt;Guid&gt;(eventBuilder, eventDeserialiser, logger, tableStorageEventStoreConnectionStringFactory);
+<span class="lineNum">      36 </span>            :                 }
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 #endregion
+<span class="lineNum">      39 </span>            :         }
+<span class="lineNum">      40 </span>            : }
 </pre>
       </td>
     </tr>

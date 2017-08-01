@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,6 +14,8 @@ using cdmdotnet.Logging;
 using cdmdotnet.Logging.Configuration;
 using cdmdotnet.StateManagement.Threaded;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
+using Cqrs.DataStores;
+using Cqrs.Entities;
 using Cqrs.MongoDB.DataStores;
 using MongoDB.Driver;
 using NUnit.Framework;
@@ -23,8 +33,13 @@ namespace Cqrs.MongoDB.Tests.Integration
 	[TestClass]
 	public class MongoDbDataStoreTests
 	{
+		/// <summary>
+		/// Tests the <see cref="IDataStore{TData}.Add(TData)"/> method
+		/// Passing a valid test <see cref="IEntity"/>
+		/// Expecting the test <see cref="IEntity"/> is able to be read.
+		/// </summary>
 		[TestMethod]
-		public void Save_ValidProjectionView_ProjectionViewCanBeRetreived()
+		public void Add_ValidProjectionView_ProjectionViewCanBeRetreived()
 		{
 			// Arrange
 			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());

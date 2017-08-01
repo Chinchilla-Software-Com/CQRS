@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['encode',['Encode',['../classSystem_1_1Web_1_1Helpers_1_1Json_a5234a572ff14b4546aca4a7ff265e9b5.html#a5234a572ff14b4546aca4a7ff265e9b5',1,'System::Web::Helpers::Json']]],
   ['endconversation',['EndConversation',['../classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Aggregates_1_1HelloWorld_a310c79f307749813d56872b41c9685f0.html#a310c79f307749813d56872b41c9685f0',1,'Cqrs.Akka.Tests.Unit.Aggregates.HelloWorld.EndConversation(EndConversationCommand command)'],['../classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Aggregates_1_1HelloWorld_aeeb20725d192b64adf47281d37dd198d.html#aeeb20725d192b64adf47281d37dd198d',1,'Cqrs.Akka.Tests.Unit.Aggregates.HelloWorld.EndConversation()']]],
   ['endconversationcommandhandler',['EndConversationCommandHandler',['../classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1Handlers_1_1EndConversationCommandHandler_aaf3680b69f6cbad95722194c4c16cd1f.html#aaf3680b69f6cbad95722194c4c16cd1f',1,'Cqrs::Akka::Tests::Unit::Commands::Handlers::EndConversationCommandHandler']]],
   ['enqueuecommand',['EnqueueCommand',['../classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ab27ff7119814cdc22bf9a5811340e4e7.html#ab27ff7119814cdc22bf9a5811340e4e7',1,'Cqrs::Bus::QueuedCommandBusReceiver']]],

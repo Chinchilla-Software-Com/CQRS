@@ -46,10 +46,10 @@ namespace Cqrs.Events
 			New = @new;
 		}
 
-		#region Implementation of IMessage
+		#region Implementation of IEvent<TAuthenticationToken>
 
 		/// <summary>
-		/// The identifier of the command itself.
+		/// The identifier of the event itself.
 		/// In some cases this may be the <see cref="IAggregateRoot{TAuthenticationToken}"/> or <see cref="ISaga{TAuthenticationToken}"/> this command targets.
 		/// </summary>
 		[DataMember]
