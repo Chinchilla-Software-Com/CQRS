@@ -26,10 +26,19 @@ namespace Cqrs.Mongo.Factories
 	{
 		private static IDictionary<Type, IList<object>> IndexTypesByEntityType { get; set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IMongoDataStoreConnectionStringFactory"/>.
+		/// </summary>
 		protected IMongoDataStoreConnectionStringFactory MongoDataStoreConnectionStringFactory { get; private set; }
 
+		/// <summary>
+		/// Instantiate a new instance of <see cref="MongoDataStoreFactory"/>.
+		/// </summary>
 		public MongoDataStoreFactory(ILogger logger, IMongoDataStoreConnectionStringFactory mongoDataStoreConnectionStringFactory)
 		{
 			Logger = logger;
@@ -105,6 +114,9 @@ namespace Cqrs.Mongo.Factories
 			}
 		}
 
+		/// <summary>
+		/// Get a <see cref="MongoCollection{TEntity}"/>
+		/// </summary>
 		protected virtual MongoCollection<TEntity> GetCollection<TEntity>()
 		{
 			var mongoClient = new MongoClient(MongoDataStoreConnectionStringFactory.GetMongoConnectionString());
@@ -114,6 +126,9 @@ namespace Cqrs.Mongo.Factories
 			return mongoDatabase.GetCollection<TEntity>(typeof(TEntity).FullName);
 		}
 
+		/// <summary>
+		/// Verify all required <see cref="IMongoIndexKeys"/> are defined and ready to go.
+		/// </summary>
 		protected virtual void VerifyIndexes<TEntity>(MongoCollection<TEntity> collection)
 		{
 			Type entityType = typeof (TEntity);

@@ -21,17 +21,22 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GlobalEventToHubProxy
     path: Framework/Cqrs.WebApi/Events/Handlers/GlobalEventToHubProxy.cs
-    startLine: 15
+    startLine: 21
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi.Events.Handlers
+  summary: "\nProxies ALL <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> received from the event bus to the <xref href=\"Cqrs.WebApi.SignalR.Hubs.INotificationHub\" data-throw-if-not-resolved=\"false\"></xref>.\nThis gets registered as a global <xref href=\"Cqrs.Events.IEventHandler\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: 'public class GlobalEventToHubProxy<TAuthenticationToken> : EventToHubProxy<TAuthenticationToken>, IEventHandler<TAuthenticationToken, IEvent<TAuthenticationToken>>, IMessageHandler<IEvent<TAuthenticationToken>>, IEventHandler, IHandler'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the authentication token.
     content.vb: >-
       Public Class GlobalEventToHubProxy(Of TAuthenticationToken)
+
           Inherits EventToHubProxy(Of TAuthenticationToken)
+
           Implements IEventHandler(Of TAuthenticationToken, IEvent(Of TAuthenticationToken)), IMessageHandler(Of IEvent(Of TAuthenticationToken)), IEventHandler, IHandler
   inheritance:
   - System.Object
@@ -80,10 +85,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Cqrs.WebApi/Events/Handlers/GlobalEventToHubProxy.cs
-    startLine: 19
+    startLine: 28
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi.Events.Handlers
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public GlobalEventToHubProxy(ILogger logger, INotificationHub notificationHub, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
     parameters:
@@ -120,15 +127,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Handle
     path: Framework/Cqrs.WebApi/Events/Handlers/GlobalEventToHubProxy.cs
-    startLine: 26
+    startLine: 39
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi.Events.Handlers
+  summary: "\nCalls <xref href=\"Cqrs.WebApi.Events.Handlers.EventToHubProxy%601.HandleGenericEvent(Cqrs.Events.IEvent%7b%600%7d)\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public void Handle(IEvent<TAuthenticationToken> event)
     parameters:
     - id: event
       type: Cqrs.Events.IEvent{{TAuthenticationToken}}
+      description: The <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> to proxy.
     content.vb: Public Sub Handle(event As IEvent(Of TAuthenticationToken))
   overload: Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy`1.Handle*
   implements:
@@ -141,6 +151,64 @@ items:
   fullName.vb: Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy(Of TAuthenticationToken).Handle(Cqrs.Events.IEvent(Of TAuthenticationToken))
   name.vb: Handle(IEvent(Of TAuthenticationToken))
 references:
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.WebApi.SignalR.Hubs.INotificationHub
+  commentId: T:Cqrs.WebApi.SignalR.Hubs.INotificationHub
+  parent: Cqrs.WebApi.SignalR.Hubs
+  isExternal: false
+  name: INotificationHub
+  nameWithType: INotificationHub
+  fullName: Cqrs.WebApi.SignalR.Hubs.INotificationHub
+- uid: Cqrs.Events.IEventHandler
+  commentId: T:Cqrs.Events.IEventHandler
+  parent: Cqrs.Events
+  isExternal: false
+  name: IEventHandler
+  nameWithType: IEventHandler
+  fullName: Cqrs.Events.IEventHandler
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: Cqrs.WebApi.Events.Handlers
   commentId: N:Cqrs.WebApi.Events.Handlers
   isExternal: false
@@ -320,13 +388,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Events.IEventHandler
-  commentId: T:Cqrs.Events.IEventHandler
-  parent: Cqrs.Events
-  isExternal: false
-  name: IEventHandler
-  nameWithType: IEventHandler
-  fullName: Cqrs.Events.IEventHandler
 - uid: Cqrs.Messages.IHandler
   commentId: T:Cqrs.Messages.IHandler
   parent: Cqrs.Messages
@@ -698,6 +759,18 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.WebApi.SignalR.Hubs
+  commentId: N:Cqrs.WebApi.SignalR.Hubs
+  isExternal: false
+  name: Cqrs.WebApi.SignalR.Hubs
+  nameWithType: Cqrs.WebApi.SignalR.Hubs
+  fullName: Cqrs.WebApi.SignalR.Hubs
+- uid: Cqrs.Events
+  commentId: N:Cqrs.Events
+  isExternal: false
+  name: Cqrs.Events
+  nameWithType: Cqrs.Events
+  fullName: Cqrs.Events
 - uid: System
   commentId: N:System
   isExternal: false
@@ -790,12 +863,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Events
-  commentId: N:Cqrs.Events
-  isExternal: false
-  name: Cqrs.Events
-  nameWithType: Cqrs.Events
-  fullName: Cqrs.Events
 - uid: Cqrs.Messages.IMessageHandler`1
   commentId: T:Cqrs.Messages.IMessageHandler`1
   isExternal: false
@@ -920,6 +987,43 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy`1
+  commentId: T:Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy`1
+  isExternal: false
+  name: GlobalEventToHubProxy<TAuthenticationToken>
+  nameWithType: GlobalEventToHubProxy<TAuthenticationToken>
+  fullName: Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy<TAuthenticationToken>
+  nameWithType.vb: GlobalEventToHubProxy(Of TAuthenticationToken)
+  fullName.vb: Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy(Of TAuthenticationToken)
+  name.vb: GlobalEventToHubProxy(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy`1
+    name: GlobalEventToHubProxy
+    nameWithType: GlobalEventToHubProxy
+    fullName: Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy`1
+    name: GlobalEventToHubProxy
+    nameWithType: GlobalEventToHubProxy
+    fullName: Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy`1.#ctor*
   commentId: Overload:Cqrs.WebApi.Events.Handlers.GlobalEventToHubProxy`1.#ctor
   isExternal: false
@@ -935,13 +1039,6 @@ references:
   name: ILogger
   nameWithType: ILogger
   fullName: cdmdotnet.Logging.ILogger
-- uid: Cqrs.WebApi.SignalR.Hubs.INotificationHub
-  commentId: T:Cqrs.WebApi.SignalR.Hubs.INotificationHub
-  parent: Cqrs.WebApi.SignalR.Hubs
-  isExternal: false
-  name: INotificationHub
-  nameWithType: INotificationHub
-  fullName: Cqrs.WebApi.SignalR.Hubs.INotificationHub
 - uid: Cqrs.Authentication.IAuthenticationTokenHelper{{TAuthenticationToken}}
   commentId: T:Cqrs.Authentication.IAuthenticationTokenHelper{`0}
   parent: Cqrs.Authentication
@@ -986,12 +1083,6 @@ references:
   name: cdmdotnet.Logging
   nameWithType: cdmdotnet.Logging
   fullName: cdmdotnet.Logging
-- uid: Cqrs.WebApi.SignalR.Hubs
-  commentId: N:Cqrs.WebApi.SignalR.Hubs
-  isExternal: false
-  name: Cqrs.WebApi.SignalR.Hubs
-  nameWithType: Cqrs.WebApi.SignalR.Hubs
-  fullName: Cqrs.WebApi.SignalR.Hubs
 - uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
   commentId: T:Cqrs.Authentication.IAuthenticationTokenHelper`1
   isExternal: false
@@ -1172,43 +1263,6 @@ references:
   - name: TMessage
     nameWithType: TMessage
     fullName: TMessage
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.Events.IEvent`1
-  commentId: T:Cqrs.Events.IEvent`1
-  isExternal: false
-  name: IEvent<TAuthenticationToken>
-  nameWithType: IEvent<TAuthenticationToken>
-  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
-  nameWithType.vb: IEvent(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
-  name.vb: IEvent(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
   - name: )
     nameWithType: )
     fullName: )

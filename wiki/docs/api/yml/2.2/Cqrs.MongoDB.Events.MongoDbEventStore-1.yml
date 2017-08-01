@@ -29,7 +29,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MongoDbEventStore
     path: Framework/Cqrs.MongoDB/Events/MongoDbEventStore.cs
-    startLine: 30
+    startLine: 32
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Events
@@ -42,7 +42,9 @@ items:
       description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the authentication token.
     content.vb: >-
       Public Class MongoDbEventStore(Of TAuthenticationToken)
+
           Inherits EventStore(Of TAuthenticationToken)
+
           Implements IEventStore(Of TAuthenticationToken)
   inheritance:
   - System.Object
@@ -94,10 +96,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MongoCollection
     path: Framework/Cqrs.MongoDB/Events/MongoDbEventStore.cs
-    startLine: 32
+    startLine: 37
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Events
+  summary: "\nGets or sets the <xref href=\"MongoDB.Driver.IMongoCollection%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected IMongoCollection<MongoDbEventData> MongoCollection { get; }
     parameters: []
@@ -131,10 +135,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MongoDbEventStoreConnectionStringFactory
     path: Framework/Cqrs.MongoDB/Events/MongoDbEventStore.cs
-    startLine: 34
+    startLine: 42
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Events
+  summary: "\nGets or sets the <xref href=\"Cqrs.MongoDB.Events.IMongoDbEventStoreConnectionStringFactory\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected IMongoDbEventStoreConnectionStringFactory MongoDbEventStoreConnectionStringFactory { get; }
     parameters: []
@@ -168,10 +174,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ConfigurationManager
     path: Framework/Cqrs.MongoDB/Events/MongoDbEventStore.cs
-    startLine: 36
+    startLine: 47
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Events
+  summary: "\nGets or sets the <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected IConfigurationManager ConfigurationManager { get; }
     parameters: []
@@ -205,10 +213,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Cqrs.MongoDB/Events/MongoDbEventStore.cs
-    startLine: 57
+    startLine: 72
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Events
+  summary: "\nInstantiate a new instance of <xref href=\"Cqrs.MongoDB.Events.MongoDbEventStore%601\" data-throw-if-not-resolved=\"false\"></xref>\ntriggering any require index checks.\n"
+  example: []
   syntax:
     content: public MongoDbEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IMongoDbEventStoreConnectionStringFactory mongoDbEventStoreConnectionStringFactory, IConfigurationManager configurationManager)
     parameters:
@@ -249,10 +259,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetCollection
     path: Framework/Cqrs.MongoDB/Events/MongoDbEventStore.cs
-    startLine: 69
+    startLine: 87
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Events
+  summary: "\nGet a <xref href=\"MongoDB.Driver.IMongoCollection%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected virtual IMongoCollection<MongoDbEventData> GetCollection()
     return:
@@ -285,10 +297,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: VerifyIndexes
     path: Framework/Cqrs.MongoDB/Events/MongoDbEventStore.cs
-    startLine: 77
+    startLine: 98
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Events
+  summary: "\nVerify all required <xref href=\"Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex%601\" data-throw-if-not-resolved=\"false\"></xref> are defined and ready to go.\n"
+  example: []
   syntax:
     content: protected virtual void VerifyIndexes()
     content.vb: Protected Overridable Sub VerifyIndexes
@@ -319,10 +333,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: VerifyIndex
     path: Framework/Cqrs.MongoDB/Events/MongoDbEventStore.cs
-    startLine: 85
+    startLine: 109
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Events
+  summary: "\nVerify the provided <span class=\"paramref\">mongoIndex</span> is defined and ready to go.\n"
+  example: []
   syntax:
     content: protected virtual void VerifyIndex(MongoDbIndex<MongoDbEventData> mongoIndex)
     parameters:
@@ -357,21 +373,27 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Get
     path: Framework/Cqrs.MongoDB/Events/MongoDbEventStore.cs
-    startLine: 135
+    startLine: 166
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Events
+  summary: "\nGets a collection of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> for the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> of type <span class=\"paramref\">aggregateRootType</span> with the ID matching the provided <span class=\"paramref\">aggregateId</span>.\n"
+  example: []
   syntax:
     content: public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
     parameters:
     - id: aggregateRootType
       type: System.Type
+      description: <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref> the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> was raised in.
     - id: aggregateId
       type: System.Guid
+      description: The <xref href="Cqrs.Domain.IAggregateRoot%601.Id" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref>.
     - id: useLastEventOnly
       type: System.Boolean
+      description: Loads only the last event<xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref>.
     - id: fromVersion
       type: System.Int32
+      description: Load events starting from this version
     return:
       type: System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}}
     content.vb: Public Overrides Function Get(aggregateRootType As Type, aggregateId As Guid, useLastEventOnly As Boolean = False, fromVersion As Integer = -1) As IEnumerable(Of IEvent(Of TAuthenticationToken))
@@ -403,15 +425,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Get
     path: Framework/Cqrs.MongoDB/Events/MongoDbEventStore.cs
-    startLine: 152
+    startLine: 187
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Events
+  summary: "\nGet all <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> instances for the given <span class=\"paramref\">correlationId</span>.\n"
+  example: []
   syntax:
     content: public override IEnumerable<EventData> Get(Guid correlationId)
     parameters:
     - id: correlationId
       type: System.Guid
+      description: The <xref href="Cqrs.Messages.IMessage.CorrelationId" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> instances to retrieve.
     return:
       type: System.Collections.Generic.IEnumerable{Cqrs.Events.EventData}
     content.vb: Public Overrides Function Get(correlationId As Guid) As IEnumerable(Of EventData)
@@ -443,15 +468,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PersistEvent
     path: Framework/Cqrs.MongoDB/Events/MongoDbEventStore.cs
-    startLine: 162
+    startLine: 201
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Events
+  summary: "\nPersist the provided <span class=\"paramref\">eventData</span> into storage.\n"
+  example: []
   syntax:
     content: protected override void PersistEvent(EventData eventData)
     parameters:
     - id: eventData
       type: Cqrs.Events.EventData
+      description: The <xref href="Cqrs.Events.EventData" data-throw-if-not-resolved="false"></xref> to persist.
     content.vb: Protected Overrides Sub PersistEvent(eventData As EventData)
   overridden: Cqrs.Events.EventStore{{TAuthenticationToken}}.PersistEvent(Cqrs.Events.EventData)
   overload: Cqrs.MongoDB.Events.MongoDbEventStore`1.PersistEvent*
@@ -1679,6 +1707,45 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: MongoDB.Driver.IMongoCollection`1
+  commentId: T:MongoDB.Driver.IMongoCollection`1
+  isExternal: true
+  name: IMongoCollection<TDocument>
+  nameWithType: IMongoCollection<TDocument>
+  fullName: MongoDB.Driver.IMongoCollection<TDocument>
+  nameWithType.vb: IMongoCollection(Of TDocument)
+  fullName.vb: MongoDB.Driver.IMongoCollection(Of TDocument)
+  name.vb: IMongoCollection(Of TDocument)
+  spec.csharp:
+  - uid: MongoDB.Driver.IMongoCollection`1
+    name: IMongoCollection
+    nameWithType: IMongoCollection
+    fullName: MongoDB.Driver.IMongoCollection
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TDocument
+    nameWithType: TDocument
+    fullName: TDocument
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: MongoDB.Driver.IMongoCollection`1
+    name: IMongoCollection
+    nameWithType: IMongoCollection
+    fullName: MongoDB.Driver.IMongoCollection
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TDocument
+    nameWithType: TDocument
+    fullName: TDocument
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.MongoDB.Events.MongoDbEventStore`1.MongoCollection*
   commentId: Overload:Cqrs.MongoDB.Events.MongoDbEventStore`1.MongoCollection
   isExternal: false
@@ -1729,51 +1796,19 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: MongoDB.Driver.IMongoCollection`1
-  commentId: T:MongoDB.Driver.IMongoCollection`1
-  isExternal: true
-  name: IMongoCollection<TDocument>
-  nameWithType: IMongoCollection<TDocument>
-  fullName: MongoDB.Driver.IMongoCollection<TDocument>
-  nameWithType.vb: IMongoCollection(Of TDocument)
-  fullName.vb: MongoDB.Driver.IMongoCollection(Of TDocument)
-  name.vb: IMongoCollection(Of TDocument)
-  spec.csharp:
-  - uid: MongoDB.Driver.IMongoCollection`1
-    name: IMongoCollection
-    nameWithType: IMongoCollection
-    fullName: MongoDB.Driver.IMongoCollection
-    isExternal: true
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TDocument
-    nameWithType: TDocument
-    fullName: TDocument
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: MongoDB.Driver.IMongoCollection`1
-    name: IMongoCollection
-    nameWithType: IMongoCollection
-    fullName: MongoDB.Driver.IMongoCollection
-    isExternal: true
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TDocument
-    nameWithType: TDocument
-    fullName: TDocument
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: MongoDB.Driver
   commentId: N:MongoDB.Driver
   isExternal: false
   name: MongoDB.Driver
   nameWithType: MongoDB.Driver
   fullName: MongoDB.Driver
+- uid: Cqrs.MongoDB.Events.IMongoDbEventStoreConnectionStringFactory
+  commentId: T:Cqrs.MongoDB.Events.IMongoDbEventStoreConnectionStringFactory
+  parent: Cqrs.MongoDB.Events
+  isExternal: false
+  name: IMongoDbEventStoreConnectionStringFactory
+  nameWithType: IMongoDbEventStoreConnectionStringFactory
+  fullName: Cqrs.MongoDB.Events.IMongoDbEventStoreConnectionStringFactory
 - uid: Cqrs.MongoDB.Events.MongoDbEventStore`1.MongoDbEventStoreConnectionStringFactory*
   commentId: Overload:Cqrs.MongoDB.Events.MongoDbEventStore`1.MongoDbEventStoreConnectionStringFactory
   isExternal: false
@@ -1782,13 +1817,13 @@ references:
   fullName: Cqrs.MongoDB.Events.MongoDbEventStore<TAuthenticationToken>.MongoDbEventStoreConnectionStringFactory
   nameWithType.vb: MongoDbEventStore(Of TAuthenticationToken).MongoDbEventStoreConnectionStringFactory
   fullName.vb: Cqrs.MongoDB.Events.MongoDbEventStore(Of TAuthenticationToken).MongoDbEventStoreConnectionStringFactory
-- uid: Cqrs.MongoDB.Events.IMongoDbEventStoreConnectionStringFactory
-  commentId: T:Cqrs.MongoDB.Events.IMongoDbEventStoreConnectionStringFactory
-  parent: Cqrs.MongoDB.Events
+- uid: Cqrs.Configuration.IConfigurationManager
+  commentId: T:Cqrs.Configuration.IConfigurationManager
+  parent: Cqrs.Configuration
   isExternal: false
-  name: IMongoDbEventStoreConnectionStringFactory
-  nameWithType: IMongoDbEventStoreConnectionStringFactory
-  fullName: Cqrs.MongoDB.Events.IMongoDbEventStoreConnectionStringFactory
+  name: IConfigurationManager
+  nameWithType: IConfigurationManager
+  fullName: Cqrs.Configuration.IConfigurationManager
 - uid: Cqrs.MongoDB.Events.MongoDbEventStore`1.ConfigurationManager*
   commentId: Overload:Cqrs.MongoDB.Events.MongoDbEventStore`1.ConfigurationManager
   isExternal: false
@@ -1797,19 +1832,49 @@ references:
   fullName: Cqrs.MongoDB.Events.MongoDbEventStore<TAuthenticationToken>.ConfigurationManager
   nameWithType.vb: MongoDbEventStore(Of TAuthenticationToken).ConfigurationManager
   fullName.vb: Cqrs.MongoDB.Events.MongoDbEventStore(Of TAuthenticationToken).ConfigurationManager
-- uid: Cqrs.Configuration.IConfigurationManager
-  commentId: T:Cqrs.Configuration.IConfigurationManager
-  parent: Cqrs.Configuration
-  isExternal: false
-  name: IConfigurationManager
-  nameWithType: IConfigurationManager
-  fullName: Cqrs.Configuration.IConfigurationManager
 - uid: Cqrs.Configuration
   commentId: N:Cqrs.Configuration
   isExternal: false
   name: Cqrs.Configuration
   nameWithType: Cqrs.Configuration
   fullName: Cqrs.Configuration
+- uid: Cqrs.MongoDB.Events.MongoDbEventStore`1
+  commentId: T:Cqrs.MongoDB.Events.MongoDbEventStore`1
+  isExternal: false
+  name: MongoDbEventStore<TAuthenticationToken>
+  nameWithType: MongoDbEventStore<TAuthenticationToken>
+  fullName: Cqrs.MongoDB.Events.MongoDbEventStore<TAuthenticationToken>
+  nameWithType.vb: MongoDbEventStore(Of TAuthenticationToken)
+  fullName.vb: Cqrs.MongoDB.Events.MongoDbEventStore(Of TAuthenticationToken)
+  name.vb: MongoDbEventStore(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.MongoDB.Events.MongoDbEventStore`1
+    name: MongoDbEventStore
+    nameWithType: MongoDbEventStore
+    fullName: Cqrs.MongoDB.Events.MongoDbEventStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.MongoDB.Events.MongoDbEventStore`1
+    name: MongoDbEventStore
+    nameWithType: MongoDbEventStore
+    fullName: Cqrs.MongoDB.Events.MongoDbEventStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.MongoDB.Events.MongoDbEventStore`1.#ctor*
   commentId: Overload:Cqrs.MongoDB.Events.MongoDbEventStore`1.#ctor
   isExternal: false
@@ -1989,6 +2054,43 @@ references:
   fullName: Cqrs.MongoDB.Events.MongoDbEventStore<TAuthenticationToken>.GetCollection
   nameWithType.vb: MongoDbEventStore(Of TAuthenticationToken).GetCollection
   fullName.vb: Cqrs.MongoDB.Events.MongoDbEventStore(Of TAuthenticationToken).GetCollection
+- uid: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex`1
+  commentId: T:Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex`1
+  isExternal: false
+  name: MongoDbIndex<TEntity>
+  nameWithType: MongoDbIndex<TEntity>
+  fullName: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex<TEntity>
+  nameWithType.vb: MongoDbIndex(Of TEntity)
+  fullName.vb: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex(Of TEntity)
+  name.vb: MongoDbIndex(Of TEntity)
+  spec.csharp:
+  - uid: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex`1
+    name: MongoDbIndex
+    nameWithType: MongoDbIndex
+    fullName: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex`1
+    name: MongoDbIndex
+    nameWithType: MongoDbIndex
+    fullName: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.MongoDB.Events.MongoDbEventStore`1.VerifyIndexes*
   commentId: Overload:Cqrs.MongoDB.Events.MongoDbEventStore`1.VerifyIndexes
   isExternal: false
@@ -2045,49 +2147,94 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex`1
-  commentId: T:Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex`1
-  isExternal: false
-  name: MongoDbIndex<TEntity>
-  nameWithType: MongoDbIndex<TEntity>
-  fullName: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex<TEntity>
-  nameWithType.vb: MongoDbIndex(Of TEntity)
-  fullName.vb: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex(Of TEntity)
-  name.vb: MongoDbIndex(Of TEntity)
-  spec.csharp:
-  - uid: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex`1
-    name: MongoDbIndex
-    nameWithType: MongoDbIndex
-    fullName: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TEntity
-    nameWithType: TEntity
-    fullName: TEntity
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex`1
-    name: MongoDbIndex
-    nameWithType: MongoDbIndex
-    fullName: Cqrs.MongoDB.DataStores.Indexes.MongoDbIndex
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TEntity
-    nameWithType: TEntity
-    fullName: TEntity
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.MongoDB.DataStores.Indexes
   commentId: N:Cqrs.MongoDB.DataStores.Indexes
   isExternal: false
   name: Cqrs.MongoDB.DataStores.Indexes
   nameWithType: Cqrs.MongoDB.DataStores.Indexes
   fullName: Cqrs.MongoDB.DataStores.Indexes
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  isExternal: false
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1.Id
+  commentId: P:Cqrs.Domain.IAggregateRoot`1.Id
+  isExternal: false
+  name: Id
+  nameWithType: IAggregateRoot<TAuthenticationToken>.Id
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.Id
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).Id
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).Id
 - uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.Get(System.Type,System.Guid,System.Boolean,System.Int32)
   commentId: M:Cqrs.Events.EventStore{`0}.Get(System.Type,System.Guid,System.Boolean,System.Int32)
   parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
@@ -2399,6 +2546,13 @@ references:
   name: System.Collections.Generic
   nameWithType: System.Collections.Generic
   fullName: System.Collections.Generic
+- uid: Cqrs.Messages.IMessage.CorrelationId
+  commentId: P:Cqrs.Messages.IMessage.CorrelationId
+  parent: Cqrs.Messages.IMessage
+  isExternal: false
+  name: CorrelationId
+  nameWithType: IMessage.CorrelationId
+  fullName: Cqrs.Messages.IMessage.CorrelationId
 - uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.Get(System.Guid)
   commentId: M:Cqrs.Events.EventStore{`0}.Get(System.Guid)
   parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
@@ -2482,6 +2636,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Messages.IMessage
+  commentId: T:Cqrs.Messages.IMessage
+  parent: Cqrs.Messages
+  isExternal: false
+  name: IMessage
+  nameWithType: IMessage
+  fullName: Cqrs.Messages.IMessage
 - uid: Cqrs.Events.EventStore`1.Get(System.Guid)
   commentId: M:Cqrs.Events.EventStore`1.Get(System.Guid)
   isExternal: true
@@ -2522,6 +2683,19 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Messages
+  commentId: N:Cqrs.Messages
+  isExternal: false
+  name: Cqrs.Messages
+  nameWithType: Cqrs.Messages
+  fullName: Cqrs.Messages
+- uid: Cqrs.Events.EventData
+  commentId: T:Cqrs.Events.EventData
+  parent: Cqrs.Events
+  isExternal: false
+  name: EventData
+  nameWithType: EventData
+  fullName: Cqrs.Events.EventData
 - uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.PersistEvent(Cqrs.Events.EventData)
   commentId: M:Cqrs.Events.EventStore{`0}.PersistEvent(Cqrs.Events.EventData)
   parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
@@ -2569,13 +2743,6 @@ references:
   fullName: Cqrs.MongoDB.Events.MongoDbEventStore<TAuthenticationToken>.PersistEvent
   nameWithType.vb: MongoDbEventStore(Of TAuthenticationToken).PersistEvent
   fullName.vb: Cqrs.MongoDB.Events.MongoDbEventStore(Of TAuthenticationToken).PersistEvent
-- uid: Cqrs.Events.EventData
-  commentId: T:Cqrs.Events.EventData
-  parent: Cqrs.Events
-  isExternal: false
-  name: EventData
-  nameWithType: EventData
-  fullName: Cqrs.Events.EventData
 - uid: Cqrs.Events.EventStore`1.PersistEvent(Cqrs.Events.EventData)
   commentId: M:Cqrs.Events.EventStore`1.PersistEvent(Cqrs.Events.EventData)
   isExternal: false

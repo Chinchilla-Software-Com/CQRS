@@ -1,4 +1,12 @@
-﻿using cdmdotnet.Logging;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using cdmdotnet.Logging;
 using Cqrs.Azure.BlobStorage.DataStores;
 using Cqrs.Configuration;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
@@ -17,6 +25,9 @@ namespace Cqrs.Azure.Storage.Test.Integration
 	{
 		#region Overrides of TableStorageDataStoreTests
 
+		/// <summary>
+		/// Create a <see cref="TableStorageDataStore{TData}"/> ready for testing.
+		/// </summary>
 		protected override TableStorageDataStore<TData> CreateDataStore<TData>(ILogger logger, IConfigurationManager configurationManager)
 		{
 			return new DataStores.TableStorageDataStore<TData>(logger, new DataStores.TableStorageDataStoreConnectionStringFactory<TData>(configurationManager, logger));

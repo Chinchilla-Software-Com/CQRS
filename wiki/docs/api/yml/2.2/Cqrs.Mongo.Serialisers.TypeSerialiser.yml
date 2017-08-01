@@ -23,14 +23,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TypeSerialiser
     path: Framework/Cqrs.Mongo/Serialisers/TypeSerialiser.cs
-    startLine: 15
+    startLine: 18
   assemblies:
   - Cqrs.Mongo
   namespace: Cqrs.Mongo.Serialisers
+  summary: "\nA <xref href=\"MongoDB.Bson.Serialization.IBsonSerializer\" data-throw-if-not-resolved=\"false\"></xref> that stores <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> information as well.\n"
+  example: []
   syntax:
     content: 'public class TypeSerialiser : IBsonSerializer'
     content.vb: >-
       Public Class TypeSerialiser
+
           Implements IBsonSerializer
   inheritance:
   - System.Object
@@ -68,10 +71,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Deserialize
     path: Framework/Cqrs.Mongo/Serialisers/TypeSerialiser.cs
-    startLine: 17
+    startLine: 23
   assemblies:
   - Cqrs.Mongo
   namespace: Cqrs.Mongo.Serialisers
+  summary: "\nDeserialises a <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> value, first reading the <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> information from the provide <span class=\"paramref\">reader</span>.\n"
+  example: []
   syntax:
     content: public object Deserialize(BsonReader reader, Type nominalType, IBsonSerializationOptions options)
     parameters:
@@ -109,10 +114,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Deserialize
     path: Framework/Cqrs.Mongo/Serialisers/TypeSerialiser.cs
-    startLine: 23
+    startLine: 32
   assemblies:
   - Cqrs.Mongo
   namespace: Cqrs.Mongo.Serialisers
+  summary: "\nDeserialises a <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> value, first reading the <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> information from the provide <span class=\"paramref\">reader</span>.\n"
+  example: []
   syntax:
     content: public object Deserialize(BsonReader reader, Type nominalType, Type actualType, IBsonSerializationOptions options)
     parameters:
@@ -152,7 +159,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetDefaultSerializationOptions
     path: Framework/Cqrs.Mongo/Serialisers/TypeSerialiser.cs
-    startLine: 39
+    startLine: 48
   assemblies:
   - Cqrs.Mongo
   namespace: Cqrs.Mongo.Serialisers
@@ -189,10 +196,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Serialize
     path: Framework/Cqrs.Mongo/Serialisers/TypeSerialiser.cs
-    startLine: 44
+    startLine: 56
   assemblies:
   - Cqrs.Mongo
   namespace: Cqrs.Mongo.Serialisers
+  summary: "\nSerialises a <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> value.\n"
+  example: []
   syntax:
     content: public void Serialize(BsonWriter writer, Type nominalType, object value, IBsonSerializationOptions options)
     parameters:
@@ -213,6 +222,20 @@ items:
   modifiers.vb:
   - Public
 references:
+- uid: MongoDB.Bson.Serialization.IBsonSerializer
+  commentId: T:MongoDB.Bson.Serialization.IBsonSerializer
+  parent: MongoDB.Bson.Serialization
+  isExternal: true
+  name: IBsonSerializer
+  nameWithType: IBsonSerializer
+  fullName: MongoDB.Bson.Serialization.IBsonSerializer
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: Cqrs.Mongo.Serialisers
   commentId: N:Cqrs.Mongo.Serialisers
   isExternal: false
@@ -226,13 +249,6 @@ references:
   name: Object
   nameWithType: Object
   fullName: System.Object
-- uid: MongoDB.Bson.Serialization.IBsonSerializer
-  commentId: T:MongoDB.Bson.Serialization.IBsonSerializer
-  parent: MongoDB.Bson.Serialization
-  isExternal: true
-  name: IBsonSerializer
-  nameWithType: IBsonSerializer
-  fullName: MongoDB.Bson.Serialization.IBsonSerializer
 - uid: System.Object.ToString
   commentId: M:System.Object.ToString
   parent: System.Object
@@ -512,18 +528,18 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System
-  commentId: N:System
-  isExternal: false
-  name: System
-  nameWithType: System
-  fullName: System
 - uid: MongoDB.Bson.Serialization
   commentId: N:MongoDB.Bson.Serialization
   isExternal: false
   name: MongoDB.Bson.Serialization
   nameWithType: MongoDB.Bson.Serialization
   fullName: MongoDB.Bson.Serialization
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
 - uid: Cqrs.Mongo.Serialisers.TypeSerialiser.Deserialize*
   commentId: Overload:Cqrs.Mongo.Serialisers.TypeSerialiser.Deserialize
   isExternal: false
@@ -610,13 +626,6 @@ references:
   name: BsonReader
   nameWithType: BsonReader
   fullName: MongoDB.Bson.IO.BsonReader
-- uid: System.Type
-  commentId: T:System.Type
-  parent: System
-  isExternal: true
-  name: Type
-  nameWithType: Type
-  fullName: System.Type
 - uid: MongoDB.Bson.Serialization.IBsonSerializationOptions
   commentId: T:MongoDB.Bson.Serialization.IBsonSerializationOptions
   parent: MongoDB.Bson.Serialization

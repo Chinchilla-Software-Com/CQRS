@@ -24,7 +24,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CqrsApiController
     path: Framework/Cqrs.WebApi/CqrsApiController.cs
-    startLine: 179
+    startLine: 227
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
@@ -37,7 +37,9 @@ items:
     - id: TAuthenticationToken
     content.vb: >-
       Public MustInherit Class CqrsApiController(Of TAuthenticationToken)
+
           Inherits CqrsApiController
+
           Implements IHttpController, IDisposable
   inheritance:
   - System.Object
@@ -137,10 +139,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Cqrs.WebApi/CqrsApiController.cs
-    startLine: 182
+    startLine: 233
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.WebApi.CqrsApiController\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
     parameters:
@@ -179,10 +183,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AuthenticationTokenHelper
     path: Framework/Cqrs.WebApi/CqrsApiController.cs
-    startLine: 188
+    startLine: 242
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
+  summary: "\nGets or set the <xref href=\"Cqrs.Authentication.IAuthenticationTokenHelper%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; }
     parameters: []
@@ -216,10 +222,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetToken
     path: Framework/Cqrs.WebApi/CqrsApiController.cs
-    startLine: 190
+    startLine: 247
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
+  summary: "\nReads the current authentication token for the request from <xref href=\"Cqrs.WebApi.CqrsApiController%601.AuthenticationTokenHelper\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected override string GetToken()
     return:
@@ -253,10 +261,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateRequest
     path: Framework/Cqrs.WebApi/CqrsApiController.cs
-    startLine: 198
+    startLine: 258
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
+  summary: "\nCreate a <xref href=\"Cqrs.Services.IServiceRequest%601\" data-throw-if-not-resolved=\"false\"></xref> setting header information.\n"
+  example: []
   syntax:
     content: protected virtual IServiceRequest<TAuthenticationToken> CreateRequest()
     return:
@@ -289,10 +299,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateRequestWithData
     path: Framework/Cqrs.WebApi/CqrsApiController.cs
-    startLine: 208
+    startLine: 272
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi
+  summary: "\nCreate a <xref href=\"Cqrs.Services.IServiceRequestWithData%602\" data-throw-if-not-resolved=\"false\"></xref> setting header information.\nIf <span class=\"paramref\">createParameterDelegate</span> is not null, it is used to populate <xref href=\"Cqrs.Services.IServiceRequestWithData%602.Data\" data-throw-if-not-resolved=\"false\"></xref> otherwise <xref href=\"Cqrs.WebApi.CqrsApiController.CreateParameter%60%601\" data-throw-if-not-resolved=\"false\"></xref> is used.\n"
+  example: []
   syntax:
     content: 'protected virtual IServiceRequestWithData<TAuthenticationToken, TParameters> CreateRequestWithData<TParameters>(Func<TParameters> createParameterDelegate = null)where TParameters : new ()'
     parameters:
@@ -4078,6 +4090,8 @@ references:
   fullName: Cqrs.WebApi.CqrsApiController<TAuthenticationToken>.AuthenticationTokenHelper
   nameWithType.vb: CqrsApiController(Of TAuthenticationToken).AuthenticationTokenHelper
   fullName.vb: Cqrs.WebApi.CqrsApiController(Of TAuthenticationToken).AuthenticationTokenHelper
+- uid: Cqrs.WebApi.CqrsApiController`1.AuthenticationTokenHelper
+  commentId: P:Cqrs.WebApi.CqrsApiController`1.AuthenticationTokenHelper
 - uid: Cqrs.WebApi.CqrsApiController.GetToken
   commentId: M:Cqrs.WebApi.CqrsApiController.GetToken
   parent: Cqrs.WebApi.CqrsApiController
@@ -4122,6 +4136,43 @@ references:
   name: String
   nameWithType: String
   fullName: System.String
+- uid: Cqrs.Services.IServiceRequest`1
+  commentId: T:Cqrs.Services.IServiceRequest`1
+  isExternal: false
+  name: IServiceRequest<TAuthenticationToken>
+  nameWithType: IServiceRequest<TAuthenticationToken>
+  fullName: Cqrs.Services.IServiceRequest<TAuthenticationToken>
+  nameWithType.vb: IServiceRequest(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Services.IServiceRequest(Of TAuthenticationToken)
+  name.vb: IServiceRequest(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Services.IServiceRequest`1
+    name: IServiceRequest
+    nameWithType: IServiceRequest
+    fullName: Cqrs.Services.IServiceRequest
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Services.IServiceRequest`1
+    name: IServiceRequest
+    nameWithType: IServiceRequest
+    fullName: Cqrs.Services.IServiceRequest
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.WebApi.CqrsApiController`1.CreateRequest*
   commentId: Overload:Cqrs.WebApi.CqrsApiController`1.CreateRequest
   isExternal: false
@@ -4168,49 +4219,69 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Services.IServiceRequest`1
-  commentId: T:Cqrs.Services.IServiceRequest`1
-  isExternal: false
-  name: IServiceRequest<TAuthenticationToken>
-  nameWithType: IServiceRequest<TAuthenticationToken>
-  fullName: Cqrs.Services.IServiceRequest<TAuthenticationToken>
-  nameWithType.vb: IServiceRequest(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Services.IServiceRequest(Of TAuthenticationToken)
-  name.vb: IServiceRequest(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Services.IServiceRequest`1
-    name: IServiceRequest
-    nameWithType: IServiceRequest
-    fullName: Cqrs.Services.IServiceRequest
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Services.IServiceRequest`1
-    name: IServiceRequest
-    nameWithType: IServiceRequest
-    fullName: Cqrs.Services.IServiceRequest
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Services
   commentId: N:Cqrs.Services
   isExternal: false
   name: Cqrs.Services
   nameWithType: Cqrs.Services
   fullName: Cqrs.Services
+- uid: Cqrs.Services.IServiceRequestWithData`2
+  commentId: T:Cqrs.Services.IServiceRequestWithData`2
+  isExternal: false
+  name: IServiceRequestWithData<TAuthenticationToken, TData>
+  nameWithType: IServiceRequestWithData<TAuthenticationToken, TData>
+  fullName: Cqrs.Services.IServiceRequestWithData<TAuthenticationToken, TData>
+  nameWithType.vb: IServiceRequestWithData(Of TAuthenticationToken, TData)
+  fullName.vb: Cqrs.Services.IServiceRequestWithData(Of TAuthenticationToken, TData)
+  name.vb: IServiceRequestWithData(Of TAuthenticationToken, TData)
+  spec.csharp:
+  - uid: Cqrs.Services.IServiceRequestWithData`2
+    name: IServiceRequestWithData
+    nameWithType: IServiceRequestWithData
+    fullName: Cqrs.Services.IServiceRequestWithData
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Services.IServiceRequestWithData`2
+    name: IServiceRequestWithData
+    nameWithType: IServiceRequestWithData
+    fullName: Cqrs.Services.IServiceRequestWithData
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Services.IServiceRequestWithData`2.Data
+  commentId: P:Cqrs.Services.IServiceRequestWithData`2.Data
+  isExternal: false
+  name: Data
+  nameWithType: IServiceRequestWithData<TAuthenticationToken, TData>.Data
+  fullName: Cqrs.Services.IServiceRequestWithData<TAuthenticationToken, TData>.Data
+  nameWithType.vb: IServiceRequestWithData(Of TAuthenticationToken, TData).Data
+  fullName.vb: Cqrs.Services.IServiceRequestWithData(Of TAuthenticationToken, TData).Data
 - uid: Cqrs.WebApi.CqrsApiController`1.CreateRequestWithData*
   commentId: Overload:Cqrs.WebApi.CqrsApiController`1.CreateRequestWithData
   isExternal: false
@@ -4345,55 +4416,6 @@ references:
   - name: TResult
     nameWithType: TResult
     fullName: TResult
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.Services.IServiceRequestWithData`2
-  commentId: T:Cqrs.Services.IServiceRequestWithData`2
-  isExternal: false
-  name: IServiceRequestWithData<TAuthenticationToken, TData>
-  nameWithType: IServiceRequestWithData<TAuthenticationToken, TData>
-  fullName: Cqrs.Services.IServiceRequestWithData<TAuthenticationToken, TData>
-  nameWithType.vb: IServiceRequestWithData(Of TAuthenticationToken, TData)
-  fullName.vb: Cqrs.Services.IServiceRequestWithData(Of TAuthenticationToken, TData)
-  name.vb: IServiceRequestWithData(Of TAuthenticationToken, TData)
-  spec.csharp:
-  - uid: Cqrs.Services.IServiceRequestWithData`2
-    name: IServiceRequestWithData
-    nameWithType: IServiceRequestWithData
-    fullName: Cqrs.Services.IServiceRequestWithData
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - name: TData
-    nameWithType: TData
-    fullName: TData
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Services.IServiceRequestWithData`2
-    name: IServiceRequestWithData
-    nameWithType: IServiceRequestWithData
-    fullName: Cqrs.Services.IServiceRequestWithData
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - name: TData
-    nameWithType: TData
-    fullName: TData
   - name: )
     nameWithType: )
     fullName: )

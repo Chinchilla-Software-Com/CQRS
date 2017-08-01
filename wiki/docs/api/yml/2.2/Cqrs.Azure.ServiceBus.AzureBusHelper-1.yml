@@ -5,7 +5,7 @@ items:
   id: AzureBusHelper`1
   parent: Cqrs.Azure.ServiceBus
   children:
-  - Cqrs.Azure.ServiceBus.AzureBusHelper`1.#ctor(Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Bus.IBusHelper,Cqrs.Configuration.IConfigurationManager,Cqrs.Configuration.IDependencyResolver)
+  - Cqrs.Azure.ServiceBus.AzureBusHelper`1.#ctor(Cqrs.Authentication.IAuthenticationTokenHelper{`0},ICorrelationIdHelper,ILogger,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Bus.IBusHelper,Cqrs.Configuration.IConfigurationManager,Cqrs.Configuration.IDependencyResolver)
   - Cqrs.Azure.ServiceBus.AzureBusHelper`1.AuthenticationTokenHelper
   - Cqrs.Azure.ServiceBus.AzureBusHelper`1.BusHelper
   - Cqrs.Azure.ServiceBus.AzureBusHelper`1.ConfigurationManager
@@ -19,11 +19,11 @@ items:
   - Cqrs.Azure.ServiceBus.AzureBusHelper`1.PrepareAndValidateEvent``1(``0,System.String)
   - Cqrs.Azure.ServiceBus.AzureBusHelper`1.PrepareCommand``1(``0,System.String)
   - Cqrs.Azure.ServiceBus.AzureBusHelper`1.PrepareEvent``1(``0,System.String)
-  - Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
-  - Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
-  - Cqrs.Azure.ServiceBus.AzureBusHelper`1.RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
-  - Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Boolean)
-  - Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Type,System.Boolean)
+  - Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
+  - Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
+  - Cqrs.Azure.ServiceBus.AzureBusHelper`1.RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
+  - Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},System.Boolean)
+  - Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},Type,System.Boolean)
   langs:
   - csharp
   - vb
@@ -33,34 +33,29 @@ items:
   type: Class
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AzureBusHelper
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 31
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
   syntax:
-    content: 'public class AzureBusHelper<TAuthenticationToken> : IAzureBusHelper<TAuthenticationToken>'
+    content: 'public class AzureBusHelper<TAuthenticationToken> : object, IAzureBusHelper<TAuthenticationToken>'
     typeParameters:
     - id: TAuthenticationToken
     content.vb: >-
       Public Class AzureBusHelper(Of TAuthenticationToken)
+
+          Inherits Object
+
           Implements IAzureBusHelper(Of TAuthenticationToken)
   inheritance:
   - System.Object
   implements:
   - Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}
-  inheritedMembers:
-  - System.Object.ToString
-  - System.Object.Equals(System.Object)
-  - System.Object.Equals(System.Object,System.Object)
-  - System.Object.ReferenceEquals(System.Object,System.Object)
-  - System.Object.GetHashCode
-  - System.Object.GetType
-  - System.Object.MemberwiseClone
   nameWithType.vb: AzureBusHelper(Of TAuthenticationToken)
   modifiers.csharp:
   - public
@@ -70,24 +65,24 @@ items:
   - Class
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken)
   name.vb: AzureBusHelper(Of TAuthenticationToken)
-- uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.#ctor(Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Bus.IBusHelper,Cqrs.Configuration.IConfigurationManager,Cqrs.Configuration.IDependencyResolver)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.#ctor(Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Bus.IBusHelper,Cqrs.Configuration.IConfigurationManager,Cqrs.Configuration.IDependencyResolver)
-  id: '#ctor(Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Bus.IBusHelper,Cqrs.Configuration.IConfigurationManager,Cqrs.Configuration.IDependencyResolver)'
+- uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.#ctor(Cqrs.Authentication.IAuthenticationTokenHelper{`0},ICorrelationIdHelper,ILogger,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Bus.IBusHelper,Cqrs.Configuration.IConfigurationManager,Cqrs.Configuration.IDependencyResolver)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.#ctor(Cqrs.Authentication.IAuthenticationTokenHelper{`0},ICorrelationIdHelper,ILogger,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Bus.IBusHelper,Cqrs.Configuration.IConfigurationManager,Cqrs.Configuration.IDependencyResolver)
+  id: '#ctor(Cqrs.Authentication.IAuthenticationTokenHelper{`0},ICorrelationIdHelper,ILogger,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Bus.IBusHelper,Cqrs.Configuration.IConfigurationManager,Cqrs.Configuration.IDependencyResolver)'
   parent: Cqrs.Azure.ServiceBus.AzureBusHelper`1
   langs:
   - csharp
   - vb
   name: AzureBusHelper(IAuthenticationTokenHelper<TAuthenticationToken>, ICorrelationIdHelper, ILogger, IMessageSerialiser<TAuthenticationToken>, IBusHelper, IConfigurationManager, IDependencyResolver)
   nameWithType: AzureBusHelper<TAuthenticationToken>.AzureBusHelper(IAuthenticationTokenHelper<TAuthenticationToken>, ICorrelationIdHelper, ILogger, IMessageSerialiser<TAuthenticationToken>, IBusHelper, IConfigurationManager, IDependencyResolver)
-  fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.AzureBusHelper(Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>, cdmdotnet.Logging.ICorrelationIdHelper, cdmdotnet.Logging.ILogger, Cqrs.Azure.ServiceBus.IMessageSerialiser<TAuthenticationToken>, Cqrs.Bus.IBusHelper, Cqrs.Configuration.IConfigurationManager, Cqrs.Configuration.IDependencyResolver)
+  fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.AzureBusHelper(Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>, ICorrelationIdHelper, ILogger, Cqrs.Azure.ServiceBus.IMessageSerialiser<TAuthenticationToken>, Cqrs.Bus.IBusHelper, Cqrs.Configuration.IConfigurationManager, Cqrs.Configuration.IDependencyResolver)
   type: Constructor
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 33
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -98,9 +93,9 @@ items:
     - id: authenticationTokenHelper
       type: Cqrs.Authentication.IAuthenticationTokenHelper{{TAuthenticationToken}}
     - id: correlationIdHelper
-      type: cdmdotnet.Logging.ICorrelationIdHelper
+      type: ICorrelationIdHelper
     - id: logger
-      type: cdmdotnet.Logging.ILogger
+      type: ILogger
     - id: messageSerialiser
       type: Cqrs.Azure.ServiceBus.IMessageSerialiser{{TAuthenticationToken}}
     - id: busHelper
@@ -116,7 +111,7 @@ items:
   - public
   modifiers.vb:
   - Public
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).AzureBusHelper(Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken), cdmdotnet.Logging.ICorrelationIdHelper, cdmdotnet.Logging.ILogger, Cqrs.Azure.ServiceBus.IMessageSerialiser(Of TAuthenticationToken), Cqrs.Bus.IBusHelper, Cqrs.Configuration.IConfigurationManager, Cqrs.Configuration.IDependencyResolver)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).AzureBusHelper(Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken), ICorrelationIdHelper, ILogger, Cqrs.Azure.ServiceBus.IMessageSerialiser(Of TAuthenticationToken), Cqrs.Bus.IBusHelper, Cqrs.Configuration.IConfigurationManager, Cqrs.Configuration.IDependencyResolver)
   name.vb: AzureBusHelper(IAuthenticationTokenHelper(Of TAuthenticationToken), ICorrelationIdHelper, ILogger, IMessageSerialiser(Of TAuthenticationToken), IBusHelper, IConfigurationManager, IDependencyResolver)
 - uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.AuthenticationTokenHelper
   commentId: P:Cqrs.Azure.ServiceBus.AzureBusHelper`1.AuthenticationTokenHelper
@@ -131,11 +126,11 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AuthenticationTokenHelper
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 44
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -168,11 +163,11 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CorrelationIdHelper
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 46
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -181,7 +176,7 @@ items:
     content: protected ICorrelationIdHelper CorrelationIdHelper { get; }
     parameters: []
     return:
-      type: cdmdotnet.Logging.ICorrelationIdHelper
+      type: ICorrelationIdHelper
     content.vb: Protected ReadOnly Property CorrelationIdHelper As ICorrelationIdHelper
   overload: Cqrs.Azure.ServiceBus.AzureBusHelper`1.CorrelationIdHelper*
   nameWithType.vb: AzureBusHelper(Of TAuthenticationToken).CorrelationIdHelper
@@ -205,11 +200,11 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Logger
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 48
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -218,7 +213,7 @@ items:
     content: protected ILogger Logger { get; }
     parameters: []
     return:
-      type: cdmdotnet.Logging.ILogger
+      type: ILogger
     content.vb: Protected ReadOnly Property Logger As ILogger
   overload: Cqrs.Azure.ServiceBus.AzureBusHelper`1.Logger*
   nameWithType.vb: AzureBusHelper(Of TAuthenticationToken).Logger
@@ -242,11 +237,11 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MessageSerialiser
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 50
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -279,11 +274,11 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: BusHelper
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 52
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -316,11 +311,11 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ConfigurationManager
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 54
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -353,11 +348,11 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DependencyResolver
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 56
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -390,11 +385,11 @@ items:
   type: Method
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrepareCommand
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 58
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -434,11 +429,11 @@ items:
   type: Method
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrepareAndValidateCommand
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 74
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -467,24 +462,24 @@ items:
   - Overridable
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).PrepareAndValidateCommand(Of TCommand)(TCommand, System.String)
   name.vb: PrepareAndValidateCommand(Of TCommand)(TCommand, String)
-- uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
-  id: ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+- uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
+  id: ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
   parent: Cqrs.Azure.ServiceBus.AzureBusHelper`1
   langs:
   - csharp
   - vb
   name: ReceiveCommand(String, Func<ICommand<TAuthenticationToken>, Nullable<Boolean>>, String, Action, Action)
   nameWithType: AzureBusHelper<TAuthenticationToken>.ReceiveCommand(String, Func<ICommand<TAuthenticationToken>, Nullable<Boolean>>, String, Action, Action)
-  fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.ReceiveCommand(System.String, System.Func<Cqrs.Commands.ICommand<TAuthenticationToken>, System.Nullable<System.Boolean>>, System.String, System.Action, System.Action)
+  fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.ReceiveCommand(System.String, Func<Cqrs.Commands.ICommand<TAuthenticationToken>, System.Nullable<System.Boolean>>, System.String, Action, Action)
   type: Method
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ReceiveCommand
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 109
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -495,19 +490,19 @@ items:
     - id: messageBody
       type: System.String
     - id: receiveCommandHandler
-      type: System.Func{Cqrs.Commands.ICommand{{TAuthenticationToken}},System.Nullable{System.Boolean}}
+      type: Func{Cqrs.Commands.ICommand{{TAuthenticationToken}},System.Nullable{System.Boolean}}
     - id: messageId
       type: System.String
     - id: skippedAction
-      type: System.Action
+      type: Action
     - id: lockRefreshAction
-      type: System.Action
+      type: Action
     return:
       type: Cqrs.Commands.ICommand{{TAuthenticationToken}}
     content.vb: Public Overridable Function ReceiveCommand(messageBody As String, receiveCommandHandler As Func(Of ICommand(Of TAuthenticationToken), Boolean?), messageId As String, skippedAction As Action = Nothing, lockRefreshAction As Action = Nothing) As ICommand(Of TAuthenticationToken)
   overload: Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveCommand*
   implements:
-  - Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{{TAuthenticationToken}},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+  - Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{{TAuthenticationToken}},System.Nullable{System.Boolean}},System.String,Action,Action)
   nameWithType.vb: AzureBusHelper(Of TAuthenticationToken).ReceiveCommand(String, Func(Of ICommand(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
   modifiers.csharp:
   - public
@@ -515,7 +510,7 @@ items:
   modifiers.vb:
   - Public
   - Overridable
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).ReceiveCommand(System.String, System.Func(Of Cqrs.Commands.ICommand(Of TAuthenticationToken), System.Nullable(Of System.Boolean)), System.String, System.Action, System.Action)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).ReceiveCommand(System.String, Func(Of Cqrs.Commands.ICommand(Of TAuthenticationToken), System.Nullable(Of System.Boolean)), System.String, Action, Action)
   name.vb: ReceiveCommand(String, Func(Of ICommand(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
 - uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.DefaultReceiveCommand(Cqrs.Commands.ICommand{`0},Cqrs.Bus.RouteManager,System.String)
   commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.DefaultReceiveCommand(Cqrs.Commands.ICommand{`0},Cqrs.Bus.RouteManager,System.String)
@@ -530,11 +525,11 @@ items:
   type: Method
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DefaultReceiveCommand
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 183
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -578,11 +573,11 @@ items:
   type: Method
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrepareEvent
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 215
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -622,11 +617,11 @@ items:
   type: Method
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrepareAndValidateEvent
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 232
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -655,24 +650,24 @@ items:
   - Overridable
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).PrepareAndValidateEvent(Of TEvent)(TEvent, System.String)
   name.vb: PrepareAndValidateEvent(Of TEvent)(TEvent, String)
-- uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
-  id: ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+- uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
+  id: ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
   parent: Cqrs.Azure.ServiceBus.AzureBusHelper`1
   langs:
   - csharp
   - vb
   name: ReceiveEvent(String, Func<IEvent<TAuthenticationToken>, Nullable<Boolean>>, String, Action, Action)
   nameWithType: AzureBusHelper<TAuthenticationToken>.ReceiveEvent(String, Func<IEvent<TAuthenticationToken>, Nullable<Boolean>>, String, Action, Action)
-  fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.ReceiveEvent(System.String, System.Func<Cqrs.Events.IEvent<TAuthenticationToken>, System.Nullable<System.Boolean>>, System.String, System.Action, System.Action)
+  fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.ReceiveEvent(System.String, Func<Cqrs.Events.IEvent<TAuthenticationToken>, System.Nullable<System.Boolean>>, System.String, Action, Action)
   type: Method
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ReceiveEvent
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
     startLine: 251
   assemblies:
   - Cqrs.Azure.ServiceBus
@@ -683,19 +678,19 @@ items:
     - id: messageBody
       type: System.String
     - id: receiveEventHandler
-      type: System.Func{Cqrs.Events.IEvent{{TAuthenticationToken}},System.Nullable{System.Boolean}}
+      type: Func{Cqrs.Events.IEvent{{TAuthenticationToken}},System.Nullable{System.Boolean}}
     - id: messageId
       type: System.String
     - id: skippedAction
-      type: System.Action
+      type: Action
     - id: lockRefreshAction
-      type: System.Action
+      type: Action
     return:
       type: Cqrs.Events.IEvent{{TAuthenticationToken}}
     content.vb: Public Overridable Function ReceiveEvent(messageBody As String, receiveEventHandler As Func(Of IEvent(Of TAuthenticationToken), Boolean?), messageId As String, skippedAction As Action = Nothing, lockRefreshAction As Action = Nothing) As IEvent(Of TAuthenticationToken)
   overload: Cqrs.Azure.ServiceBus.AzureBusHelper`1.ReceiveEvent*
   implements:
-  - Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{{TAuthenticationToken}},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+  - Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{{TAuthenticationToken}},System.Nullable{System.Boolean}},System.String,Action,Action)
   nameWithType.vb: AzureBusHelper(Of TAuthenticationToken).ReceiveEvent(String, Func(Of IEvent(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
   modifiers.csharp:
   - public
@@ -703,27 +698,27 @@ items:
   modifiers.vb:
   - Public
   - Overridable
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).ReceiveEvent(System.String, System.Func(Of Cqrs.Events.IEvent(Of TAuthenticationToken), System.Nullable(Of System.Boolean)), System.String, System.Action, System.Action)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).ReceiveEvent(System.String, Func(Of Cqrs.Events.IEvent(Of TAuthenticationToken), System.Nullable(Of System.Boolean)), System.String, Action, Action)
   name.vb: ReceiveEvent(String, Func(Of IEvent(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
-- uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
-  id: RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
+- uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
+  id: RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
   parent: Cqrs.Azure.ServiceBus.AzureBusHelper`1
   langs:
   - csharp
   - vb
   name: RefreshLock(CancellationTokenSource, BrokeredMessage, String)
   nameWithType: AzureBusHelper<TAuthenticationToken>.RefreshLock(CancellationTokenSource, BrokeredMessage, String)
-  fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.RefreshLock(System.Threading.CancellationTokenSource, Microsoft.ServiceBus.Messaging.BrokeredMessage, System.String)
+  fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.RefreshLock(CancellationTokenSource, BrokeredMessage, System.String)
   type: Method
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: RefreshLock
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
-    startLine: 320
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
+    startLine: 321
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
@@ -731,15 +726,15 @@ items:
     content: public virtual void RefreshLock(CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
     parameters:
     - id: brokeredMessageRenewCancellationTokenSource
-      type: System.Threading.CancellationTokenSource
+      type: CancellationTokenSource
     - id: message
-      type: Microsoft.ServiceBus.Messaging.BrokeredMessage
+      type: BrokeredMessage
     - id: type
       type: System.String
     content.vb: Public Overridable Sub RefreshLock(brokeredMessageRenewCancellationTokenSource As CancellationTokenSource, message As BrokeredMessage, type As String = "message")
   overload: Cqrs.Azure.ServiceBus.AzureBusHelper`1.RefreshLock*
   implements:
-  - Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
+  - Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
   nameWithType.vb: AzureBusHelper(Of TAuthenticationToken).RefreshLock(CancellationTokenSource, BrokeredMessage, String)
   modifiers.csharp:
   - public
@@ -747,7 +742,7 @@ items:
   modifiers.vb:
   - Public
   - Overridable
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).RefreshLock(System.Threading.CancellationTokenSource, Microsoft.ServiceBus.Messaging.BrokeredMessage, System.String)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).RefreshLock(CancellationTokenSource, BrokeredMessage, System.String)
 - uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.DefaultReceiveEvent(Cqrs.Events.IEvent{`0},Cqrs.Bus.RouteManager,System.String)
   commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.DefaultReceiveEvent(Cqrs.Events.IEvent{`0},Cqrs.Bus.RouteManager,System.String)
   id: DefaultReceiveEvent(Cqrs.Events.IEvent{`0},Cqrs.Bus.RouteManager,System.String)
@@ -761,12 +756,12 @@ items:
   type: Method
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DefaultReceiveEvent
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
-    startLine: 405
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
+    startLine: 406
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
@@ -796,25 +791,25 @@ items:
   - Overridable
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).DefaultReceiveEvent(Cqrs.Events.IEvent(Of TAuthenticationToken), Cqrs.Bus.RouteManager, System.String)
   name.vb: DefaultReceiveEvent(IEvent(Of TAuthenticationToken), RouteManager, String)
-- uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Type,System.Boolean)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Type,System.Boolean)
-  id: RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Type,System.Boolean)
+- uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},Type,System.Boolean)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},Type,System.Boolean)
+  id: RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},Type,System.Boolean)
   parent: Cqrs.Azure.ServiceBus.AzureBusHelper`1
   langs:
   - csharp
   - vb
   name: RegisterHandler<TMessage>(ITelemetryHelper, RouteManager, Action<TMessage>, Type, Boolean)
   nameWithType: AzureBusHelper<TAuthenticationToken>.RegisterHandler<TMessage>(ITelemetryHelper, RouteManager, Action<TMessage>, Type, Boolean)
-  fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.RegisterHandler<TMessage>(cdmdotnet.Logging.ITelemetryHelper, Cqrs.Bus.RouteManager, System.Action<TMessage>, System.Type, System.Boolean)
+  fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.RegisterHandler<TMessage>(ITelemetryHelper, Cqrs.Bus.RouteManager, Action<TMessage>, Type, System.Boolean)
   type: Method
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: RegisterHandler
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
-    startLine: 437
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
+    startLine: 438
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
@@ -822,13 +817,13 @@ items:
     content: 'public virtual void RegisterHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)where TMessage : IMessage'
     parameters:
     - id: telemetryHelper
-      type: cdmdotnet.Logging.ITelemetryHelper
+      type: ITelemetryHelper
     - id: routeManger
       type: Cqrs.Bus.RouteManager
     - id: handler
-      type: System.Action{{TMessage}}
+      type: Action{{TMessage}}
     - id: targetedType
-      type: System.Type
+      type: Type
     - id: holdMessageLock
       type: System.Boolean
     typeParameters:
@@ -836,7 +831,7 @@ items:
     content.vb: Public Overridable Sub RegisterHandler(Of TMessage As IMessage)(telemetryHelper As ITelemetryHelper, routeManger As RouteManager, handler As Action(Of TMessage), targetedType As Type, holdMessageLock As Boolean = True)
   overload: Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterHandler*
   implements:
-  - Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{{TMessage}},System.Type,System.Boolean)
+  - Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{{TMessage}},Type,System.Boolean)
   nameWithType.vb: AzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)(ITelemetryHelper, RouteManager, Action(Of TMessage), Type, Boolean)
   modifiers.csharp:
   - public
@@ -844,27 +839,27 @@ items:
   modifiers.vb:
   - Public
   - Overridable
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)(cdmdotnet.Logging.ITelemetryHelper, Cqrs.Bus.RouteManager, System.Action(Of TMessage), System.Type, System.Boolean)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)(ITelemetryHelper, Cqrs.Bus.RouteManager, Action(Of TMessage), Type, System.Boolean)
   name.vb: RegisterHandler(Of TMessage)(ITelemetryHelper, RouteManager, Action(Of TMessage), Type, Boolean)
-- uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Boolean)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Boolean)
-  id: RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Boolean)
+- uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},System.Boolean)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},System.Boolean)
+  id: RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},System.Boolean)
   parent: Cqrs.Azure.ServiceBus.AzureBusHelper`1
   langs:
   - csharp
   - vb
   name: RegisterGlobalEventHandler<TMessage>(ITelemetryHelper, RouteManager, Action<TMessage>, Boolean)
   nameWithType: AzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler<TMessage>(ITelemetryHelper, RouteManager, Action<TMessage>, Boolean)
-  fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler<TMessage>(cdmdotnet.Logging.ITelemetryHelper, Cqrs.Bus.RouteManager, System.Action<TMessage>, System.Boolean)
+  fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler<TMessage>(ITelemetryHelper, Cqrs.Bus.RouteManager, Action<TMessage>, System.Boolean)
   type: Method
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
+      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: RegisterGlobalEventHandler
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureBusHelper.cs
-    startLine: 451
+    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBusHelper.cs
+    startLine: 452
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
@@ -874,11 +869,11 @@ items:
     content: 'public void RegisterGlobalEventHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, bool holdMessageLock = true)where TMessage : IMessage'
     parameters:
     - id: telemetryHelper
-      type: cdmdotnet.Logging.ITelemetryHelper
+      type: ITelemetryHelper
     - id: routeManger
       type: Cqrs.Bus.RouteManager
     - id: handler
-      type: System.Action{{TMessage}}
+      type: Action{{TMessage}}
     - id: holdMessageLock
       type: System.Boolean
     typeParameters:
@@ -886,13 +881,13 @@ items:
     content.vb: Public Sub RegisterGlobalEventHandler(Of TMessage As IMessage)(telemetryHelper As ITelemetryHelper, routeManger As RouteManager, handler As Action(Of TMessage), holdMessageLock As Boolean = True)
   overload: Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterGlobalEventHandler*
   implements:
-  - Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{{TMessage}},System.Boolean)
+  - Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{{TMessage}},System.Boolean)
   nameWithType.vb: AzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler(Of TMessage)(ITelemetryHelper, RouteManager, Action(Of TMessage), Boolean)
   modifiers.csharp:
   - public
   modifiers.vb:
   - Public
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler(Of TMessage)(cdmdotnet.Logging.ITelemetryHelper, Cqrs.Bus.RouteManager, System.Action(Of TMessage), System.Boolean)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler(Of TMessage)(ITelemetryHelper, Cqrs.Bus.RouteManager, Action(Of TMessage), System.Boolean)
   name.vb: RegisterGlobalEventHandler(Of TMessage)(ITelemetryHelper, RouteManager, Action(Of TMessage), Boolean)
 references:
 - uid: Cqrs.Azure.ServiceBus
@@ -943,285 +938,6 @@ references:
   - name: TAuthenticationToken
     nameWithType: TAuthenticationToken
     fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.ToString
-  commentId: M:System.Object.ToString
-  parent: System.Object
-  isExternal: true
-  name: ToString()
-  nameWithType: Object.ToString()
-  fullName: System.Object.ToString()
-  spec.csharp:
-  - uid: System.Object.ToString
-    name: ToString
-    nameWithType: Object.ToString
-    fullName: System.Object.ToString
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.ToString
-    name: ToString
-    nameWithType: Object.ToString
-    fullName: System.Object.ToString
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.Equals(System.Object)
-  commentId: M:System.Object.Equals(System.Object)
-  parent: System.Object
-  isExternal: true
-  name: Equals(Object)
-  nameWithType: Object.Equals(Object)
-  fullName: System.Object.Equals(System.Object)
-  spec.csharp:
-  - uid: System.Object.Equals(System.Object)
-    name: Equals
-    nameWithType: Object.Equals
-    fullName: System.Object.Equals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.Equals(System.Object)
-    name: Equals
-    nameWithType: Object.Equals
-    fullName: System.Object.Equals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.Equals(System.Object,System.Object)
-  commentId: M:System.Object.Equals(System.Object,System.Object)
-  parent: System.Object
-  isExternal: true
-  name: Equals(Object, Object)
-  nameWithType: Object.Equals(Object, Object)
-  fullName: System.Object.Equals(System.Object, System.Object)
-  spec.csharp:
-  - uid: System.Object.Equals(System.Object,System.Object)
-    name: Equals
-    nameWithType: Object.Equals
-    fullName: System.Object.Equals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.Equals(System.Object,System.Object)
-    name: Equals
-    nameWithType: Object.Equals
-    fullName: System.Object.Equals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.ReferenceEquals(System.Object,System.Object)
-  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
-  parent: System.Object
-  isExternal: true
-  name: ReferenceEquals(Object, Object)
-  nameWithType: Object.ReferenceEquals(Object, Object)
-  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
-  spec.csharp:
-  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
-    name: ReferenceEquals
-    nameWithType: Object.ReferenceEquals
-    fullName: System.Object.ReferenceEquals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
-    name: ReferenceEquals
-    nameWithType: Object.ReferenceEquals
-    fullName: System.Object.ReferenceEquals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.GetHashCode
-  commentId: M:System.Object.GetHashCode
-  parent: System.Object
-  isExternal: true
-  name: GetHashCode()
-  nameWithType: Object.GetHashCode()
-  fullName: System.Object.GetHashCode()
-  spec.csharp:
-  - uid: System.Object.GetHashCode
-    name: GetHashCode
-    nameWithType: Object.GetHashCode
-    fullName: System.Object.GetHashCode
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.GetHashCode
-    name: GetHashCode
-    nameWithType: Object.GetHashCode
-    fullName: System.Object.GetHashCode
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.GetType
-  commentId: M:System.Object.GetType
-  parent: System.Object
-  isExternal: true
-  name: GetType()
-  nameWithType: Object.GetType()
-  fullName: System.Object.GetType()
-  spec.csharp:
-  - uid: System.Object.GetType
-    name: GetType
-    nameWithType: Object.GetType
-    fullName: System.Object.GetType
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.GetType
-    name: GetType
-    nameWithType: Object.GetType
-    fullName: System.Object.GetType
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.MemberwiseClone
-  commentId: M:System.Object.MemberwiseClone
-  parent: System.Object
-  isExternal: true
-  name: MemberwiseClone()
-  nameWithType: Object.MemberwiseClone()
-  fullName: System.Object.MemberwiseClone()
-  spec.csharp:
-  - uid: System.Object.MemberwiseClone
-    name: MemberwiseClone
-    nameWithType: Object.MemberwiseClone
-    fullName: System.Object.MemberwiseClone
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.MemberwiseClone
-    name: MemberwiseClone
-    nameWithType: Object.MemberwiseClone
-    fullName: System.Object.MemberwiseClone
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
   - name: )
     nameWithType: )
     fullName: )
@@ -1314,20 +1030,16 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: cdmdotnet.Logging.ICorrelationIdHelper
-  commentId: T:cdmdotnet.Logging.ICorrelationIdHelper
-  parent: cdmdotnet.Logging
+- uid: ICorrelationIdHelper
   isExternal: true
   name: ICorrelationIdHelper
   nameWithType: ICorrelationIdHelper
-  fullName: cdmdotnet.Logging.ICorrelationIdHelper
-- uid: cdmdotnet.Logging.ILogger
-  commentId: T:cdmdotnet.Logging.ILogger
-  parent: cdmdotnet.Logging
+  fullName: ICorrelationIdHelper
+- uid: ILogger
   isExternal: true
   name: ILogger
   nameWithType: ILogger
-  fullName: cdmdotnet.Logging.ILogger
+  fullName: ILogger
 - uid: Cqrs.Azure.ServiceBus.IMessageSerialiser{{TAuthenticationToken}}
   commentId: T:Cqrs.Azure.ServiceBus.IMessageSerialiser{`0}
   parent: Cqrs.Azure.ServiceBus
@@ -1430,12 +1142,6 @@ references:
   name: Cqrs.Authentication
   nameWithType: Cqrs.Authentication
   fullName: Cqrs.Authentication
-- uid: cdmdotnet.Logging
-  commentId: N:cdmdotnet.Logging
-  isExternal: false
-  name: cdmdotnet.Logging
-  nameWithType: cdmdotnet.Logging
-  fullName: cdmdotnet.Logging
 - uid: Cqrs.Azure.ServiceBus.IMessageSerialiser`1
   commentId: T:Cqrs.Azure.ServiceBus.IMessageSerialiser`1
   isExternal: false
@@ -1804,18 +1510,18 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.ReceiveCommand
   nameWithType.vb: AzureBusHelper(Of TAuthenticationToken).ReceiveCommand
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).ReceiveCommand
-- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{{TAuthenticationToken}},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
-  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper{`0}.ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{{TAuthenticationToken}},System.Nullable{System.Boolean}},System.String,Action,Action)
+  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper{`0}.ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
   parent: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}
-  definition: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+  definition: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
   name: ReceiveCommand(String, Func<ICommand<TAuthenticationToken>, Nullable<Boolean>>, String, Action, Action)
   nameWithType: IAzureBusHelper<TAuthenticationToken>.ReceiveCommand(String, Func<ICommand<TAuthenticationToken>, Nullable<Boolean>>, String, Action, Action)
-  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.ReceiveCommand(System.String, System.Func<Cqrs.Commands.ICommand<TAuthenticationToken>, System.Nullable<System.Boolean>>, System.String, System.Action, System.Action)
+  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.ReceiveCommand(System.String, Func<Cqrs.Commands.ICommand<TAuthenticationToken>, System.Nullable<System.Boolean>>, System.String, Action, Action)
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).ReceiveCommand(String, Func(Of ICommand(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
-  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).ReceiveCommand(System.String, System.Func(Of Cqrs.Commands.ICommand(Of TAuthenticationToken), System.Nullable(Of System.Boolean)), System.String, System.Action, System.Action)
+  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).ReceiveCommand(System.String, Func(Of Cqrs.Commands.ICommand(Of TAuthenticationToken), System.Nullable(Of System.Boolean)), System.String, Action, Action)
   name.vb: ReceiveCommand(String, Func(Of ICommand(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
     name: ReceiveCommand
     nameWithType: IAzureBusHelper<TAuthenticationToken>.ReceiveCommand
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.ReceiveCommand
@@ -1830,10 +1536,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: <
     nameWithType: <
@@ -1884,24 +1590,24 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: )
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
     name: ReceiveCommand
     nameWithType: IAzureBusHelper(Of TAuthenticationToken).ReceiveCommand
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).ReceiveCommand
@@ -1916,10 +1622,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
@@ -1970,37 +1676,36 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Func{Cqrs.Commands.ICommand{{TAuthenticationToken}},System.Nullable{System.Boolean}}
-  commentId: T:System.Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}}
-  parent: System
-  definition: System.Func`2
+- uid: Func{Cqrs.Commands.ICommand{{TAuthenticationToken}},System.Nullable{System.Boolean}}
+  commentId: '!:Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}}'
+  definition: Func`2
   name: Func<ICommand<TAuthenticationToken>, Nullable<Boolean>>
   nameWithType: Func<ICommand<TAuthenticationToken>, Nullable<Boolean>>
-  fullName: System.Func<Cqrs.Commands.ICommand<TAuthenticationToken>, System.Nullable<System.Boolean>>
+  fullName: Func<Cqrs.Commands.ICommand<TAuthenticationToken>, System.Nullable<System.Boolean>>
   nameWithType.vb: Func(Of ICommand(Of TAuthenticationToken), Nullable(Of Boolean))
-  fullName.vb: System.Func(Of Cqrs.Commands.ICommand(Of TAuthenticationToken), System.Nullable(Of System.Boolean))
+  fullName.vb: Func(Of Cqrs.Commands.ICommand(Of TAuthenticationToken), System.Nullable(Of System.Boolean))
   name.vb: Func(Of ICommand(Of TAuthenticationToken), Nullable(Of Boolean))
   spec.csharp:
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: <
     nameWithType: <
@@ -2041,10 +1746,10 @@ references:
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
@@ -2084,13 +1789,11 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Action
-  commentId: T:System.Action
-  parent: System
+- uid: Action
   isExternal: true
   name: Action
   nameWithType: Action
-  fullName: System.Action
+  fullName: Action
 - uid: Cqrs.Commands.ICommand{{TAuthenticationToken}}
   commentId: T:Cqrs.Commands.ICommand{`0}
   parent: Cqrs.Commands
@@ -2129,17 +1832,17 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
-  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
+  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
   isExternal: true
   name: ReceiveCommand(String, Func<ICommand<TAuthenticationToken>, Nullable<Boolean>>, String, Action, Action)
   nameWithType: IAzureBusHelper<TAuthenticationToken>.ReceiveCommand(String, Func<ICommand<TAuthenticationToken>, Nullable<Boolean>>, String, Action, Action)
-  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.ReceiveCommand(System.String, System.Func<Cqrs.Commands.ICommand<TAuthenticationToken>, System.Nullable<System.Boolean>>, System.String, System.Action, System.Action)
+  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.ReceiveCommand(System.String, Func<Cqrs.Commands.ICommand<TAuthenticationToken>, System.Nullable<System.Boolean>>, System.String, Action, Action)
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).ReceiveCommand(String, Func(Of ICommand(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
-  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).ReceiveCommand(System.String, System.Func(Of Cqrs.Commands.ICommand(Of TAuthenticationToken), System.Nullable(Of System.Boolean)), System.String, System.Action, System.Action)
+  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).ReceiveCommand(System.String, Func(Of Cqrs.Commands.ICommand(Of TAuthenticationToken), System.Nullable(Of System.Boolean)), System.String, Action, Action)
   name.vb: ReceiveCommand(String, Func(Of ICommand(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
     name: ReceiveCommand
     nameWithType: IAzureBusHelper<TAuthenticationToken>.ReceiveCommand
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.ReceiveCommand
@@ -2154,10 +1857,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: <
     nameWithType: <
@@ -2208,24 +1911,24 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: )
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,System.Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand(System.String,Func{Cqrs.Commands.ICommand{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
     name: ReceiveCommand
     nameWithType: IAzureBusHelper(Of TAuthenticationToken).ReceiveCommand
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).ReceiveCommand
@@ -2240,10 +1943,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
@@ -2294,70 +1997,69 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Func`2
-  commentId: T:System.Func`2
+- uid: Func`2
   isExternal: true
-  name: Func<T, TResult>
-  nameWithType: Func<T, TResult>
-  fullName: System.Func<T, TResult>
-  nameWithType.vb: Func(Of T, TResult)
-  fullName.vb: System.Func(Of T, TResult)
-  name.vb: Func(Of T, TResult)
+  name: Func<, >
+  nameWithType: Func<, >
+  fullName: Func<, >
+  nameWithType.vb: Func(Of , )
+  fullName.vb: Func(Of , )
+  name.vb: Func(Of , )
   spec.csharp:
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: <
     nameWithType: <
     fullName: <
-  - name: T
-    nameWithType: T
-    fullName: T
+  - name: ''
+    nameWithType: ''
+    fullName: ''
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - name: TResult
-    nameWithType: TResult
-    fullName: TResult
+  - name: ''
+    nameWithType: ''
+    fullName: ''
   - name: '>'
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - name: T
-    nameWithType: T
-    fullName: T
+  - name: ''
+    nameWithType: ''
+    fullName: ''
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - name: TResult
-    nameWithType: TResult
-    fullName: TResult
+  - name: ''
+    nameWithType: ''
+    fullName: ''
   - name: )
     nameWithType: )
     fullName: )
@@ -2926,18 +2628,18 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.ReceiveEvent
   nameWithType.vb: AzureBusHelper(Of TAuthenticationToken).ReceiveEvent
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).ReceiveEvent
-- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{{TAuthenticationToken}},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
-  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper{`0}.ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{{TAuthenticationToken}},System.Nullable{System.Boolean}},System.String,Action,Action)
+  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper{`0}.ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
   parent: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}
-  definition: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+  definition: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
   name: ReceiveEvent(String, Func<IEvent<TAuthenticationToken>, Nullable<Boolean>>, String, Action, Action)
   nameWithType: IAzureBusHelper<TAuthenticationToken>.ReceiveEvent(String, Func<IEvent<TAuthenticationToken>, Nullable<Boolean>>, String, Action, Action)
-  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.ReceiveEvent(System.String, System.Func<Cqrs.Events.IEvent<TAuthenticationToken>, System.Nullable<System.Boolean>>, System.String, System.Action, System.Action)
+  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.ReceiveEvent(System.String, Func<Cqrs.Events.IEvent<TAuthenticationToken>, System.Nullable<System.Boolean>>, System.String, Action, Action)
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).ReceiveEvent(String, Func(Of IEvent(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
-  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).ReceiveEvent(System.String, System.Func(Of Cqrs.Events.IEvent(Of TAuthenticationToken), System.Nullable(Of System.Boolean)), System.String, System.Action, System.Action)
+  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).ReceiveEvent(System.String, Func(Of Cqrs.Events.IEvent(Of TAuthenticationToken), System.Nullable(Of System.Boolean)), System.String, Action, Action)
   name.vb: ReceiveEvent(String, Func(Of IEvent(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
     name: ReceiveEvent
     nameWithType: IAzureBusHelper<TAuthenticationToken>.ReceiveEvent
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.ReceiveEvent
@@ -2952,10 +2654,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: <
     nameWithType: <
@@ -3006,24 +2708,24 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: )
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
     name: ReceiveEvent
     nameWithType: IAzureBusHelper(Of TAuthenticationToken).ReceiveEvent
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).ReceiveEvent
@@ -3038,10 +2740,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
@@ -3092,37 +2794,36 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Func{Cqrs.Events.IEvent{{TAuthenticationToken}},System.Nullable{System.Boolean}}
-  commentId: T:System.Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}}
-  parent: System
-  definition: System.Func`2
+- uid: Func{Cqrs.Events.IEvent{{TAuthenticationToken}},System.Nullable{System.Boolean}}
+  commentId: '!:Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}}'
+  definition: Func`2
   name: Func<IEvent<TAuthenticationToken>, Nullable<Boolean>>
   nameWithType: Func<IEvent<TAuthenticationToken>, Nullable<Boolean>>
-  fullName: System.Func<Cqrs.Events.IEvent<TAuthenticationToken>, System.Nullable<System.Boolean>>
+  fullName: Func<Cqrs.Events.IEvent<TAuthenticationToken>, System.Nullable<System.Boolean>>
   nameWithType.vb: Func(Of IEvent(Of TAuthenticationToken), Nullable(Of Boolean))
-  fullName.vb: System.Func(Of Cqrs.Events.IEvent(Of TAuthenticationToken), System.Nullable(Of System.Boolean))
+  fullName.vb: Func(Of Cqrs.Events.IEvent(Of TAuthenticationToken), System.Nullable(Of System.Boolean))
   name.vb: Func(Of IEvent(Of TAuthenticationToken), Nullable(Of Boolean))
   spec.csharp:
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: <
     nameWithType: <
@@ -3163,10 +2864,10 @@ references:
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
@@ -3244,17 +2945,17 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
-  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
+  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
   isExternal: true
   name: ReceiveEvent(String, Func<IEvent<TAuthenticationToken>, Nullable<Boolean>>, String, Action, Action)
   nameWithType: IAzureBusHelper<TAuthenticationToken>.ReceiveEvent(String, Func<IEvent<TAuthenticationToken>, Nullable<Boolean>>, String, Action, Action)
-  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.ReceiveEvent(System.String, System.Func<Cqrs.Events.IEvent<TAuthenticationToken>, System.Nullable<System.Boolean>>, System.String, System.Action, System.Action)
+  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.ReceiveEvent(System.String, Func<Cqrs.Events.IEvent<TAuthenticationToken>, System.Nullable<System.Boolean>>, System.String, Action, Action)
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).ReceiveEvent(String, Func(Of IEvent(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
-  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).ReceiveEvent(System.String, System.Func(Of Cqrs.Events.IEvent(Of TAuthenticationToken), System.Nullable(Of System.Boolean)), System.String, System.Action, System.Action)
+  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).ReceiveEvent(System.String, Func(Of Cqrs.Events.IEvent(Of TAuthenticationToken), System.Nullable(Of System.Boolean)), System.String, Action, Action)
   name.vb: ReceiveEvent(String, Func(Of IEvent(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
     name: ReceiveEvent
     nameWithType: IAzureBusHelper<TAuthenticationToken>.ReceiveEvent
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.ReceiveEvent
@@ -3269,10 +2970,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: <
     nameWithType: <
@@ -3323,24 +3024,24 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: )
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,System.Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,System.Action,System.Action)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent(System.String,Func{Cqrs.Events.IEvent{`0},System.Nullable{System.Boolean}},System.String,Action,Action)
     name: ReceiveEvent
     nameWithType: IAzureBusHelper(Of TAuthenticationToken).ReceiveEvent
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).ReceiveEvent
@@ -3355,10 +3056,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Func`2
+  - uid: Func`2
     name: Func
     nameWithType: Func
-    fullName: System.Func
+    fullName: Func
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
@@ -3409,18 +3110,18 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action
+  - uid: Action
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: )
     nameWithType: )
@@ -3476,35 +3177,35 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.RefreshLock
   nameWithType.vb: AzureBusHelper(Of TAuthenticationToken).RefreshLock
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).RefreshLock
-- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
-  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper{`0}.RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
+- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
+  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper{`0}.RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
   parent: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}
-  definition: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
+  definition: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
   name: RefreshLock(CancellationTokenSource, BrokeredMessage, String)
   nameWithType: IAzureBusHelper<TAuthenticationToken>.RefreshLock(CancellationTokenSource, BrokeredMessage, String)
-  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RefreshLock(System.Threading.CancellationTokenSource, Microsoft.ServiceBus.Messaging.BrokeredMessage, System.String)
+  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RefreshLock(CancellationTokenSource, BrokeredMessage, System.String)
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).RefreshLock(CancellationTokenSource, BrokeredMessage, String)
-  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RefreshLock(System.Threading.CancellationTokenSource, Microsoft.ServiceBus.Messaging.BrokeredMessage, System.String)
+  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RefreshLock(CancellationTokenSource, BrokeredMessage, System.String)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
     name: RefreshLock
     nameWithType: IAzureBusHelper<TAuthenticationToken>.RefreshLock
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RefreshLock
   - name: (
     nameWithType: (
     fullName: (
-  - uid: System.Threading.CancellationTokenSource
+  - uid: CancellationTokenSource
     name: CancellationTokenSource
     nameWithType: CancellationTokenSource
-    fullName: System.Threading.CancellationTokenSource
+    fullName: CancellationTokenSource
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: Microsoft.ServiceBus.Messaging.BrokeredMessage
+  - uid: BrokeredMessage
     name: BrokeredMessage
     nameWithType: BrokeredMessage
-    fullName: Microsoft.ServiceBus.Messaging.BrokeredMessage
+    fullName: BrokeredMessage
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -3518,25 +3219,25 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
     name: RefreshLock
     nameWithType: IAzureBusHelper(Of TAuthenticationToken).RefreshLock
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RefreshLock
   - name: (
     nameWithType: (
     fullName: (
-  - uid: System.Threading.CancellationTokenSource
+  - uid: CancellationTokenSource
     name: CancellationTokenSource
     nameWithType: CancellationTokenSource
-    fullName: System.Threading.CancellationTokenSource
+    fullName: CancellationTokenSource
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: Microsoft.ServiceBus.Messaging.BrokeredMessage
+  - uid: BrokeredMessage
     name: BrokeredMessage
     nameWithType: BrokeredMessage
-    fullName: Microsoft.ServiceBus.Messaging.BrokeredMessage
+    fullName: BrokeredMessage
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -3549,48 +3250,44 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Threading.CancellationTokenSource
-  commentId: T:System.Threading.CancellationTokenSource
-  parent: System.Threading
+- uid: CancellationTokenSource
   isExternal: true
   name: CancellationTokenSource
   nameWithType: CancellationTokenSource
-  fullName: System.Threading.CancellationTokenSource
-- uid: Microsoft.ServiceBus.Messaging.BrokeredMessage
-  commentId: T:Microsoft.ServiceBus.Messaging.BrokeredMessage
-  parent: Microsoft.ServiceBus.Messaging
+  fullName: CancellationTokenSource
+- uid: BrokeredMessage
   isExternal: true
   name: BrokeredMessage
   nameWithType: BrokeredMessage
-  fullName: Microsoft.ServiceBus.Messaging.BrokeredMessage
-- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
-  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
+  fullName: BrokeredMessage
+- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
+  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
   isExternal: true
   name: RefreshLock(CancellationTokenSource, BrokeredMessage, String)
   nameWithType: IAzureBusHelper<TAuthenticationToken>.RefreshLock(CancellationTokenSource, BrokeredMessage, String)
-  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RefreshLock(System.Threading.CancellationTokenSource, Microsoft.ServiceBus.Messaging.BrokeredMessage, System.String)
+  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RefreshLock(CancellationTokenSource, BrokeredMessage, System.String)
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).RefreshLock(CancellationTokenSource, BrokeredMessage, String)
-  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RefreshLock(System.Threading.CancellationTokenSource, Microsoft.ServiceBus.Messaging.BrokeredMessage, System.String)
+  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RefreshLock(CancellationTokenSource, BrokeredMessage, System.String)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
     name: RefreshLock
     nameWithType: IAzureBusHelper<TAuthenticationToken>.RefreshLock
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RefreshLock
   - name: (
     nameWithType: (
     fullName: (
-  - uid: System.Threading.CancellationTokenSource
+  - uid: CancellationTokenSource
     name: CancellationTokenSource
     nameWithType: CancellationTokenSource
-    fullName: System.Threading.CancellationTokenSource
+    fullName: CancellationTokenSource
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: Microsoft.ServiceBus.Messaging.BrokeredMessage
+  - uid: BrokeredMessage
     name: BrokeredMessage
     nameWithType: BrokeredMessage
-    fullName: Microsoft.ServiceBus.Messaging.BrokeredMessage
+    fullName: BrokeredMessage
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -3604,25 +3301,25 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(System.Threading.CancellationTokenSource,Microsoft.ServiceBus.Messaging.BrokeredMessage,System.String)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RefreshLock(CancellationTokenSource,BrokeredMessage,System.String)
     name: RefreshLock
     nameWithType: IAzureBusHelper(Of TAuthenticationToken).RefreshLock
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RefreshLock
   - name: (
     nameWithType: (
     fullName: (
-  - uid: System.Threading.CancellationTokenSource
+  - uid: CancellationTokenSource
     name: CancellationTokenSource
     nameWithType: CancellationTokenSource
-    fullName: System.Threading.CancellationTokenSource
+    fullName: CancellationTokenSource
     isExternal: true
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: Microsoft.ServiceBus.Messaging.BrokeredMessage
+  - uid: BrokeredMessage
     name: BrokeredMessage
     nameWithType: BrokeredMessage
-    fullName: Microsoft.ServiceBus.Messaging.BrokeredMessage
+    fullName: BrokeredMessage
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -3635,18 +3332,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Threading
-  commentId: N:System.Threading
-  isExternal: false
-  name: System.Threading
-  nameWithType: System.Threading
-  fullName: System.Threading
-- uid: Microsoft.ServiceBus.Messaging
-  commentId: N:Microsoft.ServiceBus.Messaging
-  isExternal: false
-  name: Microsoft.ServiceBus.Messaging
-  nameWithType: Microsoft.ServiceBus.Messaging
-  fullName: Microsoft.ServiceBus.Messaging
 - uid: Cqrs.Azure.ServiceBus.AzureBusHelper`1.DefaultReceiveEvent*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBusHelper`1.DefaultReceiveEvent
   isExternal: false
@@ -3838,28 +3523,28 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.RegisterHandler
   nameWithType.vb: AzureBusHelper(Of TAuthenticationToken).RegisterHandler
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).RegisterHandler
-- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{{TMessage}},System.Type,System.Boolean)
-  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper{`0}.RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Type,System.Boolean)
+- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{{TMessage}},Type,System.Boolean)
+  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper{`0}.RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},Type,System.Boolean)
   parent: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}
-  definition: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Type,System.Boolean)
+  definition: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},Type,System.Boolean)
   name: RegisterHandler<TMessage>(ITelemetryHelper, RouteManager, Action<TMessage>, Type, Boolean)
   nameWithType: IAzureBusHelper<TAuthenticationToken>.RegisterHandler<TMessage>(ITelemetryHelper, RouteManager, Action<TMessage>, Type, Boolean)
-  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RegisterHandler<TMessage>(cdmdotnet.Logging.ITelemetryHelper, Cqrs.Bus.RouteManager, System.Action<TMessage>, System.Type, System.Boolean)
+  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RegisterHandler<TMessage>(ITelemetryHelper, Cqrs.Bus.RouteManager, Action<TMessage>, Type, System.Boolean)
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)(ITelemetryHelper, RouteManager, Action(Of TMessage), Type, Boolean)
-  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)(cdmdotnet.Logging.ITelemetryHelper, Cqrs.Bus.RouteManager, System.Action(Of TMessage), System.Type, System.Boolean)
+  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)(ITelemetryHelper, Cqrs.Bus.RouteManager, Action(Of TMessage), Type, System.Boolean)
   name.vb: RegisterHandler(Of TMessage)(ITelemetryHelper, RouteManager, Action(Of TMessage), Type, Boolean)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Type,System.Boolean)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},Type,System.Boolean)
     name: RegisterHandler<TMessage>
     nameWithType: IAzureBusHelper<TAuthenticationToken>.RegisterHandler<TMessage>
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RegisterHandler<TMessage>
   - name: (
     nameWithType: (
     fullName: (
-  - uid: cdmdotnet.Logging.ITelemetryHelper
+  - uid: ITelemetryHelper
     name: ITelemetryHelper
     nameWithType: ITelemetryHelper
-    fullName: cdmdotnet.Logging.ITelemetryHelper
+    fullName: ITelemetryHelper
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -3871,10 +3556,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action`1
+  - uid: Action`1
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: <
     nameWithType: <
@@ -3888,10 +3573,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Type
+  - uid: Type
     name: Type
     nameWithType: Type
-    fullName: System.Type
+    fullName: Type
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -3905,17 +3590,17 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Type,System.Boolean)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},Type,System.Boolean)
     name: RegisterHandler(Of TMessage)
     nameWithType: IAzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)
   - name: (
     nameWithType: (
     fullName: (
-  - uid: cdmdotnet.Logging.ITelemetryHelper
+  - uid: ITelemetryHelper
     name: ITelemetryHelper
     nameWithType: ITelemetryHelper
-    fullName: cdmdotnet.Logging.ITelemetryHelper
+    fullName: ITelemetryHelper
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -3927,10 +3612,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action`1
+  - uid: Action`1
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
@@ -3944,10 +3629,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Type
+  - uid: Type
     name: Type
     nameWithType: Type
-    fullName: System.Type
+    fullName: Type
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -3960,28 +3645,25 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: cdmdotnet.Logging.ITelemetryHelper
-  commentId: T:cdmdotnet.Logging.ITelemetryHelper
-  parent: cdmdotnet.Logging
+- uid: ITelemetryHelper
   isExternal: true
   name: ITelemetryHelper
   nameWithType: ITelemetryHelper
-  fullName: cdmdotnet.Logging.ITelemetryHelper
-- uid: System.Action{{TMessage}}
-  commentId: T:System.Action{``0}
-  parent: System
-  definition: System.Action`1
+  fullName: ITelemetryHelper
+- uid: Action{{TMessage}}
+  commentId: '!:Action{``0}'
+  definition: Action`1
   name: Action<TMessage>
   nameWithType: Action<TMessage>
-  fullName: System.Action<TMessage>
+  fullName: Action<TMessage>
   nameWithType.vb: Action(Of TMessage)
-  fullName.vb: System.Action(Of TMessage)
+  fullName.vb: Action(Of TMessage)
   name.vb: Action(Of TMessage)
   spec.csharp:
-  - uid: System.Action`1
+  - uid: Action`1
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: <
     nameWithType: <
@@ -3993,10 +3675,10 @@ references:
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: System.Action`1
+  - uid: Action`1
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
@@ -4007,34 +3689,32 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Type
-  commentId: T:System.Type
-  parent: System
+- uid: Type
   isExternal: true
   name: Type
   nameWithType: Type
-  fullName: System.Type
-- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Type,System.Boolean)
-  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Type,System.Boolean)
+  fullName: Type
+- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},Type,System.Boolean)
+  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},Type,System.Boolean)
   isExternal: true
   name: RegisterHandler<TMessage>(ITelemetryHelper, RouteManager, Action<TMessage>, Type, Boolean)
   nameWithType: IAzureBusHelper<TAuthenticationToken>.RegisterHandler<TMessage>(ITelemetryHelper, RouteManager, Action<TMessage>, Type, Boolean)
-  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RegisterHandler<TMessage>(cdmdotnet.Logging.ITelemetryHelper, Cqrs.Bus.RouteManager, System.Action<TMessage>, System.Type, System.Boolean)
+  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RegisterHandler<TMessage>(ITelemetryHelper, Cqrs.Bus.RouteManager, Action<TMessage>, Type, System.Boolean)
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)(ITelemetryHelper, RouteManager, Action(Of TMessage), Type, Boolean)
-  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)(cdmdotnet.Logging.ITelemetryHelper, Cqrs.Bus.RouteManager, System.Action(Of TMessage), System.Type, System.Boolean)
+  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)(ITelemetryHelper, Cqrs.Bus.RouteManager, Action(Of TMessage), Type, System.Boolean)
   name.vb: RegisterHandler(Of TMessage)(ITelemetryHelper, RouteManager, Action(Of TMessage), Type, Boolean)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Type,System.Boolean)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},Type,System.Boolean)
     name: RegisterHandler<TMessage>
     nameWithType: IAzureBusHelper<TAuthenticationToken>.RegisterHandler<TMessage>
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RegisterHandler<TMessage>
   - name: (
     nameWithType: (
     fullName: (
-  - uid: cdmdotnet.Logging.ITelemetryHelper
+  - uid: ITelemetryHelper
     name: ITelemetryHelper
     nameWithType: ITelemetryHelper
-    fullName: cdmdotnet.Logging.ITelemetryHelper
+    fullName: ITelemetryHelper
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -4046,10 +3726,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action`1
+  - uid: Action`1
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: <
     nameWithType: <
@@ -4063,10 +3743,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Type
+  - uid: Type
     name: Type
     nameWithType: Type
-    fullName: System.Type
+    fullName: Type
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -4080,17 +3760,17 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Type,System.Boolean)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},Type,System.Boolean)
     name: RegisterHandler(Of TMessage)
     nameWithType: IAzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)
   - name: (
     nameWithType: (
     fullName: (
-  - uid: cdmdotnet.Logging.ITelemetryHelper
+  - uid: ITelemetryHelper
     name: ITelemetryHelper
     nameWithType: ITelemetryHelper
-    fullName: cdmdotnet.Logging.ITelemetryHelper
+    fullName: ITelemetryHelper
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -4102,10 +3782,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action`1
+  - uid: Action`1
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
@@ -4119,10 +3799,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Type
+  - uid: Type
     name: Type
     nameWithType: Type
-    fullName: System.Type
+    fullName: Type
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -4135,42 +3815,41 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Action`1
-  commentId: T:System.Action`1
+- uid: Action`1
   isExternal: true
-  name: Action<T>
-  nameWithType: Action<T>
-  fullName: System.Action<T>
-  nameWithType.vb: Action(Of T)
-  fullName.vb: System.Action(Of T)
-  name.vb: Action(Of T)
+  name: Action<>
+  nameWithType: Action<>
+  fullName: Action<>
+  nameWithType.vb: Action(Of )
+  fullName.vb: Action(Of )
+  name.vb: Action(Of )
   spec.csharp:
-  - uid: System.Action`1
+  - uid: Action`1
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: <
     nameWithType: <
     fullName: <
-  - name: T
-    nameWithType: T
-    fullName: T
+  - name: ''
+    nameWithType: ''
+    fullName: ''
   - name: '>'
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: System.Action`1
+  - uid: Action`1
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - name: T
-    nameWithType: T
-    fullName: T
+  - name: ''
+    nameWithType: ''
+    fullName: ''
   - name: )
     nameWithType: )
     fullName: )
@@ -4182,28 +3861,28 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler
   nameWithType.vb: AzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler
-- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{{TMessage}},System.Boolean)
-  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper{`0}.RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Boolean)
+- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}.RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{{TMessage}},System.Boolean)
+  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper{`0}.RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},System.Boolean)
   parent: Cqrs.Azure.ServiceBus.IAzureBusHelper{{TAuthenticationToken}}
-  definition: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Boolean)
+  definition: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},System.Boolean)
   name: RegisterGlobalEventHandler<TMessage>(ITelemetryHelper, RouteManager, Action<TMessage>, Boolean)
   nameWithType: IAzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler<TMessage>(ITelemetryHelper, RouteManager, Action<TMessage>, Boolean)
-  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler<TMessage>(cdmdotnet.Logging.ITelemetryHelper, Cqrs.Bus.RouteManager, System.Action<TMessage>, System.Boolean)
+  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler<TMessage>(ITelemetryHelper, Cqrs.Bus.RouteManager, Action<TMessage>, System.Boolean)
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler(Of TMessage)(ITelemetryHelper, RouteManager, Action(Of TMessage), Boolean)
-  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler(Of TMessage)(cdmdotnet.Logging.ITelemetryHelper, Cqrs.Bus.RouteManager, System.Action(Of TMessage), System.Boolean)
+  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler(Of TMessage)(ITelemetryHelper, Cqrs.Bus.RouteManager, Action(Of TMessage), System.Boolean)
   name.vb: RegisterGlobalEventHandler(Of TMessage)(ITelemetryHelper, RouteManager, Action(Of TMessage), Boolean)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Boolean)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},System.Boolean)
     name: RegisterGlobalEventHandler<TMessage>
     nameWithType: IAzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler<TMessage>
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler<TMessage>
   - name: (
     nameWithType: (
     fullName: (
-  - uid: cdmdotnet.Logging.ITelemetryHelper
+  - uid: ITelemetryHelper
     name: ITelemetryHelper
     nameWithType: ITelemetryHelper
-    fullName: cdmdotnet.Logging.ITelemetryHelper
+    fullName: ITelemetryHelper
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -4215,10 +3894,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action`1
+  - uid: Action`1
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: <
     nameWithType: <
@@ -4241,17 +3920,17 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Boolean)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},System.Boolean)
     name: RegisterGlobalEventHandler(Of TMessage)
     nameWithType: IAzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler(Of TMessage)
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler(Of TMessage)
   - name: (
     nameWithType: (
     fullName: (
-  - uid: cdmdotnet.Logging.ITelemetryHelper
+  - uid: ITelemetryHelper
     name: ITelemetryHelper
     nameWithType: ITelemetryHelper
-    fullName: cdmdotnet.Logging.ITelemetryHelper
+    fullName: ITelemetryHelper
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -4263,10 +3942,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action`1
+  - uid: Action`1
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
@@ -4288,27 +3967,27 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Boolean)
-  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Boolean)
+- uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},System.Boolean)
+  commentId: M:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},System.Boolean)
   isExternal: true
   name: RegisterGlobalEventHandler<TMessage>(ITelemetryHelper, RouteManager, Action<TMessage>, Boolean)
   nameWithType: IAzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler<TMessage>(ITelemetryHelper, RouteManager, Action<TMessage>, Boolean)
-  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler<TMessage>(cdmdotnet.Logging.ITelemetryHelper, Cqrs.Bus.RouteManager, System.Action<TMessage>, System.Boolean)
+  fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler<TMessage>(ITelemetryHelper, Cqrs.Bus.RouteManager, Action<TMessage>, System.Boolean)
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler(Of TMessage)(ITelemetryHelper, RouteManager, Action(Of TMessage), Boolean)
-  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler(Of TMessage)(cdmdotnet.Logging.ITelemetryHelper, Cqrs.Bus.RouteManager, System.Action(Of TMessage), System.Boolean)
+  fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler(Of TMessage)(ITelemetryHelper, Cqrs.Bus.RouteManager, Action(Of TMessage), System.Boolean)
   name.vb: RegisterGlobalEventHandler(Of TMessage)(ITelemetryHelper, RouteManager, Action(Of TMessage), Boolean)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Boolean)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},System.Boolean)
     name: RegisterGlobalEventHandler<TMessage>
     nameWithType: IAzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler<TMessage>
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.RegisterGlobalEventHandler<TMessage>
   - name: (
     nameWithType: (
     fullName: (
-  - uid: cdmdotnet.Logging.ITelemetryHelper
+  - uid: ITelemetryHelper
     name: ITelemetryHelper
     nameWithType: ITelemetryHelper
-    fullName: cdmdotnet.Logging.ITelemetryHelper
+    fullName: ITelemetryHelper
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -4320,10 +3999,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action`1
+  - uid: Action`1
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: <
     nameWithType: <
@@ -4346,17 +4025,17 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(cdmdotnet.Logging.ITelemetryHelper,Cqrs.Bus.RouteManager,System.Action{``0},System.Boolean)
+  - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterGlobalEventHandler``1(ITelemetryHelper,Cqrs.Bus.RouteManager,Action{``0},System.Boolean)
     name: RegisterGlobalEventHandler(Of TMessage)
     nameWithType: IAzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler(Of TMessage)
     fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).RegisterGlobalEventHandler(Of TMessage)
   - name: (
     nameWithType: (
     fullName: (
-  - uid: cdmdotnet.Logging.ITelemetryHelper
+  - uid: ITelemetryHelper
     name: ITelemetryHelper
     nameWithType: ITelemetryHelper
-    fullName: cdmdotnet.Logging.ITelemetryHelper
+    fullName: ITelemetryHelper
     isExternal: true
   - name: ', '
     nameWithType: ', '
@@ -4368,10 +4047,10 @@ references:
   - name: ', '
     nameWithType: ', '
     fullName: ', '
-  - uid: System.Action`1
+  - uid: Action`1
     name: Action
     nameWithType: Action
-    fullName: System.Action
+    fullName: Action
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '

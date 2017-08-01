@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">50.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-31</td>
+            <td class="headerValue">2017-08-01</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -69,24 +69,33 @@
 <span class="lineNum">      11 </span>            : 
 <span class="lineNum">      12 </span>            : namespace Cqrs.MongoDB.Serialisers
 <span class="lineNum">      13 </span>            : {
-<span class="lineNum">      14 </span>            :         public class MongoDbEventBuilder&lt;TAuthenticationToken&gt;
-<span class="lineNum">      15 </span>            :                 : DefaultEventBuilder&lt;TAuthenticationToken&gt;
-<span class="lineNum">      16 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      17 </span>            :                 #region Overrides of EventBuilder&lt;TAuthenticationToken&gt;
-<span class="lineNum">      18 </span>            : 
-<span class="lineNum">      19 </span><span class="lineCov">          1 :                 public override EventData CreateFrameworkEvent(string type, IEvent&lt;TAuthenticationToken&gt; eventData)</span>
-<span class="lineNum">      20 </span>            :                 {
-<span class="lineNum">      21 </span>            :                         return new EventData
-<span class="lineNum">      22 </span>            :                         {
-<span class="lineNum">      23 </span>            :                                 EventId = Guid.NewGuid(),
-<span class="lineNum">      24 </span>            :                                 EventType = type,
-<span class="lineNum">      25 </span>            :                                 Data = eventData
-<span class="lineNum">      26 </span>            :                         };
-<span class="lineNum">      27 </span>            :                 }
-<span class="lineNum">      28 </span>            : 
-<span class="lineNum">      29 </span>            :                 #endregion
-<span class="lineNum">      30 </span>            :         }
-<span class="lineNum">      31 </span>            : }
+<span class="lineNum">      14 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      15 </span>            :         /// Builds &lt;see cref=&quot;EventData&quot;/&gt; from various input formats leaving the event data unserialised.
+<span class="lineNum">      16 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      17 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      18 </span>            :         public class MongoDbEventBuilder&lt;TAuthenticationToken&gt;
+<span class="lineNum">      19 </span>            :                 : DefaultEventBuilder&lt;TAuthenticationToken&gt;
+<span class="lineNum">      20 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      21 </span>            :                 #region Overrides of EventBuilder&lt;TAuthenticationToken&gt;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      24 </span>            :                 /// Create an &lt;see cref=&quot;EventData&quot;&gt;framework event&lt;/see&gt; with the provided &lt;paramref name=&quot;eventData&quot;/&gt;.
+<span class="lineNum">      25 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      26 </span>            :                 /// &lt;param name=&quot;type&quot;&gt;The name of the &lt;see cref=&quot;Type&quot;/&gt; of the target object the serialised data is.&lt;/param&gt;
+<span class="lineNum">      27 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to add to the &lt;see cref=&quot;EventData&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      28 </span><span class="lineCov">          1 :                 public override EventData CreateFrameworkEvent(string type, IEvent&lt;TAuthenticationToken&gt; eventData)</span>
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                         return new EventData
+<span class="lineNum">      31 </span>            :                         {
+<span class="lineNum">      32 </span>            :                                 EventId = Guid.NewGuid(),
+<span class="lineNum">      33 </span>            :                                 EventType = type,
+<span class="lineNum">      34 </span>            :                                 Data = eventData
+<span class="lineNum">      35 </span>            :                         };
+<span class="lineNum">      36 </span>            :                 }
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 #endregion
+<span class="lineNum">      39 </span>            :         }
+<span class="lineNum">      40 </span>            : }
 </pre>
       </td>
     </tr>

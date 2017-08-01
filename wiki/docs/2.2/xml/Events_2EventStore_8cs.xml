@@ -77,7 +77,7 @@
 <codeline lineno="108"><highlight class="normal"></highlight></codeline>
 <codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;<sp/>Get&lt;T&gt;(Guid<sp/>aggregateId,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>useLastEventOnly<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>fromVersion<sp/>=<sp/>-1)</highlight></codeline>
 <codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;<sp/>results<sp/>=<sp/>Get(typeof<sp/>(T),<sp/>aggregateId,<sp/>useLastEventOnly,<sp/>fromVersion);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;<sp/>results<sp/>=<sp/>Get(typeof<sp/>(T),<sp/>aggregateId,<sp/>useLastEventOnly,<sp/>fromVersion).ToList();</highlight></codeline>
 <codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TelemetryHelper.TrackMetric(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal">.Format(</highlight><highlight class="stringliteral">&quot;Cqrs/EventStore/Get/{0}&quot;</highlight><highlight class="normal">,<sp/>GenerateStreamName(typeof(T),<sp/>aggregateId)),<sp/>results.Count());</highlight></codeline>
 <codeline lineno="120"><highlight class="normal"></highlight></codeline>
 <codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>results;</highlight></codeline>
@@ -91,6 +91,6 @@
 <codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="145"><highlight class="normal">}</highlight></codeline>
     </programlisting>
-    <location file="/mnt/c/code/git/CQRS.XsamX/Framework/Cqrs/Events/EventStore.cs"/>
+    <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Events/EventStore.cs"/>
   </compounddef>
 </doxygen>

@@ -17,10 +17,17 @@ using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Extensions;
 
 namespace Cqrs.WebApi.Formatters.FormMultipart.Converters
 {
+	/// <summary>
+	/// Converts <see cref="object">objects</see> to multi-part form-data.
+	/// </summary>
 	public class ObjectToMultipartDataByteArrayConverter
 	{
 		private MultipartFormatterSettings Settings { get; set; }
 
+		/// <summary>
+		/// Instantiate and initialise a new instance of <see cref="ObjectToMultipartDataByteArrayConverter"/>
+		/// </summary>
+		/// <param name="settings">The <see cref="MultipartFormatterSettings"/> to use.</param>
 		public ObjectToMultipartDataByteArrayConverter(MultipartFormatterSettings settings)
 		{
 			if (settings == null)
@@ -29,6 +36,9 @@ namespace Cqrs.WebApi.Formatters.FormMultipart.Converters
 			Settings = settings;
 		}
 
+		/// <summary>
+		/// Converts the provided <paramref name="value"/> to multi-part form-data using the provided <paramref name="boundary"/>.
+		/// </summary>
 		public byte[] Convert(object value, string boundary)
 		{
 			if(value == null)

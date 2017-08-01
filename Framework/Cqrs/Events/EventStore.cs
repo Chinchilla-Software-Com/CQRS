@@ -115,7 +115,7 @@ namespace Cqrs.Events
 		/// <param name="fromVersion">Load events starting from this version</param>
 		public virtual IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
-			IEnumerable<IEvent<TAuthenticationToken>> results = Get(typeof (T), aggregateId, useLastEventOnly, fromVersion);
+			IEnumerable<IEvent<TAuthenticationToken>> results = Get(typeof (T), aggregateId, useLastEventOnly, fromVersion).ToList();
 			TelemetryHelper.TrackMetric(string.Format("Cqrs/EventStore/Get/{0}", GenerateStreamName(typeof(T), aggregateId)), results.Count());
 
 			return results;

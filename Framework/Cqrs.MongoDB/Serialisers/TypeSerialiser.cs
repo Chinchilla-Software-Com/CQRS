@@ -12,17 +12,20 @@ using MongoDB.Bson.Serialization;
 
 namespace Cqrs.MongoDB.Serialisers
 {
+	/// <summary>
+	/// A <see cref="IBsonSerializer"/> that stores <see cref="Type"/> information as well.
+	/// </summary>
 	public class TypeSerialiser : IBsonSerializer<Type>
 	{
 		#region Implementation of IBsonSerializer
 
 		/// <summary>
-		/// Deserializes a value.
+		/// Deserialises a value, first reading the <see cref="Type"/> information from the provide <paramref name="context"/>.
 		/// </summary>
-		/// <param name="context">The deserialization context.</param>
-		/// <param name="args">The deserialization args.</param>
+		/// <param name="context">The deserialisation context.</param>
+		/// <param name="args">The deserialisation arguments.</param>
 		/// <returns>
-		/// A deserialized value.
+		/// A deserialised value.
 		/// </returns>
 		public object Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
 		{
@@ -32,7 +35,9 @@ namespace Cqrs.MongoDB.Serialisers
 		/// <summary>
 		/// Serializes a value.
 		/// </summary>
-		/// <param name="context">The serialization context.</param><param name="args">The serialization args.</param><param name="value">The value.</param>
+		/// <param name="context">The serialisation context.</param>
+		/// <param name="args">The serialisation arguments.</param>
+		/// <param name="value">The value.</param>
 		public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, Type value)
 		{
 			if (value == null)
@@ -46,12 +51,12 @@ namespace Cqrs.MongoDB.Serialisers
 		}
 
 		/// <summary>
-		/// Deserializes a value.
+		/// Deserialises a value.
 		/// </summary>
-		/// <param name="context">The deserialization context.</param>
-		/// <param name="args">The deserialization args.</param>
+		/// <param name="context">The deserialisation context.</param>
+		/// <param name="args">The deserialisation arguments.</param>
 		/// <returns>
-		/// A deserialized value.
+		/// A deserialised value.
 		/// </returns>
 		Type IBsonSerializer<Type>.Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
 		{
@@ -80,7 +85,9 @@ namespace Cqrs.MongoDB.Serialisers
 		/// <summary>
 		/// Serializes a value.
 		/// </summary>
-		/// <param name="context">The serialization context.</param><param name="args">The serialization args.</param><param name="value">The value.</param>
+		/// <param name="context">The serialization context.</param>
+		/// <param name="args">The serialization arguments.</param>
+		/// <param name="value">The value.</param>
 		public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, object value)
 		{
 			Serialize(context, args, (Type)value);

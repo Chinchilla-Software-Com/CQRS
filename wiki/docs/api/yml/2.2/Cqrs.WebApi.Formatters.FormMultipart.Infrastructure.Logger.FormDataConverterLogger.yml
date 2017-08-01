@@ -24,14 +24,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: FormDataConverterLogger
     path: Framework/Cqrs.WebApi/Formatters/FormMultipart/Infrastructure/Logger/FormDataConverterLogger.cs
-    startLine: 14
+    startLine: 17
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger
+  summary: "\nProvide a mechanism to log issues and <xref href=\"System.Exception\" data-throw-if-not-resolved=\"false\"></xref> data during conversions.\n"
+  example: []
   syntax:
     content: 'public class FormDataConverterLogger : IFormDataConverterLogger'
     content.vb: >-
       Public Class FormDataConverterLogger
+
           Implements IFormDataConverterLogger
   inheritance:
   - System.Object
@@ -69,10 +72,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Cqrs.WebApi/Formatters/FormMultipart/Infrastructure/Logger/FormDataConverterLogger.cs
-    startLine: 18
+    startLine: 24
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger.FormDataConverterLogger\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public FormDataConverterLogger()
     content.vb: Public Sub New
@@ -99,17 +104,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: LogError
     path: Framework/Cqrs.WebApi/Formatters/FormMultipart/Infrastructure/Logger/FormDataConverterLogger.cs
-    startLine: 23
+    startLine: 34
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger
+  summary: "\nLogs an error.\n"
+  example: []
   syntax:
     content: public void LogError(string errorPath, Exception exception)
     parameters:
     - id: errorPath
       type: System.String
+      description: The path to the member for which the error is being logged.
     - id: exception
       type: System.Exception
+      description: The exception to be logged.
     content.vb: Public Sub LogError(errorPath As String, exception As Exception)
   overload: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger.FormDataConverterLogger.LogError*
   implements:
@@ -136,17 +145,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: LogError
     path: Framework/Cqrs.WebApi/Formatters/FormMultipart/Infrastructure/Logger/FormDataConverterLogger.cs
-    startLine: 28
+    startLine: 44
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger
+  summary: "\nLogs an error.\n"
+  example: []
   syntax:
     content: public void LogError(string errorPath, string errorMessage)
     parameters:
     - id: errorPath
       type: System.String
+      description: The path to the member for which the error is being logged.
     - id: errorMessage
       type: System.String
+      description: The error message to be logged.
     content.vb: Public Sub LogError(errorPath As String, errorMessage As String)
   overload: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger.FormDataConverterLogger.LogError*
   implements:
@@ -173,10 +186,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetErrors
     path: Framework/Cqrs.WebApi/Formatters/FormMultipart/Infrastructure/Logger/FormDataConverterLogger.cs
-    startLine: 33
+    startLine: 52
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger
+  summary: "\nGet all errors recorded.\n"
+  example: []
   syntax:
     content: public List<FormDataConverterLogger.LogItem> GetErrors()
     return:
@@ -205,10 +220,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EnsureNoErrors
     path: Framework/Cqrs.WebApi/Formatters/FormMultipart/Infrastructure/Logger/FormDataConverterLogger.cs
-    startLine: 42
+    startLine: 67
   assemblies:
   - Cqrs.WebApi
   namespace: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger
+  summary: "\nThrow exception if errors found\n"
+  example: []
   syntax:
     content: public void EnsureNoErrors()
     content.vb: Public Sub EnsureNoErrors
@@ -220,6 +237,13 @@ items:
   modifiers.vb:
   - Public
 references:
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
 - uid: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger
   commentId: N:Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger
   isExternal: false
@@ -525,6 +549,12 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger.FormDataConverterLogger
+  commentId: T:Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger.FormDataConverterLogger
+  isExternal: false
+  name: FormDataConverterLogger
+  nameWithType: FormDataConverterLogger
+  fullName: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger.FormDataConverterLogger
 - uid: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger.FormDataConverterLogger.#ctor*
   commentId: Overload:Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger.FormDataConverterLogger.#ctor
   isExternal: false
@@ -599,13 +629,6 @@ references:
   name: String
   nameWithType: String
   fullName: System.String
-- uid: System.Exception
-  commentId: T:System.Exception
-  parent: System
-  isExternal: true
-  name: Exception
-  nameWithType: Exception
-  fullName: System.Exception
 - uid: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger.IFormDataConverterLogger.LogError(System.String,System.String)
   commentId: M:Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger.IFormDataConverterLogger.LogError(System.String,System.String)
   parent: Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger.IFormDataConverterLogger

@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -24,6 +32,11 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 	[TestClass]
 	public class TableStorageEventStoreTests
 	{
+		/// <summary>
+		/// Tests the <see cref="IEventStore{TAuthenticationToken}.Save"/> method
+		/// Passing a valid test <see cref="IEvent{TAuthenticationToken}"/>
+		/// Expecting the test <see cref="IEvent{TAuthenticationToken}"/> is able to be read.
+		/// </summary>
 		[TestMethod]
 		public virtual void Save_ValidEvent_EventCanBeRetreived()
 		{
@@ -31,7 +44,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
-			var eventStore = CreateDataStore(new DefaultEventBuilder<Guid>(), new EventDeserialiser<Guid>(), logger, new TableStorageEventStoreConnectionStringFactory(new ConfigurationManager(), logger));
+			var eventStore = CreateEventStore(new DefaultEventBuilder<Guid>(), new EventDeserialiser<Guid>(), logger, new TableStorageEventStoreConnectionStringFactory(new ConfigurationManager(), logger));
 
 			var event1 = new TestEvent
 			{
@@ -78,7 +91,10 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			Assert.AreEqual(2, correlatedEvents.Count);
 		}
 
-		protected virtual TableStorageEventStore<Guid> CreateDataStore(IEventBuilder<Guid> eventBuilder, IEventDeserialiser<Guid> eventDeserialiser, ILogger logger, ITableStorageStoreConnectionStringFactory tableStorageEventStoreConnectionStringFactory)
+		/// <summary>
+		/// Create a <see cref="TableStorageEventStore{TAuthenticationToken}"/> ready for testing.
+		/// </summary>
+		protected virtual TableStorageEventStore<Guid> CreateEventStore(IEventBuilder<Guid> eventBuilder, IEventDeserialiser<Guid> eventDeserialiser, ILogger logger, ITableStorageStoreConnectionStringFactory tableStorageEventStoreConnectionStringFactory)
 		{
 			return new TableStorageEventStore<Guid>(eventBuilder, eventDeserialiser, logger, tableStorageEventStoreConnectionStringFactory);
 		}

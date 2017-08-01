@@ -20,17 +20,22 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MongoDbEventDeserialiser
     path: Framework/Cqrs.MongoDB/Serialisers/MongoDbEventDeserialiser.cs
-    startLine: 12
+    startLine: 17
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Serialisers
+  summary: "\nDeserialises <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> from a serialised state.\n"
+  example: []
   syntax:
     content: 'public class MongoDbEventDeserialiser<TAuthenticationToken> : EventDeserialiser<TAuthenticationToken>, IEventDeserialiser<TAuthenticationToken>'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the authentication token.
     content.vb: >-
       Public Class MongoDbEventDeserialiser(Of TAuthenticationToken)
+
           Inherits EventDeserialiser(Of TAuthenticationToken)
+
           Implements IEventDeserialiser(Of TAuthenticationToken)
   inheritance:
   - System.Object
@@ -74,15 +79,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Deserialise
     path: Framework/Cqrs.MongoDB/Serialisers/MongoDbEventDeserialiser.cs
-    startLine: 16
+    startLine: 25
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Serialisers
+  summary: "\nDeserialise the provided <span class=\"paramref\">eventData</span> into an <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public override IEvent<TAuthenticationToken> Deserialise(EventData eventData)
     parameters:
     - id: eventData
       type: Cqrs.Events.EventData
+      description: The <xref href="Cqrs.Events.EventData" data-throw-if-not-resolved="false"></xref> to Deserialise.
     return:
       type: Cqrs.Events.IEvent{{TAuthenticationToken}}
     content.vb: Public Overrides Function Deserialise(eventData As EventData) As IEvent(Of TAuthenticationToken)
@@ -97,6 +105,50 @@ items:
   - Overrides
   fullName.vb: Cqrs.MongoDB.Serialisers.MongoDbEventDeserialiser(Of TAuthenticationToken).Deserialise(Cqrs.Events.EventData)
 references:
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: Cqrs.MongoDB.Serialisers
   commentId: N:Cqrs.MongoDB.Serialisers
   isExternal: false
@@ -629,6 +681,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Events.EventData
+  commentId: T:Cqrs.Events.EventData
+  parent: Cqrs.Events
+  isExternal: false
+  name: EventData
+  nameWithType: EventData
+  fullName: Cqrs.Events.EventData
 - uid: Cqrs.Events.EventDeserialiser{{TAuthenticationToken}}.Deserialise(Cqrs.Events.EventData)
   commentId: M:Cqrs.Events.EventDeserialiser{`0}.Deserialise(Cqrs.Events.EventData)
   parent: Cqrs.Events.EventDeserialiser{{TAuthenticationToken}}
@@ -676,13 +735,6 @@ references:
   fullName: Cqrs.MongoDB.Serialisers.MongoDbEventDeserialiser<TAuthenticationToken>.Deserialise
   nameWithType.vb: MongoDbEventDeserialiser(Of TAuthenticationToken).Deserialise
   fullName.vb: Cqrs.MongoDB.Serialisers.MongoDbEventDeserialiser(Of TAuthenticationToken).Deserialise
-- uid: Cqrs.Events.EventData
-  commentId: T:Cqrs.Events.EventData
-  parent: Cqrs.Events
-  isExternal: false
-  name: EventData
-  nameWithType: EventData
-  fullName: Cqrs.Events.EventData
 - uid: Cqrs.Events.IEvent{{TAuthenticationToken}}
   commentId: T:Cqrs.Events.IEvent{`0}
   parent: Cqrs.Events
@@ -756,43 +808,6 @@ references:
     name: EventData
     nameWithType: EventData
     fullName: Cqrs.Events.EventData
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.Events.IEvent`1
-  commentId: T:Cqrs.Events.IEvent`1
-  isExternal: false
-  name: IEvent<TAuthenticationToken>
-  nameWithType: IEvent<TAuthenticationToken>
-  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
-  nameWithType.vb: IEvent(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
-  name.vb: IEvent(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
   - name: )
     nameWithType: )
     fullName: )

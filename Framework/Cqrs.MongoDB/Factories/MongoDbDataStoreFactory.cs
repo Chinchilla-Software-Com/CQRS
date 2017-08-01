@@ -21,16 +21,25 @@ using MongoDB.Bson.Serialization;
 namespace Cqrs.MongoDB.Factories
 {
 	/// <summary>
-	/// A factory for obtaining <see cref="IDataStore{TData}"/> collections from Mongo
+	/// A factory for obtaining <see cref="IDataStore{TData}"/> collections from MongoDB
 	/// </summary>
 	public class MongoDbDataStoreFactory
 	{
 		internal static IDictionary<Type, IList<object>> IndexTypesByEntityType { get; set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IMongoDbDataStoreConnectionStringFactory"/>.
+		/// </summary>
 		protected IMongoDbDataStoreConnectionStringFactory MongoDbDataStoreConnectionStringFactory { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="MongoDbDataStoreFactory"/>.
+		/// </summary>
 		public MongoDbDataStoreFactory(ILogger logger, IMongoDbDataStoreConnectionStringFactory mongoDbDataStoreConnectionStringFactory)
 		{
 			Logger = logger;
@@ -106,6 +115,9 @@ namespace Cqrs.MongoDB.Factories
 			}
 		}
 
+		/// <summary>
+		/// Get a <see cref="IMongoCollection{TEntity}"/>
+		/// </summary>
 		protected virtual IMongoCollection<TEntity> GetCollection<TEntity>()
 		{
 			var mongoClient = new MongoClient(MongoDbDataStoreConnectionStringFactory.GetDataStoreConnectionString());
@@ -114,6 +126,9 @@ namespace Cqrs.MongoDB.Factories
 			return mongoDatabase.GetCollection<TEntity>(typeof(TEntity).FullName);
 		}
 
+		/// <summary>
+		/// Verify all required <see cref="MongoDbIndex{TEntity}"/> are defined and ready to go.
+		/// </summary>
 		protected virtual void VerifyIndexes<TEntity>(IMongoCollection<TEntity> collection)
 		{
 			Type entityType = typeof (TEntity);

@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using cdmdotnet.Logging;
 using Cqrs.Azure.BlobStorage;
 using Cqrs.Azure.BlobStorage.Events;
@@ -19,12 +27,14 @@ namespace Cqrs.Azure.Storage.Test.Integration
 	{
 		#region Overrides of TableStorageDataStoreTests
 
-		protected override TableStorageEventStore<Guid> CreateDataStore(IEventBuilder<Guid> eventBuilder, IEventDeserialiser<Guid> eventDeserialiser, ILogger logger, ITableStorageStoreConnectionStringFactory tableStorageEventStoreConnectionStringFactory)
+		/// <summary>
+		/// Create a <see cref="TableStorageEventStore{TAuthenticationToken}"/> ready for testing.
+		/// </summary>
+		protected override TableStorageEventStore<Guid> CreateEventStore(IEventBuilder<Guid> eventBuilder, IEventDeserialiser<Guid> eventDeserialiser, ILogger logger, ITableStorageStoreConnectionStringFactory tableStorageEventStoreConnectionStringFactory)
 		{
 			return new Events.TableStorageEventStore<Guid>(eventBuilder, eventDeserialiser, logger, tableStorageEventStoreConnectionStringFactory);
 		}
 
 		#endregion
-
 	}
 }

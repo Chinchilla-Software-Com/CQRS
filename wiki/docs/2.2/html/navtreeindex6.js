@@ -46,10 +46,11 @@ var NAVTREEINDEX6 =
 "classCqrs_1_1MongoDB_1_1Serialisers_1_1TypeSerialiser_a5e8aa7ae1372033da215d02b79947b20.html#a5e8aa7ae1372033da215d02b79947b20":[1,0,0,17,5,3,0],
 "classCqrs_1_1MongoDB_1_1Serialisers_1_1TypeSerialiser_af5d06e2fe995f816c840a8ceefd22991.html#af5d06e2fe995f816c840a8ceefd22991":[1,0,0,17,5,3,3],
 "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbDataStoreTests.html":[1,0,0,17,6,0,0],
-"classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbDataStoreTests_a0903b9650ae233b0dcd516cdfac2a604.html#a0903b9650ae233b0dcd516cdfac2a604":[1,0,0,17,6,0,0,0],
+"classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbDataStoreTests_abc75ba3ce42446bfb19c32a3eee3ebae.html#abc75ba3ce42446bfb19c32a3eee3ebae":[1,0,0,17,6,0,0,0],
 "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbEventStoreTests.html":[1,0,0,17,6,0,1],
 "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbEventStoreTests_a399ae37cf9f492b3e55d1480f97b1520.html#a399ae37cf9f492b3e55d1480f97b1520":[1,0,0,17,6,0,1,0],
 "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDataStoreConnectionStringFactory.html":[1,0,0,17,6,0,2],
+"classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDataStoreConnectionStringFactory.html#a5ef20369358e48be0dfae05be191d986":[1,0,0,17,6,0,2,3],
 "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDataStoreConnectionStringFactory_a1f362a8cdae3f0fb7b8a51f62f7611f3.html#a1f362a8cdae3f0fb7b8a51f62f7611f3":[1,0,0,17,6,0,2,1],
 "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDataStoreConnectionStringFactory_a2d26a00fd14aad6718b48d515ac30ff9.html#a2d26a00fd14aad6718b48d515ac30ff9":[1,0,0,17,6,0,2,2],
 "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDataStoreConnectionStringFactory_a520a0722aa91ed6144e4e86213ea13da.html#a520a0722aa91ed6144e4e86213ea13da":[1,0,0,17,6,0,2,0],
@@ -57,6 +58,7 @@ var NAVTREEINDEX6 =
 "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDbDataStoreFactory_a65d996d53f32b1a40121052193b582fa.html#a65d996d53f32b1a40121052193b582fa":[1,0,0,17,6,0,3,1],
 "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDbDataStoreFactory_abb427efd7fcd28548fd02d09a2901994.html#abb427efd7fcd28548fd02d09a2901994":[1,0,0,17,6,0,3,0],
 "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoEventStoreConnectionStringFactory.html":[1,0,0,17,6,0,4],
+"classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoEventStoreConnectionStringFactory.html#a17cd41704bf199bef133e466035ef9f2":[1,0,0,17,6,0,4,3],
 "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoEventStoreConnectionStringFactory_a647bfdbf4eef2cffe60f86e3ac01efac.html#a647bfdbf4eef2cffe60f86e3ac01efac":[1,0,0,17,6,0,4,2],
 "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoEventStoreConnectionStringFactory_a73b68d1160bae4e92bed4445303d6a8f.html#a73b68d1160bae4e92bed4445303d6a8f":[1,0,0,17,6,0,4,0],
 "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoEventStoreConnectionStringFactory_adbefedfb3bea3521f72333ce47575301.html#adbefedfb3bea3521f72333ce47575301":[1,0,0,17,6,0,4,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX6 =
 "classCqrs_1_1Ninject_1_1Configuration_1_1EventStoreModule_a90454d879b35a9d8954944e26c5afca9.html#a90454d879b35a9d8954944e26c5afca9":[1,0,0,18,2,1,0],
 "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule.html":[1,0,0,18,2,2],
 "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule_a292ec8a93f2d35a1b2053bc0b97aa7b2.html#a292ec8a93f2d35a1b2053bc0b97aa7b2":[1,0,0,18,2,2,3],
-"classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule_a4591fb32f9ec60e3246a9864ab3288cd.html#a4591fb32f9ec60e3246a9864ab3288cd":[1,0,0,18,2,2,2],
-"classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule_acf8794d693a38ff114038d6e3dfc961b.html#acf8794d693a38ff114038d6e3dfc961b":[1,0,0,18,2,2,0],
-"classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule_aee43bfd0d686faa9944dd29305e1ad39.html#aee43bfd0d686faa9944dd29305e1ad39":[1,0,0,18,2,2,1]
+"classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule_a4591fb32f9ec60e3246a9864ab3288cd.html#a4591fb32f9ec60e3246a9864ab3288cd":[1,0,0,18,2,2,2]
 };

@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-31</td>
+            <td class="headerValue">2017-08-01</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -66,39 +66,50 @@
 <span class="lineNum">       8 </span>            : 
 <span class="lineNum">       9 </span>            : using System;
 <span class="lineNum">      10 </span>            : using System.Collections.Generic;
-<span class="lineNum">      11 </span>            : 
-<span class="lineNum">      12 </span>            : namespace Cqrs.Mongo.DataStores.Indexes
-<span class="lineNum">      13 </span>            : {
-<span class="lineNum">      14 </span>            :         public abstract class MongoIndex&lt;TEntity&gt;
-<span class="lineNum">      15 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      16 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      17 </span>            :                 /// Indicates if the index enforces unique values. Defaults to false.
-<span class="lineNum">      18 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      19 </span>            :                 public bool IsUnique { get; protected set; }
-<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      11 </span>            : using Cqrs.Entities;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : namespace Cqrs.Mongo.DataStores.Indexes
+<span class="lineNum">      14 </span>            : {
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :         /// An index for MongoDB.
+<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      18 </span>            :         /// &lt;typeparam name=&quot;TEntity&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IEntity&quot;/&gt; this index is for.&lt;/typeparam&gt;
+<span class="lineNum">      19 </span>            :         public abstract class MongoIndex&lt;TEntity&gt;
+<span class="lineNum">      20 </span><span class="lineCov">          1 :         {</span>
 <span class="lineNum">      21 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      22 </span>            :                 /// Indicates if the index is in ascending order or descending. Defaults to true meaning ascending order.
+<span class="lineNum">      22 </span>            :                 /// Indicates if the index enforces unique values. Defaults to false.
 <span class="lineNum">      23 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      24 </span>            :                 public bool IsAcending { get; protected set; }
+<span class="lineNum">      24 </span>            :                 public bool IsUnique { get; protected set; }
 <span class="lineNum">      25 </span>            : 
 <span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      27 </span>            :                 /// The name of the index. Default to the class name removing any instances of &quot;Index&quot; and &quot;MongoIndex&quot; from the name.
+<span class="lineNum">      27 </span>            :                 /// Indicates if the index is in ascending order or descending. Defaults to true meaning ascending order.
 <span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      29 </span>            :                 public string Name { get; protected set; }
+<span class="lineNum">      29 </span>            :                 public bool IsAcending { get; protected set; }
 <span class="lineNum">      30 </span>            : 
-<span class="lineNum">      31 </span>            :                 public IEnumerable&lt;System.Linq.Expressions.Expression&lt;Func&lt;TEntity, object&gt;&gt;&gt; Selectors { get; protected set; }
-<span class="lineNum">      32 </span>            : 
-<span class="lineNum">      33 </span><span class="lineNoCov">          0 :                 protected MongoIndex()</span>
-<span class="lineNum">      34 </span>            :                 {
-<span class="lineNum">      35 </span>            :                         IsUnique = false;
-<span class="lineNum">      36 </span>            :                         IsAcending = true;
-<span class="lineNum">      37 </span>            :                         Name = GetType()
-<span class="lineNum">      38 </span>            :                                 .Name
-<span class="lineNum">      39 </span>            :                                 .Replace(&quot;MongoIndex&quot;, string.Empty)
-<span class="lineNum">      40 </span>            :                                 .Replace(&quot;Index&quot;, string.Empty);
-<span class="lineNum">      41 </span>            :                 }
-<span class="lineNum">      42 </span>            :         }
-<span class="lineNum">      43 </span>            : }
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// The name of the index. Default to the class name removing any instances of &quot;Index&quot; and &quot;MongoIndex&quot; from the name.
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :                 public string Name { get; protected set; }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      37 </span>            :                 /// The selectors that the index is comprised of.
+<span class="lineNum">      38 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      39 </span>            :                 public IEnumerable&lt;System.Linq.Expressions.Expression&lt;Func&lt;TEntity, object&gt;&gt;&gt; Selectors { get; protected set; }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      42 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;MongoIndex{TEntity}&quot;/&gt;.
+<span class="lineNum">      43 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      44 </span><span class="lineCov">          1 :                 protected MongoIndex()</span>
+<span class="lineNum">      45 </span>            :                 {
+<span class="lineNum">      46 </span>            :                         IsUnique = false;
+<span class="lineNum">      47 </span>            :                         IsAcending = true;
+<span class="lineNum">      48 </span>            :                         Name = GetType()
+<span class="lineNum">      49 </span>            :                                 .Name
+<span class="lineNum">      50 </span>            :                                 .Replace(&quot;MongoIndex&quot;, string.Empty)
+<span class="lineNum">      51 </span>            :                                 .Replace(&quot;Index&quot;, string.Empty);
+<span class="lineNum">      52 </span>            :                 }
+<span class="lineNum">      53 </span>            :         }
+<span class="lineNum">      54 </span>            : }
 </pre>
       </td>
     </tr>

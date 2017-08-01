@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 namespace Cqrs.Events
 {
 	/// <summary>
-	/// Builds <see cref="EventData"/> from various input formats serialising JSON.
+	/// Builds <see cref="EventData"/> from various input formats serialising as JSON.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class DefaultEventBuilder<TAuthenticationToken> : EventBuilder<TAuthenticationToken>

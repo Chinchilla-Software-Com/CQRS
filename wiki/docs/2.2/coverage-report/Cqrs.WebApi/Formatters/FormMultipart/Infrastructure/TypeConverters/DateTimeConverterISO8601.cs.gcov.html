@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-31</td>
+            <td class="headerValue">2017-08-01</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -75,16 +75,24 @@
 <span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
 <span class="lineNum">      18 </span>            :         internal class DateTimeConverterIso8601 : DateTimeConverter
 <span class="lineNum">      19 </span>            :         {
-<span class="lineNum">      20 </span><span class="lineNoCov">          0 :                 public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)</span>
-<span class="lineNum">      21 </span>            :                 {
-<span class="lineNum">      22 </span>            :                         if (value != null &amp;&amp; value is DateTime &amp;&amp; destinationType == typeof (string))
-<span class="lineNum">      23 </span>            :                         {
-<span class="lineNum">      24 </span>            :                                 return ((DateTime)value).ToString(&quot;O&quot;); // ISO 8601
-<span class="lineNum">      25 </span>            :                         }
-<span class="lineNum">      26 </span>            :                         return base.ConvertTo(context, culture, value, destinationType);
-<span class="lineNum">      27 </span>            :                 }
-<span class="lineNum">      28 </span>            :         }
-<span class="lineNum">      29 </span>            : }
+<span class="lineNum">      20 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :                 /// Converts the given &lt;paramref name=&quot;value&quot;/&gt; object to a &lt;see cref=&quot;DateTime&quot;/&gt; using the arguments.
+<span class="lineNum">      22 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      23 </span>            :                 /// &lt;param name=&quot;context&quot;&gt;An &lt;see cref=&quot;ITypeDescriptorContext&quot;/&gt; that provides a format context.&lt;/param&gt;
+<span class="lineNum">      24 </span>            :                 /// &lt;param name=&quot;culture&quot;&gt;A optional &lt;see cref=&quot;CultureInfo&quot;/&gt;. If not supplied, the current culture is assumed.&lt;/param&gt;
+<span class="lineNum">      25 </span>            :                 /// &lt;param name=&quot;value&quot;&gt;The &lt;see cref=&quot;object&quot;/&gt; to convert.&lt;/param&gt;
+<span class="lineNum">      26 </span>            :                 /// &lt;param name=&quot;destinationType&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; to convert the &lt;paramref name=&quot;value&quot;/&gt; to.&lt;/param&gt;
+<span class="lineNum">      27 </span>            :                 /// &lt;returns&gt;An &lt;see cref=&quot;object&quot;/&gt; that represents the converted &lt;paramref name=&quot;value&quot;/&gt;.&lt;/returns&gt;
+<span class="lineNum">      28 </span><span class="lineCov">          1 :                 public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)</span>
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                         if (value != null &amp;&amp; value is DateTime &amp;&amp; destinationType == typeof (string))
+<span class="lineNum">      31 </span>            :                         {
+<span class="lineNum">      32 </span>            :                                 return ((DateTime)value).ToString(&quot;O&quot;); // ISO 8601
+<span class="lineNum">      33 </span>            :                         }
+<span class="lineNum">      34 </span>            :                         return base.ConvertTo(context, culture, value, destinationType);
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            :         }
+<span class="lineNum">      37 </span>            : }
 </pre>
       </td>
     </tr>

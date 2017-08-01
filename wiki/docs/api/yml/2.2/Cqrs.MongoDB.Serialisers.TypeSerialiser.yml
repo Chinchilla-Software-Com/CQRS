@@ -24,14 +24,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TypeSerialiser
     path: Framework/Cqrs.MongoDB/Serialisers/TypeSerialiser.cs
-    startLine: 14
+    startLine: 17
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Serialisers
+  summary: "\nA <xref href=\"MongoDB.Bson.Serialization.IBsonSerializer\" data-throw-if-not-resolved=\"false\"></xref> that stores <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> information as well.\n"
+  example: []
   syntax:
     content: 'public class TypeSerialiser : IBsonSerializer<Type>, IBsonSerializer'
     content.vb: >-
       Public Class TypeSerialiser
+
           Implements IBsonSerializer(Of Type), IBsonSerializer
   inheritance:
   - System.Object
@@ -70,24 +73,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Deserialize
     path: Framework/Cqrs.MongoDB/Serialisers/TypeSerialiser.cs
-    startLine: 26
+    startLine: 29
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Serialisers
-  summary: "\nDeserializes a value.\n"
+  summary: "\nDeserialises a value, first reading the <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> information from the provide <span class=\"paramref\">context</span>.\n"
   example: []
   syntax:
     content: public object Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
     parameters:
     - id: context
       type: MongoDB.Bson.Serialization.BsonDeserializationContext
-      description: The deserialization context.
+      description: The deserialisation context.
     - id: args
       type: MongoDB.Bson.Serialization.BsonDeserializationArgs
-      description: The deserialization args.
+      description: The deserialisation arguments.
     return:
       type: System.Object
-      description: "\nA deserialized value.\n"
+      description: "\nA deserialised value.\n"
     content.vb: Public Function Deserialize(context As BsonDeserializationContext, args As BsonDeserializationArgs) As Object
   overload: Cqrs.MongoDB.Serialisers.TypeSerialiser.Deserialize*
   implements:
@@ -114,7 +117,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Serialize
     path: Framework/Cqrs.MongoDB/Serialisers/TypeSerialiser.cs
-    startLine: 35
+    startLine: 40
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Serialisers
@@ -125,10 +128,10 @@ items:
     parameters:
     - id: context
       type: MongoDB.Bson.Serialization.BsonSerializationContext
-      description: The serialization context.
+      description: The serialisation context.
     - id: args
       type: MongoDB.Bson.Serialization.BsonSerializationArgs
-      description: The serialization args.
+      description: The serialisation arguments.
     - id: value
       type: System.Type
       description: The value.
@@ -159,24 +162,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MongoDB.Bson.Serialization.IBsonSerializer<System.Type>.Deserialize
     path: Framework/Cqrs.MongoDB/Serialisers/TypeSerialiser.cs
-    startLine: 55
+    startLine: 60
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Serialisers
-  summary: "\nDeserializes a value.\n"
+  summary: "\nDeserialises a value.\n"
   example: []
   syntax:
     content: Type IBsonSerializer<Type>.Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
     parameters:
     - id: context
       type: MongoDB.Bson.Serialization.BsonDeserializationContext
-      description: The deserialization context.
+      description: The deserialisation context.
     - id: args
       type: MongoDB.Bson.Serialization.BsonDeserializationArgs
-      description: The deserialization args.
+      description: The deserialisation arguments.
     return:
       type: System.Type
-      description: "\nA deserialized value.\n"
+      description: "\nA deserialised value.\n"
     content.vb: Function MongoDB.Bson.Serialization.IBsonSerializer<System.Type>.Deserialize(context As BsonDeserializationContext, args As BsonDeserializationArgs) As Type Implements IBsonSerializer(Of Type).Deserialize
   overload: Cqrs.MongoDB.Serialisers.TypeSerialiser.MongoDB#Bson#Serialization#IBsonSerializer{System#Type}#Deserialize*
   implements:
@@ -201,7 +204,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Serialize
     path: Framework/Cqrs.MongoDB/Serialisers/TypeSerialiser.cs
-    startLine: 83
+    startLine: 90
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Serialisers
@@ -215,7 +218,7 @@ items:
       description: The serialization context.
     - id: args
       type: MongoDB.Bson.Serialization.BsonSerializationArgs
-      description: The serialization args.
+      description: The serialization arguments.
     - id: value
       type: System.Object
       description: The value.
@@ -245,7 +248,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ValueType
     path: Framework/Cqrs.MongoDB/Serialisers/TypeSerialiser.cs
-    startLine: 91
+    startLine: 98
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Serialisers
@@ -269,6 +272,20 @@ items:
   - Get
   - Protected Set
 references:
+- uid: MongoDB.Bson.Serialization.IBsonSerializer
+  commentId: T:MongoDB.Bson.Serialization.IBsonSerializer
+  parent: MongoDB.Bson.Serialization
+  isExternal: true
+  name: IBsonSerializer
+  nameWithType: IBsonSerializer
+  fullName: MongoDB.Bson.Serialization.IBsonSerializer
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: Cqrs.MongoDB.Serialisers
   commentId: N:Cqrs.MongoDB.Serialisers
   isExternal: false
@@ -326,13 +343,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: MongoDB.Bson.Serialization.IBsonSerializer
-  commentId: T:MongoDB.Bson.Serialization.IBsonSerializer
-  parent: MongoDB.Bson.Serialization
-  isExternal: true
-  name: IBsonSerializer
-  nameWithType: IBsonSerializer
-  fullName: MongoDB.Bson.Serialization.IBsonSerializer
 - uid: System.Object.ToString
   commentId: M:System.Object.ToString
   parent: System.Object
@@ -612,6 +622,12 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: MongoDB.Bson.Serialization
+  commentId: N:MongoDB.Bson.Serialization
+  isExternal: false
+  name: MongoDB.Bson.Serialization
+  nameWithType: MongoDB.Bson.Serialization
+  fullName: MongoDB.Bson.Serialization
 - uid: System
   commentId: N:System
   isExternal: false
@@ -657,12 +673,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: MongoDB.Bson.Serialization
-  commentId: N:MongoDB.Bson.Serialization
-  isExternal: false
-  name: MongoDB.Bson.Serialization
-  nameWithType: MongoDB.Bson.Serialization
-  fullName: MongoDB.Bson.Serialization
 - uid: Cqrs.MongoDB.Serialisers.TypeSerialiser.Deserialize*
   commentId: Overload:Cqrs.MongoDB.Serialisers.TypeSerialiser.Deserialize
   isExternal: false
@@ -835,13 +845,6 @@ references:
   name: BsonSerializationArgs
   nameWithType: BsonSerializationArgs
   fullName: MongoDB.Bson.Serialization.BsonSerializationArgs
-- uid: System.Type
-  commentId: T:System.Type
-  parent: System
-  isExternal: true
-  name: Type
-  nameWithType: Type
-  fullName: System.Type
 - uid: MongoDB.Bson.Serialization.IBsonSerializer`1.Serialize(MongoDB.Bson.Serialization.BsonSerializationContext,MongoDB.Bson.Serialization.BsonSerializationArgs,`0)
   commentId: M:MongoDB.Bson.Serialization.IBsonSerializer`1.Serialize(MongoDB.Bson.Serialization.BsonSerializationContext,MongoDB.Bson.Serialization.BsonSerializationArgs,`0)
   isExternal: true

@@ -8,12 +8,19 @@
 
 using System;
 using System.Linq.Expressions;
+using Cqrs.Events;
 using Cqrs.MongoDB.DataStores.Indexes;
 
 namespace Cqrs.MongoDB.Events.Indexes
 {
+	/// <summary>
+	/// A <see cref="MongoDbIndex{TEntity}"/> for <see cref="EventData.CorrelationId"/>.
+	/// </summary>
 	public class ByCorrelationIdMongoDbIndex : MongoDbIndex<MongoDbEventData>
 	{
+		/// <summary>
+		/// Instantiate a new instance of <see cref="ByCorrelationIdMongoDbIndex"/>.
+		/// </summary>
 		public ByCorrelationIdMongoDbIndex()
 		{
 			Selectors = new Expression<Func<MongoDbEventData, object>>[]

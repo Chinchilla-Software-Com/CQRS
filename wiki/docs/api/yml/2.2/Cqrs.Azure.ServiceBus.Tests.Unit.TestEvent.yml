@@ -21,20 +21,33 @@ items:
   type: Class
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+      path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TestEvent
-    path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
-    startLine: 9
+    path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+    startLine: 20
   assemblies:
-  - Cqrs.Azure.BlobStorage.Test.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
+  summary: "\nA Test <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
-    content: 'public class TestEvent : Entity, IEntity, IEvent<Guid>, IMessageWithAuthenticationToken<Guid>, IMessage'
+    content: >-
+      [Serializable]
+
+      [DataContract]
+
+      public class TestEvent : Entity, IEntity, IEvent<Guid>, IMessageWithAuthenticationToken<Guid>, IMessage
     content.vb: >-
+      <Serializable>
+
+      <DataContract>
+
       Public Class TestEvent
+
           Inherits Entity
+
           Implements IEntity, IEvent(Of Guid), IMessageWithAuthenticationToken(Of Guid), IMessage
   inheritance:
   - System.Object
@@ -55,6 +68,13 @@ items:
   - System.Object.GetHashCode
   - System.Object.GetType
   - System.Object.MemberwiseClone
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+  - type: System.Runtime.Serialization.DataContractAttribute
+    ctor: System.Runtime.Serialization.DataContractAttribute.#ctor
+    arguments: []
   modifiers.csharp:
   - public
   - class
@@ -74,15 +94,17 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+      path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AuthenticationToken
-    path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
-    startLine: 13
+    path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+    startLine: 29
   assemblies:
-  - Cqrs.Azure.BlobStorage.Test.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
+  summary: "\nThe authentication token of the entity that triggered the event to be raised.\n"
+  example: []
   syntax:
     content: >-
       [DataMember]
@@ -121,15 +143,17 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+      path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Id
-    path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
-    startLine: 20
+    path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+    startLine: 39
   assemblies:
-  - Cqrs.Azure.BlobStorage.Test.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
+  summary: "\nThe identifier of the event itself.\n"
+  example: []
   syntax:
     content: >-
       [DataMember]
@@ -168,15 +192,17 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+      path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Version
-    path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
-    startLine: 23
+    path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+    startLine: 45
   assemblies:
-  - Cqrs.Azure.BlobStorage.Test.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
+  summary: "\nThe new version number.\n"
+  example: []
   syntax:
     content: >-
       [DataMember]
@@ -215,15 +241,17 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+      path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TimeStamp
-    path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
-    startLine: 26
+    path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+    startLine: 51
   assemblies:
-  - Cqrs.Azure.BlobStorage.Test.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
+  summary: "\nThe date and time the event was raised or published.\n"
+  example: []
   syntax:
     content: >-
       [DataMember]
@@ -262,15 +290,17 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+      path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CorrelationId
-    path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
-    startLine: 33
+    path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+    startLine: 62
   assemblies:
-  - Cqrs.Azure.BlobStorage.Test.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
+  summary: "\nAn identifier used to group together several <xref href=\"Cqrs.Messages.IMessage\" data-throw-if-not-resolved=\"false\"></xref>. Any <xref href=\"Cqrs.Messages.IMessage\" data-throw-if-not-resolved=\"false\"></xref> with the same <xref href=\"Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.CorrelationId\" data-throw-if-not-resolved=\"false\"></xref> were triggered by the same initiating request.\n"
+  example: []
   syntax:
     content: >-
       [DataMember]
@@ -309,14 +339,14 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+      path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: OriginatingFramework
-    path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
-    startLine: 39
+    path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+    startLine: 68
   assemblies:
-  - Cqrs.Azure.BlobStorage.Test.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nThe originating framework this message was sent from.\n"
   example: []
@@ -358,14 +388,14 @@ items:
   type: Property
   source:
     remote:
-      path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+      path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Frameworks
-    path: Framework/Azure/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
-    startLine: 45
+    path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
+    startLine: 74
   assemblies:
-  - Cqrs.Azure.BlobStorage.Test.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nThe frameworks this <xref href=\"Cqrs.Messages.IMessage\" data-throw-if-not-resolved=\"false\"></xref> has been delivered to/sent via already.\n"
   example: []
@@ -395,6 +425,43 @@ items:
   modifiers.vb:
   - Public
 references:
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.Tests.Unit
   commentId: N:Cqrs.Azure.ServiceBus.Tests.Unit
   isExternal: false
@@ -825,43 +892,6 @@ references:
   name: Cqrs.Entities
   nameWithType: Cqrs.Entities
   fullName: Cqrs.Entities
-- uid: Cqrs.Events.IEvent`1
-  commentId: T:Cqrs.Events.IEvent`1
-  isExternal: false
-  name: IEvent<TAuthenticationToken>
-  nameWithType: IEvent<TAuthenticationToken>
-  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
-  nameWithType.vb: IEvent(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
-  name.vb: IEvent(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Events
   commentId: N:Cqrs.Events
   isExternal: false
@@ -1024,6 +1054,8 @@ references:
   fullName: Cqrs.Events.IEvent<TAuthenticationToken>.TimeStamp
   nameWithType.vb: IEvent(Of TAuthenticationToken).TimeStamp
   fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken).TimeStamp
+- uid: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.CorrelationId
+  commentId: P:Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.CorrelationId
 - uid: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.CorrelationId*
   commentId: Overload:Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.CorrelationId
   isExternal: false

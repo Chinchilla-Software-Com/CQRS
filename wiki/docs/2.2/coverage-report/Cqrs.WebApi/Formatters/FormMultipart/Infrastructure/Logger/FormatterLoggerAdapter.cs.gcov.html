@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-31</td>
+            <td class="headerValue">2017-08-01</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -69,33 +69,52 @@
 <span class="lineNum">      11 </span>            : 
 <span class="lineNum">      12 </span>            : namespace Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger
 <span class="lineNum">      13 </span>            : {
-<span class="lineNum">      14 </span>            :         internal class FormatterLoggerAdapter : IFormDataConverterLogger
-<span class="lineNum">      15 </span>            :         {
-<span class="lineNum">      16 </span>            :                 private IFormatterLogger FormatterLogger { get; set; }
-<span class="lineNum">      17 </span>            : 
-<span class="lineNum">      18 </span><span class="lineNoCov">          0 :                 public FormatterLoggerAdapter(IFormatterLogger formatterLogger)</span>
-<span class="lineNum">      19 </span>            :                 {
-<span class="lineNum">      20 </span>            :                         if(formatterLogger == null)
-<span class="lineNum">      21 </span>            :                                 throw new ArgumentNullException(&quot;formatterLogger&quot;);
-<span class="lineNum">      22 </span>            :                         FormatterLogger = formatterLogger;
-<span class="lineNum">      23 </span>            :                 }
-<span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span><span class="lineNoCov">          0 :                 public void LogError(string errorPath, Exception exception)</span>
-<span class="lineNum">      26 </span>            :                 {
-<span class="lineNum">      27 </span>            :                         FormatterLogger.LogError(errorPath, exception);
-<span class="lineNum">      28 </span>            :                 }
-<span class="lineNum">      29 </span>            : 
-<span class="lineNum">      30 </span><span class="lineNoCov">          0 :                 public void LogError(string errorPath, string errorMessage)</span>
-<span class="lineNum">      31 </span>            :                 {
-<span class="lineNum">      32 </span>            :                         FormatterLogger.LogError(errorPath, errorMessage);
-<span class="lineNum">      33 </span>            :                 }
-<span class="lineNum">      34 </span>            : 
-<span class="lineNum">      35 </span><span class="lineNoCov">          0 :                 public void EnsureNoErrors() </span>
-<span class="lineNum">      36 </span>            :                 {
-<span class="lineNum">      37 </span>            :                         //nothing to do
-<span class="lineNum">      38 </span>            :                 }
-<span class="lineNum">      39 </span>            :         }
-<span class="lineNum">      40 </span>            : }
+<span class="lineNum">      14 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      15 </span>            :         /// Provide a mechanism to log issues and &lt;see cref=&quot;Exception&quot;/&gt; data during conversions via a &lt;see cref=&quot;IFormatterLogger&quot;/&gt;.
+<span class="lineNum">      16 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      17 </span>            :         internal class FormatterLoggerAdapter : IFormDataConverterLogger
+<span class="lineNum">      18 </span>            :         {
+<span class="lineNum">      19 </span>            :                 private IFormatterLogger FormatterLogger { get; set; }
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;FormatterLoggerAdapter&quot;/&gt;.
+<span class="lineNum">      23 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      24 </span><span class="lineCov">          1 :                 public FormatterLoggerAdapter(IFormatterLogger formatterLogger)</span>
+<span class="lineNum">      25 </span>            :                 {
+<span class="lineNum">      26 </span>            :                         if(formatterLogger == null)
+<span class="lineNum">      27 </span>            :                                 throw new ArgumentNullException(&quot;formatterLogger&quot;);
+<span class="lineNum">      28 </span>            :                         FormatterLogger = formatterLogger;
+<span class="lineNum">      29 </span>            :                 }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// Logs an error.
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :                 /// &lt;param name=&quot;errorPath&quot;&gt;The path to the member for which the error is being logged.&lt;/param&gt;
+<span class="lineNum">      35 </span>            :                 /// &lt;param name=&quot;exception&quot;&gt;The exception to be logged.&lt;/param&gt;
+<span class="lineNum">      36 </span><span class="lineCov">          1 :                 public void LogError(string errorPath, Exception exception)</span>
+<span class="lineNum">      37 </span>            :                 {
+<span class="lineNum">      38 </span>            :                         FormatterLogger.LogError(errorPath, exception);
+<span class="lineNum">      39 </span>            :                 }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      42 </span>            :                 /// Logs an error.
+<span class="lineNum">      43 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      44 </span>            :                 /// &lt;param name=&quot;errorPath&quot;&gt;The path to the member for which the error is being logged.&lt;/param&gt;
+<span class="lineNum">      45 </span>            :                 /// &lt;param name=&quot;errorMessage&quot;&gt;The error message to be logged.&lt;/param&gt;
+<span class="lineNum">      46 </span><span class="lineCov">          1 :                 public void LogError(string errorPath, string errorMessage)</span>
+<span class="lineNum">      47 </span>            :                 {
+<span class="lineNum">      48 </span>            :                         FormatterLogger.LogError(errorPath, errorMessage);
+<span class="lineNum">      49 </span>            :                 }
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      52 </span>            :                 /// Does nothing.
+<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      54 </span><span class="lineCov">          1 :                 public void EnsureNoErrors() </span>
+<span class="lineNum">      55 </span>            :                 {
+<span class="lineNum">      56 </span>            :                         //nothing to do
+<span class="lineNum">      57 </span>            :                 }
+<span class="lineNum">      58 </span>            :         }
+<span class="lineNum">      59 </span>            : }
 </pre>
       </td>
     </tr>

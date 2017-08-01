@@ -10,6 +10,9 @@ using System;
 
 namespace Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger
 {
+	/// <summary>
+	/// Provide a mechanism to log issues and <see cref="Exception"/> data during conversions.
+	/// </summary>
 	public interface IFormDataConverterLogger
 	{
 		/// <summary>
@@ -27,7 +30,7 @@ namespace Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger
 		void LogError(string errorPath, string errorMessage);
 
 		/// <summary>
-		/// throw exception if errors found
+		/// Throw exception if errors found
 		/// </summary>
 		void EnsureNoErrors();
 	}

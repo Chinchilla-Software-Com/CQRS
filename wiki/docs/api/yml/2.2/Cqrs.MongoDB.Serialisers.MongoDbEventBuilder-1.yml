@@ -20,17 +20,22 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MongoDbEventBuilder
     path: Framework/Cqrs.MongoDB/Serialisers/MongoDbEventBuilder.cs
-    startLine: 13
+    startLine: 17
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Serialisers
+  summary: "\nBuilds <xref href=\"Cqrs.Events.EventData\" data-throw-if-not-resolved=\"false\"></xref> from various input formats leaving the event data unserialised.\n"
+  example: []
   syntax:
     content: 'public class MongoDbEventBuilder<TAuthenticationToken> : DefaultEventBuilder<TAuthenticationToken>, IEventBuilder<TAuthenticationToken>'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the authentication token.
     content.vb: >-
       Public Class MongoDbEventBuilder(Of TAuthenticationToken)
+
           Inherits DefaultEventBuilder(Of TAuthenticationToken)
+
           Implements IEventBuilder(Of TAuthenticationToken)
   inheritance:
   - System.Object
@@ -78,17 +83,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateFrameworkEvent
     path: Framework/Cqrs.MongoDB/Serialisers/MongoDbEventBuilder.cs
-    startLine: 18
+    startLine: 27
   assemblies:
   - Cqrs.MongoDB
   namespace: Cqrs.MongoDB.Serialisers
+  summary: "\nCreate an <xref href=\"Cqrs.Events.EventData\" data-throw-if-not-resolved=\"false\"></xref> with the provided <span class=\"paramref\">eventData</span>.\n"
+  example: []
   syntax:
     content: public override EventData CreateFrameworkEvent(string type, IEvent<TAuthenticationToken> eventData)
     parameters:
     - id: type
       type: System.String
+      description: The name of the <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the target object the serialised data is.
     - id: eventData
       type: Cqrs.Events.IEvent{{TAuthenticationToken}}
+      description: The <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> to add to the <xref href="Cqrs.Events.EventData" data-throw-if-not-resolved="false"></xref>.
     return:
       type: Cqrs.Events.EventData
     content.vb: Public Overrides Function CreateFrameworkEvent(type As String, eventData As IEvent(Of TAuthenticationToken)) As EventData
@@ -104,6 +113,20 @@ items:
   fullName.vb: Cqrs.MongoDB.Serialisers.MongoDbEventBuilder(Of TAuthenticationToken).CreateFrameworkEvent(System.String, Cqrs.Events.IEvent(Of TAuthenticationToken))
   name.vb: CreateFrameworkEvent(String, IEvent(Of TAuthenticationToken))
 references:
+- uid: Cqrs.Events.EventData
+  commentId: T:Cqrs.Events.EventData
+  parent: Cqrs.Events
+  isExternal: false
+  name: EventData
+  nameWithType: EventData
+  fullName: Cqrs.Events.EventData
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: Cqrs.MongoDB.Serialisers
   commentId: N:Cqrs.MongoDB.Serialisers
   isExternal: false
@@ -724,6 +747,12 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Events
+  commentId: N:Cqrs.Events
+  isExternal: false
+  name: Cqrs.Events
+  nameWithType: Cqrs.Events
+  fullName: Cqrs.Events
 - uid: System
   commentId: N:System
   isExternal: false
@@ -767,12 +796,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Events
-  commentId: N:Cqrs.Events
-  isExternal: false
-  name: Cqrs.Events
-  nameWithType: Cqrs.Events
-  fullName: Cqrs.Events
 - uid: Cqrs.Events.DefaultEventBuilder`1
   commentId: T:Cqrs.Events.DefaultEventBuilder`1
   isExternal: false
@@ -1056,6 +1079,43 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Events.EventBuilder{{TAuthenticationToken}}.CreateFrameworkEvent(System.String,Cqrs.Events.IEvent{{TAuthenticationToken}})
   commentId: M:Cqrs.Events.EventBuilder{`0}.CreateFrameworkEvent(System.String,Cqrs.Events.IEvent{`0})
   parent: Cqrs.Events.EventBuilder{{TAuthenticationToken}}
@@ -1183,13 +1243,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Events.EventData
-  commentId: T:Cqrs.Events.EventData
-  parent: Cqrs.Events
-  isExternal: false
-  name: EventData
-  nameWithType: EventData
-  fullName: Cqrs.Events.EventData
 - uid: Cqrs.Events.EventBuilder`1.CreateFrameworkEvent(System.String,Cqrs.Events.IEvent{`0})
   commentId: M:Cqrs.Events.EventBuilder`1.CreateFrameworkEvent(System.String,Cqrs.Events.IEvent{`0})
   isExternal: true
@@ -1260,43 +1313,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.Events.IEvent`1
-  commentId: T:Cqrs.Events.IEvent`1
-  isExternal: false
-  name: IEvent<TAuthenticationToken>
-  nameWithType: IEvent<TAuthenticationToken>
-  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
-  nameWithType.vb: IEvent(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
-  name.vb: IEvent(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
   - name: )
     nameWithType: )
     fullName: )

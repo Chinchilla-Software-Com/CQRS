@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Formatting;
 using System.Reflection;
 using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure;
 using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Extensions;
@@ -16,6 +17,9 @@ using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger;
 
 namespace Cqrs.WebApi.Formatters.FormMultipart.Converters
 {
+	/// <summary>
+	/// Converts multi-part form-data to <see cref="object">objects</see>.
+	/// </summary>
 	public class FormDataToObjectConverter
 	{
 		private readonly FormData _sourceData;
@@ -24,6 +28,12 @@ namespace Cqrs.WebApi.Formatters.FormMultipart.Converters
 
 		private readonly MultipartFormatterSettings _settings;
 
+		/// <summary>
+		/// Instantiate and initialise a new instance of <see cref="FormDataToObjectConverter"/>
+		/// </summary>
+		/// <param name="sourceData">The <see cref="FormData"/> to convert.</param>
+		/// <param name="logger">The <see cref="IFormatterLogger"/> to log events to.</param>
+		/// <param name="settings">The <see cref="MultipartFormatterSettings"/> to use.</param>
 		public FormDataToObjectConverter(FormData sourceData, IFormDataConverterLogger logger, MultipartFormatterSettings settings) 
 		{
 			if (sourceData == null)
@@ -38,6 +48,10 @@ namespace Cqrs.WebApi.Formatters.FormMultipart.Converters
 			_logger = logger;
 		}
 
+		/// <summary>
+		/// Converts the multi-part form-data to the provided <paramref name="destinationType"/>
+		/// </summary>
+		/// <param name="destinationType">The <see cref="Type"/> to convert the multi-part form-data to.</param>
 		public object Convert(Type destinationType) 
 		{
 			if (destinationType == null)
@@ -319,7 +333,6 @@ namespace Cqrs.WebApi.Formatters.FormMultipart.Converters
 			}
 			return isCustomNonEnumerableType;
 		}
-
 
 		private bool IsGenericDictionary(Type type, out Type keyType, out Type valueType)
 		{

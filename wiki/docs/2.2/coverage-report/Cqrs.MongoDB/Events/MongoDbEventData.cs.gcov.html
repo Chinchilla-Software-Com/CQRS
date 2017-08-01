@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-07-31</td>
+            <td class="headerValue">2017-08-01</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -71,31 +71,42 @@
 <span class="lineNum">      13 </span>            : 
 <span class="lineNum">      14 </span>            : namespace Cqrs.MongoDB.Events
 <span class="lineNum">      15 </span>            : {
-<span class="lineNum">      16 </span>            :         [Serializable]
-<span class="lineNum">      17 </span>            :         [DataContract]
-<span class="lineNum">      18 </span>            :         public class MongoDbEventData : EventData
-<span class="lineNum">      19 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      20 </span>            :                 [DataMember]
-<span class="lineNum">      21 </span>            :                 // ReSharper disable InconsistentNaming
-<span class="lineNum">      22 </span>            :                 public ObjectId _id { get; set; }
-<span class="lineNum">      23 </span>            :                 // ReSharper restore InconsistentNaming
-<span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span>            : 
-<span class="lineNum">      26 </span><span class="lineNoCov">          0 :                 public MongoDbEventData() { }</span>
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span><span class="lineNoCov">          0 :                 public MongoDbEventData(EventData eventData)</span>
-<span class="lineNum">      29 </span>            :                 {
-<span class="lineNum">      30 </span>            :                         AggregateRsn = eventData.AggregateRsn;
-<span class="lineNum">      31 </span>            :                         CorrelationId = eventData.CorrelationId;
-<span class="lineNum">      32 </span>            :                         AggregateId = eventData.AggregateId;
-<span class="lineNum">      33 </span>            :                         Data = eventData.Data;
-<span class="lineNum">      34 </span>            :                         EventId = eventData.EventId;
-<span class="lineNum">      35 </span>            :                         EventType = eventData.EventType;
-<span class="lineNum">      36 </span>            :                         Timestamp = eventData.Timestamp;
-<span class="lineNum">      37 </span>            :                         Version = eventData.Version;
-<span class="lineNum">      38 </span>            :                 }
-<span class="lineNum">      39 </span>            :         }
-<span class="lineNum">      40 </span>            : }
+<span class="lineNum">      16 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      17 </span>            :         /// Captures all the data relevant to an &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for &lt;see cref=&quot;MongoDbEventStore{TAuthenticationToken}&quot;/&gt; to persist.
+<span class="lineNum">      18 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      19 </span>            :         [Serializable]
+<span class="lineNum">      20 </span>            :         [DataContract]
+<span class="lineNum">      21 </span>            :         public class MongoDbEventData : EventData
+<span class="lineNum">      22 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      23 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      24 </span>            :                 /// An internal MongoDB identifier.
+<span class="lineNum">      25 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      26 </span>            :                 [DataMember]
+<span class="lineNum">      27 </span>            :                 // ReSharper disable InconsistentNaming
+<span class="lineNum">      28 </span>            :                 public ObjectId _id { get; set; }
+<span class="lineNum">      29 </span>            :                 // ReSharper restore InconsistentNaming
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;MongoDbEventData&quot;/&gt;.
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span><span class="lineCov">          1 :                 public MongoDbEventData() { }</span>
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      37 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;MongoDbEventData&quot;/&gt;.
+<span class="lineNum">      38 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      39 </span><span class="lineCov">          1 :                 public MongoDbEventData(EventData eventData)</span>
+<span class="lineNum">      40 </span>            :                 {
+<span class="lineNum">      41 </span>            :                         AggregateRsn = eventData.AggregateRsn;
+<span class="lineNum">      42 </span>            :                         CorrelationId = eventData.CorrelationId;
+<span class="lineNum">      43 </span>            :                         AggregateId = eventData.AggregateId;
+<span class="lineNum">      44 </span>            :                         Data = eventData.Data;
+<span class="lineNum">      45 </span>            :                         EventId = eventData.EventId;
+<span class="lineNum">      46 </span>            :                         EventType = eventData.EventType;
+<span class="lineNum">      47 </span>            :                         Timestamp = eventData.Timestamp;
+<span class="lineNum">      48 </span>            :                         Version = eventData.Version;
+<span class="lineNum">      49 </span>            :                 }
+<span class="lineNum">      50 </span>            :         }
+<span class="lineNum">      51 </span>            : }
 </pre>
       </td>
     </tr>

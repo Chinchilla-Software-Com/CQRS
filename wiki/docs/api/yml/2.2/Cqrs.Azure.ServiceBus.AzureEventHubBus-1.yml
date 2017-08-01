@@ -39,14 +39,12 @@ items:
     - id: TAuthenticationToken
     content.vb: >-
       Public MustInherit Class AzureEventHubBus(Of TAuthenticationToken)
+
           Inherits AzureEventHub(Of TAuthenticationToken)
   inheritance:
   - System.Object
   - Cqrs.Azure.ServiceBus.AzureBus{{TAuthenticationToken}}
   - Cqrs.Azure.ServiceBus.AzureEventHub{{TAuthenticationToken}}
-  derivedClasses:
-  - Cqrs.Azure.ServiceBus.AzureEventBusPublisher`1
-  - Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1
   inheritedMembers:
   - Cqrs.Azure.ServiceBus.AzureEventHub{{TAuthenticationToken}}.EventHubPublisher
   - Cqrs.Azure.ServiceBus.AzureEventHub{{TAuthenticationToken}}.EventHubReceiver
