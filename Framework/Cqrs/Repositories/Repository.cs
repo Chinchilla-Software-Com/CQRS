@@ -21,7 +21,7 @@ namespace Cqrs.Repositories
 	/// Provides basic repository methods for operations with an <see cref="IDataStore{TData}"/>.
 	/// </summary>
 	/// <typeparam name="TQueryStrategy">The <see cref="Type"/> of <see cref="IQueryStrategy"/>.</typeparam>
-	/// <typeparam name="TQueryBuilder">The <see cref="Type"/> of the <see cref="QueryBuilder{TQueryStrategy, TData}"/> that will be used to build queries.</typeparam>
+	/// <typeparam name="TQueryBuilder">The <see cref="Type"/> of the <see cref="Cqrs.Repositories.Queries.QueryBuilder{TQueryStrategy,TData}"/> that will be used to build queries.</typeparam>
 	/// <typeparam name="TData">The <see cref="Type"/> of data held in storage.</typeparam>
 	public abstract class Repository<TQueryStrategy, TQueryBuilder, TData> : IRepository<TQueryStrategy, TData>
 		where TQueryStrategy : IQueryStrategy
