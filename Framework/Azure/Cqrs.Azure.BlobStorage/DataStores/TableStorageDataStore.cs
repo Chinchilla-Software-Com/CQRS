@@ -6,12 +6,17 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using cdmdotnet.Logging;
 using Cqrs.Entities;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Cqrs.Azure.BlobStorage.DataStores
 {
+	/// <summary>
+	/// A <see cref="TableStorageStore{TData,TCollectionItemData}"/> that uses Azure Storage for storage.
+	/// </summary>
+	/// <typeparam name="TData">The <see cref="Type"/> of <see cref="TableEntity"/> Azure Table Storage will contain.</typeparam>
 	public class TableStorageDataStore<TData>
 		: TableStorageStore<EntityTableEntity<TData>, TData>
 		where TData : Entity
@@ -45,16 +50,30 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 
 		#region Overrides of TableStorageStore<TData>
 
+		/// <summary>
+		/// Creates a new instance of <see cref="EntityTableEntity{TData}"/> populating it with the provided <paramref name="data"/>.
+		/// </summary>
+		/// <param name="data">The data to store.</param>
 		protected override ITableEntity CreateTableEntity(TData data)
 		{
 			return new EntityTableEntity<TData>(data);
 		}
 
+		/// <summary>
+		/// Gets a <see cref="TableOperation"/> that calls <see cref="TableOperation.Retrieve{TData}(string,string,System.Collections.Generic.List{string})"/>
+		/// read for updating.
+		/// </summary>
+		/// <param name="data">The data containing the <see cref="IEntity.Rsn"/> property populated.</param>
 		protected override TableOperation GetUpdatableTableEntity(TData data)
 		{
 			return TableOperation.Retrieve<EntityTableEntity<TData>>(data.GetType().FullName, data.Rsn.ToString("N"));
 		}
 
+		/// <summary>
+		/// Gets a <see cref="TableOperation"/> that calls <see cref="TableOperation.Retrieve{TData}(string,string,System.Collections.Generic.List{string})"/>
+		/// read for updating.
+		/// </summary>
+		/// <param name="data">The <see cref="EntityTableEntity{TEntity}"/> containing the <see cref="EntityTableEntity{TEntity}.Entity"/> containing the <see cref="IEntity.Rsn"/> property populated.</param>
 		protected override TableOperation GetUpdatableTableEntity(EntityTableEntity<TData> data)
 		{
 			return GetUpdatableTableEntity(data.Entity);

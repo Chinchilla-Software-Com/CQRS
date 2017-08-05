@@ -14,7 +14,7 @@ using Cqrs.Entities;
 namespace Cqrs.DataStores
 {
 	/// <summary>
-	/// A data store capable of being queried and modified
+	/// A data store capable of being queried and modified.
 	/// </summary>
 	public interface IDataStore<TData> : IOrderedQueryable<TData>, IDisposable
 	{
