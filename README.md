@@ -1,5 +1,6 @@
 # CQRS.NET
 #### https://www.nuget.org/packages/Cqrs
+Nightly build packages and symbols available at https://cqrs-nightly-nuget-builds.azurewebsites.net/
 
 ## The framework
 A lightweight enterprise framework to write CQRS, event-sourced and micro-service applications in hybrid multi-datacentre, on-premise and Azure environments. Currently published as nuget packages @ http://www.nuget.org. It is written in C# and targets .NET 4.0 (where possible) and .NET 4.5. CQRS.NET borrows heavily from CQRSlite (https://github.com/gautema/cqrslite), from some point in 2013.
