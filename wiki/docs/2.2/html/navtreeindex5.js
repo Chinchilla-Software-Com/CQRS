@@ -1,7 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"classCqrs_1_1EventStore_1_1EventStore_a898b51899af27db8aa0fb0c0dc75b25d.html#a898b51899af27db8aa0fb0c0dc75b25d":[1,0,0,11,2,2],
-"classCqrs_1_1EventStore_1_1EventStore_aaa4ebd61c84124425380ce31e3a67600.html#aaa4ebd61c84124425380ce31e3a67600":[1,0,0,11,2,3],
 "classCqrs_1_1EventStore_1_1EventStore_ab1184aea49c7b0009a8f27d38f585952.html#ab1184aea49c7b0009a8f27d38f585952":[1,0,0,11,2,10],
 "classCqrs_1_1EventStore_1_1EventStore_ab48ad2c9d72780ae3a662e213498f194.html#ab48ad2c9d72780ae3a662e213498f194":[1,0,0,11,2,0],
 "classCqrs_1_1EventStore_1_1EventStore_adce33037e2a3eb81cfccded42ba2ed35.html#adce33037e2a3eb81cfccded42ba2ed35":[1,0,0,11,2,5],
@@ -249,5 +247,7 @@ var NAVTREEINDEX5 =
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_a90c864fa4298dc679abe4e264d17cf04.html#a90c864fa4298dc679abe4e264d17cf04":[1,0,0,17,2,4,3],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_ae551f6493cce791272dcbfbedf8c18bf.html#ae551f6493cce791272dcbfbedf8c18bf":[1,0,0,17,2,4,7],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_af78f60c035678185ecd266019f42838b.html#af78f60c035678185ecd266019f42838b":[1,0,0,17,2,4,1],
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_afb24fa31922f1297f7d7d80c7b14ee14.html#afb24fa31922f1297f7d7d80c7b14ee14":[1,0,0,17,2,4,0]
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_afb24fa31922f1297f7d7d80c7b14ee14.html#afb24fa31922f1297f7d7d80c7b14ee14":[1,0,0,17,2,4,0],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_afcf5a4f8e445742625b9ca45bc455247.html#afcf5a4f8e445742625b9ca45bc455247":[1,0,0,17,2,4,5],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a13f6823671d7cb9c042d8f7156a51b89.html#a13f6823671d7cb9c042d8f7156a51b89":[1,0,0,17,2,3,4]
 };

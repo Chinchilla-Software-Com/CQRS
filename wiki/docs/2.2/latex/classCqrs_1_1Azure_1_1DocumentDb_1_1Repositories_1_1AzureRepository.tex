@@ -1,5 +1,10 @@
 \hypertarget{classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository}{}\section{Cqrs.\+Azure.\+Document\+Db.\+Repositories.\+Azure\+Repository$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$ Class Template Reference}
 \label{classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository}\index{Cqrs.\+Azure.\+Document\+Db.\+Repositories.\+Azure\+Repository$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$@{Cqrs.\+Azure.\+Document\+Db.\+Repositories.\+Azure\+Repository$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$}}
+
+
+Provides basic repository methods for operations with an I\+Data\+Store$<$\+T\+Data$>$ using \hyperlink{namespaceCqrs_1_1Azure}{Azure} Document\+DB (Cosmos\+DB).  
+
+
 Inheritance diagram for Cqrs.\+Azure.\+Document\+Db.\+Repositories.\+Azure\+Repository$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -10,15 +15,33 @@ Inheritance diagram for Cqrs.\+Azure.\+Document\+Db.\+Repositories.\+Azure\+Repo
 \begin{DoxyCompactItemize}
 \item 
 override T\+Data \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository_a22c58163e101a6cb80f891bed6114380_a22c58163e101a6cb80f891bed6114380}{Load} (Guid rsn, bool throw\+Exception\+On\+Missing\+Entity=true)
-\begin{DoxyCompactList}\small\item\em Load the {\itshape T\+Data}  from storage identified by the provided {\itshape rsn} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Load the {\itshape T\+Data}  from \hyperlink{namespaceCqrs_1_1Azure}{Azure} Document\+DB (Cosmos\+DB) identified by the provided {\itshape rsn} . \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository_a0cd5703c46fde3eeefcb02b1d0113640_a0cd5703c46fde3eeefcb02b1d0113640}{Azure\+Repository} (Func$<$ \hyperlink{interfaceCqrs_1_1DataStores_1_1IDataStore}{I\+Data\+Store}$<$ T\+Data $>$$>$ create\+Data\+Store\+Function, T\+Query\+Builder query\+Builder)
-\item 
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository_a0cd5703c46fde3eeefcb02b1d0113640_a0cd5703c46fde3eeefcb02b1d0113640}{Azure\+Repository$<$\+T\+Query\+Strategy,\+T\+Query\+Builder,\+T\+Data$>$} \end{DoxyCompactList}\item 
 override I\+Queryable$<$ T\+Data $>$ \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository_ac9ceeed80a02ced9a45b3443cd1f453f_ac9ceeed80a02ced9a45b3443cd1f453f}{Create\+Queryable} (Expression$<$ Func$<$ T\+Data, bool $>$$>$ predicate)
-\begin{DoxyCompactList}\small\item\em Calls \hyperlink{classCqrs_1_1Repositories_1_1Repository_ae15cee6394a223564ad2ead65cd30189_ae15cee6394a223564ad2ead65cd30189}{Create\+Data\+Store\+Function} passing the {\itshape predicate} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Calls Repository$<$\+T\+Query\+Strategy,\+T\+Query\+Builder,\+T\+Data$>$.\+Create\+Data\+Store\+Function passing the {\itshape predicate} . \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Provides basic repository methods for operations with an I\+Data\+Store$<$\+T\+Data$>$ using \hyperlink{namespaceCqrs_1_1Azure}{Azure} Document\+DB (Cosmos\+DB). 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Query\+Strategy} & The Type of I\+Query\+Strategy.\\
+\hline
+{\em T\+Query\+Builder} & The Type of the \hyperlink{classCqrs_1_1Repositories_1_1Repository_a4447451b7dbcfcd68dfa3fa65a41f357_a4447451b7dbcfcd68dfa3fa65a41f357}{Query\+Builder$<$\+T\+Query\+Strategy, T\+Data$>$} that will be used to build queries.\\
+\hline
+{\em T\+Data} & The Type of data held in storage.\\
+\hline
+\end{DoxyTemplParams}
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Query\+Strategy} : {\em I\+Query\+Strategy}]\item[{\em T\+Query\+Builder} : {\em \hyperlink{classCqrs_1_1Repositories_1_1Repository_a4447451b7dbcfcd68dfa3fa65a41f357_a4447451b7dbcfcd68dfa3fa65a41f357}{Query\+Builder}}]\item[{\em T\+Query\+Builder} : {\em T\+Query\+Strategy}]\item[{\em T\+Query\+Builder} : {\em T\+Data}]\item[{\em T\+Data} : {\em Azure\+Document\+Db\+Entity}]\end{description}
+\end{Desc}
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -27,6 +50,10 @@ override I\+Queryable$<$ T\+Data $>$ \hyperlink{classCqrs_1_1Azure_1_1DocumentDb
 \index{Azure\+Repository@{Azure\+Repository}!Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Repositories\+::\+Azure\+Repository@{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Repositories\+::\+Azure\+Repository}}
 \subsubsection{\texorpdfstring{Azure\+Repository()}{AzureRepository()}}
 {\footnotesize\ttfamily \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository}{Cqrs.\+Azure.\+Document\+Db.\+Repositories.\+Azure\+Repository}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.\hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository}{Azure\+Repository} (\begin{DoxyParamCaption}\item[{Func$<$ \hyperlink{interfaceCqrs_1_1DataStores_1_1IDataStore}{I\+Data\+Store}$<$ T\+Data $>$$>$}]{create\+Data\+Store\+Function,  }\item[{T\+Query\+Builder}]{query\+Builder }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Instantiates a new instance of \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository_a0cd5703c46fde3eeefcb02b1d0113640_a0cd5703c46fde3eeefcb02b1d0113640}{Azure\+Repository$<$\+T\+Query\+Strategy,\+T\+Query\+Builder,\+T\+Data$>$} 
 
 
 
@@ -39,7 +66,7 @@ override I\+Queryable$<$ T\+Data $>$ \hyperlink{classCqrs_1_1Azure_1_1DocumentDb
 
 
 
-Calls \hyperlink{classCqrs_1_1Repositories_1_1Repository_ae15cee6394a223564ad2ead65cd30189_ae15cee6394a223564ad2ead65cd30189}{Create\+Data\+Store\+Function} passing the {\itshape predicate} . 
+Calls Repository$<$\+T\+Query\+Strategy,\+T\+Query\+Builder,\+T\+Data$>$.\+Create\+Data\+Store\+Function passing the {\itshape predicate} . 
 
 
 \begin{DoxyParams}{Parameters}
@@ -58,7 +85,7 @@ Reimplemented from \hyperlink{classCqrs_1_1Repositories_1_1Repository_ab95fc66b2
 
 
 
-Load the {\itshape T\+Data}  from storage identified by the provided {\itshape rsn} . 
+Load the {\itshape T\+Data}  from \hyperlink{namespaceCqrs_1_1Azure}{Azure} Document\+DB (Cosmos\+DB) identified by the provided {\itshape rsn} . 
 
 
 \begin{DoxyParams}{Parameters}

@@ -1,7 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1Handlers_1_1HelloWorldRepliedToSendEndConversationCommandEventHandler_1_1Actor_ab31bff19e0665a0f5057ba508d874cff.html#ab31bff19e0665a0f5057ba508d874cff":[1,0,0,0,4,0,2,0,3,0,2],
-"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1Handlers_1_1HelloWorldRepliedToSendEndConversationCommandEventHandler_a0befe6ff4cac9d9c4c6898320d4826ab.html#a0befe6ff4cac9d9c4c6898320d4826ab":[1,0,0,0,4,0,2,0,3,1],
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1Handlers_1_1HelloWorldRepliedToSendEndConversationCommandEventHandler_a627ab1180114304102fa7b11ab838fac.html#a627ab1180114304102fa7b11ab838fac":[1,0,0,0,4,0,2,0,3,3],
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1Handlers_1_1HelloWorldRepliedToSendEndConversationCommandEventHandler_af25c19f15c65e673f91eef4b1643c27f.html#af25c19f15c65e673f91eef4b1643c27f":[1,0,0,0,4,0,2,0,3,2],
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1Handlers_1_1HelloWorldSaidEventHandler.html":[1,0,0,0,4,0,2,0,4],
@@ -249,5 +247,7 @@ var NAVTREEINDEX1 =
 "classCqrs_1_1Azure_1_1BlobStorage_1_1TableEntity_aa36736f412df5a1667d7b0e5c0bd3035.html#aa36736f412df5a1667d7b0e5c0bd3035":[1,0,0,2,0,15,1],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1TableEntity_ab7a9041c7d8e5237cfb81ad98b6b3980.html#ab7a9041c7d8e5237cfb81ad98b6b3980":[1,0,0,2,0,15,4],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1TableEntity_af7467b1194756dd32029dc40f690c4ad.html#af7467b1194756dd32029dc40f690c4ad":[1,0,0,2,0,15,3],
-"classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore.html":[1,0,0,2,0,16]
+"classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore.html":[1,0,0,2,0,16],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStoreExtensions.html":[1,0,0,2,0,17],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStoreExtensions_a31a5a94e2caf554d17cde68d274a57c2.html#a31a5a94e2caf554d17cde68d274a57c2":[1,0,0,2,0,17,1]
 };
