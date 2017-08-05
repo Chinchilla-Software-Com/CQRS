@@ -36,7 +36,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 
 		public virtual IEnumerable<string> GetWritableConnectionStrings()
 		{
-			Logger.LogDebug("Getting table storage writable connection strings", "TableStorageEventStoreConnectionStringFactory\\GetWritableConnectionStrings");
+			Logger.LogDebug("Getting table storage writeable connection strings", "TableStorageEventStoreConnectionStringFactory\\GetWritableConnectionStrings");
 			try
 			{
 				var collection = new List<string> ();
@@ -69,7 +69,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 			}
 			finally
 			{
-				Logger.LogDebug("Getting table storage writable connection string... Done", "TableStorageEventStoreConnectionStringFactory\\GetWritableConnectionStrings");
+				Logger.LogDebug("Getting table storage writeable connection string... Done", "TableStorageEventStoreConnectionStringFactory\\GetWritableConnectionStrings");
 			}
 		}
 

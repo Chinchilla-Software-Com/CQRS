@@ -23,6 +23,9 @@ using Newtonsoft.Json;
 
 namespace Cqrs.Azure.BlobStorage
 {
+	/// <summary>
+	/// A <see cref="IEnumerable{TData}"/> that uses Azure Storage for storage.
+	/// </summary>
 	public abstract class StorageStore<TData, TSource>
 		: IEnumerable<TData>
 	{

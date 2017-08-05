@@ -13,16 +13,25 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
 using Cqrs.DataStores;
+using Cqrs.Entities;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Cqrs.Azure.BlobStorage
 {
+	/// <summary>
+	/// A <see cref="IDataStore{TData}"/> that uses Azure Storage for storage.
+	/// </summary>
+	/// <typeparam name="TData">The <see cref="Type"/> of <see cref="TableEntity"/> Azure Table Storage will contain.</typeparam>
+	/// <typeparam name="TCollectionItemData">The <see cref="Type"/> of <see cref="IEntity"/> the <see cref="IDataStore{TData}"/> will contain.</typeparam>
 	public abstract class TableStorageStore<TData, TCollectionItemData>
 		: StorageStore<TData, CloudTable>
 		, IDataStore<TCollectionItemData>
 		where TData : TableEntity, new()
 	{
+		/// <summary>
+		/// Gets or set the <see cref="TableQuery"/>.
+		/// </summary>
 		public TableQuery<TData> Collection { get; private set; }
 
 		/// <summary>
@@ -144,6 +153,9 @@ namespace Cqrs.Azure.BlobStorage
 
 		#region Implementation of IDataStore<TData>
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public override void Add(TData data)
 		{
 			Add(data);
@@ -181,6 +193,9 @@ namespace Cqrs.Azure.BlobStorage
 			);
 		}
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public override void Add(IEnumerable<TData> data)
 		{
 			Add(data);
@@ -213,6 +228,9 @@ namespace Cqrs.Azure.BlobStorage
 			);
 		}
 
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
 		public override void Destroy(TData data)
 		{
 			AsyncSaveData
@@ -297,6 +315,9 @@ namespace Cqrs.Azure.BlobStorage
 			Destroy((TData)CreateTableEntity(data));
 		}
 
+		/// <summary>
+		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+		/// </summary>
 		public override void RemoveAll()
 		{
 			foreach (Tuple<CloudStorageAccount, CloudTable> tuple in WritableCollection)
@@ -308,6 +329,9 @@ namespace Cqrs.Azure.BlobStorage
 			Update((TData)CreateTableEntity(data));
 		}
 
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
 		public override void Update(TData data)
 		{
 			AsyncSaveData
@@ -381,6 +405,9 @@ namespace Cqrs.Azure.BlobStorage
 			return table;
 		}
 
+		/// <summary>
+		/// Retrieves the data from Azure Storage using <see cref="Collection"/>.
+		/// </summary>
 		public virtual TData GetByKeyAndRow(Guid rsn)
 		{
 			// Create the table query.
@@ -397,6 +424,9 @@ namespace Cqrs.Azure.BlobStorage
 			return ReadableSource.ExecuteQuery(rangeQuery).Single();
 		}
 
+		/// <summary>
+		/// Retrieves the data from Azure Storage using <see cref="Collection"/>.
+		/// </summary>
 		public virtual IEnumerable<TData> GetByKey()
 		{
 			// Create the table query.
@@ -408,6 +438,15 @@ namespace Cqrs.Azure.BlobStorage
 			return ReadableSource.ExecuteQuery(rangeQuery);
 		}
 
+		/// <summary>
+		/// Extracts <see cref="TableResult.Result"/> of the provided <paramref name="retrievedResult"/>
+		/// If <see cref="TableResult.Result"/> is a <see cref="IEventDataTableEntity{TData}"/>
+		/// then <see cref="IEventDataTableEntity{TEventData}.EventData"/> is replaced with <paramref name="data"/>.
+		/// Otherwise <see cref="TableResult.Result"/> is a <see cref="IEntityTableEntity{TCollectionItemData}"/>
+		/// and <see cref="IEntityTableEntity{TCollectionItemData}.Entity"/> is replaced with <paramref name="data"/>.
+		/// </summary>
+		/// <param name="retrievedResult">The existing data to update.</param>
+		/// <param name="data">The new data to store.</param>
 		protected virtual ITableEntity ReplaceValues(TableResult retrievedResult, TData data)
 		{
 			ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;

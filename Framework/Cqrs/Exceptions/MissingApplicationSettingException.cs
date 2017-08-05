@@ -28,6 +28,29 @@ namespace Cqrs.Exceptions
 		}
 
 		/// <summary>
+		/// Instantiate a new instance of <see cref="MissingApplicationSettingException"/> with a specified error message.
+		/// </summary>
+		/// <param name="appSettingKey">The key of the app setting that is missing.</param>
+		/// <param name="message">The message that describes the error.</param>
+		public MissingApplicationSettingException(string appSettingKey, string message)
+			: base(message)
+		{
+			AppSettingKey = appSettingKey;
+		}
+
+		/// <summary>
+		/// Instantiate a new instance of <see cref="MissingApplicationSettingException"/> with a specified error message and  and a reference to the inner <paramref name="exception"/> that is the cause of this <see cref="Exception"/>
+		/// </summary>
+		/// <param name="appSettingKey">The key of the app setting that is missing.</param>
+		/// <param name="message">The message that describes the error.</param>
+		/// <param name="exception">The <see cref="Exception"/> that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner <see cref="Exception"/> is specified.</param>
+		public MissingApplicationSettingException(string appSettingKey, string message, Exception exception)
+			: base(message, exception)
+		{
+			AppSettingKey = appSettingKey;
+		}
+
+		/// <summary>
 		/// Instantiate a new instance of <see cref="MissingApplicationSettingException"/>.
 		/// </summary>
 		/// <param name="appSettingKey">The key of the app setting that is missing.</param>
@@ -37,6 +60,7 @@ namespace Cqrs.Exceptions
 		{
 			AppSettingKey = appSettingKey;
 		}
+
 		/// <summary>
 		/// Instantiate a new instance of <see cref="MissingApplicationSettingException"/> and a reference to the inner <paramref name="exception"/> that is the cause of this <see cref="Exception"/>.
 		/// </summary>

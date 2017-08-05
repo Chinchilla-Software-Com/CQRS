@@ -10,18 +10,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using cdmdotnet.Logging;
+using Cqrs.Domain;
 using Cqrs.Events;
+using Cqrs.Messages;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Cqrs.Azure.BlobStorage.Events
 {
+	/// <summary>
+	/// An Azure Storage based <see cref="EventStore{TAuthenticationToken}"/>.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class TableStorageEventStore<TAuthenticationToken>
 		: EventStore<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The pattern used to generate the stream name.
+		/// </summary>
 		protected const string TableCqrsEventStoreStreamNamePattern = "{0}.{1}";
 
+		/// <summary>
+		/// Gets or sets the underlying <see cref="TableStorageStore"/> used for persisting and reading <see cref="IEvent{TAuthenticationToken}"/> data.
+		/// </summary>
 		protected RawTableStorageEventStore TableStorageStore { get; set; }
 
+		/// <summary>
+		/// Gets or sets the underlying <see cref="TableStorageStore"/> used specifically for <see cref="Get(Guid)"/>.
+		/// </summary>
 		protected RawTableStorageEventStore CorrelationIdTableStorageStore { get; set; }
 
 		/// <summary>
@@ -43,6 +58,13 @@ namespace Cqrs.Azure.BlobStorage.Events
 			return string.Format(TableCqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 		}
 
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
+		/// <param name="fromVersion">Load events starting from this version</param>
 		public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			string streamName = GenerateStreamName(aggregateRootType, aggregateId);
@@ -66,6 +88,10 @@ namespace Cqrs.Azure.BlobStorage.Events
 				.ToList();
 		}
 
+		/// <summary>
+		/// Get all <see cref="IEvent{TAuthenticationToken}"/> instances for the given <paramref name="correlationId"/>.
+		/// </summary>
+		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
 		public override IEnumerable<EventData> Get(Guid correlationId)
 		{
 			// Create the table query.
@@ -81,6 +107,10 @@ namespace Cqrs.Azure.BlobStorage.Events
 				return query.ToList();
 		}
 
+		/// <summary>
+		/// Persist the provided <paramref name="eventData"/> into storage.
+		/// </summary>
+		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
 		protected override void PersistEvent(EventData eventData)
 		{
 			Logger.LogDebug("Adding data to the table storage event-store aggregate folder", "TableStorageStore\\Add");
@@ -91,11 +121,18 @@ namespace Cqrs.Azure.BlobStorage.Events
 
 		#endregion
 
+		/// <summary>
+		/// An Azure Storage based <see cref="TableStorageStore{TData,TCollectionItemData}"/>.
+		/// </summary>
 		public class RawTableStorageEventStore
 			: TableStorageStore<EventDataTableEntity<EventData>, EventData>
 		{
 			private string TableName { get; set; }
 
+			/// <summary>
+			/// Indicates if this is a <see cref="TableStorageStore{TData,TCollectionItemData}"/>
+			/// for <see cref="IEventStore{TAuthenticationToken}.Get(Guid)"/>
+			/// </summary>
 			protected bool IsCorrelationIdTableStorageStore { get; set; }
 
 			/// <summary>
@@ -117,6 +154,11 @@ namespace Cqrs.Azure.BlobStorage.Events
 
 			#region Overrides of StorageStore<EventData,CloudTable>
 
+			/// <summary>
+			/// Returns <see cref="TableName"/>.
+			/// </summary>
+			/// <param name="sourceName">Is not used.</param>
+			/// <returns><see cref="TableName"/></returns>
 			protected override string GetSafeSourceName(string sourceName)
 			{
 				return TableName;
@@ -126,6 +168,9 @@ namespace Cqrs.Azure.BlobStorage.Events
 
 			#region Overrides of TableStorageStore<EventData>
 
+			/// <summary>
+			/// Creates a new <see cref="EventDataTableEntity{TEventData}"/>.
+			/// </summary>
 			protected override ITableEntity CreateTableEntity(EventData data)
 			{
 				return new EventDataTableEntity<EventData>(data, IsCorrelationIdTableStorageStore);
