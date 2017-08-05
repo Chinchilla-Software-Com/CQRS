@@ -31,9 +31,9 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryLo">25.0 %</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -64,37 +64,57 @@
 <span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
 <span class="lineNum">       7 </span>            : #endregion
 <span class="lineNum">       8 </span>            : 
-<span class="lineNum">       9 </span>            : using Cqrs.Configuration;
-<span class="lineNum">      10 </span>            : using cdmdotnet.Logging;
-<span class="lineNum">      11 </span>            : 
-<span class="lineNum">      12 </span>            : namespace Cqrs.Azure.Storage.DataStores
-<span class="lineNum">      13 </span>            : {
-<span class="lineNum">      14 </span>            :         public class TableStorageDataStoreConnectionStringFactory&lt;TData&gt; : BlobStorage.DataStores.TableStorageDataStoreConnectionStringFactory
-<span class="lineNum">      15 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      16 </span><span class="lineNoCov">          0 :                 public TableStorageDataStoreConnectionStringFactory(IConfigurationManager configurationManager, ILogger logger)</span>
-<span class="lineNum">      17 </span>            :                         : base(configurationManager, logger)
-<span class="lineNum">      18 </span>            :                 {
-<span class="lineNum">      19 </span>            :                 }
-<span class="lineNum">      20 </span>            : 
-<span class="lineNum">      21 </span>            :                 #region Overrides of TableStorageDataStoreConnectionStringFactory
-<span class="lineNum">      22 </span>            : 
-<span class="lineNum">      23 </span><span class="lineNoCov">          0 :                 public override string GetContainerName()</span>
-<span class="lineNum">      24 </span>            :                 {
-<span class="lineNum">      25 </span>            :                         return GetTableName&lt;TData&gt;();
-<span class="lineNum">      26 </span>            :                 }
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span>            :                 /// &lt;remarks&gt;https://blogs.msdn.microsoft.com/jmstall/2014/06/12/azure-storage-naming-rules/&lt;/remarks&gt;
-<span class="lineNum">      29 </span><span class="lineCov">          1 :                 public override string GetTableName&lt;TData1&gt;()</span>
-<span class="lineNum">      30 </span>            :                 {
-<span class="lineNum">      31 </span>            :                         string tableName = base.GetTableName&lt;TData&gt;();
-<span class="lineNum">      32 </span>            :                         if (tableName.Length &gt; 34)
-<span class="lineNum">      33 </span>            :                                 tableName = tableName.Substring(tableName.Length - 34);
-<span class="lineNum">      34 </span>            :                         return string.Format(&quot;{0}V2&quot;, tableName);
-<span class="lineNum">      35 </span>            :                 }
-<span class="lineNum">      36 </span>            : 
-<span class="lineNum">      37 </span>            :                 #endregion
-<span class="lineNum">      38 </span>            :         }
-<span class="lineNum">      39 </span>            : }
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      11 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      12 </span>            : using Cqrs.Azure.BlobStorage.DataStores;
+<span class="lineNum">      13 </span>            : using Cqrs.DataStores;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : namespace Cqrs.Azure.Storage.DataStores
+<span class="lineNum">      16 </span>            : {
+<span class="lineNum">      17 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      18 </span>            :         /// A factory for getting connection strings and container names for &lt;see cref=&quot;IDataStore{TData}&quot;/&gt; access.
+<span class="lineNum">      19 </span>            :         /// This factory supports reading and writing from separate storage accounts. Specifically you can have as many different storage accounts as you want to configure when writing.
+<span class="lineNum">      20 </span>            :         /// This allows for manual mirroring of data while reading from the fastest/closest location possible.
+<span class="lineNum">      21 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      22 </span>            :         public class TableStorageDataStoreConnectionStringFactory&lt;TData&gt; : TableStorageDataStoreConnectionStringFactory
+<span class="lineNum">      23 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      24 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      25 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;TableStorageDataStoreConnectionStringFactory{TData}&quot;/&gt;.
+<span class="lineNum">      26 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      27 </span><span class="lineCov">          1 :                 public TableStorageDataStoreConnectionStringFactory(IConfigurationManager configurationManager, ILogger logger)</span>
+<span class="lineNum">      28 </span>            :                         : base(configurationManager, logger)
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                 }
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :                 #region Overrides of TableStorageDataStoreConnectionStringFactory
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      35 </span>            :                 /// Returns &lt;see cref=&quot;GetTableName{TData1}&quot;/&gt;.
+<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      37 </span>            :                 /// &lt;returns&gt;&lt;see cref=&quot;GetTableName{TData1}&quot;/&gt;&lt;/returns&gt;
+<span class="lineNum">      38 </span><span class="lineCov">          1 :                 public override string GetContainerName()</span>
+<span class="lineNum">      39 </span>            :                 {
+<span class="lineNum">      40 </span>            :                         return GetTableName&lt;TData&gt;();
+<span class="lineNum">      41 </span>            :                 }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      44 </span>            :                 /// Generates the name of the table for &lt;typeparamref name=&quot;TData1&quot;/&gt; that matches naming rules for Azure Storage.
+<span class="lineNum">      45 </span>            :                 /// The value differs from &lt;see cref=&quot;TableStorageDataStoreConnectionStringFactory.GetTableName{TData}&quot;/&gt; in that it appends &quot;V2&quot; to the end of the table name.
+<span class="lineNum">      46 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      47 </span>            :                 /// &lt;typeparam name=&quot;TData1&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of data to read or write.&lt;/typeparam&gt;
+<span class="lineNum">      48 </span>            :                 /// &lt;remarks&gt;https://blogs.msdn.microsoft.com/jmstall/2014/06/12/azure-storage-naming-rules/&lt;/remarks&gt;
+<span class="lineNum">      49 </span><span class="lineCov">          1 :                 public override string GetTableName&lt;TData1&gt;()</span>
+<span class="lineNum">      50 </span>            :                 {
+<span class="lineNum">      51 </span>            :                         string tableName = base.GetTableName&lt;TData&gt;();
+<span class="lineNum">      52 </span>            :                         if (tableName.Length &gt; 34)
+<span class="lineNum">      53 </span>            :                                 tableName = tableName.Substring(tableName.Length - 34);
+<span class="lineNum">      54 </span>            :                         return string.Format(&quot;{0}V2&quot;, tableName);
+<span class="lineNum">      55 </span>            :                 }
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 #endregion
+<span class="lineNum">      58 </span>            :         }
+<span class="lineNum">      59 </span>            : }
 </pre>
       </td>
     </tr>

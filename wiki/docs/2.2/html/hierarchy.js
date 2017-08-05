@@ -28,9 +28,6 @@ var hierarchy =
     [ "Cqrs.Services.BasicServiceParameterResolver< TServiceParameter, TSingleSignOnTokenResolver >", "classCqrs_1_1Services_1_1BasicServiceParameterResolver.html", [
       [ "Cqrs.Services.ServiceParameterResolver< TServiceParameter, TSingleSignOnTokenResolver >", "classCqrs_1_1Services_1_1ServiceParameterResolver.html", null ]
     ] ],
-    [ "TableStorageEventStoreRawTableStorageEventStore", null, [
-      [ "Cqrs.Azure.Storage.Events.TableStorageEventStore< TAuthenticationToken >.RawTableStorageEventStore", "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStore.html", null ]
-    ] ],
     [ "Cqrs.Azure.BlobStorage.BlobStorageStore< EventData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore.html", [
       [ "Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore< TAuthenticationToken >.RawBlobStorageEventStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_1_1RawBlobStorageEventStore.html", null ]
     ] ],
@@ -103,9 +100,7 @@ var hierarchy =
       ] ],
       [ "Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory", "interfaceCqrs_1_1Azure_1_1BlobStorage_1_1ITableStorageStoreConnectionStringFactory.html", [
         [ "Cqrs.Azure.BlobStorage.DataStores.ITableStorageDataStoreConnectionStringFactory", "interfaceCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1ITableStorageDataStoreConnectionStringFactory.html", [
-          [ "Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1TableStorageDataStoreConnectionStringFactory.html", [
-            [ "Cqrs.Azure.Storage.DataStores.TableStorageDataStoreConnectionStringFactory< TData >", "classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStoreConnectionStringFactory.html", null ]
-          ] ]
+          [ "Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1TableStorageDataStoreConnectionStringFactory.html", null ]
         ] ],
         [ "Cqrs.Azure.BlobStorage.Events.TableStorageEventStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory.html", null ]
       ] ]
@@ -878,6 +873,9 @@ var hierarchy =
     [ "Cqrs.Entities.Range< int >", "classCqrs_1_1Entities_1_1Range.html", [
       [ "Cqrs.Entities.IntegerRange", "classCqrs_1_1Entities_1_1IntegerRange.html", null ]
     ] ],
+    [ "RawTableStorageEventStore", null, [
+      [ "Cqrs.Azure.Storage.Events.TableStorageEventStore< TAuthenticationToken >.RawTableStorageEventStorer", "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer.html", null ]
+    ] ],
     [ "ReceiveActor", null, [
       [ "Cqrs.Akka.Commands.AkkaCommandBusProxy< TAuthenticationToken >.BusActor", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBusProxy_1_1BusActor.html", null ],
       [ "Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher< TAuthenticationToken, TTarget >", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher.html", null ],
@@ -914,6 +912,9 @@ var hierarchy =
     ] ],
     [ "Cqrs.Azure.BlobStorage.TableEntity< TEventData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1TableEntity.html", [
       [ "Cqrs.Azure.BlobStorage.EventDataTableEntity< TEventData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1EventDataTableEntity.html", null ]
+    ] ],
+    [ "TableStorageDataStoreConnectionStringFactory", null, [
+      [ "Cqrs.Azure.Storage.DataStores.TableStorageDataStoreConnectionStringFactory< TData >", "classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStoreConnectionStringFactory.html", null ]
     ] ],
     [ "Cqrs.Azure.BlobStorage.TableStorageStore< EntityTableEntity< TData >, TData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore.html", [
       [ "Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore< TData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1TableStorageDataStore.html", [
