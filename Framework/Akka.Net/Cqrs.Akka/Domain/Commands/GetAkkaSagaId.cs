@@ -6,8 +6,13 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using Cqrs.Domain;
+
 namespace Cqrs.Akka.Domain.Commands
 {
+	/// <summary>
+	/// Get the <see cref="ISaga{TAuthenticationToken}.Id"/> from the Akka.net system.
+	/// </summary>
 	public class GetAkkaSagaId
 	{
 	}
