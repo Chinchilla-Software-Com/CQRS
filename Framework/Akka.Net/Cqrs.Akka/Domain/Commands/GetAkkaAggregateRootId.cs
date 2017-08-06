@@ -6,8 +6,13 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using Cqrs.Domain;
+
 namespace Cqrs.Akka.Domain.Commands
 {
+	/// <summary>
+	/// Get the <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> from the Akka.net system.
+	/// </summary>
 	public class GetAkkaAggregateRootId
 	{
 	}
