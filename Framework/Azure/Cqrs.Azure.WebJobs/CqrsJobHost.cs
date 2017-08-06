@@ -18,8 +18,14 @@ namespace Cqrs.Azure.WebJobs
 	/// </summary>
 	public abstract class CqrsJobHost<TAuthenticationToken> : TelemetryCoreHost<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The <see cref="CoreHost"/> that gets executed by the Azure WebJob.
+		/// </summary>
 		protected static CoreHost<TAuthenticationToken> CoreHost { get; set; }
 
+		/// <summary>
+		/// An <see cref="Action"/> that is execute pre <see cref="JobHost.RunAndBlock"/>.
+		/// </summary>
 		protected static Action PreRunAndBlockAction { get; set; }
 
 		/// <remarks>
