@@ -1,9 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStoreExtensions_a773bb93cb6a1f7a5d8d0ff2bf245c655.html#a773bb93cb6a1f7a5d8d0ff2bf245c655":[1,0,0,2,0,17,0],
-"classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore_a0b408504b9553b9c649b7186a382052a.html#a0b408504b9553b9c649b7186a382052a":[1,0,0,2,0,16,11],
-"classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore_a120c6fbb947cf4d37f60335df0182008.html#a120c6fbb947cf4d37f60335df0182008":[1,0,0,2,0,16,4],
-"classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore_a1308b107766a375b7b8dcc92d9080393.html#a1308b107766a375b7b8dcc92d9080393":[1,0,0,2,0,16,16],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore_a168a634f7f55bd264e01bd7e0f1f9f15.html#a168a634f7f55bd264e01bd7e0f1f9f15":[1,0,0,2,0,16,9],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore_a1a1dcf73501d4e7fc23e8137627de6f7.html#a1a1dcf73501d4e7fc23e8137627de6f7":[1,0,0,2,0,16,7],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore_a1ad02e710a3fe1d794d99db332c351dc.html#a1ad02e710a3fe1d794d99db332c351dc":[1,0,0,2,0,16,10],
@@ -249,5 +245,9 @@ var NAVTREEINDEX2 =
 "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a11645c85a3c749ca664480867c6fae3c.html#a11645c85a3c749ca664480867c6fae3c":[1,0,0,2,4,9,16],
 "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35.html#a1b12b47dbb9b9afe2014477a2e457c35":[1,0,0,2,4,9,19],
 "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a286a7ddc6becff4d549434d2abe82ed1.html#a286a7ddc6becff4d549434d2abe82ed1":[1,0,0,2,4,9,24],
-"classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b102538e8b72f9990578fa3bcbe4c12.html#a2b102538e8b72f9990578fa3bcbe4c12":[1,0,0,2,4,9,31]
+"classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b102538e8b72f9990578fa3bcbe4c12.html#a2b102538e8b72f9990578fa3bcbe4c12":[1,0,0,2,4,9,31],
+"classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a36b035065fd3fc38ac136adc59742d34.html#a36b035065fd3fc38ac136adc59742d34":[1,0,0,2,4,9,26],
+"classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3747fb9fcb3de2a72c8a6d7bbd92db95.html#a3747fb9fcb3de2a72c8a6d7bbd92db95":[1,0,0,2,4,9,6],
+"classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3ef1f56ad3de3bf8337f68e73627fab2.html#a3ef1f56ad3de3bf8337f68e73627fab2":[1,0,0,2,4,9,28],
+"classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a4cf19edac088c5ea74408398b3dfd4a2.html#a4cf19edac088c5ea74408398b3dfd4a2":[1,0,0,2,4,9,32]
 };

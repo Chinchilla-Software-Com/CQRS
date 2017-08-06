@@ -6,7 +6,6 @@ var searchData=
   ['aggregateoreventmissingidexception',['AggregateOrEventMissingIdException',['../classCqrs_1_1Domain_1_1Exceptions_1_1AggregateOrEventMissingIdException.html',1,'Cqrs::Domain::Exceptions']]],
   ['aggregaterepository',['AggregateRepository',['../classCqrs_1_1Domain_1_1AggregateRepository.html',1,'Cqrs::Domain']]],
   ['aggregateroot',['AggregateRoot',['../classCqrs_1_1Domain_1_1AggregateRoot.html',1,'Cqrs::Domain']]],
-  ['akkaaggregatefactory',['AkkaAggregateFactory',['../classCqrs_1_1Akka_1_1Domain_1_1Factories_1_1AkkaAggregateFactory.html',1,'Cqrs::Akka::Domain::Factories']]],
   ['akkaaggregaterepository',['AkkaAggregateRepository',['../classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository.html',1,'Cqrs::Akka::Domain']]],
   ['akkaaggregateroot',['AkkaAggregateRoot',['../classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot.html',1,'Cqrs::Akka::Domain']]],
   ['akkaaggregateroot_3c_20guid_20_3e',['AkkaAggregateRoot&lt; Guid &gt;',['../classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot.html',1,'Cqrs::Akka::Domain']]],

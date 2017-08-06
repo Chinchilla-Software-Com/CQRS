@@ -241,9 +241,7 @@ var hierarchy =
     [ "Cqrs.Configuration.ITelemetryHelperExtensions", "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions.html", null ],
     [ "Cqrs.DataStores.SqlDataStoreExtension", "classCqrs_1_1DataStores_1_1SqlDataStoreExtension.html", null ],
     [ "Cqrs.Domain.Factories.IAggregateFactory", "interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory.html", [
-      [ "Cqrs.Domain.Factories.AggregateFactory", "classCqrs_1_1Domain_1_1Factories_1_1AggregateFactory.html", [
-        [ "Cqrs.Akka.Domain.Factories.AkkaAggregateFactory< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1Factories_1_1AkkaAggregateFactory.html", null ]
-      ] ]
+      [ "Cqrs.Domain.Factories.AggregateFactory", "classCqrs_1_1Domain_1_1Factories_1_1AggregateFactory.html", null ]
     ] ],
     [ "Cqrs.Domain.IAggregateRepository< TAuthenticationToken >", "interfaceCqrs_1_1Domain_1_1IAggregateRepository.html", [
       [ "Cqrs.Akka.Domain.IAkkaAggregateRepository< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository.html", [

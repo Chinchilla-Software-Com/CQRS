@@ -1,9 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"classCqrs_1_1Snapshots_1_1SnapshotRepository_a1328c103474b2b394b7af61a24455a65.html#a1328c103474b2b394b7af61a24455a65":[1,0,0,21,5,4],
-"classCqrs_1_1Snapshots_1_1SnapshotRepository_a34f46341da207beab43bb96b20514976.html#a34f46341da207beab43bb96b20514976":[1,0,0,21,5,6],
-"classCqrs_1_1Snapshots_1_1SnapshotRepository_a64b1457cd45056fb7affd2aa8cd07d9e.html#a64b1457cd45056fb7affd2aa8cd07d9e":[1,0,0,21,5,7],
-"classCqrs_1_1Snapshots_1_1SnapshotRepository_a7d65b4df10d0b6f75c911a9b6d59b3ba.html#a7d65b4df10d0b6f75c911a9b6d59b3ba":[1,0,0,21,5,9],
 "classCqrs_1_1Snapshots_1_1SnapshotRepository_a833748fa79fd234067b61927c57bc60f.html#a833748fa79fd234067b61927c57bc60f":[1,0,0,21,5,5],
 "classCqrs_1_1Snapshots_1_1SnapshotRepository_aac1a574562f8c6134d02a44cd10b8afa.html#aac1a574562f8c6134d02a44cd10b8afa":[1,0,0,21,5,2],
 "classCqrs_1_1Snapshots_1_1SnapshotRepository_aba01e9f20eb41e6f3e4476a7f3182275.html#aba01e9f20eb41e6f3e4476a7f3182275":[1,0,0,21,5,8],
@@ -203,8 +199,8 @@ var NAVTREEINDEX8 =
 "classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_ae3870009eab2cb1bf22b447d9fa51ec8.html#ae3870009eab2cb1bf22b447d9fa51ec8":[1,0,2,0,0,3],
 "classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_af216b6d4045dc5bb33fc0c4c36b7a67e.html#af216b6d4045dc5bb33fc0c4c36b7a67e":[1,0,2,0,0,0],
 "classes.html":[1,1],
-"functions.html":[1,3,0,0],
 "functions.html":[1,3,0],
+"functions.html":[1,3,0,0],
 "functions_a.html":[1,3,0,1],
 "functions_b.html":[1,3,0,2],
 "functions_c.html":[1,3,0,3],
@@ -249,5 +245,9 @@ var NAVTREEINDEX8 =
 "functions_prop.html":[1,3,4],
 "functions_prop_a.html":[1,3,4,1],
 "functions_prop_b.html":[1,3,4,2],
-"functions_prop_c.html":[1,3,4,3]
+"functions_prop_c.html":[1,3,4,3],
+"functions_prop_d.html":[1,3,4,4],
+"functions_prop_e.html":[1,3,4,5],
+"functions_prop_f.html":[1,3,4,6],
+"functions_prop_g.html":[1,3,4,7]
 };

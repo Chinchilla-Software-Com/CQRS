@@ -1,9 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"classCqrs_1_1EventStore_1_1EventStore_ab1184aea49c7b0009a8f27d38f585952.html#ab1184aea49c7b0009a8f27d38f585952":[1,0,0,11,2,10],
-"classCqrs_1_1EventStore_1_1EventStore_ab48ad2c9d72780ae3a662e213498f194.html#ab48ad2c9d72780ae3a662e213498f194":[1,0,0,11,2,0],
-"classCqrs_1_1EventStore_1_1EventStore_adce33037e2a3eb81cfccded42ba2ed35.html#adce33037e2a3eb81cfccded42ba2ed35":[1,0,0,11,2,5],
-"classCqrs_1_1EventStore_1_1EventStore_add7396a800fe8f64c61406311e8fee1d.html#add7396a800fe8f64c61406311e8fee1d":[1,0,0,11,2,4],
 "classCqrs_1_1EventStore_1_1EventStore_ae1bc9d364582e951ccdc0f91908b94a2.html#ae1bc9d364582e951ccdc0f91908b94a2":[1,0,0,11,2,8],
 "classCqrs_1_1EventStore_1_1EventStore_ae9733f8511daf86ae3dac78bcbc5b2f0.html#ae9733f8511daf86ae3dac78bcbc5b2f0":[1,0,0,11,2,7],
 "classCqrs_1_1EventStore_1_1ProjectionReader.html":[1,0,0,11,7],
@@ -249,5 +245,9 @@ var NAVTREEINDEX5 =
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_a90c864fa4298dc679abe4e264d17cf04.html#a90c864fa4298dc679abe4e264d17cf04":[1,0,0,17,2,4,3],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_ae551f6493cce791272dcbfbedf8c18bf.html#ae551f6493cce791272dcbfbedf8c18bf":[1,0,0,17,2,4,7],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_af78f60c035678185ecd266019f42838b.html#af78f60c035678185ecd266019f42838b":[1,0,0,17,2,4,1],
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_afb24fa31922f1297f7d7d80c7b14ee14.html#afb24fa31922f1297f7d7d80c7b14ee14":[1,0,0,17,2,4,0]
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_afb24fa31922f1297f7d7d80c7b14ee14.html#afb24fa31922f1297f7d7d80c7b14ee14":[1,0,0,17,2,4,0],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_afcf5a4f8e445742625b9ca45bc455247.html#afcf5a4f8e445742625b9ca45bc455247":[1,0,0,17,2,4,5],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a13f6823671d7cb9c042d8f7156a51b89.html#a13f6823671d7cb9c042d8f7156a51b89":[1,0,0,17,2,3,4],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a2944d6e589401531ba4283b984140c0e.html#a2944d6e589401531ba4283b984140c0e":[1,0,0,17,2,3,7],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a37e57e6f1e4e545630c1c98a5aab46a3.html#a37e57e6f1e4e545630c1c98a5aab46a3":[1,0,0,17,2,3,0]
 };

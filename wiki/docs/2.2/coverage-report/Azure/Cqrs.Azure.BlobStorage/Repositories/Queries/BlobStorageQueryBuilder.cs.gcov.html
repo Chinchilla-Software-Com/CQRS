@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntryLo">33.3 %</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-05</td>
+            <td class="headerValue">2017-08-06</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -56,34 +56,54 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       1 </span>            : ﻿using System.Linq;
-<span class="lineNum">       2 </span>            : using Cqrs.Configuration;
-<span class="lineNum">       3 </span>            : using Cqrs.DataStores;
-<span class="lineNum">       4 </span>            : using Cqrs.Entities;
-<span class="lineNum">       5 </span>            : using Cqrs.Repositories.Queries;
-<span class="lineNum">       6 </span>            : 
-<span class="lineNum">       7 </span>            : namespace Cqrs.Azure.BlobStorage.Repositories.Queries
-<span class="lineNum">       8 </span>            : {
-<span class="lineNum">       9 </span>            :         public abstract class BlobStorageQueryBuilder&lt;TQueryStrategy, TData&gt;
-<span class="lineNum">      10 </span>            :                 : QueryBuilder&lt;TQueryStrategy, TData&gt;
-<span class="lineNum">      11 </span>            :                 where TQueryStrategy : IQueryStrategy
-<span class="lineNum">      12 </span>            :                 where TData : Entity
-<span class="lineNum">      13 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      14 </span><span class="lineNoCov">          0 :                 protected BlobStorageQueryBuilder(IDataStore&lt;TData&gt; dataStore, IDependencyResolver dependencyResolver)</span>
-<span class="lineNum">      15 </span>            :                         : base(dataStore, dependencyResolver)
-<span class="lineNum">      16 </span>            :                 {
-<span class="lineNum">      17 </span>            :                 }
-<span class="lineNum">      18 </span>            : 
-<span class="lineNum">      19 </span>            :                 #region Overrides of QueryBuilder&lt;TQueryStrategy,TData&gt;
-<span class="lineNum">      20 </span>            : 
-<span class="lineNum">      21 </span><span class="lineCov">          1 :                 protected override IQueryable&lt;TData&gt; GetEmptyQueryPredicate()</span>
-<span class="lineNum">      22 </span>            :                 {
-<span class="lineNum">      23 </span>            :                         return DataStore.GetByFolder().AsQueryable();
-<span class="lineNum">      24 </span>            :                 }
-<span class="lineNum">      25 </span>            : 
-<span class="lineNum">      26 </span>            :                 #endregion
-<span class="lineNum">      27 </span>            :         }
-<span class="lineNum">      28 </span>            : }
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Linq;
+<span class="lineNum">      11 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      12 </span>            : using Cqrs.DataStores;
+<span class="lineNum">      13 </span>            : using Cqrs.Entities;
+<span class="lineNum">      14 </span>            : using Cqrs.Repositories.Queries;
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : namespace Cqrs.Azure.BlobStorage.Repositories.Queries
+<span class="lineNum">      17 </span>            : {
+<span class="lineNum">      18 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      19 </span>            :         /// Builds an &lt;see cref=&quot;IQueryable&quot;/&gt; from a &lt;typeparamref name=&quot;TQueryStrategy&quot;/&gt; for use with Azure Storage.
+<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      21 </span>            :         /// &lt;typeparam name=&quot;TQueryStrategy&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IQueryStrategy&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      22 </span>            :         /// &lt;typeparam name=&quot;TData&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of data to query.&lt;/typeparam&gt;
+<span class="lineNum">      23 </span>            :         public abstract class BlobStorageQueryBuilder&lt;TQueryStrategy, TData&gt;
+<span class="lineNum">      24 </span>            :                 : QueryBuilder&lt;TQueryStrategy, TData&gt;
+<span class="lineNum">      25 </span>            :                 where TQueryStrategy : IQueryStrategy
+<span class="lineNum">      26 </span>            :                 where TData : Entity
+<span class="lineNum">      27 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      28 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      29 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;BlobStorageQueryBuilder{TQueryStrategy,TData}&quot;/&gt;.
+<span class="lineNum">      30 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      31 </span><span class="lineCov">          1 :                 protected BlobStorageQueryBuilder(IDataStore&lt;TData&gt; dataStore, IDependencyResolver dependencyResolver)</span>
+<span class="lineNum">      32 </span>            :                         : base(dataStore, dependencyResolver)
+<span class="lineNum">      33 </span>            :                 {
+<span class="lineNum">      34 </span>            :                 }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 #region Overrides of QueryBuilder&lt;TQueryStrategy,TData&gt;
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// Returns the folder from &lt;see cref=&quot;QueryBuilder{TQueryStrategy,TData}.DataStore&quot;/&gt; itself.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span><span class="lineCov">          1 :                 protected override IQueryable&lt;TData&gt; GetEmptyQueryPredicate()</span>
+<span class="lineNum">      42 </span>            :                 {
+<span class="lineNum">      43 </span>            :                         return DataStore.GetByFolder().AsQueryable();
+<span class="lineNum">      44 </span>            :                 }
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                 #endregion
+<span class="lineNum">      47 </span>            :         }
+<span class="lineNum">      48 </span>            : }
 </pre>
       </td>
     </tr>
