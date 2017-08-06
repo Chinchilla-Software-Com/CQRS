@@ -1,0 +1,36 @@
+﻿<VSTemplate Version="3.0.0" Type="ProjectGroup" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+	<TemplateData>
+		<Name>CQRS.NET Micro Service Scheduler for Azure</Name>
+		<Description xml:space="preserve">A project template for creating a CQRS.NET micro-service scheduler for deployment on Azure.</Description>
+		<ProjectType>CSharp</ProjectType>
+		<ProjectSubType>Web</ProjectSubType>
+		<TemplateGroupID>Web</TemplateGroupID>
+		<SortOrder>1000</SortOrder>
+		<CreateNewFolder>false</CreateNewFolder>
+		<DefaultName>MyScheduler</DefaultName>
+		<ProvideDefaultName>true</ProvideDefaultName>
+		<LocationField>Enabled</LocationField>
+		<EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+		<Icon>__TemplateIcon.png</Icon>
+		<PreviewImage>__PreviewImage.png</PreviewImage>
+		<RequiredFrameworkVersion>4.5</RequiredFrameworkVersion>
+	</TemplateData>
+	<TemplateContent>
+		<ProjectCollection>
+			<SolutionFolder Name=".nuget">
+			</SolutionFolder>
+			<ProjectTemplateLink ProjectName="$projectname$.Scheduler" CopyParameters="true">
+				Cqrs.Scheduler\Cqrs.Scheduler.vstemplate
+			</ProjectTemplateLink>
+			<ProjectTemplateLink ProjectName="$projectname$.Scheduler.Events" CopyParameters="true">
+				Cqrs.Scheduler.Events\Cqrs.Scheduler.Events.vstemplate
+			</ProjectTemplateLink>
+			<ProjectTemplateLink ProjectName="$projectname$.Scheduler.SampleReport" CopyParameters="true">
+				Cqrs.Scheduler.SampleReport\Cqrs.Scheduler.SampleReport.vstemplate
+			</ProjectTemplateLink>
+		</ProjectCollection>
+		<CustomParameters>
+			<CustomParameter Name="$ProjectPath$" Value="..\"/>
+		</CustomParameters>
+	</TemplateContent>
+</VSTemplate>
