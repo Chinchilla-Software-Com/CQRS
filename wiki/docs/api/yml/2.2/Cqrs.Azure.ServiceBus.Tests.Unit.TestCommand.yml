@@ -27,46 +27,22 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestCommand.cs
     startLine: 19
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Unit
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nA Test <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
   example: []
   syntax:
-    content: >-
-      [Serializable]
-
-      [DataContract]
-
-      public class TestCommand : ICommand<Guid>, IMessageWithAuthenticationToken<Guid>, IMessage
+    content: 'public class TestCommand : object, ICommand<Guid>, IMessageWithAuthenticationToken<Guid>, IMessage'
     content.vb: >-
-      <Serializable>
-
-      <DataContract>
-
       Public Class TestCommand
-
+          Inherits Object
           Implements ICommand(Of Guid), IMessageWithAuthenticationToken(Of Guid), IMessage
   inheritance:
   - System.Object
   implements:
-  - Cqrs.Commands.ICommand{System.Guid}
-  - Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}
+  - Cqrs.Commands.ICommand{Guid}
+  - Cqrs.Messages.IMessageWithAuthenticationToken{Guid}
   - Cqrs.Messages.IMessage
-  inheritedMembers:
-  - System.Object.ToString
-  - System.Object.Equals(System.Object)
-  - System.Object.Equals(System.Object,System.Object)
-  - System.Object.ReferenceEquals(System.Object,System.Object)
-  - System.Object.GetHashCode
-  - System.Object.GetType
-  - System.Object.MemberwiseClone
-  attributes:
-  - type: System.SerializableAttribute
-    ctor: System.SerializableAttribute.#ctor
-    arguments: []
-  - type: System.Runtime.Serialization.DataContractAttribute
-    ctor: System.Runtime.Serialization.DataContractAttribute.#ctor
-    arguments: []
   modifiers.csharp:
   - public
   - class
@@ -93,29 +69,19 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestCommand.cs
     startLine: 28
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Unit
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nThe authentication token of the entity that triggered the event to be raised.\n"
   example: []
   syntax:
-    content: >-
-      [DataMember]
-
-      public Guid AuthenticationToken { get; set; }
+    content: public Guid AuthenticationToken { get; set; }
     parameters: []
     return:
-      type: System.Guid
-    content.vb: >-
-      <DataMember>
-
-      Public Property AuthenticationToken As Guid
+      type: Guid
+    content.vb: Public Property AuthenticationToken As Guid
   overload: Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.AuthenticationToken*
   implements:
-  - Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}.AuthenticationToken
-  attributes:
-  - type: System.Runtime.Serialization.DataMemberAttribute
-    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
-    arguments: []
+  - Cqrs.Messages.IMessageWithAuthenticationToken{Guid}.AuthenticationToken
   modifiers.csharp:
   - public
   - get
@@ -142,29 +108,17 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestCommand.cs
     startLine: 38
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Unit
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nThe identifier of the command itself.\n"
   example: []
   syntax:
-    content: >-
-      [DataMember]
-
-      public Guid Id { get; set; }
+    content: public Guid Id { get; set; }
     parameters: []
     return:
-      type: System.Guid
-    content.vb: >-
-      <DataMember>
-
-      Public Property Id As Guid
+      type: Guid
+    content.vb: Public Property Id As Guid
   overload: Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.Id*
-  implements:
-  - Cqrs.Commands.ICommand{System.Guid}.Id
-  attributes:
-  - type: System.Runtime.Serialization.DataMemberAttribute
-    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
-    arguments: []
   modifiers.csharp:
   - public
   - get
@@ -191,29 +145,19 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestCommand.cs
     startLine: 44
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Unit
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nThe expected version number.\n"
   example: []
   syntax:
-    content: >-
-      [DataMember]
-
-      public int ExpectedVersion { get; set; }
+    content: public int ExpectedVersion { get; set; }
     parameters: []
     return:
       type: System.Int32
-    content.vb: >-
-      <DataMember>
-
-      Public Property ExpectedVersion As Integer
+    content.vb: Public Property ExpectedVersion As Integer
   overload: Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.ExpectedVersion*
   implements:
-  - Cqrs.Commands.ICommand{System.Guid}.ExpectedVersion
-  attributes:
-  - type: System.Runtime.Serialization.DataMemberAttribute
-    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
-    arguments: []
+  - Cqrs.Commands.ICommand{Guid}.ExpectedVersion
   modifiers.csharp:
   - public
   - get
@@ -240,29 +184,17 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestCommand.cs
     startLine: 54
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Unit
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nAn identifier used to group together several <xref href=\"Cqrs.Messages.IMessage\" data-throw-if-not-resolved=\"false\"></xref>. Any <xref href=\"Cqrs.Messages.IMessage\" data-throw-if-not-resolved=\"false\"></xref> with the same <xref href=\"Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.CorrelationId\" data-throw-if-not-resolved=\"false\"></xref> were triggered by the same initiating request.\n"
   example: []
   syntax:
-    content: >-
-      [DataMember]
-
-      public Guid CorrelationId { get; set; }
+    content: public Guid CorrelationId { get; set; }
     parameters: []
     return:
-      type: System.Guid
-    content.vb: >-
-      <DataMember>
-
-      Public Property CorrelationId As Guid
+      type: Guid
+    content.vb: Public Property CorrelationId As Guid
   overload: Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.CorrelationId*
-  implements:
-  - Cqrs.Messages.IMessage.CorrelationId
-  attributes:
-  - type: System.Runtime.Serialization.DataMemberAttribute
-    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
-    arguments: []
   modifiers.csharp:
   - public
   - get
@@ -289,29 +221,19 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestCommand.cs
     startLine: 60
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Unit
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nThe originating framework this message was sent from.\n"
   example: []
   syntax:
-    content: >-
-      [DataMember]
-
-      public string OriginatingFramework { get; set; }
+    content: public string OriginatingFramework { get; set; }
     parameters: []
     return:
       type: System.String
-    content.vb: >-
-      <DataMember>
-
-      Public Property OriginatingFramework As String
+    content.vb: Public Property OriginatingFramework As String
   overload: Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.OriginatingFramework*
   implements:
   - Cqrs.Messages.IMessage.OriginatingFramework
-  attributes:
-  - type: System.Runtime.Serialization.DataMemberAttribute
-    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
-    arguments: []
   modifiers.csharp:
   - public
   - get
@@ -338,29 +260,17 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestCommand.cs
     startLine: 66
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Integration
+  - Cqrs.Azure.ServiceBus.Tests.Unit
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nThe frameworks this <xref href=\"Cqrs.Messages.IMessage\" data-throw-if-not-resolved=\"false\"></xref> has been delivered to/sent via already.\n"
   example: []
   syntax:
-    content: >-
-      [DataMember]
-
-      public IEnumerable<string> Frameworks { get; set; }
+    content: public IEnumerable<string> Frameworks { get; set; }
     parameters: []
     return:
-      type: System.Collections.Generic.IEnumerable{System.String}
-    content.vb: >-
-      <DataMember>
-
-      Public Property Frameworks As IEnumerable(Of String)
+      type: IEnumerable{System.String}
+    content.vb: Public Property Frameworks As IEnumerable(Of String)
   overload: Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.Frameworks*
-  implements:
-  - Cqrs.Messages.IMessage.Frameworks
-  attributes:
-  - type: System.Runtime.Serialization.DataMemberAttribute
-    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
-    arguments: []
   modifiers.csharp:
   - public
   - get
@@ -418,15 +328,15 @@ references:
   name: Object
   nameWithType: Object
   fullName: System.Object
-- uid: Cqrs.Commands.ICommand{System.Guid}
-  commentId: T:Cqrs.Commands.ICommand{System.Guid}
+- uid: Cqrs.Commands.ICommand{Guid}
+  commentId: T:Cqrs.Commands.ICommand{Guid}
   parent: Cqrs.Commands
   definition: Cqrs.Commands.ICommand`1
   name: ICommand<Guid>
   nameWithType: ICommand<Guid>
-  fullName: Cqrs.Commands.ICommand<System.Guid>
+  fullName: Cqrs.Commands.ICommand<Guid>
   nameWithType.vb: ICommand(Of Guid)
-  fullName.vb: Cqrs.Commands.ICommand(Of System.Guid)
+  fullName.vb: Cqrs.Commands.ICommand(Of Guid)
   name.vb: ICommand(Of Guid)
   spec.csharp:
   - uid: Cqrs.Commands.ICommand`1
@@ -436,10 +346,10 @@ references:
   - name: <
     nameWithType: <
     fullName: <
-  - uid: System.Guid
+  - uid: Guid
     name: Guid
     nameWithType: Guid
-    fullName: System.Guid
+    fullName: Guid
     isExternal: true
   - name: '>'
     nameWithType: '>'
@@ -452,23 +362,23 @@ references:
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - uid: System.Guid
+  - uid: Guid
     name: Guid
     nameWithType: Guid
-    fullName: System.Guid
+    fullName: Guid
     isExternal: true
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}
-  commentId: T:Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}
+- uid: Cqrs.Messages.IMessageWithAuthenticationToken{Guid}
+  commentId: T:Cqrs.Messages.IMessageWithAuthenticationToken{Guid}
   parent: Cqrs.Messages
   definition: Cqrs.Messages.IMessageWithAuthenticationToken`1
   name: IMessageWithAuthenticationToken<Guid>
   nameWithType: IMessageWithAuthenticationToken<Guid>
-  fullName: Cqrs.Messages.IMessageWithAuthenticationToken<System.Guid>
+  fullName: Cqrs.Messages.IMessageWithAuthenticationToken<Guid>
   nameWithType.vb: IMessageWithAuthenticationToken(Of Guid)
-  fullName.vb: Cqrs.Messages.IMessageWithAuthenticationToken(Of System.Guid)
+  fullName.vb: Cqrs.Messages.IMessageWithAuthenticationToken(Of Guid)
   name.vb: IMessageWithAuthenticationToken(Of Guid)
   spec.csharp:
   - uid: Cqrs.Messages.IMessageWithAuthenticationToken`1
@@ -478,10 +388,10 @@ references:
   - name: <
     nameWithType: <
     fullName: <
-  - uid: System.Guid
+  - uid: Guid
     name: Guid
     nameWithType: Guid
-    fullName: System.Guid
+    fullName: Guid
     isExternal: true
   - name: '>'
     nameWithType: '>'
@@ -494,10 +404,10 @@ references:
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - uid: System.Guid
+  - uid: Guid
     name: Guid
     nameWithType: Guid
-    fullName: System.Guid
+    fullName: Guid
     isExternal: true
   - name: )
     nameWithType: )
@@ -509,285 +419,6 @@ references:
   name: IMessage
   nameWithType: IMessage
   fullName: Cqrs.Messages.IMessage
-- uid: System.Object.ToString
-  commentId: M:System.Object.ToString
-  parent: System.Object
-  isExternal: true
-  name: ToString()
-  nameWithType: Object.ToString()
-  fullName: System.Object.ToString()
-  spec.csharp:
-  - uid: System.Object.ToString
-    name: ToString
-    nameWithType: Object.ToString
-    fullName: System.Object.ToString
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.ToString
-    name: ToString
-    nameWithType: Object.ToString
-    fullName: System.Object.ToString
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.Equals(System.Object)
-  commentId: M:System.Object.Equals(System.Object)
-  parent: System.Object
-  isExternal: true
-  name: Equals(Object)
-  nameWithType: Object.Equals(Object)
-  fullName: System.Object.Equals(System.Object)
-  spec.csharp:
-  - uid: System.Object.Equals(System.Object)
-    name: Equals
-    nameWithType: Object.Equals
-    fullName: System.Object.Equals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.Equals(System.Object)
-    name: Equals
-    nameWithType: Object.Equals
-    fullName: System.Object.Equals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.Equals(System.Object,System.Object)
-  commentId: M:System.Object.Equals(System.Object,System.Object)
-  parent: System.Object
-  isExternal: true
-  name: Equals(Object, Object)
-  nameWithType: Object.Equals(Object, Object)
-  fullName: System.Object.Equals(System.Object, System.Object)
-  spec.csharp:
-  - uid: System.Object.Equals(System.Object,System.Object)
-    name: Equals
-    nameWithType: Object.Equals
-    fullName: System.Object.Equals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.Equals(System.Object,System.Object)
-    name: Equals
-    nameWithType: Object.Equals
-    fullName: System.Object.Equals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.ReferenceEquals(System.Object,System.Object)
-  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
-  parent: System.Object
-  isExternal: true
-  name: ReferenceEquals(Object, Object)
-  nameWithType: Object.ReferenceEquals(Object, Object)
-  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
-  spec.csharp:
-  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
-    name: ReferenceEquals
-    nameWithType: Object.ReferenceEquals
-    fullName: System.Object.ReferenceEquals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
-    name: ReferenceEquals
-    nameWithType: Object.ReferenceEquals
-    fullName: System.Object.ReferenceEquals
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.GetHashCode
-  commentId: M:System.Object.GetHashCode
-  parent: System.Object
-  isExternal: true
-  name: GetHashCode()
-  nameWithType: Object.GetHashCode()
-  fullName: System.Object.GetHashCode()
-  spec.csharp:
-  - uid: System.Object.GetHashCode
-    name: GetHashCode
-    nameWithType: Object.GetHashCode
-    fullName: System.Object.GetHashCode
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.GetHashCode
-    name: GetHashCode
-    nameWithType: Object.GetHashCode
-    fullName: System.Object.GetHashCode
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.GetType
-  commentId: M:System.Object.GetType
-  parent: System.Object
-  isExternal: true
-  name: GetType()
-  nameWithType: Object.GetType()
-  fullName: System.Object.GetType()
-  spec.csharp:
-  - uid: System.Object.GetType
-    name: GetType
-    nameWithType: Object.GetType
-    fullName: System.Object.GetType
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.GetType
-    name: GetType
-    nameWithType: Object.GetType
-    fullName: System.Object.GetType
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Object.MemberwiseClone
-  commentId: M:System.Object.MemberwiseClone
-  parent: System.Object
-  isExternal: true
-  name: MemberwiseClone()
-  nameWithType: Object.MemberwiseClone()
-  fullName: System.Object.MemberwiseClone()
-  spec.csharp:
-  - uid: System.Object.MemberwiseClone
-    name: MemberwiseClone
-    nameWithType: Object.MemberwiseClone
-    fullName: System.Object.MemberwiseClone
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Object.MemberwiseClone
-    name: MemberwiseClone
-    nameWithType: Object.MemberwiseClone
-    fullName: System.Object.MemberwiseClone
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: System
   commentId: N:System
   isExternal: false
@@ -849,22 +480,20 @@ references:
   name: AuthenticationToken
   nameWithType: TestCommand.AuthenticationToken
   fullName: Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.AuthenticationToken
-- uid: Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}.AuthenticationToken
-  commentId: P:Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}.AuthenticationToken
-  parent: Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}
+- uid: Cqrs.Messages.IMessageWithAuthenticationToken{Guid}.AuthenticationToken
+  commentId: P:Cqrs.Messages.IMessageWithAuthenticationToken{Guid}.AuthenticationToken
+  parent: Cqrs.Messages.IMessageWithAuthenticationToken{Guid}
   definition: Cqrs.Messages.IMessageWithAuthenticationToken`1.AuthenticationToken
   name: AuthenticationToken
   nameWithType: IMessageWithAuthenticationToken<Guid>.AuthenticationToken
-  fullName: Cqrs.Messages.IMessageWithAuthenticationToken<System.Guid>.AuthenticationToken
+  fullName: Cqrs.Messages.IMessageWithAuthenticationToken<Guid>.AuthenticationToken
   nameWithType.vb: IMessageWithAuthenticationToken(Of Guid).AuthenticationToken
-  fullName.vb: Cqrs.Messages.IMessageWithAuthenticationToken(Of System.Guid).AuthenticationToken
-- uid: System.Guid
-  commentId: T:System.Guid
-  parent: System
+  fullName.vb: Cqrs.Messages.IMessageWithAuthenticationToken(Of Guid).AuthenticationToken
+- uid: Guid
   isExternal: true
   name: Guid
   nameWithType: Guid
-  fullName: System.Guid
+  fullName: Guid
 - uid: Cqrs.Messages.IMessageWithAuthenticationToken`1.AuthenticationToken
   commentId: P:Cqrs.Messages.IMessageWithAuthenticationToken`1.AuthenticationToken
   isExternal: false
@@ -879,38 +508,21 @@ references:
   name: Id
   nameWithType: TestCommand.Id
   fullName: Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.Id
-- uid: Cqrs.Commands.ICommand{System.Guid}.Id
-  commentId: P:Cqrs.Commands.ICommand{System.Guid}.Id
-  parent: Cqrs.Commands.ICommand{System.Guid}
-  definition: Cqrs.Commands.ICommand`1.Id
-  name: Id
-  nameWithType: ICommand<Guid>.Id
-  fullName: Cqrs.Commands.ICommand<System.Guid>.Id
-  nameWithType.vb: ICommand(Of Guid).Id
-  fullName.vb: Cqrs.Commands.ICommand(Of System.Guid).Id
-- uid: Cqrs.Commands.ICommand`1.Id
-  commentId: P:Cqrs.Commands.ICommand`1.Id
-  isExternal: false
-  name: Id
-  nameWithType: ICommand<TAuthenticationToken>.Id
-  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>.Id
-  nameWithType.vb: ICommand(Of TAuthenticationToken).Id
-  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken).Id
 - uid: Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.ExpectedVersion*
   commentId: Overload:Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.ExpectedVersion
   isExternal: false
   name: ExpectedVersion
   nameWithType: TestCommand.ExpectedVersion
   fullName: Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.ExpectedVersion
-- uid: Cqrs.Commands.ICommand{System.Guid}.ExpectedVersion
-  commentId: P:Cqrs.Commands.ICommand{System.Guid}.ExpectedVersion
-  parent: Cqrs.Commands.ICommand{System.Guid}
+- uid: Cqrs.Commands.ICommand{Guid}.ExpectedVersion
+  commentId: P:Cqrs.Commands.ICommand{Guid}.ExpectedVersion
+  parent: Cqrs.Commands.ICommand{Guid}
   definition: Cqrs.Commands.ICommand`1.ExpectedVersion
   name: ExpectedVersion
   nameWithType: ICommand<Guid>.ExpectedVersion
-  fullName: Cqrs.Commands.ICommand<System.Guid>.ExpectedVersion
+  fullName: Cqrs.Commands.ICommand<Guid>.ExpectedVersion
   nameWithType.vb: ICommand(Of Guid).ExpectedVersion
-  fullName.vb: Cqrs.Commands.ICommand(Of System.Guid).ExpectedVersion
+  fullName.vb: Cqrs.Commands.ICommand(Of Guid).ExpectedVersion
 - uid: System.Int32
   commentId: T:System.Int32
   parent: System
@@ -934,13 +546,6 @@ references:
   name: CorrelationId
   nameWithType: TestCommand.CorrelationId
   fullName: Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.CorrelationId
-- uid: Cqrs.Messages.IMessage.CorrelationId
-  commentId: P:Cqrs.Messages.IMessage.CorrelationId
-  parent: Cqrs.Messages.IMessage
-  isExternal: false
-  name: CorrelationId
-  nameWithType: IMessage.CorrelationId
-  fullName: Cqrs.Messages.IMessage.CorrelationId
 - uid: Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.OriginatingFramework*
   commentId: Overload:Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.OriginatingFramework
   isExternal: false
@@ -967,28 +572,20 @@ references:
   name: Frameworks
   nameWithType: TestCommand.Frameworks
   fullName: Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand.Frameworks
-- uid: Cqrs.Messages.IMessage.Frameworks
-  commentId: P:Cqrs.Messages.IMessage.Frameworks
-  parent: Cqrs.Messages.IMessage
-  isExternal: false
-  name: Frameworks
-  nameWithType: IMessage.Frameworks
-  fullName: Cqrs.Messages.IMessage.Frameworks
-- uid: System.Collections.Generic.IEnumerable{System.String}
-  commentId: T:System.Collections.Generic.IEnumerable{System.String}
-  parent: System.Collections.Generic
-  definition: System.Collections.Generic.IEnumerable`1
+- uid: IEnumerable{System.String}
+  commentId: '!:IEnumerable{System.String}'
+  definition: IEnumerable`1
   name: IEnumerable<String>
   nameWithType: IEnumerable<String>
-  fullName: System.Collections.Generic.IEnumerable<System.String>
+  fullName: IEnumerable<System.String>
   nameWithType.vb: IEnumerable(Of String)
-  fullName.vb: System.Collections.Generic.IEnumerable(Of System.String)
+  fullName.vb: IEnumerable(Of System.String)
   name.vb: IEnumerable(Of String)
   spec.csharp:
-  - uid: System.Collections.Generic.IEnumerable`1
+  - uid: IEnumerable`1
     name: IEnumerable
     nameWithType: IEnumerable
-    fullName: System.Collections.Generic.IEnumerable
+    fullName: IEnumerable
     isExternal: true
   - name: <
     nameWithType: <
@@ -1002,10 +599,10 @@ references:
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: System.Collections.Generic.IEnumerable`1
+  - uid: IEnumerable`1
     name: IEnumerable
     nameWithType: IEnumerable
-    fullName: System.Collections.Generic.IEnumerable
+    fullName: IEnumerable
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
@@ -1018,48 +615,41 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Collections.Generic.IEnumerable`1
-  commentId: T:System.Collections.Generic.IEnumerable`1
+- uid: IEnumerable`1
   isExternal: true
-  name: IEnumerable<T>
-  nameWithType: IEnumerable<T>
-  fullName: System.Collections.Generic.IEnumerable<T>
-  nameWithType.vb: IEnumerable(Of T)
-  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
-  name.vb: IEnumerable(Of T)
+  name: IEnumerable<>
+  nameWithType: IEnumerable<>
+  fullName: IEnumerable<>
+  nameWithType.vb: IEnumerable(Of )
+  fullName.vb: IEnumerable(Of )
+  name.vb: IEnumerable(Of )
   spec.csharp:
-  - uid: System.Collections.Generic.IEnumerable`1
+  - uid: IEnumerable`1
     name: IEnumerable
     nameWithType: IEnumerable
-    fullName: System.Collections.Generic.IEnumerable
+    fullName: IEnumerable
     isExternal: true
   - name: <
     nameWithType: <
     fullName: <
-  - name: T
-    nameWithType: T
-    fullName: T
+  - name: ''
+    nameWithType: ''
+    fullName: ''
   - name: '>'
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: System.Collections.Generic.IEnumerable`1
+  - uid: IEnumerable`1
     name: IEnumerable
     nameWithType: IEnumerable
-    fullName: System.Collections.Generic.IEnumerable
+    fullName: IEnumerable
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - name: T
-    nameWithType: T
-    fullName: T
+  - name: ''
+    nameWithType: ''
+    fullName: ''
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Collections.Generic
-  commentId: N:System.Collections.Generic
-  isExternal: false
-  name: System.Collections.Generic
-  nameWithType: System.Collections.Generic
-  fullName: System.Collections.Generic
