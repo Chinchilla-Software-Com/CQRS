@@ -21,20 +21,22 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: BlobStorageQueryBuilder
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Repositories/Queries/BlobStorageQueryBuilder.cs
-    startLine: 8
+    startLine: 22
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Repositories.Queries
+  summary: "\nBuilds an <xref href=\"System.Linq.IQueryable\" data-throw-if-not-resolved=\"false\"></xref> from a <code data-dev-comment-type=\"typeparamref\">TQueryStrategy</code> for use with Azure Storage.\n"
+  example: []
   syntax:
     content: 'public abstract class BlobStorageQueryBuilder<TQueryStrategy, TData> : QueryBuilder<TQueryStrategy, TData>, IQueryBuilder<TQueryStrategy, TData> where TQueryStrategy : IQueryStrategy where TData : Entity'
     typeParameters:
     - id: TQueryStrategy
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Repositories.Queries.IQueryStrategy" data-throw-if-not-resolved="false"></xref>.
     - id: TData
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of data to query.
     content.vb: >-
       Public MustInherit Class BlobStorageQueryBuilder(Of TQueryStrategy As IQueryStrategy, TData As Entity)
-
           Inherits QueryBuilder(Of TQueryStrategy, TData)
-
           Implements IQueryBuilder(Of TQueryStrategy, TData)
   inheritance:
   - System.Object
@@ -103,10 +105,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Repositories/Queries/BlobStorageQueryBuilder.cs
-    startLine: 13
+    startLine: 30
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Repositories.Queries
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder%602\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected BlobStorageQueryBuilder(IDataStore<TData> dataStore, IDependencyResolver dependencyResolver)
     parameters:
@@ -141,10 +145,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetEmptyQueryPredicate
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Repositories/Queries/BlobStorageQueryBuilder.cs
-    startLine: 20
+    startLine: 40
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Repositories.Queries
+  summary: "\nReturns the folder from <xref href=\"Cqrs.Repositories.Queries.QueryBuilder%602.DataStore\" data-throw-if-not-resolved=\"false\"></xref> itself.\n"
+  example: []
   syntax:
     content: protected override IQueryable<TData> GetEmptyQueryPredicate()
     return:
@@ -161,6 +167,27 @@ items:
   - Overrides
   fullName.vb: Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder(Of TQueryStrategy, TData).GetEmptyQueryPredicate()
 references:
+- uid: System.Linq.IQueryable
+  commentId: T:System.Linq.IQueryable
+  parent: System.Linq
+  isExternal: true
+  name: IQueryable
+  nameWithType: IQueryable
+  fullName: System.Linq.IQueryable
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: Cqrs.Repositories.Queries.IQueryStrategy
+  commentId: T:Cqrs.Repositories.Queries.IQueryStrategy
+  parent: Cqrs.Repositories.Queries
+  isExternal: false
+  name: IQueryStrategy
+  nameWithType: IQueryStrategy
+  fullName: Cqrs.Repositories.Queries.IQueryStrategy
 - uid: Cqrs.Azure.BlobStorage.Repositories.Queries
   commentId: N:Cqrs.Azure.BlobStorage.Repositories.Queries
   isExternal: false
@@ -2273,12 +2300,24 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: System.Linq
+  commentId: N:System.Linq
+  isExternal: false
+  name: System.Linq
+  nameWithType: System.Linq
+  fullName: System.Linq
 - uid: System
   commentId: N:System
   isExternal: false
   name: System
   nameWithType: System
   fullName: System
+- uid: Cqrs.Repositories.Queries
+  commentId: N:Cqrs.Repositories.Queries
+  isExternal: false
+  name: Cqrs.Repositories.Queries
+  nameWithType: Cqrs.Repositories.Queries
+  fullName: Cqrs.Repositories.Queries
 - uid: Cqrs.Repositories.Queries.QueryBuilder`2
   commentId: T:Cqrs.Repositories.Queries.QueryBuilder`2
   isExternal: false
@@ -2328,12 +2367,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Repositories.Queries
-  commentId: N:Cqrs.Repositories.Queries
-  isExternal: false
-  name: Cqrs.Repositories.Queries
-  nameWithType: Cqrs.Repositories.Queries
-  fullName: Cqrs.Repositories.Queries
 - uid: Cqrs.Repositories.Queries.IQueryBuilder`2
   commentId: T:Cqrs.Repositories.Queries.IQueryBuilder`2
   isExternal: false
@@ -4078,6 +4111,55 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder`2
+  commentId: T:Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder`2
+  isExternal: false
+  name: BlobStorageQueryBuilder<TQueryStrategy, TData>
+  nameWithType: BlobStorageQueryBuilder<TQueryStrategy, TData>
+  fullName: Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder<TQueryStrategy, TData>
+  nameWithType.vb: BlobStorageQueryBuilder(Of TQueryStrategy, TData)
+  fullName.vb: Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder(Of TQueryStrategy, TData)
+  name.vb: BlobStorageQueryBuilder(Of TQueryStrategy, TData)
+  spec.csharp:
+  - uid: Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder`2
+    name: BlobStorageQueryBuilder
+    nameWithType: BlobStorageQueryBuilder
+    fullName: Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder`2
+    name: BlobStorageQueryBuilder
+    nameWithType: BlobStorageQueryBuilder
+    fullName: Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder`2.#ctor*
   commentId: Overload:Cqrs.Azure.BlobStorage.Repositories.Queries.BlobStorageQueryBuilder`2.#ctor
   isExternal: false
@@ -4267,9 +4349,3 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Linq
-  commentId: N:System.Linq
-  isExternal: false
-  name: System.Linq
-  nameWithType: System.Linq
-  fullName: System.Linq

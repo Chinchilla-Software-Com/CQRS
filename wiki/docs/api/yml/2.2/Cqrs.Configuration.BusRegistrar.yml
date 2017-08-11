@@ -230,7 +230,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Configuration
-  summary: "\nRegisters all <xref href=\"Cqrs.Events.IEventHandler\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> instances found in the <xref href=\"System.Reflection.Assembly\" data-throw-if-not-resolved=\"false\"></xref> for each <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> in <span class=\"paramref\">typesFromAssemblyContainingMessages</span>.\n"
+  summary: "\nRegisters all <xref href=\"Cqrs.Events.IEventHandler\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> instances found in the <xref href=\"System.Reflection.Assembly\" data-throw-if-not-resolved=\"false\"></xref> for each <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> in <code data-dev-comment-type=\"paramref\">typesFromAssemblyContainingMessages</code>.\n"
   example: []
   syntax:
     content: public virtual void Register(params Type[] typesFromAssemblyContainingMessages)
@@ -271,7 +271,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Configuration
-  summary: "\nRegisters all <xref href=\"Cqrs.Messages.IHandler\" data-throw-if-not-resolved=\"false\"></xref> instances found in the <xref href=\"System.Reflection.Assembly\" data-throw-if-not-resolved=\"false\"></xref> for each <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> in <span class=\"paramref\">typesFromAssemblyContainingMessages</span>.\n"
+  summary: "\nRegisters all <xref href=\"Cqrs.Messages.IHandler\" data-throw-if-not-resolved=\"false\"></xref> instances found in the <xref href=\"System.Reflection.Assembly\" data-throw-if-not-resolved=\"false\"></xref> for each <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> in <code data-dev-comment-type=\"paramref\">typesFromAssemblyContainingMessages</code>.\n"
   example: []
   syntax:
     content: public virtual void Register(bool trueForEventsFalseForCommands, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, bool skipCommandHandlers, params Type[] typesFromAssemblyContainingMessages)
@@ -321,7 +321,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Configuration
-  summary: "\nExtract the <xref href=\"Cqrs.Bus.IHandlerRegistrar.RegisterHandler%60%601(System.Action%7b%60%600%7d%2cSystem.Type%2cSystem.Boolean)\" data-throw-if-not-resolved=\"false\"></xref> method of <xref href=\"Cqrs.Configuration.BusRegistrar.GetEventHandlerRegistrar\" data-throw-if-not-resolved=\"false\"></xref> or <xref href=\"Cqrs.Configuration.BusRegistrar.GetCommandHandlerRegistrar\" data-throw-if-not-resolved=\"false\"></xref>.\nCreate an <xref href=\"System.Action\" data-throw-if-not-resolved=\"false\"></xref> around the provided <span class=\"paramref\">executorType</span>\nThen register the created <xref href=\"System.Action\" data-throw-if-not-resolved=\"false\"></xref> using the extracted <xref href=\"Cqrs.Bus.IHandlerRegistrar.RegisterHandler%60%601(System.Action%7b%60%600%7d%2cSystem.Type%2cSystem.Boolean)\" data-throw-if-not-resolved=\"false\"></xref> method\n"
+  summary: "\nExtract the <xref href=\"Cqrs.Bus.IHandlerRegistrar.RegisterHandler%60%601(System.Action%7b%60%600%7d%2cSystem.Type%2cSystem.Boolean)\" data-throw-if-not-resolved=\"false\"></xref> method of <xref href=\"Cqrs.Configuration.BusRegistrar.GetEventHandlerRegistrar\" data-throw-if-not-resolved=\"false\"></xref> or <xref href=\"Cqrs.Configuration.BusRegistrar.GetCommandHandlerRegistrar\" data-throw-if-not-resolved=\"false\"></xref>.\nCreate an <xref href=\"System.Action\" data-throw-if-not-resolved=\"false\"></xref> around the provided <code data-dev-comment-type=\"paramref\">executorType</code>\nThen register the created <xref href=\"System.Action\" data-throw-if-not-resolved=\"false\"></xref> using the extracted <xref href=\"Cqrs.Bus.IHandlerRegistrar.RegisterHandler%60%601(System.Action%7b%60%600%7d%2cSystem.Type%2cSystem.Boolean)\" data-throw-if-not-resolved=\"false\"></xref> method\n"
   example: []
   syntax:
     content: protected virtual void InvokeHandler(Type interface, bool trueForEventsFalseForCommands, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, Type executorType)
@@ -371,14 +371,14 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Configuration
-  summary: "\nInvokes <span class=\"paramref\">handlerDelegate</span>, fetching the corresponding &quot;HoldMessageLock&quot; configuration setting \n"
+  summary: "\nInvokes <code data-dev-comment-type=\"paramref\">handlerDelegate</code>, fetching the corresponding &quot;HoldMessageLock&quot; configuration setting \n"
   example: []
   syntax:
     content: protected virtual void InvokeHandlerDelegate(MethodInfo registerExecutorMethod, bool trueForEventsFalseForCommands, HandlerDelegate handlerDelegate)
     parameters:
     - id: registerExecutorMethod
       type: System.Reflection.MethodInfo
-      description: The <xref href="System.Reflection.MethodInfo" data-throw-if-not-resolved="false"></xref> to use to invoke <span class="paramref">handlerDelegate</span>.
+      description: The <xref href="System.Reflection.MethodInfo" data-throw-if-not-resolved="false"></xref> to use to invoke <code data-dev-comment-type="paramref">handlerDelegate</code>.
     - id: trueForEventsFalseForCommands
       type: System.Boolean
       description: Indicates if this is registers <xref href="Cqrs.Events.IEventHandler" data-throw-if-not-resolved="false"></xref> or <xref href="Cqrs.Commands.ICommandHandler%602" data-throw-if-not-resolved="false"></xref>.
@@ -415,7 +415,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Configuration
-  summary: "\nBuilds a <xref href=\"Cqrs.Configuration.HandlerDelegate\" data-throw-if-not-resolved=\"false\"></xref> that will resolve the provided <span class=\"paramref\">executorType</span> and invoke the Handle method, when executed.\n"
+  summary: "\nBuilds a <xref href=\"Cqrs.Configuration.HandlerDelegate\" data-throw-if-not-resolved=\"false\"></xref> that will resolve the provided <code data-dev-comment-type=\"paramref\">executorType</code> and invoke the Handle method, when executed.\n"
   example: []
   syntax:
     content: protected virtual HandlerDelegate BuildDelegateAction(Type executorType, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface)
@@ -461,7 +461,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Configuration
-  summary: "\nBuilds a method replacing the generic type with <span class=\"paramref\">commandType</span>.\n"
+  summary: "\nBuilds a method replacing the generic type with <code data-dev-comment-type=\"paramref\">commandType</code>.\n"
   example: []
   syntax:
     content: protected virtual MethodInfo BuildExecutorMethod(MethodInfo originalRegisterExecutorMethod, Type executorType, Type commandType)
@@ -504,7 +504,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Configuration
-  summary: "\nFinds all <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> that implement <xref href=\"Cqrs.Events.IEventHandler%602\" data-throw-if-not-resolved=\"false\"></xref> that are implemented by <span class=\"paramref\">type</span>.\n"
+  summary: "\nFinds all <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> that implement <xref href=\"Cqrs.Events.IEventHandler%602\" data-throw-if-not-resolved=\"false\"></xref> that are implemented by <code data-dev-comment-type=\"paramref\">type</code>.\n"
   example: []
   syntax:
     content: protected virtual IEnumerable<Type> ResolveEventHandlerInterface(Type type)
@@ -544,7 +544,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Configuration
-  summary: "\nFinds all <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> that implement <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> that are implemented by <span class=\"paramref\">type</span>.\n"
+  summary: "\nFinds all <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> that implement <xref href=\"Cqrs.Commands.ICommandHandler%602\" data-throw-if-not-resolved=\"false\"></xref> that are implemented by <code data-dev-comment-type=\"paramref\">type</code>.\n"
   example: []
   syntax:
     content: protected virtual IEnumerable<Type> ResolveCommandHandlerInterface(Type type)

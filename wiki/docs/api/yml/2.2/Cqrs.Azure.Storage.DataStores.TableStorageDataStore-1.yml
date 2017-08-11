@@ -26,19 +26,20 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TableStorageDataStore
     path: Framework/Azure/Cqrs.Azure.Storage/DataStores/TableStorageDataStore.cs
-    startLine: 19
+    startLine: 23
   assemblies:
   - Cqrs.Azure.Storage
   namespace: Cqrs.Azure.Storage.DataStores
+  summary: "\nA <xref href=\"Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore%601\" data-throw-if-not-resolved=\"false\"></xref> that uses Azure Storage for storage.\n"
+  example: []
   syntax:
     content: 'public class TableStorageDataStore<TData> : TableStorageDataStore<TData>, IEnumerable<EntityTableEntity<TData>>, IDataStore<TData>, IOrderedQueryable<TData>, IQueryable<TData>, IEnumerable<TData>, IOrderedQueryable, IQueryable, IEnumerable, IDisposable where TData : Entity'
     typeParameters:
     - id: TData
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of <xref href="Microsoft.WindowsAzure.Storage.Table.TableEntity" data-throw-if-not-resolved="false"></xref> Azure Table Storage will contain.
     content.vb: >-
       Public Class TableStorageDataStore(Of TData As Entity)
-
           Inherits TableStorageDataStore(Of TData)
-
           Implements IEnumerable(Of EntityTableEntity(Of TData)), IDataStore(Of TData), IOrderedQueryable(Of TData), IQueryable(Of TData), IEnumerable(Of TData), IOrderedQueryable, IQueryable, IEnumerable, IDisposable
   inheritance:
   - System.Object
@@ -153,7 +154,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.Storage/DataStores/TableStorageDataStore.cs
-    startLine: 26
+    startLine: 30
   assemblies:
   - Cqrs.Azure.Storage
   namespace: Cqrs.Azure.Storage.DataStores
@@ -192,15 +193,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateTableEntity
     path: Framework/Azure/Cqrs.Azure.Storage/DataStores/TableStorageDataStore.cs
-    startLine: 33
+    startLine: 41
   assemblies:
   - Cqrs.Azure.Storage
   namespace: Cqrs.Azure.Storage.DataStores
+  summary: "\nCreates a new instance of <xref href=\"Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity\" data-throw-if-not-resolved=\"false\"></xref> populating it with the provided <code data-dev-comment-type=\"paramref\">data</code>\n"
+  example: []
   syntax:
     content: protected override ITableEntity CreateTableEntity(TData data)
     parameters:
     - id: data
       type: '{TData}'
+      description: The data to store in <xref href="Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity.Properties" data-throw-if-not-resolved="false"></xref>.
     return:
       type: Microsoft.WindowsAzure.Storage.Table.ITableEntity
     content.vb: Protected Overrides Function CreateTableEntity(data As TData) As ITableEntity
@@ -232,15 +236,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetUpdatableTableEntity
     path: Framework/Azure/Cqrs.Azure.Storage/DataStores/TableStorageDataStore.cs
-    startLine: 48
+    startLine: 62
   assemblies:
   - Cqrs.Azure.Storage
   namespace: Cqrs.Azure.Storage.DataStores
+  summary: "\nGets a <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableOperation\" data-throw-if-not-resolved=\"false\"></xref> that calls <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableOperation.Retrieve%60%601(System.String%2cSystem.String%2cSystem.Collections.Generic.List%7bSystem.String%7d)\" data-throw-if-not-resolved=\"false\"></xref>\nread for updating.\n"
+  example: []
   syntax:
     content: protected override TableOperation GetUpdatableTableEntity(TData data)
     parameters:
     - id: data
       type: '{TData}'
+      description: The data containing the <xref href="Cqrs.Entities.IEntity.Rsn" data-throw-if-not-resolved="false"></xref> property populated.
     return:
       type: Microsoft.WindowsAzure.Storage.Table.TableOperation
     content.vb: Protected Overrides Function GetUpdatableTableEntity(data As TData) As TableOperation
@@ -272,17 +279,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ReplaceValues
     path: Framework/Azure/Cqrs.Azure.Storage/DataStores/TableStorageDataStore.cs
-    startLine: 57
+    startLine: 79
   assemblies:
   - Cqrs.Azure.Storage
   namespace: Cqrs.Azure.Storage.DataStores
+  summary: "\nExtracts <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableResult.Result\" data-throw-if-not-resolved=\"false\"></xref> of the provided <code data-dev-comment-type=\"paramref\">retrievedResult</code>\nIf <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableResult.Result\" data-throw-if-not-resolved=\"false\"></xref> is NOT a <xref href=\"Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity\" data-throw-if-not-resolved=\"false\"></xref> <xref href=\"Cqrs.Azure.BlobStorage.TableStorageStore%602.ReplaceValues(Microsoft.WindowsAzure.Storage.Table.TableResult%2c%600)\" data-throw-if-not-resolved=\"false\"></xref> is called.\nOtherwise <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableResult.Result\" data-throw-if-not-resolved=\"false\"></xref> is a <xref href=\"Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity\" data-throw-if-not-resolved=\"false\"></xref>\nand <xref href=\"Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity.Properties\" data-throw-if-not-resolved=\"false\"></xref> are replaced with values from <code data-dev-comment-type=\"paramref\">data</code>.\n"
+  example: []
   syntax:
     content: protected override ITableEntity ReplaceValues(TableResult retrievedResult, EntityTableEntity<TData> data)
     parameters:
     - id: retrievedResult
       type: Microsoft.WindowsAzure.Storage.Table.TableResult
+      description: The existing data to update.
     - id: data
       type: Cqrs.Azure.BlobStorage.EntityTableEntity{{TData}}
+      description: The new data to store.
     return:
       type: Microsoft.WindowsAzure.Storage.Table.ITableEntity
     content.vb: Protected Overrides Function ReplaceValues(retrievedResult As TableResult, data As EntityTableEntity(Of TData)) As ITableEntity
@@ -315,10 +326,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetByKeyAndRow
     path: Framework/Azure/Cqrs.Azure.Storage/DataStores/TableStorageDataStore.cs
-    startLine: 75
+    startLine: 105
   assemblies:
   - Cqrs.Azure.Storage
   namespace: Cqrs.Azure.Storage.DataStores
+  summary: "\nRetrieves the data from Azure Storage \nIf the data is NOT a <xref href=\"Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity\" data-throw-if-not-resolved=\"false\"></xref> <xref href=\"Cqrs.Azure.BlobStorage.TableStorageStore%602.GetByKeyAndRow(System.Guid)\" data-throw-if-not-resolved=\"false\"></xref> is called.\nOtherwise <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableResult.Result\" data-throw-if-not-resolved=\"false\"></xref> is a <xref href=\"Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity\" data-throw-if-not-resolved=\"false\"></xref>\nand <xref href=\"Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity.Properties\" data-throw-if-not-resolved=\"false\"></xref> is converted back to <xref href=\"Cqrs.Azure.BlobStorage.EntityTableEntity%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public override EntityTableEntity<TData> GetByKeyAndRow(Guid rsn)
     parameters:
@@ -355,10 +368,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetByKey
     path: Framework/Azure/Cqrs.Azure.Storage/DataStores/TableStorageDataStore.cs
-    startLine: 90
+    startLine: 125
   assemblies:
   - Cqrs.Azure.Storage
   namespace: Cqrs.Azure.Storage.DataStores
+  summary: "\nRetrieves the data from Azure Storage using <xref href=\"Cqrs.Azure.BlobStorage.TableStorageStore%602.Collection\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public override IEnumerable<EntityTableEntity<TData>> GetByKey()
     return:
@@ -392,10 +407,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Update
     path: Framework/Azure/Cqrs.Azure.Storage/DataStores/TableStorageDataStore.cs
-    startLine: 105
+    startLine: 143
   assemblies:
   - Cqrs.Azure.Storage
   namespace: Cqrs.Azure.Storage.DataStores
+  summary: "\nUpdate the provided <code data-dev-comment-type=\"paramref\">data</code> in the data store and persist the change.\n"
+  example: []
   syntax:
     content: public override void Update(TData data)
     parameters:
@@ -413,6 +430,57 @@ items:
   - Overrides
   fullName.vb: Cqrs.Azure.Storage.DataStores.TableStorageDataStore(Of TData).Update(TData)
 references:
+- uid: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore`1
+  commentId: T:Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore`1
+  isExternal: false
+  name: TableStorageDataStore<TData>
+  nameWithType: TableStorageDataStore<TData>
+  fullName: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore<TData>
+  nameWithType.vb: TableStorageDataStore(Of TData)
+  fullName.vb: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore(Of TData)
+  name.vb: TableStorageDataStore(Of TData)
+  spec.csharp:
+  - uid: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore`1
+    name: TableStorageDataStore
+    nameWithType: TableStorageDataStore
+    fullName: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore`1
+    name: TableStorageDataStore
+    nameWithType: TableStorageDataStore
+    fullName: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: Microsoft.WindowsAzure.Storage.Table.TableEntity
+  commentId: T:Microsoft.WindowsAzure.Storage.Table.TableEntity
+  parent: Microsoft.WindowsAzure.Storage.Table
+  isExternal: true
+  name: TableEntity
+  nameWithType: TableEntity
+  fullName: Microsoft.WindowsAzure.Storage.Table.TableEntity
 - uid: Cqrs.Azure.Storage.DataStores
   commentId: N:Cqrs.Azure.Storage.DataStores
   isExternal: false
@@ -3583,6 +3651,12 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: Microsoft.WindowsAzure.Storage.Table
+  commentId: N:Microsoft.WindowsAzure.Storage.Table
+  isExternal: false
+  name: Microsoft.WindowsAzure.Storage.Table
+  nameWithType: Microsoft.WindowsAzure.Storage.Table
+  fullName: Microsoft.WindowsAzure.Storage.Table
 - uid: Cqrs.Azure.BlobStorage.StorageStore`2
   commentId: T:Cqrs.Azure.BlobStorage.StorageStore`2
   isExternal: false
@@ -3684,43 +3758,6 @@ references:
   - name: TCollectionItemData
     nameWithType: TCollectionItemData
     fullName: TCollectionItemData
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore`1
-  commentId: T:Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore`1
-  isExternal: false
-  name: TableStorageDataStore<TData>
-  nameWithType: TableStorageDataStore<TData>
-  fullName: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore<TData>
-  nameWithType.vb: TableStorageDataStore(Of TData)
-  fullName.vb: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore(Of TData)
-  name.vb: TableStorageDataStore(Of TData)
-  spec.csharp:
-  - uid: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore`1
-    name: TableStorageDataStore
-    nameWithType: TableStorageDataStore
-    fullName: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TData
-    nameWithType: TData
-    fullName: TData
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore`1
-    name: TableStorageDataStore
-    nameWithType: TableStorageDataStore
-    fullName: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TData
-    nameWithType: TData
-    fullName: TData
   - name: )
     nameWithType: )
     fullName: )
@@ -6251,6 +6288,10 @@ references:
   name: cdmdotnet.Logging
   nameWithType: cdmdotnet.Logging
   fullName: cdmdotnet.Logging
+- uid: Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity
+  commentId: T:Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity
+- uid: Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity.Properties
+  commentId: P:Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity.Properties
 - uid: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore{{TData}}.CreateTableEntity({TData})
   commentId: M:Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore{`0}.CreateTableEntity(`0)
   parent: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore{{TData}}
@@ -6350,12 +6391,22 @@ references:
   name: TData
   nameWithType: TData
   fullName: TData
-- uid: Microsoft.WindowsAzure.Storage.Table
-  commentId: N:Microsoft.WindowsAzure.Storage.Table
+- uid: Microsoft.WindowsAzure.Storage.Table.TableOperation
+  commentId: T:Microsoft.WindowsAzure.Storage.Table.TableOperation
+  parent: Microsoft.WindowsAzure.Storage.Table
+  isExternal: true
+  name: TableOperation
+  nameWithType: TableOperation
+  fullName: Microsoft.WindowsAzure.Storage.Table.TableOperation
+- uid: Microsoft.WindowsAzure.Storage.Table.TableOperation.Retrieve``1(System.String,System.String,System.Collections.Generic.List{System.String})
+  commentId: M:Microsoft.WindowsAzure.Storage.Table.TableOperation.Retrieve``1(System.String,System.String,System.Collections.Generic.List{System.String})
+- uid: Cqrs.Entities.IEntity.Rsn
+  commentId: P:Cqrs.Entities.IEntity.Rsn
+  parent: Cqrs.Entities.IEntity
   isExternal: false
-  name: Microsoft.WindowsAzure.Storage.Table
-  nameWithType: Microsoft.WindowsAzure.Storage.Table
-  fullName: Microsoft.WindowsAzure.Storage.Table
+  name: Rsn
+  nameWithType: IEntity.Rsn
+  fullName: Cqrs.Entities.IEntity.Rsn
 - uid: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore{{TData}}.GetUpdatableTableEntity({TData})
   commentId: M:Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore{`0}.GetUpdatableTableEntity(`0)
   parent: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore{{TData}}
@@ -6401,13 +6452,13 @@ references:
   fullName: Cqrs.Azure.Storage.DataStores.TableStorageDataStore<TData>.GetUpdatableTableEntity
   nameWithType.vb: TableStorageDataStore(Of TData).GetUpdatableTableEntity
   fullName.vb: Cqrs.Azure.Storage.DataStores.TableStorageDataStore(Of TData).GetUpdatableTableEntity
-- uid: Microsoft.WindowsAzure.Storage.Table.TableOperation
-  commentId: T:Microsoft.WindowsAzure.Storage.Table.TableOperation
-  parent: Microsoft.WindowsAzure.Storage.Table
-  isExternal: true
-  name: TableOperation
-  nameWithType: TableOperation
-  fullName: Microsoft.WindowsAzure.Storage.Table.TableOperation
+- uid: Cqrs.Entities.IEntity
+  commentId: T:Cqrs.Entities.IEntity
+  parent: Cqrs.Entities
+  isExternal: false
+  name: IEntity
+  nameWithType: IEntity
+  fullName: Cqrs.Entities.IEntity
 - uid: Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore`1.GetUpdatableTableEntity(`0)
   commentId: M:Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStore`1.GetUpdatableTableEntity(`0)
   isExternal: false
@@ -6444,6 +6495,14 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Entities
+  commentId: N:Cqrs.Entities
+  isExternal: false
+  name: Cqrs.Entities
+  nameWithType: Cqrs.Entities
+  fullName: Cqrs.Entities
+- uid: Microsoft.WindowsAzure.Storage.Table.TableResult.Result
+  commentId: P:Microsoft.WindowsAzure.Storage.Table.TableResult.Result
 - uid: Cqrs.Azure.Storage.DataStores.TableStorageDataStore`1.ReplaceValues*
   commentId: Overload:Cqrs.Azure.Storage.DataStores.TableStorageDataStore`1.ReplaceValues
   isExternal: false
