@@ -134,7 +134,7 @@
 <span class="lineNum">      76 </span>            :                         var azureCommandBusPublisher = new AzureCommandBusPublisher&lt;Guid&gt;(new ConfigurationManager(), new MessageSerialiser&lt;Guid&gt;(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper&lt;Guid&gt;(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser&lt;Guid&gt;(), new BusHelper(new ConfigurationManager()), new ConfigurationManager(), null), new BusHelper(new ConfigurationManager()));
 <span class="lineNum">      77 </span>            : 
 <span class="lineNum">      78 </span>            :                         // Act
-<span class="lineNum">      79 </span>            :                         azureCommandBusPublisher.Send(command);
+<span class="lineNum">      79 </span>            :                         azureCommandBusPublisher.Publish(command);
 <span class="lineNum">      80 </span>            : 
 <span class="lineNum">      81 </span>            :                         // Assert
 <span class="lineNum">      82 </span>            :                         SpinWait.SpinUntil(() =&gt; testResponse[processId].Item1);
