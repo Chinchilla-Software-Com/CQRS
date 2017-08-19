@@ -23,14 +23,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: IMessageSerialiser
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IMessageSerialiser.cs
-    startLine: 13
+    startLine: 18
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nSerialises <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public interface IMessageSerialiser<TAuthenticationToken>
     typeParameters:
     - id: TAuthenticationToken
+      description: The <see cref="!:Type"></see> of the authentication token.
     content.vb: Public Interface IMessageSerialiser(Of TAuthenticationToken)
   nameWithType.vb: IMessageSerialiser(Of TAuthenticationToken)
   modifiers.csharp:
@@ -59,19 +62,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: SerialiseEvent
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IMessageSerialiser.cs
-    startLine: 15
+    startLine: 26
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nSerialise the provided <span class=\"paramref\">event</span>.\n"
+  example: []
   syntax:
     content: 'string SerialiseEvent<TEvent>(TEvent event)where TEvent : IEvent<TAuthenticationToken>'
     parameters:
     - id: event
       type: '{TEvent}'
+      description: The <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> being serialised.
     typeParameters:
     - id: TEvent
+      description: The <see cref="!:Type"></see> of the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> being serialised.
     return:
       type: System.String
+      description: A <see cref="!:System.String"></see> representation of the provided <span class="paramref">event</span>.
     content.vb: Function SerialiseEvent(Of TEvent As IEvent(Of TAuthenticationToken))(event As TEvent) As String
   overload: Cqrs.Azure.ServiceBus.IMessageSerialiser`1.SerialiseEvent*
   nameWithType.vb: IMessageSerialiser(Of TAuthenticationToken).SerialiseEvent(Of TEvent)(TEvent)
@@ -95,19 +103,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: SerialiseCommand
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IMessageSerialiser.cs
-    startLine: 18
+    startLine: 35
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nSerialise the provided <span class=\"paramref\">command</span>.\n"
+  example: []
   syntax:
     content: 'string SerialiseCommand<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
+      description: The <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> being serialised.
     typeParameters:
     - id: TCommand
+      description: The <see cref="!:Type"></see> of the <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> being serialised.
     return:
       type: System.String
+      description: A <see cref="!:System.String"></see> representation of the provided <span class="paramref">command</span>.
     content.vb: Function SerialiseCommand(Of TCommand As ICommand(Of TAuthenticationToken))(command As TCommand) As String
   overload: Cqrs.Azure.ServiceBus.IMessageSerialiser`1.SerialiseCommand*
   nameWithType.vb: IMessageSerialiser(Of TAuthenticationToken).SerialiseCommand(Of TCommand)(TCommand)
@@ -131,15 +144,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DeserialiseEvent
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IMessageSerialiser.cs
-    startLine: 21
+    startLine: 42
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nDeserialise the provided <span class=\"paramref\">event</span> from its <see cref=\"!:System.String\"></see> representation.\n"
+  example: []
   syntax:
     content: IEvent<TAuthenticationToken> DeserialiseEvent(string event)
     parameters:
     - id: event
       type: System.String
+      description: A <see cref="!:System.String"></see> representation of an <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> to deserialise.
     return:
       type: Cqrs.Events.IEvent{{TAuthenticationToken}}
     content.vb: Function DeserialiseEvent(event As String) As IEvent(Of TAuthenticationToken)
@@ -164,22 +180,99 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DeserialiseCommand
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IMessageSerialiser.cs
-    startLine: 23
+    startLine: 48
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nDeserialise the provided <span class=\"paramref\">command</span> from its <see cref=\"!:System.String\"></see> representation.\n"
+  example: []
   syntax:
-    content: ICommand<TAuthenticationToken> DeserialiseCommand(string event)
+    content: ICommand<TAuthenticationToken> DeserialiseCommand(string command)
     parameters:
-    - id: event
+    - id: command
       type: System.String
+      description: A <see cref="!:System.String"></see> representation of an <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> to deserialise.
     return:
       type: Cqrs.Commands.ICommand{{TAuthenticationToken}}
-    content.vb: Function DeserialiseCommand(event As String) As ICommand(Of TAuthenticationToken)
+    content.vb: Function DeserialiseCommand(command As String) As ICommand(Of TAuthenticationToken)
   overload: Cqrs.Azure.ServiceBus.IMessageSerialiser`1.DeserialiseCommand*
   nameWithType.vb: IMessageSerialiser(Of TAuthenticationToken).DeserialiseCommand(String)
   fullName.vb: Cqrs.Azure.ServiceBus.IMessageSerialiser(Of TAuthenticationToken).DeserialiseCommand(System.String)
 references:
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Commands.ICommand`1
+  commentId: T:Cqrs.Commands.ICommand`1
+  isExternal: false
+  name: ICommand<TAuthenticationToken>
+  nameWithType: ICommand<TAuthenticationToken>
+  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>
+  nameWithType.vb: ICommand(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken)
+  name.vb: ICommand(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus
   commentId: N:Cqrs.Azure.ServiceBus
   isExternal: false
@@ -283,43 +376,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Events.IEvent`1
-  commentId: T:Cqrs.Events.IEvent`1
-  isExternal: false
-  name: IEvent<TAuthenticationToken>
-  nameWithType: IEvent<TAuthenticationToken>
-  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
-  nameWithType.vb: IEvent(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
-  name.vb: IEvent(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Events
   commentId: N:Cqrs.Events
   isExternal: false
@@ -338,43 +394,6 @@ references:
   commentId: T:Cqrs.Commands.ICommand{`0}
   parent: Cqrs.Commands
   definition: Cqrs.Commands.ICommand`1
-  name: ICommand<TAuthenticationToken>
-  nameWithType: ICommand<TAuthenticationToken>
-  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>
-  nameWithType.vb: ICommand(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken)
-  name.vb: ICommand(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Commands.ICommand`1
-    name: ICommand
-    nameWithType: ICommand
-    fullName: Cqrs.Commands.ICommand
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Commands.ICommand`1
-    name: ICommand
-    nameWithType: ICommand
-    fullName: Cqrs.Commands.ICommand
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.Commands.ICommand`1
-  commentId: T:Cqrs.Commands.ICommand`1
-  isExternal: false
   name: ICommand<TAuthenticationToken>
   nameWithType: ICommand<TAuthenticationToken>
   fullName: Cqrs.Commands.ICommand<TAuthenticationToken>

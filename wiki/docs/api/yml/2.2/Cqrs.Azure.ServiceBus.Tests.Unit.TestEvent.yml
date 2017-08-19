@@ -28,13 +28,22 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
     startLine: 20
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Unit
+  - Cqrs.Azure.BlobStorage.Test.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nA Test <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
   example: []
   syntax:
-    content: 'public class TestEvent : Entity, IEntity, IEvent<Guid>, IMessageWithAuthenticationToken<Guid>, IMessage'
+    content: >-
+      [Serializable]
+
+      [DataContract]
+
+      public class TestEvent : Entity, IEntity, IEvent<Guid>, IMessageWithAuthenticationToken<Guid>, IMessage
     content.vb: >-
+      <Serializable>
+
+      <DataContract>
+
       Public Class TestEvent
           Inherits Entity
           Implements IEntity, IEvent(Of Guid), IMessageWithAuthenticationToken(Of Guid), IMessage
@@ -43,13 +52,27 @@ items:
   - Cqrs.Entities.Entity
   implements:
   - Cqrs.Entities.IEntity
-  - Cqrs.Events.IEvent{Guid}
-  - Cqrs.Messages.IMessageWithAuthenticationToken{Guid}
+  - Cqrs.Events.IEvent{System.Guid}
+  - Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}
   - Cqrs.Messages.IMessage
   inheritedMembers:
   - Cqrs.Entities.Entity.Rsn
   - Cqrs.Entities.Entity.SortingOrder
   - Cqrs.Entities.Entity.IsLogicallyDeleted
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+  - type: System.Runtime.Serialization.DataContractAttribute
+    ctor: System.Runtime.Serialization.DataContractAttribute.#ctor
+    arguments: []
   modifiers.csharp:
   - public
   - class
@@ -76,19 +99,29 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
     startLine: 29
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Unit
+  - Cqrs.Azure.BlobStorage.Test.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nThe authentication token of the entity that triggered the event to be raised.\n"
   example: []
   syntax:
-    content: public Guid AuthenticationToken { get; set; }
+    content: >-
+      [DataMember]
+
+      public Guid AuthenticationToken { get; set; }
     parameters: []
     return:
-      type: Guid
-    content.vb: Public Property AuthenticationToken As Guid
+      type: System.Guid
+    content.vb: >-
+      <DataMember>
+
+      Public Property AuthenticationToken As Guid
   overload: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.AuthenticationToken*
   implements:
-  - Cqrs.Messages.IMessageWithAuthenticationToken{Guid}.AuthenticationToken
+  - Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}.AuthenticationToken
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
   modifiers.csharp:
   - public
   - get
@@ -115,17 +148,29 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
     startLine: 39
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Unit
+  - Cqrs.Azure.BlobStorage.Test.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nThe identifier of the event itself.\n"
   example: []
   syntax:
-    content: public Guid Id { get; set; }
+    content: >-
+      [DataMember]
+
+      public Guid Id { get; set; }
     parameters: []
     return:
-      type: Guid
-    content.vb: Public Property Id As Guid
+      type: System.Guid
+    content.vb: >-
+      <DataMember>
+
+      Public Property Id As Guid
   overload: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.Id*
+  implements:
+  - Cqrs.Events.IEvent{System.Guid}.Id
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
   modifiers.csharp:
   - public
   - get
@@ -152,19 +197,29 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
     startLine: 45
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Unit
+  - Cqrs.Azure.BlobStorage.Test.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nThe new version number.\n"
   example: []
   syntax:
-    content: public int Version { get; set; }
+    content: >-
+      [DataMember]
+
+      public int Version { get; set; }
     parameters: []
     return:
       type: System.Int32
-    content.vb: Public Property Version As Integer
+    content.vb: >-
+      <DataMember>
+
+      Public Property Version As Integer
   overload: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.Version*
   implements:
-  - Cqrs.Events.IEvent{Guid}.Version
+  - Cqrs.Events.IEvent{System.Guid}.Version
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
   modifiers.csharp:
   - public
   - get
@@ -191,17 +246,29 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
     startLine: 51
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Unit
+  - Cqrs.Azure.BlobStorage.Test.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nThe date and time the event was raised or published.\n"
   example: []
   syntax:
-    content: public DateTimeOffset TimeStamp { get; set; }
+    content: >-
+      [DataMember]
+
+      public DateTimeOffset TimeStamp { get; set; }
     parameters: []
     return:
-      type: DateTimeOffset
-    content.vb: Public Property TimeStamp As DateTimeOffset
+      type: System.DateTimeOffset
+    content.vb: >-
+      <DataMember>
+
+      Public Property TimeStamp As DateTimeOffset
   overload: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.TimeStamp*
+  implements:
+  - Cqrs.Events.IEvent{System.Guid}.TimeStamp
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
   modifiers.csharp:
   - public
   - get
@@ -228,17 +295,29 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
     startLine: 62
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Unit
+  - Cqrs.Azure.BlobStorage.Test.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nAn identifier used to group together several <xref href=\"Cqrs.Messages.IMessage\" data-throw-if-not-resolved=\"false\"></xref>. Any <xref href=\"Cqrs.Messages.IMessage\" data-throw-if-not-resolved=\"false\"></xref> with the same <xref href=\"Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.CorrelationId\" data-throw-if-not-resolved=\"false\"></xref> were triggered by the same initiating request.\n"
   example: []
   syntax:
-    content: public Guid CorrelationId { get; set; }
+    content: >-
+      [DataMember]
+
+      public Guid CorrelationId { get; set; }
     parameters: []
     return:
-      type: Guid
-    content.vb: Public Property CorrelationId As Guid
+      type: System.Guid
+    content.vb: >-
+      <DataMember>
+
+      Public Property CorrelationId As Guid
   overload: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.CorrelationId*
+  implements:
+  - Cqrs.Messages.IMessage.CorrelationId
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
   modifiers.csharp:
   - public
   - get
@@ -265,19 +344,29 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
     startLine: 68
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Unit
+  - Cqrs.Azure.BlobStorage.Test.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nThe originating framework this message was sent from.\n"
   example: []
   syntax:
-    content: public string OriginatingFramework { get; set; }
+    content: >-
+      [DataMember]
+
+      public string OriginatingFramework { get; set; }
     parameters: []
     return:
       type: System.String
-    content.vb: Public Property OriginatingFramework As String
+    content.vb: >-
+      <DataMember>
+
+      Public Property OriginatingFramework As String
   overload: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.OriginatingFramework*
   implements:
   - Cqrs.Messages.IMessage.OriginatingFramework
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
   modifiers.csharp:
   - public
   - get
@@ -304,17 +393,29 @@ items:
     path: Framework/Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/TestEvent.cs
     startLine: 74
   assemblies:
-  - Cqrs.Azure.ServiceBus.Tests.Unit
+  - Cqrs.Azure.BlobStorage.Test.Integration
   namespace: Cqrs.Azure.ServiceBus.Tests.Unit
   summary: "\nThe frameworks this <xref href=\"Cqrs.Messages.IMessage\" data-throw-if-not-resolved=\"false\"></xref> has been delivered to/sent via already.\n"
   example: []
   syntax:
-    content: public IEnumerable<string> Frameworks { get; set; }
+    content: >-
+      [DataMember]
+
+      public IEnumerable<string> Frameworks { get; set; }
     parameters: []
     return:
-      type: IEnumerable{System.String}
-    content.vb: Public Property Frameworks As IEnumerable(Of String)
+      type: System.Collections.Generic.IEnumerable{System.String}
+    content.vb: >-
+      <DataMember>
+
+      Public Property Frameworks As IEnumerable(Of String)
   overload: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.Frameworks*
+  implements:
+  - Cqrs.Messages.IMessage.Frameworks
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
   modifiers.csharp:
   - public
   - get
@@ -386,15 +487,15 @@ references:
   name: IEntity
   nameWithType: IEntity
   fullName: Cqrs.Entities.IEntity
-- uid: Cqrs.Events.IEvent{Guid}
-  commentId: T:Cqrs.Events.IEvent{Guid}
+- uid: Cqrs.Events.IEvent{System.Guid}
+  commentId: T:Cqrs.Events.IEvent{System.Guid}
   parent: Cqrs.Events
   definition: Cqrs.Events.IEvent`1
   name: IEvent<Guid>
   nameWithType: IEvent<Guid>
-  fullName: Cqrs.Events.IEvent<Guid>
+  fullName: Cqrs.Events.IEvent<System.Guid>
   nameWithType.vb: IEvent(Of Guid)
-  fullName.vb: Cqrs.Events.IEvent(Of Guid)
+  fullName.vb: Cqrs.Events.IEvent(Of System.Guid)
   name.vb: IEvent(Of Guid)
   spec.csharp:
   - uid: Cqrs.Events.IEvent`1
@@ -404,10 +505,10 @@ references:
   - name: <
     nameWithType: <
     fullName: <
-  - uid: Guid
+  - uid: System.Guid
     name: Guid
     nameWithType: Guid
-    fullName: Guid
+    fullName: System.Guid
     isExternal: true
   - name: '>'
     nameWithType: '>'
@@ -420,23 +521,23 @@ references:
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - uid: Guid
+  - uid: System.Guid
     name: Guid
     nameWithType: Guid
-    fullName: Guid
+    fullName: System.Guid
     isExternal: true
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Messages.IMessageWithAuthenticationToken{Guid}
-  commentId: T:Cqrs.Messages.IMessageWithAuthenticationToken{Guid}
+- uid: Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}
+  commentId: T:Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}
   parent: Cqrs.Messages
   definition: Cqrs.Messages.IMessageWithAuthenticationToken`1
   name: IMessageWithAuthenticationToken<Guid>
   nameWithType: IMessageWithAuthenticationToken<Guid>
-  fullName: Cqrs.Messages.IMessageWithAuthenticationToken<Guid>
+  fullName: Cqrs.Messages.IMessageWithAuthenticationToken<System.Guid>
   nameWithType.vb: IMessageWithAuthenticationToken(Of Guid)
-  fullName.vb: Cqrs.Messages.IMessageWithAuthenticationToken(Of Guid)
+  fullName.vb: Cqrs.Messages.IMessageWithAuthenticationToken(Of System.Guid)
   name.vb: IMessageWithAuthenticationToken(Of Guid)
   spec.csharp:
   - uid: Cqrs.Messages.IMessageWithAuthenticationToken`1
@@ -446,10 +547,10 @@ references:
   - name: <
     nameWithType: <
     fullName: <
-  - uid: Guid
+  - uid: System.Guid
     name: Guid
     nameWithType: Guid
-    fullName: Guid
+    fullName: System.Guid
     isExternal: true
   - name: '>'
     nameWithType: '>'
@@ -462,10 +563,10 @@ references:
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - uid: Guid
+  - uid: System.Guid
     name: Guid
     nameWithType: Guid
-    fullName: Guid
+    fullName: System.Guid
     isExternal: true
   - name: )
     nameWithType: )
@@ -498,6 +599,285 @@ references:
   name: IsLogicallyDeleted
   nameWithType: Entity.IsLogicallyDeleted
   fullName: Cqrs.Entities.Entity.IsLogicallyDeleted
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: System
   commentId: N:System
   isExternal: false
@@ -565,20 +945,22 @@ references:
   name: AuthenticationToken
   nameWithType: TestEvent.AuthenticationToken
   fullName: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.AuthenticationToken
-- uid: Cqrs.Messages.IMessageWithAuthenticationToken{Guid}.AuthenticationToken
-  commentId: P:Cqrs.Messages.IMessageWithAuthenticationToken{Guid}.AuthenticationToken
-  parent: Cqrs.Messages.IMessageWithAuthenticationToken{Guid}
+- uid: Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}.AuthenticationToken
+  commentId: P:Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}.AuthenticationToken
+  parent: Cqrs.Messages.IMessageWithAuthenticationToken{System.Guid}
   definition: Cqrs.Messages.IMessageWithAuthenticationToken`1.AuthenticationToken
   name: AuthenticationToken
   nameWithType: IMessageWithAuthenticationToken<Guid>.AuthenticationToken
-  fullName: Cqrs.Messages.IMessageWithAuthenticationToken<Guid>.AuthenticationToken
+  fullName: Cqrs.Messages.IMessageWithAuthenticationToken<System.Guid>.AuthenticationToken
   nameWithType.vb: IMessageWithAuthenticationToken(Of Guid).AuthenticationToken
-  fullName.vb: Cqrs.Messages.IMessageWithAuthenticationToken(Of Guid).AuthenticationToken
-- uid: Guid
+  fullName.vb: Cqrs.Messages.IMessageWithAuthenticationToken(Of System.Guid).AuthenticationToken
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
   isExternal: true
   name: Guid
   nameWithType: Guid
-  fullName: Guid
+  fullName: System.Guid
 - uid: Cqrs.Messages.IMessageWithAuthenticationToken`1.AuthenticationToken
   commentId: P:Cqrs.Messages.IMessageWithAuthenticationToken`1.AuthenticationToken
   isExternal: false
@@ -593,21 +975,38 @@ references:
   name: Id
   nameWithType: TestEvent.Id
   fullName: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.Id
+- uid: Cqrs.Events.IEvent{System.Guid}.Id
+  commentId: P:Cqrs.Events.IEvent{System.Guid}.Id
+  parent: Cqrs.Events.IEvent{System.Guid}
+  definition: Cqrs.Events.IEvent`1.Id
+  name: Id
+  nameWithType: IEvent<Guid>.Id
+  fullName: Cqrs.Events.IEvent<System.Guid>.Id
+  nameWithType.vb: IEvent(Of Guid).Id
+  fullName.vb: Cqrs.Events.IEvent(Of System.Guid).Id
+- uid: Cqrs.Events.IEvent`1.Id
+  commentId: P:Cqrs.Events.IEvent`1.Id
+  isExternal: false
+  name: Id
+  nameWithType: IEvent<TAuthenticationToken>.Id
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>.Id
+  nameWithType.vb: IEvent(Of TAuthenticationToken).Id
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken).Id
 - uid: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.Version*
   commentId: Overload:Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.Version
   isExternal: false
   name: Version
   nameWithType: TestEvent.Version
   fullName: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.Version
-- uid: Cqrs.Events.IEvent{Guid}.Version
-  commentId: P:Cqrs.Events.IEvent{Guid}.Version
-  parent: Cqrs.Events.IEvent{Guid}
+- uid: Cqrs.Events.IEvent{System.Guid}.Version
+  commentId: P:Cqrs.Events.IEvent{System.Guid}.Version
+  parent: Cqrs.Events.IEvent{System.Guid}
   definition: Cqrs.Events.IEvent`1.Version
   name: Version
   nameWithType: IEvent<Guid>.Version
-  fullName: Cqrs.Events.IEvent<Guid>.Version
+  fullName: Cqrs.Events.IEvent<System.Guid>.Version
   nameWithType.vb: IEvent(Of Guid).Version
-  fullName.vb: Cqrs.Events.IEvent(Of Guid).Version
+  fullName.vb: Cqrs.Events.IEvent(Of System.Guid).Version
 - uid: System.Int32
   commentId: T:System.Int32
   parent: System
@@ -629,12 +1028,30 @@ references:
   name: TimeStamp
   nameWithType: TestEvent.TimeStamp
   fullName: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.TimeStamp
-- uid: DateTimeOffset
-  commentId: '!:DateTimeOffset'
+- uid: Cqrs.Events.IEvent{System.Guid}.TimeStamp
+  commentId: P:Cqrs.Events.IEvent{System.Guid}.TimeStamp
+  parent: Cqrs.Events.IEvent{System.Guid}
+  definition: Cqrs.Events.IEvent`1.TimeStamp
+  name: TimeStamp
+  nameWithType: IEvent<Guid>.TimeStamp
+  fullName: Cqrs.Events.IEvent<System.Guid>.TimeStamp
+  nameWithType.vb: IEvent(Of Guid).TimeStamp
+  fullName.vb: Cqrs.Events.IEvent(Of System.Guid).TimeStamp
+- uid: System.DateTimeOffset
+  commentId: T:System.DateTimeOffset
+  parent: System
   isExternal: true
   name: DateTimeOffset
   nameWithType: DateTimeOffset
-  fullName: DateTimeOffset
+  fullName: System.DateTimeOffset
+- uid: Cqrs.Events.IEvent`1.TimeStamp
+  commentId: P:Cqrs.Events.IEvent`1.TimeStamp
+  isExternal: false
+  name: TimeStamp
+  nameWithType: IEvent<TAuthenticationToken>.TimeStamp
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>.TimeStamp
+  nameWithType.vb: IEvent(Of TAuthenticationToken).TimeStamp
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken).TimeStamp
 - uid: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.CorrelationId
   commentId: P:Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.CorrelationId
 - uid: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.CorrelationId*
@@ -643,6 +1060,13 @@ references:
   name: CorrelationId
   nameWithType: TestEvent.CorrelationId
   fullName: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.CorrelationId
+- uid: Cqrs.Messages.IMessage.CorrelationId
+  commentId: P:Cqrs.Messages.IMessage.CorrelationId
+  parent: Cqrs.Messages.IMessage
+  isExternal: false
+  name: CorrelationId
+  nameWithType: IMessage.CorrelationId
+  fullName: Cqrs.Messages.IMessage.CorrelationId
 - uid: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.OriginatingFramework*
   commentId: Overload:Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.OriginatingFramework
   isExternal: false
@@ -669,20 +1093,28 @@ references:
   name: Frameworks
   nameWithType: TestEvent.Frameworks
   fullName: Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent.Frameworks
-- uid: IEnumerable{System.String}
-  commentId: '!:IEnumerable{System.String}'
-  definition: IEnumerable`1
+- uid: Cqrs.Messages.IMessage.Frameworks
+  commentId: P:Cqrs.Messages.IMessage.Frameworks
+  parent: Cqrs.Messages.IMessage
+  isExternal: false
+  name: Frameworks
+  nameWithType: IMessage.Frameworks
+  fullName: Cqrs.Messages.IMessage.Frameworks
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
   name: IEnumerable<String>
   nameWithType: IEnumerable<String>
-  fullName: IEnumerable<System.String>
+  fullName: System.Collections.Generic.IEnumerable<System.String>
   nameWithType.vb: IEnumerable(Of String)
-  fullName.vb: IEnumerable(Of System.String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.String)
   name.vb: IEnumerable(Of String)
   spec.csharp:
-  - uid: IEnumerable`1
+  - uid: System.Collections.Generic.IEnumerable`1
     name: IEnumerable
     nameWithType: IEnumerable
-    fullName: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
     isExternal: true
   - name: <
     nameWithType: <
@@ -696,10 +1128,10 @@ references:
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: IEnumerable`1
+  - uid: System.Collections.Generic.IEnumerable`1
     name: IEnumerable
     nameWithType: IEnumerable
-    fullName: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
@@ -712,41 +1144,48 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: IEnumerable`1
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
   isExternal: true
-  name: IEnumerable<>
-  nameWithType: IEnumerable<>
-  fullName: IEnumerable<>
-  nameWithType.vb: IEnumerable(Of )
-  fullName.vb: IEnumerable(Of )
-  name.vb: IEnumerable(Of )
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
   spec.csharp:
-  - uid: IEnumerable`1
+  - uid: System.Collections.Generic.IEnumerable`1
     name: IEnumerable
     nameWithType: IEnumerable
-    fullName: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
     isExternal: true
   - name: <
     nameWithType: <
     fullName: <
-  - name: ''
-    nameWithType: ''
-    fullName: ''
+  - name: T
+    nameWithType: T
+    fullName: T
   - name: '>'
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: IEnumerable`1
+  - uid: System.Collections.Generic.IEnumerable`1
     name: IEnumerable
     nameWithType: IEnumerable
-    fullName: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
     isExternal: true
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - name: ''
-    nameWithType: ''
-    fullName: ''
+  - name: T
+    nameWithType: T
+    fullName: T
   - name: )
     nameWithType: )
     fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: false
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic

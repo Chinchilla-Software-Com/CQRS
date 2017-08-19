@@ -49,6 +49,9 @@ namespace Cqrs.Azure.BlobStorage
 			Logger = logger;
 		}
 
+		/// <summary>
+		/// The default <see cref="JsonSerializerSettings"/> to use.
+		/// </summary>
 		public static JsonSerializerSettings DefaultSettings { get; private set; }
 
 		static StorageStore()
@@ -234,6 +237,10 @@ namespace Cqrs.Azure.BlobStorage
 			}
 		}
 
+		/// <summary>
+		/// Deserialise the provided <paramref name="dataStream"/> from its <see cref="Stream"/> representation.
+		/// </summary>
+		/// <param name="dataStream">A <see cref="Stream"/> representation of an <see cref="TData"/> to deserialise.</param>
 		protected virtual TData Deserialise(Stream dataStream)
 		{
 			using (dataStream)
@@ -247,6 +254,10 @@ namespace Cqrs.Azure.BlobStorage
 			}
 		}
 
+		/// <summary>
+		/// Deserialise the provided <paramref name="json"/> from its <see cref="string"/> representation.
+		/// </summary>
+		/// <param name="json">A <see cref="string"/> representation of an <see cref="TData"/> to deserialise.</param>
 		protected virtual TData Deserialise(string json)
 		{
 			using (var stringReader = new StringReader(json))
@@ -254,6 +265,11 @@ namespace Cqrs.Azure.BlobStorage
 					return GetSerialiser().Deserialize<TData>(jsonTextReader);
 		}
 
+		/// <summary>
+		/// Serialise the provided <paramref name="data"/>.
+		/// </summary>
+		/// <param name="data">The <see cref="TData"/> being serialised.</param>
+		/// <returns>A <see cref="Stream"/> representation of the provided <paramref name="data"/>.</returns>
 		protected virtual Stream Serialise(TData data)
 		{
 			string dataContent = JsonConvert.SerializeObject(data, GetSerialisationSettings());
@@ -264,11 +280,19 @@ namespace Cqrs.Azure.BlobStorage
 			return stream;
 		}
 
+		/// <summary>
+		/// Returns <see cref="DefaultSettings"/>
+		/// </summary>
+		/// <returns><see cref="DefaultSettings"/></returns>
 		protected virtual JsonSerializerSettings GetSerialisationSettings()
 		{
 			return DefaultSettings;
 		}
 
+		/// <summary>
+		/// Creates a new <see cref="JsonSerializer"/> using the settings from <see cref="GetSerialisationSettings"/>.
+		/// </summary>
+		/// <returns>A new instance of <see cref="JsonSerializer"/>.</returns>
 		protected virtual JsonSerializer GetSerialiser()
 		{
 			JsonSerializerSettings settings = GetSerialisationSettings();

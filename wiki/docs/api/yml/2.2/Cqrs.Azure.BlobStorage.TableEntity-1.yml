@@ -91,10 +91,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DefaultSettings
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableEntity.cs
-    startLine: 18
+    startLine: 21
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nThe default <xref href=\"Newtonsoft.Json.JsonSerializerSettings\" data-throw-if-not-resolved=\"false\"></xref> to use.\n"
+  example: []
   syntax:
     content: public static JsonSerializerSettings DefaultSettings { get; }
     parameters: []
@@ -130,15 +132,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Deserialise
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableEntity.cs
-    startLine: 25
+    startLine: 32
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nDeserialise the provided <span class=\"paramref\">json</span> from its <xref href=\"System.String\" data-throw-if-not-resolved=\"false\"></xref> representation.\n"
+  example: []
   syntax:
     content: protected virtual TData Deserialise(string json)
     parameters:
     - id: json
       type: System.String
+      description: A <xref href="System.String" data-throw-if-not-resolved="false"></xref> representation of an <see cref="!:TData"></see> to deserialise.
     return:
       type: '{TData}'
     content.vb: Protected Overridable Function Deserialise(json As String) As TData
@@ -169,17 +174,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Serialise
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableEntity.cs
-    startLine: 32
+    startLine: 44
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nSerialise the provided <span class=\"paramref\">data</span>.\n"
+  example: []
   syntax:
     content: protected virtual string Serialise(TData data)
     parameters:
     - id: data
       type: '{TData}'
+      description: The <see cref="!:TData"></see> being serialised.
     return:
       type: System.String
+      description: A <xref href="System.String" data-throw-if-not-resolved="false"></xref> representation of the provided <span class="paramref">data</span>.
     content.vb: Protected Overridable Function Serialise(data As TData) As String
   overload: Cqrs.Azure.BlobStorage.TableEntity`1.Serialise*
   nameWithType.vb: TableEntity(Of TData).Serialise(TData)
@@ -208,14 +217,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetSerialisationSettings
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableEntity.cs
-    startLine: 39
+    startLine: 55
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nReturns <xref href=\"Cqrs.Azure.BlobStorage.TableEntity%601.DefaultSettings\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected virtual JsonSerializerSettings GetSerialisationSettings()
     return:
       type: Newtonsoft.Json.JsonSerializerSettings
+      description: <xref href="Cqrs.Azure.BlobStorage.TableEntity%601.DefaultSettings" data-throw-if-not-resolved="false"></xref>
     content.vb: Protected Overridable Function GetSerialisationSettings As JsonSerializerSettings
   overload: Cqrs.Azure.BlobStorage.TableEntity`1.GetSerialisationSettings*
   nameWithType.vb: TableEntity(Of TData).GetSerialisationSettings()
@@ -244,14 +256,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetSerialiser
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableEntity.cs
-    startLine: 44
+    startLine: 64
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nCreates a new <xref href=\"Newtonsoft.Json.JsonSerializer\" data-throw-if-not-resolved=\"false\"></xref> using the settings from <xref href=\"Cqrs.Azure.BlobStorage.TableEntity%601.GetSerialisationSettings\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected virtual JsonSerializer GetSerialiser()
     return:
       type: Newtonsoft.Json.JsonSerializer
+      description: A new instance of <xref href="Newtonsoft.Json.JsonSerializer" data-throw-if-not-resolved="false"></xref>.
     content.vb: Protected Overridable Function GetSerialiser As JsonSerializer
   overload: Cqrs.Azure.BlobStorage.TableEntity`1.GetSerialiser*
   nameWithType.vb: TableEntity(Of TData).GetSerialiser()
@@ -933,6 +948,13 @@ references:
   name: Microsoft.WindowsAzure.Storage.Table
   nameWithType: Microsoft.WindowsAzure.Storage.Table
   fullName: Microsoft.WindowsAzure.Storage.Table
+- uid: Newtonsoft.Json.JsonSerializerSettings
+  commentId: T:Newtonsoft.Json.JsonSerializerSettings
+  parent: Newtonsoft.Json
+  isExternal: true
+  name: JsonSerializerSettings
+  nameWithType: JsonSerializerSettings
+  fullName: Newtonsoft.Json.JsonSerializerSettings
 - uid: Cqrs.Azure.BlobStorage.TableEntity`1.DefaultSettings*
   commentId: Overload:Cqrs.Azure.BlobStorage.TableEntity`1.DefaultSettings
   isExternal: false
@@ -941,19 +963,19 @@ references:
   fullName: Cqrs.Azure.BlobStorage.TableEntity<TData>.DefaultSettings
   nameWithType.vb: TableEntity(Of TData).DefaultSettings
   fullName.vb: Cqrs.Azure.BlobStorage.TableEntity(Of TData).DefaultSettings
-- uid: Newtonsoft.Json.JsonSerializerSettings
-  commentId: T:Newtonsoft.Json.JsonSerializerSettings
-  parent: Newtonsoft.Json
-  isExternal: true
-  name: JsonSerializerSettings
-  nameWithType: JsonSerializerSettings
-  fullName: Newtonsoft.Json.JsonSerializerSettings
 - uid: Newtonsoft.Json
   commentId: N:Newtonsoft.Json
   isExternal: false
   name: Newtonsoft.Json
   nameWithType: Newtonsoft.Json
   fullName: Newtonsoft.Json
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
 - uid: Cqrs.Azure.BlobStorage.TableEntity`1.Deserialise*
   commentId: Overload:Cqrs.Azure.BlobStorage.TableEntity`1.Deserialise
   isExternal: false
@@ -962,13 +984,6 @@ references:
   fullName: Cqrs.Azure.BlobStorage.TableEntity<TData>.Deserialise
   nameWithType.vb: TableEntity(Of TData).Deserialise
   fullName.vb: Cqrs.Azure.BlobStorage.TableEntity(Of TData).Deserialise
-- uid: System.String
-  commentId: T:System.String
-  parent: System
-  isExternal: true
-  name: String
-  nameWithType: String
-  fullName: System.String
 - uid: '{TData}'
   commentId: '!:TData'
   definition: TData
@@ -988,6 +1003,14 @@ references:
   fullName: Cqrs.Azure.BlobStorage.TableEntity<TData>.Serialise
   nameWithType.vb: TableEntity(Of TData).Serialise
   fullName.vb: Cqrs.Azure.BlobStorage.TableEntity(Of TData).Serialise
+- uid: Cqrs.Azure.BlobStorage.TableEntity`1.DefaultSettings
+  commentId: P:Cqrs.Azure.BlobStorage.TableEntity`1.DefaultSettings
+  isExternal: false
+  name: DefaultSettings
+  nameWithType: TableEntity<TData>.DefaultSettings
+  fullName: Cqrs.Azure.BlobStorage.TableEntity<TData>.DefaultSettings
+  nameWithType.vb: TableEntity(Of TData).DefaultSettings
+  fullName.vb: Cqrs.Azure.BlobStorage.TableEntity(Of TData).DefaultSettings
 - uid: Cqrs.Azure.BlobStorage.TableEntity`1.GetSerialisationSettings*
   commentId: Overload:Cqrs.Azure.BlobStorage.TableEntity`1.GetSerialisationSettings
   isExternal: false
@@ -996,6 +1019,43 @@ references:
   fullName: Cqrs.Azure.BlobStorage.TableEntity<TData>.GetSerialisationSettings
   nameWithType.vb: TableEntity(Of TData).GetSerialisationSettings
   fullName.vb: Cqrs.Azure.BlobStorage.TableEntity(Of TData).GetSerialisationSettings
+- uid: Newtonsoft.Json.JsonSerializer
+  commentId: T:Newtonsoft.Json.JsonSerializer
+  parent: Newtonsoft.Json
+  isExternal: true
+  name: JsonSerializer
+  nameWithType: JsonSerializer
+  fullName: Newtonsoft.Json.JsonSerializer
+- uid: Cqrs.Azure.BlobStorage.TableEntity`1.GetSerialisationSettings
+  commentId: M:Cqrs.Azure.BlobStorage.TableEntity`1.GetSerialisationSettings
+  isExternal: false
+  name: GetSerialisationSettings()
+  nameWithType: TableEntity<TData>.GetSerialisationSettings()
+  fullName: Cqrs.Azure.BlobStorage.TableEntity<TData>.GetSerialisationSettings()
+  nameWithType.vb: TableEntity(Of TData).GetSerialisationSettings()
+  fullName.vb: Cqrs.Azure.BlobStorage.TableEntity(Of TData).GetSerialisationSettings()
+  spec.csharp:
+  - uid: Cqrs.Azure.BlobStorage.TableEntity`1.GetSerialisationSettings
+    name: GetSerialisationSettings
+    nameWithType: TableEntity<TData>.GetSerialisationSettings
+    fullName: Cqrs.Azure.BlobStorage.TableEntity<TData>.GetSerialisationSettings
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.BlobStorage.TableEntity`1.GetSerialisationSettings
+    name: GetSerialisationSettings
+    nameWithType: TableEntity(Of TData).GetSerialisationSettings
+    fullName: Cqrs.Azure.BlobStorage.TableEntity(Of TData).GetSerialisationSettings
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.BlobStorage.TableEntity`1.GetSerialiser*
   commentId: Overload:Cqrs.Azure.BlobStorage.TableEntity`1.GetSerialiser
   isExternal: false
@@ -1004,10 +1064,3 @@ references:
   fullName: Cqrs.Azure.BlobStorage.TableEntity<TData>.GetSerialiser
   nameWithType.vb: TableEntity(Of TData).GetSerialiser
   fullName.vb: Cqrs.Azure.BlobStorage.TableEntity(Of TData).GetSerialiser
-- uid: Newtonsoft.Json.JsonSerializer
-  commentId: T:Newtonsoft.Json.JsonSerializer
-  parent: Newtonsoft.Json
-  isExternal: true
-  name: JsonSerializer
-  nameWithType: JsonSerializer
-  fullName: Newtonsoft.Json.JsonSerializer

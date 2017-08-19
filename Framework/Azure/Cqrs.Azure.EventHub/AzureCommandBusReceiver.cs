@@ -21,14 +21,24 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
+	/// <summary>
+	/// A <see cref="ICommandReceiver{TAuthenticationToken}"/> that receives network messages, resolves handlers and executes the handler.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureCommandBusReceiver<TAuthenticationToken>
 		: AzureCommandBus<TAuthenticationToken>
 		, ICommandHandlerRegistrar
 		, ICommandReceiver<TAuthenticationToken>
 	{
 		// ReSharper disable StaticMemberInGenericType
-		private static RouteManager Routes { get; set; }
+		/// <summary>
+		/// Gets the <see cref="RouteManager"/>.
+		/// </summary>
+		public static RouteManager Routes { get; private set; }
 
+		/// <summary>
+		/// The number of handles currently being executed.
+		/// </summary>
 		protected static long CurrentHandles { get; set; }
 		// ReSharper restore StaticMemberInGenericType
 
@@ -37,12 +47,21 @@ namespace Cqrs.Azure.ServiceBus
 			Routes = new RouteManager();
 		}
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureCommandBusReceiver{TAuthenticationToken}"/>.
+		/// </summary>
 		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, false)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventHub.CommandBus.Receiver.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
 
+		/// <summary>
+		/// Register a command handler that will listen and respond to commands.
+		/// </summary>
+		/// <remarks>
+		/// In many cases the <paramref name="targetedType"/> will be the handler class itself, what you actually want is the target of what is being updated.
+		/// </remarks>
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
@@ -50,7 +69,7 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		/// <summary>
-		/// Register an event or command handler that will listen and respond to events or commands.
+		/// Register a command handler that will listen and respond to commands.
 		/// </summary>
 		public void RegisterHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
 			where TMessage : IMessage
@@ -58,6 +77,9 @@ namespace Cqrs.Azure.ServiceBus
 			RegisterHandler(handler, null, holdMessageLock);
 		}
 
+		/// <summary>
+		/// Receives <see cref="EventData"/> from the command bus.
+		/// </summary>
 		protected virtual void ReceiveCommand(PartitionContext context, EventData eventData)
 		{
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
@@ -177,6 +199,9 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// Receives a <see cref="ICommand{TAuthenticationToken}"/> from the command bus.
+		/// </summary>
 		public virtual bool? ReceiveCommand(ICommand<TAuthenticationToken> command)
 		{
 			return AzureBusHelper.DefaultReceiveCommand(command, Routes, "Azure-EventHub");
@@ -184,6 +209,9 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Implementation of ICommandReceiver
 
+		/// <summary>
+		/// Starts listening and processing instances of <see cref="ICommand{TAuthenticationToken}"/> from the command bus.
+		/// </summary>
 		public void Start()
 		{
 			InstantiateReceiving();

@@ -22,19 +22,34 @@ using EventData = Microsoft.ServiceBus.Messaging.EventData;
 
 namespace Cqrs.Azure.ServiceBus
 {
+	/// <summary>
+	/// A <see cref="IEventReceiver{TAuthenticationToken}"/> that receives network messages, resolves handlers and executes the handler.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureEventBusReceiver<TAuthenticationToken>
 		: AzureEventHubBus<TAuthenticationToken>
 		, IEventHandlerRegistrar
 		, IEventReceiver<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The configuration key for
+		/// the number of receiver <see cref="SubscriptionClient"/> instances to create
+		/// as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected virtual string NumberOfReceiversCountConfigurationKey
 		{
 			get { return "Cqrs.Azure.EventHub.EventBus.NumberOfReceiversCount"; }
 		}
 
 		// ReSharper disable StaticMemberInGenericType
-		protected static RouteManager Routes { get; private set; }
+		/// <summary>
+		/// Gets the <see cref="RouteManager"/>.
+		/// </summary>
+		public static RouteManager Routes { get; private set; }
 
+		/// <summary>
+		/// The number of handles currently being executed.
+		/// </summary>
 		protected static long CurrentHandles { get; set; }
 		// ReSharper restore StaticMemberInGenericType
 
@@ -43,23 +58,21 @@ namespace Cqrs.Azure.ServiceBus
 			Routes = new RouteManager();
 		}
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureEventBusReceiver{TAuthenticationToken}"/>.
+		/// </summary>
 		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, false)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventHub.EventBus.Receiver.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
 
-		public void Start()
-		{
-			InstantiateReceiving();
-
-			// Callback to handle received messages
-			RegisterReceiverMessageHandler(ReceiveEvent);
-		}
-
 		/// <summary>
-		/// Register an event or command handler that will listen and respond to events or commands.
+		/// Register an event handler that will listen and respond to events.
 		/// </summary>
+		/// <remarks>
+		/// In many cases the <paramref name="targetedType"/> will be the handler class itself, what you actually want is the target of what is being updated.
+		/// </remarks>
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
@@ -67,7 +80,7 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		/// <summary>
-		/// Register an event or command handler that will listen and respond to events or commands.
+		/// Register an event handler that will listen and respond to events.
 		/// </summary>
 		public void RegisterHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = false)
 			where TMessage : IMessage
@@ -78,11 +91,15 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
-		public void RegisterGlobalEventHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true) where TMessage : IMessage
+		public void RegisterGlobalEventHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
+			where TMessage : IMessage
 		{
 			Routes.RegisterGlobalEventHandler(handler, holdMessageLock);
 		}
 
+		/// <summary>
+		/// Receives a <see cref="BrokeredMessage"/> from the event bus.
+		/// </summary>
 		protected virtual void ReceiveEvent(PartitionContext context, EventData eventData)
 		{
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
@@ -206,6 +223,9 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// Receives a <see cref="IEvent{TAuthenticationToken}"/> from the event bus.
+		/// </summary>
 		public virtual bool? ReceiveEvent(IEvent<TAuthenticationToken> @event)
 		{
 			return AzureBusHelper.DefaultReceiveEvent(@event, Routes, "Azure-EventHub");
@@ -213,6 +233,10 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Overrides of AzureServiceBus<TAuthenticationToken>
 
+		/// <summary>
+		/// Returns <see cref="NumberOfReceiversCountConfigurationKey"/> from <see cref="IConfigurationManager"/> 
+		/// if no value is set, returns <see cref="AzureBus{TAuthenticationToken}.DefaultNumberOfReceiversCount"/>.
+		/// </summary>
 		protected override int GetCurrentNumberOfReceiversCount()
 		{
 			string numberOfReceiversCountValue;
@@ -225,6 +249,21 @@ namespace Cqrs.Azure.ServiceBus
 			else
 				numberOfReceiversCount = DefaultNumberOfReceiversCount;
 			return numberOfReceiversCount;
+		}
+
+		#endregion
+
+		#region Implementation of IEventReceiver
+
+		/// <summary>
+		/// Starts listening and processing instances of <see cref="IEvent{TAuthenticationToken}"/> from the event bus.
+		/// </summary>
+		public void Start()
+		{
+			InstantiateReceiving();
+
+			// Callback to handle received messages
+			RegisterReceiverMessageHandler(ReceiveEvent);
 		}
 
 		#endregion
