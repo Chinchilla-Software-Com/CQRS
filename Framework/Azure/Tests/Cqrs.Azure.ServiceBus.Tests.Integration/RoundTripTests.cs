@@ -76,7 +76,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			var azureCommandBusPublisher = new AzureCommandBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(new ConfigurationManager()), new ConfigurationManager(), null), new BusHelper(new ConfigurationManager()));
 
 			// Act
-			azureCommandBusPublisher.Send(command);
+			azureCommandBusPublisher.Publish(command);
 
 			// Assert
 			SpinWait.SpinUntil(() => testResponse[processId].Item1);
