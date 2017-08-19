@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-11</td>
+            <td class="headerValue">2017-08-19</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -64,64 +64,98 @@
 <span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
 <span class="lineNum">       7 </span>            : #endregion
 <span class="lineNum">       8 </span>            : 
-<span class="lineNum">       9 </span>            : using Cqrs.Authentication;
-<span class="lineNum">      10 </span>            : using Cqrs.Configuration;
-<span class="lineNum">      11 </span>            : using cdmdotnet.Logging;
-<span class="lineNum">      12 </span>            : 
-<span class="lineNum">      13 </span>            : namespace Cqrs.Azure.ServiceBus
-<span class="lineNum">      14 </span>            : {
-<span class="lineNum">      15 </span>            :         public abstract class AzureCommandBus&lt;TAuthenticationToken&gt; : AzureEventHub&lt;TAuthenticationToken&gt;
-<span class="lineNum">      16 </span>            :         {
-<span class="lineNum">      17 </span>            :                 protected override string EventHubConnectionStringNameConfigurationKey
-<span class="lineNum">      18 </span>            :                 {
-<span class="lineNum">      19 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.CommandBus.ConnectionStringName&quot;; }
-<span class="lineNum">      20 </span>            :                 }
-<span class="lineNum">      21 </span>            : 
-<span class="lineNum">      22 </span>            :                 protected override string EventHubStorageConnectionStringNameConfigurationKey
-<span class="lineNum">      23 </span>            :                 {
-<span class="lineNum">      24 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.CommandBus.StorageConnectionStringName&quot;; }
-<span class="lineNum">      25 </span>            :                 }
-<span class="lineNum">      26 </span>            : 
-<span class="lineNum">      27 </span>            :                 protected override string PrivateEventHubNameConfigurationKey
-<span class="lineNum">      28 </span>            :                 {
-<span class="lineNum">      29 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.CommandBus.PrivateEvent.EventHubName&quot;; }
-<span class="lineNum">      30 </span>            :                 }
-<span class="lineNum">      31 </span>            : 
-<span class="lineNum">      32 </span>            :                 protected override string PublicEventHubNameConfigurationKey
-<span class="lineNum">      33 </span>            :                 {
-<span class="lineNum">      34 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.CommandBus.PublicEvent.EventHubName&quot;; }
-<span class="lineNum">      35 </span>            :                 }
-<span class="lineNum">      36 </span>            : 
-<span class="lineNum">      37 </span>            :                 protected override string PrivateEventHubConsumerGroupNameConfigurationKey
-<span class="lineNum">      38 </span>            :                 {
-<span class="lineNum">      39 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.CommandBus.PrivateEvent.EventHubName.ConsumerGroupName&quot;; }
-<span class="lineNum">      40 </span>            :                 }
-<span class="lineNum">      41 </span>            : 
-<span class="lineNum">      42 </span>            :                 protected override string PublicEventHubConsumerGroupNameConfigurationKey
-<span class="lineNum">      43 </span>            :                 {
-<span class="lineNum">      44 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.CommandBus.PublicEvent.EventHubName.ConsumerGroupName&quot;; }
-<span class="lineNum">      45 </span>            :                 }
-<span class="lineNum">      46 </span>            : 
-<span class="lineNum">      47 </span>            :                 protected override string DefaultPrivateEventHubName
-<span class="lineNum">      48 </span>            :                 {
-<span class="lineNum">      49 </span>            :                         get { return &quot;Cqrs.EventHub.CommandBus.Private&quot;; }
-<span class="lineNum">      50 </span>            :                 }
-<span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span>            :                 protected override string DefaultPublicEventHubName
-<span class="lineNum">      53 </span>            :                 {
-<span class="lineNum">      54 </span>            :                         get { return &quot;Cqrs.EventHub.CommandBus&quot;; }
-<span class="lineNum">      55 </span>            :                 }
-<span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span>            :                 protected IAzureBusHelper&lt;TAuthenticationToken&gt; AzureBusHelper { get; private set; }
-<span class="lineNum">      58 </span>            : 
-<span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span><span class="lineNoCov">          0 :                 protected AzureCommandBus(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper, bool isAPublisher)</span>
-<span class="lineNum">      61 </span>            :                         : base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
-<span class="lineNum">      62 </span>            :                 {
-<span class="lineNum">      63 </span>            :                         AzureBusHelper = azureBusHelper;
-<span class="lineNum">      64 </span>            :                 }
-<span class="lineNum">      65 </span>            :         }
-<span class="lineNum">      66 </span>            : }
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      11 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      12 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : namespace Cqrs.Azure.ServiceBus
+<span class="lineNum">      15 </span>            : {
+<span class="lineNum">      16 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      17 </span>            :         /// A command bus based on &lt;see cref=&quot;AzureEventHub{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      18 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      19 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      20 </span>            :         public abstract class AzureCommandBus&lt;TAuthenticationToken&gt; : AzureEventHub&lt;TAuthenticationToken&gt;
+<span class="lineNum">      21 </span>            :         {
+<span class="lineNum">      22 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :                 /// The configuration key for the event hub connection string as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      24 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      25 </span>            :                 protected override string EventHubConnectionStringNameConfigurationKey
+<span class="lineNum">      26 </span>            :                 {
+<span class="lineNum">      27 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.CommandBus.ConnectionStringName&quot;; }
+<span class="lineNum">      28 </span>            :                 }
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// The configuration key for the event hub storage connection string as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      33 </span>            :                 protected override string EventHubStorageConnectionStringNameConfigurationKey
+<span class="lineNum">      34 </span>            :                 {
+<span class="lineNum">      35 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.CommandBus.StorageConnectionStringName&quot;; }
+<span class="lineNum">      36 </span>            :                 }
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// The configuration key for the name of the private event hub as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span>            :                 protected override string PrivateEventHubNameConfigurationKey
+<span class="lineNum">      42 </span>            :                 {
+<span class="lineNum">      43 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.CommandBus.PrivateEvent.EventHubName&quot;; }
+<span class="lineNum">      44 </span>            :                 }
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      47 </span>            :                 /// The configuration key for the name of the public event hub as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      48 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      49 </span>            :                 protected override string PublicEventHubNameConfigurationKey
+<span class="lineNum">      50 </span>            :                 {
+<span class="lineNum">      51 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.CommandBus.PublicEvent.EventHubName&quot;; }
+<span class="lineNum">      52 </span>            :                 }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      55 </span>            :                 /// The configuration key for the name of the consumer group name of the private event hub as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      56 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      57 </span>            :                 protected override string PrivateEventHubConsumerGroupNameConfigurationKey
+<span class="lineNum">      58 </span>            :                 {
+<span class="lineNum">      59 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.CommandBus.PrivateEvent.EventHubName.ConsumerGroupName&quot;; }
+<span class="lineNum">      60 </span>            :                 }
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      63 </span>            :                 /// The configuration key for the name of the consumer group name of the public event hub as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      64 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      65 </span>            :                 protected override string PublicEventHubConsumerGroupNameConfigurationKey
+<span class="lineNum">      66 </span>            :                 {
+<span class="lineNum">      67 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.CommandBus.PublicEvent.EventHubName.ConsumerGroupName&quot;; }
+<span class="lineNum">      68 </span>            :                 }
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      71 </span>            :                 /// The default name of the private event hub if no &lt;see cref=&quot;IConfigurationManager&quot;/&gt; value is set.
+<span class="lineNum">      72 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      73 </span>            :                 protected override string DefaultPrivateEventHubName
+<span class="lineNum">      74 </span>            :                 {
+<span class="lineNum">      75 </span>            :                         get { return &quot;Cqrs.EventHub.CommandBus.Private&quot;; }
+<span class="lineNum">      76 </span>            :                 }
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      79 </span>            :                 /// The default name of the public event hub if no &lt;see cref=&quot;IConfigurationManager&quot;/&gt; value is set.
+<span class="lineNum">      80 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      81 </span>            :                 protected override string DefaultPublicEventHubName
+<span class="lineNum">      82 </span>            :                 {
+<span class="lineNum">      83 </span>            :                         get { return &quot;Cqrs.EventHub.CommandBus&quot;; }
+<span class="lineNum">      84 </span>            :                 }
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      87 </span>            :                 /// Gets the &lt;see cref=&quot;IAzureBusHelper{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      88 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      89 </span>            :                 protected IAzureBusHelper&lt;TAuthenticationToken&gt; AzureBusHelper { get; private set; }
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      92 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;AzureCommandBus{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      93 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      94 </span><span class="lineCov">          2 :                 protected AzureCommandBus(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper, bool isAPublisher)</span>
+<span class="lineNum">      95 </span>            :                         : base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
+<span class="lineNum">      96 </span>            :                 {
+<span class="lineNum">      97 </span>            :                         AzureBusHelper = azureBusHelper;
+<span class="lineNum">      98 </span>            :                 }
+<span class="lineNum">      99 </span>            :         }
+<span class="lineNum">     100 </span>            : }
 </pre>
       </td>
     </tr>

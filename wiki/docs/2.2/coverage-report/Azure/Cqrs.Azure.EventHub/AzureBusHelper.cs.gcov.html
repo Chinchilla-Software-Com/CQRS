@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">3</td>
             <td class="headerCovTableEntry">12</td>
-            <td class="headerCovTableEntryLo">25.0 %</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-11</td>
+            <td class="headerValue">2017-08-19</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -87,438 +87,534 @@
 <span class="lineNum">      29 </span>            : 
 <span class="lineNum">      30 </span>            : namespace Cqrs.Azure.ServiceBus
 <span class="lineNum">      31 </span>            : {
-<span class="lineNum">      32 </span>            :         public class AzureBusHelper&lt;TAuthenticationToken&gt; : IAzureBusHelper&lt;TAuthenticationToken&gt;
-<span class="lineNum">      33 </span>            :         {
-<span class="lineNum">      34 </span><span class="lineNoCov">          0 :                 public AzureBusHelper(IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IBusHelper busHelper, IConfigurationManager configurationManager, IDependencyResolver dependencyResolver)</span>
-<span class="lineNum">      35 </span>            :                 {
-<span class="lineNum">      36 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
-<span class="lineNum">      37 </span>            :                         CorrelationIdHelper = correlationIdHelper;
-<span class="lineNum">      38 </span>            :                         Logger = logger;
-<span class="lineNum">      39 </span>            :                         MessageSerialiser = messageSerialiser;
-<span class="lineNum">      40 </span>            :                         BusHelper = busHelper;
-<span class="lineNum">      41 </span>            :                         DependencyResolver = dependencyResolver;
-<span class="lineNum">      42 </span>            :                         ConfigurationManager = configurationManager;
-<span class="lineNum">      43 </span>            :                 }
-<span class="lineNum">      44 </span>            : 
-<span class="lineNum">      45 </span>            :                 protected IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; AuthenticationTokenHelper { get; private set; }
-<span class="lineNum">      46 </span>            : 
-<span class="lineNum">      47 </span>            :                 protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
-<span class="lineNum">      48 </span>            : 
-<span class="lineNum">      49 </span>            :                 protected ILogger Logger { get; private set; }
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span>            :                 protected IMessageSerialiser&lt;TAuthenticationToken&gt; MessageSerialiser { get; private set; }
-<span class="lineNum">      52 </span>            : 
-<span class="lineNum">      53 </span>            :                 protected IBusHelper BusHelper { get; private set; }
-<span class="lineNum">      54 </span>            : 
-<span class="lineNum">      55 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      32 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      33 </span>            :         /// A helper for Azure Service Bus and Event Hub.
+<span class="lineNum">      34 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      35 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      36 </span>            :         public class AzureBusHelper&lt;TAuthenticationToken&gt; : IAzureBusHelper&lt;TAuthenticationToken&gt;
+<span class="lineNum">      37 </span>            :         {
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AzureBusHelper{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span><span class="lineCov">          2 :                 public AzureBusHelper(IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IBusHelper busHelper, IConfigurationManager configurationManager, IDependencyResolver dependencyResolver)</span>
+<span class="lineNum">      42 </span>            :                 {
+<span class="lineNum">      43 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
+<span class="lineNum">      44 </span>            :                         CorrelationIdHelper = correlationIdHelper;
+<span class="lineNum">      45 </span>            :                         Logger = logger;
+<span class="lineNum">      46 </span>            :                         MessageSerialiser = messageSerialiser;
+<span class="lineNum">      47 </span>            :                         BusHelper = busHelper;
+<span class="lineNum">      48 </span>            :                         DependencyResolver = dependencyResolver;
+<span class="lineNum">      49 </span>            :                         ConfigurationManager = configurationManager;
+<span class="lineNum">      50 </span>            :                 }
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      53 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IAuthenticationTokenHelper{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      54 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      55 </span>            :                 protected IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; AuthenticationTokenHelper { get; private set; }
 <span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span>            :                 protected IDependencyResolver DependencyResolver { get; private set; }
-<span class="lineNum">      58 </span>            : 
-<span class="lineNum">      59 </span><span class="lineNoCov">          0 :                 public virtual void PrepareCommand&lt;TCommand&gt;(TCommand command, string framework)</span>
-<span class="lineNum">      60 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
-<span class="lineNum">      61 </span>            :                 {
-<span class="lineNum">      62 </span>            :                         if (command.AuthenticationToken == null || command.AuthenticationToken.Equals(default(TAuthenticationToken)))
-<span class="lineNum">      63 </span>            :                                 command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-<span class="lineNum">      64 </span>            :                         command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-<span class="lineNum">      65 </span>            : 
-<span class="lineNum">      66 </span>            :                         if (string.IsNullOrWhiteSpace(command.OriginatingFramework))
-<span class="lineNum">      67 </span>            :                                 command.OriginatingFramework = framework;
-<span class="lineNum">      68 </span>            :                         var frameworks = new List&lt;string&gt;();
-<span class="lineNum">      69 </span>            :                         if (command.Frameworks != null)
-<span class="lineNum">      70 </span>            :                                 frameworks.AddRange(command.Frameworks);
-<span class="lineNum">      71 </span>            :                         frameworks.Add(framework);
-<span class="lineNum">      72 </span>            :                         command.Frameworks = frameworks;
-<span class="lineNum">      73 </span>            :                 }
-<span class="lineNum">      74 </span>            : 
-<span class="lineNum">      75 </span><span class="lineNoCov">          0 :                 public virtual bool PrepareAndValidateCommand&lt;TCommand&gt;(TCommand command, string framework)</span>
-<span class="lineNum">      76 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
-<span class="lineNum">      77 </span>            :                 {
-<span class="lineNum">      78 </span>            :                         Type commandType = command.GetType();
-<span class="lineNum">      79 </span>            : 
-<span class="lineNum">      80 </span>            :                         if (command.Frameworks != null &amp;&amp; command.Frameworks.Contains(framework))
-<span class="lineNum">      81 </span>            :                         {
-<span class="lineNum">      82 </span>            :                                 // if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
-<span class="lineNum">      83 </span>            :                                 if (command.Frameworks.Count() != 1)
-<span class="lineNum">      84 </span>            :                                 {
-<span class="lineNum">      85 </span>            :                                         Logger.LogInfo(&quot;The provided command has already been processed in Azure.&quot;, string.Format(&quot;{0}\\PrepareAndValidateEvent({1})&quot;, GetType().FullName, commandType.FullName));
-<span class="lineNum">      86 </span>            :                                         return false;
-<span class="lineNum">      87 </span>            :                                 }
-<span class="lineNum">      88 </span>            :                         }
-<span class="lineNum">      89 </span>            : 
-<span class="lineNum">      90 </span>            :                         ICommandValidator&lt;TAuthenticationToken, TCommand&gt; commandValidator = null;
-<span class="lineNum">      91 </span>            :                         try
-<span class="lineNum">      92 </span>            :                         {
-<span class="lineNum">      93 </span>            :                                 commandValidator = DependencyResolver.Resolve&lt;ICommandValidator&lt;TAuthenticationToken, TCommand&gt;&gt;();
-<span class="lineNum">      94 </span>            :                         }
-<span class="lineNum">      95 </span>            :                         catch (Exception exception)
-<span class="lineNum">      96 </span>            :                         {
-<span class="lineNum">      97 </span>            :                                 Logger.LogDebug(&quot;Locating an ICommandValidator failed.&quot;, string.Format(&quot;{0}\\PrepareAndValidateEvent({1})&quot;, GetType().FullName, commandType.FullName), exception);
-<span class="lineNum">      98 </span>            :                         }
+<span class="lineNum">      57 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      58 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ICorrelationIdHelper&quot;/&gt;.
+<span class="lineNum">      59 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      60 </span>            :                 protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      63 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ILogger&quot;/&gt;.
+<span class="lineNum">      64 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      65 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      68 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IMessageSerialiser{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      69 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      70 </span>            :                 protected IMessageSerialiser&lt;TAuthenticationToken&gt; MessageSerialiser { get; private set; }
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      73 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IBusHelper&quot;/&gt;.
+<span class="lineNum">      74 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      75 </span>            :                 protected IBusHelper BusHelper { get; private set; }
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      78 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      79 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      80 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      83 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IDependencyResolver&quot;/&gt;.
+<span class="lineNum">      84 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      85 </span>            :                 protected IDependencyResolver DependencyResolver { get; private set; }
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      88 </span>            :                 /// Prepares a &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; to be sent specifying the framework it is sent via.
+<span class="lineNum">      89 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      90 </span>            :                 /// &lt;typeparam name=&quot;TCommand&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of&lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; being sent.&lt;/typeparam&gt;
+<span class="lineNum">      91 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">      92 </span>            :                 /// &lt;param name=&quot;framework&quot;&gt;The framework the &lt;paramref name=&quot;command&quot;/&gt; is being sent from.&lt;/param&gt;
+<span class="lineNum">      93 </span><span class="lineCov">          2 :                 public virtual void PrepareCommand&lt;TCommand&gt;(TCommand command, string framework)</span>
+<span class="lineNum">      94 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">      95 </span>            :                 {
+<span class="lineNum">      96 </span>            :                         if (command.AuthenticationToken == null || command.AuthenticationToken.Equals(default(TAuthenticationToken)))
+<span class="lineNum">      97 </span>            :                                 command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+<span class="lineNum">      98 </span>            :                         command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 <span class="lineNum">      99 </span>            : 
-<span class="lineNum">     100 </span>            :                         if (commandValidator != null &amp;&amp; !commandValidator.IsCommandValid(command))
-<span class="lineNum">     101 </span>            :                         {
-<span class="lineNum">     102 </span>            :                                 Logger.LogInfo(&quot;The provided command is not valid.&quot;, string.Format(&quot;{0}\\PrepareAndValidateEvent({1})&quot;, GetType().FullName, commandType.FullName));
-<span class="lineNum">     103 </span>            :                                 return false;
-<span class="lineNum">     104 </span>            :                         }
-<span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span>            :                         PrepareCommand(command, framework);
-<span class="lineNum">     107 </span>            :                         return true;
-<span class="lineNum">     108 </span>            :                 }
-<span class="lineNum">     109 </span>            : 
-<span class="lineNum">     110 </span><span class="lineNoCov">          0 :                 public virtual ICommand&lt;TAuthenticationToken&gt; ReceiveCommand(string messageBody, Func&lt;ICommand&lt;TAuthenticationToken&gt;, bool?&gt; receiveCommandHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)</span>
-<span class="lineNum">     111 </span>            :                 {
-<span class="lineNum">     112 </span>            :                         ICommand&lt;TAuthenticationToken&gt; command;
-<span class="lineNum">     113 </span>            :                         try
-<span class="lineNum">     114 </span>            :                         {
-<span class="lineNum">     115 </span>            :                                 command = MessageSerialiser.DeserialiseCommand(messageBody);
-<span class="lineNum">     116 </span>            :                         }
-<span class="lineNum">     117 </span>            :                         catch (JsonSerializationException exception)
-<span class="lineNum">     118 </span>            :                         {
-<span class="lineNum">     119 </span>            :                                 JsonSerializationException checkException = exception;
-<span class="lineNum">     120 </span>            :                                 bool safeToExit = false;
-<span class="lineNum">     121 </span>            :                                 do
-<span class="lineNum">     122 </span>            :                                 {
-<span class="lineNum">     123 </span>            :                                         if (checkException.Message.StartsWith(&quot;Could not load assembly&quot;))
-<span class="lineNum">     124 </span>            :                                         {
-<span class="lineNum">     125 </span>            :                                                 safeToExit = true;
-<span class="lineNum">     126 </span>            :                                                 break;
-<span class="lineNum">     127 </span>            :                                         }
-<span class="lineNum">     128 </span>            :                                 } while ((checkException = checkException.InnerException as JsonSerializationException) != null);
-<span class="lineNum">     129 </span>            :                                 if (safeToExit)
-<span class="lineNum">     130 </span>            :                                 {
-<span class="lineNum">     131 </span>            :                                         const string pattern = @&quot;(?&lt;=^Error resolving type specified in JSON ').+?(?='\. Path '\$type')&quot;;
-<span class="lineNum">     132 </span>            :                                         Match match = new Regex(pattern).Match(exception.Message);
-<span class="lineNum">     133 </span>            :                                         if (match.Success)
-<span class="lineNum">     134 </span>            :                                         {
-<span class="lineNum">     135 </span>            :                                                 string[] typeParts = match.Value.Split(',');
-<span class="lineNum">     136 </span>            :                                                 if (typeParts.Length == 2)
-<span class="lineNum">     137 </span>            :                                                 {
-<span class="lineNum">     138 </span>            :                                                         string classType = typeParts[0];
-<span class="lineNum">     139 </span>            :                                                         bool isRequired = BusHelper.IsEventRequired(string.Format(&quot;{0}.IsRequired&quot;, classType));
-<span class="lineNum">     140 </span>            : 
-<span class="lineNum">     141 </span>            :                                                         if (!isRequired)
-<span class="lineNum">     142 </span>            :                                                         {
-<span class="lineNum">     143 </span>            :                                                                 if (skippedAction != null)
-<span class="lineNum">     144 </span>            :                                                                         skippedAction();
-<span class="lineNum">     145 </span>            :                                                                 return null;
-<span class="lineNum">     146 </span>            :                                                         }
-<span class="lineNum">     147 </span>            :                                                 }
-<span class="lineNum">     148 </span>            :                                         }
-<span class="lineNum">     149 </span>            :                                 }
-<span class="lineNum">     150 </span>            :                                 throw;
-<span class="lineNum">     151 </span>            :                         }
-<span class="lineNum">     152 </span>            : 
-<span class="lineNum">     153 </span>            :                         string commandTypeName = command.GetType().FullName;
-<span class="lineNum">     154 </span>            :                         CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
-<span class="lineNum">     155 </span>            :                         AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
-<span class="lineNum">     156 </span>            :                         Logger.LogInfo(string.Format(&quot;A command message arrived with the {0} was of type {1}.&quot;, messageId, commandTypeName));
-<span class="lineNum">     157 </span>            : 
-<span class="lineNum">     158 </span>            :                         bool canRefresh;
-<span class="lineNum">     159 </span>            :                         if (!ConfigurationManager.TryGetSetting(string.Format(&quot;{0}.ShouldRefresh&quot;, commandTypeName), out canRefresh))
-<span class="lineNum">     160 </span>            :                                 canRefresh = false;
-<span class="lineNum">     161 </span>            : 
-<span class="lineNum">     162 </span>            :                         if (canRefresh)
+<span class="lineNum">     100 </span>            :                         if (string.IsNullOrWhiteSpace(command.OriginatingFramework))
+<span class="lineNum">     101 </span>            :                                 command.OriginatingFramework = framework;
+<span class="lineNum">     102 </span>            :                         var frameworks = new List&lt;string&gt;();
+<span class="lineNum">     103 </span>            :                         if (command.Frameworks != null)
+<span class="lineNum">     104 </span>            :                                 frameworks.AddRange(command.Frameworks);
+<span class="lineNum">     105 </span>            :                         frameworks.Add(framework);
+<span class="lineNum">     106 </span>            :                         command.Frameworks = frameworks;
+<span class="lineNum">     107 </span>            :                 }
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     110 </span>            :                 /// Prepares and validates a &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; to be sent specifying the framework it is sent via.
+<span class="lineNum">     111 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     112 </span>            :                 /// &lt;typeparam name=&quot;TCommand&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of&lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; being sent.&lt;/typeparam&gt;
+<span class="lineNum">     113 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     114 </span>            :                 /// &lt;param name=&quot;framework&quot;&gt;The framework the &lt;paramref name=&quot;command&quot;/&gt; is being sent from.&lt;/param&gt;
+<span class="lineNum">     115 </span><span class="lineCov">          2 :                 public virtual bool PrepareAndValidateCommand&lt;TCommand&gt;(TCommand command, string framework)</span>
+<span class="lineNum">     116 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     117 </span>            :                 {
+<span class="lineNum">     118 </span>            :                         Type commandType = command.GetType();
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span>            :                         if (command.Frameworks != null &amp;&amp; command.Frameworks.Contains(framework))
+<span class="lineNum">     121 </span>            :                         {
+<span class="lineNum">     122 </span>            :                                 // if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
+<span class="lineNum">     123 </span>            :                                 if (command.Frameworks.Count() != 1)
+<span class="lineNum">     124 </span>            :                                 {
+<span class="lineNum">     125 </span>            :                                         Logger.LogInfo(&quot;The provided command has already been processed in Azure.&quot;, string.Format(&quot;{0}\\PrepareAndValidateEvent({1})&quot;, GetType().FullName, commandType.FullName));
+<span class="lineNum">     126 </span>            :                                         return false;
+<span class="lineNum">     127 </span>            :                                 }
+<span class="lineNum">     128 </span>            :                         }
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :                         ICommandValidator&lt;TAuthenticationToken, TCommand&gt; commandValidator = null;
+<span class="lineNum">     131 </span>            :                         try
+<span class="lineNum">     132 </span>            :                         {
+<span class="lineNum">     133 </span>            :                                 commandValidator = DependencyResolver.Resolve&lt;ICommandValidator&lt;TAuthenticationToken, TCommand&gt;&gt;();
+<span class="lineNum">     134 </span>            :                         }
+<span class="lineNum">     135 </span>            :                         catch (Exception exception)
+<span class="lineNum">     136 </span>            :                         {
+<span class="lineNum">     137 </span>            :                                 Logger.LogDebug(&quot;Locating an ICommandValidator failed.&quot;, string.Format(&quot;{0}\\PrepareAndValidateEvent({1})&quot;, GetType().FullName, commandType.FullName), exception);
+<span class="lineNum">     138 </span>            :                         }
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span>            :                         if (commandValidator != null &amp;&amp; !commandValidator.IsCommandValid(command))
+<span class="lineNum">     141 </span>            :                         {
+<span class="lineNum">     142 </span>            :                                 Logger.LogInfo(&quot;The provided command is not valid.&quot;, string.Format(&quot;{0}\\PrepareAndValidateEvent({1})&quot;, GetType().FullName, commandType.FullName));
+<span class="lineNum">     143 </span>            :                                 return false;
+<span class="lineNum">     144 </span>            :                         }
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            :                         PrepareCommand(command, framework);
+<span class="lineNum">     147 </span>            :                         return true;
+<span class="lineNum">     148 </span>            :                 }
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     151 </span>            :                 /// Deserialises and processes the &lt;paramref name=&quot;messageBody&quot;/&gt; received from the network through the provided &lt;paramref name=&quot;receiveCommandHandler&quot;/&gt;.
+<span class="lineNum">     152 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     153 </span>            :                 /// &lt;param name=&quot;messageBody&quot;&gt;A serialised &lt;see cref=&quot;IMessage&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     154 </span>            :                 /// &lt;param name=&quot;receiveCommandHandler&quot;&gt;The handler method that will process the &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     155 </span>            :                 /// &lt;param name=&quot;messageId&quot;&gt;The network id of the &lt;see cref=&quot;IMessage&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     156 </span>            :                 /// &lt;param name=&quot;skippedAction&quot;&gt;The &lt;see cref=&quot;Action&quot;/&gt; to call when the &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; is being skipped.&lt;/param&gt;
+<span class="lineNum">     157 </span>            :                 /// &lt;param name=&quot;lockRefreshAction&quot;&gt;The &lt;see cref=&quot;Action&quot;/&gt; to call to refresh the network lock.&lt;/param&gt;
+<span class="lineNum">     158 </span>            :                 /// &lt;returns&gt;The &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; that was processed.&lt;/returns&gt;
+<span class="lineNum">     159 </span><span class="lineCov">          2 :                 public virtual ICommand&lt;TAuthenticationToken&gt; ReceiveCommand(string messageBody, Func&lt;ICommand&lt;TAuthenticationToken&gt;, bool?&gt; receiveCommandHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)</span>
+<span class="lineNum">     160 </span>            :                 {
+<span class="lineNum">     161 </span>            :                         ICommand&lt;TAuthenticationToken&gt; command;
+<span class="lineNum">     162 </span>            :                         try
 <span class="lineNum">     163 </span>            :                         {
-<span class="lineNum">     164 </span>            :                                 if (lockRefreshAction == null)
-<span class="lineNum">     165 </span>            :                                         Logger.LogWarning(string.Format(&quot;A command message arrived with the {0} was of type {1} and was destined to support lock renewal, but no action was provided.&quot;, messageId, commandTypeName));
-<span class="lineNum">     166 </span>            :                                 else
-<span class="lineNum">     167 </span>            :                                         lockRefreshAction();
-<span class="lineNum">     168 </span>            :                         }
-<span class="lineNum">     169 </span>            : 
-<span class="lineNum">     170 </span>            :                         // a false response means the action wasn't handled, but didn't throw an error, so we assume, by convention, that this means it was skipped.
-<span class="lineNum">     171 </span>            :                         bool? result = receiveCommandHandler(command);
-<span class="lineNum">     172 </span>            :                         if (result != null &amp;&amp; !result.Value)
-<span class="lineNum">     173 </span>            :                                 if (skippedAction != null)
-<span class="lineNum">     174 </span>            :                                         skippedAction();
-<span class="lineNum">     175 </span>            : 
-<span class="lineNum">     176 </span>            :                         return command;
-<span class="lineNum">     177 </span>            :                 }
-<span class="lineNum">     178 </span>            : 
-<span class="lineNum">     179 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">     180 </span>            :                 /// True indicates the &lt;paramref name=&quot;command&quot;/&gt; was successfully handled by a handler.
-<span class="lineNum">     181 </span>            :                 /// False indicates the &lt;paramref name=&quot;command&quot;/&gt; wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
-<span class="lineNum">     182 </span>            :                 /// Null indicates the command&lt;paramref name=&quot;command&quot;/&gt; wasn't handled as it was already handled.
-<span class="lineNum">     183 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">     184 </span><span class="lineCov">          2 :                 public virtual bool? DefaultReceiveCommand(ICommand&lt;TAuthenticationToken&gt; command, RouteManager routeManager, string framework)</span>
-<span class="lineNum">     185 </span>            :                 {
-<span class="lineNum">     186 </span>            :                         Type commandType = command.GetType();
-<span class="lineNum">     187 </span>            : 
-<span class="lineNum">     188 </span>            :                         if (command.Frameworks != null &amp;&amp; command.Frameworks.Contains(framework))
-<span class="lineNum">     189 </span>            :                         {
-<span class="lineNum">     190 </span>            :                                 // if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
-<span class="lineNum">     191 </span>            :                                 if (command.Frameworks.Count() != 1)
-<span class="lineNum">     192 </span>            :                                 {
-<span class="lineNum">     193 </span>            :                                         Logger.LogInfo(&quot;The provided command has already been processed in Azure.&quot;, string.Format(&quot;{0}\\DefaultReceiveCommand({1})&quot;, GetType().FullName, commandType.FullName));
-<span class="lineNum">     194 </span>            :                                         return null;
-<span class="lineNum">     195 </span>            :                                 }
-<span class="lineNum">     196 </span>            :                         }
-<span class="lineNum">     197 </span>            : 
-<span class="lineNum">     198 </span>            :                         CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
-<span class="lineNum">     199 </span>            :                         AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
-<span class="lineNum">     200 </span>            : 
-<span class="lineNum">     201 </span>            :                         bool isRequired = BusHelper.IsEventRequired(commandType);
-<span class="lineNum">     202 </span>            : 
-<span class="lineNum">     203 </span>            :                         RouteHandlerDelegate commandHandler = routeManager.GetSingleHandler(command, isRequired);
-<span class="lineNum">     204 </span>            :                         // This check doesn't require an isRequired check as there will be an exception raised above and handled below.
-<span class="lineNum">     205 </span>            :                         if (commandHandler == null)
-<span class="lineNum">     206 </span>            :                         {
-<span class="lineNum">     207 </span>            :                                 Logger.LogDebug(string.Format(&quot;The command handler for '{0}' is not required.&quot;, commandType.FullName));
-<span class="lineNum">     208 </span>            :                                 return false;
-<span class="lineNum">     209 </span>            :                         }
+<span class="lineNum">     164 </span>            :                                 command = MessageSerialiser.DeserialiseCommand(messageBody);
+<span class="lineNum">     165 </span>            :                         }
+<span class="lineNum">     166 </span>            :                         catch (JsonSerializationException exception)
+<span class="lineNum">     167 </span>            :                         {
+<span class="lineNum">     168 </span>            :                                 JsonSerializationException checkException = exception;
+<span class="lineNum">     169 </span>            :                                 bool safeToExit = false;
+<span class="lineNum">     170 </span>            :                                 do
+<span class="lineNum">     171 </span>            :                                 {
+<span class="lineNum">     172 </span>            :                                         if (checkException.Message.StartsWith(&quot;Could not load assembly&quot;))
+<span class="lineNum">     173 </span>            :                                         {
+<span class="lineNum">     174 </span>            :                                                 safeToExit = true;
+<span class="lineNum">     175 </span>            :                                                 break;
+<span class="lineNum">     176 </span>            :                                         }
+<span class="lineNum">     177 </span>            :                                 } while ((checkException = checkException.InnerException as JsonSerializationException) != null);
+<span class="lineNum">     178 </span>            :                                 if (safeToExit)
+<span class="lineNum">     179 </span>            :                                 {
+<span class="lineNum">     180 </span>            :                                         const string pattern = @&quot;(?&lt;=^Error resolving type specified in JSON ').+?(?='\. Path '\$type')&quot;;
+<span class="lineNum">     181 </span>            :                                         Match match = new Regex(pattern).Match(exception.Message);
+<span class="lineNum">     182 </span>            :                                         if (match.Success)
+<span class="lineNum">     183 </span>            :                                         {
+<span class="lineNum">     184 </span>            :                                                 string[] typeParts = match.Value.Split(',');
+<span class="lineNum">     185 </span>            :                                                 if (typeParts.Length == 2)
+<span class="lineNum">     186 </span>            :                                                 {
+<span class="lineNum">     187 </span>            :                                                         string classType = typeParts[0];
+<span class="lineNum">     188 </span>            :                                                         bool isRequired = BusHelper.IsEventRequired(string.Format(&quot;{0}.IsRequired&quot;, classType));
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            :                                                         if (!isRequired)
+<span class="lineNum">     191 </span>            :                                                         {
+<span class="lineNum">     192 </span>            :                                                                 if (skippedAction != null)
+<span class="lineNum">     193 </span>            :                                                                         skippedAction();
+<span class="lineNum">     194 </span>            :                                                                 return null;
+<span class="lineNum">     195 </span>            :                                                         }
+<span class="lineNum">     196 </span>            :                                                 }
+<span class="lineNum">     197 </span>            :                                         }
+<span class="lineNum">     198 </span>            :                                 }
+<span class="lineNum">     199 </span>            :                                 throw;
+<span class="lineNum">     200 </span>            :                         }
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span>            :                         string commandTypeName = command.GetType().FullName;
+<span class="lineNum">     203 </span>            :                         CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
+<span class="lineNum">     204 </span>            :                         AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
+<span class="lineNum">     205 </span>            :                         Logger.LogInfo(string.Format(&quot;A command message arrived with the {0} was of type {1}.&quot;, messageId, commandTypeName));
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span>            :                         bool canRefresh;
+<span class="lineNum">     208 </span>            :                         if (!ConfigurationManager.TryGetSetting(string.Format(&quot;{0}.ShouldRefresh&quot;, commandTypeName), out canRefresh))
+<span class="lineNum">     209 </span>            :                                 canRefresh = false;
 <span class="lineNum">     210 </span>            : 
-<span class="lineNum">     211 </span>            :                         Action&lt;IMessage&gt; handler = commandHandler.Delegate;
-<span class="lineNum">     212 </span>            :                         handler(command);
-<span class="lineNum">     213 </span>            :                         return true;
-<span class="lineNum">     214 </span>            :                 }
-<span class="lineNum">     215 </span>            : 
-<span class="lineNum">     216 </span><span class="lineNoCov">          0 :                 public virtual void PrepareEvent&lt;TEvent&gt;(TEvent @event, string framework)</span>
-<span class="lineNum">     217 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
-<span class="lineNum">     218 </span>            :                 {
-<span class="lineNum">     219 </span>            :                         if (@event.AuthenticationToken == null || @event.AuthenticationToken.Equals(default(TAuthenticationToken)))
-<span class="lineNum">     220 </span>            :                                 @event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
-<span class="lineNum">     221 </span>            :                         @event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-<span class="lineNum">     222 </span>            :                         @event.TimeStamp = DateTimeOffset.UtcNow;
-<span class="lineNum">     223 </span>            : 
-<span class="lineNum">     224 </span>            :                         if (string.IsNullOrWhiteSpace(@event.OriginatingFramework))
-<span class="lineNum">     225 </span>            :                                 @event.OriginatingFramework = framework;
-<span class="lineNum">     226 </span>            :                         var frameworks = new List&lt;string&gt;();
-<span class="lineNum">     227 </span>            :                         if (@event.Frameworks != null)
-<span class="lineNum">     228 </span>            :                                 frameworks.AddRange(@event.Frameworks);
-<span class="lineNum">     229 </span>            :                         frameworks.Add(framework);
-<span class="lineNum">     230 </span>            :                         @event.Frameworks = frameworks;
-<span class="lineNum">     231 </span>            :                 }
-<span class="lineNum">     232 </span>            : 
-<span class="lineNum">     233 </span><span class="lineNoCov">          0 :                 public virtual bool PrepareAndValidateEvent&lt;TEvent&gt;(TEvent @event, string framework)</span>
-<span class="lineNum">     234 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
-<span class="lineNum">     235 </span>            :                 {
-<span class="lineNum">     236 </span>            :                         Type eventType = @event.GetType();
-<span class="lineNum">     237 </span>            : 
-<span class="lineNum">     238 </span>            :                         if (@event.Frameworks != null &amp;&amp; @event.Frameworks.Contains(framework))
-<span class="lineNum">     239 </span>            :                         {
-<span class="lineNum">     240 </span>            :                                 // if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
-<span class="lineNum">     241 </span>            :                                 if (@event.Frameworks.Count() != 1)
-<span class="lineNum">     242 </span>            :                                 {
-<span class="lineNum">     243 </span>            :                                         Logger.LogInfo(&quot;The provided event has already been processed in Azure.&quot;, string.Format(&quot;{0}\\PrepareAndValidateEvent({1})&quot;, GetType().FullName, eventType.FullName));
-<span class="lineNum">     244 </span>            :                                         return false;
-<span class="lineNum">     245 </span>            :                                 }
-<span class="lineNum">     246 </span>            :                         }
-<span class="lineNum">     247 </span>            : 
-<span class="lineNum">     248 </span>            :                         PrepareEvent(@event, framework);
-<span class="lineNum">     249 </span>            :                         return true;
-<span class="lineNum">     250 </span>            :                 }
-<span class="lineNum">     251 </span>            : 
-<span class="lineNum">     252 </span><span class="lineNoCov">          0 :                 public virtual IEvent&lt;TAuthenticationToken&gt; ReceiveEvent(string messageBody, Func&lt;IEvent&lt;TAuthenticationToken&gt;, bool?&gt; receiveEventHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)</span>
-<span class="lineNum">     253 </span>            :                 {
-<span class="lineNum">     254 </span>            :                         IEvent&lt;TAuthenticationToken&gt; @event;
-<span class="lineNum">     255 </span>            :                         try
-<span class="lineNum">     256 </span>            :                         {
-<span class="lineNum">     257 </span>            :                                 @event = MessageSerialiser.DeserialiseEvent(messageBody);
-<span class="lineNum">     258 </span>            :                         }
-<span class="lineNum">     259 </span>            :                         catch (JsonSerializationException exception)
-<span class="lineNum">     260 </span>            :                         {
-<span class="lineNum">     261 </span>            :                                 JsonSerializationException checkException = exception;
-<span class="lineNum">     262 </span>            :                                 bool safeToExit = false;
-<span class="lineNum">     263 </span>            :                                 do
-<span class="lineNum">     264 </span>            :                                 {
-<span class="lineNum">     265 </span>            :                                         if (checkException.Message.StartsWith(&quot;Could not load assembly&quot;))
-<span class="lineNum">     266 </span>            :                                         {
-<span class="lineNum">     267 </span>            :                                                 safeToExit = true;
-<span class="lineNum">     268 </span>            :                                                 break;
-<span class="lineNum">     269 </span>            :                                         }
-<span class="lineNum">     270 </span>            :                                 } while ((checkException = checkException.InnerException as JsonSerializationException) != null);
-<span class="lineNum">     271 </span>            :                                 if (safeToExit)
-<span class="lineNum">     272 </span>            :                                 {
-<span class="lineNum">     273 </span>            :                                         const string pattern = @&quot;(?&lt;=^Error resolving type specified in JSON ').+?(?='\. Path '\$type')&quot;;
-<span class="lineNum">     274 </span>            :                                         Match match = new Regex(pattern).Match(exception.Message);
-<span class="lineNum">     275 </span>            :                                         if (match.Success)
-<span class="lineNum">     276 </span>            :                                         {
-<span class="lineNum">     277 </span>            :                                                 string[] typeParts = match.Value.Split(',');
-<span class="lineNum">     278 </span>            :                                                 if (typeParts.Length == 2)
-<span class="lineNum">     279 </span>            :                                                 {
-<span class="lineNum">     280 </span>            :                                                         string classType = typeParts[0];
-<span class="lineNum">     281 </span>            :                                                         bool isRequired = BusHelper.IsEventRequired(string.Format(&quot;{0}.IsRequired&quot;, classType));
-<span class="lineNum">     282 </span>            : 
-<span class="lineNum">     283 </span>            :                                                         if (!isRequired)
-<span class="lineNum">     284 </span>            :                                                         {
-<span class="lineNum">     285 </span>            :                                                                 if (skippedAction != null)
-<span class="lineNum">     286 </span>            :                                                                         skippedAction();
-<span class="lineNum">     287 </span>            :                                                                 return null;
-<span class="lineNum">     288 </span>            :                                                         }
-<span class="lineNum">     289 </span>            :                                                 }
-<span class="lineNum">     290 </span>            :                                         }
-<span class="lineNum">     291 </span>            :                                 }
-<span class="lineNum">     292 </span>            :                                 throw;
-<span class="lineNum">     293 </span>            :                         }
-<span class="lineNum">     294 </span>            : 
-<span class="lineNum">     295 </span>            :                         string eventTypeName = @event.GetType().FullName;
-<span class="lineNum">     296 </span>            :                         CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
-<span class="lineNum">     297 </span>            :                         AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
-<span class="lineNum">     298 </span>            :                         Logger.LogInfo(string.Format(&quot;An event message arrived with the {0} was of type {1}.&quot;, messageId, eventTypeName));
-<span class="lineNum">     299 </span>            : 
-<span class="lineNum">     300 </span>            :                         bool canRefresh;
-<span class="lineNum">     301 </span>            :                         if (!ConfigurationManager.TryGetSetting(string.Format(&quot;{0}.ShouldRefresh&quot;, eventTypeName), out canRefresh))
-<span class="lineNum">     302 </span>            :                                 canRefresh = false;
-<span class="lineNum">     303 </span>            : 
-<span class="lineNum">     304 </span>            :                         if (canRefresh)
-<span class="lineNum">     305 </span>            :                         {
-<span class="lineNum">     306 </span>            :                                 if (lockRefreshAction == null)
-<span class="lineNum">     307 </span>            :                                         Logger.LogWarning(string.Format(&quot;An event message arrived with the {0} was of type {1} and was destined to support lock renewal, but no action was provided.&quot;, messageId, eventTypeName));
-<span class="lineNum">     308 </span>            :                                 else
-<span class="lineNum">     309 </span>            :                                         lockRefreshAction();
-<span class="lineNum">     310 </span>            :                         }
-<span class="lineNum">     311 </span>            : 
-<span class="lineNum">     312 </span>            :                         // a false response means the action wasn't handled, but didn't throw an error, so we assume, by convention, that this means it was skipped.
-<span class="lineNum">     313 </span>            :                         bool? result = receiveEventHandler(@event);
-<span class="lineNum">     314 </span>            :                         if (result != null &amp;&amp; !result.Value)
-<span class="lineNum">     315 </span>            :                                 if (skippedAction != null)
-<span class="lineNum">     316 </span>            :                                         skippedAction();
+<span class="lineNum">     211 </span>            :                         if (canRefresh)
+<span class="lineNum">     212 </span>            :                         {
+<span class="lineNum">     213 </span>            :                                 if (lockRefreshAction == null)
+<span class="lineNum">     214 </span>            :                                         Logger.LogWarning(string.Format(&quot;A command message arrived with the {0} was of type {1} and was destined to support lock renewal, but no action was provided.&quot;, messageId, commandTypeName));
+<span class="lineNum">     215 </span>            :                                 else
+<span class="lineNum">     216 </span>            :                                         lockRefreshAction();
+<span class="lineNum">     217 </span>            :                         }
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span>            :                         // a false response means the action wasn't handled, but didn't throw an error, so we assume, by convention, that this means it was skipped.
+<span class="lineNum">     220 </span>            :                         bool? result = receiveCommandHandler(command);
+<span class="lineNum">     221 </span>            :                         if (result != null &amp;&amp; !result.Value)
+<span class="lineNum">     222 </span>            :                                 if (skippedAction != null)
+<span class="lineNum">     223 </span>            :                                         skippedAction();
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span>            :                         return command;
+<span class="lineNum">     226 </span>            :                 }
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     229 </span>            :                 /// The default command handler that
+<span class="lineNum">     230 </span>            :                 /// check if the &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; has already been processed by this framework,
+<span class="lineNum">     231 </span>            :                 /// checks if the &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; is required,
+<span class="lineNum">     232 </span>            :                 /// finds the handler from the provided &lt;paramref name=&quot;routeManager&quot;/&gt;.
+<span class="lineNum">     233 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     234 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; to process.&lt;/param&gt;
+<span class="lineNum">     235 </span>            :                 /// &lt;param name=&quot;routeManager&quot;&gt;The &lt;see cref=&quot;RouteManager&quot;/&gt; to get the &lt;see cref=&quot;ICommandHandler{TAuthenticationToken,TCommand}&quot;/&gt; from.&lt;/param&gt;
+<span class="lineNum">     236 </span>            :                 /// &lt;param name=&quot;framework&quot;&gt;The current framework.&lt;/param&gt;
+<span class="lineNum">     237 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     238 </span>            :                 /// True indicates the &lt;paramref name=&quot;command&quot;/&gt; was successfully handled by a handler.
+<span class="lineNum">     239 </span>            :                 /// False indicates the &lt;paramref name=&quot;command&quot;/&gt; wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
+<span class="lineNum">     240 </span>            :                 /// Null indicates the command&lt;paramref name=&quot;command&quot;/&gt; wasn't handled as it was already handled.
+<span class="lineNum">     241 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     242 </span><span class="lineCov">          2 :                 public virtual bool? DefaultReceiveCommand(ICommand&lt;TAuthenticationToken&gt; command, RouteManager routeManager, string framework)</span>
+<span class="lineNum">     243 </span>            :                 {
+<span class="lineNum">     244 </span>            :                         Type commandType = command.GetType();
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span>            :                         if (command.Frameworks != null &amp;&amp; command.Frameworks.Contains(framework))
+<span class="lineNum">     247 </span>            :                         {
+<span class="lineNum">     248 </span>            :                                 // if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
+<span class="lineNum">     249 </span>            :                                 if (command.Frameworks.Count() != 1)
+<span class="lineNum">     250 </span>            :                                 {
+<span class="lineNum">     251 </span>            :                                         Logger.LogInfo(&quot;The provided command has already been processed in Azure.&quot;, string.Format(&quot;{0}\\DefaultReceiveCommand({1})&quot;, GetType().FullName, commandType.FullName));
+<span class="lineNum">     252 </span>            :                                         return null;
+<span class="lineNum">     253 </span>            :                                 }
+<span class="lineNum">     254 </span>            :                         }
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span>            :                         CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
+<span class="lineNum">     257 </span>            :                         AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span>            :                         bool isRequired = BusHelper.IsEventRequired(commandType);
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span>            :                         RouteHandlerDelegate commandHandler = routeManager.GetSingleHandler(command, isRequired);
+<span class="lineNum">     262 </span>            :                         // This check doesn't require an isRequired check as there will be an exception raised above and handled below.
+<span class="lineNum">     263 </span>            :                         if (commandHandler == null)
+<span class="lineNum">     264 </span>            :                         {
+<span class="lineNum">     265 </span>            :                                 Logger.LogDebug(string.Format(&quot;The command handler for '{0}' is not required.&quot;, commandType.FullName));
+<span class="lineNum">     266 </span>            :                                 return false;
+<span class="lineNum">     267 </span>            :                         }
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span>            :                         Action&lt;IMessage&gt; handler = commandHandler.Delegate;
+<span class="lineNum">     270 </span>            :                         handler(command);
+<span class="lineNum">     271 </span>            :                         return true;
+<span class="lineNum">     272 </span>            :                 }
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     275 </span>            :                 /// Prepares an &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to be sent specifying the framework it is sent via.
+<span class="lineNum">     276 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     277 </span>            :                 /// &lt;typeparam name=&quot;TEvent&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; being sent.&lt;/typeparam&gt;
+<span class="lineNum">     278 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     279 </span>            :                 /// &lt;param name=&quot;framework&quot;&gt;The framework the &lt;paramref name=&quot;event&quot;/&gt; is being sent from.&lt;/param&gt;
+<span class="lineNum">     280 </span><span class="lineCov">          2 :                 public virtual void PrepareEvent&lt;TEvent&gt;(TEvent @event, string framework)</span>
+<span class="lineNum">     281 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
+<span class="lineNum">     282 </span>            :                 {
+<span class="lineNum">     283 </span>            :                         if (@event.AuthenticationToken == null || @event.AuthenticationToken.Equals(default(TAuthenticationToken)))
+<span class="lineNum">     284 </span>            :                                 @event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+<span class="lineNum">     285 </span>            :                         @event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+<span class="lineNum">     286 </span>            :                         @event.TimeStamp = DateTimeOffset.UtcNow;
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span>            :                         if (string.IsNullOrWhiteSpace(@event.OriginatingFramework))
+<span class="lineNum">     289 </span>            :                                 @event.OriginatingFramework = framework;
+<span class="lineNum">     290 </span>            :                         var frameworks = new List&lt;string&gt;();
+<span class="lineNum">     291 </span>            :                         if (@event.Frameworks != null)
+<span class="lineNum">     292 </span>            :                                 frameworks.AddRange(@event.Frameworks);
+<span class="lineNum">     293 </span>            :                         frameworks.Add(framework);
+<span class="lineNum">     294 </span>            :                         @event.Frameworks = frameworks;
+<span class="lineNum">     295 </span>            :                 }
+<span class="lineNum">     296 </span>            : 
+<span class="lineNum">     297 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     298 </span>            :                 /// Prepares and validates an &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to be sent specifying the framework it is sent via.
+<span class="lineNum">     299 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     300 </span>            :                 /// &lt;typeparam name=&quot;TEvent&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; being sent.&lt;/typeparam&gt;
+<span class="lineNum">     301 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     302 </span>            :                 /// &lt;param name=&quot;framework&quot;&gt;The framework the &lt;paramref name=&quot;event&quot;/&gt; is being sent from.&lt;/param&gt;
+<span class="lineNum">     303 </span><span class="lineCov">          2 :                 public virtual bool PrepareAndValidateEvent&lt;TEvent&gt;(TEvent @event, string framework)</span>
+<span class="lineNum">     304 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
+<span class="lineNum">     305 </span>            :                 {
+<span class="lineNum">     306 </span>            :                         Type eventType = @event.GetType();
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span>            :                         if (@event.Frameworks != null &amp;&amp; @event.Frameworks.Contains(framework))
+<span class="lineNum">     309 </span>            :                         {
+<span class="lineNum">     310 </span>            :                                 // if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
+<span class="lineNum">     311 </span>            :                                 if (@event.Frameworks.Count() != 1)
+<span class="lineNum">     312 </span>            :                                 {
+<span class="lineNum">     313 </span>            :                                         Logger.LogInfo(&quot;The provided event has already been processed in Azure.&quot;, string.Format(&quot;{0}\\PrepareAndValidateEvent({1})&quot;, GetType().FullName, eventType.FullName));
+<span class="lineNum">     314 </span>            :                                         return false;
+<span class="lineNum">     315 </span>            :                                 }
+<span class="lineNum">     316 </span>            :                         }
 <span class="lineNum">     317 </span>            : 
-<span class="lineNum">     318 </span>            :                         return @event;
-<span class="lineNum">     319 </span>            :                 }
-<span class="lineNum">     320 </span>            : 
-<span class="lineNum">     321 </span><span class="lineNoCov">          0 :                 public virtual void RefreshLock(CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = &quot;message&quot;)</span>
-<span class="lineNum">     322 </span>            :                 {
-<span class="lineNum">     323 </span>            :                         Task.Factory.StartNewSafely(() =&gt;
-<span class="lineNum">     324 </span>            :                         {
-<span class="lineNum">     325 </span>            :                                 // The capturing of ObjectDisposedException is because even the properties can throw it.
-<span class="lineNum">     326 </span>            :                                 try
-<span class="lineNum">     327 </span>            :                                 {
-<span class="lineNum">     328 </span>            :                                         long loop = long.MinValue;
-<span class="lineNum">     329 </span>            :                                         while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
-<span class="lineNum">     330 </span>            :                                         {
-<span class="lineNum">     331 </span>            :                                                 // Based on LockedUntilUtc property to determine if the lock expires soon
-<span class="lineNum">     332 </span>            :                                                 // We lock for 45 seconds to ensure any thread based issues are mitigated.
-<span class="lineNum">     333 </span>            :                                                 if (DateTime.UtcNow &gt; message.LockedUntilUtc.AddSeconds(-45))
-<span class="lineNum">     334 </span>            :                                                 {
-<span class="lineNum">     335 </span>            :                                                         // If so, renew the lock
-<span class="lineNum">     336 </span>            :                                                         for (int i = 0; i &lt; 10; i++)
-<span class="lineNum">     337 </span>            :                                                         {
-<span class="lineNum">     338 </span>            :                                                                 try
-<span class="lineNum">     339 </span>            :                                                                 {
-<span class="lineNum">     340 </span>            :                                                                         message.RenewLock();
-<span class="lineNum">     341 </span>            :                                                                         try
-<span class="lineNum">     342 </span>            :                                                                         {
-<span class="lineNum">     343 </span>            :                                                                                 Logger.LogDebug(string.Format(&quot;Renewed the lock on {1} '{0}'.&quot;, message.MessageId, type));
-<span class="lineNum">     344 </span>            :                                                                         }
-<span class="lineNum">     345 </span>            :                                                                         catch
-<span class="lineNum">     346 </span>            :                                                                         {
-<span class="lineNum">     347 </span>            :                                                                                 Trace.TraceError(&quot;Renewed the lock on {1} '{0}'.&quot;, message.MessageId, type);
-<span class="lineNum">     348 </span>            :                                                                         }
-<span class="lineNum">     349 </span>            : 
-<span class="lineNum">     350 </span>            :                                                                         break;
-<span class="lineNum">     351 </span>            :                                                                 }
-<span class="lineNum">     352 </span>            :                                                                 catch (ObjectDisposedException)
-<span class="lineNum">     353 </span>            :                                                                 {
-<span class="lineNum">     354 </span>            :                                                                         return;
-<span class="lineNum">     355 </span>            :                                                                 }
-<span class="lineNum">     356 </span>            :                                                                 catch (MessageLockLostException exception)
-<span class="lineNum">     357 </span>            :                                                                 {
-<span class="lineNum">     358 </span>            :                                                                         try
-<span class="lineNum">     359 </span>            :                                                                         {
-<span class="lineNum">     360 </span>            :                                                                                 Logger.LogWarning(string.Format(&quot;Renewing the lock on {1} '{0}' failed as the message lock was lost.&quot;, message.MessageId, type), exception: exception);
-<span class="lineNum">     361 </span>            :                                                                         }
-<span class="lineNum">     362 </span>            :                                                                         catch
-<span class="lineNum">     363 </span>            :                                                                         {
-<span class="lineNum">     364 </span>            :                                                                                 Trace.TraceError(&quot;Renewing the lock on {1} '{0}' failed as the message lock was lost.\r\n{2}&quot;, message.MessageId, type, exception.Message);
-<span class="lineNum">     365 </span>            :                                                                         }
-<span class="lineNum">     366 </span>            :                                                                         return;
-<span class="lineNum">     367 </span>            :                                                                 }
-<span class="lineNum">     368 </span>            :                                                                 catch (Exception exception)
-<span class="lineNum">     369 </span>            :                                                                 {
-<span class="lineNum">     370 </span>            :                                                                         try
-<span class="lineNum">     371 </span>            :                                                                         {
-<span class="lineNum">     372 </span>            :                                                                                 Logger.LogWarning(string.Format(&quot;Renewing the lock on {1} '{0}' failed.&quot;, message.MessageId, type), exception: exception);
-<span class="lineNum">     373 </span>            :                                                                         }
-<span class="lineNum">     374 </span>            :                                                                         catch
-<span class="lineNum">     375 </span>            :                                                                         {
-<span class="lineNum">     376 </span>            :                                                                                 Trace.TraceError(&quot;Renewing the lock on {1} '{0}' failed.\r\n{2}&quot;, message.MessageId, type, exception.Message);
-<span class="lineNum">     377 </span>            :                                                                         }
-<span class="lineNum">     378 </span>            :                                                                         if (i == 9)
-<span class="lineNum">     379 </span>            :                                                                                 return;
-<span class="lineNum">     380 </span>            :                                                                 }
-<span class="lineNum">     381 </span>            :                                                         }
-<span class="lineNum">     382 </span>            :                                                 }
-<span class="lineNum">     383 </span>            : 
-<span class="lineNum">     384 </span>            :                                                 if (loop++ % 5 == 0)
-<span class="lineNum">     385 </span>            :                                                         Thread.Yield();
-<span class="lineNum">     386 </span>            :                                                 else
-<span class="lineNum">     387 </span>            :                                                         Thread.Sleep(500);
-<span class="lineNum">     388 </span>            :                                                 if (loop == long.MaxValue)
-<span class="lineNum">     389 </span>            :                                                         loop = long.MinValue;
-<span class="lineNum">     390 </span>            :                                         }
-<span class="lineNum">     391 </span>            :                                         try
-<span class="lineNum">     392 </span>            :                                         {
-<span class="lineNum">     393 </span>            :                                                 brokeredMessageRenewCancellationTokenSource.Dispose();
-<span class="lineNum">     394 </span>            :                                         }
-<span class="lineNum">     395 </span>            :                                         catch (ObjectDisposedException) { }
-<span class="lineNum">     396 </span>            :                                 }
-<span class="lineNum">     397 </span>            :                                 catch (ObjectDisposedException) { }
-<span class="lineNum">     398 </span>            :                         }, brokeredMessageRenewCancellationTokenSource.Token);
-<span class="lineNum">     399 </span>            :                 }
-<span class="lineNum">     400 </span>            : 
-<span class="lineNum">     401 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">     402 </span>            :                 /// True indicates the &lt;paramref name=&quot;event&quot;/&gt; was successfully handled by a handler.
-<span class="lineNum">     403 </span>            :                 /// False indicates the &lt;paramref name=&quot;event&quot;/&gt; wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
-<span class="lineNum">     404 </span>            :                 /// Null indicates the &lt;paramref name=&quot;event&quot;/&gt; wasn't handled as it was already handled.
-<span class="lineNum">     405 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">     406 </span><span class="lineCov">          2 :                 public virtual bool? DefaultReceiveEvent(IEvent&lt;TAuthenticationToken&gt; @event, RouteManager routeManager, string framework)</span>
-<span class="lineNum">     407 </span>            :                 {
-<span class="lineNum">     408 </span>            :                         Type eventType = @event.GetType();
-<span class="lineNum">     409 </span>            : 
-<span class="lineNum">     410 </span>            :                         if (@event.Frameworks != null &amp;&amp; @event.Frameworks.Contains(framework))
-<span class="lineNum">     411 </span>            :                         {
-<span class="lineNum">     412 </span>            :                                 // if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
-<span class="lineNum">     413 </span>            :                                 if (@event.Frameworks.Count() != 1)
-<span class="lineNum">     414 </span>            :                                 {
-<span class="lineNum">     415 </span>            :                                         Logger.LogInfo(&quot;The provided event has already been processed in Azure.&quot;, string.Format(&quot;{0}\\DefaultReceiveEvent({1})&quot;, GetType().FullName, eventType.FullName));
-<span class="lineNum">     416 </span>            :                                         return null;
-<span class="lineNum">     417 </span>            :                                 }
-<span class="lineNum">     418 </span>            :                         }
-<span class="lineNum">     419 </span>            : 
-<span class="lineNum">     420 </span>            :                         CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
-<span class="lineNum">     421 </span>            :                         AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
-<span class="lineNum">     422 </span>            : 
-<span class="lineNum">     423 </span>            :                         bool isRequired = BusHelper.IsEventRequired(eventType);
-<span class="lineNum">     424 </span>            : 
-<span class="lineNum">     425 </span>            :                         IEnumerable&lt;Action&lt;IMessage&gt;&gt; handlers = routeManager.GetHandlers(@event, isRequired).Select(x =&gt; x.Delegate).ToList();
-<span class="lineNum">     426 </span>            :                         // This check doesn't require an isRequired check as there will be an exception raised above and handled below.
-<span class="lineNum">     427 </span>            :                         if (!handlers.Any())
-<span class="lineNum">     428 </span>            :                         {
-<span class="lineNum">     429 </span>            :                                 Logger.LogDebug(string.Format(&quot;The event handler for '{0}' is not required.&quot;, eventType.FullName));
-<span class="lineNum">     430 </span>            :                                 return false;
-<span class="lineNum">     431 </span>            :                         }
-<span class="lineNum">     432 </span>            : 
-<span class="lineNum">     433 </span>            :                         foreach (Action&lt;IMessage&gt; handler in handlers)
-<span class="lineNum">     434 </span>            :                                 handler(@event);
-<span class="lineNum">     435 </span>            :                         return true;
-<span class="lineNum">     436 </span>            :                 }
-<span class="lineNum">     437 </span>            : 
-<span class="lineNum">     438 </span><span class="lineNoCov">          0 :                 public virtual void RegisterHandler&lt;TMessage&gt;(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
-<span class="lineNum">     439 </span>            :                         where TMessage : IMessage
-<span class="lineNum">     440 </span>            :                 {
-<span class="lineNum">     441 </span>            :                         Action&lt;TMessage&gt; registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
-<span class="lineNum">     442 </span>            : 
-<span class="lineNum">     443 </span>            :                         routeManger.RegisterHandler(registerableHandler, targetedType);
-<span class="lineNum">     444 </span>            : 
-<span class="lineNum">     445 </span>            :                         telemetryHelper.TrackEvent(string.Format(&quot;Cqrs/RegisterHandler/{0}&quot;, typeof(TMessage).FullName), new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Bus&quot; } });
-<span class="lineNum">     446 </span>            :                         telemetryHelper.Flush();
-<span class="lineNum">     447 </span>            :                 }
-<span class="lineNum">     448 </span>            : 
-<span class="lineNum">     449 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     450 </span>            :                 /// Register an event handler that will listen and respond to all events.
-<span class="lineNum">     451 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     452 </span><span class="lineCov">          2 :                 public void RegisterGlobalEventHandler&lt;TMessage&gt;(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action&lt;TMessage&gt; handler,</span>
-<span class="lineNum">     453 </span>            :                         bool holdMessageLock = true) where TMessage : IMessage
-<span class="lineNum">     454 </span>            :                 {
-<span class="lineNum">     455 </span>            :                         Action&lt;TMessage&gt; registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
-<span class="lineNum">     456 </span>            : 
-<span class="lineNum">     457 </span>            :                         routeManger.RegisterGlobalEventHandler(registerableHandler);
-<span class="lineNum">     458 </span>            : 
-<span class="lineNum">     459 </span>            :                         telemetryHelper.TrackEvent(string.Format(&quot;Cqrs/RegisterHandler/{0}&quot;, typeof(TMessage).FullName), new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Bus&quot; } });
-<span class="lineNum">     460 </span>            :                         telemetryHelper.Flush();
-<span class="lineNum">     461 </span>            :                 }
-<span class="lineNum">     462 </span>            :         }
-<span class="lineNum">     463 </span>            : }
+<span class="lineNum">     318 </span>            :                         PrepareEvent(@event, framework);
+<span class="lineNum">     319 </span>            :                         return true;
+<span class="lineNum">     320 </span>            :                 }
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     323 </span>            :                 /// Deserialises and processes the &lt;paramref name=&quot;messageBody&quot;/&gt; received from the network through the provided &lt;paramref name=&quot;receiveEventHandler&quot;/&gt;.
+<span class="lineNum">     324 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     325 </span>            :                 /// &lt;param name=&quot;messageBody&quot;&gt;A serialised &lt;see cref=&quot;IMessage&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     326 </span>            :                 /// &lt;param name=&quot;receiveEventHandler&quot;&gt;The handler method that will process the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     327 </span>            :                 /// &lt;param name=&quot;messageId&quot;&gt;The network id of the &lt;see cref=&quot;IMessage&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     328 </span>            :                 /// &lt;param name=&quot;skippedAction&quot;&gt;The &lt;see cref=&quot;Action&quot;/&gt; to call when the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; is being skipped.&lt;/param&gt;
+<span class="lineNum">     329 </span>            :                 /// &lt;param name=&quot;lockRefreshAction&quot;&gt;The &lt;see cref=&quot;Action&quot;/&gt; to call to refresh the network lock.&lt;/param&gt;
+<span class="lineNum">     330 </span>            :                 /// &lt;returns&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; that was processed.&lt;/returns&gt;
+<span class="lineNum">     331 </span><span class="lineCov">          2 :                 public virtual IEvent&lt;TAuthenticationToken&gt; ReceiveEvent(string messageBody, Func&lt;IEvent&lt;TAuthenticationToken&gt;, bool?&gt; receiveEventHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)</span>
+<span class="lineNum">     332 </span>            :                 {
+<span class="lineNum">     333 </span>            :                         IEvent&lt;TAuthenticationToken&gt; @event;
+<span class="lineNum">     334 </span>            :                         try
+<span class="lineNum">     335 </span>            :                         {
+<span class="lineNum">     336 </span>            :                                 @event = MessageSerialiser.DeserialiseEvent(messageBody);
+<span class="lineNum">     337 </span>            :                         }
+<span class="lineNum">     338 </span>            :                         catch (JsonSerializationException exception)
+<span class="lineNum">     339 </span>            :                         {
+<span class="lineNum">     340 </span>            :                                 JsonSerializationException checkException = exception;
+<span class="lineNum">     341 </span>            :                                 bool safeToExit = false;
+<span class="lineNum">     342 </span>            :                                 do
+<span class="lineNum">     343 </span>            :                                 {
+<span class="lineNum">     344 </span>            :                                         if (checkException.Message.StartsWith(&quot;Could not load assembly&quot;))
+<span class="lineNum">     345 </span>            :                                         {
+<span class="lineNum">     346 </span>            :                                                 safeToExit = true;
+<span class="lineNum">     347 </span>            :                                                 break;
+<span class="lineNum">     348 </span>            :                                         }
+<span class="lineNum">     349 </span>            :                                 } while ((checkException = checkException.InnerException as JsonSerializationException) != null);
+<span class="lineNum">     350 </span>            :                                 if (safeToExit)
+<span class="lineNum">     351 </span>            :                                 {
+<span class="lineNum">     352 </span>            :                                         const string pattern = @&quot;(?&lt;=^Error resolving type specified in JSON ').+?(?='\. Path '\$type')&quot;;
+<span class="lineNum">     353 </span>            :                                         Match match = new Regex(pattern).Match(exception.Message);
+<span class="lineNum">     354 </span>            :                                         if (match.Success)
+<span class="lineNum">     355 </span>            :                                         {
+<span class="lineNum">     356 </span>            :                                                 string[] typeParts = match.Value.Split(',');
+<span class="lineNum">     357 </span>            :                                                 if (typeParts.Length == 2)
+<span class="lineNum">     358 </span>            :                                                 {
+<span class="lineNum">     359 </span>            :                                                         string classType = typeParts[0];
+<span class="lineNum">     360 </span>            :                                                         bool isRequired = BusHelper.IsEventRequired(string.Format(&quot;{0}.IsRequired&quot;, classType));
+<span class="lineNum">     361 </span>            : 
+<span class="lineNum">     362 </span>            :                                                         if (!isRequired)
+<span class="lineNum">     363 </span>            :                                                         {
+<span class="lineNum">     364 </span>            :                                                                 if (skippedAction != null)
+<span class="lineNum">     365 </span>            :                                                                         skippedAction();
+<span class="lineNum">     366 </span>            :                                                                 return null;
+<span class="lineNum">     367 </span>            :                                                         }
+<span class="lineNum">     368 </span>            :                                                 }
+<span class="lineNum">     369 </span>            :                                         }
+<span class="lineNum">     370 </span>            :                                 }
+<span class="lineNum">     371 </span>            :                                 throw;
+<span class="lineNum">     372 </span>            :                         }
+<span class="lineNum">     373 </span>            : 
+<span class="lineNum">     374 </span>            :                         string eventTypeName = @event.GetType().FullName;
+<span class="lineNum">     375 </span>            :                         CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
+<span class="lineNum">     376 </span>            :                         AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
+<span class="lineNum">     377 </span>            :                         Logger.LogInfo(string.Format(&quot;An event message arrived with the {0} was of type {1}.&quot;, messageId, eventTypeName));
+<span class="lineNum">     378 </span>            : 
+<span class="lineNum">     379 </span>            :                         bool canRefresh;
+<span class="lineNum">     380 </span>            :                         if (!ConfigurationManager.TryGetSetting(string.Format(&quot;{0}.ShouldRefresh&quot;, eventTypeName), out canRefresh))
+<span class="lineNum">     381 </span>            :                                 canRefresh = false;
+<span class="lineNum">     382 </span>            : 
+<span class="lineNum">     383 </span>            :                         if (canRefresh)
+<span class="lineNum">     384 </span>            :                         {
+<span class="lineNum">     385 </span>            :                                 if (lockRefreshAction == null)
+<span class="lineNum">     386 </span>            :                                         Logger.LogWarning(string.Format(&quot;An event message arrived with the {0} was of type {1} and was destined to support lock renewal, but no action was provided.&quot;, messageId, eventTypeName));
+<span class="lineNum">     387 </span>            :                                 else
+<span class="lineNum">     388 </span>            :                                         lockRefreshAction();
+<span class="lineNum">     389 </span>            :                         }
+<span class="lineNum">     390 </span>            : 
+<span class="lineNum">     391 </span>            :                         // a false response means the action wasn't handled, but didn't throw an error, so we assume, by convention, that this means it was skipped.
+<span class="lineNum">     392 </span>            :                         bool? result = receiveEventHandler(@event);
+<span class="lineNum">     393 </span>            :                         if (result != null &amp;&amp; !result.Value)
+<span class="lineNum">     394 </span>            :                                 if (skippedAction != null)
+<span class="lineNum">     395 </span>            :                                         skippedAction();
+<span class="lineNum">     396 </span>            : 
+<span class="lineNum">     397 </span>            :                         return @event;
+<span class="lineNum">     398 </span>            :                 }
+<span class="lineNum">     399 </span>            : 
+<span class="lineNum">     400 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     401 </span>            :                 /// Refreshes the network lock.
+<span class="lineNum">     402 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     403 </span><span class="lineCov">          2 :                 public virtual void RefreshLock(CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = &quot;message&quot;)</span>
+<span class="lineNum">     404 </span>            :                 {
+<span class="lineNum">     405 </span>            :                         Task.Factory.StartNewSafely(() =&gt;
+<span class="lineNum">     406 </span>            :                         {
+<span class="lineNum">     407 </span>            :                                 // The capturing of ObjectDisposedException is because even the properties can throw it.
+<span class="lineNum">     408 </span>            :                                 try
+<span class="lineNum">     409 </span>            :                                 {
+<span class="lineNum">     410 </span>            :                                         long loop = long.MinValue;
+<span class="lineNum">     411 </span>            :                                         while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
+<span class="lineNum">     412 </span>            :                                         {
+<span class="lineNum">     413 </span>            :                                                 // Based on LockedUntilUtc property to determine if the lock expires soon
+<span class="lineNum">     414 </span>            :                                                 // We lock for 45 seconds to ensure any thread based issues are mitigated.
+<span class="lineNum">     415 </span>            :                                                 if (DateTime.UtcNow &gt; message.LockedUntilUtc.AddSeconds(-45))
+<span class="lineNum">     416 </span>            :                                                 {
+<span class="lineNum">     417 </span>            :                                                         // If so, renew the lock
+<span class="lineNum">     418 </span>            :                                                         for (int i = 0; i &lt; 10; i++)
+<span class="lineNum">     419 </span>            :                                                         {
+<span class="lineNum">     420 </span>            :                                                                 try
+<span class="lineNum">     421 </span>            :                                                                 {
+<span class="lineNum">     422 </span>            :                                                                         message.RenewLock();
+<span class="lineNum">     423 </span>            :                                                                         try
+<span class="lineNum">     424 </span>            :                                                                         {
+<span class="lineNum">     425 </span>            :                                                                                 Logger.LogDebug(string.Format(&quot;Renewed the lock on {1} '{0}'.&quot;, message.MessageId, type));
+<span class="lineNum">     426 </span>            :                                                                         }
+<span class="lineNum">     427 </span>            :                                                                         catch
+<span class="lineNum">     428 </span>            :                                                                         {
+<span class="lineNum">     429 </span>            :                                                                                 Trace.TraceError(&quot;Renewed the lock on {1} '{0}'.&quot;, message.MessageId, type);
+<span class="lineNum">     430 </span>            :                                                                         }
+<span class="lineNum">     431 </span>            : 
+<span class="lineNum">     432 </span>            :                                                                         break;
+<span class="lineNum">     433 </span>            :                                                                 }
+<span class="lineNum">     434 </span>            :                                                                 catch (ObjectDisposedException)
+<span class="lineNum">     435 </span>            :                                                                 {
+<span class="lineNum">     436 </span>            :                                                                         return;
+<span class="lineNum">     437 </span>            :                                                                 }
+<span class="lineNum">     438 </span>            :                                                                 catch (MessageLockLostException exception)
+<span class="lineNum">     439 </span>            :                                                                 {
+<span class="lineNum">     440 </span>            :                                                                         try
+<span class="lineNum">     441 </span>            :                                                                         {
+<span class="lineNum">     442 </span>            :                                                                                 Logger.LogWarning(string.Format(&quot;Renewing the lock on {1} '{0}' failed as the message lock was lost.&quot;, message.MessageId, type), exception: exception);
+<span class="lineNum">     443 </span>            :                                                                         }
+<span class="lineNum">     444 </span>            :                                                                         catch
+<span class="lineNum">     445 </span>            :                                                                         {
+<span class="lineNum">     446 </span>            :                                                                                 Trace.TraceError(&quot;Renewing the lock on {1} '{0}' failed as the message lock was lost.\r\n{2}&quot;, message.MessageId, type, exception.Message);
+<span class="lineNum">     447 </span>            :                                                                         }
+<span class="lineNum">     448 </span>            :                                                                         return;
+<span class="lineNum">     449 </span>            :                                                                 }
+<span class="lineNum">     450 </span>            :                                                                 catch (Exception exception)
+<span class="lineNum">     451 </span>            :                                                                 {
+<span class="lineNum">     452 </span>            :                                                                         try
+<span class="lineNum">     453 </span>            :                                                                         {
+<span class="lineNum">     454 </span>            :                                                                                 Logger.LogWarning(string.Format(&quot;Renewing the lock on {1} '{0}' failed.&quot;, message.MessageId, type), exception: exception);
+<span class="lineNum">     455 </span>            :                                                                         }
+<span class="lineNum">     456 </span>            :                                                                         catch
+<span class="lineNum">     457 </span>            :                                                                         {
+<span class="lineNum">     458 </span>            :                                                                                 Trace.TraceError(&quot;Renewing the lock on {1} '{0}' failed.\r\n{2}&quot;, message.MessageId, type, exception.Message);
+<span class="lineNum">     459 </span>            :                                                                         }
+<span class="lineNum">     460 </span>            :                                                                         if (i == 9)
+<span class="lineNum">     461 </span>            :                                                                                 return;
+<span class="lineNum">     462 </span>            :                                                                 }
+<span class="lineNum">     463 </span>            :                                                         }
+<span class="lineNum">     464 </span>            :                                                 }
+<span class="lineNum">     465 </span>            : 
+<span class="lineNum">     466 </span>            :                                                 if (loop++ % 5 == 0)
+<span class="lineNum">     467 </span>            :                                                         Thread.Yield();
+<span class="lineNum">     468 </span>            :                                                 else
+<span class="lineNum">     469 </span>            :                                                         Thread.Sleep(500);
+<span class="lineNum">     470 </span>            :                                                 if (loop == long.MaxValue)
+<span class="lineNum">     471 </span>            :                                                         loop = long.MinValue;
+<span class="lineNum">     472 </span>            :                                         }
+<span class="lineNum">     473 </span>            :                                         try
+<span class="lineNum">     474 </span>            :                                         {
+<span class="lineNum">     475 </span>            :                                                 brokeredMessageRenewCancellationTokenSource.Dispose();
+<span class="lineNum">     476 </span>            :                                         }
+<span class="lineNum">     477 </span>            :                                         catch (ObjectDisposedException) { }
+<span class="lineNum">     478 </span>            :                                 }
+<span class="lineNum">     479 </span>            :                                 catch (ObjectDisposedException) { }
+<span class="lineNum">     480 </span>            :                         }, brokeredMessageRenewCancellationTokenSource.Token);
+<span class="lineNum">     481 </span>            :                 }
+<span class="lineNum">     482 </span>            : 
+<span class="lineNum">     483 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     484 </span>            :                 /// The default event handler that
+<span class="lineNum">     485 </span>            :                 /// check if the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; has already been processed by this framework,
+<span class="lineNum">     486 </span>            :                 /// checks if the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; is required,
+<span class="lineNum">     487 </span>            :                 /// finds the handler from the provided &lt;paramref name=&quot;routeManager&quot;/&gt;.
+<span class="lineNum">     488 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     489 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to process.&lt;/param&gt;
+<span class="lineNum">     490 </span>            :                 /// &lt;param name=&quot;routeManager&quot;&gt;The &lt;see cref=&quot;RouteManager&quot;/&gt; to get the &lt;see cref=&quot;IEventHandler{TAuthenticationToken,TCommand}&quot;/&gt; from.&lt;/param&gt;
+<span class="lineNum">     491 </span>            :                 /// &lt;param name=&quot;framework&quot;&gt;The current framework.&lt;/param&gt;
+<span class="lineNum">     492 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     493 </span>            :                 /// True indicates the &lt;paramref name=&quot;event&quot;/&gt; was successfully handled by a handler.
+<span class="lineNum">     494 </span>            :                 /// False indicates the &lt;paramref name=&quot;event&quot;/&gt; wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
+<span class="lineNum">     495 </span>            :                 /// Null indicates the &lt;paramref name=&quot;event&quot;/&gt; wasn't handled as it was already handled.
+<span class="lineNum">     496 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     497 </span><span class="lineCov">          2 :                 public virtual bool? DefaultReceiveEvent(IEvent&lt;TAuthenticationToken&gt; @event, RouteManager routeManager, string framework)</span>
+<span class="lineNum">     498 </span>            :                 {
+<span class="lineNum">     499 </span>            :                         Type eventType = @event.GetType();
+<span class="lineNum">     500 </span>            : 
+<span class="lineNum">     501 </span>            :                         if (@event.Frameworks != null &amp;&amp; @event.Frameworks.Contains(framework))
+<span class="lineNum">     502 </span>            :                         {
+<span class="lineNum">     503 </span>            :                                 // if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
+<span class="lineNum">     504 </span>            :                                 if (@event.Frameworks.Count() != 1)
+<span class="lineNum">     505 </span>            :                                 {
+<span class="lineNum">     506 </span>            :                                         Logger.LogInfo(&quot;The provided event has already been processed in Azure.&quot;, string.Format(&quot;{0}\\DefaultReceiveEvent({1})&quot;, GetType().FullName, eventType.FullName));
+<span class="lineNum">     507 </span>            :                                         return null;
+<span class="lineNum">     508 </span>            :                                 }
+<span class="lineNum">     509 </span>            :                         }
+<span class="lineNum">     510 </span>            : 
+<span class="lineNum">     511 </span>            :                         CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
+<span class="lineNum">     512 </span>            :                         AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
+<span class="lineNum">     513 </span>            : 
+<span class="lineNum">     514 </span>            :                         bool isRequired = BusHelper.IsEventRequired(eventType);
+<span class="lineNum">     515 </span>            : 
+<span class="lineNum">     516 </span>            :                         IEnumerable&lt;Action&lt;IMessage&gt;&gt; handlers = routeManager.GetHandlers(@event, isRequired).Select(x =&gt; x.Delegate).ToList();
+<span class="lineNum">     517 </span>            :                         // This check doesn't require an isRequired check as there will be an exception raised above and handled below.
+<span class="lineNum">     518 </span>            :                         if (!handlers.Any())
+<span class="lineNum">     519 </span>            :                         {
+<span class="lineNum">     520 </span>            :                                 Logger.LogDebug(string.Format(&quot;The event handler for '{0}' is not required.&quot;, eventType.FullName));
+<span class="lineNum">     521 </span>            :                                 return false;
+<span class="lineNum">     522 </span>            :                         }
+<span class="lineNum">     523 </span>            : 
+<span class="lineNum">     524 </span>            :                         foreach (Action&lt;IMessage&gt; handler in handlers)
+<span class="lineNum">     525 </span>            :                                 handler(@event);
+<span class="lineNum">     526 </span>            :                         return true;
+<span class="lineNum">     527 </span>            :                 }
+<span class="lineNum">     528 </span>            : 
+<span class="lineNum">     529 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     530 </span>            :                 /// Manually registers the provided &lt;paramref name=&quot;handler&quot;/&gt; 
+<span class="lineNum">     531 </span>            :                 /// on the provided &lt;paramref name=&quot;routeManger&quot;/&gt;
+<span class="lineNum">     532 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     533 </span>            :                 /// &lt;typeparam name=&quot;TMessage&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IMessage&quot;/&gt; the &lt;paramref name=&quot;handler&quot;/&gt; can handle.&lt;/typeparam&gt;
+<span class="lineNum">     534 </span><span class="lineCov">          2 :                 public virtual void RegisterHandler&lt;TMessage&gt;(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
+<span class="lineNum">     535 </span>            :                         where TMessage : IMessage
+<span class="lineNum">     536 </span>            :                 {
+<span class="lineNum">     537 </span>            :                         Action&lt;TMessage&gt; registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
+<span class="lineNum">     538 </span>            : 
+<span class="lineNum">     539 </span>            :                         routeManger.RegisterHandler(registerableHandler, targetedType);
+<span class="lineNum">     540 </span>            : 
+<span class="lineNum">     541 </span>            :                         telemetryHelper.TrackEvent(string.Format(&quot;Cqrs/RegisterHandler/{0}&quot;, typeof(TMessage).FullName), new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Bus&quot; } });
+<span class="lineNum">     542 </span>            :                         telemetryHelper.Flush();
+<span class="lineNum">     543 </span>            :                 }
+<span class="lineNum">     544 </span>            : 
+<span class="lineNum">     545 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     546 </span>            :                 /// Register an event handler that will listen and respond to all events.
+<span class="lineNum">     547 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     548 </span><span class="lineCov">          2 :                 public void RegisterGlobalEventHandler&lt;TMessage&gt;(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action&lt;TMessage&gt; handler,</span>
+<span class="lineNum">     549 </span>            :                         bool holdMessageLock = true) where TMessage : IMessage
+<span class="lineNum">     550 </span>            :                 {
+<span class="lineNum">     551 </span>            :                         Action&lt;TMessage&gt; registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
+<span class="lineNum">     552 </span>            : 
+<span class="lineNum">     553 </span>            :                         routeManger.RegisterGlobalEventHandler(registerableHandler);
+<span class="lineNum">     554 </span>            : 
+<span class="lineNum">     555 </span>            :                         telemetryHelper.TrackEvent(string.Format(&quot;Cqrs/RegisterHandler/{0}&quot;, typeof(TMessage).FullName), new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Bus&quot; } });
+<span class="lineNum">     556 </span>            :                         telemetryHelper.Flush();
+<span class="lineNum">     557 </span>            :                 }
+<span class="lineNum">     558 </span>            :         }
+<span class="lineNum">     559 </span>            : }
 </pre>
       </td>
     </tr>

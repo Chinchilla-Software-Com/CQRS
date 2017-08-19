@@ -2,8 +2,8 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub =
 [
     [ "AzureEventHub", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_adef2c26639ae4a7725c397da7fd90000.html#adef2c26639ae4a7725c397da7fd90000", null ],
     [ "ApplyReceiverMessageHandler", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af2efc497815828b6fe0b4d6621bc8b41.html#af2efc497815828b6fe0b4d6621bc8b41", null ],
-    [ "CheckHubExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af9cafb2d7025844b0bf37ee6a6a0f635.html#af9cafb2d7025844b0bf37ee6a6a0f635", null ],
-    [ "CheckPrivateEventHubExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af43ec28c427d2d45370ef2401864db4b.html#af43ec28c427d2d45370ef2401864db4b", null ],
+    [ "CheckHubExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac62e15208566056ffad05f46a303de8f.html#ac62e15208566056ffad05f46a303de8f", null ],
+    [ "CheckPrivateHubExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a5eea5010c95290cb4081679538a06555.html#a5eea5010c95290cb4081679538a06555", null ],
     [ "CheckPublicHubExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ae60a7cddcb566ff8f5cf2ac2db17733e.html#ae60a7cddcb566ff8f5cf2ac2db17733e", null ],
     [ "GetConnectionString", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a9855633b53ed1f67863ef9dffad0812c.html#a9855633b53ed1f67863ef9dffad0812c", null ],
     [ "InstantiatePublishing", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3747fb9fcb3de2a72c8a6d7bbd92db95.html#a3747fb9fcb3de2a72c8a6d7bbd92db95", null ],

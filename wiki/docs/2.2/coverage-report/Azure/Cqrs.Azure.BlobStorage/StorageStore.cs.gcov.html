@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">10</td>
             <td class="headerCovTableEntry">18</td>
-            <td class="headerCovTableEntryLo">27.8 %</td>
+            <td class="headerCovTableEntryLo">55.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-11</td>
+            <td class="headerValue">2017-08-19</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -107,233 +107,257 @@
 <span class="lineNum">      49 </span>            :                         Logger = logger;
 <span class="lineNum">      50 </span>            :                 }
 <span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span>            :                 public static JsonSerializerSettings DefaultSettings { get; private set; }
-<span class="lineNum">      53 </span>            : 
-<span class="lineNum">      54 </span>            :                 static StorageStore()
-<span class="lineNum">      55 </span>            :                 {
-<span class="lineNum">      56 </span>            :                         DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
-<span class="lineNum">      57 </span>            :                 }
-<span class="lineNum">      58 </span>            : 
-<span class="lineNum">      59 </span><span class="lineNoCov">          0 :                 protected virtual void Initialise(IStorageStoreConnectionStringFactory storageDataStoreConnectionStringFactory)</span>
-<span class="lineNum">      60 </span>            :                 {
-<span class="lineNum">      61 </span>            :                         WritableCollection = new List&lt;Tuple&lt;CloudStorageAccount, TSource&gt;&gt;();
-<span class="lineNum">      62 </span>            :                         ReadableStorageAccount = CloudStorageAccount.Parse(storageDataStoreConnectionStringFactory.GetReadableConnectionString());
-<span class="lineNum">      63 </span>            :                         ReadableSource = CreateSource(ReadableStorageAccount, GetContainerName(), IsContainerPublic());
-<span class="lineNum">      64 </span>            : 
-<span class="lineNum">      65 </span>            :                         foreach (string writableConnectionString in storageDataStoreConnectionStringFactory.GetWritableConnectionStrings())
-<span class="lineNum">      66 </span>            :                         {
-<span class="lineNum">      67 </span>            :                                 CloudStorageAccount storageAccount = CloudStorageAccount.Parse(writableConnectionString);
-<span class="lineNum">      68 </span>            :                                 TSource container = CreateSource(storageAccount, GetContainerName(), IsContainerPublic());
-<span class="lineNum">      69 </span>            : 
-<span class="lineNum">      70 </span>            :                                 WritableCollection.Add(new Tuple&lt;CloudStorageAccount, TSource&gt;(storageAccount, container));
-<span class="lineNum">      71 </span>            :                         }
-<span class="lineNum">      72 </span>            :                 }
-<span class="lineNum">      73 </span>            : 
-<span class="lineNum">      74 </span>            :                 #region Implementation of IEnumerable
-<span class="lineNum">      75 </span>            : 
-<span class="lineNum">      76 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      77 </span>            :                 /// Returns an enumerator that iterates through the collection.
-<span class="lineNum">      78 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      79 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">      80 </span>            :                 /// A &lt;see cref=&quot;T:System.Collections.Generic.IEnumerator`1&quot;/&gt; that can be used to iterate through the collection.
-<span class="lineNum">      81 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">      82 </span><span class="lineCov">          1 :                 public abstract IEnumerator&lt;TData&gt; GetEnumerator();</span>
-<span class="lineNum">      83 </span>            : 
-<span class="lineNum">      84 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      85 </span>            :                 /// Returns an enumerator that iterates through a collection.
-<span class="lineNum">      86 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      87 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">      88 </span>            :                 /// An &lt;see cref=&quot;T:System.Collections.IEnumerator&quot;/&gt; object that can be used to iterate through the collection.
-<span class="lineNum">      89 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">      90 </span>            :                 IEnumerator IEnumerable.GetEnumerator()
-<span class="lineNum">      91 </span>            :                 {
-<span class="lineNum">      92 </span>            :                         return GetEnumerator();
-<span class="lineNum">      93 </span>            :                 }
-<span class="lineNum">      94 </span>            : 
-<span class="lineNum">      95 </span>            :                 #endregion
-<span class="lineNum">      96 </span>            : 
-<span class="lineNum">      97 </span>            :                 #region Implementation of IQueryable
-<span class="lineNum">      98 </span>            : 
-<span class="lineNum">      99 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     100 </span>            :                 /// Gets the expression tree that is associated with the instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
-<span class="lineNum">     101 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     102 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">     103 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.Expressions.Expression&quot;/&gt; that is associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
-<span class="lineNum">     104 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">     105 </span>            :                 public abstract Expression Expression { get; }
-<span class="lineNum">     106 </span>            : 
-<span class="lineNum">     107 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     108 </span>            :                 /// Gets the type of the element(s) that are returned when the expression tree associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt; is executed.
-<span class="lineNum">     109 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     110 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">     111 </span>            :                 /// A &lt;see cref=&quot;T:System.Type&quot;/&gt; that represents the type of the element(s) that are returned when the expression tree associated with this object is executed.
-<span class="lineNum">     112 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">     113 </span>            :                 public abstract Type ElementType { get; }
-<span class="lineNum">     114 </span>            : 
-<span class="lineNum">     115 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     116 </span>            :                 /// Gets the query provider that is associated with this data source.
-<span class="lineNum">     117 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     118 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">     119 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.IQueryProvider&quot;/&gt; that is associated with this data source.
-<span class="lineNum">     120 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">     121 </span>            :                 public abstract IQueryProvider Provider { get; }
-<span class="lineNum">     122 </span>            : 
-<span class="lineNum">     123 </span>            :                 #endregion
-<span class="lineNum">     124 </span>            : 
-<span class="lineNum">     125 </span>            :                 #region Implementation of IDisposable
-<span class="lineNum">     126 </span>            : 
-<span class="lineNum">     127 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     128 </span>            :                 /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-<span class="lineNum">     129 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     130 </span><span class="lineCov">          1 :                 public void Dispose()</span>
-<span class="lineNum">     131 </span>            :                 {
-<span class="lineNum">     132 </span>            :                         ReadableSource = default(TSource);
-<span class="lineNum">     133 </span>            :                         ReadableStorageAccount = null;
-<span class="lineNum">     134 </span>            : 
-<span class="lineNum">     135 </span>            :                         WritableCollection = null;
-<span class="lineNum">     136 </span>            :                 }
+<span class="lineNum">      52 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      53 </span>            :                 /// The default &lt;see cref=&quot;JsonSerializerSettings&quot;/&gt; to use.
+<span class="lineNum">      54 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      55 </span>            :                 public static JsonSerializerSettings DefaultSettings { get; private set; }
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 static StorageStore()
+<span class="lineNum">      58 </span>            :                 {
+<span class="lineNum">      59 </span>            :                         DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
+<span class="lineNum">      60 </span>            :                 }
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span><span class="lineNoCov">          0 :                 protected virtual void Initialise(IStorageStoreConnectionStringFactory storageDataStoreConnectionStringFactory)</span>
+<span class="lineNum">      63 </span>            :                 {
+<span class="lineNum">      64 </span>            :                         WritableCollection = new List&lt;Tuple&lt;CloudStorageAccount, TSource&gt;&gt;();
+<span class="lineNum">      65 </span>            :                         ReadableStorageAccount = CloudStorageAccount.Parse(storageDataStoreConnectionStringFactory.GetReadableConnectionString());
+<span class="lineNum">      66 </span>            :                         ReadableSource = CreateSource(ReadableStorageAccount, GetContainerName(), IsContainerPublic());
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                         foreach (string writableConnectionString in storageDataStoreConnectionStringFactory.GetWritableConnectionStrings())
+<span class="lineNum">      69 </span>            :                         {
+<span class="lineNum">      70 </span>            :                                 CloudStorageAccount storageAccount = CloudStorageAccount.Parse(writableConnectionString);
+<span class="lineNum">      71 </span>            :                                 TSource container = CreateSource(storageAccount, GetContainerName(), IsContainerPublic());
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                                 WritableCollection.Add(new Tuple&lt;CloudStorageAccount, TSource&gt;(storageAccount, container));
+<span class="lineNum">      74 </span>            :                         }
+<span class="lineNum">      75 </span>            :                 }
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :                 #region Implementation of IEnumerable
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      80 </span>            :                 /// Returns an enumerator that iterates through the collection.
+<span class="lineNum">      81 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      82 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">      83 </span>            :                 /// A &lt;see cref=&quot;T:System.Collections.Generic.IEnumerator`1&quot;/&gt; that can be used to iterate through the collection.
+<span class="lineNum">      84 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">      85 </span><span class="lineCov">          1 :                 public abstract IEnumerator&lt;TData&gt; GetEnumerator();</span>
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      88 </span>            :                 /// Returns an enumerator that iterates through a collection.
+<span class="lineNum">      89 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      90 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">      91 </span>            :                 /// An &lt;see cref=&quot;T:System.Collections.IEnumerator&quot;/&gt; object that can be used to iterate through the collection.
+<span class="lineNum">      92 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">      93 </span>            :                 IEnumerator IEnumerable.GetEnumerator()
+<span class="lineNum">      94 </span>            :                 {
+<span class="lineNum">      95 </span>            :                         return GetEnumerator();
+<span class="lineNum">      96 </span>            :                 }
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                 #endregion
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :                 #region Implementation of IQueryable
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     103 </span>            :                 /// Gets the expression tree that is associated with the instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
+<span class="lineNum">     104 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     105 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     106 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.Expressions.Expression&quot;/&gt; that is associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
+<span class="lineNum">     107 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     108 </span>            :                 public abstract Expression Expression { get; }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     111 </span>            :                 /// Gets the type of the element(s) that are returned when the expression tree associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt; is executed.
+<span class="lineNum">     112 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     113 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     114 </span>            :                 /// A &lt;see cref=&quot;T:System.Type&quot;/&gt; that represents the type of the element(s) that are returned when the expression tree associated with this object is executed.
+<span class="lineNum">     115 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     116 </span>            :                 public abstract Type ElementType { get; }
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     119 </span>            :                 /// Gets the query provider that is associated with this data source.
+<span class="lineNum">     120 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     121 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     122 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.IQueryProvider&quot;/&gt; that is associated with this data source.
+<span class="lineNum">     123 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     124 </span>            :                 public abstract IQueryProvider Provider { get; }
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span>            :                 #endregion
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            :                 #region Implementation of IDisposable
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     131 </span>            :                 /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+<span class="lineNum">     132 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     133 </span><span class="lineCov">          1 :                 public void Dispose()</span>
+<span class="lineNum">     134 </span>            :                 {
+<span class="lineNum">     135 </span>            :                         ReadableSource = default(TSource);
+<span class="lineNum">     136 </span>            :                         ReadableStorageAccount = null;
 <span class="lineNum">     137 </span>            : 
-<span class="lineNum">     138 </span>            :                 #endregion
-<span class="lineNum">     139 </span>            : 
-<span class="lineNum">     140 </span>            :                 #region Implementation of IDataStore&lt;TData&gt;
-<span class="lineNum">     141 </span>            : 
-<span class="lineNum">     142 </span><span class="lineNoCov">          0 :                 public abstract void Add(TData data);</span>
-<span class="lineNum">     143 </span>            : 
-<span class="lineNum">     144 </span><span class="lineNoCov">          0 :                 public virtual void Add(IEnumerable&lt;TData&gt; data)</span>
-<span class="lineNum">     145 </span>            :                 {
-<span class="lineNum">     146 </span>            :                         foreach (TData dataItem in data)
-<span class="lineNum">     147 </span>            :                                 Add(dataItem);
-<span class="lineNum">     148 </span>            :                 }
-<span class="lineNum">     149 </span>            : 
-<span class="lineNum">     150 </span><span class="lineNoCov">          0 :                 public abstract void Destroy(TData data);</span>
-<span class="lineNum">     151 </span>            : 
-<span class="lineNum">     152 </span><span class="lineNoCov">          0 :                 public abstract void RemoveAll();</span>
-<span class="lineNum">     153 </span>            : 
-<span class="lineNum">     154 </span><span class="lineNoCov">          0 :                 public abstract void Update(TData data);</span>
-<span class="lineNum">     155 </span>            : 
-<span class="lineNum">     156 </span>            :                 #endregion
-<span class="lineNum">     157 </span>            : 
-<span class="lineNum">     158 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     159 </span>            :                 /// Creates a &lt;typeparam name=&quot;TSource&quot; /&gt; with the specified name &lt;paramref name=&quot;sourceName&quot;/&gt; if it doesn't already exist.
-<span class="lineNum">     160 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     161 </span>            :                 /// &lt;param name=&quot;storageAccount&quot;&gt;The storage account to create the container is&lt;/param&gt;
-<span class="lineNum">     162 </span>            :                 /// &lt;param name=&quot;sourceName&quot;&gt;The name of the source.&lt;/param&gt;
-<span class="lineNum">     163 </span>            :                 /// &lt;param name=&quot;isPublic&quot;&gt;Whether or not this source is publicly accessible.&lt;/param&gt;
-<span class="lineNum">     164 </span><span class="lineCov">          1 :                 protected abstract TSource CreateSource(CloudStorageAccount storageAccount, string sourceName, bool isPublic = true);</span>
-<span class="lineNum">     165 </span>            : 
-<span class="lineNum">     166 </span><span class="lineNoCov">          0 :                 protected virtual string GetSafeSourceName(string sourceName)</span>
-<span class="lineNum">     167 </span>            :                 {
-<span class="lineNum">     168 </span>            :                         return GetSafeSourceName(sourceName, true);
-<span class="lineNum">     169 </span>            :                 }
-<span class="lineNum">     170 </span>            : 
-<span class="lineNum">     171 </span><span class="lineNoCov">          0 :                 protected virtual string GetSafeSourceName(string sourceName, bool lowerCaseName)</span>
-<span class="lineNum">     172 </span>            :                 {
-<span class="lineNum">     173 </span>            :                         if (sourceName.Contains(&quot;:&quot;))
-<span class="lineNum">     174 </span>            :                                 return sourceName;
-<span class="lineNum">     175 </span>            : 
-<span class="lineNum">     176 </span>            :                         string safeContainerName = sourceName.Replace(@&quot;\&quot;, @&quot;/&quot;).Replace(@&quot;/&quot;, @&quot;-&quot;);
-<span class="lineNum">     177 </span>            :                         if (lowerCaseName)
-<span class="lineNum">     178 </span>            :                                 safeContainerName = safeContainerName.ToLowerInvariant();
-<span class="lineNum">     179 </span>            :                         if (safeContainerName.StartsWith(&quot;-&quot;))
-<span class="lineNum">     180 </span>            :                                 safeContainerName = safeContainerName.Substring(1);
-<span class="lineNum">     181 </span>            :                         if (safeContainerName.EndsWith(&quot;-&quot;))
-<span class="lineNum">     182 </span>            :                                 safeContainerName = safeContainerName.Substring(0, safeContainerName.Length - 1);
-<span class="lineNum">     183 </span>            :                         safeContainerName = safeContainerName.Replace(&quot; &quot;, &quot;-&quot;);
-<span class="lineNum">     184 </span>            : 
-<span class="lineNum">     185 </span>            :                         return safeContainerName;
-<span class="lineNum">     186 </span>            :                 }
+<span class="lineNum">     138 </span>            :                         WritableCollection = null;
+<span class="lineNum">     139 </span>            :                 }
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            :                 #endregion
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span>            :                 #region Implementation of IDataStore&lt;TData&gt;
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :                 public abstract void Add(TData data);</span>
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :                 public virtual void Add(IEnumerable&lt;TData&gt; data)</span>
+<span class="lineNum">     148 </span>            :                 {
+<span class="lineNum">     149 </span>            :                         foreach (TData dataItem in data)
+<span class="lineNum">     150 </span>            :                                 Add(dataItem);
+<span class="lineNum">     151 </span>            :                 }
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :                 public abstract void Destroy(TData data);</span>
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :                 public abstract void RemoveAll();</span>
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :                 public abstract void Update(TData data);</span>
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span>            :                 #endregion
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     162 </span>            :                 /// Creates a &lt;typeparam name=&quot;TSource&quot; /&gt; with the specified name &lt;paramref name=&quot;sourceName&quot;/&gt; if it doesn't already exist.
+<span class="lineNum">     163 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     164 </span>            :                 /// &lt;param name=&quot;storageAccount&quot;&gt;The storage account to create the container is&lt;/param&gt;
+<span class="lineNum">     165 </span>            :                 /// &lt;param name=&quot;sourceName&quot;&gt;The name of the source.&lt;/param&gt;
+<span class="lineNum">     166 </span>            :                 /// &lt;param name=&quot;isPublic&quot;&gt;Whether or not this source is publicly accessible.&lt;/param&gt;
+<span class="lineNum">     167 </span><span class="lineCov">          1 :                 protected abstract TSource CreateSource(CloudStorageAccount storageAccount, string sourceName, bool isPublic = true);</span>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :                 protected virtual string GetSafeSourceName(string sourceName)</span>
+<span class="lineNum">     170 </span>            :                 {
+<span class="lineNum">     171 </span>            :                         return GetSafeSourceName(sourceName, true);
+<span class="lineNum">     172 </span>            :                 }
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :                 protected virtual string GetSafeSourceName(string sourceName, bool lowerCaseName)</span>
+<span class="lineNum">     175 </span>            :                 {
+<span class="lineNum">     176 </span>            :                         if (sourceName.Contains(&quot;:&quot;))
+<span class="lineNum">     177 </span>            :                                 return sourceName;
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span>            :                         string safeContainerName = sourceName.Replace(@&quot;\&quot;, @&quot;/&quot;).Replace(@&quot;/&quot;, @&quot;-&quot;);
+<span class="lineNum">     180 </span>            :                         if (lowerCaseName)
+<span class="lineNum">     181 </span>            :                                 safeContainerName = safeContainerName.ToLowerInvariant();
+<span class="lineNum">     182 </span>            :                         if (safeContainerName.StartsWith(&quot;-&quot;))
+<span class="lineNum">     183 </span>            :                                 safeContainerName = safeContainerName.Substring(1);
+<span class="lineNum">     184 </span>            :                         if (safeContainerName.EndsWith(&quot;-&quot;))
+<span class="lineNum">     185 </span>            :                                 safeContainerName = safeContainerName.Substring(0, safeContainerName.Length - 1);
+<span class="lineNum">     186 </span>            :                         safeContainerName = safeContainerName.Replace(&quot; &quot;, &quot;-&quot;);
 <span class="lineNum">     187 </span>            : 
-<span class="lineNum">     188 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     189 </span>            :                 /// Characters Disallowed in Key Fields
-<span class="lineNum">     190 </span>            :                 /// 
-<span class="lineNum">     191 </span>            :                 /// The following characters are not allowed in values for the PartitionKey and RowKey properties:
-<span class="lineNum">     192 </span>            :                 /// 
-<span class="lineNum">     193 </span>            :                 /// The forward slash (/) character
-<span class="lineNum">     194 </span>            :                 /// The backslash (\) character
-<span class="lineNum">     195 </span>            :                 /// The number sign (#) character
-<span class="lineNum">     196 </span>            :                 /// The question mark (?) character
-<span class="lineNum">     197 </span>            :                 /// Control characters from U+0000 to U+001F, including:
-<span class="lineNum">     198 </span>            :                 /// The horizontal tab (\t) character
-<span class="lineNum">     199 </span>            :                 /// The linefeed (\n) character
-<span class="lineNum">     200 </span>            :                 /// The carriage return (\r) character
-<span class="lineNum">     201 </span>            :                 /// Control characters from U+007F to U+009F
-<span class="lineNum">     202 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     203 </span>            :                 /// &lt;param name=&quot;sourceName&quot;&gt;&lt;/param&gt;
-<span class="lineNum">     204 </span>            :                 /// &lt;returns&gt;&lt;/returns&gt;
-<span class="lineNum">     205 </span>            :                 internal static string GetSafeStorageKey(string sourceName)
-<span class="lineNum">     206 </span>            :                 {
-<span class="lineNum">     207 </span>            :                         var sb = new StringBuilder();
-<span class="lineNum">     208 </span>            :                         foreach (var c in sourceName
-<span class="lineNum">     209 </span>            :                                 .Where(c =&gt; c != '/'
-<span class="lineNum">     210 </span>            :                                                         &amp;&amp; c != '\\'
-<span class="lineNum">     211 </span>            :                                                         &amp;&amp; c != '#'
-<span class="lineNum">     212 </span>            :                                                         &amp;&amp; c != '/'
-<span class="lineNum">     213 </span>            :                                                         &amp;&amp; c != '?'
-<span class="lineNum">     214 </span>            :                                                         &amp;&amp; !char.IsControl(c)))
-<span class="lineNum">     215 </span>            :                                 sb.Append(c);
-<span class="lineNum">     216 </span>            :                         return sb.ToString();
-<span class="lineNum">     217 </span>            :                 }
-<span class="lineNum">     218 </span>            : 
-<span class="lineNum">     219 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     220 </span>            :                 /// Gets the default retry policy dedicated to handling transient conditions with Windows Azure Storage.
-<span class="lineNum">     221 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     222 </span>            :                 protected virtual RetryPolicy AzureStorageRetryPolicy
-<span class="lineNum">     223 </span>            :                 {
-<span class="lineNum">     224 </span>            :                         get
-<span class="lineNum">     225 </span>            :                         {
-<span class="lineNum">     226 </span>            :                                 RetryManager retryManager = EnterpriseLibraryContainer.Current.GetInstance&lt;RetryManager&gt;();
-<span class="lineNum">     227 </span>            :                                 RetryPolicy retryPolicy = retryManager.GetDefaultAzureStorageRetryPolicy();
-<span class="lineNum">     228 </span>            :                                 retryPolicy.Retrying += (sender, args) =&gt;
-<span class="lineNum">     229 </span>            :                                 {
-<span class="lineNum">     230 </span>            :                                         var msg = string.Format(&quot;Retrying action - Count: {0}, Delay: {1}&quot;, args.CurrentRetryCount, args.Delay);
-<span class="lineNum">     231 </span>            :                                         Logger.LogWarning(msg, exception: args.LastException);
-<span class="lineNum">     232 </span>            :                                 };
-<span class="lineNum">     233 </span>            :                                 return retryPolicy;
-<span class="lineNum">     234 </span>            :                         }
-<span class="lineNum">     235 </span>            :                 }
-<span class="lineNum">     236 </span>            : 
-<span class="lineNum">     237 </span><span class="lineNoCov">          0 :                 protected virtual TData Deserialise(Stream dataStream)</span>
-<span class="lineNum">     238 </span>            :                 {
-<span class="lineNum">     239 </span>            :                         using (dataStream)
-<span class="lineNum">     240 </span>            :                         {
-<span class="lineNum">     241 </span>            :                                 using (var reader = new StreamReader(dataStream))
-<span class="lineNum">     242 </span>            :                                 {
-<span class="lineNum">     243 </span>            :                                         string jsonContents = reader.ReadToEnd();
-<span class="lineNum">     244 </span>            :                                         TData obj = Deserialise(jsonContents);
-<span class="lineNum">     245 </span>            :                                         return obj;
-<span class="lineNum">     246 </span>            :                                 }
-<span class="lineNum">     247 </span>            :                         }
-<span class="lineNum">     248 </span>            :                 }
-<span class="lineNum">     249 </span>            : 
-<span class="lineNum">     250 </span><span class="lineNoCov">          0 :                 protected virtual TData Deserialise(string json)</span>
-<span class="lineNum">     251 </span>            :                 {
-<span class="lineNum">     252 </span>            :                         using (var stringReader = new StringReader(json))
-<span class="lineNum">     253 </span>            :                                 using (var jsonTextReader = new JsonTextReader(stringReader))
-<span class="lineNum">     254 </span>            :                                         return GetSerialiser().Deserialize&lt;TData&gt;(jsonTextReader);
+<span class="lineNum">     188 </span>            :                         return safeContainerName;
+<span class="lineNum">     189 </span>            :                 }
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     192 </span>            :                 /// Characters Disallowed in Key Fields
+<span class="lineNum">     193 </span>            :                 /// 
+<span class="lineNum">     194 </span>            :                 /// The following characters are not allowed in values for the PartitionKey and RowKey properties:
+<span class="lineNum">     195 </span>            :                 /// 
+<span class="lineNum">     196 </span>            :                 /// The forward slash (/) character
+<span class="lineNum">     197 </span>            :                 /// The backslash (\) character
+<span class="lineNum">     198 </span>            :                 /// The number sign (#) character
+<span class="lineNum">     199 </span>            :                 /// The question mark (?) character
+<span class="lineNum">     200 </span>            :                 /// Control characters from U+0000 to U+001F, including:
+<span class="lineNum">     201 </span>            :                 /// The horizontal tab (\t) character
+<span class="lineNum">     202 </span>            :                 /// The linefeed (\n) character
+<span class="lineNum">     203 </span>            :                 /// The carriage return (\r) character
+<span class="lineNum">     204 </span>            :                 /// Control characters from U+007F to U+009F
+<span class="lineNum">     205 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     206 </span>            :                 /// &lt;param name=&quot;sourceName&quot;&gt;&lt;/param&gt;
+<span class="lineNum">     207 </span>            :                 /// &lt;returns&gt;&lt;/returns&gt;
+<span class="lineNum">     208 </span>            :                 internal static string GetSafeStorageKey(string sourceName)
+<span class="lineNum">     209 </span>            :                 {
+<span class="lineNum">     210 </span>            :                         var sb = new StringBuilder();
+<span class="lineNum">     211 </span>            :                         foreach (var c in sourceName
+<span class="lineNum">     212 </span>            :                                 .Where(c =&gt; c != '/'
+<span class="lineNum">     213 </span>            :                                                         &amp;&amp; c != '\\'
+<span class="lineNum">     214 </span>            :                                                         &amp;&amp; c != '#'
+<span class="lineNum">     215 </span>            :                                                         &amp;&amp; c != '/'
+<span class="lineNum">     216 </span>            :                                                         &amp;&amp; c != '?'
+<span class="lineNum">     217 </span>            :                                                         &amp;&amp; !char.IsControl(c)))
+<span class="lineNum">     218 </span>            :                                 sb.Append(c);
+<span class="lineNum">     219 </span>            :                         return sb.ToString();
+<span class="lineNum">     220 </span>            :                 }
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     223 </span>            :                 /// Gets the default retry policy dedicated to handling transient conditions with Windows Azure Storage.
+<span class="lineNum">     224 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     225 </span>            :                 protected virtual RetryPolicy AzureStorageRetryPolicy
+<span class="lineNum">     226 </span>            :                 {
+<span class="lineNum">     227 </span>            :                         get
+<span class="lineNum">     228 </span>            :                         {
+<span class="lineNum">     229 </span>            :                                 RetryManager retryManager = EnterpriseLibraryContainer.Current.GetInstance&lt;RetryManager&gt;();
+<span class="lineNum">     230 </span>            :                                 RetryPolicy retryPolicy = retryManager.GetDefaultAzureStorageRetryPolicy();
+<span class="lineNum">     231 </span>            :                                 retryPolicy.Retrying += (sender, args) =&gt;
+<span class="lineNum">     232 </span>            :                                 {
+<span class="lineNum">     233 </span>            :                                         var msg = string.Format(&quot;Retrying action - Count: {0}, Delay: {1}&quot;, args.CurrentRetryCount, args.Delay);
+<span class="lineNum">     234 </span>            :                                         Logger.LogWarning(msg, exception: args.LastException);
+<span class="lineNum">     235 </span>            :                                 };
+<span class="lineNum">     236 </span>            :                                 return retryPolicy;
+<span class="lineNum">     237 </span>            :                         }
+<span class="lineNum">     238 </span>            :                 }
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     241 </span>            :                 /// Deserialise the provided &lt;paramref name=&quot;dataStream&quot;/&gt; from its &lt;see cref=&quot;Stream&quot;/&gt; representation.
+<span class="lineNum">     242 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     243 </span>            :                 /// &lt;param name=&quot;dataStream&quot;&gt;A &lt;see cref=&quot;Stream&quot;/&gt; representation of an &lt;see cref=&quot;TData&quot;/&gt; to deserialise.&lt;/param&gt;
+<span class="lineNum">     244 </span><span class="lineCov">          1 :                 protected virtual TData Deserialise(Stream dataStream)</span>
+<span class="lineNum">     245 </span>            :                 {
+<span class="lineNum">     246 </span>            :                         using (dataStream)
+<span class="lineNum">     247 </span>            :                         {
+<span class="lineNum">     248 </span>            :                                 using (var reader = new StreamReader(dataStream))
+<span class="lineNum">     249 </span>            :                                 {
+<span class="lineNum">     250 </span>            :                                         string jsonContents = reader.ReadToEnd();
+<span class="lineNum">     251 </span>            :                                         TData obj = Deserialise(jsonContents);
+<span class="lineNum">     252 </span>            :                                         return obj;
+<span class="lineNum">     253 </span>            :                                 }
+<span class="lineNum">     254 </span>            :                         }
 <span class="lineNum">     255 </span>            :                 }
 <span class="lineNum">     256 </span>            : 
-<span class="lineNum">     257 </span><span class="lineNoCov">          0 :                 protected virtual Stream Serialise(TData data)</span>
-<span class="lineNum">     258 </span>            :                 {
-<span class="lineNum">     259 </span>            :                         string dataContent = JsonConvert.SerializeObject(data, GetSerialisationSettings());
-<span class="lineNum">     260 </span>            : 
-<span class="lineNum">     261 </span>            :                         byte[] byteArray = Encoding.UTF8.GetBytes(dataContent);
-<span class="lineNum">     262 </span>            :                         var stream = new MemoryStream(byteArray);
-<span class="lineNum">     263 </span>            : 
-<span class="lineNum">     264 </span>            :                         return stream;
-<span class="lineNum">     265 </span>            :                 }
-<span class="lineNum">     266 </span>            : 
-<span class="lineNum">     267 </span><span class="lineNoCov">          0 :                 protected virtual JsonSerializerSettings GetSerialisationSettings()</span>
-<span class="lineNum">     268 </span>            :                 {
-<span class="lineNum">     269 </span>            :                         return DefaultSettings;
-<span class="lineNum">     270 </span>            :                 }
-<span class="lineNum">     271 </span>            : 
-<span class="lineNum">     272 </span><span class="lineNoCov">          0 :                 protected virtual JsonSerializer GetSerialiser()</span>
-<span class="lineNum">     273 </span>            :                 {
-<span class="lineNum">     274 </span>            :                         JsonSerializerSettings settings = GetSerialisationSettings();
-<span class="lineNum">     275 </span>            :                         return JsonSerializer.Create(settings);
-<span class="lineNum">     276 </span>            :                 }
-<span class="lineNum">     277 </span>            :         }
-<span class="lineNum">     278 </span>            : }
+<span class="lineNum">     257 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     258 </span>            :                 /// Deserialise the provided &lt;paramref name=&quot;json&quot;/&gt; from its &lt;see cref=&quot;string&quot;/&gt; representation.
+<span class="lineNum">     259 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     260 </span>            :                 /// &lt;param name=&quot;json&quot;&gt;A &lt;see cref=&quot;string&quot;/&gt; representation of an &lt;see cref=&quot;TData&quot;/&gt; to deserialise.&lt;/param&gt;
+<span class="lineNum">     261 </span><span class="lineCov">          1 :                 protected virtual TData Deserialise(string json)</span>
+<span class="lineNum">     262 </span>            :                 {
+<span class="lineNum">     263 </span>            :                         using (var stringReader = new StringReader(json))
+<span class="lineNum">     264 </span>            :                                 using (var jsonTextReader = new JsonTextReader(stringReader))
+<span class="lineNum">     265 </span>            :                                         return GetSerialiser().Deserialize&lt;TData&gt;(jsonTextReader);
+<span class="lineNum">     266 </span>            :                 }
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     269 </span>            :                 /// Serialise the provided &lt;paramref name=&quot;data&quot;/&gt;.
+<span class="lineNum">     270 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     271 </span>            :                 /// &lt;param name=&quot;data&quot;&gt;The &lt;see cref=&quot;TData&quot;/&gt; being serialised.&lt;/param&gt;
+<span class="lineNum">     272 </span>            :                 /// &lt;returns&gt;A &lt;see cref=&quot;Stream&quot;/&gt; representation of the provided &lt;paramref name=&quot;data&quot;/&gt;.&lt;/returns&gt;
+<span class="lineNum">     273 </span><span class="lineCov">          1 :                 protected virtual Stream Serialise(TData data)</span>
+<span class="lineNum">     274 </span>            :                 {
+<span class="lineNum">     275 </span>            :                         string dataContent = JsonConvert.SerializeObject(data, GetSerialisationSettings());
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span>            :                         byte[] byteArray = Encoding.UTF8.GetBytes(dataContent);
+<span class="lineNum">     278 </span>            :                         var stream = new MemoryStream(byteArray);
+<span class="lineNum">     279 </span>            : 
+<span class="lineNum">     280 </span>            :                         return stream;
+<span class="lineNum">     281 </span>            :                 }
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     284 </span>            :                 /// Returns &lt;see cref=&quot;DefaultSettings&quot;/&gt;
+<span class="lineNum">     285 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     286 </span>            :                 /// &lt;returns&gt;&lt;see cref=&quot;DefaultSettings&quot;/&gt;&lt;/returns&gt;
+<span class="lineNum">     287 </span><span class="lineCov">          1 :                 protected virtual JsonSerializerSettings GetSerialisationSettings()</span>
+<span class="lineNum">     288 </span>            :                 {
+<span class="lineNum">     289 </span>            :                         return DefaultSettings;
+<span class="lineNum">     290 </span>            :                 }
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     293 </span>            :                 /// Creates a new &lt;see cref=&quot;JsonSerializer&quot;/&gt; using the settings from &lt;see cref=&quot;GetSerialisationSettings&quot;/&gt;.
+<span class="lineNum">     294 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     295 </span>            :                 /// &lt;returns&gt;A new instance of &lt;see cref=&quot;JsonSerializer&quot;/&gt;.&lt;/returns&gt;
+<span class="lineNum">     296 </span><span class="lineCov">          1 :                 protected virtual JsonSerializer GetSerialiser()</span>
+<span class="lineNum">     297 </span>            :                 {
+<span class="lineNum">     298 </span>            :                         JsonSerializerSettings settings = GetSerialisationSettings();
+<span class="lineNum">     299 </span>            :                         return JsonSerializer.Create(settings);
+<span class="lineNum">     300 </span>            :                 }
+<span class="lineNum">     301 </span>            :         }
+<span class="lineNum">     302 </span>            : }
 </pre>
       </td>
     </tr>

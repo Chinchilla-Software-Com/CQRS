@@ -2,9 +2,9 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus =
 [
     [ "AzureServiceBus", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a44845c00c29574c2fa2d43a8a6b124ca.html#a44845c00c29574c2fa2d43a8a6b124ca", null ],
     [ "ApplyReceiverMessageHandler", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a6ea94560e02fce0d920c467062f5fc98.html#a6ea94560e02fce0d920c467062f5fc98", null ],
-    [ "CheckPrivateEventTopicExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a13484259317dd6a936ff9269480674a1.html#a13484259317dd6a936ff9269480674a1", null ],
+    [ "CheckPrivateTopicExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_add2d99ff99f1af5470082b1de340c04a.html#add2d99ff99f1af5470082b1de340c04a", null ],
     [ "CheckPublicTopicExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_aae464d1d93ae6600ff5ace028160dd3c.html#aae464d1d93ae6600ff5ace028160dd3c", null ],
-    [ "CheckTopicExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ae330bdb4454bfb9d1594f11df577da3a.html#ae330bdb4454bfb9d1594f11df577da3a", null ],
+    [ "CheckTopicExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a167ace15de6e40d5ec0b0c2e0fd95504.html#a167ace15de6e40d5ec0b0c2e0fd95504", null ],
     [ "CleanUpDeadLetters", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a8d1d5833d49b7793933825f2a13fb8b7.html#a8d1d5833d49b7793933825f2a13fb8b7", null ],
     [ "GetConnectionString", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a5a3b3610dc5dfebe586262c0bc787748.html#a5a3b3610dc5dfebe586262c0bc787748", null ],
     [ "InstantiatePublishing", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a5c286d29b0bbfe3770f3407efda57036.html#a5c286d29b0bbfe3770f3407efda57036", null ],
