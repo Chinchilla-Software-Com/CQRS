@@ -17,48 +17,115 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
+	/// <summary>
+	/// An <see cref="AzureBus{TAuthenticationToken}"/> that uses Azure Service Event Hubs.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public abstract class AzureEventHub<TAuthenticationToken> : AzureBus<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Gets the public<see cref="EventHubClient"/>.
+		/// </summary>
 		protected EventHubClient EventHubPublisher { get; private set; }
 
+		/// <summary>
+		/// Gets the public<see cref="EventProcessorHost"/>.
+		/// </summary>
 		protected EventProcessorHost EventHubReceiver { get; private set; }
 
+		/// <summary>
+		/// The name of the private event hub.
+		/// </summary>
 		protected string PrivateEventHubName { get; set; }
 
+		/// <summary>
+		/// The name of the public event hub.
+		/// </summary>
 		protected string PublicEventHubName { get; private set; }
 
+		/// <summary>
+		/// The name of the consumer group in the private event hub.
+		/// </summary>
 		protected string PrivateEventHubConsumerGroupName { get; private set; }
 
+		/// <summary>
+		/// The name of the consumer group in the public event hub.
+		/// </summary>
 		protected string PublicEventHubConsumerGroupName { get; private set; }
 
+		/// <summary>
+		/// The configuration key for the event hub connection string as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected abstract string EventHubConnectionStringNameConfigurationKey { get; }
 
+		/// <summary>
+		/// The configuration key for the event hub storage connection string as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected abstract string EventHubStorageConnectionStringNameConfigurationKey { get; }
 
+		/// <summary>
+		/// The configuration key for the name of the private event hub as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected abstract string PrivateEventHubNameConfigurationKey { get; }
 
+		/// <summary>
+		/// The configuration key for the name of the public event hub as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected abstract string PublicEventHubNameConfigurationKey { get; }
 
-		protected abstract string DefaultPrivateEventHubName { get; }
-
-		protected abstract string DefaultPublicEventHubName { get; }
-
+		/// <summary>
+		/// The configuration key for the name of the consumer group name of the private event hub as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected abstract string PrivateEventHubConsumerGroupNameConfigurationKey { get; }
 
+		/// <summary>
+		/// The configuration key for the name of the consumer group name of the public event hub as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected abstract string PublicEventHubConsumerGroupNameConfigurationKey { get; }
 
+		/// <summary>
+		/// The default name of the private event hub if no <see cref="IConfigurationManager"/> value is set.
+		/// </summary>
+		protected abstract string DefaultPrivateEventHubName { get; }
+
+		/// <summary>
+		/// The default name of the public event hub if no <see cref="IConfigurationManager"/> value is set.
+		/// </summary>
+		protected abstract string DefaultPublicEventHubName { get; }
+
+		/// <summary>
+		/// The default name of the consumer group in the private event hub if no <see cref="IConfigurationManager"/> value is set.
+		/// </summary>
 		protected const string DefaultPrivateEventHubConsumerGroupName = "$Default";
 
+		/// <summary>
+		/// The default name of the consumer group in the public event hub if no <see cref="IConfigurationManager"/> value is set.
+		/// </summary>
 		protected const string DefaultPublicEventHubConsumerGroupName = "$Default";
 
+		/// <summary>
+		/// The event hub storage connection string.
+		/// </summary>
 		protected string StorageConnectionString { get; private set; }
 
+		/// <summary>
+		/// The <see cref="Action{PartitionContext, EventData}">handler</see> used for <see cref="EventProcessorHost.RegisterEventProcessorFactoryAsync(Microsoft.ServiceBus.Messaging.IEventProcessorFactory)"/> on <see cref="EventHubReceiver"/>.
+		/// </summary>
 		protected Action<PartitionContext, EventData> ReceiverMessageHandler { get; private set; }
-		
+
+		/// <summary>
+		/// The <see cref="EventProcessorOptions" /> used for <see cref="EventProcessorHost.RegisterEventProcessorFactoryAsync(Microsoft.ServiceBus.Messaging.IEventProcessorFactory)"/> on <see cref="EventHubReceiver"/>.
+		/// </summary>
 		protected EventProcessorOptions ReceiverMessageHandlerOptions { get; private set; }
 
+		/// <summary>
+		/// Gets the <see cref="ITelemetryHelper"/>.
+		/// </summary>
 		protected ITelemetryHelper TelemetryHelper { get; set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureEventHub{TAuthenticationToken}"/>
+		/// </summary>
 		protected AzureEventHub(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
 			: base (configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
@@ -67,6 +134,9 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Overrides of AzureBus<TAuthenticationToken>
 
+		/// <summary>
+		/// Gets the connection string for the bus from <see cref="AzureBus{TAuthenticationToken}.ConfigurationManager"/>
+		/// </summary>
 		protected override string GetConnectionString()
 		{
 			string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(EventHubConnectionStringNameConfigurationKey)].ConnectionString;
@@ -75,6 +145,10 @@ namespace Cqrs.Azure.ServiceBus
 			return connectionString;
 		}
 
+		/// <summary>
+		/// Calls <see cref="AzureBus{TAuthenticationToken}.SetConnectionStrings"/>
+		/// and then sets the required storage connection string.
+		/// </summary>
 		protected override void SetConnectionStrings()
 		{
 			base.SetConnectionStrings();
@@ -86,21 +160,32 @@ namespace Cqrs.Azure.ServiceBus
 
 		#endregion
 
+		/// <summary>
+		/// Instantiate publishing on this bus by
+		/// calling <see cref="CheckPrivateHubExists"/> and <see cref="CheckPublicHubExists"/>
+		/// then calling <see cref="AzureBus{TAuthenticationToken}.StartSettingsChecking"/>
+		/// </summary>
 		protected override void InstantiatePublishing()
 		{
 			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
-			CheckPrivateEventHubExists(namespaceManager);
+			CheckPrivateHubExists(namespaceManager);
 			CheckPublicHubExists(namespaceManager);
 
 			EventHubPublisher = EventHubClient.CreateFromConnectionString(ConnectionString, PublicEventHubName);
 			StartSettingsChecking();
 		}
 
+		/// <summary>
+		/// Instantiate receiving on this bus by
+		/// calling <see cref="CheckPrivateHubExists"/> and <see cref="CheckPublicHubExists"/>
+		/// then InstantiateReceiving for private and public topics,
+		/// then calling <see cref="AzureBus{TAuthenticationToken}.StartSettingsChecking"/>
+		/// </summary>
 		protected override void InstantiateReceiving()
 		{
 			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
 
-			CheckPrivateEventHubExists(namespaceManager);
+			CheckPrivateHubExists(namespaceManager);
 			CheckPublicHubExists(namespaceManager);
 
 			EventHubReceiver = new EventProcessorHost(PublicEventHubName, PublicEventHubConsumerGroupName, ConnectionString, StorageConnectionString);
@@ -112,20 +197,32 @@ namespace Cqrs.Azure.ServiceBus
 			StartSettingsChecking();
 		}
 
-		protected virtual void CheckPrivateEventHubExists(NamespaceManager namespaceManager)
+		/// <summary>
+		/// Checks if the private hub and consumer group name exists as per <see cref="PrivateEventHubName"/> and <see cref="PrivateEventHubConsumerGroupName"/>.
+		/// </summary>
+		/// <param name="namespaceManager">The <see cref="NamespaceManager"/>.</param>
+		protected virtual void CheckPrivateHubExists(NamespaceManager namespaceManager)
 		{
 			CheckHubExists(namespaceManager, PrivateEventHubName = ConfigurationManager.GetSetting(PrivateEventHubNameConfigurationKey) ?? DefaultPrivateEventHubName, PrivateEventHubConsumerGroupName = ConfigurationManager.GetSetting(PrivateEventHubConsumerGroupNameConfigurationKey) ?? DefaultPrivateEventHubConsumerGroupName);
 		}
 
+		/// <summary>
+		/// Checks if the public hub and consumer group name exists as per <see cref="PublicEventHubName"/> and <see cref="PublicEventHubConsumerGroupName"/>.
+		/// </summary>
+		/// <param name="namespaceManager">The <see cref="NamespaceManager"/>.</param>
 		protected virtual void CheckPublicHubExists(NamespaceManager namespaceManager)
 		{
 			CheckHubExists(namespaceManager, PublicEventHubName = ConfigurationManager.GetSetting(PublicEventHubNameConfigurationKey) ?? DefaultPublicEventHubName, PublicEventHubConsumerGroupName = ConfigurationManager.GetSetting(PublicEventHubConsumerGroupNameConfigurationKey) ?? DefaultPublicEventHubConsumerGroupName);
 		}
 
-		protected virtual void CheckHubExists(NamespaceManager namespaceManager, string eventHubName, string eventSubscriptionNames)
+		/// <summary>
+		/// Checks if a event hub by the provided <paramref name="hubName"/> exists and
+		/// Checks if a consumer group by the provided <paramref name="consumerGroupNames"/> exists.
+		/// </summary>
+		protected virtual void CheckHubExists(NamespaceManager namespaceManager, string hubName, string consumerGroupNames)
 		{
 			// Configure Queue Settings
-			var eventHubDescription = new EventHubDescription(eventHubName)
+			var eventHubDescription = new EventHubDescription(hubName)
 			{
 				MessageRetentionInDays = long.MaxValue,
 				
@@ -134,12 +231,17 @@ namespace Cqrs.Azure.ServiceBus
 			// Create the topic if it does not exist already
 			namespaceManager.CreateEventHubIfNotExists(eventHubDescription);
 
-			var subscriptionDescription = new SubscriptionDescription(eventHubDescription.Path, eventSubscriptionNames);
+			var subscriptionDescription = new SubscriptionDescription(eventHubDescription.Path, consumerGroupNames);
 
-			if (!namespaceManager.SubscriptionExists(eventHubDescription.Path, eventSubscriptionNames))
+			if (!namespaceManager.SubscriptionExists(eventHubDescription.Path, consumerGroupNames))
 				namespaceManager.CreateSubscription(subscriptionDescription);
 		}
 
+		/// <summary>
+		/// Checks <see cref="AzureBus{TAuthenticationToken}.ValidateSettingsHaveChanged"/>
+		/// and that <see cref="StorageConnectionString"/> have changed.
+		/// </summary>
+		/// <returns></returns>
 		protected override bool ValidateSettingsHaveChanged()
 		{
 			return base.ValidateSettingsHaveChanged()
@@ -147,6 +249,10 @@ namespace Cqrs.Azure.ServiceBus
 			StorageConnectionString != ConfigurationManager.GetSetting(EventHubStorageConnectionStringNameConfigurationKey);
 		}
 
+		/// <summary>
+		/// Triggers settings checking on <see cref="EventHubPublisher"/> and <see cref="EventHubReceiver"/>,
+		/// then calls <see cref="InstantiateReceiving"/> and <see cref="InstantiatePublishing"/>.
+		/// </summary>
 		protected override void TriggerSettingsChecking()
 		{
 			// Let's wrap up using this event hub and start the switch
@@ -187,6 +293,9 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// Registers the provided <paramref name="receiverMessageHandler"/> with the provided <paramref name="receiverMessageHandlerOptions"/>.
+		/// </summary>
 		protected virtual void RegisterReceiverMessageHandler(Action<PartitionContext, EventData> receiverMessageHandler, EventProcessorOptions receiverMessageHandlerOptions = null)
 		{
 			StoreReceiverMessageHandler(receiverMessageHandler, receiverMessageHandlerOptions);
@@ -194,12 +303,18 @@ namespace Cqrs.Azure.ServiceBus
 			ApplyReceiverMessageHandler();
 		}
 
+		/// <summary>
+		/// Stores the provided <paramref name="receiverMessageHandler"/> and <paramref name="receiverMessageHandlerOptions"/>.
+		/// </summary>
 		protected virtual void StoreReceiverMessageHandler(Action<PartitionContext, EventData> receiverMessageHandler, EventProcessorOptions receiverMessageHandlerOptions = null)
 		{
 			ReceiverMessageHandler = receiverMessageHandler;
 			ReceiverMessageHandlerOptions = receiverMessageHandlerOptions;
 		}
 
+		/// <summary>
+		/// Applies the stored ReceiverMessageHandler and ReceiverMessageHandlerOptions to the <see cref="EventHubReceiver"/>.
+		/// </summary>
 		protected override void ApplyReceiverMessageHandler()
 		{
 			EventHubReceiver.RegisterEventProcessorFactoryAsync

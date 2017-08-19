@@ -27,14 +27,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AzureQueuedEventBusReceiver
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureQueuedEventBusReceiver.cs
-    startLine: 22
+    startLine: 26
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nA concurrent implementation of <xref href=\"Cqrs.Azure.ServiceBus.AzureEventBusReceiver%601\" data-throw-if-not-resolved=\"false\"></xref> that resides in memory.\n"
+  example: []
   syntax:
     content: 'public class AzureQueuedEventBusReceiver<TAuthenticationToken> : AzureEventBusReceiver<TAuthenticationToken>, IEventHandlerRegistrar, IHandlerRegistrar, IEventReceiver<TAuthenticationToken>, IEventReceiver'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <see cref="!:Type"></see> of the authentication token.
     content.vb: >-
       Public Class AzureQueuedEventBusReceiver(Of TAuthenticationToken)
           Inherits AzureEventBusReceiver(Of TAuthenticationToken)
@@ -57,7 +60,6 @@ items:
   - Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.FilterKey
   - Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.Routes
   - Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.CurrentHandles
-  - Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.Start
   - Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.InstantiateReceiving(NamespaceManager,IDictionary{System.Int32,SubscriptionClient},System.String,System.String)
   - Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.RegisterHandler``1(Action{{TMessage}},Type,System.Boolean)
   - Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.RegisterHandler``1(Action{{TMessage}},System.Boolean)
@@ -65,6 +67,7 @@ items:
   - Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.ReceiveEvent(Cqrs.Events.IEvent{{TAuthenticationToken}})
   - Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.GetCurrentNumberOfReceiversCount
   - Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.GetCurrentMaximumConcurrentReceiverProcessesCount
+  - Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.Start
   - Cqrs.Azure.ServiceBus.AzureEventBus{{TAuthenticationToken}}.MessageBusConnectionStringConfigurationKey
   - Cqrs.Azure.ServiceBus.AzureEventBus{{TAuthenticationToken}}.PrivateTopicNameConfigurationKey
   - Cqrs.Azure.ServiceBus.AzureEventBus{{TAuthenticationToken}}.PublicTopicNameConfigurationKey
@@ -92,7 +95,7 @@ items:
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.GetConnectionString
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.InstantiatePublishing
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.InstantiateReceiving
-  - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPrivateEventTopicExists(NamespaceManager)
+  - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPrivateTopicExists(NamespaceManager)
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPublicTopicExists(NamespaceManager)
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckTopicExists(NamespaceManager,System.String,System.String)
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.TriggerSettingsChecking
@@ -147,10 +150,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: QueueTracker
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureQueuedEventBusReceiver.cs
-    startLine: 24
+    startLine: 31
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nTracks all queues.\n"
+  example: []
   syntax:
     content: protected static ConcurrentDictionary<string, ConcurrentQueue<IEvent<TAuthenticationToken>>> QueueTracker { get; }
     parameters: []
@@ -186,10 +191,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: QueueTrackerLock
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureQueuedEventBusReceiver.cs
-    startLine: 26
+    startLine: 36
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nGets the <see cref=\"!:ReaderWriterLockSlim\"></see>.\n"
+  example: []
   syntax:
     content: protected ReaderWriterLockSlim QueueTrackerLock { get; }
     parameters: []
@@ -223,10 +230,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureQueuedEventBusReceiver.cs
-    startLine: 28
+    startLine: 41
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public AzureQueuedEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
     parameters:
@@ -271,10 +280,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ReceiveEvent
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureQueuedEventBusReceiver.cs
-    startLine: 35
+    startLine: 51
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nReceives a <see cref=\"!:BrokeredMessage\"></see> from the event bus, identifies a key and queues it accordingly.\n"
+  example: []
   syntax:
     content: protected override void ReceiveEvent(BrokeredMessage message)
     parameters:
@@ -309,15 +320,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateQueueAndAttachListenerIfNotExist
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureQueuedEventBusReceiver.cs
-    startLine: 83
+    startLine: 107
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nCreates the queue of the name <span class=\"paramref\">queueName</span> if it does not already exist,\nthe queue is attached to <xref href=\"Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver%601.DequeuAndProcessEvent(System.String)\" data-throw-if-not-resolved=\"false\"></xref> using a <see cref=\"!:Thread\"></see>.\n"
+  example: []
   syntax:
     content: protected void CreateQueueAndAttachListenerIfNotExist(string queueName)
     parameters:
     - id: queueName
       type: System.String
+      description: The name of the queue to check and create.
     content.vb: Protected Sub CreateQueueAndAttachListenerIfNotExist(queueName As String)
   overload: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1.CreateQueueAndAttachListenerIfNotExist*
   nameWithType.vb: AzureQueuedEventBusReceiver(Of TAuthenticationToken).CreateQueueAndAttachListenerIfNotExist(String)
@@ -344,15 +358,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DequeuAndProcessEvent
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureQueuedEventBusReceiver.cs
-    startLine: 111
+    startLine: 140
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nTakes an <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> off the queue of <span class=\"paramref\">queueName</span>\nand calls <xref href=\"Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver%601.ReceiveEvent(BrokeredMessage)\" data-throw-if-not-resolved=\"false\"></xref>. Repeats in a loop until the queue is empty.\n"
+  example: []
   syntax:
     content: protected void DequeuAndProcessEvent(string queueName)
     parameters:
     - id: queueName
       type: System.String
+      description: The name of the queue process.
     content.vb: Protected Sub DequeuAndProcessEvent(queueName As String)
   overload: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1.DequeuAndProcessEvent*
   nameWithType.vb: AzureQueuedEventBusReceiver(Of TAuthenticationToken).DequeuAndProcessEvent(String)
@@ -379,10 +396,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: QueueCount
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureQueuedEventBusReceiver.cs
-    startLine: 173
+    startLine: 205
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe number of queues currently known.\n"
+  example: []
   syntax:
     content: public int QueueCount { get; }
     parameters: []
@@ -416,10 +435,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: QueueNames
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureQueuedEventBusReceiver.cs
-    startLine: 189
+    startLine: 224
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe name of all currently known queues.\n"
+  example: []
   syntax:
     content: public ICollection<string> QueueNames { get; }
     parameters: []
@@ -436,6 +457,43 @@ items:
   - ReadOnly
   fullName.vb: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver(Of TAuthenticationToken).QueueNames
 references:
+- uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1
+  commentId: T:Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1
+  isExternal: false
+  name: AzureEventBusReceiver<TAuthenticationToken>
+  nameWithType: AzureEventBusReceiver<TAuthenticationToken>
+  fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver<TAuthenticationToken>
+  nameWithType.vb: AzureEventBusReceiver(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventBusReceiver(Of TAuthenticationToken)
+  name.vb: AzureEventBusReceiver(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1
+    name: AzureEventBusReceiver
+    nameWithType: AzureEventBusReceiver
+    fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1
+    name: AzureEventBusReceiver
+    nameWithType: AzureEventBusReceiver
+    fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus
   commentId: N:Cqrs.Azure.ServiceBus
   isExternal: false
@@ -714,37 +772,6 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver<TAuthenticationToken>.CurrentHandles
   nameWithType.vb: AzureEventBusReceiver(Of TAuthenticationToken).CurrentHandles
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventBusReceiver(Of TAuthenticationToken).CurrentHandles
-- uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.Start
-  commentId: M:Cqrs.Azure.ServiceBus.AzureEventBusReceiver{`0}.Start
-  parent: Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}
-  definition: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
-  name: Start()
-  nameWithType: AzureEventBusReceiver<TAuthenticationToken>.Start()
-  fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver<TAuthenticationToken>.Start()
-  nameWithType.vb: AzureEventBusReceiver(Of TAuthenticationToken).Start()
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventBusReceiver(Of TAuthenticationToken).Start()
-  spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
-    name: Start
-    nameWithType: AzureEventBusReceiver<TAuthenticationToken>.Start
-    fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver<TAuthenticationToken>.Start
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
-    name: Start
-    nameWithType: AzureEventBusReceiver(Of TAuthenticationToken).Start
-    fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver(Of TAuthenticationToken).Start
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.InstantiateReceiving(NamespaceManager,IDictionary{System.Int32,SubscriptionClient},System.String,System.String)
   commentId: M:Cqrs.Azure.ServiceBus.AzureEventBusReceiver{`0}.InstantiateReceiving(NamespaceManager,IDictionary{System.Int32,SubscriptionClient},System.String,System.String)
   parent: Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}
@@ -1237,6 +1264,37 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}.Start
+  commentId: M:Cqrs.Azure.ServiceBus.AzureEventBusReceiver{`0}.Start
+  parent: Cqrs.Azure.ServiceBus.AzureEventBusReceiver{{TAuthenticationToken}}
+  definition: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
+  name: Start()
+  nameWithType: AzureEventBusReceiver<TAuthenticationToken>.Start()
+  fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver<TAuthenticationToken>.Start()
+  nameWithType.vb: AzureEventBusReceiver(Of TAuthenticationToken).Start()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventBusReceiver(Of TAuthenticationToken).Start()
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
+    name: Start
+    nameWithType: AzureEventBusReceiver<TAuthenticationToken>.Start
+    fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver<TAuthenticationToken>.Start
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
+    name: Start
+    nameWithType: AzureEventBusReceiver(Of TAuthenticationToken).Start
+    fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver(Of TAuthenticationToken).Start
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureEventBus{{TAuthenticationToken}}.MessageBusConnectionStringConfigurationKey
   commentId: P:Cqrs.Azure.ServiceBus.AzureEventBus{`0}.MessageBusConnectionStringConfigurationKey
   parent: Cqrs.Azure.ServiceBus.AzureEventBus{{TAuthenticationToken}}
@@ -1546,20 +1604,20 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPrivateEventTopicExists(NamespaceManager)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureServiceBus{`0}.CheckPrivateEventTopicExists(NamespaceManager)
+- uid: Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPrivateTopicExists(NamespaceManager)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureServiceBus{`0}.CheckPrivateTopicExists(NamespaceManager)
   parent: Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}
-  definition: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-  name: CheckPrivateEventTopicExists(NamespaceManager)
-  nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists(NamespaceManager)
-  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists(NamespaceManager)
-  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists(NamespaceManager)
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists(NamespaceManager)
+  definition: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+  name: CheckPrivateTopicExists(NamespaceManager)
+  nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists(NamespaceManager)
+  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists(NamespaceManager)
+  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists(NamespaceManager)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists(NamespaceManager)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-    name: CheckPrivateEventTopicExists
-    nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+    name: CheckPrivateTopicExists
+    nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists
   - name: (
     nameWithType: (
     fullName: (
@@ -1572,10 +1630,10 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-    name: CheckPrivateEventTopicExists
-    nameWithType: AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+    name: CheckPrivateTopicExists
+    nameWithType: AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists
   - name: (
     nameWithType: (
     fullName: (
@@ -2518,43 +2576,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1
-  commentId: T:Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1
-  isExternal: false
-  name: AzureEventBusReceiver<TAuthenticationToken>
-  nameWithType: AzureEventBusReceiver<TAuthenticationToken>
-  fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver<TAuthenticationToken>
-  nameWithType.vb: AzureEventBusReceiver(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventBusReceiver(Of TAuthenticationToken)
-  name.vb: AzureEventBusReceiver(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1
-    name: AzureEventBusReceiver
-    nameWithType: AzureEventBusReceiver
-    fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1
-    name: AzureEventBusReceiver
-    nameWithType: AzureEventBusReceiver
-    fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Bus
   commentId: N:Cqrs.Bus
   isExternal: false
@@ -2652,36 +2673,6 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver<TAuthenticationToken>.CurrentHandles
   nameWithType.vb: AzureEventBusReceiver(Of TAuthenticationToken).CurrentHandles
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventBusReceiver(Of TAuthenticationToken).CurrentHandles
-- uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
-  commentId: M:Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
-  isExternal: false
-  name: Start()
-  nameWithType: AzureEventBusReceiver<TAuthenticationToken>.Start()
-  fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver<TAuthenticationToken>.Start()
-  nameWithType.vb: AzureEventBusReceiver(Of TAuthenticationToken).Start()
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventBusReceiver(Of TAuthenticationToken).Start()
-  spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
-    name: Start
-    nameWithType: AzureEventBusReceiver<TAuthenticationToken>.Start
-    fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver<TAuthenticationToken>.Start
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
-    name: Start
-    nameWithType: AzureEventBusReceiver(Of TAuthenticationToken).Start
-    fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver(Of TAuthenticationToken).Start
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.InstantiateReceiving(NamespaceManager,IDictionary{System.Int32,SubscriptionClient},System.String,System.String)
   commentId: M:Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.InstantiateReceiving(NamespaceManager,IDictionary{System.Int32,SubscriptionClient},System.String,System.String)
   isExternal: true
@@ -3167,6 +3158,36 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
+  commentId: M:Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
+  isExternal: false
+  name: Start()
+  nameWithType: AzureEventBusReceiver<TAuthenticationToken>.Start()
+  fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver<TAuthenticationToken>.Start()
+  nameWithType.vb: AzureEventBusReceiver(Of TAuthenticationToken).Start()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventBusReceiver(Of TAuthenticationToken).Start()
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
+    name: Start
+    nameWithType: AzureEventBusReceiver<TAuthenticationToken>.Start
+    fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver<TAuthenticationToken>.Start
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureEventBusReceiver`1.Start
+    name: Start
+    nameWithType: AzureEventBusReceiver(Of TAuthenticationToken).Start
+    fullName: Cqrs.Azure.ServiceBus.AzureEventBusReceiver(Of TAuthenticationToken).Start
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureEventBus`1.MessageBusConnectionStringConfigurationKey
   commentId: P:Cqrs.Azure.ServiceBus.AzureEventBus`1.MessageBusConnectionStringConfigurationKey
   isExternal: false
@@ -3449,19 +3470,19 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
+- uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
   isExternal: true
-  name: CheckPrivateEventTopicExists(NamespaceManager)
-  nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists(NamespaceManager)
-  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists(NamespaceManager)
-  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists(NamespaceManager)
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists(NamespaceManager)
+  name: CheckPrivateTopicExists(NamespaceManager)
+  nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists(NamespaceManager)
+  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists(NamespaceManager)
+  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists(NamespaceManager)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists(NamespaceManager)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-    name: CheckPrivateEventTopicExists
-    nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+    name: CheckPrivateTopicExists
+    nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists
   - name: (
     nameWithType: (
     fullName: (
@@ -3474,10 +3495,10 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-    name: CheckPrivateEventTopicExists
-    nameWithType: AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+    name: CheckPrivateTopicExists
+    nameWithType: AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists
   - name: (
     nameWithType: (
     fullName: (
@@ -4444,6 +4465,43 @@ references:
   name: ReaderWriterLockSlim
   nameWithType: ReaderWriterLockSlim
   fullName: ReaderWriterLockSlim
+- uid: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1
+  commentId: T:Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1
+  isExternal: false
+  name: AzureQueuedEventBusReceiver<TAuthenticationToken>
+  nameWithType: AzureQueuedEventBusReceiver<TAuthenticationToken>
+  fullName: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver<TAuthenticationToken>
+  nameWithType.vb: AzureQueuedEventBusReceiver(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver(Of TAuthenticationToken)
+  name.vb: AzureQueuedEventBusReceiver(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1
+    name: AzureQueuedEventBusReceiver
+    nameWithType: AzureQueuedEventBusReceiver
+    fullName: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1
+    name: AzureQueuedEventBusReceiver
+    nameWithType: AzureQueuedEventBusReceiver
+    fullName: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1.#ctor*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1.#ctor
   isExternal: false
@@ -4807,6 +4865,8 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1.DequeuAndProcessEvent(System.String)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1.DequeuAndProcessEvent(System.String)
 - uid: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1.CreateQueueAndAttachListenerIfNotExist*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1.CreateQueueAndAttachListenerIfNotExist
   isExternal: false
@@ -4822,6 +4882,45 @@ references:
   name: String
   nameWithType: String
   fullName: System.String
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1.ReceiveEvent(BrokeredMessage)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1.ReceiveEvent(BrokeredMessage)
 - uid: Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1.DequeuAndProcessEvent*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver`1.DequeuAndProcessEvent
   isExternal: false

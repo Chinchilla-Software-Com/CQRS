@@ -21,17 +21,28 @@ using Cqrs.Messages;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	// The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
+	/// <summary>
+	/// An <see cref="IEventPublisher{TAuthenticationToken}"/> that resolves handlers and executes the handler.
+	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	// The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
-	public class AzureEventBusPublisher<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IEventPublisher<TAuthenticationToken>
+	public class AzureEventBusPublisher<TAuthenticationToken>
+		: AzureEventBus<TAuthenticationToken>
+		, IEventPublisher<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureEventBusPublisher{TAuthenticationToken}"/>.
+		/// </summary>
 		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
 
+		/// <summary>
+		/// The debugger variable window value.
+		/// </summary>
 		internal string DebuggerDisplay
 		{
 			get
@@ -41,7 +52,7 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					connectionString = string.Concat(connectionString, "=", GetConnectionString());
 				}
-				catch { /**/ }
+				catch { /* */ }
 				return string.Format(CultureInfo.InvariantCulture, "{0}, PrivateTopicName : {1}, PrivateTopicSubscriptionName : {2}, PublicTopicName : {3}, PublicTopicSubscriptionName : {4}",
 					connectionString, PrivateTopicName, PrivateTopicSubscriptionName, PublicTopicName, PublicTopicSubscriptionName);
 			}
@@ -49,6 +60,9 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Implementation of IEventPublisher<TAuthenticationToken>
 
+		/// <summary>
+		/// Publishes the provided <paramref name="event"/> on the event bus.
+		/// </summary>
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
@@ -189,6 +203,9 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// Publishes the provided <paramref name="events"/> on the event bus.
+		/// </summary>
 		public virtual void Publish<TEvent>(IEnumerable<TEvent> events)
 			where TEvent : IEvent<TAuthenticationToken>
 		{

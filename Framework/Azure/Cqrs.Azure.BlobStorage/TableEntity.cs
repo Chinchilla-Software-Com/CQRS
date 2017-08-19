@@ -16,6 +16,9 @@ namespace Cqrs.Azure.BlobStorage
 	public abstract class TableEntity<TData>
 		: TableEntity
 	{
+		/// <summary>
+		/// The default <see cref="JsonSerializerSettings"/> to use.
+		/// </summary>
 		public static JsonSerializerSettings DefaultSettings { get; private set; }
 
 		static TableEntity()
@@ -23,6 +26,10 @@ namespace Cqrs.Azure.BlobStorage
 			DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
 		}
 
+		/// <summary>
+		/// Deserialise the provided <paramref name="json"/> from its <see cref="string"/> representation.
+		/// </summary>
+		/// <param name="json">A <see cref="string"/> representation of an <see cref="TData"/> to deserialise.</param>
 		protected virtual TData Deserialise(string json)
 		{
 			using (var stringReader = new StringReader(json))
@@ -30,6 +37,11 @@ namespace Cqrs.Azure.BlobStorage
 				return GetSerialiser().Deserialize<TData>(jsonTextReader);
 		}
 
+		/// <summary>
+		/// Serialise the provided <paramref name="data"/>.
+		/// </summary>
+		/// <param name="data">The <see cref="TData"/> being serialised.</param>
+		/// <returns>A <see cref="string"/> representation of the provided <paramref name="data"/>.</returns>
 		protected virtual string Serialise(TData data)
 		{
 			string dataContent = JsonConvert.SerializeObject(data, GetSerialisationSettings());
@@ -37,11 +49,19 @@ namespace Cqrs.Azure.BlobStorage
 			return dataContent;
 		}
 
+		/// <summary>
+		/// Returns <see cref="DefaultSettings"/>
+		/// </summary>
+		/// <returns><see cref="DefaultSettings"/></returns>
 		protected virtual JsonSerializerSettings GetSerialisationSettings()
 		{
 			return DefaultSettings;
 		}
 
+		/// <summary>
+		/// Creates a new <see cref="JsonSerializer"/> using the settings from <see cref="GetSerialisationSettings"/>.
+		/// </summary>
+		/// <returns>A new instance of <see cref="JsonSerializer"/>.</returns>
 		protected virtual JsonSerializer GetSerialiser()
 		{
 			JsonSerializerSettings settings = GetSerialisationSettings();

@@ -28,14 +28,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AzureCommandBus
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBus.cs
-    startLine: 15
+    startLine: 20
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nA command bus based on <xref href=\"Cqrs.Azure.ServiceBus.AzureServiceBus%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: 'public abstract class AzureCommandBus<TAuthenticationToken> : AzureServiceBus<TAuthenticationToken>'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <see cref="!:Type"></see> of the authentication token.
     content.vb: >-
       Public MustInherit Class AzureCommandBus(Of TAuthenticationToken)
           Inherits AzureServiceBus(Of TAuthenticationToken)
@@ -67,7 +70,7 @@ items:
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.InstantiatePublishing
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.InstantiateReceiving
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.InstantiateReceiving(NamespaceManager,IDictionary{System.Int32,SubscriptionClient},System.String,System.String)
-  - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPrivateEventTopicExists(NamespaceManager)
+  - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPrivateTopicExists(NamespaceManager)
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPublicTopicExists(NamespaceManager)
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckTopicExists(NamespaceManager,System.String,System.String)
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.TriggerSettingsChecking
@@ -126,10 +129,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MessageBusConnectionStringConfigurationKey
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBus.cs
-    startLine: 19
+    startLine: 27
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe configuration key for the message bus connection string as used by <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected override string MessageBusConnectionStringConfigurationKey { get; }
     parameters: []
@@ -166,10 +171,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrivateTopicNameConfigurationKey
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBus.cs
-    startLine: 24
+    startLine: 35
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe configuration key for the name of the private topic as used by <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected override string PrivateTopicNameConfigurationKey { get; }
     parameters: []
@@ -206,10 +213,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublicTopicNameConfigurationKey
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBus.cs
-    startLine: 29
+    startLine: 43
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe configuration key for the name of the public topic as used by <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected override string PublicTopicNameConfigurationKey { get; }
     parameters: []
@@ -246,10 +255,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrivateTopicSubscriptionNameConfigurationKey
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBus.cs
-    startLine: 34
+    startLine: 51
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe configuration key for the name of the subscription in the private topic as used by <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected override string PrivateTopicSubscriptionNameConfigurationKey { get; }
     parameters: []
@@ -286,10 +297,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublicTopicSubscriptionNameConfigurationKey
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBus.cs
-    startLine: 39
+    startLine: 59
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe configuration key for the name of the subscription in the public topic as used by <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected override string PublicTopicSubscriptionNameConfigurationKey { get; }
     parameters: []
@@ -326,10 +339,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DefaultPrivateTopicName
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBus.cs
-    startLine: 44
+    startLine: 67
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe default name of the private topic if no <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> value is set.\n"
+  example: []
   syntax:
     content: protected override string DefaultPrivateTopicName { get; }
     parameters: []
@@ -366,10 +381,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DefaultPublicTopicName
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBus.cs
-    startLine: 49
+    startLine: 75
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe default name of the public topic if no <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> value is set.\n"
+  example: []
   syntax:
     content: protected override string DefaultPublicTopicName { get; }
     parameters: []
@@ -406,10 +423,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBus.cs
-    startLine: 54
+    startLine: 85
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe configuration key that\nspecifies if an <see cref=\"!:Exception\"></see> is thrown if the network lock is lost\nas used by <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected override string ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey { get; }
     parameters: []
@@ -446,10 +465,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBus.cs
-    startLine: 61
+    startLine: 95
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nInstantiate a new instance of <xref href=\"Cqrs.Azure.ServiceBus.AzureCommandBus%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected AzureCommandBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper, bool isAPublisher)
     parameters:
@@ -479,6 +500,43 @@ items:
   fullName.vb: Cqrs.Azure.ServiceBus.AzureCommandBus(Of TAuthenticationToken).AzureCommandBus(Cqrs.Configuration.IConfigurationManager, Cqrs.Azure.ServiceBus.IMessageSerialiser(Of TAuthenticationToken), Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken), ICorrelationIdHelper, ILogger, Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken), Cqrs.Bus.IBusHelper, System.Boolean)
   name.vb: AzureCommandBus(IConfigurationManager, IMessageSerialiser(Of TAuthenticationToken), IAuthenticationTokenHelper(Of TAuthenticationToken), ICorrelationIdHelper, ILogger, IAzureBusHelper(Of TAuthenticationToken), IBusHelper, Boolean)
 references:
+- uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1
+  commentId: T:Cqrs.Azure.ServiceBus.AzureServiceBus`1
+  isExternal: false
+  name: AzureServiceBus<TAuthenticationToken>
+  nameWithType: AzureServiceBus<TAuthenticationToken>
+  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>
+  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken)
+  name.vb: AzureServiceBus(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1
+    name: AzureServiceBus
+    nameWithType: AzureServiceBus
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1
+    name: AzureServiceBus
+    nameWithType: AzureServiceBus
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus
   commentId: N:Cqrs.Azure.ServiceBus
   isExternal: false
@@ -933,20 +991,20 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPrivateEventTopicExists(NamespaceManager)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureServiceBus{`0}.CheckPrivateEventTopicExists(NamespaceManager)
+- uid: Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPrivateTopicExists(NamespaceManager)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureServiceBus{`0}.CheckPrivateTopicExists(NamespaceManager)
   parent: Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}
-  definition: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-  name: CheckPrivateEventTopicExists(NamespaceManager)
-  nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists(NamespaceManager)
-  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists(NamespaceManager)
-  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists(NamespaceManager)
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists(NamespaceManager)
+  definition: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+  name: CheckPrivateTopicExists(NamespaceManager)
+  nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists(NamespaceManager)
+  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists(NamespaceManager)
+  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists(NamespaceManager)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists(NamespaceManager)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-    name: CheckPrivateEventTopicExists
-    nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+    name: CheckPrivateTopicExists
+    nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists
   - name: (
     nameWithType: (
     fullName: (
@@ -959,10 +1017,10 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-    name: CheckPrivateEventTopicExists
-    nameWithType: AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+    name: CheckPrivateTopicExists
+    nameWithType: AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists
   - name: (
     nameWithType: (
     fullName: (
@@ -1893,43 +1951,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1
-  commentId: T:Cqrs.Azure.ServiceBus.AzureServiceBus`1
-  isExternal: false
-  name: AzureServiceBus<TAuthenticationToken>
-  nameWithType: AzureServiceBus<TAuthenticationToken>
-  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>
-  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken)
-  name.vb: AzureServiceBus(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1
-    name: AzureServiceBus
-    nameWithType: AzureServiceBus
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1
-    name: AzureServiceBus
-    nameWithType: AzureServiceBus
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.PrivateServiceBusPublisher
   commentId: P:Cqrs.Azure.ServiceBus.AzureServiceBus`1.PrivateServiceBusPublisher
   isExternal: false
@@ -2275,19 +2296,19 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
+- uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
   isExternal: true
-  name: CheckPrivateEventTopicExists(NamespaceManager)
-  nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists(NamespaceManager)
-  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists(NamespaceManager)
-  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists(NamespaceManager)
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists(NamespaceManager)
+  name: CheckPrivateTopicExists(NamespaceManager)
+  nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists(NamespaceManager)
+  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists(NamespaceManager)
+  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists(NamespaceManager)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists(NamespaceManager)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-    name: CheckPrivateEventTopicExists
-    nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+    name: CheckPrivateTopicExists
+    nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists
   - name: (
     nameWithType: (
     fullName: (
@@ -2300,10 +2321,10 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-    name: CheckPrivateEventTopicExists
-    nameWithType: AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+    name: CheckPrivateTopicExists
+    nameWithType: AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists
   - name: (
     nameWithType: (
     fullName: (
@@ -3162,6 +3183,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Configuration.IConfigurationManager
+  commentId: T:Cqrs.Configuration.IConfigurationManager
+  parent: Cqrs.Configuration
+  isExternal: false
+  name: IConfigurationManager
+  nameWithType: IConfigurationManager
+  fullName: Cqrs.Configuration.IConfigurationManager
 - uid: Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.MessageBusConnectionStringConfigurationKey
   commentId: P:Cqrs.Azure.ServiceBus.AzureServiceBus{`0}.MessageBusConnectionStringConfigurationKey
   parent: Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}
@@ -3186,6 +3214,12 @@ references:
   name: String
   nameWithType: String
   fullName: System.String
+- uid: Cqrs.Configuration
+  commentId: N:Cqrs.Configuration
+  isExternal: false
+  name: Cqrs.Configuration
+  nameWithType: Cqrs.Configuration
+  fullName: Cqrs.Configuration
 - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.MessageBusConnectionStringConfigurationKey
   commentId: P:Cqrs.Azure.ServiceBus.AzureServiceBus`1.MessageBusConnectionStringConfigurationKey
   isExternal: false
@@ -3369,6 +3403,43 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey
   nameWithType.vb: AzureServiceBus(Of TAuthenticationToken).ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey
   fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey
+- uid: Cqrs.Azure.ServiceBus.AzureCommandBus`1
+  commentId: T:Cqrs.Azure.ServiceBus.AzureCommandBus`1
+  isExternal: false
+  name: AzureCommandBus<TAuthenticationToken>
+  nameWithType: AzureCommandBus<TAuthenticationToken>
+  fullName: Cqrs.Azure.ServiceBus.AzureCommandBus<TAuthenticationToken>
+  nameWithType.vb: AzureCommandBus(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureCommandBus(Of TAuthenticationToken)
+  name.vb: AzureCommandBus(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureCommandBus`1
+    name: AzureCommandBus
+    nameWithType: AzureCommandBus
+    fullName: Cqrs.Azure.ServiceBus.AzureCommandBus
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureCommandBus`1
+    name: AzureCommandBus
+    nameWithType: AzureCommandBus
+    fullName: Cqrs.Azure.ServiceBus.AzureCommandBus
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureCommandBus`1.#ctor*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureCommandBus`1.#ctor
   isExternal: false
@@ -3377,13 +3448,6 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureCommandBus<TAuthenticationToken>.AzureCommandBus
   nameWithType.vb: AzureCommandBus(Of TAuthenticationToken).AzureCommandBus
   fullName.vb: Cqrs.Azure.ServiceBus.AzureCommandBus(Of TAuthenticationToken).AzureCommandBus
-- uid: Cqrs.Configuration.IConfigurationManager
-  commentId: T:Cqrs.Configuration.IConfigurationManager
-  parent: Cqrs.Configuration
-  isExternal: false
-  name: IConfigurationManager
-  nameWithType: IConfigurationManager
-  fullName: Cqrs.Configuration.IConfigurationManager
 - uid: Cqrs.Azure.ServiceBus.IMessageSerialiser{{TAuthenticationToken}}
   commentId: T:Cqrs.Azure.ServiceBus.IMessageSerialiser{`0}
   parent: Cqrs.Azure.ServiceBus
@@ -3522,12 +3586,6 @@ references:
   name: Boolean
   nameWithType: Boolean
   fullName: System.Boolean
-- uid: Cqrs.Configuration
-  commentId: N:Cqrs.Configuration
-  isExternal: false
-  name: Cqrs.Configuration
-  nameWithType: Cqrs.Configuration
-  fullName: Cqrs.Configuration
 - uid: Cqrs.Azure.ServiceBus.IMessageSerialiser`1
   commentId: T:Cqrs.Azure.ServiceBus.IMessageSerialiser`1
   isExternal: false

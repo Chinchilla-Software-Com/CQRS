@@ -20,8 +20,17 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	public class AzureEventBusPublisher<TAuthenticationToken> : AzureEventHubBus<TAuthenticationToken>, IEventPublisher<TAuthenticationToken>
+	/// <summary>
+	/// An <see cref="IEventPublisher{TAuthenticationToken}"/> that resolves handlers and executes the handler.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	public class AzureEventBusPublisher<TAuthenticationToken>
+		: AzureEventHubBus<TAuthenticationToken>
+		, IEventPublisher<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureEventBusPublisher{TAuthenticationToken}"/>.
+		/// </summary>
 		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, true)
 		{
@@ -30,6 +39,9 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Implementation of IEventPublisher<TAuthenticationToken>
 
+		/// <summary>
+		/// Publishes the provided <paramref name="event"/> on the event bus.
+		/// </summary>
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
@@ -78,6 +90,9 @@ namespace Cqrs.Azure.ServiceBus
 			Logger.LogInfo(string.Format("An event was published with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
 		}
 
+		/// <summary>
+		/// Publishes the provided <paramref name="events"/> on the event bus.
+		/// </summary>
 		public virtual void Publish<TEvent>(IEnumerable<TEvent> events)
 			where TEvent : IEvent<TAuthenticationToken>
 		{

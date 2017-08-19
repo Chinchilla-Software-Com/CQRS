@@ -8,7 +8,7 @@ items:
   - Cqrs.Azure.ServiceBus.AzureEventHub`1.#ctor(Cqrs.Configuration.IConfigurationManager,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,cdmdotnet.Logging.ILogger,System.Boolean)
   - Cqrs.Azure.ServiceBus.AzureEventHub`1.ApplyReceiverMessageHandler
   - Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckHubExists(Microsoft.ServiceBus.NamespaceManager,System.String,System.String)
-  - Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateEventHubExists(Microsoft.ServiceBus.NamespaceManager)
+  - Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)
   - Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPublicHubExists(Microsoft.ServiceBus.NamespaceManager)
   - Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubConsumerGroupName
   - Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubName
@@ -52,14 +52,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AzureEventHub
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 19
+    startLine: 23
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nAn <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601\" data-throw-if-not-resolved=\"false\"></xref> that uses Azure Service Event Hubs.\n"
+  example: []
   syntax:
     content: 'public abstract class AzureEventHub<TAuthenticationToken> : AzureBus<TAuthenticationToken>'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the authentication token.
     content.vb: >-
       Public MustInherit Class AzureEventHub(Of TAuthenticationToken)
           Inherits AzureBus(Of TAuthenticationToken)
@@ -124,10 +127,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EventHubPublisher
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 21
+    startLine: 28
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nGets the public<xref href=\"Microsoft.ServiceBus.Messaging.EventHubClient\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected EventHubClient EventHubPublisher { get; }
     parameters: []
@@ -161,10 +166,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EventHubReceiver
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 23
+    startLine: 33
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nGets the public<xref href=\"Microsoft.ServiceBus.Messaging.EventProcessorHost\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected EventProcessorHost EventHubReceiver { get; }
     parameters: []
@@ -198,10 +205,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrivateEventHubName
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 25
+    startLine: 38
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe name of the private event hub.\n"
+  example: []
   syntax:
     content: protected string PrivateEventHubName { get; set; }
     parameters: []
@@ -235,10 +244,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublicEventHubName
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 27
+    startLine: 43
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe name of the public event hub.\n"
+  example: []
   syntax:
     content: protected string PublicEventHubName { get; }
     parameters: []
@@ -272,10 +283,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrivateEventHubConsumerGroupName
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 29
+    startLine: 48
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe name of the consumer group in the private event hub.\n"
+  example: []
   syntax:
     content: protected string PrivateEventHubConsumerGroupName { get; }
     parameters: []
@@ -309,10 +322,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublicEventHubConsumerGroupName
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 31
+    startLine: 53
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe name of the consumer group in the public event hub.\n"
+  example: []
   syntax:
     content: protected string PublicEventHubConsumerGroupName { get; }
     parameters: []
@@ -346,10 +361,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EventHubConnectionStringNameConfigurationKey
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 33
+    startLine: 58
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe configuration key for the event hub connection string as used by <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected abstract string EventHubConnectionStringNameConfigurationKey { get; }
     parameters: []
@@ -385,10 +402,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EventHubStorageConnectionStringNameConfigurationKey
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 35
+    startLine: 63
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe configuration key for the event hub storage connection string as used by <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected abstract string EventHubStorageConnectionStringNameConfigurationKey { get; }
     parameters: []
@@ -424,10 +443,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrivateEventHubNameConfigurationKey
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 37
+    startLine: 68
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe configuration key for the name of the private event hub as used by <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected abstract string PrivateEventHubNameConfigurationKey { get; }
     parameters: []
@@ -463,10 +484,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublicEventHubNameConfigurationKey
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 39
+    startLine: 73
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe configuration key for the name of the public event hub as used by <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected abstract string PublicEventHubNameConfigurationKey { get; }
     parameters: []
@@ -484,84 +507,6 @@ items:
   - MustOverride
   - ReadOnly
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).PublicEventHubNameConfigurationKey
-- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubName
-  commentId: P:Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubName
-  id: DefaultPrivateEventHubName
-  parent: Cqrs.Azure.ServiceBus.AzureEventHub`1
-  langs:
-  - csharp
-  - vb
-  name: DefaultPrivateEventHubName
-  nameWithType: AzureEventHub<TAuthenticationToken>.DefaultPrivateEventHubName
-  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.DefaultPrivateEventHubName
-  type: Property
-  source:
-    remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-      branch: features/documentation
-      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
-    id: DefaultPrivateEventHubName
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 41
-  assemblies:
-  - Cqrs.Azure.ServiceBus
-  namespace: Cqrs.Azure.ServiceBus
-  syntax:
-    content: protected abstract string DefaultPrivateEventHubName { get; }
-    parameters: []
-    return:
-      type: System.String
-    content.vb: Protected MustOverride ReadOnly Property DefaultPrivateEventHubName As String
-  overload: Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubName*
-  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).DefaultPrivateEventHubName
-  modifiers.csharp:
-  - protected
-  - abstract
-  - get
-  modifiers.vb:
-  - Protected
-  - MustOverride
-  - ReadOnly
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).DefaultPrivateEventHubName
-- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPublicEventHubName
-  commentId: P:Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPublicEventHubName
-  id: DefaultPublicEventHubName
-  parent: Cqrs.Azure.ServiceBus.AzureEventHub`1
-  langs:
-  - csharp
-  - vb
-  name: DefaultPublicEventHubName
-  nameWithType: AzureEventHub<TAuthenticationToken>.DefaultPublicEventHubName
-  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.DefaultPublicEventHubName
-  type: Property
-  source:
-    remote:
-      path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-      branch: features/documentation
-      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
-    id: DefaultPublicEventHubName
-    path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 43
-  assemblies:
-  - Cqrs.Azure.ServiceBus
-  namespace: Cqrs.Azure.ServiceBus
-  syntax:
-    content: protected abstract string DefaultPublicEventHubName { get; }
-    parameters: []
-    return:
-      type: System.String
-    content.vb: Protected MustOverride ReadOnly Property DefaultPublicEventHubName As String
-  overload: Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPublicEventHubName*
-  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).DefaultPublicEventHubName
-  modifiers.csharp:
-  - protected
-  - abstract
-  - get
-  modifiers.vb:
-  - Protected
-  - MustOverride
-  - ReadOnly
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).DefaultPublicEventHubName
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.PrivateEventHubConsumerGroupNameConfigurationKey
   commentId: P:Cqrs.Azure.ServiceBus.AzureEventHub`1.PrivateEventHubConsumerGroupNameConfigurationKey
   id: PrivateEventHubConsumerGroupNameConfigurationKey
@@ -580,10 +525,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrivateEventHubConsumerGroupNameConfigurationKey
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 45
+    startLine: 78
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe configuration key for the name of the consumer group name of the private event hub as used by <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected abstract string PrivateEventHubConsumerGroupNameConfigurationKey { get; }
     parameters: []
@@ -619,10 +566,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublicEventHubConsumerGroupNameConfigurationKey
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 47
+    startLine: 83
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe configuration key for the name of the consumer group name of the public event hub as used by <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected abstract string PublicEventHubConsumerGroupNameConfigurationKey { get; }
     parameters: []
@@ -640,6 +589,88 @@ items:
   - MustOverride
   - ReadOnly
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).PublicEventHubConsumerGroupNameConfigurationKey
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubName
+  commentId: P:Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubName
+  id: DefaultPrivateEventHubName
+  parent: Cqrs.Azure.ServiceBus.AzureEventHub`1
+  langs:
+  - csharp
+  - vb
+  name: DefaultPrivateEventHubName
+  nameWithType: AzureEventHub<TAuthenticationToken>.DefaultPrivateEventHubName
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.DefaultPrivateEventHubName
+  type: Property
+  source:
+    remote:
+      path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: DefaultPrivateEventHubName
+    path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
+    startLine: 88
+  assemblies:
+  - Cqrs.Azure.ServiceBus
+  namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe default name of the private event hub if no <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> value is set.\n"
+  example: []
+  syntax:
+    content: protected abstract string DefaultPrivateEventHubName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Protected MustOverride ReadOnly Property DefaultPrivateEventHubName As String
+  overload: Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubName*
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).DefaultPrivateEventHubName
+  modifiers.csharp:
+  - protected
+  - abstract
+  - get
+  modifiers.vb:
+  - Protected
+  - MustOverride
+  - ReadOnly
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).DefaultPrivateEventHubName
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPublicEventHubName
+  commentId: P:Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPublicEventHubName
+  id: DefaultPublicEventHubName
+  parent: Cqrs.Azure.ServiceBus.AzureEventHub`1
+  langs:
+  - csharp
+  - vb
+  name: DefaultPublicEventHubName
+  nameWithType: AzureEventHub<TAuthenticationToken>.DefaultPublicEventHubName
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.DefaultPublicEventHubName
+  type: Property
+  source:
+    remote:
+      path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: DefaultPublicEventHubName
+    path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
+    startLine: 93
+  assemblies:
+  - Cqrs.Azure.ServiceBus
+  namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe default name of the public event hub if no <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> value is set.\n"
+  example: []
+  syntax:
+    content: protected abstract string DefaultPublicEventHubName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Protected MustOverride ReadOnly Property DefaultPublicEventHubName As String
+  overload: Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPublicEventHubName*
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).DefaultPublicEventHubName
+  modifiers.csharp:
+  - protected
+  - abstract
+  - get
+  modifiers.vb:
+  - Protected
+  - MustOverride
+  - ReadOnly
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).DefaultPublicEventHubName
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubConsumerGroupName
   commentId: F:Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubConsumerGroupName
   id: DefaultPrivateEventHubConsumerGroupName
@@ -658,10 +689,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DefaultPrivateEventHubConsumerGroupName
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 49
+    startLine: 98
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe default name of the consumer group in the private event hub if no <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> value is set.\n"
+  example: []
   syntax:
     content: protected const string DefaultPrivateEventHubConsumerGroupName = "$Default"
     return:
@@ -693,10 +726,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DefaultPublicEventHubConsumerGroupName
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 51
+    startLine: 103
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe default name of the consumer group in the public event hub if no <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> value is set.\n"
+  example: []
   syntax:
     content: protected const string DefaultPublicEventHubConsumerGroupName = "$Default"
     return:
@@ -728,10 +763,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: StorageConnectionString
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 53
+    startLine: 108
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe event hub storage connection string.\n"
+  example: []
   syntax:
     content: protected string StorageConnectionString { get; }
     parameters: []
@@ -765,10 +802,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ReceiverMessageHandler
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 55
+    startLine: 113
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe <xref href=\"System.Action%602\" data-throw-if-not-resolved=\"false\"></xref> used for <xref href=\"Microsoft.ServiceBus.Messaging.EventProcessorHost.RegisterEventProcessorFactoryAsync(Microsoft.ServiceBus.Messaging.IEventProcessorFactory)\" data-throw-if-not-resolved=\"false\"></xref> on <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.EventHubReceiver\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected Action<PartitionContext, EventData> ReceiverMessageHandler { get; }
     parameters: []
@@ -802,10 +841,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ReceiverMessageHandlerOptions
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 57
+    startLine: 118
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe <xref href=\"Microsoft.ServiceBus.Messaging.EventProcessorOptions\" data-throw-if-not-resolved=\"false\"></xref> used for <xref href=\"Microsoft.ServiceBus.Messaging.EventProcessorHost.RegisterEventProcessorFactoryAsync(Microsoft.ServiceBus.Messaging.IEventProcessorFactory)\" data-throw-if-not-resolved=\"false\"></xref> on <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.EventHubReceiver\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected EventProcessorOptions ReceiverMessageHandlerOptions { get; }
     parameters: []
@@ -839,10 +880,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TelemetryHelper
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 59
+    startLine: 123
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nGets the <xref href=\"cdmdotnet.Logging.ITelemetryHelper\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected ITelemetryHelper TelemetryHelper { get; set; }
     parameters: []
@@ -876,10 +919,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 61
+    startLine: 128
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected AzureEventHub(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
     parameters:
@@ -922,10 +967,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetConnectionString
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 69
+    startLine: 139
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nGets the connection string for the bus from <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.ConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected override string GetConnectionString()
     return:
@@ -959,10 +1006,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: SetConnectionStrings
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 77
+    startLine: 151
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nCalls <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.SetConnectionStrings\" data-throw-if-not-resolved=\"false\"></xref>\nand then sets the required storage connection string.\n"
+  example: []
   syntax:
     content: protected override void SetConnectionStrings()
     content.vb: Protected Overrides Sub SetConnectionStrings
@@ -994,10 +1043,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: InstantiatePublishing
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 88
+    startLine: 167
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nInstantiate publishing on this bus by\ncalling <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.CheckPublicHubExists(Microsoft.ServiceBus.NamespaceManager)\" data-throw-if-not-resolved=\"false\"></xref>\nthen calling <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.StartSettingsChecking\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected override void InstantiatePublishing()
     content.vb: Protected Overrides Sub InstantiatePublishing
@@ -1029,10 +1080,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: InstantiateReceiving
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 98
+    startLine: 183
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nInstantiate receiving on this bus by\ncalling <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.CheckPublicHubExists(Microsoft.ServiceBus.NamespaceManager)\" data-throw-if-not-resolved=\"false\"></xref>\nthen InstantiateReceiving for private and public topics,\nthen calling <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.StartSettingsChecking\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected override void InstantiateReceiving()
     content.vb: Protected Overrides Sub InstantiateReceiving
@@ -1046,43 +1099,46 @@ items:
   - Protected
   - Overrides
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).InstantiateReceiving()
-- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateEventHubExists(Microsoft.ServiceBus.NamespaceManager)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateEventHubExists(Microsoft.ServiceBus.NamespaceManager)
-  id: CheckPrivateEventHubExists(Microsoft.ServiceBus.NamespaceManager)
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)
+  id: CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)
   parent: Cqrs.Azure.ServiceBus.AzureEventHub`1
   langs:
   - csharp
   - vb
-  name: CheckPrivateEventHubExists(NamespaceManager)
-  nameWithType: AzureEventHub<TAuthenticationToken>.CheckPrivateEventHubExists(NamespaceManager)
-  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.CheckPrivateEventHubExists(Microsoft.ServiceBus.NamespaceManager)
+  name: CheckPrivateHubExists(NamespaceManager)
+  nameWithType: AzureEventHub<TAuthenticationToken>.CheckPrivateHubExists(NamespaceManager)
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)
   type: Method
   source:
     remote:
       path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
       branch: features/documentation
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
-    id: CheckPrivateEventHubExists
+    id: CheckPrivateHubExists
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 114
+    startLine: 203
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nChecks if the private hub and consumer group name exists as per <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.PrivateEventHubName\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.PrivateEventHubConsumerGroupName\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
-    content: protected virtual void CheckPrivateEventHubExists(NamespaceManager namespaceManager)
+    content: protected virtual void CheckPrivateHubExists(NamespaceManager namespaceManager)
     parameters:
     - id: namespaceManager
       type: Microsoft.ServiceBus.NamespaceManager
-    content.vb: Protected Overridable Sub CheckPrivateEventHubExists(namespaceManager As NamespaceManager)
-  overload: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateEventHubExists*
-  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).CheckPrivateEventHubExists(NamespaceManager)
+      description: The <xref href="Microsoft.ServiceBus.NamespaceManager" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Protected Overridable Sub CheckPrivateHubExists(namespaceManager As NamespaceManager)
+  overload: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateHubExists*
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).CheckPrivateHubExists(NamespaceManager)
   modifiers.csharp:
   - protected
   - virtual
   modifiers.vb:
   - Protected
   - Overridable
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).CheckPrivateEventHubExists(Microsoft.ServiceBus.NamespaceManager)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPublicHubExists(Microsoft.ServiceBus.NamespaceManager)
   commentId: M:Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPublicHubExists(Microsoft.ServiceBus.NamespaceManager)
   id: CheckPublicHubExists(Microsoft.ServiceBus.NamespaceManager)
@@ -1101,15 +1157,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CheckPublicHubExists
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 119
+    startLine: 212
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nChecks if the public hub and consumer group name exists as per <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.PublicEventHubName\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.PublicEventHubConsumerGroupName\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected virtual void CheckPublicHubExists(NamespaceManager namespaceManager)
     parameters:
     - id: namespaceManager
       type: Microsoft.ServiceBus.NamespaceManager
+      description: The <xref href="Microsoft.ServiceBus.NamespaceManager" data-throw-if-not-resolved="false"></xref>.
     content.vb: Protected Overridable Sub CheckPublicHubExists(namespaceManager As NamespaceManager)
   overload: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPublicHubExists*
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).CheckPublicHubExists(NamespaceManager)
@@ -1138,20 +1197,22 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CheckHubExists
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 124
+    startLine: 221
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nChecks if a event hub by the provided <span class=\"paramref\">hubName</span> exists and\nChecks if a consumer group by the provided <span class=\"paramref\">consumerGroupNames</span> exists.\n"
+  example: []
   syntax:
-    content: protected virtual void CheckHubExists(NamespaceManager namespaceManager, string eventHubName, string eventSubscriptionNames)
+    content: protected virtual void CheckHubExists(NamespaceManager namespaceManager, string hubName, string consumerGroupNames)
     parameters:
     - id: namespaceManager
       type: Microsoft.ServiceBus.NamespaceManager
-    - id: eventHubName
+    - id: hubName
       type: System.String
-    - id: eventSubscriptionNames
+    - id: consumerGroupNames
       type: System.String
-    content.vb: Protected Overridable Sub CheckHubExists(namespaceManager As NamespaceManager, eventHubName As String, eventSubscriptionNames As String)
+    content.vb: Protected Overridable Sub CheckHubExists(namespaceManager As NamespaceManager, hubName As String, consumerGroupNames As String)
   overload: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckHubExists*
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).CheckHubExists(NamespaceManager, String, String)
   modifiers.csharp:
@@ -1179,14 +1240,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ValidateSettingsHaveChanged
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 142
+    startLine: 244
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nChecks <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.ValidateSettingsHaveChanged\" data-throw-if-not-resolved=\"false\"></xref>\nand that <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.StorageConnectionString\" data-throw-if-not-resolved=\"false\"></xref> have changed.\n"
+  example: []
   syntax:
     content: protected override bool ValidateSettingsHaveChanged()
     return:
       type: System.Boolean
+      description: ''
     content.vb: Protected Overrides Function ValidateSettingsHaveChanged As Boolean
   overridden: Cqrs.Azure.ServiceBus.AzureBus{{TAuthenticationToken}}.ValidateSettingsHaveChanged
   overload: Cqrs.Azure.ServiceBus.AzureEventHub`1.ValidateSettingsHaveChanged*
@@ -1216,10 +1280,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TriggerSettingsChecking
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 149
+    startLine: 255
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nTriggers settings checking on <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.EventHubPublisher\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.EventHubReceiver\" data-throw-if-not-resolved=\"false\"></xref>,\nthen calls <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.InstantiateReceiving\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.InstantiatePublishing\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected override void TriggerSettingsChecking()
     content.vb: Protected Overrides Sub TriggerSettingsChecking
@@ -1251,10 +1317,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: RegisterReceiverMessageHandler
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 189
+    startLine: 298
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nRegisters the provided <span class=\"paramref\">receiverMessageHandler</span> with the provided <span class=\"paramref\">receiverMessageHandlerOptions</span>.\n"
+  example: []
   syntax:
     content: protected virtual void RegisterReceiverMessageHandler(Action<PartitionContext, EventData> receiverMessageHandler, EventProcessorOptions receiverMessageHandlerOptions = null)
     parameters:
@@ -1291,10 +1359,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: StoreReceiverMessageHandler
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 196
+    startLine: 308
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nStores the provided <span class=\"paramref\">receiverMessageHandler</span> and <span class=\"paramref\">receiverMessageHandlerOptions</span>.\n"
+  example: []
   syntax:
     content: protected virtual void StoreReceiverMessageHandler(Action<PartitionContext, EventData> receiverMessageHandler, EventProcessorOptions receiverMessageHandlerOptions = null)
     parameters:
@@ -1331,10 +1401,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ApplyReceiverMessageHandler
     path: Framework/Azure/Cqrs.Azure.EventHub/AzureEventHub.cs
-    startLine: 202
+    startLine: 317
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nApplies the stored ReceiverMessageHandler and ReceiverMessageHandlerOptions to the <xref href=\"Cqrs.Azure.ServiceBus.AzureEventHub%601.EventHubReceiver\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected override void ApplyReceiverMessageHandler()
     content.vb: Protected Overrides Sub ApplyReceiverMessageHandler
@@ -1349,6 +1421,50 @@ items:
   - Overrides
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).ApplyReceiverMessageHandler()
 references:
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1
+  commentId: T:Cqrs.Azure.ServiceBus.AzureBus`1
+  isExternal: false
+  name: AzureBus<TAuthenticationToken>
+  nameWithType: AzureBus<TAuthenticationToken>
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>
+  nameWithType.vb: AzureBus(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken)
+  name.vb: AzureBus(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1
+    name: AzureBus
+    nameWithType: AzureBus
+    fullName: Cqrs.Azure.ServiceBus.AzureBus
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1
+    name: AzureBus
+    nameWithType: AzureBus
+    fullName: Cqrs.Azure.ServiceBus.AzureBus
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: Cqrs.Azure.ServiceBus
   commentId: N:Cqrs.Azure.ServiceBus
   isExternal: false
@@ -2010,43 +2126,6 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: Cqrs.Azure.ServiceBus.AzureBus`1
-  commentId: T:Cqrs.Azure.ServiceBus.AzureBus`1
-  isExternal: false
-  name: AzureBus<TAuthenticationToken>
-  nameWithType: AzureBus<TAuthenticationToken>
-  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>
-  nameWithType.vb: AzureBus(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken)
-  name.vb: AzureBus(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.AzureBus`1
-    name: AzureBus
-    nameWithType: AzureBus
-    fullName: Cqrs.Azure.ServiceBus.AzureBus
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.AzureBus`1
-    name: AzureBus
-    nameWithType: AzureBus
-    fullName: Cqrs.Azure.ServiceBus.AzureBus
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.ConnectionString
   commentId: P:Cqrs.Azure.ServiceBus.AzureBus`1.ConnectionString
   isExternal: false
@@ -2353,6 +2432,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Microsoft.ServiceBus.Messaging.EventHubClient
+  commentId: T:Microsoft.ServiceBus.Messaging.EventHubClient
+  parent: Microsoft.ServiceBus.Messaging
+  isExternal: true
+  name: EventHubClient
+  nameWithType: EventHubClient
+  fullName: Microsoft.ServiceBus.Messaging.EventHubClient
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.EventHubPublisher*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.EventHubPublisher
   isExternal: false
@@ -2361,19 +2447,19 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.EventHubPublisher
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).EventHubPublisher
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).EventHubPublisher
-- uid: Microsoft.ServiceBus.Messaging.EventHubClient
-  commentId: T:Microsoft.ServiceBus.Messaging.EventHubClient
-  parent: Microsoft.ServiceBus.Messaging
-  isExternal: true
-  name: EventHubClient
-  nameWithType: EventHubClient
-  fullName: Microsoft.ServiceBus.Messaging.EventHubClient
 - uid: Microsoft.ServiceBus.Messaging
   commentId: N:Microsoft.ServiceBus.Messaging
   isExternal: false
   name: Microsoft.ServiceBus.Messaging
   nameWithType: Microsoft.ServiceBus.Messaging
   fullName: Microsoft.ServiceBus.Messaging
+- uid: Microsoft.ServiceBus.Messaging.EventProcessorHost
+  commentId: T:Microsoft.ServiceBus.Messaging.EventProcessorHost
+  parent: Microsoft.ServiceBus.Messaging
+  isExternal: true
+  name: EventProcessorHost
+  nameWithType: EventProcessorHost
+  fullName: Microsoft.ServiceBus.Messaging.EventProcessorHost
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.EventHubReceiver*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.EventHubReceiver
   isExternal: false
@@ -2382,13 +2468,6 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.EventHubReceiver
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).EventHubReceiver
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).EventHubReceiver
-- uid: Microsoft.ServiceBus.Messaging.EventProcessorHost
-  commentId: T:Microsoft.ServiceBus.Messaging.EventProcessorHost
-  parent: Microsoft.ServiceBus.Messaging
-  isExternal: true
-  name: EventProcessorHost
-  nameWithType: EventProcessorHost
-  fullName: Microsoft.ServiceBus.Messaging.EventProcessorHost
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.PrivateEventHubName*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.PrivateEventHubName
   isExternal: false
@@ -2428,6 +2507,13 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.PublicEventHubConsumerGroupName
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).PublicEventHubConsumerGroupName
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).PublicEventHubConsumerGroupName
+- uid: Cqrs.Configuration.IConfigurationManager
+  commentId: T:Cqrs.Configuration.IConfigurationManager
+  parent: Cqrs.Configuration
+  isExternal: false
+  name: IConfigurationManager
+  nameWithType: IConfigurationManager
+  fullName: Cqrs.Configuration.IConfigurationManager
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.EventHubConnectionStringNameConfigurationKey*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.EventHubConnectionStringNameConfigurationKey
   isExternal: false
@@ -2436,6 +2522,12 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.EventHubConnectionStringNameConfigurationKey
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).EventHubConnectionStringNameConfigurationKey
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).EventHubConnectionStringNameConfigurationKey
+- uid: Cqrs.Configuration
+  commentId: N:Cqrs.Configuration
+  isExternal: false
+  name: Cqrs.Configuration
+  nameWithType: Cqrs.Configuration
+  fullName: Cqrs.Configuration
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.EventHubStorageConnectionStringNameConfigurationKey*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.EventHubStorageConnectionStringNameConfigurationKey
   isExternal: false
@@ -2460,22 +2552,6 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.PublicEventHubNameConfigurationKey
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).PublicEventHubNameConfigurationKey
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).PublicEventHubNameConfigurationKey
-- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubName*
-  commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubName
-  isExternal: false
-  name: DefaultPrivateEventHubName
-  nameWithType: AzureEventHub<TAuthenticationToken>.DefaultPrivateEventHubName
-  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.DefaultPrivateEventHubName
-  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).DefaultPrivateEventHubName
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).DefaultPrivateEventHubName
-- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPublicEventHubName*
-  commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPublicEventHubName
-  isExternal: false
-  name: DefaultPublicEventHubName
-  nameWithType: AzureEventHub<TAuthenticationToken>.DefaultPublicEventHubName
-  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.DefaultPublicEventHubName
-  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).DefaultPublicEventHubName
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).DefaultPublicEventHubName
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.PrivateEventHubConsumerGroupNameConfigurationKey*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.PrivateEventHubConsumerGroupNameConfigurationKey
   isExternal: false
@@ -2492,6 +2568,22 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.PublicEventHubConsumerGroupNameConfigurationKey
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).PublicEventHubConsumerGroupNameConfigurationKey
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).PublicEventHubConsumerGroupNameConfigurationKey
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubName*
+  commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPrivateEventHubName
+  isExternal: false
+  name: DefaultPrivateEventHubName
+  nameWithType: AzureEventHub<TAuthenticationToken>.DefaultPrivateEventHubName
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.DefaultPrivateEventHubName
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).DefaultPrivateEventHubName
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).DefaultPrivateEventHubName
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPublicEventHubName*
+  commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.DefaultPublicEventHubName
+  isExternal: false
+  name: DefaultPublicEventHubName
+  nameWithType: AzureEventHub<TAuthenticationToken>.DefaultPublicEventHubName
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.DefaultPublicEventHubName
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).DefaultPublicEventHubName
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).DefaultPublicEventHubName
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.StorageConnectionString*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.StorageConnectionString
   isExternal: false
@@ -2500,6 +2592,67 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.StorageConnectionString
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).StorageConnectionString
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).StorageConnectionString
+- uid: System.Action`2
+  commentId: T:System.Action`2
+  isExternal: true
+  name: Action<T1, T2>
+  nameWithType: Action<T1, T2>
+  fullName: System.Action<T1, T2>
+  nameWithType.vb: Action(Of T1, T2)
+  fullName.vb: System.Action(Of T1, T2)
+  name.vb: Action(Of T1, T2)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Microsoft.ServiceBus.Messaging.EventProcessorHost.RegisterEventProcessorFactoryAsync(Microsoft.ServiceBus.Messaging.IEventProcessorFactory)
+  commentId: M:Microsoft.ServiceBus.Messaging.EventProcessorHost.RegisterEventProcessorFactoryAsync(Microsoft.ServiceBus.Messaging.IEventProcessorFactory)
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.EventHubReceiver
+  commentId: P:Cqrs.Azure.ServiceBus.AzureEventHub`1.EventHubReceiver
+  isExternal: false
+  name: EventHubReceiver
+  nameWithType: AzureEventHub<TAuthenticationToken>.EventHubReceiver
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.EventHubReceiver
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).EventHubReceiver
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).EventHubReceiver
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.ReceiverMessageHandler*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.ReceiverMessageHandler
   isExternal: false
@@ -2568,57 +2721,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Action`2
-  commentId: T:System.Action`2
+- uid: Microsoft.ServiceBus.Messaging.EventProcessorOptions
+  commentId: T:Microsoft.ServiceBus.Messaging.EventProcessorOptions
+  parent: Microsoft.ServiceBus.Messaging
   isExternal: true
-  name: Action<T1, T2>
-  nameWithType: Action<T1, T2>
-  fullName: System.Action<T1, T2>
-  nameWithType.vb: Action(Of T1, T2)
-  fullName.vb: System.Action(Of T1, T2)
-  name.vb: Action(Of T1, T2)
-  spec.csharp:
-  - uid: System.Action`2
-    name: Action
-    nameWithType: Action
-    fullName: System.Action
-    isExternal: true
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: T1
-    nameWithType: T1
-    fullName: T1
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - name: T2
-    nameWithType: T2
-    fullName: T2
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: System.Action`2
-    name: Action
-    nameWithType: Action
-    fullName: System.Action
-    isExternal: true
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: T1
-    nameWithType: T1
-    fullName: T1
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - name: T2
-    nameWithType: T2
-    fullName: T2
-  - name: )
-    nameWithType: )
-    fullName: )
+  name: EventProcessorOptions
+  nameWithType: EventProcessorOptions
+  fullName: Microsoft.ServiceBus.Messaging.EventProcessorOptions
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.ReceiverMessageHandlerOptions*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.ReceiverMessageHandlerOptions
   isExternal: false
@@ -2627,13 +2736,13 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.ReceiverMessageHandlerOptions
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).ReceiverMessageHandlerOptions
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).ReceiverMessageHandlerOptions
-- uid: Microsoft.ServiceBus.Messaging.EventProcessorOptions
-  commentId: T:Microsoft.ServiceBus.Messaging.EventProcessorOptions
-  parent: Microsoft.ServiceBus.Messaging
+- uid: cdmdotnet.Logging.ITelemetryHelper
+  commentId: T:cdmdotnet.Logging.ITelemetryHelper
+  parent: cdmdotnet.Logging
   isExternal: true
-  name: EventProcessorOptions
-  nameWithType: EventProcessorOptions
-  fullName: Microsoft.ServiceBus.Messaging.EventProcessorOptions
+  name: ITelemetryHelper
+  nameWithType: ITelemetryHelper
+  fullName: cdmdotnet.Logging.ITelemetryHelper
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.TelemetryHelper*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.TelemetryHelper
   isExternal: false
@@ -2642,19 +2751,49 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.TelemetryHelper
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).TelemetryHelper
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).TelemetryHelper
-- uid: cdmdotnet.Logging.ITelemetryHelper
-  commentId: T:cdmdotnet.Logging.ITelemetryHelper
-  parent: cdmdotnet.Logging
-  isExternal: true
-  name: ITelemetryHelper
-  nameWithType: ITelemetryHelper
-  fullName: cdmdotnet.Logging.ITelemetryHelper
 - uid: cdmdotnet.Logging
   commentId: N:cdmdotnet.Logging
   isExternal: false
   name: cdmdotnet.Logging
   nameWithType: cdmdotnet.Logging
   fullName: cdmdotnet.Logging
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1
+  commentId: T:Cqrs.Azure.ServiceBus.AzureEventHub`1
+  isExternal: false
+  name: AzureEventHub<TAuthenticationToken>
+  nameWithType: AzureEventHub<TAuthenticationToken>
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken)
+  name.vb: AzureEventHub(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1
+    name: AzureEventHub
+    nameWithType: AzureEventHub
+    fullName: Cqrs.Azure.ServiceBus.AzureEventHub
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1
+    name: AzureEventHub
+    nameWithType: AzureEventHub
+    fullName: Cqrs.Azure.ServiceBus.AzureEventHub
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.#ctor*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.#ctor
   isExternal: false
@@ -2663,13 +2802,6 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.AzureEventHub
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).AzureEventHub
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).AzureEventHub
-- uid: Cqrs.Configuration.IConfigurationManager
-  commentId: T:Cqrs.Configuration.IConfigurationManager
-  parent: Cqrs.Configuration
-  isExternal: false
-  name: IConfigurationManager
-  nameWithType: IConfigurationManager
-  fullName: Cqrs.Configuration.IConfigurationManager
 - uid: Cqrs.Azure.ServiceBus.IMessageSerialiser{{TAuthenticationToken}}
   commentId: T:Cqrs.Azure.ServiceBus.IMessageSerialiser{`0}
   parent: Cqrs.Azure.ServiceBus
@@ -2767,12 +2899,6 @@ references:
   name: Boolean
   nameWithType: Boolean
   fullName: System.Boolean
-- uid: Cqrs.Configuration
-  commentId: N:Cqrs.Configuration
-  isExternal: false
-  name: Cqrs.Configuration
-  nameWithType: Cqrs.Configuration
-  fullName: Cqrs.Configuration
 - uid: Cqrs.Azure.ServiceBus.IMessageSerialiser`1
   commentId: T:Cqrs.Azure.ServiceBus.IMessageSerialiser`1
   isExternal: false
@@ -2922,6 +3048,36 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
+  isExternal: false
+  name: SetConnectionStrings()
+  nameWithType: AzureBus<TAuthenticationToken>.SetConnectionStrings()
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.SetConnectionStrings()
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).SetConnectionStrings()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).SetConnectionStrings()
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
+    name: SetConnectionStrings
+    nameWithType: AzureBus<TAuthenticationToken>.SetConnectionStrings
+    fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.SetConnectionStrings
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
+    name: SetConnectionStrings
+    nameWithType: AzureBus(Of TAuthenticationToken).SetConnectionStrings
+    fullName: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).SetConnectionStrings
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureBus{{TAuthenticationToken}}.SetConnectionStrings
   commentId: M:Cqrs.Azure.ServiceBus.AzureBus{`0}.SetConnectionStrings
   parent: Cqrs.Azure.ServiceBus.AzureBus{{TAuthenticationToken}}
@@ -2961,33 +3117,83 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.SetConnectionStrings
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).SetConnectionStrings
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).SetConnectionStrings
-- uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
-  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
-  isExternal: false
-  name: SetConnectionStrings()
-  nameWithType: AzureBus<TAuthenticationToken>.SetConnectionStrings()
-  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.SetConnectionStrings()
-  nameWithType.vb: AzureBus(Of TAuthenticationToken).SetConnectionStrings()
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).SetConnectionStrings()
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)
+  isExternal: true
+  name: CheckPrivateHubExists(NamespaceManager)
+  nameWithType: AzureEventHub<TAuthenticationToken>.CheckPrivateHubExists(NamespaceManager)
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).CheckPrivateHubExists(NamespaceManager)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
-    name: SetConnectionStrings
-    nameWithType: AzureBus<TAuthenticationToken>.SetConnectionStrings
-    fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.SetConnectionStrings
+  - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)
+    name: CheckPrivateHubExists
+    nameWithType: AzureEventHub<TAuthenticationToken>.CheckPrivateHubExists
+    fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.CheckPrivateHubExists
   - name: (
     nameWithType: (
     fullName: (
+  - uid: Microsoft.ServiceBus.NamespaceManager
+    name: NamespaceManager
+    nameWithType: NamespaceManager
+    fullName: Microsoft.ServiceBus.NamespaceManager
+    isExternal: true
   - name: )
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
-    name: SetConnectionStrings
-    nameWithType: AzureBus(Of TAuthenticationToken).SetConnectionStrings
-    fullName: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).SetConnectionStrings
+  - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateHubExists(Microsoft.ServiceBus.NamespaceManager)
+    name: CheckPrivateHubExists
+    nameWithType: AzureEventHub(Of TAuthenticationToken).CheckPrivateHubExists
+    fullName: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).CheckPrivateHubExists
   - name: (
     nameWithType: (
     fullName: (
+  - uid: Microsoft.ServiceBus.NamespaceManager
+    name: NamespaceManager
+    nameWithType: NamespaceManager
+    fullName: Microsoft.ServiceBus.NamespaceManager
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPublicHubExists(Microsoft.ServiceBus.NamespaceManager)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPublicHubExists(Microsoft.ServiceBus.NamespaceManager)
+  isExternal: true
+  name: CheckPublicHubExists(NamespaceManager)
+  nameWithType: AzureEventHub<TAuthenticationToken>.CheckPublicHubExists(NamespaceManager)
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.CheckPublicHubExists(Microsoft.ServiceBus.NamespaceManager)
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).CheckPublicHubExists(NamespaceManager)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).CheckPublicHubExists(Microsoft.ServiceBus.NamespaceManager)
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPublicHubExists(Microsoft.ServiceBus.NamespaceManager)
+    name: CheckPublicHubExists
+    nameWithType: AzureEventHub<TAuthenticationToken>.CheckPublicHubExists
+    fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.CheckPublicHubExists
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Microsoft.ServiceBus.NamespaceManager
+    name: NamespaceManager
+    nameWithType: NamespaceManager
+    fullName: Microsoft.ServiceBus.NamespaceManager
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPublicHubExists(Microsoft.ServiceBus.NamespaceManager)
+    name: CheckPublicHubExists
+    nameWithType: AzureEventHub(Of TAuthenticationToken).CheckPublicHubExists
+    fullName: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).CheckPublicHubExists
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Microsoft.ServiceBus.NamespaceManager
+    name: NamespaceManager
+    nameWithType: NamespaceManager
+    fullName: Microsoft.ServiceBus.NamespaceManager
+    isExternal: true
   - name: )
     nameWithType: )
     fullName: )
@@ -3129,14 +3335,22 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateEventHubExists*
-  commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateEventHubExists
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.PrivateEventHubName
+  commentId: P:Cqrs.Azure.ServiceBus.AzureEventHub`1.PrivateEventHubName
   isExternal: false
-  name: CheckPrivateEventHubExists
-  nameWithType: AzureEventHub<TAuthenticationToken>.CheckPrivateEventHubExists
-  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.CheckPrivateEventHubExists
-  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).CheckPrivateEventHubExists
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).CheckPrivateEventHubExists
+  name: PrivateEventHubName
+  nameWithType: AzureEventHub<TAuthenticationToken>.PrivateEventHubName
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.PrivateEventHubName
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).PrivateEventHubName
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).PrivateEventHubName
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.PrivateEventHubConsumerGroupName
+  commentId: P:Cqrs.Azure.ServiceBus.AzureEventHub`1.PrivateEventHubConsumerGroupName
+  isExternal: false
+  name: PrivateEventHubConsumerGroupName
+  nameWithType: AzureEventHub<TAuthenticationToken>.PrivateEventHubConsumerGroupName
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.PrivateEventHubConsumerGroupName
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).PrivateEventHubConsumerGroupName
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).PrivateEventHubConsumerGroupName
 - uid: Microsoft.ServiceBus.NamespaceManager
   commentId: T:Microsoft.ServiceBus.NamespaceManager
   parent: Microsoft.ServiceBus
@@ -3144,12 +3358,36 @@ references:
   name: NamespaceManager
   nameWithType: NamespaceManager
   fullName: Microsoft.ServiceBus.NamespaceManager
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateHubExists*
+  commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPrivateHubExists
+  isExternal: false
+  name: CheckPrivateHubExists
+  nameWithType: AzureEventHub<TAuthenticationToken>.CheckPrivateHubExists
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.CheckPrivateHubExists
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).CheckPrivateHubExists
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).CheckPrivateHubExists
 - uid: Microsoft.ServiceBus
   commentId: N:Microsoft.ServiceBus
   isExternal: false
   name: Microsoft.ServiceBus
   nameWithType: Microsoft.ServiceBus
   fullName: Microsoft.ServiceBus
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.PublicEventHubName
+  commentId: P:Cqrs.Azure.ServiceBus.AzureEventHub`1.PublicEventHubName
+  isExternal: false
+  name: PublicEventHubName
+  nameWithType: AzureEventHub<TAuthenticationToken>.PublicEventHubName
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.PublicEventHubName
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).PublicEventHubName
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).PublicEventHubName
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.PublicEventHubConsumerGroupName
+  commentId: P:Cqrs.Azure.ServiceBus.AzureEventHub`1.PublicEventHubConsumerGroupName
+  isExternal: false
+  name: PublicEventHubConsumerGroupName
+  nameWithType: AzureEventHub<TAuthenticationToken>.PublicEventHubConsumerGroupName
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.PublicEventHubConsumerGroupName
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).PublicEventHubConsumerGroupName
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).PublicEventHubConsumerGroupName
 - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPublicHubExists*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureEventHub`1.CheckPublicHubExists
   isExternal: false
@@ -3166,6 +3404,44 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.CheckHubExists
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).CheckHubExists
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).CheckHubExists
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.ValidateSettingsHaveChanged
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.ValidateSettingsHaveChanged
+  isExternal: false
+  name: ValidateSettingsHaveChanged()
+  nameWithType: AzureBus<TAuthenticationToken>.ValidateSettingsHaveChanged()
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.ValidateSettingsHaveChanged()
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged()
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.ValidateSettingsHaveChanged
+    name: ValidateSettingsHaveChanged
+    nameWithType: AzureBus<TAuthenticationToken>.ValidateSettingsHaveChanged
+    fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.ValidateSettingsHaveChanged
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.ValidateSettingsHaveChanged
+    name: ValidateSettingsHaveChanged
+    nameWithType: AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged
+    fullName: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.StorageConnectionString
+  commentId: P:Cqrs.Azure.ServiceBus.AzureEventHub`1.StorageConnectionString
+  isExternal: false
+  name: StorageConnectionString
+  nameWithType: AzureEventHub<TAuthenticationToken>.StorageConnectionString
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.StorageConnectionString
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).StorageConnectionString
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).StorageConnectionString
 - uid: Cqrs.Azure.ServiceBus.AzureBus{{TAuthenticationToken}}.ValidateSettingsHaveChanged
   commentId: M:Cqrs.Azure.ServiceBus.AzureBus{`0}.ValidateSettingsHaveChanged
   parent: Cqrs.Azure.ServiceBus.AzureBus{{TAuthenticationToken}}
@@ -3205,19 +3481,27 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.ValidateSettingsHaveChanged
   nameWithType.vb: AzureEventHub(Of TAuthenticationToken).ValidateSettingsHaveChanged
   fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).ValidateSettingsHaveChanged
-- uid: Cqrs.Azure.ServiceBus.AzureBus`1.ValidateSettingsHaveChanged
-  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.ValidateSettingsHaveChanged
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.EventHubPublisher
+  commentId: P:Cqrs.Azure.ServiceBus.AzureEventHub`1.EventHubPublisher
   isExternal: false
-  name: ValidateSettingsHaveChanged()
-  nameWithType: AzureBus<TAuthenticationToken>.ValidateSettingsHaveChanged()
-  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.ValidateSettingsHaveChanged()
-  nameWithType.vb: AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged()
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged()
+  name: EventHubPublisher
+  nameWithType: AzureEventHub<TAuthenticationToken>.EventHubPublisher
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.EventHubPublisher
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).EventHubPublisher
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).EventHubPublisher
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.InstantiateReceiving
+  commentId: M:Cqrs.Azure.ServiceBus.AzureEventHub`1.InstantiateReceiving
+  isExternal: false
+  name: InstantiateReceiving()
+  nameWithType: AzureEventHub<TAuthenticationToken>.InstantiateReceiving()
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.InstantiateReceiving()
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).InstantiateReceiving()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).InstantiateReceiving()
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.ValidateSettingsHaveChanged
-    name: ValidateSettingsHaveChanged
-    nameWithType: AzureBus<TAuthenticationToken>.ValidateSettingsHaveChanged
-    fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.ValidateSettingsHaveChanged
+  - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.InstantiateReceiving
+    name: InstantiateReceiving
+    nameWithType: AzureEventHub<TAuthenticationToken>.InstantiateReceiving
+    fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.InstantiateReceiving
   - name: (
     nameWithType: (
     fullName: (
@@ -3225,10 +3509,40 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.ValidateSettingsHaveChanged
-    name: ValidateSettingsHaveChanged
-    nameWithType: AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged
-    fullName: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged
+  - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.InstantiateReceiving
+    name: InstantiateReceiving
+    nameWithType: AzureEventHub(Of TAuthenticationToken).InstantiateReceiving
+    fullName: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).InstantiateReceiving
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.InstantiatePublishing
+  commentId: M:Cqrs.Azure.ServiceBus.AzureEventHub`1.InstantiatePublishing
+  isExternal: false
+  name: InstantiatePublishing()
+  nameWithType: AzureEventHub<TAuthenticationToken>.InstantiatePublishing()
+  fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.InstantiatePublishing()
+  nameWithType.vb: AzureEventHub(Of TAuthenticationToken).InstantiatePublishing()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).InstantiatePublishing()
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.InstantiatePublishing
+    name: InstantiatePublishing
+    nameWithType: AzureEventHub<TAuthenticationToken>.InstantiatePublishing
+    fullName: Cqrs.Azure.ServiceBus.AzureEventHub<TAuthenticationToken>.InstantiatePublishing
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureEventHub`1.InstantiatePublishing
+    name: InstantiatePublishing
+    nameWithType: AzureEventHub(Of TAuthenticationToken).InstantiatePublishing
+    fullName: Cqrs.Azure.ServiceBus.AzureEventHub(Of TAuthenticationToken).InstantiatePublishing
   - name: (
     nameWithType: (
     fullName: (

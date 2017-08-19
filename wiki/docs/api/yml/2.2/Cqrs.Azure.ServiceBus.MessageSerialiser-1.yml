@@ -25,14 +25,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MessageSerialiser
     path: Framework/Azure/Cqrs.Azure.ServiceBus/MessageSerialiser.cs
-    startLine: 14
+    startLine: 19
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nSerialises <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: 'public class MessageSerialiser<TAuthenticationToken> : object, IMessageSerialiser<TAuthenticationToken>'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <see cref="!:Type"></see> of the authentication token.
     content.vb: >-
       Public Class MessageSerialiser(Of TAuthenticationToken)
           Inherits Object
@@ -68,10 +71,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DefaultSettings
     path: Framework/Azure/Cqrs.Azure.ServiceBus/MessageSerialiser.cs
-    startLine: 16
+    startLine: 24
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe default <see cref=\"!:JsonSerializerSettings\"></see> to use.\n"
+  example: []
   syntax:
     content: public static JsonSerializerSettings DefaultSettings { get; }
     parameters: []
@@ -107,28 +112,35 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: SerialiseEvent
     path: Framework/Azure/Cqrs.Azure.ServiceBus/MessageSerialiser.cs
-    startLine: 23
+    startLine: 37
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nSerialise the provided <span class=\"paramref\">event</span>.\n"
+  example: []
   syntax:
-    content: 'public string SerialiseEvent<TEvent>(TEvent event)where TEvent : IEvent<TAuthenticationToken>'
+    content: 'public virtual string SerialiseEvent<TEvent>(TEvent event)where TEvent : IEvent<TAuthenticationToken>'
     parameters:
     - id: event
       type: '{TEvent}'
+      description: The <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> being serialised.
     typeParameters:
     - id: TEvent
+      description: The <see cref="!:Type"></see> of the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> being serialised.
     return:
       type: System.String
-    content.vb: Public Function SerialiseEvent(Of TEvent As IEvent(Of TAuthenticationToken))(event As TEvent) As String
+      description: A <see cref="!:System.String"></see> representation of the provided <span class="paramref">event</span>.
+    content.vb: Public Overridable Function SerialiseEvent(Of TEvent As IEvent(Of TAuthenticationToken))(event As TEvent) As String
   overload: Cqrs.Azure.ServiceBus.MessageSerialiser`1.SerialiseEvent*
   implements:
   - Cqrs.Azure.ServiceBus.IMessageSerialiser{{TAuthenticationToken}}.SerialiseEvent``1({TEvent})
   nameWithType.vb: MessageSerialiser(Of TAuthenticationToken).SerialiseEvent(Of TEvent)(TEvent)
   modifiers.csharp:
   - public
+  - virtual
   modifiers.vb:
   - Public
+  - Overridable
   fullName.vb: Cqrs.Azure.ServiceBus.MessageSerialiser(Of TAuthenticationToken).SerialiseEvent(Of TEvent)(TEvent)
   name.vb: SerialiseEvent(Of TEvent)(TEvent)
 - uid: Cqrs.Azure.ServiceBus.MessageSerialiser`1.SerialiseCommand``1(``0)
@@ -149,28 +161,35 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: SerialiseCommand
     path: Framework/Azure/Cqrs.Azure.ServiceBus/MessageSerialiser.cs
-    startLine: 29
+    startLine: 49
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nSerialise the provided <span class=\"paramref\">command</span>.\n"
+  example: []
   syntax:
-    content: 'public string SerialiseCommand<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
+    content: 'public virtual string SerialiseCommand<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
+      description: The <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> being serialised.
     typeParameters:
     - id: TCommand
+      description: The <see cref="!:Type"></see> of the <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> being serialised.
     return:
       type: System.String
-    content.vb: Public Function SerialiseCommand(Of TCommand As ICommand(Of TAuthenticationToken))(command As TCommand) As String
+      description: A <see cref="!:System.String"></see> representation of the provided <span class="paramref">command</span>.
+    content.vb: Public Overridable Function SerialiseCommand(Of TCommand As ICommand(Of TAuthenticationToken))(command As TCommand) As String
   overload: Cqrs.Azure.ServiceBus.MessageSerialiser`1.SerialiseCommand*
   implements:
   - Cqrs.Azure.ServiceBus.IMessageSerialiser{{TAuthenticationToken}}.SerialiseCommand``1({TCommand})
   nameWithType.vb: MessageSerialiser(Of TAuthenticationToken).SerialiseCommand(Of TCommand)(TCommand)
   modifiers.csharp:
   - public
+  - virtual
   modifiers.vb:
   - Public
+  - Overridable
   fullName.vb: Cqrs.Azure.ServiceBus.MessageSerialiser(Of TAuthenticationToken).SerialiseCommand(Of TCommand)(TCommand)
   name.vb: SerialiseCommand(Of TCommand)(TCommand)
 - uid: Cqrs.Azure.ServiceBus.MessageSerialiser`1.DeserialiseEvent(System.String)
@@ -191,26 +210,31 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DeserialiseEvent
     path: Framework/Azure/Cqrs.Azure.ServiceBus/MessageSerialiser.cs
-    startLine: 34
+    startLine: 58
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nDeserialise the provided <span class=\"paramref\">event</span> from its <see cref=\"!:System.String\"></see> representation.\n"
+  example: []
   syntax:
-    content: public IEvent<TAuthenticationToken> DeserialiseEvent(string event)
+    content: public virtual IEvent<TAuthenticationToken> DeserialiseEvent(string event)
     parameters:
     - id: event
       type: System.String
+      description: A <see cref="!:System.String"></see> representation of an <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> to deserialise.
     return:
       type: Cqrs.Events.IEvent{{TAuthenticationToken}}
-    content.vb: Public Function DeserialiseEvent(event As String) As IEvent(Of TAuthenticationToken)
+    content.vb: Public Overridable Function DeserialiseEvent(event As String) As IEvent(Of TAuthenticationToken)
   overload: Cqrs.Azure.ServiceBus.MessageSerialiser`1.DeserialiseEvent*
   implements:
   - Cqrs.Azure.ServiceBus.IMessageSerialiser{{TAuthenticationToken}}.DeserialiseEvent(System.String)
   nameWithType.vb: MessageSerialiser(Of TAuthenticationToken).DeserialiseEvent(String)
   modifiers.csharp:
   - public
+  - virtual
   modifiers.vb:
   - Public
+  - Overridable
   fullName.vb: Cqrs.Azure.ServiceBus.MessageSerialiser(Of TAuthenticationToken).DeserialiseEvent(System.String)
 - uid: Cqrs.Azure.ServiceBus.MessageSerialiser`1.DeserialiseCommand(System.String)
   commentId: M:Cqrs.Azure.ServiceBus.MessageSerialiser`1.DeserialiseCommand(System.String)
@@ -230,26 +254,31 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DeserialiseCommand
     path: Framework/Azure/Cqrs.Azure.ServiceBus/MessageSerialiser.cs
-    startLine: 39
+    startLine: 67
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nDeserialise the provided <span class=\"paramref\">command</span> from its <see cref=\"!:System.String\"></see> representation.\n"
+  example: []
   syntax:
-    content: public ICommand<TAuthenticationToken> DeserialiseCommand(string event)
+    content: public virtual ICommand<TAuthenticationToken> DeserialiseCommand(string command)
     parameters:
-    - id: event
+    - id: command
       type: System.String
+      description: A <see cref="!:System.String"></see> representation of an <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> to deserialise.
     return:
       type: Cqrs.Commands.ICommand{{TAuthenticationToken}}
-    content.vb: Public Function DeserialiseCommand(event As String) As ICommand(Of TAuthenticationToken)
+    content.vb: Public Overridable Function DeserialiseCommand(command As String) As ICommand(Of TAuthenticationToken)
   overload: Cqrs.Azure.ServiceBus.MessageSerialiser`1.DeserialiseCommand*
   implements:
   - Cqrs.Azure.ServiceBus.IMessageSerialiser{{TAuthenticationToken}}.DeserialiseCommand(System.String)
   nameWithType.vb: MessageSerialiser(Of TAuthenticationToken).DeserialiseCommand(String)
   modifiers.csharp:
   - public
+  - virtual
   modifiers.vb:
   - Public
+  - Overridable
   fullName.vb: Cqrs.Azure.ServiceBus.MessageSerialiser(Of TAuthenticationToken).DeserialiseCommand(System.String)
 - uid: Cqrs.Azure.ServiceBus.MessageSerialiser`1.GetSerialisationSettings
   commentId: M:Cqrs.Azure.ServiceBus.MessageSerialiser`1.GetSerialisationSettings
@@ -269,14 +298,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetSerialisationSettings
     path: Framework/Azure/Cqrs.Azure.ServiceBus/MessageSerialiser.cs
-    startLine: 44
+    startLine: 76
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nReturns <xref href=\"Cqrs.Azure.ServiceBus.MessageSerialiser%601.DefaultSettings\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected virtual JsonSerializerSettings GetSerialisationSettings()
     return:
       type: JsonSerializerSettings
+      description: <xref href="Cqrs.Azure.ServiceBus.MessageSerialiser%601.DefaultSettings" data-throw-if-not-resolved="false"></xref>
     content.vb: Protected Overridable Function GetSerialisationSettings As JsonSerializerSettings
   overload: Cqrs.Azure.ServiceBus.MessageSerialiser`1.GetSerialisationSettings*
   nameWithType.vb: MessageSerialiser(Of TAuthenticationToken).GetSerialisationSettings()
@@ -288,6 +320,80 @@ items:
   - Overridable
   fullName.vb: Cqrs.Azure.ServiceBus.MessageSerialiser(Of TAuthenticationToken).GetSerialisationSettings()
 references:
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Commands.ICommand`1
+  commentId: T:Cqrs.Commands.ICommand`1
+  isExternal: false
+  name: ICommand<TAuthenticationToken>
+  nameWithType: ICommand<TAuthenticationToken>
+  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>
+  nameWithType.vb: ICommand(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken)
+  name.vb: ICommand(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus
   commentId: N:Cqrs.Azure.ServiceBus
   isExternal: false
@@ -717,43 +823,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Events.IEvent`1
-  commentId: T:Cqrs.Events.IEvent`1
-  isExternal: false
-  name: IEvent<TAuthenticationToken>
-  nameWithType: IEvent<TAuthenticationToken>
-  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
-  nameWithType.vb: IEvent(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
-  name.vb: IEvent(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Events
   commentId: N:Cqrs.Events
   isExternal: false
@@ -887,49 +956,14 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Commands.ICommand`1
-  commentId: T:Cqrs.Commands.ICommand`1
-  isExternal: false
-  name: ICommand<TAuthenticationToken>
-  nameWithType: ICommand<TAuthenticationToken>
-  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>
-  nameWithType.vb: ICommand(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken)
-  name.vb: ICommand(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Commands.ICommand`1
-    name: ICommand
-    nameWithType: ICommand
-    fullName: Cqrs.Commands.ICommand
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Commands.ICommand`1
-    name: ICommand
-    nameWithType: ICommand
-    fullName: Cqrs.Commands.ICommand
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Commands
   commentId: N:Cqrs.Commands
   isExternal: false
   name: Cqrs.Commands
   nameWithType: Cqrs.Commands
   fullName: Cqrs.Commands
+- uid: Cqrs.Azure.ServiceBus.MessageSerialiser`1.DefaultSettings
+  commentId: P:Cqrs.Azure.ServiceBus.MessageSerialiser`1.DefaultSettings
 - uid: Cqrs.Azure.ServiceBus.MessageSerialiser`1.GetSerialisationSettings*
   commentId: Overload:Cqrs.Azure.ServiceBus.MessageSerialiser`1.GetSerialisationSettings
   isExternal: false

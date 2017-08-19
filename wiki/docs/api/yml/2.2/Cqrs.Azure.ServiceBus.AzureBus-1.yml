@@ -46,14 +46,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AzureBus
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 24
+    startLine: 30
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nAn Azure Bus such as a Service Bus or Event Hub.\n"
+  example: []
   syntax:
     content: 'public abstract class AzureBus<TAuthenticationToken> : object'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <see cref="!:Type"></see> of the authentication token.
     content.vb: >-
       Public MustInherit Class AzureBus(Of TAuthenticationToken)
           Inherits Object
@@ -91,10 +94,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ConnectionString
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 26
+    startLine: 35
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nGets or sets the connection string to the bus.\n"
+  example: []
   syntax:
     content: protected string ConnectionString { get; set; }
     parameters: []
@@ -128,10 +133,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MessageSerialiser
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 28
+    startLine: 40
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nGets or sets the <xref href=\"Cqrs.Azure.ServiceBus.IMessageSerialiser%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected IMessageSerialiser<TAuthenticationToken> MessageSerialiser { get; }
     parameters: []
@@ -165,10 +172,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AuthenticationTokenHelper
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 30
+    startLine: 45
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nGets or sets the <xref href=\"Cqrs.Authentication.IAuthenticationTokenHelper%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; }
     parameters: []
@@ -202,10 +211,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CorrelationIdHelper
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 32
+    startLine: 50
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nGets or sets the <see cref=\"!:ICorrelationIdHelper\"></see>.\n"
+  example: []
   syntax:
     content: protected ICorrelationIdHelper CorrelationIdHelper { get; }
     parameters: []
@@ -239,10 +250,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Logger
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 34
+    startLine: 55
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nGets or sets the <see cref=\"!:ILogger\"></see>.\n"
+  example: []
   syntax:
     content: protected ILogger Logger { get; }
     parameters: []
@@ -276,10 +289,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ConfigurationManager
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 36
+    startLine: 60
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nGets or sets the <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected IConfigurationManager ConfigurationManager { get; }
     parameters: []
@@ -313,10 +328,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EventWaits
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 38
+    startLine: 66
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nGets or sets the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> to wait for before responding to the caller\nkeyed by the <xref href=\"Cqrs.Commands.ICommand%601.Id\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected IDictionary<Guid, IList<IEvent<TAuthenticationToken>>> EventWaits { get; }
     parameters: []
@@ -350,10 +367,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DefaultNumberOfReceiversCount
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 40
+    startLine: 71
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe default number of receivers to start and run.\n"
+  example: []
   syntax:
     content: protected const int DefaultNumberOfReceiversCount = null
     return:
@@ -385,10 +404,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: NumberOfReceiversCount
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 42
+    startLine: 76
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe number of receivers to start and run.\n"
+  example: []
   syntax:
     content: protected int NumberOfReceiversCount { get; set; }
     parameters: []
@@ -422,10 +443,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DefaultMaximumConcurrentReceiverProcessesCount
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 44
+    startLine: 81
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe default number for <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.MaximumConcurrentReceiverProcessesCount\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected const int DefaultMaximumConcurrentReceiverProcessesCount = null
     return:
@@ -457,10 +480,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MaximumConcurrentReceiverProcessesCount
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 46
+    startLine: 86
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe <see cref=\"!:OnMessageOptions.MaxConcurrentCalls\"></see> value.\n"
+  example: []
   syntax:
     content: protected int MaximumConcurrentReceiverProcessesCount { get; set; }
     parameters: []
@@ -494,10 +519,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 48
+    startLine: 91
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
     parameters:
@@ -540,10 +567,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: SetConnectionStrings
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 65
+    startLine: 111
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nSets <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.ConnectionString\" data-throw-if-not-resolved=\"false\"></xref> from <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.GetConnectionString\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected virtual void SetConnectionStrings()
     content.vb: Protected Overridable Sub SetConnectionStrings
@@ -574,10 +603,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: SetNumberOfReceiversCount
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 71
+    startLine: 120
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nSets <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.NumberOfReceiversCount\" data-throw-if-not-resolved=\"false\"></xref> from <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.GetCurrentNumberOfReceiversCount\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected virtual void SetNumberOfReceiversCount()
     content.vb: Protected Overridable Sub SetNumberOfReceiversCount
@@ -608,10 +639,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: SetMaximumConcurrentReceiverProcessesCount
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 77
+    startLine: 129
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nSets <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.MaximumConcurrentReceiverProcessesCount\" data-throw-if-not-resolved=\"false\"></xref> from <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.GetCurrentMaximumConcurrentReceiverProcessesCount\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected virtual void SetMaximumConcurrentReceiverProcessesCount()
     content.vb: Protected Overridable Sub SetMaximumConcurrentReceiverProcessesCount
@@ -642,10 +675,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetConnectionString
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 83
+    startLine: 138
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nGets the connection string for the bus.\n"
+  example: []
   syntax:
     content: protected abstract string GetConnectionString()
     return:
@@ -678,14 +713,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetCurrentNumberOfReceiversCount
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 85
+    startLine: 144
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nReturns <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.DefaultNumberOfReceiversCount\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected virtual int GetCurrentNumberOfReceiversCount()
     return:
       type: System.Int32
+      description: <xref href="Cqrs.Azure.ServiceBus.AzureBus%601.DefaultNumberOfReceiversCount" data-throw-if-not-resolved="false"></xref>.
     content.vb: Protected Overridable Function GetCurrentNumberOfReceiversCount As Integer
   overload: Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentNumberOfReceiversCount*
   nameWithType.vb: AzureBus(Of TAuthenticationToken).GetCurrentNumberOfReceiversCount()
@@ -714,14 +752,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetCurrentMaximumConcurrentReceiverProcessesCount
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 90
+    startLine: 153
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nReturns <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.DefaultMaximumConcurrentReceiverProcessesCount\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected virtual int GetCurrentMaximumConcurrentReceiverProcessesCount()
     return:
       type: System.Int32
+      description: <xref href="Cqrs.Azure.ServiceBus.AzureBus%601.DefaultMaximumConcurrentReceiverProcessesCount" data-throw-if-not-resolved="false"></xref>.
     content.vb: Protected Overridable Function GetCurrentMaximumConcurrentReceiverProcessesCount As Integer
   overload: Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentMaximumConcurrentReceiverProcessesCount*
   nameWithType.vb: AzureBus(Of TAuthenticationToken).GetCurrentMaximumConcurrentReceiverProcessesCount()
@@ -750,10 +791,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: InstantiatePublishing
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 95
+    startLine: 161
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nInstantiate publishing on this bus.\n"
+  example: []
   syntax:
     content: protected abstract void InstantiatePublishing()
     content.vb: Protected MustOverride Sub InstantiatePublishing
@@ -784,10 +827,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: InstantiateReceiving
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 97
+    startLine: 166
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nInstantiate receiving on this bus.\n"
+  example: []
   syntax:
     content: protected abstract void InstantiateReceiving()
     content.vb: Protected MustOverride Sub InstantiateReceiving
@@ -818,10 +863,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetNamespaceManager
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 99
+    startLine: 171
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nCreates a new instance of <see cref=\"!:NamespaceManager\"></see> with the <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.ConnectionString\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected virtual NamespaceManager GetNamespaceManager()
     return:
@@ -854,7 +901,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AzureServiceBusRetryPolicy
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 108
+    startLine: 180
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
@@ -895,10 +942,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: StartSettingsChecking
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 123
+    startLine: 199
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nStarts a new <see cref=\"!:Task\"></see> that periodically calls <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.ValidateSettingsHaveChanged\" data-throw-if-not-resolved=\"false\"></xref>\nand if there is a change, calls <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.TriggerSettingsChecking\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected virtual void StartSettingsChecking()
     content.vb: Protected Overridable Sub StartSettingsChecking
@@ -929,14 +978,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ValidateSettingsHaveChanged
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 137
+    startLine: 219
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nChecks if the settings for\n<xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.ConnectionString\" data-throw-if-not-resolved=\"false\"></xref>, <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.NumberOfReceiversCount\" data-throw-if-not-resolved=\"false\"></xref>\nor <xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.MaximumConcurrentReceiverProcessesCount\" data-throw-if-not-resolved=\"false\"></xref> have changed.\n"
+  example: []
   syntax:
     content: protected virtual bool ValidateSettingsHaveChanged()
     return:
       type: System.Boolean
+      description: ''
     content.vb: Protected Overridable Function ValidateSettingsHaveChanged As Boolean
   overload: Cqrs.Azure.ServiceBus.AzureBus`1.ValidateSettingsHaveChanged*
   nameWithType.vb: AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged()
@@ -965,10 +1017,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: UpdateSettings
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 146
+    startLine: 234
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nCalls \n<xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.SetConnectionStrings\" data-throw-if-not-resolved=\"false\"></xref>\n<xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.SetNumberOfReceiversCount\" data-throw-if-not-resolved=\"false\"></xref> and \n<xref href=\"Cqrs.Azure.ServiceBus.AzureBus%601.SetMaximumConcurrentReceiverProcessesCount\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected virtual void UpdateSettings()
     content.vb: Protected Overridable Sub UpdateSettings
@@ -999,10 +1053,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TriggerSettingsChecking
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 153
+    startLine: 244
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nChange the settings used by this bus.\n"
+  example: []
   syntax:
     content: protected abstract void TriggerSettingsChecking()
     content.vb: Protected MustOverride Sub TriggerSettingsChecking
@@ -1033,10 +1089,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ApplyReceiverMessageHandler
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureBus.cs
-    startLine: 155
+    startLine: 249
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nSets the handler on <see cref=\"!:SubscriptionClient.OnMessage(System.Action&lt;Microsoft.ServiceBus.Messaging.BrokeredMessage>)\"></see>.\n"
+  example: []
   syntax:
     content: protected abstract void ApplyReceiverMessageHandler()
     content.vb: Protected MustOverride Sub ApplyReceiverMessageHandler
@@ -1084,6 +1142,43 @@ references:
   name: String
   nameWithType: String
   fullName: System.String
+- uid: Cqrs.Azure.ServiceBus.IMessageSerialiser`1
+  commentId: T:Cqrs.Azure.ServiceBus.IMessageSerialiser`1
+  isExternal: false
+  name: IMessageSerialiser<TAuthenticationToken>
+  nameWithType: IMessageSerialiser<TAuthenticationToken>
+  fullName: Cqrs.Azure.ServiceBus.IMessageSerialiser<TAuthenticationToken>
+  nameWithType.vb: IMessageSerialiser(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Azure.ServiceBus.IMessageSerialiser(Of TAuthenticationToken)
+  name.vb: IMessageSerialiser(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.IMessageSerialiser`1
+    name: IMessageSerialiser
+    nameWithType: IMessageSerialiser
+    fullName: Cqrs.Azure.ServiceBus.IMessageSerialiser
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.IMessageSerialiser`1
+    name: IMessageSerialiser
+    nameWithType: IMessageSerialiser
+    fullName: Cqrs.Azure.ServiceBus.IMessageSerialiser
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.MessageSerialiser*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.MessageSerialiser
   isExternal: false
@@ -1130,55 +1225,9 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.ServiceBus.IMessageSerialiser`1
-  commentId: T:Cqrs.Azure.ServiceBus.IMessageSerialiser`1
+- uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
+  commentId: T:Cqrs.Authentication.IAuthenticationTokenHelper`1
   isExternal: false
-  name: IMessageSerialiser<TAuthenticationToken>
-  nameWithType: IMessageSerialiser<TAuthenticationToken>
-  fullName: Cqrs.Azure.ServiceBus.IMessageSerialiser<TAuthenticationToken>
-  nameWithType.vb: IMessageSerialiser(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Azure.ServiceBus.IMessageSerialiser(Of TAuthenticationToken)
-  name.vb: IMessageSerialiser(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.IMessageSerialiser`1
-    name: IMessageSerialiser
-    nameWithType: IMessageSerialiser
-    fullName: Cqrs.Azure.ServiceBus.IMessageSerialiser
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.IMessageSerialiser`1
-    name: IMessageSerialiser
-    nameWithType: IMessageSerialiser
-    fullName: Cqrs.Azure.ServiceBus.IMessageSerialiser
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.Azure.ServiceBus.AzureBus`1.AuthenticationTokenHelper*
-  commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.AuthenticationTokenHelper
-  isExternal: false
-  name: AuthenticationTokenHelper
-  nameWithType: AzureBus<TAuthenticationToken>.AuthenticationTokenHelper
-  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.AuthenticationTokenHelper
-  nameWithType.vb: AzureBus(Of TAuthenticationToken).AuthenticationTokenHelper
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).AuthenticationTokenHelper
-- uid: Cqrs.Authentication.IAuthenticationTokenHelper{{TAuthenticationToken}}
-  commentId: T:Cqrs.Authentication.IAuthenticationTokenHelper{`0}
-  parent: Cqrs.Authentication
-  definition: Cqrs.Authentication.IAuthenticationTokenHelper`1
   name: IAuthenticationTokenHelper<TAuthenticationToken>
   nameWithType: IAuthenticationTokenHelper<TAuthenticationToken>
   fullName: Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>
@@ -1213,9 +1262,18 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
-  commentId: T:Cqrs.Authentication.IAuthenticationTokenHelper`1
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.AuthenticationTokenHelper*
+  commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.AuthenticationTokenHelper
   isExternal: false
+  name: AuthenticationTokenHelper
+  nameWithType: AzureBus<TAuthenticationToken>.AuthenticationTokenHelper
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.AuthenticationTokenHelper
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).AuthenticationTokenHelper
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).AuthenticationTokenHelper
+- uid: Cqrs.Authentication.IAuthenticationTokenHelper{{TAuthenticationToken}}
+  commentId: T:Cqrs.Authentication.IAuthenticationTokenHelper{`0}
+  parent: Cqrs.Authentication
+  definition: Cqrs.Authentication.IAuthenticationTokenHelper`1
   name: IAuthenticationTokenHelper<TAuthenticationToken>
   nameWithType: IAuthenticationTokenHelper<TAuthenticationToken>
   fullName: Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>
@@ -1282,6 +1340,13 @@ references:
   name: ILogger
   nameWithType: ILogger
   fullName: ILogger
+- uid: Cqrs.Configuration.IConfigurationManager
+  commentId: T:Cqrs.Configuration.IConfigurationManager
+  parent: Cqrs.Configuration
+  isExternal: false
+  name: IConfigurationManager
+  nameWithType: IConfigurationManager
+  fullName: Cqrs.Configuration.IConfigurationManager
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.ConfigurationManager*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.ConfigurationManager
   isExternal: false
@@ -1290,19 +1355,57 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.ConfigurationManager
   nameWithType.vb: AzureBus(Of TAuthenticationToken).ConfigurationManager
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).ConfigurationManager
-- uid: Cqrs.Configuration.IConfigurationManager
-  commentId: T:Cqrs.Configuration.IConfigurationManager
-  parent: Cqrs.Configuration
-  isExternal: false
-  name: IConfigurationManager
-  nameWithType: IConfigurationManager
-  fullName: Cqrs.Configuration.IConfigurationManager
 - uid: Cqrs.Configuration
   commentId: N:Cqrs.Configuration
   isExternal: false
   name: Cqrs.Configuration
   nameWithType: Cqrs.Configuration
   fullName: Cqrs.Configuration
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Commands.ICommand`1.Id
+  commentId: P:Cqrs.Commands.ICommand`1.Id
+  isExternal: false
+  name: Id
+  nameWithType: ICommand<TAuthenticationToken>.Id
+  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>.Id
+  nameWithType.vb: ICommand(Of TAuthenticationToken).Id
+  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken).Id
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.EventWaits*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.EventWaits
   isExternal: false
@@ -1473,6 +1576,14 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.NumberOfReceiversCount
   nameWithType.vb: AzureBus(Of TAuthenticationToken).NumberOfReceiversCount
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).NumberOfReceiversCount
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.MaximumConcurrentReceiverProcessesCount
+  commentId: P:Cqrs.Azure.ServiceBus.AzureBus`1.MaximumConcurrentReceiverProcessesCount
+  isExternal: false
+  name: MaximumConcurrentReceiverProcessesCount
+  nameWithType: AzureBus<TAuthenticationToken>.MaximumConcurrentReceiverProcessesCount
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.MaximumConcurrentReceiverProcessesCount
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).MaximumConcurrentReceiverProcessesCount
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).MaximumConcurrentReceiverProcessesCount
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.MaximumConcurrentReceiverProcessesCount*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.MaximumConcurrentReceiverProcessesCount
   isExternal: false
@@ -1481,6 +1592,43 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.MaximumConcurrentReceiverProcessesCount
   nameWithType.vb: AzureBus(Of TAuthenticationToken).MaximumConcurrentReceiverProcessesCount
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).MaximumConcurrentReceiverProcessesCount
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1
+  commentId: T:Cqrs.Azure.ServiceBus.AzureBus`1
+  isExternal: false
+  name: AzureBus<TAuthenticationToken>
+  nameWithType: AzureBus<TAuthenticationToken>
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>
+  nameWithType.vb: AzureBus(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken)
+  name.vb: AzureBus(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1
+    name: AzureBus
+    nameWithType: AzureBus
+    fullName: Cqrs.Azure.ServiceBus.AzureBus
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1
+    name: AzureBus
+    nameWithType: AzureBus
+    fullName: Cqrs.Azure.ServiceBus.AzureBus
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.#ctor*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.#ctor
   isExternal: false
@@ -1496,6 +1644,44 @@ references:
   name: Boolean
   nameWithType: Boolean
   fullName: System.Boolean
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.ConnectionString
+  commentId: P:Cqrs.Azure.ServiceBus.AzureBus`1.ConnectionString
+  isExternal: false
+  name: ConnectionString
+  nameWithType: AzureBus<TAuthenticationToken>.ConnectionString
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.ConnectionString
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).ConnectionString
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).ConnectionString
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.GetConnectionString
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.GetConnectionString
+  isExternal: false
+  name: GetConnectionString()
+  nameWithType: AzureBus<TAuthenticationToken>.GetConnectionString()
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.GetConnectionString()
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).GetConnectionString()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).GetConnectionString()
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.GetConnectionString
+    name: GetConnectionString
+    nameWithType: AzureBus<TAuthenticationToken>.GetConnectionString
+    fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.GetConnectionString
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.GetConnectionString
+    name: GetConnectionString
+    nameWithType: AzureBus(Of TAuthenticationToken).GetConnectionString
+    fullName: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).GetConnectionString
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
   isExternal: false
@@ -1504,6 +1690,44 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.SetConnectionStrings
   nameWithType.vb: AzureBus(Of TAuthenticationToken).SetConnectionStrings
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).SetConnectionStrings
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.NumberOfReceiversCount
+  commentId: P:Cqrs.Azure.ServiceBus.AzureBus`1.NumberOfReceiversCount
+  isExternal: false
+  name: NumberOfReceiversCount
+  nameWithType: AzureBus<TAuthenticationToken>.NumberOfReceiversCount
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.NumberOfReceiversCount
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).NumberOfReceiversCount
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).NumberOfReceiversCount
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentNumberOfReceiversCount
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentNumberOfReceiversCount
+  isExternal: false
+  name: GetCurrentNumberOfReceiversCount()
+  nameWithType: AzureBus<TAuthenticationToken>.GetCurrentNumberOfReceiversCount()
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.GetCurrentNumberOfReceiversCount()
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).GetCurrentNumberOfReceiversCount()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).GetCurrentNumberOfReceiversCount()
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentNumberOfReceiversCount
+    name: GetCurrentNumberOfReceiversCount
+    nameWithType: AzureBus<TAuthenticationToken>.GetCurrentNumberOfReceiversCount
+    fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.GetCurrentNumberOfReceiversCount
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentNumberOfReceiversCount
+    name: GetCurrentNumberOfReceiversCount
+    nameWithType: AzureBus(Of TAuthenticationToken).GetCurrentNumberOfReceiversCount
+    fullName: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).GetCurrentNumberOfReceiversCount
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetNumberOfReceiversCount*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.SetNumberOfReceiversCount
   isExternal: false
@@ -1512,6 +1736,36 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.SetNumberOfReceiversCount
   nameWithType.vb: AzureBus(Of TAuthenticationToken).SetNumberOfReceiversCount
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).SetNumberOfReceiversCount
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentMaximumConcurrentReceiverProcessesCount
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentMaximumConcurrentReceiverProcessesCount
+  isExternal: false
+  name: GetCurrentMaximumConcurrentReceiverProcessesCount()
+  nameWithType: AzureBus<TAuthenticationToken>.GetCurrentMaximumConcurrentReceiverProcessesCount()
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.GetCurrentMaximumConcurrentReceiverProcessesCount()
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).GetCurrentMaximumConcurrentReceiverProcessesCount()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).GetCurrentMaximumConcurrentReceiverProcessesCount()
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentMaximumConcurrentReceiverProcessesCount
+    name: GetCurrentMaximumConcurrentReceiverProcessesCount
+    nameWithType: AzureBus<TAuthenticationToken>.GetCurrentMaximumConcurrentReceiverProcessesCount
+    fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.GetCurrentMaximumConcurrentReceiverProcessesCount
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentMaximumConcurrentReceiverProcessesCount
+    name: GetCurrentMaximumConcurrentReceiverProcessesCount
+    nameWithType: AzureBus(Of TAuthenticationToken).GetCurrentMaximumConcurrentReceiverProcessesCount
+    fullName: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).GetCurrentMaximumConcurrentReceiverProcessesCount
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetMaximumConcurrentReceiverProcessesCount*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.SetMaximumConcurrentReceiverProcessesCount
   isExternal: false
@@ -1528,6 +1782,14 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.GetConnectionString
   nameWithType.vb: AzureBus(Of TAuthenticationToken).GetConnectionString
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).GetConnectionString
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.DefaultNumberOfReceiversCount
+  commentId: F:Cqrs.Azure.ServiceBus.AzureBus`1.DefaultNumberOfReceiversCount
+  isExternal: false
+  name: DefaultNumberOfReceiversCount
+  nameWithType: AzureBus<TAuthenticationToken>.DefaultNumberOfReceiversCount
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.DefaultNumberOfReceiversCount
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).DefaultNumberOfReceiversCount
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).DefaultNumberOfReceiversCount
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentNumberOfReceiversCount*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentNumberOfReceiversCount
   isExternal: false
@@ -1536,6 +1798,14 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.GetCurrentNumberOfReceiversCount
   nameWithType.vb: AzureBus(Of TAuthenticationToken).GetCurrentNumberOfReceiversCount
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).GetCurrentNumberOfReceiversCount
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.DefaultMaximumConcurrentReceiverProcessesCount
+  commentId: F:Cqrs.Azure.ServiceBus.AzureBus`1.DefaultMaximumConcurrentReceiverProcessesCount
+  isExternal: false
+  name: DefaultMaximumConcurrentReceiverProcessesCount
+  nameWithType: AzureBus<TAuthenticationToken>.DefaultMaximumConcurrentReceiverProcessesCount
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.DefaultMaximumConcurrentReceiverProcessesCount
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).DefaultMaximumConcurrentReceiverProcessesCount
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).DefaultMaximumConcurrentReceiverProcessesCount
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentMaximumConcurrentReceiverProcessesCount*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.GetCurrentMaximumConcurrentReceiverProcessesCount
   isExternal: false
@@ -1594,6 +1864,66 @@ references:
   name: Microsoft.Practices.TransientFaultHandling
   nameWithType: Microsoft.Practices.TransientFaultHandling
   fullName: Microsoft.Practices.TransientFaultHandling
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.ValidateSettingsHaveChanged
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.ValidateSettingsHaveChanged
+  isExternal: false
+  name: ValidateSettingsHaveChanged()
+  nameWithType: AzureBus<TAuthenticationToken>.ValidateSettingsHaveChanged()
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.ValidateSettingsHaveChanged()
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged()
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.ValidateSettingsHaveChanged
+    name: ValidateSettingsHaveChanged
+    nameWithType: AzureBus<TAuthenticationToken>.ValidateSettingsHaveChanged
+    fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.ValidateSettingsHaveChanged
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.ValidateSettingsHaveChanged
+    name: ValidateSettingsHaveChanged
+    nameWithType: AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged
+    fullName: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.TriggerSettingsChecking
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.TriggerSettingsChecking
+  isExternal: false
+  name: TriggerSettingsChecking()
+  nameWithType: AzureBus<TAuthenticationToken>.TriggerSettingsChecking()
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.TriggerSettingsChecking()
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).TriggerSettingsChecking()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).TriggerSettingsChecking()
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.TriggerSettingsChecking
+    name: TriggerSettingsChecking
+    nameWithType: AzureBus<TAuthenticationToken>.TriggerSettingsChecking
+    fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.TriggerSettingsChecking
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.TriggerSettingsChecking
+    name: TriggerSettingsChecking
+    nameWithType: AzureBus(Of TAuthenticationToken).TriggerSettingsChecking
+    fullName: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).TriggerSettingsChecking
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.StartSettingsChecking*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.StartSettingsChecking
   isExternal: false
@@ -1610,6 +1940,96 @@ references:
   fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.ValidateSettingsHaveChanged
   nameWithType.vb: AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged
   fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).ValidateSettingsHaveChanged
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
+  isExternal: false
+  name: SetConnectionStrings()
+  nameWithType: AzureBus<TAuthenticationToken>.SetConnectionStrings()
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.SetConnectionStrings()
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).SetConnectionStrings()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).SetConnectionStrings()
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
+    name: SetConnectionStrings
+    nameWithType: AzureBus<TAuthenticationToken>.SetConnectionStrings
+    fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.SetConnectionStrings
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetConnectionStrings
+    name: SetConnectionStrings
+    nameWithType: AzureBus(Of TAuthenticationToken).SetConnectionStrings
+    fullName: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).SetConnectionStrings
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetNumberOfReceiversCount
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.SetNumberOfReceiversCount
+  isExternal: false
+  name: SetNumberOfReceiversCount()
+  nameWithType: AzureBus<TAuthenticationToken>.SetNumberOfReceiversCount()
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.SetNumberOfReceiversCount()
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).SetNumberOfReceiversCount()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).SetNumberOfReceiversCount()
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetNumberOfReceiversCount
+    name: SetNumberOfReceiversCount
+    nameWithType: AzureBus<TAuthenticationToken>.SetNumberOfReceiversCount
+    fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.SetNumberOfReceiversCount
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetNumberOfReceiversCount
+    name: SetNumberOfReceiversCount
+    nameWithType: AzureBus(Of TAuthenticationToken).SetNumberOfReceiversCount
+    fullName: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).SetNumberOfReceiversCount
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetMaximumConcurrentReceiverProcessesCount
+  commentId: M:Cqrs.Azure.ServiceBus.AzureBus`1.SetMaximumConcurrentReceiverProcessesCount
+  isExternal: false
+  name: SetMaximumConcurrentReceiverProcessesCount()
+  nameWithType: AzureBus<TAuthenticationToken>.SetMaximumConcurrentReceiverProcessesCount()
+  fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.SetMaximumConcurrentReceiverProcessesCount()
+  nameWithType.vb: AzureBus(Of TAuthenticationToken).SetMaximumConcurrentReceiverProcessesCount()
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).SetMaximumConcurrentReceiverProcessesCount()
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetMaximumConcurrentReceiverProcessesCount
+    name: SetMaximumConcurrentReceiverProcessesCount
+    nameWithType: AzureBus<TAuthenticationToken>.SetMaximumConcurrentReceiverProcessesCount
+    fullName: Cqrs.Azure.ServiceBus.AzureBus<TAuthenticationToken>.SetMaximumConcurrentReceiverProcessesCount
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureBus`1.SetMaximumConcurrentReceiverProcessesCount
+    name: SetMaximumConcurrentReceiverProcessesCount
+    nameWithType: AzureBus(Of TAuthenticationToken).SetMaximumConcurrentReceiverProcessesCount
+    fullName: Cqrs.Azure.ServiceBus.AzureBus(Of TAuthenticationToken).SetMaximumConcurrentReceiverProcessesCount
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureBus`1.UpdateSettings*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureBus`1.UpdateSettings
   isExternal: false

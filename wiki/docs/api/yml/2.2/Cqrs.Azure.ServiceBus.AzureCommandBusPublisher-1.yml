@@ -14,8 +14,6 @@ items:
   - Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait``2(``0,Func{IEnumerable{Cqrs.Events.IEvent{`0}},``1},TimeSpan,Cqrs.Events.IEventReceiver{`0})
   - Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait``2(``0,System.Int32,Cqrs.Events.IEventReceiver{`0})
   - Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait``2(``0,TimeSpan,Cqrs.Events.IEventReceiver{`0})
-  - Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send``1(``0)
-  - Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send``1(IEnumerable{``0})
   langs:
   - csharp
   - vb
@@ -30,16 +28,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AzureCommandBusPublisher
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-    startLine: 29
+    startLine: 30
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
-  summary: "\nA <xref href=\"Cqrs.Commands.ICommandPublisher%601\" data-throw-if-not-resolved=\"false\"></xref> that resolves handlers , executes the handler and then publishes the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> on the public command bus.\n"
+  summary: "\nA <xref href=\"Cqrs.Commands.ICommandPublisher%601\" data-throw-if-not-resolved=\"false\"></xref> that resolves handlers , executes the handler and then publishes the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> on the private command bus.\n"
   example: []
   syntax:
     content: 'public class AzureCommandBusPublisher<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, IPublishAndWaitCommandPublisher<TAuthenticationToken>, ICommandPublisher<TAuthenticationToken>'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <see cref="!:Type"></see> of the authentication token.
     content.vb: >-
       Public Class AzureCommandBusPublisher(Of TAuthenticationToken)
           Inherits AzureCommandBus(Of TAuthenticationToken)
@@ -81,7 +80,7 @@ items:
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.InstantiatePublishing
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.InstantiateReceiving
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.InstantiateReceiving(NamespaceManager,IDictionary{System.Int32,SubscriptionClient},System.String,System.String)
-  - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPrivateEventTopicExists(NamespaceManager)
+  - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPrivateTopicExists(NamespaceManager)
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPublicTopicExists(NamespaceManager)
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckTopicExists(NamespaceManager,System.String,System.String)
   - Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.TriggerSettingsChecking
@@ -138,10 +137,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-    startLine: 32
+    startLine: 38
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Azure.ServiceBus.AzureCommandBusPublisher%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
     parameters:
@@ -186,10 +187,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Publish
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-    startLine: 55
+    startLine: 67
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nPublishes the provided <span class=\"paramref\">command</span> on the command bus.\n"
+  example: []
   syntax:
     content: 'public virtual void Publish<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
@@ -210,46 +213,6 @@ items:
   - Overridable
   fullName.vb: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher(Of TAuthenticationToken).Publish(Of TCommand)(TCommand)
   name.vb: Publish(Of TCommand)(TCommand)
-- uid: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send``1(``0)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send``1(``0)
-  id: Send``1(``0)
-  parent: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1
-  langs:
-  - csharp
-  - vb
-  name: Send<TCommand>(TCommand)
-  nameWithType: AzureCommandBusPublisher<TAuthenticationToken>.Send<TCommand>(TCommand)
-  fullName: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher<TAuthenticationToken>.Send<TCommand>(TCommand)
-  type: Method
-  source:
-    remote:
-      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-      branch: features/documentation
-      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
-    id: Send
-    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-    startLine: 107
-  assemblies:
-  - Cqrs.Azure.ServiceBus
-  namespace: Cqrs.Azure.ServiceBus
-  syntax:
-    content: 'public virtual void Send<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
-    parameters:
-    - id: command
-      type: '{TCommand}'
-    typeParameters:
-    - id: TCommand
-    content.vb: Public Overridable Sub Send(Of TCommand As ICommand(Of TAuthenticationToken))(command As TCommand)
-  overload: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send*
-  nameWithType.vb: AzureCommandBusPublisher(Of TAuthenticationToken).Send(Of TCommand)(TCommand)
-  modifiers.csharp:
-  - public
-  - virtual
-  modifiers.vb:
-  - Public
-  - Overridable
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher(Of TAuthenticationToken).Send(Of TCommand)(TCommand)
-  name.vb: Send(Of TCommand)(TCommand)
 - uid: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Publish``1(IEnumerable{``0})
   commentId: M:Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Publish``1(IEnumerable{``0})
   id: Publish``1(IEnumerable{``0})
@@ -268,10 +231,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Publish
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-    startLine: 113
+    startLine: 122
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nPublishes the provided <span class=\"paramref\">commands</span> on the command bus.\n"
+  example: []
   syntax:
     content: 'public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
@@ -290,46 +255,6 @@ items:
   - Overridable
   fullName.vb: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher(Of TAuthenticationToken).Publish(Of TCommand)(IEnumerable(Of TCommand))
   name.vb: Publish(Of TCommand)(IEnumerable(Of TCommand))
-- uid: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send``1(IEnumerable{``0})
-  commentId: M:Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send``1(IEnumerable{``0})
-  id: Send``1(IEnumerable{``0})
-  parent: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1
-  langs:
-  - csharp
-  - vb
-  name: Send<TCommand>(IEnumerable<TCommand>)
-  nameWithType: AzureCommandBusPublisher<TAuthenticationToken>.Send<TCommand>(IEnumerable<TCommand>)
-  fullName: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher<TAuthenticationToken>.Send<TCommand>(IEnumerable<TCommand>)
-  type: Method
-  source:
-    remote:
-      path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-      branch: features/documentation
-      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
-    id: Send
-    path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-    startLine: 186
-  assemblies:
-  - Cqrs.Azure.ServiceBus
-  namespace: Cqrs.Azure.ServiceBus
-  syntax:
-    content: 'public virtual void Send<TCommand>(IEnumerable<TCommand> commands)where TCommand : ICommand<TAuthenticationToken>'
-    parameters:
-    - id: commands
-      type: IEnumerable{{TCommand}}
-    typeParameters:
-    - id: TCommand
-    content.vb: Public Overridable Sub Send(Of TCommand As ICommand(Of TAuthenticationToken))(commands As IEnumerable(Of TCommand))
-  overload: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send*
-  nameWithType.vb: AzureCommandBusPublisher(Of TAuthenticationToken).Send(Of TCommand)(IEnumerable(Of TCommand))
-  modifiers.csharp:
-  - public
-  - virtual
-  modifiers.vb:
-  - Public
-  - Overridable
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher(Of TAuthenticationToken).Send(Of TCommand)(IEnumerable(Of TCommand))
-  name.vb: Send(Of TCommand)(IEnumerable(Of TCommand))
 - uid: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait``2(``0,Cqrs.Events.IEventReceiver{`0})
   commentId: M:Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait``2(``0,Cqrs.Events.IEventReceiver{`0})
   id: PublishAndWait``2(``0,Cqrs.Events.IEventReceiver{`0})
@@ -348,18 +273,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-    startLine: 197
+    startLine: 200
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
-  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code>\n"
+  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span>\n"
   example: []
   syntax:
     content: 'public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
+      description: The <span class="typeparamref">TCommand</span> to publish.
     - id: eventReceiver
       type: Cqrs.Events.IEventReceiver{{TAuthenticationToken}}
       description: If provided, is the <xref href="Cqrs.Events.IEventReceiver%601" data-throw-if-not-resolved="false"></xref> that the event is expected to be returned on.
@@ -399,18 +324,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-    startLine: 209
+    startLine: 212
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
-  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
+  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
+      description: The <span class="typeparamref">TCommand</span> to publish.
     - id: millisecondsTimeout
       type: System.Int32
       description: The number of milliseconds to wait, or <xref href="System.Threading.Timeout.Infinite" data-throw-if-not-resolved="false"></xref> (-1) to wait indefinitely.
@@ -453,18 +378,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-    startLine: 221
+    startLine: 224
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
-  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
+  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
+      description: The <span class="typeparamref">TCommand</span> to publish.
     - id: timeout
       type: TimeSpan
       description: A <xref href="System.TimeSpan" data-throw-if-not-resolved="false"></xref> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.
@@ -505,21 +430,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-    startLine: 236
+    startLine: 239
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
-  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits until the specified condition is satisfied an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code>\n"
+  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits until the specified condition is satisfied an event of <span class=\"typeparamref\">TEvent</span>\n"
   example: []
   syntax:
     content: 'public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
+      description: The <span class="typeparamref">TCommand</span> to publish.
     - id: condition
       type: Func{IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}},{TEvent}}
-      description: A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.
+      description: A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.
     - id: eventReceiver
       type: Cqrs.Events.IEventReceiver{{TAuthenticationToken}}
       description: If provided, is the <xref href="Cqrs.Events.IEventReceiver%601" data-throw-if-not-resolved="false"></xref> that the event is expected to be returned on.
@@ -557,21 +482,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-    startLine: 249
+    startLine: 252
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
-  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
+  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
+      description: The <span class="typeparamref">TCommand</span> to publish.
     - id: condition
       type: Func{IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}},{TEvent}}
-      description: A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.
+      description: A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.
     - id: millisecondsTimeout
       type: System.Int32
       description: The number of milliseconds to wait, or <xref href="System.Threading.Timeout.Infinite" data-throw-if-not-resolved="false"></xref> (-1) to wait indefinitely.
@@ -612,21 +537,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Azure/Cqrs.Azure.ServiceBus/AzureCommandBusPublisher.cs
-    startLine: 326
+    startLine: 329
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
-  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
+  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
+      description: The <span class="typeparamref">TCommand</span> to publish.
     - id: condition
       type: Func{IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}},{TEvent}}
-      description: A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.
+      description: A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.
     - id: timeout
       type: TimeSpan
       description: A <xref href="System.TimeSpan" data-throw-if-not-resolved="false"></xref> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.
@@ -1364,20 +1289,20 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPrivateEventTopicExists(NamespaceManager)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureServiceBus{`0}.CheckPrivateEventTopicExists(NamespaceManager)
+- uid: Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}.CheckPrivateTopicExists(NamespaceManager)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureServiceBus{`0}.CheckPrivateTopicExists(NamespaceManager)
   parent: Cqrs.Azure.ServiceBus.AzureServiceBus{{TAuthenticationToken}}
-  definition: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-  name: CheckPrivateEventTopicExists(NamespaceManager)
-  nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists(NamespaceManager)
-  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists(NamespaceManager)
-  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists(NamespaceManager)
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists(NamespaceManager)
+  definition: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+  name: CheckPrivateTopicExists(NamespaceManager)
+  nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists(NamespaceManager)
+  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists(NamespaceManager)
+  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists(NamespaceManager)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists(NamespaceManager)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-    name: CheckPrivateEventTopicExists
-    nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+    name: CheckPrivateTopicExists
+    nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists
   - name: (
     nameWithType: (
     fullName: (
@@ -1390,10 +1315,10 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-    name: CheckPrivateEventTopicExists
-    nameWithType: AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+    name: CheckPrivateTopicExists
+    nameWithType: AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists
   - name: (
     nameWithType: (
     fullName: (
@@ -2850,19 +2775,19 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-  commentId: M:Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
+- uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+  commentId: M:Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
   isExternal: true
-  name: CheckPrivateEventTopicExists(NamespaceManager)
-  nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists(NamespaceManager)
-  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists(NamespaceManager)
-  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists(NamespaceManager)
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists(NamespaceManager)
+  name: CheckPrivateTopicExists(NamespaceManager)
+  nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists(NamespaceManager)
+  fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists(NamespaceManager)
+  nameWithType.vb: AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists(NamespaceManager)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists(NamespaceManager)
   spec.csharp:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-    name: CheckPrivateEventTopicExists
-    nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateEventTopicExists
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+    name: CheckPrivateTopicExists
+    nameWithType: AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus<TAuthenticationToken>.CheckPrivateTopicExists
   - name: (
     nameWithType: (
     fullName: (
@@ -2875,10 +2800,10 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateEventTopicExists(NamespaceManager)
-    name: CheckPrivateEventTopicExists
-    nameWithType: AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists
-    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateEventTopicExists
+  - uid: Cqrs.Azure.ServiceBus.AzureServiceBus`1.CheckPrivateTopicExists(NamespaceManager)
+    name: CheckPrivateTopicExists
+    nameWithType: AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists
+    fullName: Cqrs.Azure.ServiceBus.AzureServiceBus(Of TAuthenticationToken).CheckPrivateTopicExists
   - name: (
     nameWithType: (
     fullName: (
@@ -3737,6 +3662,43 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1
+  commentId: T:Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1
+  isExternal: false
+  name: AzureCommandBusPublisher<TAuthenticationToken>
+  nameWithType: AzureCommandBusPublisher<TAuthenticationToken>
+  fullName: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher<TAuthenticationToken>
+  nameWithType.vb: AzureCommandBusPublisher(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher(Of TAuthenticationToken)
+  name.vb: AzureCommandBusPublisher(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1
+    name: AzureCommandBusPublisher
+    nameWithType: AzureCommandBusPublisher
+    fullName: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1
+    name: AzureCommandBusPublisher
+    nameWithType: AzureCommandBusPublisher
+    fullName: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.#ctor*
   commentId: Overload:Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.#ctor
   isExternal: false
@@ -4106,14 +4068,6 @@ references:
   name: TCommand
   nameWithType: TCommand
   fullName: TCommand
-- uid: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send*
-  commentId: Overload:Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send
-  isExternal: false
-  name: Send
-  nameWithType: AzureCommandBusPublisher<TAuthenticationToken>.Send
-  fullName: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher<TAuthenticationToken>.Send
-  nameWithType.vb: AzureCommandBusPublisher(Of TAuthenticationToken).Send
-  fullName.vb: Cqrs.Azure.ServiceBus.AzureCommandBusPublisher(Of TAuthenticationToken).Send
 - uid: IEnumerable{{TCommand}}
   commentId: '!:IEnumerable{``0}'
   definition: IEnumerable`1

@@ -20,12 +20,25 @@ using SpinWait = Cqrs.Infrastructure.SpinWait;
 
 namespace Cqrs.Azure.ServiceBus
 {
+	/// <summary>
+	/// A concurrent implementation of <see cref="AzureCommandBusReceiver{TAuthenticationToken}"/> that resides in memory.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureQueuedCommandBusReceiver<TAuthenticationToken> : AzureCommandBusReceiver<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Tracks all queues.
+		/// </summary>
 		protected static ConcurrentDictionary<string, ConcurrentQueue<ICommand<TAuthenticationToken>>> QueueTracker { get; private set; }
 
+		/// <summary>
+		/// Gets the <see cref="ReaderWriterLockSlim"/>.
+		/// </summary>
 		protected ReaderWriterLockSlim QueueTrackerLock { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureQueuedCommandBusReceiver{TAuthenticationToken}"/>.
+		/// </summary>
 		public AzureQueuedCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper)
 		{
@@ -33,6 +46,9 @@ namespace Cqrs.Azure.ServiceBus
 			QueueTrackerLock = new ReaderWriterLockSlim();
 		}
 
+		/// <summary>
+		/// Receives a <see cref="BrokeredMessage"/> from the command bus, identifies a key and queues it accordingly.
+		/// </summary>
 		protected override void ReceiveCommand(BrokeredMessage message)
 		{
 			try
@@ -75,12 +91,20 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// Adds the provided <paramref name="command"/> to the <see cref="QueueTracker"/> of the queue <paramref name="targetQueueName"/>.
+		/// </summary>
 		private void EnqueueCommand(string targetQueueName, ICommand<TAuthenticationToken> command)
 		{
 			var queue = QueueTracker.GetOrAdd(targetQueueName, new ConcurrentQueue<ICommand<TAuthenticationToken>>());
 			queue.Enqueue(command);
 		}
 
+		/// <summary>
+		/// Creates the queue of the name <paramref name="queueName"/> if it does not already exist,
+		/// the queue is attached to <see cref="DequeuAndProcessCommand"/> using a <see cref="Thread"/>.
+		/// </summary>
+		/// <param name="queueName">The name of the queue to check and create.</param>
 		protected void CreateQueueAndAttachListenerIfNotExist(string queueName)
 		{
 			if (!QueueTracker.ContainsKey(queueName))
@@ -109,6 +133,11 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// Takes an <see cref="ICommand{TAuthenticationToken}"/> off the queue of <paramref name="queueName"/>
+		/// and calls <see cref="ReceiveCommand"/>. Repeats in a loop until the queue is empty.
+		/// </summary>
+		/// <param name="queueName">The name of the queue process.</param>
 		protected void DequeuAndProcessCommand(string queueName)
 		{
 			SpinWait.SpinUntil
@@ -172,6 +201,9 @@ namespace Cqrs.Azure.ServiceBus
 			);
 		}
 
+		/// <summary>
+		/// The number of queues currently known.
+		/// </summary>
 		public int QueueCount
 		{
 			get
@@ -188,6 +220,9 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// The name of all currently known queues.
+		/// </summary>
 		public ICollection<string> QueueNames
 		{
 			get

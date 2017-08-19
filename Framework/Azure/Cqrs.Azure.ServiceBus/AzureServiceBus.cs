@@ -22,56 +22,137 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
+	/// <summary>
+	/// An <see cref="AzureBus{TAuthenticationToken}"/> that uses Azure Service Bus.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public abstract class AzureServiceBus<TAuthenticationToken> : AzureBus<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Gets the private <see cref="TopicClient"/> publisher.
+		/// </summary>
 		protected TopicClient PrivateServiceBusPublisher { get; private set; }
 
+		/// <summary>
+		/// Gets the public <see cref="TopicClient"/> publisher.
+		/// </summary>
 		protected TopicClient PublicServiceBusPublisher { get; private set; }
 
+		/// <summary>
+		/// Gets the private <see cref="SubscriptionClient"/> receivers.
+		/// </summary>
 		protected IDictionary<int, SubscriptionClient> PrivateServiceBusReceivers { get; private set; }
 
+		/// <summary>
+		/// Gets the public <see cref="SubscriptionClient"/> receivers.
+		/// </summary>
 		protected IDictionary<int, SubscriptionClient> PublicServiceBusReceivers { get; private set; }
 
+		/// <summary>
+		/// The name of the private topic.
+		/// </summary>
 		protected string PrivateTopicName { get; private set; }
 
+		/// <summary>
+		/// The name of the public topic.
+		/// </summary>
 		protected string PublicTopicName { get; private set; }
 
+		/// <summary>
+		/// The name of the subscription in the private topic.
+		/// </summary>
 		protected string PrivateTopicSubscriptionName { get; private set; }
 
+		/// <summary>
+		/// The name of the subscription in the public topic.
+		/// </summary>
 		protected string PublicTopicSubscriptionName { get; private set; }
 
+		/// <summary>
+		/// The configuration key for the message bus connection string as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected abstract string MessageBusConnectionStringConfigurationKey { get; }
 
+		/// <summary>
+		/// The configuration key for the name of the private topic as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected abstract string PrivateTopicNameConfigurationKey { get; }
 
+		/// <summary>
+		/// The configuration key for the name of the public topic as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected abstract string PublicTopicNameConfigurationKey { get; }
 
+		/// <summary>
+		/// The default name of the private topic if no <see cref="IConfigurationManager"/> value is set.
+		/// </summary>
 		protected abstract string DefaultPrivateTopicName { get; }
 
+		/// <summary>
+		/// The default name of the public topic if no <see cref="IConfigurationManager"/> value is set.
+		/// </summary>
 		protected abstract string DefaultPublicTopicName { get; }
 
+		/// <summary>
+		/// The configuration key for the name of the subscription in the private topic as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected abstract string PrivateTopicSubscriptionNameConfigurationKey { get; }
 
+		/// <summary>
+		/// The configuration key for the name of the subscription in the public topic as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected abstract string PublicTopicSubscriptionNameConfigurationKey { get; }
 
+		/// <summary>
+		/// The configuration key that
+		/// specifies if an <see cref="Exception"/> is thrown if the network lock is lost
+		/// as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected abstract string ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey { get; }
 
+		/// <summary>
+		/// Specifies if an <see cref="Exception"/> is thrown if the network lock is lost.
+		/// </summary>
 		protected bool ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete { get; private set; }
 
+		/// <summary>
+		/// The default name of the subscription in the private topic if no <see cref="IConfigurationManager"/> value is set.
+		/// </summary>
 		protected const string DefaultPrivateTopicSubscriptionName = "Root";
 
+		/// <summary>
+		/// The default name of the subscription in the public topic if no <see cref="IConfigurationManager"/> value is set.
+		/// </summary>
 		protected const string DefaultPublicTopicSubscriptionName = "Root";
 
+		/// <summary>
+		/// The <see cref="Action{TBrokeredMessage}">handler</see> used for <see cref="SubscriptionClient.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage}, OnMessageOptions)"/> on each receiver.
+		/// </summary>
 		protected Action<BrokeredMessage> ReceiverMessageHandler { get; set; }
 
+		/// <summary>
+		/// The <see cref="OnMessageOptions" /> used for <see cref="SubscriptionClient.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage}, OnMessageOptions)"/> on each receiver.
+		/// </summary>
 		protected OnMessageOptions ReceiverMessageHandlerOptions { get; set; }
 
+		/// <summary>
+		/// Gets the <see cref="IBusHelper"/>.
+		/// </summary>
 		protected IBusHelper BusHelper { get; private set; }
 
+		/// <summary>
+		/// Gets the <see cref="IAzureBusHelper{TAuthenticationToken}"/>.
+		/// </summary>
 		protected IAzureBusHelper<TAuthenticationToken> AzureBusHelper { get; private set; }
 
+		/// <summary>
+		/// Gets the <see cref="ITelemetryHelper"/>.
+		/// </summary>
 		protected ITelemetryHelper TelemetryHelper { get; set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureServiceBus{TAuthenticationToken}"/>
+		/// </summary>
 		protected AzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper, bool isAPublisher)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
@@ -84,6 +165,9 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Overrides of AzureBus<TAuthenticationToken>
 
+		/// <summary>
+		/// Gets the connection string for the bus from <see cref="AzureBus{TAuthenticationToken}.ConfigurationManager"/>
+		/// </summary>
 		protected override string GetConnectionString()
 		{
 			string connectionString = ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
@@ -94,10 +178,15 @@ namespace Cqrs.Azure.ServiceBus
 
 		#endregion
 
+		/// <summary>
+		/// Instantiate publishing on this bus by
+		/// calling <see cref="CheckPrivateTopicExists"/> and <see cref="CheckPublicTopicExists"/>
+		/// then calling <see cref="AzureBus{TAuthenticationToken}.StartSettingsChecking"/>
+		/// </summary>
 		protected override void InstantiatePublishing()
 		{
 			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
-			CheckPrivateEventTopicExists(namespaceManager);
+			CheckPrivateTopicExists(namespaceManager);
 			CheckPublicTopicExists(namespaceManager);
 
 			PrivateServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PrivateTopicName);
@@ -105,11 +194,18 @@ namespace Cqrs.Azure.ServiceBus
 			StartSettingsChecking();
 		}
 
+		/// <summary>
+		/// Instantiate receiving on this bus by
+		/// calling <see cref="CheckPrivateTopicExists"/> and <see cref="CheckPublicTopicExists"/>
+		/// then InstantiateReceiving for private and public topics,
+		/// calls <see cref="CleanUpDeadLetters"/> for the private and public topics,
+		/// then calling <see cref="AzureBus{TAuthenticationToken}.StartSettingsChecking"/>
+		/// </summary>
 		protected override void InstantiateReceiving()
 		{
 			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
 
-			CheckPrivateEventTopicExists(namespaceManager);
+			CheckPrivateTopicExists(namespaceManager);
 			CheckPublicTopicExists(namespaceManager);
 
 			try
@@ -145,6 +241,14 @@ namespace Cqrs.Azure.ServiceBus
 			StartSettingsChecking();
 		}
 
+		/// <summary>
+		/// Creates <see cref="AzureBus{TAuthenticationToken}.NumberOfReceiversCount"/> <see cref="SubscriptionClient"/>.
+		/// If flushing is required, any flushed <see cref="SubscriptionClient"/> has <see cref="ClientEntity.Close()"/> called on it first.
+		/// </summary>
+		/// <param name="namespaceManager">The <see cref="NamespaceManager"/>.</param>
+		/// <param name="serviceBusReceivers">The receivers collection to place <see cref="SubscriptionClient"/> instances into.</param>
+		/// <param name="topicName">The topic name.</param>
+		/// <param name="topicSubscriptionName">The topic subscription name.</param>
 		protected virtual void InstantiateReceiving(NamespaceManager namespaceManager, IDictionary<int, SubscriptionClient> serviceBusReceivers, string topicName, string topicSubscriptionName)
 		{
 			for (int i = 0; i < NumberOfReceiversCount; i++)
@@ -157,23 +261,40 @@ namespace Cqrs.Azure.ServiceBus
 			}
 			// Remove any if the number has decreased
 			for (int i = NumberOfReceiversCount; i < serviceBusReceivers.Count; i++)
-				serviceBusReceivers.Remove(i + 1);
+			{
+				SubscriptionClient serviceBusReceiver;
+				if (serviceBusReceivers.TryGetValue(i, out serviceBusReceiver))
+					serviceBusReceiver.Close();
+				serviceBusReceivers.Remove(i);
+			}
 		}
 
-		protected virtual void CheckPrivateEventTopicExists(NamespaceManager namespaceManager)
+		/// <summary>
+		/// Checks if the private topic and subscription name exists as per <see cref="PrivateTopicName"/> and <see cref="PrivateTopicSubscriptionName"/>.
+		/// </summary>
+		/// <param name="namespaceManager">The <see cref="NamespaceManager"/>.</param>
+		protected virtual void CheckPrivateTopicExists(NamespaceManager namespaceManager)
 		{
 			CheckTopicExists(namespaceManager, PrivateTopicName = ConfigurationManager.GetSetting(PrivateTopicNameConfigurationKey) ?? DefaultPrivateTopicName, PrivateTopicSubscriptionName = ConfigurationManager.GetSetting(PrivateTopicSubscriptionNameConfigurationKey) ?? DefaultPrivateTopicSubscriptionName);
 		}
 
+		/// <summary>
+		/// Checks if the public topic and subscription name exists as per <see cref="PublicTopicName"/> and <see cref="PublicTopicSubscriptionName"/>.
+		/// </summary>
+		/// <param name="namespaceManager">The <see cref="NamespaceManager"/>.</param>
 		protected virtual void CheckPublicTopicExists(NamespaceManager namespaceManager)
 		{
 			CheckTopicExists(namespaceManager, PublicTopicName = ConfigurationManager.GetSetting(PublicTopicNameConfigurationKey) ?? DefaultPublicTopicName, PublicTopicSubscriptionName = ConfigurationManager.GetSetting(PublicTopicSubscriptionNameConfigurationKey) ?? DefaultPublicTopicSubscriptionName);
 		}
 
-		protected virtual void CheckTopicExists(NamespaceManager namespaceManager, string eventTopicName, string eventSubscriptionNames)
+		/// <summary>
+		/// Checks if a topic by the provided <paramref name="topicName"/> exists and
+		/// Checks if a subscription name by the provided <paramref name="subscriptionName"/> exists.
+		/// </summary>
+		protected virtual void CheckTopicExists(NamespaceManager namespaceManager, string topicName, string subscriptionName)
 		{
 			// Configure Queue Settings
-			var eventTopicDescription = new TopicDescription(eventTopicName)
+			var eventTopicDescription = new TopicDescription(topicName)
 			{
 				MaxSizeInMegabytes = 5120,
 				DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
@@ -184,10 +305,10 @@ namespace Cqrs.Azure.ServiceBus
 			if (!namespaceManager.TopicExists(eventTopicDescription.Path))
 				namespaceManager.CreateTopic(eventTopicDescription);
 
-			if (!namespaceManager.SubscriptionExists(eventTopicDescription.Path, eventSubscriptionNames))
+			if (!namespaceManager.SubscriptionExists(eventTopicDescription.Path, subscriptionName))
 				namespaceManager.CreateSubscription
 				(
-					new SubscriptionDescription(eventTopicDescription.Path, eventSubscriptionNames)
+					new SubscriptionDescription(eventTopicDescription.Path, subscriptionName)
 					{
 						DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
 						EnableBatchedOperations = true,
@@ -196,6 +317,10 @@ namespace Cqrs.Azure.ServiceBus
 				);
 		}
 
+		/// <summary>
+		/// Triggers settings checking on both public and private publishers and receivers,
+		/// then calls <see cref="InstantiatePublishing"/> if <see cref="PublicServiceBusPublisher"/> is not null.
+		/// </summary>
 		protected override void TriggerSettingsChecking()
 		{
 			// First refresh the EventBlackListProcessing property
@@ -216,6 +341,10 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// Triggers settings checking on the provided <paramref name="serviceBusPublisher"/> and <paramref name="serviceBusReceivers"/>,
+		/// then calls <see cref="InstantiateReceiving()"/>.
+		/// </summary>
 		protected virtual void TriggerSettingsChecking(TopicClient serviceBusPublisher, IDictionary<int, SubscriptionClient> serviceBusReceivers)
 		{
 			// Let's wrap up using this message bus and start the switch
@@ -251,6 +380,9 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// Registers the provided <paramref name="receiverMessageHandler"/> with the provided <paramref name="receiverMessageHandlerOptions"/>.
+		/// </summary>
 		protected virtual void RegisterReceiverMessageHandler(Action<BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
 		{
 			StoreReceiverMessageHandler(receiverMessageHandler, receiverMessageHandlerOptions);
@@ -258,12 +390,19 @@ namespace Cqrs.Azure.ServiceBus
 			ApplyReceiverMessageHandler();
 		}
 
+		/// <summary>
+		/// Stores the provided <paramref name="receiverMessageHandler"/> and <paramref name="receiverMessageHandlerOptions"/>.
+		/// </summary>
 		protected virtual void StoreReceiverMessageHandler(Action<BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
 		{
 			ReceiverMessageHandler = receiverMessageHandler;
 			ReceiverMessageHandlerOptions = receiverMessageHandlerOptions;
 		}
 
+		/// <summary>
+		/// Applies the stored ReceiverMessageHandler and ReceiverMessageHandlerOptions to all receivers in
+		/// <see cref="PrivateServiceBusReceivers"/> and <see cref="PublicServiceBusReceivers"/>.
+		/// </summary>
 		protected override void ApplyReceiverMessageHandler()
 		{
 			foreach (SubscriptionClient serviceBusReceiver in PrivateServiceBusReceivers.Values)
@@ -272,6 +411,13 @@ namespace Cqrs.Azure.ServiceBus
 				serviceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
 		}
 
+		/// <summary>
+		/// Using a <see cref="Task"/>, clears all dead letters from the topic and subscription of the 
+		/// provided <paramref name="topicName"/> and <paramref name="topicSubscriptionName"/>.
+		/// </summary>
+		/// <param name="topicName">The name of the topic.</param>
+		/// <param name="topicSubscriptionName">The name of the subscription.</param>
+		/// <returns></returns>
 		protected virtual CancellationTokenSource CleanUpDeadLetters(string topicName, string topicSubscriptionName)
 		{
 			var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();

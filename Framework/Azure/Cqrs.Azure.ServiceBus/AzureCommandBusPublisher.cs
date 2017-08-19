@@ -24,18 +24,27 @@ using Microsoft.ServiceBus.Messaging;
 namespace Cqrs.Azure.ServiceBus
 {
 	/// <summary>
-	/// A <see cref="ICommandPublisher{TAuthenticationToken}"/> that resolves handlers , executes the handler and then publishes the <see cref="ICommand{TAuthenticationToken}"/> on the public command bus.
+	/// A <see cref="ICommandPublisher{TAuthenticationToken}"/> that resolves handlers , executes the handler and then publishes the <see cref="ICommand{TAuthenticationToken}"/> on the private command bus.
 	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	// The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
-	public class AzureCommandBusPublisher<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, IPublishAndWaitCommandPublisher<TAuthenticationToken>
+	public class AzureCommandBusPublisher<TAuthenticationToken>
+		: AzureCommandBus<TAuthenticationToken>
+		, IPublishAndWaitCommandPublisher<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureCommandBusPublisher{TAuthenticationToken}"/>.
+		/// </summary>
 		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.CommandBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
 
+		/// <summary>
+		/// The debugger variable window value.
+		/// </summary>
 		internal string DebuggerDisplay
 		{
 			get
@@ -45,7 +54,7 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					connectionString = string.Concat(connectionString, "=", GetConnectionString());
 				}
-				catch { /**/ }
+				catch { /* */ }
 				return string.Format(CultureInfo.InvariantCulture, "{0}, PrivateTopicName : {1}, PrivateTopicSubscriptionName : {2}, PublicTopicName : {3}, PublicTopicSubscriptionName : {4}",
 					connectionString, PrivateTopicName, PrivateTopicSubscriptionName, PublicTopicName, PublicTopicSubscriptionName);
 			}
@@ -53,6 +62,9 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Implementation of ICommandPublisher<TAuthenticationToken>
 
+		/// <summary>
+		/// Publishes the provided <paramref name="command"/> on the command bus.
+		/// </summary>
 		public virtual void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
@@ -105,12 +117,9 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
-		public virtual void Send<TCommand>(TCommand command)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			Publish(command);
-		}
-
+		/// <summary>
+		/// Publishes the provided <paramref name="commands"/> on the command bus.
+		/// </summary>
 		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
@@ -182,12 +191,6 @@ namespace Cqrs.Azure.ServiceBus
 				mainStopWatch.Stop();
 				TelemetryHelper.TrackDependency("Azure/Servicebus/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 			}
-		}
-
-		public virtual void Send<TCommand>(IEnumerable<TCommand> commands)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			Publish(commands);
 		}
 
 		/// <summary>
