@@ -20,10 +20,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ITableStorageDataStoreConnectionStringFactory
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/ITableStorageDataStoreConnectionStringFactory.cs
-    startLine: 10
+    startLine: 18
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nA factory for getting connection strings and container names for <xref href=\"Cqrs.DataStores.IDataStore%601\" data-throw-if-not-resolved=\"false\"></xref> access.\nThis factory supports reading and writing from separate storage accounts. Specifically you can have as many different storage accounts as you want to configure when writing.\nThis allows for manual mirroring of data while reading from the fastest/closest location possible.\n"
+  example: []
   syntax:
     content: 'public interface ITableStorageDataStoreConnectionStringFactory : ITableStorageStoreConnectionStringFactory, IStorageStoreConnectionStringFactory'
     content.vb: >-
@@ -57,14 +59,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetTableName
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/ITableStorageDataStoreConnectionStringFactory.cs
-    startLine: 12
+    startLine: 25
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nGenerates the name of the table for <code data-dev-comment-type=\"typeparamref\">TData</code> that matches naming rules for Azure Storage.\n"
+  remarks: https://blogs.msdn.microsoft.com/jmstall/2014/06/12/azure-storage-naming-rules/
+  example: []
   syntax:
     content: string GetTableName<TData>()
     typeParameters:
     - id: TData
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of data to read or write.
     return:
       type: System.String
     content.vb: Function GetTableName(Of TData) As String
@@ -73,6 +79,43 @@ items:
   fullName.vb: Cqrs.Azure.BlobStorage.DataStores.ITableStorageDataStoreConnectionStringFactory.GetTableName(Of TData)()
   name.vb: GetTableName(Of TData)()
 references:
+- uid: Cqrs.DataStores.IDataStore`1
+  commentId: T:Cqrs.DataStores.IDataStore`1
+  isExternal: false
+  name: IDataStore<TData>
+  nameWithType: IDataStore<TData>
+  fullName: Cqrs.DataStores.IDataStore<TData>
+  nameWithType.vb: IDataStore(Of TData)
+  fullName.vb: Cqrs.DataStores.IDataStore(Of TData)
+  name.vb: IDataStore(Of TData)
+  spec.csharp:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.BlobStorage.DataStores
   commentId: N:Cqrs.Azure.BlobStorage.DataStores
   isExternal: false
@@ -186,6 +229,13 @@ references:
   name: Cqrs.Azure.BlobStorage
   nameWithType: Cqrs.Azure.BlobStorage
   fullName: Cqrs.Azure.BlobStorage
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: Cqrs.Azure.BlobStorage.DataStores.ITableStorageDataStoreConnectionStringFactory.GetTableName*
   commentId: Overload:Cqrs.Azure.BlobStorage.DataStores.ITableStorageDataStoreConnectionStringFactory.GetTableName
   isExternal: false

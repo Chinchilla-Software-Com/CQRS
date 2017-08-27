@@ -523,7 +523,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nLocates a suitable <xref href=\"Cqrs.Commands.ICommandValidator%602\" data-throw-if-not-resolved=\"false\"></xref> to validate the provided <span class=\"paramref\">command</span> and validates the provided <span class=\"paramref\">command</span> if one is located\nCalls <xref href=\"Cqrs.Bus.InProcessBus%601.PrepareCommand%60%601(%60%600)\" data-throw-if-not-resolved=\"false\"></xref>\nChecks if the provided <span class=\"paramref\">command</span> is required to be processed\nLocates a single <xref href=\"Cqrs.Bus.RouteHandlerDelegate\" data-throw-if-not-resolved=\"false\"></xref> for the provided <span class=\"paramref\">command</span>\n"
+  summary: "\nLocates a suitable <xref href=\"Cqrs.Commands.ICommandValidator%602\" data-throw-if-not-resolved=\"false\"></xref> to validate the provided <code data-dev-comment-type=\"paramref\">command</code> and validates the provided <code data-dev-comment-type=\"paramref\">command</code> if one is located\nCalls <xref href=\"Cqrs.Bus.InProcessBus%601.PrepareCommand%60%601(%60%600)\" data-throw-if-not-resolved=\"false\"></xref>\nChecks if the provided <code data-dev-comment-type=\"paramref\">command</code> is required to be processed\nLocates a single <xref href=\"Cqrs.Bus.RouteHandlerDelegate\" data-throw-if-not-resolved=\"false\"></xref> for the provided <code data-dev-comment-type=\"paramref\">command</code>\n"
   example: []
   syntax:
     content: 'protected virtual bool PrepareAndValidateCommand<TCommand>(TCommand command, out RouteHandlerDelegate commandHandler)where TCommand : ICommand<TAuthenticationToken>'
@@ -536,7 +536,7 @@ items:
     - id: TCommand
     return:
       type: System.Boolean
-      description: "\nFalse if a suitable <xref href=\"Cqrs.Commands.ICommandValidator%602\" data-throw-if-not-resolved=\"false\"></xref> is located and the provided <span class=\"paramref\">command</span> fails validation,\nFalse if no <xref href=\"Cqrs.Bus.RouteHandlerDelegate\" data-throw-if-not-resolved=\"false\"></xref> is found but the command isn&apos;t required to be handled,\nTrue otherwise.\n"
+      description: "\nFalse if a suitable <xref href=\"Cqrs.Commands.ICommandValidator%602\" data-throw-if-not-resolved=\"false\"></xref> is located and the provided <code data-dev-comment-type=\"paramref\">command</code> fails validation,\nFalse if no <xref href=\"Cqrs.Bus.RouteHandlerDelegate\" data-throw-if-not-resolved=\"false\"></xref> is found but the command isn&apos;t required to be handled,\nTrue otherwise.\n"
     content.vb: Protected Overridable Function PrepareAndValidateCommand(Of TCommand As ICommand(Of TAuthenticationToken))(command As TCommand, ByRef commandHandler As RouteHandlerDelegate) As Boolean
   overload: Cqrs.Bus.InProcessBus`1.PrepareAndValidateCommand*
   nameWithType.vb: InProcessBus(Of TAuthenticationToken).PrepareAndValidateCommand(Of TCommand)(TCommand, ByRef RouteHandlerDelegate)
@@ -571,7 +571,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> on the command bus.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> on the command bus.\n"
   example: []
   syntax:
     content: 'void ICommandPublisher<TAuthenticationToken>.Publish<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
@@ -609,7 +609,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> on the command bus.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> on the command bus.\n"
   example: []
   syntax:
     content: 'public virtual void Send<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
@@ -652,7 +652,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nPublishes the provided <span class=\"paramref\">commands</span> on the command bus.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">commands</code> on the command bus.\n"
   example: []
   syntax:
     content: 'void ICommandPublisher<TAuthenticationToken>.Publish<TCommand>(IEnumerable<TCommand> commands)where TCommand : ICommand<TAuthenticationToken>'
@@ -690,7 +690,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nPublishes the provided <span class=\"paramref\">commands</span> on the command bus.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">commands</code> on the command bus.\n"
   example: []
   syntax:
     content: 'public virtual void Send<TCommand>(IEnumerable<TCommand> commands)where TCommand : ICommand<TAuthenticationToken>'
@@ -732,14 +732,14 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nSends the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span>\n"
+  summary: "\nSends the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code>\n"
   example: []
   syntax:
     content: 'public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to send.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to send.
     - id: eventReceiver
       type: Cqrs.Events.IEventReceiver{{TAuthenticationToken}}
       description: If provided, is the <xref href="Cqrs.Events.IEventReceiver%601" data-throw-if-not-resolved="false"></xref> that the event is expected to be returned on.
@@ -781,14 +781,14 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nSends the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
+  summary: "\nSends the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to send.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to send.
     - id: millisecondsTimeout
       type: System.Int32
       description: The number of milliseconds to wait, or <xref href="System.Threading.Timeout.Infinite" data-throw-if-not-resolved="false"></xref> (-1) to wait indefinitely.
@@ -833,14 +833,14 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nSends the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
+  summary: "\nSends the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to send.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to send.
     - id: timeout
       type: System.TimeSpan
       description: A <xref href="System.TimeSpan" data-throw-if-not-resolved="false"></xref> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.
@@ -885,17 +885,17 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nSends the provided <span class=\"paramref\">command</span> and waits until the specified condition is satisfied an event of <span class=\"typeparamref\">TEvent</span>\n"
+  summary: "\nSends the provided <code data-dev-comment-type=\"paramref\">command</code> and waits until the specified condition is satisfied an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code>\n"
   example: []
   syntax:
     content: 'public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to send.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to send.
     - id: condition
       type: System.Func{System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}},{TEvent}}
-      description: A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.
+      description: A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.
     - id: eventReceiver
       type: Cqrs.Events.IEventReceiver{{TAuthenticationToken}}
       description: If provided, is the <xref href="Cqrs.Events.IEventReceiver%601" data-throw-if-not-resolved="false"></xref> that the event is expected to be returned on.
@@ -937,17 +937,17 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nSends the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
+  summary: "\nSends the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to send.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to send.
     - id: condition
       type: System.Func{System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}},{TEvent}}
-      description: A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.
+      description: A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.
     - id: millisecondsTimeout
       type: System.Int32
       description: The number of milliseconds to wait, or <xref href="System.Threading.Timeout.Infinite" data-throw-if-not-resolved="false"></xref> (-1) to wait indefinitely.
@@ -992,17 +992,17 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nSends the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
+  summary: "\nSends the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to send.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to send.
     - id: condition
       type: System.Func{System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}},{TEvent}}
-      description: A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.
+      description: A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.
     - id: timeout
       type: System.TimeSpan
       description: A <xref href="System.TimeSpan" data-throw-if-not-resolved="false"></xref> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.
@@ -1047,7 +1047,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nPublishes the provided <span class=\"paramref\">event</span> on the event bus.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">event</code> on the event bus.\n"
   example: []
   syntax:
     content: 'public virtual void Publish<TEvent>(TEvent event)where TEvent : IEvent<TAuthenticationToken>'
@@ -1091,7 +1091,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nPublishes the provided <span class=\"paramref\">events</span> on the event bus.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">events</code> on the event bus.\n"
   example: []
   syntax:
     content: 'public virtual void Publish<TEvent>(IEnumerable<TEvent> events)where TEvent : IEvent<TAuthenticationToken>'
@@ -1135,14 +1135,14 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span>\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code>\n"
   example: []
   syntax:
     content: 'public TEvent PublishAndWait<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to publish.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
     - id: eventReceiver
       type: Cqrs.Events.IEventReceiver{{TAuthenticationToken}}
       description: If provided, is the <xref href="Cqrs.Events.IEventReceiver%601" data-throw-if-not-resolved="false"></xref> that the event is expected to be returned on.
@@ -1184,14 +1184,14 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public TEvent PublishAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to publish.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
     - id: millisecondsTimeout
       type: System.Int32
       description: The number of milliseconds to wait, or <xref href="System.Threading.Timeout.Infinite" data-throw-if-not-resolved="false"></xref> (-1) to wait indefinitely.
@@ -1236,14 +1236,14 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public TEvent PublishAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to publish.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
     - id: timeout
       type: System.TimeSpan
       description: A <xref href="System.TimeSpan" data-throw-if-not-resolved="false"></xref> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.
@@ -1288,17 +1288,17 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits until the specified condition is satisfied an event of <span class=\"typeparamref\">TEvent</span>\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits until the specified condition is satisfied an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code>\n"
   example: []
   syntax:
     content: 'public TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to publish.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
     - id: condition
       type: System.Func{System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}},{TEvent}}
-      description: A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.
+      description: A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.
     - id: eventReceiver
       type: Cqrs.Events.IEventReceiver{{TAuthenticationToken}}
       description: If provided, is the <xref href="Cqrs.Events.IEventReceiver%601" data-throw-if-not-resolved="false"></xref> that the event is expected to be returned on.
@@ -1340,17 +1340,17 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to publish.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
     - id: condition
       type: System.Func{System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}},{TEvent}}
-      description: A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.
+      description: A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.
     - id: millisecondsTimeout
       type: System.Int32
       description: The number of milliseconds to wait, or <xref href="System.Threading.Timeout.Infinite" data-throw-if-not-resolved="false"></xref> (-1) to wait indefinitely.
@@ -1395,17 +1395,17 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Bus
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to publish.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
     - id: condition
       type: System.Func{System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}},{TEvent}}
-      description: A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.
+      description: A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.
     - id: timeout
       type: System.TimeSpan
       description: A <xref href="System.TimeSpan" data-throw-if-not-resolved="false"></xref> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.

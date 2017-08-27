@@ -254,17 +254,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GenerateStreamName
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Events/TableStorageEventStore.cs
-    startLine: 55
+    startLine: 60
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Events
+  summary: "\nGenerate a unique stream name based on the provided <code data-dev-comment-type=\"paramref\">aggregateRootType</code> and the <code data-dev-comment-type=\"paramref\">aggregateId</code>.\n"
+  example: []
   syntax:
     content: protected override string GenerateStreamName(Type aggregateRootType, Guid aggregateId)
     parameters:
     - id: aggregateRootType
       type: System.Type
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref>.
     - id: aggregateId
       type: System.Guid
+      description: The ID of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref>.
     return:
       type: System.String
     content.vb: Protected Overrides Function GenerateStreamName(aggregateRootType As Type, aggregateId As Guid) As String
@@ -296,11 +300,11 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Get
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Events/TableStorageEventStore.cs
-    startLine: 67
+    startLine: 72
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Events
-  summary: "\nGets a collection of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> for the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> of type <span class=\"paramref\">aggregateRootType</span> with the ID matching the provided <span class=\"paramref\">aggregateId</span>.\n"
+  summary: "\nGets a collection of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> for the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> of type <code data-dev-comment-type=\"paramref\">aggregateRootType</code> with the ID matching the provided <code data-dev-comment-type=\"paramref\">aggregateId</code>.\n"
   example: []
   syntax:
     content: public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
@@ -348,11 +352,11 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Get
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Events/TableStorageEventStore.cs
-    startLine: 94
+    startLine: 99
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Events
-  summary: "\nGet all <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> instances for the given <span class=\"paramref\">correlationId</span>.\n"
+  summary: "\nGet all <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> instances for the given <code data-dev-comment-type=\"paramref\">correlationId</code>.\n"
   example: []
   syntax:
     content: public override IEnumerable<EventData> Get(Guid correlationId)
@@ -391,11 +395,11 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PersistEvent
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Events/TableStorageEventStore.cs
-    startLine: 113
+    startLine: 118
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Events
-  summary: "\nPersist the provided <span class=\"paramref\">eventData</span> into storage.\n"
+  summary: "\nPersist the provided <code data-dev-comment-type=\"paramref\">eventData</code> into storage.\n"
   example: []
   syntax:
     content: protected override void PersistEvent(EventData eventData)
@@ -2053,6 +2057,43 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  isExternal: false
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.GenerateStreamName(System.Type,System.Guid)
   commentId: M:Cqrs.Events.EventStore{`0}.GenerateStreamName(System.Type,System.Guid)
   parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
@@ -2178,43 +2219,6 @@ references:
     nameWithType: Guid
     fullName: System.Guid
     isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.Domain.IAggregateRoot`1
-  commentId: T:Cqrs.Domain.IAggregateRoot`1
-  isExternal: false
-  name: IAggregateRoot<TAuthenticationToken>
-  nameWithType: IAggregateRoot<TAuthenticationToken>
-  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
-  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
-  name.vb: IAggregateRoot(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Domain.IAggregateRoot`1
-    name: IAggregateRoot
-    nameWithType: IAggregateRoot
-    fullName: Cqrs.Domain.IAggregateRoot
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Domain.IAggregateRoot`1
-    name: IAggregateRoot
-    nameWithType: IAggregateRoot
-    fullName: Cqrs.Domain.IAggregateRoot
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
   - name: )
     nameWithType: )
     fullName: )

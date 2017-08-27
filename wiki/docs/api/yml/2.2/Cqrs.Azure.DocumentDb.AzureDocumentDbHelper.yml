@@ -27,10 +27,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AzureDocumentDbHelper
     path: Framework/Azure/Cqrs.Azure.DocumentDb/AzureDocumentDbHelper.cs
-    startLine: 22
+    startLine: 25
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nA helper for Azure Document DB.\n"
+  example: []
   syntax:
     content: 'public class AzureDocumentDbHelper : object, IAzureDocumentDbHelper'
     content.vb: >-
@@ -65,10 +67,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Logger
     path: Framework/Azure/Cqrs.Azure.DocumentDb/AzureDocumentDbHelper.cs
-    startLine: 24
+    startLine: 30
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nGets or sets the <see cref=\"!:ILogger\"></see>.\n"
+  example: []
   syntax:
     content: protected ILogger Logger { get; }
     parameters: []
@@ -100,10 +104,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AzureDocumentDbConnectionCache
     path: Framework/Azure/Cqrs.Azure.DocumentDb/AzureDocumentDbHelper.cs
-    startLine: 26
+    startLine: 35
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nGets the <xref href=\"Cqrs.Azure.DocumentDb.IAzureDocumentDbConnectionCache\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected IAzureDocumentDbConnectionCache AzureDocumentDbConnectionCache { get; }
     parameters: []
@@ -135,10 +141,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.DocumentDb/AzureDocumentDbHelper.cs
-    startLine: 28
+    startLine: 40
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Azure.DocumentDb.AzureDocumentDbHelper\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public AzureDocumentDbHelper(ILogger logger, IAzureDocumentDbConnectionCache azureDocumentDbConnectionCache)
     parameters:
@@ -170,17 +178,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateOrReadDatabase
     path: Framework/Azure/Cqrs.Azure.DocumentDb/AzureDocumentDbHelper.cs
-    startLine: 34
+    startLine: 51
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nGets a <see cref=\"!:Database\"></see> creating one if it doesn&apos;t already exist.\n"
+  example: []
   syntax:
     content: public Task<Database> CreateOrReadDatabase(DocumentClient client, string databaseName)
     parameters:
     - id: client
       type: DocumentClient
+      description: The <see cref="!:DocumentClient"></see> to use.
     - id: databaseName
       type: System.String
+      description: The name of the database to get.
     return:
       type: Task{Database}
     content.vb: Public Function CreateOrReadDatabase(client As DocumentClient, databaseName As String) As Task(Of Database)
@@ -209,21 +221,27 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateOrReadCollection
     path: Framework/Azure/Cqrs.Azure.DocumentDb/AzureDocumentDbHelper.cs
-    startLine: 88
+    startLine: 112
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nGets a <see cref=\"!:DocumentCollection\"></see> creating one if it doesn&apos;t already exist.\n"
+  example: []
   syntax:
     content: public Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName, string[] uniqiueIndexPropertyNames = null)
     parameters:
     - id: client
       type: DocumentClient
+      description: The <see cref="!:DocumentClient"></see> to use.
     - id: database
       type: Database
+      description: The <see cref="!:Database"></see> to look in.
     - id: collectionName
       type: System.String
+      description: The name of the collection to get.
     - id: uniqiueIndexPropertyNames
       type: System.String[]
+      description: Any unique properties the collection should enforce.
     return:
       type: Task{DocumentCollection}
     content.vb: Public Function CreateOrReadCollection(client As DocumentClient, database As Database, collectionName As String, uniqiueIndexPropertyNames As String() = Nothing) As Task(Of DocumentCollection)
@@ -255,15 +273,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ProcessFaultTollerantExceptions
     path: Framework/Azure/Cqrs.Azure.DocumentDb/AzureDocumentDbHelper.cs
-    startLine: 259
+    startLine: 287
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nProcess the provided <code data-dev-comment-type=\"paramref\">documentClientException</code> checking for operations that can be retired.\n"
+  example: []
   syntax:
     content: protected virtual void ProcessFaultTollerantExceptions(DocumentClientException documentClientException)
     parameters:
     - id: documentClientException
       type: DocumentClientException
+      description: The <see cref="!:DocumentClientException"></see> to check.
     content.vb: Protected Overridable Sub ProcessFaultTollerantExceptions(documentClientException As DocumentClientException)
   overload: Cqrs.Azure.DocumentDb.AzureDocumentDbHelper.ProcessFaultTollerantExceptions*
   modifiers.csharp:
@@ -290,15 +311,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ExecuteFaultTollerantFunction
     path: Framework/Azure/Cqrs.Azure.DocumentDb/AzureDocumentDbHelper.cs
-    startLine: 273
+    startLine: 305
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nExecute the provided <code data-dev-comment-type=\"paramref\">func</code> in a fault tolerant way.\n"
+  example: []
   syntax:
     content: public virtual T ExecuteFaultTollerantFunction<T>(Func<T> func)
     parameters:
     - id: func
       type: Func{{T}}
+      description: The <see cref="!:Func&lt;T>"></see> to execute.
     typeParameters:
     - id: T
     return:
@@ -334,15 +358,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ExecuteFaultTollerantFunction
     path: Framework/Azure/Cqrs.Azure.DocumentDb/AzureDocumentDbHelper.cs
-    startLine: 300
+    startLine: 336
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nExecute the provided <code data-dev-comment-type=\"paramref\">func</code> in a fault tolerant way.\n"
+  example: []
   syntax:
     content: public virtual void ExecuteFaultTollerantFunction(Action func)
     parameters:
     - id: func
       type: Action
+      description: The <see cref="!:Action"></see> to execute.
     content.vb: Public Overridable Sub ExecuteFaultTollerantFunction(func As Action)
   overload: Cqrs.Azure.DocumentDb.AzureDocumentDbHelper.ExecuteFaultTollerantFunction*
   implements:
@@ -391,12 +418,6 @@ references:
   name: ILogger
   nameWithType: ILogger
   fullName: ILogger
-- uid: Cqrs.Azure.DocumentDb.AzureDocumentDbHelper.AzureDocumentDbConnectionCache*
-  commentId: Overload:Cqrs.Azure.DocumentDb.AzureDocumentDbHelper.AzureDocumentDbConnectionCache
-  isExternal: false
-  name: AzureDocumentDbConnectionCache
-  nameWithType: AzureDocumentDbHelper.AzureDocumentDbConnectionCache
-  fullName: Cqrs.Azure.DocumentDb.AzureDocumentDbHelper.AzureDocumentDbConnectionCache
 - uid: Cqrs.Azure.DocumentDb.IAzureDocumentDbConnectionCache
   commentId: T:Cqrs.Azure.DocumentDb.IAzureDocumentDbConnectionCache
   parent: Cqrs.Azure.DocumentDb
@@ -404,6 +425,18 @@ references:
   name: IAzureDocumentDbConnectionCache
   nameWithType: IAzureDocumentDbConnectionCache
   fullName: Cqrs.Azure.DocumentDb.IAzureDocumentDbConnectionCache
+- uid: Cqrs.Azure.DocumentDb.AzureDocumentDbHelper.AzureDocumentDbConnectionCache*
+  commentId: Overload:Cqrs.Azure.DocumentDb.AzureDocumentDbHelper.AzureDocumentDbConnectionCache
+  isExternal: false
+  name: AzureDocumentDbConnectionCache
+  nameWithType: AzureDocumentDbHelper.AzureDocumentDbConnectionCache
+  fullName: Cqrs.Azure.DocumentDb.AzureDocumentDbHelper.AzureDocumentDbConnectionCache
+- uid: Cqrs.Azure.DocumentDb.AzureDocumentDbHelper
+  commentId: T:Cqrs.Azure.DocumentDb.AzureDocumentDbHelper
+  isExternal: false
+  name: AzureDocumentDbHelper
+  nameWithType: AzureDocumentDbHelper
+  fullName: Cqrs.Azure.DocumentDb.AzureDocumentDbHelper
 - uid: Cqrs.Azure.DocumentDb.AzureDocumentDbHelper.#ctor*
   commentId: Overload:Cqrs.Azure.DocumentDb.AzureDocumentDbHelper.#ctor
   isExternal: false

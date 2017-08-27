@@ -23,15 +23,26 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EventDataTableEntity
     path: Framework/Azure/Cqrs.Azure.BlobStorage/EventDataTableEntity.cs
-    startLine: 5
+    startLine: 17
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nA projection/entity especially designed to work with Azure Table storage.\n"
+  example: []
   syntax:
-    content: 'public class EventDataTableEntity<TEventData> : TableEntity<TEventData>, ITableEntity, IEventDataTableEntity<TEventData> where TEventData : EventData'
+    content: >-
+      [Serializable]
+
+      [DataContract]
+
+      public class EventDataTableEntity<TEventData> : TableEntity<TEventData>, ITableEntity, IEventDataTableEntity<TEventData> where TEventData : EventData
     typeParameters:
     - id: TEventData
     content.vb: >-
+      <Serializable>
+
+      <DataContract>
+
       Public Class EventDataTableEntity(Of TEventData As EventData)
           Inherits TableEntity(Of TEventData)
           Implements ITableEntity, IEventDataTableEntity(Of TEventData)
@@ -65,6 +76,13 @@ items:
   - System.Object.GetHashCode
   - System.Object.GetType
   - System.Object.MemberwiseClone
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+  - type: System.Runtime.Serialization.DataContractAttribute
+    ctor: System.Runtime.Serialization.DataContractAttribute.#ctor
+    arguments: []
   nameWithType.vb: EventDataTableEntity(Of TEventData)
   modifiers.csharp:
   - public
@@ -92,10 +110,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.BlobStorage/EventDataTableEntity.cs
-    startLine: 10
+    startLine: 27
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Azure.BlobStorage.EventDataTableEntity%601\" data-throw-if-not-resolved=\"false\"></xref> specificly setting <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableEntity.PartitionKey\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableEntity.RowKey\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public EventDataTableEntity(TEventData eventData, bool isCorrelationIdTableStorageStore = false)
     parameters:
@@ -129,10 +149,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.BlobStorage/EventDataTableEntity.cs
-    startLine: 18
+    startLine: 38
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Azure.BlobStorage.EventDataTableEntity%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public EventDataTableEntity()
     content.vb: Public Sub New
@@ -161,10 +183,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EventData
     path: Framework/Azure/Cqrs.Azure.BlobStorage/EventDataTableEntity.cs
-    startLine: 24
+    startLine: 47
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nGets or sets the <code data-dev-comment-type=\"typeparamref\">TEventData</code>.\n"
+  example: []
   syntax:
     content: >-
       [DataMember]
@@ -210,10 +234,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EventDataContent
     path: Framework/Azure/Cqrs.Azure.BlobStorage/EventDataTableEntity.cs
-    startLine: 33
+    startLine: 59
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nGets or sets a serialised version.\n"
+  example: []
   syntax:
     content: >-
       [DataMember]
@@ -1350,6 +1376,43 @@ references:
   - name: (
     nameWithType: (
     fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Azure.BlobStorage.EventDataTableEntity`1
+  commentId: T:Cqrs.Azure.BlobStorage.EventDataTableEntity`1
+  isExternal: false
+  name: EventDataTableEntity<TEventData>
+  nameWithType: EventDataTableEntity<TEventData>
+  fullName: Cqrs.Azure.BlobStorage.EventDataTableEntity<TEventData>
+  nameWithType.vb: EventDataTableEntity(Of TEventData)
+  fullName.vb: Cqrs.Azure.BlobStorage.EventDataTableEntity(Of TEventData)
+  name.vb: EventDataTableEntity(Of TEventData)
+  spec.csharp:
+  - uid: Cqrs.Azure.BlobStorage.EventDataTableEntity`1
+    name: EventDataTableEntity
+    nameWithType: EventDataTableEntity
+    fullName: Cqrs.Azure.BlobStorage.EventDataTableEntity
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEventData
+    nameWithType: TEventData
+    fullName: TEventData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.BlobStorage.EventDataTableEntity`1
+    name: EventDataTableEntity
+    nameWithType: EventDataTableEntity
+    fullName: Cqrs.Azure.BlobStorage.EventDataTableEntity
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEventData
+    nameWithType: TEventData
+    fullName: TEventData
   - name: )
     nameWithType: )
     fullName: )

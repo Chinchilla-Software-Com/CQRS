@@ -5,6 +5,7 @@ items:
   id: DocumentDbException
   parent: Cqrs.Azure.DocumentDb
   children:
+  - Cqrs.Azure.DocumentDb.DocumentDbException.#ctor(Exception)
   - Cqrs.Azure.DocumentDb.DocumentDbException.#ctor(System.String,Exception)
   langs:
   - csharp
@@ -20,10 +21,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DocumentDbException
     path: Framework/Azure/Cqrs.Azure.DocumentDb/DocumentDbException.cs
-    startLine: 12
+    startLine: 15
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nA non-fault tolerant <see cref=\"!:Exception\"></see> while interacting with DocumentDB.\n"
+  example: []
   syntax:
     content: 'public class DocumentDbException : Exception'
     content.vb: >-
@@ -55,18 +58,58 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.DocumentDb/DocumentDbException.cs
-    startLine: 14
+    startLine: 23
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nInstantiate a new instance of <xref href=\"Cqrs.Azure.DocumentDb.DocumentDbException\" data-throw-if-not-resolved=\"false\"></xref> with a specified error message and a reference to the inner <code data-dev-comment-type=\"paramref\">exception</code> that is the cause of this <see cref=\"!:Exception\"></see>.\n"
+  example: []
   syntax:
     content: public DocumentDbException(string message, Exception exception)
     parameters:
     - id: message
       type: System.String
+      description: The error message that explains the reason for the exception.
     - id: exception
       type: Exception
+      description: The <see cref="!:Exception"></see> that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner <see cref="!:Exception"></see> is specified.
     content.vb: Public Sub New(message As String, exception As Exception)
+  overload: Cqrs.Azure.DocumentDb.DocumentDbException.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Cqrs.Azure.DocumentDb.DocumentDbException.#ctor(Exception)
+  commentId: M:Cqrs.Azure.DocumentDb.DocumentDbException.#ctor(Exception)
+  id: '#ctor(Exception)'
+  parent: Cqrs.Azure.DocumentDb.DocumentDbException
+  langs:
+  - csharp
+  - vb
+  name: DocumentDbException(Exception)
+  nameWithType: DocumentDbException.DocumentDbException(Exception)
+  fullName: Cqrs.Azure.DocumentDb.DocumentDbException.DocumentDbException(Exception)
+  type: Constructor
+  source:
+    remote:
+      path: Framework/Azure/Cqrs.Azure.DocumentDb/DocumentDbException.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: .ctor
+    path: Framework/Azure/Cqrs.Azure.DocumentDb/DocumentDbException.cs
+    startLine: 32
+  assemblies:
+  - Cqrs.Azure.DocumentDb
+  namespace: Cqrs.Azure.DocumentDb
+  summary: "\nInstantiate a new instance of <xref href=\"Cqrs.Azure.DocumentDb.DocumentDbException\" data-throw-if-not-resolved=\"false\"></xref> with a reference to the inner <code data-dev-comment-type=\"paramref\">exception</code> that is the cause of this <see cref=\"!:Exception\"></see>.\n"
+  example: []
+  syntax:
+    content: public DocumentDbException(Exception exception)
+    parameters:
+    - id: exception
+      type: Exception
+      description: The <see cref="!:Exception"></see> that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner <see cref="!:Exception"></see> is specified.
+    content.vb: Public Sub New(exception As Exception)
   overload: Cqrs.Azure.DocumentDb.DocumentDbException.#ctor*
   modifiers.csharp:
   - public
@@ -92,6 +135,12 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: Cqrs.Azure.DocumentDb.DocumentDbException
+  commentId: T:Cqrs.Azure.DocumentDb.DocumentDbException
+  isExternal: false
+  name: DocumentDbException
+  nameWithType: DocumentDbException
+  fullName: Cqrs.Azure.DocumentDb.DocumentDbException
 - uid: Cqrs.Azure.DocumentDb.DocumentDbException.#ctor*
   commentId: Overload:Cqrs.Azure.DocumentDb.DocumentDbException.#ctor
   isExternal: false
@@ -106,7 +155,6 @@ references:
   nameWithType: String
   fullName: System.String
 - uid: Exception
-  commentId: '!:Exception'
   isExternal: true
   name: Exception
   nameWithType: Exception

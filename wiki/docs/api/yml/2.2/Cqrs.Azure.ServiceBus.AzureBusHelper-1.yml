@@ -421,7 +421,7 @@ items:
       description: The <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> to send.
     - id: framework
       type: System.String
-      description: The framework the <span class="paramref">command</span> is being sent from.
+      description: The framework the <code data-dev-comment-type="paramref">command</code> is being sent from.
     typeParameters:
     - id: TCommand
       description: The <see cref="!:Type"></see> of<xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> being sent.
@@ -470,7 +470,7 @@ items:
       description: The <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> to send.
     - id: framework
       type: System.String
-      description: The framework the <span class="paramref">command</span> is being sent from.
+      description: The framework the <code data-dev-comment-type="paramref">command</code> is being sent from.
     typeParameters:
     - id: TCommand
       description: The <see cref="!:Type"></see> of<xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> being sent.
@@ -511,7 +511,7 @@ items:
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
-  summary: "\nDeserialises and processes the <span class=\"paramref\">messageBody</span> received from the network through the provided <span class=\"paramref\">receiveCommandHandler</span>.\n"
+  summary: "\nDeserialises and processes the <code data-dev-comment-type=\"paramref\">messageBody</code> received from the network through the provided <code data-dev-comment-type=\"paramref\">receiveCommandHandler</code>.\n"
   example: []
   syntax:
     content: public virtual ICommand<TAuthenticationToken> ReceiveCommand(string messageBody, Func<ICommand<TAuthenticationToken>, bool ? > receiveCommandHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)
@@ -569,7 +569,7 @@ items:
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
-  summary: "\nThe default command handler that\ncheck if the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> has already been processed by this framework,\nchecks if the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> is required,\nfinds the handler from the provided <span class=\"paramref\">routeManager</span>.\n"
+  summary: "\nThe default command handler that\ncheck if the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> has already been processed by this framework,\nchecks if the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> is required,\nfinds the handler from the provided <code data-dev-comment-type=\"paramref\">routeManager</code>.\n"
   example: []
   syntax:
     content: public virtual bool ? DefaultReceiveCommand(ICommand<TAuthenticationToken> command, RouteManager routeManager, string framework)
@@ -585,7 +585,7 @@ items:
       description: The current framework.
     return:
       type: System.Nullable{System.Boolean}
-      description: "\nTrue indicates the <span class=\"paramref\">command</span> was successfully handled by a handler.\nFalse indicates the <span class=\"paramref\">command</span> wasn&apos;t handled, but didn&apos;t throw an error, so by convention, that means it was skipped.\nNull indicates the command<span class=\"paramref\">command</span> wasn&apos;t handled as it was already handled.\n"
+      description: "\nTrue indicates the <code data-dev-comment-type=\"paramref\">command</code> was successfully handled by a handler.\nFalse indicates the <code data-dev-comment-type=\"paramref\">command</code> wasn&apos;t handled, but didn&apos;t throw an error, so by convention, that means it was skipped.\nNull indicates the command<code data-dev-comment-type=\"paramref\">command</code> wasn&apos;t handled as it was already handled.\n"
     content.vb: Public Overridable Function DefaultReceiveCommand(command As ICommand(Of TAuthenticationToken), routeManager As RouteManager, framework As String) As Boolean?
   overload: Cqrs.Azure.ServiceBus.AzureBusHelper`1.DefaultReceiveCommand*
   implements:
@@ -631,7 +631,7 @@ items:
       description: The <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> to send.
     - id: framework
       type: System.String
-      description: The framework the <span class="paramref">event</span> is being sent from.
+      description: The framework the <code data-dev-comment-type="paramref">event</code> is being sent from.
     typeParameters:
     - id: TEvent
       description: The <see cref="!:Type"></see> of<xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> being sent.
@@ -680,7 +680,7 @@ items:
       description: The <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> to send.
     - id: framework
       type: System.String
-      description: The framework the <span class="paramref">event</span> is being sent from.
+      description: The framework the <code data-dev-comment-type="paramref">event</code> is being sent from.
     typeParameters:
     - id: TEvent
       description: The <see cref="!:Type"></see> of<xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> being sent.
@@ -721,7 +721,7 @@ items:
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
-  summary: "\nDeserialises and processes the <span class=\"paramref\">messageBody</span> received from the network through the provided <span class=\"paramref\">receiveEventHandler</span>.\n"
+  summary: "\nDeserialises and processes the <code data-dev-comment-type=\"paramref\">messageBody</code> received from the network through the provided <code data-dev-comment-type=\"paramref\">receiveEventHandler</code>.\n"
   example: []
   syntax:
     content: public virtual IEvent<TAuthenticationToken> ReceiveEvent(string messageBody, Func<IEvent<TAuthenticationToken>, bool ? > receiveEventHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)
@@ -824,7 +824,7 @@ items:
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
-  summary: "\nThe default event handler that\ncheck if the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> has already been processed by this framework,\nchecks if the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> is required,\nfinds the handler from the provided <span class=\"paramref\">routeManager</span>.\n"
+  summary: "\nThe default event handler that\ncheck if the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> has already been processed by this framework,\nchecks if the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> is required,\nfinds the handler from the provided <code data-dev-comment-type=\"paramref\">routeManager</code>.\n"
   example: []
   syntax:
     content: public virtual bool ? DefaultReceiveEvent(IEvent<TAuthenticationToken> event, RouteManager routeManager, string framework)
@@ -840,7 +840,7 @@ items:
       description: The current framework.
     return:
       type: System.Nullable{System.Boolean}
-      description: "\nTrue indicates the <span class=\"paramref\">event</span> was successfully handled by a handler.\nFalse indicates the <span class=\"paramref\">event</span> wasn&apos;t handled, but didn&apos;t throw an error, so by convention, that means it was skipped.\nNull indicates the <span class=\"paramref\">event</span> wasn&apos;t handled as it was already handled.\n"
+      description: "\nTrue indicates the <code data-dev-comment-type=\"paramref\">event</code> was successfully handled by a handler.\nFalse indicates the <code data-dev-comment-type=\"paramref\">event</code> wasn&apos;t handled, but didn&apos;t throw an error, so by convention, that means it was skipped.\nNull indicates the <code data-dev-comment-type=\"paramref\">event</code> wasn&apos;t handled as it was already handled.\n"
     content.vb: Public Overridable Function DefaultReceiveEvent(event As IEvent(Of TAuthenticationToken), routeManager As RouteManager, framework As String) As Boolean?
   overload: Cqrs.Azure.ServiceBus.AzureBusHelper`1.DefaultReceiveEvent*
   implements:
@@ -876,7 +876,7 @@ items:
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
-  summary: "\nManually registers the provided <span class=\"paramref\">handler</span> \non the provided <span class=\"paramref\">routeManger</span>\n"
+  summary: "\nManually registers the provided <code data-dev-comment-type=\"paramref\">handler</code> \non the provided <code data-dev-comment-type=\"paramref\">routeManger</code>\n"
   example: []
   syntax:
     content: 'public virtual void RegisterHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)where TMessage : IMessage'
@@ -893,7 +893,7 @@ items:
       type: System.Boolean
     typeParameters:
     - id: TMessage
-      description: The <see cref="!:Type"></see> of <xref href="Cqrs.Messages.IMessage" data-throw-if-not-resolved="false"></xref> the <span class="paramref">handler</span> can handle.
+      description: The <see cref="!:Type"></see> of <xref href="Cqrs.Messages.IMessage" data-throw-if-not-resolved="false"></xref> the <code data-dev-comment-type="paramref">handler</code> can handle.
     content.vb: Public Overridable Sub RegisterHandler(Of TMessage As IMessage)(telemetryHelper As ITelemetryHelper, routeManger As RouteManager, handler As Action(Of TMessage), targetedType As Type, holdMessageLock As Boolean = True)
   overload: Cqrs.Azure.ServiceBus.AzureBusHelper`1.RegisterHandler*
   implements:
