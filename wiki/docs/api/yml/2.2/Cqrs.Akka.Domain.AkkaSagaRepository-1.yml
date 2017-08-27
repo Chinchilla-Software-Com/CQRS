@@ -23,14 +23,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AkkaSagaRepository
     path: Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs
-    startLine: 18
+    startLine: 22
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nA <xref href=\"Cqrs.Domain.SagaRepository%601\" data-throw-if-not-resolved=\"false\"></xref> that is safe to use within Akka.NET\n"
+  example: []
   syntax:
     content: 'public class AkkaSagaRepository<TAuthenticationToken> : SagaRepository<TAuthenticationToken>, IAkkaSagaRepository<TAuthenticationToken>, ISagaRepository<TAuthenticationToken>'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of authentication token.
     content.vb: >-
       Public Class AkkaSagaRepository(Of TAuthenticationToken)
           Inherits SagaRepository(Of TAuthenticationToken)
@@ -84,10 +87,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EventPublisher
     path: Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs
-    startLine: 22
+    startLine: 29
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nGets the <xref href=\"Cqrs.Akka.Events.IAkkaEventPublisherProxy%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected IAkkaEventPublisherProxy<TAuthenticationToken> EventPublisher { get; }
     parameters: []
@@ -121,10 +126,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs
-    startLine: 24
+    startLine: 34
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Akka.Domain.AkkaSagaRepository%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: public AkkaSagaRepository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICorrelationIdHelper correlationIdHelper, IAkkaEventPublisherProxy<TAuthenticationToken> eventPublisher)
     parameters:
@@ -165,17 +172,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateSaga
     path: Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs
-    startLine: 32
+    startLine: 47
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nCalls <xref href=\"Cqrs.Domain.Factories.IAggregateFactory.Create(System.Type%2cSystem.Nullable%7bSystem.Guid%7d%2cSystem.Boolean)\" data-throw-if-not-resolved=\"false\"></xref> to get a, <code data-dev-comment-type=\"typeparamref\">TSaga</code>.\n"
+  example: []
   syntax:
     content: 'protected override TSaga CreateSaga<TSaga>(Guid id)where TSaga : ISaga<TAuthenticationToken>'
     parameters:
     - id: id
       type: System.Guid
+      description: The id of the <code data-dev-comment-type="typeparamref">TSaga</code> to create.
     typeParameters:
     - id: TSaga
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of <xref href="Cqrs.Domain.ISaga%601" data-throw-if-not-resolved="false"></xref>.
     return:
       type: '{TSaga}'
     content.vb: Protected Overrides Function CreateSaga(Of TSaga As ISaga(Of TAuthenticationToken))(id As Guid) As TSaga
@@ -208,10 +219,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishEvent
     path: Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs
-    startLine: 39
+    startLine: 58
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nPublish the saved <code data-dev-comment-type=\"paramref\">event</code> asynchronously on <xref href=\"Cqrs.Akka.Domain.AkkaSagaRepository%601.EventPublisher\" data-throw-if-not-resolved=\"false\"></xref>,\nthen calls <xref href=\"Cqrs.Domain.SagaRepository%601.PublishEvent(Cqrs.Events.ISagaEvent%7b%600%7d)\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected override void PublishEvent(ISagaEvent<TAuthenticationToken> event)
     parameters:
@@ -230,6 +243,50 @@ items:
   fullName.vb: Cqrs.Akka.Domain.AkkaSagaRepository(Of TAuthenticationToken).PublishEvent(Cqrs.Events.ISagaEvent(Of TAuthenticationToken))
   name.vb: PublishEvent(ISagaEvent(Of TAuthenticationToken))
 references:
+- uid: Cqrs.Domain.SagaRepository`1
+  commentId: T:Cqrs.Domain.SagaRepository`1
+  isExternal: false
+  name: SagaRepository<TAuthenticationToken>
+  nameWithType: SagaRepository<TAuthenticationToken>
+  fullName: Cqrs.Domain.SagaRepository<TAuthenticationToken>
+  nameWithType.vb: SagaRepository(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.SagaRepository(Of TAuthenticationToken)
+  name.vb: SagaRepository(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.SagaRepository`1
+    name: SagaRepository
+    nameWithType: SagaRepository
+    fullName: Cqrs.Domain.SagaRepository
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.SagaRepository`1
+    name: SagaRepository
+    nameWithType: SagaRepository
+    fullName: Cqrs.Domain.SagaRepository
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: Cqrs.Akka.Domain
   commentId: N:Cqrs.Akka.Domain
   isExternal: false
@@ -1054,43 +1111,6 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: Cqrs.Domain.SagaRepository`1
-  commentId: T:Cqrs.Domain.SagaRepository`1
-  isExternal: false
-  name: SagaRepository<TAuthenticationToken>
-  nameWithType: SagaRepository<TAuthenticationToken>
-  fullName: Cqrs.Domain.SagaRepository<TAuthenticationToken>
-  nameWithType.vb: SagaRepository(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Domain.SagaRepository(Of TAuthenticationToken)
-  name.vb: SagaRepository(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Domain.SagaRepository`1
-    name: SagaRepository
-    nameWithType: SagaRepository
-    fullName: Cqrs.Domain.SagaRepository
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Domain.SagaRepository`1
-    name: SagaRepository
-    nameWithType: SagaRepository
-    fullName: Cqrs.Domain.SagaRepository
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Domain
   commentId: N:Cqrs.Domain
   isExternal: false
@@ -1575,6 +1595,43 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Akka.Events.IAkkaEventPublisherProxy`1
+  commentId: T:Cqrs.Akka.Events.IAkkaEventPublisherProxy`1
+  isExternal: false
+  name: IAkkaEventPublisherProxy<TAuthenticationToken>
+  nameWithType: IAkkaEventPublisherProxy<TAuthenticationToken>
+  fullName: Cqrs.Akka.Events.IAkkaEventPublisherProxy<TAuthenticationToken>
+  nameWithType.vb: IAkkaEventPublisherProxy(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Akka.Events.IAkkaEventPublisherProxy(Of TAuthenticationToken)
+  name.vb: IAkkaEventPublisherProxy(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Akka.Events.IAkkaEventPublisherProxy`1
+    name: IAkkaEventPublisherProxy
+    nameWithType: IAkkaEventPublisherProxy
+    fullName: Cqrs.Akka.Events.IAkkaEventPublisherProxy
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Akka.Events.IAkkaEventPublisherProxy`1
+    name: IAkkaEventPublisherProxy
+    nameWithType: IAkkaEventPublisherProxy
+    fullName: Cqrs.Akka.Events.IAkkaEventPublisherProxy
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Akka.Domain.AkkaSagaRepository`1.EventPublisher*
   commentId: Overload:Cqrs.Akka.Domain.AkkaSagaRepository`1.EventPublisher
   isExternal: false
@@ -1621,20 +1678,26 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Akka.Events.IAkkaEventPublisherProxy`1
-  commentId: T:Cqrs.Akka.Events.IAkkaEventPublisherProxy`1
+- uid: Cqrs.Akka.Events
+  commentId: N:Cqrs.Akka.Events
   isExternal: false
-  name: IAkkaEventPublisherProxy<TAuthenticationToken>
-  nameWithType: IAkkaEventPublisherProxy<TAuthenticationToken>
-  fullName: Cqrs.Akka.Events.IAkkaEventPublisherProxy<TAuthenticationToken>
-  nameWithType.vb: IAkkaEventPublisherProxy(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Akka.Events.IAkkaEventPublisherProxy(Of TAuthenticationToken)
-  name.vb: IAkkaEventPublisherProxy(Of TAuthenticationToken)
+  name: Cqrs.Akka.Events
+  nameWithType: Cqrs.Akka.Events
+  fullName: Cqrs.Akka.Events
+- uid: Cqrs.Akka.Domain.AkkaSagaRepository`1
+  commentId: T:Cqrs.Akka.Domain.AkkaSagaRepository`1
+  isExternal: false
+  name: AkkaSagaRepository<TAuthenticationToken>
+  nameWithType: AkkaSagaRepository<TAuthenticationToken>
+  fullName: Cqrs.Akka.Domain.AkkaSagaRepository<TAuthenticationToken>
+  nameWithType.vb: AkkaSagaRepository(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Akka.Domain.AkkaSagaRepository(Of TAuthenticationToken)
+  name.vb: AkkaSagaRepository(Of TAuthenticationToken)
   spec.csharp:
-  - uid: Cqrs.Akka.Events.IAkkaEventPublisherProxy`1
-    name: IAkkaEventPublisherProxy
-    nameWithType: IAkkaEventPublisherProxy
-    fullName: Cqrs.Akka.Events.IAkkaEventPublisherProxy
+  - uid: Cqrs.Akka.Domain.AkkaSagaRepository`1
+    name: AkkaSagaRepository
+    nameWithType: AkkaSagaRepository
+    fullName: Cqrs.Akka.Domain.AkkaSagaRepository
   - name: <
     nameWithType: <
     fullName: <
@@ -1645,10 +1708,10 @@ references:
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: Cqrs.Akka.Events.IAkkaEventPublisherProxy`1
-    name: IAkkaEventPublisherProxy
-    nameWithType: IAkkaEventPublisherProxy
-    fullName: Cqrs.Akka.Events.IAkkaEventPublisherProxy
+  - uid: Cqrs.Akka.Domain.AkkaSagaRepository`1
+    name: AkkaSagaRepository
+    nameWithType: AkkaSagaRepository
+    fullName: Cqrs.Akka.Domain.AkkaSagaRepository
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
@@ -1658,12 +1721,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Akka.Events
-  commentId: N:Cqrs.Akka.Events
-  isExternal: false
-  name: Cqrs.Akka.Events
-  nameWithType: Cqrs.Akka.Events
-  fullName: Cqrs.Akka.Events
 - uid: Cqrs.Akka.Domain.AkkaSagaRepository`1.#ctor*
   commentId: Overload:Cqrs.Akka.Domain.AkkaSagaRepository`1.#ctor
   isExternal: false
@@ -1854,6 +1911,139 @@ references:
   name: cdmdotnet.Logging
   nameWithType: cdmdotnet.Logging
   fullName: cdmdotnet.Logging
+- uid: Cqrs.Domain.Factories.IAggregateFactory.Create(System.Type,System.Nullable{System.Guid},System.Boolean)
+  commentId: M:Cqrs.Domain.Factories.IAggregateFactory.Create(System.Type,System.Nullable{System.Guid},System.Boolean)
+  parent: Cqrs.Domain.Factories.IAggregateFactory
+  isExternal: true
+  name: Create(Type, Nullable<Guid>, Boolean)
+  nameWithType: IAggregateFactory.Create(Type, Nullable<Guid>, Boolean)
+  fullName: Cqrs.Domain.Factories.IAggregateFactory.Create(System.Type, System.Nullable<System.Guid>, System.Boolean)
+  nameWithType.vb: IAggregateFactory.Create(Type, Nullable(Of Guid), Boolean)
+  fullName.vb: Cqrs.Domain.Factories.IAggregateFactory.Create(System.Type, System.Nullable(Of System.Guid), System.Boolean)
+  name.vb: Create(Type, Nullable(Of Guid), Boolean)
+  spec.csharp:
+  - uid: Cqrs.Domain.Factories.IAggregateFactory.Create(System.Type,System.Nullable{System.Guid},System.Boolean)
+    name: Create
+    nameWithType: IAggregateFactory.Create
+    fullName: Cqrs.Domain.Factories.IAggregateFactory.Create
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Domain.Factories.IAggregateFactory.Create(System.Type,System.Nullable{System.Guid},System.Boolean)
+    name: Create
+    nameWithType: IAggregateFactory.Create
+    fullName: Cqrs.Domain.Factories.IAggregateFactory.Create
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.ISaga`1
+  commentId: T:Cqrs.Domain.ISaga`1
+  isExternal: false
+  name: ISaga<TAuthenticationToken>
+  nameWithType: ISaga<TAuthenticationToken>
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>
+  nameWithType.vb: ISaga(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken)
+  name.vb: ISaga(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.ISaga`1
+    name: ISaga
+    nameWithType: ISaga
+    fullName: Cqrs.Domain.ISaga
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.ISaga`1
+    name: ISaga
+    nameWithType: ISaga
+    fullName: Cqrs.Domain.ISaga
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Domain.SagaRepository{{TAuthenticationToken}}.CreateSaga``1(System.Guid)
   commentId: M:Cqrs.Domain.SagaRepository{`0}.CreateSaga``1(System.Guid)
   parent: Cqrs.Domain.SagaRepository{{TAuthenticationToken}}
@@ -1963,6 +2153,65 @@ references:
   name: TSaga
   nameWithType: TSaga
   fullName: TSaga
+- uid: Cqrs.Akka.Domain.AkkaSagaRepository`1.EventPublisher
+  commentId: P:Cqrs.Akka.Domain.AkkaSagaRepository`1.EventPublisher
+- uid: Cqrs.Domain.SagaRepository`1.PublishEvent(Cqrs.Events.ISagaEvent{`0})
+  commentId: M:Cqrs.Domain.SagaRepository`1.PublishEvent(Cqrs.Events.ISagaEvent{`0})
+  isExternal: false
+  name: PublishEvent(ISagaEvent<TAuthenticationToken>)
+  nameWithType: SagaRepository<TAuthenticationToken>.PublishEvent(ISagaEvent<TAuthenticationToken>)
+  fullName: Cqrs.Domain.SagaRepository<TAuthenticationToken>.PublishEvent(Cqrs.Events.ISagaEvent<TAuthenticationToken>)
+  nameWithType.vb: SagaRepository(Of TAuthenticationToken).PublishEvent(ISagaEvent(Of TAuthenticationToken))
+  fullName.vb: Cqrs.Domain.SagaRepository(Of TAuthenticationToken).PublishEvent(Cqrs.Events.ISagaEvent(Of TAuthenticationToken))
+  name.vb: PublishEvent(ISagaEvent(Of TAuthenticationToken))
+  spec.csharp:
+  - uid: Cqrs.Domain.SagaRepository`1.PublishEvent(Cqrs.Events.ISagaEvent{`0})
+    name: PublishEvent
+    nameWithType: SagaRepository<TAuthenticationToken>.PublishEvent
+    fullName: Cqrs.Domain.SagaRepository<TAuthenticationToken>.PublishEvent
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Events.ISagaEvent`1
+    name: ISagaEvent
+    nameWithType: ISagaEvent
+    fullName: Cqrs.Events.ISagaEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Domain.SagaRepository`1.PublishEvent(Cqrs.Events.ISagaEvent{`0})
+    name: PublishEvent
+    nameWithType: SagaRepository(Of TAuthenticationToken).PublishEvent
+    fullName: Cqrs.Domain.SagaRepository(Of TAuthenticationToken).PublishEvent
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Events.ISagaEvent`1
+    name: ISagaEvent
+    nameWithType: ISagaEvent
+    fullName: Cqrs.Events.ISagaEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Domain.SagaRepository{{TAuthenticationToken}}.PublishEvent(Cqrs.Events.ISagaEvent{{TAuthenticationToken}})
   commentId: M:Cqrs.Domain.SagaRepository{`0}.PublishEvent(Cqrs.Events.ISagaEvent{`0})
   parent: Cqrs.Domain.SagaRepository{{TAuthenticationToken}}
@@ -2064,63 +2313,6 @@ references:
   - name: TAuthenticationToken
     nameWithType: TAuthenticationToken
     fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.Domain.SagaRepository`1.PublishEvent(Cqrs.Events.ISagaEvent{`0})
-  commentId: M:Cqrs.Domain.SagaRepository`1.PublishEvent(Cqrs.Events.ISagaEvent{`0})
-  isExternal: false
-  name: PublishEvent(ISagaEvent<TAuthenticationToken>)
-  nameWithType: SagaRepository<TAuthenticationToken>.PublishEvent(ISagaEvent<TAuthenticationToken>)
-  fullName: Cqrs.Domain.SagaRepository<TAuthenticationToken>.PublishEvent(Cqrs.Events.ISagaEvent<TAuthenticationToken>)
-  nameWithType.vb: SagaRepository(Of TAuthenticationToken).PublishEvent(ISagaEvent(Of TAuthenticationToken))
-  fullName.vb: Cqrs.Domain.SagaRepository(Of TAuthenticationToken).PublishEvent(Cqrs.Events.ISagaEvent(Of TAuthenticationToken))
-  name.vb: PublishEvent(ISagaEvent(Of TAuthenticationToken))
-  spec.csharp:
-  - uid: Cqrs.Domain.SagaRepository`1.PublishEvent(Cqrs.Events.ISagaEvent{`0})
-    name: PublishEvent
-    nameWithType: SagaRepository<TAuthenticationToken>.PublishEvent
-    fullName: Cqrs.Domain.SagaRepository<TAuthenticationToken>.PublishEvent
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: Cqrs.Events.ISagaEvent`1
-    name: ISagaEvent
-    nameWithType: ISagaEvent
-    fullName: Cqrs.Events.ISagaEvent
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: Cqrs.Domain.SagaRepository`1.PublishEvent(Cqrs.Events.ISagaEvent{`0})
-    name: PublishEvent
-    nameWithType: SagaRepository(Of TAuthenticationToken).PublishEvent
-    fullName: Cqrs.Domain.SagaRepository(Of TAuthenticationToken).PublishEvent
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: Cqrs.Events.ISagaEvent`1
-    name: ISagaEvent
-    nameWithType: ISagaEvent
-    fullName: Cqrs.Events.ISagaEvent
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
   - name: )
     nameWithType: )
     fullName: )

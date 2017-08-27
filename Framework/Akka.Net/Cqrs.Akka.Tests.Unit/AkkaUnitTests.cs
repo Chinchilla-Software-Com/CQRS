@@ -124,7 +124,7 @@ namespace Cqrs.Akka.Tests.Unit
 			FinalCommandReached.Add(correlationId, false);
 
 			// Act
-			commandBusProxy.Send(command);
+			commandBusProxy.Publish(command);
 
 			// Assert
 			SpinWait.SpinUntil
