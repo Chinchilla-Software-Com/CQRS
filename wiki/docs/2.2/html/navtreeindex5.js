@@ -1,11 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"classCqrs_1_1EventStore_1_1EventStore_add7396a800fe8f64c61406311e8fee1d.html#add7396a800fe8f64c61406311e8fee1d":[1,0,0,11,2,4],
-"classCqrs_1_1EventStore_1_1EventStore_ae1bc9d364582e951ccdc0f91908b94a2.html#ae1bc9d364582e951ccdc0f91908b94a2":[1,0,0,11,2,8],
-"classCqrs_1_1EventStore_1_1EventStore_ae9733f8511daf86ae3dac78bcbc5b2f0.html#ae9733f8511daf86ae3dac78bcbc5b2f0":[1,0,0,11,2,7],
-"classCqrs_1_1EventStore_1_1ProjectionReader.html":[1,0,0,11,7],
-"classCqrs_1_1EventStore_1_1ProjectionReader_a2c7ada08a9525c161eb7e42e2dbf55e0.html#a2c7ada08a9525c161eb7e42e2dbf55e0":[1,0,0,11,7,3],
-"classCqrs_1_1EventStore_1_1ProjectionReader_a87d5f996f75577bb6ae18704c9a590a2.html#a87d5f996f75577bb6ae18704c9a590a2":[1,0,0,11,7,0],
 "classCqrs_1_1EventStore_1_1ProjectionReader_ab169b1404cc40751c3a71c772ed0eaa4.html#ab169b1404cc40751c3a71c772ed0eaa4":[1,0,0,11,7,4],
 "classCqrs_1_1EventStore_1_1ProjectionReader_adb256fc2c761a0add40c84fe2c1cb6e8.html#adb256fc2c761a0add40c84fe2c1cb6e8":[1,0,0,11,7,2],
 "classCqrs_1_1EventStore_1_1ProjectionReader_adcc229abde429acfa6b125b3a93a85b4.html#adcc229abde429acfa6b125b3a93a85b4":[1,0,0,11,7,1],
@@ -249,5 +243,11 @@ var NAVTREEINDEX5 =
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_afb24fa31922f1297f7d7d80c7b14ee14.html#afb24fa31922f1297f7d7d80c7b14ee14":[1,0,0,17,2,4,0],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_afcf5a4f8e445742625b9ca45bc455247.html#afcf5a4f8e445742625b9ca45bc455247":[1,0,0,17,2,4,5],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a13f6823671d7cb9c042d8f7156a51b89.html#a13f6823671d7cb9c042d8f7156a51b89":[1,0,0,17,2,3,4],
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a2944d6e589401531ba4283b984140c0e.html#a2944d6e589401531ba4283b984140c0e":[1,0,0,17,2,3,7]
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a2944d6e589401531ba4283b984140c0e.html#a2944d6e589401531ba4283b984140c0e":[1,0,0,17,2,3,7],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a37e57e6f1e4e545630c1c98a5aab46a3.html#a37e57e6f1e4e545630c1c98a5aab46a3":[1,0,0,17,2,3,0],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a60ae02928a3ae8cb99d46f6c340b5138.html#a60ae02928a3ae8cb99d46f6c340b5138":[1,0,0,17,2,3,6],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a6a6f0303cd412974d90be87d281e81f5.html#a6a6f0303cd412974d90be87d281e81f5":[1,0,0,17,2,3,5],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a7a1ac8e59dc5bff0bb6562fb4f43e8df.html#a7a1ac8e59dc5bff0bb6562fb4f43e8df":[1,0,0,17,2,3,1],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_aa008df8aa5d4e63a2123735acb7cd775.html#aa008df8aa5d4e63a2123735acb7cd775":[1,0,0,17,2,3,9],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_aa6a9499aa1dcde55d82d8e0f3b5bd077.html#aa6a9499aa1dcde55d82d8e0f3b5bd077":[1,0,0,17,2,3,3]
 };

@@ -9,8 +9,6 @@ var classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher =
     [ "PublishAndWait< TCommand, TEvent >", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher_a396d965b3c74f546923840a680539164.html#a396d965b3c74f546923840a680539164", null ],
     [ "PublishAndWait< TCommand, TEvent >", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher_a158c0f61847635a7e2b6be760f5927ee.html#a158c0f61847635a7e2b6be760f5927ee", null ],
     [ "PublishAndWait< TCommand, TEvent >", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher_a80ae82e4812d7e52eafae1dcbcd4404a.html#a80ae82e4812d7e52eafae1dcbcd4404a", null ],
-    [ "Send< TCommand >", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher_a79cf34f63b994b3f70086aa6543d3a53.html#a79cf34f63b994b3f70086aa6543d3a53", null ],
-    [ "Send< TCommand >", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher_ae19e74f3221ff9175a03a66bb77cbf47.html#ae19e74f3221ff9175a03a66bb77cbf47", null ],
     [ "ActorReference", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher_a3ad0660fe46ca4b238a7e2a8cecad19c.html#a3ad0660fe46ca4b238a7e2a8cecad19c", null ],
     [ "CommandReceiver", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher_a000c2cddf20768b5feec16a8f4e02587.html#a000c2cddf20768b5feec16a8f4e02587", null ]
 ];

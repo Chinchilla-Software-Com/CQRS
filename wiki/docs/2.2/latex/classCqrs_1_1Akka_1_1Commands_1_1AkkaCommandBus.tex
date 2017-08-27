@@ -15,15 +15,11 @@ Inheritance diagram for Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus$<$ T\+Authen
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a255b78be5cb216dcd30e2d2dd1240c06_a255b78be5cb216dcd30e2d2dd1240c06}{Akka\+Command\+Bus} (\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper}{I\+Bus\+Helper} bus\+Helper, \hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}$<$ T\+Authentication\+Token $>$ authentication\+Token\+Helper, I\+Correlation\+Id\+Helper correlation\+Id\+Helper, \hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver} dependency\+Resolver, I\+Logger logger, \hyperlink{interfaceCqrs_1_1Commands_1_1ICommandPublisher}{I\+Command\+Publisher}$<$ T\+Authentication\+Token $>$ command\+Publisher, \hyperlink{interfaceCqrs_1_1Commands_1_1ICommandReceiver}{I\+Command\+Receiver}$<$ T\+Authentication\+Token $>$ command\+Receiver)
-\item 
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of Akka\+Command\+Bus$<$\+T\+Authentication\+Token$>$ \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a48e1d46035b1e1a3251636b8a03f7dae_a48e1d46035b1e1a3251636b8a03f7dae}{Publish$<$ T\+Command $>$} (T\+Command command)
 \begin{DoxyCompactList}\small\item\em Publishes the provided {\itshape command}  on the command bus. \end{DoxyCompactList}\item 
-virtual void \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a696f471533265685f80922e39727288e_a696f471533265685f80922e39727288e}{Send$<$ T\+Command $>$} (T\+Command command)
-\item 
 virtual void \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ab52365375febd74ac078e97af6e6cd24_ab52365375febd74ac078e97af6e6cd24}{Publish$<$ T\+Command $>$} (I\+Enumerable$<$ T\+Command $>$ commands)
 \begin{DoxyCompactList}\small\item\em Publishes the provided {\itshape commands}  on the command bus. \end{DoxyCompactList}\item 
-virtual void \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a06b7b148493c67d79aaf6b7d59afa487_a06b7b148493c67d79aaf6b7d59afa487}{Send$<$ T\+Command $>$} (I\+Enumerable$<$ T\+Command $>$ commands)
-\item 
 virtual T\+Event \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a8e1291f0259ac80e393c02bb119159a5_a8e1291f0259ac80e393c02bb119159a5}{Publish\+And\+Wait$<$ T\+Command, T\+Event $>$} (T\+Command command, \hyperlink{interfaceCqrs_1_1Events_1_1IEventReceiver}{I\+Event\+Receiver}$<$ T\+Authentication\+Token $>$ event\+Receiver=null)
 \begin{DoxyCompactList}\small\item\em Publishes the provided {\itshape command}  and waits for an event of {\itshape T\+Event}  \end{DoxyCompactList}\item 
 virtual T\+Event \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a7f820323e5293e476f4afee7c731f7a3_a7f820323e5293e476f4afee7c731f7a3}{Publish\+And\+Wait$<$ T\+Command, T\+Event $>$} (T\+Command command, int milliseconds\+Timeout, \hyperlink{interfaceCqrs_1_1Events_1_1IEventReceiver}{I\+Event\+Receiver}$<$ T\+Authentication\+Token $>$ event\+Receiver=null)
@@ -44,30 +40,30 @@ void \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_adc21072d2b02c74
 \begin{DoxyCompactItemize}
 \item 
 virtual void \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a9755a84c0b971ce0862abdc2783422ce_a9755a84c0b971ce0862abdc2783422ce}{Prepare\+Command$<$ T\+Command $>$} (T\+Command command)
-\item 
+\begin{DoxyCompactList}\small\item\em Sets the I\+Message\+With\+Authentication\+Token$<$\+T\+Authentication\+Token$>$.\+Authentication\+Token, I\+Message.\+Correlation\+Id, I\+Message.\+Originating\+Framework to \char`\"{}\+Akka\char`\"{} and adds a value of \char`\"{}\+Akka\char`\"{} to the I\+Message.\+Frameworks if not already done so \end{DoxyCompactList}\item 
 virtual bool \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ae3e5f1725bceb0359aedb74ded530858_ae3e5f1725bceb0359aedb74ded530858}{Prepare\+And\+Validate\+Command$<$ T\+Command $>$} (T\+Command command, out \hyperlink{classCqrs_1_1Bus_1_1RouteHandlerDelegate}{Route\+Handler\+Delegate} command\+Handler)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Locates a suitable I\+Command\+Validator$<$\+T\+Authentication\+Token,\+T\+Command$>$ to validate the provided {\itshape command}  and validates the provided {\itshape command}  if one is located Calls \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a9755a84c0b971ce0862abdc2783422ce_a9755a84c0b971ce0862abdc2783422ce}{Prepare\+Command$<$\+T\+Command$>$} Checks if the provided {\itshape command}  is required to be processed Locates a single \hyperlink{}{command handler} for the provided {\itshape command}  \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
 static \hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager} \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a93ddefb347d0cbc4f869c6d0866c8c64_a93ddefb347d0cbc4f869c6d0866c8c64}{Routes}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets the Route\+Manager \end{DoxyCompactList}\item 
 \hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ad74a628484d215ec6daab02b20ac1dbe_ad74a628484d215ec6daab02b20ac1dbe}{Authentication\+Token\+Helper}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or sets the \hyperlink{}{Authentication Token Helper} \end{DoxyCompactList}\item 
 I\+Correlation\+Id\+Helper \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ad8bdf5674c0d5ea3fd9340bd8cd4b0a8_ad8bdf5674c0d5ea3fd9340bd8cd4b0a8}{Correlation\+Id\+Helper}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Correlation\+Id\+Helper \end{DoxyCompactList}\item 
 \hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver} \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ae1229644077b0740d9014708d15b44c2_ae1229644077b0740d9014708d15b44c2}{Dependency\+Resolver}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Dependency\+Resolver \end{DoxyCompactList}\item 
 \hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper}{I\+Bus\+Helper} \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_abe5501970c0e39abb9a70670ab985fdc_abe5501970c0e39abb9a70670ab985fdc}{Bus\+Helper}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Bus\+Helper \end{DoxyCompactList}\item 
 I\+Logger \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a218e431067a4cadbdd711d74cbe8e53b_a218e431067a4cadbdd711d74cbe8e53b}{Logger}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Logger \end{DoxyCompactList}\item 
 \hyperlink{interfaceCqrs_1_1Commands_1_1ICommandPublisher}{I\+Command\+Publisher}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ad028b0520a1d98d1e7adcbecb781d261_ad028b0520a1d98d1e7adcbecb781d261}{Command\+Publisher}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Command\+Publisher$<$\+T\+Authentication\+Token$>$ \end{DoxyCompactList}\item 
 \hyperlink{interfaceCqrs_1_1Commands_1_1ICommandReceiver}{I\+Command\+Receiver}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ac65a93dadbbb006dd815c5c54c9ecc82_ac65a93dadbbb006dd815c5c54c9ecc82}{Command\+Receiver}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or sets the \hyperlink{interfaceCqrs_1_1Commands_1_1ICommandReceiver}{I\+Command\+Receiver$<$\+T\+Authentication\+Token$>$} \end{DoxyCompactList}\item 
 I\+Dictionary$<$ Guid, I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ $>$ \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_af64744500f25a0b203684ef757aa7962_af64744500f25a0b203684ef757aa7962}{Event\+Waits}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Gets or sets the current list of events waiting to be evaluated for \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a8e1291f0259ac80e393c02bb119159a5_a8e1291f0259ac80e393c02bb119159a5}{Publish\+And\+Wait$<$\+T\+Command,\+T\+Event$>$(\+T\+Command,\+Cqrs.\+Events.\+I\+Event\+Receiver$<$\+T\+Authentication\+Token$>$)} \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -89,6 +85,10 @@ A I\+Command\+Publisher$<$\+T\+Authentication\+Token$>$ that resolves handlers ,
 
 
 
+Instantiates a new instance of Akka\+Command\+Bus$<$\+T\+Authentication\+Token$>$ 
+
+
+
 \subsection{Member Function Documentation}
 \mbox{\Hypertarget{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ae3e5f1725bceb0359aedb74ded530858_ae3e5f1725bceb0359aedb74ded530858}\label{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ae3e5f1725bceb0359aedb74ded530858_ae3e5f1725bceb0359aedb74ded530858}} 
 \index{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}!Prepare\+And\+Validate\+Command$<$ T\+Command $>$@{Prepare\+And\+Validate\+Command$<$ T\+Command $>$}}
@@ -96,6 +96,13 @@ A I\+Command\+Publisher$<$\+T\+Authentication\+Token$>$ that resolves handlers ,
 \subsubsection{\texorpdfstring{Prepare\+And\+Validate\+Command$<$ T\+Command $>$()}{PrepareAndValidateCommand< TCommand >()}}
 {\footnotesize\ttfamily virtual bool \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus}{Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus}$<$ T\+Authentication\+Token $>$.Prepare\+And\+Validate\+Command$<$ T\+Command $>$ (\begin{DoxyParamCaption}\item[{T\+Command}]{command,  }\item[{out \hyperlink{classCqrs_1_1Bus_1_1RouteHandlerDelegate}{Route\+Handler\+Delegate}}]{command\+Handler }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
 
+
+
+Locates a suitable I\+Command\+Validator$<$\+T\+Authentication\+Token,\+T\+Command$>$ to validate the provided {\itshape command}  and validates the provided {\itshape command}  if one is located Calls \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a9755a84c0b971ce0862abdc2783422ce_a9755a84c0b971ce0862abdc2783422ce}{Prepare\+Command$<$\+T\+Command$>$} Checks if the provided {\itshape command}  is required to be processed Locates a single \hyperlink{}{command handler} for the provided {\itshape command}  
+
+\begin{DoxyReturn}{Returns}
+False if a suitable I\+Command\+Validator$<$\+T\+Authentication\+Token,\+T\+Command$>$ is located and the provided {\itshape command}  fails validation, False if no \hyperlink{}{command handler} is found but the command isn\textquotesingle{}t required to be handled, True otherwise. 
+\end{DoxyReturn}
 \begin{Desc}
 \item[Type Constraints]\begin{description}
 \item[{\em T\+Command} : {\em I\+Command$<$T\+Authentication\+Token$>$}]\end{description}
@@ -105,6 +112,10 @@ A I\+Command\+Publisher$<$\+T\+Authentication\+Token$>$ that resolves handlers ,
 \index{Prepare\+Command$<$ T\+Command $>$@{Prepare\+Command$<$ T\+Command $>$}!Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}}
 \subsubsection{\texorpdfstring{Prepare\+Command$<$ T\+Command $>$()}{PrepareCommand< TCommand >()}}
 {\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus}{Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus}$<$ T\+Authentication\+Token $>$.Prepare\+Command$<$ T\+Command $>$ (\begin{DoxyParamCaption}\item[{T\+Command}]{command }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Sets the I\+Message\+With\+Authentication\+Token$<$\+T\+Authentication\+Token$>$.\+Authentication\+Token, I\+Message.\+Correlation\+Id, I\+Message.\+Originating\+Framework to \char`\"{}\+Akka\char`\"{} and adds a value of \char`\"{}\+Akka\char`\"{} to the I\+Message.\+Frameworks if not already done so 
 
 \begin{Desc}
 \item[Type Constraints]\begin{description}
@@ -346,26 +357,6 @@ Implements \hyperlink{interfaceCqrs_1_1Bus_1_1IHandlerRegistrar_a07792dcc9a8b272
 \item[Type Constraints]\begin{description}
 \item[{\em T\+Message} : {\em I\+Message}]\end{description}
 \end{Desc}
-\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a696f471533265685f80922e39727288e_a696f471533265685f80922e39727288e}\label{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a696f471533265685f80922e39727288e_a696f471533265685f80922e39727288e}} 
-\index{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}!Send$<$ T\+Command $>$@{Send$<$ T\+Command $>$}}
-\index{Send$<$ T\+Command $>$@{Send$<$ T\+Command $>$}!Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}}
-\subsubsection{\texorpdfstring{Send$<$ T\+Command $>$()}{Send< TCommand >()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus}{Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus}$<$ T\+Authentication\+Token $>$.Send$<$ T\+Command $>$ (\begin{DoxyParamCaption}\item[{T\+Command}]{command }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
-
-\begin{Desc}
-\item[Type Constraints]\begin{description}
-\item[{\em T\+Command} : {\em I\+Command$<$T\+Authentication\+Token$>$}]\end{description}
-\end{Desc}
-\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a06b7b148493c67d79aaf6b7d59afa487_a06b7b148493c67d79aaf6b7d59afa487}\label{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a06b7b148493c67d79aaf6b7d59afa487_a06b7b148493c67d79aaf6b7d59afa487}} 
-\index{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}!Send$<$ T\+Command $>$@{Send$<$ T\+Command $>$}}
-\index{Send$<$ T\+Command $>$@{Send$<$ T\+Command $>$}!Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}}
-\subsubsection{\texorpdfstring{Send$<$ T\+Command $>$()}{Send< TCommand >()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus}{Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus}$<$ T\+Authentication\+Token $>$.Send$<$ T\+Command $>$ (\begin{DoxyParamCaption}\item[{I\+Enumerable$<$ T\+Command $>$}]{commands }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
-
-\begin{Desc}
-\item[Type Constraints]\begin{description}
-\item[{\em T\+Command} : {\em I\+Command$<$T\+Authentication\+Token$>$}]\end{description}
-\end{Desc}
 
 
 \subsection{Property Documentation}
@@ -375,11 +366,19 @@ Implements \hyperlink{interfaceCqrs_1_1Bus_1_1IHandlerRegistrar_a07792dcc9a8b272
 \subsubsection{\texorpdfstring{Authentication\+Token\+Helper}{AuthenticationTokenHelper}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}$<$T\+Authentication\+Token$>$ \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus}{Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Authentication_1_1AuthenticationTokenHelper}{Authentication\+Token\+Helper}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+Gets or sets the \hyperlink{}{Authentication Token Helper} 
+
 \mbox{\Hypertarget{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_abe5501970c0e39abb9a70670ab985fdc_abe5501970c0e39abb9a70670ab985fdc}\label{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_abe5501970c0e39abb9a70670ab985fdc_abe5501970c0e39abb9a70670ab985fdc}} 
 \index{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}!Bus\+Helper@{Bus\+Helper}}
 \index{Bus\+Helper@{Bus\+Helper}!Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}}
 \subsubsection{\texorpdfstring{Bus\+Helper}{BusHelper}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper}{I\+Bus\+Helper} \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus}{Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Bus_1_1BusHelper}{Bus\+Helper}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Bus\+Helper 
 
 \mbox{\Hypertarget{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ad028b0520a1d98d1e7adcbecb781d261_ad028b0520a1d98d1e7adcbecb781d261}\label{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ad028b0520a1d98d1e7adcbecb781d261_ad028b0520a1d98d1e7adcbecb781d261}} 
 \index{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}!Command\+Publisher@{Command\+Publisher}}
@@ -387,11 +386,19 @@ Implements \hyperlink{interfaceCqrs_1_1Bus_1_1IHandlerRegistrar_a07792dcc9a8b272
 \subsubsection{\texorpdfstring{Command\+Publisher}{CommandPublisher}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Commands_1_1ICommandPublisher}{I\+Command\+Publisher}$<$T\+Authentication\+Token$>$ \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus}{Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus}$<$ T\+Authentication\+Token $>$.Command\+Publisher\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+Gets or sets the I\+Command\+Publisher$<$\+T\+Authentication\+Token$>$ 
+
 \mbox{\Hypertarget{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ac65a93dadbbb006dd815c5c54c9ecc82_ac65a93dadbbb006dd815c5c54c9ecc82}\label{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ac65a93dadbbb006dd815c5c54c9ecc82_ac65a93dadbbb006dd815c5c54c9ecc82}} 
 \index{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}!Command\+Receiver@{Command\+Receiver}}
 \index{Command\+Receiver@{Command\+Receiver}!Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}}
 \subsubsection{\texorpdfstring{Command\+Receiver}{CommandReceiver}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Commands_1_1ICommandReceiver}{I\+Command\+Receiver}$<$T\+Authentication\+Token$>$ \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus}{Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus}$<$ T\+Authentication\+Token $>$.Command\+Receiver\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the \hyperlink{interfaceCqrs_1_1Commands_1_1ICommandReceiver}{I\+Command\+Receiver$<$\+T\+Authentication\+Token$>$} 
 
 \mbox{\Hypertarget{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ad8bdf5674c0d5ea3fd9340bd8cd4b0a8_ad8bdf5674c0d5ea3fd9340bd8cd4b0a8}\label{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ad8bdf5674c0d5ea3fd9340bd8cd4b0a8_ad8bdf5674c0d5ea3fd9340bd8cd4b0a8}} 
 \index{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}!Correlation\+Id\+Helper@{Correlation\+Id\+Helper}}
@@ -399,11 +406,19 @@ Implements \hyperlink{interfaceCqrs_1_1Bus_1_1IHandlerRegistrar_a07792dcc9a8b272
 \subsubsection{\texorpdfstring{Correlation\+Id\+Helper}{CorrelationIdHelper}}
 {\footnotesize\ttfamily I\+Correlation\+Id\+Helper \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus}{Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus}$<$ T\+Authentication\+Token $>$.Correlation\+Id\+Helper\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+Gets or sets the I\+Correlation\+Id\+Helper 
+
 \mbox{\Hypertarget{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ae1229644077b0740d9014708d15b44c2_ae1229644077b0740d9014708d15b44c2}\label{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ae1229644077b0740d9014708d15b44c2_ae1229644077b0740d9014708d15b44c2}} 
 \index{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}!Dependency\+Resolver@{Dependency\+Resolver}}
 \index{Dependency\+Resolver@{Dependency\+Resolver}!Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}}
 \subsubsection{\texorpdfstring{Dependency\+Resolver}{DependencyResolver}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver} \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus}{Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Configuration_1_1DependencyResolver}{Dependency\+Resolver}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Dependency\+Resolver 
 
 \mbox{\Hypertarget{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_af64744500f25a0b203684ef757aa7962_af64744500f25a0b203684ef757aa7962}\label{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_af64744500f25a0b203684ef757aa7962_af64744500f25a0b203684ef757aa7962}} 
 \index{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}!Event\+Waits@{Event\+Waits}}
@@ -411,15 +426,27 @@ Implements \hyperlink{interfaceCqrs_1_1Bus_1_1IHandlerRegistrar_a07792dcc9a8b272
 \subsubsection{\texorpdfstring{Event\+Waits}{EventWaits}}
 {\footnotesize\ttfamily I\+Dictionary$<$Guid, I\+List$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ $>$ \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus}{Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus}$<$ T\+Authentication\+Token $>$.Event\+Waits\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+Gets or sets the current list of events waiting to be evaluated for \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a8e1291f0259ac80e393c02bb119159a5_a8e1291f0259ac80e393c02bb119159a5}{Publish\+And\+Wait$<$\+T\+Command,\+T\+Event$>$(\+T\+Command,\+Cqrs.\+Events.\+I\+Event\+Receiver$<$\+T\+Authentication\+Token$>$)} 
+
 \mbox{\Hypertarget{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a218e431067a4cadbdd711d74cbe8e53b_a218e431067a4cadbdd711d74cbe8e53b}\label{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a218e431067a4cadbdd711d74cbe8e53b_a218e431067a4cadbdd711d74cbe8e53b}} 
 \index{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}!Logger@{Logger}}
 \index{Logger@{Logger}!Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}}
 \subsubsection{\texorpdfstring{Logger}{Logger}}
 {\footnotesize\ttfamily I\+Logger \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus}{Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus}$<$ T\+Authentication\+Token $>$.Logger\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+Gets or sets the I\+Logger 
+
 \mbox{\Hypertarget{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a93ddefb347d0cbc4f869c6d0866c8c64_a93ddefb347d0cbc4f869c6d0866c8c64}\label{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a93ddefb347d0cbc4f869c6d0866c8c64_a93ddefb347d0cbc4f869c6d0866c8c64}} 
 \index{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}!Routes@{Routes}}
 \index{Routes@{Routes}!Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus@{Cqrs\+::\+Akka\+::\+Commands\+::\+Akka\+Command\+Bus}}
 \subsubsection{\texorpdfstring{Routes}{Routes}}
 {\footnotesize\ttfamily \hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager} \hyperlink{classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus}{Cqrs.\+Akka.\+Commands.\+Akka\+Command\+Bus}$<$ T\+Authentication\+Token $>$.Routes\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets the Route\+Manager 
 

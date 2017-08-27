@@ -30,18 +30,56 @@
           <defval>true</defval>
         </param>
         <briefdescription>
-        </briefdescription>
+<para>If <emphasis>events</emphasis>  is null, loads the events from an IEventStore&lt;TAuthenticationToken&gt;, checks for duplicates and then rehydrates the <emphasis>saga</emphasis>  with the events. </para>        </briefdescription>
         <detaileddescription>
-        </detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TSaga</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of ISaga&lt;TAuthenticationToken&gt;.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>saga</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <emphasis>TSaga</emphasis>  to rehydrate.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>events</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A collection of IEvent&lt;TAuthenticationToken&gt; to replay on the retrieved ISaga&lt;TAuthenticationToken&gt;. If null, the IEventStore&lt;TAuthenticationToken&gt; will be used to retrieve a list of IEvent&lt;TAuthenticationToken&gt; for you. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>throwExceptionOnNoEvents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true will throw an instance of SagaNotFoundException&lt;TSaga,TAuthenticationToken&gt; if no aggregate events or provided or found in the IEventStore&lt;TAuthenticationToken&gt;.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaSagaRepository.cs" line="17" column="1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaSagaRepository.cs" line="34" column="1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
-    </briefdescription>
+<para>A SagaRepository&lt;TAuthenticationToken&gt; that is safe to use within Akka.NET </para>    </briefdescription>
     <detaileddescription>
-    </detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TAuthenticationToken</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of authentication token.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>    </detaileddescription>
     <inheritancegraph>
       <node id="121">
         <label>Cqrs.Akka.Domain.IAkkaSagaRepository&lt; TAuthenticationToken &gt;</label>
@@ -72,7 +110,7 @@
         <link refid="interfaceCqrs_1_1Domain_1_1ISagaRepository"/>
       </node>
     </collaborationgraph>
-    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaSagaRepository.cs" line="16" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaSagaRepository.cs" bodystart="15" bodyend="19"/>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaSagaRepository.cs" line="22" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaSagaRepository.cs" bodystart="21" bodyend="36"/>
     <listofallmembers>
       <member refid="interfaceCqrs_1_1Domain_1_1ISagaRepository_aa3409bf59bbe489afcc89716928e9ad1_1aa3409bf59bbe489afcc89716928e9ad1" prot="public" virt="non-virtual"><scope>Cqrs::Akka::Domain::IAkkaSagaRepository</scope><name>Get&lt; TSaga &gt;</name></member>
       <member refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaRepository_a77233d8c2230c0a69a993faaac0101a9_1a77233d8c2230c0a69a993faaac0101a9" prot="public" virt="non-virtual"><scope>Cqrs::Akka::Domain::IAkkaSagaRepository</scope><name>LoadSagaHistory&lt; TSaga &gt;</name></member>

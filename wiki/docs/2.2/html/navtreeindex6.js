@@ -1,11 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a37e57e6f1e4e545630c1c98a5aab46a3.html#a37e57e6f1e4e545630c1c98a5aab46a3":[1,0,0,17,2,3,0],
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a60ae02928a3ae8cb99d46f6c340b5138.html#a60ae02928a3ae8cb99d46f6c340b5138":[1,0,0,17,2,3,6],
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a6a6f0303cd412974d90be87d281e81f5.html#a6a6f0303cd412974d90be87d281e81f5":[1,0,0,17,2,3,5],
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a7a1ac8e59dc5bff0bb6562fb4f43e8df.html#a7a1ac8e59dc5bff0bb6562fb4f43e8df":[1,0,0,17,2,3,1],
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_aa008df8aa5d4e63a2123735acb7cd775.html#aa008df8aa5d4e63a2123735acb7cd775":[1,0,0,17,2,3,9],
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_aa6a9499aa1dcde55d82d8e0f3b5bd077.html#aa6a9499aa1dcde55d82d8e0f3b5bd077":[1,0,0,17,2,3,3],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_ac886ca0a57ad86cb99ef0a3767db9280.html#ac886ca0a57ad86cb99ef0a3767db9280":[1,0,0,17,2,3,2],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_af2dfb3af9b76e8b1cab0f7dc68cdc377.html#af2dfb3af9b76e8b1cab0f7dc68cdc377":[1,0,0,17,2,3,8],
 "classCqrs_1_1MongoDB_1_1Factories_1_1MongoDbDataStoreConnectionStringFactory.html":[1,0,0,17,3,1],
@@ -249,5 +243,11 @@ var NAVTREEINDEX6 =
 "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule_a4591fb32f9ec60e3246a9864ab3288cd.html#a4591fb32f9ec60e3246a9864ab3288cd":[1,0,0,18,2,2,2],
 "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule_acf8794d693a38ff114038d6e3dfc961b.html#acf8794d693a38ff114038d6e3dfc961b":[1,0,0,18,2,2,0],
 "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule_aee43bfd0d686faa9944dd29305e1ad39.html#aee43bfd0d686faa9944dd29305e1ad39":[1,0,0,18,2,2,1],
-"classCqrs_1_1Ninject_1_1Configuration_1_1InProcessEventBusModule.html":[1,0,0,18,2,3]
+"classCqrs_1_1Ninject_1_1Configuration_1_1InProcessEventBusModule.html":[1,0,0,18,2,3],
+"classCqrs_1_1Ninject_1_1Configuration_1_1InProcessEventBusModule_a0d0b1838c22e2bfeb4044f077739d8c8.html#a0d0b1838c22e2bfeb4044f077739d8c8":[1,0,0,18,2,3,2],
+"classCqrs_1_1Ninject_1_1Configuration_1_1InProcessEventBusModule_a9fee585df29bca69862c1543bd3b4356.html#a9fee585df29bca69862c1543bd3b4356":[1,0,0,18,2,3,1],
+"classCqrs_1_1Ninject_1_1Configuration_1_1InProcessEventBusModule_ac3250443c7847aed15dbcbe03ff9ac6d.html#ac3250443c7847aed15dbcbe03ff9ac6d":[1,0,0,18,2,3,3],
+"classCqrs_1_1Ninject_1_1Configuration_1_1InProcessEventBusModule_aee95aba5105f016f37a772b19001c0f7.html#aee95aba5105f016f37a772b19001c0f7":[1,0,0,18,2,3,0],
+"classCqrs_1_1Ninject_1_1Configuration_1_1InProcessEventStoreModule.html":[1,0,0,18,2,4],
+"classCqrs_1_1Ninject_1_1Configuration_1_1InProcessEventStoreModule_a6383665ddfef93febbccf74879f1c412.html#a6383665ddfef93febbccf74879f1c412":[1,0,0,18,2,4,0]
 };

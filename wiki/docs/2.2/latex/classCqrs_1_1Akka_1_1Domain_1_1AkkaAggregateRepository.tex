@@ -1,5 +1,10 @@
 \hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository}{}\section{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$ Class Template Reference}
 \label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository}\index{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$@{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}}
+
+
+A \hyperlink{classCqrs_1_1Domain_1_1AggregateRepository_ae4a6c96b10c536a0df6a381659f87744_ae4a6c96b10c536a0df6a381659f87744}{Aggregate\+Repository$<$\+T\+Authentication\+Token$>$} that is safe to use within Akka.\+N\+ET  
+
+
 Inheritance diagram for Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -10,19 +15,29 @@ Inheritance diagram for Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Repository$<$ T\
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository_afc997ba5187ca08d3f81a0c204eda3a2_afc997ba5187ca08d3f81a0c204eda3a2}{Akka\+Aggregate\+Repository} (\hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{I\+Aggregate\+Factory} aggregate\+Factory, \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}$<$ T\+Authentication\+Token $>$ event\+Store, \hyperlink{interfaceCqrs_1_1Events_1_1IEventPublisher}{I\+Event\+Publisher}$<$ T\+Authentication\+Token $>$ publisher, I\+Correlation\+Id\+Helper correlation\+Id\+Helper, \hyperlink{interfaceCqrs_1_1Akka_1_1Events_1_1IAkkaEventPublisherProxy}{I\+Akka\+Event\+Publisher\+Proxy}$<$ T\+Authentication\+Token $>$ event\+Publisher)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository_afc997ba5187ca08d3f81a0c204eda3a2_afc997ba5187ca08d3f81a0c204eda3a2}{Akka\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$} \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 override T\+Aggregate\+Root \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository_a889a80595755372614382c36092f30dc_a889a80595755372614382c36092f30dc}{Create\+Aggregate$<$ T\+Aggregate\+Root $>$} (Guid id)
 \begin{DoxyCompactList}\small\item\em Calls I\+Aggregate\+Factory.\+Create to get a, {\itshape T\+Aggregate\+Root} . \end{DoxyCompactList}\item 
 override void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository_a144cbfdedb23039729ba5b3058f84e7a_a144cbfdedb23039729ba5b3058f84e7a}{Publish\+Event} (\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @event)
-\begin{DoxyCompactList}\small\item\em Publish the saved {\itshape event} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Publish the saved {\itshape event}  asynchronously on \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository_a6c6400aef33fd3ec5dc3e479ebec6b40_a6c6400aef33fd3ec5dc3e479ebec6b40}{Event\+Publisher}, then calls Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Publish\+Event \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{interfaceCqrs_1_1Akka_1_1Events_1_1IAkkaEventPublisherProxy}{I\+Akka\+Event\+Publisher\+Proxy}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository_a6c6400aef33fd3ec5dc3e479ebec6b40_a6c6400aef33fd3ec5dc3e479ebec6b40}{Event\+Publisher}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Gets the I\+Akka\+Event\+Publisher\+Proxy$<$\+T\+Authentication\+Token$>$ \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A \hyperlink{classCqrs_1_1Domain_1_1AggregateRepository_ae4a6c96b10c536a0df6a381659f87744_ae4a6c96b10c536a0df6a381659f87744}{Aggregate\+Repository$<$\+T\+Authentication\+Token$>$} that is safe to use within Akka.\+N\+ET 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of authentication token.\\
+\hline
+\end{DoxyTemplParams}
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -31,6 +46,10 @@ override void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository_
 \index{Akka\+Aggregate\+Repository@{Akka\+Aggregate\+Repository}!Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Aggregate\+Repository@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Aggregate\+Repository}}
 \subsubsection{\texorpdfstring{Akka\+Aggregate\+Repository()}{AkkaAggregateRepository()}}
 {\footnotesize\ttfamily \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Repository}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository}{Akka\+Aggregate\+Repository} (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{I\+Aggregate\+Factory}}]{aggregate\+Factory,  }\item[{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}$<$ T\+Authentication\+Token $>$}]{event\+Store,  }\item[{\hyperlink{interfaceCqrs_1_1Events_1_1IEventPublisher}{I\+Event\+Publisher}$<$ T\+Authentication\+Token $>$}]{publisher,  }\item[{I\+Correlation\+Id\+Helper}]{correlation\+Id\+Helper,  }\item[{\hyperlink{interfaceCqrs_1_1Akka_1_1Events_1_1IAkkaEventPublisherProxy}{I\+Akka\+Event\+Publisher\+Proxy}$<$ T\+Authentication\+Token $>$}]{event\+Publisher }\end{DoxyParamCaption})}
+
+
+
+Instantiates a new instance of \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository_afc997ba5187ca08d3f81a0c204eda3a2_afc997ba5187ca08d3f81a0c204eda3a2}{Akka\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$} 
 
 
 
@@ -67,7 +86,7 @@ Reimplemented from \hyperlink{classCqrs_1_1Domain_1_1AggregateRepository_a64d82c
 
 
 
-Publish the saved {\itshape event} . 
+Publish the saved {\itshape event}  asynchronously on \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository_a6c6400aef33fd3ec5dc3e479ebec6b40_a6c6400aef33fd3ec5dc3e479ebec6b40}{Event\+Publisher}, then calls Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Publish\+Event 
 
 
 
@@ -81,4 +100,8 @@ Reimplemented from \hyperlink{classCqrs_1_1Domain_1_1AggregateRepository_a3191ba
 \index{Event\+Publisher@{Event\+Publisher}!Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Aggregate\+Repository@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Aggregate\+Repository}}
 \subsubsection{\texorpdfstring{Event\+Publisher}{EventPublisher}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Akka_1_1Events_1_1IAkkaEventPublisherProxy}{I\+Akka\+Event\+Publisher\+Proxy}$<$T\+Authentication\+Token$>$ \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Repository}$<$ T\+Authentication\+Token $>$.Event\+Publisher\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets the I\+Akka\+Event\+Publisher\+Proxy$<$\+T\+Authentication\+Token$>$ 
 

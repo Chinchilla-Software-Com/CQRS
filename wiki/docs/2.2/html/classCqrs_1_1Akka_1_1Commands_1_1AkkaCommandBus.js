@@ -13,8 +13,6 @@ var classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus =
     [ "PublishAndWait< TCommand, TEvent >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a1966669d8cf5d5a68be99fbb5e8af1f7.html#a1966669d8cf5d5a68be99fbb5e8af1f7", null ],
     [ "RegisterHandler< TMessage >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a8ed33fb315493d52470bc3bc2bf076f2.html#a8ed33fb315493d52470bc3bc2bf076f2", null ],
     [ "RegisterHandler< TMessage >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_adc21072d2b02c745747c4d585a53dba3.html#adc21072d2b02c745747c4d585a53dba3", null ],
-    [ "Send< TCommand >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a696f471533265685f80922e39727288e.html#a696f471533265685f80922e39727288e", null ],
-    [ "Send< TCommand >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_a06b7b148493c67d79aaf6b7d59afa487.html#a06b7b148493c67d79aaf6b7d59afa487", null ],
     [ "AuthenticationTokenHelper", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ad74a628484d215ec6daab02b20ac1dbe.html#ad74a628484d215ec6daab02b20ac1dbe", null ],
     [ "BusHelper", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_abe5501970c0e39abb9a70670ab985fdc.html#abe5501970c0e39abb9a70670ab985fdc", null ],
     [ "CommandPublisher", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus_ad028b0520a1d98d1e7adcbecb781d261.html#ad028b0520a1d98d1e7adcbecb781d261", null ],

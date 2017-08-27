@@ -1,5 +1,10 @@
 \hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository}{}\section{Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Repository$<$ T\+Authentication\+Token $>$ Class Template Reference}
 \label{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository}\index{Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Repository$<$ T\+Authentication\+Token $>$@{Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Repository$<$ T\+Authentication\+Token $>$}}
+
+
+A \hyperlink{classCqrs_1_1Domain_1_1SagaRepository_a2981231b25fa89133ab50796cd352fbf_a2981231b25fa89133ab50796cd352fbf}{Saga\+Repository$<$\+T\+Authentication\+Token$>$} that is safe to use within Akka.\+N\+ET  
+
+
 Inheritance diagram for Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Repository$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -10,19 +15,29 @@ Inheritance diagram for Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Repository$<$ T\+Auth
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a8297f64e2b7a7be7bcc999c89dcece05_a8297f64e2b7a7be7bcc999c89dcece05}{Akka\+Saga\+Repository} (\hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{I\+Aggregate\+Factory} aggregate\+Factory, \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}$<$ T\+Authentication\+Token $>$ event\+Store, \hyperlink{interfaceCqrs_1_1Events_1_1IEventPublisher}{I\+Event\+Publisher}$<$ T\+Authentication\+Token $>$ publisher, I\+Correlation\+Id\+Helper correlation\+Id\+Helper, \hyperlink{interfaceCqrs_1_1Akka_1_1Events_1_1IAkkaEventPublisherProxy}{I\+Akka\+Event\+Publisher\+Proxy}$<$ T\+Authentication\+Token $>$ event\+Publisher)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a8297f64e2b7a7be7bcc999c89dcece05_a8297f64e2b7a7be7bcc999c89dcece05}{Akka\+Saga\+Repository$<$\+T\+Authentication\+Token$>$} \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 override T\+Saga \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a2c7263d0e58d2b31149ec685d5be934a_a2c7263d0e58d2b31149ec685d5be934a}{Create\+Saga$<$ T\+Saga $>$} (Guid id)
 \begin{DoxyCompactList}\small\item\em Calls I\+Aggregate\+Factory.\+Create to get a, {\itshape T\+Saga} . \end{DoxyCompactList}\item 
 override void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a7f6375bb99e680792466fb420232a535_a7f6375bb99e680792466fb420232a535}{Publish\+Event} (\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$ T\+Authentication\+Token $>$ @event)
-\begin{DoxyCompactList}\small\item\em Publish the saved {\itshape event} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Publish the saved {\itshape event}  asynchronously on \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a25957859d1f98ea7f434983c562e9724_a25957859d1f98ea7f434983c562e9724}{Event\+Publisher}, then calls Saga\+Repository$<$\+T\+Authentication\+Token$>$.\+Publish\+Event \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{interfaceCqrs_1_1Akka_1_1Events_1_1IAkkaEventPublisherProxy}{I\+Akka\+Event\+Publisher\+Proxy}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a25957859d1f98ea7f434983c562e9724_a25957859d1f98ea7f434983c562e9724}{Event\+Publisher}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Gets the I\+Akka\+Event\+Publisher\+Proxy$<$\+T\+Authentication\+Token$>$ \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A \hyperlink{classCqrs_1_1Domain_1_1SagaRepository_a2981231b25fa89133ab50796cd352fbf_a2981231b25fa89133ab50796cd352fbf}{Saga\+Repository$<$\+T\+Authentication\+Token$>$} that is safe to use within Akka.\+N\+ET 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of authentication token.\\
+\hline
+\end{DoxyTemplParams}
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -31,6 +46,10 @@ override void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a7f63
 \index{Akka\+Saga\+Repository@{Akka\+Saga\+Repository}!Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga\+Repository@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga\+Repository}}
 \subsubsection{\texorpdfstring{Akka\+Saga\+Repository()}{AkkaSagaRepository()}}
 {\footnotesize\ttfamily \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Repository}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository}{Akka\+Saga\+Repository} (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{I\+Aggregate\+Factory}}]{aggregate\+Factory,  }\item[{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}$<$ T\+Authentication\+Token $>$}]{event\+Store,  }\item[{\hyperlink{interfaceCqrs_1_1Events_1_1IEventPublisher}{I\+Event\+Publisher}$<$ T\+Authentication\+Token $>$}]{publisher,  }\item[{I\+Correlation\+Id\+Helper}]{correlation\+Id\+Helper,  }\item[{\hyperlink{interfaceCqrs_1_1Akka_1_1Events_1_1IAkkaEventPublisherProxy}{I\+Akka\+Event\+Publisher\+Proxy}$<$ T\+Authentication\+Token $>$}]{event\+Publisher }\end{DoxyParamCaption})}
+
+
+
+Instantiates a new instance of \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a8297f64e2b7a7be7bcc999c89dcece05_a8297f64e2b7a7be7bcc999c89dcece05}{Akka\+Saga\+Repository$<$\+T\+Authentication\+Token$>$} 
 
 
 
@@ -67,7 +86,7 @@ Reimplemented from \hyperlink{classCqrs_1_1Domain_1_1SagaRepository_acb23e0bd3e5
 
 
 
-Publish the saved {\itshape event} . 
+Publish the saved {\itshape event}  asynchronously on \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a25957859d1f98ea7f434983c562e9724_a25957859d1f98ea7f434983c562e9724}{Event\+Publisher}, then calls Saga\+Repository$<$\+T\+Authentication\+Token$>$.\+Publish\+Event 
 
 
 
@@ -81,4 +100,8 @@ Reimplemented from \hyperlink{classCqrs_1_1Domain_1_1SagaRepository_a1dec03959e4
 \index{Event\+Publisher@{Event\+Publisher}!Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga\+Repository@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga\+Repository}}
 \subsubsection{\texorpdfstring{Event\+Publisher}{EventPublisher}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Akka_1_1Events_1_1IAkkaEventPublisherProxy}{I\+Akka\+Event\+Publisher\+Proxy}$<$T\+Authentication\+Token$>$ \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Repository}$<$ T\+Authentication\+Token $>$.Event\+Publisher\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets the I\+Akka\+Event\+Publisher\+Proxy$<$\+T\+Authentication\+Token$>$ 
 
