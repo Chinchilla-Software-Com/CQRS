@@ -1,5 +1,10 @@
 \hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory}{}\section{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory Class Reference}
 \label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory}\index{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory@{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory}}
+
+
+A factory for getting connection strings and container names for I\+Event\+Store$<$\+T\+Authentication\+Token$>$ access. This factory supports reading and writing from separate storage accounts. Specifically you can have as many different storage accounts as you want to configure when writing. This allows for manual mirroring of data while reading from the fastest/closest location possible.  
+
+
 Inheritance diagram for Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -10,31 +15,36 @@ Inheritance diagram for Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a48d61b35856515a2bfb0674c1fa57995_a48d61b35856515a2bfb0674c1fa57995}{Table\+Storage\+Event\+Store\+Connection\+String\+Factory} (\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} configuration\+Manager, I\+Logger logger)
-\item 
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory}{Table\+Storage\+Event\+Store\+Connection\+String\+Factory}. \end{DoxyCompactList}\item 
 virtual I\+Enumerable$<$ string $>$ \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a07406c2607bdd42dd13116b92fc6b665_a07406c2607bdd42dd13116b92fc6b665}{Get\+Writable\+Connection\+Strings} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Gets all writeable connection strings. If using a single storage account, then \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a95f8662029c8a40117e326973de936bf_a95f8662029c8a40117e326973de936bf}{Table\+Storage\+Event\+Store\+Connection\+String\+Key} will most likely be returned. If a value for \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a73df7618d5978a2c0d2e69880b799369_a73df7618d5978a2c0d2e69880b799369}{Table\+Storage\+Writable\+Event\+Store\+Connection\+String\+Key} is found, it will append \char`\"{}.\+1\char`\"{}, \char`\"{}.\+2\char`\"{} etc returning any additionally found connection string values in \hyperlink{namespaceCqrs_1_1Azure_1_1ConfigurationManager}{Configuration\+Manager}. \end{DoxyCompactList}\item 
 virtual string \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a047e58aa30e97231dc913df350bc2446_a047e58aa30e97231dc913df350bc2446}{Get\+Readable\+Connection\+String} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Gets the readable connection string. If using a single storage account, then \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a95f8662029c8a40117e326973de936bf_a95f8662029c8a40117e326973de936bf}{Table\+Storage\+Event\+Store\+Connection\+String\+Key} will most likely be returned. If a value for \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_ac28aea2439fe0bed85d1b53c0fd8fdaf_ac28aea2439fe0bed85d1b53c0fd8fdaf}{Table\+Storage\+Readable\+Event\+Store\+Connection\+String\+Key} is found, that will be returned instead. \end{DoxyCompactList}\item 
 virtual string \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a118388598a7fa653122fc11521c915d7_a118388598a7fa653122fc11521c915d7}{Get\+Base\+Container\+Name} ()
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Returns the name of the base contain to be used. This will be the value from \hyperlink{namespaceCqrs_1_1Azure_1_1ConfigurationManager}{Configuration\+Manager} keyed \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a9aad5e7497e3f5192d3aaec8d5f7b5f8_a9aad5e7497e3f5192d3aaec8d5f7b5f8}{Table\+Storage\+Base\+Container\+Name\+Key}. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 static string \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_ac28aea2439fe0bed85d1b53c0fd8fdaf_ac28aea2439fe0bed85d1b53c0fd8fdaf}{Table\+Storage\+Readable\+Event\+Store\+Connection\+String\+Key} = \char`\"{}Cqrs.\+Azure.\+Table\+Storage.\+Event\+Store.\+Read.\+Connection\+String\+Name\char`\"{}
-\item 
+\begin{DoxyCompactList}\small\item\em The name of the app setting in I\+Configuration\+Manager that will have the connection string of the readable storage account if using a separate storage account for reads and writes. \end{DoxyCompactList}\item 
 static string \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a73df7618d5978a2c0d2e69880b799369_a73df7618d5978a2c0d2e69880b799369}{Table\+Storage\+Writable\+Event\+Store\+Connection\+String\+Key} = \char`\"{}Cqrs.\+Azure.\+Table\+Storage.\+Event\+Store.\+Write.\+Connection\+String\+Name\char`\"{}
-\item 
+\begin{DoxyCompactList}\small\item\em The name of the app setting in I\+Configuration\+Manager that will have the connection string of the writeable storage account if using a separate storage account for reads and writes. This value gets appended with a \char`\"{}.\+1\char`\"{}, \char`\"{}.\+2\char`\"{} etc allowing you to write to as many different locations as possible. \end{DoxyCompactList}\item 
 static string \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a95f8662029c8a40117e326973de936bf_a95f8662029c8a40117e326973de936bf}{Table\+Storage\+Event\+Store\+Connection\+String\+Key} = \char`\"{}Cqrs.\+Azure.\+Table\+Storage.\+Event\+Store.\+Connection\+String\+Name\char`\"{}
-\item 
+\begin{DoxyCompactList}\small\item\em The name of the app setting in I\+Configuration\+Manager that will have the connection string if using a single storage account for both reads and writes. \end{DoxyCompactList}\item 
 static string \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a9aad5e7497e3f5192d3aaec8d5f7b5f8_a9aad5e7497e3f5192d3aaec8d5f7b5f8}{Table\+Storage\+Base\+Container\+Name\+Key} = \char`\"{}Cqrs.\+Azure.\+Table\+Storage.\+Event\+Store.\+Base\+Container\+Name\char`\"{}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em The name of the app setting in I\+Configuration\+Manager that will have the base name of the container used. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a3787d14bf40a1756c742b0640413a62e_a3787d14bf40a1756c742b0640413a62e}{Configuration\+Manager}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\item 
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Configuration\+Manager. \end{DoxyCompactList}\item 
 I\+Logger \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a1324be985c77f1393a45a73dbb178314_a1324be985c77f1393a45a73dbb178314}{Logger}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Logger. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A factory for getting connection strings and container names for I\+Event\+Store$<$\+T\+Authentication\+Token$>$ access. This factory supports reading and writing from separate storage accounts. Specifically you can have as many different storage accounts as you want to configure when writing. This allows for manual mirroring of data while reading from the fastest/closest location possible. 
+
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -46,12 +56,20 @@ I\+Logger \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorage
 
 
 
+Instantiates a new instance of \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory}{Table\+Storage\+Event\+Store\+Connection\+String\+Factory}. 
+
+
+
 \subsection{Member Function Documentation}
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a118388598a7fa653122fc11521c915d7_a118388598a7fa653122fc11521c915d7}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a118388598a7fa653122fc11521c915d7_a118388598a7fa653122fc11521c915d7}} 
 \index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory}!Get\+Base\+Container\+Name@{Get\+Base\+Container\+Name}}
 \index{Get\+Base\+Container\+Name@{Get\+Base\+Container\+Name}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory}}
 \subsubsection{\texorpdfstring{Get\+Base\+Container\+Name()}{GetBaseContainerName()}}
 {\footnotesize\ttfamily virtual string Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory.\+Get\+Base\+Container\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Returns the name of the base contain to be used. This will be the value from \hyperlink{namespaceCqrs_1_1Azure_1_1ConfigurationManager}{Configuration\+Manager} keyed \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a9aad5e7497e3f5192d3aaec8d5f7b5f8_a9aad5e7497e3f5192d3aaec8d5f7b5f8}{Table\+Storage\+Base\+Container\+Name\+Key}. 
 
 
 
@@ -65,6 +83,10 @@ Implements \hyperlink{interfaceCqrs_1_1Azure_1_1BlobStorage_1_1ITableStorageStor
 
 
 
+Gets the readable connection string. If using a single storage account, then \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a95f8662029c8a40117e326973de936bf_a95f8662029c8a40117e326973de936bf}{Table\+Storage\+Event\+Store\+Connection\+String\+Key} will most likely be returned. If a value for \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_ac28aea2439fe0bed85d1b53c0fd8fdaf_ac28aea2439fe0bed85d1b53c0fd8fdaf}{Table\+Storage\+Readable\+Event\+Store\+Connection\+String\+Key} is found, that will be returned instead. 
+
+
+
 Implements \hyperlink{interfaceCqrs_1_1Azure_1_1BlobStorage_1_1IStorageStoreConnectionStringFactory_a0ed836289e048767f753630bbcc98d5d_a0ed836289e048767f753630bbcc98d5d}{Cqrs.\+Azure.\+Blob\+Storage.\+I\+Storage\+Store\+Connection\+String\+Factory}.
 
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a07406c2607bdd42dd13116b92fc6b665_a07406c2607bdd42dd13116b92fc6b665}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a07406c2607bdd42dd13116b92fc6b665_a07406c2607bdd42dd13116b92fc6b665}} 
@@ -72,6 +94,10 @@ Implements \hyperlink{interfaceCqrs_1_1Azure_1_1BlobStorage_1_1IStorageStoreConn
 \index{Get\+Writable\+Connection\+Strings@{Get\+Writable\+Connection\+Strings}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory}}
 \subsubsection{\texorpdfstring{Get\+Writable\+Connection\+Strings()}{GetWritableConnectionStrings()}}
 {\footnotesize\ttfamily virtual I\+Enumerable$<$string$>$ Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory.\+Get\+Writable\+Connection\+Strings (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Gets all writeable connection strings. If using a single storage account, then \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a95f8662029c8a40117e326973de936bf_a95f8662029c8a40117e326973de936bf}{Table\+Storage\+Event\+Store\+Connection\+String\+Key} will most likely be returned. If a value for \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a73df7618d5978a2c0d2e69880b799369_a73df7618d5978a2c0d2e69880b799369}{Table\+Storage\+Writable\+Event\+Store\+Connection\+String\+Key} is found, it will append \char`\"{}.\+1\char`\"{}, \char`\"{}.\+2\char`\"{} etc returning any additionally found connection string values in \hyperlink{namespaceCqrs_1_1Azure_1_1ConfigurationManager}{Configuration\+Manager}. 
 
 
 
@@ -86,11 +112,19 @@ Implements \hyperlink{interfaceCqrs_1_1Azure_1_1BlobStorage_1_1IStorageStoreConn
 \subsubsection{\texorpdfstring{Table\+Storage\+Base\+Container\+Name\+Key}{TableStorageBaseContainerNameKey}}
 {\footnotesize\ttfamily string Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory.\+Table\+Storage\+Base\+Container\+Name\+Key = \char`\"{}Cqrs.\+Azure.\+Table\+Storage.\+Event\+Store.\+Base\+Container\+Name\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}
 
+
+
+The name of the app setting in I\+Configuration\+Manager that will have the base name of the container used. 
+
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a95f8662029c8a40117e326973de936bf_a95f8662029c8a40117e326973de936bf}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a95f8662029c8a40117e326973de936bf_a95f8662029c8a40117e326973de936bf}} 
 \index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory}!Table\+Storage\+Event\+Store\+Connection\+String\+Key@{Table\+Storage\+Event\+Store\+Connection\+String\+Key}}
 \index{Table\+Storage\+Event\+Store\+Connection\+String\+Key@{Table\+Storage\+Event\+Store\+Connection\+String\+Key}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory}}
 \subsubsection{\texorpdfstring{Table\+Storage\+Event\+Store\+Connection\+String\+Key}{TableStorageEventStoreConnectionStringKey}}
 {\footnotesize\ttfamily string Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory.\+Table\+Storage\+Event\+Store\+Connection\+String\+Key = \char`\"{}Cqrs.\+Azure.\+Table\+Storage.\+Event\+Store.\+Connection\+String\+Name\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The name of the app setting in I\+Configuration\+Manager that will have the connection string if using a single storage account for both reads and writes. 
 
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_ac28aea2439fe0bed85d1b53c0fd8fdaf_ac28aea2439fe0bed85d1b53c0fd8fdaf}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_ac28aea2439fe0bed85d1b53c0fd8fdaf_ac28aea2439fe0bed85d1b53c0fd8fdaf}} 
 \index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory}!Table\+Storage\+Readable\+Event\+Store\+Connection\+String\+Key@{Table\+Storage\+Readable\+Event\+Store\+Connection\+String\+Key}}
@@ -98,11 +132,19 @@ Implements \hyperlink{interfaceCqrs_1_1Azure_1_1BlobStorage_1_1IStorageStoreConn
 \subsubsection{\texorpdfstring{Table\+Storage\+Readable\+Event\+Store\+Connection\+String\+Key}{TableStorageReadableEventStoreConnectionStringKey}}
 {\footnotesize\ttfamily string Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory.\+Table\+Storage\+Readable\+Event\+Store\+Connection\+String\+Key = \char`\"{}Cqrs.\+Azure.\+Table\+Storage.\+Event\+Store.\+Read.\+Connection\+String\+Name\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}
 
+
+
+The name of the app setting in I\+Configuration\+Manager that will have the connection string of the readable storage account if using a separate storage account for reads and writes. 
+
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a73df7618d5978a2c0d2e69880b799369_a73df7618d5978a2c0d2e69880b799369}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a73df7618d5978a2c0d2e69880b799369_a73df7618d5978a2c0d2e69880b799369}} 
 \index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory}!Table\+Storage\+Writable\+Event\+Store\+Connection\+String\+Key@{Table\+Storage\+Writable\+Event\+Store\+Connection\+String\+Key}}
 \index{Table\+Storage\+Writable\+Event\+Store\+Connection\+String\+Key@{Table\+Storage\+Writable\+Event\+Store\+Connection\+String\+Key}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory}}
 \subsubsection{\texorpdfstring{Table\+Storage\+Writable\+Event\+Store\+Connection\+String\+Key}{TableStorageWritableEventStoreConnectionStringKey}}
 {\footnotesize\ttfamily string Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory.\+Table\+Storage\+Writable\+Event\+Store\+Connection\+String\+Key = \char`\"{}Cqrs.\+Azure.\+Table\+Storage.\+Event\+Store.\+Write.\+Connection\+String\+Name\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The name of the app setting in I\+Configuration\+Manager that will have the connection string of the writeable storage account if using a separate storage account for reads and writes. This value gets appended with a \char`\"{}.\+1\char`\"{}, \char`\"{}.\+2\char`\"{} etc allowing you to write to as many different locations as possible. 
 
 
 
@@ -113,9 +155,17 @@ Implements \hyperlink{interfaceCqrs_1_1Azure_1_1BlobStorage_1_1IStorageStoreConn
 \subsubsection{\texorpdfstring{Configuration\+Manager}{ConfigurationManager}}
 {\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory.\+Configuration\+Manager\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
 
+
+
+Gets or sets the I\+Configuration\+Manager. 
+
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a1324be985c77f1393a45a73dbb178314_a1324be985c77f1393a45a73dbb178314}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory_a1324be985c77f1393a45a73dbb178314_a1324be985c77f1393a45a73dbb178314}} 
 \index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory}!Logger@{Logger}}
 \index{Logger@{Logger}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory}}
 \subsubsection{\texorpdfstring{Logger}{Logger}}
 {\footnotesize\ttfamily I\+Logger Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store\+Connection\+String\+Factory.\+Logger\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Logger. 
 

@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">2</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-19</td>
+            <td class="headerValue">2017-08-27</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -68,14 +68,32 @@
 <span class="lineNum">      10 </span>            : 
 <span class="lineNum">      11 </span>            : namespace Cqrs.Azure.DocumentDb
 <span class="lineNum">      12 </span>            : {
-<span class="lineNum">      13 </span>            :         public class DocumentDbException : Exception
-<span class="lineNum">      14 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      15 </span><span class="lineNoCov">          0 :                 public DocumentDbException(string message, Exception exception)</span>
-<span class="lineNum">      16 </span>            :                         : base(message, exception)
-<span class="lineNum">      17 </span>            :                 {
-<span class="lineNum">      18 </span>            :                 }
-<span class="lineNum">      19 </span>            :         }
-<span class="lineNum">      20 </span>            : }
+<span class="lineNum">      13 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      14 </span>            :         /// A non-fault tolerant &lt;see cref=&quot;Exception&quot;/&gt; while interacting with DocumentDB.
+<span class="lineNum">      15 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      16 </span>            :         [Serializable]
+<span class="lineNum">      17 </span>            :         public class DocumentDbException : Exception
+<span class="lineNum">      18 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      19 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      20 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;DocumentDbException&quot;/&gt; with a specified error message and a reference to the inner &lt;paramref name=&quot;exception&quot;/&gt; that is the cause of this &lt;see cref=&quot;Exception&quot;/&gt;.
+<span class="lineNum">      21 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      22 </span>            :                 /// &lt;param name=&quot;message&quot;&gt;The error message that explains the reason for the exception.&lt;/param&gt;
+<span class="lineNum">      23 </span>            :                 /// &lt;param name=&quot;exception&quot;&gt;The &lt;see cref=&quot;Exception&quot;/&gt; that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner &lt;see cref=&quot;Exception&quot;/&gt; is specified.&lt;/param&gt;
+<span class="lineNum">      24 </span><span class="lineCov">          1 :                 public DocumentDbException(string message, Exception exception)</span>
+<span class="lineNum">      25 </span>            :                         : base(message, exception)
+<span class="lineNum">      26 </span>            :                 {
+<span class="lineNum">      27 </span>            :                 }
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      30 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;DocumentDbException&quot;/&gt; with a reference to the inner &lt;paramref name=&quot;exception&quot;/&gt; that is the cause of this &lt;see cref=&quot;Exception&quot;/&gt;.
+<span class="lineNum">      31 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      32 </span>            :                 /// &lt;param name=&quot;exception&quot;&gt;The &lt;see cref=&quot;Exception&quot;/&gt; that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner &lt;see cref=&quot;Exception&quot;/&gt; is specified.&lt;/param&gt;
+<span class="lineNum">      33 </span><span class="lineCov">          1 :                 public DocumentDbException(Exception exception)</span>
+<span class="lineNum">      34 </span>            :                         : this(&quot;Non-fault tolerant exception raised.&quot;, exception)
+<span class="lineNum">      35 </span>            :                 {
+<span class="lineNum">      36 </span>            :                 }
+<span class="lineNum">      37 </span>            :         }
+<span class="lineNum">      38 </span>            : }
 </pre>
       </td>
     </tr>

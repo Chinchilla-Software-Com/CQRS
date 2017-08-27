@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">4</td>
             <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntryMed">80.0 %</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-19</td>
+            <td class="headerValue">2017-08-27</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -64,69 +64,76 @@
 <span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
 <span class="lineNum">       7 </span>            : #endregion
 <span class="lineNum">       8 </span>            : 
-<span class="lineNum">       9 </span>            : using System.IO;
-<span class="lineNum">      10 </span>            : using Cqrs.Events;
-<span class="lineNum">      11 </span>            : using Microsoft.WindowsAzure.Storage.Table;
-<span class="lineNum">      12 </span>            : using Newtonsoft.Json;
-<span class="lineNum">      13 </span>            : 
-<span class="lineNum">      14 </span>            : namespace Cqrs.Azure.BlobStorage
-<span class="lineNum">      15 </span>            : {
-<span class="lineNum">      16 </span>            :         public abstract class TableEntity&lt;TData&gt;
-<span class="lineNum">      17 </span>            :                 : TableEntity
-<span class="lineNum">      18 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      19 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      20 </span>            :                 /// The default &lt;see cref=&quot;JsonSerializerSettings&quot;/&gt; to use.
-<span class="lineNum">      21 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      22 </span>            :                 public static JsonSerializerSettings DefaultSettings { get; private set; }
-<span class="lineNum">      23 </span>            : 
-<span class="lineNum">      24 </span>            :                 static TableEntity()
-<span class="lineNum">      25 </span>            :                 {
-<span class="lineNum">      26 </span>            :                         DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
-<span class="lineNum">      27 </span>            :                 }
-<span class="lineNum">      28 </span>            : 
-<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      30 </span>            :                 /// Deserialise the provided &lt;paramref name=&quot;json&quot;/&gt; from its &lt;see cref=&quot;string&quot;/&gt; representation.
-<span class="lineNum">      31 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      32 </span>            :                 /// &lt;param name=&quot;json&quot;&gt;A &lt;see cref=&quot;string&quot;/&gt; representation of an &lt;see cref=&quot;TData&quot;/&gt; to deserialise.&lt;/param&gt;
-<span class="lineNum">      33 </span><span class="lineCov">          1 :                 protected virtual TData Deserialise(string json)</span>
-<span class="lineNum">      34 </span>            :                 {
-<span class="lineNum">      35 </span>            :                         using (var stringReader = new StringReader(json))
-<span class="lineNum">      36 </span>            :                         using (var jsonTextReader = new JsonTextReader(stringReader))
-<span class="lineNum">      37 </span>            :                                 return GetSerialiser().Deserialize&lt;TData&gt;(jsonTextReader);
-<span class="lineNum">      38 </span>            :                 }
-<span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      41 </span>            :                 /// Serialise the provided &lt;paramref name=&quot;data&quot;/&gt;.
-<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      43 </span>            :                 /// &lt;param name=&quot;data&quot;&gt;The &lt;see cref=&quot;TData&quot;/&gt; being serialised.&lt;/param&gt;
-<span class="lineNum">      44 </span>            :                 /// &lt;returns&gt;A &lt;see cref=&quot;string&quot;/&gt; representation of the provided &lt;paramref name=&quot;data&quot;/&gt;.&lt;/returns&gt;
-<span class="lineNum">      45 </span><span class="lineCov">          1 :                 protected virtual string Serialise(TData data)</span>
-<span class="lineNum">      46 </span>            :                 {
-<span class="lineNum">      47 </span>            :                         string dataContent = JsonConvert.SerializeObject(data, GetSerialisationSettings());
-<span class="lineNum">      48 </span>            : 
-<span class="lineNum">      49 </span>            :                         return dataContent;
-<span class="lineNum">      50 </span>            :                 }
-<span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      53 </span>            :                 /// Returns &lt;see cref=&quot;DefaultSettings&quot;/&gt;
-<span class="lineNum">      54 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      55 </span>            :                 /// &lt;returns&gt;&lt;see cref=&quot;DefaultSettings&quot;/&gt;&lt;/returns&gt;
-<span class="lineNum">      56 </span><span class="lineCov">          1 :                 protected virtual JsonSerializerSettings GetSerialisationSettings()</span>
-<span class="lineNum">      57 </span>            :                 {
-<span class="lineNum">      58 </span>            :                         return DefaultSettings;
-<span class="lineNum">      59 </span>            :                 }
-<span class="lineNum">      60 </span>            : 
-<span class="lineNum">      61 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      62 </span>            :                 /// Creates a new &lt;see cref=&quot;JsonSerializer&quot;/&gt; using the settings from &lt;see cref=&quot;GetSerialisationSettings&quot;/&gt;.
-<span class="lineNum">      63 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      64 </span>            :                 /// &lt;returns&gt;A new instance of &lt;see cref=&quot;JsonSerializer&quot;/&gt;.&lt;/returns&gt;
-<span class="lineNum">      65 </span><span class="lineCov">          1 :                 protected virtual JsonSerializer GetSerialiser()</span>
-<span class="lineNum">      66 </span>            :                 {
-<span class="lineNum">      67 </span>            :                         JsonSerializerSettings settings = GetSerialisationSettings();
-<span class="lineNum">      68 </span>            :                         return JsonSerializer.Create(settings);
-<span class="lineNum">      69 </span>            :                 }
-<span class="lineNum">      70 </span>            :         }
-<span class="lineNum">      71 </span>            : }
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.IO;
+<span class="lineNum">      11 </span>            : using System.Runtime.Serialization;
+<span class="lineNum">      12 </span>            : using Cqrs.Events;
+<span class="lineNum">      13 </span>            : using Microsoft.WindowsAzure.Storage.Table;
+<span class="lineNum">      14 </span>            : using Newtonsoft.Json;
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : namespace Cqrs.Azure.BlobStorage
+<span class="lineNum">      17 </span>            : {
+<span class="lineNum">      18 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      19 </span>            :         /// A projection/entity especially designed to work with Azure Table storage.
+<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      21 </span>            :         [Serializable]
+<span class="lineNum">      22 </span>            :         [DataContract]
+<span class="lineNum">      23 </span>            :         public abstract class TableEntity&lt;TData&gt;
+<span class="lineNum">      24 </span>            :                 : TableEntity
+<span class="lineNum">      25 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// The default &lt;see cref=&quot;JsonSerializerSettings&quot;/&gt; to use.
+<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      29 </span>            :                 public static JsonSerializerSettings DefaultSettings { get; private set; }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 static TableEntity()
+<span class="lineNum">      32 </span>            :                 {
+<span class="lineNum">      33 </span>            :                         DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
+<span class="lineNum">      34 </span>            :                 }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      37 </span>            :                 /// Deserialise the provided &lt;paramref name=&quot;json&quot;/&gt; from its &lt;see cref=&quot;string&quot;/&gt; representation.
+<span class="lineNum">      38 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      39 </span>            :                 /// &lt;param name=&quot;json&quot;&gt;A &lt;see cref=&quot;string&quot;/&gt; representation of an &lt;typeparamref name=&quot;TData&quot;/&gt; to deserialise.&lt;/param&gt;
+<span class="lineNum">      40 </span><span class="lineCov">          1 :                 protected virtual TData Deserialise(string json)</span>
+<span class="lineNum">      41 </span>            :                 {
+<span class="lineNum">      42 </span>            :                         using (var stringReader = new StringReader(json))
+<span class="lineNum">      43 </span>            :                         using (var jsonTextReader = new JsonTextReader(stringReader))
+<span class="lineNum">      44 </span>            :                                 return GetSerialiser().Deserialize&lt;TData&gt;(jsonTextReader);
+<span class="lineNum">      45 </span>            :                 }
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      48 </span>            :                 /// Serialise the provided &lt;paramref name=&quot;data&quot;/&gt;.
+<span class="lineNum">      49 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      50 </span>            :                 /// &lt;param name=&quot;data&quot;&gt;The &lt;typeparamref name=&quot;TData&quot;/&gt; being serialised.&lt;/param&gt;
+<span class="lineNum">      51 </span>            :                 /// &lt;returns&gt;A &lt;see cref=&quot;string&quot;/&gt; representation of the provided &lt;paramref name=&quot;data&quot;/&gt;.&lt;/returns&gt;
+<span class="lineNum">      52 </span><span class="lineCov">          1 :                 protected virtual string Serialise(TData data)</span>
+<span class="lineNum">      53 </span>            :                 {
+<span class="lineNum">      54 </span>            :                         string dataContent = JsonConvert.SerializeObject(data, GetSerialisationSettings());
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                         return dataContent;
+<span class="lineNum">      57 </span>            :                 }
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      60 </span>            :                 /// Returns &lt;see cref=&quot;DefaultSettings&quot;/&gt;
+<span class="lineNum">      61 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      62 </span>            :                 /// &lt;returns&gt;&lt;see cref=&quot;DefaultSettings&quot;/&gt;&lt;/returns&gt;
+<span class="lineNum">      63 </span><span class="lineCov">          1 :                 protected virtual JsonSerializerSettings GetSerialisationSettings()</span>
+<span class="lineNum">      64 </span>            :                 {
+<span class="lineNum">      65 </span>            :                         return DefaultSettings;
+<span class="lineNum">      66 </span>            :                 }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      69 </span>            :                 /// Creates a new &lt;see cref=&quot;JsonSerializer&quot;/&gt; using the settings from &lt;see cref=&quot;GetSerialisationSettings&quot;/&gt;.
+<span class="lineNum">      70 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      71 </span>            :                 /// &lt;returns&gt;A new instance of &lt;see cref=&quot;JsonSerializer&quot;/&gt;.&lt;/returns&gt;
+<span class="lineNum">      72 </span><span class="lineCov">          1 :                 protected virtual JsonSerializer GetSerialiser()</span>
+<span class="lineNum">      73 </span>            :                 {
+<span class="lineNum">      74 </span>            :                         JsonSerializerSettings settings = GetSerialisationSettings();
+<span class="lineNum">      75 </span>            :                         return JsonSerializer.Create(settings);
+<span class="lineNum">      76 </span>            :                 }
+<span class="lineNum">      77 </span>            :         }
+<span class="lineNum">      78 </span>            : }
 </pre>
       </td>
     </tr>
