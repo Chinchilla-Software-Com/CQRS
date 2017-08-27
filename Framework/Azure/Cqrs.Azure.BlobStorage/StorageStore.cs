@@ -14,6 +14,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using cdmdotnet.Logging;
+using Cqrs.Entities;
 using Cqrs.Events;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling;
@@ -29,16 +30,34 @@ namespace Cqrs.Azure.BlobStorage
 	public abstract class StorageStore<TData, TSource>
 		: IEnumerable<TData>
 	{
+		/// <summary>
+		/// Gets the collection of writeable <see cref="CloudStorageAccount"/>.
+		/// </summary>
 		protected IList<Tuple<CloudStorageAccount, TSource>> WritableCollection { get; private set; }
 
+		/// <summary>
+		/// Gets the readable <see cref="CloudStorageAccount"/>.
+		/// </summary>
 		protected CloudStorageAccount ReadableStorageAccount { get; private set; }
 
+		/// <summary>
+		/// Gets the readable <typeparamref name="TSource"/>.
+		/// </summary>
 		internal TSource ReadableSource { get; private set; }
 
+		/// <summary>
+		/// Gets the <see cref="ILogger"/>.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="Func{Tstring}"/> that returns the name of the container.
+		/// </summary>
 		protected Func<string> GetContainerName { get; set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="Func{Tstring}"/> that returns if the container is public or not.
+		/// </summary>
 		protected Func<bool> IsContainerPublic { get; set; }
 
 		/// <summary>
@@ -59,6 +78,9 @@ namespace Cqrs.Azure.BlobStorage
 			DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
 		}
 
+		/// <summary>
+		/// Initialises the <see cref="StorageStore{TData,TSource}"/>.
+		/// </summary>
 		protected virtual void Initialise(IStorageStoreConnectionStringFactory storageDataStoreConnectionStringFactory)
 		{
 			WritableCollection = new List<Tuple<CloudStorageAccount, TSource>>();
@@ -142,35 +164,59 @@ namespace Cqrs.Azure.BlobStorage
 
 		#region Implementation of IDataStore<TData>
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public abstract void Add(TData data);
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public virtual void Add(IEnumerable<TData> data)
 		{
 			foreach (TData dataItem in data)
 				Add(dataItem);
 		}
 
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
 		public abstract void Destroy(TData data);
 
+		/// <summary>
+		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+		/// </summary>
 		public abstract void RemoveAll();
 
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
 		public abstract void Update(TData data);
 
 		#endregion
 
 		/// <summary>
-		/// Creates a <typeparam name="TSource" /> with the specified name <paramref name="sourceName"/> if it doesn't already exist.
+		/// Creates a <typeparamref name="TSource" /> with the specified name <paramref name="sourceName"/> if it doesn't already exist.
 		/// </summary>
 		/// <param name="storageAccount">The storage account to create the container is</param>
 		/// <param name="sourceName">The name of the source.</param>
 		/// <param name="isPublic">Whether or not this source is publicly accessible.</param>
 		protected abstract TSource CreateSource(CloudStorageAccount storageAccount, string sourceName, bool isPublic = true);
 
+		/// <summary>
+		/// Gets the provided <paramref name="sourceName"/> in a safe to use in lower case format.
+		/// </summary>
+		/// <param name="sourceName">The name to make safe.</param>
 		protected virtual string GetSafeSourceName(string sourceName)
 		{
 			return GetSafeSourceName(sourceName, true);
 		}
 
+		/// <summary>
+		/// Gets the provided <paramref name="sourceName"/> in a safe to use in format.
+		/// </summary>
+		/// <param name="sourceName">The name to make safe.</param>
+		/// <param name="lowerCaseName">Indicates if the generated name is forced into a lower case format.</param>
 		protected virtual string GetSafeSourceName(string sourceName, bool lowerCaseName)
 		{
 			if (sourceName.Contains(":"))
@@ -240,7 +286,7 @@ namespace Cqrs.Azure.BlobStorage
 		/// <summary>
 		/// Deserialise the provided <paramref name="dataStream"/> from its <see cref="Stream"/> representation.
 		/// </summary>
-		/// <param name="dataStream">A <see cref="Stream"/> representation of an <see cref="TData"/> to deserialise.</param>
+		/// <param name="dataStream">A <see cref="Stream"/> representation of an <typeparamref name="TData"/> to deserialise.</param>
 		protected virtual TData Deserialise(Stream dataStream)
 		{
 			using (dataStream)
@@ -257,7 +303,7 @@ namespace Cqrs.Azure.BlobStorage
 		/// <summary>
 		/// Deserialise the provided <paramref name="json"/> from its <see cref="string"/> representation.
 		/// </summary>
-		/// <param name="json">A <see cref="string"/> representation of an <see cref="TData"/> to deserialise.</param>
+		/// <param name="json">A <see cref="string"/> representation of an <typeparamref name="TData"/> to deserialise.</param>
 		protected virtual TData Deserialise(string json)
 		{
 			using (var stringReader = new StringReader(json))
@@ -268,7 +314,7 @@ namespace Cqrs.Azure.BlobStorage
 		/// <summary>
 		/// Serialise the provided <paramref name="data"/>.
 		/// </summary>
-		/// <param name="data">The <see cref="TData"/> being serialised.</param>
+		/// <param name="data">The <typeparamref name="TData"/> being serialised.</param>
 		/// <returns>A <see cref="Stream"/> representation of the provided <paramref name="data"/>.</returns>
 		protected virtual Stream Serialise(TData data)
 		{

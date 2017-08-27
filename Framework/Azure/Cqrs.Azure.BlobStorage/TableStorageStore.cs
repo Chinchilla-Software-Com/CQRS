@@ -44,6 +44,9 @@ namespace Cqrs.Azure.BlobStorage
 
 		#region Overrides of StorageStore<TData,CloudTable>
 
+		/// <summary>
+		/// Initialises the <see cref="StorageStore{TData,TSource}"/>.
+		/// </summary>
 		protected override void Initialise(IStorageStoreConnectionStringFactory tableStorageDataStoreConnectionStringFactory)
 		{
 			base.Initialise(tableStorageDataStoreConnectionStringFactory);
@@ -124,6 +127,9 @@ namespace Cqrs.Azure.BlobStorage
 
 		#endregion
 
+		/// <summary>
+		/// Save the provided <paramref name="data"/> asynchronously.
+		/// </summary>
 		protected virtual void AsyncSaveData<TSaveData, TResult>(TSaveData data, Func<TSaveData, CloudTable, TResult> function, Func<TSaveData, string> customFilenameFunction = null)
 		{
 			IList<Task> persistTasks = new List<Task>();
@@ -149,6 +155,10 @@ namespace Cqrs.Azure.BlobStorage
 				throw new AggregateException("Persisting data to table storage failed. Check the logs for more details.");
 		}
 
+		/// <summary>
+		/// Creates a new instance of <see cref="ITableEntity"/> populating it with the provided <paramref name="data"/>.
+		/// </summary>
+		/// <param name="data">The data to store.</param>
 		protected abstract ITableEntity CreateTableEntity(TCollectionItemData data);
 
 		#region Implementation of IDataStore<TData>
@@ -161,6 +171,9 @@ namespace Cqrs.Azure.BlobStorage
 			Add(data);
 		}
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public virtual void Add(ITableEntity data)
 		{
 			AsyncSaveData
@@ -201,6 +214,9 @@ namespace Cqrs.Azure.BlobStorage
 			Add(data);
 		}
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public virtual void Add(IEnumerable<ITableEntity> data)
 		{
 			AsyncSaveData
@@ -293,12 +309,18 @@ namespace Cqrs.Azure.BlobStorage
 		}
 		*/
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public virtual void Add(TCollectionItemData data)
 		{
 			// Create the TableOperation object that inserts the customer entity.
 			Add(CreateTableEntity(data));
 		}
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public virtual void Add(IEnumerable<TCollectionItemData> data)
 		{
 			// Create the TableOperation object that inserts the customer entity.
@@ -310,6 +332,9 @@ namespace Cqrs.Azure.BlobStorage
 		/// </summary>
 		public abstract void Remove(TCollectionItemData data);
 
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
 		public virtual void Destroy(TCollectionItemData data)
 		{
 			Destroy((TData)CreateTableEntity(data));
@@ -324,6 +349,9 @@ namespace Cqrs.Azure.BlobStorage
 				tuple.Item2.DeleteIfExists();
 		}
 
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
 		public virtual void Update(TCollectionItemData data)
 		{
 			Update((TData)CreateTableEntity(data));
@@ -364,8 +392,14 @@ namespace Cqrs.Azure.BlobStorage
 
 		#endregion
 
+		/// <summary>
+		/// Gets a <see cref="TableOperation"/> for updating.
+		/// </summary>
 		protected abstract TableOperation GetUpdatableTableEntity(TCollectionItemData data);
 
+		/// <summary>
+		/// Gets a <see cref="TableOperation"/> for updating.
+		/// </summary>
 		protected abstract TableOperation GetUpdatableTableEntity(TData data);
 
 		/// <summary>
@@ -461,6 +495,10 @@ namespace Cqrs.Azure.BlobStorage
 
 		#region Overrides of StorageStore<TData,CloudTable>
 
+		/// <summary>
+		/// Gets the provided <paramref name="sourceName"/> in a safe to use format.
+		/// </summary>
+		/// <param name="sourceName">The name to make safe.</param>
 		protected override string GetSafeSourceName(string sourceName)
 		{
 			return GetSafeSourceName(sourceName, false);

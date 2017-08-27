@@ -61,7 +61,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 
 		/// <summary>
 		/// Gets a <see cref="TableOperation"/> that calls <see cref="TableOperation.Retrieve{TData}(string,string,System.Collections.Generic.List{string})"/>
-		/// read for updating.
+		/// for updating.
 		/// </summary>
 		/// <param name="data">The data containing the <see cref="IEntity.Rsn"/> property populated.</param>
 		protected override TableOperation GetUpdatableTableEntity(TData data)
@@ -71,7 +71,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 
 		/// <summary>
 		/// Gets a <see cref="TableOperation"/> that calls <see cref="TableOperation.Retrieve{TData}(string,string,System.Collections.Generic.List{string})"/>
-		/// read for updating.
+		/// for updating.
 		/// </summary>
 		/// <param name="data">The <see cref="EntityTableEntity{TEntity}"/> containing the <see cref="EntityTableEntity{TEntity}.Entity"/> containing the <see cref="IEntity.Rsn"/> property populated.</param>
 		protected override TableOperation GetUpdatableTableEntity(EntityTableEntity<TData> data)

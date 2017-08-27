@@ -15,6 +15,10 @@ using Cqrs.Entities;
 
 namespace Cqrs.Azure.BlobStorage.DataStores
 {
+	/// <summary>
+	/// A <see cref="IDataStore{TData}"/> that uses Azure Blob Storage for storage.
+	/// </summary>
+	/// <typeparam name="TData">The <see cref="Type"/> of <see cref="IEntity"/> the <see cref="IDataStore{TData}"/> will contain.</typeparam>
 	public class BlobStorageDataStore<TData>
 		: BlobStorageStore<TData>
 		, IDataStore<TData>
@@ -51,6 +55,9 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 
 		#endregion
 
+		/// <summary>
+		/// Get all <typeparamref name="TData"/> items in the folder.
+		/// </summary>
 		public virtual IEnumerable<TData> GetByFolder()
 		{
 			string folderName = GenerateFolderName();

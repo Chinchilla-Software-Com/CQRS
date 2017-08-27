@@ -8,6 +8,7 @@
 
 using System.Linq;
 using cdmdotnet.Logging;
+using Cqrs.DataStores;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
@@ -15,16 +16,28 @@ using Microsoft.Azure.Documents.Linq;
 namespace Cqrs.Azure.DocumentDb.Factories
 {
 	/// <summary>
-	/// A factory for obtaining DataStore collections from Azure DocumentDB
+	/// A factory for obtaining <see cref="IDataStore{TData}"/> collections from Azure DocumentDB
 	/// </summary>
 	public class AzureDocumentDbDataStoreFactory
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="IAzureDocumentDbDataStoreConnectionStringFactory"/>.
+		/// </summary>
 		protected IAzureDocumentDbDataStoreConnectionStringFactory AzureDocumentDbDataStoreConnectionStringFactory { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IAzureDocumentDbHelper"/>.
+		/// </summary>
 		protected IAzureDocumentDbHelper AzureDocumentDbHelper { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureDocumentDbDataStoreFactory"/>.
+		/// </summary>
 		public AzureDocumentDbDataStoreFactory(IAzureDocumentDbDataStoreConnectionStringFactory azureDocumentDbDataStoreConnectionStringFactory, IAzureDocumentDbHelper azureDocumentDbHelper, ILogger logger)
 		{
 			AzureDocumentDbDataStoreConnectionStringFactory = azureDocumentDbDataStoreConnectionStringFactory;
@@ -32,6 +45,9 @@ namespace Cqrs.Azure.DocumentDb.Factories
 			Logger = logger;
 		}
 
+		/// <summary>
+		/// Get a <see cref="DocumentClient"/> from the <see cref="AzureDocumentDbDataStoreConnectionStringFactory"/>.
+		/// </summary>
 		protected virtual DocumentClient GetClient()
 		{
 			DocumentClient client = AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbConnectionClient();
@@ -39,6 +55,9 @@ namespace Cqrs.Azure.DocumentDb.Factories
 			return client;
 		}
 
+		/// <summary>
+		/// Get a <see cref="DocumentCollection"/> from the <see cref="AzureDocumentDbDataStoreConnectionStringFactory"/>.
+		/// </summary>
 		protected virtual DocumentCollection GetCollection<TEntity>(DocumentClient client, Database database)
 		{
 			string collectionName = string.Format(AzureDocumentDbDataStoreConnectionStringFactory.UseSingleCollectionForAllDataStores() ? "{0}" : "{0}_{1}", AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbCollectionName(), typeof(TEntity).FullName);
@@ -47,6 +66,9 @@ namespace Cqrs.Azure.DocumentDb.Factories
 			return collection;
 		}
 
+		/// <summary>
+		/// Get a blank <see cref="IOrderedQueryable{TEntity}"/>.
+		/// </summary>
 		protected virtual IOrderedQueryable<TEntity> GetQuery<TEntity>(DocumentClient client, DocumentCollection collection)
 		{
 			Logger.LogDebug("Getting Azure query", "AzureDocumentDbDataStoreFactory\\GetQuery");
@@ -62,6 +84,9 @@ namespace Cqrs.Azure.DocumentDb.Factories
 			}
 		}
 
+		/// <summary>
+		/// Get the <see cref="Database"/> from the <see cref="AzureDocumentDbDataStoreConnectionStringFactory"/>.
+		/// </summary>
 		protected virtual Database GetDatabase(DocumentClient client)
 		{
 			return AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbDataStoreConnectionStringFactory.GetAzureDocumentDbDatabaseName()).Result;

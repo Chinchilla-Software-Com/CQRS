@@ -13,11 +13,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
+using Cqrs.Entities;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Cqrs.Azure.BlobStorage
 {
+	/// <summary>
+	/// A <see cref="IEnumerable{TData}"/> that uses Azure Blobl Storage for storage.
+	/// </summary>
 	public class BlobStorageStore<TData>
 		: StorageStore<TData, CloudBlobContainer>
 	{
@@ -101,6 +105,9 @@ namespace Cqrs.Azure.BlobStorage
 
 		#endregion
 
+		/// <summary>
+		/// Save the provided <paramref name="data"/> asynchronously.
+		/// </summary>
 		protected virtual void AsyncSaveData<TResult>(TData data, Func<TData, CloudBlockBlob, TResult> function, Func<TData, string> customFilenameFunction = null)
 		{
 			IList<Task> persistTasks = new List<Task>();
@@ -137,6 +144,9 @@ namespace Cqrs.Azure.BlobStorage
 
 		#region Implementation of IDataStore<TData>
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public override void Add(TData data)
 		{
 			AsyncSaveData
@@ -160,6 +170,9 @@ namespace Cqrs.Azure.BlobStorage
 			);
 		}
 
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
 		public override void Destroy(TData data)
 		{
 			AsyncSaveData
@@ -180,12 +193,18 @@ namespace Cqrs.Azure.BlobStorage
 			);
 		}
 
+		/// <summary>
+		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+		/// </summary>
 		public override void RemoveAll()
 		{
 			foreach (Tuple<CloudStorageAccount, CloudBlobContainer> tuple in WritableCollection)
 				tuple.Item2.DeleteIfExists();
 		}
 
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
 		public override void Update(TData data)
 		{
 			Add(data);
@@ -256,6 +275,9 @@ namespace Cqrs.Azure.BlobStorage
 			return container.GetBlockBlobReference(blobName);
 		}
 
+		/// <summary>
+		/// Get <typeparamref name="TData"/> by its name.
+		/// </summary>
 		public virtual TData GetByName(string name)
 		{
 			return OpenStreamsForReading(blobPrefix: name.Replace("\\", "/"))
@@ -268,6 +290,9 @@ namespace Cqrs.Azure.BlobStorage
 			*/
 		}
 
+		/// <summary>
+		/// Get all <typeparamref name="TData"/> items in the folder.
+		/// </summary>
 		public virtual IEnumerable<TData> GetByFolder(string folderName)
 		{
 			string folder = new Uri(string.Format(folderName.StartsWith("..\\") ? "http://l/2/{0}" : "http://l/{0}", folderName)).AbsolutePath.Substring(1);

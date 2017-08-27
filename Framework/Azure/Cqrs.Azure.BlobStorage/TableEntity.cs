@@ -6,13 +6,20 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using System.IO;
+using System.Runtime.Serialization;
 using Cqrs.Events;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 
 namespace Cqrs.Azure.BlobStorage
 {
+	/// <summary>
+	/// A projection/entity especially designed to work with Azure Table storage.
+	/// </summary>
+	[Serializable]
+	[DataContract]
 	public abstract class TableEntity<TData>
 		: TableEntity
 	{
@@ -29,7 +36,7 @@ namespace Cqrs.Azure.BlobStorage
 		/// <summary>
 		/// Deserialise the provided <paramref name="json"/> from its <see cref="string"/> representation.
 		/// </summary>
-		/// <param name="json">A <see cref="string"/> representation of an <see cref="TData"/> to deserialise.</param>
+		/// <param name="json">A <see cref="string"/> representation of an <typeparamref name="TData"/> to deserialise.</param>
 		protected virtual TData Deserialise(string json)
 		{
 			using (var stringReader = new StringReader(json))
@@ -40,7 +47,7 @@ namespace Cqrs.Azure.BlobStorage
 		/// <summary>
 		/// Serialise the provided <paramref name="data"/>.
 		/// </summary>
-		/// <param name="data">The <see cref="TData"/> being serialised.</param>
+		/// <param name="data">The <typeparamref name="TData"/> being serialised.</param>
 		/// <returns>A <see cref="string"/> representation of the provided <paramref name="data"/>.</returns>
 		protected virtual string Serialise(TData data)
 		{
