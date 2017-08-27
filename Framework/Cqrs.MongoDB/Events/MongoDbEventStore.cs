@@ -19,7 +19,6 @@ using Cqrs.Messages;
 using Cqrs.MongoDB.DataStores.Indexes;
 using Cqrs.MongoDB.Events.Indexes;
 using Cqrs.MongoDB.Factories;
-using Cqrs.MongoDB.Serialisers;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;

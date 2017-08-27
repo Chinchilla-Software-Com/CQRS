@@ -17,8 +17,14 @@ namespace Cqrs.Azure.BlobStorage.Factories
 	/// </summary>
 	public abstract class BlobStorageDataStoreFactory
 	{
+		/// <summary>
+		/// Gets the <see cref="IBlobStorageDataStoreConnectionStringFactory"/>.
+		/// </summary>
 		protected IBlobStorageDataStoreConnectionStringFactory BlobStorageDataStoreConnectionStringFactory { get; private set; }
 
+		/// <summary>
+		/// Gets the <see cref="ILogger"/>.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
 		/// <summary>

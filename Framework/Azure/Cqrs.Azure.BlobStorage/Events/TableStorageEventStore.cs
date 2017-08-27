@@ -53,6 +53,11 @@ namespace Cqrs.Azure.BlobStorage.Events
 
 		#region Overrides of EventStore<TAuthenticationToken>
 
+		/// <summary>
+		/// Generate a unique stream name based on the provided <paramref name="aggregateRootType"/> and the <paramref name="aggregateId"/>.
+		/// </summary>
+		/// <param name="aggregateRootType">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="aggregateId">The ID of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		protected override string GenerateStreamName(Type aggregateRootType, Guid aggregateId)
 		{
 			return string.Format(TableCqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
@@ -122,7 +127,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 		#endregion
 
 		/// <summary>
-		/// An Azure Storage based <see cref="TableStorageStore{TData,TCollectionItemData}"/>.
+		/// An Azure Storage based <see cref="Cqrs.Azure.BlobStorage.TableStorageStore{TData,TCollectionItemData}"/>.
 		/// </summary>
 		public class RawTableStorageEventStore
 			: TableStorageStore<EventDataTableEntity<EventData>, EventData>
@@ -130,7 +135,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 			private string TableName { get; set; }
 
 			/// <summary>
-			/// Indicates if this is a <see cref="TableStorageStore{TData,TCollectionItemData}"/>
+			/// Indicates if this is a <see cref="Cqrs.Azure.BlobStorage.TableStorageStore{TData,TCollectionItemData}"/>
 			/// for <see cref="IEventStore{TAuthenticationToken}.Get(Guid)"/>
 			/// </summary>
 			protected bool IsCorrelationIdTableStorageStore { get; set; }
@@ -184,11 +189,17 @@ namespace Cqrs.Azure.BlobStorage.Events
 				throw new InvalidOperationException("Event store entries are not deletable.");
 			}
 
+			/// <summary>
+			/// Will throw an <see cref="InvalidOperationException"/> as this is not supported.
+			/// </summary>
 			protected override TableOperation GetUpdatableTableEntity(EventData data)
 			{
-				throw new InvalidOperationException("Event store entries are not updatable.");
+				throw new InvalidOperationException("Event store entries are not updateable.");
 			}
 
+			/// <summary>
+			/// Will throw an <see cref="InvalidOperationException"/> as this is not supported.
+			/// </summary>
 			protected override TableOperation GetUpdatableTableEntity(EventDataTableEntity<EventData> data)
 			{
 				return GetUpdatableTableEntity(data.EventData);

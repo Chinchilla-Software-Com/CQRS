@@ -20,18 +20,35 @@ using Microsoft.Azure.Documents.Linq;
 
 namespace Cqrs.Azure.DocumentDb
 {
+	/// <summary>
+	/// A helper for Azure Document DB.
+	/// </summary>
 	public class AzureDocumentDbHelper : IAzureDocumentDbHelper
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Gets the <see cref="IAzureDocumentDbConnectionCache"/>
+		/// </summary>
 		protected IAzureDocumentDbConnectionCache AzureDocumentDbConnectionCache { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureDocumentDbHelper"/>.
+		/// </summary>
 		public AzureDocumentDbHelper(ILogger logger, IAzureDocumentDbConnectionCache azureDocumentDbConnectionCache)
 		{
 			Logger = logger;
 			AzureDocumentDbConnectionCache = azureDocumentDbConnectionCache;
 		}
 
+		/// <summary>
+		/// Gets a <see cref="Database"/> creating one if it doesn't already exist.
+		/// </summary>
+		/// <param name="client">The <see cref="DocumentClient"/> to use.</param>
+		/// <param name="databaseName">The name of the database to get.</param>
 		public async Task<Database> CreateOrReadDatabase(DocumentClient client, string databaseName)
 		{
 			Logger.LogDebug("Getting Azure database", "AzureDocumentDbHelper\\CreateOrReadDatabase");
@@ -47,7 +64,7 @@ namespace Cqrs.Azure.DocumentDb
 				}
 				finally
 				{
-					Logger.LogDebug(string.Format("Returning cached database took... Done"), "AzureDocumentDbHelper\\CreateOrReadDatabase");
+					Logger.LogDebug("Returning cached database took... Done", "AzureDocumentDbHelper\\CreateOrReadDatabase");
 				}
 			}
 			try
@@ -68,7 +85,7 @@ namespace Cqrs.Azure.DocumentDb
 					}
 					finally
 					{
-						Logger.LogDebug(string.Format("Returning the existing database... Done"), "AzureDocumentDbHelper\\CreateOrReadDatabase");
+						Logger.LogDebug("Returning the existing database... Done", "AzureDocumentDbHelper\\CreateOrReadDatabase");
 					}
 				}
 				Logger.LogDebug("Creating and returning a new database", "AzureDocumentDbHelper\\CreateOrReadDatabase");
@@ -86,6 +103,13 @@ namespace Cqrs.Azure.DocumentDb
 			}
 		}
 
+		/// <summary>
+		/// Gets a <see cref="DocumentCollection"/> creating one if it doesn't already exist.
+		/// </summary>
+		/// <param name="client">The <see cref="DocumentClient"/> to use.</param>
+		/// <param name="database">The <see cref="Database"/> to look in.</param>
+		/// <param name="collectionName">The name of the collection to get.</param>
+		/// <param name="uniqiueIndexPropertyNames">Any unique properties the collection should enforce.</param>
 		public async Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName, string[] uniqiueIndexPropertyNames = null)
 		{
 			Logger.LogDebug("Getting Azure collection", "AzureDocumentDbHelper\\CreateOrReadCollection");
@@ -101,7 +125,7 @@ namespace Cqrs.Azure.DocumentDb
 				}
 				finally
 				{
-					Logger.LogDebug(string.Format("Returning cached collection took... Done"), "AzureDocumentDbHelper\\CreateOrReadCollection");
+					Logger.LogDebug("Returning cached collection took... Done", "AzureDocumentDbHelper\\CreateOrReadCollection");
 				}
 			}
 			try
@@ -122,7 +146,7 @@ namespace Cqrs.Azure.DocumentDb
 					}
 					finally
 					{
-						Logger.LogDebug(string.Format("Returning the existing document collection... Done"), "AzureDocumentDbHelper\\CreateOrReadCollection");
+						Logger.LogDebug("Returning the existing document collection... Done", "AzureDocumentDbHelper\\CreateOrReadCollection");
 					}
 				}
 				Logger.LogDebug("Creating and returning a new collection", "AzureDocumentDbHelper\\CreateOrReadCollection");
@@ -257,6 +281,10 @@ function()
 			}
 		}
 
+		/// <summary>
+		/// Process the provided <paramref name="documentClientException"/> checking for operations that can be retired.
+		/// </summary>
+		/// <param name="documentClientException">The <see cref="DocumentClientException"/> to check.</param>
 		protected virtual void ProcessFaultTollerantExceptions(DocumentClientException documentClientException)
 		{
 			var statusCode = (int)documentClientException.StatusCode;
@@ -267,10 +295,14 @@ function()
 				Logger.LogWarning("Non-fault tolerant exception raised via DocumentClientException.", "AzureDocumentDbDataStore\\ProcessFaultTollerantExceptions");
 				if (documentClientException.Error.Message == "Resource with specified id or name already exists.")
 					throw new DuplicateCreateCommandException(documentClientException);
-				throw new DocumentDbException("Non-fault tolerant exception raised.", documentClientException);
+				throw new DocumentDbException(documentClientException);
 			}
 		}
 
+		/// <summary>
+		/// Execute the provided <paramref name="func"/> in a fault tolerant way.
+		/// </summary>
+		/// <param name="func">The <see cref="Func{T}"/> to execute.</param>
 		public virtual T ExecuteFaultTollerantFunction<T>(Func<T> func)
 		{
 			while (true)
@@ -298,6 +330,10 @@ function()
 			}
 		}
 
+		/// <summary>
+		/// Execute the provided <paramref name="func"/> in a fault tolerant way.
+		/// </summary>
+		/// <param name="func">The <see cref="Action"/> to execute.</param>
 		public virtual void ExecuteFaultTollerantFunction(Action func)
 		{
 			while (true)
