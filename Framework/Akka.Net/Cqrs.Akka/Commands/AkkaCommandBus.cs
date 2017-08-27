@@ -29,19 +29,59 @@ namespace Cqrs.Akka.Commands
 		: IAkkaCommandPublisher<TAuthenticationToken>
 		, ICommandHandlerRegistrar
 	{
+		/// <summary>
+		/// Gets the <see cref="RouteManager"/>
+		/// </summary>
 		protected static RouteManager Routes { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IAuthenticationTokenHelper{TAuthenticationToken}">Authentication Token Helper</see>
+		/// </summary>
 		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ICorrelationIdHelper"/>
+		/// </summary>
 		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IDependencyResolver"/>
+		/// </summary>
 		protected IDependencyResolver DependencyResolver { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="IBusHelper"/>
+		/// </summary>
+		protected IBusHelper BusHelper { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>
+		/// </summary>
+		protected ILogger Logger { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="ICommandPublisher{TAuthenticationToken}"/>
+		/// </summary>
+		protected ICommandPublisher<TAuthenticationToken> CommandPublisher { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="ICommandReceiver{TAuthenticationToken}"/>
+		/// </summary>
+		protected ICommandReceiver<TAuthenticationToken> CommandReceiver { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the current list of events waiting to be evaluated for <see cref="PublishAndWait{TCommand,TEvent}(TCommand,Cqrs.Events.IEventReceiver{TAuthenticationToken})"/>
+		/// </summary>
+		protected IDictionary<Guid, IList<IEvent<TAuthenticationToken>>> EventWaits { get; private set; }
 
 		static AkkaCommandBus()
 		{
 			Routes = new RouteManager();
 		}
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AkkaCommandBus{TAuthenticationToken}"/>
+		/// </summary>
 		public AkkaCommandBus(IBusHelper busHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger, ICommandPublisher<TAuthenticationToken> commandPublisher, ICommandReceiver<TAuthenticationToken> commandReceiver)
 		{
 			Logger = logger;
@@ -54,16 +94,14 @@ namespace Cqrs.Akka.Commands
 			CommandReceiver = commandReceiver;
 		}
 
-		protected IBusHelper BusHelper { get; private set; }
-
-		protected ILogger Logger { get; private set; }
-
-		protected ICommandPublisher<TAuthenticationToken> CommandPublisher { get; private set; }
-
-		protected ICommandReceiver<TAuthenticationToken> CommandReceiver { get; private set; }
-
-		protected IDictionary<Guid, IList<IEvent<TAuthenticationToken>>> EventWaits { get; private set; }
-
+		/// <summary>
+		/// Sets the
+		/// <see cref="IMessageWithAuthenticationToken{TAuthenticationToken}.AuthenticationToken"/>,
+		/// <see cref="IMessage.CorrelationId"/>,
+		/// <see cref="IMessage.OriginatingFramework"/> to "Akka" and
+		/// adds a value of "Akka" to the <see cref="IMessage.Frameworks"/>
+		/// if not already done so
+		/// </summary>
 		protected virtual void PrepareCommand<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
@@ -81,6 +119,17 @@ namespace Cqrs.Akka.Commands
 			command.Frameworks = frameworks;
 		}
 
+		/// <summary>
+		/// Locates a suitable <see cref="ICommandValidator{TAuthenticationToken,TCommand}"/> to validate the provided <paramref name="command"/> and validates the provided <paramref name="command"/> if one is located
+		/// Calls <see cref="PrepareCommand{TCommand}"/>
+		/// Checks if the provided <paramref name="command"/> is required to be processed
+		/// Locates a single <see cref="RouteHandlerDelegate">command handler</see> for the provided <paramref name="command"/>
+		/// </summary>
+		/// <returns>
+		/// False if a suitable <see cref="ICommandValidator{TAuthenticationToken,TCommand}"/> is located and the provided <paramref name="command"/> fails validation,
+		/// False if no <see cref="RouteHandlerDelegate">command handler</see> is found but the command isn't required to be handled,
+		/// True otherwise.
+		/// </returns>
 		protected virtual bool PrepareAndValidateCommand<TCommand>(TCommand command, out RouteHandlerDelegate commandHandler)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
@@ -128,6 +177,9 @@ namespace Cqrs.Akka.Commands
 
 		#region Implementation of ICommandPublisher<TAuthenticationToken>
 
+		/// <summary>
+		/// Publishes the provided <paramref name="command"/> on the command bus.
+		/// </summary>
 		public virtual void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
@@ -143,12 +195,9 @@ namespace Cqrs.Akka.Commands
 			CommandPublisher.Publish(command);
 		}
 
-		public virtual void Send<TCommand>(TCommand command)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			Publish(command);
-		}
-
+		/// <summary>
+		/// Publishes the provided <paramref name="commands"/> on the command bus.
+		/// </summary>
 		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
@@ -165,12 +214,6 @@ namespace Cqrs.Akka.Commands
 			}
 			// Let everything else know about the command (usually double handling a command is bad... but sometimes it might be useful... like pushing from AWS to Azure so both systems handle it... although an event really is the proper pattern to use here.
 			CommandPublisher.Publish((IEnumerable<TCommand>)sourceCommands);
-		}
-
-		public virtual void Send<TCommand>(IEnumerable<TCommand> commands)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			Publish(commands);
 		}
 
 		/// <summary>

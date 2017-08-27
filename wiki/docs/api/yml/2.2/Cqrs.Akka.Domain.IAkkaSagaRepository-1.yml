@@ -20,14 +20,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: IAkkaSagaRepository
     path: Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaSagaRepository.cs
-    startLine: 14
+    startLine: 20
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nA <xref href=\"Cqrs.Domain.SagaRepository%601\" data-throw-if-not-resolved=\"false\"></xref> that is safe to use within Akka.NET\n"
+  example: []
   syntax:
     content: 'public interface IAkkaSagaRepository<TAuthenticationToken> : ISagaRepository<TAuthenticationToken>'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of authentication token.
     content.vb: >-
       Public Interface IAkkaSagaRepository(Of TAuthenticationToken)
           Inherits ISagaRepository(Of TAuthenticationToken)
@@ -61,27 +64,77 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: LoadSagaHistory
     path: Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaSagaRepository.cs
-    startLine: 16
+    startLine: 33
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nIf <code data-dev-comment-type=\"paramref\">events</code> is null, loads the events from an <xref href=\"Cqrs.Events.IEventStore%601\" data-throw-if-not-resolved=\"false\"></xref>, checks for duplicates and then\nrehydrates the <code data-dev-comment-type=\"paramref\">saga</code> with the events.\n"
+  example: []
   syntax:
     content: 'void LoadSagaHistory<TSaga>(TSaga saga, IList<ISagaEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)where TSaga : ISaga<TAuthenticationToken>'
     parameters:
     - id: saga
       type: '{TSaga}'
+      description: The <code data-dev-comment-type="typeparamref">TSaga</code> to rehydrate.
     - id: events
       type: System.Collections.Generic.IList{Cqrs.Events.ISagaEvent{{TAuthenticationToken}}}
+      description: "\nA collection of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> to replay on the retrieved <xref href=\"Cqrs.Domain.ISaga%601\" data-throw-if-not-resolved=\"false\"></xref>.\nIf null, the <xref href=\"Cqrs.Events.IEventStore%601\" data-throw-if-not-resolved=\"false\"></xref> will be used to retrieve a list of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> for you.\n"
     - id: throwExceptionOnNoEvents
       type: System.Boolean
+      description: If true will throw an instance of <xref href="Cqrs.Domain.Exceptions.SagaNotFoundException%602" data-throw-if-not-resolved="false"></xref> if no aggregate events or provided or found in the <xref href="Cqrs.Events.IEventStore%601" data-throw-if-not-resolved="false"></xref>.
     typeParameters:
     - id: TSaga
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of <xref href="Cqrs.Domain.ISaga%601" data-throw-if-not-resolved="false"></xref>.
     content.vb: Sub LoadSagaHistory(Of TSaga As ISaga(Of TAuthenticationToken))(saga As TSaga, events As IList(Of ISagaEvent(Of TAuthenticationToken)) = Nothing, throwExceptionOnNoEvents As Boolean = True)
   overload: Cqrs.Akka.Domain.IAkkaSagaRepository`1.LoadSagaHistory*
   nameWithType.vb: IAkkaSagaRepository(Of TAuthenticationToken).LoadSagaHistory(Of TSaga)(TSaga, IList(Of ISagaEvent(Of TAuthenticationToken)), Boolean)
   fullName.vb: Cqrs.Akka.Domain.IAkkaSagaRepository(Of TAuthenticationToken).LoadSagaHistory(Of TSaga)(TSaga, System.Collections.Generic.IList(Of Cqrs.Events.ISagaEvent(Of TAuthenticationToken)), System.Boolean)
   name.vb: LoadSagaHistory(Of TSaga)(TSaga, IList(Of ISagaEvent(Of TAuthenticationToken)), Boolean)
 references:
+- uid: Cqrs.Domain.SagaRepository`1
+  commentId: T:Cqrs.Domain.SagaRepository`1
+  isExternal: false
+  name: SagaRepository<TAuthenticationToken>
+  nameWithType: SagaRepository<TAuthenticationToken>
+  fullName: Cqrs.Domain.SagaRepository<TAuthenticationToken>
+  nameWithType.vb: SagaRepository(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.SagaRepository(Of TAuthenticationToken)
+  name.vb: SagaRepository(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.SagaRepository`1
+    name: SagaRepository
+    nameWithType: SagaRepository
+    fullName: Cqrs.Domain.SagaRepository
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.SagaRepository`1
+    name: SagaRepository
+    nameWithType: SagaRepository
+    fullName: Cqrs.Domain.SagaRepository
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: Cqrs.Akka.Domain
   commentId: N:Cqrs.Akka.Domain
   isExternal: false
@@ -260,6 +313,12 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
 - uid: Cqrs.Domain.ISagaRepository`1.Save``1(``0,System.Nullable{System.Int32})
   commentId: M:Cqrs.Domain.ISagaRepository`1.Save``1(``0,System.Nullable{System.Int32})
   isExternal: true
@@ -511,6 +570,166 @@ references:
   name: Cqrs.Domain
   nameWithType: Cqrs.Domain
   fullName: Cqrs.Domain
+- uid: Cqrs.Events.IEventStore`1
+  commentId: T:Cqrs.Events.IEventStore`1
+  isExternal: false
+  name: IEventStore<TAuthenticationToken>
+  nameWithType: IEventStore<TAuthenticationToken>
+  fullName: Cqrs.Events.IEventStore<TAuthenticationToken>
+  nameWithType.vb: IEventStore(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEventStore(Of TAuthenticationToken)
+  name.vb: IEventStore(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEventStore`1
+    name: IEventStore
+    nameWithType: IEventStore
+    fullName: Cqrs.Events.IEventStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEventStore`1
+    name: IEventStore
+    nameWithType: IEventStore
+    fullName: Cqrs.Events.IEventStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.ISaga`1
+  commentId: T:Cqrs.Domain.ISaga`1
+  isExternal: false
+  name: ISaga<TAuthenticationToken>
+  nameWithType: ISaga<TAuthenticationToken>
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>
+  nameWithType.vb: ISaga(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken)
+  name.vb: ISaga(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.ISaga`1
+    name: ISaga
+    nameWithType: ISaga
+    fullName: Cqrs.Domain.ISaga
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.ISaga`1
+    name: ISaga
+    nameWithType: ISaga
+    fullName: Cqrs.Domain.ISaga
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.Exceptions.SagaNotFoundException`2
+  commentId: T:Cqrs.Domain.Exceptions.SagaNotFoundException`2
+  isExternal: false
+  name: SagaNotFoundException<TSaga, TAuthenticationToken>
+  nameWithType: SagaNotFoundException<TSaga, TAuthenticationToken>
+  fullName: Cqrs.Domain.Exceptions.SagaNotFoundException<TSaga, TAuthenticationToken>
+  nameWithType.vb: SagaNotFoundException(Of TSaga, TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.Exceptions.SagaNotFoundException(Of TSaga, TAuthenticationToken)
+  name.vb: SagaNotFoundException(Of TSaga, TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.Exceptions.SagaNotFoundException`2
+    name: SagaNotFoundException
+    nameWithType: SagaNotFoundException
+    fullName: Cqrs.Domain.Exceptions.SagaNotFoundException
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TSaga
+    nameWithType: TSaga
+    fullName: TSaga
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.Exceptions.SagaNotFoundException`2
+    name: SagaNotFoundException
+    nameWithType: SagaNotFoundException
+    fullName: Cqrs.Domain.Exceptions.SagaNotFoundException
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TSaga
+    nameWithType: TSaga
+    fullName: TSaga
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Akka.Domain.IAkkaSagaRepository`1.LoadSagaHistory*
   commentId: Overload:Cqrs.Akka.Domain.IAkkaSagaRepository`1.LoadSagaHistory
   isExternal: false
@@ -642,9 +861,3 @@ references:
   name: System.Collections.Generic
   nameWithType: System.Collections.Generic
   fullName: System.Collections.Generic
-- uid: System
-  commentId: N:System
-  isExternal: false
-  name: System
-  nameWithType: System
-  fullName: System

@@ -24,6 +24,9 @@ namespace Cqrs.Akka.Commands
 	public class AkkaCommandBusProxy<TAuthenticationToken>
 		: IAkkaCommandPublisherProxy<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AkkaCommandBusProxy{TAuthenticationToken}"/>.
+		/// </summary>
 		public AkkaCommandBusProxy(IDependencyResolver dependencyResolver, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
 		{
 			CorrelationIdHelper = correlationIdHelper;
@@ -31,14 +34,26 @@ namespace Cqrs.Akka.Commands
 			CommandHandlerResolver = ((IAkkaAggregateResolver)dependencyResolver).ResolveActor<BusActor>();
 		}
 
+		/// <summary>
+		/// Gets the <see cref="IActorRef">command handler resolver</see> that we send/proxy the command to.
+		/// </summary>
 		protected IActorRef CommandHandlerResolver { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ICorrelationIdHelper"/>.
+		/// </summary>
 		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IAuthenticationTokenHelper{TAuthenticationToken}">Authentication Token Helper</see>.
+		/// </summary>
 		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
 
 		#region Implementation of ICommandSender<TAuthenticationToken>
 
+		/// <summary>
+		/// Publishes the provided <paramref name="command"/> on the command bus.
+		/// </summary>
 		public virtual void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
@@ -50,12 +65,9 @@ namespace Cqrs.Akka.Commands
 			bool result = CommandHandlerResolver.Ask<bool>(command).Result;
 		}
 
-		public virtual void Send<TCommand>(TCommand command)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			Publish(command);
-		}
-
+		/// <summary>
+		/// Publishes the provided <paramref name="commands"/> on the command bus.
+		/// </summary>
 		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
@@ -72,17 +84,17 @@ namespace Cqrs.Akka.Commands
 			}
 		}
 
-		public virtual void Send<TCommand>(IEnumerable<TCommand> commands)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			Publish(commands);
-		}
-
 		#endregion
 
+		/// <summary>
+		/// Similar to a <see cref="ICommandPublisher{TAuthenticationToken}"/>, passes commands onto the <see cref="CommandHandlerResolver"/>.
+		/// </summary>
 		public class BusActor
 			: ReceiveActor
 		{
+			/// <summary>
+			/// Instantiates a new instance of <see cref="BusActor"/>.
+			/// </summary>
 			public BusActor(IAkkaCommandPublisher<TAuthenticationToken> commandHandlerResolver, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
 			{
 				CommandHandlerResolver = commandHandlerResolver;
@@ -91,12 +103,25 @@ namespace Cqrs.Akka.Commands
 				Receive<ICommand<TAuthenticationToken>>(command => ExecuteReceive(command));
 			}
 
+			/// <summary>
+			/// Gets or sets the <see cref="IAkkaCommandPublisher{TAuthenticationToken}"/>.
+			/// </summary>
 			protected IAkkaCommandPublisher<TAuthenticationToken> CommandHandlerResolver { get; private set; }
 
+			/// <summary>
+			/// Gets or sets the <see cref="ICorrelationIdHelper"/>.
+			/// </summary>
 			protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
+			/// <summary>
+			/// Gets or sets the <see cref="IAuthenticationTokenHelper{TAuthenticationToken}"/>.
+			/// </summary>
 			protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
 
+			/// <summary>
+			/// Passes the provided <paramref name="command"/> to <see cref="CommandHandlerResolver"/> via <see cref="ICommandPublisher{TAuthenticationToken}.Publish{TCommand}(TCommand)"/>
+			/// then calls <see cref="ActorRefImplicitSenderExtensions.Tell"/>.
+			/// </summary>
 			protected virtual void ExecuteReceive(ICommand<TAuthenticationToken> command)
 			{
 				try

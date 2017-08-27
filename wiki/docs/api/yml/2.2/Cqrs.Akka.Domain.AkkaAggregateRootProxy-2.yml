@@ -26,15 +26,19 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AkkaAggregateRootProxy
     path: Framework/Akka.Net/Cqrs.Akka/Domain/AkkaAggregateRootProxy.cs
-    startLine: 17
+    startLine: 22
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nA remote proxy to an <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: 'public class AkkaAggregateRootProxy<TAuthenticationToken, TAggregateRoot> : IAkkaAggregateRootProxy<TAggregateRoot>, IAggregateRoot<TAuthenticationToken>'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of authentication token.
     - id: TAggregateRoot
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref>.
     content.vb: >-
       Public Class AkkaAggregateRootProxy(Of TAuthenticationToken, TAggregateRoot)
           Implements IAkkaAggregateRootProxy(Of TAggregateRoot), IAggregateRoot(Of TAuthenticationToken)
@@ -78,10 +82,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ActorReference
     path: Framework/Akka.Net/Cqrs.Akka/Domain/AkkaAggregateRootProxy.cs
-    startLine: 23
+    startLine: 31
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nGets the <xref href=\"Akka.Actor.IActorRef\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public IActorRef ActorReference { get; }
     parameters: []
@@ -117,10 +123,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Aggregate
     path: Framework/Akka.Net/Cqrs.Akka/Domain/AkkaAggregateRootProxy.cs
-    startLine: 25
+    startLine: 36
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nGets the <code data-dev-comment-type=\"typeparamref\">TAggregateRoot</code>.\n"
+  example: []
   syntax:
     content: public TAggregateRoot Aggregate { get; protected set; }
     parameters: []
@@ -158,10 +166,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Id
     path: Framework/Akka.Net/Cqrs.Akka/Domain/AkkaAggregateRootProxy.cs
-    startLine: 29
+    startLine: 43
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nThe identifier of this <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public virtual Guid Id { get; }
     parameters: []
@@ -199,10 +209,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Version
     path: Framework/Akka.Net/Cqrs.Akka/Domain/AkkaAggregateRootProxy.cs
-    startLine: 34
+    startLine: 51
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nThe current version of this <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public virtual int Version { get; }
     parameters: []
@@ -240,10 +252,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetUncommittedChanges
     path: Framework/Akka.Net/Cqrs.Akka/Domain/AkkaAggregateRootProxy.cs
-    startLine: 39
+    startLine: 59
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nGet all applied changes that haven&apos;t yet been committed.\n"
+  example: []
   syntax:
     content: public virtual IEnumerable<IEvent<TAuthenticationToken>> GetUncommittedChanges()
     return:
@@ -278,10 +292,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: MarkChangesAsCommitted
     path: Framework/Akka.Net/Cqrs.Akka/Domain/AkkaAggregateRootProxy.cs
-    startLine: 44
+    startLine: 67
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nMark all applied changes as committed, increment <xref href=\"Cqrs.Akka.Domain.AkkaAggregateRootProxy%602.Version\" data-throw-if-not-resolved=\"false\"></xref> and flush the internal collection of changes.\n"
+  example: []
   syntax:
     content: public virtual void MarkChangesAsCommitted()
     content.vb: Public Overridable Sub MarkChangesAsCommitted
@@ -314,10 +330,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: LoadFromHistory
     path: Framework/Akka.Net/Cqrs.Akka/Domain/AkkaAggregateRootProxy.cs
-    startLine: 49
+    startLine: 76
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nApply all the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> in <code data-dev-comment-type=\"paramref\">history</code>\nusing event replay to this instance.\n"
+  example: []
   syntax:
     content: public virtual void LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>> history)
     parameters:
@@ -337,6 +355,50 @@ items:
   fullName.vb: Cqrs.Akka.Domain.AkkaAggregateRootProxy(Of TAuthenticationToken, TAggregateRoot).LoadFromHistory(System.Collections.Generic.IEnumerable(Of Cqrs.Events.IEvent(Of TAuthenticationToken)))
   name.vb: LoadFromHistory(IEnumerable(Of IEvent(Of TAuthenticationToken)))
 references:
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  isExternal: false
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: Cqrs.Akka.Domain
   commentId: N:Cqrs.Akka.Domain
   isExternal: false
@@ -748,49 +810,19 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Domain.IAggregateRoot`1
-  commentId: T:Cqrs.Domain.IAggregateRoot`1
-  isExternal: false
-  name: IAggregateRoot<TAuthenticationToken>
-  nameWithType: IAggregateRoot<TAuthenticationToken>
-  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
-  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
-  name.vb: IAggregateRoot(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Domain.IAggregateRoot`1
-    name: IAggregateRoot
-    nameWithType: IAggregateRoot
-    fullName: Cqrs.Domain.IAggregateRoot
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Domain.IAggregateRoot`1
-    name: IAggregateRoot
-    nameWithType: IAggregateRoot
-    fullName: Cqrs.Domain.IAggregateRoot
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Domain
   commentId: N:Cqrs.Domain
   isExternal: false
   name: Cqrs.Domain
   nameWithType: Cqrs.Domain
   fullName: Cqrs.Domain
+- uid: Akka.Actor.IActorRef
+  commentId: T:Akka.Actor.IActorRef
+  parent: Akka.Actor
+  isExternal: true
+  name: IActorRef
+  nameWithType: IActorRef
+  fullName: Akka.Actor.IActorRef
 - uid: Cqrs.Akka.Domain.AkkaAggregateRootProxy`2.ActorReference*
   commentId: Overload:Cqrs.Akka.Domain.AkkaAggregateRootProxy`2.ActorReference
   isExternal: false
@@ -808,13 +840,12 @@ references:
   fullName: Cqrs.Akka.Domain.IAkkaAggregateRootProxy<TAggregateRoot>.ActorReference
   nameWithType.vb: IAkkaAggregateRootProxy(Of TAggregateRoot).ActorReference
   fullName.vb: Cqrs.Akka.Domain.IAkkaAggregateRootProxy(Of TAggregateRoot).ActorReference
-- uid: Akka.Actor.IActorRef
-  commentId: T:Akka.Actor.IActorRef
-  parent: Akka.Actor
-  isExternal: true
-  name: IActorRef
-  nameWithType: IActorRef
-  fullName: Akka.Actor.IActorRef
+- uid: Akka.Actor
+  commentId: N:Akka.Actor
+  isExternal: false
+  name: Akka.Actor
+  nameWithType: Akka.Actor
+  fullName: Akka.Actor
 - uid: Cqrs.Akka.Domain.IAkkaAggregateRootProxy`1.ActorReference
   commentId: P:Cqrs.Akka.Domain.IAkkaAggregateRootProxy`1.ActorReference
   isExternal: false
@@ -823,12 +854,6 @@ references:
   fullName: Cqrs.Akka.Domain.IAkkaAggregateRootProxy<TAggregate>.ActorReference
   nameWithType.vb: IAkkaAggregateRootProxy(Of TAggregate).ActorReference
   fullName.vb: Cqrs.Akka.Domain.IAkkaAggregateRootProxy(Of TAggregate).ActorReference
-- uid: Akka.Actor
-  commentId: N:Akka.Actor
-  isExternal: false
-  name: Akka.Actor
-  nameWithType: Akka.Actor
-  fullName: Akka.Actor
 - uid: Cqrs.Akka.Domain.AkkaAggregateRootProxy`2.Aggregate*
   commentId: Overload:Cqrs.Akka.Domain.AkkaAggregateRootProxy`2.Aggregate
   isExternal: false
@@ -1103,6 +1128,8 @@ references:
   name: System.Collections.Generic
   nameWithType: System.Collections.Generic
   fullName: System.Collections.Generic
+- uid: Cqrs.Akka.Domain.AkkaAggregateRootProxy`2.Version
+  commentId: P:Cqrs.Akka.Domain.AkkaAggregateRootProxy`2.Version
 - uid: Cqrs.Akka.Domain.AkkaAggregateRootProxy`2.MarkChangesAsCommitted*
   commentId: Overload:Cqrs.Akka.Domain.AkkaAggregateRootProxy`2.MarkChangesAsCommitted
   isExternal: false
@@ -1169,6 +1196,43 @@ references:
   - name: (
     nameWithType: (
     fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
   - name: )
     nameWithType: )
     fullName: )

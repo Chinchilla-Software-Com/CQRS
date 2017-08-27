@@ -25,25 +25,49 @@ namespace Cqrs.Akka.Events
 		: IAkkaEventPublisher<TAuthenticationToken>
 		, IEventHandlerRegistrar
 	{
+		/// <summary>
+		/// Gets the <see cref="RouteManager"/>
+		/// </summary>
 		protected static RouteManager Routes { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="IAuthenticationTokenHelper{TAuthenticationToken}">Authentication Token Helper</see>
+		/// </summary>
+		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="ICorrelationIdHelper"/>
+		/// </summary>
+		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="IBusHelper"/>
+		/// </summary>
+		protected IBusHelper BusHelper { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>
+		/// </summary>
+		protected ILogger Logger { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="IEventPublisher{TAuthenticationToken}"/>
+		/// </summary>
+		protected IEventPublisher<TAuthenticationToken> EventPublisher { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="IEventReceiver{TAuthenticationToken}"/>
+		/// </summary>
+		protected IEventReceiver<TAuthenticationToken> EventReceiver { get; private set; }
 
 		static AkkaEventBus()
 		{
 			Routes = new RouteManager();
 		}
 
-		protected IEventPublisher<TAuthenticationToken> EventPublisher { get; private set; }
-
-		protected IEventReceiver<TAuthenticationToken> EventReceiver { get; private set; }
-
-		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
-
-		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
-
-		protected IBusHelper BusHelper { get; private set; }
-
-		protected ILogger Logger { get; private set; }
-
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AkkaEventBus{TAuthenticationToken}"/>
+		/// </summary>
 		public AkkaEventBus(IBusHelper busHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IEventPublisher<TAuthenticationToken> eventPublisher, IEventReceiver<TAuthenticationToken> eventReceiver)
 		{
 			BusHelper = busHelper;
@@ -56,6 +80,9 @@ namespace Cqrs.Akka.Events
 
 		#region Implementation of IEventPublisher<TAuthenticationToken>
 
+		/// <summary>
+		/// Publishes the provided <paramref name="event"/> on the event bus.
+		/// </summary>
 		public void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
@@ -71,6 +98,9 @@ namespace Cqrs.Akka.Events
 			EventPublisher.Publish(@event);
 		}
 
+		/// <summary>
+		/// Publishes the provided <paramref name="events"/> on the event bus.
+		/// </summary>
 		public virtual void Publish<TEvent>(IEnumerable<TEvent> events)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
@@ -92,6 +122,12 @@ namespace Cqrs.Akka.Events
 
 		#endregion
 
+		/// <summary>
+		/// Prepares an <see cref="IEvent{TAuthenticationToken}"/> to be sent specifying the framework it is sent via.
+		/// </summary>
+		/// <typeparam name="TEvent">The <see cref="Type"/> of<see cref="IEvent{TAuthenticationToken}"/> being sent.</typeparam>
+		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to send.</param>
+		/// <param name="framework">The framework the <paramref name="event"/> is being sent from.</param>
 		public virtual void PrepareEvent<TEvent>(TEvent @event, string framework)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
@@ -111,6 +147,13 @@ namespace Cqrs.Akka.Events
 			@event.Frameworks = frameworks;
 		}
 
+		/// <summary>
+		/// Prepares and validates an <see cref="IEvent{TAuthenticationToken}"/> to be sent specifying the framework it is sent via.
+		/// </summary>
+		/// <typeparam name="TEvent">The <see cref="Type"/> of<see cref="IEvent{TAuthenticationToken}"/> being sent.</typeparam>
+		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to send.</param>
+		/// <param name="framework">The framework the <paramref name="event"/> is being sent from.</param>
+		/// <param name="handlers">The located <see cref="RouteHandlerDelegate">handlers</see> to be executed by passing the <paramref name="event"/>.</param>
 		public virtual bool PrepareAndValidateEvent<TEvent>(TEvent @event, string framework, out IEnumerable<RouteHandlerDelegate> handlers)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
@@ -129,7 +172,6 @@ namespace Cqrs.Akka.Events
 
 			PrepareEvent(@event, framework);
 
-
 			bool isRequired = BusHelper.IsEventRequired(eventType);
 
 			handlers = Routes.GetHandlers(@event, isRequired);
@@ -139,7 +181,6 @@ namespace Cqrs.Akka.Events
 
 			return true;
 		}
-
 
 		#region Implementation of IHandlerRegistrar
 

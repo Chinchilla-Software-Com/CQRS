@@ -16,8 +16,6 @@ items:
   - Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.PublishAndWait``2(``0,System.Func{System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{`0}},``1},System.TimeSpan,Cqrs.Events.IEventReceiver{`0})
   - Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.PublishAndWait``2(``0,System.Int32,Cqrs.Events.IEventReceiver{`0})
   - Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.PublishAndWait``2(``0,System.TimeSpan,Cqrs.Events.IEventReceiver{`0})
-  - Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Send``1(``0)
-  - Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Send``1(System.Collections.Generic.IEnumerable{``0})
   langs:
   - csharp
   - vb
@@ -138,10 +136,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ActorReference
     path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-    startLine: 26
+    startLine: 29
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets the <xref href=\"Akka.Actor.IActorRef\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected IActorRef ActorReference { get; }
     parameters: []
@@ -175,10 +175,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CommandReceiver
     path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-    startLine: 28
+    startLine: 34
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets the <xref href=\"Cqrs.Commands.ICommandReceiver%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected ICommandReceiver<TAuthenticationToken> CommandReceiver { get; }
     parameters: []
@@ -212,10 +214,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-    startLine: 30
+    startLine: 39
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher%602\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public ConcurrentAkkaCommandPublisher(IActorRef actorReference, ICommandReceiver<TAuthenticationToken> commandReceiver)
     parameters:
@@ -250,10 +254,13 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Publish
     path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-    startLine: 38
+    startLine: 53
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> on the <xref href=\"Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher%602.CommandReceiver\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  remarks: "\nThis is for when a command originated outside Akka and now needs to be pushed into Akka.\n"
+  example: []
   syntax:
     content: 'public void Publish<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
@@ -272,44 +279,6 @@ items:
   - Public
   fullName.vb: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget).Publish(Of TCommand)(TCommand)
   name.vb: Publish(Of TCommand)(TCommand)
-- uid: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Send``1(``0)
-  commentId: M:Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Send``1(``0)
-  id: Send``1(``0)
-  parent: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2
-  langs:
-  - csharp
-  - vb
-  name: Send<TCommand>(TCommand)
-  nameWithType: ConcurrentAkkaCommandPublisher<TAuthenticationToken, TTarget>.Send<TCommand>(TCommand)
-  fullName: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher<TAuthenticationToken, TTarget>.Send<TCommand>(TCommand)
-  type: Method
-  source:
-    remote:
-      path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-      branch: features/documentation
-      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
-    id: Send
-    path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-    startLine: 46
-  assemblies:
-  - Cqrs.Akka
-  namespace: Cqrs.Akka.Commands
-  syntax:
-    content: 'public void Send<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
-    parameters:
-    - id: command
-      type: '{TCommand}'
-    typeParameters:
-    - id: TCommand
-    content.vb: Public Sub Send(Of TCommand As ICommand(Of TAuthenticationToken))(command As TCommand)
-  overload: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Send*
-  nameWithType.vb: ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget).Send(Of TCommand)(TCommand)
-  modifiers.csharp:
-  - public
-  modifiers.vb:
-  - Public
-  fullName.vb: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget).Send(Of TCommand)(TCommand)
-  name.vb: Send(Of TCommand)(TCommand)
 - uid: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Publish``1(System.Collections.Generic.IEnumerable{``0})
   commentId: M:Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Publish``1(System.Collections.Generic.IEnumerable{``0})
   id: Publish``1(System.Collections.Generic.IEnumerable{``0})
@@ -328,10 +297,13 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Publish
     path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-    startLine: 52
+    startLine: 67
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">commands</code> on the <xref href=\"Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher%602.CommandReceiver\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  remarks: "\nThis is for when a command originated outside Akka and now needs to be pushed into Akka.\n"
+  example: []
   syntax:
     content: 'public void Publish<TCommand>(IEnumerable<TCommand> commands)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
@@ -350,44 +322,6 @@ items:
   - Public
   fullName.vb: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget).Publish(Of TCommand)(System.Collections.Generic.IEnumerable(Of TCommand))
   name.vb: Publish(Of TCommand)(IEnumerable(Of TCommand))
-- uid: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Send``1(System.Collections.Generic.IEnumerable{``0})
-  commentId: M:Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Send``1(System.Collections.Generic.IEnumerable{``0})
-  id: Send``1(System.Collections.Generic.IEnumerable{``0})
-  parent: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2
-  langs:
-  - csharp
-  - vb
-  name: Send<TCommand>(IEnumerable<TCommand>)
-  nameWithType: ConcurrentAkkaCommandPublisher<TAuthenticationToken, TTarget>.Send<TCommand>(IEnumerable<TCommand>)
-  fullName: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher<TAuthenticationToken, TTarget>.Send<TCommand>(System.Collections.Generic.IEnumerable<TCommand>)
-  type: Method
-  source:
-    remote:
-      path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-      branch: features/documentation
-      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
-    id: Send
-    path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-    startLine: 61
-  assemblies:
-  - Cqrs.Akka
-  namespace: Cqrs.Akka.Commands
-  syntax:
-    content: 'public void Send<TCommand>(IEnumerable<TCommand> commands)where TCommand : ICommand<TAuthenticationToken>'
-    parameters:
-    - id: commands
-      type: System.Collections.Generic.IEnumerable{{TCommand}}
-    typeParameters:
-    - id: TCommand
-    content.vb: Public Sub Send(Of TCommand As ICommand(Of TAuthenticationToken))(commands As IEnumerable(Of TCommand))
-  overload: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Send*
-  nameWithType.vb: ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget).Send(Of TCommand)(IEnumerable(Of TCommand))
-  modifiers.csharp:
-  - public
-  modifiers.vb:
-  - Public
-  fullName.vb: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget).Send(Of TCommand)(System.Collections.Generic.IEnumerable(Of TCommand))
-  name.vb: Send(Of TCommand)(IEnumerable(Of TCommand))
 - uid: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.PublishAndWait``2(``0,Cqrs.Events.IEventReceiver{`0})
   commentId: M:Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.PublishAndWait``2(``0,Cqrs.Events.IEventReceiver{`0})
   id: PublishAndWait``2(``0,Cqrs.Events.IEventReceiver{`0})
@@ -406,7 +340,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-    startLine: 72
+    startLine: 81
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
@@ -457,7 +391,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-    startLine: 84
+    startLine: 93
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
@@ -509,7 +443,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-    startLine: 96
+    startLine: 105
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
@@ -561,7 +495,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-    startLine: 111
+    startLine: 120
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
@@ -613,7 +547,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-    startLine: 124
+    startLine: 133
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
@@ -668,7 +602,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Akka.Net/Cqrs.Akka/Commands/ConcurrentAkkaCommandSender.cs
-    startLine: 137
+    startLine: 146
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
@@ -3828,6 +3762,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Akka.Actor.IActorRef
+  commentId: T:Akka.Actor.IActorRef
+  parent: Akka.Actor
+  isExternal: true
+  name: IActorRef
+  nameWithType: IActorRef
+  fullName: Akka.Actor.IActorRef
 - uid: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.ActorReference*
   commentId: Overload:Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.ActorReference
   isExternal: false
@@ -3836,13 +3777,43 @@ references:
   fullName: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher<TAuthenticationToken, TTarget>.ActorReference
   nameWithType.vb: ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget).ActorReference
   fullName.vb: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget).ActorReference
-- uid: Akka.Actor.IActorRef
-  commentId: T:Akka.Actor.IActorRef
-  parent: Akka.Actor
-  isExternal: true
-  name: IActorRef
-  nameWithType: IActorRef
-  fullName: Akka.Actor.IActorRef
+- uid: Cqrs.Commands.ICommandReceiver`1
+  commentId: T:Cqrs.Commands.ICommandReceiver`1
+  isExternal: false
+  name: ICommandReceiver<TAuthenticationToken>
+  nameWithType: ICommandReceiver<TAuthenticationToken>
+  fullName: Cqrs.Commands.ICommandReceiver<TAuthenticationToken>
+  nameWithType.vb: ICommandReceiver(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Commands.ICommandReceiver(Of TAuthenticationToken)
+  name.vb: ICommandReceiver(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommandReceiver`1
+    name: ICommandReceiver
+    nameWithType: ICommandReceiver
+    fullName: Cqrs.Commands.ICommandReceiver
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommandReceiver`1
+    name: ICommandReceiver
+    nameWithType: ICommandReceiver
+    fullName: Cqrs.Commands.ICommandReceiver
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.CommandReceiver*
   commentId: Overload:Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.CommandReceiver
   isExternal: false
@@ -3889,40 +3860,52 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Commands.ICommandReceiver`1
-  commentId: T:Cqrs.Commands.ICommandReceiver`1
+- uid: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2
+  commentId: T:Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2
   isExternal: false
-  name: ICommandReceiver<TAuthenticationToken>
-  nameWithType: ICommandReceiver<TAuthenticationToken>
-  fullName: Cqrs.Commands.ICommandReceiver<TAuthenticationToken>
-  nameWithType.vb: ICommandReceiver(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Commands.ICommandReceiver(Of TAuthenticationToken)
-  name.vb: ICommandReceiver(Of TAuthenticationToken)
+  name: ConcurrentAkkaCommandPublisher<TAuthenticationToken, TTarget>
+  nameWithType: ConcurrentAkkaCommandPublisher<TAuthenticationToken, TTarget>
+  fullName: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher<TAuthenticationToken, TTarget>
+  nameWithType.vb: ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget)
+  fullName.vb: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget)
+  name.vb: ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget)
   spec.csharp:
-  - uid: Cqrs.Commands.ICommandReceiver`1
-    name: ICommandReceiver
-    nameWithType: ICommandReceiver
-    fullName: Cqrs.Commands.ICommandReceiver
+  - uid: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2
+    name: ConcurrentAkkaCommandPublisher
+    nameWithType: ConcurrentAkkaCommandPublisher
+    fullName: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher
   - name: <
     nameWithType: <
     fullName: <
   - name: TAuthenticationToken
     nameWithType: TAuthenticationToken
     fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TTarget
+    nameWithType: TTarget
+    fullName: TTarget
   - name: '>'
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: Cqrs.Commands.ICommandReceiver`1
-    name: ICommandReceiver
-    nameWithType: ICommandReceiver
-    fullName: Cqrs.Commands.ICommandReceiver
+  - uid: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2
+    name: ConcurrentAkkaCommandPublisher
+    nameWithType: ConcurrentAkkaCommandPublisher
+    fullName: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
   - name: TAuthenticationToken
     nameWithType: TAuthenticationToken
     fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TTarget
+    nameWithType: TTarget
+    fullName: TTarget
   - name: )
     nameWithType: )
     fullName: )
@@ -3934,6 +3917,8 @@ references:
   fullName: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher<TAuthenticationToken, TTarget>.ConcurrentAkkaCommandPublisher
   nameWithType.vb: ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget).ConcurrentAkkaCommandPublisher
   fullName.vb: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget).ConcurrentAkkaCommandPublisher
+- uid: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.CommandReceiver
+  commentId: P:Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.CommandReceiver
 - uid: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Publish*
   commentId: Overload:Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Publish
   isExternal: false
@@ -4028,14 +4013,6 @@ references:
   name: TCommand
   nameWithType: TCommand
   fullName: TCommand
-- uid: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Send*
-  commentId: Overload:Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher`2.Send
-  isExternal: false
-  name: Send
-  nameWithType: ConcurrentAkkaCommandPublisher<TAuthenticationToken, TTarget>.Send
-  fullName: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher<TAuthenticationToken, TTarget>.Send
-  nameWithType.vb: ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget).Send
-  fullName.vb: Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher(Of TAuthenticationToken, TTarget).Send
 - uid: Cqrs.Commands.ICommandPublisher{{TAuthenticationToken}}.Publish``1(System.Collections.Generic.IEnumerable{{TCommand}})
   commentId: M:Cqrs.Commands.ICommandPublisher{`0}.Publish``1(System.Collections.Generic.IEnumerable{``0})
   parent: Cqrs.Commands.ICommandPublisher{{TAuthenticationToken}}
