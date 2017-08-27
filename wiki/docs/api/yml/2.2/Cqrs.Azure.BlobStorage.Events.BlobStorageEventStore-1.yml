@@ -24,14 +24,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: BlobStorageEventStore
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Events/BlobStorageEventStore.cs
-    startLine: 17
+    startLine: 23
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Events
+  summary: "\nAn Azure blob storage based <xref href=\"Cqrs.Events.EventStore%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: 'public class BlobStorageEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken>, IEventStore<TAuthenticationToken>'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the authentication token.
     content.vb: >-
       Public Class BlobStorageEventStore(Of TAuthenticationToken)
           Inherits EventStore(Of TAuthenticationToken)
@@ -86,10 +89,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: BlobStorageStore
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Events/BlobStorageEventStore.cs
-    startLine: 20
+    startLine: 29
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Events
+  summary: "\nGet the <xref href=\"Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore%601.RawBlobStorageEventStore\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected BlobStorageEventStore<TAuthenticationToken>.RawBlobStorageEventStore BlobStorageStore { get; }
     parameters: []
@@ -123,7 +128,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Events/BlobStorageEventStore.cs
-    startLine: 25
+    startLine: 34
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Events
@@ -167,21 +172,27 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Get
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Events/BlobStorageEventStore.cs
-    startLine: 33
+    startLine: 49
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Events
+  summary: "\nGets a collection of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> for the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> of type <code data-dev-comment-type=\"paramref\">aggregateRootType</code> with the ID matching the provided <code data-dev-comment-type=\"paramref\">aggregateId</code>.\n"
+  example: []
   syntax:
     content: public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
     parameters:
     - id: aggregateRootType
       type: System.Type
+      description: <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref> the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> was raised in.
     - id: aggregateId
       type: System.Guid
+      description: The <xref href="Cqrs.Domain.IAggregateRoot%601.Id" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref>.
     - id: useLastEventOnly
       type: System.Boolean
+      description: Loads only the last event<xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref>.
     - id: fromVersion
       type: System.Int32
+      description: Load events starting from this version
     return:
       type: System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}}
     content.vb: Public Overrides Function Get(aggregateRootType As Type, aggregateId As Guid, useLastEventOnly As Boolean = False, fromVersion As Integer = -1) As IEnumerable(Of IEvent(Of TAuthenticationToken))
@@ -213,15 +224,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Get
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Events/BlobStorageEventStore.cs
-    startLine: 50
+    startLine: 70
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Events
+  summary: "\nGet all <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> instances for the given <code data-dev-comment-type=\"paramref\">correlationId</code>.\n"
+  example: []
   syntax:
     content: public override IEnumerable<EventData> Get(Guid correlationId)
     parameters:
     - id: correlationId
       type: System.Guid
+      description: The <xref href="Cqrs.Messages.IMessage.CorrelationId" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> instances to retrieve.
     return:
       type: System.Collections.Generic.IEnumerable{Cqrs.Events.EventData}
     content.vb: Public Overrides Function Get(correlationId As Guid) As IEnumerable(Of EventData)
@@ -253,15 +267,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PersistEvent
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Events/BlobStorageEventStore.cs
-    startLine: 60
+    startLine: 84
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Events
+  summary: "\nPersist the provided <code data-dev-comment-type=\"paramref\">eventData</code> into storage.\n"
+  example: []
   syntax:
     content: protected override void PersistEvent(EventData eventData)
     parameters:
     - id: eventData
       type: Cqrs.Events.EventData
+      description: The <xref href="Cqrs.Events.EventData" data-throw-if-not-resolved="false"></xref> to persist.
     content.vb: Protected Overrides Sub PersistEvent(eventData As EventData)
   overridden: Cqrs.Events.EventStore{{TAuthenticationToken}}.PersistEvent(Cqrs.Events.EventData)
   overload: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore`1.PersistEvent*
@@ -274,6 +291,50 @@ items:
   - Overrides
   fullName.vb: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore(Of TAuthenticationToken).PersistEvent(Cqrs.Events.EventData)
 references:
+- uid: Cqrs.Events.EventStore`1
+  commentId: T:Cqrs.Events.EventStore`1
+  isExternal: false
+  name: EventStore<TAuthenticationToken>
+  nameWithType: EventStore<TAuthenticationToken>
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>
+  nameWithType.vb: EventStore(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken)
+  name.vb: EventStore(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1
+    name: EventStore
+    nameWithType: EventStore
+    fullName: Cqrs.Events.EventStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1
+    name: EventStore
+    nameWithType: EventStore
+    fullName: Cqrs.Events.EventStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: Cqrs.Azure.BlobStorage.Events
   commentId: N:Cqrs.Azure.BlobStorage.Events
   isExternal: false
@@ -1030,43 +1091,6 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: Cqrs.Events.EventStore`1
-  commentId: T:Cqrs.Events.EventStore`1
-  isExternal: false
-  name: EventStore<TAuthenticationToken>
-  nameWithType: EventStore<TAuthenticationToken>
-  fullName: Cqrs.Events.EventStore<TAuthenticationToken>
-  nameWithType.vb: EventStore(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken)
-  name.vb: EventStore(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Events.EventStore`1
-    name: EventStore
-    nameWithType: EventStore
-    fullName: Cqrs.Events.EventStore
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Events.EventStore`1
-    name: EventStore
-    nameWithType: EventStore
-    fullName: Cqrs.Events.EventStore
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Events
   commentId: N:Cqrs.Events
   isExternal: false
@@ -1482,14 +1506,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore`1.BlobStorageStore*
-  commentId: Overload:Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore`1.BlobStorageStore
-  isExternal: false
-  name: BlobStorageStore
-  nameWithType: BlobStorageEventStore<TAuthenticationToken>.BlobStorageStore
-  fullName: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore<TAuthenticationToken>.BlobStorageStore
-  nameWithType.vb: BlobStorageEventStore(Of TAuthenticationToken).BlobStorageStore
-  fullName.vb: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore(Of TAuthenticationToken).BlobStorageStore
 - uid: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore`1.RawBlobStorageEventStore
   commentId: T:Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore`1.RawBlobStorageEventStore
   parent: Cqrs.Azure.BlobStorage.Events
@@ -1522,6 +1538,14 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore`1.BlobStorageStore*
+  commentId: Overload:Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore`1.BlobStorageStore
+  isExternal: false
+  name: BlobStorageStore
+  nameWithType: BlobStorageEventStore<TAuthenticationToken>.BlobStorageStore
+  fullName: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore<TAuthenticationToken>.BlobStorageStore
+  nameWithType.vb: BlobStorageEventStore(Of TAuthenticationToken).BlobStorageStore
+  fullName.vb: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore(Of TAuthenticationToken).BlobStorageStore
 - uid: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore`1
   commentId: T:Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore`1
   isExternal: false
@@ -1743,6 +1767,88 @@ references:
   name: Cqrs.Azure.BlobStorage
   nameWithType: Cqrs.Azure.BlobStorage
   fullName: Cqrs.Azure.BlobStorage
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  isExternal: false
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1.Id
+  commentId: P:Cqrs.Domain.IAggregateRoot`1.Id
+  isExternal: false
+  name: Id
+  nameWithType: IAggregateRoot<TAuthenticationToken>.Id
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.Id
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).Id
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).Id
 - uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.Get(System.Type,System.Guid,System.Boolean,System.Int32)
   commentId: M:Cqrs.Events.EventStore{`0}.Get(System.Type,System.Guid,System.Boolean,System.Int32)
   parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
@@ -1840,13 +1946,6 @@ references:
   fullName: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore<TAuthenticationToken>.Get
   nameWithType.vb: BlobStorageEventStore(Of TAuthenticationToken).Get
   fullName.vb: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore(Of TAuthenticationToken).Get
-- uid: System.Type
-  commentId: T:System.Type
-  parent: System
-  isExternal: true
-  name: Type
-  nameWithType: Type
-  fullName: System.Type
 - uid: System.Guid
   commentId: T:System.Guid
   parent: System
@@ -2061,6 +2160,13 @@ references:
   name: System.Collections.Generic
   nameWithType: System.Collections.Generic
   fullName: System.Collections.Generic
+- uid: Cqrs.Messages.IMessage.CorrelationId
+  commentId: P:Cqrs.Messages.IMessage.CorrelationId
+  parent: Cqrs.Messages.IMessage
+  isExternal: false
+  name: CorrelationId
+  nameWithType: IMessage.CorrelationId
+  fullName: Cqrs.Messages.IMessage.CorrelationId
 - uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.Get(System.Guid)
   commentId: M:Cqrs.Events.EventStore{`0}.Get(System.Guid)
   parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
@@ -2144,6 +2250,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Messages.IMessage
+  commentId: T:Cqrs.Messages.IMessage
+  parent: Cqrs.Messages
+  isExternal: false
+  name: IMessage
+  nameWithType: IMessage
+  fullName: Cqrs.Messages.IMessage
 - uid: Cqrs.Events.EventStore`1.Get(System.Guid)
   commentId: M:Cqrs.Events.EventStore`1.Get(System.Guid)
   isExternal: true
@@ -2184,6 +2297,19 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Messages
+  commentId: N:Cqrs.Messages
+  isExternal: false
+  name: Cqrs.Messages
+  nameWithType: Cqrs.Messages
+  fullName: Cqrs.Messages
+- uid: Cqrs.Events.EventData
+  commentId: T:Cqrs.Events.EventData
+  parent: Cqrs.Events
+  isExternal: false
+  name: EventData
+  nameWithType: EventData
+  fullName: Cqrs.Events.EventData
 - uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.PersistEvent(Cqrs.Events.EventData)
   commentId: M:Cqrs.Events.EventStore{`0}.PersistEvent(Cqrs.Events.EventData)
   parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
@@ -2231,13 +2357,6 @@ references:
   fullName: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore<TAuthenticationToken>.PersistEvent
   nameWithType.vb: BlobStorageEventStore(Of TAuthenticationToken).PersistEvent
   fullName.vb: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore(Of TAuthenticationToken).PersistEvent
-- uid: Cqrs.Events.EventData
-  commentId: T:Cqrs.Events.EventData
-  parent: Cqrs.Events
-  isExternal: false
-  name: EventData
-  nameWithType: EventData
-  fullName: Cqrs.Events.EventData
 - uid: Cqrs.Events.EventStore`1.PersistEvent(Cqrs.Events.EventData)
   commentId: M:Cqrs.Events.EventStore`1.PersistEvent(Cqrs.Events.EventData)
   isExternal: false

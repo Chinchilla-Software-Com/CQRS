@@ -23,10 +23,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: IAzureDocumentDbHelper
     path: Framework/Azure/Cqrs.Azure.DocumentDb/IAzureDocumentDbHelper.cs
-    startLine: 15
+    startLine: 18
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nA helper for Azure Document DB.\n"
+  example: []
   syntax:
     content: public interface IAzureDocumentDbHelper
     content.vb: Public Interface IAzureDocumentDbHelper
@@ -54,17 +56,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateOrReadDatabase
     path: Framework/Azure/Cqrs.Azure.DocumentDb/IAzureDocumentDbHelper.cs
-    startLine: 17
+    startLine: 25
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nGets a <see cref=\"!:Database\"></see> creating one if it doesn&apos;t already exist.\n"
+  example: []
   syntax:
     content: Task<Database> CreateOrReadDatabase(DocumentClient client, string databaseName)
     parameters:
     - id: client
       type: DocumentClient
+      description: The <see cref="!:DocumentClient"></see> to use.
     - id: databaseName
       type: System.String
+      description: The name of the database to get.
     return:
       type: Task{Database}
     content.vb: Function CreateOrReadDatabase(client As DocumentClient, databaseName As String) As Task(Of Database)
@@ -87,21 +93,27 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateOrReadCollection
     path: Framework/Azure/Cqrs.Azure.DocumentDb/IAzureDocumentDbHelper.cs
-    startLine: 19
+    startLine: 34
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nGets a <see cref=\"!:DocumentCollection\"></see> creating one if it doesn&apos;t already exist.\n"
+  example: []
   syntax:
     content: Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName, string[] uniqiueIndexPropertyNames = null)
     parameters:
     - id: client
       type: DocumentClient
+      description: The <see cref="!:DocumentClient"></see> to use.
     - id: database
       type: Database
+      description: The <see cref="!:Database"></see> to look in.
     - id: collectionName
       type: System.String
+      description: The name of the collection to get.
     - id: uniqiueIndexPropertyNames
       type: System.String[]
+      description: Any unique properties the collection should enforce.
     return:
       type: Task{DocumentCollection}
     content.vb: Function CreateOrReadCollection(client As DocumentClient, database As Database, collectionName As String, uniqiueIndexPropertyNames As String() = Nothing) As Task(Of DocumentCollection)
@@ -127,15 +139,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ExecuteFaultTollerantFunction
     path: Framework/Azure/Cqrs.Azure.DocumentDb/IAzureDocumentDbHelper.cs
-    startLine: 21
+    startLine: 40
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nExecute the provided <code data-dev-comment-type=\"paramref\">func</code> in a fault tolerant way.\n"
+  example: []
   syntax:
     content: T ExecuteFaultTollerantFunction<T>(Func<T> func)
     parameters:
     - id: func
       type: Func{{T}}
+      description: The <see cref="!:Func&lt;T>"></see> to execute.
     typeParameters:
     - id: T
     return:
@@ -163,15 +178,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ExecuteFaultTollerantFunction
     path: Framework/Azure/Cqrs.Azure.DocumentDb/IAzureDocumentDbHelper.cs
-    startLine: 23
+    startLine: 46
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nExecute the provided <code data-dev-comment-type=\"paramref\">func</code> in a fault tolerant way.\n"
+  example: []
   syntax:
     content: void ExecuteFaultTollerantFunction(Action func)
     parameters:
     - id: func
       type: Action
+      description: The <see cref="!:Action"></see> to execute.
     content.vb: Sub ExecuteFaultTollerantFunction(func As Action)
   overload: Cqrs.Azure.DocumentDb.IAzureDocumentDbHelper.ExecuteFaultTollerantFunction*
 references:

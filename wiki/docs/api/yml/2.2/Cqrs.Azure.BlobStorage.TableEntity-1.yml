@@ -24,15 +24,26 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TableEntity
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableEntity.cs
-    startLine: 15
+    startLine: 20
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nA projection/entity especially designed to work with Azure Table storage.\n"
+  example: []
   syntax:
-    content: 'public abstract class TableEntity<TData> : TableEntity, ITableEntity'
+    content: >-
+      [Serializable]
+
+      [DataContract]
+
+      public abstract class TableEntity<TData> : TableEntity, ITableEntity
     typeParameters:
     - id: TData
     content.vb: >-
+      <Serializable>
+
+      <DataContract>
+
       Public MustInherit Class TableEntity(Of TData)
           Inherits TableEntity
           Implements ITableEntity
@@ -62,6 +73,13 @@ items:
   - System.Object.GetHashCode
   - System.Object.GetType
   - System.Object.MemberwiseClone
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+  - type: System.Runtime.Serialization.DataContractAttribute
+    ctor: System.Runtime.Serialization.DataContractAttribute.#ctor
+    arguments: []
   nameWithType.vb: TableEntity(Of TData)
   modifiers.csharp:
   - public
@@ -91,7 +109,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DefaultSettings
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableEntity.cs
-    startLine: 21
+    startLine: 28
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -132,18 +150,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Deserialise
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableEntity.cs
-    startLine: 32
+    startLine: 39
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
-  summary: "\nDeserialise the provided <span class=\"paramref\">json</span> from its <xref href=\"System.String\" data-throw-if-not-resolved=\"false\"></xref> representation.\n"
+  summary: "\nDeserialise the provided <code data-dev-comment-type=\"paramref\">json</code> from its <xref href=\"System.String\" data-throw-if-not-resolved=\"false\"></xref> representation.\n"
   example: []
   syntax:
     content: protected virtual TData Deserialise(string json)
     parameters:
     - id: json
       type: System.String
-      description: A <xref href="System.String" data-throw-if-not-resolved="false"></xref> representation of an <see cref="!:TData"></see> to deserialise.
+      description: A <xref href="System.String" data-throw-if-not-resolved="false"></xref> representation of an <code data-dev-comment-type="typeparamref">TData</code> to deserialise.
     return:
       type: '{TData}'
     content.vb: Protected Overridable Function Deserialise(json As String) As TData
@@ -174,21 +192,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Serialise
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableEntity.cs
-    startLine: 44
+    startLine: 51
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
-  summary: "\nSerialise the provided <span class=\"paramref\">data</span>.\n"
+  summary: "\nSerialise the provided <code data-dev-comment-type=\"paramref\">data</code>.\n"
   example: []
   syntax:
     content: protected virtual string Serialise(TData data)
     parameters:
     - id: data
       type: '{TData}'
-      description: The <see cref="!:TData"></see> being serialised.
+      description: The <code data-dev-comment-type="typeparamref">TData</code> being serialised.
     return:
       type: System.String
-      description: A <xref href="System.String" data-throw-if-not-resolved="false"></xref> representation of the provided <span class="paramref">data</span>.
+      description: A <xref href="System.String" data-throw-if-not-resolved="false"></xref> representation of the provided <code data-dev-comment-type="paramref">data</code>.
     content.vb: Protected Overridable Function Serialise(data As TData) As String
   overload: Cqrs.Azure.BlobStorage.TableEntity`1.Serialise*
   nameWithType.vb: TableEntity(Of TData).Serialise(TData)
@@ -217,7 +235,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetSerialisationSettings
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableEntity.cs
-    startLine: 55
+    startLine: 62
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -256,7 +274,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetSerialiser
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableEntity.cs
-    startLine: 64
+    startLine: 71
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage

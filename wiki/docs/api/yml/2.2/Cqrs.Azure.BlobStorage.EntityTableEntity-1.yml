@@ -23,15 +23,26 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EntityTableEntity
     path: Framework/Azure/Cqrs.Azure.BlobStorage/EntityTableEntity.cs
-    startLine: 5
+    startLine: 17
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nA projection/entity especially designed to work with Azure Table storage.\n"
+  example: []
   syntax:
-    content: 'public class EntityTableEntity<TEntity> : TableEntity<TEntity>, ITableEntity, IEntityTableEntity<TEntity> where TEntity : IEntity'
+    content: >-
+      [Serializable]
+
+      [DataContract]
+
+      public class EntityTableEntity<TEntity> : TableEntity<TEntity>, ITableEntity, IEntityTableEntity<TEntity> where TEntity : IEntity
     typeParameters:
     - id: TEntity
     content.vb: >-
+      <Serializable>
+
+      <DataContract>
+
       Public Class EntityTableEntity(Of TEntity As IEntity)
           Inherits TableEntity(Of TEntity)
           Implements ITableEntity, IEntityTableEntity(Of TEntity)
@@ -65,6 +76,13 @@ items:
   - System.Object.GetHashCode
   - System.Object.GetType
   - System.Object.MemberwiseClone
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+  - type: System.Runtime.Serialization.DataContractAttribute
+    ctor: System.Runtime.Serialization.DataContractAttribute.#ctor
+    arguments: []
   nameWithType.vb: EntityTableEntity(Of TEntity)
   modifiers.csharp:
   - public
@@ -92,10 +110,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.BlobStorage/EntityTableEntity.cs
-    startLine: 10
+    startLine: 27
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Azure.BlobStorage.EntityTableEntity%601\" data-throw-if-not-resolved=\"false\"></xref> specificly setting <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableEntity.PartitionKey\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableEntity.RowKey\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public EntityTableEntity(TEntity entity)
     parameters:
@@ -127,10 +147,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.BlobStorage/EntityTableEntity.cs
-    startLine: 18
+    startLine: 38
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Azure.BlobStorage.EntityTableEntity%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public EntityTableEntity()
     content.vb: Public Sub New
@@ -159,10 +181,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Entity
     path: Framework/Azure/Cqrs.Azure.BlobStorage/EntityTableEntity.cs
-    startLine: 24
+    startLine: 47
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nGets or sets the <code data-dev-comment-type=\"typeparamref\">TEntity</code>.\n"
+  example: []
   syntax:
     content: >-
       [DataMember]
@@ -208,10 +232,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EntityContent
     path: Framework/Azure/Cqrs.Azure.BlobStorage/EntityTableEntity.cs
-    startLine: 33
+    startLine: 59
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nGets or sets a serialised version.\n"
+  example: []
   syntax:
     content: >-
       [DataMember]
@@ -1348,6 +1374,43 @@ references:
   - name: (
     nameWithType: (
     fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Azure.BlobStorage.EntityTableEntity`1
+  commentId: T:Cqrs.Azure.BlobStorage.EntityTableEntity`1
+  isExternal: false
+  name: EntityTableEntity<TEntity>
+  nameWithType: EntityTableEntity<TEntity>
+  fullName: Cqrs.Azure.BlobStorage.EntityTableEntity<TEntity>
+  nameWithType.vb: EntityTableEntity(Of TEntity)
+  fullName.vb: Cqrs.Azure.BlobStorage.EntityTableEntity(Of TEntity)
+  name.vb: EntityTableEntity(Of TEntity)
+  spec.csharp:
+  - uid: Cqrs.Azure.BlobStorage.EntityTableEntity`1
+    name: EntityTableEntity
+    nameWithType: EntityTableEntity
+    fullName: Cqrs.Azure.BlobStorage.EntityTableEntity
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.BlobStorage.EntityTableEntity`1
+    name: EntityTableEntity
+    nameWithType: EntityTableEntity
+    fullName: Cqrs.Azure.BlobStorage.EntityTableEntity
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
   - name: )
     nameWithType: )
     fullName: )
