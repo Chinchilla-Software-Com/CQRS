@@ -44,8 +44,6 @@ var searchData=
   ['azuredocumentdbdatastoreextensions',['AzureDocumentDbDataStoreExtensions',['../classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions.html',1,'System::Linq']]],
   ['azuredocumentdbdatastorefactory',['AzureDocumentDbDataStoreFactory',['../classCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1AzureDocumentDbDataStoreFactory.html',1,'Cqrs::Azure::DocumentDb::Factories']]],
   ['azuredocumentdbentity',['AzureDocumentDbEntity',['../classCqrs_1_1Azure_1_1DocumentDb_1_1Entities_1_1AzureDocumentDbEntity.html',1,'Cqrs::Azure::DocumentDb::Entities']]],
-  ['azuredocumentdbeventbuilder',['AzureDocumentDbEventBuilder',['../classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventBuilder.html',1,'Cqrs::Azure::DocumentDb::Events']]],
-  ['azuredocumentdbeventdeserialiser',['AzureDocumentDbEventDeserialiser',['../classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventDeserialiser.html',1,'Cqrs::Azure::DocumentDb::Events']]],
   ['azuredocumentdbeventstore',['AzureDocumentDbEventStore',['../classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore.html',1,'Cqrs::Azure::DocumentDb::Events']]],
   ['azuredocumentdbeventstoreconnectionstringfactory',['AzureDocumentDbEventStoreConnectionStringFactory',['../classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStoreConnectionStringFactory.html',1,'Cqrs::Azure::DocumentDb::Events']]],
   ['azuredocumentdbeventstoremodule',['AzureDocumentDbEventStoreModule',['../classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule.html',1,'Cqrs::Ninject::Azure::DocumentDb::Configuration']]],

@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">6</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-19</td>
+            <td class="headerValue">2017-08-27</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -69,21 +69,57 @@
 <span class="lineNum">      11 </span>            : 
 <span class="lineNum">      12 </span>            : namespace Cqrs.Azure.DocumentDb
 <span class="lineNum">      13 </span>            : {
-<span class="lineNum">      14 </span>            :         public interface IAzureDocumentDbConnectionCache
-<span class="lineNum">      15 </span>            :         {
-<span class="lineNum">      16 </span><span class="lineNoCov">          0 :                 bool TryGetClient(string key, out DocumentClient client);</span>
-<span class="lineNum">      17 </span>            : 
-<span class="lineNum">      18 </span><span class="lineNoCov">          0 :                 void SetClient(string key, DocumentClient client);</span>
-<span class="lineNum">      19 </span>            : 
-<span class="lineNum">      20 </span><span class="lineNoCov">          0 :                 bool TryGetDatabase(string key, out Database database);</span>
-<span class="lineNum">      21 </span>            : 
-<span class="lineNum">      22 </span><span class="lineNoCov">          0 :                 void SetDatabase(string key, Database database);</span>
-<span class="lineNum">      23 </span>            : 
-<span class="lineNum">      24 </span><span class="lineNoCov">          0 :                 bool TryGetDocumentCollection(string key, out DocumentCollection documentCollection);</span>
-<span class="lineNum">      25 </span>            : 
-<span class="lineNum">      26 </span><span class="lineNoCov">          0 :                 void SetDocumentCollection(string key, DocumentCollection documentCollection);</span>
-<span class="lineNum">      27 </span>            :         }
-<span class="lineNum">      28 </span>            : }
+<span class="lineNum">      14 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      15 </span>            :         /// A cache manager for DocumentDB clients, databases and collections.
+<span class="lineNum">      16 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      17 </span>            :         public interface IAzureDocumentDbConnectionCache
+<span class="lineNum">      18 </span>            :         {
+<span class="lineNum">      19 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      20 </span>            :                 /// Gets the &lt;see cref=&quot;DocumentClient&quot;/&gt;.
+<span class="lineNum">      21 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      22 </span>            :                 /// &lt;param name=&quot;key&quot;&gt;The name of the &lt;see cref=&quot;DocumentClient&quot;/&gt; to get.&lt;/param&gt;
+<span class="lineNum">      23 </span>            :                 /// &lt;param name=&quot;client&quot;&gt;If the &lt;see cref=&quot;DocumentClient&quot;/&gt; is found, it is returned here; otherwise null is returned. This parameter is passed uninitialized.&lt;/param&gt;
+<span class="lineNum">      24 </span>            :                 /// &lt;returns&gt;true if the  &lt;see cref=&quot;DocumentClient&quot;/&gt; is found; otherwise, false.&lt;/returns&gt;
+<span class="lineNum">      25 </span><span class="lineCov">          1 :                 bool TryGetClient(string key, out DocumentClient client);</span>
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      28 </span>            :                 /// Sets the provided &lt;paramref name=&quot;client&quot;/&gt;.
+<span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      30 </span>            :                 /// &lt;param name=&quot;key&quot;&gt;The name of the &lt;see cref=&quot;DocumentClient&quot;/&gt; to get.&lt;/param&gt;
+<span class="lineNum">      31 </span>            :                 /// &lt;param name=&quot;client&quot;&gt;The &lt;see cref=&quot;DocumentClient&quot;/&gt; to set.&lt;/param&gt;
+<span class="lineNum">      32 </span><span class="lineCov">          1 :                 void SetClient(string key, DocumentClient client);</span>
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      35 </span>            :                 /// Gets the &lt;see cref=&quot;Database&quot;/&gt;.
+<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      37 </span>            :                 /// &lt;param name=&quot;key&quot;&gt;The name of the &lt;see cref=&quot;Database&quot;/&gt; to get.&lt;/param&gt;
+<span class="lineNum">      38 </span>            :                 /// &lt;param name=&quot;database&quot;&gt;If the &lt;see cref=&quot;Database&quot;/&gt; is found, it is returned here; otherwise null is returned. This parameter is passed uninitialized.&lt;/param&gt;
+<span class="lineNum">      39 </span>            :                 /// &lt;returns&gt;true if the  &lt;see cref=&quot;Database&quot;/&gt; is found; otherwise, false.&lt;/returns&gt;
+<span class="lineNum">      40 </span><span class="lineCov">          1 :                 bool TryGetDatabase(string key, out Database database);</span>
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      43 </span>            :                 /// Sets the provided &lt;paramref name=&quot;database&quot;/&gt;.
+<span class="lineNum">      44 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      45 </span>            :                 /// &lt;param name=&quot;key&quot;&gt;The name of the &lt;see cref=&quot;Database&quot;/&gt; to get.&lt;/param&gt;
+<span class="lineNum">      46 </span>            :                 /// &lt;param name=&quot;database&quot;&gt;The &lt;see cref=&quot;Database&quot;/&gt; to set.&lt;/param&gt;
+<span class="lineNum">      47 </span><span class="lineCov">          1 :                 void SetDatabase(string key, Database database);</span>
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      50 </span>            :                 /// Gets the &lt;see cref=&quot;DocumentCollection&quot;/&gt;.
+<span class="lineNum">      51 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      52 </span>            :                 /// &lt;param name=&quot;key&quot;&gt;The name of the &lt;see cref=&quot;DocumentCollection&quot;/&gt; to get.&lt;/param&gt;
+<span class="lineNum">      53 </span>            :                 /// &lt;param name=&quot;documentCollection&quot;&gt;If the &lt;see cref=&quot;DocumentCollection&quot;/&gt; is found, it is returned here; otherwise null is returned. This parameter is passed uninitialized.&lt;/param&gt;
+<span class="lineNum">      54 </span>            :                 /// &lt;returns&gt;true if the  &lt;see cref=&quot;DocumentCollection&quot;/&gt; is found; otherwise, false.&lt;/returns&gt;
+<span class="lineNum">      55 </span><span class="lineCov">          1 :                 bool TryGetDocumentCollection(string key, out DocumentCollection documentCollection);</span>
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      58 </span>            :                 /// Sets the provided &lt;paramref name=&quot;documentCollection&quot;/&gt;.
+<span class="lineNum">      59 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      60 </span>            :                 /// &lt;param name=&quot;key&quot;&gt;The name of the &lt;see cref=&quot;DocumentCollection&quot;/&gt; to get.&lt;/param&gt;
+<span class="lineNum">      61 </span>            :                 /// &lt;param name=&quot;documentCollection&quot;&gt;The &lt;see cref=&quot;DocumentCollection&quot;/&gt; to set.&lt;/param&gt;
+<span class="lineNum">      62 </span><span class="lineCov">          1 :                 void SetDocumentCollection(string key, DocumentCollection documentCollection);</span>
+<span class="lineNum">      63 </span>            :         }
+<span class="lineNum">      64 </span>            : }
 </pre>
       </td>
     </tr>

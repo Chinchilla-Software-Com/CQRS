@@ -1,5 +1,10 @@
 \hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore}{}\section{Cqrs.\+Azure.\+Blob\+Storage.\+Blob\+Storage\+Store$<$ T\+Data $>$ Class Template Reference}
 \label{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore}\index{Cqrs.\+Azure.\+Blob\+Storage.\+Blob\+Storage\+Store$<$ T\+Data $>$@{Cqrs.\+Azure.\+Blob\+Storage.\+Blob\+Storage\+Store$<$ T\+Data $>$}}
+
+
+A I\+Enumerable$<$\+T\+Data$>$ that uses \hyperlink{namespaceCqrs_1_1Azure}{Azure} Blobl \hyperlink{namespaceCqrs_1_1Azure_1_1Storage}{Storage} for storage.  
+
+
 Inheritance diagram for Cqrs.\+Azure.\+Blob\+Storage.\+Blob\+Storage\+Store$<$ T\+Data $>$\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -14,22 +19,22 @@ Inheritance diagram for Cqrs.\+Azure.\+Blob\+Storage.\+Blob\+Storage\+Store$<$ T
 override I\+Enumerator$<$ T\+Data $>$ \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a7b106644bd8bfe5b1b5e5ef7bc279769_a7b106644bd8bfe5b1b5e5ef7bc279769}{Get\+Enumerator} ()
 \begin{DoxyCompactList}\small\item\em Returns an enumerator that iterates through the collection. \end{DoxyCompactList}\item 
 override void \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a527ef0e0d39f9e01f4112b6bc90129b2_a527ef0e0d39f9e01f4112b6bc90129b2}{Add} (T\+Data data)
-\item 
+\begin{DoxyCompactList}\small\item\em Add the provided {\itshape data}  to the data store and persist the change. \end{DoxyCompactList}\item 
 override void \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a7e4870567b393327563d131cb25151e0_a7e4870567b393327563d131cb25151e0}{Destroy} (T\+Data data)
-\item 
+\begin{DoxyCompactList}\small\item\em Remove the provided {\itshape data}  (normally by I\+Entity.\+Rsn) from the data store and persist the change. \end{DoxyCompactList}\item 
 override void \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a4371b95250e51b8462d8ab33b6f3fe9e_a4371b95250e51b8462d8ab33b6f3fe9e}{Remove\+All} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Remove all contents (normally by use of a truncate operation) from the data store and persist the change. \end{DoxyCompactList}\item 
 override void \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a03be976aded454866b4589de99a9e1c8_a03be976aded454866b4589de99a9e1c8}{Update} (T\+Data data)
-\item 
+\begin{DoxyCompactList}\small\item\em Update the provided {\itshape data}  in the data store and persist the change. \end{DoxyCompactList}\item 
 virtual T\+Data \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a16464b2b12056d0d270b8657b6c9e1e6_a16464b2b12056d0d270b8657b6c9e1e6}{Get\+By\+Name} (string name)
-\item 
+\begin{DoxyCompactList}\small\item\em Get {\itshape T\+Data}  by its name. \end{DoxyCompactList}\item 
 virtual I\+Enumerable$<$ T\+Data $>$ \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a96064e01ccf12413582acd7497f3802d_a96064e01ccf12413582acd7497f3802d}{Get\+By\+Folder} (string folder\+Name)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get all {\itshape T\+Data}  items in the folder. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 virtual void \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a70157155d5b9ea9d1ac752014d6d0df6_a70157155d5b9ea9d1ac752014d6d0df6}{Async\+Save\+Data$<$ T\+Result $>$} (T\+Data data, Func$<$ T\+Data, Cloud\+Block\+Blob, T\+Result $>$ function, Func$<$ T\+Data, string $>$ custom\+Filename\+Function=null)
-\item 
+\begin{DoxyCompactList}\small\item\em Save the provided {\itshape data}  asynchronously. \end{DoxyCompactList}\item 
 override Cloud\+Blob\+Container \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a68828f9e6c1f0d297623e5f0c9af0e7e_a68828f9e6c1f0d297623e5f0c9af0e7e}{Create\+Source} (Cloud\+Storage\+Account storage\+Account, string container\+Name, bool is\+Public=true)
 \begin{DoxyCompactList}\small\item\em Creates a Cloud\+Blob\+Container with the specified name {\itshape container\+Name}  if it doesn\textquotesingle{}t already exist. \end{DoxyCompactList}\item 
 virtual I\+Enumerable$<$ Stream $>$ \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a6a916e23890ba65048e449353bbd17c2_a6a916e23890ba65048e449353bbd17c2}{Open\+Streams\+For\+Reading} (Func$<$ Cloud\+Block\+Blob, bool $>$ predicate=null, string blob\+Prefix=null, string folder\+Name=null)
@@ -45,6 +50,11 @@ override Type \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a
 \begin{DoxyCompactList}\small\item\em Gets the type of the element(s) that are returned when the expression tree associated with this instance of T\+:\+System.\+Linq.\+I\+Queryable is executed. \end{DoxyCompactList}\item 
 override I\+Query\+Provider \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_acbc7f5a9d6eb9d1ece9a9035f185d4bf_acbc7f5a9d6eb9d1ece9a9035f185d4bf}{Provider}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \begin{DoxyCompactList}\small\item\em Gets the query provider that is associated with this data source. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A I\+Enumerable$<$\+T\+Data$>$ that uses \hyperlink{namespaceCqrs_1_1Azure}{Azure} Blobl \hyperlink{namespaceCqrs_1_1Azure_1_1Storage}{Storage} for storage. 
+
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -69,6 +79,10 @@ Initializes a new instance of the \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1
 
 
 
+Add the provided {\itshape data}  to the data store and persist the change. 
+
+
+
 Implements \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_af56bdbd7fa6650aaef5c0bab9ed55f1a_af56bdbd7fa6650aaef5c0bab9ed55f1a}{Cqrs.\+Azure.\+Blob\+Storage.\+Storage\+Store$<$ T\+Data, Cloud\+Blob\+Container $>$}.
 
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a70157155d5b9ea9d1ac752014d6d0df6_a70157155d5b9ea9d1ac752014d6d0df6}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a70157155d5b9ea9d1ac752014d6d0df6_a70157155d5b9ea9d1ac752014d6d0df6}} 
@@ -76,6 +90,10 @@ Implements \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_af56bdbd
 \index{Async\+Save\+Data$<$ T\+Result $>$@{Async\+Save\+Data$<$ T\+Result $>$}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Blob\+Storage\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Blob\+Storage\+Store}}
 \subsubsection{\texorpdfstring{Async\+Save\+Data$<$ T\+Result $>$()}{AsyncSaveData< TResult >()}}
 {\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore}{Cqrs.\+Azure.\+Blob\+Storage.\+Blob\+Storage\+Store}$<$ T\+Data $>$.Async\+Save\+Data$<$ T\+Result $>$ (\begin{DoxyParamCaption}\item[{T\+Data}]{data,  }\item[{Func$<$ T\+Data, Cloud\+Block\+Blob, T\+Result $>$}]{function,  }\item[{Func$<$ T\+Data, string $>$}]{custom\+Filename\+Function = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Save the provided {\itshape data}  asynchronously. 
 
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a68828f9e6c1f0d297623e5f0c9af0e7e_a68828f9e6c1f0d297623e5f0c9af0e7e}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a68828f9e6c1f0d297623e5f0c9af0e7e_a68828f9e6c1f0d297623e5f0c9af0e7e}} 
 \index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Blob\+Storage\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Blob\+Storage\+Store}!Create\+Source@{Create\+Source}}
@@ -108,6 +126,10 @@ Implements \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_a07903b6
 
 
 
+Remove the provided {\itshape data}  (normally by I\+Entity.\+Rsn) from the data store and persist the change. 
+
+
+
 Implements \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_a9879b4ab18c2a33d7e20bc0b3a734195_a9879b4ab18c2a33d7e20bc0b3a734195}{Cqrs.\+Azure.\+Blob\+Storage.\+Storage\+Store$<$ T\+Data, Cloud\+Blob\+Container $>$}.
 
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a2d38c9a30365ae357f3cf5e300c6ca25_a2d38c9a30365ae357f3cf5e300c6ca25}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a2d38c9a30365ae357f3cf5e300c6ca25_a2d38c9a30365ae357f3cf5e300c6ca25}} 
@@ -136,11 +158,19 @@ A reference to a block blob.
 \subsubsection{\texorpdfstring{Get\+By\+Folder()}{GetByFolder()}}
 {\footnotesize\ttfamily virtual I\+Enumerable$<$T\+Data$>$ \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore}{Cqrs.\+Azure.\+Blob\+Storage.\+Blob\+Storage\+Store}$<$ T\+Data $>$.Get\+By\+Folder (\begin{DoxyParamCaption}\item[{string}]{folder\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
+
+
+Get all {\itshape T\+Data}  items in the folder. 
+
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a16464b2b12056d0d270b8657b6c9e1e6_a16464b2b12056d0d270b8657b6c9e1e6}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a16464b2b12056d0d270b8657b6c9e1e6_a16464b2b12056d0d270b8657b6c9e1e6}} 
 \index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Blob\+Storage\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Blob\+Storage\+Store}!Get\+By\+Name@{Get\+By\+Name}}
 \index{Get\+By\+Name@{Get\+By\+Name}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Blob\+Storage\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Blob\+Storage\+Store}}
 \subsubsection{\texorpdfstring{Get\+By\+Name()}{GetByName()}}
 {\footnotesize\ttfamily virtual T\+Data \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore}{Cqrs.\+Azure.\+Blob\+Storage.\+Blob\+Storage\+Store}$<$ T\+Data $>$.Get\+By\+Name (\begin{DoxyParamCaption}\item[{string}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Get {\itshape T\+Data}  by its name. 
 
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a7b106644bd8bfe5b1b5e5ef7bc279769_a7b106644bd8bfe5b1b5e5ef7bc279769}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a7b106644bd8bfe5b1b5e5ef7bc279769_a7b106644bd8bfe5b1b5e5ef7bc279769}} 
 \index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Blob\+Storage\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Blob\+Storage\+Store}!Get\+Enumerator@{Get\+Enumerator}}
@@ -177,6 +207,10 @@ Opens stream for reading from a block blob.
 
 
 
+Remove all contents (normally by use of a truncate operation) from the data store and persist the change. 
+
+
+
 Implements \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_a4e848f342be903293812b3b660464d1a_a4e848f342be903293812b3b660464d1a}{Cqrs.\+Azure.\+Blob\+Storage.\+Storage\+Store$<$ T\+Data, Cloud\+Blob\+Container $>$}.
 
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a03be976aded454866b4589de99a9e1c8_a03be976aded454866b4589de99a9e1c8}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore_a03be976aded454866b4589de99a9e1c8_a03be976aded454866b4589de99a9e1c8}} 
@@ -184,6 +218,10 @@ Implements \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_a4e848f3
 \index{Update@{Update}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Blob\+Storage\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Blob\+Storage\+Store}}
 \subsubsection{\texorpdfstring{Update()}{Update()}}
 {\footnotesize\ttfamily override void \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore}{Cqrs.\+Azure.\+Blob\+Storage.\+Blob\+Storage\+Store}$<$ T\+Data $>$.Update (\begin{DoxyParamCaption}\item[{T\+Data}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Update the provided {\itshape data}  in the data store and persist the change. 
 
 
 

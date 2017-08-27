@@ -305,14 +305,12 @@ var hierarchy =
     [ "Cqrs.Events.IEventBuilder< TAuthenticationToken >", "interfaceCqrs_1_1Events_1_1IEventBuilder.html", [
       [ "Cqrs.Events.EventBuilder< TAuthenticationToken >", "classCqrs_1_1Events_1_1EventBuilder.html", [
         [ "Cqrs.Events.DefaultEventBuilder< TAuthenticationToken >", "classCqrs_1_1Events_1_1DefaultEventBuilder.html", [
-          [ "Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventBuilder< TAuthenticationToken >", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventBuilder.html", null ],
           [ "Cqrs.MongoDB.Serialisers.MongoDbEventBuilder< TAuthenticationToken >", "classCqrs_1_1MongoDB_1_1Serialisers_1_1MongoDbEventBuilder.html", null ]
         ] ]
       ] ]
     ] ],
     [ "Cqrs.Events.IEventDeserialiser< TAuthenticationToken >", "interfaceCqrs_1_1Events_1_1IEventDeserialiser.html", [
       [ "Cqrs.Events.EventDeserialiser< TAuthenticationToken >", "classCqrs_1_1Events_1_1EventDeserialiser.html", [
-        [ "Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventDeserialiser< TAuthenticationToken >", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventDeserialiser.html", null ],
         [ "Cqrs.MongoDB.Serialisers.MongoDbEventDeserialiser< TAuthenticationToken >", "classCqrs_1_1MongoDB_1_1Serialisers_1_1MongoDbEventDeserialiser.html", null ]
       ] ]
     ] ],
