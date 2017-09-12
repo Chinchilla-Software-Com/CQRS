@@ -656,7 +656,7 @@ namespace Cqrs.Bus
 		{
 			Action<TMessage> registerableHandler = BusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(TelemetryHelper, handler, holdMessageLock, "In-Process/Bus");
 
-			Routes.RegisterHandler(registerableHandler, null);
+			Routes.RegisterGlobalEventHandler(registerableHandler, holdMessageLock);
 
 			TelemetryHelper.TrackEvent(string.Format("Cqrs/RegisterGlobalEventHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "In-Process/Bus" } });
 			TelemetryHelper.Flush();

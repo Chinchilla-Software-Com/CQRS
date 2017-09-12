@@ -553,7 +553,7 @@ namespace Cqrs.Azure.ServiceBus
 
 			routeManger.RegisterGlobalEventHandler(registerableHandler);
 
-			telemetryHelper.TrackEvent(string.Format("Cqrs/RegisterHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "Azure/Bus" } });
+			telemetryHelper.TrackEvent(string.Format("Cqrs/RegisterGlobalEventHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "Azure/Bus" } });
 			telemetryHelper.Flush();
 		}
 	}
