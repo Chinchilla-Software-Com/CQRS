@@ -208,10 +208,10 @@ namespace Cqrs.Bus
 
 			Route route;
 			if (Routes.TryGetValue(messageType, out route))
-			{
 				routeHandlers.AddRange(route.Handlers);
+
+			if (routeHandlers.Any())
 				return routeHandlers;
-			}
 
 			if (throwExceptionOnNoRouteHandlers)
 			{
