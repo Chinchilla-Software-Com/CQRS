@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-28</td>
+            <td class="headerValue">2017-09-13</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -714,7 +714,7 @@
 <span class="lineNum">     656 </span>            :                 {
 <span class="lineNum">     657 </span>            :                         Action&lt;TMessage&gt; registerableHandler = BusHelper.BuildTelemeteredActionHandler&lt;TMessage, TAuthenticationToken&gt;(TelemetryHelper, handler, holdMessageLock, &quot;In-Process/Bus&quot;);
 <span class="lineNum">     658 </span>            : 
-<span class="lineNum">     659 </span>            :                         Routes.RegisterHandler(registerableHandler, null);
+<span class="lineNum">     659 </span>            :                         Routes.RegisterGlobalEventHandler(registerableHandler, holdMessageLock);
 <span class="lineNum">     660 </span>            : 
 <span class="lineNum">     661 </span>            :                         TelemetryHelper.TrackEvent(string.Format(&quot;Cqrs/RegisterGlobalEventHandler/{0}&quot;, typeof(TMessage).FullName), new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;In-Process/Bus&quot; } });
 <span class="lineNum">     662 </span>            :                         TelemetryHelper.Flush();
