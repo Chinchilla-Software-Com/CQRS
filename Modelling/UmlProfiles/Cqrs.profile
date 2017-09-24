@@ -151,7 +151,19 @@
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
-        <property name="AggregateTechnology" displayName="Aggregate Technology: What technology are you using for aggregate processing of THIS aggregate." defaultValue="BuiltIn">
+        <property name="AggregateTechnology" displayName="Event Technology: What technology are you using for event processing of THIS aggregate." defaultValue="BuiltIn">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/AggregateTechnology"/>
+          </propertyType>
+        </property>
+      </properties>
+    </stereotype>
+    <stereotype name="Saga" displayName="Saga/Process Manager">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
+      </metaclasses>
+      <properties>
+        <property name="EventTechnology" displayName="Event Technology: What technology are you using for event processing of THIS saga." defaultValue="BuiltIn">
           <propertyType>
             <enumerationTypeMoniker name="/CqrsProfile/AggregateTechnology"/>
           </propertyType>
