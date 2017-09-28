@@ -184,7 +184,7 @@ namespace Cqrs.Bus
 					if (command != null)
 					{
 						messagePrefix = "Command/";
-						telemetryName = string.Format("{0}/{1}/{2}", telemetryName, command.GetIdentity(), @event.Id);
+						telemetryName = string.Format("{0}/{1}/{2}", telemetryName, command.GetIdentity(), command.Id);
 						authenticationToken = command.AuthenticationToken;
 					}
 				}
