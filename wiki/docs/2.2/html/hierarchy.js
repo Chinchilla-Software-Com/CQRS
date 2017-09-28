@@ -199,6 +199,7 @@ var hierarchy =
       [ "Cqrs.EventStore.Bus.EventStoreBasedLastEventProcessedStore", "classCqrs_1_1EventStore_1_1Bus_1_1EventStoreBasedLastEventProcessedStore.html", null ]
     ] ],
     [ "Cqrs.Bus.Route", "classCqrs_1_1Bus_1_1Route.html", null ],
+    [ "Cqrs.Commands.CommandExtensions", "classCqrs_1_1Commands_1_1CommandExtensions.html", null ],
     [ "Cqrs.Commands.ICommandPublisher< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ICommandPublisher.html", [
       [ "Cqrs.Akka.Commands.IAkkaCommandPublisherProxy< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IAkkaCommandPublisherProxy.html", [
         [ "Cqrs.Akka.Commands.AkkaCommandBusProxy< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBusProxy.html", null ]
@@ -302,6 +303,7 @@ var hierarchy =
     [ "Cqrs.Events.EventData", "classCqrs_1_1Events_1_1EventData.html", [
       [ "Cqrs.MongoDB.Events.MongoDbEventData", "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventData.html", null ]
     ] ],
+    [ "Cqrs.Events.EventExtensions", "classCqrs_1_1Events_1_1EventExtensions.html", null ],
     [ "Cqrs.Events.IEventBuilder< TAuthenticationToken >", "interfaceCqrs_1_1Events_1_1IEventBuilder.html", [
       [ "Cqrs.Events.EventBuilder< TAuthenticationToken >", "classCqrs_1_1Events_1_1EventBuilder.html", [
         [ "Cqrs.Events.DefaultEventBuilder< TAuthenticationToken >", "classCqrs_1_1Events_1_1DefaultEventBuilder.html", [
@@ -384,11 +386,13 @@ var hierarchy =
     [ "Cqrs.Messages.IMessage", "interfaceCqrs_1_1Messages_1_1IMessage.html", [
       [ "Cqrs.Messages.IMessageWithAuthenticationToken< TAuthenticationToken >", "interfaceCqrs_1_1Messages_1_1IMessageWithAuthenticationToken.html", [
         [ "Cqrs.Commands.ICommand< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ICommand.html", [
-          [ "Cqrs.Commands.DtoCommand< TAuthenticationToken, TDto >", "classCqrs_1_1Commands_1_1DtoCommand.html", null ]
+          [ "Cqrs.Commands.DtoCommand< TAuthenticationToken, TDto >", "classCqrs_1_1Commands_1_1DtoCommand.html", null ],
+          [ "Cqrs.Commands.ICommandWithIdentity< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ICommandWithIdentity.html", null ]
         ] ],
         [ "Cqrs.Events.IEvent< TAuthenticationToken >", "interfaceCqrs_1_1Events_1_1IEvent.html", [
           [ "Cqrs.Events.DtoAggregateEvent< TAuthenticationToken, TDto >", "classCqrs_1_1Events_1_1DtoAggregateEvent.html", null ],
           [ "Cqrs.Events.DuplicateCreateCommandEvent< TAuthenticationToken >", "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent.html", null ],
+          [ "Cqrs.Events.IEventWithIdentity< TAuthenticationToken >", "interfaceCqrs_1_1Events_1_1IEventWithIdentity.html", null ],
           [ "Cqrs.Events.ISagaEvent< TAuthenticationToken >", "interfaceCqrs_1_1Events_1_1ISagaEvent.html", [
             [ "Cqrs.Events.SagaEvent< TAuthenticationToken >", "classCqrs_1_1Events_1_1SagaEvent.html", null ]
           ] ],

@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.EventStore/EventFactory.cs</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">Cqrs.EventStore</a> - EventFactory.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-09-29</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Text;
+<span class="lineNum">      12 </span>            : using Cqrs.Events;
+<span class="lineNum">      13 </span>            : using EventStore.ClientAPI;
+<span class="lineNum">      14 </span>            : using Newtonsoft.Json;
+<span class="lineNum">      15 </span>            : using Newtonsoft.Json.Converters;
+<span class="lineNum">      16 </span>            : using EventData=EventStore.ClientAPI.EventData;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : namespace Cqrs.EventStore
+<span class="lineNum">      19 </span>            : {
+<span class="lineNum">      20 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :         /// A factory implementing &lt;see cref=&quot;IEventDeserialiser{TAuthenticationToken}&quot;/&gt; and &lt;see cref=&quot;IEventBuilder{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      22 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      23 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      24 </span>            :         public class EventFactory&lt;TAuthenticationToken&gt; : IEventBuilder&lt;TAuthenticationToken&gt;, IEventDeserialiser&lt;TAuthenticationToken&gt;
+<span class="lineNum">      25 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      26 </span>            :                 #region Implementation of IEventDeserialiser
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      29 </span>            :                 /// Deserialise the provided &lt;paramref name=&quot;eventData&quot;/&gt; into an &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      30 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      31 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;RecordedEvent&quot;/&gt; to Deserialise.&lt;/param&gt;
+<span class="lineNum">      32 </span><span class="lineCov">          1 :                 public IEvent&lt;TAuthenticationToken&gt; Deserialise(RecordedEvent eventData)</span>
+<span class="lineNum">      33 </span>            :                 {
+<span class="lineNum">      34 </span>            :                         JsonSerializerSettings jsonSerialiserSettings = GetSerialisationSettings();
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                         switch (eventData.EventType)
+<span class="lineNum">      37 </span>            :                         {
+<span class="lineNum">      38 </span>            :                                 case &quot;Client Connected&quot;:
+<span class="lineNum">      39 </span>            :                                         return JsonConvert.DeserializeObject&lt;SimpleEvent&lt;TAuthenticationToken&gt;&gt;(new UTF8Encoding().GetString(eventData.Data), jsonSerialiserSettings);
+<span class="lineNum">      40 </span>            :                                 default:
+<span class="lineNum">      41 </span>            :                                         return (IEvent&lt;TAuthenticationToken&gt;)JsonConvert.DeserializeObject(new UTF8Encoding().GetString(eventData.Data), Type.GetType(eventData.EventType));
+<span class="lineNum">      42 </span>            :                         }
+<span class="lineNum">      43 </span>            :                 }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      46 </span>            :                 /// Deserialise the provided &lt;paramref name=&quot;notification&quot;/&gt; into an &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      47 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      48 </span>            :                 /// &lt;param name=&quot;notification&quot;&gt;The &lt;see cref=&quot;ResolvedEvent&quot;/&gt; to Deserialise.&lt;/param&gt;
+<span class="lineNum">      49 </span><span class="lineCov">          1 :                 public IEvent&lt;TAuthenticationToken&gt; Deserialise(ResolvedEvent notification)</span>
+<span class="lineNum">      50 </span>            :                 {
+<span class="lineNum">      51 </span>            :                         return Deserialise(notification.Event);
+<span class="lineNum">      52 </span>            :                 }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      55 </span>            :                 /// Gets the &lt;see cref=&quot;JsonSerializerSettings&quot;/&gt; used while Deserialising.
+<span class="lineNum">      56 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      57 </span><span class="lineCov">          1 :                 public JsonSerializerSettings GetSerialisationSettings()</span>
+<span class="lineNum">      58 </span>            :                 {
+<span class="lineNum">      59 </span>            :                         return new JsonSerializerSettings
+<span class="lineNum">      60 </span>            :                         {
+<span class="lineNum">      61 </span>            :                                 Formatting = Formatting.None,
+<span class="lineNum">      62 </span>            :                                 MissingMemberHandling = MissingMemberHandling.Ignore,
+<span class="lineNum">      63 </span>            :                                 DateParseHandling = DateParseHandling.DateTimeOffset,
+<span class="lineNum">      64 </span>            :                                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+<span class="lineNum">      65 </span>            :                                 Converters = new List&lt;JsonConverter&gt; { new StringEnumConverter() },
+<span class="lineNum">      66 </span>            :                         };
+<span class="lineNum">      67 </span>            :                 }
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :                 #endregion
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                 #region Implementation of IEventBuilder
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      74 </span>            :                 /// Create an &lt;see cref=&quot;EventData&quot;&gt;framework event&lt;/see&gt; with the provided &lt;paramref name=&quot;eventData&quot;/&gt;.
+<span class="lineNum">      75 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      76 </span>            :                 /// &lt;param name=&quot;type&quot;&gt;The name of the &lt;see cref=&quot;Type&quot;/&gt; of the target object the serialised data is.&lt;/param&gt;
+<span class="lineNum">      77 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to add to the &lt;see cref=&quot;EventData&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      78 </span><span class="lineCov">          1 :                 public EventData CreateFrameworkEvent(string type, IEvent&lt;TAuthenticationToken&gt; eventData)</span>
+<span class="lineNum">      79 </span>            :                 {
+<span class="lineNum">      80 </span>            :                         JsonSerializerSettings jsonSerialiserSettings = GetSerialisationSettings();
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                         return new EventData
+<span class="lineNum">      83 </span>            :                         (
+<span class="lineNum">      84 </span>            :                                 Guid.NewGuid(),
+<span class="lineNum">      85 </span>            :                                 type,
+<span class="lineNum">      86 </span>            :                                 true,
+<span class="lineNum">      87 </span>            :                                 new UTF8Encoding().GetBytes(JsonConvert.SerializeObject(eventData, jsonSerialiserSettings)),
+<span class="lineNum">      88 </span>            :                                 new byte[0]
+<span class="lineNum">      89 </span>            :                         );
+<span class="lineNum">      90 </span>            :                 }
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      93 </span>            :                 /// Create an &lt;see cref=&quot;EventData&quot;&gt;framework event&lt;/see&gt; with the provided &lt;paramref name=&quot;eventData&quot;/&gt;.
+<span class="lineNum">      94 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      95 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to add to the &lt;see cref=&quot;EventData&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      96 </span><span class="lineCov">          1 :                 public EventData CreateFrameworkEvent(IEvent&lt;TAuthenticationToken&gt; eventData)</span>
+<span class="lineNum">      97 </span>            :                 {
+<span class="lineNum">      98 </span>            :                         JsonSerializerSettings jsonSerialiserSettings = GetSerialisationSettings();
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :                         return new EventData
+<span class="lineNum">     101 </span>            :                         (
+<span class="lineNum">     102 </span>            :                                 Guid.NewGuid(),
+<span class="lineNum">     103 </span>            :                                 eventData.GetType().AssemblyQualifiedName,
+<span class="lineNum">     104 </span>            :                                 true,
+<span class="lineNum">     105 </span>            :                                 new UTF8Encoding().GetBytes(JsonConvert.SerializeObject(eventData, jsonSerialiserSettings)),
+<span class="lineNum">     106 </span>            :                                 new byte[0]
+<span class="lineNum">     107 </span>            :                         );
+<span class="lineNum">     108 </span>            :                 }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     111 </span>            :                 /// Create an &lt;see cref=&quot;EventData&quot;&gt;framework event&lt;/see&gt; from the provided &lt;paramref name=&quot;eventDataBody&quot;/&gt;.
+<span class="lineNum">     112 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     113 </span>            :                 /// &lt;param name=&quot;eventDataBody&quot;&gt;A JSON string of serialised data.&lt;/param&gt;
+<span class="lineNum">     114 </span><span class="lineCov">          1 :                 public EventData CreateFrameworkEvent(string eventDataBody)</span>
+<span class="lineNum">     115 </span>            :                 {
+<span class="lineNum">     116 </span>            :                         return CreateFrameworkEvent
+<span class="lineNum">     117 </span>            :                         (
+<span class="lineNum">     118 </span>            :                                 new SimpleEvent&lt;TAuthenticationToken&gt; { Id = Guid.NewGuid(), Message = eventDataBody, TimeStamp = DateTimeOffset.Now, Version = 1 }
+<span class="lineNum">     119 </span>            :                         );
+<span class="lineNum">     120 </span>            :                 }
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     123 </span>            :                 /// Create an &lt;see cref=&quot;EventData&quot;&gt;framework event&lt;/see&gt; from the provided &lt;paramref name=&quot;eventDataBody&quot;/&gt;.
+<span class="lineNum">     124 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     125 </span>            :                 /// &lt;param name=&quot;type&quot;&gt;The name of the &lt;see cref=&quot;Type&quot;/&gt; of the target object the serialised data is.&lt;/param&gt;
+<span class="lineNum">     126 </span>            :                 /// &lt;param name=&quot;eventDataBody&quot;&gt;A JSON string of serialised data.&lt;/param&gt;
+<span class="lineNum">     127 </span><span class="lineCov">          1 :                 public EventData CreateFrameworkEvent(string type, string eventDataBody)</span>
+<span class="lineNum">     128 </span>            :                 {
+<span class="lineNum">     129 </span>            :                         return CreateFrameworkEvent
+<span class="lineNum">     130 </span>            :                         (
+<span class="lineNum">     131 </span>            :                                 type,
+<span class="lineNum">     132 </span>            :                                 new SimpleEvent&lt;TAuthenticationToken&gt; { Id = Guid.NewGuid(), Message = eventDataBody, TimeStamp = DateTimeOffset.Now, Version = 1 }
+<span class="lineNum">     133 </span>            :                         );
+<span class="lineNum">     134 </span>            :                 }
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     137 </span>            :                 /// Create an &lt;see cref=&quot;EventData&quot;/&gt; that notifies people a client has connected.
+<span class="lineNum">     138 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     139 </span>            :                 /// &lt;param name=&quot;clientName&quot;&gt;The name of the client that has connected.&lt;/param&gt;
+<span class="lineNum">     140 </span><span class="lineCov">          1 :                 public EventData CreateClientConnectedEvent(string clientName)</span>
+<span class="lineNum">     141 </span>            :                 {
+<span class="lineNum">     142 </span>            :                         return CreateFrameworkEvent
+<span class="lineNum">     143 </span>            :                         (
+<span class="lineNum">     144 </span>            :                                 &quot;Client Connected&quot;,
+<span class="lineNum">     145 </span>            :                                 string.Format(&quot;{0} has connected.&quot;, clientName)
+<span class="lineNum">     146 </span>            :                         );
+<span class="lineNum">     147 </span>            :                 }
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span>            :                 #endregion
+<span class="lineNum">     150 </span>            :         }
+<span class="lineNum">     151 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

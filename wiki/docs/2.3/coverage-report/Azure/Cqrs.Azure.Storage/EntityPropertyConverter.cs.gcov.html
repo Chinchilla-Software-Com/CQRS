@@ -1,0 +1,886 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.Storage/EntityPropertyConverter.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.Storage</a> - EntityPropertyConverter.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-09-29</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿// -----------------------------------------------------------------------------------------
+<span class="lineNum">       2 </span>            : // &lt;copyright file=&quot;EntityPropertyConverter.cs&quot; company=&quot;Microsoft&quot;&gt;
+<span class="lineNum">       3 </span>            : //    Copyright 2013 Microsoft Corporation
+<span class="lineNum">       4 </span>            : //
+<span class="lineNum">       5 </span>            : //    Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+<span class="lineNum">       6 </span>            : //    you may not use this file except in compliance with the License.
+<span class="lineNum">       7 </span>            : //    You may obtain a copy of the License at
+<span class="lineNum">       8 </span>            : //      http://www.apache.org/licenses/LICENSE-2.0
+<span class="lineNum">       9 </span>            : //
+<span class="lineNum">      10 </span>            : //    Unless required by applicable law or agreed to in writing, software
+<span class="lineNum">      11 </span>            : //    distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+<span class="lineNum">      12 </span>            : //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<span class="lineNum">      13 </span>            : //    See the License for the specific language governing permissions and
+<span class="lineNum">      14 </span>            : //    limitations under the License.
+<span class="lineNum">      15 </span>            : // &lt;/copyright&gt;
+<span class="lineNum">      16 </span>            : // -----------------------------------------------------------------------------------------
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : using System.Collections;
+<span class="lineNum">      19 </span>            : using System.Diagnostics;
+<span class="lineNum">      20 </span>            : using Newtonsoft.Json;
+<span class="lineNum">      21 </span>            : using Newtonsoft.Json.Converters;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : namespace Microsoft.WindowsAzure.Storage.Table
+<span class="lineNum">      24 </span>            : {
+<span class="lineNum">      25 </span>            :         using System;
+<span class="lineNum">      26 </span>            :         using System.Collections.Generic;
+<span class="lineNum">      27 </span>            :         using System.Globalization;
+<span class="lineNum">      28 </span>            :         using System.IO;
+<span class="lineNum">      29 </span>            :         using System.Linq;
+<span class="lineNum">      30 </span>            :         using System.Reflection;
+<span class="lineNum">      31 </span>            :         using System.Runtime.CompilerServices;
+<span class="lineNum">      32 </span>            :         using System.Runtime.Serialization;
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      35 </span>            :         /// EntityPropertyConverter class.
+<span class="lineNum">      36 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      37 </span>            :         public static class EntityPropertyConverter
+<span class="lineNum">      38 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      39 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      40 </span>            :                 /// The default &lt;see cref=&quot;JsonSerializerSettings&quot;/&gt; to use.
+<span class="lineNum">      41 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      42 </span>            :                 public static JsonSerializerSettings DefaultSettings { get; private set; }
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :                 static EntityPropertyConverter()
+<span class="lineNum">      45 </span>            :                 {
+<span class="lineNum">      46 </span>            :                         DefaultSettings = new JsonSerializerSettings
+<span class="lineNum">      47 </span>            :                         {
+<span class="lineNum">      48 </span>            :                                 Formatting = Formatting.None,
+<span class="lineNum">      49 </span>            :                                 MissingMemberHandling = MissingMemberHandling.Ignore,
+<span class="lineNum">      50 </span>            :                                 DateParseHandling = DateParseHandling.DateTimeOffset,
+<span class="lineNum">      51 </span>            :                                 DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind,
+<span class="lineNum">      52 </span>            :                                 Converters = new List&lt;JsonConverter&gt; { new StringEnumConverter() },
+<span class="lineNum">      53 </span>            :                                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
+<span class="lineNum">      54 </span>            :                                 DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
+<span class="lineNum">      55 </span>            :                                 FloatFormatHandling = FloatFormatHandling.DefaultValue,
+<span class="lineNum">      56 </span>            :                                 NullValueHandling = NullValueHandling.Include,
+<span class="lineNum">      57 </span>            :                                 PreserveReferencesHandling = PreserveReferencesHandling.All,
+<span class="lineNum">      58 </span>            :                                 ReferenceLoopHandling = ReferenceLoopHandling.Error,
+<span class="lineNum">      59 </span>            :                                 StringEscapeHandling = StringEscapeHandling.EscapeNonAscii,
+<span class="lineNum">      60 </span>            :                                 TypeNameHandling = TypeNameHandling.All
+<span class="lineNum">      61 </span>            :                         };
+<span class="lineNum">      62 </span>            :                 }
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      65 </span>            :                 /// The property delimiter.
+<span class="lineNum">      66 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      67 </span>            :                 public const string DefaultPropertyNameDelimiter = &quot;_&quot;;
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      70 </span>            :                 /// Traverses object graph, flattens and converts all nested (and not nested) properties to EntityProperties, stores them in the property dictionary.
+<span class="lineNum">      71 </span>            :                 /// The keys are constructed by appending the names of the properties visited during pre-order depth first traversal from root to each end node property delimited by '_'.
+<span class="lineNum">      72 </span>            :                 /// Allows complex objects to be stored in persistent storage systems or passed between web services in a generic way.
+<span class="lineNum">      73 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      74 </span>            :                 /// &lt;param name=&quot;root&quot;&gt;The object to flatten and convert.&lt;/param&gt;
+<span class="lineNum">      75 </span>            :                 /// &lt;param name=&quot;operationContext&quot;&gt;An &lt;see cref=&quot;OperationContext&quot;/&gt; object that represents the context for the current operation.&lt;/param&gt;
+<span class="lineNum">      76 </span>            :                 /// &lt;returns&gt;The result containing &lt;see cref=&quot;IDictionary{TKey,TValue}&quot;/&gt; of &lt;see cref=&quot;EntityProperty&quot;/&gt; objects for all properties of the flattened root object.&lt;/returns&gt;
+<span class="lineNum">      77 </span><span class="lineCov">          1 :                 public static Dictionary&lt;string, EntityProperty&gt; Flatten(object root, OperationContext operationContext)</span>
+<span class="lineNum">      78 </span>            :                 {
+<span class="lineNum">      79 </span>            :                         return Flatten(root, new EntityPropertyConverterOptions { PropertyNameDelimiter = DefaultPropertyNameDelimiter }, operationContext);
+<span class="lineNum">      80 </span>            :                 }
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      83 </span>            :                 /// Traverses object graph, flattens and converts all nested (and not nested) properties to EntityProperties, stores them in the property dictionary.
+<span class="lineNum">      84 </span>            :                 /// The keys are constructed by appending the names of the properties visited during pre-order depth first traversal from root to each end node property delimited by '_'.
+<span class="lineNum">      85 </span>            :                 /// Allows complex objects to be stored in persistent storage systems or passed between web services in a generic way.
+<span class="lineNum">      86 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      87 </span>            :                 /// &lt;param name=&quot;root&quot;&gt;The object to flatten and convert.&lt;/param&gt;
+<span class="lineNum">      88 </span>            :                 /// &lt;param name=&quot;entityPropertyConverterOptions&quot;&gt;A &lt;see cref=&quot;EntityPropertyConverterOptions&quot;/&gt; object that specifies options for the entity property conversion.&lt;/param&gt;
+<span class="lineNum">      89 </span>            :                 /// &lt;param name=&quot;operationContext&quot;&gt;An &lt;see cref=&quot;OperationContext&quot;/&gt; object that represents the context for the current operation.&lt;/param&gt;
+<span class="lineNum">      90 </span>            :                 /// &lt;returns&gt;The result containing &lt;see cref=&quot;IDictionary{TKey,TValue}&quot;/&gt; of &lt;see cref=&quot;EntityProperty&quot;/&gt; objects for all properties of the flattened root object.&lt;/returns&gt;
+<span class="lineNum">      91 </span><span class="lineCov">          1 :                 public static Dictionary&lt;string, EntityProperty&gt; Flatten(object root, EntityPropertyConverterOptions entityPropertyConverterOptions, OperationContext operationContext)</span>
+<span class="lineNum">      92 </span>            :                 {
+<span class="lineNum">      93 </span>            :                         if (root == null)
+<span class="lineNum">      94 </span>            :                         {
+<span class="lineNum">      95 </span>            :                                 return null;
+<span class="lineNum">      96 </span>            :                         }
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                         Dictionary&lt;string, EntityProperty&gt; propertyDictionary = new Dictionary&lt;string, EntityProperty&gt;();
+<span class="lineNum">      99 </span>            :                         HashSet&lt;object&gt; antecedents = new HashSet&lt;object&gt;(new ObjectReferenceEqualityComparer());
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            :                         return Flatten(propertyDictionary, root, string.Empty, antecedents, entityPropertyConverterOptions, operationContext) ? propertyDictionary : null;
+<span class="lineNum">     102 </span>            :                 }
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     105 </span>            :                 /// Reconstructs the complete object graph of type T using the flattened entity property dictionary and returns reconstructed object.
+<span class="lineNum">     106 </span>            :                 /// The property dictionary may contain only basic properties, only nested properties or a mix of both types.
+<span class="lineNum">     107 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     108 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The type of the object to populate&lt;/typeparam&gt;
+<span class="lineNum">     109 </span>            :                 /// &lt;param name=&quot;flattenedEntityProperties&quot;&gt;The flattened entity property dictionary.&lt;/param&gt;
+<span class="lineNum">     110 </span>            :                 /// &lt;param name=&quot;operationContext&quot;&gt;An &lt;see cref=&quot;OperationContext&quot;/&gt; object that represents the context for the current operation.&lt;/param&gt;
+<span class="lineNum">     111 </span>            :                 /// &lt;returns&gt;The result containing the reconstructed object with its full object hierarchy.&lt;/returns&gt;
+<span class="lineNum">     112 </span><span class="lineCov">          1 :                 public static T ConvertBack&lt;T&gt;(IDictionary&lt;string, EntityProperty&gt; flattenedEntityProperties, OperationContext operationContext)</span>
+<span class="lineNum">     113 </span>            :                 {
+<span class="lineNum">     114 </span>            :                         return ConvertBack&lt;T&gt;(flattenedEntityProperties, new EntityPropertyConverterOptions { PropertyNameDelimiter = DefaultPropertyNameDelimiter }, operationContext);
+<span class="lineNum">     115 </span>            :                 }
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     118 </span>            :                 /// Reconstructs the complete object graph of type T using the flattened entity property dictionary and returns reconstructed object.
+<span class="lineNum">     119 </span>            :                 /// The property dictionary may contain only basic properties, only nested properties or a mix of both types.
+<span class="lineNum">     120 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     121 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The type of the object to populate&lt;/typeparam&gt;
+<span class="lineNum">     122 </span>            :                 /// &lt;param name=&quot;flattenedEntityProperties&quot;&gt;The flattened entity property dictionary.&lt;/param&gt;
+<span class="lineNum">     123 </span>            :                 /// &lt;param name=&quot;entityPropertyConverterOptions&quot;&gt;A &lt;see cref=&quot;EntityPropertyConverterOptions&quot;/&gt; object that specifies options for the entity property conversion.&lt;/param&gt;
+<span class="lineNum">     124 </span>            :                 /// &lt;param name=&quot;operationContext&quot;&gt;An &lt;see cref=&quot;OperationContext&quot;/&gt; object that represents the context for the current operation.&lt;/param&gt;
+<span class="lineNum">     125 </span>            :                 /// &lt;returns&gt;The result containing the reconstructed object with its full object hierarchy.&lt;/returns&gt;
+<span class="lineNum">     126 </span><span class="lineCov">          1 :                 public static T ConvertBack&lt;T&gt;(</span>
+<span class="lineNum">     127 </span>            :                         IDictionary&lt;string, EntityProperty&gt; flattenedEntityProperties,
+<span class="lineNum">     128 </span>            :                         EntityPropertyConverterOptions entityPropertyConverterOptions,
+<span class="lineNum">     129 </span>            :                         OperationContext operationContext)
+<span class="lineNum">     130 </span>            :                 {
+<span class="lineNum">     131 </span>            :                         if (flattenedEntityProperties == null)
+<span class="lineNum">     132 </span>            :                         {
+<span class="lineNum">     133 </span>            :                                 return default(T);
+<span class="lineNum">     134 </span>            :                         }
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :                         T root = (T)Activator.CreateInstance(typeof(T));
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span>            :                         return flattenedEntityProperties.Aggregate(root, (current, kvp) =&gt; (T)SetProperty(current, kvp.Key, kvp.Value.PropertyAsObject, entityPropertyConverterOptions, operationContext));
+<span class="lineNum">     139 </span>            :                 }
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     142 </span>            :                 /// Traverses object graph, flattens and converts all nested (and not nested) properties to EntityProperties, stores them in the property dictionary.
+<span class="lineNum">     143 </span>            :                 /// The keys are constructed by appending the names of the properties visited during pre-order depth first traversal from root to each end node property delimited by '.'.
+<span class="lineNum">     144 </span>            :                 /// Allows complex objects to be stored in persistent storage systems or passed between web services in a generic way.
+<span class="lineNum">     145 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     146 </span>            :                 /// &lt;param name=&quot;propertyDictionary&quot;&gt;The property dictionary.&lt;/param&gt;
+<span class="lineNum">     147 </span>            :                 /// &lt;param name=&quot;current&quot;&gt;The current object.&lt;/param&gt;
+<span class="lineNum">     148 </span>            :                 /// &lt;param name=&quot;objectPath&quot;&gt;The object path.&lt;/param&gt;
+<span class="lineNum">     149 </span>            :                 /// &lt;param name=&quot;antecedents&quot;&gt;The antecedents of current object, used to detect circular references in object graph.&lt;/param&gt;
+<span class="lineNum">     150 </span>            :                 /// &lt;param name=&quot;entityPropertyConverterOptions&quot;&gt;A &lt;see cref=&quot;EntityPropertyConverterOptions&quot;/&gt; object that specifies options for the entity property conversion.&lt;/param&gt;
+<span class="lineNum">     151 </span>            :                 /// &lt;param name=&quot;operationContext&quot;&gt;An &lt;see cref=&quot;OperationContext&quot;/&gt; object that represents the context for the current operation.&lt;/param&gt;
+<span class="lineNum">     152 </span>            :                 /// &lt;returns&gt;The &lt;see cref=&quot;bool&quot;/&gt; to indicate success of conversion to flattened EntityPropertyDictionary.&lt;/returns&gt;
+<span class="lineNum">     153 </span>            :                 private static bool Flatten(
+<span class="lineNum">     154 </span>            :                         Dictionary&lt;string, EntityProperty&gt; propertyDictionary,
+<span class="lineNum">     155 </span>            :                         object current,
+<span class="lineNum">     156 </span>            :                         string objectPath,
+<span class="lineNum">     157 </span>            :                         HashSet&lt;object&gt; antecedents,
+<span class="lineNum">     158 </span>            :                         EntityPropertyConverterOptions entityPropertyConverterOptions,
+<span class="lineNum">     159 </span>            :                         OperationContext operationContext)
+<span class="lineNum">     160 </span>            :                 {
+<span class="lineNum">     161 </span>            :                         if (current == null)
+<span class="lineNum">     162 </span>            :                         {
+<span class="lineNum">     163 </span>            :                                 return true;
+<span class="lineNum">     164 </span>            :                         }
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :                         Type type;
+<span class="lineNum">     167 </span>            :                         do
+<span class="lineNum">     168 </span>            :                         {
+<span class="lineNum">     169 </span>            :                                 type = current.GetType();
+<span class="lineNum">     170 </span>            :                                 EntityProperty entityProperty = CreateEntityPropertyWithType(current, type);
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span>            :                                 if (entityProperty != null)
+<span class="lineNum">     173 </span>            :                                 {
+<span class="lineNum">     174 </span>            :                                         propertyDictionary.Add(objectPath, entityProperty);
+<span class="lineNum">     175 </span>            :                                         return true;
+<span class="lineNum">     176 </span>            :                                 }
+<span class="lineNum">     177 </span>            :                                 // Better support for IEnumerable
+<span class="lineNum">     178 </span>            :                                 if (current is IEnumerable &amp;&amp; !(current is string))
+<span class="lineNum">     179 </span>            :                                         current = string.Format(&quot;_$¿={0}&quot;, JsonConvert.SerializeObject(current, GetSerialisationSettings()));
+<span class="lineNum">     180 </span>            :                                 else
+<span class="lineNum">     181 </span>            :                                         break;
+<span class="lineNum">     182 </span>            :                         } while (true);
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span>            :                         IEnumerable&lt;PropertyInfo&gt; propertyInfos = type.GetProperties();
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span>            :                         if (!propertyInfos.Any())
+<span class="lineNum">     187 </span>            :                         {
+<span class="lineNum">     188 </span>            :                                 throw new SerializationException(string.Format(CultureInfo.InvariantCulture, SR.UnsupportedPropertyTypeForEntityPropertyConversion, type, objectPath));
+<span class="lineNum">     189 </span>            :                         }
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span>            :                         bool isAntecedent = false;
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span>            :                         if (!type.IsValueType)
+<span class="lineNum">     194 </span>            :                         {
+<span class="lineNum">     195 </span>            :                                 if (antecedents.Contains(current))
+<span class="lineNum">     196 </span>            :                                 {
+<span class="lineNum">     197 </span>            :                                         throw new SerializationException(string.Format(CultureInfo.InvariantCulture, SR.RecursiveReferencedObject, objectPath, type));
+<span class="lineNum">     198 </span>            :                                 }
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span>            :                                 antecedents.Add(current);
+<span class="lineNum">     201 </span>            :                                 isAntecedent = true;
+<span class="lineNum">     202 </span>            :                         }
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :                         string propertyNameDelimiter = entityPropertyConverterOptions != null ? entityPropertyConverterOptions.PropertyNameDelimiter : DefaultPropertyNameDelimiter;
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span>            :                         bool success = propertyInfos
+<span class="lineNum">     207 </span>            :                                 .Where(propertyInfo =&gt; !ShouldSkip(propertyInfo, objectPath, operationContext))
+<span class="lineNum">     208 </span>            :                                 .All(propertyInfo =&gt;
+<span class="lineNum">     209 </span>            :                                 {
+<span class="lineNum">     210 </span>            :                                         if (propertyInfo.Name.Contains(propertyNameDelimiter))
+<span class="lineNum">     211 </span>            :                                         {
+<span class="lineNum">     212 </span>            :                                                 throw new SerializationException(string.Format(CultureInfo.InvariantCulture, SR.PropertyDelimiterExistsInPropertyName, propertyNameDelimiter, propertyInfo.Name, objectPath));
+<span class="lineNum">     213 </span>            :                                         }
+<span class="lineNum">     214 </span>            : 
+<span class="lineNum">     215 </span>            :                                         object value;
+<span class="lineNum">     216 </span>            :                                         try
+<span class="lineNum">     217 </span>            :                                         {
+<span class="lineNum">     218 </span>            :                                                 value = propertyInfo.GetValue(current, index: null);
+<span class="lineNum">     219 </span>            :                                         }
+<span class="lineNum">     220 </span>            :                                         catch (Exception)
+<span class="lineNum">     221 </span>            :                                         {
+<span class="lineNum">     222 </span>            :                                                 // Support for unsupported data types
+<span class="lineNum">     223 </span>            :                                                 value = string.Format(&quot;_$¿={0}&quot;, JsonConvert.SerializeObject(current, GetSerialisationSettings()));
+<span class="lineNum">     224 </span>            :                                         }
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span>            :                                         return Flatten(
+<span class="lineNum">     227 </span>            :                                                 propertyDictionary,
+<span class="lineNum">     228 </span>            :                                                 value,
+<span class="lineNum">     229 </span>            :                                                 string.IsNullOrWhiteSpace(objectPath) ? propertyInfo.Name : objectPath + propertyNameDelimiter + propertyInfo.Name,
+<span class="lineNum">     230 </span>            :                                                 antecedents,
+<span class="lineNum">     231 </span>            :                                                 entityPropertyConverterOptions,
+<span class="lineNum">     232 </span>            :                                                 operationContext);
+<span class="lineNum">     233 </span>            :                                 });
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span>            :                         if (isAntecedent)
+<span class="lineNum">     236 </span>            :                         {
+<span class="lineNum">     237 </span>            :                                 antecedents.Remove(current);
+<span class="lineNum">     238 </span>            :                         }
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :                         return success;
+<span class="lineNum">     241 </span>            :                 }
+<span class="lineNum">     242 </span>            : 
+<span class="lineNum">     243 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     244 </span>            :                 /// Returns &lt;see cref=&quot;DefaultSettings&quot;/&gt;
+<span class="lineNum">     245 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     246 </span>            :                 /// &lt;returns&gt;&lt;see cref=&quot;DefaultSettings&quot;/&gt;&lt;/returns&gt;
+<span class="lineNum">     247 </span>            :                 static JsonSerializerSettings GetSerialisationSettings()
+<span class="lineNum">     248 </span>            :                 {
+<span class="lineNum">     249 </span>            :                         return DefaultSettings;
+<span class="lineNum">     250 </span>            :                 }
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span>            :                 /// &lt;summary&gt;Creates entity property with given type.&lt;/summary&gt;
+<span class="lineNum">     253 </span>            :                 /// &lt;param name=&quot;value&quot;&gt;The value.&lt;/param&gt;
+<span class="lineNum">     254 </span>            :                 /// &lt;param name=&quot;type&quot;&gt;The type.&lt;/param&gt;
+<span class="lineNum">     255 </span>            :                 /// &lt;returns&gt;The &lt;see cref=&quot;EntityProperty&quot;/&gt;.&lt;/returns&gt;
+<span class="lineNum">     256 </span>            :                 private static EntityProperty CreateEntityPropertyWithType(object value, Type type)
+<span class="lineNum">     257 </span>            :                 {
+<span class="lineNum">     258 </span>            :                         if (type == typeof(string))
+<span class="lineNum">     259 </span>            :                         {
+<span class="lineNum">     260 </span>            :                                 return new EntityProperty((string)value);
+<span class="lineNum">     261 </span>            :                         }
+<span class="lineNum">     262 </span>            :                         else if (type == typeof(byte[]))
+<span class="lineNum">     263 </span>            :                         {
+<span class="lineNum">     264 </span>            :                                 return new EntityProperty((byte[])value);
+<span class="lineNum">     265 </span>            :                         }
+<span class="lineNum">     266 </span>            :                         else if (type == typeof(bool))
+<span class="lineNum">     267 </span>            :                         {
+<span class="lineNum">     268 </span>            :                                 return new EntityProperty((bool)value);
+<span class="lineNum">     269 </span>            :                         }
+<span class="lineNum">     270 </span>            :                         else if (type == typeof(bool?))
+<span class="lineNum">     271 </span>            :                         {
+<span class="lineNum">     272 </span>            :                                 return new EntityProperty((bool?)value);
+<span class="lineNum">     273 </span>            :                         }
+<span class="lineNum">     274 </span>            :                         else if (type == typeof(DateTime))
+<span class="lineNum">     275 </span>            :                         {
+<span class="lineNum">     276 </span>            :                                 return new EntityProperty((DateTime)value);
+<span class="lineNum">     277 </span>            :                         }
+<span class="lineNum">     278 </span>            :                         else if (type == typeof(DateTime?))
+<span class="lineNum">     279 </span>            :                         {
+<span class="lineNum">     280 </span>            :                                 return new EntityProperty((DateTime?)value);
+<span class="lineNum">     281 </span>            :                         }
+<span class="lineNum">     282 </span>            :                         else if (type == typeof(DateTimeOffset))
+<span class="lineNum">     283 </span>            :                         {
+<span class="lineNum">     284 </span>            :                                 return new EntityProperty((DateTimeOffset)value);
+<span class="lineNum">     285 </span>            :                         }
+<span class="lineNum">     286 </span>            :                         else if (type == typeof(DateTimeOffset?))
+<span class="lineNum">     287 </span>            :                         {
+<span class="lineNum">     288 </span>            :                                 return new EntityProperty((DateTimeOffset?)value);
+<span class="lineNum">     289 </span>            :                         }
+<span class="lineNum">     290 </span>            :                         else if (type == typeof(double))
+<span class="lineNum">     291 </span>            :                         {
+<span class="lineNum">     292 </span>            :                                 return new EntityProperty((double)value);
+<span class="lineNum">     293 </span>            :                         }
+<span class="lineNum">     294 </span>            :                         else if (type == typeof(double?))
+<span class="lineNum">     295 </span>            :                         {
+<span class="lineNum">     296 </span>            :                                 return new EntityProperty((double?)value);
+<span class="lineNum">     297 </span>            :                         }
+<span class="lineNum">     298 </span>            :                         else if (type == typeof(Guid?))
+<span class="lineNum">     299 </span>            :                         {
+<span class="lineNum">     300 </span>            :                                 return new EntityProperty((Guid?)value);
+<span class="lineNum">     301 </span>            :                         }
+<span class="lineNum">     302 </span>            :                         else if (type == typeof(Guid))
+<span class="lineNum">     303 </span>            :                         {
+<span class="lineNum">     304 </span>            :                                 return new EntityProperty((Guid)value);
+<span class="lineNum">     305 </span>            :                         }
+<span class="lineNum">     306 </span>            :                         else if (type == typeof(int))
+<span class="lineNum">     307 </span>            :                         {
+<span class="lineNum">     308 </span>            :                                 return new EntityProperty((int)value);
+<span class="lineNum">     309 </span>            :                         }
+<span class="lineNum">     310 </span>            :                         else if (type == typeof(int?))
+<span class="lineNum">     311 </span>            :                         {
+<span class="lineNum">     312 </span>            :                                 return new EntityProperty((int?)value);
+<span class="lineNum">     313 </span>            :                         }
+<span class="lineNum">     314 </span>            :                         else if (type == typeof(uint))
+<span class="lineNum">     315 </span>            :                         {
+<span class="lineNum">     316 </span>            :                                 return new EntityProperty(unchecked((int)Convert.ToUInt32(value, CultureInfo.InvariantCulture)));
+<span class="lineNum">     317 </span>            :                         }
+<span class="lineNum">     318 </span>            :                         else if (type == typeof(uint?))
+<span class="lineNum">     319 </span>            :                         {
+<span class="lineNum">     320 </span>            :                                 return new EntityProperty(unchecked((int?)Convert.ToUInt32(value, CultureInfo.InvariantCulture)));
+<span class="lineNum">     321 </span>            :                         }
+<span class="lineNum">     322 </span>            :                         else if (type == typeof(long))
+<span class="lineNum">     323 </span>            :                         {
+<span class="lineNum">     324 </span>            :                                 return new EntityProperty((long)value);
+<span class="lineNum">     325 </span>            :                         }
+<span class="lineNum">     326 </span>            :                         else if (type == typeof(long?))
+<span class="lineNum">     327 </span>            :                         {
+<span class="lineNum">     328 </span>            :                                 return new EntityProperty((long?)value);
+<span class="lineNum">     329 </span>            :                         }
+<span class="lineNum">     330 </span>            :                         else if (type == typeof(ulong))
+<span class="lineNum">     331 </span>            :                         {
+<span class="lineNum">     332 </span>            :                                 return new EntityProperty(unchecked((long)Convert.ToUInt64(value, CultureInfo.InvariantCulture)));
+<span class="lineNum">     333 </span>            :                         }
+<span class="lineNum">     334 </span>            :                         else if (type == typeof(ulong?))
+<span class="lineNum">     335 </span>            :                         {
+<span class="lineNum">     336 </span>            :                                 return new EntityProperty(unchecked((long?)Convert.ToUInt64(value, CultureInfo.InvariantCulture)));
+<span class="lineNum">     337 </span>            :                         }
+<span class="lineNum">     338 </span>            :                         else if (type.IsEnum)
+<span class="lineNum">     339 </span>            :                         {
+<span class="lineNum">     340 </span>            :                                 return new EntityProperty(value.ToString());
+<span class="lineNum">     341 </span>            :                         }
+<span class="lineNum">     342 </span>            :                         else if (type == typeof(TimeSpan))
+<span class="lineNum">     343 </span>            :                         {
+<span class="lineNum">     344 </span>            :                                 return new EntityProperty(value.ToString());
+<span class="lineNum">     345 </span>            :                         }
+<span class="lineNum">     346 </span>            :                         else if (type == typeof(TimeSpan?))
+<span class="lineNum">     347 </span>            :                         {
+<span class="lineNum">     348 </span>            :                                 return new EntityProperty(value != null ? value.ToString() : null);
+<span class="lineNum">     349 </span>            :                         }
+<span class="lineNum">     350 </span>            :                         else
+<span class="lineNum">     351 </span>            :                         {
+<span class="lineNum">     352 </span>            :                                 return null;
+<span class="lineNum">     353 </span>            :                         }
+<span class="lineNum">     354 </span>            :                 }
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span>            :                 /// &lt;summary&gt;Sets the property given with the property path on the passed in object.&lt;/summary&gt;
+<span class="lineNum">     357 </span>            :                 /// &lt;param name=&quot;root&quot;&gt;The root object.&lt;/param&gt;
+<span class="lineNum">     358 </span>            :                 /// &lt;param name=&quot;propertyPath&quot;&gt;The full property path formed by the name of properties from root object to the target property(included), appended by '.'.&lt;/param&gt;
+<span class="lineNum">     359 </span>            :                 /// &lt;param name=&quot;propertyValue&quot;&gt;The property value.&lt;/param&gt;
+<span class="lineNum">     360 </span>            :                 /// &lt;param name=&quot;entityPropertyConverterOptions&quot;&gt;A &lt;see cref=&quot;EntityPropertyConverterOptions&quot;/&gt; object that specifies options for the entity property conversion.&lt;/param&gt;
+<span class="lineNum">     361 </span>            :                 /// &lt;param name=&quot;operationContext&quot;&gt;An &lt;see cref=&quot;OperationContext&quot;/&gt; object that represents the context for the current operation.&lt;/param&gt;
+<span class="lineNum">     362 </span>            :                 /// &lt;returns&gt;The updated &lt;see cref=&quot;object&quot;/&gt;.&lt;/returns&gt;
+<span class="lineNum">     363 </span>            :                 private static object SetProperty(
+<span class="lineNum">     364 </span>            :                         object root,
+<span class="lineNum">     365 </span>            :                         string propertyPath,
+<span class="lineNum">     366 </span>            :                         object propertyValue,
+<span class="lineNum">     367 </span>            :                         EntityPropertyConverterOptions entityPropertyConverterOptions,
+<span class="lineNum">     368 </span>            :                         OperationContext operationContext)
+<span class="lineNum">     369 </span>            :                 {
+<span class="lineNum">     370 </span>            :                         if (root == null)
+<span class="lineNum">     371 </span>            :                         {
+<span class="lineNum">     372 </span>            :                                 throw new ArgumentNullException(&quot;root&quot;);
+<span class="lineNum">     373 </span>            :                         }
+<span class="lineNum">     374 </span>            : 
+<span class="lineNum">     375 </span>            :                         if (propertyPath == null)
+<span class="lineNum">     376 </span>            :                         {
+<span class="lineNum">     377 </span>            :                                 throw new ArgumentNullException(&quot;propertyPath&quot;);
+<span class="lineNum">     378 </span>            :                         }
+<span class="lineNum">     379 </span>            : 
+<span class="lineNum">     380 </span>            :                         try
+<span class="lineNum">     381 </span>            :                         {
+<span class="lineNum">     382 </span>            :                                 string propertyNameDelimiter = entityPropertyConverterOptions != null ? entityPropertyConverterOptions.PropertyNameDelimiter : DefaultPropertyNameDelimiter;
+<span class="lineNum">     383 </span>            : 
+<span class="lineNum">     384 </span>            :                                 Stack&lt;Tuple&lt;object, object, PropertyInfo&gt;&gt; valueTypePropertyHierarchy = new Stack&lt;Tuple&lt;object, object, PropertyInfo&gt;&gt;();
+<span class="lineNum">     385 </span>            :                                 string[] properties = propertyPath.Split(new[] { propertyNameDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+<span class="lineNum">     386 </span>            : 
+<span class="lineNum">     387 </span>            :                                 object parentProperty = root;
+<span class="lineNum">     388 </span>            :                                 bool valueTypeDetected = false;
+<span class="lineNum">     389 </span>            : 
+<span class="lineNum">     390 </span>            :                                 for (int i = 0; i &lt; properties.Length - 1; i++)
+<span class="lineNum">     391 </span>            :                                 {
+<span class="lineNum">     392 </span>            :                                         PropertyInfo propertyToGet = parentProperty.GetType().GetProperty(properties[i]);
+<span class="lineNum">     393 </span>            :                                         object temp = propertyToGet.GetValue(parentProperty, null);
+<span class="lineNum">     394 </span>            :                                         Type type = propertyToGet.PropertyType;
+<span class="lineNum">     395 </span>            : 
+<span class="lineNum">     396 </span>            :                                         if (temp == null)
+<span class="lineNum">     397 </span>            :                                         {
+<span class="lineNum">     398 </span>            :                                                 temp = Activator.CreateInstance(type);
+<span class="lineNum">     399 </span>            :                                                 propertyToGet.SetValue(parentProperty, ChangeType(temp, propertyToGet.PropertyType), index: null);
+<span class="lineNum">     400 </span>            :                                         }
+<span class="lineNum">     401 </span>            : 
+<span class="lineNum">     402 </span>            :                                         if (valueTypeDetected || type.IsValueType)
+<span class="lineNum">     403 </span>            :                                         {
+<span class="lineNum">     404 </span>            :                                                 valueTypeDetected = true;
+<span class="lineNum">     405 </span>            :                                                 valueTypePropertyHierarchy.Push(new Tuple&lt;object, object, PropertyInfo&gt;(temp, parentProperty, propertyToGet));
+<span class="lineNum">     406 </span>            :                                         }
+<span class="lineNum">     407 </span>            : 
+<span class="lineNum">     408 </span>            :                                         parentProperty = temp;
+<span class="lineNum">     409 </span>            :                                 }
+<span class="lineNum">     410 </span>            : 
+<span class="lineNum">     411 </span>            :                                 PropertyInfo propertyToSet = parentProperty.GetType().GetProperty(properties.Last());
+<span class="lineNum">     412 </span>            : 
+<span class="lineNum">     413 </span>            :                                 string stringValue = propertyValue as string;
+<span class="lineNum">     414 </span>            :                                 // Support for unsupported data types, but only if the target type isn't a string... if the target type is a string, then this isn't unsupported data-type-ing
+<span class="lineNum">     415 </span>            :                                 if (stringValue != null &amp;&amp; propertyToSet.PropertyType != typeof(string) &amp;&amp; stringValue.StartsWith(&quot;_$¿=&quot;))
+<span class="lineNum">     416 </span>            :                                         propertyToSet.SetValue(parentProperty, Deserialise(stringValue.Substring(4), propertyToSet.PropertyType), index: null);
+<span class="lineNum">     417 </span>            :                                 else
+<span class="lineNum">     418 </span>            :                                         propertyToSet.SetValue(parentProperty, ChangeType(propertyValue, propertyToSet.PropertyType), index: null);
+<span class="lineNum">     419 </span>            : 
+<span class="lineNum">     420 </span>            :                                 object termValue = parentProperty;
+<span class="lineNum">     421 </span>            :                                 while (valueTypePropertyHierarchy.Count != 0)
+<span class="lineNum">     422 </span>            :                                 {
+<span class="lineNum">     423 </span>            :                                         Tuple&lt;object, object, PropertyInfo&gt; propertyTuple = valueTypePropertyHierarchy.Pop();
+<span class="lineNum">     424 </span>            :                                         propertyTuple.Item3.SetValue(propertyTuple.Item2, ChangeType(termValue, propertyTuple.Item3.PropertyType), index: null);
+<span class="lineNum">     425 </span>            :                                         termValue = propertyTuple.Item2;
+<span class="lineNum">     426 </span>            :                                 }
+<span class="lineNum">     427 </span>            : 
+<span class="lineNum">     428 </span>            :                                 return root;
+<span class="lineNum">     429 </span>            :                         }
+<span class="lineNum">     430 </span>            :                         catch (Exception ex)
+<span class="lineNum">     431 </span>            :                         {
+<span class="lineNum">     432 </span>            :                                 Trace.TraceError(SR.TraceSetPropertyError, propertyPath, propertyValue, ex.Message);
+<span class="lineNum">     433 </span>            :                                 throw;
+<span class="lineNum">     434 </span>            :                         }
+<span class="lineNum">     435 </span>            :                 }
+<span class="lineNum">     436 </span>            : 
+<span class="lineNum">     437 </span>            :                 static object Deserialise(string json, Type type)
+<span class="lineNum">     438 </span>            :                 {
+<span class="lineNum">     439 </span>            :                         using (var stringReader = new StringReader(json))
+<span class="lineNum">     440 </span>            :                         using (var jsonTextReader = new JsonTextReader(stringReader))
+<span class="lineNum">     441 </span>            :                                 return GetSerialiser().Deserialize(jsonTextReader, type);
+<span class="lineNum">     442 </span>            :                 }
+<span class="lineNum">     443 </span>            : 
+<span class="lineNum">     444 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     445 </span>            :                 /// Creates a new &lt;see cref=&quot;JsonSerializer&quot;/&gt; using the settings from &lt;see cref=&quot;GetSerialisationSettings&quot;/&gt;.
+<span class="lineNum">     446 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     447 </span>            :                 /// &lt;returns&gt;A new instance of &lt;see cref=&quot;JsonSerializer&quot;/&gt;.&lt;/returns&gt;
+<span class="lineNum">     448 </span>            :                 static JsonSerializer GetSerialiser()
+<span class="lineNum">     449 </span>            :                 {
+<span class="lineNum">     450 </span>            :                         JsonSerializerSettings settings = GetSerialisationSettings();
+<span class="lineNum">     451 </span>            :                         return JsonSerializer.Create(settings);
+<span class="lineNum">     452 </span>            :                 }
+<span class="lineNum">     453 </span>            : 
+<span class="lineNum">     454 </span>            :                 /// &lt;summary&gt;Creates an object of specified propertyType from propertyValue.&lt;/summary&gt;
+<span class="lineNum">     455 </span>            :                 /// &lt;param name=&quot;propertyValue&quot;&gt;The property value.&lt;/param&gt;
+<span class="lineNum">     456 </span>            :                 /// &lt;param name=&quot;propertyType&quot;&gt;The property type.&lt;/param&gt;
+<span class="lineNum">     457 </span>            :                 /// &lt;returns&gt;The &lt;see cref=&quot;object&quot;/&gt;.&lt;/returns&gt;
+<span class="lineNum">     458 </span>            :                 private static object ChangeType(object propertyValue, Type propertyType)
+<span class="lineNum">     459 </span>            :                 {
+<span class="lineNum">     460 </span>            :                         Type underlyingType = Nullable.GetUnderlyingType(propertyType);
+<span class="lineNum">     461 </span>            :                         Type type = underlyingType ?? propertyType;
+<span class="lineNum">     462 </span>            : 
+<span class="lineNum">     463 </span>            :                         if (type.IsEnum)
+<span class="lineNum">     464 </span>            :                         {
+<span class="lineNum">     465 </span>            :                                 return Enum.Parse(type, propertyValue.ToString());
+<span class="lineNum">     466 </span>            :                         }
+<span class="lineNum">     467 </span>            : 
+<span class="lineNum">     468 </span>            :                         if (type == typeof(DateTimeOffset))
+<span class="lineNum">     469 </span>            :                         {
+<span class="lineNum">     470 </span>            :                                 return new DateTimeOffset((DateTime)propertyValue);
+<span class="lineNum">     471 </span>            :                         }
+<span class="lineNum">     472 </span>            : 
+<span class="lineNum">     473 </span>            :                         if (type == typeof(TimeSpan))
+<span class="lineNum">     474 </span>            :                         {
+<span class="lineNum">     475 </span>            :                                 return TimeSpan.Parse(propertyValue.ToString(), CultureInfo.InvariantCulture);
+<span class="lineNum">     476 </span>            :                         }
+<span class="lineNum">     477 </span>            : 
+<span class="lineNum">     478 </span>            :                         if (type == typeof(uint))
+<span class="lineNum">     479 </span>            :                         {
+<span class="lineNum">     480 </span>            :                                 return unchecked((uint)(int)propertyValue);
+<span class="lineNum">     481 </span>            :                         }
+<span class="lineNum">     482 </span>            : 
+<span class="lineNum">     483 </span>            :                         if (type == typeof(ulong))
+<span class="lineNum">     484 </span>            :                         {
+<span class="lineNum">     485 </span>            :                                 return unchecked((ulong)(long)propertyValue);
+<span class="lineNum">     486 </span>            :                         }
+<span class="lineNum">     487 </span>            : 
+<span class="lineNum">     488 </span>            :                         return Convert.ChangeType(propertyValue, type, CultureInfo.InvariantCulture);
+<span class="lineNum">     489 </span>            :                 }
+<span class="lineNum">     490 </span>            : 
+<span class="lineNum">     491 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     492 </span>            :                 /// Indicates whether the object member should be skipped from being flattened
+<span class="lineNum">     493 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     494 </span>            :                 /// &lt;param name=&quot;propertyInfo&quot;&gt;The property info.&lt;/param&gt;
+<span class="lineNum">     495 </span>            :                 /// &lt;param name=&quot;objectPath&quot;&gt;The object path.&lt;/param&gt;
+<span class="lineNum">     496 </span>            :                 /// &lt;param name=&quot;operationContext&quot;&gt;An &lt;see cref=&quot;OperationContext&quot;/&gt; object that represents the context for the current operation.&lt;/param&gt;
+<span class="lineNum">     497 </span>            :                 /// &lt;returns&gt;The &lt;see cref=&quot;bool&quot;/&gt; to indicate whether the object member should be skipped from being flattened.&lt;/returns&gt;
+<span class="lineNum">     498 </span>            :                 private static bool ShouldSkip(PropertyInfo propertyInfo, string objectPath, OperationContext operationContext)
+<span class="lineNum">     499 </span>            :                 {
+<span class="lineNum">     500 </span>            :                         if (!propertyInfo.CanWrite)
+<span class="lineNum">     501 </span>            :                         {
+<span class="lineNum">     502 </span>            :                                 Trace.TraceInformation(SR.TraceNonExistingSetter, propertyInfo.Name, objectPath);
+<span class="lineNum">     503 </span>            :                                 return true;
+<span class="lineNum">     504 </span>            :                         }
+<span class="lineNum">     505 </span>            : 
+<span class="lineNum">     506 </span>            :                         if (!propertyInfo.CanRead)
+<span class="lineNum">     507 </span>            :                         {
+<span class="lineNum">     508 </span>            :                                 Trace.TraceInformation(SR.TraceNonExistingGetter, propertyInfo.Name, objectPath);
+<span class="lineNum">     509 </span>            :                                 return true;
+<span class="lineNum">     510 </span>            :                         }
+<span class="lineNum">     511 </span>            : 
+<span class="lineNum">     512 </span>            :                         return Attribute.IsDefined(propertyInfo, typeof(IgnorePropertyAttribute));
+<span class="lineNum">     513 </span>            :                 }
+<span class="lineNum">     514 </span>            : 
+<span class="lineNum">     515 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     516 </span>            :                 /// The object reference equality comparer.
+<span class="lineNum">     517 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     518 </span>            :                 private class ObjectReferenceEqualityComparer : IEqualityComparer&lt;object&gt;
+<span class="lineNum">     519 </span>            :                 {
+<span class="lineNum">     520 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     521 </span>            :                         /// Determines whether the specified object instances are considered equal.
+<span class="lineNum">     522 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     523 </span>            :                         /// &lt;param name=&quot;x&quot;&gt;The first object to compare.&lt;/param&gt;
+<span class="lineNum">     524 </span>            :                         /// &lt;param name=&quot;y&quot;&gt;The second object to compare.&lt;/param&gt;
+<span class="lineNum">     525 </span>            :                         /// &lt;returns&gt;true if the objects are considered equal; otherwise, false. If both objA and objB are null, the method returns true.&lt;/returns&gt;
+<span class="lineNum">     526 </span><span class="lineCov">          1 :                         public new bool Equals(object x, object y)</span>
+<span class="lineNum">     527 </span>            :                         {
+<span class="lineNum">     528 </span>            :                                 return ReferenceEquals(x, y);
+<span class="lineNum">     529 </span>            :                         }
+<span class="lineNum">     530 </span>            : 
+<span class="lineNum">     531 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     532 </span>            :                         /// Serves as a hash function for a particular type.
+<span class="lineNum">     533 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     534 </span>            :                         /// &lt;returns&gt;A hash code for the current &lt;see cref=&quot;object&quot;/&gt;.&lt;/returns&gt;
+<span class="lineNum">     535 </span><span class="lineCov">          1 :                         public int GetHashCode(object obj)</span>
+<span class="lineNum">     536 </span>            :                         {
+<span class="lineNum">     537 </span>            :                                 return RuntimeHelpers.GetHashCode(obj);
+<span class="lineNum">     538 </span>            :                         }
+<span class="lineNum">     539 </span>            :                 }
+<span class="lineNum">     540 </span>            :         }
+<span class="lineNum">     541 </span>            : 
+<span class="lineNum">     542 </span>            :         internal class SR
+<span class="lineNum">     543 </span>            :         {
+<span class="lineNum">     544 </span>            :                 public const string AbsoluteAddressNotPermitted = &quot;Address '{0}' is an absolute address. Only relative addresses are permitted.&quot;;
+<span class="lineNum">     545 </span>            :                 public const string AccountNameMismatch = &quot;Account names do not match.  First account name is {0}, second is {1}.&quot;;
+<span class="lineNum">     546 </span>            :                 public const string ArgumentEmptyError = &quot;The argument must not be empty string.&quot;;
+<span class="lineNum">     547 </span>            :                 public const string ArgumentOutOfRangeError = &quot;The argument is out of range. Value passed: {0}&quot;;
+<span class="lineNum">     548 </span>            :                 public const string ArgumentTooLargeError = &quot;The argument '{0}' is larger than maximum of '{1}'&quot;;
+<span class="lineNum">     549 </span>            :                 public const string ArgumentTooSmallError = &quot;The argument '{0}' is smaller than minimum of '{1}'&quot;;
+<span class="lineNum">     550 </span>            :                 public const string AttemptedEdmTypeForTheProperty = &quot;Attempting to deserialize '{0}' as type '{1}'&quot;;
+<span class="lineNum">     551 </span>            :                 public const string BatchWithRetreiveContainsOtherOperations = &quot;A batch transaction with a retrieve operation cannot contain any other operations.&quot;;
+<span class="lineNum">     552 </span>            :                 public const string BatchExceededMaximumNumberOfOperations = &quot;The maximum number of operations allowed in one batch has been exceeded.&quot;;
+<span class="lineNum">     553 </span>            :                 public const string BatchOperationRequiresPartitionKeyRowKey = &quot;A batch non-retrieve operation requires a non-null partition key and row key.&quot;;
+<span class="lineNum">     554 </span>            :                 public const string BatchErrorInOperation = &quot;Element {0} in the batch returned an unexpected response code.&quot;;
+<span class="lineNum">     555 </span>            :                 public const string BinaryMessageShouldUseBase64Encoding = &quot;EncodeMessage should be true for binary message.&quot;;
+<span class="lineNum">     556 </span>            :                 public const string Blob = &quot;blob&quot;;
+<span class="lineNum">     557 </span>            :                 public const string BlobDataCorrupted = &quot;Blob data corrupted (integrity check failed), Expected value is '{0}', retrieved '{1}'&quot;;
+<span class="lineNum">     558 </span>            :                 public const string BlobEndPointNotConfigured = &quot;No blob endpoint configured.&quot;;
+<span class="lineNum">     559 </span>            :                 public const string BlobInvalidSequenceNumber = &quot;The sequence number may not be specified for an increment operation.&quot;;
+<span class="lineNum">     560 </span>            :                 public const string BlobOverMaxBlockLimit = &quot;The total blocks required for this upload exceeds the maximum block limit. Please increase the block size if applicable and ensure the Blob size is not greater than the maximum Blob size limit.&quot;;
+<span class="lineNum">     561 </span>            :                 public const string BlobStreamAlreadyCommitted = &quot;Blob stream has already been committed once.&quot;;
+<span class="lineNum">     562 </span>            :                 public const string BlobStreamFlushPending = &quot;Blob stream has a pending flush operation. Please call EndFlush first.&quot;;
+<span class="lineNum">     563 </span>            :                 public const string BlobStreamReadPending = &quot;Blob stream has a pending read operation. Please call EndRead first.&quot;;
+<span class="lineNum">     564 </span>            :                 public const string BlobTypeMismatch = &quot;Blob type of the blob reference doesn't match blob type of the blob.&quot;;
+<span class="lineNum">     565 </span>            :                 public const string BufferTooSmall = &quot;The provided buffer is too small to fit in the blob data given the offset.&quot;;
+<span class="lineNum">     566 </span>            :                 public const string BufferManagerProvidedIncorrectLengthBuffer = &quot;The IBufferManager provided an incorrect length buffer to the stream, Expected {0}, received {1}. Buffer length should equal the value returned by IBufferManager.GetDefaultBufferSize().&quot;;
+<span class="lineNum">     567 </span>            :                 public const string CannotCreateSASSignatureForGivenCred = &quot;Cannot create Shared Access Signature as the credentials does not have account name information. Please check that the credentials used support creating Shared Access Signature.&quot;;
+<span class="lineNum">     568 </span>            :                 public const string CannotCreateSASWithoutAccountKey = &quot;Cannot create Shared Access Signature unless Account Key credentials are used.&quot;;
+<span class="lineNum">     569 </span>            :                 public const string CannotModifySnapshot = &quot;Cannot perform this operation on a blob representing a snapshot.&quot;;
+<span class="lineNum">     570 </span>            :                 public const string CannotModifyShareSnapshot = &quot;Cannot perform this operation on a share representing a snapshot.&quot;;
+<span class="lineNum">     571 </span>            :                 public const string CannotTransformNonHttpsUriWithHttpsOnlyCredentials = &quot;Cannot transform a Uri object using a StorageCredentials object that is marked HTTPS only.&quot;;
+<span class="lineNum">     572 </span>            :                 public const string CannotUpdateKeyWithoutAccountKeyCreds = &quot;Cannot update key unless Account Key credentials are used.&quot;;
+<span class="lineNum">     573 </span>            :                 public const string CannotUpdateSasWithoutSasCreds = &quot;Cannot update Shared Access Signature unless Sas credentials are used.&quot;;
+<span class="lineNum">     574 </span>            :                 public const string ConcurrentOperationsNotSupported = &quot;Could not acquire exclusive use of the TableServiceContext, Concurrent operations are not supported.&quot;;
+<span class="lineNum">     575 </span>            :                 public const string Container = &quot;container&quot;;
+<span class="lineNum">     576 </span>            :                 public const string ContentMD5NotCalculated = &quot;The operation requires a response body but no data was copied to the destination buffer.&quot;;
+<span class="lineNum">     577 </span>            :                 public const string CopyAborted = &quot;The copy operation has been aborted by the user.&quot;;
+<span class="lineNum">     578 </span>            :                 public const string CopyFailed = &quot;The copy operation failed with the following error message: {0}&quot;;
+<span class="lineNum">     579 </span>            :                 public const string CryptoError = &quot;Cryptographic error occurred. Please check the inner exception for more details.&quot;;
+<span class="lineNum">     580 </span>            :                 public const string CryptoFunctionFailed = &quot;Crypto function failed with error code '{0}'&quot;;
+<span class="lineNum">     581 </span>            :                 public const string DecryptionLogicError = &quot;Decryption logic threw error. Please check the inner exception for more details.&quot;;
+<span class="lineNum">     582 </span>            :                 public const string DeleteSnapshotsNotValidError = &quot;The option '{0}' must be 'None' to delete a specific snapshot specified by '{1}'&quot;;
+<span class="lineNum">     583 </span>            :                 public const string Directory = &quot;directory&quot;;
+<span class="lineNum">     584 </span>            :                 public const string EmptyBatchOperation = &quot;Cannot execute an empty batch operation&quot;;
+<span class="lineNum">     585 </span>            :                 public const string EncryptedMessageTooLarge = &quot;Encrypted Messages cannot be larger than {0} bytes. Please note that encrypting queue messages can increase their size.&quot;;
+<span class="lineNum">     586 </span>            :                 public const string EncryptionDataNotPresentError = &quot;Encryption data does not exist. If you do not want to decrypt the data, please do not set the RequireEncryption flag on request options.&quot;;
+<span class="lineNum">     587 </span>            :                 public const string EncryptionLogicError = &quot;Encryption logic threw error. Please check the inner exception for more details.&quot;;
+<span class="lineNum">     588 </span>            :                 public const string EncryptedMessageDeserializingError = &quot;Error while de-serializing the encrypted queue message string from the wire. Please check inner exception for more details.&quot;;
+<span class="lineNum">     589 </span>            :                 public const string EncryptionNotSupportedForOperation = &quot;Encryption is not supported for the current operation. Please ensure that EncryptionPolicy is not set on RequestOptions.&quot;;
+<span class="lineNum">     590 </span>            :                 public const string EncryptingNullPropertiesNotAllowed = &quot;Null properties cannot be encrypted. Please assign a default value to the property if you wish to encrypt it.&quot;;
+<span class="lineNum">     591 </span>            :                 public const string EncryptionMetadataError = &quot;Error while de-serializing the encryption metadata string from the wire.&quot;;
+<span class="lineNum">     592 </span>            :                 public const string EncryptionNotSupportedForExistingBlobs = &quot;Encryption is not supported for a blob that already exists. Please do not specify an encryption policy.&quot;;
+<span class="lineNum">     593 </span>            :                 public const string EncryptionNotSupportedForFiles = &quot;Encryption is not supported for files.&quot;;
+<span class="lineNum">     594 </span>            :                 public const string EncryptionNotSupportedForPageBlobsOnPhone = &quot;Encryption is not supported for PageBlobs on Windows Phone.&quot;;
+<span class="lineNum">     595 </span>            :                 public const string EncryptionPolicyMissingInStrictMode = &quot;Encryption Policy is mandatory when RequireEncryption is set to true. If you do not want to encrypt/decrypt data, please set RequireEncryption to false in request options.&quot;;
+<span class="lineNum">     596 </span>            :                 public const string EncryptionProtocolVersionInvalid = &quot;Invalid Encryption Agent. This version of the client library does not understand the Encryption Agent set on the blob.&quot;;
+<span class="lineNum">     597 </span>            :                 public const string ETagMissingForDelete = &quot;Delete requires an ETag (which may be the '*' wildcard).&quot;;
+<span class="lineNum">     598 </span>            :                 public const string ETagMissingForMerge = &quot;Merge requires an ETag (which may be the '*' wildcard).&quot;;
+<span class="lineNum">     599 </span>            :                 public const string ETagMissingForReplace = &quot;Replace requires an ETag (which may be the '*' wildcard).&quot;;
+<span class="lineNum">     600 </span>            :                 public const string ExceptionOccurred = &quot;An exception has occurred. For more information please deserialize this message via RequestResult.TranslateFromExceptionMessage.&quot;;
+<span class="lineNum">     601 </span>            :                 public const string ExtendedErrorUnavailable = &quot;An unknown error has occurred, extended error information not available.&quot;;
+<span class="lineNum">     602 </span>            :                 public const string File = &quot;file&quot;;
+<span class="lineNum">     603 </span>            :                 public const string FileDataCorrupted = &quot;File data corrupted (integrity check failed), Expected value is '{0}', retrieved '{1}'&quot;;
+<span class="lineNum">     604 </span>            :                 public const string FileEndPointNotConfigured = &quot;No file endpoint configured.&quot;;
+<span class="lineNum">     605 </span>            :                 public const string FileStreamAlreadyCommitted = &quot;File stream has already been committed once.&quot;;
+<span class="lineNum">     606 </span>            :                 public const string FileStreamFlushPending = &quot;File stream has a pending flush operation. Please call EndFlush first.&quot;;
+<span class="lineNum">     607 </span>            :                 public const string FileStreamReadPending = &quot;File stream has a pending read operation. Please call EndRead first.&quot;;
+<span class="lineNum">     608 </span>            :                 public const string FailParseProperty = &quot;Failed to parse property '{0}' with value '{1}' as type '{2}'&quot;;
+<span class="lineNum">     609 </span>            :                 public const string GetServiceStatsInvalidOperation = &quot;GetServiceStats cannot be run with a 'PrimaryOnly' location mode.&quot;;
+<span class="lineNum">     610 </span>            :                 public const string IncorrectNumberOfBytes = &quot;Incorrect number of bytes received. Expected '{0}', received '{1}'&quot;;
+<span class="lineNum">     611 </span>            :                 public const string InternalStorageError = &quot;Unexpected internal storage client error.&quot;;
+<span class="lineNum">     612 </span>            :                 public const string InvalidAclType = &quot;Invalid acl public access type returned '{0}'. Expected blob or container.&quot;;
+<span class="lineNum">     613 </span>            :                 public const string InvalidBlobListItem = &quot;Invalid blob list item returned&quot;;
+<span class="lineNum">     614 </span>            :                 public const string InvalidCorsRule = &quot;A CORS rule must contain at least one allowed origin and allowed method, and MaxAgeInSeconds cannot have a value less than zero.&quot;;
+<span class="lineNum">     615 </span>            :                 public const string InvalidDelimiter = &quot;\\ is an invalid delimiter.&quot;;
+<span class="lineNum">     616 </span>            :                 public const string InvalidFileAclType = &quot;Invalid acl public access type returned '{0}'. Expected file or share.&quot;;
+<span class="lineNum">     617 </span>            :                 public const string InvalidEncryptionAlgorithm = &quot;Invalid Encryption Algorithm found on the resource. This version of the client library does not support the specified encryption algorithm.&quot;;
+<span class="lineNum">     618 </span>            :                 public const string InvalidEncryptionMode = &quot;Invalid BlobEncryptionMode set on the policy. Please set it to FullBlob when the policy is used with UploadFromStream.&quot;;
+<span class="lineNum">     619 </span>            :                 public const string InvalidFileListItem = &quot;Invalid file list item returned&quot;;
+<span class="lineNum">     620 </span>            :                 public const string InvalidGeoReplicationStatus = &quot;Invalid geo-replication status in response: '{0}'&quot;;
+<span class="lineNum">     621 </span>            :                 public const string InvalidHeaders = &quot;Headers are not supported in the 2012-02-12 version.&quot;;
+<span class="lineNum">     622 </span>            :                 public const string InvalidIPAddress = &quot;Error when parsing IP address: IP address is invalid.&quot;;
+<span class="lineNum">     623 </span>            :                 public const string InvalidLeaseStatus = &quot;Invalid lease status in response: '{0}'&quot;;
+<span class="lineNum">     624 </span>            :                 public const string InvalidLeaseState = &quot;Invalid lease state in response: '{0}'&quot;;
+<span class="lineNum">     625 </span>            :                 public const string InvalidLeaseDuration = &quot;Invalid lease duration in response: '{0}'&quot;;
+<span class="lineNum">     626 </span>            :                 public const string InvalidListingDetails = &quot;Invalid blob listing details specified.&quot;;
+<span class="lineNum">     627 </span>            :                 public const string InvalidLoggingLevel = &quot;Invalid logging operations specified.&quot;;
+<span class="lineNum">     628 </span>            :                 public const string InvalidMetricsLevel = &quot;Invalid metrics level specified.&quot;;
+<span class="lineNum">     629 </span>            :                 public const string InvalidBlockSize = &quot;Append block data should not exceed the maximum blob size condition value.&quot;;
+<span class="lineNum">     630 </span>            :                 public const string InvalidPageSize = &quot;Page data must be a multiple of 512 bytes.&quot;;
+<span class="lineNum">     631 </span>            :                 public const string InvalidProtocolsInSAS = &quot;Invalid value {0} for the SharedAccessProtocol parameter when creating a SharedAccessSignature.  Use 'null' if you do not wish to include a SharedAccessProtocol.&quot;;
+<span class="lineNum">     632 </span>            :                 public const string InvalidResourceName = &quot;Invalid {0} name. Check MSDN for more information about valid {0} naming.&quot;;
+<span class="lineNum">     633 </span>            :                 public const string InvalidResourceNameLength = &quot;Invalid {0} name length. The {0} name must be between {1} and {2} characters long.&quot;;
+<span class="lineNum">     634 </span>            :                 public const string InvalidResourceReservedName = &quot;Invalid {0} name. This {0} name is reserved.&quot;;
+<span class="lineNum">     635 </span>            :                 public const string InvalidSASVersion = &quot;SAS Version invalid. Valid versions include 2012-02-12 and 2013-08-15.&quot;;
+<span class="lineNum">     636 </span>            :                 public const string InvalidStorageService = &quot;Invalid storage service specified.&quot;;
+<span class="lineNum">     637 </span>            :                 public const string IPAddressOrRangeMustBeNullInOldVersion = &quot;IPAddressOrRange must be null when creating a SAS token with an older service version parameter.&quot;;
+<span class="lineNum">     638 </span>            :                 public const string IPMustBeIPV4InSAS = &quot;When specifying an IP Address in a SAS token, it must be an IPv4 address. Input address was {0}.&quot;;
+<span class="lineNum">     639 </span>            :                 public const string IQueryableExtensionObjectMustBeTableQuery = &quot;Query must be a TableQuery&lt;T&gt;&quot;;
+<span class="lineNum">     640 </span>            :                 public const string JsonNotSupportedOnRT = &quot;JSON payloads are not supported in Windows Runtime.&quot;;
+<span class="lineNum">     641 </span>            :                 public const string JsonReaderNotInCompletedState = &quot;The JSON reader has not yet reached the completed state.&quot;;
+<span class="lineNum">     642 </span>            :                 public const string KeyAndResolverMissingError = &quot;Key and Resolver are not initialized. Decryption requires either of them to be initialized.&quot;;
+<span class="lineNum">     643 </span>            :                 public const string KeyMismatch = &quot;Key mismatch. The key id stored on the service does not match the specified key.&quot;;
+<span class="lineNum">     644 </span>            :                 public const string KeyMissingError = &quot;Key is not initialized. Encryption requires it to be initialized.&quot;;
+<span class="lineNum">     645 </span>            :                 public const string KeyResolverCannotResolveExistingKey = &quot;KeyResolver is not able to resolve the existing encryption key used to encrypt this blob.&quot;;
+<span class="lineNum">     646 </span>            :                 public const string KeyRotationInvalidAccessCondition = @&quot;Cannot supply an AccessCondition with an ETag or Modified-Since condition for key rotation.  An If-Match condition will be automatically applied.&quot;;
+<span class="lineNum">     647 </span>            :                 public const string KeyRotationNoEncryptionKey = &quot;Must supply a new encryption key as the Encryption Policy's \&quot;Key\&quot; parameter when rotating encryption keys.&quot;;
+<span class="lineNum">     648 </span>            :                 public const string KeyRotationNoEncryptionKeyResolver = &quot;Must supply a key resolver on the encryption policy when rotating encryption keys.&quot;;
+<span class="lineNum">     649 </span>            :                 public const string KeyRotationNoEncryptionMetadata = &quot;Cannot rotate the encryption key when encryption metadata is not available on the blob.  Either the blob is not encrypted, or you need to call FetchAttributes before calling this method.&quot;;
+<span class="lineNum">     650 </span>            :                 public const string KeyRotationNoEncryptionPolicy = &quot;Encryption Policy on the Request Options cannot be null for an encryption key rotation call.&quot;;
+<span class="lineNum">     651 </span>            :                 public const string KeyRotationNoEtag = &quot;Cannot rotate the encryption key when the ETag is not available on the blob.  You need to call FetchAttributes before calling this method.&quot;;
+<span class="lineNum">     652 </span>            :                 public const string KeyRotationNoKeyID = &quot;Cannot rotate encryption key when the encryption metadata does not contain a KeyID.&quot;;
+<span class="lineNum">     653 </span>            :                 public const string KeyRotationPreconditionFailed = &quot;Precondition failed.  If this is due to an incorrect ETag value, call FetchAttributes on the local blob object and retry rotating the encryption key.&quot;;
+<span class="lineNum">     654 </span>            :                 public const string LeaseConditionOnSource = &quot;A lease condition cannot be specified on the source of a copy.&quot;;
+<span class="lineNum">     655 </span>            :                 public const string LeaseTimeNotReceived = &quot;Valid lease time expected but not received from the service.&quot;;
+<span class="lineNum">     656 </span>            :                 public const string LengthNotInRange = &quot;The length provided is out of range. The range must be between 0 and the length of the byte array.&quot;;
+<span class="lineNum">     657 </span>            :                 public const string ListSnapshotsWithDelimiterError = &quot;Listing snapshots is only supported in flat mode (no delimiter). Consider setting the useFlatBlobListing parameter to true.&quot;;
+<span class="lineNum">     658 </span>            :                 public const string LogStreamEndError = &quot;Error parsing log record: unexpected end of stream at position '{0}'.&quot;;
+<span class="lineNum">     659 </span>            :                 public const string LogStreamDelimiterError = &quot;Error parsing log record: expected the delimiter '{0}', but read '{1}' at position '{2}'.&quot;;
+<span class="lineNum">     660 </span>            :                 public const string LogStreamParseError = &quot;Error parsing log record: could not parse '{0}' using format: {1}&quot;;
+<span class="lineNum">     661 </span>            :                 public const string LogStreamQuoteError = &quot;Error parsing log record: unexpected quote character found. String so far: '{0}'. Character read: '{1}'&quot;;
+<span class="lineNum">     662 </span>            :                 public const string LogVersionUnsupported = &quot;A storage log version of {0} is unsupported.&quot;;
+<span class="lineNum">     663 </span>            :                 public const string LoggingVersionNull = &quot;The logging version is null or empty.&quot;;
+<span class="lineNum">     664 </span>            :                 public const string MD5MismatchError = &quot;Calculated MD5 does not match existing property&quot;;
+<span class="lineNum">     665 </span>            :                 public const string MD5NotPossible = &quot;MD5 cannot be calculated for an existing blob because it would require reading the existing data. Please disable StoreBlobContentMD5.&quot;;
+<span class="lineNum">     666 </span>            :                 public const string MD5NotPresentError = &quot;MD5 does not exist. If you do not want to force validation, please disable UseTransactionalMD5.&quot;;
+<span class="lineNum">     667 </span>            :                 public const string MessageTooLarge = &quot;Messages cannot be larger than {0} bytes.&quot;;
+<span class="lineNum">     668 </span>            :                 public const string MetricVersionNull = &quot;The metrics version is null or empty.&quot;;
+<span class="lineNum">     669 </span>            :                 public const string MissingAccountInformationInUri = &quot;Cannot find account information inside Uri '{0}'&quot;;
+<span class="lineNum">     670 </span>            :                 public const string MissingContainerInformation = &quot;Invalid blob address '{0}', missing container information&quot;;
+<span class="lineNum">     671 </span>            :                 public const string MissingCredentials = &quot;No credentials provided.&quot;;
+<span class="lineNum">     672 </span>            :                 public const string MissingLeaseIDChanging = &quot;A lease ID must be specified when changing a lease.&quot;;
+<span class="lineNum">     673 </span>            :                 public const string MissingLeaseIDReleasing = &quot;A lease ID must be specified when releasing a lease.&quot;;
+<span class="lineNum">     674 </span>            :                 public const string MissingLeaseIDRenewing = &quot;A lease ID must be specified when renewing a lease.&quot;;
+<span class="lineNum">     675 </span>            :                 public const string MissingMandatoryParametersForSAS = &quot;Missing mandatory parameters for valid Shared Access Signature&quot;;
+<span class="lineNum">     676 </span>            :                 public const string MissingShareInformation = &quot;Invalid file address '{0}', missing share information&quot;;
+<span class="lineNum">     677 </span>            :                 public const string MissingWrappingIV = &quot;A key wrapping IV must be present in the encryption metadata while decrypting.&quot;;
+<span class="lineNum">     678 </span>            :                 public const string StorageUriMustMatch = &quot;Primary and secondary location URIs in a StorageUri must point to the same resource.&quot;;
+<span class="lineNum">     679 </span>            :                 public const string MultipleCredentialsProvided = &quot;Cannot provide credentials as part of the address and as constructor parameter. Either pass in the address or use a different constructor.&quot;;
+<span class="lineNum">     680 </span>            :                 public const string MultipleSnapshotTimesProvided = &quot;Multiple different snapshot times provided as part of query '{0}' and as constructor parameter '{1}'.&quot;;
+<span class="lineNum">     681 </span>            :                 public const string NegativeBytesRequestedInCopy = &quot;Internal Error - negative copyLength requested when attempting to copy a stream.  CopyLength = {0}, totalBytes = {1}, total bytes recorded so far = {2}.&quot;;
+<span class="lineNum">     682 </span>            :                 public const string NoPropertyResolverAvailable = &quot;No property resolver available. Deserializing the entity properties as strings.&quot;;
+<span class="lineNum">     683 </span>            :                 public const string OffsetNotInRange = &quot;The offset provided is out of range. The range must be between 0 and the length of the byte array.&quot;;
+<span class="lineNum">     684 </span>            :                 public const string ODataReaderNotInCompletedState = &quot;OData Reader state expected to be Completed state. Actual state: {0}.&quot;;
+<span class="lineNum">     685 </span>            :                 public const string OperationCanceled = &quot;Operation was canceled by user.&quot;;
+<span class="lineNum">     686 </span>            :                 public const string ParseError = &quot;Error parsing value&quot;;
+<span class="lineNum">     687 </span>            :                 public const string PartitionKey = &quot;All entities in a given batch must have the same partition key.&quot;;
+<span class="lineNum">     688 </span>            :                 public const string PathStyleUriMissingAccountNameInformation = &quot;Missing account name information inside path style uri. Path style uris should be of the form http://&lt;IPAddressPlusPort&gt;/&lt;accountName&gt;&quot;;
+<span class="lineNum">     689 </span>            :                 public const string PayloadFormat = &quot;Setting payload format for the request to '{0}'.&quot;;
+<span class="lineNum">     690 </span>            :                 public const string PreconditionFailed = &quot;The condition specified using HTTP conditional header(s) is not met.&quot;;
+<span class="lineNum">     691 </span>            :                 public const string PreconditionFailureIgnored = &quot;Pre-condition failure on a retry is being ignored since the request should have succeeded in the first attempt.&quot;;
+<span class="lineNum">     692 </span>            :                 public const string PrimaryOnlyCommand = &quot;This operation can only be executed against the primary storage location.&quot;;
+<span class="lineNum">     693 </span>            :                 public const string PropertyDelimiterExistsInPropertyName = &quot;Property delimiter: {0} exists in property name: {1}. Object Path: {2}&quot;;
+<span class="lineNum">     694 </span>            :                 public const string PropertyResolverCacheDisabled = &quot;Property resolver cache is disabled.&quot;;
+<span class="lineNum">     695 </span>            :                 public const string PropertyResolverThrewError = &quot;The custom property resolver delegate threw an exception. Check the inner exception for more details.&quot;;
+<span class="lineNum">     696 </span>            :                 public const string ProtocolsMustBeNullInOldVersion = &quot;SharedAccessProtocol must be null when creating a SAS token with an older service version parameter.&quot;;
+<span class="lineNum">     697 </span>            :                 public const string PutBlobNeedsStoreBlobContentMD5 = &quot;When uploading a blob in a single request, StoreBlobContentMD5 must be set to true if UseTransactionalMD5 is true, because the MD5 calculated for the transaction will be stored in the blob.&quot;;
+<span class="lineNum">     698 </span>            :                 public const string QueryBuilderKeyNotFound = &quot;'{0}' key not found in the query builder.&quot;;
+<span class="lineNum">     699 </span>            :                 public const string Queue = &quot;queue&quot;;
+<span class="lineNum">     700 </span>            :                 public const string QueueEndPointNotConfigured = &quot;No queue endpoint configured.&quot;;
+<span class="lineNum">     701 </span>            :                 public const string RangeDownloadNotPermittedOnPhone = &quot;Windows Phone does not support downloading closed ranges from an encrypted blob. Please download the full blob or an open range (by specifying length as null)&quot;;
+<span class="lineNum">     702 </span>            :                 public const string RecursiveReferencedObject = &quot;Recursive reference detected. Object Path: {0} Property Type: {1}.&quot;;
+<span class="lineNum">     703 </span>            :                 public const string RelativeAddressNotPermitted = &quot;Address '{0}' is a relative address. Only absolute addresses are permitted.&quot;;
+<span class="lineNum">     704 </span>            :                 public const string ResourceConsumed = &quot;Resource consumed&quot;;
+<span class="lineNum">     705 </span>            :                 public const string ResourceNameEmpty = &quot;Invalid {0} name. The {0} name may not be null, empty, or whitespace only.&quot;;
+<span class="lineNum">     706 </span>            :                 public const string RetrieveWithContinuationToken = &quot;Retrieved '{0}' results with continuation token '{1}'.&quot;;
+<span class="lineNum">     707 </span>            :                 public const string SecondaryOnlyCommand = &quot;This operation can only be executed against the secondary storage location.&quot;;
+<span class="lineNum">     708 </span>            :                 public const string SetServicePropertiesRequiresNonNullSettings = &quot;At least one service property needs to be non-null for SetServiceProperties API.&quot;;
+<span class="lineNum">     709 </span>            :                 public const string Share = &quot;share&quot;;
+<span class="lineNum">     710 </span>            :                 public const string StartTimeExceedsEndTime = &quot;StartTime invalid. The start time '{0}' occurs after the end time '{1}'.&quot;;
+<span class="lineNum">     711 </span>            :                 public const string StorageUriMissingLocation = &quot;The Uri for the target storage location is not specified. Please consider changing the request's location mode.&quot;;
+<span class="lineNum">     712 </span>            :                 public const string StreamLengthError = &quot;The length of the stream exceeds the permitted length.&quot;;
+<span class="lineNum">     713 </span>            :                 public const string StreamLengthMismatch = &quot;Cannot specify both copyLength and maxLength.&quot;;
+<span class="lineNum">     714 </span>            :                 public const string StreamLengthShortError = &quot;The requested number of bytes exceeds the length of the stream remaining from the specified position.&quot;;
+<span class="lineNum">     715 </span>            :                 public const string Table = &quot;table&quot;;
+<span class="lineNum">     716 </span>            :                 public const string TableEndPointNotConfigured = &quot;No table endpoint configured.&quot;;
+<span class="lineNum">     717 </span>            :                 public const string TableQueryDynamicPropertyAccess = &quot;Accessing property dictionary of DynamicTableEntity requires a string constant for property name.&quot;;
+<span class="lineNum">     718 </span>            :                 public const string TableQueryEntityPropertyInQueryNotSupported = &quot;Referencing {0} on EntityProperty only supported with properties dictionary exposed via DynamicTableEntity.&quot;;
+<span class="lineNum">     719 </span>            :                 public const string TableQueryFluentMethodNotAllowed = &quot;Fluent methods may not be invoked on a Query created via CloudTable.CreateQuery&lt;T&gt;()&quot;;
+<span class="lineNum">     720 </span>            :                 public const string TableQueryMustHaveQueryProvider = &quot;Unknown Table. The TableQuery does not have an associated CloudTable Reference. Please execute the query via the CloudTable ExecuteQuery APIs.&quot;;
+<span class="lineNum">     721 </span>            :                 public const string TableQueryTypeMustImplementITableEnitty = &quot;TableQuery Generic Type must implement the ITableEntity Interface&quot;;
+<span class="lineNum">     722 </span>            :                 public const string TableQueryTypeMustHaveDefaultParameterlessCtor = &quot;TableQuery Generic Type must provide a default parameterless constructor.&quot;;
+<span class="lineNum">     723 </span>            :                 public const string TakeCountNotPositive = &quot;Take count must be positive and greater than 0.&quot;;
+<span class="lineNum">     724 </span>            :                 public const string TimeoutExceptionMessage = &quot;The client could not finish the operation within specified timeout.&quot;;
+<span class="lineNum">     725 </span>            :                 public const string TooManyPolicyIdentifiers = &quot;Too many '{0}' shared access policy identifiers provided. Server does not support setting more than '{1}' on a single container, queue, table, or share.&quot;;
+<span class="lineNum">     726 </span>            :                 public const string TooManyPathSegments = &quot;The count of URL path segments (strings between '/' characters) as part of the blob name cannot exceed 254.&quot;;
+<span class="lineNum">     727 </span>            :                 public const string TraceAbort = &quot;Aborting pending request due to timeout.&quot;;
+<span class="lineNum">     728 </span>            :                 public const string TraceAbortError = &quot;Could not abort pending request because of {0}.&quot;;
+<span class="lineNum">     729 </span>            :                 public const string TraceAbortRetry = &quot;Aborting pending retry due to user request.&quot;;
+<span class="lineNum">     730 </span>            :                 public const string TraceDispose = &quot;Disposing action invoked.&quot;;
+<span class="lineNum">     731 </span>            :                 public const string TraceDisposeError = &quot;Disposing action threw an exception : {0}.&quot;;
+<span class="lineNum">     732 </span>            :                 public const string TraceDownload = &quot;Downloading response body.&quot;;
+<span class="lineNum">     733 </span>            :                 public const string TraceDownloadError = &quot;Downloading error response body.&quot;;
+<span class="lineNum">     734 </span>            :                 public const string TraceRetryInfo = &quot;The extended retry policy set the next location to {0} and updated the location mode to {1}.&quot;;
+<span class="lineNum">     735 </span>            :                 public const string TraceGenericError = &quot;Exception thrown during the operation: {0}.&quot;;
+<span class="lineNum">     736 </span>            :                 public const string TraceGetResponse = &quot;Waiting for response.&quot;;
+<span class="lineNum">     737 </span>            :                 public const string TraceGetResponseError = &quot;Exception thrown while waiting for response: {0}.&quot;;
+<span class="lineNum">     738 </span>            :                 public const string TraceIgnoreAttribute = &quot;Omitting property '{0}' from serialization/de-serialization because IgnoreAttribute has been set on that property.&quot;;
+<span class="lineNum">     739 </span>            :                 public const string TraceInitLocation = &quot;Starting operation with location {0} per location mode {1}.&quot;;
+<span class="lineNum">     740 </span>            :                 public const string TraceInitRequestError = &quot;Exception thrown while initializing request: {0}.&quot;;
+<span class="lineNum">     741 </span>            :                 public const string TraceMissingDictionaryEntry = &quot;Omitting property '{0}' from de-serialization because there is no corresponding entry in the dictionary provided.&quot;;
+<span class="lineNum">     742 </span>            :                 public const string TraceNextLocation = &quot;The next location has been set to {0}, based on the location mode.&quot;;
+<span class="lineNum">     743 </span>            :                 public const string TraceNonPublicGetSet = &quot;Omitting property '{0}' from serialization/de-serialization because the property's getter/setter are not public.&quot;;
+<span class="lineNum">     744 </span>            :                 public const string TraceNonExistingGetter = &quot;Omitting property: {0} from serialization/de-serialization because the property does not have a getter. Object path: {1}&quot;;
+<span class="lineNum">     745 </span>            :                 public const string TraceNonExistingSetter = &quot;Omitting property: {0} from serialization/de-serialization because the property does not have a setter.&quot;
+<span class="lineNum">     746 </span>            :                         + &quot; The property needs to have at least a private setter. Object Path: {1}&quot;;
+<span class="lineNum">     747 </span>            :                 public const string TracePrepareUpload = &quot;Preparing to write request data.&quot;;
+<span class="lineNum">     748 </span>            :                 public const string TracePrepareUploadError = &quot;Exception thrown while preparing to write request data: {0}.&quot;;
+<span class="lineNum">     749 </span>            :                 public const string TracePreProcessDone = &quot;Response headers were processed successfully, proceeding with the rest of the operation.&quot;;
+<span class="lineNum">     750 </span>            :                 public const string TracePreProcessError = &quot;Exception thrown while processing response: {0}.&quot;;
+<span class="lineNum">     751 </span>            :                 public const string TracePostProcess = &quot;Processing response body.&quot;;
+<span class="lineNum">     752 </span>            :                 public const string TracePostProcessError = &quot;Exception thrown while ending operation: {0}.&quot;;
+<span class="lineNum">     753 </span>            :                 public const string TraceResponse = &quot;Response received. Status code = {0}, Request ID = {1}, Content-MD5 = {2}, ETag = {3}.&quot;;
+<span class="lineNum">     754 </span>            :                 public const string TraceRetry = &quot;Retrying failed operation.&quot;;
+<span class="lineNum">     755 </span>            :                 public const string TraceRetryCheck = &quot;Checking if the operation should be retried. Retry count = {0}, HTTP status code = {1}, Retryable exception = {2}, Exception = {3}.&quot;;
+<span class="lineNum">     756 </span>            :                 public const string TraceRetryDecisionPolicy = &quot;Retry policy did not allow for a retry. Failing with {0}.&quot;;
+<span class="lineNum">     757 </span>            :                 public const string TraceRetryDecisionTimeout = &quot;Operation cannot be retried because the maximum execution time has been reached. Failing with {0}.&quot;;
+<span class="lineNum">     758 </span>            :                 public const string TraceRetryDelay = &quot;Operation will be retried after {0}ms.&quot;;
+<span class="lineNum">     759 </span>            :                 public const string TraceRetryError = &quot;Exception thrown while retrying operation: {0}.&quot;;
+<span class="lineNum">     760 </span>            :                 public const string TraceSetPropertyError = &quot;Exception thrown while trying to set property value. Property Path: {0} Property Value: {1}. Exception Message: {2}&quot;;
+<span class="lineNum">     761 </span>            :                 public const string TraceStartRequestAsync = &quot;Starting asynchronous request to {0}.&quot;;
+<span class="lineNum">     762 </span>            :                 public const string TraceStartRequestSync = &quot;Starting synchronous request to {0}.&quot;;
+<span class="lineNum">     763 </span>            :                 public const string TraceStringToSign = &quot;StringToSign = {0}.&quot;;
+<span class="lineNum">     764 </span>            :                 public const string TraceSuccess = &quot;Operation completed successfully.&quot;;
+<span class="lineNum">     765 </span>            :                 public const string TraceUpload = &quot;Writing request data.&quot;;
+<span class="lineNum">     766 </span>            :                 public const string TraceUploadError = &quot;Exception thrown while writing request data: {0}.&quot;;
+<span class="lineNum">     767 </span>            :                 public const string UndefinedBlobType = &quot;The blob type cannot be undefined.&quot;;
+<span class="lineNum">     768 </span>            :                 public const string UnexpectedElement = &quot;Unexpected Element '{0}'&quot;;
+<span class="lineNum">     769 </span>            :                 public const string UnexpectedEmptyElement = &quot;Unexpected Empty Element '{0}'&quot;;
+<span class="lineNum">     770 </span>            :                 public const string UnexpectedParameterInSAS = &quot;The parameter `api-version` should not be included in the SAS token. Please allow the library to set the  `api-version` parameter.&quot;;
+<span class="lineNum">     771 </span>            :                 public const string UnexpectedContinuationType = &quot;Unexpected Continuation Type&quot;;
+<span class="lineNum">     772 </span>            :                 public const string UnexpectedLocation = &quot;Unexpected Location '{0}'&quot;;
+<span class="lineNum">     773 </span>            :                 public const string UnexpectedResponseCode = &quot;Unexpected response code, Expected:{0}, Received:{1}&quot;;
+<span class="lineNum">     774 </span>            :                 public const string UnsupportedPropertyTypeForEncryption = &quot;Unsupported type : {0} encountered during encryption. Only string properties can be encrypted on the client side.&quot;;
+<span class="lineNum">     775 </span>            :                 public const string UnsupportedPropertyTypeForEntityPropertyConversion = &quot;Unsupported type : {0} encountered during conversion to EntityProperty. Object Path: {1}&quot;;
+<span class="lineNum">     776 </span>            :                 public const string UpdateMessageVisibilityRequired = &quot;Calls to UpdateMessage must include the Visibility flag.&quot;;
+<span class="lineNum">     777 </span>            :                 public const string UsingDefaultPropertyResolver = &quot;Using the default property resolver to deserialize the entity.&quot;;
+<span class="lineNum">     778 </span>            :                 public const string UsingUserProvidedPropertyResolver = &quot;Using the property resolver provided via TableRequestOptions to deserialize the entity.&quot;;
+<span class="lineNum">     779 </span>            : 
+<span class="lineNum">     780 </span>            : #if WINDOWS_PHONE &amp;&amp; WINDOWS_DESKTOP
+<span class="lineNum">     781 </span>            :                 public const string WindowsPhoneDoesNotSupportMD5 = &quot;MD5 is not supported on Windows Phone&quot;;
+<span class="lineNum">     782 </span>            : #endif
+<span class="lineNum">     783 </span>            :                 // Table IQueryable Exception messages
+<span class="lineNum">     784 </span>            :                 public const string ALinqCouldNotConvert = &quot;Could not convert constant {0} expression to string.&quot;;
+<span class="lineNum">     785 </span>            :                 public const string ALinqMethodNotSupported = &quot;The method '{0}' is not supported.&quot;;
+<span class="lineNum">     786 </span>            :                 public const string ALinqUnaryNotSupported = &quot;The unary operator '{0}' is not supported.&quot;;
+<span class="lineNum">     787 </span>            :                 public const string ALinqBinaryNotSupported = &quot;The binary operator '{0}' is not supported.&quot;;
+<span class="lineNum">     788 </span>            :                 public const string ALinqConstantNotSupported = &quot;The constant for '{0}' is not supported.&quot;;
+<span class="lineNum">     789 </span>            :                 public const string ALinqTypeBinaryNotSupported = &quot;An operation between an expression and a type is not supported.&quot;;
+<span class="lineNum">     790 </span>            :                 public const string ALinqConditionalNotSupported = &quot;The conditional expression is not supported.&quot;;
+<span class="lineNum">     791 </span>            :                 public const string ALinqParameterNotSupported = &quot;The parameter expression is not supported.&quot;;
+<span class="lineNum">     792 </span>            :                 public const string ALinqMemberAccessNotSupported = &quot;The member access of '{0}' is not supported.&quot;;
+<span class="lineNum">     793 </span>            :                 public const string ALinqLambdaNotSupported = &quot;Lambda Expressions not supported.&quot;;
+<span class="lineNum">     794 </span>            :                 public const string ALinqNewNotSupported = &quot;New Expressions not supported.&quot;;
+<span class="lineNum">     795 </span>            :                 public const string ALinqMemberInitNotSupported = &quot;Member Init Expressions not supported.&quot;;
+<span class="lineNum">     796 </span>            :                 public const string ALinqListInitNotSupported = &quot;List Init Expressions not supported.&quot;;
+<span class="lineNum">     797 </span>            :                 public const string ALinqNewArrayNotSupported = &quot;New Array Expressions not supported.&quot;;
+<span class="lineNum">     798 </span>            :                 public const string ALinqInvocationNotSupported = &quot;Invocation Expressions not supported.&quot;;
+<span class="lineNum">     799 </span>            :                 public const string ALinqUnsupportedExpression = &quot;The expression type {0} is not supported.&quot;;
+<span class="lineNum">     800 </span>            :                 public const string ALinqCanOnlyProjectTheLeaf = &quot;Can only project the last entity type in the query being translated.&quot;;
+<span class="lineNum">     801 </span>            :                 public const string ALinqCantCastToUnsupportedPrimitive = &quot;Can't cast to unsupported type '{0}'&quot;;
+<span class="lineNum">     802 </span>            :                 public const string ALinqCantTranslateExpression = &quot;The expression {0} is not supported.&quot;;
+<span class="lineNum">     803 </span>            :                 public const string ALinqCantNavigateWithoutKeyPredicate = &quot;Navigation properties can only be selected from a single resource. Specify a key predicate to restrict the entity set to a single instance.&quot;;
+<span class="lineNum">     804 </span>            :                 public const string ALinqCantReferToPublicField = &quot;Referencing public field '{0}' not supported in query option expression.  Use public property instead.&quot;;
+<span class="lineNum">     805 </span>            :                 public const string ALinqCannotConstructKnownEntityTypes = &quot;Construction of entity type instances must use object initializer with default constructor.&quot;;
+<span class="lineNum">     806 </span>            :                 public const string ALinqCannotCreateConstantEntity = &quot;Referencing of local entity type instances not supported when projecting results.&quot;;
+<span class="lineNum">     807 </span>            :                 public const string ALinqExpressionNotSupportedInProjectionToEntity = &quot;Initializing instances of the entity type {0} with the expression {1} is not supported.&quot;;
+<span class="lineNum">     808 </span>            :                 public const string ALinqExpressionNotSupportedInProjection = &quot;Constructing or initializing instances of the type {0} with the expression {1} is not supported.&quot;;
+<span class="lineNum">     809 </span>            :                 public const string ALinqProjectionMemberAssignmentMismatch = &quot;Cannot initialize an instance of entity type '{0}' because '{1}' and '{2}' do not refer to the same source entity.&quot;;
+<span class="lineNum">     810 </span>            :                 public const string ALinqPropertyNamesMustMatchInProjections = &quot;Cannot assign the value from the {0} property to the {1} property.  When projecting results into a entity type, the property names of the source type and the target type must match for the properties being projected.&quot;;
+<span class="lineNum">     811 </span>            :                 public const string ALinqQueryOptionOutOfOrder = &quot;The {0} query option cannot be specified after the {1} query option.&quot;;
+<span class="lineNum">     812 </span>            :                 public const string ALinqQueryOptionsOnlyAllowedOnLeafNodes = &quot;Can only specify query options (orderby, where, take, skip) after last navigation.&quot;;
+<span class="lineNum">     813 </span>            :         }
+<span class="lineNum">     814 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Akka.Net/Cqrs.Akka.Tests.Unit/Sagas/ConversationReportProcessManagerEventHandlers.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Akka.Net/Cqrs.Akka.Tests.Unit/Sagas</a> - ConversationReportProcessManagerEventHandlers.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-09-29</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : using System;
+<span class="lineNum">       2 </span>            : using Akka.Actor;
+<span class="lineNum">       3 </span>            : using Cqrs.Akka.Domain;
+<span class="lineNum">       4 </span>            : using Cqrs.Akka.Tests.Unit.Events;
+<span class="lineNum">       5 </span>            : using Cqrs.Domain;
+<span class="lineNum">       6 </span>            : using Cqrs.Events;
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : namespace Cqrs.Akka.Tests.Unit.Sagas
+<span class="lineNum">       9 </span>            : {
+<span class="lineNum">      10 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      11 </span>            :         /// An &lt;see cref=&quot;IEventHandler&quot;/&gt; that passes the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances it receives to &lt;see cref=&quot;ConversationReportProcessManager&quot;/&gt;
+<span class="lineNum">      12 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      13 </span>            :         public class ConversationReportProcessManagerEventHandlers
+<span class="lineNum">      14 </span>            :                 : IEventHandler&lt;Guid, HelloWorldSaid&gt;
+<span class="lineNum">      15 </span>            :                         , IEventHandler&lt;Guid, HelloWorldRepliedTo&gt;
+<span class="lineNum">      16 </span>            :                         , IEventHandler&lt;Guid, ConversationEnded&gt;
+<span class="lineNum">      17 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      18 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      19 </span>            :                 /// Instantiates the &lt;see cref=&quot;ConversationReportProcessManagerEventHandlers&quot;/&gt; class registering any &lt;see cref=&quot;ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})&quot;/&gt; required.
+<span class="lineNum">      20 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      21 </span><span class="lineCov">          1 :                 public ConversationReportProcessManagerEventHandlers(IAkkaSagaResolver sagaResolver)</span>
+<span class="lineNum">      22 </span>            :                 {
+<span class="lineNum">      23 </span>            :                         SagaResolver = sagaResolver;
+<span class="lineNum">      24 </span>            :                 }
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// Resolves Akka.Net actor based &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      29 </span>            :                 protected IAkkaSagaResolver SagaResolver { get; private set; }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 #region Implementation of IMessageHandler&lt;in HelloWorldRepliedTo&gt;
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      34 </span>            :                 /// Responds to the provided &lt;paramref name=&quot;message&quot;/&gt;.
+<span class="lineNum">      35 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      36 </span>            :                 /// &lt;param name=&quot;message&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to respond to or &quot;handle&quot;&lt;/param&gt;
+<span class="lineNum">      37 </span><span class="lineCov">          1 :                 protected virtual void HandleEvent(IEvent&lt;Guid&gt; message)</span>
+<span class="lineNum">      38 </span>            :                 {
+<span class="lineNum">      39 </span>            :                         // Resolve and locate the instance of the Saga to pass the message to
+<span class="lineNum">      40 </span>            :                         IActorRef item = SagaResolver.ResolveActor&lt;ConversationReportProcessManager, Guid&gt;(message.Id);
+<span class="lineNum">      41 </span>            :                         // Pass the message to it (and wait?)
+<span class="lineNum">      42 </span>            :                         bool result = item.Ask&lt;bool&gt;(message).Result;
+<span class="lineNum">      43 </span>            :                         // item.Tell(message);
+<span class="lineNum">      44 </span>            :                 }
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      47 </span>            :                 /// Responds to the provided &lt;paramref name=&quot;message&quot;/&gt;.
+<span class="lineNum">      48 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      49 </span>            :                 /// &lt;param name=&quot;message&quot;&gt;The &lt;see cref=&quot;HelloWorldRepliedTo&quot;/&gt; to respond to or &quot;handle&quot;&lt;/param&gt;
+<span class="lineNum">      50 </span><span class="lineCov">          1 :                 public void Handle(HelloWorldRepliedTo message)</span>
+<span class="lineNum">      51 </span>            :                 {
+<span class="lineNum">      52 </span>            :                         HandleEvent(message);
+<span class="lineNum">      53 </span>            :                 }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 #endregion
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 #region Implementation of IMessageHandler&lt;in HelloWorldSaid&gt;
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      60 </span>            :                 /// Responds to the provided &lt;paramref name=&quot;message&quot;/&gt;.
+<span class="lineNum">      61 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      62 </span>            :                 /// &lt;param name=&quot;message&quot;&gt;The &lt;see cref=&quot;HelloWorldSaid&quot;/&gt; to respond to or &quot;handle&quot;&lt;/param&gt;
+<span class="lineNum">      63 </span><span class="lineCov">          1 :                 public void Handle(HelloWorldSaid message)</span>
+<span class="lineNum">      64 </span>            :                 {
+<span class="lineNum">      65 </span>            :                         HandleEvent(message);
+<span class="lineNum">      66 </span>            :                 }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                 #endregion
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :                 #region Implementation of IMessageHandler&lt;in ConversationEnded&gt;
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      73 </span>            :                 /// Responds to the provided &lt;paramref name=&quot;message&quot;/&gt;.
+<span class="lineNum">      74 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      75 </span>            :                 /// &lt;param name=&quot;message&quot;&gt;The &lt;see cref=&quot;ConversationEnded&quot;/&gt; to respond to or &quot;handle&quot;&lt;/param&gt;
+<span class="lineNum">      76 </span><span class="lineCov">          1 :                 public void Handle(ConversationEnded message)</span>
+<span class="lineNum">      77 </span>            :                 {
+<span class="lineNum">      78 </span>            :                         HandleEvent(message);
+<span class="lineNum">      79 </span>            :                 }
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :                 #endregion
+<span class="lineNum">      82 </span>            :         }
+<span class="lineNum">      83 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

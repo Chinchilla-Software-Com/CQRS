@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Snapshots/DefaultSnapshotStrategy.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Snapshots</a> - DefaultSnapshotStrategy.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-09-29</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Linq;
+<span class="lineNum">      11 </span>            : using Cqrs.Domain;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : namespace Cqrs.Snapshots
+<span class="lineNum">      14 </span>            : {
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :         /// An &lt;see cref=&quot;ISnapshotStrategy{TAuthenticationToken}&quot;/&gt; that takes a snapshot every 15 versions.
+<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      18 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      19 </span>            :         public class DefaultSnapshotStrategy&lt;TAuthenticationToken&gt; : ISnapshotStrategy&lt;TAuthenticationToken&gt;
+<span class="lineNum">      20 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      21 </span>            :                 private const int SnapshotInterval = 15;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      24 </span>            :                 /// Indicates if the &lt;paramref name=&quot;aggregateType&quot;/&gt; is able to be snapshotted by checking if the &lt;paramref name=&quot;aggregateType&quot;/&gt;
+<span class="lineNum">      25 </span>            :                 /// directly inherits &lt;see cref=&quot;SnapshotAggregateRoot{TAuthenticationToken,TSnapshot}&quot;/&gt;
+<span class="lineNum">      26 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      27 </span>            :                 /// &lt;param name=&quot;aggregateType&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to check.&lt;/param&gt;
+<span class="lineNum">      28 </span><span class="lineCov">          1 :                 public virtual bool IsSnapshotable(Type aggregateType)</span>
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                         if (aggregateType.BaseType == null)
+<span class="lineNum">      31 </span>            :                                 return false;
+<span class="lineNum">      32 </span>            :                         if (aggregateType.BaseType.IsGenericType &amp;&amp; aggregateType.BaseType.GetGenericTypeDefinition() == typeof(SnapshotAggregateRoot&lt;,&gt;))
+<span class="lineNum">      33 </span>            :                                 return true;
+<span class="lineNum">      34 </span>            :                         return IsSnapshotable(aggregateType.BaseType);
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :                 /// Checks &lt;see cref=&quot;IsSnapshotable&quot;/&gt; and if it is, also checks if the calculated version number would be exactly dividable by &lt;see cref=&quot;GetSnapshotInterval&quot;/&gt;.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span>            :                 /// &lt;param name=&quot;aggregate&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to check.&lt;/param&gt;
+<span class="lineNum">      41 </span><span class="lineCov">          1 :                 public virtual bool ShouldMakeSnapShot(IAggregateRoot&lt;TAuthenticationToken&gt; aggregate)</span>
+<span class="lineNum">      42 </span>            :                 {
+<span class="lineNum">      43 </span>            :                         if (!IsSnapshotable(aggregate.GetType()))
+<span class="lineNum">      44 </span>            :                                 return false;
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                         // Why isn't this something as simple as `(aggregate.Version + aggregate.GetUncommittedChanges().Count()) % SnapshotInterval`???
+<span class="lineNum">      47 </span>            :                         int i = aggregate.Version;
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                         int limit = aggregate.GetUncommittedChanges().Count();
+<span class="lineNum">      50 </span>            :                         for (int j = 0; j &lt; limit; j++)
+<span class="lineNum">      51 </span>            :                                 if (++i % GetSnapshotInterval() == 0 &amp;&amp; i != 0)
+<span class="lineNum">      52 </span>            :                                         return true;
+<span class="lineNum">      53 </span>            :                         return false;
+<span class="lineNum">      54 </span>            :                 }
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      57 </span>            :                 /// Returns the value of &lt;see cref=&quot;SnapshotInterval&quot;/&gt;.
+<span class="lineNum">      58 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      59 </span><span class="lineCov">          1 :                 protected virtual int GetSnapshotInterval()</span>
+<span class="lineNum">      60 </span>            :                 {
+<span class="lineNum">      61 </span>            :                         return SnapshotInterval;
+<span class="lineNum">      62 </span>            :                 }
+<span class="lineNum">      63 </span>            :         }
+<span class="lineNum">      64 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

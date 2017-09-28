@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Repositories/Queries/QueryPredicateExtensions.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Cqrs/Repositories/Queries</a> - QueryPredicateExtensions.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-09-29</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Linq;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : namespace Cqrs.Repositories.Queries
+<span class="lineNum">      14 </span>            : {
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :         /// A collection of extension methods for working with queries.
+<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      18 </span>            :         public static class QueryPredicateExtensions
+<span class="lineNum">      19 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      20 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :                 /// Gets the value from the provided &lt;paramref name=&quot;keyValuePair&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">      22 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      23 </span>            :                 /// &lt;remarks&gt;
+<span class="lineNum">      24 </span>            :                 /// Gets the &lt;see cref=&quot;KeyValuePair{TKey,TValue}.Value&quot;/&gt; from the provided &lt;paramref name=&quot;keyValuePair&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">      25 </span>            :                 /// &lt;/remarks&gt;
+<span class="lineNum">      26 </span><span class="lineCov">          1 :                 public static TResult GetValue&lt;TResult&gt;(this KeyValuePair&lt;string, object&gt; keyValuePair)</span>
+<span class="lineNum">      27 </span>            :                 {
+<span class="lineNum">      28 </span>            :                         return (TResult) keyValuePair.Value;
+<span class="lineNum">      29 </span>            :                 }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// Gets the value from the provided &lt;paramref name=&quot;collection&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :                 /// &lt;remarks&gt;
+<span class="lineNum">      35 </span>            :                 /// Filters the provided &lt;paramref name=&quot;collection&quot;/&gt; where the &lt;see cref=&quot;KeyValuePair{TKey,TValue}.Key&quot;/&gt; equals the provided &lt;paramref name=&quot;key&quot;/&gt;
+<span class="lineNum">      36 </span>            :                 /// then gets the &lt;see cref=&quot;KeyValuePair{TKey,TValue}.Value&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">      37 </span>            :                 /// &lt;/remarks&gt;
+<span class="lineNum">      38 </span><span class="lineCov">          1 :                 public static TResult GetValue&lt;TResult&gt;(this ISet&lt;KeyValuePair&lt;string, object&gt;&gt; collection, string key)</span>
+<span class="lineNum">      39 </span>            :                 {
+<span class="lineNum">      40 </span>            :                         return collection.Single(kvp =&gt; kvp.Key == key).GetValue&lt;TResult&gt;();
+<span class="lineNum">      41 </span>            :                 }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      44 </span>            :                 /// Gets the value from the provided &lt;paramref name=&quot;collection&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      46 </span>            :                 /// &lt;remarks&gt;
+<span class="lineNum">      47 </span>            :                 /// Gets the &lt;see cref=&quot;KeyValuePair{TKey,TValue}&quot;/&gt; at index &lt;paramref name=&quot;index&quot;/&gt; from the provided &lt;paramref name=&quot;collection&quot;/&gt;
+<span class="lineNum">      48 </span>            :                 /// then gets the &lt;see cref=&quot;KeyValuePair{TKey,TValue}.Value&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">      49 </span>            :                 /// &lt;/remarks&gt;
+<span class="lineNum">      50 </span><span class="lineCov">          1 :                 public static TResult GetValue&lt;TResult&gt;(this SortedSet&lt;KeyValuePair&lt;string, object&gt;&gt; collection, int index)</span>
+<span class="lineNum">      51 </span>            :                 {
+<span class="lineNum">      52 </span>            :                         int collectionIndex = 0;
+<span class="lineNum">      53 </span>            :                         foreach (KeyValuePair&lt;string, object&gt; keyValuePair in collection)
+<span class="lineNum">      54 </span>            :                         {
+<span class="lineNum">      55 </span>            :                                 if (index &lt; collectionIndex++)
+<span class="lineNum">      56 </span>            :                                         continue;
+<span class="lineNum">      57 </span>            :                                 return keyValuePair.GetValue&lt;TResult&gt;();
+<span class="lineNum">      58 </span>            :                         }
+<span class="lineNum">      59 </span>            :                         throw new IndexOutOfRangeException();
+<span class="lineNum">      60 </span>            :                 }
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      63 </span>            :                 /// Gets the value from the provided &lt;paramref name=&quot;queryParameter&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">      64 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      65 </span>            :                 /// &lt;remarks&gt;
+<span class="lineNum">      66 </span>            :                 /// Gets the &lt;see cref=&quot;QueryParameter.ParameterValue&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">      67 </span>            :                 /// &lt;/remarks&gt;
+<span class="lineNum">      68 </span><span class="lineCov">          1 :                 public static TResult GetValue&lt;TResult&gt;(this QueryParameter queryParameter)</span>
+<span class="lineNum">      69 </span>            :                 {
+<span class="lineNum">      70 </span>            :                         return (TResult)queryParameter.ParameterValue;
+<span class="lineNum">      71 </span>            :                 }
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      74 </span>            :                 /// Gets the value from the provided &lt;paramref name=&quot;collection&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">      75 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      76 </span>            :                 /// &lt;remarks&gt;
+<span class="lineNum">      77 </span>            :                 /// Filters the provided &lt;paramref name=&quot;collection&quot;/&gt; where the &lt;see cref=&quot;QueryParameter.ParameterName&quot;/&gt; equals the provided &lt;paramref name=&quot;parameterName&quot;/&gt;
+<span class="lineNum">      78 </span>            :                 /// then gets the &lt;see cref=&quot;QueryParameter.ParameterValue&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">      79 </span>            :                 /// &lt;/remarks&gt;
+<span class="lineNum">      80 </span><span class="lineCov">          1 :                 public static TResult GetValue&lt;TResult&gt;(this ISet&lt;QueryParameter&gt; collection, string parameterName)</span>
+<span class="lineNum">      81 </span>            :                 {
+<span class="lineNum">      82 </span>            :                         return collection.Single(queryParameter =&gt; queryParameter.ParameterName == parameterName).GetValue&lt;TResult&gt;();
+<span class="lineNum">      83 </span>            :                 }
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      86 </span>            :                 /// Gets the value from the provided &lt;paramref name=&quot;collection&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">      87 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      88 </span>            :                 /// &lt;remarks&gt;
+<span class="lineNum">      89 </span>            :                 /// Gets the &lt;see cref=&quot;QueryParameter&quot;/&gt; at index &lt;paramref name=&quot;index&quot;/&gt; from the provided &lt;paramref name=&quot;collection&quot;/&gt;
+<span class="lineNum">      90 </span>            :                 /// then gets the &lt;see cref=&quot;QueryParameter.ParameterValue&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">      91 </span>            :                 /// &lt;/remarks&gt;
+<span class="lineNum">      92 </span><span class="lineCov">          1 :                 public static TResult GetValue&lt;TResult&gt;(this SortedSet&lt;QueryParameter&gt; collection, int index)</span>
+<span class="lineNum">      93 </span>            :                 {
+<span class="lineNum">      94 </span>            :                         int collectionIndex = 0;
+<span class="lineNum">      95 </span>            :                         foreach (QueryParameter queryParameter in collection)
+<span class="lineNum">      96 </span>            :                         {
+<span class="lineNum">      97 </span>            :                                 if (index &lt; collectionIndex++)
+<span class="lineNum">      98 </span>            :                                         continue;
+<span class="lineNum">      99 </span>            :                                 return queryParameter.GetValue&lt;TResult&gt;();
+<span class="lineNum">     100 </span>            :                         }
+<span class="lineNum">     101 </span>            :                         throw new IndexOutOfRangeException();
+<span class="lineNum">     102 </span>            :                 }
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     105 </span>            :                 /// Gets the value from the provided &lt;paramref name=&quot;collection&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">     106 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     107 </span>            :                 /// &lt;remarks&gt;
+<span class="lineNum">     108 </span>            :                 /// Filters the provided &lt;paramref name=&quot;collection&quot;/&gt; where the &lt;see cref=&quot;QueryParameter.ParameterName&quot;/&gt; equals the provided &lt;paramref name=&quot;parameterName&quot;/&gt;
+<span class="lineNum">     109 </span>            :                 /// then gets the &lt;see cref=&quot;QueryParameter.ParameterValue&quot;/&gt; cast to &lt;typeparamref name=&quot;TResult&quot;/&gt;.
+<span class="lineNum">     110 </span>            :                 /// &lt;/remarks&gt;
+<span class="lineNum">     111 </span><span class="lineCov">          1 :                 public static TResult GetValue&lt;TResult&gt;(this SortedSet&lt;QueryParameter&gt; collection, string parameterName)</span>
+<span class="lineNum">     112 </span>            :                 {
+<span class="lineNum">     113 </span>            :                         return collection.Single(queryParameter =&gt; queryParameter.ParameterName == parameterName).GetValue&lt;TResult&gt;();
+<span class="lineNum">     114 </span>            :                 }
+<span class="lineNum">     115 </span>            :         }
+<span class="lineNum">     116 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

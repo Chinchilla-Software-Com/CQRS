@@ -1,0 +1,775 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Bus/InProcessBus.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Bus</a> - InProcessBus.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-09-29</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Concurrent;
+<span class="lineNum">      11 </span>            : using System.Collections.Generic;
+<span class="lineNum">      12 </span>            : using System.Diagnostics;
+<span class="lineNum">      13 </span>            : using System.Linq;
+<span class="lineNum">      14 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      15 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      16 </span>            : using Cqrs.Commands;
+<span class="lineNum">      17 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      18 </span>            : using Cqrs.Events;
+<span class="lineNum">      19 </span>            : using Cqrs.Messages;
+<span class="lineNum">      20 </span>            : using SpinWait = Cqrs.Infrastructure.SpinWait;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : namespace Cqrs.Bus
+<span class="lineNum">      23 </span>            : {
+<span class="lineNum">      24 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      25 </span>            :         /// An in process command bus 
+<span class="lineNum">      26 </span>            :         /// (&lt;see cref=&quot;ICommandPublisher{TAuthenticationToken}&quot;/&gt; and &lt;see cref=&quot;ICommandReceiver{TAuthenticationToken}&quot;/&gt;)
+<span class="lineNum">      27 </span>            :         /// event bus
+<span class="lineNum">      28 </span>            :         /// (&lt;see cref=&quot;IEventPublisher{TAuthenticationToken}&quot;/&gt; and &lt;see cref=&quot;IEventHandler{TAuthenticationToken,TTarget,TEvent}&quot;/&gt;)
+<span class="lineNum">      29 </span>            :         /// as well as a &lt;see cref=&quot;IEventHandlerRegistrar&quot;/&gt; and &lt;see cref=&quot;ICommandHandlerRegistrar&quot;/&gt; that requires no networking.
+<span class="lineNum">      30 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      31 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      32 </span>            :         public class InProcessBus&lt;TAuthenticationToken&gt;
+<span class="lineNum">      33 </span>            :                 : IPublishAndWaitCommandPublisher&lt;TAuthenticationToken&gt;
+<span class="lineNum">      34 </span>            :                 , IEventPublisher&lt;TAuthenticationToken&gt;
+<span class="lineNum">      35 </span>            :                 , IEventHandlerRegistrar
+<span class="lineNum">      36 </span>            :                 , ICommandHandlerRegistrar
+<span class="lineNum">      37 </span>            :                 , ICommandReceiver&lt;TAuthenticationToken&gt;
+<span class="lineNum">      38 </span>            :                 , IEventReceiver&lt;TAuthenticationToken&gt;
+<span class="lineNum">      39 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      41 </span>            :                 /// Gets or sets the Route Manager
+<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      43 </span>            :                 private static RouteManager Routes { get; set; }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      46 </span>            :                 /// Gets or sets the Authentication Token Helper
+<span class="lineNum">      47 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      48 </span>            :                 protected IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; AuthenticationTokenHelper { get; private set; }
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      51 </span>            :                 /// Gets or sets the CorrelationId Helper
+<span class="lineNum">      52 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      53 </span>            :                 protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      56 </span>            :                 /// Gets or sets the Dependency Resolver
+<span class="lineNum">      57 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      58 </span>            :                 protected IDependencyResolver DependencyResolver { get; private set; }
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      61 </span>            :                 /// Gets or sets the Logger
+<span class="lineNum">      62 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      63 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      66 </span>            :                 /// Gets or sets the Configuration Manager
+<span class="lineNum">      67 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      68 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      71 </span>            :                 /// Gets or sets the Bus Helper
+<span class="lineNum">      72 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      73 </span>            :                 protected IBusHelper BusHelper { get; private set; }
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      76 </span>            :                 /// Gets or sets the current list of events waiting to be evaluated for &lt;see cref=&quot;PublishAndWait{TCommand,TEvent}(TCommand,Cqrs.Events.IEventReceiver{TAuthenticationToken})&quot;/&gt;
+<span class="lineNum">      77 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      78 </span>            :                 protected IDictionary&lt;Guid, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt; EventWaits { get; private set; }
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      81 </span>            :                 /// Gets or sets the Telemetry Helper
+<span class="lineNum">      82 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      83 </span>            :                 protected ITelemetryHelper TelemetryHelper { get; set; }
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                 static InProcessBus()
+<span class="lineNum">      86 </span>            :                 {
+<span class="lineNum">      87 </span>            :                         Routes = new RouteManager();
+<span class="lineNum">      88 </span>            :                 }
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      91 </span>            :                 /// Instantiates a new instance of the &lt;see cref=&quot;InProcessBus{TAuthenticationToken}&quot;/&gt; class.
+<span class="lineNum">      92 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      93 </span><span class="lineCov">          1 :                 public InProcessBus(IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger, IConfigurationManager configurationManager, IBusHelper busHelper)</span>
+<span class="lineNum">      94 </span>            :                 {
+<span class="lineNum">      95 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
+<span class="lineNum">      96 </span>            :                         CorrelationIdHelper = correlationIdHelper;
+<span class="lineNum">      97 </span>            :                         DependencyResolver = dependencyResolver;
+<span class="lineNum">      98 </span>            :                         Logger = logger;
+<span class="lineNum">      99 </span>            :                         ConfigurationManager = configurationManager;
+<span class="lineNum">     100 </span>            :                         BusHelper = busHelper;
+<span class="lineNum">     101 </span>            :                         EventWaits = new ConcurrentDictionary&lt;Guid, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt;();
+<span class="lineNum">     102 </span>            :                         TelemetryHelper = configurationManager.CreateTelemetryHelper(&quot;Cqrs.InProcessBus.UseApplicationInsightTelemetryHelper&quot;, correlationIdHelper);
+<span class="lineNum">     103 </span>            :                 }
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     106 </span>            :                 /// Sets the
+<span class="lineNum">     107 </span>            :                 /// &lt;see cref=&quot;IMessageWithAuthenticationToken{TAuthenticationToken}.AuthenticationToken&quot;/&gt;,
+<span class="lineNum">     108 </span>            :                 /// &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt;,
+<span class="lineNum">     109 </span>            :                 /// &lt;see cref=&quot;IMessage.OriginatingFramework&quot;/&gt; to &quot;Built-In&quot; and
+<span class="lineNum">     110 </span>            :                 /// adds a value of &quot;Built-In&quot; to the &lt;see cref=&quot;IMessage.Frameworks&quot;/&gt;
+<span class="lineNum">     111 </span>            :                 /// if not already done so
+<span class="lineNum">     112 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     113 </span><span class="lineCov">          1 :                 protected virtual void PrepareCommand&lt;TCommand&gt;(TCommand command)</span>
+<span class="lineNum">     114 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     115 </span>            :                 {
+<span class="lineNum">     116 </span>            :                         if (command.AuthenticationToken == null || command.AuthenticationToken.Equals(default(TAuthenticationToken)))
+<span class="lineNum">     117 </span>            :                                 command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+<span class="lineNum">     118 </span>            :                         command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span>            :                         if (string.IsNullOrWhiteSpace(command.OriginatingFramework))
+<span class="lineNum">     121 </span>            :                                 command.OriginatingFramework = &quot;Built-In&quot;;
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :                         var frameworks = new List&lt;string&gt;();
+<span class="lineNum">     124 </span>            :                         if (command.Frameworks != null)
+<span class="lineNum">     125 </span>            :                                 frameworks.AddRange(command.Frameworks);
+<span class="lineNum">     126 </span>            :                         frameworks.Add(&quot;Built-In&quot;);
+<span class="lineNum">     127 </span>            :                         command.Frameworks = frameworks;
+<span class="lineNum">     128 </span>            :                 }
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     131 </span>            :                 /// Locates a suitable &lt;see cref=&quot;ICommandValidator{TAuthenticationToken,TCommand}&quot;/&gt; to validate the provided &lt;paramref name=&quot;command&quot;/&gt; and validates the provided &lt;paramref name=&quot;command&quot;/&gt; if one is located
+<span class="lineNum">     132 </span>            :                 /// Calls &lt;see cref=&quot;PrepareCommand{TCommand}&quot;/&gt;
+<span class="lineNum">     133 </span>            :                 /// Checks if the provided &lt;paramref name=&quot;command&quot;/&gt; is required to be processed
+<span class="lineNum">     134 </span>            :                 /// Locates a single &lt;see cref=&quot;RouteHandlerDelegate&quot;&gt;command handler&lt;/see&gt; for the provided &lt;paramref name=&quot;command&quot;/&gt;
+<span class="lineNum">     135 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     136 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     137 </span>            :                 /// False if a suitable &lt;see cref=&quot;ICommandValidator{TAuthenticationToken,TCommand}&quot;/&gt; is located and the provided &lt;paramref name=&quot;command&quot;/&gt; fails validation,
+<span class="lineNum">     138 </span>            :                 /// False if no &lt;see cref=&quot;RouteHandlerDelegate&quot;&gt;command handler&lt;/see&gt; is found but the command isn't required to be handled,
+<span class="lineNum">     139 </span>            :                 /// True otherwise.
+<span class="lineNum">     140 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     141 </span><span class="lineCov">          1 :                 protected virtual bool PrepareAndValidateCommand&lt;TCommand&gt;(TCommand command, out RouteHandlerDelegate commandHandler)</span>
+<span class="lineNum">     142 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     143 </span>            :                 {
+<span class="lineNum">     144 </span>            :                         Type commandType = command.GetType();
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            :                         if (command.Frameworks != null &amp;&amp; command.Frameworks.Contains(&quot;Built-In&quot;))
+<span class="lineNum">     147 </span>            :                         {
+<span class="lineNum">     148 </span>            :                                 Logger.LogInfo(&quot;The provided command has already been processed by the Built-In bus.&quot;, string.Format(&quot;{0}\\PrepareAndValidateEvent({1})&quot;, GetType().FullName, commandType.FullName));
+<span class="lineNum">     149 </span>            :                                 commandHandler = null;
+<span class="lineNum">     150 </span>            :                                 return false;
+<span class="lineNum">     151 </span>            :                         }
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            :                         ICommandValidator&lt;TAuthenticationToken, TCommand&gt; commandValidator = null;
+<span class="lineNum">     154 </span>            :                         try
+<span class="lineNum">     155 </span>            :                         {
+<span class="lineNum">     156 </span>            :                                 commandValidator = DependencyResolver.Resolve&lt;ICommandValidator&lt;TAuthenticationToken, TCommand&gt;&gt;();
+<span class="lineNum">     157 </span>            :                         }
+<span class="lineNum">     158 </span>            :                         catch (Exception exception)
+<span class="lineNum">     159 </span>            :                         {
+<span class="lineNum">     160 </span>            :                                 Logger.LogDebug(&quot;Locating an ICommandValidator failed.&quot;, string.Format(&quot;{0}\\Handle({1})&quot;, GetType().FullName, commandType.FullName), exception);
+<span class="lineNum">     161 </span>            :                         }
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span>            :                         if (commandValidator != null &amp;&amp; !commandValidator.IsCommandValid(command))
+<span class="lineNum">     164 </span>            :                         {
+<span class="lineNum">     165 </span>            :                                 Logger.LogInfo(&quot;The provided command is not valid.&quot;, string.Format(&quot;{0}\\Handle({1})&quot;, GetType().FullName, commandType.FullName));
+<span class="lineNum">     166 </span>            :                                 commandHandler = null;
+<span class="lineNum">     167 </span>            :                                 return false;
+<span class="lineNum">     168 </span>            :                         }
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            :                         PrepareCommand(command);
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span>            :                         bool isRequired = BusHelper.IsEventRequired(commandType);
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span>            :                         commandHandler = Routes.GetSingleHandler(command, isRequired);
+<span class="lineNum">     175 </span>            :                         // This check doesn't require an isRequired check as there will be an exception raised above and handled below.
+<span class="lineNum">     176 </span>            :                         if (commandHandler == null)
+<span class="lineNum">     177 </span>            :                         {
+<span class="lineNum">     178 </span>            :                                 Logger.LogDebug(string.Format(&quot;The command handler for '{0}' is not required.&quot;, commandType.FullName));
+<span class="lineNum">     179 </span>            :                                 return false;
+<span class="lineNum">     180 </span>            :                         }
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span>            :                         return true;
+<span class="lineNum">     183 </span>            :                 }
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span>            :                 #region Implementation of ICommandSender&lt;TAuthenticationToken&gt;
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     188 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;/&gt; on the command bus.
+<span class="lineNum">     189 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     190 </span>            :                 void ICommandPublisher&lt;TAuthenticationToken&gt;.Publish&lt;TCommand&gt;(TCommand command)
+<span class="lineNum">     191 </span>            :                 {
+<span class="lineNum">     192 </span>            :                         Send(command);
+<span class="lineNum">     193 </span>            :                 }
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     196 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;/&gt; on the command bus.
+<span class="lineNum">     197 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     198 </span><span class="lineCov">          1 :                 public virtual void Send&lt;TCommand&gt;(TCommand command)</span>
+<span class="lineNum">     199 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     200 </span>            :                 {
+<span class="lineNum">     201 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+<span class="lineNum">     202 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
+<span class="lineNum">     203 </span>            :                         string responseCode = &quot;200&quot;;
+<span class="lineNum">     204 </span>            :                         bool wasSuccessfull = false;
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;InProcessBus&quot; } };
+<span class="lineNum">     207 </span>            :                         string telemetryName = string.Format(&quot;{0}/{1}&quot;, command.GetType().FullName, command.Id);
+<span class="lineNum">     208 </span>            :                         var telemeteredCommand = command as ITelemeteredMessage;
+<span class="lineNum">     209 </span>            :                         if (telemeteredCommand != null)
+<span class="lineNum">     210 </span>            :                                 telemetryName = telemeteredCommand.TelemetryName;
+<span class="lineNum">     211 </span>            :                         telemetryName = string.Format(&quot;Command/{0}&quot;, telemetryName);
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span>            :                         try
+<span class="lineNum">     214 </span>            :                         {
+<span class="lineNum">     215 </span>            :                                 RouteHandlerDelegate commandHandler;
+<span class="lineNum">     216 </span>            :                                 if (!PrepareAndValidateCommand(command, out commandHandler))
+<span class="lineNum">     217 </span>            :                                         return;
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span>            :                                 try
+<span class="lineNum">     220 </span>            :                                 {
+<span class="lineNum">     221 </span>            :                                         Action&lt;IMessage&gt; handler = commandHandler.Delegate;
+<span class="lineNum">     222 </span>            :                                         handler(command);
+<span class="lineNum">     223 </span>            :                                 }
+<span class="lineNum">     224 </span>            :                                 catch (Exception exception)
+<span class="lineNum">     225 </span>            :                                 {
+<span class="lineNum">     226 </span>            :                                         responseCode = &quot;500&quot;;
+<span class="lineNum">     227 </span>            :                                         Logger.LogError(&quot;An issue occurred while trying to publish a command.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; {{&quot;Command&quot;, command}});
+<span class="lineNum">     228 </span>            :                                         throw;
+<span class="lineNum">     229 </span>            :                                 }
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span>            :                                 Logger.LogInfo(string.Format(&quot;A command was sent of type {0}.&quot;, command.GetType().FullName));
+<span class="lineNum">     232 </span>            :                                 wasSuccessfull = true;
+<span class="lineNum">     233 </span>            :                         }
+<span class="lineNum">     234 </span>            :                         finally
+<span class="lineNum">     235 </span>            :                         {
+<span class="lineNum">     236 </span>            :                                 mainStopWatch.Stop();
+<span class="lineNum">     237 </span>            :                                 TelemetryHelper.TrackDependency(&quot;InProcessBus/CommandBus&quot;, &quot;Command&quot;, telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     238 </span>            :                         }
+<span class="lineNum">     239 </span>            :                 }
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     242 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;commands&quot;/&gt; on the command bus.
+<span class="lineNum">     243 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     244 </span>            :                 void ICommandPublisher&lt;TAuthenticationToken&gt;.Publish&lt;TCommand&gt;(IEnumerable&lt;TCommand&gt; commands)
+<span class="lineNum">     245 </span>            :                 {
+<span class="lineNum">     246 </span>            :                         Send(commands);
+<span class="lineNum">     247 </span>            :                 }
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     250 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;commands&quot;/&gt; on the command bus.
+<span class="lineNum">     251 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     252 </span><span class="lineCov">          1 :                 public virtual void Send&lt;TCommand&gt;(IEnumerable&lt;TCommand&gt; commands)</span>
+<span class="lineNum">     253 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     254 </span>            :                 {
+<span class="lineNum">     255 </span>            :                         IEnumerable&lt;TCommand&gt; sourceCommands = commands.ToList();
+<span class="lineNum">     256 </span>            : 
+<span class="lineNum">     257 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+<span class="lineNum">     258 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
+<span class="lineNum">     259 </span>            :                         string responseCode = &quot;500&quot;;
+<span class="lineNum">     260 </span>            :                         bool wasSuccessfull = false;
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;InProcessBus&quot; } };
+<span class="lineNum">     263 </span>            :                         string telemetryName = &quot;Commands&quot;;
+<span class="lineNum">     264 </span>            :                         string telemetryNames = string.Empty;
+<span class="lineNum">     265 </span>            :                         foreach (TCommand command in sourceCommands)
+<span class="lineNum">     266 </span>            :                         {
+<span class="lineNum">     267 </span>            :                                 string subTelemetryName = string.Format(&quot;{0}/{1}&quot;, command.GetType().FullName, command.Id);
+<span class="lineNum">     268 </span>            :                                 var telemeteredCommand = command as ITelemeteredMessage;
+<span class="lineNum">     269 </span>            :                                 if (telemeteredCommand != null)
+<span class="lineNum">     270 </span>            :                                         subTelemetryName = telemeteredCommand.TelemetryName;
+<span class="lineNum">     271 </span>            :                                 telemetryNames = string.Format(&quot;{0}{1},&quot;, telemetryNames, subTelemetryName);
+<span class="lineNum">     272 </span>            :                         }
+<span class="lineNum">     273 </span>            :                         if (telemetryNames.Length &gt; 0)
+<span class="lineNum">     274 </span>            :                                 telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
+<span class="lineNum">     275 </span>            :                         telemetryProperties.Add(&quot;Commands&quot;, telemetryNames);
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span>            :                         try
+<span class="lineNum">     278 </span>            :                         {
+<span class="lineNum">     279 </span>            :                                 foreach (TCommand command in sourceCommands)
+<span class="lineNum">     280 </span>            :                                         Send(command);
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span>            :                                 responseCode = &quot;200&quot;;
+<span class="lineNum">     283 </span>            :                                 wasSuccessfull = true;
+<span class="lineNum">     284 </span>            :                         }
+<span class="lineNum">     285 </span>            :                         finally
+<span class="lineNum">     286 </span>            :                         {
+<span class="lineNum">     287 </span>            :                                 mainStopWatch.Stop();
+<span class="lineNum">     288 </span>            :                                 TelemetryHelper.TrackDependency(&quot;InProcessBus/CommandBus&quot;, &quot;Command&quot;, telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     289 </span>            :                         }
+<span class="lineNum">     290 </span>            :                 }
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span>            :                 #endregion
+<span class="lineNum">     293 </span>            : 
+<span class="lineNum">     294 </span>            :                 #region Implementation of ISendAndWaitCommandSender&lt;TAuthenticationToken&gt;
+<span class="lineNum">     295 </span>            : 
+<span class="lineNum">     296 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     297 </span>            :                 /// Sends the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt;
+<span class="lineNum">     298 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     299 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     300 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     301 </span><span class="lineCov">          1 :                 public virtual TEvent SendAndWait&lt;TCommand, TEvent&gt;(TCommand command, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     302 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     303 </span>            :                 {
+<span class="lineNum">     304 </span>            :                         return SendAndWait&lt;TCommand, TEvent&gt;(command, -1, eventReceiver);
+<span class="lineNum">     305 </span>            :                 }
+<span class="lineNum">     306 </span>            : 
+<span class="lineNum">     307 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     308 </span>            :                 /// Sends the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     309 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     310 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     311 </span>            :                 /// &lt;param name=&quot;millisecondsTimeout&quot;&gt;The number of milliseconds to wait, or &lt;see cref=&quot;F:System.Threading.Timeout.Infinite&quot;/&gt; (-1) to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     312 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     313 </span><span class="lineCov">          1 :                 public virtual TEvent SendAndWait&lt;TCommand, TEvent&gt;(TCommand command, int millisecondsTimeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     314 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     315 </span>            :                 {
+<span class="lineNum">     316 </span>            :                         return SendAndWait(command, events =&gt; (TEvent)events.SingleOrDefault(@event =&gt; @event is TEvent), millisecondsTimeout, eventReceiver);
+<span class="lineNum">     317 </span>            :                 }
+<span class="lineNum">     318 </span>            : 
+<span class="lineNum">     319 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     320 </span>            :                 /// Sends the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     321 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     322 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     323 </span>            :                 /// &lt;param name=&quot;timeout&quot;&gt;A &lt;see cref=&quot;T:System.TimeSpan&quot;/&gt; that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     324 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     325 </span><span class="lineCov">          1 :                 public virtual TEvent SendAndWait&lt;TCommand, TEvent&gt;(TCommand command, TimeSpan timeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     326 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     327 </span>            :                 {
+<span class="lineNum">     328 </span>            :                         long num = (long)timeout.TotalMilliseconds;
+<span class="lineNum">     329 </span>            :                         if (num &lt; -1L || num &gt; int.MaxValue)
+<span class="lineNum">     330 </span>            :                                 throw new ArgumentOutOfRangeException(&quot;timeout&quot;, timeout, &quot;SpinWait_SpinUntil_TimeoutWrong&quot;);
+<span class="lineNum">     331 </span>            :                         return SendAndWait&lt;TCommand, TEvent&gt;(command, (int)timeout.TotalMilliseconds, eventReceiver);
+<span class="lineNum">     332 </span>            :                 }
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     335 </span>            :                 /// Sends the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits until the specified condition is satisfied an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt;
+<span class="lineNum">     336 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     337 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     338 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
+<span class="lineNum">     339 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     340 </span><span class="lineCov">          1 :                 public virtual TEvent SendAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     341 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     342 </span>            :                 {
+<span class="lineNum">     343 </span>            :                         return PublishAndWait(command, condition, eventReceiver);
+<span class="lineNum">     344 </span>            :                 }
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     347 </span>            :                 /// Sends the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     348 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     349 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     350 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
+<span class="lineNum">     351 </span>            :                 /// &lt;param name=&quot;millisecondsTimeout&quot;&gt;The number of milliseconds to wait, or &lt;see cref=&quot;F:System.Threading.Timeout.Infinite&quot;/&gt; (-1) to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     352 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     353 </span><span class="lineCov">          1 :                 public virtual TEvent SendAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, int millisecondsTimeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     354 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     355 </span>            :                 {
+<span class="lineNum">     356 </span>            :                         return PublishAndWait(command, condition, millisecondsTimeout, eventReceiver);
+<span class="lineNum">     357 </span>            :                 }
+<span class="lineNum">     358 </span>            : 
+<span class="lineNum">     359 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     360 </span>            :                 /// Sends the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     361 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     362 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">     363 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
+<span class="lineNum">     364 </span>            :                 /// &lt;param name=&quot;timeout&quot;&gt;A &lt;see cref=&quot;T:System.TimeSpan&quot;/&gt; that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     365 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     366 </span><span class="lineCov">          1 :                 public virtual TEvent SendAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, TimeSpan timeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     367 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     368 </span>            :                 {
+<span class="lineNum">     369 </span>            :                         return PublishAndWait(command, condition, timeout, eventReceiver);
+<span class="lineNum">     370 </span>            :                 }
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span>            :                 #endregion
+<span class="lineNum">     373 </span>            : 
+<span class="lineNum">     374 </span>            :                 #region Implementation of IEventPublisher&lt;TAuthenticationToken&gt;
+<span class="lineNum">     375 </span>            : 
+<span class="lineNum">     376 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     377 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;event&quot;/&gt; on the event bus.
+<span class="lineNum">     378 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     379 </span><span class="lineCov">          1 :                 public virtual void Publish&lt;TEvent&gt;(TEvent @event)</span>
+<span class="lineNum">     380 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
+<span class="lineNum">     381 </span>            :                 {
+<span class="lineNum">     382 </span>            :                         Type eventType = @event.GetType();
+<span class="lineNum">     383 </span>            :                         string eventName = eventType.FullName;
+<span class="lineNum">     384 </span>            :                         ISagaEvent&lt;TAuthenticationToken&gt; sagaEvent = @event as ISagaEvent&lt;TAuthenticationToken&gt;;
+<span class="lineNum">     385 </span>            :                         if (sagaEvent != null)
+<span class="lineNum">     386 </span>            :                                 eventName = string.Format(&quot;Cqrs.Events.SagaEvent[{0}]&quot;, sagaEvent.Event.GetType().FullName);
+<span class="lineNum">     387 </span>            : 
+<span class="lineNum">     388 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+<span class="lineNum">     389 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
+<span class="lineNum">     390 </span>            :                         string responseCode = &quot;200&quot;;
+<span class="lineNum">     391 </span>            :                         bool wasSuccessfull = false;
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;InProcessBus&quot; } };
+<span class="lineNum">     394 </span>            :                         string telemetryName = string.Format(&quot;{0}/{1}/{2}&quot;, eventName, @event.GetIdentity(), @event.Id);
+<span class="lineNum">     395 </span>            :                         var telemeteredEvent = @event as ITelemeteredMessage;
+<span class="lineNum">     396 </span>            :                         if (telemeteredEvent != null)
+<span class="lineNum">     397 </span>            :                                 telemetryName = telemeteredEvent.TelemetryName;
+<span class="lineNum">     398 </span>            :                         telemetryName = string.Format(&quot;Event/{0}&quot;, telemetryName);
+<span class="lineNum">     399 </span>            : 
+<span class="lineNum">     400 </span>            :                         try
+<span class="lineNum">     401 </span>            :                         {
+<span class="lineNum">     402 </span>            :                                 if (@event.Frameworks != null &amp;&amp; @event.Frameworks.Contains(&quot;Built-In&quot;))
+<span class="lineNum">     403 </span>            :                                 {
+<span class="lineNum">     404 </span>            :                                         Logger.LogInfo(&quot;The provided event has already been processed by the Built-In bus.&quot;, string.Format(&quot;{0}\\PrepareAndValidateEvent({1})&quot;, GetType().FullName, eventType.FullName));
+<span class="lineNum">     405 </span>            :                                         return;
+<span class="lineNum">     406 </span>            :                                 }
+<span class="lineNum">     407 </span>            : 
+<span class="lineNum">     408 </span>            :                                 if (@event.AuthenticationToken == null || @event.AuthenticationToken.Equals(default(TAuthenticationToken)))
+<span class="lineNum">     409 </span>            :                                         @event.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+<span class="lineNum">     410 </span>            :                                 @event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span>            :                                 if (string.IsNullOrWhiteSpace(@event.OriginatingFramework))
+<span class="lineNum">     413 </span>            :                                 {
+<span class="lineNum">     414 </span>            :                                         @event.TimeStamp = DateTimeOffset.UtcNow;
+<span class="lineNum">     415 </span>            :                                         @event.OriginatingFramework = &quot;Built-In&quot;;
+<span class="lineNum">     416 </span>            :                                 }
+<span class="lineNum">     417 </span>            : 
+<span class="lineNum">     418 </span>            :                                 var frameworks = new List&lt;string&gt;();
+<span class="lineNum">     419 </span>            :                                 if (@event.Frameworks != null)
+<span class="lineNum">     420 </span>            :                                         frameworks.AddRange(@event.Frameworks);
+<span class="lineNum">     421 </span>            :                                 frameworks.Add(&quot;Built-In&quot;);
+<span class="lineNum">     422 </span>            :                                 @event.Frameworks = frameworks;
+<span class="lineNum">     423 </span>            : 
+<span class="lineNum">     424 </span>            :                                 bool isRequired;
+<span class="lineNum">     425 </span>            :                                 if (!ConfigurationManager.TryGetSetting(string.Format(&quot;{0}.IsRequired&quot;, eventName), out isRequired))
+<span class="lineNum">     426 </span>            :                                         isRequired = true;
+<span class="lineNum">     427 </span>            : 
+<span class="lineNum">     428 </span>            :                                 IEnumerable&lt;Action&lt;IMessage&gt;&gt; handlers = Routes.GetHandlers(@event, isRequired).Select(x =&gt; x.Delegate).ToList();
+<span class="lineNum">     429 </span>            :                                 // This check doesn't require an isRequired check as there will be an exception raised above and handled below.
+<span class="lineNum">     430 </span>            :                                 if (!handlers.Any())
+<span class="lineNum">     431 </span>            :                                         Logger.LogDebug(string.Format(&quot;An event handler for '{0}' is not required.&quot;, eventName));
+<span class="lineNum">     432 </span>            : 
+<span class="lineNum">     433 </span>            :                                 foreach (Action&lt;IMessage&gt; handler in handlers)
+<span class="lineNum">     434 </span>            :                                 {
+<span class="lineNum">     435 </span>            :                                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events;
+<span class="lineNum">     436 </span>            :                                         if (EventWaits.TryGetValue(@event.CorrelationId, out events))
+<span class="lineNum">     437 </span>            :                                                 events.Add(@event);
+<span class="lineNum">     438 </span>            :                                         handler(@event);
+<span class="lineNum">     439 </span>            :                                 }
+<span class="lineNum">     440 </span>            : 
+<span class="lineNum">     441 </span>            :                                 Logger.LogInfo(string.Format(&quot;An event was sent of type {0}.&quot;, eventName));
+<span class="lineNum">     442 </span>            :                                 wasSuccessfull = true;
+<span class="lineNum">     443 </span>            :                         }
+<span class="lineNum">     444 </span>            :                         catch (Exception exception)
+<span class="lineNum">     445 </span>            :                         {
+<span class="lineNum">     446 </span>            :                                 responseCode = &quot;500&quot;;
+<span class="lineNum">     447 </span>            :                                 Logger.LogError(&quot;An issue occurred while trying to publish an event.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Event&quot;, @event } });
+<span class="lineNum">     448 </span>            :                                 throw;
+<span class="lineNum">     449 </span>            :                         }
+<span class="lineNum">     450 </span>            :                         finally
+<span class="lineNum">     451 </span>            :                         {
+<span class="lineNum">     452 </span>            :                                 mainStopWatch.Stop();
+<span class="lineNum">     453 </span>            :                                 TelemetryHelper.TrackDependency(&quot;InProcessBus/EventBus&quot;, &quot;Event&quot;, telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     454 </span>            :                         }
+<span class="lineNum">     455 </span>            :                 }
+<span class="lineNum">     456 </span>            : 
+<span class="lineNum">     457 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     458 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;events&quot;/&gt; on the event bus.
+<span class="lineNum">     459 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     460 </span><span class="lineCov">          1 :                 public virtual void Publish&lt;TEvent&gt;(IEnumerable&lt;TEvent&gt; events)</span>
+<span class="lineNum">     461 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
+<span class="lineNum">     462 </span>            :                 {
+<span class="lineNum">     463 </span>            :                         IEnumerable&lt;TEvent&gt; sourceEvents = events.ToList();
+<span class="lineNum">     464 </span>            : 
+<span class="lineNum">     465 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+<span class="lineNum">     466 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
+<span class="lineNum">     467 </span>            :                         string responseCode = &quot;500&quot;;
+<span class="lineNum">     468 </span>            :                         bool wasSuccessfull = false;
+<span class="lineNum">     469 </span>            : 
+<span class="lineNum">     470 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;InProcessBus&quot; } };
+<span class="lineNum">     471 </span>            :                         string telemetryName = &quot;Events&quot;;
+<span class="lineNum">     472 </span>            :                         string telemetryNames = string.Empty;
+<span class="lineNum">     473 </span>            :                         foreach (TEvent @event in sourceEvents)
+<span class="lineNum">     474 </span>            :                         {
+<span class="lineNum">     475 </span>            :                                 string subTelemetryName = string.Format(&quot;{0}/{1}/{2}&quot;, @event.GetType().FullName, @event.GetIdentity(), @event.Id);
+<span class="lineNum">     476 </span>            :                                 var telemeteredCommand = @event as ITelemeteredMessage;
+<span class="lineNum">     477 </span>            :                                 if (telemeteredCommand != null)
+<span class="lineNum">     478 </span>            :                                         subTelemetryName = telemeteredCommand.TelemetryName;
+<span class="lineNum">     479 </span>            :                                 telemetryNames = string.Format(&quot;{0}{1},&quot;, telemetryNames, subTelemetryName);
+<span class="lineNum">     480 </span>            :                         }
+<span class="lineNum">     481 </span>            :                         if (telemetryNames.Length &gt; 0)
+<span class="lineNum">     482 </span>            :                                 telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
+<span class="lineNum">     483 </span>            :                         telemetryProperties.Add(&quot;Events&quot;, telemetryNames);
+<span class="lineNum">     484 </span>            : 
+<span class="lineNum">     485 </span>            :                         try
+<span class="lineNum">     486 </span>            :                         {
+<span class="lineNum">     487 </span>            :                                 foreach (TEvent @event in sourceEvents)
+<span class="lineNum">     488 </span>            :                                         Publish(@event);
+<span class="lineNum">     489 </span>            : 
+<span class="lineNum">     490 </span>            :                                 responseCode = &quot;200&quot;;
+<span class="lineNum">     491 </span>            :                                 wasSuccessfull = true;
+<span class="lineNum">     492 </span>            :                         }
+<span class="lineNum">     493 </span>            :                         finally
+<span class="lineNum">     494 </span>            :                         {
+<span class="lineNum">     495 </span>            :                                 mainStopWatch.Stop();
+<span class="lineNum">     496 </span>            :                                 TelemetryHelper.TrackDependency(&quot;InProcessBus/EventBus&quot;, &quot;Event&quot;, telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     497 </span>            :                         }
+<span class="lineNum">     498 </span>            :                 }
+<span class="lineNum">     499 </span>            : 
+<span class="lineNum">     500 </span>            :                 #endregion
+<span class="lineNum">     501 </span>            : 
+<span class="lineNum">     502 </span>            :                 #region Implementation of IPublishAndWaitCommandPublisher&lt;TAuthenticationToken&gt;
+<span class="lineNum">     503 </span>            : 
+<span class="lineNum">     504 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     505 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt;
+<span class="lineNum">     506 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     507 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to publish.&lt;/param&gt;
+<span class="lineNum">     508 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     509 </span><span class="lineCov">          1 :                 public TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null) where TCommand : ICommand&lt;TAuthenticationToken&gt;</span>
+<span class="lineNum">     510 </span>            :                 {
+<span class="lineNum">     511 </span>            :                         return PublishAndWait&lt;TCommand, TEvent&gt;(command, -1, eventReceiver);
+<span class="lineNum">     512 </span>            :                 }
+<span class="lineNum">     513 </span>            : 
+<span class="lineNum">     514 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     515 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     516 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     517 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to publish.&lt;/param&gt;
+<span class="lineNum">     518 </span>            :                 /// &lt;param name=&quot;millisecondsTimeout&quot;&gt;The number of milliseconds to wait, or &lt;see cref=&quot;F:System.Threading.Timeout.Infinite&quot;/&gt; (-1) to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     519 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     520 </span><span class="lineCov">          1 :                 public TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, int millisecondsTimeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null) where TCommand : ICommand&lt;TAuthenticationToken&gt;</span>
+<span class="lineNum">     521 </span>            :                 {
+<span class="lineNum">     522 </span>            :                         return PublishAndWait(command, events =&gt; (TEvent)events.SingleOrDefault(@event =&gt; @event is TEvent), millisecondsTimeout, eventReceiver);
+<span class="lineNum">     523 </span>            :                 }
+<span class="lineNum">     524 </span>            : 
+<span class="lineNum">     525 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     526 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     527 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     528 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to publish.&lt;/param&gt;
+<span class="lineNum">     529 </span>            :                 /// &lt;param name=&quot;timeout&quot;&gt;A &lt;see cref=&quot;T:System.TimeSpan&quot;/&gt; that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     530 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     531 </span><span class="lineCov">          1 :                 public TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, TimeSpan timeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null) where TCommand : ICommand&lt;TAuthenticationToken&gt;</span>
+<span class="lineNum">     532 </span>            :                 {
+<span class="lineNum">     533 </span>            :                         long num = (long)timeout.TotalMilliseconds;
+<span class="lineNum">     534 </span>            :                         if (num &lt; -1L || num &gt; int.MaxValue)
+<span class="lineNum">     535 </span>            :                                 throw new ArgumentOutOfRangeException(&quot;timeout&quot;, timeout, &quot;SpinWait_SpinUntil_TimeoutWrong&quot;);
+<span class="lineNum">     536 </span>            :                         return PublishAndWait&lt;TCommand, TEvent&gt;(command, (int)timeout.TotalMilliseconds, eventReceiver);
+<span class="lineNum">     537 </span>            :                 }
+<span class="lineNum">     538 </span>            : 
+<span class="lineNum">     539 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     540 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits until the specified condition is satisfied an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt;
+<span class="lineNum">     541 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     542 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to publish.&lt;/param&gt;
+<span class="lineNum">     543 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
+<span class="lineNum">     544 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     545 </span><span class="lineCov">          1 :                 public TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null) where TCommand : ICommand&lt;TAuthenticationToken&gt;</span>
+<span class="lineNum">     546 </span>            :                 {
+<span class="lineNum">     547 </span>            :                         return PublishAndWait(command, condition, -1, eventReceiver);
+<span class="lineNum">     548 </span>            :                 }
+<span class="lineNum">     549 </span>            : 
+<span class="lineNum">     550 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     551 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     552 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     553 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to publish.&lt;/param&gt;
+<span class="lineNum">     554 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
+<span class="lineNum">     555 </span>            :                 /// &lt;param name=&quot;millisecondsTimeout&quot;&gt;The number of milliseconds to wait, or &lt;see cref=&quot;F:System.Threading.Timeout.Infinite&quot;/&gt; (-1) to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     556 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     557 </span><span class="lineCov">          1 :                 public TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, int millisecondsTimeout,</span>
+<span class="lineNum">     558 </span>            :                         IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null) where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     559 </span>            :                 {
+<span class="lineNum">     560 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+<span class="lineNum">     561 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
+<span class="lineNum">     562 </span>            :                         string responseCode = &quot;200&quot;;
+<span class="lineNum">     563 </span>            :                         bool wasSuccessfull = false;
+<span class="lineNum">     564 </span>            : 
+<span class="lineNum">     565 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;InProcessBus&quot; } };
+<span class="lineNum">     566 </span>            :                         string telemetryName = string.Format(&quot;{0}/{1}&quot;, command.GetType().FullName, command.Id);
+<span class="lineNum">     567 </span>            :                         var telemeteredCommand = command as ITelemeteredMessage;
+<span class="lineNum">     568 </span>            :                         if (telemeteredCommand != null)
+<span class="lineNum">     569 </span>            :                                 telemetryName = telemeteredCommand.TelemetryName;
+<span class="lineNum">     570 </span>            :                         telemetryName = string.Format(&quot;Command/{0}&quot;, telemetryName);
+<span class="lineNum">     571 </span>            : 
+<span class="lineNum">     572 </span>            :                         TEvent result;
+<span class="lineNum">     573 </span>            : 
+<span class="lineNum">     574 </span>            :                         try
+<span class="lineNum">     575 </span>            :                         {
+<span class="lineNum">     576 </span>            :                                 if (eventReceiver != null)
+<span class="lineNum">     577 </span>            :                                         throw new NotSupportedException(&quot;Specifying a different event receiver is not yet supported.&quot;);
+<span class="lineNum">     578 </span>            :                                 RouteHandlerDelegate commandHandler;
+<span class="lineNum">     579 </span>            :                                 if (!PrepareAndValidateCommand(command, out commandHandler))
+<span class="lineNum">     580 </span>            :                                         return (TEvent)(object)null;
+<span class="lineNum">     581 </span>            : 
+<span class="lineNum">     582 </span>            :                                 result = (TEvent)(object)null;
+<span class="lineNum">     583 </span>            :                                 EventWaits.Add(command.CorrelationId, new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;());
+<span class="lineNum">     584 </span>            : 
+<span class="lineNum">     585 </span>            :                                 Action&lt;IMessage&gt; handler = commandHandler.Delegate;
+<span class="lineNum">     586 </span>            :                                 handler(command);
+<span class="lineNum">     587 </span>            :                                 Logger.LogInfo(string.Format(&quot;A command was sent of type {0}.&quot;, command.GetType().FullName));
+<span class="lineNum">     588 </span>            :                                 wasSuccessfull = true;
+<span class="lineNum">     589 </span>            :                         }
+<span class="lineNum">     590 </span>            :                         finally
+<span class="lineNum">     591 </span>            :                         {
+<span class="lineNum">     592 </span>            :                                 mainStopWatch.Stop();
+<span class="lineNum">     593 </span>            :                                 TelemetryHelper.TrackDependency(&quot;InProcessBus/CommandBus&quot;, &quot;Command&quot;, telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     594 </span>            :                         }
+<span class="lineNum">     595 </span>            : 
+<span class="lineNum">     596 </span>            :                         SpinWait.SpinUntil(() =&gt;
+<span class="lineNum">     597 </span>            :                         {
+<span class="lineNum">     598 </span>            :                                 IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = EventWaits[command.CorrelationId];
+<span class="lineNum">     599 </span>            : 
+<span class="lineNum">     600 </span>            :                                 result = condition(events);
+<span class="lineNum">     601 </span>            : 
+<span class="lineNum">     602 </span>            :                                 return result != null;
+<span class="lineNum">     603 </span>            :                         }, millisecondsTimeout, SpinWait.DefaultSleepInMilliseconds);
+<span class="lineNum">     604 </span>            : 
+<span class="lineNum">     605 </span>            :                         TelemetryHelper.TrackDependency(&quot;InProcessBus/CommandBus&quot;, &quot;Command/AndWait&quot;, string.Format(&quot;Command/AndWait{0}&quot;, telemetryName.Substring(7)), null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     606 </span>            :                         return result;
+<span class="lineNum">     607 </span>            :                 }
+<span class="lineNum">     608 </span>            : 
+<span class="lineNum">     609 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     610 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;&gt;&lt;/paramref&gt; and waits for an event of &lt;typeparamref name=&quot;TEvent&quot;/&gt; or exits if the specified timeout is expired.
+<span class="lineNum">     611 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     612 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to publish.&lt;/param&gt;
+<span class="lineNum">     613 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
+<span class="lineNum">     614 </span>            :                 /// &lt;param name=&quot;timeout&quot;&gt;A &lt;see cref=&quot;T:System.TimeSpan&quot;/&gt; that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     615 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
+<span class="lineNum">     616 </span><span class="lineCov">          1 :                 public TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, TimeSpan timeout,</span>
+<span class="lineNum">     617 </span>            :                         IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null) where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">     618 </span>            :                 {
+<span class="lineNum">     619 </span>            :                         long num = (long)timeout.TotalMilliseconds;
+<span class="lineNum">     620 </span>            :                         if (num &lt; -1L || num &gt; int.MaxValue)
+<span class="lineNum">     621 </span>            :                                 throw new ArgumentOutOfRangeException(&quot;timeout&quot;, timeout, &quot;SpinWait_SpinUntil_TimeoutWrong&quot;);
+<span class="lineNum">     622 </span>            :                         return PublishAndWait(command, condition, (int)timeout.TotalMilliseconds, eventReceiver);
+<span class="lineNum">     623 </span>            :                 }
+<span class="lineNum">     624 </span>            : 
+<span class="lineNum">     625 </span>            :                 #endregion
+<span class="lineNum">     626 </span>            : 
+<span class="lineNum">     627 </span>            :                 #region Implementation of IHandlerRegistrar
+<span class="lineNum">     628 </span>            : 
+<span class="lineNum">     629 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     630 </span>            :                 /// Register an event or command handler that will listen and respond to events or commands.
+<span class="lineNum">     631 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     632 </span><span class="lineCov">          1 :                 public virtual void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
+<span class="lineNum">     633 </span>            :                         where TMessage : IMessage
+<span class="lineNum">     634 </span>            :                 {
+<span class="lineNum">     635 </span>            :                         Action&lt;TMessage&gt; registerableHandler = BusHelper.BuildTelemeteredActionHandler&lt;TMessage, TAuthenticationToken&gt;(TelemetryHelper, handler, holdMessageLock, &quot;In-Process/Bus&quot;);
+<span class="lineNum">     636 </span>            : 
+<span class="lineNum">     637 </span>            :                         Routes.RegisterHandler(registerableHandler, targetedType);
+<span class="lineNum">     638 </span>            : 
+<span class="lineNum">     639 </span>            :                         TelemetryHelper.TrackEvent(string.Format(&quot;Cqrs/RegisterHandler/{0}&quot;, typeof(TMessage).FullName), new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;In-Process/Bus&quot; } });
+<span class="lineNum">     640 </span>            :                         TelemetryHelper.Flush();
+<span class="lineNum">     641 </span>            :                 }
+<span class="lineNum">     642 </span>            : 
+<span class="lineNum">     643 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     644 </span>            :                 /// Register an event or command handler that will listen and respond to events or commands.
+<span class="lineNum">     645 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     646 </span><span class="lineCov">          1 :                 public virtual void RegisterHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = true)</span>
+<span class="lineNum">     647 </span>            :                         where TMessage : IMessage
+<span class="lineNum">     648 </span>            :                 {
+<span class="lineNum">     649 </span>            :                         RegisterHandler(handler, null, holdMessageLock);
+<span class="lineNum">     650 </span>            :                 }
+<span class="lineNum">     651 </span>            : 
+<span class="lineNum">     652 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     653 </span>            :                 /// Register an event handler that will listen and respond to all events.
+<span class="lineNum">     654 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     655 </span><span class="lineCov">          1 :                 public void RegisterGlobalEventHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock = true) where TMessage : IMessage</span>
+<span class="lineNum">     656 </span>            :                 {
+<span class="lineNum">     657 </span>            :                         Action&lt;TMessage&gt; registerableHandler = BusHelper.BuildTelemeteredActionHandler&lt;TMessage, TAuthenticationToken&gt;(TelemetryHelper, handler, holdMessageLock, &quot;In-Process/Bus&quot;);
+<span class="lineNum">     658 </span>            : 
+<span class="lineNum">     659 </span>            :                         Routes.RegisterGlobalEventHandler(registerableHandler, holdMessageLock);
+<span class="lineNum">     660 </span>            : 
+<span class="lineNum">     661 </span>            :                         TelemetryHelper.TrackEvent(string.Format(&quot;Cqrs/RegisterGlobalEventHandler/{0}&quot;, typeof(TMessage).FullName), new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;In-Process/Bus&quot; } });
+<span class="lineNum">     662 </span>            :                         TelemetryHelper.Flush();
+<span class="lineNum">     663 </span>            :                 }
+<span class="lineNum">     664 </span>            : 
+<span class="lineNum">     665 </span>            :                 #endregion
+<span class="lineNum">     666 </span>            : 
+<span class="lineNum">     667 </span>            :                 #region Implementation of ICommandReceiver
+<span class="lineNum">     668 </span>            : 
+<span class="lineNum">     669 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     670 </span>            :                 /// Receives a &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; from the command bus.
+<span class="lineNum">     671 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     672 </span><span class="lineCov">          1 :                 public virtual bool? ReceiveCommand(ICommand&lt;TAuthenticationToken&gt; command)</span>
+<span class="lineNum">     673 </span>            :                 {
+<span class="lineNum">     674 </span>            :                         Send(command);
+<span class="lineNum">     675 </span>            :                         return true;
+<span class="lineNum">     676 </span>            :                 }
+<span class="lineNum">     677 </span>            : 
+<span class="lineNum">     678 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     679 </span>            :                 /// Receives an &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; from the event bus.
+<span class="lineNum">     680 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     681 </span><span class="lineCov">          1 :                 public virtual bool? ReceiveEvent(IEvent&lt;TAuthenticationToken&gt; @event)</span>
+<span class="lineNum">     682 </span>            :                 {
+<span class="lineNum">     683 </span>            :                         Publish(@event);
+<span class="lineNum">     684 </span>            :                         return true;
+<span class="lineNum">     685 </span>            :                 }
+<span class="lineNum">     686 </span>            : 
+<span class="lineNum">     687 </span>            :                 void ICommandReceiver.Start()
+<span class="lineNum">     688 </span>            :                 {
+<span class="lineNum">     689 </span>            :                         // This is in-process so doesn't need to do anything
+<span class="lineNum">     690 </span>            :                 }
+<span class="lineNum">     691 </span>            : 
+<span class="lineNum">     692 </span>            :                 #endregion
+<span class="lineNum">     693 </span>            : 
+<span class="lineNum">     694 </span>            :                 #region Implementation of IEventReceiver
+<span class="lineNum">     695 </span>            : 
+<span class="lineNum">     696 </span>            :                 void IEventReceiver.Start()
+<span class="lineNum">     697 </span>            :                 {
+<span class="lineNum">     698 </span>            :                         // This is in-process so doesn't need to do anything
+<span class="lineNum">     699 </span>            :                 }
+<span class="lineNum">     700 </span>            : 
+<span class="lineNum">     701 </span>            :                 #endregion
+<span class="lineNum">     702 </span>            :         }
+<span class="lineNum">     703 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

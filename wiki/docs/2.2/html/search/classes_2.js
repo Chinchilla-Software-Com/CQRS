@@ -4,6 +4,7 @@ var searchData=
   ['clientcontroller',['ClientController',['../classCqrs_1_1WebApi_1_1Controllers_1_1ClientController.html',1,'Cqrs::WebApi::Controllers']]],
   ['cloudconfigurationmanager',['CloudConfigurationManager',['../classCqrs_1_1Azure_1_1ConfigurationManager_1_1CloudConfigurationManager.html',1,'Cqrs::Azure::ConfigurationManager']]],
   ['collectionresultquery',['CollectionResultQuery',['../classCqrs_1_1Repositories_1_1Queries_1_1CollectionResultQuery.html',1,'Cqrs::Repositories::Queries']]],
+  ['commandextensions',['CommandExtensions',['../classCqrs_1_1Commands_1_1CommandExtensions.html',1,'Cqrs::Commands']]],
   ['concurrencyexception',['ConcurrencyException',['../classCqrs_1_1Domain_1_1Exceptions_1_1ConcurrencyException.html',1,'Cqrs::Domain::Exceptions']]],
   ['concurrentakkacommandpublisher',['ConcurrentAkkaCommandPublisher',['../classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher.html',1,'Cqrs::Akka::Commands']]],
   ['configurationextensions',['ConfigurationExtensions',['../classCqrs_1_1Configuration_1_1ConfigurationExtensions.html',1,'Cqrs::Configuration']]],
