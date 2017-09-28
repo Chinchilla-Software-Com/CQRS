@@ -155,7 +155,7 @@ namespace Cqrs.Akka.Domain
 			foreach (ISagaEvent<TAuthenticationToken> @event in history.OrderBy(e => e.Version))
 			{
 				if (@event.Version != Version + 1)
-					throw new EventsOutOfOrderException(@event.Id, sagaType, Version + 1, @event.Version);
+					throw new EventsOutOfOrderException(@event.GetIdentity(), sagaType, Version + 1, @event.Version);
 				ApplyChange(@event, true);
 			}
 		}
@@ -189,7 +189,7 @@ namespace Cqrs.Akka.Domain
 		/// </summary>
 		protected virtual void SetId(ISagaEvent<TAuthenticationToken> sagaEvent)
 		{
-			sagaEvent.Id = sagaEvent.Event.Id;
+			sagaEvent.Rsn = sagaEvent.Event.GetIdentity();
 		}
 
 		private void ApplyChange(ISagaEvent<TAuthenticationToken> @event, bool isEventReplay)
@@ -201,7 +201,7 @@ namespace Cqrs.Akka.Domain
 			}
 			else
 			{
-				Id = @event.Id;
+				Id = @event.Rsn;
 				Version++;
 			}
 		}

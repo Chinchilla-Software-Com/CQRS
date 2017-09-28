@@ -80,10 +80,21 @@ namespace Cqrs.Domain
 			int version = aggregate.Version;
 			foreach (IEvent<TAuthenticationToken> @event in uncommittedChanges)
 			{
-				if (@event.Id == Guid.Empty) 
-					@event.Id = aggregate.Id;
-				if (@event.Id == Guid.Empty)
-					throw new AggregateOrEventMissingIdException(aggregate.GetType(), @event.GetType());
+				var eventWithIdentity = @event as IEventWithIdentity<TAuthenticationToken>;
+				if (eventWithIdentity != null)
+				{
+					if (eventWithIdentity.Rsn == Guid.Empty)
+						eventWithIdentity.Rsn = aggregate.Id;
+					if (eventWithIdentity.Rsn == Guid.Empty)
+						throw new AggregateOrEventMissingIdException(aggregate.GetType(), @event.GetType());
+				}
+				else
+				{
+					if (@event.Id == Guid.Empty)
+						@event.Id = aggregate.Id;
+					if (@event.Id == Guid.Empty)
+						throw new AggregateOrEventMissingIdException(aggregate.GetType(), @event.GetType());
+				}
 
 				i++;
 				version++;

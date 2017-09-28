@@ -151,32 +151,36 @@ if (stereoTypeProperties.PropertyInstances
 		/// </summary>
 		[DataMember]
 		public Guid Rsn { get; set; }
-
 <#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
 		// Properties
 		foreach(IProperty collectionProperty in collectionProperties)
 		{
-			if (collectionProperty.OwningAssociation != null)
+			IAssociation owningAssociation = collectionProperty.OwningAssociation;
+			if (owningAssociation != null)
 			{
-				var eventToCommandConverterHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
-				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				var eventToCommandConverterHandler = owningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
+				// If this is an event to command handler association, don't add a property for it.
 				if (eventToCommandConverterHandler != null)
 					continue;
-				var eventHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
-				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				var eventHandler = owningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				// If this is an event handler association, don't add a property for it.
 				if (eventHandler != null)
 					continue;
-				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				var saga = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Saga");
+				// If this is a saga association, don't add a property for it.
+				if (saga != null)
+					continue;
+				var eventLink = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
 				// If this is an event association, don't add a property for it as it's an event definition
 				if (eventLink != null)
 					continue;
 			}
 #>
+
 <# WriteSummaryComment(collectionProperty.Description); #>
 		[DataMember]
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; private set; }
-
 <#
 		}
 #>
@@ -188,17 +192,22 @@ if (stereoTypeProperties.PropertyInstances
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (collectionProperty.OwningAssociation != null)
+			IAssociation owningAssociation = collectionProperty.OwningAssociation;
+			if (owningAssociation != null)
 			{
-				var eventToCommandConverterHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
+				var eventToCommandConverterHandler = owningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (eventToCommandConverterHandler != null)
 					continue;
-				var eventHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				var eventHandler = owningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (eventHandler != null)
 					continue;
-				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				var saga = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Saga");
+				// If this is a saga association, don't add a property for it.
+				if (saga != null)
+					continue;
+				var eventLink = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
 				// If this is an event association, don't add a property for it as it's an event definition
 				if (eventLink != null)
 					continue;
@@ -211,17 +220,22 @@ if (stereoTypeProperties.PropertyInstances
 <#
 		foreach(IProperty collectionProperty in collectionProperties)
 		{
-			if (collectionProperty.OwningAssociation != null)
+			IAssociation owningAssociation = collectionProperty.OwningAssociation;
+			if (owningAssociation != null)
 			{
-				var eventToCommandConverterHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
+				var eventToCommandConverterHandler = owningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (eventToCommandConverterHandler != null)
 					continue;
-				var eventHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				var eventHandler = owningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (eventHandler != null)
 					continue;
-				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				var saga = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Saga");
+				// If this is a saga association, don't add a property for it.
+				if (saga != null)
+					continue;
+				var eventLink = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
 				// If this is an event association, don't add a property for it as it's an event definition
 				if (eventLink != null)
 					continue;

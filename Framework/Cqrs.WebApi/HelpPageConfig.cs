@@ -181,6 +181,7 @@ namespace Cqrs.WebApi
 				EmailAddress = "john@smith.com",
 				Frameworks = new List<string> { "Azure", "Amazon EC2" },
 				Id = Guid.NewGuid(),
+				Rsn = Guid.NewGuid(),
 				Name = "John Smith",
 				OriginatingFramework = "Azure",
 				TimeStamp = DateTime.Now.AddMinutes(-3),

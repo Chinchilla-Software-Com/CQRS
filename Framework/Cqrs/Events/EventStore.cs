@@ -74,7 +74,7 @@ namespace Cqrs.Events
 		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to extract information from.</param>
 		protected virtual string GenerateStreamName(Type aggregateRootType, IEvent<TAuthenticationToken> @event)
 		{
-			return GenerateStreamName(aggregateRootType, @event.Id);
+			return GenerateStreamName(aggregateRootType, @event.GetIdentity());
 		}
 
 		/// <summary>
@@ -98,7 +98,7 @@ namespace Cqrs.Events
 			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
 			string streamName = GenerateStreamName(aggregateRootType, @event);
 			eventData.AggregateId = streamName;
-			eventData.AggregateRsn = @event.Id;
+			eventData.AggregateRsn = @event.GetIdentity();
 			eventData.Version = @event.Version;
 			eventData.CorrelationId = @event.CorrelationId;
 			PersistEvent(eventData);

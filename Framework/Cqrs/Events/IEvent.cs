@@ -70,6 +70,7 @@ namespace Cqrs.Events
 	/// ********************************************
 	/// Also see http://cqrs.nu/Faq/commands-and-events.
 	/// </remarks>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public interface IEvent<TAuthenticationToken> : IMessageWithAuthenticationToken<TAuthenticationToken>
 	{
 		/// <summary>

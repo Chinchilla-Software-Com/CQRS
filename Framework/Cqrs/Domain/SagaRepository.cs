@@ -79,9 +79,9 @@ namespace Cqrs.Domain
 			int version = saga.Version;
 			foreach (ISagaEvent<TAuthenticationToken> @event in uncommittedChanges)
 			{
-				if (@event.Id == Guid.Empty)
-					@event.Id = saga.Id;
-				if (@event.Id == Guid.Empty)
+				if (@event.Rsn == Guid.Empty)
+					@event.Rsn = saga.Id;
+				if (@event.Rsn == Guid.Empty)
 					throw new AggregateOrEventMissingIdException(saga.GetType(), @event.GetType());
 
 				i++;

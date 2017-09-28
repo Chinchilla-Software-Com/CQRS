@@ -143,7 +143,7 @@ namespace Cqrs.Domain
 			foreach (ISagaEvent<TAuthenticationToken> @event in history.OrderBy(e => e.Version))
 			{
 				if (@event.Version != Version + 1)
-					throw new EventsOutOfOrderException(@event.Id, sagaType, Version + 1, @event.Version);
+					throw new EventsOutOfOrderException(@event.Rsn, sagaType, Version + 1, @event.Version);
 				ApplyChange(@event, true);
 			}
 		}
@@ -184,7 +184,7 @@ namespace Cqrs.Domain
 				}
 				else
 				{
-					Id = @event.Id;
+					Id = @event.Rsn;
 					Version++;
 				}
 			}

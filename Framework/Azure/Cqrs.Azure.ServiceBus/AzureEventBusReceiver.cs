@@ -305,7 +305,7 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					if (@event != null)
 					{
-						telemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+						telemetryName = string.Format("{0}/{1}/{2}", @event.GetType().FullName, @event.GetIdentity(), @event.Id);
 						authenticationToken = @event.AuthenticationToken as ISingleSignOnToken;
 
 						var telemeteredMessage = @event as ITelemeteredMessage;

@@ -51,7 +51,7 @@ namespace Cqrs.Azure.ServiceBus
 			bool wasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/EventHub" } };
-			string telemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+			string telemetryName = string.Format("{0}/{1}/{2}", @event.GetType().FullName, @event.GetIdentity(), @event.Id);
 			var telemeteredEvent = @event as ITelemeteredMessage;
 			if (telemeteredEvent != null)
 				telemetryName = telemeteredEvent.TelemetryName;
@@ -108,7 +108,7 @@ namespace Cqrs.Azure.ServiceBus
 			string telemetryNames = string.Empty;
 			foreach (TEvent @event in sourceEvents)
 			{
-				string subTelemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+				string subTelemetryName = string.Format("{0}/{1}/{2}", @event.GetType().FullName, @event.GetIdentity(), @event.Id);
 				var telemeteredEvent = @event as ITelemeteredMessage;
 				if (telemeteredEvent != null)
 					subTelemetryName = telemeteredEvent.TelemetryName;

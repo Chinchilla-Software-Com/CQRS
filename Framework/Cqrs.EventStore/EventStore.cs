@@ -73,7 +73,7 @@ namespace Cqrs.EventStore
 		public void Save(Type aggregateRootType, IEvent<TAuthenticationToken> @event)
 		{
 			EventData eventData = EventBuilder.CreateFrameworkEvent(@event);
-			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.Id);
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, @event.GetIdentity());
 			using (EventStoreTransaction transaction = EventStoreConnection.StartTransactionAsync(streamName, ExpectedVersion.Any).Result)
 			{
 				WriteResult saveResult = EventStoreConnection.AppendToStreamAsync(streamName, ExpectedVersion.Any, new[] {eventData}).Result;

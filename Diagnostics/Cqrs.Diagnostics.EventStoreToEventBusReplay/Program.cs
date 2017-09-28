@@ -253,6 +253,8 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 		/// </summary>
 		protected virtual void PublishEventOnTheEventBus(ILogger logger, IEventPublisher<TAuthenticationToken> eventPublisher, IEvent<TAuthenticationToken> @event)
 		{
+			var eventWithIdentity = @event as IEventWithIdentity<TAuthenticationToken>;
+			Guid rsn = @event.GetIdentity();
 			// Flush tracking information so it gets processed again.
 			@event.Frameworks = null;
 			@event.OriginatingFramework = null;
@@ -270,11 +272,17 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 				}
 				catch (Exception exception)
 				{
-					logger.LogError(string.Format("Publishing event {0} failed to be published.", @event.Id), "PublishEventOnTheEventBus", exception);
+					string exceptionMessage = eventWithIdentity == null
+						? "Publishing event {0} failed to be published."
+						: "Publishing event {0} with identifier {1} failed to be published.";
+					logger.LogError(string.Format(exceptionMessage, @event.Id, rsn), "PublishEventOnTheEventBus", exception);
 					return;
 				}
 			} while (loopCount < 10);
-			logger.LogError(string.Format("Publishing event {0} failed to be published due to an event bus timeout... we tried 10 times before moving on.", @event.Id), "PublishEventOnTheEventBus");
+			string message = eventWithIdentity == null
+				? "Publishing event {0} failed to be published due to an event bus timeout... we tried 10 times before moving on."
+				: "Publishing event {0} with identifier {1} failed to be published due to an event bus timeout... we tried 10 times before moving on.";
+			logger.LogError(string.Format(message, @event.Id, rsn), "PublishEventOnTheEventBus");
 		}
 
 		public class ExposedMongoEventStore

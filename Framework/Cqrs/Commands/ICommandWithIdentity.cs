@@ -10,25 +10,19 @@ using System;
 using System.Runtime.Serialization;
 using Cqrs.Domain;
 
-namespace Cqrs.Events
+namespace Cqrs.Commands
 {
 	/// <summary>
-	/// An <see cref="IEvent{TAuthenticationToken}"/> used specifically by a <see cref="ISaga{TAuthenticationToken}"/>
+	/// An <see cref="ICommand{TAuthenticationToken}"/> that can identify an <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see>.
+	/// The <see cref="ICommand{TAuthenticationToken}.Id"/> is specifically the identifier for the individual <see cref="ICommand{TAuthenticationToken}"/> itself, not the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> being targeted.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public interface ISagaEvent<TAuthenticationToken>
-		: IEvent<TAuthenticationToken>
+	public interface ICommandWithIdentity<TAuthenticationToken> : ICommand<TAuthenticationToken>
 	{
 		/// <summary>
-		/// The identity of the <see cref="ISaga{TAuthenticationToken}" /> being targeted.
+		/// The identity of the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> being targeted.
 		/// </summary>
 		[DataMember]
 		Guid Rsn { get; set; }
-
-		/// <summary>
-		/// The <see cref="IEvent{TAuthenticationToken}"/> this <see cref="ISagaEvent{TAuthenticationToken}"/> encases.
-		/// </summary>
-		[DataMember]
-		IEvent<TAuthenticationToken> Event { get; set; }
 	}
 }

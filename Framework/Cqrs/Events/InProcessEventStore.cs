@@ -42,11 +42,11 @@ namespace Cqrs.Events
 		public void Save(Type aggregateRootType, IEvent<TAuthenticationToken> @event)
 		{
 			IList<IEvent<TAuthenticationToken>> list;
-			InMemoryDb.TryGetValue(@event.Id, out list);
+			InMemoryDb.TryGetValue(@event.GetIdentity(), out list);
 			if (list == null)
 			{
 				list = new List<IEvent<TAuthenticationToken>>();
-				InMemoryDb.Add(@event.Id, list);
+				InMemoryDb.Add(@event.GetIdentity(), list);
 			}
 			list.Add(@event);
 		}
