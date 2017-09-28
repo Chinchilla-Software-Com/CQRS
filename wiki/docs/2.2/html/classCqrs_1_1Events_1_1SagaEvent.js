@@ -8,6 +8,7 @@ var classCqrs_1_1Events_1_1SagaEvent =
     [ "Frameworks", "classCqrs_1_1Events_1_1SagaEvent_a2a52816a942f9d69a3bec20f632b853d.html#a2a52816a942f9d69a3bec20f632b853d", null ],
     [ "Id", "classCqrs_1_1Events_1_1SagaEvent_a995f70a4311341459b96bd00488f0eea.html#a995f70a4311341459b96bd00488f0eea", null ],
     [ "OriginatingFramework", "classCqrs_1_1Events_1_1SagaEvent_a58fda921f9a06762dcb7eee86390820a.html#a58fda921f9a06762dcb7eee86390820a", null ],
+    [ "Rsn", "classCqrs_1_1Events_1_1SagaEvent_a7ed84d58bc5727966f3edba43dacf387.html#a7ed84d58bc5727966f3edba43dacf387", null ],
     [ "TimeStamp", "classCqrs_1_1Events_1_1SagaEvent_a6e522969d3456b62fe4291c5abc7e888.html#a6e522969d3456b62fe4291c5abc7e888", null ],
     [ "Version", "classCqrs_1_1Events_1_1SagaEvent_a4918d2e0a66897600143f1e645a0f136.html#a4918d2e0a66897600143f1e645a0f136", null ]
 ];

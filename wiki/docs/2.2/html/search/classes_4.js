@@ -12,6 +12,7 @@ var searchData=
   ['eventdataresolver',['EventDataResolver',['../classCqrs_1_1Events_1_1EventDataResolver.html',1,'Cqrs::Events']]],
   ['eventdatatableentity',['EventDataTableEntity',['../classCqrs_1_1Azure_1_1BlobStorage_1_1EventDataTableEntity.html',1,'Cqrs::Azure::BlobStorage']]],
   ['eventdeserialiser',['EventDeserialiser',['../classCqrs_1_1Events_1_1EventDeserialiser.html',1,'Cqrs::Events']]],
+  ['eventextensions',['EventExtensions',['../classCqrs_1_1Events_1_1EventExtensions.html',1,'Cqrs::Events']]],
   ['eventfactory',['EventFactory',['../classCqrs_1_1EventStore_1_1EventFactory.html',1,'Cqrs::EventStore']]],
   ['eventservice',['EventService',['../classCqrs_1_1Services_1_1EventService.html',1,'Cqrs::Services']]],
   ['eventsoutoforderexception',['EventsOutOfOrderException',['../classCqrs_1_1Domain_1_1Exceptions_1_1EventsOutOfOrderException.html',1,'Cqrs::Domain::Exceptions']]],

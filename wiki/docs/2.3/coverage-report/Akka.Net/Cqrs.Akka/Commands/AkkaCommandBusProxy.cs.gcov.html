@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Akka.Net/Cqrs.Akka/Commands/AkkaCommandBusProxy.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Akka.Net/Cqrs.Akka/Commands</a> - AkkaCommandBusProxy.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-09-29</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using Akka.Actor;
+<span class="lineNum">      12 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      13 </span>            : using Cqrs.Akka.Domain;
+<span class="lineNum">      14 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      15 </span>            : using Cqrs.Commands;
+<span class="lineNum">      16 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : namespace Cqrs.Akka.Commands
+<span class="lineNum">      19 </span>            : {
+<span class="lineNum">      20 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :         /// A &lt;see cref=&quot;ICommandPublisher{TAuthenticationToken}&quot;/&gt; that proxies &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; to the &lt;see cref=&quot;IActorRef&quot;/&gt; which acts as a single point of all handler resolutions.
+<span class="lineNum">      22 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      23 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      24 </span>            :         public class AkkaCommandBusProxy&lt;TAuthenticationToken&gt;
+<span class="lineNum">      25 </span>            :                 : IAkkaCommandPublisherProxy&lt;TAuthenticationToken&gt;
+<span class="lineNum">      26 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      27 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      28 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AkkaCommandBusProxy{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      30 </span><span class="lineCov">          1 :                 public AkkaCommandBusProxy(IDependencyResolver dependencyResolver, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper)</span>
+<span class="lineNum">      31 </span>            :                 {
+<span class="lineNum">      32 </span>            :                         CorrelationIdHelper = correlationIdHelper;
+<span class="lineNum">      33 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
+<span class="lineNum">      34 </span>            :                         CommandHandlerResolver = ((IAkkaAggregateResolver)dependencyResolver).ResolveActor&lt;BusActor&gt;();
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :                 /// Gets the &lt;see cref=&quot;IActorRef&quot;&gt;command handler resolver&lt;/see&gt; that we send/proxy the command to.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span>            :                 protected IActorRef CommandHandlerResolver { get; private set; }
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      43 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ICorrelationIdHelper&quot;/&gt;.
+<span class="lineNum">      44 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      45 </span>            :                 protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      48 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IAuthenticationTokenHelper{TAuthenticationToken}&quot;&gt;Authentication Token Helper&lt;/see&gt;.
+<span class="lineNum">      49 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      50 </span>            :                 protected IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; AuthenticationTokenHelper { get; private set; }
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :                 #region Implementation of ICommandSender&lt;TAuthenticationToken&gt;
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      55 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;/&gt; on the command bus.
+<span class="lineNum">      56 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      57 </span><span class="lineCov">          1 :                 public virtual void Publish&lt;TCommand&gt;(TCommand command)</span>
+<span class="lineNum">      58 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">      59 </span>            :                 {
+<span class="lineNum">      60 </span>            :                         // We only set these two properties as they are not going to be available across the thread/task
+<span class="lineNum">      61 </span>            :                         if (command.AuthenticationToken == null || command.AuthenticationToken.Equals(default(TAuthenticationToken)))
+<span class="lineNum">      62 </span>            :                                 command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+<span class="lineNum">      63 </span>            :                         command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                         bool result = CommandHandlerResolver.Ask&lt;bool&gt;(command).Result;
+<span class="lineNum">      66 </span>            :                 }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      69 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;commands&quot;/&gt; on the command bus.
+<span class="lineNum">      70 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      71 </span><span class="lineCov">          1 :                 public virtual void Publish&lt;TCommand&gt;(IEnumerable&lt;TCommand&gt; commands)</span>
+<span class="lineNum">      72 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
+<span class="lineNum">      73 </span>            :                 {
+<span class="lineNum">      74 </span>            :                         foreach (TCommand rawCommand in commands)
+<span class="lineNum">      75 </span>            :                         {
+<span class="lineNum">      76 </span>            :                                 // Lambda scoping thing
+<span class="lineNum">      77 </span>            :                                 TCommand command = rawCommand;
+<span class="lineNum">      78 </span>            :                                 // We only set these two properties as they are not going to be available across the thread/task
+<span class="lineNum">      79 </span>            :                                 if (command.AuthenticationToken == null || command.AuthenticationToken.Equals(default(TAuthenticationToken)))
+<span class="lineNum">      80 </span>            :                                         command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
+<span class="lineNum">      81 </span>            :                                 command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :                                 bool result = CommandHandlerResolver.Ask&lt;bool&gt;(command).Result;
+<span class="lineNum">      84 </span>            :                         }
+<span class="lineNum">      85 </span>            :                 }
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :                 #endregion
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      90 </span>            :                 /// Similar to a &lt;see cref=&quot;ICommandPublisher{TAuthenticationToken}&quot;/&gt;, passes commands onto the &lt;see cref=&quot;CommandHandlerResolver&quot;/&gt;.
+<span class="lineNum">      91 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      92 </span>            :                 public class BusActor
+<span class="lineNum">      93 </span>            :                         : ReceiveActor
+<span class="lineNum">      94 </span><span class="lineCov">          1 :                 {</span>
+<span class="lineNum">      95 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">      96 </span>            :                         /// Instantiates a new instance of &lt;see cref=&quot;BusActor&quot;/&gt;.
+<span class="lineNum">      97 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">      98 </span><span class="lineCov">          1 :                         public BusActor(IAkkaCommandPublisher&lt;TAuthenticationToken&gt; commandHandlerResolver, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper)</span>
+<span class="lineNum">      99 </span>            :                         {
+<span class="lineNum">     100 </span>            :                                 CommandHandlerResolver = commandHandlerResolver;
+<span class="lineNum">     101 </span>            :                                 CorrelationIdHelper = correlationIdHelper;
+<span class="lineNum">     102 </span>            :                                 AuthenticationTokenHelper = authenticationTokenHelper;
+<span class="lineNum">     103 </span>            :                                 Receive&lt;ICommand&lt;TAuthenticationToken&gt;&gt;(command =&gt; ExecuteReceive(command));
+<span class="lineNum">     104 </span>            :                         }
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     107 </span>            :                         /// Gets or sets the &lt;see cref=&quot;IAkkaCommandPublisher{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     108 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     109 </span>            :                         protected IAkkaCommandPublisher&lt;TAuthenticationToken&gt; CommandHandlerResolver { get; private set; }
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     112 </span>            :                         /// Gets or sets the &lt;see cref=&quot;ICorrelationIdHelper&quot;/&gt;.
+<span class="lineNum">     113 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     114 </span>            :                         protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     117 </span>            :                         /// Gets or sets the &lt;see cref=&quot;IAuthenticationTokenHelper{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     118 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     119 </span>            :                         protected IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; AuthenticationTokenHelper { get; private set; }
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     122 </span>            :                         /// Passes the provided &lt;paramref name=&quot;command&quot;/&gt; to &lt;see cref=&quot;CommandHandlerResolver&quot;/&gt; via &lt;see cref=&quot;ICommandPublisher{TAuthenticationToken}.Publish{TCommand}(TCommand)&quot;/&gt;
+<span class="lineNum">     123 </span>            :                         /// then calls &lt;see cref=&quot;ActorRefImplicitSenderExtensions.Tell&quot;/&gt;.
+<span class="lineNum">     124 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     125 </span><span class="lineCov">          1 :                         protected virtual void ExecuteReceive(ICommand&lt;TAuthenticationToken&gt; command)</span>
+<span class="lineNum">     126 </span>            :                         {
+<span class="lineNum">     127 </span>            :                                 try
+<span class="lineNum">     128 </span>            :                                 {
+<span class="lineNum">     129 </span>            :                                         AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
+<span class="lineNum">     130 </span>            :                                         CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
+<span class="lineNum">     131 </span>            :                                         CommandHandlerResolver.Publish(command);
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            :                                         Sender.Tell(true);
+<span class="lineNum">     134 </span>            :                                 }
+<span class="lineNum">     135 </span>            :                                 catch
+<span class="lineNum">     136 </span>            :                                 {
+<span class="lineNum">     137 </span>            :                                         Sender.Tell(false);
+<span class="lineNum">     138 </span>            :                                         throw;
+<span class="lineNum">     139 </span>            :                                 }
+<span class="lineNum">     140 </span>            :                         }
+<span class="lineNum">     141 </span>            :                 }
+<span class="lineNum">     142 </span>            :         }
+<span class="lineNum">     143 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
