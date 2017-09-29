@@ -308,6 +308,14 @@
 				aggregateTechnology = propertyInstance.Value;
 		}
 
+		var sagaStereoTypeProperties = t.AppliedStereotypes.SingleOrDefault(property => property.Name == "Saga");
+		if (sagaStereoTypeProperties != null)
+		{
+			var propertyInstance = sagaStereoTypeProperties.PropertyInstances.SingleOrDefault(property => property.Name == "EventTechnology");
+			if (propertyInstance != null)
+				aggregateTechnology = propertyInstance.Value;
+		}
+
 		return aggregateTechnology;
 	}
 

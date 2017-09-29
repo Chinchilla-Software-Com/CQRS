@@ -80,8 +80,8 @@ namespace <#= classNamespace #>
 	if (aggregateTechnology != "Akka")
 	{
 #>
-		protected ILogger Logger { get; private set; }
 
+		protected ILogger Logger { get; private set; }
 <#
 	}
 #>
@@ -102,9 +102,9 @@ namespace <#= classNamespace #>
 					continue;
 			}
 #>
+
 <# WriteSummaryComment(collectionProperty.Description); #>
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; private set; }
-
 <#
 		}
 #>
@@ -710,11 +710,23 @@ switch(aggregateTechnology)
 			string targetElementName = ((INamedElement)relationship.TargetElement).Name;
 			IList<IProperty> relationshipProperties = GetPropertyList((IClass)relationship.SourceElement).Where(property=> property.Type != relationship.TargetElement && property.Type != relationship.SourceElement).ToList();
 			IEnumerable<IAssociation> eventRelationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.Name == relationship.Name && associationEnd.SourceElement == this.Element);
+			string commandName = string.Format("{0}Command", ((INamedElement)relationship.SourceElement).Name);
 
+			var commandHandler = relationship.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+			// If this is a command handler association, don't add a property for it as it's a command handler definition
+			if (commandHandler != null)
+			{
+				string aggregateRootMethod = commandHandler.PropertyInstances.Single(property => property.Name == "AggregateRootMethod").Value;
+				if (!string.IsNullOrWhiteSpace(aggregateRootMethod))
+					relationshipName = aggregateRootMethod;
+			}
+#>
+
+<#
 			if (aggregateTechnology == "Akka")
 			{
 #>
-		public virtual void <#= relationshipName #>(<#= ((INamedElement)relationship.SourceElement).Name #>Command command)
+		public virtual void <#= relationshipName #>(<#= commandName #> command)
 		{
 			<#= relationshipName #>(<#
 				var methodBody = new System.Text.StringBuilder();
@@ -809,7 +821,7 @@ switch(aggregateTechnology)
 				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
 				#><#= (i == 0) ? string.Empty : ", " #><#= GetLowercaseFirstCharacter(relationshipProperty.Name) #><#
 			}
-#><#= eventParameters.Substring(!relationshipProperties.Any() ? 2 : 0) #>);
+#><#= string.IsNullOrWhiteSpace(eventParameters) ? "/* Has no parameters */" : eventParameters.Substring(!relationshipProperties.Any() ? 2 : 0) #>);
 <#
 			foreach(IAssociation eventRelationship in eventRelationships)
 			{
@@ -844,7 +856,7 @@ switch(aggregateTechnology)
 				IProperty relationshipProperty = relationshipProperties.ElementAt(i);
 				#><#= (i == 0) ? string.Empty : ", " #><#= GetFullDisplayType(relationshipProperty) #> <#= GetLowercaseFirstCharacter(relationshipProperty.Name) #><#
 			}
-#><#= eventParametersWithType.Substring(!relationshipProperties.Any() ? 2 : 0) #>);
+#><#= string.IsNullOrWhiteSpace(eventParametersWithType) ? "/* Has no parameters */" : eventParametersWithType.Substring(!relationshipProperties.Any() ? 2 : 0) #>);
 
 		partial void On<#= relationshipName #>Handled(<#
 			for (int i = 0; i < relationshipProperties.Count; i++)

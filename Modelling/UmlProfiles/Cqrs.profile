@@ -163,6 +163,11 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
       <properties>
+        <property name="IsSnapshotable" displayName="IsSnapshotable: Indicates if the saga supports snapshots." defaultValue="false">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
         <property name="EventTechnology" displayName="Event Technology: What technology are you using for event processing of THIS saga." defaultValue="BuiltIn">
           <propertyType>
             <enumerationTypeMoniker name="/CqrsProfile/AggregateTechnology"/>
