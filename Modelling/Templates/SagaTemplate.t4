@@ -12,7 +12,7 @@
 <#@ Output Extension=".cs" #>
 
 <#
-var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "Saga");
 string authenticationTokenType = GetDomainAuthenticationTokenType(this.Element);
 
 // Header
@@ -27,7 +27,7 @@ if (string.IsNullOrWhiteSpace(baseClass))
 		.Single(property => property.Name == "IsSnapshotable")
 		.Value == "true";
 	if (isSnapshotable)
-		baseClass = string.Format("SnapshotAggregateRoot<" + authenticationTokenType + ", {0}.{0}Snapshot>", className);
+		baseClass = string.Format("SnapshotSaga<" + authenticationTokenType + ", {0}.{0}Snapshot>", className);
 }
 
 // using statements
@@ -37,14 +37,14 @@ switch(aggregateTechnology)
 {
 	case "Akka":
 		if (string.IsNullOrWhiteSpace(baseClass))
-			baseClass = "AkkaAggregateRoot<" + authenticationTokenType + ">";
+			baseClass = "AkkaSaga<" + authenticationTokenType + ">";
 #>using Akka.Actor;
 using Cqrs.Akka.Domain;
 <#
 		break;
 	default:
 		if (string.IsNullOrWhiteSpace(baseClass))
-			baseClass = "AggregateRoot<" + authenticationTokenType + ">";
+			baseClass = "Saga<" + authenticationTokenType + ">";
 		break;
 }
 #>
@@ -67,24 +67,7 @@ namespace <#= classNamespace #>
 	<#= GetGeneratedCodeAttribute() #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #> : <#= baseClass #>
 	{
-		public Guid Rsn
-		{
-			get { return Id; }
-			private set { Id = value; }
-		}
-
-		public bool IsLogicallyDeleted {get; set;}
-
 		protected IDependencyResolver DependencyResolver { get; private set; }
-<#
-	if (aggregateTechnology != "Akka")
-	{
-#>
-		protected ILogger Logger { get; private set; }
-
-<#
-	}
-#>
 <#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
 		// Properties
@@ -243,10 +226,10 @@ switch(aggregateTechnology)
 
 			bool isSimple = false;
 			string eventName = null;
-			var methodStereoTypeProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "AggregateRootMethod");
+			var methodStereoTypeProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "SagaMethod");
 			if (methodStereoTypeProperties != null)
 			{
-				isSimple = methodStereoTypeProperties.PropertyInstances.Any(property => property.Name == "AggregateRootMethodType" && property.Value == "Simple");
+				isSimple = methodStereoTypeProperties.PropertyInstances.Any(property => property.Name == "SagaMethodType" && property.Value == "Simple");
 				if (isSimple)
 					eventName = methodStereoTypeProperties.PropertyInstances.Single(property => property.Name == "EventName").Value;
 			}
@@ -891,6 +874,6 @@ switch(aggregateTechnology)
 <#+
 	protected override bool AppliesToElement()
 	{
-		return ShouldGenerateCodeForElement(this.Element) && this.Element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
+		return ShouldGenerateCodeForElement(this.Element) && this.Element.AppliedStereotypes.Any(property => property.Name == "Saga");
 	}
 #>
