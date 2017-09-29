@@ -231,6 +231,14 @@ if (!relationships.Any())
 		{
 			string targetElementName = ((INamedElement)relationship.TargetElement).Name;
 			aggregateTechnology = GetAggregateTechnology(relationship.TargetElement);
+			string relationshipName = relationship.Name;
+			var commandHandler = relationship.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+			if (commandHandler != null)
+			{
+				string aggregateRootMethod = commandHandler.PropertyInstances.Single(property => property.Name == "AggregateRootMethod").Value;
+				if (!string.IsNullOrWhiteSpace(aggregateRootMethod))
+					relationshipName = aggregateRootMethod;
+			}
 #>
 		#region Implementation of ICommandHandler<in <#= className #>>
 
@@ -276,7 +284,7 @@ if (!relationships.Any())
 			{
 #>
 				<#= targetElementName #> item = null;
-				On<#= relationship.Name #>(command, ref item);
+				On<#= relationshipName #>(command, ref item);
 				if (item == null)
 <#
 				if (createsNewInstance)
@@ -295,7 +303,7 @@ if (!relationships.Any())
 <#
 				}
 #>
-				item.<#= relationship.Name #>(<#
+				item.<#= relationshipName #>(<#
 				int processedProperties= 0;
 				for (int i = 0; i < collectionProperties.Count; i++)
 				{
@@ -315,7 +323,7 @@ if (!relationships.Any())
 				processedProperties++;
 				}
 #>);
-				On<#= relationship.Name #>Handled(command, item);
+				On<#= relationshipName #>Handled(command, item);
 				OnAddToUnitOfWork(command, item);
 				UnitOfWork.Add(item);
 				OnAddedToUnitOfWork(command, item);
@@ -332,9 +340,9 @@ if (!relationships.Any())
 
 		partial void OnHandle(<#= className #>Command command, ref bool continueExecution);
 
-		partial void On<#= relationship.Name #>(<#= className #>Command command, ref <#= targetElementName #> item);
+		partial void On<#= relationshipName #>(<#= className #>Command command, ref <#= targetElementName #> item);
 
-		partial void On<#= relationship.Name #>Handled(<#= className #>Command command, <#= targetElementName #> item);
+		partial void On<#= relationshipName #>Handled(<#= className #>Command command, <#= targetElementName #> item);
 
 		partial void OnAddToUnitOfWork(<#= className #>Command command, <#= targetElementName #> item);
 

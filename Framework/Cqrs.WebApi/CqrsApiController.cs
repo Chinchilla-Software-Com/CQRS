@@ -96,7 +96,6 @@ namespace Cqrs.WebApi
 		/// If <paramref name="createParameterDelegate"/> is not null, it is used to populate <see cref="IServiceRequestWithData{TAuthenticationToken,TData}.Data"/> otherwise <see cref="CreateParameter{TParameters}"/> is used.
 		/// </summary>
 		protected virtual IServiceRequestWithData<TSingleSignOnToken, TParameters> CreateRequestWithData<TSingleSignOnToken, TParameters>(Func<TParameters> createParameterDelegate = null)
-			where TSingleSignOnToken : ISingleSignOnToken, new()
 			where TParameters : new()
 		{
 			return new ServiceRequestWithData<TSingleSignOnToken, TParameters>
@@ -110,16 +109,74 @@ namespace Cqrs.WebApi
 		/// <summary>
 		/// Create an <typeparamref name="TSingleSignOnToken"/>.
 		/// </summary>
-		/// <typeparam name="TSingleSignOnToken">Th <see cref="Type"/> of <see cref="ISingleSignOnToken"/>.</typeparam>
+		/// <typeparam name="TSingleSignOnToken">The <see cref="Type"/> of <see cref="ISingleSignOnToken"/>.</typeparam>
 		protected virtual TSingleSignOnToken CreateAuthenticationToken<TSingleSignOnToken>()
-			where TSingleSignOnToken : ISingleSignOnToken, new()
 		{
-			return new TSingleSignOnToken
-			{
-				DateIssued = GetDateTokenIssued(),
-				Token = GetToken(),
-				TimeOfExpiry = GetTokenTimeOfExpiry()
-			};
+			if (typeof(TSingleSignOnToken) == typeof(int))
+				return (TSingleSignOnToken)(object)int.Parse(GetToken());
+			if (typeof(TSingleSignOnToken) == typeof(Guid))
+				return (TSingleSignOnToken)(object)new Guid(GetToken());
+			if (typeof(TSingleSignOnToken) == typeof(string))
+				return (TSingleSignOnToken)(object)GetToken();
+
+			if (typeof(TSingleSignOnToken) == typeof(SingleSignOnToken))
+				return (TSingleSignOnToken)(object)new SingleSignOnToken
+				{
+					DateIssued = GetDateTokenIssued(),
+					Token = GetToken(),
+					TimeOfExpiry = GetTokenTimeOfExpiry()
+				};
+			if (typeof(TSingleSignOnToken) == typeof(SingleSignOnTokenWithUserRsn))
+				return (TSingleSignOnToken)(object)new SingleSignOnTokenWithUserRsn
+				{
+					DateIssued = GetDateTokenIssued(),
+					Token = GetToken(),
+					TimeOfExpiry = GetTokenTimeOfExpiry()
+				};
+			if (typeof(TSingleSignOnToken) == typeof(SingleSignOnTokenWithCompanyRsn))
+				return (TSingleSignOnToken)(object)new SingleSignOnTokenWithCompanyRsn
+				{
+					DateIssued = GetDateTokenIssued(),
+					Token = GetToken(),
+					TimeOfExpiry = GetTokenTimeOfExpiry()
+				};
+			if (typeof(TSingleSignOnToken) == typeof(SingleSignOnTokenWithUserRsnAndCompanyRsn))
+				return (TSingleSignOnToken)(object)new SingleSignOnTokenWithUserRsnAndCompanyRsn
+				{
+					DateIssued = GetDateTokenIssued(),
+					Token = GetToken(),
+					TimeOfExpiry = GetTokenTimeOfExpiry()
+				};
+
+			if (typeof(TSingleSignOnToken) == typeof(ISingleSignOnToken))
+				return (TSingleSignOnToken)(object)new SingleSignOnToken
+				{
+					DateIssued = GetDateTokenIssued(),
+					Token = GetToken(),
+					TimeOfExpiry = GetTokenTimeOfExpiry()
+				};
+			if (typeof(TSingleSignOnToken) == typeof(ISingleSignOnTokenWithUserRsn))
+				return (TSingleSignOnToken)(object)new SingleSignOnTokenWithUserRsn
+				{
+					DateIssued = GetDateTokenIssued(),
+					Token = GetToken(),
+					TimeOfExpiry = GetTokenTimeOfExpiry()
+				};
+			if (typeof(TSingleSignOnToken) == typeof(ISingleSignOnTokenWithCompanyRsn))
+				return (TSingleSignOnToken)(object)new SingleSignOnTokenWithCompanyRsn
+				{
+					DateIssued = GetDateTokenIssued(),
+					Token = GetToken(),
+					TimeOfExpiry = GetTokenTimeOfExpiry()
+				};
+			if (typeof(TSingleSignOnToken) == typeof(ISingleSignOnTokenWithUserRsnAndCompanyRsn))
+				return (TSingleSignOnToken)(object)new SingleSignOnTokenWithUserRsnAndCompanyRsn
+				{
+					DateIssued = GetDateTokenIssued(),
+					Token = GetToken(),
+					TimeOfExpiry = GetTokenTimeOfExpiry()
+				};
+			return default(TSingleSignOnToken);
 		}
 
 		/// <summary>

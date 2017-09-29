@@ -23,7 +23,6 @@ namespace Cqrs.WebApi
 	public abstract class CqrsEventApiController<TSingleSignOnToken>
 		: CqrsApiController
 		, IEventService<TSingleSignOnToken>
-		where TSingleSignOnToken : ISingleSignOnToken, new()
 	{
 		/// <summary>
 		/// Instantiates a new instance of <see cref="CqrsEventApiController{TSingleSignOnToken}"/>.

@@ -130,6 +130,17 @@ switch(aggregateTechnology)
 <#
 			foreach(IProperty collectionProperty in collectionProperties.Where(property => property.UpperValue != null && property.UpperValue.ToString() == "*").ToList())
 			{
+				if (collectionProperty.OwningAssociation != null)
+				{
+					var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+					// If this is a command handler association, don't add a property for it as it's a command handler definition
+					if (commandHandler != null)
+						continue;
+					var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+					// If this is an event association, don't add a property for it as it's an event definition
+					if (eventLink != null)
+						continue;
+				}
 #>
 			<#= collectionProperty.Name #> = new List<<#= GetDisplayType(collectionProperty) #>>();
 <#
@@ -211,6 +222,17 @@ switch(aggregateTechnology)
 <#
 			foreach(IProperty collectionProperty in collectionProperties.Where(property => property.UpperValue != null && property.UpperValue.ToString() == "*").ToList())
 			{
+				if (collectionProperty.OwningAssociation != null)
+				{
+					var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+					// If this is a command handler association, don't add a property for it as it's a command handler definition
+					if (commandHandler != null)
+						continue;
+					var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+					// If this is an event association, don't add a property for it as it's an event definition
+					if (eventLink != null)
+						continue;
+				}
 #>
 			<#= collectionProperty.Name #> = new List<<#= GetDisplayType(collectionProperty) #>>();
 <#
@@ -226,6 +248,17 @@ switch(aggregateTechnology)
 <#
 			foreach(IProperty collectionProperty in collectionProperties.Where(property => property.UpperValue != null && property.UpperValue.ToString() == "*").ToList())
 			{
+				if (collectionProperty.OwningAssociation != null)
+				{
+					var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+					// If this is a command handler association, don't add a property for it as it's a command handler definition
+					if (commandHandler != null)
+						continue;
+					var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+					// If this is an event association, don't add a property for it as it's an event definition
+					if (eventLink != null)
+						continue;
+				}
 #>
 			<#= collectionProperty.Name #> = new List<<#= GetDisplayType(collectionProperty) #>>();
 <#
@@ -713,7 +746,6 @@ switch(aggregateTechnology)
 			string commandName = string.Format("{0}Command", ((INamedElement)relationship.SourceElement).Name);
 
 			var commandHandler = relationship.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
-			// If this is a command handler association, don't add a property for it as it's a command handler definition
 			if (commandHandler != null)
 			{
 				string aggregateRootMethod = commandHandler.PropertyInstances.Single(property => property.Name == "AggregateRootMethod").Value;

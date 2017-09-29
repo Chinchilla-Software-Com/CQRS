@@ -6,7 +6,7 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IPackage" />
       </metaclasses>
       <properties>
-        <property name="AuthenticationTokenType" displayName="AuthenticationTokenType: The data type of the authentication token" defaultValue="Cqrs.Authentication.ISingleSignOnToken">
+        <property name="AuthenticationTokenType" displayName="AuthenticationTokenType: The data type of the authentication token" defaultValue="System.Guid">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>

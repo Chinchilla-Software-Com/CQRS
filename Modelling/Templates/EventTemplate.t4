@@ -73,7 +73,7 @@ if (stereoTypeProperties.PropertyInstances
 		#region Implementation of IEvent
 
 		/// <summary>
-		/// The Rsn of the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> being targeted.
+		/// The Id of the <see cref="IEvent{TAuthenticationToken}" /> itself.
 		/// </summary>
 		[DataMember]
 		public Guid Id { get; set; }
@@ -236,6 +236,10 @@ if (stereoTypeProperties.PropertyInstances
 if (classNamespace.EndsWith(".Events"))
 { #>
 namespace <#= classNamespace.Substring(0, classNamespace.Length - 6) #>Commands
+{
+}
+
+namespace <#= classNamespace.Substring(0, classNamespace.Length - 6) #>Sagas
 {
 }
 <# } #>
