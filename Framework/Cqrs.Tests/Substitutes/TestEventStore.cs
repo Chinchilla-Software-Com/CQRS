@@ -40,15 +40,15 @@ namespace Cqrs.Tests.Substitutes
 					new SagaEvent<ISingleSignOnToken>
 					(
 						new TestAggregateDidSomethingElse {Id = Guid.NewGuid(), Version = 13}
-					){Id = aggregateId, Version = 2},
+					){Id = Guid.NewGuid(), Rsn = aggregateId, Version = 2},
 					new SagaEvent<ISingleSignOnToken>
 					(
 						new TestAggregateDidSomething {Id = Guid.NewGuid(), Version = 26}
-					){Id = aggregateId, Version = 3},
+					){Id = Guid.NewGuid(), Rsn = aggregateId, Version = 3},
 					new SagaEvent<ISingleSignOnToken>
 					(
 						new TestAggregateDidSomething {Id = Guid.NewGuid(), Version = 47}
-					){Id = aggregateId, Version = 4}
+					){Id = Guid.NewGuid(), Rsn = aggregateId, Version = 4}
 				}
 				.Where(x => x.Version > fromVersion);
 			}
