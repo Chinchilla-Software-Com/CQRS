@@ -23,11 +23,27 @@ string entityName = stereoTypeProperties.PropertyInstances
 	.Value;
 if (!string.IsNullOrWhiteSpace(entityName))
 	entityName = entityName.Replace("::", ".");
-string eventName = stereoTypeProperties.PropertyInstances
+string evName = stereoTypeProperties.PropertyInstances
 	.Single(property => property.Name == "EventName")
 	.Value;
-if (!string.IsNullOrWhiteSpace(eventName))
-	eventName = eventName.Replace("::", ".");
+if (!string.IsNullOrWhiteSpace(evName))
+	evName = evName.Replace("::", ".");
+
+IList<string> eventNames = new List<string>();
+if (!string.IsNullOrWhiteSpace(evName))
+	eventNames.Add(evName);
+
+IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.TargetElement == this.Element);
+// related events etc
+foreach(IAssociation relationship in relationships)
+{
+	var eventLink = relationship.SourceElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+	if (eventLink != null)
+	{
+		if (!eventNames.Contains(((INamedElement)relationship.SourceElement).Name))
+			eventNames.Add(string.Format("{0}.{1}", GetNamespace(((INamedElement)relationship.SourceElement).Namespace), ((INamedElement)relationship.SourceElement).Name));
+	}
+}
 
 string entityNameAsInterface = entityName;
 if (!string.IsNullOrWhiteSpace(entityNameAsInterface))
@@ -46,6 +62,8 @@ if (!string.IsNullOrWhiteSpace(entityNameAsInterface))
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using cdmdotnet.AutoMapper;
+using cdmdotnet.Logging;
 using Cqrs.Events;
 using Cqrs.Domain;
 
@@ -55,20 +73,29 @@ string eventHandlerTechnology = GetEventHandlerTechnology(this.Element);
 namespace <#= classNamespace #>.Handlers
 {
 <#
-	// Class and Attributes
-	string eventHandlerTechnologyBaseClass = "IEventHandler<" + authenticationTokenType + ", " + eventName + ">";
-	if (!string.IsNullOrWhiteSpace(baseClass))
-	{
-		baseClass = ": " + baseClass;
-		eventHandlerTechnologyBaseClass = ", " + eventHandlerTechnologyBaseClass;
-	}
-	else
-		eventHandlerTechnologyBaseClass = ": " + eventHandlerTechnologyBaseClass;
+string eventHandlerTechnologyBaseClass = "";
+// Class and Attributes
+foreach(string eventName in eventNames)
+{
+	if (!string.IsNullOrWhiteSpace(eventHandlerTechnologyBaseClass))
+		eventHandlerTechnologyBaseClass = eventHandlerTechnologyBaseClass + "\r\n\t\t, ";
+	eventHandlerTechnologyBaseClass = string.Format("{0}IEventHandler<{1}, {2}>", eventHandlerTechnologyBaseClass, authenticationTokenType, eventName);
+}
+if (!string.IsNullOrWhiteSpace(baseClass))
+{
+	baseClass = ": " + baseClass;
+	eventHandlerTechnologyBaseClass = ", " + eventHandlerTechnologyBaseClass;
+}
+else
+	eventHandlerTechnologyBaseClass = ": " + eventHandlerTechnologyBaseClass;
+
+if (!string.IsNullOrWhiteSpace(baseClass))
+	baseClass = baseClass + "\r\n\t\t";
+baseClass = eventHandlerTechnologyBaseClass;
 #>
 	<#= GetGeneratedCodeAttribute() #>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #>EventHandler
 		<#= baseClass #>
-		<#= eventHandlerTechnologyBaseClass #>
 	{
 		public <#= className #>EventHandler(ILogger logger, IAutomapHelper automapHelper<# if (!string.IsNullOrWhiteSpace(entityNameAsInterface)) { #>, <#= entityNameAsInterface #>Repository entityRepository<#} #>)
 		{
@@ -93,6 +120,10 @@ if (!string.IsNullOrWhiteSpace(entityNameAsInterface))
 #>
 
 		protected <#= entityNameAsInterface #>Repository EntityRepository { get; private set; }
+<#
+	foreach(string eventName in eventNames)
+	{
+#>
 
 		#region Implementation of IEventHandler<in <#= eventName #>>
 
@@ -192,9 +223,12 @@ if (!string.IsNullOrWhiteSpace(entityNameAsInterface))
 
 		partial void OnHandled(<#= eventName #> @event);
 <#
+	}
 }
 else
 {
+	foreach(string eventName in eventNames)
+	{
 #>
 
 		#region Implementation of IEventHandler<in <#= eventName #>>
@@ -206,10 +240,15 @@ else
 
 		#endregion
 <#
+	}
 }
+
+foreach(string eventName in eventNames)
+{
 #>
 
 		partial void OnHandle(<#= eventName #> @event);
+<# } #>
 	}
 }
 <#+

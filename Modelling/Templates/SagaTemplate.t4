@@ -42,6 +42,7 @@ using Cqrs.Akka.Domain;
 #>
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
+using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Domain;
 using Cqrs.Events;
@@ -383,23 +384,25 @@ switch(aggregateTechnology)
 			}
 #>
 
-			IList<IEvent<<#= authenticationTokenType #>>> eventsToPublish = new List<IEvent<<#= authenticationTokenType #>>>();
-			OnHandle(@event, ref eventsToPublish);
+			IList<ICommand<<#= authenticationTokenType #>>> commandsToPublish = new List<ICommand<<#= authenticationTokenType #>>>();
+			OnHandle(@event, commandsToPublish);
 
-			foreach(IEvent<<#= authenticationTokenType #>> eventToPublish in eventsToPublish)
+			foreach(ICommand<<#= authenticationTokenType #>> commandToPublish in commandsToPublish)
 			{
-				IEvent<<#= authenticationTokenType #>> eventToPublishMaybe = eventToPublish;
-				PreApplyChange<#= relationshipName #>(@event, eventToPublishMaybe);
-				if (eventToPublishMaybe != null)
-					ApplyChange(eventToPublishMaybe);
+				ICommand<<#= authenticationTokenType #>> commandToPublishMaybe = commandToPublish;
+				PrePublish<#= relationshipName #>(@event, ref commandToPublishMaybe);
+				if (commandToPublishMaybe != null)
+					CommandPublisher.Publish(commandToPublishMaybe);
 			}
+
+			ApplyChange(@event);
 
 			Logger.LogDebug("Exited", "<#= className #>/Handle/<#= relationshipName #>");
 		}
 
-		partial void OnHandle(<#= sourceElementName #> @event, IList<IEvent<<#= authenticationTokenType #>>> eventsToPublish);
+		partial void OnHandle(<#= sourceElementName #> @event, IList<ICommand<<#= authenticationTokenType #>>> commandsToPublish);
 
-		partial void PreApplyChange<#= relationshipName #>(<#= sourceElementName #> @event, ref IEvent<<#= authenticationTokenType #>> eventToPublish);
+		partial void PrePublish<#= relationshipName #>(<#= sourceElementName #> @event, ref ICommand<<#= authenticationTokenType #>> commandToPublish);
 <#
 		}
 #>

@@ -149,6 +149,10 @@ if (stereoTypeProperties.PropertyInstances
 				// If this is an event handler association, don't add a property for it.
 				if (eventHandler != null)
 					continue;
+				eventHandler = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				// If this is an association to an event handler, don't add a property for it.
+				if (eventHandler != null)
+					continue;
 				var saga = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Saga");
 				// If this is a saga association, don't add a property for it.
 				if (saga != null)
@@ -185,6 +189,10 @@ if (stereoTypeProperties.PropertyInstances
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (eventHandler != null)
 					continue;
+				eventHandler = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				// If this is an association to an event handler, don't add a property for it.
+				if (eventHandler != null)
+					continue;
 				var saga = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Saga");
 				// If this is a saga association, don't add a property for it.
 				if (saga != null)
@@ -214,6 +222,10 @@ if (stereoTypeProperties.PropertyInstances
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (eventHandler != null)
 					continue;
+				eventHandler = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				// If this is an association to an event handler, don't add a property for it.
+				if (eventHandler != null)
+					continue;
 				var saga = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Saga");
 				// If this is a saga association, don't add a property for it.
 				if (saga != null)
@@ -236,6 +248,10 @@ if (stereoTypeProperties.PropertyInstances
 if (classNamespace.EndsWith(".Events"))
 { #>
 namespace <#= classNamespace.Substring(0, classNamespace.Length - 6) #>Commands
+{
+}
+
+namespace <#= classNamespace #>.Handlers
 {
 }
 
