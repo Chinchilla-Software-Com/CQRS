@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-09-30</td>
+            <td class="headerValue">2017-10-02</td>
             <td></td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -177,7 +177,7 @@
 <span class="lineNum">     119 </span>            :                 static TAuthenticationToken GenerateAuthenticationToken()
 <span class="lineNum">     120 </span>            :                 {
 <span class="lineNum">     121 </span>            :                         string authenticationType;
-<span class="lineNum">     122 </span>            :                         if (!DependencyResolver.Current.Resolve&lt;IConfigurationManager&gt;().TryGetSetting(&quot;Cqrs.AuthenticationTokenType&quot;, out authenticationType))
+<span class="lineNum">     122 </span>            :                         if (!DependencyResolver.Current.Resolve&lt;IConfigurationManager&gt;().TryGetSetting(&quot;Cqrs.AuthenticationTokenType&quot;, out authenticationType) || string.IsNullOrWhiteSpace(authenticationType))
 <span class="lineNum">     123 </span>            :                                 authenticationType = &quot;Guid&quot;;
 <span class="lineNum">     124 </span>            : 
 <span class="lineNum">     125 </span>            :                         TAuthenticationToken token = default(TAuthenticationToken);
@@ -298,12 +298,12 @@
 <span class="lineNum">     240 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     241 </span>            :                 /// Generate a list of relevant XML files to use with the auto documenting feature.
 <span class="lineNum">     242 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
-<span class="lineNum">     243 </span>            :                 public static void GenerateAssemblyXmlFileNames()
+<span class="lineNum">     243 </span>            :                 public static void GenerateAssemblyXmlFileNames(Assembly assembly = null)
 <span class="lineNum">     244 </span>            :                 {
 <span class="lineNum">     245 </span>            :                         if (AssemblyXmlFileNames.Any())
 <span class="lineNum">     246 </span>            :                                 return;
 <span class="lineNum">     247 </span>            : 
-<span class="lineNum">     248 </span>            :                         string webAssemblyName = Assembly.GetCallingAssembly().FullName;
+<span class="lineNum">     248 </span>            :                         string webAssemblyName = (assembly ?? Assembly.GetCallingAssembly()).FullName;
 <span class="lineNum">     249 </span>            :                         webAssemblyName = webAssemblyName.Substring(0, webAssemblyName.IndexOf(&quot;,&quot;));
 <span class="lineNum">     250 </span>            :                         AssemblyXmlFileNames = new List&lt;string&gt; { webAssemblyName };
 <span class="lineNum">     251 </span>            :                         try
@@ -323,9 +323,9 @@
 <span class="lineNum">     265 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     266 </span>            :                 /// Generate the relevant XML file used by the auto documenting feature.
 <span class="lineNum">     267 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
-<span class="lineNum">     268 </span>            :                 public static void CreateXmlDocumentation()
+<span class="lineNum">     268 </span>            :                 public static void CreateXmlDocumentation(Assembly assembly = null)
 <span class="lineNum">     269 </span>            :                 {
-<span class="lineNum">     270 </span>            :                         GenerateAssemblyXmlFileNames();
+<span class="lineNum">     270 </span>            :                         GenerateAssemblyXmlFileNames(assembly);
 <span class="lineNum">     271 </span>            :                         var assemblyXmlFileNames = new List&lt;string&gt;(AssemblyXmlFileNames) {&quot;Cqrs&quot;, &quot;Cqrs.WebApi&quot;};
 <span class="lineNum">     272 </span>            :                         var finalDocumentation = new XmlDocument();
 <span class="lineNum">     273 </span>            :                         for (int i = 0; i &lt; assemblyXmlFileNames.Count; i++)
