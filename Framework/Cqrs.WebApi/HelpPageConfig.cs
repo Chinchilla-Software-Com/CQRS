@@ -119,7 +119,7 @@ namespace Cqrs.WebApi
 		static TAuthenticationToken GenerateAuthenticationToken()
 		{
 			string authenticationType;
-			if (!DependencyResolver.Current.Resolve<IConfigurationManager>().TryGetSetting("Cqrs.AuthenticationTokenType", out authenticationType))
+			if (!DependencyResolver.Current.Resolve<IConfigurationManager>().TryGetSetting("Cqrs.AuthenticationTokenType", out authenticationType) || string.IsNullOrWhiteSpace(authenticationType))
 				authenticationType = "Guid";
 
 			TAuthenticationToken token = default(TAuthenticationToken);
