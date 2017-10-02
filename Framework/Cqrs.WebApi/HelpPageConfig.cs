@@ -240,12 +240,12 @@ namespace Cqrs.WebApi
 		/// <summary>
 		/// Generate a list of relevant XML files to use with the auto documenting feature.
 		/// </summary>
-		public static void GenerateAssemblyXmlFileNames()
+		public static void GenerateAssemblyXmlFileNames(Assembly assembly = null)
 		{
 			if (AssemblyXmlFileNames.Any())
 				return;
 
-			string webAssemblyName = Assembly.GetCallingAssembly().FullName;
+			string webAssemblyName = (assembly ?? Assembly.GetCallingAssembly()).FullName;
 			webAssemblyName = webAssemblyName.Substring(0, webAssemblyName.IndexOf(","));
 			AssemblyXmlFileNames = new List<string> { webAssemblyName };
 			try
@@ -265,9 +265,9 @@ namespace Cqrs.WebApi
 		/// <summary>
 		/// Generate the relevant XML file used by the auto documenting feature.
 		/// </summary>
-		public static void CreateXmlDocumentation()
+		public static void CreateXmlDocumentation(Assembly assembly = null)
 		{
-			GenerateAssemblyXmlFileNames();
+			GenerateAssemblyXmlFileNames(assembly);
 			var assemblyXmlFileNames = new List<string>(AssemblyXmlFileNames) {"Cqrs", "Cqrs.WebApi"};
 			var finalDocumentation = new XmlDocument();
 			for (int i = 0; i < assemblyXmlFileNames.Count; i++)
