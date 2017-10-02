@@ -294,9 +294,9 @@ namespace <#= classNamespace #>.Services
 				return CompleteResponse(new ServiceResponse { State = serviceResponseStateType.Value });
 
 			UnitOfWorkService.Commit(this);
-			return CompleteResponse(new ServiceResponse());
-
 			Logger.LogDebug("Exited", "<#= className #>/<#= relationshipName #>");
+
+			return CompleteResponse(new ServiceResponse());
 		}
 
 		partial void On<#= relationshipName #>(<#= methodSignatureParameter #>, ref <#= sourceElementName #>Command command, ref ServiceResponseStateType? serviceResponseStateType);

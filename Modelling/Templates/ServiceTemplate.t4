@@ -57,21 +57,12 @@ namespace <#= classNamespace #>
 
 		protected IQueryFactory QueryFactory { get; private set; }
 
-		protected IAuthenticationTokenHelper<<#= authenticationTokenType #>> AuthenticationTokenHelper { get; set; }
-
-		protected ICorrelationIdHelper CorrelationIdHelper { get; set; }
-
-		protected ILogger Logger { get; private set; }
-
 		public <#= className #>(ICommandPublisher<<#= authenticationTokenType #>> commandPublisher, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IEventStore<<#= authenticationTokenType #>> eventStore)
 			: base(eventStore, logger, correlationIdHelper, authenticationTokenHelper)
 		{
 			CommandPublisher = commandPublisher;
 			UnitOfWorkService = unitOfWorkService;
 			QueryFactory = queryFactory;
-			AuthenticationTokenHelper = authenticationTokenHelper;
-			CorrelationIdHelper = correlationIdHelper;
-			Logger = logger;
 		}
 
 <#
