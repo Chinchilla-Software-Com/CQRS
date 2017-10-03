@@ -828,6 +828,8 @@ switch(aggregateTechnology)
 
 			string eventParameters = "";
 			string eventParametersWithType = "";
+			string eventParameterType = "";
+			string eventParameterName = "";
 			foreach(IAssociation eventRelationship in eventRelationships)
 			{
 				string eventTargetElementName = ((INamedElement)eventRelationship.TargetElement).Name;
@@ -841,9 +843,11 @@ switch(aggregateTechnology)
 					eventParameters = string.Concat(eventParameters, ", ref ");
 					eventParametersWithType = string.Concat(eventParametersWithType, ", ref ");
 				}
-				eventParameters = string.Concat(eventParameters, GetLowercaseFirstCharacter(eventTargetElementName), "Event");
-				eventParametersWithType = string.Concat(eventParametersWithType, eventTargetElementName, " ", GetLowercaseFirstCharacter(eventTargetElementName), "Event");
-#>			<#= eventTargetElementName #> <#= GetLowercaseFirstCharacter(eventTargetElementName) #>Event = null;
+				eventParameterType = GetFullDisplayType(eventRelationship.MemberEnds.Single(x => x.Type != this.Element), editableCollection: true);
+				eventParameterName = string.Concat(GetLowercaseFirstCharacter(eventTargetElementName), eventTargetElementName.EndsWith("Event") ? string.Empty : "Event", eventParameterType.StartsWith("IList<") ? "s" : string.Empty);
+				eventParameters = string.Concat(eventParameters, eventParameterName);
+				eventParametersWithType = string.Concat(eventParametersWithType, eventParameterType, " ", eventParameterName);
+#>			<#= eventParameterType #> <#= eventParameterName #> = <#= eventParameterType.StartsWith("IList<") ? string.Concat("new ", eventParameterType.Substring(1), "()") : "null" #>;
 <#
 			}
 #>
@@ -860,10 +864,10 @@ switch(aggregateTechnology)
 			{
 				string eventTargetElementName = ((INamedElement)eventRelationship.TargetElement).Name;
 #>
-			if (<#= GetLowercaseFirstCharacter(eventTargetElementName) #>Event != null)
+			if (<#= eventParameterName #> != null)
 			{
 				Logger.LogDebug("Pre", "<#= className #>/<#= relationshipName #>/ApplyChange/<#= eventTargetElementName #>");
-				ApplyChange(<#= GetLowercaseFirstCharacter(eventTargetElementName) #>Event);
+				ApplyChange<#= eventParameterType.StartsWith("IList<") ? "s" : string.Empty #>(<#= eventParameterName #>);
 				Logger.LogDebug("Post", "<#= className #>/<#= relationshipName #>/ApplyChange/<#= eventTargetElementName #>");
 			}
 <#

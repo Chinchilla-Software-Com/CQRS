@@ -174,18 +174,67 @@ namespace Cqrs.Domain
 
 		private void ApplyChange(ISagaEvent<TAuthenticationToken> @event, bool isEventReplay)
 		{
+			ApplyChanges(new[] { @event }, isEventReplay);
+		}
+
+		/// <summary>
+		/// Call the "Apply" method with a signature matching each <see cref="ISagaEvent{TAuthenticationToken}"/> in the provided <paramref name="events"/> without using event replay to this instance.
+		/// </summary>
+		/// <remarks>
+		/// This means a method named "Apply", with return type void and one parameter must exist to be applied.
+		/// If no method exists, nothing is applied
+		/// The parameter type must match exactly the <see cref="Type"/> of the <see cref="IEvent{TAuthenticationToken}"/> in the provided <paramref name="events"/>.
+		/// </remarks>
+		protected virtual void ApplyChanges(IEnumerable<ISagaEvent<TAuthenticationToken>> events)
+		{
+			ApplyChanges(events, false);
+		}
+
+		/// <summary>
+		/// Calls the "SetId" method dynamically if the method exists on the first <see cref="IEvent{TAuthenticationToken}"/> in the provided <paramref name="events"/>,
+		/// then calls <see cref="ApplyChanges(System.Collections.Generic.IEnumerable{Cqrs.Events.ISagaEvent{TAuthenticationToken}})"/>
+		/// </summary>
+		protected virtual void ApplyChanges(IEnumerable<IEvent<TAuthenticationToken>> events)
+		{
+			IList<IEvent<TAuthenticationToken>> list = events.ToList();
+			IList<ISagaEvent<TAuthenticationToken>> sagaEvents = new List<ISagaEvent<TAuthenticationToken>>();
+			for (int i = 0; i < list.Count; i++)
+			{
+				var sagaEvent = new SagaEvent<TAuthenticationToken>(list[i]);
+				// Set ID
+				if (i == 0)
+					this.AsDynamic().SetId(sagaEvent);
+				sagaEvents.Add(sagaEvent);
+			}
+			ApplyChanges(sagaEvents);
+		}
+
+		private void ApplyChanges(IEnumerable<ISagaEvent<TAuthenticationToken>> events, bool isEventReplay)
+		{
 			Lock.EnterWriteLock();
+			IList<ISagaEvent<TAuthenticationToken>> changes = new List<ISagaEvent<TAuthenticationToken>>();
 			try
 			{
-				this.AsDynamic().Apply(@event.Event);
-				if (!isEventReplay)
+				try
 				{
-					Changes = new ReadOnlyCollection<ISagaEvent<TAuthenticationToken>>(Changes.Concat(new[] { @event }).ToList());
+					dynamic dynamicThis = this.AsDynamic();
+					foreach (ISagaEvent<TAuthenticationToken> @event in events)
+					{
+						dynamicThis.Apply(@event.Event);
+						if (!isEventReplay)
+						{
+							changes.Add(@event);
+						}
+						else
+						{
+							Id = @event.Rsn;
+							Version++;
+						}
+					}
 				}
-				else
+				finally
 				{
-					Id = @event.Rsn;
-					Version++;
+					Changes = new ReadOnlyCollection<ISagaEvent<TAuthenticationToken>>(Changes.Concat(changes).ToList());
 				}
 			}
 			finally
