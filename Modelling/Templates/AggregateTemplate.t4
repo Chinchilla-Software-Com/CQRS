@@ -863,6 +863,8 @@ switch(aggregateTechnology)
 			foreach(IAssociation eventRelationship in eventRelationships)
 			{
 				string eventTargetElementName = ((INamedElement)eventRelationship.TargetElement).Name;
+				eventParameterType = GetFullDisplayType(eventRelationship.MemberEnds.Single(x => x.Type != this.Element), editableCollection: true);
+				eventParameterName = string.Concat(GetLowercaseFirstCharacter(eventTargetElementName), eventTargetElementName.EndsWith("Event") ? string.Empty : "Event", eventParameterType.StartsWith("IList<") ? "s" : string.Empty);
 #>
 			if (<#= eventParameterName #> != null)
 			{
