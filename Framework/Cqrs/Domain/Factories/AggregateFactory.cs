@@ -46,7 +46,7 @@ namespace Cqrs.Domain.Factories
 		/// <param name="tryDependencyResolutionFirst">Indicates the use of <see cref="IDependencyResolver"/> should be tried first.</param>
 		public virtual TAggregate Create<TAggregate>(Guid? rsn = null, bool tryDependencyResolutionFirst = true)
 		{
-			return (TAggregate)Create(typeof (TAggregate), rsn);
+			return (TAggregate)Create(typeof(TAggregate), rsn, tryDependencyResolutionFirst);
 		}
 
 		/// <summary>
@@ -58,7 +58,7 @@ namespace Cqrs.Domain.Factories
 		public object Create(Type aggregateType, Guid? rsn = null, bool tryDependencyResolutionFirst = true)
 		{
 			if (tryDependencyResolutionFirst)
-			{ 
+			{
 				try
 				{
 					return DependencyResolver.Resolve(aggregateType);
@@ -89,6 +89,18 @@ namespace Cqrs.Domain.Factories
 					}
 					catch (MissingMethodException)
 					{
+						if (!tryDependencyResolutionFirst)
+						{
+							try
+							{
+								return DependencyResolver.Resolve(aggregateType);
+							}
+							catch
+							{
+								Logger.LogDebug(string.Format("Using the dependency resolver to create an instance of the aggregate typed '{0}' failed.", aggregateType.FullName), "Cqrs.Domain.Factories.AggregateFactory.Create");
+							}
+						}
+
 						throw new MissingParameterLessConstructorException(aggregateType);
 					}
 				}

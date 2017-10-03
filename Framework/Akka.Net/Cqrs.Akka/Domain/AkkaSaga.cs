@@ -56,6 +56,8 @@ namespace Cqrs.Akka.Domain
 
 		private ICollection<ISagaEvent<TAuthenticationToken>> Changes { get; set; }
 
+		private ICollection<ICommand<TAuthenticationToken>> Commands { get; set; }
+
 		/// <summary>
 		/// The identifier of the <see cref="ISaga{TAuthenticationToken}"/>.
 		/// </summary>
@@ -83,6 +85,7 @@ namespace Cqrs.Akka.Domain
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CommandPublisher = commandPublisher;
 			Changes = new ReadOnlyCollection<ISagaEvent<TAuthenticationToken>>(new List<ISagaEvent<TAuthenticationToken>>());
+			Commands = new ReadOnlyCollection<ICommand<TAuthenticationToken>>(new List<ICommand<TAuthenticationToken>>());
 		}
 
 		#region Overrides of ActorBase
@@ -131,7 +134,7 @@ namespace Cqrs.Akka.Domain
 		/// <summary>
 		/// Get all applied changes that haven't yet been committed.
 		/// </summary>
-		public IEnumerable<ISagaEvent<TAuthenticationToken>> GetUncommittedChanges()
+		public virtual IEnumerable<ISagaEvent<TAuthenticationToken>> GetUncommittedChanges()
 		{
 			return Changes;
 		}
@@ -158,6 +161,30 @@ namespace Cqrs.Akka.Domain
 					throw new EventsOutOfOrderException(@event.GetIdentity(), sagaType, Version + 1, @event.Version);
 				ApplyChange(@event, true);
 			}
+		}
+
+		/// <summary>
+		/// Get all pending commands that haven't yet been published yet.
+		/// </summary>
+		public virtual IEnumerable<ICommand<TAuthenticationToken>> GetUnpublishedCommands()
+		{
+			return Commands;
+		}
+
+		/// <summary>
+		/// Queue the provided <paramref name="command"/> for publishing.
+		/// </summary>
+		protected virtual void QueueCommand(ICommand<TAuthenticationToken> command)
+		{
+			Commands = new ReadOnlyCollection<ICommand<TAuthenticationToken>>(Commands.Concat(new[] { command }).ToList());
+		}
+
+		/// <summary>
+		/// Mark all published commands as published and flush the internal collection of commands.
+		/// </summary>
+		public virtual void MarkCommandsAsPublished()
+		{
+			Commands = new ReadOnlyCollection<ICommand<TAuthenticationToken>>(new List<ICommand<TAuthenticationToken>>());
 		}
 
 		/// <summary>

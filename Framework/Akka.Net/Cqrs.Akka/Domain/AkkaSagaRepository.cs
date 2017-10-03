@@ -10,6 +10,7 @@ using System;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
 using Cqrs.Akka.Events;
+using Cqrs.Commands;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
@@ -32,8 +33,8 @@ namespace Cqrs.Akka.Domain
 		/// <summary>
 		/// Instantiates a new instance of <see cref="AkkaSagaRepository{TAuthenticationToken}"/>
 		/// </summary>
-		public AkkaSagaRepository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICorrelationIdHelper correlationIdHelper, IAkkaEventPublisherProxy<TAuthenticationToken> eventPublisher)
-			: base(aggregateFactory, eventStore, publisher, correlationIdHelper)
+		public AkkaSagaRepository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICommandPublisher<TAuthenticationToken> commandPublisher, ICorrelationIdHelper correlationIdHelper, IAkkaEventPublisherProxy<TAuthenticationToken> eventPublisher)
+			: base(aggregateFactory, eventStore, publisher, commandPublisher, correlationIdHelper)
 		{
 			EventPublisher = eventPublisher;
 		}

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using cdmdotnet.Logging;
+using Cqrs.Commands;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
@@ -33,6 +34,11 @@ namespace Cqrs.Domain
 		protected IEventPublisher<TAuthenticationToken> Publisher { get; private set; }
 
 		/// <summary>
+		/// Gets or sets the Publisher used to publish an <see cref="ICommand{TAuthenticationToken}"/>
+		/// </summary>
+		protected ICommandPublisher<TAuthenticationToken> CommandPublisher { get; private set; }
+
+		/// <summary>
 		/// Gets or set the <see cref="IAggregateFactory"/>.
 		/// </summary>
 		protected IAggregateFactory SagaFactory { get; private set; }
@@ -45,11 +51,12 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Instantiates a new instance of <see cref="SagaRepository{TAuthenticationToken}"/>
 		/// </summary>
-		public SagaRepository(IAggregateFactory sagaFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICorrelationIdHelper correlationIdHelper)
+		public SagaRepository(IAggregateFactory sagaFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICommandPublisher<TAuthenticationToken> commandPublisher, ICorrelationIdHelper correlationIdHelper)
 		{
 			EventStore = eventStore;
 			Publisher = publisher;
 			CorrelationIdHelper = correlationIdHelper;
+			CommandPublisher = commandPublisher;
 			SagaFactory = sagaFactory;
 		}
 
@@ -97,6 +104,9 @@ namespace Cqrs.Domain
 			saga.MarkChangesAsCommitted();
 			foreach (ISagaEvent<TAuthenticationToken> @event in eventsToPublish)
 				PublishEvent(@event);
+
+			IEnumerable<ICommand<TAuthenticationToken>> commandsToPublish = saga.GetUnpublishedCommands();
+			PublishCommand(commandsToPublish);
 		}
 
 		/// <summary>
@@ -105,6 +115,14 @@ namespace Cqrs.Domain
 		protected virtual void PublishEvent(ISagaEvent<TAuthenticationToken> @event)
 		{
 			Publisher.Publish(@event);
+		}
+
+		/// <summary>
+		/// Publish the <paramref name="commands"/>.
+		/// </summary>
+		protected virtual void PublishCommand(IEnumerable<ICommand<TAuthenticationToken>> commands)
+		{
+			CommandPublisher.Publish(commands);
 		}
 
 		/// <summary>
@@ -147,7 +165,7 @@ namespace Cqrs.Domain
 		protected virtual TSaga LoadSaga<TSaga>(Guid id, IList<ISagaEvent<TAuthenticationToken>> events = null)
 			where TSaga : ISaga<TAuthenticationToken>
 		{
-			var saga = SagaFactory.Create<TSaga>(id);
+			var saga = SagaFactory.Create<TSaga>(id, false);
 
 			LoadSagaHistory(saga, events);
 			return saga;

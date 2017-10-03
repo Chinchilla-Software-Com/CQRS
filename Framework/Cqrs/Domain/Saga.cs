@@ -43,6 +43,8 @@ namespace Cqrs.Domain
 
 		private ICollection<ISagaEvent<TAuthenticationToken>> Changes { get; set; }
 
+		private ICollection<ICommand<TAuthenticationToken>> Commands { get; set; }
+
 		/// <summary>
 		/// The identifier of this <see cref="ISaga{TAuthenticationToken}"/>.
 		/// </summary>
@@ -86,6 +88,15 @@ namespace Cqrs.Domain
 		{
 			Lock = new ReaderWriterLockSlim();
 			Changes = new ReadOnlyCollection<ISagaEvent<TAuthenticationToken>>(new List<ISagaEvent<TAuthenticationToken>>());
+			Commands = new ReadOnlyCollection<ICommand<TAuthenticationToken>>(new List<ICommand<TAuthenticationToken>>());
+			Initialise();
+		}
+
+		/// <summary>
+		/// Initialise any properties
+		/// </summary>
+		protected virtual void Initialise()
+		{
 		}
 
 		/// <summary>
@@ -149,6 +160,46 @@ namespace Cqrs.Domain
 		}
 
 		/// <summary>
+		/// Get all pending commands that haven't yet been published yet.
+		/// </summary>
+		public virtual IEnumerable<ICommand<TAuthenticationToken>> GetUnpublishedCommands()
+		{
+			return Commands;
+		}
+
+		/// <summary>
+		/// Queue the provided <paramref name="command"/> for publishing.
+		/// </summary>
+		protected virtual void QueueCommand(ICommand<TAuthenticationToken> command)
+		{
+			Lock.EnterWriteLock();
+			try
+			{
+				Commands = new ReadOnlyCollection<ICommand<TAuthenticationToken>>(Commands.Concat(new []{command}).ToList());
+			}
+			finally
+			{
+				Lock.ExitWriteLock();
+			}
+		}
+
+		/// <summary>
+		/// Mark all published commands as published and flush the internal collection of commands.
+		/// </summary>
+		public virtual void MarkCommandsAsPublished()
+		{
+			Lock.EnterWriteLock();
+			try
+			{
+				Commands = new ReadOnlyCollection<ICommand<TAuthenticationToken>>(new List<ICommand<TAuthenticationToken>>());
+			}
+			finally
+			{
+				Lock.ExitWriteLock();
+			}
+		}
+
+		/// <summary>
 		/// Call the "Apply" method with a signature matching the provided <paramref name="event"/> without using event replay to this instance.
 		/// </summary>
 		/// <remarks>
@@ -170,6 +221,14 @@ namespace Cqrs.Domain
 			// Set ID
 			this.AsDynamic().SetId(sagaEvent);
 			ApplyChange(sagaEvent);
+		}
+
+		/// <summary>
+		/// Sets the <see cref="IEvent{TAuthenticationToken}.Id"/> from <see cref="ISagaEvent{TAuthenticationToken}.Event"/> back onto <paramref name="sagaEvent"/>.
+		/// </summary>
+		protected virtual void SetId(ISagaEvent<TAuthenticationToken> sagaEvent)
+		{
+			sagaEvent.Rsn = sagaEvent.Event.GetIdentity();
 		}
 
 		private void ApplyChange(ISagaEvent<TAuthenticationToken> @event, bool isEventReplay)

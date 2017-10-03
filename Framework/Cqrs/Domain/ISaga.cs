@@ -59,5 +59,15 @@ namespace Cqrs.Domain
 		/// using event replay to this instance.
 		/// </summary>
 		void LoadFromHistory(IEnumerable<ISagaEvent<TAuthenticationToken>> history);
+
+		/// <summary>
+		/// Get all pending commands that haven't yet been published yet.
+		/// </summary>
+		IEnumerable<ICommand<TAuthenticationToken>> GetUnpublishedCommands();
+
+		/// <summary>
+		/// Mark all published commands as published and flush the internal collection of commands.
+		/// </summary>
+		void MarkCommandsAsPublished();
 	}
 }

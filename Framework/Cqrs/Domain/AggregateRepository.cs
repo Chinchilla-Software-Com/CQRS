@@ -159,7 +159,7 @@ namespace Cqrs.Domain
 		protected virtual TAggregateRoot LoadAggregate<TAggregateRoot>(Guid id, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			var aggregate = AggregateFactory.Create<TAggregateRoot>(id);
+			var aggregate = AggregateFactory.Create<TAggregateRoot>(id, false);
 
 			LoadAggregateHistory(aggregate, events);
 			return aggregate;

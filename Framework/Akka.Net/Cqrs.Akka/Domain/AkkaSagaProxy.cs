@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using Akka.Actor;
 using Cqrs.Akka.Domain.Commands;
+using Cqrs.Commands;
 using Cqrs.Domain;
 using Cqrs.Events;
 
@@ -77,6 +78,22 @@ namespace Cqrs.Akka.Domain
 		public virtual void LoadFromHistory(IEnumerable<ISagaEvent<TAuthenticationToken>> history)
 		{
 			((ISaga<TAuthenticationToken>)Saga).LoadFromHistory(history);
+		}
+
+		/// <summary>
+		/// Get all pending commands that haven't yet been published yet.
+		/// </summary>
+		public IEnumerable<ICommand<TAuthenticationToken>> GetUnpublishedCommands()
+		{
+			return ((ISaga<TAuthenticationToken>)Saga).GetUnpublishedCommands();
+		}
+
+		/// <summary>
+		/// Mark all published commands as published and flush the internal collection of commands.
+		/// </summary>
+		public void MarkCommandsAsPublished()
+		{
+			((ISaga<TAuthenticationToken>) Saga).MarkCommandsAsPublished();
 		}
 
 		#endregion

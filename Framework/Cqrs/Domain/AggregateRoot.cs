@@ -54,6 +54,14 @@ namespace Cqrs.Domain
 		{
 			Lock = new ReaderWriterLockSlim();
 			Changes = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(new List<IEvent<TAuthenticationToken>>());
+			Initialise();
+		}
+
+		/// <summary>
+		/// Initialise any properties
+		/// </summary>
+		protected virtual void Initialise()
+		{
 		}
 
 		/// <summary>
