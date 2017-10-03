@@ -903,6 +903,19 @@ switch(aggregateTechnology)
 			}
 #>);
 <#
+			foreach(IAssociation eventRelationship in eventRelationships)
+			{
+				string eventTargetElementName = ((INamedElement)eventRelationship.TargetElement).Name;
+#>
+
+		private void Apply(<#= eventTargetElementName #> @event)
+		{
+			Apply<#= eventTargetElementName #>(@event);
+		}
+
+		partial void Apply<#= eventTargetElementName #>(<#= eventTargetElementName #> @event);
+<#
+			}
 		}
 #>
 
