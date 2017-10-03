@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-10-02</td>
+            <td class="headerValue">2017-10-03</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -232,27 +232,76 @@
 <span class="lineNum">     174 </span>            : 
 <span class="lineNum">     175 </span>            :                 private void ApplyChange(ISagaEvent&lt;TAuthenticationToken&gt; @event, bool isEventReplay)
 <span class="lineNum">     176 </span>            :                 {
-<span class="lineNum">     177 </span>            :                         Lock.EnterWriteLock();
-<span class="lineNum">     178 </span>            :                         try
-<span class="lineNum">     179 </span>            :                         {
-<span class="lineNum">     180 </span>            :                                 this.AsDynamic().Apply(@event.Event);
-<span class="lineNum">     181 </span>            :                                 if (!isEventReplay)
-<span class="lineNum">     182 </span>            :                                 {
-<span class="lineNum">     183 </span>            :                                         Changes = new ReadOnlyCollection&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt;(Changes.Concat(new[] { @event }).ToList());
-<span class="lineNum">     184 </span>            :                                 }
-<span class="lineNum">     185 </span>            :                                 else
-<span class="lineNum">     186 </span>            :                                 {
-<span class="lineNum">     187 </span>            :                                         Id = @event.Rsn;
-<span class="lineNum">     188 </span>            :                                         Version++;
-<span class="lineNum">     189 </span>            :                                 }
-<span class="lineNum">     190 </span>            :                         }
-<span class="lineNum">     191 </span>            :                         finally
-<span class="lineNum">     192 </span>            :                         {
-<span class="lineNum">     193 </span>            :                                 Lock.ExitWriteLock();
-<span class="lineNum">     194 </span>            :                         }
-<span class="lineNum">     195 </span>            :                 }
-<span class="lineNum">     196 </span>            :         }
-<span class="lineNum">     197 </span>            : }
+<span class="lineNum">     177 </span>            :                         ApplyChanges(new[] { @event }, isEventReplay);
+<span class="lineNum">     178 </span>            :                 }
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     181 </span>            :                 /// Call the &quot;Apply&quot; method with a signature matching each &lt;see cref=&quot;ISagaEvent{TAuthenticationToken}&quot;/&gt; in the provided &lt;paramref name=&quot;events&quot;/&gt; without using event replay to this instance.
+<span class="lineNum">     182 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     183 </span>            :                 /// &lt;remarks&gt;
+<span class="lineNum">     184 </span>            :                 /// This means a method named &quot;Apply&quot;, with return type void and one parameter must exist to be applied.
+<span class="lineNum">     185 </span>            :                 /// If no method exists, nothing is applied
+<span class="lineNum">     186 </span>            :                 /// The parameter type must match exactly the &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; in the provided &lt;paramref name=&quot;events&quot;/&gt;.
+<span class="lineNum">     187 </span>            :                 /// &lt;/remarks&gt;
+<span class="lineNum">     188 </span>            :                 protected virtual void ApplyChanges(IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; events)
+<span class="lineNum">     189 </span>            :                 {
+<span class="lineNum">     190 </span>            :                         ApplyChanges(events, false);
+<span class="lineNum">     191 </span>            :                 }
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     194 </span>            :                 /// Calls the &quot;SetId&quot; method dynamically if the method exists on the first &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; in the provided &lt;paramref name=&quot;events&quot;/&gt;,
+<span class="lineNum">     195 </span>            :                 /// then calls &lt;see cref=&quot;ApplyChanges(System.Collections.Generic.IEnumerable{Cqrs.Events.ISagaEvent{TAuthenticationToken}})&quot;/&gt;
+<span class="lineNum">     196 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     197 </span>            :                 protected virtual void ApplyChanges(IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events)
+<span class="lineNum">     198 </span>            :                 {
+<span class="lineNum">     199 </span>            :                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; list = events.ToList();
+<span class="lineNum">     200 </span>            :                         IList&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; sagaEvents = new List&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">     201 </span>            :                         for (int i = 0; i &lt; list.Count; i++)
+<span class="lineNum">     202 </span>            :                         {
+<span class="lineNum">     203 </span>            :                                 var sagaEvent = new SagaEvent&lt;TAuthenticationToken&gt;(list[i]);
+<span class="lineNum">     204 </span>            :                                 // Set ID
+<span class="lineNum">     205 </span>            :                                 if (i == 0)
+<span class="lineNum">     206 </span>            :                                         this.AsDynamic().SetId(sagaEvent);
+<span class="lineNum">     207 </span>            :                                 sagaEvents.Add(sagaEvent);
+<span class="lineNum">     208 </span>            :                         }
+<span class="lineNum">     209 </span>            :                         ApplyChanges(sagaEvents);
+<span class="lineNum">     210 </span>            :                 }
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span>            :                 private void ApplyChanges(IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; events, bool isEventReplay)
+<span class="lineNum">     213 </span>            :                 {
+<span class="lineNum">     214 </span>            :                         Lock.EnterWriteLock();
+<span class="lineNum">     215 </span>            :                         IList&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; changes = new List&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">     216 </span>            :                         try
+<span class="lineNum">     217 </span>            :                         {
+<span class="lineNum">     218 </span>            :                                 try
+<span class="lineNum">     219 </span>            :                                 {
+<span class="lineNum">     220 </span>            :                                         dynamic dynamicThis = this.AsDynamic();
+<span class="lineNum">     221 </span>            :                                         foreach (ISagaEvent&lt;TAuthenticationToken&gt; @event in events)
+<span class="lineNum">     222 </span>            :                                         {
+<span class="lineNum">     223 </span>            :                                                 dynamicThis.Apply(@event.Event);
+<span class="lineNum">     224 </span>            :                                                 if (!isEventReplay)
+<span class="lineNum">     225 </span>            :                                                 {
+<span class="lineNum">     226 </span>            :                                                         changes.Add(@event);
+<span class="lineNum">     227 </span>            :                                                 }
+<span class="lineNum">     228 </span>            :                                                 else
+<span class="lineNum">     229 </span>            :                                                 {
+<span class="lineNum">     230 </span>            :                                                         Id = @event.Rsn;
+<span class="lineNum">     231 </span>            :                                                         Version++;
+<span class="lineNum">     232 </span>            :                                                 }
+<span class="lineNum">     233 </span>            :                                         }
+<span class="lineNum">     234 </span>            :                                 }
+<span class="lineNum">     235 </span>            :                                 finally
+<span class="lineNum">     236 </span>            :                                 {
+<span class="lineNum">     237 </span>            :                                         Changes = new ReadOnlyCollection&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt;(Changes.Concat(changes).ToList());
+<span class="lineNum">     238 </span>            :                                 }
+<span class="lineNum">     239 </span>            :                         }
+<span class="lineNum">     240 </span>            :                         finally
+<span class="lineNum">     241 </span>            :                         {
+<span class="lineNum">     242 </span>            :                                 Lock.ExitWriteLock();
+<span class="lineNum">     243 </span>            :                         }
+<span class="lineNum">     244 </span>            :                 }
+<span class="lineNum">     245 </span>            :         }
+<span class="lineNum">     246 </span>            : }
 </pre>
       </td>
     </tr>

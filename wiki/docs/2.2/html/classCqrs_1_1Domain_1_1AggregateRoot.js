@@ -2,6 +2,7 @@ var classCqrs_1_1Domain_1_1AggregateRoot =
 [
     [ "AggregateRoot", "classCqrs_1_1Domain_1_1AggregateRoot_a1db2322dd7442e1e0c3c07332124eb2f.html#a1db2322dd7442e1e0c3c07332124eb2f", null ],
     [ "ApplyChange", "classCqrs_1_1Domain_1_1AggregateRoot_a7e299b13c7556731e52670aa6d782296.html#a7e299b13c7556731e52670aa6d782296", null ],
+    [ "ApplyChanges", "classCqrs_1_1Domain_1_1AggregateRoot_aaf87b883f3f89addff957c7071a67203.html#aaf87b883f3f89addff957c7071a67203", null ],
     [ "GetUncommittedChanges", "classCqrs_1_1Domain_1_1AggregateRoot_a625e885ec7885a686f729ed1efe3a8fa.html#a625e885ec7885a686f729ed1efe3a8fa", null ],
     [ "LoadFromHistory", "classCqrs_1_1Domain_1_1AggregateRoot_aec873ad6e4c98309cad2d9f1c534aebb.html#aec873ad6e4c98309cad2d9f1c534aebb", null ],
     [ "MarkChangesAsCommitted", "classCqrs_1_1Domain_1_1AggregateRoot_adab968b830e186cb832583910bf6f3a6.html#adab968b830e186cb832583910bf6f3a6", null ],
