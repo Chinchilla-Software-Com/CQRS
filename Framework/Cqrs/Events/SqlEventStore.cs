@@ -34,6 +34,8 @@ namespace Cqrs.Events
 
 		internal const string SqlEventStoreGetByCorrelationIdCommandTimeout = @"Cqrs.SqlEventStore.GetByCorrelationId.CommandTimeout";
 
+		internal const string SqlEventStoreTableNameApplicationKeyPattern = @"Cqrs.SqlEventStore.CustomTableNames.{0}";
+
 		/// <summary>
 		/// Gets or sets the <see cref="IConfigurationManager"/>.
 		/// </summary>
@@ -61,7 +63,7 @@ namespace Cqrs.Events
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
-			using (DataContext dbDataContext = CreateDbDataContext())
+			using (DataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
 			{
 				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
 					.AsQueryable()
@@ -108,7 +110,7 @@ namespace Cqrs.Events
 		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
 		protected override void PersistEvent(EventData eventData)
 		{
-			using (DataContext dbDataContext = CreateDbDataContext())
+			using (DataContext dbDataContext = CreateDbDataContext(eventData.AggregateId.Substring(0, eventData.AggregateId.IndexOf("/", StringComparison.InvariantCultureIgnoreCase))))
 			{
 				Add(dbDataContext, eventData);
 			}
@@ -119,7 +121,7 @@ namespace Cqrs.Events
 		/// <summary>
 		/// Creates a new <see cref="DataContext"/> using connection string settings from <see cref="ConfigurationManager"/>.
 		/// </summary>
-		protected virtual DataContext CreateDbDataContext()
+		protected virtual DataContext CreateDbDataContext(string aggregateRootTypeName = null)
 		{
 			string connectionStringKey;
 			string applicationKey;
@@ -144,7 +146,21 @@ namespace Cqrs.Events
 					throw new MissingConnectionStringException(applicationKey, exception);
 				}
 			}
-			return new DataContext(connectionStringKey);
+
+			string tableName;
+			if (!string.IsNullOrWhiteSpace(aggregateRootTypeName) && ConfigurationManager.TryGetSetting(string.Format(SqlEventStoreTableNameApplicationKeyPattern, aggregateRootTypeName), out tableName) && !string.IsNullOrEmpty(tableName))
+			{
+				bool autoname;
+				if (bool.TryParse(tableName, out autoname))
+				{
+					if (autoname)
+						return SqlEventStoreDataContext.New<EventData>(aggregateRootTypeName.Replace(".", "_"), connectionStringKey);
+				}
+				else
+					return SqlEventStoreDataContext.New<EventData>(tableName, connectionStringKey);
+			}
+
+			return new SqlEventStoreDataContext(connectionStringKey);
 		}
 
 		/// <summary>

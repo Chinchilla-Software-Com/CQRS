@@ -17,7 +17,7 @@ CREATE TABLE [dbo].[EventStore](
 	(
 		[EventId] ASC
 	) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON),
-	CONSTRAINT [UIX_AggregateId_Version] UNIQUE NONCLUSTERED 
+	CONSTRAINT [UIX_EventStore_AggregateId_Version] UNIQUE NONCLUSTERED 
 	(
 		[AggregateId] ASC,
 		[Version] DESC
@@ -26,7 +26,7 @@ CREATE TABLE [dbo].[EventStore](
 
 GO
 
-CREATE PARTITION FUNCTION PF_EventStore_AggregateRsn (uniqueidentifier)
+CREATE PARTITION FUNCTION [PF_EventStore_AggregateRsn] (uniqueidentifier)
 AS RANGE RIGHT
 FOR VALUES
 (
@@ -52,36 +52,36 @@ FOR VALUES
 ) ;
 GO
 
-CREATE PARTITION SCHEME PS_EventStore_AggregateRsn
-AS PARTITION PF_EventStore_AggregateRsn ALL TO ([PRIMARY]) 
+CREATE PARTITION SCHEME [PS_EventStore_AggregateRsn]
+AS PARTITION [PF_EventStore_AggregateRsn] ALL TO ([PRIMARY]) 
 GO
 
-CREATE CLUSTERED INDEX [IX_AggregateRsn] ON [dbo].[EventStore]
+CREATE CLUSTERED INDEX [IX_EventStore_AggregateRsn] ON [dbo].[EventStore]
 (
 	[AggregateRsn] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
-ON PS_EventStore_AggregateRsn(AggregateRsn)
+ON [PS_EventStore_AggregateRsn](AggregateRsn)
 GO
 
-CREATE NONCLUSTERED INDEX [IX_EventId] ON [dbo].[EventStore]
+CREATE NONCLUSTERED INDEX [IX_EventStore_EventId] ON [dbo].[EventStore]
 (
 	[EventId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 GO
 
-CREATE NONCLUSTERED INDEX [IX_CorrelationId] ON [dbo].[EventStore]
+CREATE NONCLUSTERED INDEX [IX_EventStore_CorrelationId] ON [dbo].[EventStore]
 (
 	[CorrelationId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 GO
 
-CREATE NONCLUSTERED INDEX [IX_Timestamp] ON [dbo].[EventStore]
+CREATE NONCLUSTERED INDEX [IX_EventStore_Timestamp] ON [dbo].[EventStore]
 (
 	[Timestamp] DESC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 GO
 
-CREATE NONCLUSTERED INDEX [IX_Timestamp_EventId_CorrelationId] ON [dbo].[EventStore]
+CREATE NONCLUSTERED INDEX [IX_EventStore_Timestamp_EventId_CorrelationId] ON [dbo].[EventStore]
 (
 	[Timestamp] DESC,
 	[EventId] ASC,
@@ -90,10 +90,10 @@ CREATE NONCLUSTERED INDEX [IX_Timestamp_EventId_CorrelationId] ON [dbo].[EventSt
 INCLUDE ([EventType]) WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF)
 GO
 
-CREATE STATISTICS [ST_CorrelationId_Timestamp] ON [dbo].[EventStore]([CorrelationId], [Timestamp])
+CREATE STATISTICS [ST_EventStore_CorrelationId_Timestamp] ON [dbo].[EventStore]([CorrelationId], [Timestamp])
 GO
 
-CREATE STATISTICS [ST_EventId_CorrelationId_Timestamp] ON [dbo].[EventStore]([EventId], [CorrelationId], [Timestamp])
+CREATE STATISTICS [ST_EventStore_EventId_CorrelationId_Timestamp] ON [dbo].[EventStore]([EventId], [CorrelationId], [Timestamp])
 GO
 
 SELECT ps.name,pf.name,boundary_id,value
