@@ -208,6 +208,40 @@
         </inbodydescription>
         <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" line="167" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" bodystart="167" bodyend="173"/>
       </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Domain_1_1Saga_aa46571a6a68f8232955d3bac3be40c4a_1aa46571a6a68f8232955d3bac3be40c4a" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Cqrs.Domain.Saga&lt; TAuthenticationToken &gt;.ApplyChanges</definition>
+        <argsstring>(IEnumerable&lt; ISagaEvent&lt; TAuthenticationToken &gt;&gt; events)</argsstring>
+        <name>ApplyChanges</name>
+        <param>
+          <type>IEnumerable&lt; <ref refid="interfaceCqrs_1_1Events_1_1ISagaEvent" kindref="compound">ISagaEvent</ref>&lt; TAuthenticationToken &gt;&gt;</type>
+          <declname>events</declname>
+        </param>
+        <briefdescription>
+<para>Call the &quot;Apply&quot; method with a signature matching each ISagaEvent&lt;TAuthenticationToken&gt; in the provided <emphasis>events</emphasis>  without using event replay to this instance. </para>        </briefdescription>
+        <detaileddescription>
+<para>This means a method named &quot;Apply&quot;, with return type void and one parameter must exist to be applied. If no method exists, nothing is applied The parameter type must match exactly the Type of the IEvent&lt;TAuthenticationToken&gt; in the provided <emphasis>events</emphasis> . </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" line="188" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" bodystart="188" bodyend="191"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Domain_1_1Saga_a73de6a7e67618f9aa2eb1ef6d988d297_1a73de6a7e67618f9aa2eb1ef6d988d297" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Cqrs.Domain.Saga&lt; TAuthenticationToken &gt;.ApplyChanges</definition>
+        <argsstring>(IEnumerable&lt; IEvent&lt; TAuthenticationToken &gt;&gt; events)</argsstring>
+        <name>ApplyChanges</name>
+        <param>
+          <type>IEnumerable&lt; <ref refid="interfaceCqrs_1_1Events_1_1IEvent" kindref="compound">IEvent</ref>&lt; TAuthenticationToken &gt;&gt;</type>
+          <declname>events</declname>
+        </param>
+        <briefdescription>
+<para>Calls the &quot;SetId&quot; method dynamically if the method exists on the first IEvent&lt;TAuthenticationToken&gt; in the provided <emphasis>events</emphasis> , then calls ApplyChanges(System.Collections.Generic.IEnumerable&lt;Cqrs.Events.ISagaEvent&lt;TAuthenticationToken&gt;&gt;) </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" line="197" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" bodystart="197" bodyend="210"/>
+      </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
       <memberdef kind="function" id="classCqrs_1_1Domain_1_1Saga_a759b30b518c7fa5037ec4041054f349c_1a759b30b518c7fa5037ec4041054f349c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
@@ -277,7 +311,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" line="175" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" bodystart="175" bodyend="195"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" line="175" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" bodystart="175" bodyend="178"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Domain_1_1Saga_1aebfe8e4dddfab6614c99d90e86b30091" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Cqrs.Domain.Saga&lt; TAuthenticationToken &gt;.ApplyChanges</definition>
+        <argsstring>(IEnumerable&lt; ISagaEvent&lt; TAuthenticationToken &gt;&gt; events, bool isEventReplay)</argsstring>
+        <name>ApplyChanges</name>
+        <param>
+          <type>IEnumerable&lt; <ref refid="interfaceCqrs_1_1Events_1_1ISagaEvent" kindref="compound">ISagaEvent</ref>&lt; TAuthenticationToken &gt;&gt;</type>
+          <declname>events</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>isEventReplay</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" line="212" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" bodystart="212" bodyend="244"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -308,11 +363,14 @@
         <link refid="interfaceCqrs_1_1Domain_1_1ISaga"/>
       </node>
     </collaborationgraph>
-    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" line="41" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" bodystart="40" bodyend="196"/>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" line="41" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/Saga.cs" bodystart="40" bodyend="245"/>
     <listofallmembers>
       <member refid="classCqrs_1_1Domain_1_1Saga_af8a1eddbadc8fc3fb69f18691f3b08ac_1af8a1eddbadc8fc3fb69f18691f3b08ac" prot="protected" virt="virtual"><scope>Cqrs::Domain::Saga</scope><name>ApplyChange</name></member>
       <member refid="classCqrs_1_1Domain_1_1Saga_a25462563492d834e297388e0648a57ac_1a25462563492d834e297388e0648a57ac" prot="protected" virt="virtual"><scope>Cqrs::Domain::Saga</scope><name>ApplyChange</name></member>
       <member refid="classCqrs_1_1Domain_1_1Saga_1a95211092c7ad5bf77c7faedded302605" prot="private" virt="non-virtual"><scope>Cqrs::Domain::Saga</scope><name>ApplyChange</name></member>
+      <member refid="classCqrs_1_1Domain_1_1Saga_aa46571a6a68f8232955d3bac3be40c4a_1aa46571a6a68f8232955d3bac3be40c4a" prot="protected" virt="virtual"><scope>Cqrs::Domain::Saga</scope><name>ApplyChanges</name></member>
+      <member refid="classCqrs_1_1Domain_1_1Saga_a73de6a7e67618f9aa2eb1ef6d988d297_1a73de6a7e67618f9aa2eb1ef6d988d297" prot="protected" virt="virtual"><scope>Cqrs::Domain::Saga</scope><name>ApplyChanges</name></member>
+      <member refid="classCqrs_1_1Domain_1_1Saga_1aebfe8e4dddfab6614c99d90e86b30091" prot="private" virt="non-virtual"><scope>Cqrs::Domain::Saga</scope><name>ApplyChanges</name></member>
       <member refid="classCqrs_1_1Domain_1_1Saga_1aa6ce2573f18c8ca115fc675ab3e9c1df" prot="private" virt="non-virtual"><scope>Cqrs::Domain::Saga</scope><name>Changes</name></member>
       <member refid="classCqrs_1_1Domain_1_1Saga_a944fc264b716dcd60a2e51c9897766fa_1a944fc264b716dcd60a2e51c9897766fa" prot="protected" virt="non-virtual"><scope>Cqrs::Domain::Saga</scope><name>CommandPublisher</name></member>
       <member refid="classCqrs_1_1Domain_1_1Saga_afd8b9bae392272e1651f2ea53c65db12_1afd8b9bae392272e1651f2ea53c65db12" prot="protected" virt="non-virtual"><scope>Cqrs::Domain::Saga</scope><name>DependencyResolver</name></member>

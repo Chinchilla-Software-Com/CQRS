@@ -32,7 +32,11 @@ virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga_a6029fc09445e2093f7fb40e304a
 virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga_af8a1eddbadc8fc3fb69f18691f3b08ac_af8a1eddbadc8fc3fb69f18691f3b08ac}{Apply\+Change} (\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$ T\+Authentication\+Token $>$ @event)
 \begin{DoxyCompactList}\small\item\em Call the \char`\"{}\+Apply\char`\"{} method with a signature matching the provided {\itshape event}  without using event replay to this instance. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga_a25462563492d834e297388e0648a57ac_a25462563492d834e297388e0648a57ac}{Apply\+Change} (\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @event)
-\begin{DoxyCompactList}\small\item\em Calls the \char`\"{}\+Set\+Id\char`\"{} method dynamically if the method exists, then calls Apply\+Change(\+Cqrs.\+Events.\+I\+Saga\+Event$<$\+T\+Authentication\+Token$>$) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Calls the \char`\"{}\+Set\+Id\char`\"{} method dynamically if the method exists, then calls Apply\+Change(\+Cqrs.\+Events.\+I\+Saga\+Event$<$\+T\+Authentication\+Token$>$) \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga_aa46571a6a68f8232955d3bac3be40c4a_aa46571a6a68f8232955d3bac3be40c4a}{Apply\+Changes} (I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$ T\+Authentication\+Token $>$$>$ events)
+\begin{DoxyCompactList}\small\item\em Call the \char`\"{}\+Apply\char`\"{} method with a signature matching each I\+Saga\+Event$<$\+T\+Authentication\+Token$>$ in the provided {\itshape events}  without using event replay to this instance. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga_a73de6a7e67618f9aa2eb1ef6d988d297_a73de6a7e67618f9aa2eb1ef6d988d297}{Apply\+Changes} (I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ events)
+\begin{DoxyCompactList}\small\item\em Calls the \char`\"{}\+Set\+Id\char`\"{} method dynamically if the method exists on the first I\+Event$<$\+T\+Authentication\+Token$>$ in the provided {\itshape events} , then calls Apply\+Changes(\+System.\+Collections.\+Generic.\+I\+Enumerable$<$\+Cqrs.\+Events.\+I\+Saga\+Event$<$\+T\+Authentication\+Token$>$$>$) \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
@@ -114,6 +118,26 @@ This means a method named \char`\"{}\+Apply\char`\"{}, with return type void and
 
 
 Calls the \char`\"{}\+Set\+Id\char`\"{} method dynamically if the method exists, then calls Apply\+Change(\+Cqrs.\+Events.\+I\+Saga\+Event$<$\+T\+Authentication\+Token$>$) 
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_aa46571a6a68f8232955d3bac3be40c4a_aa46571a6a68f8232955d3bac3be40c4a}\label{classCqrs_1_1Domain_1_1Saga_aa46571a6a68f8232955d3bac3be40c4a_aa46571a6a68f8232955d3bac3be40c4a}} 
+\index{Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}!Apply\+Changes@{Apply\+Changes}}
+\index{Apply\+Changes@{Apply\+Changes}!Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}}
+\subsubsection{\texorpdfstring{Apply\+Changes()}{ApplyChanges()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga}{Cqrs.\+Domain.\+Saga}$<$ T\+Authentication\+Token $>$.Apply\+Changes (\begin{DoxyParamCaption}\item[{I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$ T\+Authentication\+Token $>$$>$}]{events }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Call the \char`\"{}\+Apply\char`\"{} method with a signature matching each I\+Saga\+Event$<$\+T\+Authentication\+Token$>$ in the provided {\itshape events}  without using event replay to this instance. 
+
+This means a method named \char`\"{}\+Apply\char`\"{}, with return type void and one parameter must exist to be applied. If no method exists, nothing is applied The parameter type must match exactly the Type of the I\+Event$<$\+T\+Authentication\+Token$>$ in the provided {\itshape events} . \mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_a73de6a7e67618f9aa2eb1ef6d988d297_a73de6a7e67618f9aa2eb1ef6d988d297}\label{classCqrs_1_1Domain_1_1Saga_a73de6a7e67618f9aa2eb1ef6d988d297_a73de6a7e67618f9aa2eb1ef6d988d297}} 
+\index{Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}!Apply\+Changes@{Apply\+Changes}}
+\index{Apply\+Changes@{Apply\+Changes}!Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}}
+\subsubsection{\texorpdfstring{Apply\+Changes()}{ApplyChanges()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Domain_1_1Saga}{Cqrs.\+Domain.\+Saga}$<$ T\+Authentication\+Token $>$.Apply\+Changes (\begin{DoxyParamCaption}\item[{I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{events }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Calls the \char`\"{}\+Set\+Id\char`\"{} method dynamically if the method exists on the first I\+Event$<$\+T\+Authentication\+Token$>$ in the provided {\itshape events} , then calls Apply\+Changes(\+System.\+Collections.\+Generic.\+I\+Enumerable$<$\+Cqrs.\+Events.\+I\+Saga\+Event$<$\+T\+Authentication\+Token$>$$>$) 
 
 \mbox{\Hypertarget{classCqrs_1_1Domain_1_1Saga_a759b30b518c7fa5037ec4041054f349c_a759b30b518c7fa5037ec4041054f349c}\label{classCqrs_1_1Domain_1_1Saga_a759b30b518c7fa5037ec4041054f349c_a759b30b518c7fa5037ec4041054f349c}} 
 \index{Cqrs\+::\+Domain\+::\+Saga@{Cqrs\+::\+Domain\+::\+Saga}!Get\+Uncommitted\+Changes@{Get\+Uncommitted\+Changes}}
