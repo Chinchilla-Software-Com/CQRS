@@ -42,7 +42,7 @@ namespace CQRSWeb {
 									y =>
 										new CacheRepository<ISingleSignOnToken>
 										(
-											new AggregateRepository<ISingleSignOnToken>(y.GetInstance<IAggregateFactory>(), y.GetInstance<IEventStore<ISingleSignOnToken>>(), y.GetInstance<IEventPublisher<ISingleSignOnToken>>(), y.GetInstance<ICorrelationIdHelper>()),
+											new AggregateRepository<ISingleSignOnToken>(y.GetInstance<IAggregateFactory>(), y.GetInstance<IEventStore<ISingleSignOnToken>>(), y.GetInstance<IEventPublisher<ISingleSignOnToken>>(), y.GetInstance<ICorrelationIdHelper>(), y.GetInstance<IConfigurationManager>()),
 											y.GetInstance<IEventStore<ISingleSignOnToken>>()
 										)
 								);

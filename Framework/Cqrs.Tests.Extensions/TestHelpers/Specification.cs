@@ -9,6 +9,7 @@ using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
 using Cqrs.Authentication;
+using Cqrs.Configuration;
 using Cqrs.Snapshots;
 using NUnit.Framework;
 
@@ -40,7 +41,7 @@ namespace Cqrs.Tests.Extensions.TestHelpers
 			var aggregateFactory = new AggregateFactory(null, new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ThreadedContextItemCollectionFactory())));
 
 			var snapshotStrategy = new DefaultSnapshotStrategy<ISingleSignOnToken>();
-			var repository = new SnapshotRepository<ISingleSignOnToken>(snapshotstorage, snapshotStrategy, new AggregateRepository<ISingleSignOnToken>(aggregateFactory, eventstorage, eventpublisher, new NullCorrelationIdHelper()), eventstorage, aggregateFactory);
+			var repository = new SnapshotRepository<ISingleSignOnToken>(snapshotstorage, snapshotStrategy, new AggregateRepository<ISingleSignOnToken>(aggregateFactory, eventstorage, eventpublisher, new NullCorrelationIdHelper(), new ConfigurationManager()), eventstorage, aggregateFactory);
 			UnitOfWork = new UnitOfWork<ISingleSignOnToken>(repository);
 
 			Aggregate = UnitOfWork.Get<TAggregate>(Guid.Empty);
