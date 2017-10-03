@@ -70,8 +70,12 @@ namespace Cqrs.Domain
 			where TSaga : ISaga<TAuthenticationToken>
 		{
 			IList<ISagaEvent<TAuthenticationToken>> uncommittedChanges = saga.GetUncommittedChanges().ToList();
+			IEnumerable<ICommand<TAuthenticationToken>> commandsToPublish = saga.GetUnpublishedCommands();
 			if (!uncommittedChanges.Any())
+			{
+				PublishCommand(commandsToPublish);
 				return;
+			}
 
 			if (expectedVersion != null)
 			{
@@ -105,7 +109,6 @@ namespace Cqrs.Domain
 			foreach (ISagaEvent<TAuthenticationToken> @event in eventsToPublish)
 				PublishEvent(@event);
 
-			IEnumerable<ICommand<TAuthenticationToken>> commandsToPublish = saga.GetUnpublishedCommands();
 			PublishCommand(commandsToPublish);
 		}
 
