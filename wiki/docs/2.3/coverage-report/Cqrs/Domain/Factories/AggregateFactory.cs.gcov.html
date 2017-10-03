@@ -104,7 +104,7 @@
 <span class="lineNum">      46 </span>            :                 /// &lt;param name=&quot;tryDependencyResolutionFirst&quot;&gt;Indicates the use of &lt;see cref=&quot;IDependencyResolver&quot;/&gt; should be tried first.&lt;/param&gt;
 <span class="lineNum">      47 </span><span class="lineCov">          1 :                 public virtual TAggregate Create&lt;TAggregate&gt;(Guid? rsn = null, bool tryDependencyResolutionFirst = true)</span>
 <span class="lineNum">      48 </span>            :                 {
-<span class="lineNum">      49 </span>            :                         return (TAggregate)Create(typeof (TAggregate), rsn);
+<span class="lineNum">      49 </span>            :                         return (TAggregate)Create(typeof(TAggregate), rsn, tryDependencyResolutionFirst);
 <span class="lineNum">      50 </span>            :                 }
 <span class="lineNum">      51 </span>            : 
 <span class="lineNum">      52 </span>            :                 /// &lt;summary&gt;
@@ -116,7 +116,7 @@
 <span class="lineNum">      58 </span><span class="lineCov">          1 :                 public object Create(Type aggregateType, Guid? rsn = null, bool tryDependencyResolutionFirst = true)</span>
 <span class="lineNum">      59 </span>            :                 {
 <span class="lineNum">      60 </span>            :                         if (tryDependencyResolutionFirst)
-<span class="lineNum">      61 </span>            :                         { 
+<span class="lineNum">      61 </span>            :                         {
 <span class="lineNum">      62 </span>            :                                 try
 <span class="lineNum">      63 </span>            :                                 {
 <span class="lineNum">      64 </span>            :                                         return DependencyResolver.Resolve(aggregateType);
@@ -147,13 +147,25 @@
 <span class="lineNum">      89 </span>            :                                         }
 <span class="lineNum">      90 </span>            :                                         catch (MissingMethodException)
 <span class="lineNum">      91 </span>            :                                         {
-<span class="lineNum">      92 </span>            :                                                 throw new MissingParameterLessConstructorException(aggregateType);
-<span class="lineNum">      93 </span>            :                                         }
-<span class="lineNum">      94 </span>            :                                 }
-<span class="lineNum">      95 </span>            :                         }
-<span class="lineNum">      96 </span>            :                 }
-<span class="lineNum">      97 </span>            :         }
-<span class="lineNum">      98 </span>            : }
+<span class="lineNum">      92 </span>            :                                                 if (!tryDependencyResolutionFirst)
+<span class="lineNum">      93 </span>            :                                                 {
+<span class="lineNum">      94 </span>            :                                                         try
+<span class="lineNum">      95 </span>            :                                                         {
+<span class="lineNum">      96 </span>            :                                                                 return DependencyResolver.Resolve(aggregateType);
+<span class="lineNum">      97 </span>            :                                                         }
+<span class="lineNum">      98 </span>            :                                                         catch
+<span class="lineNum">      99 </span>            :                                                         {
+<span class="lineNum">     100 </span>            :                                                                 Logger.LogDebug(string.Format(&quot;Using the dependency resolver to create an instance of the aggregate typed '{0}' failed.&quot;, aggregateType.FullName), &quot;Cqrs.Domain.Factories.AggregateFactory.Create&quot;);
+<span class="lineNum">     101 </span>            :                                                         }
+<span class="lineNum">     102 </span>            :                                                 }
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            :                                                 throw new MissingParameterLessConstructorException(aggregateType);
+<span class="lineNum">     105 </span>            :                                         }
+<span class="lineNum">     106 </span>            :                                 }
+<span class="lineNum">     107 </span>            :                         }
+<span class="lineNum">     108 </span>            :                 }
+<span class="lineNum">     109 </span>            :         }
+<span class="lineNum">     110 </span>            : }
 </pre>
       </td>
     </tr>
