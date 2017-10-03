@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampMongoDbIndex_a642c97e253eaa259cb64b627701540c0.html#a642c97e253eaa259cb64b627701540c0":[1,0,0,17,2,0,3,0],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventData.html":[1,0,0,17,2,2],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventData_a3e0d14163cbc3e11505d63b15ddd1337.html#a3e0d14163cbc3e11505d63b15ddd1337":[1,0,0,17,2,2,0],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventData_a5650b3e9bac3dd255e8267394e67749a.html#a5650b3e9bac3dd255e8267394e67749a":[1,0,0,17,2,2,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a3437afb1ea306ff4e65eb2ca22a276d9.html#a3437afb1ea306ff4e65eb2ca22a276d9":[1,0,0,18,2,0,9],
 "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a5c3b6741270b2cb16aa1a1a84c57041b.html#a5c3b6741270b2cb16aa1a1a84c57041b":[1,0,0,18,2,0,3],
 "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a61a20168f5dc9dab74bb2f7fad7c0adb.html#a61a20168f5dc9dab74bb2f7fad7c0adb":[1,0,0,18,2,0,5],
-"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a6ca61a712ab7efc28eb38e7f74853e3e.html#a6ca61a712ab7efc28eb38e7f74853e3e":[1,0,0,18,2,0,4],
-"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a7bb448b4c38d7a4628a30ba709dc8a36.html#a7bb448b4c38d7a4628a30ba709dc8a36":[1,0,0,18,2,0,7]
+"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a6ca61a712ab7efc28eb38e7f74853e3e.html#a6ca61a712ab7efc28eb38e7f74853e3e":[1,0,0,18,2,0,4]
 };

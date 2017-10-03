@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"classCqrs_1_1EventStore_1_1EventStoreConnectionHelper_a0658657c13dd7edfaca4837e39fd86dd.html#a0658657c13dd7edfaca4837e39fd86dd":[1,0,0,11,3,6],
 "classCqrs_1_1EventStore_1_1EventStoreConnectionHelper_a36c7ef0505319af9f8ae02da0050ab30.html#a36c7ef0505319af9f8ae02da0050ab30":[1,0,0,11,3,2],
 "classCqrs_1_1EventStore_1_1EventStoreConnectionHelper_a8c018b324a38ce67ab73e637b1aa7bec.html#a8c018b324a38ce67ab73e637b1aa7bec":[1,0,0,11,3,3],
 "classCqrs_1_1EventStore_1_1EventStoreConnectionHelper_aa518bbaa1cd7d75a57429c3cf4dd4f96.html#aa518bbaa1cd7d75a57429c3cf4dd4f96":[1,0,0,11,3,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByCorrelationIdMongoDbIndex_a7bfea0225205a97ffd3501ba5032b5b3.html#a7bfea0225205a97ffd3501ba5032b5b3":[1,0,0,17,2,0,1,0],
 "classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampAndEventTypeMongoDbIndex.html":[1,0,0,17,2,0,2],
 "classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampAndEventTypeMongoDbIndex_ac31e888bf88b4cabc9f7be0dd1fc3ffc.html#ac31e888bf88b4cabc9f7be0dd1fc3ffc":[1,0,0,17,2,0,2,0],
-"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampMongoDbIndex.html":[1,0,0,17,2,0,3],
-"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampMongoDbIndex_a642c97e253eaa259cb64b627701540c0.html#a642c97e253eaa259cb64b627701540c0":[1,0,0,17,2,0,3,0]
+"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampMongoDbIndex.html":[1,0,0,17,2,0,3]
 };
