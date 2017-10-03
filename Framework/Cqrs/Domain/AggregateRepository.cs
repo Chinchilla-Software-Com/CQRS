@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using cdmdotnet.Logging;
+using Cqrs.Configuration;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
@@ -44,13 +45,19 @@ namespace Cqrs.Domain
 		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
 		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>.
+		/// </summary>
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
+		/// <summary>
 		/// Instantiates a new instance of <see cref="AggregateRepository{TAuthenticationToken}"/>
 		/// </summary>
-		public AggregateRepository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICorrelationIdHelper correlationIdHelper)
+		public AggregateRepository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager)
 		{
 			EventStore = eventStore;
 			Publisher = publisher;
 			CorrelationIdHelper = correlationIdHelper;
+			ConfigurationManager = configurationManager;
 			AggregateFactory = aggregateFactory;
 		}
 
@@ -159,7 +166,11 @@ namespace Cqrs.Domain
 		protected virtual TAggregateRoot LoadAggregate<TAggregateRoot>(Guid id, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			var aggregate = AggregateFactory.Create<TAggregateRoot>(id, false);
+			bool tryDependencyResolutionFirst;
+			if (!ConfigurationManager.TryGetSetting(string.Format("Cqrs.AggregateFactory.TryDependencyResolutionFirst.{0}", typeof(TAggregateRoot).FullName), out tryDependencyResolutionFirst))
+				if (!ConfigurationManager.TryGetSetting("Cqrs.AggregateFactory.TryDependencyResolutionFirst", out tryDependencyResolutionFirst))
+					tryDependencyResolutionFirst = false;
+			var aggregate = AggregateFactory.Create<TAggregateRoot>(id, tryDependencyResolutionFirst);
 
 			LoadAggregateHistory(aggregate, events);
 			return aggregate;
