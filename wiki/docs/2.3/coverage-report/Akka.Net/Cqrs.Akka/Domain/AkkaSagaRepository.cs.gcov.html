@@ -68,64 +68,65 @@
 <span class="lineNum">      10 </span>            : using System.Threading.Tasks;
 <span class="lineNum">      11 </span>            : using cdmdotnet.Logging;
 <span class="lineNum">      12 </span>            : using Cqrs.Akka.Events;
-<span class="lineNum">      13 </span>            : using Cqrs.Domain;
-<span class="lineNum">      14 </span>            : using Cqrs.Domain.Factories;
-<span class="lineNum">      15 </span>            : using Cqrs.Events;
-<span class="lineNum">      16 </span>            : 
-<span class="lineNum">      17 </span>            : namespace Cqrs.Akka.Domain
-<span class="lineNum">      18 </span>            : {
-<span class="lineNum">      19 </span>            :         /// &lt;summary&gt;
-<span class="lineNum">      20 </span>            :         /// A &lt;see cref=&quot;SagaRepository{TAuthenticationToken}&quot;/&gt; that is safe to use within Akka.NET
-<span class="lineNum">      21 </span>            :         /// &lt;/summary&gt;
-<span class="lineNum">      22 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
-<span class="lineNum">      23 </span>            :         public class AkkaSagaRepository&lt;TAuthenticationToken&gt;
-<span class="lineNum">      24 </span>            :                 : SagaRepository&lt;TAuthenticationToken&gt;
-<span class="lineNum">      25 </span>            :                 , IAkkaSagaRepository&lt;TAuthenticationToken&gt;
-<span class="lineNum">      26 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      27 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      28 </span>            :                 /// Gets the &lt;see cref=&quot;IAkkaEventPublisherProxy{TAuthenticationToken}&quot;/&gt;
-<span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      30 </span>            :                 protected IAkkaEventPublisherProxy&lt;TAuthenticationToken&gt; EventPublisher { get; private set; }
-<span class="lineNum">      31 </span>            : 
-<span class="lineNum">      32 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      33 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AkkaSagaRepository{TAuthenticationToken}&quot;/&gt;
-<span class="lineNum">      34 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      35 </span><span class="lineCov">          1 :                 public AkkaSagaRepository(IAggregateFactory aggregateFactory, IEventStore&lt;TAuthenticationToken&gt; eventStore, IEventPublisher&lt;TAuthenticationToken&gt; publisher, ICorrelationIdHelper correlationIdHelper, IAkkaEventPublisherProxy&lt;TAuthenticationToken&gt; eventPublisher)</span>
-<span class="lineNum">      36 </span>            :                         : base(aggregateFactory, eventStore, publisher, correlationIdHelper)
-<span class="lineNum">      37 </span>            :                 {
-<span class="lineNum">      38 </span>            :                         EventPublisher = eventPublisher;
-<span class="lineNum">      39 </span>            :                 }
-<span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span>            :                 #region Overrides of Repository&lt;TAuthenticationToken&gt;
-<span class="lineNum">      42 </span>            : 
-<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      44 </span>            :                 /// Calls &lt;see cref=&quot;IAggregateFactory.Create&quot;/&gt; to get a, &lt;typeparamref name=&quot;TSaga&quot;/&gt;.
-<span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      46 </span>            :                 /// &lt;typeparam name=&quot;TSaga&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
-<span class="lineNum">      47 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The id of the &lt;typeparamref name=&quot;TSaga&quot;/&gt; to create.&lt;/param&gt;
-<span class="lineNum">      48 </span><span class="lineCov">          1 :                 protected override TSaga CreateSaga&lt;TSaga&gt;(Guid id)</span>
-<span class="lineNum">      49 </span>            :                 {
-<span class="lineNum">      50 </span>            :                         var saga = SagaFactory.Create&lt;TSaga&gt;();
-<span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span>            :                         return saga;
-<span class="lineNum">      53 </span>            :                 }
-<span class="lineNum">      54 </span>            : 
-<span class="lineNum">      55 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      56 </span>            :                 /// Publish the saved &lt;paramref name=&quot;event&quot;/&gt; asynchronously on &lt;see cref=&quot;EventPublisher&quot;/&gt;,
-<span class="lineNum">      57 </span>            :                 /// then calls &lt;see cref=&quot;SagaRepository{TAuthenticationToken}.PublishEvent&quot;/&gt;
-<span class="lineNum">      58 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      59 </span><span class="lineCov">          1 :                 protected override void PublishEvent(ISagaEvent&lt;TAuthenticationToken&gt; @event)</span>
-<span class="lineNum">      60 </span>            :                 {
-<span class="lineNum">      61 </span>            :                         Task.Factory.StartNewSafely(() =&gt;
-<span class="lineNum">      62 </span>            :                         {
-<span class="lineNum">      63 </span>            :                                 EventPublisher.Publish(@event);
-<span class="lineNum">      64 </span>            :                                 base.PublishEvent(@event);
-<span class="lineNum">      65 </span>            :                         });
-<span class="lineNum">      66 </span>            :                 }
-<span class="lineNum">      67 </span>            : 
-<span class="lineNum">      68 </span>            :                 #endregion
-<span class="lineNum">      69 </span>            :         }
-<span class="lineNum">      70 </span>            : }
+<span class="lineNum">      13 </span>            : using Cqrs.Commands;
+<span class="lineNum">      14 </span>            : using Cqrs.Domain;
+<span class="lineNum">      15 </span>            : using Cqrs.Domain.Factories;
+<span class="lineNum">      16 </span>            : using Cqrs.Events;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : namespace Cqrs.Akka.Domain
+<span class="lineNum">      19 </span>            : {
+<span class="lineNum">      20 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :         /// A &lt;see cref=&quot;SagaRepository{TAuthenticationToken}&quot;/&gt; that is safe to use within Akka.NET
+<span class="lineNum">      22 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      23 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      24 </span>            :         public class AkkaSagaRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      25 </span>            :                 : SagaRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      26 </span><span class="lineCov">          1 :                 , IAkkaSagaRepository&lt;TAuthenticationToken&gt;</span>
+<span class="lineNum">      27 </span>            :         {
+<span class="lineNum">      28 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      29 </span>            :                 /// Gets the &lt;see cref=&quot;IAkkaEventPublisherProxy{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      30 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      31 </span>            :                 protected IAkkaEventPublisherProxy&lt;TAuthenticationToken&gt; EventPublisher { get; private set; }
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      34 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AkkaSagaRepository{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      35 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
+<span class="lineNum">      36 </span>            :                 public AkkaSagaRepository(IAggregateFactory aggregateFactory, IEventStore&lt;TAuthenticationToken&gt; eventStore, IEventPublisher&lt;TAuthenticationToken&gt; publisher, ICommandPublisher&lt;TAuthenticationToken&gt; commandPublisher, ICorrelationIdHelper correlationIdHelper, IAkkaEventPublisherProxy&lt;TAuthenticationToken&gt; eventPublisher)
+<span class="lineNum">      37 </span>            :                         : base(aggregateFactory, eventStore, publisher, commandPublisher, correlationIdHelper)
+<span class="lineNum">      38 </span>            :                 {
+<span class="lineNum">      39 </span>            :                         EventPublisher = eventPublisher;
+<span class="lineNum">      40 </span>            :                 }
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                 #region Overrides of Repository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      45 </span>            :                 /// Calls &lt;see cref=&quot;IAggregateFactory.Create&quot;/&gt; to get a, &lt;typeparamref name=&quot;TSaga&quot;/&gt;.
+<span class="lineNum">      46 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      47 </span>            :                 /// &lt;typeparam name=&quot;TSaga&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      48 </span><span class="lineCov">          1 :                 /// &lt;param name=&quot;id&quot;&gt;The id of the &lt;typeparamref name=&quot;TSaga&quot;/&gt; to create.&lt;/param&gt;</span>
+<span class="lineNum">      49 </span>            :                 protected override TSaga CreateSaga&lt;TSaga&gt;(Guid id)
+<span class="lineNum">      50 </span>            :                 {
+<span class="lineNum">      51 </span>            :                         var saga = SagaFactory.Create&lt;TSaga&gt;();
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            :                         return saga;
+<span class="lineNum">      54 </span>            :                 }
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      57 </span>            :                 /// Publish the saved &lt;paramref name=&quot;event&quot;/&gt; asynchronously on &lt;see cref=&quot;EventPublisher&quot;/&gt;,
+<span class="lineNum">      58 </span>            :                 /// then calls &lt;see cref=&quot;SagaRepository{TAuthenticationToken}.PublishEvent&quot;/&gt;
+<span class="lineNum">      59 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
+<span class="lineNum">      60 </span>            :                 protected override void PublishEvent(ISagaEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">      61 </span>            :                 {
+<span class="lineNum">      62 </span>            :                         Task.Factory.StartNewSafely(() =&gt;
+<span class="lineNum">      63 </span>            :                         {
+<span class="lineNum">      64 </span>            :                                 EventPublisher.Publish(@event);
+<span class="lineNum">      65 </span>            :                                 base.PublishEvent(@event);
+<span class="lineNum">      66 </span>            :                         });
+<span class="lineNum">      67 </span>            :                 }
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :                 #endregion
+<span class="lineNum">      70 </span>            :         }
+<span class="lineNum">      71 </span>            : }
 </pre>
       </td>
     </tr>

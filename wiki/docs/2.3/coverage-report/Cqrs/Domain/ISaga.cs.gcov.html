@@ -117,8 +117,18 @@
 <span class="lineNum">      59 </span>            :                 /// using event replay to this instance.
 <span class="lineNum">      60 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">      61 </span><span class="lineCov">          1 :                 void LoadFromHistory(IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; history);</span>
-<span class="lineNum">      62 </span>            :         }
-<span class="lineNum">      63 </span>            : }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      64 </span>            :                 /// Get all pending commands that haven't yet been published yet.
+<span class="lineNum">      65 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      66 </span>            :                 IEnumerable&lt;ICommand&lt;TAuthenticationToken&gt;&gt; GetUnpublishedCommands();
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      69 </span>            :                 /// Mark all published commands as published and flush the internal collection of commands.
+<span class="lineNum">      70 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      71 </span>            :                 void MarkCommandsAsPublished();
+<span class="lineNum">      72 </span>            :         }
+<span class="lineNum">      73 </span>            : }
 </pre>
       </td>
     </tr>

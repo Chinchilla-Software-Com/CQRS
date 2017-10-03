@@ -14,12 +14,16 @@ Inheritance diagram for Cqrs.\+Akka.\+Domain.\+Akka\+Saga$<$ T\+Authentication\+
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_ac88061e29e3e2223db31ce9075835b46_ac88061e29e3e2223db31ce9075835b46}{Get\+Uncommitted\+Changes} ()
+virtual I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a1fceccba498fa9f2d3db328a921da23d_a1fceccba498fa9f2d3db328a921da23d}{Get\+Uncommitted\+Changes} ()
 \begin{DoxyCompactList}\small\item\em Get all applied changes that haven\textquotesingle{}t yet been committed. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a83269fac4653cca097461e924feaea7f_a83269fac4653cca097461e924feaea7f}{Mark\+Changes\+As\+Committed} ()
 \begin{DoxyCompactList}\small\item\em Mark all applied changes as committed, increment \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a3fda31a3857e12a1aed60f4a4f04edd1_a3fda31a3857e12a1aed60f4a4f04edd1}{Version} and flush the internal collection of changes. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a40b859bc15c2f7c87a21b07f9bc9548c_a40b859bc15c2f7c87a21b07f9bc9548c}{Load\+From\+History} (I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$ T\+Authentication\+Token $>$$>$ history)
-\begin{DoxyCompactList}\small\item\em Apply all the \hyperlink{}{events} in {\itshape history}  using event replay to this instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Apply all the \hyperlink{}{events} in {\itshape history}  using event replay to this instance. \end{DoxyCompactList}\item 
+virtual I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a0776a9a8f387c01313aa12d06643249a_a0776a9a8f387c01313aa12d06643249a}{Get\+Unpublished\+Commands} ()
+\begin{DoxyCompactList}\small\item\em Get all pending commands that haven\textquotesingle{}t yet been published yet. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a8ba652a3fbc2025b3367ef73185f8a6f_a8ba652a3fbc2025b3367ef73185f8a6f}{Mark\+Commands\+As\+Published} ()
+\begin{DoxyCompactList}\small\item\em Mark all published commands as published and flush the internal collection of commands. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -31,6 +35,8 @@ override void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a4615beae56f595
 Is called when an Actor is started. Actors are automatically started asynchronously when created. Empty default implementation. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_ac0782ac0b7e28418a52cead1b7b8b0c3_ac0782ac0b7e28418a52cead1b7b8b0c3}{Execute$<$ T\+Event $>$} (Action$<$ T\+Event $>$ action, T\+Event @event)
 \begin{DoxyCompactList}\small\item\em Executes the provided {\itshape action}  passing it the provided {\itshape event} , then calls Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Publish\+Event \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_ac13c2f1c4130ad4886d5c6bfd5910bb4_ac13c2f1c4130ad4886d5c6bfd5910bb4}{Queue\+Command} (\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}$<$ T\+Authentication\+Token $>$ command)
+\begin{DoxyCompactList}\small\item\em Queue the provided {\itshape command}  for publishing. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a42126a6a1a7896d16412b6023f208f7c_a42126a6a1a7896d16412b6023f208f7c}{Apply\+Change} (\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$ T\+Authentication\+Token $>$ @event)
 \begin{DoxyCompactList}\small\item\em Call the \char`\"{}\+Apply\char`\"{} method with a signature matching the provided {\itshape event}  without using event replay to this instance. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a18d554cd5ad329ab152efb7d852f2438_a18d554cd5ad329ab152efb7d852f2438}{Apply\+Change} (\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @event)
@@ -128,11 +134,11 @@ Executes the provided {\itshape action}  passing it the provided {\itshape event
 \item[Type Constraints]\begin{description}
 \item[{\em T\+Event} : {\em I\+Event$<$T\+Authentication\+Token$>$}]\end{description}
 \end{Desc}
-\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_ac88061e29e3e2223db31ce9075835b46_ac88061e29e3e2223db31ce9075835b46}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_ac88061e29e3e2223db31ce9075835b46_ac88061e29e3e2223db31ce9075835b46}} 
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a1fceccba498fa9f2d3db328a921da23d_a1fceccba498fa9f2d3db328a921da23d}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a1fceccba498fa9f2d3db328a921da23d_a1fceccba498fa9f2d3db328a921da23d}} 
 \index{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga}!Get\+Uncommitted\+Changes@{Get\+Uncommitted\+Changes}}
 \index{Get\+Uncommitted\+Changes@{Get\+Uncommitted\+Changes}!Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga}}
 \subsubsection{\texorpdfstring{Get\+Uncommitted\+Changes()}{GetUncommittedChanges()}}
-{\footnotesize\ttfamily I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga}$<$ T\+Authentication\+Token $>$.Get\+Uncommitted\+Changes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily virtual I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga}$<$ T\+Authentication\+Token $>$.Get\+Uncommitted\+Changes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -141,6 +147,20 @@ Get all applied changes that haven\textquotesingle{}t yet been committed.
 
 
 Implements \hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_abb77811b4f7d19adb61f9d33da18e7e0_abb77811b4f7d19adb61f9d33da18e7e0}{Cqrs.\+Domain.\+I\+Saga$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a0776a9a8f387c01313aa12d06643249a_a0776a9a8f387c01313aa12d06643249a}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a0776a9a8f387c01313aa12d06643249a_a0776a9a8f387c01313aa12d06643249a}} 
+\index{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga}!Get\+Unpublished\+Commands@{Get\+Unpublished\+Commands}}
+\index{Get\+Unpublished\+Commands@{Get\+Unpublished\+Commands}!Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga}}
+\subsubsection{\texorpdfstring{Get\+Unpublished\+Commands()}{GetUnpublishedCommands()}}
+{\footnotesize\ttfamily virtual I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga}$<$ T\+Authentication\+Token $>$.Get\+Unpublished\+Commands (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Get all pending commands that haven\textquotesingle{}t yet been published yet. 
+
+
+
+Implements \hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_abba76d72857107a14328c8b555f3883f_abba76d72857107a14328c8b555f3883f}{Cqrs.\+Domain.\+I\+Saga$<$ T\+Authentication\+Token $>$}.
 
 \mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a40b859bc15c2f7c87a21b07f9bc9548c_a40b859bc15c2f7c87a21b07f9bc9548c}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a40b859bc15c2f7c87a21b07f9bc9548c_a40b859bc15c2f7c87a21b07f9bc9548c}} 
 \index{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga}!Load\+From\+History@{Load\+From\+History}}
@@ -170,6 +190,20 @@ Mark all applied changes as committed, increment \hyperlink{classCqrs_1_1Akka_1_
 
 Implements \hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a85c75f80bc5be4bad7f1d9f1231bfba7_a85c75f80bc5be4bad7f1d9f1231bfba7}{Cqrs.\+Domain.\+I\+Saga$<$ T\+Authentication\+Token $>$}.
 
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a8ba652a3fbc2025b3367ef73185f8a6f_a8ba652a3fbc2025b3367ef73185f8a6f}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a8ba652a3fbc2025b3367ef73185f8a6f_a8ba652a3fbc2025b3367ef73185f8a6f}} 
+\index{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga}!Mark\+Commands\+As\+Published@{Mark\+Commands\+As\+Published}}
+\index{Mark\+Commands\+As\+Published@{Mark\+Commands\+As\+Published}!Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga}}
+\subsubsection{\texorpdfstring{Mark\+Commands\+As\+Published()}{MarkCommandsAsPublished()}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga}$<$ T\+Authentication\+Token $>$.Mark\+Commands\+As\+Published (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Mark all published commands as published and flush the internal collection of commands. 
+
+
+
+Implements \hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a4ce7c6cb939b5d6a5afb7538da3d1680_a4ce7c6cb939b5d6a5afb7538da3d1680}{Cqrs.\+Domain.\+I\+Saga$<$ T\+Authentication\+Token $>$}.
+
 \mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a4615beae56f595074f3ba643a890ba74_a4615beae56f595074f3ba643a890ba74}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a4615beae56f595074f3ba643a890ba74_a4615beae56f595074f3ba643a890ba74}} 
 \index{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga}!Pre\+Start@{Pre\+Start}}
 \index{Pre\+Start@{Pre\+Start}!Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga}}
@@ -181,6 +215,16 @@ Implements \hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a85c75f80bc5be4bad7f1d9f1
 User overridable callback. 
 
 Is called when an Actor is started. Actors are automatically started asynchronously when created. Empty default implementation. 
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_ac13c2f1c4130ad4886d5c6bfd5910bb4_ac13c2f1c4130ad4886d5c6bfd5910bb4}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_ac13c2f1c4130ad4886d5c6bfd5910bb4_ac13c2f1c4130ad4886d5c6bfd5910bb4}} 
+\index{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga}!Queue\+Command@{Queue\+Command}}
+\index{Queue\+Command@{Queue\+Command}!Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga}}
+\subsubsection{\texorpdfstring{Queue\+Command()}{QueueCommand()}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga}$<$ T\+Authentication\+Token $>$.Queue\+Command (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}$<$ T\+Authentication\+Token $>$}]{command }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Queue the provided {\itshape command}  for publishing. 
 
 \mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a3f3cf1a10203a1eead599e7529d41613_a3f3cf1a10203a1eead599e7529d41613}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a3f3cf1a10203a1eead599e7529d41613_a3f3cf1a10203a1eead599e7529d41613}} 
 \index{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga@{Cqrs\+::\+Akka\+::\+Domain\+::\+Akka\+Saga}!Set\+Id@{Set\+Id}}
