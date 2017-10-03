@@ -59,7 +59,7 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> if it has already been loaded or get it from the <see cref="IAggregateRepository{TAuthenticationToken}"/>.
 		/// </summary>
-		public TAggregateRoot Get<TAggregateRoot>(Guid id, int? expectedVersion = null)
+		public TAggregateRoot Get<TAggregateRoot>(Guid id, int? expectedVersion = null, bool useSnapshots = false)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			if(IsTracked(id))

@@ -25,7 +25,7 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> if it has already been loaded.
 		/// </summary>
-		TAggregateRoot Get<TAggregateRoot>(Guid id, int? expectedVersion = null)
+		TAggregateRoot Get<TAggregateRoot>(Guid id, int? expectedVersion = null, bool useSnapshots = false)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>;
 
 		/// <summary>
