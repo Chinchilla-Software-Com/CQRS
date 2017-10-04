@@ -569,6 +569,9 @@ var hierarchy =
     [ "Cqrs.Ninject.Azure.Wcf.CqrsWebHost< TAuthenticationToken, TAuthenticationTokenHelper, WebJobHostModule >", "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html", [
       [ "Cqrs.Ninject.Azure.WebJobs.CqrsNinjectJobHost< TAuthenticationToken, TAuthenticationTokenHelper >", "classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost.html", null ]
     ] ],
+    [ "DataContext", null, [
+      [ "Cqrs.Events.SqlEventStoreDataContext", "classCqrs_1_1Events_1_1SqlEventStoreDataContext.html", null ]
+    ] ],
     [ "DataContractResolver", null, [
       [ "Cqrs.Services.BasicServiceParameterResolver< TServiceParameter, TAuthenticationToken >", "classCqrs_1_1Services_1_1BasicServiceParameterResolver.html", null ]
     ] ],
