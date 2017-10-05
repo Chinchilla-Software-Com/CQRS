@@ -29,5 +29,6 @@ var namespaceCqrs_1_1Events =
     [ "PublicEventAttribute", "classCqrs_1_1Events_1_1PublicEventAttribute.html", null ],
     [ "ReplicatedSqlEventStore", "classCqrs_1_1Events_1_1ReplicatedSqlEventStore.html", "classCqrs_1_1Events_1_1ReplicatedSqlEventStore" ],
     [ "SagaEvent", "classCqrs_1_1Events_1_1SagaEvent.html", "classCqrs_1_1Events_1_1SagaEvent" ],
-    [ "SqlEventStore", "classCqrs_1_1Events_1_1SqlEventStore.html", "classCqrs_1_1Events_1_1SqlEventStore" ]
+    [ "SqlEventStore", "classCqrs_1_1Events_1_1SqlEventStore.html", "classCqrs_1_1Events_1_1SqlEventStore" ],
+    [ "SqlEventStoreDataContext", "classCqrs_1_1Events_1_1SqlEventStoreDataContext.html", "classCqrs_1_1Events_1_1SqlEventStoreDataContext" ]
 ];

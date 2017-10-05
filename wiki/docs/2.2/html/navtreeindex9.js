@@ -1,5 +1,12 @@
 var NAVTREEINDEX9 =
 {
+"functions_func_q.html":[1,3,1,15],
+"functions_func_r.html":[1,3,1,16],
+"functions_func_s.html":[1,3,1,17],
+"functions_func_t.html":[1,3,1,18],
+"functions_func_u.html":[1,3,1,19],
+"functions_func_v.html":[1,3,1,20],
+"functions_func_w.html":[1,3,1,21],
 "functions_g.html":[1,3,0,7],
 "functions_h.html":[1,3,0,8],
 "functions_i.html":[1,3,0,9],
@@ -10,8 +17,8 @@ var NAVTREEINDEX9 =
 "functions_n.html":[1,3,0,14],
 "functions_o.html":[1,3,0,15],
 "functions_p.html":[1,3,0,16],
-"functions_prop.html":[1,3,4,0],
 "functions_prop.html":[1,3,4],
+"functions_prop.html":[1,3,4,0],
 "functions_prop_a.html":[1,3,4,1],
 "functions_prop_b.html":[1,3,4,2],
 "functions_prop_c.html":[1,3,4,3],
@@ -242,12 +249,5 @@ var NAVTREEINDEX9 =
 "interfaceCqrs_1_1EventStore_1_1IEventBuilder_ae11ead7fa69632041e081e60f51c4e9f.html#ae11ead7fa69632041e081e60f51c4e9f":[1,0,0,11,4,0],
 "interfaceCqrs_1_1EventStore_1_1IEventDeserialiser.html":[1,0,0,11,5],
 "interfaceCqrs_1_1EventStore_1_1IEventDeserialiser_a931d4a498b2213aac492bd35518a3286.html#a931d4a498b2213aac492bd35518a3286":[1,0,0,11,5,1],
-"interfaceCqrs_1_1EventStore_1_1IEventDeserialiser_aa2859d10fd556b743679079ac15ffdde.html#aa2859d10fd556b743679079ac15ffdde":[1,0,0,11,5,2],
-"interfaceCqrs_1_1EventStore_1_1IEventDeserialiser_ad84a4d975f6e2b5b1fef3fd23e738bfd.html#ad84a4d975f6e2b5b1fef3fd23e738bfd":[1,0,0,11,5,0],
-"interfaceCqrs_1_1EventStore_1_1IEventStoreConnectionHelper.html":[1,0,0,11,6],
-"interfaceCqrs_1_1EventStore_1_1IEventStoreConnectionHelper_a7efd07573a65ace6d520d3efdb5799f3.html#a7efd07573a65ace6d520d3efdb5799f3":[1,0,0,11,6,0],
-"interfaceCqrs_1_1Events_1_1IEvent.html":[1,0,0,10,11],
-"interfaceCqrs_1_1Events_1_1IEventBuilder.html":[1,0,0,10,12],
-"interfaceCqrs_1_1Events_1_1IEventBuilder_a3c0cb2db87e496ad64f481a6cce2c79d.html#a3c0cb2db87e496ad64f481a6cce2c79d":[1,0,0,10,12,0],
-"interfaceCqrs_1_1Events_1_1IEventBuilder_ac77123302de4e79df9661c13219af4d4.html#ac77123302de4e79df9661c13219af4d4":[1,0,0,10,12,1]
+"interfaceCqrs_1_1EventStore_1_1IEventDeserialiser_aa2859d10fd556b743679079ac15ffdde.html#aa2859d10fd556b743679079ac15ffdde":[1,0,0,11,5,2]
 };

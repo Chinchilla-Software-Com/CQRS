@@ -145,6 +145,13 @@ var NAVTREEINDEX5 =
 "classCqrs_1_1Events_1_1SagaEvent_ad965f37f2c485f04978237f0d1be9cb7.html#ad965f37f2c485f04978237f0d1be9cb7":[1,0,0,10,28,4],
 "classCqrs_1_1Events_1_1SagaEvent_aeb42f8e8f8e18bffe0dbe55b3da3c476.html#aeb42f8e8f8e18bffe0dbe55b3da3c476":[1,0,0,10,28,1],
 "classCqrs_1_1Events_1_1SqlEventStore.html":[1,0,0,10,29],
+"classCqrs_1_1Events_1_1SqlEventStoreDataContext.html":[1,0,0,10,30],
+"classCqrs_1_1Events_1_1SqlEventStoreDataContext_a1220bc1424f6346662dc4adf1f23765f.html#a1220bc1424f6346662dc4adf1f23765f":[1,0,0,10,30,5],
+"classCqrs_1_1Events_1_1SqlEventStoreDataContext_a2b12344967911de04dbbb9c24150cfe6.html#a2b12344967911de04dbbb9c24150cfe6":[1,0,0,10,30,0],
+"classCqrs_1_1Events_1_1SqlEventStoreDataContext_a419c48a01192a0157934defa22a70c14.html#a419c48a01192a0157934defa22a70c14":[1,0,0,10,30,4],
+"classCqrs_1_1Events_1_1SqlEventStoreDataContext_aa8e29c6f9d3220b279c8748e82725b51.html#aa8e29c6f9d3220b279c8748e82725b51":[1,0,0,10,30,3],
+"classCqrs_1_1Events_1_1SqlEventStoreDataContext_aaa1706a1cff7c264688b6755ab842dad.html#aaa1706a1cff7c264688b6755ab842dad":[1,0,0,10,30,1],
+"classCqrs_1_1Events_1_1SqlEventStoreDataContext_ae059fb99b1100d4d7fb917b635c1be5d.html#ae059fb99b1100d4d7fb917b635c1be5d":[1,0,0,10,30,2],
 "classCqrs_1_1Events_1_1SqlEventStore_a15df78a1b12d2e3035b9715e9bfc8535.html#a15df78a1b12d2e3035b9715e9bfc8535":[1,0,0,10,29,0],
 "classCqrs_1_1Events_1_1SqlEventStore_a6daa6c32874ab593d0d8a54c90d219c6.html#a6daa6c32874ab593d0d8a54c90d219c6":[1,0,0,10,29,5],
 "classCqrs_1_1Events_1_1SqlEventStore_a7e32a08a015642a5bc1cefa6998e6f11.html#a7e32a08a015642a5bc1cefa6998e6f11":[1,0,0,10,29,3],
@@ -242,12 +249,5 @@ var NAVTREEINDEX5 =
 "classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity.html":[1,0,0,17,1,0],
 "classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity_a3d5f7476fc2de3b9061ea3e76e77e0cb.html#a3d5f7476fc2de3b9061ea3e76e77e0cb":[1,0,0,17,1,0,2],
 "classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity_a763ab3fddd6f7d07e907c274bea305f5.html#a763ab3fddd6f7d07e907c274bea305f5":[1,0,0,17,1,0,0],
-"classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity_acc0c0c4d927e9abfe88415cababff6b5.html#acc0c0c4d927e9abfe88415cababff6b5":[1,0,0,17,1,0,1],
-"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByAggregateIdAndVersionMongoDbIndex.html":[1,0,0,17,2,0,0],
-"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByAggregateIdAndVersionMongoDbIndex_a084cc895e473e0e0ea2dbcf81bba4514.html#a084cc895e473e0e0ea2dbcf81bba4514":[1,0,0,17,2,0,0,0],
-"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByCorrelationIdMongoDbIndex.html":[1,0,0,17,2,0,1],
-"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByCorrelationIdMongoDbIndex_a7bfea0225205a97ffd3501ba5032b5b3.html#a7bfea0225205a97ffd3501ba5032b5b3":[1,0,0,17,2,0,1,0],
-"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampAndEventTypeMongoDbIndex.html":[1,0,0,17,2,0,2],
-"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampAndEventTypeMongoDbIndex_ac31e888bf88b4cabc9f7be0dd1fc3ffc.html#ac31e888bf88b4cabc9f7be0dd1fc3ffc":[1,0,0,17,2,0,2,0],
-"classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByTimestampMongoDbIndex.html":[1,0,0,17,2,0,3]
+"classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity_acc0c0c4d927e9abfe88415cababff6b5.html#acc0c0c4d927e9abfe88415cababff6b5":[1,0,0,17,1,0,1]
 };
