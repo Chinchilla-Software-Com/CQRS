@@ -21,7 +21,10 @@ string baseClass = string.Empty;
 IElement eventElement = this.Element.SourceElement;
 IElement commandElement = this.Element.TargetElement;
 string eventName = ClassifierName(eventElement as IClassifier);
-string commandName =  GetNamespace((commandElement as IClassifier).Namespace) + "." + ClassifierName(commandElement as IClassifier) + "Command";
+string eventParameterType = GetFullDisplayType(this.Element.MemberEnds.Single(x => x.Type == commandElement), editableCollection: true);
+bool isEventParameterTypeACollection = eventParameterType.StartsWith("IList<");
+string commandName = string.Format("{2}{0}.{1}Command{3}", GetNamespace((commandElement as IClassifier).Namespace), ClassifierName(commandElement as IClassifier), isEventParameterTypeACollection ? "IList<" : null, isEventParameterTypeACollection ? ">" : null);
+string crefName = isEventParameterTypeACollection ? "IList{" + ClassifierName(commandElement as IClassifier) + "}" : ClassifierName(commandElement as IClassifier);
 
 string aggregateTechnology = GetAggregateTechnology(FindDomainElement(this.Element));
 string commandSender;
@@ -41,6 +44,7 @@ switch(aggregateTechnology)
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Linq;
 <#
 string eventHandlerTechnology = GetEventHandlerTechnology(this.Element);
 switch(eventHandlerTechnology)
@@ -71,7 +75,7 @@ namespace <#= classNamespace #>.Handlers
 	eventHandlerTechnologyBaseClass = ": " + eventHandlerTechnologyBaseClass;
 #>
 	/// <summary>
-	/// Converts <see cref="<#= eventName #>"/> to a <see cref="<#= commandName #>"/> and publish it using <see cref="CommandBus"/>
+	/// Converts <see cref="<#= eventName #>"/> to a <see cref="<#= crefName #>"/> and publish it using <see cref="CommandBus"/>
 	/// </summary>
 	<#= GetGeneratedCodeAttribute() #>
 	public partial class <#= className #>EventToCommandHandler
@@ -149,7 +153,7 @@ switch(eventHandlerTechnology)
 			#region Implementation of IEventHandler<in <#= className #>>
 
 			/// <summary>
-			/// Convert the provided <paramref name="@event"/> to a <see cref="<#= commandName #>"/> and publish it using <see cref="CommandBus"/>
+			/// Convert the provided <paramref name="@event"/> to a <see cref="<#= crefName #>"/> and publish it using <see cref="CommandBus"/>
 			/// </summary>
 			public virtual void Handle(<#= eventName #> @event)
 			{
@@ -181,20 +185,20 @@ switch(eventHandlerTechnology)
 		#region Implementation of IEventHandler<in <#= className #>>
 
 		/// <summary>
-		/// Convert the provided <paramref name="@event"/> to a <see cref="<#= commandName #>"/> and publish it using <see cref="CommandBus"/>
+		/// Convert the provided <paramref name="@event"/> to a <see cref="<#= crefName #>"/> and publish it using <see cref="CommandBus"/>
 		/// </summary>
 		public virtual void Handle(<#= eventName #> @event)
 		{
-			<#= commandName #> command = null;
-			OnHandle(@event, ref command);
-			if (command != null)
-				CommandBus.Publish(command);
+			<#= commandName #> command<#= isEventParameterTypeACollection ? "s" : null #> = <#= isEventParameterTypeACollection ? "new " + commandName.Substring(1) + "()" : "null" #>;
+			OnHandle(@event, ref command<#= isEventParameterTypeACollection ? "s" : null #>);
+			if (command<#= isEventParameterTypeACollection ? "s" : null #> != null)
+				CommandBus.Publish(command<#= isEventParameterTypeACollection ? "s.AsEnumerable()" : null #>);
 			OnHandled(@event);
 		}
 
 		#endregion
 
-		partial void OnHandle(<#= eventName #> @event, ref <#= commandName #> command);
+		partial void OnHandle(<#= eventName #> @event, ref <#= commandName #> command<#= isEventParameterTypeACollection ? "s" : null #>);
 
 		partial void OnHandled(<#= eventName #> @event);
 <#
