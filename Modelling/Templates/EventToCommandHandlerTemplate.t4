@@ -189,16 +189,16 @@ switch(eventHandlerTechnology)
 		/// </summary>
 		public virtual void Handle(<#= eventName #> @event)
 		{
-			<#= commandName #> command<#= isEventParameterTypeACollection ? "s" : null #> = <#= isEventParameterTypeACollection ? "new " + commandName.Substring(1) + "()" : "null" #>;
-			OnHandle(@event, ref command<#= isEventParameterTypeACollection ? "s" : null #>);
-			if (command<#= isEventParameterTypeACollection ? "s" : null #> != null)
-				CommandBus.Publish(command<#= isEventParameterTypeACollection ? "s.AsEnumerable()" : null #>);
+			<#= commandName #> command<#= isEventParameterTypeACollection ? "s" : string.Empty #> = <#= isEventParameterTypeACollection ? "new " + commandName.Substring(1) + "()" : "null" #>;
+			OnHandle(@event, ref command<#= isEventParameterTypeACollection ? "s" : string.Empty #>);
+			if (command<#= isEventParameterTypeACollection ? "s" : string.Empty #> != null)
+				CommandBus.Publish(command<#= isEventParameterTypeACollection ? "s.AsEnumerable()" : string.Empty #>);
 			OnHandled(@event);
 		}
 
 		#endregion
 
-		partial void OnHandle(<#= eventName #> @event, ref <#= commandName #> command<#= isEventParameterTypeACollection ? "s" : null #>);
+		partial void OnHandle(<#= eventName #> @event, ref <#= commandName #> command<#= isEventParameterTypeACollection ? "s" : string.Empty #>);
 
 		partial void OnHandled(<#= eventName #> @event);
 <#
