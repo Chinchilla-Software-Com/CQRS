@@ -361,6 +361,8 @@ if (index > 0)
 			string relationshipName = relationship.Name;
 			if (string.IsNullOrWhiteSpace(relationshipName))
 				relationshipName = ((INamedElement)relationship.SourceElement).Name;
+			if (relationshipName.EndsWith("CommandHandler"))
+				relationshipName = relationshipName.Substring(0, relationshipName.Length - 14);
 #>
 	/// <summary>
 	/// A <see cref="DataContractResolver"/> for using <see cref="I<#= className #>Service.<#= relationshipName #>"/> via WCF
