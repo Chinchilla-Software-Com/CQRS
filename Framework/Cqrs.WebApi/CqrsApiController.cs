@@ -82,7 +82,6 @@ namespace Cqrs.WebApi
 		/// Create a <see cref="IServiceRequest{TAuthenticationToken}"/> setting header information.
 		/// </summary>
 		protected virtual IServiceRequest<TSingleSignOnToken> CreateRequest<TSingleSignOnToken>()
-			where TSingleSignOnToken : ISingleSignOnToken, new()
 		{
 			return new ServiceRequest<TSingleSignOnToken>
 			{
