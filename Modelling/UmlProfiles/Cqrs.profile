@@ -348,6 +348,11 @@
             <enumerationTypeMoniker name="/CqrsProfile/AggregateTechnology"/>
           </propertyType>
         </property>
+        <property name="CreateDontUpdateEntity" displayName="Create Don't Update Entity: Indicates that this handler (if it is an entity event hander) will create an entity not update it." defaultValue="false">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
       </properties>
     </stereotype>
     <stereotype name="EventToCommandConverter" displayName="Event To Command Converter">
