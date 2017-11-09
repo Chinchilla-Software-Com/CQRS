@@ -76,7 +76,7 @@ $.each(window.api.metadata, function (i, action)
 	{{
 		window.api[action.ControllerName] = {{}};
 	}}
-	window.api[action.ControllerName][action.ActionName] = function (parameters)
+	window.api[action.ControllerName][action.ActionName] = function (parameters, successFunction, errorFunction, statusCodeFunctions)
 	{{
 		var url = '{1}{2}' + action.Url;
 		var data = {{}};
@@ -140,9 +140,9 @@ $.each(window.api.metadata, function (i, action)
 				headers: window.api.globalHandlers['setHeaders'](),
 				beforeSend: window.api.globalHandlers['before'],
 				complete: window.api.globalHandlers['complete'],
-				error: window.api.globalHandlers['error'],
-				success: window.api.globalHandlers['success'],
-				statusCode: {{
+				error: (errorFunction || window.api.globalHandlers['error']),
+				success: (successFunction || window.api.globalHandlers['success']),
+				statusCode: ( statusCodeFunctions || {{
 					202: window.api.globalHandlers['202'],
 					300: window.api.globalHandlers['300'],
 					400: window.api.globalHandlers['400'],
@@ -151,7 +151,7 @@ $.each(window.api.metadata, function (i, action)
 					404: window.api.globalHandlers['404'],
 					412: window.api.globalHandlers['412'],
 					500: window.api.globalHandlers['500']
-				}}
+				}})
 			}});
 		return $.ajax({{
 			type: action.Method,
@@ -160,9 +160,9 @@ $.each(window.api.metadata, function (i, action)
 			headers: window.api.globalHandlers['setHeaders'](),
 			beforeSend: window.api.globalHandlers['before'],
 			complete: window.api.globalHandlers['complete'],
-			error: window.api.globalHandlers['error'],
-			success: window.api.globalHandlers['success'],
-			statusCode: {{
+			error: (errorFunction || window.api.globalHandlers['error']),
+			success: (successFunction || window.api.globalHandlers['success']),
+			statusCode: ( statusCodeFunctions || {{
 				202: window.api.globalHandlers['202'],
 				300: window.api.globalHandlers['300'],
 				400: window.api.globalHandlers['400'],
@@ -171,7 +171,7 @@ $.each(window.api.metadata, function (i, action)
 				404: window.api.globalHandlers['404'],
 				412: window.api.globalHandlers['412'],
 				500: window.api.globalHandlers['500']
-			}}
+			}})
 		}});
 	}};
 }});",
