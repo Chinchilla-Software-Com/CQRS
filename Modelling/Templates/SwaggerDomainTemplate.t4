@@ -1,0 +1,186 @@
+<#@ Include File="TemplateHeader.t4" #>
+<#@ Modeling ElementType="Microsoft.VisualStudio.Uml.Classes.IPackage" Processor="ModelingProcessor" ApplyStereotypes="CSharp" #>
+<#@ Import Namespace="Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml" #>
+<#@ Import Namespace="Microsoft.VisualStudio.Uml.AuxiliaryConstructs" #>
+<#@ import namespace="Microsoft.VisualStudio.Uml.Classes" #>
+<#@ import namespace="System.Linq" #>
+<#@ Include File="CSharpCommentHelpers.t4" #>
+<#@ Include File="CSharpHelpers.t4" #>
+<#@ Include File="CqrsTemplateHelpers.t4" #>
+<#@ Include File="ModelHelper.t4" #>
+<#@ Output Extension=".swagger" #>
+<#
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "Domain");
+
+string classNamespace = GetNamespace(this.Element.Namespace);
+string className = this.Element.Name;
+
+IDictionary<INamedElement, IList<INamedElement>> allModules = new Dictionary<INamedElement, IList<INamedElement>>();
+foreach (INamedElement moduleElement in AllElements(this.Element, "Module").OfType<INamedElement>().OrderBy(e => e.Name))
+{
+	IList<INamedElement> allAggregates = new List<INamedElement>();
+	foreach (INamedElement AggregateElement in AllElements(moduleElement, "AggregateRoot").OfType<INamedElement>().OrderBy(e => e.Name))
+	{
+		allAggregates.Add(AggregateElement);
+	}
+	allModules.Add(moduleElement, allAggregates);
+}
+#>
+swagger: "2.0"
+info:
+	description: "<#= className #>."
+	version: "1.0.0"
+	title: "<#= className #>"
+host: "localhost/<#= className #>"
+basePath: "/Api"
+tags:
+<#
+foreach(INamedElement module in allModules.Keys)
+{
+#>
+-	name: "<#= module.Name #>"
+	description: "<#= module.Description #>"
+<#
+}
+#>
+schemes:
+-	"https"
+-	"http"
+paths:
+<#
+foreach(var module in allModules)
+{
+	foreach(INamedElement aggregate in module.Value)
+	{
+		IList<IOperation> collectionMethods = GetMethodList(aggregate);
+		foreach(INamedElement collectionMethod in collectionMethods)
+		{
+
+			string relationshipName = collectionMethod.Name;
+			var serviceMethod = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "ServiceMethod");
+			if (serviceMethod == null)
+				continue;
+
+			string httpMethodAttributeValue = serviceMethod.PropertyInstances.Single(property => property.Name == "WebApiVerb").Value;
+			string route = (serviceMethod.PropertyInstances.Any(property => property.Name == "IsWebApiUrlRsned" && property.Value == "true") ? "rsn:guid/" : string.Empty) + collectionMethod.Name;
+			if (!serviceMethod.PropertyInstances.Any(property => property.Name == "AutoGenerateWebApiRoute" && property.Value == "true"))
+				route = serviceMethod.PropertyInstances.Single(property => property.Name == "WebApiRoute").Value;
+
+#>
+	/<#= module.Key.Name #>/<#= aggregate.Name #>/<#= route #>:
+		<#= httpMethodAttributeValue #>:
+			tags:
+			-				"<#= module.Key.Name #>"
+			summary:		"<#= collectionMethod.Name #>"
+			description:	""
+			operationId:	"<#= module.Key.Name #><#= aggregate.Name #><#= route #>"
+			consumes:
+			-				"application/json"
+			-				"application/xml"
+			produces:
+			-				"application/xml"
+			-				"application/json"
+
+			responses:
+				200:
+					description:	"Successful operation"
+					schema:
+						type:		"object"
+						required:
+						-			"name"
+				405:
+					description:	"Invalid input"
+			security:
+			- api_key: []
+
+<#
+		}
+	}
+}
+#>
+securityDefinitions:
+	api_key:
+		type:	"apiKey"
+		name:	"X-Token"
+		in:		"header"
+
+<#
+	// Class and Attributes
+#>
+	/// <summary>
+	/// A factory for obtaining <see cref="IDataStore{TData}"/> instances from Mongo
+	/// </summary>
+	<#= GetGeneratedCodeAttribute() #>
+	public partial class <#= className #>MongoDataStoreFactory : Cqrs.Mongo.Factories.MongoDataStoreFactory, I<#= className #>DataStoreFactory
+	{
+		public <#= className #>MongoDataStoreFactory(ILogger logger, IMongoDataStoreConnectionStringFactory mongoDataStoreConnectionStringFactory)
+			: base(logger, mongoDataStoreConnectionStringFactory)
+		{
+		}
+
+		#region Implementation of I<#= className #>DataStoreFactory
+
+<#
+		IList<INamedElement> allDataStores = new List<INamedElement>();
+		foreach (INamedElement element in AllElements(this.Element, "AggregateRoot").OfType<INamedElement>().OrderBy(e => e.Name))
+		{
+			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
+				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
+			if (shouldBuild)
+				allDataStores.Add(element);
+		}
+		foreach (INamedElement element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
+		{
+			bool isAggregateTo = element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
+			if (isAggregateTo)
+				continue;
+			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "Entity");
+			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
+				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
+			if (shouldBuild)
+				allDataStores.Add(element);
+		}
+		foreach (INamedElement element in allDataStores)
+		{
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+#>
+		public virtual IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> Get<#= elementName #>DataStore()
+		{
+			OnObtain<#= elementName #>Collection();
+			MongoCollection<<#= moduleName #>.Entities.<#= elementName #>Entity> collection = GetCollection<<#= moduleName #>.Entities.<#= elementName #>Entity>();
+			OnObtained<#= elementName #>Collection(ref collection);
+			VerifyIndexes<<#= moduleName #>.Entities.<#= elementName #>Entity>(collection);
+			VerifyIndexes(collection);
+			return new MongoDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity>(Logger, collection);
+		}
+
+<#
+		}
+#>
+		#endregion
+
+<#
+		foreach (INamedElement element in allDataStores)
+		{
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+#>
+		partial void OnObtain<#= elementName #>Collection();
+
+		partial void OnObtained<#= elementName #>Collection(ref MongoCollection<<#= moduleName #>.Entities.<#= elementName #>Entity> collection);
+
+		partial void VerifyIndexes(MongoCollection<<#= moduleName #>.Entities.<#= elementName #>Entity> collection);
+
+<#
+		}
+#>
+	}
+}
+<#+
+	protected override bool AppliesToElement()
+	{
+		return ShouldGenerateCodeForElement(this.Element) && this.Element.AppliedStereotypes.Any(property => property.Name == "Domain") && GetEntityPersistenceTechnology(this.Element) == "MongoDb";
+	}
+#>
