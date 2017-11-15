@@ -13,85 +13,101 @@
 var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "Domain");
 
 string classNamespace = GetNamespace(this.Element.Namespace);
-string className = this.Element.Name;
+string className = this.Element.OwningPackage.Name;
 
-IDictionary<INamedElement, IList<INamedElement>> allModules = new Dictionary<INamedElement, IList<INamedElement>>();
+IDictionary<INamedElement, Tuple<IList<INamedElement>, IList<INamedElement>>> allModules = new Dictionary<INamedElement, Tuple<IList<INamedElement>, IList<INamedElement>>>();
 foreach (INamedElement moduleElement in AllElements(this.Element, "Module").OfType<INamedElement>().OrderBy(e => e.Name))
 {
 	IList<INamedElement> allAggregates = new List<INamedElement>();
-	foreach (INamedElement AggregateElement in AllElements(moduleElement, "AggregateRoot").OfType<INamedElement>().OrderBy(e => e.Name))
+	IList<INamedElement> allServices = new List<INamedElement>();
+	foreach (INamedElement aggregateElement in AllElements(moduleElement, "AggregateRoot").OfType<INamedElement>().OrderBy(e => e.Name))
 	{
-		allAggregates.Add(AggregateElement);
+		allAggregates.Add(aggregateElement);
+		foreach (INamedElement serviceElement in AllElements(moduleElement, "Service").OfType<INamedElement>().OrderBy(e => e.Name))
+		{
+			if (serviceElement.Name != string.Format("{0}Service", aggregateElement.Name))
+			allServices.Add(serviceElement);
+		}
 	}
-	allModules.Add(moduleElement, allAggregates);
+	allModules.Add(moduleElement, new Tuple<IList<INamedElement>, IList<INamedElement>>(allAggregates, allServices));
 }
 #>
 swagger: "2.0"
 info:
-	description: "<#= className #>."
-	version: "1.0.0"
-	title: "<#= className #>"
-host: "localhost/<#= className #>"
-basePath: "/Api"
+  description: "<#= this.Element.OwningPackage.Description ?? className #>."
+  version: "1.0.0"
+  title: "<#= className #>"
+host: "localhost"
+basePath: "/<#= className #>/Api"
 tags:
 <#
 foreach(INamedElement module in allModules.Keys)
 {
 #>
--	name: "<#= module.Name #>"
-	description: "<#= module.Description #>"
+-  name: "<#= module.Name #>"
+   description: "<#= module.Description #>"
 <#
 }
 #>
 schemes:
--	"https"
--	"http"
+-  "https"
+-  "http"
 paths:
 <#
 foreach(var module in allModules)
 {
-	foreach(INamedElement aggregate in module.Value)
+	foreach(INamedElement aggregate in module.Value.Item2)
 	{
 		IList<IOperation> collectionMethods = GetMethodList(aggregate as IClass);
 		foreach(INamedElement collectionMethod in collectionMethods)
 		{
-
 			string relationshipName = collectionMethod.Name;
 			var serviceMethod = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "ServiceMethod");
 			if (serviceMethod == null)
 				continue;
 
 			string httpMethodAttributeValue = serviceMethod.PropertyInstances.Single(property => property.Name == "WebApiVerb").Value;
+			if (httpMethodAttributeValue.StartsWith("Http"))
+				httpMethodAttributeValue = httpMethodAttributeValue.Substring(4);
+			httpMethodAttributeValue = httpMethodAttributeValue.ToLower();
 			string route = (serviceMethod.PropertyInstances.Any(property => property.Name == "IsWebApiUrlRsned" && property.Value == "true") ? "rsn:guid/" : string.Empty) + collectionMethod.Name;
 			if (!serviceMethod.PropertyInstances.Any(property => property.Name == "AutoGenerateWebApiRoute" && property.Value == "true"))
 				route = serviceMethod.PropertyInstances.Single(property => property.Name == "WebApiRoute").Value;
 
 #>
-	/<#= module.Key.Name #>/<#= aggregate.Name #>/<#= route #>:
-		<#= httpMethodAttributeValue #>:
-			tags:
-			-				"<#= module.Key.Name #>"
-			summary:		"<#= collectionMethod.Name #>"
-			description:	""
-			operationId:	"<#= module.Key.Name #><#= aggregate.Name #><#= route #>"
-			consumes:
-			-				"application/json"
-			-				"application/xml"
-			produces:
-			-				"application/xml"
-			-				"application/json"
+  /<#= module.Key.Name #>/<#= aggregate.Name #>/<#= route #>:
+    <#= httpMethodAttributeValue #>:
+      tags:
+      - "<#= module.Key.Name #>"
+      summary:		"<#= collectionMethod.Name #>"
+      description:	""
+      operationId:	"<#= module.Key.Name #><#= aggregate.Name #><#= route #>"
+      consumes:
+      -				"application/json"
+      -				"application/xml"
+      produces:
+      -				"application/xml"
+      -				"application/json"
 
-			responses:
-				200:
-					description:	"Successful operation"
-					schema:
-						type:		"object"
-						required:
-						-			"name"
-				405:
-					description:	"Invalid input"
-			security:
-			- api_key: []
+      responses:
+        200:
+          description:	"Successful operation"
+          schema:
+            type:		"object"
+            required:
+            -			"name"
+            properties:
+              rsn:
+                type: "string"
+              id:
+                type: "integer"
+                format: "int64"
+              name:
+                type: "string"
+        405:
+          description:	"Invalid input"
+      security:
+      - api_key: []
 
 <#
 		}
@@ -99,10 +115,10 @@ foreach(var module in allModules)
 }
 #>
 securityDefinitions:
-	api_key:
-		type:	"apiKey"
-		name:	"X-Token"
-		in:		"header"
+  api_key:
+    type:  "apiKey"
+    name:  "X-Token"
+    in:    "header"
 
 <#+
 	protected override bool AppliesToElement()
