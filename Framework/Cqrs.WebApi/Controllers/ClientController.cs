@@ -125,7 +125,7 @@ $.each(window.api.metadata, function (i, action)
 			}});
 		}}
 
-		if (bodyParameters == 1 && complexParameters == 0 && lastBodyParameter != null && lastBodyParameter != "")
+		if (bodyParameters == 1 && complexParameters == 0 && lastBodyParameter != null && lastBodyParameter != '')
 			data = data[lastBodyParameter];
 
 		if (bodyParameters == 0 && complexParameters == 0)
