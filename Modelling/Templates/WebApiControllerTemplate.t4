@@ -117,7 +117,8 @@ namespace <#= classNamespace #>.Controllers
 		}
 		string httpMethodAttributeValue = serviceMethod.PropertyInstances.Single(property => property.Name == "WebApiVerb").Value;
 		string responseDataType = methodResponseTypeName + methodTypeName;
-		string route = (serviceMethod.PropertyInstances.Any(property => property.Name == "IsWebApiUrlRsned" && property.Value == "true") ? "rsn:guid/" : string.Empty) + collectionMethod.Name;
+		bool isWebApiUrlRsned = serviceMethod.PropertyInstances.Any(property => property.Name == "IsWebApiUrlRsned" && property.Value == "true");
+		string route = (isWebApiUrlRsned ? "{rsn:guid}/" : string.Empty) + collectionMethod.Name;
 		if (!serviceMethod.PropertyInstances.Any(property => property.Name == "AutoGenerateWebApiRoute" && property.Value == "true"))
 			route = serviceMethod.PropertyInstances.Single(property => property.Name == "WebApiRoute").Value;
 #>
@@ -128,12 +129,28 @@ namespace <#= classNamespace #>.Controllers
 		[Route("<#= route #>")]
 		[<#= httpMethodAttributeValue #>]
 		public virtual System.Net.Http.HttpResponseMessage <#= relationshipName #>(<#
+		if (isWebApiUrlRsned)
+		{
+#>Guid rsn<#
+		}
 		if (hasData)
 		{
+			if (isWebApiUrlRsned)
+			{
+#>, <#
+			}
 #>[FromBody]<#= rawParameterName #> parameters<#
 		}
 #>)
 		{
+<#
+		if (hasData && isWebApiUrlRsned)
+		{
+#>
+			parameters = new ScheduledReportServiceGetReportParameters{Rsn = rsn};
+<#
+		}
+#>
 			return CompleteResponse(<#= relationshipName #>(CreateRequest<#= hasData ? "WithData" : string.Empty #><<#= authenticationTokenType #><#= hasData ? ", " + rawParameterName : string.Empty #>>(<#= hasData ? "() => parameters" : string.Empty #>)));
 		}
 
