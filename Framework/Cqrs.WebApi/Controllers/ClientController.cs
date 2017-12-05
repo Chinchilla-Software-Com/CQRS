@@ -88,7 +88,7 @@ $.each(window.api.metadata, function (i, action)
 			bodyParameters = 1;
 			data = parameters;
 		}}
-		else if (action.Parameters.length == 2 && (action.Parameters[0].Name == 'entity' && action.Parameters[1].Name == 'rsn') || (action.Parameters[1].Name == 'parameters' && action.Parameters[0].Name == 'rsn'))
+		else if (action.Parameters.length == 2 && ((action.Parameters[0].Name == 'entity' && action.Parameters[1].Name == 'rsn') || (action.Parameters[1].Name == 'parameters' && action.Parameters[0].Name == 'rsn')))
 		{{
 			bodyParameters = 1;
 			url = url.substring(0, url.length - 5) + parameters['Rsn'];
