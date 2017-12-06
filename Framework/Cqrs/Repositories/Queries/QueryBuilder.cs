@@ -296,7 +296,7 @@ namespace Cqrs.Repositories.Queries
 			}
 			catch (MissingMethodException)
 			{
-				return DependencyResolver.Current.Resolve<TQueryStrategy>();
+				return DependencyResolver.Resolve<TQueryStrategy>();
 			}
 		}
 
