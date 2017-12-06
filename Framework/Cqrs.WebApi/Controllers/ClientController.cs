@@ -93,7 +93,7 @@ $.each(window.api.metadata, function (i, action)
 			bodyParameters = 1;
 			url = url
 			url = url.replace(/\/\{{rsn\}}/g, '\/' + parameters['Rsn']);
-			data = parameters;
+			data = (action.Parameters[1].Name == 'parameters' && Object.keys(parameters).length <= 1) ? null : parameters;
 		}}
 		else
 		{{
