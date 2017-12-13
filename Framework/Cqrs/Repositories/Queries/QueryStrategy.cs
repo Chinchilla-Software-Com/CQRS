@@ -173,43 +173,6 @@ namespace Cqrs.Repositories.Queries
 
 		/// <summary>
 		/// Builds a <see cref="IQueryPredicate"/> from the provided <paramref name="func"/>
-		/// storing the provided <paramref name="parameter1"/>, <paramref name="parameter2"/> and  <paramref name="parameter3"/>.
-		/// </summary>
-		protected virtual IQueryPredicate BuildQueryPredicate<TParameter1, TParameter2, TParameter3, TData>(Func<TParameter1, TParameter2, TParameter3, TData> func, TParameter1 parameter1, TParameter2 parameter2, TParameter3 parameter3)
-		{
-			var queryPredicate = new QueryPredicate
-			{
-				Name = func.Method.Name,
-				Parameters = new SortedSet<QueryParameter>()
-			};
-
-			int parameterIndex = 1;
-			foreach (ParameterInfo parameterInfo in func.Method.GetParameters())
-			{
-				object parameter;
-				switch (parameterIndex)
-				{
-					case 1:
-						parameter = parameter1;
-						break;
-					case 2:
-						parameter = parameter2;
-						break;
-					case 3:
-						parameter = parameter3;
-						break;
-					default:
-						throw new InvalidOperationException();
-				}
-				queryPredicate.Parameters.Add(new QueryParameter(parameterInfo.Name, parameter));
-				parameterIndex++;
-			}
-
-			return queryPredicate;
-		}
-
-		/// <summary>
-		/// Builds a <see cref="IQueryPredicate"/> from the provided <paramref name="func"/>
 		/// storing the provided <paramref name="parameter1"/>, <paramref name="parameter2"/>, <paramref name="parameter3"/> and <paramref name="parameter4"/>.
 		/// </summary>
 		protected virtual IQueryPredicate BuildQueryPredicate<TParameter1, TParameter2, TParameter3, TParameter4, TData>(Func<TParameter1, TParameter2, TParameter3, TParameter4, TData> func, TParameter1 parameter1, TParameter2 parameter2, TParameter3 parameter3, TParameter4 parameter4)
