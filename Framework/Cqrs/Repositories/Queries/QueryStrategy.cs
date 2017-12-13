@@ -255,6 +255,22 @@ namespace Cqrs.Repositories.Queries
 		}
 
 		/// <summary>
+		/// Builds an <see cref="IAndQueryPredicate"/> between <see cref="QueryPredicate"/>
+		/// and the provided <paramref name="queryPredicate"/>
+		/// </summary>
+		protected virtual IQueryPredicate And(IQueryPredicate queryPredicate)
+		{
+			if (QueryPredicate == null)
+				return queryPredicate;
+
+			return new AndQueryPredicate
+			{
+				LeftQueryPredicate = QueryPredicate,
+				RightQueryPredicate = queryPredicate
+			};
+		}
+
+		/// <summary>
 		/// Builds an <see cref="IOrQueryPredicate"/> between <see cref="QueryPredicate"/>
 		/// and the provided <paramref name="queryPredicate"/>
 		/// </summary>
