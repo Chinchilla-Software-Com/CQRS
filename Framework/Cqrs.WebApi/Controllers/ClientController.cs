@@ -33,7 +33,7 @@ namespace Cqrs.WebApi.Controllers
 			var apiExplorer = GlobalConfiguration.Configuration.Services.GetApiExplorer();
 			var apiMethods = apiExplorer.ApiDescriptions.Select(ad => new ApiMethodModel(ad)).ToList();
 
-			string host = Url.Content(Request.RequestUri.AbsoluteUri.Substring(0, Request.RequestUri.AbsoluteUri.Length - Request.RequestUri.AbsolutePath.Length));
+			string host = Url.Content(Request.RequestUri.AbsoluteUri.Substring(0, Request.RequestUri.AbsoluteUri.Length - Request.RequestUri.PathAndQuery.Length));
 			string path = Url.Content("~/");
 			if (path.StartsWith(host))
 				host = null;
