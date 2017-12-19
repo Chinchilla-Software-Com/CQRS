@@ -84,7 +84,10 @@ namespace Cqrs.WebApi
 						if (queryStringParts.Length != 2)
 							continue;
 						if (queryStringParts[0].ToLowerInvariant() == authenticationTokenName.ToLowerInvariant())
+						{
 							xToken = queryStringParts[1];
+							break;
+						}
 					}
 				}
 			}
