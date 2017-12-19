@@ -73,6 +73,20 @@ namespace Cqrs.WebApi
 				CookieHeaderValue cookie = Request.Headers.GetCookies(authenticationTokenName).FirstOrDefault();
 				if (cookie != null)
 					xToken = cookie[authenticationTokenName].Value;
+				else
+				{
+					string[] queryStrings = (Request.RequestUri.Query ?? "?")
+						.Substring(1)
+						.Split('&');
+					foreach(string queryString in queryStrings)
+					{
+						string[] queryStringParts = queryString.Split('=');
+						if (queryStringParts.Length != 2)
+							continue;
+						if (queryStringParts[0].ToLowerInvariant() == authenticationTokenName.ToLowerInvariant())
+							xToken = queryStringParts[1];
+					}
+				}
 			}
 
 			return xToken;
