@@ -100,6 +100,7 @@
 		bool isStruct = false;
 		bool isEnum = false;
 		bool isEntity = false;
+		bool isAggregate = false;
 
 		typeName = ElementType(typedProperty);
 		if (typeName.StartsWith("Root::"))
@@ -111,12 +112,13 @@
 		canBeMultiple = property.UpperValue != null ? property.UpperValue.ToString() == "*" : false;
 		isStruct = typedProperty != null && typedProperty.Type != null && (typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Struct", StringComparison.InvariantCultureIgnoreCase)) || typeName == "int" || typeName == "integer");
 		isEnum = (typedProperty.Type as IEnumeration) != null;
-		isEntity = typedProperty != null && typedProperty.Type != null && typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Entity", StringComparison.InvariantCultureIgnoreCase) && !typedProperty.Name.EndsWith("Entity"));
+		isEntity = typedProperty != null && typedProperty.Type != null && typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Entity", StringComparison.InvariantCultureIgnoreCase) && !typeName .EndsWith("Entity"));
+		isAggregate = typedProperty != null && typedProperty.Type != null && typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("AggregateRoot", StringComparison.InvariantCultureIgnoreCase) && !typedProperty.Name.EndsWith("Entity"));
 
 		return string.Format("{0}{1}{2}{3}{4}"
 			, canBeMultiple && isUnique ? editableCollection ? "IList<" : "ICollection<" : canBeMultiple ? editableCollection ? "IList<" : "IEnumerable<" : string.Empty
 			, typeName
-			, isEntity ? "Entity" : string.Empty
+			, isEntity && isAggregate ? "Entity" : string.Empty
 			, canBeMultiple ? ">" : string.Empty
 			, !canBeMultiple && canBeEmpty && (!onlyStructAsNullable || isStruct || isEnum) ? "?" : string.Empty);
 	}
