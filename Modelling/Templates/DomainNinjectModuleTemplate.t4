@@ -240,8 +240,20 @@ string authenticationToken = GetDomainAuthenticationTokenType(this.Element);
 #>
 			Bind<<#= moduleName #>.Repositories.I<#= elementName #>Repository>()
 				.To<<#= moduleName #>.Repositories.<#= elementName #>Repository>()
+<#
+				switch(technology)
+				{
+					case "SimplifiedSql" :
+#>
+				.InThreadScope();
+<#
+						break;
+					default :
+#>
 				.InSingletonScope();
 <#
+						break;
+				}
 			}
 		}
 
@@ -262,8 +274,20 @@ string authenticationToken = GetDomainAuthenticationTokenType(this.Element);
 #>
 			Bind<<#= moduleName #>.Entities.Repositories.I<#= elementName #>Repository>()
 				.To<<#= moduleName #>.Entities.Repositories.<#= elementName #>Repository>()
+<#
+				switch(technology)
+				{
+					case "SimplifiedSql" :
+#>
+				.InThreadScope();
+<#
+						break;
+					default :
+#>
 				.InSingletonScope();
 <#
+						break;
+				}
 			}
 		}
 #>
