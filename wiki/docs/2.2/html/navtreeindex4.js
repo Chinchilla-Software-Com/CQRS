@@ -1,5 +1,13 @@
 var NAVTREEINDEX4 =
 {
+"classCqrs_1_1Commands_1_1DtoCommand_a9429ca1b2c6576c36d46912a18e5dc18.html#a9429ca1b2c6576c36d46912a18e5dc18":[1,0,0,5,1,3],
+"classCqrs_1_1Commands_1_1DtoCommand_a9664c5705a6de37478bdb627590363e5.html#a9664c5705a6de37478bdb627590363e5":[1,0,0,5,1,6],
+"classCqrs_1_1Commands_1_1DtoCommand_aeb60eb40f2a201fd63e846d728768cdf.html#aeb60eb40f2a201fd63e846d728768cdf":[1,0,0,5,1,2],
+"classCqrs_1_1Commands_1_1DtoCommand_aedf535bfbf04e3532c90e69548b85c32.html#aedf535bfbf04e3532c90e69548b85c32":[1,0,0,5,1,1],
+"classCqrs_1_1Configuration_1_1BusRegistrar.html":[1,0,0,6,0],
+"classCqrs_1_1Configuration_1_1BusRegistrar_a03ecf12389b8f55b75c887e113520ac7.html#a03ecf12389b8f55b75c887e113520ac7":[1,0,0,6,0,2],
+"classCqrs_1_1Configuration_1_1BusRegistrar_a07d27088739f2ae0ac7c551fc6a72ac9.html#a07d27088739f2ae0ac7c551fc6a72ac9":[1,0,0,6,0,1],
+"classCqrs_1_1Configuration_1_1BusRegistrar_a0af1844a5f7f1c4adfde2499b054aaae.html#a0af1844a5f7f1c4adfde2499b054aaae":[1,0,0,6,0,8],
 "classCqrs_1_1Configuration_1_1BusRegistrar_a0e118c57c7e804df1d810750befb25df.html#a0e118c57c7e804df1d810750befb25df":[1,0,0,6,0,7],
 "classCqrs_1_1Configuration_1_1BusRegistrar_a159eba5ece9015165be70676a52d8127.html#a159eba5ece9015165be70676a52d8127":[1,0,0,6,0,3],
 "classCqrs_1_1Configuration_1_1BusRegistrar_a3103da4cf077104607fe03a862958827.html#a3103da4cf077104607fe03a862958827":[1,0,0,6,0,4],
@@ -241,13 +249,5 @@ var NAVTREEINDEX4 =
 "classCqrs_1_1EventStore_1_1Bus_1_1InvalidLastEventProcessedException_ac0de4bdfa1896dfae88644a2ae422145.html#ac0de4bdfa1896dfae88644a2ae422145":[1,0,0,11,0,4,1],
 "classCqrs_1_1EventStore_1_1EventFactory.html":[1,0,0,11,1],
 "classCqrs_1_1EventStore_1_1EventFactory_a1be7f3c4014991bc4b9619eaa2e8b9a4.html#a1be7f3c4014991bc4b9619eaa2e8b9a4":[1,0,0,11,1,6],
-"classCqrs_1_1EventStore_1_1EventFactory_a237daf998b545d170ab9f30187a0b8e7.html#a237daf998b545d170ab9f30187a0b8e7":[1,0,0,11,1,0],
-"classCqrs_1_1EventStore_1_1EventFactory_a4e52c4fd639d1af97b1ecc5052189783.html#a4e52c4fd639d1af97b1ecc5052189783":[1,0,0,11,1,7],
-"classCqrs_1_1EventStore_1_1EventFactory_a91394437675f3185d2105c6a79f7b5aa.html#a91394437675f3185d2105c6a79f7b5aa":[1,0,0,11,1,1],
-"classCqrs_1_1EventStore_1_1EventFactory_a9e04e262a8af8f60bdde7b4bf3eafebb.html#a9e04e262a8af8f60bdde7b4bf3eafebb":[1,0,0,11,1,4],
-"classCqrs_1_1EventStore_1_1EventFactory_abfd04f6833e4f010234d84a591f6eb6b.html#abfd04f6833e4f010234d84a591f6eb6b":[1,0,0,11,1,5],
-"classCqrs_1_1EventStore_1_1EventFactory_adbcf9f3c67cfef3fe894e5fb53e8b800.html#adbcf9f3c67cfef3fe894e5fb53e8b800":[1,0,0,11,1,3],
-"classCqrs_1_1EventStore_1_1EventFactory_ae514998a8368283f882014cc0db5b2b2.html#ae514998a8368283f882014cc0db5b2b2":[1,0,0,11,1,2],
-"classCqrs_1_1EventStore_1_1EventStore.html":[1,0,0,11,2],
-"classCqrs_1_1EventStore_1_1EventStoreConnectionHelper.html":[1,0,0,11,3]
+"classCqrs_1_1EventStore_1_1EventFactory_a237daf998b545d170ab9f30187a0b8e7.html#a237daf998b545d170ab9f30187a0b8e7":[1,0,0,11,1,0]
 };

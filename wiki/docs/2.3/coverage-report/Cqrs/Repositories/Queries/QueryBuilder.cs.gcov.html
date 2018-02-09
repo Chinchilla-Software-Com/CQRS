@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-10-06</td>
+            <td class="headerValue">2018-02-10</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -348,19 +348,26 @@
 <span class="lineNum">     290 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     291 </span><span class="lineCov">          1 :                 protected virtual TQueryStrategy GetNullQueryStrategy()</span>
 <span class="lineNum">     292 </span>            :                 {
-<span class="lineNum">     293 </span>            :                         return Activator.CreateInstance&lt;TQueryStrategy&gt;();
-<span class="lineNum">     294 </span>            :                 }
-<span class="lineNum">     295 </span>            : 
-<span class="lineNum">     296 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     297 </span>            :                 /// Override to build or apply any sorting required to &lt;paramref name=&quot;queryable&quot;/&gt;
-<span class="lineNum">     298 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     299 </span>            :                 /// &lt;param name=&quot;queryStrategy&quot;&gt;The &lt;typeparamref name=&quot;TQueryStrategy&quot;/&gt; with sorting information.&lt;/param&gt;
-<span class="lineNum">     300 </span>            :                 /// &lt;param name=&quot;queryable&quot;&gt;The &lt;see cref=&quot;IQueryable&quot;/&gt; to apply sorting to.&lt;/param&gt;
-<span class="lineNum">     301 </span><span class="lineCov">          1 :                 protected virtual void ApplySorting(TQueryStrategy queryStrategy, ref IQueryable&lt;TData&gt; queryable)</span>
-<span class="lineNum">     302 </span>            :                 {
-<span class="lineNum">     303 </span>            :                 }
-<span class="lineNum">     304 </span>            :         }
-<span class="lineNum">     305 </span>            : }
+<span class="lineNum">     293 </span>            :                         try
+<span class="lineNum">     294 </span>            :                         {
+<span class="lineNum">     295 </span>            :                                 return Activator.CreateInstance&lt;TQueryStrategy&gt;();
+<span class="lineNum">     296 </span>            :                         }
+<span class="lineNum">     297 </span>            :                         catch (MissingMethodException)
+<span class="lineNum">     298 </span>            :                         {
+<span class="lineNum">     299 </span>            :                                 return DependencyResolver.Resolve&lt;TQueryStrategy&gt;();
+<span class="lineNum">     300 </span>            :                         }
+<span class="lineNum">     301 </span><span class="lineCov">          1 :                 }</span>
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     304 </span>            :                 /// Override to build or apply any sorting required to &lt;paramref name=&quot;queryable&quot;/&gt;
+<span class="lineNum">     305 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     306 </span>            :                 /// &lt;param name=&quot;queryStrategy&quot;&gt;The &lt;typeparamref name=&quot;TQueryStrategy&quot;/&gt; with sorting information.&lt;/param&gt;
+<span class="lineNum">     307 </span>            :                 /// &lt;param name=&quot;queryable&quot;&gt;The &lt;see cref=&quot;IQueryable&quot;/&gt; to apply sorting to.&lt;/param&gt;
+<span class="lineNum">     308 </span>            :                 protected virtual void ApplySorting(TQueryStrategy queryStrategy, ref IQueryable&lt;TData&gt; queryable)
+<span class="lineNum">     309 </span>            :                 {
+<span class="lineNum">     310 </span>            :                 }
+<span class="lineNum">     311 </span>            :         }
+<span class="lineNum">     312 </span>            : }
 </pre>
       </td>
     </tr>
