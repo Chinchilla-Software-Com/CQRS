@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
+using cdmdotnet.StateManagement;
 using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;
@@ -30,10 +31,12 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Instantiates a new instance of <see cref="BusHelper"/>
 		/// </summary>
-		public BusHelper(IConfigurationManager configurationManager)
+		public BusHelper(IConfigurationManager configurationManager, IContextItemCollectionFactory factory)
 		{
+			Cache = factory.GetCurrentContext();
 			ConfigurationManager = configurationManager;
 			CachedChecks = new ConcurrentDictionary<string, Tuple<bool, DateTime>>();
+			NullableCachedChecks = new ConcurrentDictionary<string, Tuple<bool?, DateTime>>();
 			bool isblackListRequired;
 			if (!ConfigurationManager.TryGetSetting("Cqrs.MessageBus.BlackListProcessing", out isblackListRequired))
 				isblackListRequired = true;
@@ -51,6 +54,12 @@ namespace Cqrs.Bus
 		/// The value was last checked, keyed by it's configuration key.
 		/// </summary>
 		protected IDictionary<string, Tuple<bool, DateTime>> CachedChecks { get; private set; }
+
+		/// <summary>
+		/// A collection of <see cref="Tuple{T1, T2}"/> holding the configurations value (always a <see cref="bool"/>) and the <see cref="DateTime"/>
+		/// The value was last checked, keyed by it's configuration key.
+		/// </summary>
+		protected IDictionary<string, Tuple<bool?, DateTime>> NullableCachedChecks { get; private set; }
 
 		/// <summary>
 		/// The current value of "Cqrs.MessageBus.BlackListProcessing" from <see cref="ConfigurationManager"/>.
@@ -83,6 +92,16 @@ namespace Cqrs.Bus
 				// Check it's age - by adding 20 minutes from being obtained or refreshed and if it's older than now remove it
 				else if (pair.Item2.AddMinutes(20) < DateTime.UtcNow)
 					CachedChecks.Remove(configurationKey);
+			}
+
+			// Now in a dictionary safe way check each key for a value.
+			keys = NullableCachedChecks.Keys.ToList();
+			foreach (string configurationKey in keys)
+			{
+				Tuple<bool?, DateTime> pair = NullableCachedChecks[configurationKey];
+				// Check it's age - by adding 20 minutes from being obtained or refreshed and if it's older than now remove it
+				if (pair.Item2.AddMinutes(20) < DateTime.UtcNow)
+					NullableCachedChecks.Remove(configurationKey);
 			}
 		}
 
@@ -131,7 +150,7 @@ namespace Cqrs.Bus
 			bool isRequired;
 			if (!CachedChecks.TryGetValue(configurationKey, out settings))
 			{
-				// If we can't a value or there is no specific setting, we default to EventBlackListProcessing
+				// If we can't find a value or there is no specific setting, we default to EventBlackListProcessing
 				if (!ConfigurationManager.TryGetSetting(configurationKey, out isRequired))
 					isRequired = EventBlackListProcessing;
 
@@ -150,6 +169,81 @@ namespace Cqrs.Bus
 			// Don't refresh the expiry, we'll just update the cache every so often which is faster than constantly changing dictionary values.
 			else
 				isRequired = settings.Item1;
+
+			return isRequired;
+		}
+
+		/// <summary>
+		/// Checks if the private bus is required to send the message. Note, this does not imply the public bus is not required as well.
+		/// </summary>
+		/// <param name="messageType">The <see cref="Type"/> of the message being processed.</param>
+		/// <returns>Null for unconfigured, True for private bus transmission, false otherwise.</returns>
+		public virtual bool? IsPrivateBusRequired(Type messageType)
+		{
+			return IsABusRequired(messageType, false);
+		}
+
+		/// <summary>
+		/// Checks if the public bus is required to send the message. Note, this does not imply the public bus is not required as well.
+		/// </summary>
+		/// <param name="messageType">The <see cref="Type"/> of the message being processed.</param>
+		/// <returns>Null for unconfigured, True for private bus transmission, false otherwise.</returns>
+		public virtual bool? IsPublicBusRequired(Type messageType)
+		{
+			return IsABusRequired(messageType, true);
+		}
+
+		/// <summary>
+		/// Checks if the particular bus is required to send the message. Note, this does not imply the public bus is not required as well.
+		/// </summary>
+		/// <param name="messageType">The <see cref="Type"/> of the message being processed.</param>
+		/// <param name="checkPublic">Check for the public or private bus.</param>
+		/// <returns>Null for unconfigured, True for a particular bus transmission, false otherwise.</returns>
+		protected virtual bool? IsABusRequired(Type messageType, bool checkPublic)
+		{
+			string configurationKey = string.Format(checkPublic ? "{0}.IsPublicBusRequired" : "{0}.IsPrivateBusRequired", messageType.FullName);
+			Tuple<bool?, DateTime> settings;
+			bool? isRequired;
+			if (!NullableCachedChecks.TryGetValue(configurationKey, out settings))
+			{
+				bool isRequired1;
+				// Check if there is a cached value
+				if (ConfigurationManager.TryGetSetting(configurationKey, out isRequired1))
+					isRequired = isRequired1;
+				// If not, check the attributes
+				else if (checkPublic)
+				{
+					var eventAttribute = Attribute.GetCustomAttribute(messageType, typeof(PublicEventAttribute)) as PublicEventAttribute;
+					isRequired = eventAttribute == null ? (bool?) null : true;
+				}
+				// If not, check the attributes
+				else
+				{
+					var eventAttribute = Attribute.GetCustomAttribute(messageType, typeof(PrivateEventAttribute)) as PrivateEventAttribute;
+					isRequired = eventAttribute == null ? (bool?)null : true;
+				}
+
+				// Now cache the response
+				try
+				{
+					NullableCachedChecks.Add(configurationKey, new Tuple<bool?, DateTime>(isRequired, DateTime.UtcNow));
+				}
+				catch (ArgumentException exception)
+				{
+					if (exception.Message != "The key already existed in the dictionary.")
+						throw;
+					// It's been added since we checked... adding locks is slow, so just move on.
+				}
+			}
+			// Don't refresh the expiry, we'll just update the cache every so often which is faster than constantly changing dictionary values.
+			else
+				isRequired = settings.Item1;
+
+			// If all the above is still not difinitive, react to the bus the originating message was received on, but we only need to check for private.
+			// We do this here so caching is atleast used, but this cannot be cached as that would be wrong
+			if (isRequired == null && !checkPublic)
+				if (GetWasPrivateBusUsed())
+					return true;
 
 			return isRequired;
 		}
@@ -286,6 +380,39 @@ namespace Cqrs.Bus
 			}
 
 			return registerableHandler;
+		}
+
+		/// <summary>
+		/// The key used to store the authentication token in the <see cref="Cache"/>.
+		/// </summary>
+		protected string CacheKey = "WasPrivateBusUsed";
+
+		/// <summary>
+		/// Get or set the Cache.
+		/// </summary>
+		protected IContextItemCollection Cache { get; private set; }
+
+		/// <summary>
+		/// Indicates if the message was received via the private bus or not. If false, this implies the public was use used.
+		/// </summary>
+		public bool GetWasPrivateBusUsed()
+		{
+			try
+			{
+				return Cache.GetData<bool>(CacheKey);
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// Set whether the message was received via the private bus or not. If false, this indicates the public was use used.
+		/// </summary>
+		public bool SetWasPrivateBusUsed(bool wasPrivate)
+		{
+			return Cache.SetData(CacheKey, wasPrivate);
 		}
 	}
 }

@@ -7,7 +7,9 @@ using Cqrs.Messages;
 
 namespace Cqrs.Tests.Substitutes
 {
-	public class TestAggregateDidSomething : IEvent<ISingleSignOnToken>
+	public class TestAggregateDidSomething
+		: IEvent<ISingleSignOnToken>
+		, ITelemeteredMessage
 	{
 		public Guid Id { get; set; }
 
@@ -49,6 +51,20 @@ namespace Cqrs.Tests.Substitutes
 			get { return CorrelationId; }
 			set { CorrelationId = value; }
 		}
+
+		#endregion
+
+		public TestAggregateDidSomething()
+		{
+			TelemetryName = "Event/TestAggregateDidSomething";
+		}
+
+		#region Implementation of ITelemeteredMessage
+
+		/// <summary>
+		/// Gets or sets the Name of this message.
+		/// </summary>
+		public string TelemetryName { get; set; }
 
 		#endregion
 	}

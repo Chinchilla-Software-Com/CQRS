@@ -77,23 +77,25 @@ namespace Cqrs.Azure.ServiceBus
 			var telemeteredEvent = @event as ITelemeteredMessage;
 			if (telemeteredEvent != null)
 				telemetryName = telemeteredEvent.TelemetryName;
-			telemetryName = string.Format("Event/{0}", telemetryName);
+			else
+				telemetryName = string.Format("Event/{0}", telemetryName);
 
 			try
 			{
 				if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-ServiceBus"))
 					return;
 
-				var privateEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PrivateEventAttribute;
-				var publicEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PublicEventAttribute;
+				Type eventType = typeof (TEvent);
+				bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(eventType);
+				bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(eventType);
 
 				// We only add telemetry for overall operations if two occured
-				telemeterOverall = publicEventAttribute != null && privateEventAttribute != null;
+				telemeterOverall = isPublicBusRequired != null && isPublicBusRequired.Value && isPrivateBusRequired != null && isPrivateBusRequired.Value;
 
 				// Backwards compatibility and simplicity
 				bool wasSuccessfull;
 				Stopwatch stopWatch = Stopwatch.StartNew();
-				if (publicEventAttribute == null && privateEventAttribute == null)
+				if ((isPublicBusRequired == null || !isPublicBusRequired.Value) && (isPrivateBusRequired == null || !isPrivateBusRequired.Value))
 				{
 					stopWatch.Restart();
 					responseCode = "200";
@@ -126,7 +128,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
 				}
-				if (publicEventAttribute != null)
+				if ((isPublicBusRequired == null || !isPublicBusRequired.Value) )
 				{
 					stopWatch.Restart();
 					responseCode = "200";
@@ -159,7 +161,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
 				}
-				if (privateEventAttribute != null)
+				if (isPrivateBusRequired == null || !isPrivateBusRequired.Value)
 				{
 					stopWatch.Restart();
 					responseCode = "200";

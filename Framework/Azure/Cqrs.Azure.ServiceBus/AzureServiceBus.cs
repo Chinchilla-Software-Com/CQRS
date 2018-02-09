@@ -406,9 +406,27 @@ namespace Cqrs.Azure.ServiceBus
 		protected override void ApplyReceiverMessageHandler()
 		{
 			foreach (SubscriptionClient serviceBusReceiver in PrivateServiceBusReceivers.Values)
-				serviceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
+				serviceBusReceiver
+					.OnMessage
+					(
+						message =>
+						{
+							BusHelper.SetWasPrivateBusUsed(true);
+							ReceiverMessageHandler(message);
+						},
+						ReceiverMessageHandlerOptions
+					);
 			foreach (SubscriptionClient serviceBusReceiver in PublicServiceBusReceivers.Values)
-				serviceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
+				serviceBusReceiver
+					.OnMessage
+					(
+						message =>
+						{
+							BusHelper.SetWasPrivateBusUsed(false);
+							ReceiverMessageHandler(message);
+						},
+						ReceiverMessageHandlerOptions
+					);
 		}
 
 		/// <summary>

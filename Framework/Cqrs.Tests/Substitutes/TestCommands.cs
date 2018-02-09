@@ -7,7 +7,9 @@ using Cqrs.Messages;
 
 namespace Cqrs.Tests.Substitutes
 {
-	public class TestAggregateDoSomething : ICommand<ISingleSignOnToken>
+	public class TestAggregateDoSomething
+		: ICommand<ISingleSignOnToken>
+		, ITelemeteredMessage
 	{
 		public Guid Id { get; set; }
 
@@ -35,6 +37,20 @@ namespace Cqrs.Tests.Substitutes
 		/// </summary>
 		[DataMember]
 		public IEnumerable<string> Frameworks { get; set; }
+
+		#endregion
+
+		public TestAggregateDoSomething()
+		{
+			TelemetryName = "Command/TestAggregateDoSomething";
+		}
+
+		#region Implementation of ITelemeteredMessage
+
+		/// <summary>
+		/// Gets or sets the Name of this message.
+		/// </summary>
+		public string TelemetryName { get; set; }
 
 		#endregion
 	}

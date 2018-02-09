@@ -102,7 +102,6 @@ namespace Cqrs.Authentication
 		/// </summary>
 		protected IContextItemCollection Cache { get; private set; }
 
-
 		/// <summary>
 		/// Instantiate a new instance of <see cref="AuthenticationTokenHelper{TAuthenticationToken}"/>
 		/// </summary>
