@@ -130,7 +130,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					Logger.LogDebug(string.Format("An command was published on the public bus with the id '{0}' was of type {1}.", command.Id, command.GetType().FullName));
 				}
-				if ((isPublicBusRequired == null || !isPublicBusRequired.Value))
+				if ((isPublicBusRequired != null && isPublicBusRequired.Value))
 				{
 					stopWatch.Restart();
 					responseCode = "200";
@@ -163,7 +163,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					Logger.LogDebug(string.Format("An command was published on the public bus with the id '{0}' was of type {1}.", command.Id, command.GetType().FullName));
 				}
-				if (isPrivateBusRequired == null || !isPrivateBusRequired.Value)
+				if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
 				{
 					stopWatch.Restart();
 					responseCode = "200";
