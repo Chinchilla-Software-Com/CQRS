@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using cdmdotnet.Logging;
@@ -19,14 +27,45 @@ namespace Cqrs.Configuration
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of authentication token.</typeparam>
 	/// <typeparam name="TCommandHanderOrEventHandler">The <see cref="Type"/> of any <see cref="ICommandHandle"/> or <see cref="IEventHandler"/>.</typeparam>
-	public class SampleRuntime<TAuthenticationToken, TCommandHanderOrEventHandler> : IDisposable
+	public class SampleRuntime<TAuthenticationToken, TCommandHanderOrEventHandler>
+		: IDisposable
 	{
+		/// <summary>
+		/// The <see cref="Func{TResult}"/> used to create the <see cref="IEventStore{TAuthenticationToken}"/>
+		/// </summary>
+		protected static Func<IDependencyResolver, IEventStore<TAuthenticationToken>> EventStoreCreator { get; set; }
+
 		/// <summary>
 		/// Instaiance a new instance of the <see cref="SampleRuntime{TAuthenticationToken,TCommandHanderOrEventHandler}"/>
 		/// </summary>
 		public SampleRuntime()
 		{
+			SetEventStoreCreator();
+			StartDependencyResolver();
+			RegisterHandlers();
+		}
+
+		/// <summary>
+		/// Sets the <see cref="EventStoreCreator"/> to use <see cref="InProcessEventStore{TAuthenticationToken}"/>
+		/// </summary>
+		protected virtual void SetEventStoreCreator()
+		{
+			EventStoreCreator = dependencyResolver => new InProcessEventStore<TAuthenticationToken>();
+		}
+
+		/// <summary>
+		/// Starts the <see cref="IDependencyResolver"/>.
+		/// </summary>
+		protected virtual void StartDependencyResolver()
+		{
 			MockDependencyResolver.Start();
+		}
+
+		/// <summary>
+		/// Registers the all <see cref="IEventHandler"/> and <see cref="ICommandHandle"/>.
+		/// </summary>
+		protected virtual void RegisterHandlers()
+		{
 			new BusRegistrar(DependencyResolver.Current)
 				.Register(typeof(TCommandHanderOrEventHandler));
 		}
@@ -34,7 +73,7 @@ namespace Cqrs.Configuration
 		/// <summary>
 		/// Prints out the statistics of this run such as the number of event raised to the <see cref="Console"/>.
 		/// </summary>
-		public void PrintStatsticsToConsole()
+		public virtual void PrintStatsticsToConsole()
 		{
 			var inProcStore = DependencyResolver.Current.Resolve<IEventStore<TAuthenticationToken>>() as InProcessEventStore<TAuthenticationToken>;
 			if (inProcStore != null)
@@ -57,7 +96,10 @@ namespace Cqrs.Configuration
 
 		#endregion
 
-		class MockDependencyResolver
+		/// <summary>
+		/// Provides an ability to resolve a minimum known set of objects.
+		/// </summary>
+		protected class MockDependencyResolver
 			: DependencyResolver
 			, IDisposable
 		{
@@ -80,6 +122,9 @@ namespace Cqrs.Configuration
 				Current = new MockDependencyResolver();
 			}
 
+			/// <summary>
+			/// Starts the <see cref="IDependencyResolver"/>.
+			/// </summary>
 			public static void Start() { }
 
 			private MockDependencyResolver()
@@ -88,7 +133,7 @@ namespace Cqrs.Configuration
 				CorrelationIdHelper = new CorrelationIdHelper((ThreadedContextItemCollectionFactory)ContextFactory);
 				ConfigurationManager = new ConfigurationManager();
 				Logger = new TraceLogger(new LoggerSettings(), CorrelationIdHelper);
-				EventStore = CreateEventStore();
+				EventStore = EventStoreCreator(this);
 
 				Bus = new InProcessBus<TAuthenticationToken>
 				(
@@ -165,6 +210,10 @@ namespace Cqrs.Configuration
 					return AggregateRepository;
 				if (type == typeof(IEventStore<TAuthenticationToken>))
 					return EventStore;
+				if (type == typeof(IEventBuilder<TAuthenticationToken>))
+					return new DefaultEventBuilder<TAuthenticationToken>();
+				if (type == typeof(IEventDeserialiser<TAuthenticationToken>))
+					return new EventDeserialiser<TAuthenticationToken>();
 
 				if (typeof(ICommandHandle).IsAssignableFrom(type))
 					return Activator.CreateInstance(type, Resolve<IUnitOfWork<TAuthenticationToken>>());
@@ -175,11 +224,6 @@ namespace Cqrs.Configuration
 			}
 
 			#endregion
-
-			private IEventStore<TAuthenticationToken> CreateEventStore()
-			{
-				return new InProcessEventStore<TAuthenticationToken>();
-			}
 
 			#region Implementation of IDisposable
 
