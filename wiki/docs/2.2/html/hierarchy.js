@@ -695,6 +695,7 @@ var hierarchy =
       [ "Cqrs.Sql.DataStores.SqlDataStore< TEntity, TDbEntity >", "classCqrs_1_1Sql_1_1DataStores_1_1SqlDataStore.html", null ]
     ] ],
     [ "IDisposable", null, [
+      [ "Cqrs.Configuration.SampleRuntime< TAuthenticationToken, TCommandHanderOrEventHandler >", "classCqrs_1_1Configuration_1_1SampleRuntime.html", null ],
       [ "Cqrs.DataStores.IDataStore< TData >", "interfaceCqrs_1_1DataStores_1_1IDataStore.html", [
         [ "Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStore< TData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1BlobStorageDataStore.html", null ],
         [ "Cqrs.Azure.DocumentDb.DataStores.AzureDocumentDbDataStore< TData >", "classCqrs_1_1Azure_1_1DocumentDb_1_1DataStores_1_1AzureDocumentDbDataStore.html", null ],

@@ -1,5 +1,9 @@
 var NAVTREEINDEX7 =
 {
+"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_a796f167e2cf851a069bd92e4d9c10846.html#a796f167e2cf851a069bd92e4d9c10846":[1,0,0,18,1,3,0,1,4],
+"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_a81b657e59955f4e21f5c0d9bffbbe771.html#a81b657e59955f4e21f5c0d9bffbbe771":[1,0,0,18,1,3,0,1,3],
+"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_acac355ad5f368268e5d2f6a6d1804f94.html#acac355ad5f368268e5d2f6a6d1804f94":[1,0,0,18,1,3,0,1,0],
+"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_afc3b7631771eb44c282e98edc80792de.html#afc3b7631771eb44c282e98edc80792de":[1,0,0,18,1,3,0,1,5],
 "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html":[1,0,0,18,1,3,1],
 "classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1Configuration_1_1WebJobHostModule.html":[1,0,0,18,1,4,0,0],
 "classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1Configuration_1_1WebJobHostModule_a478ea88f9dd4740ffd11b5d169683e2b.html#a478ea88f9dd4740ffd11b5d169683e2b":[1,0,0,18,1,4,0,0,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX7 =
 "classCqrs_1_1Services_1_1ServiceRequestWithData.html":[1,0,0,20,15],
 "classCqrs_1_1Services_1_1ServiceRequestWithData_aab0d15e170d06c7170be934f9705937b.html#aab0d15e170d06c7170be934f9705937b":[1,0,0,20,15,0],
 "classCqrs_1_1Services_1_1ServiceRequest_abbf7a905744ac65ab59edf4f550cad61.html#abbf7a905744ac65ab59edf4f550cad61":[1,0,0,20,14,1],
-"classCqrs_1_1Services_1_1ServiceRequest_ac1a9faff43be83d010b5b59a849c4c4b.html#ac1a9faff43be83d010b5b59a849c4c4b":[1,0,0,20,14,0],
-"classCqrs_1_1Services_1_1ServiceResponse.html":[1,0,0,20,16],
-"classCqrs_1_1Services_1_1ServiceResponseWithResultData.html":[1,0,0,20,17],
-"classCqrs_1_1Services_1_1ServiceResponseWithResultData_a4241511df21804b73baec2b0c2e66402.html#a4241511df21804b73baec2b0c2e66402":[1,0,0,20,17,0],
-"classCqrs_1_1Services_1_1ServiceResponseWithResultData_a63a840d449e8b06652130ffb1228432d.html#a63a840d449e8b06652130ffb1228432d":[1,0,0,20,17,1]
+"classCqrs_1_1Services_1_1ServiceRequest_ac1a9faff43be83d010b5b59a849c4c4b.html#ac1a9faff43be83d010b5b59a849c4c4b":[1,0,0,20,14,0]
 };

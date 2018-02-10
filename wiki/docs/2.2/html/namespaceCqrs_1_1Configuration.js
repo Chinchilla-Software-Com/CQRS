@@ -7,5 +7,6 @@ var namespaceCqrs_1_1Configuration =
     [ "HandlerDelegate", "classCqrs_1_1Configuration_1_1HandlerDelegate.html", null ],
     [ "IConfigurationManager", "interfaceCqrs_1_1Configuration_1_1IConfigurationManager.html", "interfaceCqrs_1_1Configuration_1_1IConfigurationManager" ],
     [ "IDependencyResolver", "interfaceCqrs_1_1Configuration_1_1IDependencyResolver.html", "interfaceCqrs_1_1Configuration_1_1IDependencyResolver" ],
-    [ "ITelemetryHelperExtensions", "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions.html", "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions" ]
+    [ "ITelemetryHelperExtensions", "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions.html", "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions" ],
+    [ "SampleRuntime", "classCqrs_1_1Configuration_1_1SampleRuntime.html", "classCqrs_1_1Configuration_1_1SampleRuntime" ]
 ];
