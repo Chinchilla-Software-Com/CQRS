@@ -15,7 +15,7 @@ var searchData=
   ['conversationreportprocessmanagereventhandlers',['ConversationReportProcessManagerEventHandlers',['../classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessManagerEventHandlers.html',1,'Cqrs::Akka::Tests::Unit::Sagas']]],
   ['converters',['Converters',['../classCqrs_1_1Sql_1_1DataStores_1_1Converters.html',1,'Cqrs::Sql::DataStores']]],
   ['corehost',['CoreHost',['../classCqrs_1_1Hosts_1_1CoreHost.html',1,'Cqrs::Hosts']]],
-  ['cqrsapicontroller',['CqrsApiController',['../classCqrs_1_1WebApi_1_1CqrsApiController.html',1,'Cqrs.WebApi.CqrsApiController'],['../classCqrs_1_1WebApi_1_1CqrsApiController.html',1,'Cqrs.WebApi.CqrsApiController&lt; TAuthenticationToken &gt;']]],
+  ['cqrsapicontroller',['CqrsApiController',['../classCqrs_1_1WebApi_1_1CqrsApiController.html',1,'Cqrs.WebApi.CqrsApiController&lt; TAuthenticationToken &gt;'],['../classCqrs_1_1WebApi_1_1CqrsApiController.html',1,'Cqrs.WebApi.CqrsApiController']]],
   ['cqrseventapicontroller',['CqrsEventApiController',['../classCqrs_1_1WebApi_1_1CqrsEventApiController.html',1,'Cqrs::WebApi']]],
   ['cqrshttpapplication',['CqrsHttpApplication',['../classCqrs_1_1Hosts_1_1CqrsHttpApplication.html',1,'Cqrs.Hosts.CqrsHttpApplication'],['../classCqrs_1_1Hosts_1_1CqrsHttpApplication.html',1,'Cqrs.Hosts.CqrsHttpApplication&lt; TAuthenticationToken &gt;']]],
   ['cqrshttpapplication_3c_20tauthenticationtoken_20_3e',['CqrsHttpApplication&lt; TAuthenticationToken &gt;',['../classCqrs_1_1Hosts_1_1CqrsHttpApplication.html',1,'Cqrs::Hosts']]],
@@ -24,7 +24,7 @@ var searchData=
   ['cqrsmodule',['CqrsModule',['../classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule.html',1,'Cqrs::Ninject::Configuration']]],
   ['cqrsninjectjobhost',['CqrsNinjectJobHost',['../classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost.html',1,'Cqrs::Ninject::Azure::WebJobs']]],
   ['cqrsninjectjobhost_3c_20system_2eguid_2c_20defaultauthenticationtokenhelper_20_3e',['CqrsNinjectJobHost&lt; System.Guid, DefaultAuthenticationTokenHelper &gt;',['../classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost.html',1,'Cqrs::Ninject::Azure::WebJobs']]],
-  ['cqrswebhost',['CqrsWebHost',['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html',1,'Cqrs.Ninject.Azure.Wcf.CqrsWebHost&lt; TAuthenticationToken, TAuthenticationTokenHelper, TWebHostModule &gt;'],['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html',1,'Cqrs.Ninject.Azure.Wcf.CqrsWebHost&lt; TAuthenticationToken, TAuthenticationTokenHelper &gt;']]],
+  ['cqrswebhost',['CqrsWebHost',['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html',1,'Cqrs.Ninject.Azure.Wcf.CqrsWebHost&lt; TAuthenticationToken, TAuthenticationTokenHelper &gt;'],['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html',1,'Cqrs.Ninject.Azure.Wcf.CqrsWebHost&lt; TAuthenticationToken, TAuthenticationTokenHelper, TWebHostModule &gt;']]],
   ['cqrswebhost_3c_20tauthenticationtoken_2c_20tauthenticationtokenhelper_2c_20webhostmodule_20_3e',['CqrsWebHost&lt; TAuthenticationToken, TAuthenticationTokenHelper, WebHostModule &gt;',['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html',1,'Cqrs::Ninject::Azure::Wcf']]],
   ['cqrswebhost_3c_20tauthenticationtoken_2c_20tauthenticationtokenhelper_2c_20webjobhostmodule_20_3e',['CqrsWebHost&lt; TAuthenticationToken, TAuthenticationTokenHelper, WebJobHostModule &gt;',['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html',1,'Cqrs::Ninject::Azure::Wcf']]],
   ['cqrswebjobprogram',['CqrsWebJobProgram',['../classCqrsWebJobProgram.html',1,'']]]

@@ -34,6 +34,10 @@ var NAVTREEINDEX4 =
 "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions_a4a954213d1a2e3782de2bd4ebe1ec2e9.html#a4a954213d1a2e3782de2bd4ebe1ec2e9":[1,0,0,6,7,1],
 "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions_a8e248c0990f9abd8f9d7f06a6e82c1d6.html#a8e248c0990f9abd8f9d7f06a6e82c1d6":[1,0,0,6,7,0],
 "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions_aba815675738eed8509d2ad4d327b591d.html#aba815675738eed8509d2ad4d327b591d":[1,0,0,6,7,2],
+"classCqrs_1_1Configuration_1_1SampleRuntime.html":[1,0,0,6,8],
+"classCqrs_1_1Configuration_1_1SampleRuntime_a384b1c93c2d856f2d15a7ae410dedee9.html#a384b1c93c2d856f2d15a7ae410dedee9":[1,0,0,6,8,2],
+"classCqrs_1_1Configuration_1_1SampleRuntime_a9382e8b20b8701815ad20c1cd645c27b.html#a9382e8b20b8701815ad20c1cd645c27b":[1,0,0,6,8,0],
+"classCqrs_1_1Configuration_1_1SampleRuntime_ae3729c9e4d130fb2e0c88246d58dc761.html#ae3729c9e4d130fb2e0c88246d58dc761":[1,0,0,6,8,1],
 "classCqrs_1_1DataStores_1_1InProcessDataStore.html":[1,0,0,7,1],
 "classCqrs_1_1DataStores_1_1InProcessDataStore.html#afb0df42f934f7cc4b920a5d04f654a90":[1,0,0,7,1,11],
 "classCqrs_1_1DataStores_1_1InProcessDataStore_a1fc7a3935f52087f3703b652e77f0b75.html#a1fc7a3935f52087f3703b652e77f0b75":[1,0,0,7,1,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX4 =
 "classCqrs_1_1EventStore_1_1Bus_1_1InvalidLastEventProcessedException.html":[1,0,0,11,0,4],
 "classCqrs_1_1EventStore_1_1Bus_1_1InvalidLastEventProcessedException_a01e8e2b27b64b5404f20bcfa2627b06c.html#a01e8e2b27b64b5404f20bcfa2627b06c":[1,0,0,11,0,4,2],
 "classCqrs_1_1EventStore_1_1Bus_1_1InvalidLastEventProcessedException_aa14bdf5c6f8c0227dd3919b1fed91417.html#aa14bdf5c6f8c0227dd3919b1fed91417":[1,0,0,11,0,4,3],
-"classCqrs_1_1EventStore_1_1Bus_1_1InvalidLastEventProcessedException_aa941d9b0c42053195d592ed07bcfcb08.html#aa941d9b0c42053195d592ed07bcfcb08":[1,0,0,11,0,4,0],
-"classCqrs_1_1EventStore_1_1Bus_1_1InvalidLastEventProcessedException_ac0de4bdfa1896dfae88644a2ae422145.html#ac0de4bdfa1896dfae88644a2ae422145":[1,0,0,11,0,4,1],
-"classCqrs_1_1EventStore_1_1EventFactory.html":[1,0,0,11,1],
-"classCqrs_1_1EventStore_1_1EventFactory_a1be7f3c4014991bc4b9619eaa2e8b9a4.html#a1be7f3c4014991bc4b9619eaa2e8b9a4":[1,0,0,11,1,6],
-"classCqrs_1_1EventStore_1_1EventFactory_a237daf998b545d170ab9f30187a0b8e7.html#a237daf998b545d170ab9f30187a0b8e7":[1,0,0,11,1,0]
+"classCqrs_1_1EventStore_1_1Bus_1_1InvalidLastEventProcessedException_aa941d9b0c42053195d592ed07bcfcb08.html#aa941d9b0c42053195d592ed07bcfcb08":[1,0,0,11,0,4,0]
 };

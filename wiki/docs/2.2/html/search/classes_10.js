@@ -6,6 +6,7 @@ var searchData=
   ['saganotfoundexception',['SagaNotFoundException',['../classCqrs_1_1Domain_1_1Exceptions_1_1SagaNotFoundException.html',1,'Cqrs::Domain::Exceptions']]],
   ['sagarepository',['SagaRepository',['../classCqrs_1_1Domain_1_1SagaRepository.html',1,'Cqrs::Domain']]],
   ['sagaunitofwork',['SagaUnitOfWork',['../classCqrs_1_1Domain_1_1SagaUnitOfWork.html',1,'Cqrs::Domain']]],
+  ['sampleruntime',['SampleRuntime',['../classCqrs_1_1Configuration_1_1SampleRuntime.html',1,'Cqrs::Configuration']]],
   ['sayhelloworldcommand',['SayHelloWorldCommand',['../classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1SayHelloWorldCommand.html',1,'Cqrs::Akka::Tests::Unit::Commands']]],
   ['sayhelloworldcommandhandler',['SayHelloWorldCommandHandler',['../classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1Handlers_1_1SayHelloWorldCommandHandler.html',1,'Cqrs::Akka::Tests::Unit::Commands::Handlers']]],
   ['servicechannelfactory',['ServiceChannelFactory',['../classCqrs_1_1Services_1_1ServiceChannelFactory.html',1,'Cqrs::Services']]],

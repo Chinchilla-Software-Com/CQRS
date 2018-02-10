@@ -1,5 +1,9 @@
 var NAVTREEINDEX6 =
 {
+"classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_a5003aba35b02f686cbacf5832a14cf46.html#a5003aba35b02f686cbacf5832a14cf46":[1,0,0,17,0,1,4],
+"classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_a54f5798a67d64a47e6acb15f378fb246.html#a54f5798a67d64a47e6acb15f378fb246":[1,0,0,17,0,1,10],
+"classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_a709fc1e29d266a7c19a46bd181d03963.html#a709fc1e29d266a7c19a46bd181d03963":[1,0,0,17,0,1,2],
+"classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_ab08ce716944d76cbaef9a94fd1525440.html#ab08ce716944d76cbaef9a94fd1525440":[1,0,0,17,0,1,14],
 "classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_ac0cb8626e8f8ab0275a31e88a920ee3e.html#ac0cb8626e8f8ab0275a31e88a920ee3e":[1,0,0,17,0,1,7],
 "classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_ade387c1d511dfad22ff7eb752fb842e5.html#ade387c1d511dfad22ff7eb752fb842e5":[1,0,0,17,0,1,11],
 "classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_af86a3df56e2df92fb9ef880ff4fa5f16.html#af86a3df56e2df92fb9ef880ff4fa5f16":[1,0,0,17,0,1,9],
@@ -245,9 +249,5 @@ var NAVTREEINDEX6 =
 "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1SimplifiedNinjectWcf_a7a4bdce5525a0b3ae46efacedb74bbda.html#a7a4bdce5525a0b3ae46efacedb74bbda":[1,0,0,18,1,3,0,0,1],
 "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule.html":[1,0,0,18,1,3,0,1],
 "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_a40d0f52a4c5588c84a8147d9a82b47ec.html#a40d0f52a4c5588c84a8147d9a82b47ec":[1,0,0,18,1,3,0,1,1],
-"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_a6714aa12771f4b5ee7d9410c5a3b6632.html#a6714aa12771f4b5ee7d9410c5a3b6632":[1,0,0,18,1,3,0,1,2],
-"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_a796f167e2cf851a069bd92e4d9c10846.html#a796f167e2cf851a069bd92e4d9c10846":[1,0,0,18,1,3,0,1,4],
-"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_a81b657e59955f4e21f5c0d9bffbbe771.html#a81b657e59955f4e21f5c0d9bffbbe771":[1,0,0,18,1,3,0,1,3],
-"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_acac355ad5f368268e5d2f6a6d1804f94.html#acac355ad5f368268e5d2f6a6d1804f94":[1,0,0,18,1,3,0,1,0],
-"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_afc3b7631771eb44c282e98edc80792de.html#afc3b7631771eb44c282e98edc80792de":[1,0,0,18,1,3,0,1,5]
+"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_a6714aa12771f4b5ee7d9410c5a3b6632.html#a6714aa12771f4b5ee7d9410c5a3b6632":[1,0,0,18,1,3,0,1,2]
 };
