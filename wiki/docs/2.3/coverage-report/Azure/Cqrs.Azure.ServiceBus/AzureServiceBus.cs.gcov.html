@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-10-06</td>
+            <td class="headerValue">2018-02-10</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -464,161 +464,179 @@
 <span class="lineNum">     406 </span><span class="lineCov">          1 :                 protected override void ApplyReceiverMessageHandler()</span>
 <span class="lineNum">     407 </span>            :                 {
 <span class="lineNum">     408 </span>            :                         foreach (SubscriptionClient serviceBusReceiver in PrivateServiceBusReceivers.Values)
-<span class="lineNum">     409 </span>            :                                 serviceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
-<span class="lineNum">     410 </span>            :                         foreach (SubscriptionClient serviceBusReceiver in PublicServiceBusReceivers.Values)
-<span class="lineNum">     411 </span>            :                                 serviceBusReceiver.OnMessage(ReceiverMessageHandler, ReceiverMessageHandlerOptions);
-<span class="lineNum">     412 </span>            :                 }
-<span class="lineNum">     413 </span>            : 
-<span class="lineNum">     414 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     415 </span>            :                 /// Using a &lt;see cref=&quot;Task&quot;/&gt;, clears all dead letters from the topic and subscription of the 
-<span class="lineNum">     416 </span>            :                 /// provided &lt;paramref name=&quot;topicName&quot;/&gt; and &lt;paramref name=&quot;topicSubscriptionName&quot;/&gt;.
-<span class="lineNum">     417 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     418 </span>            :                 /// &lt;param name=&quot;topicName&quot;&gt;The name of the topic.&lt;/param&gt;
-<span class="lineNum">     419 </span>            :                 /// &lt;param name=&quot;topicSubscriptionName&quot;&gt;The name of the subscription.&lt;/param&gt;
-<span class="lineNum">     420 </span>            :                 /// &lt;returns&gt;&lt;/returns&gt;
-<span class="lineNum">     421 </span><span class="lineCov">          1 :                 protected virtual CancellationTokenSource CleanUpDeadLetters(string topicName, string topicSubscriptionName)</span>
-<span class="lineNum">     422 </span>            :                 {
-<span class="lineNum">     423 </span>            :                         var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
-<span class="lineNum">     424 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Servicebus&quot; } };
-<span class="lineNum">     425 </span>            :                         int lockIssues = 0;
-<span class="lineNum">     426 </span>            : 
-<span class="lineNum">     427 </span>            :                         Action&lt;BrokeredMessage, IMessage&gt; leaveDeadlLetterInQueue = (deadLetterBrokeredMessage, deadLetterMessage) =&gt;
-<span class="lineNum">     428 </span>            :                         {
-<span class="lineNum">     429 </span>            :                                 // Remove message from queue
-<span class="lineNum">     430 </span>            :                                 try
-<span class="lineNum">     431 </span>            :                                 {
-<span class="lineNum">     432 </span>            :                                         deadLetterBrokeredMessage.Abandon();
-<span class="lineNum">     433 </span>            :                                         lockIssues = 0;
-<span class="lineNum">     434 </span>            :                                 }
-<span class="lineNum">     435 </span>            :                                 catch (MessageLockLostException)
-<span class="lineNum">     436 </span>            :                                 {
-<span class="lineNum">     437 </span>            :                                         lockIssues++;
-<span class="lineNum">     438 </span>            :                                         Logger.LogWarning(string.Format(&quot;The lock supplied for abandon for the skipped dead-letter message '{0}' is invalid.&quot;, deadLetterBrokeredMessage.MessageId));
-<span class="lineNum">     439 </span>            :                                 }
-<span class="lineNum">     440 </span>            :                                 Logger.LogDebug(string.Format(&quot;A dead-letter message of type {0} arrived with the id '{1}' but left in the queue due to settings.&quot;, deadLetterMessage.GetType().FullName, deadLetterBrokeredMessage.MessageId));
-<span class="lineNum">     441 </span>            :                         };
-<span class="lineNum">     442 </span>            :                         Action&lt;BrokeredMessage&gt; removeDeadlLetterFromQueue = deadLetterBrokeredMessage =&gt;
-<span class="lineNum">     443 </span>            :                         {
-<span class="lineNum">     444 </span>            :                                 // Remove message from queue
-<span class="lineNum">     445 </span>            :                                 try
-<span class="lineNum">     446 </span>            :                                 {
-<span class="lineNum">     447 </span>            :                                         deadLetterBrokeredMessage.Complete();
-<span class="lineNum">     448 </span>            :                                         lockIssues = 0;
-<span class="lineNum">     449 </span>            :                                 }
-<span class="lineNum">     450 </span>            :                                 catch (MessageLockLostException)
-<span class="lineNum">     451 </span>            :                                 {
-<span class="lineNum">     452 </span>            :                                         lockIssues++;
-<span class="lineNum">     453 </span>            :                                         Logger.LogWarning(string.Format(&quot;The lock supplied for complete for the skipped dead-letter message '{0}' is invalid.&quot;, deadLetterBrokeredMessage.MessageId));
-<span class="lineNum">     454 </span>            :                                 }
-<span class="lineNum">     455 </span>            :                                 Logger.LogDebug(string.Format(&quot;A dead-letter message arrived with the id '{0}' but was removed as processing was skipped due to settings.&quot;, deadLetterBrokeredMessage.MessageId));
-<span class="lineNum">     456 </span>            :                         };
-<span class="lineNum">     457 </span>            : 
-<span class="lineNum">     458 </span>            :                         Task.Factory.StartNewSafely(() =&gt;
-<span class="lineNum">     459 </span>            :                         {
-<span class="lineNum">     460 </span>            :                                 int loop = 0;
-<span class="lineNum">     461 </span>            :                                 while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
-<span class="lineNum">     462 </span>            :                                 {
-<span class="lineNum">     463 </span>            :                                         lockIssues = 0;
-<span class="lineNum">     464 </span>            :                                         MessagingFactory factory = MessagingFactory.CreateFromConnectionString(ConnectionString);
-<span class="lineNum">     465 </span>            :                                         string deadLetterPath = SubscriptionClient.FormatDeadLetterPath(topicName, topicSubscriptionName);
-<span class="lineNum">     466 </span>            :                                         MessageReceiver client = factory.CreateMessageReceiver(deadLetterPath, ReceiveMode.PeekLock);
-<span class="lineNum">     467 </span>            : 
-<span class="lineNum">     468 </span>            :                                         IEnumerable&lt;BrokeredMessage&gt; brokeredMessages = client.ReceiveBatch(1000);
-<span class="lineNum">     469 </span>            : 
-<span class="lineNum">     470 </span>            :                                         foreach (BrokeredMessage brokeredMessage in brokeredMessages)
-<span class="lineNum">     471 </span>            :                                         {
-<span class="lineNum">     472 </span>            :                                                 if (lockIssues &gt; 10)
-<span class="lineNum">     473 </span>            :                                                         break;
-<span class="lineNum">     474 </span>            :                                                 try
-<span class="lineNum">     475 </span>            :                                                 {
-<span class="lineNum">     476 </span>            :                                                         Logger.LogDebug(string.Format(&quot;A dead-letter message arrived with the id '{0}'.&quot;, brokeredMessage.MessageId));
-<span class="lineNum">     477 </span>            :                                                         string messageBody = brokeredMessage.GetBody&lt;string&gt;();
-<span class="lineNum">     478 </span>            : 
-<span class="lineNum">     479 </span>            :                                                         // Closure protection
-<span class="lineNum">     480 </span>            :                                                         BrokeredMessage message = brokeredMessage;
-<span class="lineNum">     481 </span>            :                                                         try
-<span class="lineNum">     482 </span>            :                                                         {
-<span class="lineNum">     483 </span>            :                                                                 AzureBusHelper.ReceiveEvent
-<span class="lineNum">     484 </span>            :                                                                 (
-<span class="lineNum">     485 </span>            :                                                                         messageBody,
-<span class="lineNum">     486 </span>            :                                                                         @event =&gt;
-<span class="lineNum">     487 </span>            :                                                                         {
-<span class="lineNum">     488 </span>            :                                                                                 bool isRequired = BusHelper.IsEventRequired(@event.GetType());
-<span class="lineNum">     489 </span>            :                                                                                 if (!isRequired)
-<span class="lineNum">     490 </span>            :                                                                                         removeDeadlLetterFromQueue(message);
-<span class="lineNum">     491 </span>            :                                                                                 else
-<span class="lineNum">     492 </span>            :                                                                                         leaveDeadlLetterInQueue(message, @event);
-<span class="lineNum">     493 </span>            :                                                                                 return true;
-<span class="lineNum">     494 </span>            :                                                                         },
-<span class="lineNum">     495 </span>            :                                                                         string.Format(&quot;id '{0}'&quot;, brokeredMessage.MessageId),
-<span class="lineNum">     496 </span>            :                                                                         () =&gt;
-<span class="lineNum">     497 </span>            :                                                                         {
-<span class="lineNum">     498 </span>            :                                                                                 removeDeadlLetterFromQueue(message);
-<span class="lineNum">     499 </span>            :                                                                         },
-<span class="lineNum">     500 </span>            :                                                                         () =&gt; { }
-<span class="lineNum">     501 </span>            :                                                                 );
-<span class="lineNum">     502 </span>            :                                                         }
-<span class="lineNum">     503 </span>            :                                                         catch
-<span class="lineNum">     504 </span>            :                                                         {
-<span class="lineNum">     505 </span>            :                                                                 AzureBusHelper.ReceiveCommand
-<span class="lineNum">     506 </span>            :                                                                 (
-<span class="lineNum">     507 </span>            :                                                                         messageBody,
-<span class="lineNum">     508 </span>            :                                                                         command =&gt;
-<span class="lineNum">     509 </span>            :                                                                         {
-<span class="lineNum">     510 </span>            :                                                                                 bool isRequired = BusHelper.IsEventRequired(command.GetType());
-<span class="lineNum">     511 </span>            :                                                                                 if (!isRequired)
-<span class="lineNum">     512 </span>            :                                                                                         removeDeadlLetterFromQueue(message);
-<span class="lineNum">     513 </span>            :                                                                                 else
-<span class="lineNum">     514 </span>            :                                                                                         leaveDeadlLetterInQueue(message, command);
-<span class="lineNum">     515 </span>            :                                                                                 return true;
-<span class="lineNum">     516 </span>            :                                                                         },
-<span class="lineNum">     517 </span>            :                                                                         string.Format(&quot;id '{0}'&quot;, brokeredMessage.MessageId),
-<span class="lineNum">     518 </span>            :                                                                         () =&gt;
-<span class="lineNum">     519 </span>            :                                                                         {
-<span class="lineNum">     520 </span>            :                                                                                 removeDeadlLetterFromQueue(message);
-<span class="lineNum">     521 </span>            :                                                                         },
-<span class="lineNum">     522 </span>            :                                                                         () =&gt; { }
-<span class="lineNum">     523 </span>            :                                                                 );
-<span class="lineNum">     524 </span>            :                                                         }
-<span class="lineNum">     525 </span>            :                                                 }
-<span class="lineNum">     526 </span>            :                                                 catch (Exception exception)
-<span class="lineNum">     527 </span>            :                                                 {
-<span class="lineNum">     528 </span>            :                                                         TelemetryHelper.TrackException(exception, null, telemetryProperties);
-<span class="lineNum">     529 </span>            :                                                         // Indicates a problem, unlock message in queue
-<span class="lineNum">     530 </span>            :                                                         Logger.LogError(string.Format(&quot;A dead-letter message arrived with the id '{0}' but failed to be process.&quot;, brokeredMessage.MessageId), exception: exception);
-<span class="lineNum">     531 </span>            :                                                         try
-<span class="lineNum">     532 </span>            :                                                         {
-<span class="lineNum">     533 </span>            :                                                                 brokeredMessage.Abandon();
-<span class="lineNum">     534 </span>            :                                                         }
-<span class="lineNum">     535 </span>            :                                                         catch (MessageLockLostException)
-<span class="lineNum">     536 </span>            :                                                         {
-<span class="lineNum">     537 </span>            :                                                                 lockIssues++;
-<span class="lineNum">     538 </span>            :                                                                 Logger.LogWarning(string.Format(&quot;The lock supplied for abandon for the skipped dead-letter message '{0}' is invalid.&quot;, brokeredMessage.MessageId));
-<span class="lineNum">     539 </span>            :                                                         }
-<span class="lineNum">     540 </span>            :                                                 }
-<span class="lineNum">     541 </span>            :                                         }
-<span class="lineNum">     542 </span>            : 
-<span class="lineNum">     543 </span>            :                                         client.Close();
-<span class="lineNum">     544 </span>            : 
-<span class="lineNum">     545 </span>            :                                         if (loop++ % 5 == 0)
-<span class="lineNum">     546 </span>            :                                         {
-<span class="lineNum">     547 </span>            :                                                 loop = 0;
-<span class="lineNum">     548 </span>            :                                                 Thread.Yield();
-<span class="lineNum">     549 </span>            :                                         }
-<span class="lineNum">     550 </span>            :                                         else
-<span class="lineNum">     551 </span>            :                                                 Thread.Sleep(500);
-<span class="lineNum">     552 </span>            :                                 }
-<span class="lineNum">     553 </span>            :                                 try
-<span class="lineNum">     554 </span>            :                                 {
-<span class="lineNum">     555 </span>            :                                         brokeredMessageRenewCancellationTokenSource.Dispose();
-<span class="lineNum">     556 </span>            :                                 }
-<span class="lineNum">     557 </span>            :                                 catch (ObjectDisposedException) { }
-<span class="lineNum">     558 </span>            :                         }, brokeredMessageRenewCancellationTokenSource.Token);
-<span class="lineNum">     559 </span>            : 
-<span class="lineNum">     560 </span>            :                         return brokeredMessageRenewCancellationTokenSource;
-<span class="lineNum">     561 </span>            :                 }
-<span class="lineNum">     562 </span>            :         }
-<span class="lineNum">     563 </span>            : }
+<span class="lineNum">     409 </span>            :                                 serviceBusReceiver
+<span class="lineNum">     410 </span>            :                                         .OnMessage
+<span class="lineNum">     411 </span>            :                                         (
+<span class="lineNum">     412 </span>            :                                                 message =&gt;
+<span class="lineNum">     413 </span>            :                                                 {
+<span class="lineNum">     414 </span>            :                                                         BusHelper.SetWasPrivateBusUsed(true);
+<span class="lineNum">     415 </span>            :                                                         ReceiverMessageHandler(message);
+<span class="lineNum">     416 </span>            :                                                 },
+<span class="lineNum">     417 </span>            :                                                 ReceiverMessageHandlerOptions
+<span class="lineNum">     418 </span>            :                                         );
+<span class="lineNum">     419 </span>            :                         foreach (SubscriptionClient serviceBusReceiver in PublicServiceBusReceivers.Values)
+<span class="lineNum">     420 </span>            :                                 serviceBusReceiver
+<span class="lineNum">     421 </span><span class="lineCov">          1 :                                         .OnMessage</span>
+<span class="lineNum">     422 </span>            :                                         (
+<span class="lineNum">     423 </span>            :                                                 message =&gt;
+<span class="lineNum">     424 </span>            :                                                 {
+<span class="lineNum">     425 </span>            :                                                         BusHelper.SetWasPrivateBusUsed(false);
+<span class="lineNum">     426 </span>            :                                                         ReceiverMessageHandler(message);
+<span class="lineNum">     427 </span>            :                                                 },
+<span class="lineNum">     428 </span>            :                                                 ReceiverMessageHandlerOptions
+<span class="lineNum">     429 </span>            :                                         );
+<span class="lineNum">     430 </span>            :                 }
+<span class="lineNum">     431 </span>            : 
+<span class="lineNum">     432 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     433 </span>            :                 /// Using a &lt;see cref=&quot;Task&quot;/&gt;, clears all dead letters from the topic and subscription of the 
+<span class="lineNum">     434 </span>            :                 /// provided &lt;paramref name=&quot;topicName&quot;/&gt; and &lt;paramref name=&quot;topicSubscriptionName&quot;/&gt;.
+<span class="lineNum">     435 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     436 </span>            :                 /// &lt;param name=&quot;topicName&quot;&gt;The name of the topic.&lt;/param&gt;
+<span class="lineNum">     437 </span>            :                 /// &lt;param name=&quot;topicSubscriptionName&quot;&gt;The name of the subscription.&lt;/param&gt;
+<span class="lineNum">     438 </span>            :                 /// &lt;returns&gt;&lt;/returns&gt;
+<span class="lineNum">     439 </span>            :                 protected virtual CancellationTokenSource CleanUpDeadLetters(string topicName, string topicSubscriptionName)
+<span class="lineNum">     440 </span>            :                 {
+<span class="lineNum">     441 </span>            :                         var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
+<span class="lineNum">     442 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Servicebus&quot; } };
+<span class="lineNum">     443 </span>            :                         int lockIssues = 0;
+<span class="lineNum">     444 </span>            : 
+<span class="lineNum">     445 </span>            :                         Action&lt;BrokeredMessage, IMessage&gt; leaveDeadlLetterInQueue = (deadLetterBrokeredMessage, deadLetterMessage) =&gt;
+<span class="lineNum">     446 </span>            :                         {
+<span class="lineNum">     447 </span>            :                                 // Remove message from queue
+<span class="lineNum">     448 </span>            :                                 try
+<span class="lineNum">     449 </span>            :                                 {
+<span class="lineNum">     450 </span>            :                                         deadLetterBrokeredMessage.Abandon();
+<span class="lineNum">     451 </span>            :                                         lockIssues = 0;
+<span class="lineNum">     452 </span>            :                                 }
+<span class="lineNum">     453 </span>            :                                 catch (MessageLockLostException)
+<span class="lineNum">     454 </span>            :                                 {
+<span class="lineNum">     455 </span>            :                                         lockIssues++;
+<span class="lineNum">     456 </span>            :                                         Logger.LogWarning(string.Format(&quot;The lock supplied for abandon for the skipped dead-letter message '{0}' is invalid.&quot;, deadLetterBrokeredMessage.MessageId));
+<span class="lineNum">     457 </span>            :                                 }
+<span class="lineNum">     458 </span>            :                                 Logger.LogDebug(string.Format(&quot;A dead-letter message of type {0} arrived with the id '{1}' but left in the queue due to settings.&quot;, deadLetterMessage.GetType().FullName, deadLetterBrokeredMessage.MessageId));
+<span class="lineNum">     459 </span>            :                         };
+<span class="lineNum">     460 </span>            :                         Action&lt;BrokeredMessage&gt; removeDeadlLetterFromQueue = deadLetterBrokeredMessage =&gt;
+<span class="lineNum">     461 </span>            :                         {
+<span class="lineNum">     462 </span>            :                                 // Remove message from queue
+<span class="lineNum">     463 </span>            :                                 try
+<span class="lineNum">     464 </span>            :                                 {
+<span class="lineNum">     465 </span>            :                                         deadLetterBrokeredMessage.Complete();
+<span class="lineNum">     466 </span>            :                                         lockIssues = 0;
+<span class="lineNum">     467 </span>            :                                 }
+<span class="lineNum">     468 </span>            :                                 catch (MessageLockLostException)
+<span class="lineNum">     469 </span>            :                                 {
+<span class="lineNum">     470 </span>            :                                         lockIssues++;
+<span class="lineNum">     471 </span>            :                                         Logger.LogWarning(string.Format(&quot;The lock supplied for complete for the skipped dead-letter message '{0}' is invalid.&quot;, deadLetterBrokeredMessage.MessageId));
+<span class="lineNum">     472 </span>            :                                 }
+<span class="lineNum">     473 </span>            :                                 Logger.LogDebug(string.Format(&quot;A dead-letter message arrived with the id '{0}' but was removed as processing was skipped due to settings.&quot;, deadLetterBrokeredMessage.MessageId));
+<span class="lineNum">     474 </span>            :                         };
+<span class="lineNum">     475 </span>            : 
+<span class="lineNum">     476 </span>            :                         Task.Factory.StartNewSafely(() =&gt;
+<span class="lineNum">     477 </span>            :                         {
+<span class="lineNum">     478 </span>            :                                 int loop = 0;
+<span class="lineNum">     479 </span>            :                                 while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
+<span class="lineNum">     480 </span>            :                                 {
+<span class="lineNum">     481 </span>            :                                         lockIssues = 0;
+<span class="lineNum">     482 </span>            :                                         MessagingFactory factory = MessagingFactory.CreateFromConnectionString(ConnectionString);
+<span class="lineNum">     483 </span>            :                                         string deadLetterPath = SubscriptionClient.FormatDeadLetterPath(topicName, topicSubscriptionName);
+<span class="lineNum">     484 </span>            :                                         MessageReceiver client = factory.CreateMessageReceiver(deadLetterPath, ReceiveMode.PeekLock);
+<span class="lineNum">     485 </span>            : 
+<span class="lineNum">     486 </span>            :                                         IEnumerable&lt;BrokeredMessage&gt; brokeredMessages = client.ReceiveBatch(1000);
+<span class="lineNum">     487 </span>            : 
+<span class="lineNum">     488 </span>            :                                         foreach (BrokeredMessage brokeredMessage in brokeredMessages)
+<span class="lineNum">     489 </span>            :                                         {
+<span class="lineNum">     490 </span>            :                                                 if (lockIssues &gt; 10)
+<span class="lineNum">     491 </span>            :                                                         break;
+<span class="lineNum">     492 </span>            :                                                 try
+<span class="lineNum">     493 </span>            :                                                 {
+<span class="lineNum">     494 </span>            :                                                         Logger.LogDebug(string.Format(&quot;A dead-letter message arrived with the id '{0}'.&quot;, brokeredMessage.MessageId));
+<span class="lineNum">     495 </span>            :                                                         string messageBody = brokeredMessage.GetBody&lt;string&gt;();
+<span class="lineNum">     496 </span>            : 
+<span class="lineNum">     497 </span>            :                                                         // Closure protection
+<span class="lineNum">     498 </span>            :                                                         BrokeredMessage message = brokeredMessage;
+<span class="lineNum">     499 </span>            :                                                         try
+<span class="lineNum">     500 </span>            :                                                         {
+<span class="lineNum">     501 </span>            :                                                                 AzureBusHelper.ReceiveEvent
+<span class="lineNum">     502 </span>            :                                                                 (
+<span class="lineNum">     503 </span>            :                                                                         messageBody,
+<span class="lineNum">     504 </span>            :                                                                         @event =&gt;
+<span class="lineNum">     505 </span>            :                                                                         {
+<span class="lineNum">     506 </span>            :                                                                                 bool isRequired = BusHelper.IsEventRequired(@event.GetType());
+<span class="lineNum">     507 </span>            :                                                                                 if (!isRequired)
+<span class="lineNum">     508 </span>            :                                                                                         removeDeadlLetterFromQueue(message);
+<span class="lineNum">     509 </span>            :                                                                                 else
+<span class="lineNum">     510 </span>            :                                                                                         leaveDeadlLetterInQueue(message, @event);
+<span class="lineNum">     511 </span>            :                                                                                 return true;
+<span class="lineNum">     512 </span>            :                                                                         },
+<span class="lineNum">     513 </span>            :                                                                         string.Format(&quot;id '{0}'&quot;, brokeredMessage.MessageId),
+<span class="lineNum">     514 </span>            :                                                                         () =&gt;
+<span class="lineNum">     515 </span>            :                                                                         {
+<span class="lineNum">     516 </span>            :                                                                                 removeDeadlLetterFromQueue(message);
+<span class="lineNum">     517 </span>            :                                                                         },
+<span class="lineNum">     518 </span>            :                                                                         () =&gt; { }
+<span class="lineNum">     519 </span>            :                                                                 );
+<span class="lineNum">     520 </span>            :                                                         }
+<span class="lineNum">     521 </span>            :                                                         catch
+<span class="lineNum">     522 </span>            :                                                         {
+<span class="lineNum">     523 </span>            :                                                                 AzureBusHelper.ReceiveCommand
+<span class="lineNum">     524 </span>            :                                                                 (
+<span class="lineNum">     525 </span>            :                                                                         messageBody,
+<span class="lineNum">     526 </span>            :                                                                         command =&gt;
+<span class="lineNum">     527 </span>            :                                                                         {
+<span class="lineNum">     528 </span>            :                                                                                 bool isRequired = BusHelper.IsEventRequired(command.GetType());
+<span class="lineNum">     529 </span>            :                                                                                 if (!isRequired)
+<span class="lineNum">     530 </span>            :                                                                                         removeDeadlLetterFromQueue(message);
+<span class="lineNum">     531 </span>            :                                                                                 else
+<span class="lineNum">     532 </span>            :                                                                                         leaveDeadlLetterInQueue(message, command);
+<span class="lineNum">     533 </span>            :                                                                                 return true;
+<span class="lineNum">     534 </span>            :                                                                         },
+<span class="lineNum">     535 </span>            :                                                                         string.Format(&quot;id '{0}'&quot;, brokeredMessage.MessageId),
+<span class="lineNum">     536 </span>            :                                                                         () =&gt;
+<span class="lineNum">     537 </span>            :                                                                         {
+<span class="lineNum">     538 </span>            :                                                                                 removeDeadlLetterFromQueue(message);
+<span class="lineNum">     539 </span>            :                                                                         },
+<span class="lineNum">     540 </span>            :                                                                         () =&gt; { }
+<span class="lineNum">     541 </span>            :                                                                 );
+<span class="lineNum">     542 </span>            :                                                         }
+<span class="lineNum">     543 </span>            :                                                 }
+<span class="lineNum">     544 </span>            :                                                 catch (Exception exception)
+<span class="lineNum">     545 </span>            :                                                 {
+<span class="lineNum">     546 </span>            :                                                         TelemetryHelper.TrackException(exception, null, telemetryProperties);
+<span class="lineNum">     547 </span>            :                                                         // Indicates a problem, unlock message in queue
+<span class="lineNum">     548 </span>            :                                                         Logger.LogError(string.Format(&quot;A dead-letter message arrived with the id '{0}' but failed to be process.&quot;, brokeredMessage.MessageId), exception: exception);
+<span class="lineNum">     549 </span>            :                                                         try
+<span class="lineNum">     550 </span>            :                                                         {
+<span class="lineNum">     551 </span>            :                                                                 brokeredMessage.Abandon();
+<span class="lineNum">     552 </span>            :                                                         }
+<span class="lineNum">     553 </span>            :                                                         catch (MessageLockLostException)
+<span class="lineNum">     554 </span>            :                                                         {
+<span class="lineNum">     555 </span>            :                                                                 lockIssues++;
+<span class="lineNum">     556 </span>            :                                                                 Logger.LogWarning(string.Format(&quot;The lock supplied for abandon for the skipped dead-letter message '{0}' is invalid.&quot;, brokeredMessage.MessageId));
+<span class="lineNum">     557 </span>            :                                                         }
+<span class="lineNum">     558 </span>            :                                                 }
+<span class="lineNum">     559 </span>            :                                         }
+<span class="lineNum">     560 </span>            : 
+<span class="lineNum">     561 </span>            :                                         client.Close();
+<span class="lineNum">     562 </span>            : 
+<span class="lineNum">     563 </span>            :                                         if (loop++ % 5 == 0)
+<span class="lineNum">     564 </span>            :                                         {
+<span class="lineNum">     565 </span>            :                                                 loop = 0;
+<span class="lineNum">     566 </span>            :                                                 Thread.Yield();
+<span class="lineNum">     567 </span>            :                                         }
+<span class="lineNum">     568 </span>            :                                         else
+<span class="lineNum">     569 </span>            :                                                 Thread.Sleep(500);
+<span class="lineNum">     570 </span>            :                                 }
+<span class="lineNum">     571 </span>            :                                 try
+<span class="lineNum">     572 </span>            :                                 {
+<span class="lineNum">     573 </span>            :                                         brokeredMessageRenewCancellationTokenSource.Dispose();
+<span class="lineNum">     574 </span>            :                                 }
+<span class="lineNum">     575 </span>            :                                 catch (ObjectDisposedException) { }
+<span class="lineNum">     576 </span>            :                         }, brokeredMessageRenewCancellationTokenSource.Token);
+<span class="lineNum">     577 </span>            : 
+<span class="lineNum">     578 </span>            :                         return brokeredMessageRenewCancellationTokenSource;
+<span class="lineNum">     579 </span>            :                 }
+<span class="lineNum">     580 </span>            :         }
+<span class="lineNum">     581 </span>            : }
 </pre>
       </td>
     </tr>

@@ -1,5 +1,13 @@
 var NAVTREEINDEX6 =
 {
+"classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_ac0cb8626e8f8ab0275a31e88a920ee3e.html#ac0cb8626e8f8ab0275a31e88a920ee3e":[1,0,0,17,0,1,7],
+"classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_ade387c1d511dfad22ff7eb752fb842e5.html#ade387c1d511dfad22ff7eb752fb842e5":[1,0,0,17,0,1,11],
+"classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_af86a3df56e2df92fb9ef880ff4fa5f16.html#af86a3df56e2df92fb9ef880ff4fa5f16":[1,0,0,17,0,1,9],
+"classCqrs_1_1MongoDB_1_1DataStores_1_1MongoDbDataStore_affcb1268469b99963501dd8c58e4a480.html#affcb1268469b99963501dd8c58e4a480":[1,0,0,17,0,1,1],
+"classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity.html":[1,0,0,17,1,0],
+"classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity_a3d5f7476fc2de3b9061ea3e76e77e0cb.html#a3d5f7476fc2de3b9061ea3e76e77e0cb":[1,0,0,17,1,0,2],
+"classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity_a763ab3fddd6f7d07e907c274bea305f5.html#a763ab3fddd6f7d07e907c274bea305f5":[1,0,0,17,1,0,0],
+"classCqrs_1_1MongoDB_1_1Entities_1_1MongoEntity_acc0c0c4d927e9abfe88415cababff6b5.html#acc0c0c4d927e9abfe88415cababff6b5":[1,0,0,17,1,0,1],
 "classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByAggregateIdAndVersionMongoDbIndex.html":[1,0,0,17,2,0,0],
 "classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByAggregateIdAndVersionMongoDbIndex_a084cc895e473e0e0ea2dbcf81bba4514.html#a084cc895e473e0e0ea2dbcf81bba4514":[1,0,0,17,2,0,0,0],
 "classCqrs_1_1MongoDB_1_1Events_1_1Indexes_1_1ByCorrelationIdMongoDbIndex.html":[1,0,0,17,2,0,1],
@@ -241,13 +249,5 @@ var NAVTREEINDEX6 =
 "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_a796f167e2cf851a069bd92e4d9c10846.html#a796f167e2cf851a069bd92e4d9c10846":[1,0,0,18,1,3,0,1,4],
 "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_a81b657e59955f4e21f5c0d9bffbbe771.html#a81b657e59955f4e21f5c0d9bffbbe771":[1,0,0,18,1,3,0,1,3],
 "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_acac355ad5f368268e5d2f6a6d1804f94.html#acac355ad5f368268e5d2f6a6d1804f94":[1,0,0,18,1,3,0,1,0],
-"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_afc3b7631771eb44c282e98edc80792de.html#afc3b7631771eb44c282e98edc80792de":[1,0,0,18,1,3,0,1,5],
-"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html":[1,0,0,18,1,3,1],
-"classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1Configuration_1_1WebJobHostModule.html":[1,0,0,18,1,4,0,0],
-"classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1Configuration_1_1WebJobHostModule_a478ea88f9dd4740ffd11b5d169683e2b.html#a478ea88f9dd4740ffd11b5d169683e2b":[1,0,0,18,1,4,0,0,0],
-"classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost.html":[1,0,0,18,1,4,1],
-"classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost_a16eceaa51739d5baff6e4986ed822d8f.html#a16eceaa51739d5baff6e4986ed822d8f":[1,0,0,18,1,4,1,2],
-"classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost_a2c166839548b7c238a9462b46bd8e555.html#a2c166839548b7c238a9462b46bd8e555":[1,0,0,18,1,4,1,1],
-"classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost_a9b7fb1deadaf625c21f1d7d55cd5752f.html#a9b7fb1deadaf625c21f1d7d55cd5752f":[1,0,0,18,1,4,1,0],
-"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule.html":[1,0,0,18,2,0]
+"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule_afc3b7631771eb44c282e98edc80792de.html#afc3b7631771eb44c282e98edc80792de":[1,0,0,18,1,3,0,1,5]
 };
