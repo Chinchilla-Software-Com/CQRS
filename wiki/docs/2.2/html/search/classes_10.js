@@ -43,6 +43,7 @@ var searchData=
   ['sqldatastoreextensions',['SqlDataStoreExtensions',['../classCqrs_1_1Sql_1_1DataStores_1_1SqlDataStoreExtensions.html',1,'Cqrs::Sql::DataStores']]],
   ['sqleventstore',['SqlEventStore',['../classCqrs_1_1Events_1_1SqlEventStore.html',1,'Cqrs::Events']]],
   ['sqleventstoredatacontext',['SqlEventStoreDataContext',['../classCqrs_1_1Events_1_1SqlEventStoreDataContext.html',1,'Cqrs::Events']]],
+  ['sqlsampleruntime',['SqlSampleRuntime',['../classCqrs_1_1Configuration_1_1SqlSampleRuntime.html',1,'Cqrs::Configuration']]],
   ['startup',['StartUp',['../classCqrs_1_1Hosts_1_1StartUp.html',1,'Cqrs::Hosts']]],
   ['storagestore',['StorageStore',['../classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore.html',1,'Cqrs::Azure::BlobStorage']]],
   ['storagestore_3c_20tdata_2c_20cloudblobcontainer_20_3e',['StorageStore&lt; TData, CloudBlobContainer &gt;',['../classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore.html',1,'Cqrs::Azure::BlobStorage']]],

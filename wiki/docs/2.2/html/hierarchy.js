@@ -234,6 +234,7 @@ var hierarchy =
     ] ],
     [ "Cqrs.Configuration.IDependencyResolver", "interfaceCqrs_1_1Configuration_1_1IDependencyResolver.html", [
       [ "Cqrs.Configuration.DependencyResolver", "classCqrs_1_1Configuration_1_1DependencyResolver.html", [
+        [ "Cqrs.Configuration.SampleRuntime< TAuthenticationToken, TCommandHanderOrEventHandler >.MockDependencyResolver", "classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html", null ],
         [ "Cqrs.Ninject.Configuration.NinjectDependencyResolver", "classCqrs_1_1Ninject_1_1Configuration_1_1NinjectDependencyResolver.html", [
           [ "Cqrs.Ninject.Akka.AkkaNinjectDependencyResolver", "classCqrs_1_1Ninject_1_1Akka_1_1AkkaNinjectDependencyResolver.html", null ]
         ] ]
@@ -695,7 +696,10 @@ var hierarchy =
       [ "Cqrs.Sql.DataStores.SqlDataStore< TEntity, TDbEntity >", "classCqrs_1_1Sql_1_1DataStores_1_1SqlDataStore.html", null ]
     ] ],
     [ "IDisposable", null, [
-      [ "Cqrs.Configuration.SampleRuntime< TAuthenticationToken, TCommandHanderOrEventHandler >", "classCqrs_1_1Configuration_1_1SampleRuntime.html", null ],
+      [ "Cqrs.Configuration.SampleRuntime< TAuthenticationToken, TCommandHanderOrEventHandler >", "classCqrs_1_1Configuration_1_1SampleRuntime.html", [
+        [ "Cqrs.Configuration.SqlSampleRuntime< TAuthenticationToken, TCommandHanderOrEventHandler >", "classCqrs_1_1Configuration_1_1SqlSampleRuntime.html", null ]
+      ] ],
+      [ "Cqrs.Configuration.SampleRuntime< TAuthenticationToken, TCommandHanderOrEventHandler >.MockDependencyResolver", "classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html", null ],
       [ "Cqrs.DataStores.IDataStore< TData >", "interfaceCqrs_1_1DataStores_1_1IDataStore.html", [
         [ "Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStore< TData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1BlobStorageDataStore.html", null ],
         [ "Cqrs.Azure.DocumentDb.DataStores.AzureDocumentDbDataStore< TData >", "classCqrs_1_1Azure_1_1DocumentDb_1_1DataStores_1_1AzureDocumentDbDataStore.html", null ],

@@ -8,5 +8,6 @@ var namespaceCqrs_1_1Configuration =
     [ "IConfigurationManager", "interfaceCqrs_1_1Configuration_1_1IConfigurationManager.html", "interfaceCqrs_1_1Configuration_1_1IConfigurationManager" ],
     [ "IDependencyResolver", "interfaceCqrs_1_1Configuration_1_1IDependencyResolver.html", "interfaceCqrs_1_1Configuration_1_1IDependencyResolver" ],
     [ "ITelemetryHelperExtensions", "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions.html", "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions" ],
-    [ "SampleRuntime", "classCqrs_1_1Configuration_1_1SampleRuntime.html", "classCqrs_1_1Configuration_1_1SampleRuntime" ]
+    [ "SampleRuntime", "classCqrs_1_1Configuration_1_1SampleRuntime.html", "classCqrs_1_1Configuration_1_1SampleRuntime" ],
+    [ "SqlSampleRuntime", "classCqrs_1_1Configuration_1_1SqlSampleRuntime.html", "classCqrs_1_1Configuration_1_1SqlSampleRuntime" ]
 ];
