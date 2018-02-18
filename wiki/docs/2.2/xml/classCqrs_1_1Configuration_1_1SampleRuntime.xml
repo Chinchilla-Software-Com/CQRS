@@ -3,7 +3,8 @@
   <compounddef id="classCqrs_1_1Configuration_1_1SampleRuntime" kind="class" language="C#" prot="public">
     <compoundname>Cqrs::Configuration::SampleRuntime</compoundname>
     <basecompoundref prot="public" virt="non-virtual">IDisposable</basecompoundref>
-    <innerclass refid="classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver" prot="private">Cqrs::Configuration::SampleRuntime::MockDependencyResolver</innerclass>
+    <derivedcompoundref refid="classCqrs_1_1Configuration_1_1SqlSampleRuntime" prot="public" virt="non-virtual">Cqrs.Configuration.SqlSampleRuntime&lt; TAuthenticationToken, TCommandHanderOrEventHandler &gt;</derivedcompoundref>
+    <innerclass refid="classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver" prot="protected">Cqrs::Configuration::SampleRuntime::MockDependencyResolver</innerclass>
     <templateparamlist>
       <param>
         <type>TAuthenticationToken</type>
@@ -12,6 +13,21 @@
         <type>TCommandHanderOrEventHandler</type>
       </param>
     </templateparamlist>
+      <sectiondef kind="property">
+      <memberdef kind="property" id="classCqrs_1_1Configuration_1_1SampleRuntime_a9038dd478bcafb2f5f65cbcbada712db_1a9038dd478bcafb2f5f65cbcbada712db" prot="protected" static="yes" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="yes" privatesettable="no" protectedsettable="no">
+        <type>Func&lt; <ref refid="interfaceCqrs_1_1Configuration_1_1IDependencyResolver" kindref="compound">IDependencyResolver</ref>, <ref refid="interfaceCqrs_1_1Events_1_1IEventStore" kindref="compound">IEventStore</ref>&lt; TAuthenticationToken &gt; &gt;</type>
+        <definition>Func&lt;IDependencyResolver, IEventStore&lt;TAuthenticationToken&gt; &gt; Cqrs.Configuration.SampleRuntime&lt; TAuthenticationToken, TCommandHanderOrEventHandler &gt;.EventStoreCreator</definition>
+        <argsstring></argsstring>
+        <name>EventStoreCreator</name>
+        <briefdescription>
+<para>The Func&lt;TResult&gt; used to create the IEventStore&lt;TAuthenticationToken&gt; </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" line="36" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
       <sectiondef kind="public-func">
       <memberdef kind="function" id="classCqrs_1_1Configuration_1_1SampleRuntime_a9382e8b20b8701815ad20c1cd645c27b_1a9382e8b20b8701815ad20c1cd645c27b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
@@ -24,11 +40,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" line="27" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" bodystart="27" bodyend="32"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" line="41" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" bodystart="41" bodyend="46"/>
       </memberdef>
-      <memberdef kind="function" id="classCqrs_1_1Configuration_1_1SampleRuntime_a384b1c93c2d856f2d15a7ae410dedee9_1a384b1c93c2d856f2d15a7ae410dedee9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classCqrs_1_1Configuration_1_1SampleRuntime_a058cc1b64ffab9b1f2d0a4ca196a17ab_1a058cc1b64ffab9b1f2d0a4ca196a17ab" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
-        <definition>void Cqrs.Configuration.SampleRuntime&lt; TAuthenticationToken, TCommandHanderOrEventHandler &gt;.PrintStatsticsToConsole</definition>
+        <definition>virtual void Cqrs.Configuration.SampleRuntime&lt; TAuthenticationToken, TCommandHanderOrEventHandler &gt;.PrintStatsticsToConsole</definition>
         <argsstring>()</argsstring>
         <name>PrintStatsticsToConsole</name>
         <briefdescription>
@@ -37,7 +53,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" line="37" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" bodystart="37" bodyend="45"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" line="76" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" bodystart="76" bodyend="84"/>
       </memberdef>
       <memberdef kind="function" id="classCqrs_1_1Configuration_1_1SampleRuntime_ae3729c9e4d130fb2e0c88246d58dc761_1ae3729c9e4d130fb2e0c88246d58dc761" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -50,7 +66,49 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" line="52" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" bodystart="52" bodyend="56"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" line="91" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" bodystart="91" bodyend="95"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classCqrs_1_1Configuration_1_1SampleRuntime_a08ac580aad6ab03f16fd3171f21dfe59_1a08ac580aad6ab03f16fd3171f21dfe59" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Cqrs.Configuration.SampleRuntime&lt; TAuthenticationToken, TCommandHanderOrEventHandler &gt;.SetEventStoreCreator</definition>
+        <argsstring>()</argsstring>
+        <name>SetEventStoreCreator</name>
+        <reimplementedby refid="classCqrs_1_1Configuration_1_1SqlSampleRuntime_ae2fedd0697e72a1283a098c809d832c9_1ae2fedd0697e72a1283a098c809d832c9">SetEventStoreCreator</reimplementedby>
+        <briefdescription>
+<para>Sets the <ref refid="classCqrs_1_1Configuration_1_1SampleRuntime_a9038dd478bcafb2f5f65cbcbada712db_1a9038dd478bcafb2f5f65cbcbada712db" kindref="member">EventStoreCreator</ref> to use InProcessEventStore&lt;TAuthenticationToken&gt; </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" line="51" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" bodystart="51" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Configuration_1_1SampleRuntime_a1593df9e75becc36fee1f15b2be14ec4_1a1593df9e75becc36fee1f15b2be14ec4" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Cqrs.Configuration.SampleRuntime&lt; TAuthenticationToken, TCommandHanderOrEventHandler &gt;.StartDependencyResolver</definition>
+        <argsstring>()</argsstring>
+        <name>StartDependencyResolver</name>
+        <briefdescription>
+<para>Starts the <ref refid="interfaceCqrs_1_1Configuration_1_1IDependencyResolver" kindref="compound">IDependencyResolver</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" line="59" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" bodystart="59" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Configuration_1_1SampleRuntime_a001d4810823f11dee9144834182f8e05_1a001d4810823f11dee9144834182f8e05" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Cqrs.Configuration.SampleRuntime&lt; TAuthenticationToken, TCommandHanderOrEventHandler &gt;.RegisterHandlers</definition>
+        <argsstring>()</argsstring>
+        <name>RegisterHandlers</name>
+        <briefdescription>
+<para>Registers the all IEventHandler and ICommandHandle. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" line="67" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" bodystart="67" bodyend="71"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -73,19 +131,14 @@
 </parameterlist>
 </para>    </detaileddescription>
     <inheritancegraph>
-      <node id="1159">
-        <label>IDisposable</label>
-      </node>
-      <node id="1158">
-        <label>Cqrs.Configuration.SampleRuntime&lt; TAuthenticationToken, TCommandHanderOrEventHandler &gt;</label>
-        <link refid="classCqrs_1_1Configuration_1_1SampleRuntime"/>
-        <childnode refid="1159" relation="public-inheritance">
-        </childnode>
-      </node>
-    </inheritancegraph>
-    <collaborationgraph>
       <node id="1161">
         <label>IDisposable</label>
+      </node>
+      <node id="1162">
+        <label>Cqrs::Configuration::SqlSampleRuntime&lt; TAuthenticationToken, TCommandHanderOrEventHandler &gt;</label>
+        <link refid="classCqrs_1_1Configuration_1_1SqlSampleRuntime"/>
+        <childnode refid="1160" relation="public-inheritance">
+        </childnode>
       </node>
       <node id="1160">
         <label>Cqrs.Configuration.SampleRuntime&lt; TAuthenticationToken, TCommandHanderOrEventHandler &gt;</label>
@@ -93,12 +146,27 @@
         <childnode refid="1161" relation="public-inheritance">
         </childnode>
       </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1164">
+        <label>IDisposable</label>
+      </node>
+      <node id="1163">
+        <label>Cqrs.Configuration.SampleRuntime&lt; TAuthenticationToken, TCommandHanderOrEventHandler &gt;</label>
+        <link refid="classCqrs_1_1Configuration_1_1SampleRuntime"/>
+        <childnode refid="1164" relation="public-inheritance">
+        </childnode>
+      </node>
     </collaborationgraph>
-    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" line="23" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" bodystart="22" bodyend="202"/>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" line="32" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/SampleRuntime.cs" bodystart="30" bodyend="246"/>
     <listofallmembers>
       <member refid="classCqrs_1_1Configuration_1_1SampleRuntime_ae3729c9e4d130fb2e0c88246d58dc761_1ae3729c9e4d130fb2e0c88246d58dc761" prot="public" virt="non-virtual"><scope>Cqrs::Configuration::SampleRuntime</scope><name>Dispose</name></member>
-      <member refid="classCqrs_1_1Configuration_1_1SampleRuntime_a384b1c93c2d856f2d15a7ae410dedee9_1a384b1c93c2d856f2d15a7ae410dedee9" prot="public" virt="non-virtual"><scope>Cqrs::Configuration::SampleRuntime</scope><name>PrintStatsticsToConsole</name></member>
+      <member refid="classCqrs_1_1Configuration_1_1SampleRuntime_a9038dd478bcafb2f5f65cbcbada712db_1a9038dd478bcafb2f5f65cbcbada712db" prot="protected" virt="non-virtual"><scope>Cqrs::Configuration::SampleRuntime</scope><name>EventStoreCreator</name></member>
+      <member refid="classCqrs_1_1Configuration_1_1SampleRuntime_a058cc1b64ffab9b1f2d0a4ca196a17ab_1a058cc1b64ffab9b1f2d0a4ca196a17ab" prot="public" virt="virtual"><scope>Cqrs::Configuration::SampleRuntime</scope><name>PrintStatsticsToConsole</name></member>
+      <member refid="classCqrs_1_1Configuration_1_1SampleRuntime_a001d4810823f11dee9144834182f8e05_1a001d4810823f11dee9144834182f8e05" prot="protected" virt="virtual"><scope>Cqrs::Configuration::SampleRuntime</scope><name>RegisterHandlers</name></member>
       <member refid="classCqrs_1_1Configuration_1_1SampleRuntime_a9382e8b20b8701815ad20c1cd645c27b_1a9382e8b20b8701815ad20c1cd645c27b" prot="public" virt="non-virtual"><scope>Cqrs::Configuration::SampleRuntime</scope><name>SampleRuntime</name></member>
+      <member refid="classCqrs_1_1Configuration_1_1SampleRuntime_a08ac580aad6ab03f16fd3171f21dfe59_1a08ac580aad6ab03f16fd3171f21dfe59" prot="protected" virt="virtual"><scope>Cqrs::Configuration::SampleRuntime</scope><name>SetEventStoreCreator</name></member>
+      <member refid="classCqrs_1_1Configuration_1_1SampleRuntime_a1593df9e75becc36fee1f15b2be14ec4_1a1593df9e75becc36fee1f15b2be14ec4" prot="protected" virt="virtual"><scope>Cqrs::Configuration::SampleRuntime</scope><name>StartDependencyResolver</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

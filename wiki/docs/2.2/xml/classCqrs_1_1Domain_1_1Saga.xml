@@ -428,25 +428,25 @@
     <detaileddescription>
 <para>From an implementation perspective, a <ref refid="classCqrs_1_1Domain_1_1Saga_a1b6019cecbbf2572b64dd456cb5d91a2_1a1b6019cecbbf2572b64dd456cb5d91a2" kindref="member">Saga&lt;TAuthenticationToken&gt;</ref> is a state machine that is driven forward by incoming IEvent&lt;TAuthenticationToken&gt; (which may come from many AggregateRoot&lt;TAuthenticationToken&gt; or other <ref refid="classCqrs_1_1Domain_1_1Saga_a1b6019cecbbf2572b64dd456cb5d91a2_1a1b6019cecbbf2572b64dd456cb5d91a2" kindref="member">Saga&lt;TAuthenticationToken&gt;</ref>). Some states will have side effects, such as sending ICommand&lt;TAuthenticationToken&gt;, talking to external web services, or sending emails. </para><para>Isn&apos;t a <ref refid="classCqrs_1_1Domain_1_1Saga_a1b6019cecbbf2572b64dd456cb5d91a2_1a1b6019cecbbf2572b64dd456cb5d91a2" kindref="member">Saga&lt;TAuthenticationToken&gt;</ref> just leaked domain logic? No. A <ref refid="classCqrs_1_1Domain_1_1Saga_a1b6019cecbbf2572b64dd456cb5d91a2_1a1b6019cecbbf2572b64dd456cb5d91a2" kindref="member">Saga&lt;TAuthenticationToken&gt;</ref> can doing things that no individual AggregateRoot&lt;TAuthenticationToken&gt; can sensibly do. Thus, it&apos;s not a logic leak since the logic didn&apos;t belong in an AggregateRoot&lt;TAuthenticationToken&gt; anyway. Furthermore, we&apos;re not breaking encapsulation in any way, since <ref refid="classCqrs_1_1Domain_1_1Saga_a1b6019cecbbf2572b64dd456cb5d91a2_1a1b6019cecbbf2572b64dd456cb5d91a2" kindref="member">Saga&lt;TAuthenticationToken&gt;</ref> operate with ICommand&lt;TAuthenticationToken&gt; and IEvent&lt;TAuthenticationToken&gt;, which are part of the public API.</para><para>How can I make my <ref refid="classCqrs_1_1Domain_1_1Saga_a1b6019cecbbf2572b64dd456cb5d91a2_1a1b6019cecbbf2572b64dd456cb5d91a2" kindref="member">Saga&lt;TAuthenticationToken&gt;</ref> react to an IEvent&lt;TAuthenticationToken&gt; that did not happen? The <ref refid="classCqrs_1_1Domain_1_1Saga_a1b6019cecbbf2572b64dd456cb5d91a2_1a1b6019cecbbf2572b64dd456cb5d91a2" kindref="member">Saga&lt;TAuthenticationToken&gt;</ref>, besides reacting to domain IEvent&lt;TAuthenticationToken&gt;, can be &quot;woken up&quot; by recurrent internal alarms. Implementing such alarms is easy. See cron in Unix, or triggered WebJobs in <ref refid="namespaceCqrs_1_1Azure" kindref="compound">Azure</ref> for examples.</para><para>How does the <ref refid="classCqrs_1_1Domain_1_1Saga_a1b6019cecbbf2572b64dd456cb5d91a2_1a1b6019cecbbf2572b64dd456cb5d91a2" kindref="member">Saga&lt;TAuthenticationToken&gt;</ref> interact with the write side? By sending an ICommand&lt;TAuthenticationToken&gt; to it. </para>    </detaileddescription>
     <inheritancegraph>
-      <node id="1316">
+      <node id="1325">
         <label>Cqrs.Domain.Saga&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Domain_1_1Saga"/>
-        <childnode refid="1317" relation="public-inheritance">
+        <childnode refid="1326" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1317">
+      <node id="1326">
         <label>ISaga&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Domain_1_1ISaga"/>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="1318">
+      <node id="1327">
         <label>Cqrs.Domain.Saga&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Domain_1_1Saga"/>
-        <childnode refid="1319" relation="public-inheritance">
+        <childnode refid="1328" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1319">
+      <node id="1328">
         <label>ISaga&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Domain_1_1ISaga"/>
       </node>

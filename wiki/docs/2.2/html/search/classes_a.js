@@ -8,6 +8,7 @@ var searchData=
   ['missingapplicationsettingforconnectionstringexception',['MissingApplicationSettingForConnectionStringException',['../classCqrs_1_1Exceptions_1_1MissingApplicationSettingForConnectionStringException.html',1,'Cqrs::Exceptions']]],
   ['missingconnectionstringexception',['MissingConnectionStringException',['../classCqrs_1_1Exceptions_1_1MissingConnectionStringException.html',1,'Cqrs::Exceptions']]],
   ['missingparameterlessconstructorexception',['MissingParameterLessConstructorException',['../classCqrs_1_1Domain_1_1Exceptions_1_1MissingParameterLessConstructorException.html',1,'Cqrs::Domain::Exceptions']]],
+  ['mockdependencyresolver',['MockDependencyResolver',['../classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html',1,'Cqrs::Configuration::SampleRuntime']]],
   ['mongodatastore',['MongoDataStore',['../classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore.html',1,'Cqrs::Mongo::DataStores']]],
   ['mongodatastoreconnectionstringfactory',['MongoDataStoreConnectionStringFactory',['../classCqrs_1_1Mongo_1_1Factories_1_1MongoDataStoreConnectionStringFactory.html',1,'Cqrs::Mongo::Factories']]],
   ['mongodatastorefactory',['MongoDataStoreFactory',['../classCqrs_1_1Mongo_1_1Factories_1_1MongoDataStoreFactory.html',1,'Cqrs::Mongo::Factories']]],
