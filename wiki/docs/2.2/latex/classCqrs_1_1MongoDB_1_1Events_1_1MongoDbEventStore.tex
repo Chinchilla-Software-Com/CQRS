@@ -18,6 +18,10 @@ Inheritance diagram for Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$
 \begin{DoxyCompactList}\small\item\em Instantiate a new instance of Mongo\+Db\+Event\+Store$<$\+T\+Authentication\+Token$>$ triggering any require index checks. \end{DoxyCompactList}\item 
 override I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a7a1ac8e59dc5bff0bb6562fb4f43e8df_a7a1ac8e59dc5bff0bb6562fb4f43e8df}{Get} (Type aggregate\+Root\+Type, Guid aggregate\+Id, bool use\+Last\+Event\+Only=false, int from\+Version=-\/1)
 \begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id} . \end{DoxyCompactList}\item 
+override I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_ad319a5e79600fa5a10c2ecb436533a11_ad319a5e79600fa5a10c2ecb436533a11}{Get\+To\+Version} (Type aggregate\+Root\+Type, Guid aggregate\+Id, int version)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape version} . \end{DoxyCompactList}\item 
+override I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_aaf78eb481e17c4a7dee0efca8a4d47bf_aaf78eb481e17c4a7dee0efca8a4d47bf}{Get\+To\+Date} (Type aggregate\+Root\+Type, Guid aggregate\+Id, Date\+Time versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . \end{DoxyCompactList}\item 
 override I\+Enumerable$<$ \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} $>$ \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_ac886ca0a57ad86cb99ef0a3767db9280_ac886ca0a57ad86cb99ef0a3767db9280}{Get} (Guid correlation\+Id)
 \begin{DoxyCompactList}\small\item\em Get all I\+Event$<$\+T\+Authentication\+Token$>$ instances for the given {\itshape correlation\+Id} . \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
@@ -120,6 +124,52 @@ Implements \hyperlink{classCqrs_1_1Events_1_1EventStore_a0096646f5dff730b0041b94
 
 
 Get a I\+Mongo\+Collection$<$\+T\+Document$>$ 
+
+\mbox{\Hypertarget{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_aaf78eb481e17c4a7dee0efca8a4d47bf_aaf78eb481e17c4a7dee0efca8a4d47bf}\label{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_aaf78eb481e17c4a7dee0efca8a4d47bf_aaf78eb481e17c4a7dee0efca8a4d47bf}} 
+\index{Cqrs\+::\+Mongo\+D\+B\+::\+Events\+::\+Mongo\+Db\+Event\+Store@{Cqrs\+::\+Mongo\+D\+B\+::\+Events\+::\+Mongo\+Db\+Event\+Store}!Get\+To\+Date@{Get\+To\+Date}}
+\index{Get\+To\+Date@{Get\+To\+Date}!Cqrs\+::\+Mongo\+D\+B\+::\+Events\+::\+Mongo\+Db\+Event\+Store@{Cqrs\+::\+Mongo\+D\+B\+::\+Events\+::\+Mongo\+Db\+Event\+Store}}
+\subsubsection{\texorpdfstring{Get\+To\+Date()}{GetToDate()}}
+{\footnotesize\ttfamily override I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store}$<$ T\+Authentication\+Token $>$.Get\+To\+Date (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{versioned\+Date }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & System.\+Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em versioned\+Date} & Load events up-\/to and including from this System.\+Date\+Time\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classCqrs_1_1Events_1_1EventStore_acc2cf147ad6420c5359485f04367d5d1_acc2cf147ad6420c5359485f04367d5d1}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_ad319a5e79600fa5a10c2ecb436533a11_ad319a5e79600fa5a10c2ecb436533a11}\label{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_ad319a5e79600fa5a10c2ecb436533a11_ad319a5e79600fa5a10c2ecb436533a11}} 
+\index{Cqrs\+::\+Mongo\+D\+B\+::\+Events\+::\+Mongo\+Db\+Event\+Store@{Cqrs\+::\+Mongo\+D\+B\+::\+Events\+::\+Mongo\+Db\+Event\+Store}!Get\+To\+Version@{Get\+To\+Version}}
+\index{Get\+To\+Version@{Get\+To\+Version}!Cqrs\+::\+Mongo\+D\+B\+::\+Events\+::\+Mongo\+Db\+Event\+Store@{Cqrs\+::\+Mongo\+D\+B\+::\+Events\+::\+Mongo\+Db\+Event\+Store}}
+\subsubsection{\texorpdfstring{Get\+To\+Version()}{GetToVersion()}}
+{\footnotesize\ttfamily override I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store}$<$ T\+Authentication\+Token $>$.Get\+To\+Version (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{int}]{version }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape version} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & System.\+Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em version} & Load events up-\/to and including from this version\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classCqrs_1_1Events_1_1EventStore_a2785f85c9d986cdf11ab6054826c195d_a2785f85c9d986cdf11ab6054826c195d}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}.
 
 \mbox{\Hypertarget{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a13f6823671d7cb9c042d8f7156a51b89_a13f6823671d7cb9c042d8f7156a51b89}\label{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a13f6823671d7cb9c042d8f7156a51b89_a13f6823671d7cb9c042d8f7156a51b89}} 
 \index{Cqrs\+::\+Mongo\+D\+B\+::\+Events\+::\+Mongo\+Db\+Event\+Store@{Cqrs\+::\+Mongo\+D\+B\+::\+Events\+::\+Mongo\+Db\+Event\+Store}!Persist\+Event@{Persist\+Event}}

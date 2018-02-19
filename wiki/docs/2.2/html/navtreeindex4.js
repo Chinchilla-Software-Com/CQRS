@@ -1,5 +1,13 @@
 var NAVTREEINDEX4 =
 {
+"classCqrs_1_1Commands_1_1DtoCommandHandler.html#ae9e054dac739fb08c77a7e93319070e6":[1,0,0,5,2,2],
+"classCqrs_1_1Commands_1_1DtoCommandHandler_a344c5d909b31fe7ad6b81c69ab569fc8.html#a344c5d909b31fe7ad6b81c69ab569fc8":[1,0,0,5,2,1],
+"classCqrs_1_1Commands_1_1DtoCommandHandler_aaff94627552cf26c503c628eb49adb60.html#aaff94627552cf26c503c628eb49adb60":[1,0,0,5,2,0],
+"classCqrs_1_1Commands_1_1DtoCommand_a14212f77b9341f240f77efa6d6adf211.html#a14212f77b9341f240f77efa6d6adf211":[1,0,0,5,1,5],
+"classCqrs_1_1Commands_1_1DtoCommand_a2df20833afc756e5f7d553e4ed28406e.html#a2df20833afc756e5f7d553e4ed28406e":[1,0,0,5,1,4],
+"classCqrs_1_1Commands_1_1DtoCommand_a67471c7e64228ee832343be7b89aa708.html#a67471c7e64228ee832343be7b89aa708":[1,0,0,5,1,7],
+"classCqrs_1_1Commands_1_1DtoCommand_a705b7bdee6a242dd56821c60b4040b23.html#a705b7bdee6a242dd56821c60b4040b23":[1,0,0,5,1,0],
+"classCqrs_1_1Commands_1_1DtoCommand_a7272fbc4acb35942a1c5fb22cd3a6b9b.html#a7272fbc4acb35942a1c5fb22cd3a6b9b":[1,0,0,5,1,8],
 "classCqrs_1_1Commands_1_1DtoCommand_a9429ca1b2c6576c36d46912a18e5dc18.html#a9429ca1b2c6576c36d46912a18e5dc18":[1,0,0,5,1,3],
 "classCqrs_1_1Commands_1_1DtoCommand_a9664c5705a6de37478bdb627590363e5.html#a9664c5705a6de37478bdb627590363e5":[1,0,0,5,1,6],
 "classCqrs_1_1Commands_1_1DtoCommand_aeb60eb40f2a201fd63e846d728768cdf.html#aeb60eb40f2a201fd63e846d728768cdf":[1,0,0,5,1,2],
@@ -51,8 +59,9 @@ var NAVTREEINDEX4 =
 "classCqrs_1_1Configuration_1_1SampleRuntime_a058cc1b64ffab9b1f2d0a4ca196a17ab.html#a058cc1b64ffab9b1f2d0a4ca196a17ab":[1,0,0,6,8,3],
 "classCqrs_1_1Configuration_1_1SampleRuntime_a08ac580aad6ab03f16fd3171f21dfe59.html#a08ac580aad6ab03f16fd3171f21dfe59":[1,0,0,6,8,5],
 "classCqrs_1_1Configuration_1_1SampleRuntime_a1593df9e75becc36fee1f15b2be14ec4.html#a1593df9e75becc36fee1f15b2be14ec4":[1,0,0,6,8,6],
-"classCqrs_1_1Configuration_1_1SampleRuntime_a9038dd478bcafb2f5f65cbcbada712db.html#a9038dd478bcafb2f5f65cbcbada712db":[1,0,0,6,8,7],
+"classCqrs_1_1Configuration_1_1SampleRuntime_a9038dd478bcafb2f5f65cbcbada712db.html#a9038dd478bcafb2f5f65cbcbada712db":[1,0,0,6,8,8],
 "classCqrs_1_1Configuration_1_1SampleRuntime_a9382e8b20b8701815ad20c1cd645c27b.html#a9382e8b20b8701815ad20c1cd645c27b":[1,0,0,6,8,1],
+"classCqrs_1_1Configuration_1_1SampleRuntime_abf9adc15d9a99c70ab60792c37a619f0.html#abf9adc15d9a99c70ab60792c37a619f0":[1,0,0,6,8,7],
 "classCqrs_1_1Configuration_1_1SampleRuntime_ae3729c9e4d130fb2e0c88246d58dc761.html#ae3729c9e4d130fb2e0c88246d58dc761":[1,0,0,6,8,2],
 "classCqrs_1_1Configuration_1_1SqlSampleRuntime.html":[1,0,0,6,9],
 "classCqrs_1_1Configuration_1_1SqlSampleRuntime_ae2fedd0697e72a1283a098c809d832c9.html#ae2fedd0697e72a1283a098c809d832c9":[1,0,0,6,9,0],
@@ -240,14 +249,5 @@ var NAVTREEINDEX4 =
 "classCqrs_1_1Entities_1_1IntegerRange_ac491ceda1f36d73025011d79e56d77d3.html#ac491ceda1f36d73025011d79e56d77d3":[1,0,0,9,4,0],
 "classCqrs_1_1Entities_1_1Range.html":[1,0,0,9,5],
 "classCqrs_1_1Entities_1_1Range_a06daca38005d4f4ff2156b99a95d2f92.html#a06daca38005d4f4ff2156b99a95d2f92":[1,0,0,9,5,3],
-"classCqrs_1_1Entities_1_1Range_a135f90a2f05344538e79a40b5da28378.html#a135f90a2f05344538e79a40b5da28378":[1,0,0,9,5,1],
-"classCqrs_1_1Entities_1_1Range_a14cc90fd0525d94b2f3d4c69f19d013e.html#a14cc90fd0525d94b2f3d4c69f19d013e":[1,0,0,9,5,2],
-"classCqrs_1_1Entities_1_1Range_a373db08544a25cb6d53411f56e0e072a.html#a373db08544a25cb6d53411f56e0e072a":[1,0,0,9,5,0],
-"classCqrs_1_1EventStore_1_1Bus_1_1EventConverter.html":[1,0,0,11,0,0],
-"classCqrs_1_1EventStore_1_1Bus_1_1EventConverter_a22d7d8455731564574dc9684c272e6d2.html#a22d7d8455731564574dc9684c272e6d2":[1,0,0,11,0,0,0],
-"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreBasedLastEventProcessedStore.html":[1,0,0,11,0,1],
-"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreBasedLastEventProcessedStore_a3f4ac10a5ede43130099f2d1b421ea1c.html#a3f4ac10a5ede43130099f2d1b421ea1c":[1,0,0,11,0,1,3],
-"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreBasedLastEventProcessedStore_a54dc3860c38026fd298bd204e3079490.html#a54dc3860c38026fd298bd204e3079490":[1,0,0,11,0,1,0],
-"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreBasedLastEventProcessedStore_a63b4ae4f14e782d605aff1bd214db3f1.html#a63b4ae4f14e782d605aff1bd214db3f1":[1,0,0,11,0,1,2],
-"classCqrs_1_1EventStore_1_1Bus_1_1EventStoreBasedLastEventProcessedStore_aa3125d75a64df58026e0fd785f99bfff.html#aa3125d75a64df58026e0fd785f99bfff":[1,0,0,11,0,1,1]
+"classCqrs_1_1Entities_1_1Range_a135f90a2f05344538e79a40b5da28378.html#a135f90a2f05344538e79a40b5da28378":[1,0,0,9,5,1]
 };

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-02-15</td>
+            <td class="headerValue">2018-02-19</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -77,86 +77,139 @@
 <span class="lineNum">      19 </span>            :         /// This does not manage memory in any way and will continue to grow. Mostly suitable for running tests or short lived processes.
 <span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
 <span class="lineNum">      21 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
-<span class="lineNum">      22 </span>            :         public class InProcessEventStore&lt;TAuthenticationToken&gt; : IEventStore&lt;TAuthenticationToken&gt;
-<span class="lineNum">      23 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      24 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      25 </span>            :                 /// Gets or sets the in-memory storage &lt;see cref=&quot;IDictionary{TKey,TValue}&quot;/&gt;.
-<span class="lineNum">      26 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      27 </span>            :                 protected IDictionary&lt;Guid, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt; InMemoryDb { get; private set; }
-<span class="lineNum">      28 </span>            : 
-<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      30 </span>            :                 /// Instantiate a new instance of the &lt;see cref=&quot;InProcessEventStore{TAuthenticationToken}&quot;/&gt; class.
-<span class="lineNum">      31 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      32 </span><span class="lineCov">          1 :                 public InProcessEventStore()</span>
-<span class="lineNum">      33 </span>            :                 {
-<span class="lineNum">      34 </span>            :                         InMemoryDb = new Dictionary&lt;Guid, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt;();
-<span class="lineNum">      35 </span>            :                 }
-<span class="lineNum">      36 </span>            : 
-<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      38 </span>            :                 /// Saves the provided &lt;paramref name=&quot;event&quot;/&gt;.
-<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      40 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
-<span class="lineNum">      41 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to be saved.&lt;/param&gt;
-<span class="lineNum">      42 </span><span class="lineCov">          1 :                 public void Save(Type aggregateRootType, IEvent&lt;TAuthenticationToken&gt; @event)</span>
-<span class="lineNum">      43 </span>            :                 {
-<span class="lineNum">      44 </span>            :                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; list;
-<span class="lineNum">      45 </span>            :                         InMemoryDb.TryGetValue(@event.GetIdentity(), out list);
-<span class="lineNum">      46 </span>            :                         if (list == null)
-<span class="lineNum">      47 </span>            :                         {
-<span class="lineNum">      48 </span>            :                                 list = new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;();
-<span class="lineNum">      49 </span>            :                                 InMemoryDb.Add(@event.GetIdentity(), list);
-<span class="lineNum">      50 </span>            :                         }
-<span class="lineNum">      51 </span>            :                         list.Add(@event);
-<span class="lineNum">      52 </span>            :                 }
-<span class="lineNum">      53 </span>            : 
-<span class="lineNum">      54 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      55 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;typeparamref name=&quot;T&quot;&gt;aggregate root&lt;/typeparamref&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
-<span class="lineNum">      56 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      57 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
-<span class="lineNum">      58 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">      59 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">      60 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
-<span class="lineNum">      61 </span><span class="lineCov">          1 :                 public IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get&lt;T&gt;(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
-<span class="lineNum">      62 </span>            :                 {
-<span class="lineNum">      63 </span>            :                         return Get(typeof(T), aggregateId, useLastEventOnly, fromVersion);
-<span class="lineNum">      64 </span>            :                 }
-<span class="lineNum">      65 </span>            : 
-<span class="lineNum">      66 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      67 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
-<span class="lineNum">      68 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      69 </span>            :                 /// &lt;param name=&quot;aggregateType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
-<span class="lineNum">      70 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">      71 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">      72 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
-<span class="lineNum">      73 </span><span class="lineCov">          1 :                 public IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get(Type aggregateType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
-<span class="lineNum">      74 </span>            :                 {
-<span class="lineNum">      75 </span>            :                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events;
-<span class="lineNum">      76 </span>            :                         InMemoryDb.TryGetValue(aggregateId, out events);
-<span class="lineNum">      77 </span>            :                         return events != null
-<span class="lineNum">      78 </span>            :                                 ? events.Where(x =&gt; x.Version &gt; fromVersion)
-<span class="lineNum">      79 </span>            :                                 : new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;();
-<span class="lineNum">      80 </span>            :                 }
-<span class="lineNum">      81 </span>            : 
-<span class="lineNum">      82 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      83 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances for the given &lt;paramref name=&quot;correlationId&quot;/&gt;.
-<span class="lineNum">      84 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      85 </span>            :                 /// &lt;param name=&quot;correlationId&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances to retrieve.&lt;/param&gt;
-<span class="lineNum">      86 </span><span class="lineCov">          1 :                 public IEnumerable&lt;EventData&gt; Get(Guid correlationId)</span>
-<span class="lineNum">      87 </span>            :                 {
-<span class="lineNum">      88 </span>            :                         return Enumerable.Empty&lt;EventData&gt;();
-<span class="lineNum">      89 </span>            :                 }
-<span class="lineNum">      90 </span>            : 
-<span class="lineNum">      91 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      92 </span>            :                 /// Saves the provided &lt;paramref name=&quot;event&quot;/&gt;.
-<span class="lineNum">      93 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      94 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
-<span class="lineNum">      95 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to be saved.&lt;/param&gt;
-<span class="lineNum">      96 </span><span class="lineCov">          1 :                 public void Save&lt;T&gt;(IEvent&lt;TAuthenticationToken&gt; @event)</span>
-<span class="lineNum">      97 </span>            :                 {
-<span class="lineNum">      98 </span>            :                         Save(typeof(T), @event);
-<span class="lineNum">      99 </span>            :                 }
-<span class="lineNum">     100 </span>            :         }
-<span class="lineNum">     101 </span>            : }
+<span class="lineNum">      22 </span>            :         public class InProcessEventStore&lt;TAuthenticationToken&gt;
+<span class="lineNum">      23 </span><span class="lineCov">          1 :                 : IEventStore&lt;TAuthenticationToken&gt;</span>
+<span class="lineNum">      24 </span>            :         {
+<span class="lineNum">      25 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      26 </span>            :                 /// Gets or sets the in-memory storage &lt;see cref=&quot;IDictionary{TKey,TValue}&quot;/&gt;.
+<span class="lineNum">      27 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      28 </span>            :                 protected IDictionary&lt;Guid, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt; InMemoryDb { get; private set; }
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// Instantiate a new instance of the &lt;see cref=&quot;InProcessEventStore{TAuthenticationToken}&quot;/&gt; class.
+<span class="lineNum">      32 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
+<span class="lineNum">      33 </span>            :                 public InProcessEventStore()
+<span class="lineNum">      34 </span>            :                 {
+<span class="lineNum">      35 </span>            :                         InMemoryDb = new Dictionary&lt;Guid, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt;();
+<span class="lineNum">      36 </span>            :                 }
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// Saves the provided &lt;paramref name=&quot;event&quot;/&gt;.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">      42 </span><span class="lineCov">          1 :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to be saved.&lt;/param&gt;</span>
+<span class="lineNum">      43 </span>            :                 public virtual void Save(Type aggregateRootType, IEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">      44 </span>            :                 {
+<span class="lineNum">      45 </span>            :                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; list;
+<span class="lineNum">      46 </span>            :                         InMemoryDb.TryGetValue(@event.GetIdentity(), out list);
+<span class="lineNum">      47 </span>            :                         if (list == null)
+<span class="lineNum">      48 </span>            :                         {
+<span class="lineNum">      49 </span>            :                                 list = new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">      50 </span>            :                                 InMemoryDb.Add(@event.GetIdentity(), list);
+<span class="lineNum">      51 </span>            :                         }
+<span class="lineNum">      52 </span>            :                         list.Add(@event);
+<span class="lineNum">      53 </span>            :                 }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      56 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;typeparamref name=&quot;T&quot;&gt;aggregate root&lt;/typeparamref&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
+<span class="lineNum">      57 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      58 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">      59 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      60 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      61 </span><span class="lineCov">          1 :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;</span>
+<span class="lineNum">      62 </span>            :                 public virtual IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get&lt;T&gt;(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+<span class="lineNum">      63 </span>            :                 {
+<span class="lineNum">      64 </span>            :                         return Get(typeof(T), aggregateId, useLastEventOnly, fromVersion);
+<span class="lineNum">      65 </span>            :                 }
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      68 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
+<span class="lineNum">      69 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      70 </span>            :                 /// &lt;param name=&quot;aggregateType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">      71 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      72 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      73 </span><span class="lineCov">          1 :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;</span>
+<span class="lineNum">      74 </span>            :                 public virtual IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get(Type aggregateType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+<span class="lineNum">      75 </span>            :                 {
+<span class="lineNum">      76 </span>            :                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events;
+<span class="lineNum">      77 </span>            :                         InMemoryDb.TryGetValue(aggregateId, out events);
+<span class="lineNum">      78 </span>            :                         return events != null
+<span class="lineNum">      79 </span>            :                                 ? events.Where(x =&gt; x.Version &gt; fromVersion)
+<span class="lineNum">      80 </span>            :                                 : new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">      81 </span>            :                 }
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      84 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt; up to and including the provided &lt;paramref name=&quot;version&quot;/&gt;.
+<span class="lineNum">      85 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      86 </span><span class="lineCov">          1 :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;</span>
+<span class="lineNum">      87 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      88 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">      89 </span>            :                 public virtual IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetToVersion(Type aggregateRootType, Guid aggregateId, int version)
+<span class="lineNum">      90 </span>            :                 {
+<span class="lineNum">      91 </span>            :                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events;
+<span class="lineNum">      92 </span>            :                         InMemoryDb.TryGetValue(aggregateId, out events);
+<span class="lineNum">      93 </span>            :                         return events != null
+<span class="lineNum">      94 </span>            :                                 ? events.Where(x =&gt; x.Version &lt;= version)
+<span class="lineNum">      95 </span>            :                                 : new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">      96 </span><span class="lineCov">          1 :                 }</span>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      99 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;typeparamref name=&quot;T&quot;&gt;aggregate root&lt;/typeparamref&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt; up to and including the provided &lt;paramref name=&quot;version&quot;/&gt;.
+<span class="lineNum">     100 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     101 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">     102 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     103 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">     104 </span>            :                 public virtual IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetToVersion&lt;T&gt;(Guid aggregateId, int version)
+<span class="lineNum">     105 </span>            :                 {
+<span class="lineNum">     106 </span>            :                         return GetToVersion(typeof(T), aggregateId, version);
+<span class="lineNum">     107 </span>            :                 }
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     110 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt; up to and including the provided &lt;paramref name=&quot;versionedDate&quot;/&gt;.
+<span class="lineNum">     111 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     112 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">     113 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     114 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     115 </span>            :                 public virtual IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetToDate(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+<span class="lineNum">     116 </span>            :                 {
+<span class="lineNum">     117 </span>            :                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events;
+<span class="lineNum">     118 </span>            :                         InMemoryDb.TryGetValue(aggregateId, out events);
+<span class="lineNum">     119 </span>            :                         return events != null
+<span class="lineNum">     120 </span>            :                                 ? events.Where(x =&gt; x.TimeStamp &lt;= versionedDate)
+<span class="lineNum">     121 </span>            :                                 : new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">     122 </span>            :                 }
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     125 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;typeparamref name=&quot;T&quot;&gt;aggregate root&lt;/typeparamref&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt; up to and including the provided &lt;paramref name=&quot;versionedDate&quot;/&gt;.
+<span class="lineNum">     126 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     127 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">     128 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     129 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     130 </span>            :                 public virtual IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetToDate&lt;T&gt;(Guid aggregateId, DateTime versionedDate)
+<span class="lineNum">     131 </span>            :                 {
+<span class="lineNum">     132 </span>            :                         return GetToDate(typeof(T), aggregateId, versionedDate);
+<span class="lineNum">     133 </span>            :                 }
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     136 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances for the given &lt;paramref name=&quot;correlationId&quot;/&gt;.
+<span class="lineNum">     137 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     138 </span>            :                 /// &lt;param name=&quot;correlationId&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances to retrieve.&lt;/param&gt;
+<span class="lineNum">     139 </span>            :                 public virtual IEnumerable&lt;EventData&gt; Get(Guid correlationId)
+<span class="lineNum">     140 </span>            :                 {
+<span class="lineNum">     141 </span>            :                         return Enumerable.Empty&lt;EventData&gt;();
+<span class="lineNum">     142 </span>            :                 }
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     145 </span>            :                 /// Saves the provided &lt;paramref name=&quot;event&quot;/&gt;.
+<span class="lineNum">     146 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     147 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">     148 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to be saved.&lt;/param&gt;
+<span class="lineNum">     149 </span>            :                 public virtual void Save&lt;T&gt;(IEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">     150 </span>            :                 {
+<span class="lineNum">     151 </span>            :                         Save(typeof(T), @event);
+<span class="lineNum">     152 </span>            :                 }
+<span class="lineNum">     153 </span>            :         }
+<span class="lineNum">     154 </span>            : }
 </pre>
       </td>
     </tr>

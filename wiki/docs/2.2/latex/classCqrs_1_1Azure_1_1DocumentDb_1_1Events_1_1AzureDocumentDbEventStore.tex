@@ -18,8 +18,16 @@ Inheritance diagram for Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+
 \begin{DoxyCompactList}\small\item\em Instantiate a new instance of \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a0bbf294600f2dcebfcca28143aacd430_a0bbf294600f2dcebfcca28143aacd430}{Azure\+Document\+Db\+Event\+Store$<$\+T\+Authentication\+Token$>$}. \end{DoxyCompactList}\item 
 override I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a54f298fdde141166e23f01e4911bf188_a54f298fdde141166e23f01e4911bf188}{Get} (Type aggregate\+Root\+Type, Guid aggregate\+Id, bool use\+Last\+Event\+Only=false, int from\+Version=-\/1)
 \begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id} . \end{DoxyCompactList}\item 
+override I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a749548ae5196022867d32bbb5a8dd277_a749548ae5196022867d32bbb5a8dd277}{Get\+To\+Version} (Type aggregate\+Root\+Type, Guid aggregate\+Id, int version)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape version} . \end{DoxyCompactList}\item 
+override I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_ad81c8ea571d926f3d8453bca7ce6a647_ad81c8ea571d926f3d8453bca7ce6a647}{Get\+To\+Date} (Type aggregate\+Root\+Type, Guid aggregate\+Id, Date\+Time versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . \end{DoxyCompactList}\item 
 override I\+Enumerable$<$ \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} $>$ \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_ac59ce599b768ce047869b8ac135f4e22_ac59ce599b768ce047869b8ac135f4e22}{Get} (Guid correlation\+Id)
-\begin{DoxyCompactList}\small\item\em Get all I\+Event$<$\+T\+Authentication\+Token$>$ instances for the given {\itshape correlation\+Id} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get all I\+Event$<$\+T\+Authentication\+Token$>$ instances for the given {\itshape correlation\+Id} . \end{DoxyCompactList}\item 
+async Task$<$ I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ $>$ \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a1f757002d6a4e02f782feeddbb8d4815_a1f757002d6a4e02f782feeddbb8d4815}{Get\+To\+Version\+Async} (Type aggregate\+Root\+Type, Guid aggregate\+Id, int version)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape version} . \end{DoxyCompactList}\item 
+async Task$<$ I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ $>$ \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a64e7a2f4bd301c8c0ae133bb1aeb6758_a64e7a2f4bd301c8c0ae133bb1aeb6758}{Get\+To\+Date\+Async} (Type aggregate\+Root\+Type, Guid aggregate\+Id, Date\+Time versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -176,6 +184,90 @@ Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggrega
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_ad81c8ea571d926f3d8453bca7ce6a647_ad81c8ea571d926f3d8453bca7ce6a647}\label{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_ad81c8ea571d926f3d8453bca7ce6a647_ad81c8ea571d926f3d8453bca7ce6a647}} 
+\index{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store@{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store}!Get\+To\+Date@{Get\+To\+Date}}
+\index{Get\+To\+Date@{Get\+To\+Date}!Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store@{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store}}
+\subsubsection{\texorpdfstring{Get\+To\+Date()}{GetToDate()}}
+{\footnotesize\ttfamily override I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store}$<$ T\+Authentication\+Token $>$.Get\+To\+Date (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{versioned\+Date }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & System.\+Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em versioned\+Date} & Load events up-\/to and including from this System.\+Date\+Time\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classCqrs_1_1Events_1_1EventStore_acc2cf147ad6420c5359485f04367d5d1_acc2cf147ad6420c5359485f04367d5d1}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a64e7a2f4bd301c8c0ae133bb1aeb6758_a64e7a2f4bd301c8c0ae133bb1aeb6758}\label{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a64e7a2f4bd301c8c0ae133bb1aeb6758_a64e7a2f4bd301c8c0ae133bb1aeb6758}} 
+\index{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store@{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store}!Get\+To\+Date\+Async@{Get\+To\+Date\+Async}}
+\index{Get\+To\+Date\+Async@{Get\+To\+Date\+Async}!Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store@{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store}}
+\subsubsection{\texorpdfstring{Get\+To\+Date\+Async()}{GetToDateAsync()}}
+{\footnotesize\ttfamily async Task$<$I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ $>$ \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store}$<$ T\+Authentication\+Token $>$.Get\+To\+Date\+Async (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{versioned\+Date }\end{DoxyParamCaption})}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & System.\+Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em versioned\+Date} & Load events up-\/to and including from this System.\+Date\+Time\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a749548ae5196022867d32bbb5a8dd277_a749548ae5196022867d32bbb5a8dd277}\label{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a749548ae5196022867d32bbb5a8dd277_a749548ae5196022867d32bbb5a8dd277}} 
+\index{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store@{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store}!Get\+To\+Version@{Get\+To\+Version}}
+\index{Get\+To\+Version@{Get\+To\+Version}!Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store@{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store}}
+\subsubsection{\texorpdfstring{Get\+To\+Version()}{GetToVersion()}}
+{\footnotesize\ttfamily override I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store}$<$ T\+Authentication\+Token $>$.Get\+To\+Version (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{int}]{version }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape version} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & System.\+Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em version} & Load events up-\/to and including from this version\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classCqrs_1_1Events_1_1EventStore_a2785f85c9d986cdf11ab6054826c195d_a2785f85c9d986cdf11ab6054826c195d}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a1f757002d6a4e02f782feeddbb8d4815_a1f757002d6a4e02f782feeddbb8d4815}\label{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a1f757002d6a4e02f782feeddbb8d4815_a1f757002d6a4e02f782feeddbb8d4815}} 
+\index{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store@{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store}!Get\+To\+Version\+Async@{Get\+To\+Version\+Async}}
+\index{Get\+To\+Version\+Async@{Get\+To\+Version\+Async}!Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store@{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store}}
+\subsubsection{\texorpdfstring{Get\+To\+Version\+Async()}{GetToVersionAsync()}}
+{\footnotesize\ttfamily async Task$<$I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ $>$ \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store}$<$ T\+Authentication\+Token $>$.Get\+To\+Version\+Async (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{int}]{version }\end{DoxyParamCaption})}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape version} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & System.\+Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em version} & Load events up-\/to and including from this version\\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_afe494469614082cf667f5cf4b6c4a97b_afe494469614082cf667f5cf4b6c4a97b}\label{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_afe494469614082cf667f5cf4b6c4a97b_afe494469614082cf667f5cf4b6c4a97b}} 
 \index{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store@{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store}!Persist\+Event@{Persist\+Event}}
 \index{Persist\+Event@{Persist\+Event}!Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store@{Cqrs\+::\+Azure\+::\+Document\+Db\+::\+Events\+::\+Azure\+Document\+Db\+Event\+Store}}
