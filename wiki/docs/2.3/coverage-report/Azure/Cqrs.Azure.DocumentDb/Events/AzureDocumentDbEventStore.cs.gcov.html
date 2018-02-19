@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-02-15</td>
+            <td class="headerValue">2018-02-19</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -82,163 +82,244 @@
 <span class="lineNum">      24 </span>            :         /// A DocumentDb based &lt;see cref=&quot;EventStore{TAuthenticationToken}&quot;/&gt;.
 <span class="lineNum">      25 </span>            :         /// &lt;/summary&gt;
 <span class="lineNum">      26 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
-<span class="lineNum">      27 </span>            :         public class AzureDocumentDbEventStore&lt;TAuthenticationToken&gt; : EventStore&lt;TAuthenticationToken&gt;
-<span class="lineNum">      28 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      30 </span>            :                 /// The properties that must be unique.
-<span class="lineNum">      31 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      32 </span>            :                 protected readonly string[] UniqueIndexProperties = {&quot;AggregateId&quot;, &quot;Version&quot;};
-<span class="lineNum">      33 </span>            : 
-<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      35 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IAzureDocumentDbEventStoreConnectionStringFactory&quot;/&gt;
-<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      37 </span>            :                 protected IAzureDocumentDbEventStoreConnectionStringFactory AzureDocumentDbEventStoreConnectionStringFactory { get; private set; }
-<span class="lineNum">      38 </span>            : 
-<span class="lineNum">      39 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      40 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IAzureDocumentDbHelper&quot;/&gt;
-<span class="lineNum">      41 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      42 </span>            :                 protected IAzureDocumentDbHelper AzureDocumentDbHelper { get; private set; }
-<span class="lineNum">      43 </span>            : 
-<span class="lineNum">      44 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      45 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;AzureDocumentDbEventStore{TAuthenticationToken}&quot;/&gt;.
-<span class="lineNum">      46 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      47 </span><span class="lineCov">          1 :                 public AzureDocumentDbEventStore(IEventBuilder&lt;TAuthenticationToken&gt; eventBuilder, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser, ILogger logger, IAzureDocumentDbHelper azureDocumentDbHelper, IAzureDocumentDbEventStoreConnectionStringFactory azureDocumentDbEventStoreConnectionStringFactory)</span>
-<span class="lineNum">      48 </span>            :                         : base(eventBuilder, eventDeserialiser, logger)
-<span class="lineNum">      49 </span>            :                 {
-<span class="lineNum">      50 </span>            :                         AzureDocumentDbHelper = azureDocumentDbHelper;
-<span class="lineNum">      51 </span>            :                         AzureDocumentDbEventStoreConnectionStringFactory = azureDocumentDbEventStoreConnectionStringFactory;
-<span class="lineNum">      52 </span>            :                 }
-<span class="lineNum">      53 </span>            : 
-<span class="lineNum">      54 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      55 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
-<span class="lineNum">      56 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      57 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
-<span class="lineNum">      58 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">      59 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">      60 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
-<span class="lineNum">      61 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
-<span class="lineNum">      62 </span>            :                 {
-<span class="lineNum">      63 </span>            :                         return GetAsync(aggregateRootType, aggregateId, useLastEventOnly, fromVersion).Result;
-<span class="lineNum">      64 </span>            :                 }
-<span class="lineNum">      65 </span>            : 
-<span class="lineNum">      66 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      67 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances for the given &lt;paramref name=&quot;correlationId&quot;/&gt;.
-<span class="lineNum">      68 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      69 </span>            :                 /// &lt;param name=&quot;correlationId&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances to retrieve.&lt;/param&gt;
-<span class="lineNum">      70 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;EventData&gt; Get(Guid correlationId)</span>
-<span class="lineNum">      71 </span>            :                 {
-<span class="lineNum">      72 </span>            :                         return GetAsync(correlationId).Result;
-<span class="lineNum">      73 </span>            :                 }
-<span class="lineNum">      74 </span>            : 
-<span class="lineNum">      75 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      76 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;T&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
-<span class="lineNum">      77 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      78 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;&lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
-<span class="lineNum">      79 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">      80 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">      81 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
-<span class="lineNum">      82 </span>            :                 /// &lt;returns&gt;&lt;/returns&gt;
-<span class="lineNum">      83 </span><span class="lineCov">          1 :                 protected async Task&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt; GetAsync&lt;T&gt;(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
-<span class="lineNum">      84 </span>            :                 {
-<span class="lineNum">      85 </span>            :                         return Get(typeof(T), aggregateId, useLastEventOnly, fromVersion);
-<span class="lineNum">      86 </span>            :                 }
-<span class="lineNum">      87 </span>            : 
-<span class="lineNum">      88 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      89 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
-<span class="lineNum">      90 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      91 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt;&lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
-<span class="lineNum">      92 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">      93 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">      94 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
-<span class="lineNum">      95 </span><span class="lineCov">          1 :                 protected async Task&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt; GetAsync(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
-<span class="lineNum">      96 </span>            :                 {
-<span class="lineNum">      97 </span>            :                         using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
-<span class="lineNum">      98 </span>            :                         {
-<span class="lineNum">      99 </span>            :                                 Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
-<span class="lineNum">     100 </span>            :                                 //DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format(&quot;{0}_{1}&quot;, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), typeof(T).FullName)).Result;
-<span class="lineNum">     101 </span>            :                                 string collectionName = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName();
-<span class="lineNum">     102 </span>            :                                 DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName, UniqueIndexProperties).Result;
-<span class="lineNum">     103 </span>            : 
-<span class="lineNum">     104 </span>            :                                 IOrderedQueryable&lt;EventData&gt; query = client.CreateDocumentQuery&lt;EventData&gt;(collection.SelfLink);
-<span class="lineNum">     105 </span>            :                                 string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
-<span class="lineNum">     106 </span>            : 
-<span class="lineNum">     107 </span>            :                                 IEnumerable&lt;EventData&gt; results = query.Where(x =&gt; x.AggregateId == streamName &amp;&amp; x.Version &gt; fromVersion);
-<span class="lineNum">     108 </span>            : 
-<span class="lineNum">     109 </span>            :                                 return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =&gt;
-<span class="lineNum">     110 </span>            :                                         results
-<span class="lineNum">     111 </span>            :                                                 .ToList()
-<span class="lineNum">     112 </span>            :                                                 .OrderByDescending(x =&gt; x.EventId)
-<span class="lineNum">     113 </span>            :                                                 .Select(EventDeserialiser.Deserialise)
-<span class="lineNum">     114 </span>            :                                 );
-<span class="lineNum">     115 </span>            :                         }
-<span class="lineNum">     116 </span>            :                 }
-<span class="lineNum">     117 </span>            : 
-<span class="lineNum">     118 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     119 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances for the given &lt;paramref name=&quot;correlationId&quot;/&gt;.
-<span class="lineNum">     120 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     121 </span>            :                 /// &lt;param name=&quot;correlationId&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances to retrieve.&lt;/param&gt;
-<span class="lineNum">     122 </span><span class="lineCov">          1 :                 protected async Task&lt;IEnumerable&lt;EventData&gt;&gt; GetAsync(Guid correlationId)</span>
-<span class="lineNum">     123 </span>            :                 {
-<span class="lineNum">     124 </span>            :                         using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
-<span class="lineNum">     125 </span>            :                         {
-<span class="lineNum">     126 </span>            :                                 Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
-<span class="lineNum">     127 </span>            :                                 //DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format(&quot;{0}_{1}&quot;, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), typeof(T).FullName)).Result;
-<span class="lineNum">     128 </span>            :                                 string collectionName = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName();
-<span class="lineNum">     129 </span>            :                                 DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName, UniqueIndexProperties).Result;
-<span class="lineNum">     130 </span>            : 
-<span class="lineNum">     131 </span>            :                                 IOrderedQueryable&lt;EventData&gt; query = client.CreateDocumentQuery&lt;EventData&gt;(collection.SelfLink);
-<span class="lineNum">     132 </span>            : 
-<span class="lineNum">     133 </span>            :                                 IEnumerable&lt;EventData&gt; results = query.Where(x =&gt; x.CorrelationId == correlationId);
-<span class="lineNum">     134 </span>            : 
-<span class="lineNum">     135 </span>            :                                 return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =&gt;
-<span class="lineNum">     136 </span>            :                                         results
-<span class="lineNum">     137 </span>            :                                                 .ToList()
-<span class="lineNum">     138 </span>            :                                                 .OrderBy(x =&gt; x.Timestamp)
-<span class="lineNum">     139 </span>            :                                 );
-<span class="lineNum">     140 </span>            :                         }
-<span class="lineNum">     141 </span>            :                 }
-<span class="lineNum">     142 </span>            : 
-<span class="lineNum">     143 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     144 </span>            :                 /// Persist the provided &lt;paramref name=&quot;eventData&quot;/&gt; into storage.
-<span class="lineNum">     145 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     146 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;EventData&quot;/&gt; to persist.&lt;/param&gt;
-<span class="lineNum">     147 </span><span class="lineCov">          1 :                 protected override void PersistEvent(EventData eventData)</span>
+<span class="lineNum">      27 </span>            :         public class AzureDocumentDbEventStore&lt;TAuthenticationToken&gt;
+<span class="lineNum">      28 </span><span class="lineCov">          1 :                 : EventStore&lt;TAuthenticationToken&gt;</span>
+<span class="lineNum">      29 </span>            :         {
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// The properties that must be unique.
+<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      33 </span>            :                 protected readonly string[] UniqueIndexProperties = {&quot;AggregateId&quot;, &quot;Version&quot;};
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      36 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IAzureDocumentDbEventStoreConnectionStringFactory&quot;/&gt;
+<span class="lineNum">      37 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      38 </span>            :                 protected IAzureDocumentDbEventStoreConnectionStringFactory AzureDocumentDbEventStoreConnectionStringFactory { get; private set; }
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      41 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IAzureDocumentDbHelper&quot;/&gt;
+<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      43 </span>            :                 protected IAzureDocumentDbHelper AzureDocumentDbHelper { get; private set; }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      46 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;AzureDocumentDbEventStore{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      47 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
+<span class="lineNum">      48 </span>            :                 public AzureDocumentDbEventStore(IEventBuilder&lt;TAuthenticationToken&gt; eventBuilder, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser, ILogger logger, IAzureDocumentDbHelper azureDocumentDbHelper, IAzureDocumentDbEventStoreConnectionStringFactory azureDocumentDbEventStoreConnectionStringFactory)
+<span class="lineNum">      49 </span>            :                         : base(eventBuilder, eventDeserialiser, logger)
+<span class="lineNum">      50 </span>            :                 {
+<span class="lineNum">      51 </span>            :                         AzureDocumentDbHelper = azureDocumentDbHelper;
+<span class="lineNum">      52 </span>            :                         AzureDocumentDbEventStoreConnectionStringFactory = azureDocumentDbEventStoreConnectionStringFactory;
+<span class="lineNum">      53 </span>            :                 }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      56 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
+<span class="lineNum">      57 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      58 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">      59 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      60 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      61 </span><span class="lineCov">          1 :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;</span>
+<span class="lineNum">      62 </span>            :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+<span class="lineNum">      63 </span>            :                 {
+<span class="lineNum">      64 </span>            :                         return GetAsync(aggregateRootType, aggregateId, useLastEventOnly, fromVersion).Result;
+<span class="lineNum">      65 </span>            :                 }
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      68 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt; up to and including the provided &lt;paramref name=&quot;version&quot;/&gt;.
+<span class="lineNum">      69 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      70 </span><span class="lineCov">          1 :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;System.Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;</span>
+<span class="lineNum">      71 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      72 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">      73 </span>            :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetToVersion(Type aggregateRootType, Guid aggregateId, int version)
+<span class="lineNum">      74 </span>            :                 {
+<span class="lineNum">      75 </span>            :                         return GetToVersionAsync(aggregateRootType, aggregateId, version).Result;
+<span class="lineNum">      76 </span>            :                 }
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      79 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt; up to and including the provided &lt;paramref name=&quot;versionedDate&quot;/&gt;.
+<span class="lineNum">      80 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      81 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;System.Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">      82 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      83 </span><span class="lineCov">          1 :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;System.DateTime&quot;/&gt;&lt;/param&gt;</span>
+<span class="lineNum">      84 </span>            :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetToDate(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+<span class="lineNum">      85 </span>            :                 {
+<span class="lineNum">      86 </span>            :                         return GetToDateAsync(aggregateRootType, aggregateId, versionedDate).Result;
+<span class="lineNum">      87 </span>            :                 }
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      90 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances for the given &lt;paramref name=&quot;correlationId&quot;/&gt;.
+<span class="lineNum">      91 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      92 </span>            :                 /// &lt;param name=&quot;correlationId&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances to retrieve.&lt;/param&gt;
+<span class="lineNum">      93 </span>            :                 public override IEnumerable&lt;EventData&gt; Get(Guid correlationId)
+<span class="lineNum">      94 </span>            :                 {
+<span class="lineNum">      95 </span><span class="lineCov">          1 :                         return GetAsync(correlationId).Result;</span>
+<span class="lineNum">      96 </span>            :                 }
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      99 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;T&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
+<span class="lineNum">     100 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     101 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;&lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">     102 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     103 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     104 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
+<span class="lineNum">     105 </span>            :                 /// &lt;returns&gt;&lt;/returns&gt;
+<span class="lineNum">     106 </span>            :                 protected async Task&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt; GetAsync&lt;T&gt;(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+<span class="lineNum">     107 </span>            :                 {
+<span class="lineNum">     108 </span>            :                         return Get(typeof(T), aggregateId, useLastEventOnly, fromVersion);
+<span class="lineNum">     109 </span>            :                 }
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     112 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
+<span class="lineNum">     113 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     114 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt;&lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">     115 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     116 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     117 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
+<span class="lineNum">     118 </span>            :                 protected async Task&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt; GetAsync(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+<span class="lineNum">     119 </span>            :                 {
+<span class="lineNum">     120 </span>            :                         using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
+<span class="lineNum">     121 </span>            :                         {
+<span class="lineNum">     122 </span><span class="lineCov">          1 :                                 Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;</span>
+<span class="lineNum">     123 </span>            :                                 //DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format(&quot;{0}_{1}&quot;, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), typeof(T).FullName)).Result;
+<span class="lineNum">     124 </span>            :                                 string collectionName = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName();
+<span class="lineNum">     125 </span>            :                                 DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName, UniqueIndexProperties).Result;
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            :                                 IOrderedQueryable&lt;EventData&gt; query = client.CreateDocumentQuery&lt;EventData&gt;(collection.SelfLink);
+<span class="lineNum">     128 </span>            :                                 string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :                                 IEnumerable&lt;EventData&gt; results = query.Where(x =&gt; x.AggregateId == streamName &amp;&amp; x.Version &gt; fromVersion);
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span>            :                                 return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =&gt;
+<span class="lineNum">     133 </span>            :                                         results
+<span class="lineNum">     134 </span>            :                                                 .ToList()
+<span class="lineNum">     135 </span>            :                                                 .OrderByDescending(x =&gt; x.EventId)
+<span class="lineNum">     136 </span>            :                                                 .Select(EventDeserialiser.Deserialise)
+<span class="lineNum">     137 </span>            :                                 );
+<span class="lineNum">     138 </span>            :                         }
+<span class="lineNum">     139 </span>            :                 }
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     142 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt; up to and including the provided &lt;paramref name=&quot;version&quot;/&gt;.
+<span class="lineNum">     143 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     144 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;System.Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">     145 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     146 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">     147 </span><span class="lineCov">          1 :                 public async Task&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt; GetToVersionAsync(Type aggregateRootType, Guid aggregateId, int version)</span>
 <span class="lineNum">     148 </span>            :                 {
-<span class="lineNum">     149 </span>            :                         Logger.LogDebug(&quot;Persisting aggregate root event&quot;, string.Format(&quot;{0}\\PersitEvent&quot;, GetType().Name));
-<span class="lineNum">     150 </span>            :                         try
-<span class="lineNum">     151 </span>            :                         {
-<span class="lineNum">     152 </span>            :                                 using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
-<span class="lineNum">     153 </span>            :                                 {
-<span class="lineNum">     154 </span>            :                                         Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
-<span class="lineNum">     155 </span>            :                                         //DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format(&quot;{0}_{1}&quot;, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), eventData.EventType)).Result;
-<span class="lineNum">     156 </span>            :                                         //string collectionName = string.Format(&quot;{0}::{1}&quot;, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), eventData.AggregateId.Substring(0, eventData.AggregateId.IndexOf(&quot;/&quot;, StringComparison.Ordinal)));
-<span class="lineNum">     157 </span>            :                                         string collectionName = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName();
-<span class="lineNum">     158 </span>            :                                         DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName, UniqueIndexProperties).Result;
-<span class="lineNum">     159 </span>            : 
-<span class="lineNum">     160 </span>            :                                         Logger.LogDebug(&quot;Creating document for event asynchronously&quot;, string.Format(&quot;{0}\\PersitEvent&quot;, GetType().Name));
-<span class="lineNum">     161 </span>            :                                         AzureDocumentDbHelper.ExecuteFaultTollerantFunction
-<span class="lineNum">     162 </span>            :                                         (
-<span class="lineNum">     163 </span>            :                                                 () =&gt;
-<span class="lineNum">     164 </span>            :                                                 {
-<span class="lineNum">     165 </span>            :                                                         Task&lt;ResourceResponse&lt;Document&gt;&gt; work = client.CreateDocumentAsync
-<span class="lineNum">     166 </span>            :                                                         (
-<span class="lineNum">     167 </span>            :                                                                 collection.SelfLink,
-<span class="lineNum">     168 </span>            :                                                                 eventData,
-<span class="lineNum">     169 </span>            :                                                                 new RequestOptions {PreTriggerInclude = new[] {&quot;ValidateUniqueConstraints&quot;}}
-<span class="lineNum">     170 </span>            :                                                         );
-<span class="lineNum">     171 </span>            :                                                         work.ConfigureAwait(false);
-<span class="lineNum">     172 </span>            :                                                         work.Wait();
-<span class="lineNum">     173 </span>            :                                                 }
-<span class="lineNum">     174 </span>            :                                         );
-<span class="lineNum">     175 </span>            :                                 }
-<span class="lineNum">     176 </span>            :                         }
-<span class="lineNum">     177 </span>            :                         finally
-<span class="lineNum">     178 </span>            :                         {
-<span class="lineNum">     179 </span>            :                                 Logger.LogDebug(&quot;Persisting aggregate root event... Done&quot;, string.Format(&quot;{0}\\PersitEvent&quot;, GetType().Name));
-<span class="lineNum">     180 </span>            :                         }
-<span class="lineNum">     181 </span>            :                 }
-<span class="lineNum">     182 </span>            :         }
-<span class="lineNum">     183 </span>            : }
+<span class="lineNum">     149 </span>            :                         using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
+<span class="lineNum">     150 </span>            :                         {
+<span class="lineNum">     151 </span>            :                                 Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
+<span class="lineNum">     152 </span>            :                                 //DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format(&quot;{0}_{1}&quot;, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), typeof(T).FullName)).Result;
+<span class="lineNum">     153 </span>            :                                 string collectionName = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName();
+<span class="lineNum">     154 </span>            :                                 DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName, UniqueIndexProperties).Result;
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span>            :                                 IOrderedQueryable&lt;EventData&gt; query = client.CreateDocumentQuery&lt;EventData&gt;(collection.SelfLink);
+<span class="lineNum">     157 </span>            :                                 string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span>            :                                 IEnumerable&lt;EventData&gt; results = query.Where(x =&gt; x.AggregateId == streamName &amp;&amp; x.Version &lt;= version);
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            :                                 return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =&gt;
+<span class="lineNum">     162 </span>            :                                         results
+<span class="lineNum">     163 </span>            :                                                 .ToList()
+<span class="lineNum">     164 </span>            :                                                 .OrderByDescending(x =&gt; x.EventId)
+<span class="lineNum">     165 </span>            :                                                 .Select(EventDeserialiser.Deserialise)
+<span class="lineNum">     166 </span>            :                                 );
+<span class="lineNum">     167 </span>            :                         }
+<span class="lineNum">     168 </span>            :                 }
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     171 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt; up to and including the provided &lt;paramref name=&quot;versionedDate&quot;/&gt;.
+<span class="lineNum">     172 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     173 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;System.Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">     174 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     175 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;System.DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     176 </span>            :                 public async Task&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt; GetToDateAsync(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+<span class="lineNum">     177 </span>            :                 {
+<span class="lineNum">     178 </span>            :                         using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
+<span class="lineNum">     179 </span>            :                         {
+<span class="lineNum">     180 </span>            :                                 Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
+<span class="lineNum">     181 </span>            :                                 //DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format(&quot;{0}_{1}&quot;, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), typeof(T).FullName)).Result;
+<span class="lineNum">     182 </span>            :                                 string collectionName = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName();
+<span class="lineNum">     183 </span>            :                                 DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName, UniqueIndexProperties).Result;
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span>            :                                 IOrderedQueryable&lt;EventData&gt; query = client.CreateDocumentQuery&lt;EventData&gt;(collection.SelfLink);
+<span class="lineNum">     186 </span>            :                                 string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span>            :                                 IEnumerable&lt;EventData&gt; results = query.Where(x =&gt; x.AggregateId == streamName &amp;&amp; x.Timestamp &lt;= versionedDate);
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            :                                 return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =&gt;
+<span class="lineNum">     191 </span>            :                                         results
+<span class="lineNum">     192 </span>            :                                                 .ToList()
+<span class="lineNum">     193 </span>            :                                                 .OrderByDescending(x =&gt; x.EventId)
+<span class="lineNum">     194 </span>            :                                                 .Select(EventDeserialiser.Deserialise)
+<span class="lineNum">     195 </span>            :                                 );
+<span class="lineNum">     196 </span>            :                         }
+<span class="lineNum">     197 </span>            :                 }
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     200 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances for the given &lt;paramref name=&quot;correlationId&quot;/&gt;.
+<span class="lineNum">     201 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     202 </span>            :                 /// &lt;param name=&quot;correlationId&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances to retrieve.&lt;/param&gt;
+<span class="lineNum">     203 </span>            :                 protected async Task&lt;IEnumerable&lt;EventData&gt;&gt; GetAsync(Guid correlationId)
+<span class="lineNum">     204 </span>            :                 {
+<span class="lineNum">     205 </span>            :                         using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
+<span class="lineNum">     206 </span>            :                         {
+<span class="lineNum">     207 </span>            :                                 Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
+<span class="lineNum">     208 </span>            :                                 //DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format(&quot;{0}_{1}&quot;, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), typeof(T).FullName)).Result;
+<span class="lineNum">     209 </span>            :                                 string collectionName = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName();
+<span class="lineNum">     210 </span>            :                                 DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName, UniqueIndexProperties).Result;
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span>            :                                 IOrderedQueryable&lt;EventData&gt; query = client.CreateDocumentQuery&lt;EventData&gt;(collection.SelfLink);
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            :                                 IEnumerable&lt;EventData&gt; results = query.Where(x =&gt; x.CorrelationId == correlationId);
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            :                                 return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =&gt;
+<span class="lineNum">     217 </span>            :                                         results
+<span class="lineNum">     218 </span>            :                                                 .ToList()
+<span class="lineNum">     219 </span>            :                                                 .OrderBy(x =&gt; x.Timestamp)
+<span class="lineNum">     220 </span>            :                                 );
+<span class="lineNum">     221 </span>            :                         }
+<span class="lineNum">     222 </span>            :                 }
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     225 </span>            :                 /// Persist the provided &lt;paramref name=&quot;eventData&quot;/&gt; into storage.
+<span class="lineNum">     226 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     227 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;EventData&quot;/&gt; to persist.&lt;/param&gt;
+<span class="lineNum">     228 </span>            :                 protected override void PersistEvent(EventData eventData)
+<span class="lineNum">     229 </span>            :                 {
+<span class="lineNum">     230 </span>            :                         Logger.LogDebug(&quot;Persisting aggregate root event&quot;, string.Format(&quot;{0}\\PersitEvent&quot;, GetType().Name));
+<span class="lineNum">     231 </span>            :                         try
+<span class="lineNum">     232 </span>            :                         {
+<span class="lineNum">     233 </span>            :                                 using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
+<span class="lineNum">     234 </span>            :                                 {
+<span class="lineNum">     235 </span>            :                                         Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
+<span class="lineNum">     236 </span>            :                                         //DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format(&quot;{0}_{1}&quot;, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), eventData.EventType)).Result;
+<span class="lineNum">     237 </span>            :                                         //string collectionName = string.Format(&quot;{0}::{1}&quot;, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), eventData.AggregateId.Substring(0, eventData.AggregateId.IndexOf(&quot;/&quot;, StringComparison.Ordinal)));
+<span class="lineNum">     238 </span>            :                                         string collectionName = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName();
+<span class="lineNum">     239 </span>            :                                         DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName, UniqueIndexProperties).Result;
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span>            :                                         Logger.LogDebug(&quot;Creating document for event asynchronously&quot;, string.Format(&quot;{0}\\PersitEvent&quot;, GetType().Name));
+<span class="lineNum">     242 </span>            :                                         AzureDocumentDbHelper.ExecuteFaultTollerantFunction
+<span class="lineNum">     243 </span>            :                                         (
+<span class="lineNum">     244 </span>            :                                                 () =&gt;
+<span class="lineNum">     245 </span>            :                                                 {
+<span class="lineNum">     246 </span>            :                                                         Task&lt;ResourceResponse&lt;Document&gt;&gt; work = client.CreateDocumentAsync
+<span class="lineNum">     247 </span>            :                                                         (
+<span class="lineNum">     248 </span>            :                                                                 collection.SelfLink,
+<span class="lineNum">     249 </span>            :                                                                 eventData,
+<span class="lineNum">     250 </span>            :                                                                 new RequestOptions {PreTriggerInclude = new[] {&quot;ValidateUniqueConstraints&quot;}}
+<span class="lineNum">     251 </span>            :                                                         );
+<span class="lineNum">     252 </span>            :                                                         work.ConfigureAwait(false);
+<span class="lineNum">     253 </span>            :                                                         work.Wait();
+<span class="lineNum">     254 </span>            :                                                 }
+<span class="lineNum">     255 </span>            :                                         );
+<span class="lineNum">     256 </span>            :                                 }
+<span class="lineNum">     257 </span>            :                         }
+<span class="lineNum">     258 </span>            :                         finally
+<span class="lineNum">     259 </span>            :                         {
+<span class="lineNum">     260 </span>            :                                 Logger.LogDebug(&quot;Persisting aggregate root event... Done&quot;, string.Format(&quot;{0}\\PersitEvent&quot;, GetType().Name));
+<span class="lineNum">     261 </span>            :                         }
+<span class="lineNum">     262 </span>            :                 }
+<span class="lineNum">     263 </span>            :         }
+<span class="lineNum">     264 </span>            : }
 </pre>
       </td>
     </tr>
