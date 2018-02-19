@@ -29,7 +29,8 @@ namespace Cqrs.MongoDB.Events
 	/// A MongoDB based <see cref="EventStore{TAuthenticationToken}"/>.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class MongoDbEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken> 
+	public class MongoDbEventStore<TAuthenticationToken>
+		: EventStore<TAuthenticationToken> 
 	{
 		/// <summary>
 		/// Gets or sets the <see cref="IMongoCollection{TData}"/>
@@ -174,6 +175,46 @@ namespace Cqrs.MongoDB.Events
 
 			if (useLastEventOnly)
 				query = query.AsQueryable().Take(1);
+
+			return query
+				.Select(EventDeserialiser.Deserialise)
+				.ToList();
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="version"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="System.Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="version">Load events up-to and including from this version</param>
+		public override IEnumerable<IEvent<TAuthenticationToken>> GetToVersion(Type aggregateRootType, Guid aggregateId, int version)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			IEnumerable<MongoDbEventData> query = MongoCollection
+				.AsQueryable()
+				.Where(eventData => eventData.AggregateId == streamName && eventData.Version <= version)
+				.OrderByDescending(eventData => eventData.Version);
+
+			return query
+				.Select(EventDeserialiser.Deserialise)
+				.ToList();
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="versionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="System.Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="versionedDate">Load events up-to and including from this <see cref="System.DateTime"/></param>
+		public override IEnumerable<IEvent<TAuthenticationToken>> GetToDate(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			IEnumerable<MongoDbEventData> query = MongoCollection
+				.AsQueryable()
+				.Where(eventData => eventData.AggregateId == streamName && eventData.Timestamp <= versionedDate)
+				.OrderByDescending(eventData => eventData.Version);
 
 			return query
 				.Select(EventDeserialiser.Deserialise)

@@ -24,7 +24,8 @@ namespace Cqrs.Azure.DocumentDb.Events
 	/// A DocumentDb based <see cref="EventStore{TAuthenticationToken}"/>.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class AzureDocumentDbEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken>
+	public class AzureDocumentDbEventStore<TAuthenticationToken>
+		: EventStore<TAuthenticationToken>
 	{
 		/// <summary>
 		/// The properties that must be unique.
@@ -61,6 +62,28 @@ namespace Cqrs.Azure.DocumentDb.Events
 		public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			return GetAsync(aggregateRootType, aggregateId, useLastEventOnly, fromVersion).Result;
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="version"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="System.Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="version">Load events up-to and including from this version</param>
+		public override IEnumerable<IEvent<TAuthenticationToken>> GetToVersion(Type aggregateRootType, Guid aggregateId, int version)
+		{
+			return GetToVersionAsync(aggregateRootType, aggregateId, version).Result;
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="versionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="System.Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="versionedDate">Load events up-to and including from this <see cref="System.DateTime"/></param>
+		public override IEnumerable<IEvent<TAuthenticationToken>> GetToDate(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+		{
+			return GetToDateAsync(aggregateRootType, aggregateId, versionedDate).Result;
 		}
 
 		/// <summary>
@@ -105,6 +128,64 @@ namespace Cqrs.Azure.DocumentDb.Events
 				string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
 				IEnumerable<EventData> results = query.Where(x => x.AggregateId == streamName && x.Version > fromVersion);
+
+				return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
+					results
+						.ToList()
+						.OrderByDescending(x => x.EventId)
+						.Select(EventDeserialiser.Deserialise)
+				);
+			}
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="version"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="System.Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="version">Load events up-to and including from this version</param>
+		public async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToVersionAsync(Type aggregateRootType, Guid aggregateId, int version)
+		{
+			using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
+			{
+				Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
+				//DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format("{0}_{1}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), typeof(T).FullName)).Result;
+				string collectionName = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName();
+				DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName, UniqueIndexProperties).Result;
+
+				IOrderedQueryable<EventData> query = client.CreateDocumentQuery<EventData>(collection.SelfLink);
+				string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+				IEnumerable<EventData> results = query.Where(x => x.AggregateId == streamName && x.Version <= version);
+
+				return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
+					results
+						.ToList()
+						.OrderByDescending(x => x.EventId)
+						.Select(EventDeserialiser.Deserialise)
+				);
+			}
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="versionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="System.Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="versionedDate">Load events up-to and including from this <see cref="System.DateTime"/></param>
+		public async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToDateAsync(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+		{
+			using (DocumentClient client = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionClient())
+			{
+				Database database = AzureDocumentDbHelper.CreateOrReadDatabase(client, AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionDatabaseName()).Result;
+				//DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, string.Format("{0}_{1}", AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName(), typeof(T).FullName)).Result;
+				string collectionName = AzureDocumentDbEventStoreConnectionStringFactory.GetEventStoreConnectionCollectionName();
+				DocumentCollection collection = AzureDocumentDbHelper.CreateOrReadCollection(client, database, collectionName, UniqueIndexProperties).Result;
+
+				IOrderedQueryable<EventData> query = client.CreateDocumentQuery<EventData>(collection.SelfLink);
+				string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+				IEnumerable<EventData> results = query.Where(x => x.AggregateId == streamName && x.Timestamp <= versionedDate);
 
 				return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
 					results

@@ -19,6 +19,7 @@ using Cqrs.Commands;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
+using Cqrs.Repositories.Queries;
 
 namespace Cqrs.Configuration
 {
@@ -34,6 +35,11 @@ namespace Cqrs.Configuration
 		/// The <see cref="Func{TResult}"/> used to create the <see cref="IEventStore{TAuthenticationToken}"/>
 		/// </summary>
 		protected static Func<IDependencyResolver, IEventStore<TAuthenticationToken>> EventStoreCreator { get; set; }
+
+		/// <summary>
+		/// A custom dependency resolver.
+		/// </summary>
+		public static Func<IDependencyResolver, Type, object> CustomResolver { get; set; }
 
 		/// <summary>
 		/// Instaiance a new instance of the <see cref="SampleRuntime{TAuthenticationToken,TCommandHanderOrEventHandler}"/>
@@ -214,11 +220,26 @@ namespace Cqrs.Configuration
 					return new DefaultEventBuilder<TAuthenticationToken>();
 				if (type == typeof(IEventDeserialiser<TAuthenticationToken>))
 					return new EventDeserialiser<TAuthenticationToken>();
+				if (type == typeof(IAuthenticationTokenHelper<TAuthenticationToken>))
+					return new AuthenticationTokenHelper<TAuthenticationToken>(ContextFactory);
+				if (type == typeof(IQueryFactory))
+					return new QueryFactory(this);
 
 				if (typeof(ICommandHandle).IsAssignableFrom(type))
 					return Activator.CreateInstance(type, Resolve<IUnitOfWork<TAuthenticationToken>>());
 				if (typeof(IEventHandler).IsAssignableFrom(type))
 					return Activator.CreateInstance(type);
+
+				if (CustomResolver != null)
+				{
+					try
+					{
+						object result = CustomResolver(this, type);
+						if (result != null)
+							return result;
+					}
+					catch { /* */ }
+				}
 
 				return Activator.CreateInstance(type);
 			}
