@@ -77,84 +77,113 @@
 <span class="lineNum">      19 </span>            :         /// &lt;remarks&gt;
 <span class="lineNum">      20 </span>            :         /// This shouldn't normally be used as a singleton.
 <span class="lineNum">      21 </span>            :         /// &lt;/remarks&gt;
-<span class="lineNum">      22 </span>            :         public class UnitOfWork&lt;TAuthenticationToken&gt; : IUnitOfWork&lt;TAuthenticationToken&gt;
-<span class="lineNum">      23 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      24 </span>            :                 private IAggregateRepository&lt;TAuthenticationToken&gt; Repository { get; set; }
-<span class="lineNum">      25 </span>            : 
-<span class="lineNum">      26 </span>            :                 private Dictionary&lt;Guid, IAggregateDescriptor&lt;TAuthenticationToken&gt;&gt; TrackedAggregates { get; set; }
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      29 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;UnitOfWork{TAuthenticationToken}&quot;/&gt;
-<span class="lineNum">      30 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      31 </span><span class="lineCov">          1 :                 public UnitOfWork(IAggregateRepository&lt;TAuthenticationToken&gt; repository)</span>
-<span class="lineNum">      32 </span>            :                 {
-<span class="lineNum">      33 </span>            :                         if(repository == null)
-<span class="lineNum">      34 </span>            :                                 throw new ArgumentNullException(&quot;repository&quot;);
-<span class="lineNum">      35 </span>            : 
-<span class="lineNum">      36 </span>            :                         Repository = repository;
-<span class="lineNum">      37 </span>            :                         TrackedAggregates = new Dictionary&lt;Guid, IAggregateDescriptor&lt;TAuthenticationToken&gt;&gt;();
-<span class="lineNum">      38 </span>            :                 }
-<span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      41 </span>            :                 /// Add an item into the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; ready to be committed.
-<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      43 </span><span class="lineCov">          1 :                 public void Add&lt;TAggregateRoot&gt;(TAggregateRoot aggregate)</span>
-<span class="lineNum">      44 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
-<span class="lineNum">      45 </span>            :                 {
-<span class="lineNum">      46 </span>            :                         if (!IsTracked(aggregate.Id))
-<span class="lineNum">      47 </span>            :                         {
-<span class="lineNum">      48 </span>            :                                 var aggregateDescriptor = new AggregateDescriptor&lt;TAggregateRoot, TAuthenticationToken&gt;
-<span class="lineNum">      49 </span>            :                                 {
-<span class="lineNum">      50 </span>            :                                         Aggregate = aggregate,
-<span class="lineNum">      51 </span>            :                                         Version = aggregate.Version
-<span class="lineNum">      52 </span>            :                                 };
-<span class="lineNum">      53 </span>            :                                 TrackedAggregates.Add(aggregate.Id, aggregateDescriptor);
-<span class="lineNum">      54 </span>            :                         }
-<span class="lineNum">      55 </span>            :                         else if (((TrackedAggregates[aggregate.Id]).Aggregate) != (IAggregateRoot&lt;TAuthenticationToken&gt;)aggregate)
-<span class="lineNum">      56 </span>            :                                 throw new ConcurrencyException(aggregate.Id);
-<span class="lineNum">      57 </span>            :                 }
-<span class="lineNum">      58 </span>            : 
-<span class="lineNum">      59 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      60 </span>            :                 /// Get an item from the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; if it has already been loaded or get it from the &lt;see cref=&quot;IAggregateRepository{TAuthenticationToken}&quot;/&gt;.
-<span class="lineNum">      61 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      62 </span><span class="lineCov">          1 :                 public TAggregateRoot Get&lt;TAggregateRoot&gt;(Guid id, int? expectedVersion = null, bool useSnapshots = false)</span>
-<span class="lineNum">      63 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
-<span class="lineNum">      64 </span>            :                 {
-<span class="lineNum">      65 </span>            :                         if(IsTracked(id))
-<span class="lineNum">      66 </span>            :                         {
-<span class="lineNum">      67 </span>            :                                 var trackedAggregate = (TAggregateRoot)TrackedAggregates[id].Aggregate;
-<span class="lineNum">      68 </span>            :                                 if (expectedVersion != null &amp;&amp; trackedAggregate.Version != expectedVersion)
-<span class="lineNum">      69 </span>            :                                         throw new ConcurrencyException(trackedAggregate.Id);
-<span class="lineNum">      70 </span>            :                                 return trackedAggregate;
-<span class="lineNum">      71 </span>            :                         }
-<span class="lineNum">      72 </span>            : 
-<span class="lineNum">      73 </span>            :                         var aggregate = Repository.Get&lt;TAggregateRoot&gt;(id);
-<span class="lineNum">      74 </span>            :                         if (expectedVersion != null &amp;&amp; aggregate.Version != expectedVersion)
-<span class="lineNum">      75 </span>            :                                 throw new ConcurrencyException(id);
-<span class="lineNum">      76 </span>            :                         Add(aggregate);
-<span class="lineNum">      77 </span>            : 
-<span class="lineNum">      78 </span>            :                         return aggregate;
-<span class="lineNum">      79 </span>            :                 }
-<span class="lineNum">      80 </span>            : 
-<span class="lineNum">      81 </span>            :                 private bool IsTracked(Guid id)
-<span class="lineNum">      82 </span>            :                 {
-<span class="lineNum">      83 </span>            :                         return TrackedAggregates.ContainsKey(id);
-<span class="lineNum">      84 </span>            :                 }
-<span class="lineNum">      85 </span>            : 
-<span class="lineNum">      86 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      87 </span>            :                 /// Commit any changed &lt;see cref=&quot;AggregateRoot{TAuthenticationToken}&quot;/&gt; added to this &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; via &lt;see cref=&quot;Add{T}&quot;/&gt;
-<span class="lineNum">      88 </span>            :                 /// into the &lt;see cref=&quot;IAggregateRepository{TAuthenticationToken}&quot;/&gt;
-<span class="lineNum">      89 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      90 </span><span class="lineCov">          1 :                 public void Commit()</span>
-<span class="lineNum">      91 </span>            :                 {
-<span class="lineNum">      92 </span>            :                         foreach (IAggregateDescriptor&lt;TAuthenticationToken&gt; descriptor in TrackedAggregates.Values)
-<span class="lineNum">      93 </span>            :                         {
-<span class="lineNum">      94 </span>            :                                 Repository.Save(descriptor.Aggregate, descriptor.Version);
-<span class="lineNum">      95 </span>            :                         }
-<span class="lineNum">      96 </span>            :                         TrackedAggregates.Clear();
-<span class="lineNum">      97 </span>            :                 }
-<span class="lineNum">      98 </span>            :         }
-<span class="lineNum">      99 </span>            : }
+<span class="lineNum">      22 </span>            :         public class UnitOfWork&lt;TAuthenticationToken&gt;
+<span class="lineNum">      23 </span><span class="lineCov">          1 :                 : IUnitOfWork&lt;TAuthenticationToken&gt;</span>
+<span class="lineNum">      24 </span>            :         {
+<span class="lineNum">      25 </span>            :                 private IAggregateRepository&lt;TAuthenticationToken&gt; Repository { get; set; }
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :                 private Dictionary&lt;Guid, IAggregateDescriptor&lt;TAuthenticationToken&gt;&gt; TrackedAggregates { get; set; }
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      30 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;UnitOfWork{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      31 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
+<span class="lineNum">      32 </span>            :                 public UnitOfWork(IAggregateRepository&lt;TAuthenticationToken&gt; repository)
+<span class="lineNum">      33 </span>            :                 {
+<span class="lineNum">      34 </span>            :                         if(repository == null)
+<span class="lineNum">      35 </span>            :                                 throw new ArgumentNullException(&quot;repository&quot;);
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                         Repository = repository;
+<span class="lineNum">      38 </span>            :                         TrackedAggregates = new Dictionary&lt;Guid, IAggregateDescriptor&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">      39 </span>            :                 }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      42 </span>            :                 /// Add an item into the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; ready to be committed.
+<span class="lineNum">      43 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
+<span class="lineNum">      44 </span>            :                 public void Add&lt;TAggregateRoot&gt;(TAggregateRoot aggregate)
+<span class="lineNum">      45 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">      46 </span>            :                 {
+<span class="lineNum">      47 </span>            :                         if (!IsTracked(aggregate.Id))
+<span class="lineNum">      48 </span>            :                         {
+<span class="lineNum">      49 </span>            :                                 var aggregateDescriptor = new AggregateDescriptor&lt;TAggregateRoot, TAuthenticationToken&gt;
+<span class="lineNum">      50 </span>            :                                 {
+<span class="lineNum">      51 </span>            :                                         Aggregate = aggregate,
+<span class="lineNum">      52 </span>            :                                         Version = aggregate.Version
+<span class="lineNum">      53 </span>            :                                 };
+<span class="lineNum">      54 </span>            :                                 TrackedAggregates.Add(aggregate.Id, aggregateDescriptor);
+<span class="lineNum">      55 </span>            :                         }
+<span class="lineNum">      56 </span>            :                         else if (((TrackedAggregates[aggregate.Id]).Aggregate) != (IAggregateRoot&lt;TAuthenticationToken&gt;)aggregate)
+<span class="lineNum">      57 </span>            :                                 throw new ConcurrencyException(aggregate.Id);
+<span class="lineNum">      58 </span>            :                 }
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      61 </span>            :                 /// Get an item from the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; if it has already been loaded or get it from the &lt;see cref=&quot;IAggregateRepository{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      62 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
+<span class="lineNum">      63 </span>            :                 public TAggregateRoot Get&lt;TAggregateRoot&gt;(Guid id, int? expectedVersion = null, bool useSnapshots = false)
+<span class="lineNum">      64 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">      65 </span>            :                 {
+<span class="lineNum">      66 </span>            :                         if(IsTracked(id))
+<span class="lineNum">      67 </span>            :                         {
+<span class="lineNum">      68 </span>            :                                 var trackedAggregate = (TAggregateRoot)TrackedAggregates[id].Aggregate;
+<span class="lineNum">      69 </span>            :                                 if (expectedVersion != null &amp;&amp; trackedAggregate.Version != expectedVersion)
+<span class="lineNum">      70 </span>            :                                         throw new ConcurrencyException(trackedAggregate.Id);
+<span class="lineNum">      71 </span>            :                                 return trackedAggregate;
+<span class="lineNum">      72 </span>            :                         }
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :                         var aggregate = Repository.Get&lt;TAggregateRoot&gt;(id);
+<span class="lineNum">      75 </span>            :                         if (expectedVersion != null &amp;&amp; aggregate.Version != expectedVersion)
+<span class="lineNum">      76 </span>            :                                 throw new ConcurrencyException(id);
+<span class="lineNum">      77 </span>            :                         Add(aggregate);
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :                         return aggregate;
+<span class="lineNum">      80 </span>            :                 }
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      83 </span>            :                 /// Get an item from the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; up to and including the provided &lt;paramref name=&quot;version&quot;/&gt;.
+<span class="lineNum">      84 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      85 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">      86 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      87 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">      88 </span>            :                 public TAggregateRoot GetToVersion&lt;TAggregateRoot&gt;(Guid id, int version)
+<span class="lineNum">      89 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">      90 </span><span class="lineCov">          1 :                 {</span>
+<span class="lineNum">      91 </span>            :                         var aggregate = Repository.GetToVersion&lt;TAggregateRoot&gt;(id, version);
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :                         return aggregate;
+<span class="lineNum">      94 </span>            :                 }
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      97 </span>            :                 /// Get an item from the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; up to and including the provided &lt;paramref name=&quot;versionedDate&quot;/&gt;.
+<span class="lineNum">      98 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      99 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">     100 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     101 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     102 </span>            :                 public TAggregateRoot GetToDate&lt;TAggregateRoot&gt;(Guid id, DateTime versionedDate)
+<span class="lineNum">     103 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     104 </span>            :                 {
+<span class="lineNum">     105 </span>            :                         var aggregate = Repository.GetToDate&lt;TAggregateRoot&gt;(id, versionedDate);
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            :                         return aggregate;
+<span class="lineNum">     108 </span>            :                 }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :                 private bool IsTracked(Guid id)
+<span class="lineNum">     111 </span>            :                 {
+<span class="lineNum">     112 </span>            :                         return TrackedAggregates.ContainsKey(id);
+<span class="lineNum">     113 </span>            :                 }
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     116 </span>            :                 /// Commit any changed &lt;see cref=&quot;AggregateRoot{TAuthenticationToken}&quot;/&gt; added to this &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; via &lt;see cref=&quot;Add{T}&quot;/&gt;
+<span class="lineNum">     117 </span>            :                 /// into the &lt;see cref=&quot;IAggregateRepository{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">     118 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     119 </span>            :                 public void Commit()
+<span class="lineNum">     120 </span>            :                 {
+<span class="lineNum">     121 </span>            :                         foreach (IAggregateDescriptor&lt;TAuthenticationToken&gt; descriptor in TrackedAggregates.Values)
+<span class="lineNum">     122 </span>            :                         {
+<span class="lineNum">     123 </span>            :                                 Repository.Save(descriptor.Aggregate, descriptor.Version);
+<span class="lineNum">     124 </span>            :                         }
+<span class="lineNum">     125 </span>            :                         TrackedAggregates.Clear();
+<span class="lineNum">     126 </span>            :                 }
+<span class="lineNum">     127 </span>            :         }
+<span class="lineNum">     128 </span>            : }
 </pre>
       </td>
     </tr>

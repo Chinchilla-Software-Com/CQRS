@@ -19,7 +19,11 @@ Inheritance diagram for Cqrs.\+Snapshots.\+Snapshot\+Repository$<$ T\+Authentica
 void \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_aac1a574562f8c6134d02a44cd10b8afa_aac1a574562f8c6134d02a44cd10b8afa}{Save$<$ T\+Aggregate\+Root $>$} (T\+Aggregate\+Root aggregate, int? expected\+Version=null)
 \begin{DoxyCompactList}\small\item\em Calls \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_a06b3211ded753ed79c3080819b16d496_a06b3211ded753ed79c3080819b16d496}{Try\+Make\+Snapshot} then I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Save$<$\+T\+Aggregate\+Root$>$ on \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_a64b1457cd45056fb7affd2aa8cd07d9e_a64b1457cd45056fb7affd2aa8cd07d9e}{Repository}. \end{DoxyCompactList}\item 
 T\+Aggregate\+Root \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_acdbea47afc87de1da613a6eff3ceef0f_acdbea47afc87de1da613a6eff3ceef0f}{Get$<$ T\+Aggregate\+Root $>$} (Guid aggregate\+Id, I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ events=null)
-\begin{DoxyCompactList}\small\item\em Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root} , First using \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_a1328c103474b2b394b7af61a24455a65_a1328c103474b2b394b7af61a24455a65}{Try\+Restore\+Aggregate\+From\+Snapshot$<$\+T\+Aggregate\+Root$>$}, otherwise via I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Get$<$\+T\+Aggregate\+Root$>$ on \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_a64b1457cd45056fb7affd2aa8cd07d9e_a64b1457cd45056fb7affd2aa8cd07d9e}{Repository} Then does rehydration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root} , First using \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_a1328c103474b2b394b7af61a24455a65_a1328c103474b2b394b7af61a24455a65}{Try\+Restore\+Aggregate\+From\+Snapshot$<$\+T\+Aggregate\+Root$>$}, otherwise via I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Get$<$\+T\+Aggregate\+Root$>$ on \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_a64b1457cd45056fb7affd2aa8cd07d9e_a64b1457cd45056fb7affd2aa8cd07d9e}{Repository} Then does rehydration. \end{DoxyCompactList}\item 
+T\+Aggregate\+Root \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_abdeca9aa6a5ce75e445888b2d0092a7d_abdeca9aa6a5ce75e445888b2d0092a7d}{Get\+To\+Version$<$ T\+Aggregate\+Root $>$} (Guid aggregate\+Id, int version, I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ events=null)
+\begin{DoxyCompactList}\small\item\em Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root}  up to and including the provided {\itshape version} . \end{DoxyCompactList}\item 
+T\+Aggregate\+Root \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository_a2a55df8aa2b9a2058360ef8cdd4c1ebc_a2a55df8aa2b9a2058360ef8cdd4c1ebc}{Get\+To\+Date$<$ T\+Aggregate\+Root $>$} (Guid aggregate\+Id, Date\+Time versioned\+Date, I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ events=null)
+\begin{DoxyCompactList}\small\item\em Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root}  up to and including the provided {\itshape versioned\+Date} . \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -91,6 +95,70 @@ Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshap
 
 
 Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a890633fddbd05bd3b9e9968a2de095bb_a890633fddbd05bd3b9e9968a2de095bb}{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Aggregate\+Root} : {\em I\+Aggregate\+Root$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotRepository_a2a55df8aa2b9a2058360ef8cdd4c1ebc_a2a55df8aa2b9a2058360ef8cdd4c1ebc}\label{classCqrs_1_1Snapshots_1_1SnapshotRepository_a2a55df8aa2b9a2058360ef8cdd4c1ebc_a2a55df8aa2b9a2058360ef8cdd4c1ebc}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Repository@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Repository}!Get\+To\+Date$<$ T\+Aggregate\+Root $>$@{Get\+To\+Date$<$ T\+Aggregate\+Root $>$}}
+\index{Get\+To\+Date$<$ T\+Aggregate\+Root $>$@{Get\+To\+Date$<$ T\+Aggregate\+Root $>$}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Repository@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Get\+To\+Date$<$ T\+Aggregate\+Root $>$()}{GetToDate< TAggregateRoot >()}}
+{\footnotesize\ttfamily T\+Aggregate\+Root \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository}{Cqrs.\+Snapshots.\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.Get\+To\+Date$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{versioned\+Date,  }\item[{I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{events = {\ttfamily null} }\end{DoxyParamCaption})}
+
+
+
+Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root}  up to and including the provided {\itshape versioned\+Date} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The identifier of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to retrieve.\\
+\hline
+{\em versioned\+Date} & Load events up-\/to and including from this Date\+Time\\
+\hline
+{\em events} & A collection of I\+Event$<$\+T\+Authentication\+Token$>$ to replay on the retrieved I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. If null, the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ will be used to retrieve a list of I\+Event$<$\+T\+Authentication\+Token$>$ for you. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a32308a27ce03c5d406e16b17430dd040_a32308a27ce03c5d406e16b17430dd040}{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Aggregate\+Root} : {\em I\+Aggregate\+Root$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotRepository_abdeca9aa6a5ce75e445888b2d0092a7d_abdeca9aa6a5ce75e445888b2d0092a7d}\label{classCqrs_1_1Snapshots_1_1SnapshotRepository_abdeca9aa6a5ce75e445888b2d0092a7d_abdeca9aa6a5ce75e445888b2d0092a7d}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Repository@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Repository}!Get\+To\+Version$<$ T\+Aggregate\+Root $>$@{Get\+To\+Version$<$ T\+Aggregate\+Root $>$}}
+\index{Get\+To\+Version$<$ T\+Aggregate\+Root $>$@{Get\+To\+Version$<$ T\+Aggregate\+Root $>$}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Repository@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Get\+To\+Version$<$ T\+Aggregate\+Root $>$()}{GetToVersion< TAggregateRoot >()}}
+{\footnotesize\ttfamily T\+Aggregate\+Root \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotRepository}{Cqrs.\+Snapshots.\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.Get\+To\+Version$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{int}]{version,  }\item[{I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{events = {\ttfamily null} }\end{DoxyParamCaption})}
+
+
+
+Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root}  up to and including the provided {\itshape version} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The identifier of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to retrieve.\\
+\hline
+{\em version} & Load events up-\/to and including from this version\\
+\hline
+{\em events} & A collection of I\+Event$<$\+T\+Authentication\+Token$>$ to replay on the retrieved I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. If null, the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ will be used to retrieve a list of I\+Event$<$\+T\+Authentication\+Token$>$ for you. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_aa0d6b4b9b117357e1676cae829fe2a5c_aa0d6b4b9b117357e1676cae829fe2a5c}{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}.
 
 \begin{Desc}
 \item[Type Constraints]\begin{description}

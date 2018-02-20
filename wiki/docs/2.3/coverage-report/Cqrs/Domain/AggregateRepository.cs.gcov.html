@@ -80,193 +80,338 @@
 <span class="lineNum">      22 </span>            :         /// that also publishes events once saved.
 <span class="lineNum">      23 </span>            :         /// &lt;/summary&gt;
 <span class="lineNum">      24 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
-<span class="lineNum">      25 </span><span class="lineCov">          1 :         public class AggregateRepository&lt;TAuthenticationToken&gt; : IAggregateRepository&lt;TAuthenticationToken&gt;</span>
-<span class="lineNum">      26 </span>            :         {
-<span class="lineNum">      27 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      28 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; used to store and retrieve events from.
-<span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      30 </span>            :                 protected IEventStore&lt;TAuthenticationToken&gt; EventStore { get; private set; }
-<span class="lineNum">      31 </span>            : 
-<span class="lineNum">      32 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      33 </span>            :                 /// Gets or sets the Publisher used to publish events on once saved into the &lt;see cref=&quot;EventStore&quot;/&gt;.
-<span class="lineNum">      34 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      35 </span>            :                 protected IEventPublisher&lt;TAuthenticationToken&gt; Publisher { get; private set; }
-<span class="lineNum">      36 </span>            : 
-<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      38 </span>            :                 /// Gets or set the &lt;see cref=&quot;IAggregateFactory&quot;/&gt;.
-<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      40 </span>            :                 protected IAggregateFactory AggregateFactory { get; private set; }
-<span class="lineNum">      41 </span>            : 
-<span class="lineNum">      42 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      43 </span>            :                 /// Gets or set the &lt;see cref=&quot;ICorrelationIdHelper&quot;/&gt;.
-<span class="lineNum">      44 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      45 </span>            :                 protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
-<span class="lineNum">      46 </span>            : 
-<span class="lineNum">      47 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      48 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
-<span class="lineNum">      49 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
-<span class="lineNum">      50 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
-<span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      53 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AggregateRepository{TAuthenticationToken}&quot;/&gt;
-<span class="lineNum">      54 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      55 </span>            :                 public AggregateRepository(IAggregateFactory aggregateFactory, IEventStore&lt;TAuthenticationToken&gt; eventStore, IEventPublisher&lt;TAuthenticationToken&gt; publisher, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager)
-<span class="lineNum">      56 </span>            :                 {
-<span class="lineNum">      57 </span>            :                         EventStore = eventStore;
-<span class="lineNum">      58 </span>            :                         Publisher = publisher;
-<span class="lineNum">      59 </span>            :                         CorrelationIdHelper = correlationIdHelper;
-<span class="lineNum">      60 </span>            :                         ConfigurationManager = configurationManager;
-<span class="lineNum">      61 </span>            :                         AggregateFactory = aggregateFactory;
-<span class="lineNum">      62 </span>            :                 }
-<span class="lineNum">      63 </span><span class="lineCov">          1 : </span>
-<span class="lineNum">      64 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      65 </span>            :                 /// Save and persist the provided &lt;paramref name=&quot;aggregate&quot;/&gt;, optionally providing the version number the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; is expected to be at.
-<span class="lineNum">      66 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      67 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
-<span class="lineNum">      68 </span>            :                 /// &lt;param name=&quot;aggregate&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to save and persist.&lt;/param&gt;
-<span class="lineNum">      69 </span>            :                 /// &lt;param name=&quot;expectedVersion&quot;&gt;The version number the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; is expected to be at.&lt;/param&gt;
-<span class="lineNum">      70 </span>            :                 public virtual void Save&lt;TAggregateRoot&gt;(TAggregateRoot aggregate, int? expectedVersion = null)
-<span class="lineNum">      71 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
-<span class="lineNum">      72 </span>            :                 {
-<span class="lineNum">      73 </span>            :                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; uncommittedChanges = aggregate.GetUncommittedChanges().ToList();
-<span class="lineNum">      74 </span>            :                         if (!uncommittedChanges.Any())
-<span class="lineNum">      75 </span>            :                                 return;
-<span class="lineNum">      76 </span>            : 
-<span class="lineNum">      77 </span>            :                         if (expectedVersion != null)
-<span class="lineNum">      78 </span>            :                         {
-<span class="lineNum">      79 </span>            :                                 IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; eventStoreResults = EventStore.Get(aggregate.GetType(), aggregate.Id, false, expectedVersion.Value);
-<span class="lineNum">      80 </span>            :                                 if (eventStoreResults.Any())
-<span class="lineNum">      81 </span>            :                                         throw new ConcurrencyException(aggregate.Id);
-<span class="lineNum">      82 </span>            :                         }
-<span class="lineNum">      83 </span>            : 
-<span class="lineNum">      84 </span>            :                         var eventsToPublish = new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;();
-<span class="lineNum">      85 </span>            : 
-<span class="lineNum">      86 </span>            :                         int i = 0;
-<span class="lineNum">      87 </span>            :                         int version = aggregate.Version;
-<span class="lineNum">      88 </span>            :                         foreach (IEvent&lt;TAuthenticationToken&gt; @event in uncommittedChanges)
-<span class="lineNum">      89 </span>            :                         {
-<span class="lineNum">      90 </span>            :                                 var eventWithIdentity = @event as IEventWithIdentity&lt;TAuthenticationToken&gt;;
-<span class="lineNum">      91 </span>            :                                 if (eventWithIdentity != null)
-<span class="lineNum">      92 </span>            :                                 {
-<span class="lineNum">      93 </span>            :                                         if (eventWithIdentity.Rsn == Guid.Empty)
-<span class="lineNum">      94 </span>            :                                                 eventWithIdentity.Rsn = aggregate.Id;
-<span class="lineNum">      95 </span>            :                                         if (eventWithIdentity.Rsn == Guid.Empty)
-<span class="lineNum">      96 </span>            :                                                 throw new AggregateOrEventMissingIdException(aggregate.GetType(), @event.GetType());
-<span class="lineNum">      97 </span>            :                                 }
-<span class="lineNum">      98 </span>            :                                 else
-<span class="lineNum">      99 </span>            :                                 {
-<span class="lineNum">     100 </span>            :                                         if (@event.Id == Guid.Empty)
-<span class="lineNum">     101 </span>            :                                                 @event.Id = aggregate.Id;
-<span class="lineNum">     102 </span>            :                                         if (@event.Id == Guid.Empty)
-<span class="lineNum">     103 </span>            :                                                 throw new AggregateOrEventMissingIdException(aggregate.GetType(), @event.GetType());
-<span class="lineNum">     104 </span>            :                                 }
-<span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span><span class="lineCov">          1 :                                 i++;</span>
-<span class="lineNum">     107 </span>            :                                 version++;
-<span class="lineNum">     108 </span>            : 
-<span class="lineNum">     109 </span>            :                                 @event.Version = version;
-<span class="lineNum">     110 </span>            :                                 @event.TimeStamp = DateTimeOffset.UtcNow;
-<span class="lineNum">     111 </span>            :                                 @event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-<span class="lineNum">     112 </span>            :                                 EventStore.Save(aggregate.GetType(), @event);
-<span class="lineNum">     113 </span>            :                                 eventsToPublish.Add(@event);
-<span class="lineNum">     114 </span>            :                         }
-<span class="lineNum">     115 </span>            : 
-<span class="lineNum">     116 </span>            :                         aggregate.MarkChangesAsCommitted();
-<span class="lineNum">     117 </span>            :                         foreach (IEvent&lt;TAuthenticationToken&gt; @event in eventsToPublish)
-<span class="lineNum">     118 </span>            :                                 PublishEvent(@event);
-<span class="lineNum">     119 </span>            :                 }
-<span class="lineNum">     120 </span><span class="lineCov">          1 : </span>
-<span class="lineNum">     121 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     122 </span>            :                 /// Publish the saved &lt;paramref name=&quot;event&quot;/&gt;.
-<span class="lineNum">     123 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     124 </span>            :                 protected virtual void PublishEvent(IEvent&lt;TAuthenticationToken&gt; @event)
-<span class="lineNum">     125 </span>            :                 {
-<span class="lineNum">     126 </span>            :                         Publisher.Publish(@event);
-<span class="lineNum">     127 </span>            :                 }
-<span class="lineNum">     128 </span>            : 
-<span class="lineNum">     129 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     130 </span>            :                 /// Retrieves an &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt;.
-<span class="lineNum">     131 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
-<span class="lineNum">     132 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
-<span class="lineNum">     133 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The identifier of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to retrieve.&lt;/param&gt;
-<span class="lineNum">     134 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
-<span class="lineNum">     135 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
-<span class="lineNum">     136 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
-<span class="lineNum">     137 </span>            :                 /// &lt;/param&gt;
-<span class="lineNum">     138 </span>            :                 public virtual TAggregateRoot Get&lt;TAggregateRoot&gt;(Guid aggregateId, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)
-<span class="lineNum">     139 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
-<span class="lineNum">     140 </span>            :                 {
-<span class="lineNum">     141 </span>            :                         return LoadAggregate&lt;TAggregateRoot&gt;(aggregateId, events);
-<span class="lineNum">     142 </span>            :                 }
-<span class="lineNum">     143 </span>            : 
-<span class="lineNum">     144 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     145 </span>            :                 /// Calls &lt;see cref=&quot;IAggregateFactory.Create&quot;/&gt; to get a, &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt;.
-<span class="lineNum">     146 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     147 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
-<span class="lineNum">     148 </span><span class="lineCov">          1 :                 /// &lt;param name=&quot;id&quot;&gt;The id of the &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; to create.&lt;/param&gt;</span>
-<span class="lineNum">     149 </span>            :                 protected virtual TAggregateRoot CreateAggregate&lt;TAggregateRoot&gt;(Guid id)
-<span class="lineNum">     150 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
-<span class="lineNum">     151 </span>            :                 {
-<span class="lineNum">     152 </span>            :                         var aggregate = AggregateFactory.Create&lt;TAggregateRoot&gt;(id);
-<span class="lineNum">     153 </span>            : 
-<span class="lineNum">     154 </span>            :                         return aggregate;
-<span class="lineNum">     155 </span>            :                 }
-<span class="lineNum">     156 </span>            : 
-<span class="lineNum">     157 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     158 </span>            :                 /// Calls &lt;see cref=&quot;IAggregateFactory.Create&quot;/&gt; to get a, &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; and then calls &lt;see cref=&quot;LoadAggregateHistory{TAggregateRoot}&quot;/&gt;.
-<span class="lineNum">     159 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     160 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
-<span class="lineNum">     161 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The id of the &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; to create.&lt;/param&gt;
-<span class="lineNum">     162 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
-<span class="lineNum">     163 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
-<span class="lineNum">     164 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
-<span class="lineNum">     165 </span>            :                 /// &lt;/param&gt;
-<span class="lineNum">     166 </span>            :                 protected virtual TAggregateRoot LoadAggregate&lt;TAggregateRoot&gt;(Guid id, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)
-<span class="lineNum">     167 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
-<span class="lineNum">     168 </span><span class="lineCov">          1 :                 {</span>
-<span class="lineNum">     169 </span>            :                         bool tryDependencyResolutionFirst;
-<span class="lineNum">     170 </span>            :                         if (!ConfigurationManager.TryGetSetting(string.Format(&quot;Cqrs.AggregateFactory.TryDependencyResolutionFirst.{0}&quot;, typeof(TAggregateRoot).FullName), out tryDependencyResolutionFirst))
-<span class="lineNum">     171 </span>            :                                 if (!ConfigurationManager.TryGetSetting(&quot;Cqrs.AggregateFactory.TryDependencyResolutionFirst&quot;, out tryDependencyResolutionFirst))
-<span class="lineNum">     172 </span>            :                                         tryDependencyResolutionFirst = false;
-<span class="lineNum">     173 </span>            :                         var aggregate = AggregateFactory.Create&lt;TAggregateRoot&gt;(id, tryDependencyResolutionFirst);
-<span class="lineNum">     174 </span>            : 
-<span class="lineNum">     175 </span>            :                         LoadAggregateHistory(aggregate, events);
-<span class="lineNum">     176 </span>            :                         return aggregate;
-<span class="lineNum">     177 </span>            :                 }
-<span class="lineNum">     178 </span>            : 
-<span class="lineNum">     179 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     180 </span>            :                 /// If &lt;paramref name=&quot;events&quot;/&gt; is null, loads the events from &lt;see cref=&quot;EventStore&quot;/&gt;, checks for duplicates and then
-<span class="lineNum">     181 </span>            :                 /// rehydrates the &lt;paramref name=&quot;aggregate&quot;/&gt; with the events.
-<span class="lineNum">     182 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     183 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
-<span class="lineNum">     184 </span>            :                 /// &lt;param name=&quot;aggregate&quot;&gt;The &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; to rehydrate.&lt;/param&gt;
-<span class="lineNum">     185 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
-<span class="lineNum">     186 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
-<span class="lineNum">     187 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
-<span class="lineNum">     188 </span>            :                 /// &lt;/param&gt;
-<span class="lineNum">     189 </span>            :                 /// &lt;param name=&quot;throwExceptionOnNoEvents&quot;&gt;If true will throw an instance of &lt;see cref=&quot;AggregateNotFoundException{TAggregateRoot,TAuthenticationToken}&quot;/&gt; if no aggregate events or provided or found in the &lt;see cref=&quot;EventStore&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">     190 </span>            :                 public virtual void LoadAggregateHistory&lt;TAggregateRoot&gt;(TAggregateRoot aggregate, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null, bool throwExceptionOnNoEvents = true)
-<span class="lineNum">     191 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
-<span class="lineNum">     192 </span>            :                 {
-<span class="lineNum">     193 </span>            :                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; theseEvents = events ?? EventStore.Get&lt;TAggregateRoot&gt;(aggregate.Id).ToList();
-<span class="lineNum">     194 </span>            :                         if (!theseEvents.Any())
-<span class="lineNum">     195 </span>            :                         {
-<span class="lineNum">     196 </span>            :                                 if (throwExceptionOnNoEvents)
-<span class="lineNum">     197 </span>            :                                         throw new AggregateNotFoundException&lt;TAggregateRoot, TAuthenticationToken&gt;(aggregate.Id);
-<span class="lineNum">     198 </span>            :                                 return;
-<span class="lineNum">     199 </span>            :                         }
-<span class="lineNum">     200 </span>            : 
-<span class="lineNum">     201 </span>            :                         var duplicatedEvents =
-<span class="lineNum">     202 </span>            :                                 theseEvents.GroupBy(x =&gt; x.Version)
-<span class="lineNum">     203 </span>            :                                         .Select(x =&gt; new { Version = x.Key, Total = x.Count() })
-<span class="lineNum">     204 </span>            :                                         .FirstOrDefault(x =&gt; x.Total &gt; 1);
-<span class="lineNum">     205 </span>            :                         if (duplicatedEvents != null)
-<span class="lineNum">     206 </span>            :                                 throw new DuplicateEventException&lt;TAggregateRoot, TAuthenticationToken&gt;(aggregate.Id, duplicatedEvents.Version);
+<span class="lineNum">      25 </span><span class="lineCov">          1 :         public class AggregateRepository&lt;TAuthenticationToken&gt;</span>
+<span class="lineNum">      26 </span>            :                 : IAggregateRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      27 </span>            :         {
+<span class="lineNum">      28 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      29 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; used to store and retrieve events from.
+<span class="lineNum">      30 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      31 </span>            :                 protected IEventStore&lt;TAuthenticationToken&gt; EventStore { get; private set; }
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      34 </span>            :                 /// Gets or sets the Publisher used to publish events on once saved into the &lt;see cref=&quot;EventStore&quot;/&gt;.
+<span class="lineNum">      35 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      36 </span>            :                 protected IEventPublisher&lt;TAuthenticationToken&gt; Publisher { get; private set; }
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// Gets or set the &lt;see cref=&quot;IAggregateFactory&quot;/&gt;.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span>            :                 protected IAggregateFactory AggregateFactory { get; private set; }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      44 </span>            :                 /// Gets or set the &lt;see cref=&quot;ICorrelationIdHelper&quot;/&gt;.
+<span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      46 </span>            :                 protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      49 </span><span class="lineCov">          1 :                 /// Gets or sets the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.</span>
+<span class="lineNum">      50 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      51 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      54 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AggregateRepository{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      55 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      56 </span>            :                 public AggregateRepository(IAggregateFactory aggregateFactory, IEventStore&lt;TAuthenticationToken&gt; eventStore, IEventPublisher&lt;TAuthenticationToken&gt; publisher, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager)
+<span class="lineNum">      57 </span>            :                 {
+<span class="lineNum">      58 </span>            :                         EventStore = eventStore;
+<span class="lineNum">      59 </span>            :                         Publisher = publisher;
+<span class="lineNum">      60 </span>            :                         CorrelationIdHelper = correlationIdHelper;
+<span class="lineNum">      61 </span>            :                         ConfigurationManager = configurationManager;
+<span class="lineNum">      62 </span>            :                         AggregateFactory = aggregateFactory;
+<span class="lineNum">      63 </span><span class="lineCov">          1 :                 }</span>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      66 </span>            :                 /// Save and persist the provided &lt;paramref name=&quot;aggregate&quot;/&gt;, optionally providing the version number the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; is expected to be at.
+<span class="lineNum">      67 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      68 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      69 </span>            :                 /// &lt;param name=&quot;aggregate&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to save and persist.&lt;/param&gt;
+<span class="lineNum">      70 </span>            :                 /// &lt;param name=&quot;expectedVersion&quot;&gt;The version number the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; is expected to be at.&lt;/param&gt;
+<span class="lineNum">      71 </span>            :                 public virtual void Save&lt;TAggregateRoot&gt;(TAggregateRoot aggregate, int? expectedVersion = null)
+<span class="lineNum">      72 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">      73 </span>            :                 {
+<span class="lineNum">      74 </span>            :                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; uncommittedChanges = aggregate.GetUncommittedChanges().ToList();
+<span class="lineNum">      75 </span>            :                         if (!uncommittedChanges.Any())
+<span class="lineNum">      76 </span>            :                                 return;
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                         if (expectedVersion != null)
+<span class="lineNum">      79 </span>            :                         {
+<span class="lineNum">      80 </span>            :                                 IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; eventStoreResults = EventStore.Get(aggregate.GetType(), aggregate.Id, false, expectedVersion.Value);
+<span class="lineNum">      81 </span>            :                                 if (eventStoreResults.Any())
+<span class="lineNum">      82 </span>            :                                         throw new ConcurrencyException(aggregate.Id);
+<span class="lineNum">      83 </span>            :                         }
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                         var eventsToPublish = new List&lt;IEvent&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :                         int i = 0;
+<span class="lineNum">      88 </span>            :                         int version = aggregate.Version;
+<span class="lineNum">      89 </span>            :                         foreach (IEvent&lt;TAuthenticationToken&gt; @event in uncommittedChanges)
+<span class="lineNum">      90 </span>            :                         {
+<span class="lineNum">      91 </span>            :                                 var eventWithIdentity = @event as IEventWithIdentity&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      92 </span>            :                                 if (eventWithIdentity != null)
+<span class="lineNum">      93 </span>            :                                 {
+<span class="lineNum">      94 </span>            :                                         if (eventWithIdentity.Rsn == Guid.Empty)
+<span class="lineNum">      95 </span>            :                                                 eventWithIdentity.Rsn = aggregate.Id;
+<span class="lineNum">      96 </span>            :                                         if (eventWithIdentity.Rsn == Guid.Empty)
+<span class="lineNum">      97 </span>            :                                                 throw new AggregateOrEventMissingIdException(aggregate.GetType(), @event.GetType());
+<span class="lineNum">      98 </span>            :                                 }
+<span class="lineNum">      99 </span>            :                                 else
+<span class="lineNum">     100 </span>            :                                 {
+<span class="lineNum">     101 </span>            :                                         if (@event.Id == Guid.Empty)
+<span class="lineNum">     102 </span>            :                                                 @event.Id = aggregate.Id;
+<span class="lineNum">     103 </span>            :                                         if (@event.Id == Guid.Empty)
+<span class="lineNum">     104 </span>            :                                                 throw new AggregateOrEventMissingIdException(aggregate.GetType(), @event.GetType());
+<span class="lineNum">     105 </span>            :                                 }
+<span class="lineNum">     106 </span><span class="lineCov">          1 : </span>
+<span class="lineNum">     107 </span>            :                                 i++;
+<span class="lineNum">     108 </span>            :                                 version++;
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :                                 @event.Version = version;
+<span class="lineNum">     111 </span>            :                                 @event.TimeStamp = DateTimeOffset.UtcNow;
+<span class="lineNum">     112 </span>            :                                 @event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+<span class="lineNum">     113 </span>            :                                 EventStore.Save(aggregate.GetType(), @event);
+<span class="lineNum">     114 </span>            :                                 eventsToPublish.Add(@event);
+<span class="lineNum">     115 </span>            :                         }
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span>            :                         aggregate.MarkChangesAsCommitted();
+<span class="lineNum">     118 </span>            :                         foreach (IEvent&lt;TAuthenticationToken&gt; @event in eventsToPublish)
+<span class="lineNum">     119 </span>            :                                 PublishEvent(@event);
+<span class="lineNum">     120 </span><span class="lineCov">          1 :                 }</span>
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     123 </span>            :                 /// Publish the saved &lt;paramref name=&quot;event&quot;/&gt;.
+<span class="lineNum">     124 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     125 </span>            :                 protected virtual void PublishEvent(IEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">     126 </span>            :                 {
+<span class="lineNum">     127 </span>            :                         Publisher.Publish(@event);
+<span class="lineNum">     128 </span>            :                 }
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     131 </span><span class="lineCov">          1 :                 /// Retrieves an &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt;.</span>
+<span class="lineNum">     132 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     133 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     134 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The identifier of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to retrieve.&lt;/param&gt;
+<span class="lineNum">     135 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     136 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     137 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     138 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     139 </span>            :                 public virtual TAggregateRoot Get&lt;TAggregateRoot&gt;(Guid aggregateId, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)
+<span class="lineNum">     140 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     141 </span>            :                 {
+<span class="lineNum">     142 </span>            :                         return LoadAggregate&lt;TAggregateRoot&gt;(aggregateId, events);
+<span class="lineNum">     143 </span>            :                 }
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     146 </span>            :                 /// Retrieves an &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; up to and including the provided &lt;paramref name=&quot;version&quot;/&gt;.
+<span class="lineNum">     147 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     148 </span><span class="lineCov">          1 :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;</span>
+<span class="lineNum">     149 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The identifier of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to retrieve.&lt;/param&gt;
+<span class="lineNum">     150 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">     151 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     152 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     153 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     154 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     155 </span>            :                 public virtual TAggregateRoot GetToVersion&lt;TAggregateRoot&gt;(Guid aggregateId, int version, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)
+<span class="lineNum">     156 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     157 </span>            :                 {
+<span class="lineNum">     158 </span>            :                         return LoadAggregateToVersion&lt;TAggregateRoot&gt;(aggregateId, version, events);
+<span class="lineNum">     159 </span>            :                 }
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     162 </span>            :                 /// Retrieves an &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; up to and including the provided &lt;paramref name=&quot;versionedDate&quot;/&gt;.
+<span class="lineNum">     163 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     164 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     165 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The identifier of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to retrieve.&lt;/param&gt;
+<span class="lineNum">     166 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     167 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     168 </span><span class="lineCov">          1 :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.</span>
+<span class="lineNum">     169 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     170 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     171 </span>            :                 public virtual TAggregateRoot GetToDate&lt;TAggregateRoot&gt;(Guid aggregateId, DateTime versionedDate, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)
+<span class="lineNum">     172 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     173 </span>            :                 {
+<span class="lineNum">     174 </span>            :                         return LoadAggregateToDate&lt;TAggregateRoot&gt;(aggregateId, versionedDate, events);
+<span class="lineNum">     175 </span>            :                 }
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     178 </span>            :                 /// Calls &lt;see cref=&quot;IAggregateFactory.Create&quot;/&gt; to get a, &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt;.
+<span class="lineNum">     179 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     180 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     181 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The id of the &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; to create.&lt;/param&gt;
+<span class="lineNum">     182 </span>            :                 protected virtual TAggregateRoot CreateAggregate&lt;TAggregateRoot&gt;(Guid id)
+<span class="lineNum">     183 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     184 </span>            :                 {
+<span class="lineNum">     185 </span>            :                         var aggregate = AggregateFactory.Create&lt;TAggregateRoot&gt;(id);
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span>            :                         return aggregate;
+<span class="lineNum">     188 </span>            :                 }
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     191 </span>            :                 /// Calls &lt;see cref=&quot;IAggregateFactory.Create&quot;/&gt; to get a, &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; and then calls &lt;see cref=&quot;LoadAggregateHistory{TAggregateRoot}&quot;/&gt;.
+<span class="lineNum">     192 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     193 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     194 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The id of the &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; to create.&lt;/param&gt;
+<span class="lineNum">     195 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     196 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     197 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     198 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     199 </span>            :                 protected virtual TAggregateRoot LoadAggregate&lt;TAggregateRoot&gt;(Guid id, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)
+<span class="lineNum">     200 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     201 </span>            :                 {
+<span class="lineNum">     202 </span>            :                         bool tryDependencyResolutionFirst;
+<span class="lineNum">     203 </span>            :                         if (!ConfigurationManager.TryGetSetting(string.Format(&quot;Cqrs.AggregateFactory.TryDependencyResolutionFirst.{0}&quot;, typeof(TAggregateRoot).FullName), out tryDependencyResolutionFirst))
+<span class="lineNum">     204 </span>            :                                 if (!ConfigurationManager.TryGetSetting(&quot;Cqrs.AggregateFactory.TryDependencyResolutionFirst&quot;, out tryDependencyResolutionFirst))
+<span class="lineNum">     205 </span>            :                                         tryDependencyResolutionFirst = false;
+<span class="lineNum">     206 </span>            :                         var aggregate = AggregateFactory.Create&lt;TAggregateRoot&gt;(id, tryDependencyResolutionFirst);
 <span class="lineNum">     207 </span>            : 
-<span class="lineNum">     208 </span>            :                         aggregate.LoadFromHistory(theseEvents);
-<span class="lineNum">     209 </span>            :                 }
-<span class="lineNum">     210 </span>            :         }
-<span class="lineNum">     211 </span>            : }
+<span class="lineNum">     208 </span>            :                         LoadAggregateHistory(aggregate, events);
+<span class="lineNum">     209 </span>            :                         return aggregate;
+<span class="lineNum">     210 </span>            :                 }
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     213 </span>            :                 /// Calls &lt;see cref=&quot;IAggregateFactory.Create&quot;/&gt; to get a, &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; and then calls &lt;see cref=&quot;LoadAggregateHistory{TAggregateRoot}&quot;/&gt;.
+<span class="lineNum">     214 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     215 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     216 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The id of the &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; to create.&lt;/param&gt;
+<span class="lineNum">     217 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">     218 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     219 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     220 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     221 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     222 </span>            :                 protected virtual TAggregateRoot LoadAggregateToVersion&lt;TAggregateRoot&gt;(Guid id, int version, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)
+<span class="lineNum">     223 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     224 </span>            :                 {
+<span class="lineNum">     225 </span>            :                         bool tryDependencyResolutionFirst;
+<span class="lineNum">     226 </span>            :                         if (!ConfigurationManager.TryGetSetting(string.Format(&quot;Cqrs.AggregateFactory.TryDependencyResolutionFirst.{0}&quot;, typeof(TAggregateRoot).FullName), out tryDependencyResolutionFirst))
+<span class="lineNum">     227 </span>            :                                 if (!ConfigurationManager.TryGetSetting(&quot;Cqrs.AggregateFactory.TryDependencyResolutionFirst&quot;, out tryDependencyResolutionFirst))
+<span class="lineNum">     228 </span>            :                                         tryDependencyResolutionFirst = false;
+<span class="lineNum">     229 </span>            :                         var aggregate = AggregateFactory.Create&lt;TAggregateRoot&gt;(id, tryDependencyResolutionFirst);
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span>            :                         LoadAggregateHistoryToVersion(aggregate, version, events);
+<span class="lineNum">     232 </span>            :                         return aggregate;
+<span class="lineNum">     233 </span>            :                 }
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     236 </span>            :                 /// Calls &lt;see cref=&quot;IAggregateFactory.Create&quot;/&gt; to get a, &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; and then calls &lt;see cref=&quot;LoadAggregateHistory{TAggregateRoot}&quot;/&gt;.
+<span class="lineNum">     237 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     238 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     239 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The id of the &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; to create.&lt;/param&gt;
+<span class="lineNum">     240 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     241 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     242 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     243 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     244 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     245 </span>            :                 protected virtual TAggregateRoot LoadAggregateToDate&lt;TAggregateRoot&gt;(Guid id, DateTime versionedDate, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)
+<span class="lineNum">     246 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     247 </span>            :                 {
+<span class="lineNum">     248 </span>            :                         bool tryDependencyResolutionFirst;
+<span class="lineNum">     249 </span>            :                         if (!ConfigurationManager.TryGetSetting(string.Format(&quot;Cqrs.AggregateFactory.TryDependencyResolutionFirst.{0}&quot;, typeof(TAggregateRoot).FullName), out tryDependencyResolutionFirst))
+<span class="lineNum">     250 </span>            :                                 if (!ConfigurationManager.TryGetSetting(&quot;Cqrs.AggregateFactory.TryDependencyResolutionFirst&quot;, out tryDependencyResolutionFirst))
+<span class="lineNum">     251 </span>            :                                         tryDependencyResolutionFirst = false;
+<span class="lineNum">     252 </span>            :                         var aggregate = AggregateFactory.Create&lt;TAggregateRoot&gt;(id, tryDependencyResolutionFirst);
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            :                         LoadAggregateHistoryToDate(aggregate, versionedDate, events);
+<span class="lineNum">     255 </span>            :                         return aggregate;
+<span class="lineNum">     256 </span>            :                 }
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     259 </span>            :                 /// If &lt;paramref name=&quot;events&quot;/&gt; is null, loads the events from &lt;see cref=&quot;EventStore&quot;/&gt;, checks for duplicates and then
+<span class="lineNum">     260 </span>            :                 /// rehydrates the &lt;paramref name=&quot;aggregate&quot;/&gt; with the events.
+<span class="lineNum">     261 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     262 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     263 </span>            :                 /// &lt;param name=&quot;aggregate&quot;&gt;The &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; to rehydrate.&lt;/param&gt;
+<span class="lineNum">     264 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     265 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     266 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     267 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     268 </span>            :                 /// &lt;param name=&quot;throwExceptionOnNoEvents&quot;&gt;If true will throw an instance of &lt;see cref=&quot;AggregateNotFoundException{TAggregateRoot,TAuthenticationToken}&quot;/&gt; if no aggregate events or provided or found in the &lt;see cref=&quot;EventStore&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     269 </span>            :                 public virtual void LoadAggregateHistory&lt;TAggregateRoot&gt;(TAggregateRoot aggregate, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null, bool throwExceptionOnNoEvents = true)
+<span class="lineNum">     270 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     271 </span>            :                 {
+<span class="lineNum">     272 </span>            :                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; theseEvents = events ?? EventStore.Get&lt;TAggregateRoot&gt;(aggregate.Id).ToList();
+<span class="lineNum">     273 </span>            :                         if (!theseEvents.Any())
+<span class="lineNum">     274 </span>            :                         {
+<span class="lineNum">     275 </span>            :                                 if (throwExceptionOnNoEvents)
+<span class="lineNum">     276 </span>            :                                         throw new AggregateNotFoundException&lt;TAggregateRoot, TAuthenticationToken&gt;(aggregate.Id);
+<span class="lineNum">     277 </span>            :                                 return;
+<span class="lineNum">     278 </span>            :                         }
+<span class="lineNum">     279 </span>            : 
+<span class="lineNum">     280 </span>            :                         var duplicatedEvents =
+<span class="lineNum">     281 </span>            :                                 theseEvents.GroupBy(x =&gt; x.Version)
+<span class="lineNum">     282 </span>            :                                         .Select(x =&gt; new { Version = x.Key, Total = x.Count() })
+<span class="lineNum">     283 </span>            :                                         .FirstOrDefault(x =&gt; x.Total &gt; 1);
+<span class="lineNum">     284 </span>            :                         if (duplicatedEvents != null)
+<span class="lineNum">     285 </span>            :                                 throw new DuplicateEventException&lt;TAggregateRoot, TAuthenticationToken&gt;(aggregate.Id, duplicatedEvents.Version);
+<span class="lineNum">     286 </span>            : 
+<span class="lineNum">     287 </span>            :                         aggregate.LoadFromHistory(theseEvents);
+<span class="lineNum">     288 </span>            :                 }
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     291 </span>            :                 /// If &lt;paramref name=&quot;events&quot;/&gt; is null, loads the events from &lt;see cref=&quot;EventStore&quot;/&gt;, checks for duplicates and then
+<span class="lineNum">     292 </span>            :                 /// rehydrates the &lt;paramref name=&quot;aggregate&quot;/&gt; with the events.
+<span class="lineNum">     293 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     294 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     295 </span>            :                 /// &lt;param name=&quot;aggregate&quot;&gt;The &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; to rehydrate.&lt;/param&gt;
+<span class="lineNum">     296 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">     297 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     298 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     299 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     300 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     301 </span>            :                 /// &lt;param name=&quot;throwExceptionOnNoEvents&quot;&gt;If true will throw an instance of &lt;see cref=&quot;AggregateNotFoundException{TAggregateRoot,TAuthenticationToken}&quot;/&gt; if no aggregate events or provided or found in the &lt;see cref=&quot;EventStore&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     302 </span>            :                 public virtual void LoadAggregateHistoryToVersion&lt;TAggregateRoot&gt;(TAggregateRoot aggregate, int version, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null, bool throwExceptionOnNoEvents = true)
+<span class="lineNum">     303 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     304 </span>            :                 {
+<span class="lineNum">     305 </span>            :                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; theseEvents = events ?? EventStore.GetToVersion&lt;TAggregateRoot&gt;(aggregate.Id, version).ToList();
+<span class="lineNum">     306 </span>            :                         if (!theseEvents.Any())
+<span class="lineNum">     307 </span>            :                         {
+<span class="lineNum">     308 </span>            :                                 if (throwExceptionOnNoEvents)
+<span class="lineNum">     309 </span>            :                                         throw new AggregateNotFoundException&lt;TAggregateRoot, TAuthenticationToken&gt;(aggregate.Id);
+<span class="lineNum">     310 </span>            :                                 return;
+<span class="lineNum">     311 </span>            :                         }
+<span class="lineNum">     312 </span>            : 
+<span class="lineNum">     313 </span>            :                         var duplicatedEvents =
+<span class="lineNum">     314 </span>            :                                 theseEvents.GroupBy(x =&gt; x.Version)
+<span class="lineNum">     315 </span>            :                                         .Select(x =&gt; new { Version = x.Key, Total = x.Count() })
+<span class="lineNum">     316 </span>            :                                         .FirstOrDefault(x =&gt; x.Total &gt; 1);
+<span class="lineNum">     317 </span>            :                         if (duplicatedEvents != null)
+<span class="lineNum">     318 </span>            :                                 throw new DuplicateEventException&lt;TAggregateRoot, TAuthenticationToken&gt;(aggregate.Id, duplicatedEvents.Version);
+<span class="lineNum">     319 </span>            : 
+<span class="lineNum">     320 </span>            :                         aggregate.LoadFromHistory(theseEvents);
+<span class="lineNum">     321 </span>            :                 }
+<span class="lineNum">     322 </span>            : 
+<span class="lineNum">     323 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     324 </span>            :                 /// If &lt;paramref name=&quot;events&quot;/&gt; is null, loads the events from &lt;see cref=&quot;EventStore&quot;/&gt;, checks for duplicates and then
+<span class="lineNum">     325 </span>            :                 /// rehydrates the &lt;paramref name=&quot;aggregate&quot;/&gt; with the events.
+<span class="lineNum">     326 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     327 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     328 </span>            :                 /// &lt;param name=&quot;aggregate&quot;&gt;The &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; to rehydrate.&lt;/param&gt;
+<span class="lineNum">     329 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     330 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     331 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     332 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     333 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     334 </span>            :                 /// &lt;param name=&quot;throwExceptionOnNoEvents&quot;&gt;If true will throw an instance of &lt;see cref=&quot;AggregateNotFoundException{TAggregateRoot,TAuthenticationToken}&quot;/&gt; if no aggregate events or provided or found in the &lt;see cref=&quot;EventStore&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     335 </span>            :                 public virtual void LoadAggregateHistoryToDate&lt;TAggregateRoot&gt;(TAggregateRoot aggregate, DateTime versionedDate, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null, bool throwExceptionOnNoEvents = true)
+<span class="lineNum">     336 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     337 </span>            :                 {
+<span class="lineNum">     338 </span>            :                         IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; theseEvents = events ?? EventStore.GetToDate&lt;TAggregateRoot&gt;(aggregate.Id, versionedDate).ToList();
+<span class="lineNum">     339 </span>            :                         if (!theseEvents.Any())
+<span class="lineNum">     340 </span>            :                         {
+<span class="lineNum">     341 </span>            :                                 if (throwExceptionOnNoEvents)
+<span class="lineNum">     342 </span>            :                                         throw new AggregateNotFoundException&lt;TAggregateRoot, TAuthenticationToken&gt;(aggregate.Id);
+<span class="lineNum">     343 </span>            :                                 return;
+<span class="lineNum">     344 </span>            :                         }
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span>            :                         var duplicatedEvents =
+<span class="lineNum">     347 </span>            :                                 theseEvents.GroupBy(x =&gt; x.Version)
+<span class="lineNum">     348 </span>            :                                         .Select(x =&gt; new { Version = x.Key, Total = x.Count() })
+<span class="lineNum">     349 </span>            :                                         .FirstOrDefault(x =&gt; x.Total &gt; 1);
+<span class="lineNum">     350 </span>            :                         if (duplicatedEvents != null)
+<span class="lineNum">     351 </span>            :                                 throw new DuplicateEventException&lt;TAggregateRoot, TAuthenticationToken&gt;(aggregate.Id, duplicatedEvents.Version);
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span>            :                         aggregate.LoadFromHistory(theseEvents);
+<span class="lineNum">     354 </span>            :                 }
+<span class="lineNum">     355 </span>            :         }
+<span class="lineNum">     356 </span>            : }
 </pre>
       </td>
     </tr>

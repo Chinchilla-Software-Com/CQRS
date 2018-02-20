@@ -77,21 +77,41 @@
 <span class="lineNum">      19 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      20 </span>            :                 /// Add an item into the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; ready to be committed.
 <span class="lineNum">      21 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      22 </span><span class="lineCov">          1 :                 void Add&lt;TAggregateRoot&gt;(TAggregateRoot aggregate)</span>
-<span class="lineNum">      23 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;;
-<span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      26 </span>            :                 /// Get an item from the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; if it has already been loaded.
-<span class="lineNum">      27 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      28 </span><span class="lineCov">          1 :                 TAggregateRoot Get&lt;TAggregateRoot&gt;(Guid id, int? expectedVersion = null, bool useSnapshots = false)</span>
-<span class="lineNum">      29 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;;
-<span class="lineNum">      30 </span>            : 
-<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      32 </span>            :                 /// Commit any changed &lt;see cref=&quot;AggregateRoot{TAuthenticationToken}&quot;/&gt; added to this &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; via &lt;see cref=&quot;Add{T}&quot;/&gt;
-<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      34 </span><span class="lineCov">          1 :                 void Commit();</span>
-<span class="lineNum">      35 </span>            :         }
-<span class="lineNum">      36 </span>            : }
+<span class="lineNum">      22 </span><span class="lineCov">          1 :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;</span>
+<span class="lineNum">      23 </span>            :                 void Add&lt;TAggregateRoot&gt;(TAggregateRoot aggregate)
+<span class="lineNum">      24 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// Get an item from the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; if it has already been loaded.
+<span class="lineNum">      28 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
+<span class="lineNum">      29 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">      30 </span>            :                 TAggregateRoot Get&lt;TAggregateRoot&gt;(Guid id, int? expectedVersion = null, bool useSnapshots = false)
+<span class="lineNum">      31 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      34 </span><span class="lineCov">          1 :                 /// Get an item from the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; up to and including the provided &lt;paramref name=&quot;version&quot;/&gt;.</span>
+<span class="lineNum">      35 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      36 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">      37 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      38 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">      39 </span>            :                 TAggregateRoot GetToVersion&lt;TAggregateRoot&gt;(Guid id, int version)
+<span class="lineNum">      40 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      43 </span>            :                 /// Get an item from the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; up to and including the provided &lt;paramref name=&quot;versionedDate&quot;/&gt;.
+<span class="lineNum">      44 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      45 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">      46 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      47 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">      48 </span>            :                 TAggregateRoot GetToDate&lt;TAggregateRoot&gt;(Guid id, DateTime versionedDate)
+<span class="lineNum">      49 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      52 </span>            :                 /// Commit any changed &lt;see cref=&quot;AggregateRoot{TAuthenticationToken}&quot;/&gt; added to this &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; via &lt;see cref=&quot;Add{T}&quot;/&gt;
+<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      54 </span>            :                 void Commit();
+<span class="lineNum">      55 </span>            :         }
+<span class="lineNum">      56 </span>            : }
 </pre>
       </td>
     </tr>

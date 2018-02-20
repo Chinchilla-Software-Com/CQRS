@@ -96,8 +96,34 @@
 <span class="lineNum">      38 </span>            :                 /// &lt;/param&gt;
 <span class="lineNum">      39 </span><span class="lineCov">          1 :                 TAggregateRoot Get&lt;TAggregateRoot&gt;(Guid aggregateId, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)</span>
 <span class="lineNum">      40 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;;
-<span class="lineNum">      41 </span>            :         }
-<span class="lineNum">      42 </span>            : }
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      43 </span>            :                 /// Retrieves an &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; up to and including the provided &lt;paramref name=&quot;version&quot;/&gt;.
+<span class="lineNum">      44 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      45 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      46 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The identifier of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to retrieve.&lt;/param&gt;
+<span class="lineNum">      47 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">      48 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">      49 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      50 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">      51 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">      52 </span>            :                 TAggregateRoot GetToVersion&lt;TAggregateRoot&gt;(Guid aggregateId, int version, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)
+<span class="lineNum">      53 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      56 </span>            :                 /// Retrieves an &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; up to and including the provided &lt;paramref name=&quot;versionedDate&quot;/&gt;.
+<span class="lineNum">      57 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      58 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      59 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The identifier of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to retrieve.&lt;/param&gt;
+<span class="lineNum">      60 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">      61 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">      62 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      63 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">      64 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">      65 </span>            :                 TAggregateRoot GetToDate&lt;TAggregateRoot&gt;(Guid aggregateId, DateTime versionedDate, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)
+<span class="lineNum">      66 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      67 </span>            :         }
+<span class="lineNum">      68 </span>            : }
 </pre>
       </td>
     </tr>

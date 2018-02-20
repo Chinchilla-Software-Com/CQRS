@@ -1,5 +1,15 @@
 var NAVTREEINDEX6 =
 {
+"classCqrs_1_1Exceptions_1_1NoCommandHandlerRegisteredException_afe8d9819db3c2f2bd901e04425642e95.html#afe8d9819db3c2f2bd901e04425642e95":[1,0,0,12,6,0],
+"classCqrs_1_1Exceptions_1_1NoEventHandlerRegisteredException.html":[1,0,0,12,7],
+"classCqrs_1_1Exceptions_1_1NoEventHandlerRegisteredException_a3b57a958403c3068e8811dc935148b86.html#a3b57a958403c3068e8811dc935148b86":[1,0,0,12,7,1],
+"classCqrs_1_1Exceptions_1_1NoEventHandlerRegisteredException_a8b0073d3afdffd45293c856b14806b46.html#a8b0073d3afdffd45293c856b14806b46":[1,0,0,12,7,0],
+"classCqrs_1_1Exceptions_1_1NoHandlerRegisteredException.html":[1,0,0,12,8],
+"classCqrs_1_1Exceptions_1_1NoHandlerRegisteredException_a573a57a3de0f1f63adc8709708aa94ff.html#a573a57a3de0f1f63adc8709708aa94ff":[1,0,0,12,8,0],
+"classCqrs_1_1Exceptions_1_1NoHandlerRegisteredException_afe0d2f28155653fd69e4c295c94daf64.html#afe0d2f28155653fd69e4c295c94daf64":[1,0,0,12,8,1],
+"classCqrs_1_1Exceptions_1_1NoHandlersRegisteredException.html":[1,0,0,12,9],
+"classCqrs_1_1Exceptions_1_1NoHandlersRegisteredException_a07fae549945497c218333281933f9373.html#a07fae549945497c218333281933f9373":[1,0,0,12,9,0],
+"classCqrs_1_1Exceptions_1_1NoHandlersRegisteredException_a2e134224b1864868953952274cae8ca4.html#a2e134224b1864868953952274cae8ca4":[1,0,0,12,9,1],
 "classCqrs_1_1Hosts_1_1CoreHost.html":[1,0,0,13,0],
 "classCqrs_1_1Hosts_1_1CoreHost_a098b8ab87f83dd6519e36b9838fd6e2e.html#a098b8ab87f83dd6519e36b9838fd6e2e":[1,0,0,13,0,16],
 "classCqrs_1_1Hosts_1_1CoreHost_a118553f5aa11e7fe07fce1d899528fa6.html#a118553f5aa11e7fe07fce1d899528fa6":[1,0,0,13,0,7],
@@ -239,15 +249,5 @@ var NAVTREEINDEX6 =
 "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule.html":[1,0,0,18,1,1,0,0],
 "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule_a0e10f40d139dc9268f492d0c1497c598.html#a0e10f40d139dc9268f492d0c1497c598":[1,0,0,18,1,1,0,0,1],
 "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule_a31458027b78e7016206b0340f647bd97.html#a31458027b78e7016206b0340f647bd97":[1,0,0,18,1,1,0,0,4],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule_a5b131fff27bf3787fa762bd5dc364bdd.html#a5b131fff27bf3787fa762bd5dc364bdd":[1,0,0,18,1,1,0,0,0],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule_a877c0ec79b109c14b0b6f950b643d9a8.html#a877c0ec79b109c14b0b6f950b643d9a8":[1,0,0,18,1,1,0,0,3],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule_a9aad9974c48acdbabb458117d7ab9e82.html#a9aad9974c48acdbabb458117d7ab9e82":[1,0,0,18,1,1,0,0,2],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule.html":[1,0,0,18,1,1,0,1],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule_a178aad844dd24aee601e304a0f538108.html#a178aad844dd24aee601e304a0f538108":[1,0,0,18,1,1,0,1,3],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule_a6528ff9a0213bc0accd217080ff56653.html#a6528ff9a0213bc0accd217080ff56653":[1,0,0,18,1,1,0,1,1],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule_ad541aab18b7ca5082dcabaaa5320a15c.html#ad541aab18b7ca5082dcabaaa5320a15c":[1,0,0,18,1,1,0,1,2],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule_ad9536f1eb7820c9066f2ce5f711ee55e.html#ad9536f1eb7820c9066f2ce5f711ee55e":[1,0,0,18,1,1,0,1,0],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule_ae47d987c2f32d3167ebda105f5fc8743.html#ae47d987c2f32d3167ebda105f5fc8743":[1,0,0,18,1,1,0,1,4],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule.html":[1,0,0,18,1,1,0,2],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule_a2b3e6c1f8edd6aa4101b98df7d1be93e.html#a2b3e6c1f8edd6aa4101b98df7d1be93e":[1,0,0,18,1,1,0,2,0]
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule_a5b131fff27bf3787fa762bd5dc364bdd.html#a5b131fff27bf3787fa762bd5dc364bdd":[1,0,0,18,1,1,0,0,0]
 };

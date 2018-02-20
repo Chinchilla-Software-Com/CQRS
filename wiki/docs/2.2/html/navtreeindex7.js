@@ -1,5 +1,15 @@
 var NAVTREEINDEX7 =
 {
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule_a877c0ec79b109c14b0b6f950b643d9a8.html#a877c0ec79b109c14b0b6f950b643d9a8":[1,0,0,18,1,1,0,0,3],
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule_a9aad9974c48acdbabb458117d7ab9e82.html#a9aad9974c48acdbabb458117d7ab9e82":[1,0,0,18,1,1,0,0,2],
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule.html":[1,0,0,18,1,1,0,1],
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule_a178aad844dd24aee601e304a0f538108.html#a178aad844dd24aee601e304a0f538108":[1,0,0,18,1,1,0,1,3],
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule_a6528ff9a0213bc0accd217080ff56653.html#a6528ff9a0213bc0accd217080ff56653":[1,0,0,18,1,1,0,1,1],
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule_ad541aab18b7ca5082dcabaaa5320a15c.html#ad541aab18b7ca5082dcabaaa5320a15c":[1,0,0,18,1,1,0,1,2],
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule_ad9536f1eb7820c9066f2ce5f711ee55e.html#ad9536f1eb7820c9066f2ce5f711ee55e":[1,0,0,18,1,1,0,1,0],
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule_ae47d987c2f32d3167ebda105f5fc8743.html#ae47d987c2f32d3167ebda105f5fc8743":[1,0,0,18,1,1,0,1,4],
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule.html":[1,0,0,18,1,1,0,2],
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule_a2b3e6c1f8edd6aa4101b98df7d1be93e.html#a2b3e6c1f8edd6aa4101b98df7d1be93e":[1,0,0,18,1,1,0,2,0],
 "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbModule.html":[1,0,0,18,1,1,0,3],
 "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbModule_a9bd41611cfee1edc8a88815c366fccae.html#a9bd41611cfee1edc8a88815c366fccae":[1,0,0,18,1,1,0,3,0],
 "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Events_1_1TestAzureDocumentDbEventStoreConnectionStringFactory.html":[1,0,0,18,1,1,1,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX7 =
 "classCqrs_1_1Repositories_1_1Queries_1_1QueryStrategy_ab1841119fbbb58337d55b014a8b260b4.html#ab1841119fbbb58337d55b014a8b260b4":[1,0,0,19,0,19,7],
 "classCqrs_1_1Repositories_1_1Queries_1_1QueryStrategy_ac21d8e8a04e218e1a7c283ad181e0e9f.html#ac21d8e8a04e218e1a7c283ad181e0e9f":[1,0,0,19,0,19,11],
 "classCqrs_1_1Repositories_1_1Queries_1_1QueryStrategy_ad63fa502c1054b3663049cbbcd8754ea.html#ad63fa502c1054b3663049cbbcd8754ea":[1,0,0,19,0,19,4],
-"classCqrs_1_1Repositories_1_1Queries_1_1QueryStrategy_ad8b52782f5410a399949417b10820780.html#ad8b52782f5410a399949417b10820780":[1,0,0,19,0,19,12],
-"classCqrs_1_1Repositories_1_1Queries_1_1QueryStrategy_ad8d28df2576ea9669e4b02fd368ffab5.html#ad8d28df2576ea9669e4b02fd368ffab5":[1,0,0,19,0,19,1],
-"classCqrs_1_1Repositories_1_1Queries_1_1QueryStrategy_af8d1066419789fe942ebc167cd76ddfb.html#af8d1066419789fe942ebc167cd76ddfb":[1,0,0,19,0,19,3],
-"classCqrs_1_1Repositories_1_1Queries_1_1ResultQuery.html":[1,0,0,19,0,20],
-"classCqrs_1_1Repositories_1_1Queries_1_1ResultQuery_a1c9b0137e4b5b1c00c6198fdcfde7ca3.html#a1c9b0137e4b5b1c00c6198fdcfde7ca3":[1,0,0,19,0,20,1],
-"classCqrs_1_1Repositories_1_1Queries_1_1ResultQuery_abad7775345c741c688bab2ec4671ba6b.html#abad7775345c741c688bab2ec4671ba6b":[1,0,0,19,0,20,0],
-"classCqrs_1_1Repositories_1_1Queries_1_1SingleResultQuery.html":[1,0,0,19,0,21],
-"classCqrs_1_1Repositories_1_1Queries_1_1SortParameter.html":[1,0,0,19,0,22],
-"classCqrs_1_1Repositories_1_1Queries_1_1SortParameter_abbe43d8ab36bb92bc388ad72651db73f.html#abbe43d8ab36bb92bc388ad72651db73f":[1,0,0,19,0,22,0],
-"classCqrs_1_1Repositories_1_1Queries_1_1SortParameter_adcd8ebe48bfc697ada8b302d5acb3d00.html#adcd8ebe48bfc697ada8b302d5acb3d00":[1,0,0,19,0,22,1],
-"classCqrs_1_1Repositories_1_1Repository.html":[1,0,0,19,3]
+"classCqrs_1_1Repositories_1_1Queries_1_1QueryStrategy_ad8b52782f5410a399949417b10820780.html#ad8b52782f5410a399949417b10820780":[1,0,0,19,0,19,12]
 };

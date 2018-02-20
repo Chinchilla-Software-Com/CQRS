@@ -1,5 +1,15 @@
 var NAVTREEINDEX5 =
 {
+"classCqrs_1_1Entities_1_1DecimalRange_a6bc3dc9a228baeff240d1fa3528a13ed.html#a6bc3dc9a228baeff240d1fa3528a13ed":[1,0,0,9,1,0],
+"classCqrs_1_1Entities_1_1Entity.html":[1,0,0,9,2],
+"classCqrs_1_1Entities_1_1Entity_a0d7379f43369a62bfe5783005d3e6ceb.html#a0d7379f43369a62bfe5783005d3e6ceb":[1,0,0,9,2,0],
+"classCqrs_1_1Entities_1_1Entity_a5c7605c4ab598f2975b914db7a274796.html#a5c7605c4ab598f2975b914db7a274796":[1,0,0,9,2,1],
+"classCqrs_1_1Entities_1_1Entity_a9913174d2d333a505af68a0f7e5fd2ca.html#a9913174d2d333a505af68a0f7e5fd2ca":[1,0,0,9,2,2],
+"classCqrs_1_1Entities_1_1IntegerRange.html":[1,0,0,9,4],
+"classCqrs_1_1Entities_1_1IntegerRange_ac491ceda1f36d73025011d79e56d77d3.html#ac491ceda1f36d73025011d79e56d77d3":[1,0,0,9,4,0],
+"classCqrs_1_1Entities_1_1Range.html":[1,0,0,9,5],
+"classCqrs_1_1Entities_1_1Range_a06daca38005d4f4ff2156b99a95d2f92.html#a06daca38005d4f4ff2156b99a95d2f92":[1,0,0,9,5,3],
+"classCqrs_1_1Entities_1_1Range_a135f90a2f05344538e79a40b5da28378.html#a135f90a2f05344538e79a40b5da28378":[1,0,0,9,5,1],
 "classCqrs_1_1Entities_1_1Range_a14cc90fd0525d94b2f3d4c69f19d013e.html#a14cc90fd0525d94b2f3d4c69f19d013e":[1,0,0,9,5,2],
 "classCqrs_1_1Entities_1_1Range_a373db08544a25cb6d53411f56e0e072a.html#a373db08544a25cb6d53411f56e0e072a":[1,0,0,9,5,0],
 "classCqrs_1_1EventStore_1_1Bus_1_1EventConverter.html":[1,0,0,11,0,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX5 =
 "classCqrs_1_1Exceptions_1_1MultipleHandlersRegisteredException_a5cfe27c70026da5cc37f5ad2de2bce9c.html#a5cfe27c70026da5cc37f5ad2de2bce9c":[1,0,0,12,5,0],
 "classCqrs_1_1Exceptions_1_1MultipleHandlersRegisteredException_ade772c573d129335b96ef168aec74183.html#ade772c573d129335b96ef168aec74183":[1,0,0,12,5,1],
 "classCqrs_1_1Exceptions_1_1NoCommandHandlerRegisteredException.html":[1,0,0,12,6],
-"classCqrs_1_1Exceptions_1_1NoCommandHandlerRegisteredException_a489f12858f990ea6a84f268e7744ab84.html#a489f12858f990ea6a84f268e7744ab84":[1,0,0,12,6,1],
-"classCqrs_1_1Exceptions_1_1NoCommandHandlerRegisteredException_afe8d9819db3c2f2bd901e04425642e95.html#afe8d9819db3c2f2bd901e04425642e95":[1,0,0,12,6,0],
-"classCqrs_1_1Exceptions_1_1NoEventHandlerRegisteredException.html":[1,0,0,12,7],
-"classCqrs_1_1Exceptions_1_1NoEventHandlerRegisteredException_a3b57a958403c3068e8811dc935148b86.html#a3b57a958403c3068e8811dc935148b86":[1,0,0,12,7,1],
-"classCqrs_1_1Exceptions_1_1NoEventHandlerRegisteredException_a8b0073d3afdffd45293c856b14806b46.html#a8b0073d3afdffd45293c856b14806b46":[1,0,0,12,7,0],
-"classCqrs_1_1Exceptions_1_1NoHandlerRegisteredException.html":[1,0,0,12,8],
-"classCqrs_1_1Exceptions_1_1NoHandlerRegisteredException_a573a57a3de0f1f63adc8709708aa94ff.html#a573a57a3de0f1f63adc8709708aa94ff":[1,0,0,12,8,0],
-"classCqrs_1_1Exceptions_1_1NoHandlerRegisteredException_afe0d2f28155653fd69e4c295c94daf64.html#afe0d2f28155653fd69e4c295c94daf64":[1,0,0,12,8,1],
-"classCqrs_1_1Exceptions_1_1NoHandlersRegisteredException.html":[1,0,0,12,9],
-"classCqrs_1_1Exceptions_1_1NoHandlersRegisteredException_a07fae549945497c218333281933f9373.html#a07fae549945497c218333281933f9373":[1,0,0,12,9,0],
-"classCqrs_1_1Exceptions_1_1NoHandlersRegisteredException_a2e134224b1864868953952274cae8ca4.html#a2e134224b1864868953952274cae8ca4":[1,0,0,12,9,1]
+"classCqrs_1_1Exceptions_1_1NoCommandHandlerRegisteredException_a489f12858f990ea6a84f268e7744ab84.html#a489f12858f990ea6a84f268e7744ab84":[1,0,0,12,6,1]
 };
