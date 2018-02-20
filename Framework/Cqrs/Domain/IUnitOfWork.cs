@@ -19,13 +19,33 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Add an item into the <see cref="IUnitOfWork{TAuthenticationToken}"/> ready to be committed.
 		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		void Add<TAggregateRoot>(TAggregateRoot aggregate)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>;
 
 		/// <summary>
 		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> if it has already been loaded.
 		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		TAggregateRoot Get<TAggregateRoot>(Guid id, int? expectedVersion = null, bool useSnapshots = false)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>;
+
+		/// <summary>
+		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> up to and including the provided <paramref name="version"/>.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
+		/// <param name="id">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="version">Load events up-to and including from this version</param>
+		TAggregateRoot GetToVersion<TAggregateRoot>(Guid id, int version)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>;
+
+		/// <summary>
+		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> up to and including the provided <paramref name="versionedDate"/>.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
+		/// <param name="id">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		TAggregateRoot GetToDate<TAggregateRoot>(Guid id, DateTime versionedDate)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>;
 
 		/// <summary>

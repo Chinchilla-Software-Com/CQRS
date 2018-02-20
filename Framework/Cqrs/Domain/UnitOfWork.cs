@@ -19,7 +19,8 @@ namespace Cqrs.Domain
 	/// <remarks>
 	/// This shouldn't normally be used as a singleton.
 	/// </remarks>
-	public class UnitOfWork<TAuthenticationToken> : IUnitOfWork<TAuthenticationToken>
+	public class UnitOfWork<TAuthenticationToken>
+		: IUnitOfWork<TAuthenticationToken>
 	{
 		private IAggregateRepository<TAuthenticationToken> Repository { get; set; }
 
@@ -74,6 +75,34 @@ namespace Cqrs.Domain
 			if (expectedVersion != null && aggregate.Version != expectedVersion)
 				throw new ConcurrencyException(id);
 			Add(aggregate);
+
+			return aggregate;
+		}
+
+		/// <summary>
+		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> up to and including the provided <paramref name="version"/>.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
+		/// <param name="id">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="version">Load events up-to and including from this version</param>
+		public TAggregateRoot GetToVersion<TAggregateRoot>(Guid id, int version)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
+		{
+			var aggregate = Repository.GetToVersion<TAggregateRoot>(id, version);
+
+			return aggregate;
+		}
+
+		/// <summary>
+		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> up to and including the provided <paramref name="versionedDate"/>.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
+		/// <param name="id">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		public TAggregateRoot GetToDate<TAggregateRoot>(Guid id, DateTime versionedDate)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
+		{
+			var aggregate = Repository.GetToDate<TAggregateRoot>(id, versionedDate);
 
 			return aggregate;
 		}

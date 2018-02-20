@@ -20,7 +20,8 @@ namespace Cqrs.Cache
 	/// Uses <see cref="MemoryCache.Default"/> to provide a caching mechanism to improve performance of a <see cref="IAggregateRepository{TAuthenticationToken}"/>.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of authentication token.</typeparam>
-	public class CacheRepository<TAuthenticationToken> : IAggregateRepository<TAuthenticationToken>
+	public class CacheRepository<TAuthenticationToken>
+		: IAggregateRepository<TAuthenticationToken>
 	{
 		/// <summary>
 		/// Sets or set the <see cref="IAggregateRepository{TAuthenticationToken}"/> that will be used, and cached over.
@@ -140,6 +141,38 @@ namespace Cqrs.Cache
 				Cache.Remove(idstring);
 				throw;
 			}
+		}
+
+		/// <summary>
+		/// Retrieves an <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <typeparamref name="TAggregateRoot"/> up to and including the provided <paramref name="version"/>.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
+		/// <param name="aggregateId">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to retrieve.</param>
+		/// <param name="version">Load events up-to and including from this version</param>
+		/// <param name="events">
+		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
+		/// </param>
+		public TAggregateRoot GetToVersion<TAggregateRoot>(Guid aggregateId, int version, IList<IEvent<TAuthenticationToken>> events = null)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
+		{
+			throw new InvalidOperationException("Verion replay is not appriopriate with caching.");
+		}
+
+		/// <summary>
+		/// Retrieves an <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <typeparamref name="TAggregateRoot"/> up to and including the provided <paramref name="versionedDate"/>.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
+		/// <param name="aggregateId">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to retrieve.</param>
+		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		/// <param name="events">
+		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
+		/// </param>
+		public TAggregateRoot GetToDate<TAggregateRoot>(Guid aggregateId, DateTime versionedDate, IList<IEvent<TAuthenticationToken>> events = null)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
+		{
+			throw new InvalidOperationException("Verion replay is not appriopriate with caching.");
 		}
 
 		private bool IsTracked(Guid id)
