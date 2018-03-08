@@ -66,6 +66,7 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
+			Type eventType = @event.GetType();
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = null;
@@ -73,7 +74,7 @@ namespace Cqrs.Azure.ServiceBus
 			bool telemeterOverall = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
-			string telemetryName = string.Format("{0}/{1}/{2}", @event.GetType().FullName, @event.GetIdentity(), @event.Id);
+			string telemetryName = string.Format("{0}/{1}/{2}", eventType.FullName, @event.GetIdentity(), @event.Id);
 			var telemeteredEvent = @event as ITelemeteredMessage;
 			if (telemeteredEvent != null)
 				telemetryName = telemeteredEvent.TelemetryName;
@@ -85,7 +86,6 @@ namespace Cqrs.Azure.ServiceBus
 				if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-ServiceBus"))
 					return;
 
-				Type eventType = typeof (TEvent);
 				bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(eventType);
 				bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(eventType);
 
@@ -106,7 +106,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 						};
-						brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
+						brokeredMessage.Properties.Add("Type", eventType.FullName);
 						PublicServiceBusPublisher.Send(brokeredMessage);
 						wasSuccessfull = true;
 					}
@@ -126,7 +126,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Default Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
-					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
+					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
 				}
 				if ((isPublicBusRequired != null && isPublicBusRequired.Value) )
 				{
@@ -139,7 +139,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 						};
-						brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
+						brokeredMessage.Properties.Add("Type", eventType.FullName);
 						PublicServiceBusPublisher.Send(brokeredMessage);
 						wasSuccessfull = true;
 					}
@@ -159,7 +159,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Public Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
-					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
+					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
 				}
 				if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
 				{
@@ -172,7 +172,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 						};
-						brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
+						brokeredMessage.Properties.Add("Type", eventType.FullName);
 						PrivateServiceBusPublisher.Send(brokeredMessage);
 						wasSuccessfull = true;
 					}
@@ -193,7 +193,7 @@ namespace Cqrs.Azure.ServiceBus
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Private Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
 
-					Logger.LogDebug(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
+					Logger.LogDebug(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
 				}
 				mainWasSuccessfull = true;
 			}
@@ -223,7 +223,8 @@ namespace Cqrs.Azure.ServiceBus
 			string telemetryNames = string.Empty;
 			foreach (TEvent @event in sourceEvents)
 			{
-				string subTelemetryName = string.Format("{0}/{1}/{2}", @event.GetType().FullName, @event.GetIdentity(), @event.Id);
+				Type eventType = @event.GetType();
+				string subTelemetryName = string.Format("{0}/{1}/{2}", eventType.FullName, @event.GetIdentity(), @event.Id);
 				var telemeteredEvent = @event as ITelemeteredMessage;
 				if (telemeteredEvent != null)
 					subTelemetryName = telemeteredEvent.TelemetryName;
@@ -243,11 +244,13 @@ namespace Cqrs.Azure.ServiceBus
 					if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-ServiceBus"))
 						continue;
 
+					Type eventType = @event.GetType();
+
 					var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
 					{
 						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 					};
-					brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
+					brokeredMessage.Properties.Add("Type", eventType.FullName);
 
 					var privateEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PrivateEventAttribute;
 					var publicEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PublicEventAttribute;
@@ -261,12 +264,12 @@ namespace Cqrs.Azure.ServiceBus
 						)
 					{
 						publicBrokeredMessages.Add(brokeredMessage);
-						sourceEventMessages.Add(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
+						sourceEventMessages.Add(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
 					}
 					if (privateEventAttribute != null)
 					{
 						privateBrokeredMessages.Add(brokeredMessage);
-						sourceEventMessages.Add(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
+						sourceEventMessages.Add(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
 					}
 				}
 

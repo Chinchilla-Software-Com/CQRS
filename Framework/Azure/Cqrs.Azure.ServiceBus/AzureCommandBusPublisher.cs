@@ -68,6 +68,7 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
+			Type commandType = command.GetType();
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = "200";
@@ -75,7 +76,7 @@ namespace Cqrs.Azure.ServiceBus
 			bool telemeterOverall = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
-			string telemetryName = string.Format("{0}/{1}/{2}", command.GetType().FullName, command.GetIdentity(), command.Id);
+			string telemetryName = string.Format("{0}/{1}/{2}", commandType.FullName, command.GetIdentity(), command.Id);
 			var telemeteredCommand = command as ITelemeteredMessage;
 			if (telemeteredCommand != null)
 				telemetryName = telemeteredCommand.TelemetryName;
@@ -87,7 +88,6 @@ namespace Cqrs.Azure.ServiceBus
 				if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
 					return;
 
-				Type commandType = typeof(TCommand);
 				bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(commandType);
 				bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(commandType);
 
@@ -108,7 +108,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 						};
-						brokeredMessage.Properties.Add("Type", commandType.GetType().FullName);
+						brokeredMessage.Properties.Add("Type", commandType.FullName);
 						PublicServiceBusPublisher.Send(brokeredMessage);
 						wasSuccessfull = true;
 					}
@@ -128,7 +128,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Command", telemetryName, "Default Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
-					Logger.LogDebug(string.Format("An command was published on the public bus with the id '{0}' was of type {1}.", command.Id, command.GetType().FullName));
+					Logger.LogDebug(string.Format("An command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
 				}
 				if ((isPublicBusRequired != null && isPublicBusRequired.Value))
 				{
@@ -141,7 +141,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 						};
-						brokeredMessage.Properties.Add("Type", commandType.GetType().FullName);
+						brokeredMessage.Properties.Add("Type", commandType.FullName);
 						PublicServiceBusPublisher.Send(brokeredMessage);
 						wasSuccessfull = true;
 					}
@@ -161,7 +161,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Command", telemetryName, "Public Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
-					Logger.LogDebug(string.Format("An command was published on the public bus with the id '{0}' was of type {1}.", command.Id, command.GetType().FullName));
+					Logger.LogDebug(string.Format("An command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
 				}
 				if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
 				{
@@ -174,7 +174,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 						};
-						brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+						brokeredMessage.Properties.Add("Type", commandType.FullName);
 						PrivateServiceBusPublisher.Send(brokeredMessage);
 						wasSuccessfull = true;
 					}
@@ -195,7 +195,7 @@ namespace Cqrs.Azure.ServiceBus
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Command", telemetryName, "Private Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
 
-					Logger.LogDebug(string.Format("An command was published on the private bus with the id '{0}' was of type {1}.", command.Id, command.GetType().FullName));
+					Logger.LogDebug(string.Format("An command was published on the private bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
 				}
 				mainWasSuccessfull = true;
 			}
@@ -225,7 +225,8 @@ namespace Cqrs.Azure.ServiceBus
 			string telemetryNames = string.Empty;
 			foreach (TCommand command in sourceCommands)
 			{
-				string subTelemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+				Type commandType = command.GetType();
+				string subTelemetryName = string.Format("{0}/{1}", commandType.FullName, command.Id);
 				var telemeteredCommand = command as ITelemeteredMessage;
 				if (telemeteredCommand != null)
 					subTelemetryName = telemeteredCommand.TelemetryName;
@@ -241,6 +242,7 @@ namespace Cqrs.Azure.ServiceBus
 				IList<BrokeredMessage> brokeredMessages = new List<BrokeredMessage>(sourceCommands.Count);
 				foreach (TCommand command in sourceCommands)
 				{
+					Type commandType = command.GetType();
 					if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
 						continue;
 
@@ -248,10 +250,10 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 					};
-					brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+					brokeredMessage.Properties.Add("Type", commandType.FullName);
 
 					brokeredMessages.Add(brokeredMessage);
-					sourceCommandMessages.Add(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+					sourceCommandMessages.Add(string.Format("A command was sent of type {0}.", commandType.FullName));
 				}
 
 				try
@@ -343,13 +345,14 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout,
 			IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
 		{
+			Type commandType = command.GetType();
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = "200";
 			bool wasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
-			string telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+			string telemetryName = string.Format("{0}/{1}", commandType.FullName, command.Id);
 			var telemeteredCommand = command as ITelemeteredMessage;
 			if (telemeteredCommand != null)
 				telemetryName = telemeteredCommand.TelemetryName;
@@ -373,7 +376,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 					};
-					brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+					brokeredMessage.Properties.Add("Type", commandType.FullName);
 					PrivateServiceBusPublisher.Send(brokeredMessage);
 				}
 				catch (QuotaExceededException exception)
@@ -388,7 +391,7 @@ namespace Cqrs.Azure.ServiceBus
 					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
 					throw;
 				}
-				Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+				Logger.LogInfo(string.Format("A command was sent of type {0}.", commandType.FullName));
 				wasSuccessfull = true;
 			}
 			finally
