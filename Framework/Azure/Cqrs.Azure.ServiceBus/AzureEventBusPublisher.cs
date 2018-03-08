@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using cdmdotnet.Logging;
+using cdmdotnet.Logging.Configuration;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
@@ -34,11 +35,17 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureEventBusPublisher{TAuthenticationToken}"/>.
 		/// </summary>
-		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
+		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper, ILoggerSettings loggerSettings)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
 		{
+			LoggerSettings = loggerSettings;
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
+
+		/// <summary>
+		/// Gets the <see cref="ILoggerSettings"/>.
+		/// </summary>
+		protected virtual ILoggerSettings LoggerSettings { get; private set; }
 
 		/// <summary>
 		/// The debugger variable window value.
@@ -107,6 +114,7 @@ namespace Cqrs.Azure.ServiceBus
 							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 						};
 						brokeredMessage.Properties.Add("Type", eventType.FullName);
+						brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
 						PublicServiceBusPublisher.Send(brokeredMessage);
 						wasSuccessfull = true;
 					}
@@ -140,6 +148,7 @@ namespace Cqrs.Azure.ServiceBus
 							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 						};
 						brokeredMessage.Properties.Add("Type", eventType.FullName);
+						brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
 						PublicServiceBusPublisher.Send(brokeredMessage);
 						wasSuccessfull = true;
 					}
@@ -173,6 +182,7 @@ namespace Cqrs.Azure.ServiceBus
 							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 						};
 						brokeredMessage.Properties.Add("Type", eventType.FullName);
+						brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
 						PrivateServiceBusPublisher.Send(brokeredMessage);
 						wasSuccessfull = true;
 					}
@@ -251,6 +261,7 @@ namespace Cqrs.Azure.ServiceBus
 						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 					};
 					brokeredMessage.Properties.Add("Type", eventType.FullName);
+					brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
 
 					var privateEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PrivateEventAttribute;
 					var publicEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PublicEventAttribute;

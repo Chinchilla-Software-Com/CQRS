@@ -44,7 +44,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			azureEventBusReceiver.RegisterHandler<TestEvent>(handler.Handle, handler.GetType());
 			azureEventBusReceiver.Start();
 
-			var azureEventBusPublisher = new AzureEventBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(new ConfigurationManager(), new ThreadedContextItemCollectionFactory()), new ConfigurationManager(), null), new BusHelper(new ConfigurationManager(), new ThreadedContextItemCollectionFactory()));
+			var azureEventBusPublisher = new AzureEventBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(new ConfigurationManager(), new ThreadedContextItemCollectionFactory()), new ConfigurationManager(), null), new BusHelper(new ConfigurationManager(), new ThreadedContextItemCollectionFactory()), new LoggerSettingsConfigurationSection());
 
 			// Act
 			azureEventBusPublisher.Publish(@event);
@@ -74,7 +74,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			azureCommandBusReceiver.RegisterHandler<TestCommand>(handler.Handle, handler.GetType());
 			azureCommandBusReceiver.Start();
 
-			var azureCommandBusPublisher = new AzureCommandBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(new ConfigurationManager(), new ThreadedContextItemCollectionFactory()), new ConfigurationManager(), null), new BusHelper(new ConfigurationManager(), new ThreadedContextItemCollectionFactory()));
+			var azureCommandBusPublisher = new AzureCommandBusPublisher<Guid>(new ConfigurationManager(), new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(new ConfigurationManager(), new ThreadedContextItemCollectionFactory()), new ConfigurationManager(), null), new BusHelper(new ConfigurationManager(), new ThreadedContextItemCollectionFactory()), new LoggerSettingsConfigurationSection());
 
 			// Act
 			azureCommandBusPublisher.Publish(command);

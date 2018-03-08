@@ -15,6 +15,7 @@ using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
+using cdmdotnet.Logging.Configuration;
 using Cqrs.Bus;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
@@ -36,11 +37,17 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureCommandBusPublisher{TAuthenticationToken}"/>.
 		/// </summary>
-		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
+		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper, ILoggerSettings loggerSettings)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
 		{
+			LoggerSettings = loggerSettings;
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.CommandBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
+
+		/// <summary>
+		/// Gets the <see cref="ILoggerSettings"/>.
+		/// </summary>
+		protected virtual ILoggerSettings LoggerSettings { get; private set; }
 
 		/// <summary>
 		/// The debugger variable window value.
@@ -109,6 +116,7 @@ namespace Cqrs.Azure.ServiceBus
 							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 						};
 						brokeredMessage.Properties.Add("Type", commandType.FullName);
+						brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
 						PublicServiceBusPublisher.Send(brokeredMessage);
 						wasSuccessfull = true;
 					}
@@ -142,6 +150,7 @@ namespace Cqrs.Azure.ServiceBus
 							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 						};
 						brokeredMessage.Properties.Add("Type", commandType.FullName);
+						brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
 						PublicServiceBusPublisher.Send(brokeredMessage);
 						wasSuccessfull = true;
 					}
@@ -175,6 +184,7 @@ namespace Cqrs.Azure.ServiceBus
 							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 						};
 						brokeredMessage.Properties.Add("Type", commandType.FullName);
+						brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
 						PrivateServiceBusPublisher.Send(brokeredMessage);
 						wasSuccessfull = true;
 					}
@@ -251,6 +261,7 @@ namespace Cqrs.Azure.ServiceBus
 						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 					};
 					brokeredMessage.Properties.Add("Type", commandType.FullName);
+					brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
 
 					brokeredMessages.Add(brokeredMessage);
 					sourceCommandMessages.Add(string.Format("A command was sent of type {0}.", commandType.FullName));
@@ -377,6 +388,7 @@ namespace Cqrs.Azure.ServiceBus
 						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 					};
 					brokeredMessage.Properties.Add("Type", commandType.FullName);
+					brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
 					PrivateServiceBusPublisher.Send(brokeredMessage);
 				}
 				catch (QuotaExceededException exception)

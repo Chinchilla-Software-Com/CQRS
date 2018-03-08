@@ -269,6 +269,8 @@ namespace Cqrs.Azure.ServiceBus
 			object value;
 			if (message.Properties.TryGetValue("Type", out value))
 				telemetryProperties.Add("MessageType", value.ToString());
+			if (message.Properties.TryGetValue("Source", out value))
+				telemetryProperties.Add("MessageSource", value.ToString());
 			TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles++, telemetryProperties);
 			var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
 			try
