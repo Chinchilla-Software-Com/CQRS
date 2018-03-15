@@ -83,7 +83,7 @@ namespace Cqrs.MongoDB.Events
 					}
 				}
 
-				ConnectionStringSettings connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[MongoDbConnectionStringKey];
+				ConnectionStringSettings connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey];
 				// If the connection string doesn't exist this value IS the connection string itself
 				if (connectionString == null)
 					return applicationKey;
