@@ -75,7 +75,7 @@ namespace Cqrs.WebApi
 					xToken = cookie[authenticationTokenName].Value;
 				else
 				{
-					string[] queryStrings = (Request.RequestUri.Query ?? "?")
+					string[] queryStrings = (string.IsNullOrWhiteSpace(Request.RequestUri.Query) ? "?" : Request.RequestUri.Query)
 						.Substring(1)
 						.Split('&');
 					foreach(string queryString in queryStrings)
