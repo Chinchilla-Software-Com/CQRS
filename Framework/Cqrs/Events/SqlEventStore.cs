@@ -127,6 +127,30 @@ namespace Cqrs.Events
 		}
 
 		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> from and including the provided <paramref name="fromVersionedDate"/> up to and including the provided <paramref name="toVersionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
+		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		public override IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			using (DataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+			{
+				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
+					.AsQueryable()
+					.Where(eventData => eventData.AggregateId == streamName && eventData.Timestamp >= fromVersionedDate && eventData.Timestamp <= toVersionedDate)
+					.OrderByDescending(eventData => eventData.Version);
+
+				return query
+					.Select(EventDeserialiser.Deserialise)
+					.ToList();
+			}
+		}
+
+		/// <summary>
 		/// Get all <see cref="IEvent{TAuthenticationToken}"/> instances for the given <paramref name="correlationId"/>.
 		/// </summary>
 		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>

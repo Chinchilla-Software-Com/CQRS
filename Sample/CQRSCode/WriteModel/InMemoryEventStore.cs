@@ -84,6 +84,32 @@ namespace CQRSCode.WriteModel
 			return GetToDate(typeof(T), aggregateId, versionedDate);
 		}
 
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> from and including the provided <paramref name="fromVersionedDate"/> up to and including the provided <paramref name="toVersionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
+		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		public IEnumerable<IEvent<ISingleSignOnToken>> GetBetweenDates(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
+		{
+			List<IEvent<ISingleSignOnToken>> events;
+			_inMemoryDb.TryGetValue(aggregateId, out events);
+			return events != null ? events.Where(eventData => eventData.TimeStamp >= fromVersionedDate && eventData.TimeStamp <= toVersionedDate) : new List<IEvent<ISingleSignOnToken>>();
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <typeparamref name="T">aggregate root</typeparamref> with the ID matching the provided <paramref name="aggregateId"/> from and including the provided <paramref name="fromVersionedDate"/> up to and including the provided <paramref name="toVersionedDate"/>.
+		/// </summary>
+		/// <typeparam name="T">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
+		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		public IEnumerable<IEvent<ISingleSignOnToken>> GetBetweenDates<T>(Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
+		{
+			return GetBetweenDates(typeof(T), aggregateId, fromVersionedDate, toVersionedDate);
+		}
+
 		public IEnumerable<EventData> Get(Guid correlationId)
 		{
 			return Enumerable.Empty<EventData>();

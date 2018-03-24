@@ -30,7 +30,7 @@ namespace Cqrs.MongoDB.Events
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class MongoDbEventStore<TAuthenticationToken>
-		: EventStore<TAuthenticationToken> 
+		: EventStore<TAuthenticationToken>
 	{
 		/// <summary>
 		/// Gets or sets the <see cref="IMongoCollection{TData}"/>
@@ -214,6 +214,27 @@ namespace Cqrs.MongoDB.Events
 			IEnumerable<MongoDbEventData> query = MongoCollection
 				.AsQueryable()
 				.Where(eventData => eventData.AggregateId == streamName && eventData.Timestamp <= versionedDate)
+				.OrderByDescending(eventData => eventData.Version);
+
+			return query
+				.Select(EventDeserialiser.Deserialise)
+				.ToList();
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> from and including the provided <paramref name="fromVersionedDate"/> up to and including the provided <paramref name="toVersionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="System.Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="fromVersionedDate">Load events from and including from this <see cref="System.DateTime"/></param>
+		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="System.DateTime"/></param>
+		public override IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			IEnumerable<MongoDbEventData> query = MongoCollection
+				.AsQueryable()
+				.Where(eventData => eventData.AggregateId == streamName && eventData.Timestamp >= fromVersionedDate && eventData.Timestamp <= toVersionedDate)
 				.OrderByDescending(eventData => eventData.Version);
 
 			return query

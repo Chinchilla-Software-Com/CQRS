@@ -81,25 +81,54 @@ namespace Cqrs.Configuration
 			foreach (Type typesFromAssemblyContainingMessage in typesFromAssemblyContainingMessages)
 			{
 				Assembly executorsAssembly = typesFromAssemblyContainingMessage.Assembly;
-				var executorTypes = executorsAssembly
+				HandlerTypeInformation[] executorTypes = executorsAssembly
 					.GetTypes()
-					.Select(type => new { Type = type, Interfaces = resolveMessageHandlerInterface(type) })
-					.Where(type => type.Interfaces != null && type.Interfaces.Any());
+					.Select(type => new HandlerTypeInformation { Type = type, Interfaces = resolveMessageHandlerInterface(type) })
+					.Where(type => type.Interfaces != null && type.Interfaces.Any())
+					.ToArray();
 
-				foreach (var executorType in executorTypes)
+				Register(trueForEventsFalseForCommands, resolveMessageHandlerInterface, skipCommandHandlers, executorTypes);
+			}
+		}
+
+		/// <summary>
+		/// Information explaining the registration to make
+		/// </summary>
+		public class HandlerTypeInformation
+		{
+			/// <summary>
+			/// The <see cref="Type"/> of the hanlder to register
+			/// </summary>
+			public Type Type { get; set; }
+
+			/// <summary>
+			/// The Handler type to resolve to, so either <see cref="IEventHandler{TAuthenticationToken,TEvent}"/> or <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/>
+			/// </summary>
+			public IEnumerable<Type> Interfaces { get; set; }
+		}
+
+		/// <summary>
+		/// Registers all <see cref="IHandler"/> instances in the provided <paramref name="executorTypes"/>.
+		/// </summary>
+		/// <param name="trueForEventsFalseForCommands">Indicates if this is registers <see cref="IEventHandler"/> or <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/>.</param>
+		/// <param name="resolveMessageHandlerInterface"><see cref="ResolveEventHandlerInterface"/> or <see cref="ResolveCommandHandlerInterface"/></param>
+		/// <param name="skipCommandHandlers">Indicates if registering of <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/> is enabled.</param>
+		/// <param name="executorTypes">A collection of <see cref="Type"/> to register.</param>
+		public virtual void Register(bool trueForEventsFalseForCommands, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, bool skipCommandHandlers, params HandlerTypeInformation[] executorTypes)
+		{
+			foreach (var executorType in executorTypes)
+			{
+				foreach (Type @interface in executorType.Interfaces)
 				{
-					foreach (Type @interface in executorType.Interfaces)
+					Type safeExecutorType = executorType.Type;
+					if (safeExecutorType.IsGenericType && safeExecutorType.Name == typeof(DtoCommandHandler<,>).Name)
 					{
-						Type safeExecutorType = executorType.Type;
-						if (typesFromAssemblyContainingMessage.IsGenericType && typesFromAssemblyContainingMessage.Name == typeof(DtoCommandHandler<,>).Name)
-						{
-							if (skipCommandHandlers)
-								continue;
-							Type[] genericArguments = typesFromAssemblyContainingMessage.GetGenericArguments().Take(2).ToArray();
-							safeExecutorType = safeExecutorType.MakeGenericType(genericArguments.Take(2).ToArray());
-						}
-						InvokeHandler(@interface, trueForEventsFalseForCommands, resolveMessageHandlerInterface, safeExecutorType);
+						if (skipCommandHandlers)
+							continue;
+						Type[] genericArguments = safeExecutorType.GetGenericArguments().Take(2).ToArray();
+						safeExecutorType = safeExecutorType.MakeGenericType(genericArguments.Take(2).ToArray());
 					}
+					InvokeHandler(@interface, trueForEventsFalseForCommands, resolveMessageHandlerInterface, safeExecutorType);
 				}
 			}
 		}
@@ -231,7 +260,7 @@ namespace Cqrs.Configuration
 		/// Finds all <see cref="Type"/> that implement <see cref="IEventHandler{TAuthenticationToken,TEvent}"/> that are implemented by <paramref name="type"/>.
 		/// </summary>
 		/// <param name="type">The <see cref="Type"/> to find all <see cref="IEventHandler{TAuthenticationToken,TEvent}"/> of.</param>
-		protected virtual IEnumerable<Type> ResolveEventHandlerInterface(Type type)
+		public virtual IEnumerable<Type> ResolveEventHandlerInterface(Type type)
 		{
 			return type
 				.GetInterfaces()
@@ -249,7 +278,7 @@ namespace Cqrs.Configuration
 		/// Finds all <see cref="Type"/> that implement <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/> that are implemented by <paramref name="type"/>.
 		/// </summary>
 		/// <param name="type">The <see cref="Type"/> to find all <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/> of.</param>
-		protected virtual IEnumerable<Type> ResolveCommandHandlerInterface(Type type)
+		public virtual IEnumerable<Type> ResolveCommandHandlerInterface(Type type)
 		{
 			return type
 				.GetInterfaces()

@@ -54,7 +54,8 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 			RegisterFactories();
 			RegisterServices();
 			RegisterRepositories();
-			RegisterCqrsCommandHandlers();
+			if (bool.Parse(System.Configuration.ConfigurationManager.AppSettings["Cqrs.Handlers.AutoRegisterAllHandlers"] ?? "true"))
+				RegisterCqrsCommandHandlers();
 		}
 
 		#endregion
