@@ -372,68 +372,81 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 				IQueryable<EventData> query = new ExposedSqlEventStore(sqlEventStore).RawQuery
 					.OrderBy(eventData => eventData.Timestamp);
 
-				IList<string> eventTypeNames = new List<string>();
-
-				Expression<Func<EventData, bool>> subQuery = PredicateBuilder.True<EventData>();
-				foreach (Type eventType in eventTypes)
-				{
-					string assemblyQualifiedName = eventType.AssemblyQualifiedName;
-					string[] assemblyQualifiedNameParts = assemblyQualifiedName.Split(',');
-					if (assemblyQualifiedNameParts.Length > 0)
-						assemblyQualifiedName = assemblyQualifiedNameParts[0].Trim() + ", " + assemblyQualifiedNameParts[1].Trim();
-					eventTypeNames.Add(assemblyQualifiedName);
-					subQuery = subQuery.Or(eventData => eventData.EventType.StartsWith(assemblyQualifiedName));
-				}
-
-				if (fromDate != null)
-					query = query.Where(eventData => eventData.Timestamp >= fromDate.Value);
-				if (toDate != null)
-					query = query.Where(eventData => eventData.Timestamp <= toDate.Value);
-
-				int skipCount = 0;
-				int limitCount;
-				if (!int.TryParse(ConfigurationManager.AppSettings["Cqrs.SQL.RecordsetSize"], out limitCount))
-					limitCount = 50000;
-				int resultsCount = 0;
-				IQueryable<EventData> runQuery = query.Take(limitCount).Skip(skipCount);
-				var results = new List<IEvent<TAuthenticationToken>>();
-
-				do
-				{
-					IList<EventData> subResults = runQuery.ToList();
-					if (!subResults.Any())
-						break;
-
-					foreach (EventData eventData in subResults.Where(eventData => eventTypeNames.Any(eventTypeName => eventData.EventType.StartsWith(eventTypeName))))
-					{
-						try
-						{
-							IEvent<TAuthenticationToken> @event = DependencyResolver.Current.Resolve<IEventDeserialiser<TAuthenticationToken>>().Deserialise(eventData);
-							if (LoadAllDataFirst)
-								results.Add(@event);
-							else
-								PublishEventOnTheEventBus(logger, eventPublisher, @event);
-							resultsCount++;
-						}
-						catch (Exception exception)
-						{
-							logger.LogError("Failed to process message", exception: exception);
-							if (resumeOnError)
-								continue;
-							throw;
-						}
-					}
-
-					logger.LogProgress(string.Format("Captured {0:N0} items, walked past {1:N0} items and currently have {2:N0} events.", subResults.Count, skipCount, resultsCount), "LoadEventsFromEventStore");
-					skipCount = skipCount + subResults.Count;
-					runQuery = query.Take(limitCount).Skip(skipCount);
-				} while (true);
-
-				return results;
+				return LoadEventsFromEventStore(eventPublisher, query, fromDate, toDate, eventTypes);
 			}
 
 			throw new NotImplementedException();
 		}
+
+		protected virtual IEnumerable<IEvent<TAuthenticationToken>> LoadEventsFromEventStore(IEventPublisher<TAuthenticationToken> eventPublisher, IQueryable<EventData> query, DateTime? fromDate = null, DateTime? toDate = null, params Type[] eventTypes)
+		{
+			bool resumeOnError;
+			if (!bool.TryParse(ConfigurationManager.AppSettings["ResumeOnError"], out resumeOnError))
+				resumeOnError = false;
+
+			var logger = DependencyResolver.Current.Resolve<ILogger>();
+			IList<string> eventTypeNames = new List<string>();
+
+			Expression<Func<EventData, bool>> subQuery = PredicateBuilder.True<EventData>();
+			foreach (Type eventType in eventTypes)
+			{
+				string assemblyQualifiedName = eventType.AssemblyQualifiedName;
+				string[] assemblyQualifiedNameParts = assemblyQualifiedName.Split(',');
+				if (assemblyQualifiedNameParts.Length > 0)
+					assemblyQualifiedName = assemblyQualifiedNameParts[0].Trim() + ", " + assemblyQualifiedNameParts[1].Trim();
+				eventTypeNames.Add(assemblyQualifiedName);
+				subQuery = subQuery.Or(eventData => eventData.EventType.StartsWith(assemblyQualifiedName));
+			}
+
+			if (fromDate != null)
+				query = query.Where(eventData => eventData.Timestamp >= fromDate.Value);
+			if (toDate != null)
+				query = query.Where(eventData => eventData.Timestamp <= toDate.Value);
+
+			int skipCount = 0;
+			int limitCount;
+			if (!int.TryParse(ConfigurationManager.AppSettings["Cqrs.SQL.RecordsetSize"], out limitCount))
+				limitCount = 50000;
+			int resultsCount = 0;
+			IQueryable<EventData> runQuery = query.Take(limitCount).Skip(skipCount);
+			var results = new List<IEvent<TAuthenticationToken>>();
+
+			do
+			{
+				IList<EventData> subResults = runQuery.ToList();
+				if (!subResults.Any())
+					break;
+
+				foreach (EventData eventData in subResults.Where(eventData => eventTypeNames.Any(eventTypeName => eventData.EventType.StartsWith(eventTypeName))))
+				{
+					try
+					{
+						IEvent<TAuthenticationToken> @event = DependencyResolver.Current.Resolve<IEventDeserialiser<TAuthenticationToken>>().Deserialise(eventData);
+						if (LoadAllDataFirst)
+							results.Add(@event);
+						else
+							PublishEventOnTheEventBus(logger, eventPublisher, @event);
+						resultsCount++;
+					}
+					catch (Exception exception)
+					{
+						logger.LogError("Failed to process message", exception: exception);
+						if (!resumeOnError)
+						{
+							Console.WriteLine("Review the above fatal issue, then press any key to continue.");
+							Console.ReadKey();
+						}
+					}
+				}
+
+				logger.LogProgress(string.Format("Captured {0:N0} items, walked past {1:N0} items and currently have {2:N0} events.", subResults.Count, skipCount, resultsCount), "LoadEventsFromEventStore");
+				skipCount = skipCount + subResults.Count;
+				runQuery = query.Take(limitCount).Skip(skipCount);
+			} while (true);
+
+			return results;
+		}
+
 
 		/// <summary>
 		/// Publish the loaded <see cref="IEvent{TAuthenticationToken}">events</see> on <see cref="IEventPublisher{TAuthenticationToken}">event bus</see>.
@@ -484,6 +497,17 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 						? "Publishing event {0} failed to be published."
 						: "Publishing event {0} with identifier {1} failed to be published.";
 					logger.LogError(string.Format(exceptionMessage, @event.Id, rsn), "PublishEventOnTheEventBus", exception);
+
+					bool resumeOnError;
+					if (!bool.TryParse(ConfigurationManager.AppSettings["ResumeOnError"], out resumeOnError))
+						resumeOnError = false;
+
+					if (!resumeOnError)
+					{
+						Console.WriteLine("Review the above issue, then press any key to continue.");
+						Console.ReadKey();
+					}
+
 					return;
 				}
 			} while (loopCount < 10);
