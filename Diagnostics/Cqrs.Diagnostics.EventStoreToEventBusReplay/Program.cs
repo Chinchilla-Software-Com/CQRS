@@ -30,6 +30,22 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 		private static void Main(string[] args)
 		{
 			int argumentCount = args.Length;
+
+			Console.WriteLine(@"This application will replay a collection of events.
+
+It works by scanning any subfolders for .net assemblies and looking for events it can republish on an event bus.
+
+For this to work we suggest you create a subfolder and place any assemblies you want to process in that folder.
+You will also need to adjust/modify the .config file for this application with any required configuration your assemblies need. Once you have done that you will be ready to proceed.
+
+Have you created your subfolder, added your assemblies and configured the .config file? Press Y if so to proceed. Press any other key to exit the application and configure your environment.
+
+Press Y to proceed.");
+			ConsoleKeyInfo character = Console.ReadKey();
+			Console.WriteLine();
+			if (!(new[] {'y', 'Y'}.Contains(character.KeyChar)))
+				return;
+
 			IProgram program;
 			string authenticationType = ConfigurationManager.AppSettings["Cqrs.AuthenticationTokenType"] ?? string.Empty;
 
