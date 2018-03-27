@@ -8,6 +8,7 @@
 
 using System;
 using Cqrs.Events;
+using Cqrs.Snapshots;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Configuration
@@ -42,6 +43,9 @@ namespace Cqrs.Ninject.Configuration
 			Bind<IEventDeserialiser<TAuthenticationToken>>()
 				.To<EventDeserialiser<TAuthenticationToken>>()
 				.InSingletonScope();
+			Bind<ISnapshotDeserialiser>()
+				.To<SnapshotDeserialiser>()
+				.InSingletonScope();
 		}
 
 		/// <summary>
@@ -51,6 +55,9 @@ namespace Cqrs.Ninject.Configuration
 		{
 			Bind<IEventStore<TAuthenticationToken>>()
 				.To<SqlEventStore<TAuthenticationToken>>()
+				.InSingletonScope();
+			Bind<ISnapshotStore>()
+				.To<SqlSnapshotStore>()
 				.InSingletonScope();
 		}
 	}

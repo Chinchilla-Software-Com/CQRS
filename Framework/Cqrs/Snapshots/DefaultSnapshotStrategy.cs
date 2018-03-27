@@ -43,7 +43,9 @@ namespace Cqrs.Snapshots
 			if (!IsSnapshotable(aggregate.GetType()))
 				return false;
 
-			// Why isn't this something as simple as `(aggregate.Version + aggregate.GetUncommittedChanges().Count()) % SnapshotInterval`???
+			// This reason this isn't as simple as `(aggregate.Version + aggregate.GetUncommittedChanges().Count()) % SnapshotInterval` is
+			// because if there are enough uncommited events that this would result in a snapshot, plus some left over, the final state is what will be generated
+			// when the snapshot is taken, thus this is a faster and more accurate assessment.
 			int i = aggregate.Version;
 
 			int limit = aggregate.GetUncommittedChanges().Count();

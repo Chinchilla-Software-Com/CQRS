@@ -1,5 +1,6 @@
 ﻿DECLARE	@TableName	NVARCHAR(50);
 SET		@TableName	= 'EventStore';
+-- If you are going to use snapshots, run this script again replacing 'EventStore' above with 'Snapshots'
 
 EXECUTE ('
 CREATE TABLE [dbo].[' + @TableName + '](
