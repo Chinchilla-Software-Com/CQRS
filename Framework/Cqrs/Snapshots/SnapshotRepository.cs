@@ -22,7 +22,7 @@ namespace Cqrs.Snapshots
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of authentication token.</typeparam>
 	public class SnapshotRepository<TAuthenticationToken>
-		: IAggregateRepository<TAuthenticationToken>
+		: ISnapshotAggregateRepository<TAuthenticationToken>
 	{
 		/// <summary>
 		/// Gets or sets the <see cref="ISnapshotStore"/>.

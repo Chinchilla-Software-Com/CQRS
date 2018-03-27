@@ -30,23 +30,7 @@ namespace Cqrs.Tests.Integrations
 			NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule<int>());
 			NinjectDependencyResolver.ModulesToLoad.Add(new TestCqrsModule());
 			NinjectDependencyResolver.Start();
-			var snapshotStore = DependencyResolver.Current.Resolve<ISnapshotStore>();
-			var snapshotStrategy = DependencyResolver.Current.Resolve<ISnapshotStrategy<int>>();
-			var unitOfWork = new UnitOfWork<int>(new SnapshotRepository<int>
-			(
-				snapshotStore,
-				snapshotStrategy,
-				new AggregateRepository<int>
-				(
-					DependencyResolver.Current.Resolve<IAggregateFactory>(),
-					DependencyResolver.Current.Resolve<IEventStore<int>>(),
-					DependencyResolver.Current.Resolve<IEventPublisher<int>>(),
-					new CorrelationIdHelper(new ThreadedContextItemCollectionFactory()),
-					DependencyResolver.Current.Resolve<IConfigurationManager>()
-				),
-				DependencyResolver.Current.Resolve<IEventStore<int>>(),
-				DependencyResolver.Current.Resolve<IAggregateFactory>()
-			));
+			var unitOfWork = new UnitOfWork<int>(DependencyResolver.Current.Resolve<ISnapshotAggregateRepository<int>>());
 			var aggregate = DependencyResolver.Current.Resolve<IAggregateFactory>().Create<TestAggregate>(Guid.NewGuid());
 			unitOfWork.Add(aggregate);
 			int count = 0;
