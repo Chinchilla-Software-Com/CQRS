@@ -70,8 +70,11 @@ namespace Cqrs.Snapshots
 		public void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			TryMakeSnapshot(aggregate);
+			// We need to grab these first as the changes will have been commitedd already by the time we go to make the snapshot.
+			IEnumerable<IEvent<TAuthenticationToken>> uncommittedChanges = aggregate.GetUncommittedChanges();
+			// Save the evets first then snapshot the system.
 			Repository.Save(aggregate, expectedVersion);
+			TryMakeSnapshot(aggregate, uncommittedChanges);
 		}
 
 		/// <summary>
@@ -163,20 +166,21 @@ namespace Cqrs.Snapshots
 		/// The <see cref="Snapshot.Version"/> is calculated, finally <see cref="ISnapshotStore.Save"/> is called on <see cref="SnapshotStore"/>.
 		/// </summary>
 		/// <param name="aggregate">The <see cref="IAggregateRoot{TAuthenticationToken}"/> to try and snapshot.</param>
-		protected virtual void TryMakeSnapshot(IAggregateRoot<TAuthenticationToken> aggregate)
+		/// <param name="uncommittedChanges">A collection of uncommited changes to assess. If null the aggregate will be asked to provide them.</param>
+		protected virtual void TryMakeSnapshot(IAggregateRoot<TAuthenticationToken> aggregate, IEnumerable<IEvent<TAuthenticationToken>> uncommittedChanges)
 		{
-			if (!SnapshotStrategy.ShouldMakeSnapShot(aggregate))
+			if (!SnapshotStrategy.ShouldMakeSnapShot(aggregate, uncommittedChanges))
 				return;
 			dynamic snapshot = aggregate.AsDynamic().GetSnapshot().RealObject;
 			var rsnapshot = snapshot as Snapshot;
 			if (rsnapshot != null)
 			{
-				rsnapshot.Version = aggregate.Version + aggregate.GetUncommittedChanges().Count();
+				rsnapshot.Version = aggregate.Version;
 				SnapshotStore.Save(rsnapshot);
 			}
 			else
 			{
-				snapshot.Version = aggregate.Version + aggregate.GetUncommittedChanges().Count();
+				snapshot.Version = aggregate.Version;
 				SnapshotStore.Save(snapshot);
 			}
 		}

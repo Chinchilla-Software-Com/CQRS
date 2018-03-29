@@ -7,7 +7,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using Cqrs.Domain;
+using Cqrs.Events;
 
 namespace Cqrs.Snapshots
 {
@@ -22,7 +24,8 @@ namespace Cqrs.Snapshots
 		/// This does NOT indicate if the provided <paramref name="aggregate"/> can have a <see cref="Snapshot"/> made or not.
 		/// </summary>
 		/// <param name="aggregate">The <see cref="IAggregateRoot{TAuthenticationToken}"/> to check.</param>
-		bool ShouldMakeSnapShot(IAggregateRoot<TAuthenticationToken> aggregate);
+		/// <param name="uncommittedChanges">A collection of uncommited changes to assess. If null the aggregate will be asked to provide them.</param>
+		bool ShouldMakeSnapShot(IAggregateRoot<TAuthenticationToken> aggregate, IEnumerable<IEvent<TAuthenticationToken>> uncommittedChanges = null);
 
 		/// <summary>
 		/// Indicates if the provided <paramref name="aggregateType"/> can have a <see cref="Snapshot"/> made or not.

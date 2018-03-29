@@ -53,6 +53,8 @@ namespace Cqrs.Events
 					.Take(1)
 					.SingleOrDefault();
 
+				if (query == null)
+					return null;
 				return EventDeserialiser.Deserialise(query);
 			}
 		}

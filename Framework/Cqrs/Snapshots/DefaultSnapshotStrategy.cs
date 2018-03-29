@@ -7,8 +7,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cqrs.Domain;
+using Cqrs.Events;
 
 namespace Cqrs.Snapshots
 {
@@ -38,19 +40,21 @@ namespace Cqrs.Snapshots
 		/// Checks <see cref="IsSnapshotable"/> and if it is, also checks if the calculated version number would be exactly dividable by <see cref="GetSnapshotInterval"/>.
 		/// </summary>
 		/// <param name="aggregate">The <see cref="IAggregateRoot{TAuthenticationToken}"/> to check.</param>
-		public virtual bool ShouldMakeSnapShot(IAggregateRoot<TAuthenticationToken> aggregate)
+		/// <param name="uncommittedChanges">A collection of uncommited changes to assess. If null the aggregate will be asked to provide them.</param>
+		public virtual bool ShouldMakeSnapShot(IAggregateRoot<TAuthenticationToken> aggregate, IEnumerable<IEvent<TAuthenticationToken>> uncommittedChanges = null)
 		{
 			if (!IsSnapshotable(aggregate.GetType()))
 				return false;
 
-			// This reason this isn't as simple as `(aggregate.Version + aggregate.GetUncommittedChanges().Count()) % SnapshotInterval` is
+			// The reason this isn't as simple as `(aggregate.Version + aggregate.GetUncommittedChanges().Count()) % SnapshotInterval` is
 			// because if there are enough uncommited events that this would result in a snapshot, plus some left over, the final state is what will be generated
 			// when the snapshot is taken, thus this is a faster and more accurate assessment.
-			int i = aggregate.Version;
-
-			int limit = aggregate.GetUncommittedChanges().Count();
+			int limit = (uncommittedChanges ?? aggregate.GetUncommittedChanges()).Count();
+			int i = aggregate.Version - limit;
+			int snapshotInterval = GetSnapshotInterval();
+			
 			for (int j = 0; j < limit; j++)
-				if (++i % GetSnapshotInterval() == 0 && i != 0)
+				if (++i % snapshotInterval == 0 && i != 0)
 					return true;
 			return false;
 		}
