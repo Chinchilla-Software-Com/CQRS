@@ -7,9 +7,11 @@
 #endregion
 
 using System;
+using System.Linq;
 using Cqrs.Events;
 using Cqrs.MongoDB.Events;
 using Cqrs.MongoDB.Serialisers;
+using Cqrs.Snapshots;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.MongoDB.Configuration
@@ -42,6 +44,9 @@ namespace Cqrs.Ninject.MongoDB.Configuration
 			Bind<IMongoDbEventStoreConnectionStringFactory>()
 				.To<MongoDbEventStoreConnectionStringFactory>()
 				.InSingletonScope();
+			Bind<IMongoDbSnapshotStoreConnectionStringFactory>()
+				.To<MongoDbSnapshotStoreConnectionStringFactory>()
+				.InSingletonScope();
 		}
 
 		/// <summary>
@@ -55,6 +60,15 @@ namespace Cqrs.Ninject.MongoDB.Configuration
 			Bind<IEventDeserialiser<TAuthenticationToken>>()
 				.To<MongoDbEventDeserialiser<TAuthenticationToken>>()
 				.InSingletonScope();
+			Bind<ISnapshotDeserialiser>()
+				.To<MongoDbSnapshotDeserialiser>()
+				.InSingletonScope();
+
+			if (Kernel.GetBindings(typeof(ISnapshotBuilder)).Any())
+				Kernel.Unbind<ISnapshotBuilder>();
+			Bind<ISnapshotBuilder>()
+				.To<MongoDbSnapshotBuilder>()
+				.InSingletonScope();
 		}
 
 		/// <summary>
@@ -64,6 +78,9 @@ namespace Cqrs.Ninject.MongoDB.Configuration
 		{
 			Bind<IEventStore<TAuthenticationToken>>()
 				.To<MongoDbEventStore<TAuthenticationToken>>()
+				.InSingletonScope();
+			Bind<ISnapshotStore>()
+				.To<MongoDbSnapshotStore>()
 				.InSingletonScope();
 		}
 	}

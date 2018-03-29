@@ -69,6 +69,10 @@
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -93,9 +97,12 @@
     <Compile Include="..\Azure\Tests\Cqrs.Azure.ServiceBus.Tests.Unit\TestEvent.cs">
       <Link>TestEvent.cs</Link>
     </Compile>
+    <Compile Include="Configuration\TestMongoDbModule.cs" />
+    <Compile Include="MongoDbSnapshotStoreTests.cs" />
     <Compile Include="MongoDbEventStoreTests.cs" />
     <Compile Include="MongoDbDataStoreTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestMongoDbSnapshotStoreConnectionStringFactory.cs" />
     <Compile Include="TestMongoEventStoreConnectionStringFactory.cs" />
     <Compile Include="TestMongoDbDataStoreConnectionStringFactory.cs" />
     <Compile Include="TestMongoDbDataStoreFactory.cs" />
@@ -109,13 +116,18 @@
       <Project>{dafd2a8a-d6b0-4433-8ddf-b98460c64ec6}</Project>
       <Name>Cqrs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Ninject\Cqrs.Ninject.MongoDB\Cqrs.Ninject.MongoDB.csproj">
+      <Project>{a3e58931-724c-4628-af03-a7011894957d}</Project>
+      <Name>Cqrs.Ninject.MongoDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ninject\Cqrs.Ninject\Cqrs.Ninject.csproj">
+      <Project>{359bdd3f-785d-4a4a-861f-4951e6e71321}</Project>
+      <Name>Cqrs.Ninject</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="tools\Create-Log-Table.sql" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

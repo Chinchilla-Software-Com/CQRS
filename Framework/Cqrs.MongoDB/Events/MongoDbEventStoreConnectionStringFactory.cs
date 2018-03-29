@@ -18,7 +18,8 @@ namespace Cqrs.MongoDB.Events
 	/// <summary>
 	/// A factory for getting connection strings and database names for <see cref="IEventStore{TAuthenticationToken}"/> access.
 	/// </summary>
-	public class MongoDbEventStoreConnectionStringFactory : IMongoDbEventStoreConnectionStringFactory
+	public class MongoDbEventStoreConnectionStringFactory
+		: IMongoDbEventStoreConnectionStringFactory
 	{
 		/// <summary>
 		/// Backwards compatibility with version 1.

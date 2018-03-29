@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Linq;
 using System.Linq;
 using cdmdotnet.Logging;
@@ -208,14 +209,10 @@ namespace Cqrs.Events
 			}
 			else
 			{
-				try
-				{
-					connectionStringKey = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey].ConnectionString;
-				}
-				catch (NullReferenceException exception)
-				{
-					throw new MissingConnectionStringException(applicationKey, exception);
-				}
+				ConnectionStringSettings connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey];
+				if (connectionString == null)
+					throw new MissingConnectionStringException(applicationKey);
+				connectionStringKey = connectionString.ConnectionString;
 			}
 
 			string tableName;

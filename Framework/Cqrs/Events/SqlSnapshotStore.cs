@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Configuration;
 using System.Data.Linq;
 using System.Linq;
 using cdmdotnet.Logging;
@@ -21,76 +22,28 @@ namespace Cqrs.Events
 	/// Stores the most recent <see cref="Snapshot">snapshots</see> for replay and <see cref="IAggregateRoot{TAuthenticationToken}"/> rehydration on a <see cref="SnapshotAggregateRoot{TAuthenticationToken,TSnapshot}"/> in SqlServer that uses LinqToSql and follows a rigid schema.
 	/// </summary>
 	public class SqlSnapshotStore
-		: ISnapshotStore
+		: SnapshotStore
 	{
 		internal const string SqlSnapshotStoreConnectionNameApplicationKey = @"Cqrs.SqlSnapshotStore.ConnectionStringName";
 
 		internal const string SqlSnapshotStoreTableNameApplicationKeyPattern = @"Cqrs.SqlSnapshotStore.CustomTableNames.{0}";
 
 		/// <summary>
-		/// The pattern used to generate the stream name.
-		/// </summary>
-		protected const string CqrsSnapshotStoreStreamNamePattern = "{0}/{1}";
-
-		/// <summary>
 		/// Instantiate a new instance of the <see cref="SqlSnapshotStore"/> class.
 		/// </summary>
 		public SqlSnapshotStore(IConfigurationManager configurationManager, ISnapshotDeserialiser eventDeserialiser, ILogger logger, ICorrelationIdHelper correlationIdHelper, ISnapshotBuilder snapshotBuilder)
+			: base(configurationManager, eventDeserialiser, snapshotBuilder, logger, correlationIdHelper)
 		{
-			ConfigurationManager = configurationManager;
-			EventDeserialiser = eventDeserialiser;
-			Logger = logger;
-			CorrelationIdHelper = correlationIdHelper;
-			SnapshotBuilder = snapshotBuilder;
 		}
-
-		/// <summary>
-		/// The <see cref="ISnapshotDeserialiser"/> used to deserialise snapshots.
-		/// </summary>
-		protected ISnapshotDeserialiser EventDeserialiser { get; private set; }
-
-		/// <summary>
-		/// Gets or sets the <see cref="IConfigurationManager"/>.
-		/// </summary>
-		protected IConfigurationManager ConfigurationManager { get; private set; }
-
-		/// <summary>
-		/// The <see cref="ILogger"/> to use.
-		/// </summary>
-		protected ILogger Logger { get; private set; }
-
-		/// <summary>
-		/// The <see cref="ICorrelationIdHelper"/> to use.
-		/// </summary>
-		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
-
-		/// <summary>
-		/// The <see cref="ISnapshotBuilder"/> used to build snapshots.
-		/// </summary>
-		protected ISnapshotBuilder SnapshotBuilder { get; private set; }
 
 		#region Implementation of ISnapshotStore
 
 		/// <summary>
 		/// Get the latest <see cref="Snapshot"/> from storage.
 		/// </summary>
-		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/> to find a snapshot for.</typeparam>
-		/// <param name="id">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to get the most recent <see cref="Snapshot"/> of.</param>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
-		public virtual Snapshot Get<TAggregateRoot>(Guid id)
+		protected override Snapshot Get(Type aggregateRootType, string streamName)
 		{
-			Type aggregateRootType = typeof (TAggregateRoot);
-			while (aggregateRootType != null && !aggregateRootType.IsGenericType && aggregateRootType.GetGenericArguments().Length != 2)
-				aggregateRootType = aggregateRootType.BaseType;
-			if (aggregateRootType == null)
-				return null;
-
-			aggregateRootType = aggregateRootType.GetGenericArguments()[1];
-			if (aggregateRootType.BaseType != typeof(Snapshot))
-				return null;
-
-			string streamName = string.Format(CqrsSnapshotStoreStreamNamePattern, aggregateRootType.FullName, id);
-
 			using (DataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
 			{
 				EventData query = GetEventStoreSnapshotTable(dbDataContext)
@@ -108,7 +61,7 @@ namespace Cqrs.Events
 		/// Saves the provided <paramref name="snapshot"/> into storage.
 		/// </summary>
 		/// <param name="snapshot">the <see cref="Snapshot"/> to save and store.</param>
-		public virtual void Save(Snapshot snapshot)
+		public override void Save(Snapshot snapshot)
 		{
 			using (DataContext dbDataContext = CreateDbDataContext(snapshot.GetType().Name))
 			{
@@ -119,7 +72,7 @@ namespace Cqrs.Events
 		#endregion
 
 		/// <summary>
-		/// Creates a new <see cref="DataContext"/> using connection string settings from <see cref="ConfigurationManager"/>.
+		/// Creates a new <see cref="DataContext"/> using connection string settings from ConfigurationManager.
 		/// </summary>
 		protected virtual DataContext CreateDbDataContext(string aggregateRootTypeName = null)
 		{
@@ -127,14 +80,10 @@ namespace Cqrs.Events
 			string applicationKey;
 			if (!ConfigurationManager.TryGetSetting(SqlSnapshotStoreConnectionNameApplicationKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
 				throw new MissingApplicationSettingForConnectionStringException(SqlSnapshotStoreConnectionNameApplicationKey);
-			try
-			{
-				connectionStringKey = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey].ConnectionString;
-			}
-			catch (NullReferenceException exception)
-			{
-				throw new MissingConnectionStringException(applicationKey, exception);
-			}
+			ConnectionStringSettings connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey];
+			if (connectionString == null)
+				throw new MissingConnectionStringException(applicationKey);
+			connectionStringKey = connectionString.ConnectionString;
 
 			string tableName;
 			if (!string.IsNullOrWhiteSpace(aggregateRootTypeName) && ConfigurationManager.TryGetSetting(string.Format(SqlSnapshotStoreTableNameApplicationKeyPattern, aggregateRootTypeName), out tableName) && !string.IsNullOrEmpty(tableName))
@@ -163,20 +112,15 @@ namespace Cqrs.Events
 		}
 
 		/// <summary>
-		/// Persist the provided <paramref name="data"/> into SQL Server using the provided <paramref name="dbDataContext"/>.
+		/// Persist the provided <paramref name="snapshot"/> into SQL Server using the provided <paramref name="dbDataContext"/>.
 		/// </summary>
-		protected virtual void Add(DataContext dbDataContext, Snapshot data)
+		protected virtual void Add(DataContext dbDataContext, Snapshot snapshot)
 		{
 			Logger.LogDebug("Adding data to the SQL snapshot database", "SqlSnapshotStore\\Add");
 			try
 			{
 				DateTime start = DateTime.Now;
-				EventData eventData = SnapshotBuilder.CreateFrameworkEvent(data);
-				string streamName = GenerateStreamName(data.GetType(), data.Id);
-				eventData.AggregateId = streamName;
-				eventData.AggregateRsn = data.Id;
-				eventData.Version = data.Version;
-				eventData.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+				EventData eventData = BuildEventData(snapshot);
 				GetEventStoreSnapshotTable(dbDataContext).InsertOnSubmit(eventData);
 				dbDataContext.SubmitChanges();
 				DateTime end = DateTime.Now;
@@ -191,16 +135,6 @@ namespace Cqrs.Events
 			{
 				Logger.LogDebug("Adding data to the SQL snapshot database... Done", "SqlSnapshotStore\\Add");
 			}
-		}
-
-		/// <summary>
-		/// Generate a unique stream name based on the provided <paramref name="aggregateRootType"/> and the <paramref name="aggregateId"/>.
-		/// </summary>
-		/// <param name="aggregateRootType">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
-		/// <param name="aggregateId">The ID of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
-		protected virtual string GenerateStreamName(Type aggregateRootType, Guid aggregateId)
-		{
-			return string.Format(CqrsSnapshotStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 		}
 	}
 }

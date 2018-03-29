@@ -18,7 +18,8 @@ namespace Cqrs.Ninject.MongoDB.Configuration
 	/// <see cref="IMongoDbEventStoreConnectionStringFactory"/> and <see cref="IMongoDbDataStoreConnectionStringFactory"/>.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class TestMongoDbDataStoreModule<TAuthenticationToken> : MongoDbEventStoreModule<TAuthenticationToken>
+	public class TestMongoDbDataStoreModule<TAuthenticationToken>
+		: MongoDbEventStoreModule<TAuthenticationToken>
 	{
 		/// <summary>
 		/// Register the all factories

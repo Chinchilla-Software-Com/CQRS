@@ -19,6 +19,7 @@ using cdmdotnet.StateManagement;
 using cdmdotnet.StateManagement.Threaded;
 using cdmdotnet.StateManagement.Web;
 using Cqrs.Configuration;
+using Cqrs.Events;
 using Cqrs.Repositories.Queries;
 using Cqrs.Snapshots;
 using Ninject.Modules;
@@ -54,6 +55,11 @@ namespace Cqrs.Ninject.Configuration
 		protected bool RegisterDefaultSnapshotStrategy { get; private set; }
 
 		/// <summary>
+		/// Indicates that the <see cref="ISnapshotBuilder"/> should be registered automatically.
+		/// </summary>
+		protected bool RegisterDefaultSnapshotBuilder { get; private set; }
+
+		/// <summary>
 		/// Instantiate a new instance of the <see cref="CqrsModule{TAuthenticationToken,TAuthenticationTokenHelper}"/> that uses the provided <paramref name="configurationManager"/>
 		/// to read the following configuration settings:
 		/// "Cqrs.SetupForWeb": If set to true the system will be configured for hosting in IIS or some other web-server that provides access to System.Web.HttpContext.Current.
@@ -76,6 +82,13 @@ namespace Cqrs.Ninject.Configuration
 			bool registerDefaultSnapshotStrategy;
 			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultSnapshotStrategy", out registerDefaultSnapshotStrategy))
 				RegisterDefaultSnapshotStrategy = registerDefaultSnapshotStrategy;
+			else
+				RegisterDefaultSnapshotStrategy = true;
+			bool registerDefaultSnapshotBuilder;
+			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultSnapshotBuilder", out registerDefaultSnapshotBuilder))
+				RegisterDefaultSnapshotBuilder = registerDefaultSnapshotBuilder;
+			else
+				RegisterDefaultSnapshotBuilder = true;
 		}
 
 		/// <summary>
@@ -272,6 +285,11 @@ namespace Cqrs.Ninject.Configuration
 			if (RegisterDefaultSnapshotStrategy)
 				Bind<ISnapshotStrategy<TAuthenticationToken>>()
 					.To<DefaultSnapshotStrategy<TAuthenticationToken>>()
+					.InSingletonScope();
+
+			if (RegisterDefaultSnapshotBuilder)
+				Bind<ISnapshotBuilder>()
+					.To<DefaultSnapshotBuilder>()
 					.InSingletonScope();
 		}
 	}

@@ -20,9 +20,9 @@ namespace Cqrs.MongoDB.Tests.Integration
 	/// </summary>
 	public class TestMongoEventStoreConnectionStringFactory : IMongoDbEventStoreConnectionStringFactory
 	{
-		private const string MongoDbConnectionStringKey = "MongoDb-Test";
+		internal const string MongoDbConnectionStringKey = "MongoDb-Test";
 
-		private const string CallContextDatabaseNameKey = "MongoEventStoreConnectionStringFactory¿DatabaseName";
+		internal const string CallContextDatabaseNameKey = "MongoEventStoreConnectionStringFactory¿DatabaseName";
 
 		private static IContextItemCollection Query { get; set; }
 
