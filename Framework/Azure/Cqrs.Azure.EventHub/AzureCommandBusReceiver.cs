@@ -18,6 +18,7 @@ using Cqrs.Configuration;
 using cdmdotnet.Logging;
 using Cqrs.Messages;
 using Microsoft.ServiceBus.Messaging;
+using Cqrs.Exceptions;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -138,6 +139,26 @@ namespace Cqrs.Azure.ServiceBus
 					wasSuccessfull = true;
 					responseCode = "200";
 					return;
+				}
+				catch (NoHandlersRegisteredException exception)
+				{
+					TelemetryHelper.TrackException(exception, null, telemetryProperties);
+					// Indicates a problem, unlock message in queue
+					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but no handlers were found to process it.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+					wasSuccessfull = false;
+					responseCode = "501";
+					telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
+					telemetryProperties.Add("ExceptionMessage", exception.Message);
+				}
+				catch (NoHandlerRegisteredException exception)
+				{
+					TelemetryHelper.TrackException(exception, null, telemetryProperties);
+					// Indicates a problem, unlock message in queue
+					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but no handler was found to process it.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+					wasSuccessfull = false;
+					responseCode = "501";
+					telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
+					telemetryProperties.Add("ExceptionMessage", exception.Message);
 				}
 				catch (Exception exception)
 				{

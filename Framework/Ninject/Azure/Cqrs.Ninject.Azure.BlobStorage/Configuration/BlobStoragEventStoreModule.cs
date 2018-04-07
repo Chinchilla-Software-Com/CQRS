@@ -10,6 +10,7 @@ using System;
 using Cqrs.Azure.BlobStorage;
 using Cqrs.Azure.BlobStorage.Events;
 using Cqrs.Events;
+using Cqrs.Snapshots;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Azure.BlobStorage.Configuration
@@ -42,6 +43,9 @@ namespace Cqrs.Ninject.Azure.BlobStorage.Configuration
 			Bind<IBlobStorageStoreConnectionStringFactory>()
 				.To<BlobStorageEventStoreConnectionStringFactory>()
 				.InSingletonScope();
+			Bind<IBlobStorageSnapshotStoreConnectionStringFactory>()
+				.To<BlobStorageSnapshotStoreConnectionStringFactory>()
+				.InSingletonScope();
 		}
 
 		/// <summary>
@@ -55,6 +59,9 @@ namespace Cqrs.Ninject.Azure.BlobStorage.Configuration
 			Bind<IEventDeserialiser<TAuthenticationToken>>()
 				.To<EventDeserialiser<TAuthenticationToken>>()
 				.InSingletonScope();
+			Bind<ISnapshotDeserialiser>()
+				.To<SnapshotDeserialiser>()
+				.InSingletonScope();
 		}
 
 		/// <summary>
@@ -62,6 +69,14 @@ namespace Cqrs.Ninject.Azure.BlobStorage.Configuration
 		/// </summary>
 		public virtual void RegisterEventStore()
 		{
+			/*
+			Bind<IEventStore<TAuthenticationToken>>()
+				.To<BlobStorageEventStore<TAuthenticationToken>>()
+				.InSingletonScope();
+			Bind<ISnapshotStore>()
+				.To<BlobStorageSnapshotStore>()
+				.InSingletonScope();
+			*/
 		}
 	}
 }

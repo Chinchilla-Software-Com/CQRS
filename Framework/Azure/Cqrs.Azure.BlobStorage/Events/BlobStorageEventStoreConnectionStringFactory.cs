@@ -12,6 +12,7 @@ using System.Linq;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
 using Cqrs.Events;
+using Cqrs.Exceptions;
 
 namespace Cqrs.Azure.BlobStorage.Events
 {
@@ -20,7 +21,8 @@ namespace Cqrs.Azure.BlobStorage.Events
 	/// This factory supports reading and writing from separate storage accounts. Specifically you can have as many different storage accounts as you want to configure when writing.
 	/// This allows for manual mirroring of data while reading from the fastest/closest location possible.
 	/// </summary>
-	public class BlobStorageEventStoreConnectionStringFactory : IBlobStorageStoreConnectionStringFactory
+	public class BlobStorageEventStoreConnectionStringFactory
+		: IBlobStorageStoreConnectionStringFactory
 	{
 		/// <summary>
 		/// The name of the app setting in <see cref="IConfigurationManager"/> that will have the connection string of the readable storage account if using a separate storage account for reads and writes.
@@ -97,7 +99,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 			}
 			catch (NullReferenceException exception)
 			{
-				throw new NullReferenceException(string.Format("No application settings named '{0}' was found in the configuration file with the cloud storage connection string.", BlobStorageEventStoreConnectionStringKey), exception);
+				throw new MissingApplicationSettingException(BlobStorageEventStoreConnectionStringKey, string.Format("No application settings named '{0}' was found in the configuration file with the cloud storage connection string.", BlobStorageEventStoreConnectionStringKey), exception);
 			}
 			finally
 			{
@@ -128,7 +130,7 @@ namespace Cqrs.Azure.BlobStorage.Events
 			}
 			catch (NullReferenceException exception)
 			{
-				throw new NullReferenceException(string.Format("No application settings named '{0}' was found in the configuration file with the cloud storage connection string.", BlobStorageEventStoreConnectionStringKey), exception);
+				throw new MissingApplicationSettingException(BlobStorageEventStoreConnectionStringKey, string.Format("No application settings named '{0}' was found in the configuration file with the cloud storage connection string.", BlobStorageEventStoreConnectionStringKey), exception);
 			}
 			finally
 			{

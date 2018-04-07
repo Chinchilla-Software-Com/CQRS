@@ -18,6 +18,7 @@ using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using cdmdotnet.Logging;
+using Cqrs.Exceptions;
 using Cqrs.Messages;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
@@ -358,6 +359,28 @@ namespace Cqrs.Azure.ServiceBus
 					}
 				}
 				responseCode = "599";
+			}
+			catch (NoHandlersRegisteredException exception)
+			{
+				TelemetryHelper.TrackException(exception, null, telemetryProperties);
+				// Indicates a problem, unlock message in queue
+				Logger.LogError(string.Format("An event message arrived with the id '{0}' but no handlers were found to process it.", message.MessageId), exception: exception);
+				message.DeadLetter();
+				wasSuccessfull = false;
+				responseCode = "501";
+				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
+				telemetryProperties.Add("ExceptionMessage", exception.Message);
+			}
+			catch (NoHandlerRegisteredException exception)
+			{
+				TelemetryHelper.TrackException(exception, null, telemetryProperties);
+				// Indicates a problem, unlock message in queue
+				Logger.LogError(string.Format("An event message arrived with the id '{0}' but no handler was found to process it.", message.MessageId), exception: exception);
+				message.DeadLetter();
+				wasSuccessfull = false;
+				responseCode = "501";
+				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
+				telemetryProperties.Add("ExceptionMessage", exception.Message);
 			}
 			catch (Exception exception)
 			{

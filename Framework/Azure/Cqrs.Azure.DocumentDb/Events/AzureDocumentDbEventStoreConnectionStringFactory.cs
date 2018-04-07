@@ -17,7 +17,8 @@ namespace Cqrs.Azure.DocumentDb.Events
 	/// <summary>
 	/// A factory for getting connections and database names for <see cref="IEventStore{TAuthenticationToken}"/> access.
 	/// </summary>
-	public class AzureDocumentDbEventStoreConnectionStringFactory : IAzureDocumentDbEventStoreConnectionStringFactory
+	public class AzureDocumentDbEventStoreConnectionStringFactory
+		: IAzureDocumentDbEventStoreConnectionStringFactory
 	{
 		/// <summary>
 		/// Gets or sets the <see cref="ILogger"/>.

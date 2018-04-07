@@ -288,8 +288,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 							Task<ResourceResponse<Document>> work = client.CreateDocumentAsync
 							(
 								collection.SelfLink,
-								eventData,
-								new RequestOptions {PreTriggerInclude = new[] {"ValidateUniqueConstraints"}}
+								eventData
 							);
 							work.ConfigureAwait(false);
 							work.Wait();

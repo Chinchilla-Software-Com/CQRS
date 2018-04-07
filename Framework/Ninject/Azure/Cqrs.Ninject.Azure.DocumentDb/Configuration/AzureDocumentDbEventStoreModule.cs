@@ -11,6 +11,7 @@ using System.Linq;
 using Cqrs.Azure.DocumentDb;
 using Cqrs.Azure.DocumentDb.Events;
 using Cqrs.Events;
+using Cqrs.Snapshots;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
@@ -47,6 +48,9 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 			Bind<IEventDeserialiser<TAuthenticationToken>>()
 				.To<EventDeserialiser<TAuthenticationToken>>()
 				.InSingletonScope();
+			Bind<ISnapshotDeserialiser>()
+				.To<SnapshotDeserialiser>()
+				.InSingletonScope();
 		}
 
 		/// <summary>
@@ -77,9 +81,15 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 			Bind<IAzureDocumentDbEventStoreConnectionStringFactory>()
 				.To<AzureDocumentDbEventStoreConnectionStringFactory>()
 				.InSingletonScope();
+			Bind<IAzureDocumentDbSnapshotStoreConnectionStringFactory>()
+				.To<AzureDocumentDbSnapshotStoreConnectionStringFactory>()
+				.InSingletonScope();
 
 			Bind<IEventStore<TAuthenticationToken>>()
 				.To<AzureDocumentDbEventStore<TAuthenticationToken>>()
+				.InSingletonScope();
+			Bind<ISnapshotStore>()
+				.To<AzureDocumentDbSnapshotStore>()
 				.InSingletonScope();
 		}
 	}

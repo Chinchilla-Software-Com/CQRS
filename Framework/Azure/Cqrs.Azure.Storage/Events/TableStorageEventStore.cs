@@ -105,7 +105,7 @@ namespace Cqrs.Azure.Storage.Events
 			: RawTableStorageEventStore
 		{
 			/// <summary>
-			/// Initializes a new instance of the RawTableStorageEventStore class using the specified container.
+			/// Initializes a new instance of the RawTableStorageEventStorer class using the specified container.
 			/// </summary>
 			public RawTableStorageEventStorer(ILogger logger, ITableStorageStoreConnectionStringFactory tableStorageEventStoreConnectionStringFactory, bool isCorrelationIdTableStorageStore = false)
 				: base(logger, tableStorageEventStoreConnectionStringFactory, isCorrelationIdTableStorageStore)

@@ -13,6 +13,7 @@ using cdmdotnet.StateManagement.Threaded;
 using Cqrs.Configuration;
 using Cqrs.DataStores;
 using Cqrs.Events;
+using Microsoft.Azure.Documents.Client;
 
 namespace Cqrs.Ninject.Azure.DocumentDb.Events
 {
@@ -20,7 +21,9 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Events
 	/// A <see cref="AzureDocumentDbEventStoreConnectionStringFactory"/>
 	/// that enables you to set a database name with <see cref="DatabaseName"/>. This means you can randomly generate your own database name per test.
 	/// </summary>
-	public class TestAzureDocumentDbEventStoreConnectionStringFactory : AzureDocumentDbEventStoreConnectionStringFactory
+	public class TestAzureDocumentDbEventStoreConnectionStringFactory
+		: AzureDocumentDbEventStoreConnectionStringFactory
+		, IAzureDocumentDbSnapshotStoreConnectionStringFactory
 	{
 		private const string CallContextDatabaseNameKey = "AzureDocumentDbEventStoreConnectionStringFactory¿DatabaseName";
 
@@ -62,6 +65,34 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Events
 		public override string GetEventStoreConnectionDatabaseName()
 		{
 			return DatabaseName;
+		}
+
+		#endregion
+
+		#region Implementation of IAzureDocumentDbSnapshotStoreConnectionStringFactory
+
+		/// <summary>
+		/// Gets the current <see cref="DocumentClient"/>.
+		/// </summary>
+		public DocumentClient GetSnapshotStoreConnectionClient()
+		{
+			return GetEventStoreConnectionClient();
+		}
+
+		/// <summary>
+		/// Gets the current database name.
+		/// </summary>
+		public string GetSnapshotStoreConnectionDatabaseName()
+		{
+			return GetEventStoreConnectionDatabaseName();
+		}
+
+		/// <summary>
+		/// Gets the current collection name.
+		/// </summary>
+		public string GetSnapshotStoreConnectionCollectionName()
+		{
+			return GetEventStoreConnectionCollectionName();
 		}
 
 		#endregion
