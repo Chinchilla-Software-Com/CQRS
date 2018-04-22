@@ -3,9 +3,9 @@
 Nightly build packages and symbols available at http://nightlies.chinchillasoftware.co.nz/
 
 ## The framework
-A lightweight enterprise framework to write CQRS, event-sourced and micro-service applications in hybrid multi-datacentre, on-premise and Azure environments. Currently published as nuget packages @ http://www.nuget.org. It is written in C# and targets .NET 4.0 (where possible) and .NET 4.5. CQRS.NET borrows heavily from CQRSlite (https://github.com/gautema/cqrslite), from some point in 2013.
+A lightweight enterprise Function as a service (FaaS) framework to write function based serverless and micro-service applications in hybrid multi-datacentre, on-premise and Azure environments, offering modern patterns such as CQRS and event-sourcing. Offering a superior combination of serverless, micro-service and traditional deployments both in the cloud and on-premise to suit any business. Deployments can be inter-conntected with each other sharing data and resourcing or independant and issolated while providing a consistent framework and guideline for both development, deployment, DevOps and administration.
 
-CQRS.NET has been designed with modularity in mind... see the number of technology packages below you can chose from. Every package and design choice made should be interchangeable with custom code if needed.
+CQRS.NET has been designed with modularity in mind... see the number of technology packages below you can chose from. Modularity applies to both development concerns like storage as well as operational modularity such as serverless or micro-service deployment. Every package and design choice made should be interchangeable with custom code if needed.
 
 ![CQRS.NET](https://raw.githubusercontent.com/Chinchilla-Software-Com/CQRS/master/wiki/CQRS-Process-Flow-Level-2.png)
 
