@@ -10,10 +10,10 @@ CQRS.NET has been designed with modularity in mind... see the number of technolo
 ![CQRS.NET](https://raw.githubusercontent.com/Chinchilla-Software-Com/CQRS/master/wiki/stack/FaaS.png)
 
 ## Tutorials and getting started
-For those new to CQRS.NET, we strongly suggest you have a look at our basic [Hello World Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Hello-World-Example-1) that covers basic commands and events.
-Or you have a look at our basic [Northwind Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Tutorial-1:-Step-1:-Quick-Northwind-sample.) which takes a look into queries, views, read stores and read models, then commands, eents aggregates and event handlers.
+For those new to CQRS.NET, we strongly suggest you have a look at our basic [Hello World Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Hello-World-Example-1) that covers the basics of sending messages between a website and a function via commands and events, including pushing real-time messages back to the browser without refreshing your screen.
+Or you can have a look at our basic [Northwind Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Tutorial-1:-Step-1:-Quick-Northwind-sample.) which takes a look into converting an existing legacy website covering some queries, views, read stores and read models, then getting into actioning function with commands, events aggregates and event handlers (the function itself).
 
-And for those looking for a more thorough tutorial we suggest you start with the [getting started](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Getting-Started) section in the [wiki](https://github.com/Chinchilla-Software-Com/CQRS/wiki)
+And for those looking for a more thorough tutorial including a deep, deep dive into best practises we suggest you start with the [A Beginner's Guide](https://github.com/Chinchilla-Software-Com/CQRS/wiki/A-Beginner's-Guide-To-Implementing-CQRS-ES) section in the [wiki](https://github.com/Chinchilla-Software-Com/CQRS/wiki). This covers much, much more than just functions, but modern coding practises that really do work in the cloud.
 
 ## Documentation
 [CQRS.NET API reference documentation](http://chinchilla-software-com.github.io/CQRS/wiki/docs) is available to browse. We are adding more and more documentation as we edit each file. By version 3.0 we aim to have all public methods and classes documented.
