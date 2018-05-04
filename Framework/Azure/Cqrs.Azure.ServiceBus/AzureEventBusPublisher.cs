@@ -115,7 +115,21 @@ namespace Cqrs.Azure.ServiceBus
 						};
 						brokeredMessage.Properties.Add("Type", eventType.FullName);
 						brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
-						PublicServiceBusPublisher.Send(brokeredMessage);
+						int count = 1;
+						do
+						{
+							try
+							{
+								PublicServiceBusPublisher.Send(brokeredMessage);
+								break;
+							}
+							catch (TimeoutException)
+							{
+								if (count >= TimeoutOnSendRetryMaximumCount)
+									throw;
+							}
+							count++;
+						} while (true);
 						wasSuccessfull = true;
 					}
 					catch (QuotaExceededException exception)
@@ -149,7 +163,21 @@ namespace Cqrs.Azure.ServiceBus
 						};
 						brokeredMessage.Properties.Add("Type", eventType.FullName);
 						brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
-						PublicServiceBusPublisher.Send(brokeredMessage);
+						int count = 1;
+						do
+						{
+							try
+							{
+								PublicServiceBusPublisher.Send(brokeredMessage);
+								break;
+							}
+							catch (TimeoutException)
+							{
+								if (count >= TimeoutOnSendRetryMaximumCount)
+									throw;
+							}
+							count++;
+						} while (true);
 						wasSuccessfull = true;
 					}
 					catch (QuotaExceededException exception)
@@ -183,7 +211,21 @@ namespace Cqrs.Azure.ServiceBus
 						};
 						brokeredMessage.Properties.Add("Type", eventType.FullName);
 						brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
-						PrivateServiceBusPublisher.Send(brokeredMessage);
+						int count = 1;
+						do
+						{
+							try
+							{
+								PrivateServiceBusPublisher.Send(brokeredMessage);
+								break;
+							}
+							catch (TimeoutException)
+							{
+								if (count >= TimeoutOnSendRetryMaximumCount)
+									throw;
+							}
+							count++;
+						} while (true);
 						wasSuccessfull = true;
 					}
 					catch (QuotaExceededException exception)
@@ -293,7 +335,21 @@ namespace Cqrs.Azure.ServiceBus
 				wasSuccessfull = false;
 				try
 				{
-					PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
+					int count = 1;
+					do
+					{
+						try
+						{
+							PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
+							break;
+						}
+						catch (TimeoutException)
+						{
+							if (count >= TimeoutOnSendRetryMaximumCount)
+								throw;
+						}
+						count++;
+					} while (true);
 					wasSuccessfull = true;
 				}
 				catch (QuotaExceededException exception)
@@ -318,7 +374,21 @@ namespace Cqrs.Azure.ServiceBus
 				wasSuccessfull = false;
 				try
 				{
-					PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
+					int count = 1;
+					do
+					{
+						try
+						{
+							PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
+							break;
+						}
+						catch (TimeoutException)
+						{
+							if (count >= TimeoutOnSendRetryMaximumCount)
+								throw;
+						}
+						count++;
+					} while (true);
 					wasSuccessfull = true;
 				}
 				catch (QuotaExceededException exception)

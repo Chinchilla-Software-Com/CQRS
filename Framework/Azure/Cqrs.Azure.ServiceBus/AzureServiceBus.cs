@@ -151,6 +151,11 @@ namespace Cqrs.Azure.ServiceBus
 		protected ITelemetryHelper TelemetryHelper { get; set; }
 
 		/// <summary>
+		/// The maximum number of time a retry is tried if a <see cref="System.TimeoutException"/> is thrown while sending messages.
+		/// </summary>
+		protected short TimeoutOnSendRetryMaximumCount { get; private set; }
+
+		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureServiceBus{TAuthenticationToken}"/>
 		/// </summary>
 		protected AzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper, bool isAPublisher)
@@ -161,6 +166,12 @@ namespace Cqrs.Azure.ServiceBus
 			TelemetryHelper = new NullTelemetryHelper();
 			PrivateServiceBusReceivers = new Dictionary<int, SubscriptionClient>();
 			PublicServiceBusReceivers = new Dictionary<int, SubscriptionClient>();
+			TimeoutOnSendRetryMaximumCount = 1;
+			string timeoutOnSendRetryMaximumCountValue;
+			short timeoutOnSendRetryMaximumCount;
+			if (ConfigurationManager.TryGetSetting("Cqrs.Azure.Servicebus.TimeoutOnSendRetryMaximumCount", out timeoutOnSendRetryMaximumCountValue) && !string.IsNullOrWhiteSpace(timeoutOnSendRetryMaximumCountValue) && short.TryParse(timeoutOnSendRetryMaximumCountValue, out timeoutOnSendRetryMaximumCount))
+				TimeoutOnSendRetryMaximumCount = timeoutOnSendRetryMaximumCount;
+
 		}
 
 		#region Overrides of AzureBus<TAuthenticationToken>

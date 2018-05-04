@@ -407,6 +407,11 @@ namespace Cqrs.Azure.ServiceBus
 				// The capturing of ObjectDisposedException is because even the properties can throw it.
 				try
 				{
+					object value;
+					string typeName = null;
+					if (message.Properties.TryGetValue("Type", out value))
+						typeName = value.ToString();
+
 					long loop = long.MinValue;
 					while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
 					{
@@ -419,14 +424,16 @@ namespace Cqrs.Azure.ServiceBus
 							{
 								try
 								{
+									if (brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
+										return;
 									message.RenewLock();
 									try
 									{
-										Logger.LogDebug(string.Format("Renewed the lock on {1} '{0}'.", message.MessageId, type));
+										Logger.LogDebug(string.Format("Renewed the {2} lock on {1} '{0}'.", message.MessageId, type, typeName));
 									}
 									catch
 									{
-										Trace.TraceError("Renewed the lock on {1} '{0}'.", message.MessageId, type);
+										Trace.TraceError("Renewed the {2} lock on {1} '{0}'.", message.MessageId, type, typeName);
 									}
 
 									break;
@@ -439,11 +446,11 @@ namespace Cqrs.Azure.ServiceBus
 								{
 									try
 									{
-										Logger.LogWarning(string.Format("Renewing the lock on {1} '{0}' failed as the message lock was lost.", message.MessageId, type), exception: exception);
+										Logger.LogWarning(string.Format("Renewing the {2} lock on {1} '{0}' failed as the message lock was lost.", message.MessageId, type, typeName), exception: exception);
 									}
 									catch
 									{
-										Trace.TraceError("Renewing the lock on {1} '{0}' failed as the message lock was lost.\r\n{2}", message.MessageId, type, exception.Message);
+										Trace.TraceError("Renewing the {2} lock on {1} '{0}' failed as the message lock was lost.\r\n{3}", message.MessageId, type, typeName, exception.Message);
 									}
 									return;
 								}
@@ -451,11 +458,11 @@ namespace Cqrs.Azure.ServiceBus
 								{
 									try
 									{
-										Logger.LogWarning(string.Format("Renewing the lock on {1} '{0}' failed.", message.MessageId, type), exception: exception);
+										Logger.LogWarning(string.Format("Renewing the {2} lock on {1} '{0}' failed.", message.MessageId, type, typeName), exception: exception);
 									}
 									catch
 									{
-										Trace.TraceError("Renewing the lock on {1} '{0}' failed.\r\n{2}", message.MessageId, type, exception.Message);
+										Trace.TraceError("Renewing the {2} lock on {1} '{0}' failed.\r\n{3}", message.MessageId, type, typeName, exception.Message);
 									}
 									if (i == 9)
 										return;
