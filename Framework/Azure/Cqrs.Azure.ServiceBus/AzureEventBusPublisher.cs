@@ -327,7 +327,7 @@ namespace Cqrs.Azure.ServiceBus
 						(
 						// Backwards compatibility and simplicity
 						(publicEventAttribute == null && privateEventAttribute == null)
-						||
+							||
 						publicEventAttribute != null
 						)
 					{
@@ -355,7 +355,8 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						try
 						{
-							PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
+							if (publicBrokeredMessages.Any())
+								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
 							break;
 						}
 						catch (TimeoutException)
@@ -394,7 +395,8 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						try
 						{
-							PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
+							if (privateBrokeredMessages.Any())
+								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
 							break;
 						}
 						catch (TimeoutException)

@@ -151,7 +151,8 @@ namespace Cqrs.Azure.ServiceBus
 
 				try
 				{
-					EventHubPublisher.SendBatch(brokeredMessages);
+					if (brokeredMessages.Any())
+						EventHubPublisher.SendBatch(brokeredMessages);
 					wasSuccessfull = true;
 				}
 				catch (QuotaExceededException exception)

@@ -331,7 +331,8 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						try
 						{
-							PrivateServiceBusPublisher.SendBatch(brokeredMessages);
+							if (brokeredMessages.Any())
+								PrivateServiceBusPublisher.SendBatch(brokeredMessages);
 							break;
 						}
 						catch (TimeoutException)

@@ -148,7 +148,8 @@ namespace Cqrs.Azure.ServiceBus
 
 				try
 				{
-					EventHubPublisher.SendBatch(brokeredMessages);
+					if (brokeredMessages.Any())
+						EventHubPublisher.SendBatch(brokeredMessages);
 				}
 				catch (Exception exception)
 				{
