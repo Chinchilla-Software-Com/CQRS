@@ -73,6 +73,11 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
+			if (@event == null)
+			{
+				Logger.LogDebug("No event to publish.");
+				return;
+			}
 			Type eventType = @event.GetType();
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
@@ -263,7 +268,17 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void Publish<TEvent>(IEnumerable<TEvent> events)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
+			if (events == null)
+			{
+				Logger.LogDebug("No events to publish.");
+				return;
+			}
 			IList<TEvent> sourceEvents = events.ToList();
+			if (sourceEvents.Any())
+			{
+				Logger.LogDebug("An empty collection of events to publish.");
+				return;
+			}
 
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();

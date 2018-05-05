@@ -47,6 +47,11 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
+			if (command == null)
+			{
+				Logger.LogDebug("No command to publish.");
+				return;
+			}
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = "200";
@@ -93,7 +98,17 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
+			if (commands == null)
+			{
+				Logger.LogDebug("No commands to publish.");
+				return;
+			}
 			IList<TCommand> sourceCommands = commands.ToList();
+			if (sourceCommands.Any())
+			{
+				Logger.LogDebug("An empty collection of commands to publish.");
+				return;
+			}
 
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
@@ -214,6 +229,11 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout,
 			IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
 		{
+			if (command == null)
+			{
+				Logger.LogDebug("No command to publish.");
+				return (TEvent)(object)null;
+			}
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = "200";
