@@ -274,7 +274,7 @@ namespace Cqrs.Azure.ServiceBus
 				return;
 			}
 			IList<TEvent> sourceEvents = events.ToList();
-			if (sourceEvents.Any())
+			if (!sourceEvents.Any())
 			{
 				Logger.LogDebug("An empty collection of events to publish.");
 				return;
@@ -357,6 +357,8 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (publicBrokeredMessages.Any())
 								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
+							else
+								Logger.LogDebug("An empty collection of public events to publish post validation.");
 							break;
 						}
 						catch (TimeoutException)
@@ -397,6 +399,8 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (privateBrokeredMessages.Any())
 								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
+							else
+								Logger.LogDebug("An empty collection of private events to publish post validation.");
 							break;
 						}
 						catch (TimeoutException)

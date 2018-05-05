@@ -104,7 +104,7 @@ namespace Cqrs.Azure.ServiceBus
 				return;
 			}
 			IList<TCommand> sourceCommands = commands.ToList();
-			if (sourceCommands.Any())
+			if (!sourceCommands.Any())
 			{
 				Logger.LogDebug("An empty collection of commands to publish.");
 				return;
@@ -150,6 +150,8 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					if (brokeredMessages.Any())
 						EventHubPublisher.SendBatch(brokeredMessages);
+					else
+						Logger.LogDebug("An empty collection of commands to publish post validation.");
 				}
 				catch (Exception exception)
 				{

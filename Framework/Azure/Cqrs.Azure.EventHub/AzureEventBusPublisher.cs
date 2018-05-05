@@ -107,7 +107,7 @@ namespace Cqrs.Azure.ServiceBus
 				return;
 			}
 			IList<TEvent> sourceEvents = events.ToList();
-			if (sourceEvents.Any())
+			if (!sourceEvents.Any())
 			{
 				Logger.LogDebug("An empty collection of events to publish.");
 				return;
@@ -153,6 +153,8 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					if (brokeredMessages.Any())
 						EventHubPublisher.SendBatch(brokeredMessages);
+					else
+						Logger.LogDebug("An empty collection of events to publish post validation.");
 					wasSuccessfull = true;
 				}
 				catch (QuotaExceededException exception)
