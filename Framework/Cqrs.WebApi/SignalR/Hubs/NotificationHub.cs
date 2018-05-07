@@ -95,7 +95,9 @@ namespace Cqrs.WebApi.SignalR.Hubs
 			else
 				userRsn = Context.QueryString[authenticationTokenName];
 
-			return userRsn.Replace(".", string.Empty);
+			return userRsn
+				.Replace(".", string.Empty)
+				.Replace("-", string.Empty);
 		}
 
 		/// <summary>
