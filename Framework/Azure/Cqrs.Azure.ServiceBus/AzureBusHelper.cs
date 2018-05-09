@@ -202,7 +202,11 @@ namespace Cqrs.Azure.ServiceBus
 			string commandTypeName = command.GetType().FullName;
 			CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
 			AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);
-			Logger.LogInfo(string.Format("A command message arrived with the {0} was of type {1}.", messageId, commandTypeName));
+			string identifyMessage = null;
+			var identifiedEvent = command as ICommandWithIdentity<TAuthenticationToken>;
+			if (identifiedEvent != null)
+				identifyMessage = string.Format(" for aggregate {0}", identifiedEvent.Rsn);
+			Logger.LogInfo(string.Format("A command message arrived with the {0} was of type {1}{2}.", messageId, commandTypeName, identifyMessage));
 
 			bool canRefresh;
 			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.ShouldRefresh", commandTypeName), out canRefresh))
@@ -375,7 +379,11 @@ namespace Cqrs.Azure.ServiceBus
 			string eventTypeName = @event.GetType().FullName;
 			CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
 			AuthenticationTokenHelper.SetAuthenticationToken(@event.AuthenticationToken);
-			Logger.LogInfo(string.Format("An event message arrived with the {0} was of type {1}.", messageId, eventTypeName));
+			object identifyMessage = null;
+			var identifiedEvent = @event as IEventWithIdentity<TAuthenticationToken>;
+			if (identifiedEvent != null)
+				identifyMessage = string.Format(" for aggregate {0}", identifiedEvent.Rsn);
+			Logger.LogInfo(string.Format("An event message arrived with the {0} was of type {1}{2}.", messageId, eventTypeName, identifyMessage));
 
 			bool canRefresh;
 			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.ShouldRefresh", eventTypeName), out canRefresh))
@@ -553,8 +561,8 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
-		public void RegisterGlobalEventHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler,
-			bool holdMessageLock = true) where TMessage : IMessage
+		public void RegisterGlobalEventHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, bool holdMessageLock = true)
+			where TMessage : IMessage
 		{
 			Action<TMessage> registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
 

@@ -155,7 +155,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
 				}
-				if ((isPublicBusRequired != null && isPublicBusRequired.Value) )
+				if ((isPublicBusRequired != null && isPublicBusRequired.Value))
 				{
 					stopWatch.Restart();
 					responseCode = "200";
@@ -320,21 +320,21 @@ namespace Cqrs.Azure.ServiceBus
 					brokeredMessage.Properties.Add("Type", eventType.FullName);
 					brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
 
-					var privateEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PrivateEventAttribute;
-					var publicEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PublicEventAttribute;
+					bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(eventType);
+					bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(eventType);
 
-					if
-						(
-						// Backwards compatibility and simplicity
-						(publicEventAttribute == null && privateEventAttribute == null)
-							||
-						publicEventAttribute != null
-						)
+					// Backwards compatibility and simplicity
+					if ((isPublicBusRequired == null || !isPublicBusRequired.Value) && (isPrivateBusRequired == null || !isPrivateBusRequired.Value))
 					{
 						publicBrokeredMessages.Add(brokeredMessage);
 						sourceEventMessages.Add(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
 					}
-					if (privateEventAttribute != null)
+					if ((isPublicBusRequired != null && isPublicBusRequired.Value))
+					{
+						publicBrokeredMessages.Add(brokeredMessage);
+						sourceEventMessages.Add(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
+					}
+					if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
 					{
 						privateBrokeredMessages.Add(brokeredMessage);
 						sourceEventMessages.Add(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
