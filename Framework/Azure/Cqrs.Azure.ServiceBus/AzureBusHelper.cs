@@ -13,7 +13,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,6 +26,7 @@ using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
+using Cqrs.Exceptions;
 using Cqrs.Messages;
 using Microsoft.ServiceBus.Messaging;
 using Newtonsoft.Json;
@@ -33,7 +37,8 @@ namespace Cqrs.Azure.ServiceBus
 	/// A helper for Azure Service Bus and Event Hub.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class AzureBusHelper<TAuthenticationToken> : IAzureBusHelper<TAuthenticationToken>
+	public class AzureBusHelper<TAuthenticationToken>
+		: IAzureBusHelper<TAuthenticationToken>
 	{
 		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureBusHelper{TAuthenticationToken}"/>.
@@ -47,6 +52,7 @@ namespace Cqrs.Azure.ServiceBus
 			BusHelper = busHelper;
 			DependencyResolver = dependencyResolver;
 			ConfigurationManager = configurationManager;
+			Signer = new SHA512CryptoServiceProvider();
 		}
 
 		/// <summary>
@@ -83,6 +89,16 @@ namespace Cqrs.Azure.ServiceBus
 		/// Gets or sets the <see cref="IDependencyResolver"/>.
 		/// </summary>
 		protected IDependencyResolver DependencyResolver { get; private set; }
+
+		/// <summary>
+		/// The configuration key for the default message refreshing setting as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
+		protected const string DefaultMessagesShouldRefreshConfigurationKey = "Cqrs.Azure.Messages.ShouldRefresh";
+
+		/// <summary>
+		/// The <see cref="HashAlgorithm"/> to use to sign messages.
+		/// </summary>
+		protected HashAlgorithm Signer { get; private set; }
 
 		/// <summary>
 		/// Prepares a <see cref="ICommand{TAuthenticationToken}"/> to be sent specifying the framework it is sent via.
@@ -153,10 +169,12 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="messageBody">A serialised <see cref="IMessage"/>.</param>
 		/// <param name="receiveCommandHandler">The handler method that will process the <see cref="ICommand{TAuthenticationToken}"/>.</param>
 		/// <param name="messageId">The network id of the <see cref="IMessage"/>.</param>
+		/// <param name="signature">The signature of the <see cref="IMessage"/>.</param>
+		/// <param name="signingTokenConfigurationKey">The configuration key for the signing token as used by <see cref="IConfigurationManager"/>.</param>
 		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="ICommand{TAuthenticationToken}"/> is being skipped.</param>
 		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
 		/// <returns>The <see cref="ICommand{TAuthenticationToken}"/> that was processed.</returns>
-		public virtual ICommand<TAuthenticationToken> ReceiveCommand(string messageBody, Func<ICommand<TAuthenticationToken>, bool?> receiveCommandHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)
+		public virtual ICommand<TAuthenticationToken> ReceiveCommand(string messageBody, Func<ICommand<TAuthenticationToken>, bool?> receiveCommandHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null)
 		{
 			ICommand<TAuthenticationToken> command;
 			try
@@ -208,6 +226,7 @@ namespace Cqrs.Azure.ServiceBus
 				identifyMessage = string.Format(" for aggregate {0}", identifiedEvent.Rsn);
 			Logger.LogInfo(string.Format("A command message arrived with the {0} was of type {1}{2}.", messageId, commandTypeName, identifyMessage));
 
+			VerifySignature(signingTokenConfigurationKey, signature, "A command", messageId, commandTypeName, identifyMessage, messageBody);
 			bool canRefresh;
 			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.ShouldRefresh", commandTypeName), out canRefresh))
 				canRefresh = false;
@@ -329,15 +348,16 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="messageBody">A serialised <see cref="IMessage"/>.</param>
 		/// <param name="receiveEventHandler">The handler method that will process the <see cref="IEvent{TAuthenticationToken}"/>.</param>
 		/// <param name="messageId">The network id of the <see cref="IMessage"/>.</param>
+		/// <param name="signature">The signature of the <see cref="IMessage"/>.</param>
+		/// <param name="signingTokenConfigurationKey">The configuration key for the signing token as used by <see cref="IConfigurationManager"/>.</param>
 		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="IEvent{TAuthenticationToken}"/> is being skipped.</param>
 		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
 		/// <returns>The <see cref="IEvent{TAuthenticationToken}"/> that was processed.</returns>
-		public virtual IEvent<TAuthenticationToken> ReceiveEvent(string messageBody, Func<IEvent<TAuthenticationToken>, bool?> receiveEventHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)
+		public virtual IEvent<TAuthenticationToken> ReceiveEvent(string messageBody, Func<IEvent<TAuthenticationToken>, bool?> receiveEventHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null)
 		{
 			IEvent<TAuthenticationToken> @event;
 			try
 			{
-				
 				@event = MessageSerialiser.DeserialiseEvent(messageBody);
 			}
 			catch (JsonSerializationException exception)
@@ -385,9 +405,11 @@ namespace Cqrs.Azure.ServiceBus
 				identifyMessage = string.Format(" for aggregate {0}", identifiedEvent.Rsn);
 			Logger.LogInfo(string.Format("An event message arrived with the {0} was of type {1}{2}.", messageId, eventTypeName, identifyMessage));
 
+			VerifySignature(signingTokenConfigurationKey, signature, "An event", messageId, eventTypeName, identifyMessage, messageBody);
 			bool canRefresh;
 			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.ShouldRefresh", eventTypeName), out canRefresh))
-				canRefresh = false;
+				if (!ConfigurationManager.TryGetSetting(DefaultMessagesShouldRefreshConfigurationKey, out canRefresh))
+					canRefresh = false;
 
 			if (canRefresh)
 			{
@@ -543,6 +565,33 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		/// <summary>
+		/// Verifies that the signature is authorised.
+		/// </summary>
+		protected virtual void VerifySignature(string signingTokenConfigurationKey, string signature, string messagetype, string messageId, string typeName, object identifyMessage, string messageBody)
+		{
+			if (string.IsNullOrWhiteSpace(signature))
+				Logger.LogWarning(string.Format("{3} message arrived with the {0} was of type {1}{2} and had no signature.", messageId, typeName, identifyMessage, messagetype));
+			else
+			{
+				bool messageIsValid = false;
+				// see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security</remarks>
+				string configurationKey = string.Format("{0}.SigningToken", typeName);
+				string signingToken;
+				if (ConfigurationManager.TryGetSetting(configurationKey, out signingToken) && !string.IsNullOrWhiteSpace(signingToken))
+					using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", signingToken, messageBody))))
+						messageIsValid = signature == Convert.ToBase64String(Signer.ComputeHash(hashStream));
+				if (!messageIsValid && ConfigurationManager.TryGetSetting(signingTokenConfigurationKey, out signingToken) && !string.IsNullOrWhiteSpace(signingToken))
+					using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", signingToken, messageBody))))
+						messageIsValid = signature == Convert.ToBase64String(Signer.ComputeHash(hashStream));
+				if (!messageIsValid)
+					using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", Guid.Empty.ToString("N"), messageBody))))
+						messageIsValid = signature == Convert.ToBase64String(Signer.ComputeHash(hashStream));
+				if (!messageIsValid)
+					throw new UnAuthorisedMessageReceivedException(messageId, typeName, identifyMessage);
+			}
+		}
+
+		/// <summary>
 		/// Manually registers the provided <paramref name="handler"/> 
 		/// on the provided <paramref name="routeManger"/>
 		/// </summary>
@@ -561,7 +610,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
-		public void RegisterGlobalEventHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, bool holdMessageLock = true)
+		public virtual void RegisterGlobalEventHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
 			Action<TMessage> registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);

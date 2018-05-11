@@ -266,12 +266,7 @@ namespace Cqrs.Azure.ServiceBus
 			string telemetryName = string.Format("Cqrs/Handle/Event/{0}", message.MessageId);
 			ISingleSignOnToken authenticationToken = null;
 
-			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
-			object value;
-			if (message.Properties.TryGetValue("Type", out value))
-				telemetryProperties.Add("MessageType", value.ToString());
-			if (message.Properties.TryGetValue("Source", out value))
-				telemetryProperties.Add("MessageSource", value.ToString());
+			IDictionary<string, string> telemetryProperties = ExtractTelemetryProperties(message, "Azure/Servicebus");
 			TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles++, telemetryProperties);
 			var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
 			try
@@ -281,6 +276,8 @@ namespace Cqrs.Azure.ServiceBus
 
 				IEvent<TAuthenticationToken> @event = AzureBusHelper.ReceiveEvent(messageBody, ReceiveEvent,
 					string.Format("id '{0}'", message.MessageId),
+					ExtractSignature(message),
+					SigningTokenConfigurationKey,
 					() =>
 					{
 						wasSuccessfull = null;

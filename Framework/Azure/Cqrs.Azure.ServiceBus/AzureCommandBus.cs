@@ -31,6 +31,14 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		/// <summary>
+		/// The configuration key for the signing token as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
+		protected override string SigningTokenConfigurationKey
+		{
+			get { return "Cqrs.Azure.CommandBus.SigningToken"; }
+		}
+
+		/// <summary>
 		/// The configuration key for the name of the private topic as used by <see cref="IConfigurationManager"/>.
 		/// </summary>
 		protected override string PrivateTopicNameConfigurationKey

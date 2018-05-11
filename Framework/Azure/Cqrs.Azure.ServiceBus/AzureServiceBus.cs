@@ -9,9 +9,16 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
+using cdmdotnet.Logging.Configuration;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
@@ -26,7 +33,8 @@ namespace Cqrs.Azure.ServiceBus
 	/// An <see cref="AzureBus{TAuthenticationToken}"/> that uses Azure Service Bus.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public abstract class AzureServiceBus<TAuthenticationToken> : AzureBus<TAuthenticationToken>
+	public abstract class AzureServiceBus<TAuthenticationToken>
+		: AzureBus<TAuthenticationToken>
 	{
 		/// <summary>
 		/// Gets the private <see cref="TopicClient"/> publisher.
@@ -72,6 +80,11 @@ namespace Cqrs.Azure.ServiceBus
 		/// The configuration key for the message bus connection string as used by <see cref="IConfigurationManager"/>.
 		/// </summary>
 		protected abstract string MessageBusConnectionStringConfigurationKey { get; }
+
+		/// <summary>
+		/// The configuration key for the signing token as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
+		protected abstract string SigningTokenConfigurationKey { get; }
 
 		/// <summary>
 		/// The configuration key for the name of the private topic as used by <see cref="IConfigurationManager"/>.
@@ -156,6 +169,21 @@ namespace Cqrs.Azure.ServiceBus
 		protected short TimeoutOnSendRetryMaximumCount { get; private set; }
 
 		/// <summary>
+		/// The <see cref="HashAlgorithm"/> to use to sign messages.
+		/// </summary>
+		protected HashAlgorithm Signer { get; private set; }
+
+		/// <summary>
+		/// Gets the <see cref="ILoggerSettings"/>.
+		/// </summary>
+		protected virtual ILoggerSettings LoggerSettings { get; private set; }
+
+		/// <summary>
+		/// A list of namespaces to exclude when trying to automatically determine the container.
+		/// </summary>
+		protected IList<string> ExclusionNamespaces { get; private set; }
+
+		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureServiceBus{TAuthenticationToken}"/>
 		/// </summary>
 		protected AzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper, bool isAPublisher)
@@ -171,7 +199,9 @@ namespace Cqrs.Azure.ServiceBus
 			short timeoutOnSendRetryMaximumCount;
 			if (ConfigurationManager.TryGetSetting("Cqrs.Azure.Servicebus.TimeoutOnSendRetryMaximumCount", out timeoutOnSendRetryMaximumCountValue) && !string.IsNullOrWhiteSpace(timeoutOnSendRetryMaximumCountValue) && short.TryParse(timeoutOnSendRetryMaximumCountValue, out timeoutOnSendRetryMaximumCount))
 				TimeoutOnSendRetryMaximumCount = timeoutOnSendRetryMaximumCount;
-
+			LoggerSettings = logger.LoggerSettings;
+			ExclusionNamespaces = new SynchronizedCollection<string> { "Cqrs", "System" };
+			Signer = new SHA512CryptoServiceProvider();
 		}
 
 		#region Overrides of AzureBus<TAuthenticationToken>
@@ -522,6 +552,8 @@ namespace Cqrs.Azure.ServiceBus
 										return true;
 									},
 									string.Format("id '{0}'", brokeredMessage.MessageId),
+									ExtractSignature(message),
+									SigningTokenConfigurationKey,
 									() =>
 									{
 										removeDeadlLetterFromQueue(message);
@@ -544,6 +576,8 @@ namespace Cqrs.Azure.ServiceBus
 										return true;
 									},
 									string.Format("id '{0}'", brokeredMessage.MessageId),
+									ExtractSignature(message),
+									SigningTokenConfigurationKey,
 									() =>
 									{
 										removeDeadlLetterFromQueue(message);
@@ -587,6 +621,92 @@ namespace Cqrs.Azure.ServiceBus
 			}, brokeredMessageRenewCancellationTokenSource.Token);
 
 			return brokeredMessageRenewCancellationTokenSource;
+		}
+
+		/// <summary>
+		/// Create a <see cref="BrokeredMessage"/> with additional properties to aid routing and tracing
+		/// </summary>
+		protected virtual BrokeredMessage CreateBrokeredMessage<TMessage>(Func<TMessage, string> serialiserFunction, Type messageType, TMessage message)
+		{
+			string messageBody = serialiserFunction(message);
+			var brokeredMessage = new BrokeredMessage(messageBody)
+			{
+				CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
+			};
+			brokeredMessage.Properties.Add("Type", messageType.FullName);
+			brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
+
+			// see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security</remarks>
+			string configurationKey = string.Format("{0}.SigningToken", messageType.FullName);
+			string signingToken;
+			if (!ConfigurationManager.TryGetSetting(configurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
+				if (!ConfigurationManager.TryGetSetting(SigningTokenConfigurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
+					signingToken = Guid.Empty.ToString("N");
+			if (!string.IsNullOrWhiteSpace(signingToken))
+				using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", signingToken, messageBody))))
+					brokeredMessage.Properties.Add("Signature", Convert.ToBase64String(Signer.ComputeHash(hashStream)));
+
+			try
+			{
+				var stackTrace = new StackTrace();
+				StackFrame[] stackFrames = stackTrace.GetFrames();
+				if (stackFrames != null)
+				{
+					foreach (StackFrame frame in stackFrames)
+					{
+						MethodBase method = frame.GetMethod();
+						if (method.ReflectedType == null)
+							continue;
+
+						try
+						{
+							if (ExclusionNamespaces.All(@namespace => !method.ReflectedType.FullName.StartsWith(@namespace)))
+							{
+								brokeredMessage.Properties.Add("Source-Method", string.Format("{0}.{1}", method.ReflectedType.FullName, method.Name));
+								break;
+							}
+						}
+						catch
+						{
+							// Just move on
+						}
+					}
+				}
+			}
+			catch
+			{
+				// Just move on
+			}
+
+			return brokeredMessage;
+		}
+
+		/// <summary>
+		/// Extract any telemetry properties from the provided <paramref name="message"/>.
+		/// </summary>
+		protected virtual IDictionary<string, string> ExtractTelemetryProperties(BrokeredMessage message, string baseCommunicationType)
+		{
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", baseCommunicationType } };
+			object value;
+			if (message.Properties.TryGetValue("Type", out value))
+				telemetryProperties.Add("MessageType", value.ToString());
+			if (message.Properties.TryGetValue("Source", out value))
+				telemetryProperties.Add("MessageSource", value.ToString());
+			if (message.Properties.TryGetValue("Source-Method", out value))
+				telemetryProperties.Add("MessageSourceMethod", value.ToString());
+
+			return telemetryProperties;
+		}
+
+		/// <summary>
+		/// Extract the signature from the provided <paramref name="message"/>.
+		/// </summary>
+		protected virtual string ExtractSignature(BrokeredMessage message)
+		{
+			object value;
+			if (message.Properties.TryGetValue("Signature", out value))
+				return value.ToString();
+			return null;
 		}
 	}
 }
