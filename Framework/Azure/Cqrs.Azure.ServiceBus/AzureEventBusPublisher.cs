@@ -12,7 +12,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
@@ -35,17 +34,11 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureEventBusPublisher{TAuthenticationToken}"/>.
 		/// </summary>
-		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper, ILoggerSettings loggerSettings)
+		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
 		{
-			LoggerSettings = loggerSettings;
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
-
-		/// <summary>
-		/// Gets the <see cref="ILoggerSettings"/>.
-		/// </summary>
-		protected virtual ILoggerSettings LoggerSettings { get; private set; }
 
 		/// <summary>
 		/// The debugger variable window value.
@@ -101,7 +94,7 @@ namespace Cqrs.Azure.ServiceBus
 				bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(eventType);
 				bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(eventType);
 
-				// We only add telemetry for overall operations if two occured
+				// We only add telemetry for overall operations if two occurred
 				telemeterOverall = isPublicBusRequired != null && isPublicBusRequired.Value && isPrivateBusRequired != null && isPrivateBusRequired.Value;
 
 				// Backwards compatibility and simplicity
@@ -114,12 +107,7 @@ namespace Cqrs.Azure.ServiceBus
 					wasSuccessfull = false;
 					try
 					{
-						var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
-						{
-							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-						};
-						brokeredMessage.Properties.Add("Type", eventType.FullName);
-						brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
+						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
 						int count = 1;
 						do
 						{
@@ -162,12 +150,7 @@ namespace Cqrs.Azure.ServiceBus
 					wasSuccessfull = false;
 					try
 					{
-						var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
-						{
-							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-						};
-						brokeredMessage.Properties.Add("Type", eventType.FullName);
-						brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
+						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
 						int count = 1;
 						do
 						{
@@ -210,12 +193,7 @@ namespace Cqrs.Azure.ServiceBus
 					wasSuccessfull = false;
 					try
 					{
-						var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
-						{
-							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-						};
-						brokeredMessage.Properties.Add("Type", eventType.FullName);
-						brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
+						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
 						int count = 1;
 						do
 						{
@@ -313,12 +291,7 @@ namespace Cqrs.Azure.ServiceBus
 
 					Type eventType = @event.GetType();
 
-					var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
-					{
-						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-					};
-					brokeredMessage.Properties.Add("Type", eventType.FullName);
-					brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
+					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
 
 					bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(eventType);
 					bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(eventType);

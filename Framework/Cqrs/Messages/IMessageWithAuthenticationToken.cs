@@ -11,7 +11,7 @@ using System;
 namespace Cqrs.Messages
 {
 	/// <summary>
-	/// A <see cref="IMessage"/> with a authentication information.
+	/// A <see cref="IMessage"/> with authentication information.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public interface IMessageWithAuthenticationToken<TAuthenticationToken> : IMessage

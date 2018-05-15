@@ -20,7 +20,9 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 	/// </summary>
 	[Serializable]
 	[DataContract]
-	public class TestEvent : Entity, IEvent<Guid>
+	public class TestEvent
+		: Entity
+		, IEvent<Guid>
 	{
 		#region Implementation of IMessageWithAuthenticationToken<Guid>
 

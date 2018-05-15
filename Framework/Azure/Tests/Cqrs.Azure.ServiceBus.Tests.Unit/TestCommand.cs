@@ -19,7 +19,8 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 	/// </summary>
 	[Serializable]
 	[DataContract]
-	public class TestCommand : ICommand<Guid>
+	public class TestCommand
+		: ICommand<Guid>
 	{
 		#region Implementation of IMessageWithAuthenticationToken<Guid>
 
