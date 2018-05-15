@@ -87,10 +87,29 @@ namespace Cqrs.Azure.ServiceBus
 		protected int MaximumConcurrentReceiverProcessesCount { get; set; }
 
 		/// <summary>
+		/// Indicates if the <typeparamref name="TAuthenticationToken"/> is a <see cref="Guid"/>.
+		/// </summary>
+		protected bool AuthenticationTokenIsGuid { get; private set; }
+
+		/// <summary>
+		/// Indicates if the <typeparamref name="TAuthenticationToken"/> is an <see cref="int"/>.
+		/// </summary>
+		protected bool AuthenticationTokenIsInt { get; private set; }
+
+		/// <summary>
+		/// Indicates if the <typeparamref name="TAuthenticationToken"/> is a <see cref="string"/>.
+		/// </summary>
+		protected bool AuthenticationTokenIsString { get; private set; }
+
+		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureBus{TAuthenticationToken}"/>
 		/// </summary>
 		protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
 		{
+			AuthenticationTokenIsGuid = typeof(TAuthenticationToken) == typeof(Guid);
+			AuthenticationTokenIsInt = typeof(TAuthenticationToken) == typeof(int);
+			AuthenticationTokenIsString = typeof(TAuthenticationToken) == typeof(string);
+
 			EventWaits = new ConcurrentDictionary<Guid, IList<IEvent<TAuthenticationToken>>>();
 
 			MessageSerialiser = messageSerialiser;

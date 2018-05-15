@@ -110,6 +110,9 @@ namespace Cqrs.Azure.ServiceBus
 			bool? wasSuccessfull = true;
 			string telemetryName = string.Format("Cqrs/Handle/Event/{0}", eventData.SequenceNumber);
 			ISingleSignOnToken authenticationToken = null;
+			Guid? guidAuthenticationToken = null;
+			string stringAuthenticationToken = null;
+			int? intAuthenticationToken = null;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/EventHub" } };
 			object value;
@@ -144,6 +147,12 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							telemetryName = string.Format("{0}/{1}/{2}", @event.GetType().FullName, @event.GetIdentity(), @event.Id);
 							authenticationToken = @event.AuthenticationToken as ISingleSignOnToken;
+							if (AuthenticationTokenIsGuid)
+								guidAuthenticationToken = @event.AuthenticationToken as Guid?;
+							if (AuthenticationTokenIsString)
+								stringAuthenticationToken = @event.AuthenticationToken as string;
+							if (AuthenticationTokenIsInt)
+								intAuthenticationToken = @event.AuthenticationToken as int?;
 
 							var telemeteredMessage = @event as ITelemeteredMessage;
 							if (telemeteredMessage != null)
@@ -228,16 +237,50 @@ namespace Cqrs.Azure.ServiceBus
 					TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles--, telemetryProperties);
 
 					mainStopWatch.Stop();
-					TelemetryHelper.TrackRequest
-					(
-						telemetryName,
-						authenticationToken,
-						startedAt,
-						mainStopWatch.Elapsed,
-						responseCode,
-						wasSuccessfull == null || wasSuccessfull.Value,
-						telemetryProperties
-					);
+					if (guidAuthenticationToken != null)
+						TelemetryHelper.TrackRequest
+						(
+							telemetryName,
+							guidAuthenticationToken,
+							startedAt,
+							mainStopWatch.Elapsed,
+							responseCode,
+							wasSuccessfull == null || wasSuccessfull.Value,
+							telemetryProperties
+						);
+					else if (intAuthenticationToken != null)
+						TelemetryHelper.TrackRequest
+						(
+							telemetryName,
+							intAuthenticationToken,
+							startedAt,
+							mainStopWatch.Elapsed,
+							responseCode,
+							wasSuccessfull == null || wasSuccessfull.Value,
+							telemetryProperties
+						);
+					else if (stringAuthenticationToken != null)
+						TelemetryHelper.TrackRequest
+						(
+							telemetryName,
+							stringAuthenticationToken,
+							startedAt,
+							mainStopWatch.Elapsed,
+							responseCode,
+							wasSuccessfull == null || wasSuccessfull.Value,
+							telemetryProperties
+						);
+					else
+						TelemetryHelper.TrackRequest
+						(
+							telemetryName,
+							authenticationToken,
+							startedAt,
+							mainStopWatch.Elapsed,
+							responseCode,
+							wasSuccessfull == null || wasSuccessfull.Value,
+							telemetryProperties
+						);
 
 					TelemetryHelper.Flush();
 				}

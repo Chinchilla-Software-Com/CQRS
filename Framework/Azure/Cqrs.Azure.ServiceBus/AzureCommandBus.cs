@@ -18,7 +18,8 @@ namespace Cqrs.Azure.ServiceBus
 	/// A command bus based on <see cref="AzureServiceBus{TAuthenticationToken}"/>.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public abstract class AzureCommandBus<TAuthenticationToken> : AzureServiceBus<TAuthenticationToken>
+	public abstract class AzureCommandBus<TAuthenticationToken>
+		: AzureServiceBus<TAuthenticationToken>
 	{
 		#region Overrides of AzureServiceBus<TAuthenticationToken>
 

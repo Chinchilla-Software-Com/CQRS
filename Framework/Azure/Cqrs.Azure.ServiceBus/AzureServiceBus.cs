@@ -26,7 +26,8 @@ namespace Cqrs.Azure.ServiceBus
 	/// An <see cref="AzureBus{TAuthenticationToken}"/> that uses Azure Service Bus.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public abstract class AzureServiceBus<TAuthenticationToken> : AzureBus<TAuthenticationToken>
+	public abstract class AzureServiceBus<TAuthenticationToken>
+		: AzureBus<TAuthenticationToken>
 	{
 		/// <summary>
 		/// Gets the private <see cref="TopicClient"/> publisher.
