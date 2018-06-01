@@ -17,7 +17,8 @@ namespace Cqrs.Azure.ServiceBus
 	/// A event bus based on <see cref="AzureEventHub{TAuthenticationToken}"/>.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public abstract class AzureEventHubBus<TAuthenticationToken> : AzureEventHub<TAuthenticationToken>
+	public abstract class AzureEventHubBus<TAuthenticationToken>
+		: AzureEventHub<TAuthenticationToken>
 	{
 		/// <summary>
 		/// The configuration key for the event hub connection string as used by <see cref="IConfigurationManager"/>.
@@ -33,6 +34,14 @@ namespace Cqrs.Azure.ServiceBus
 		protected override string EventHubStorageConnectionStringNameConfigurationKey
 		{
 			get { return "Cqrs.Azure.EventHub.EventBus.StorageConnectionStringName"; }
+		}
+
+		/// <summary>
+		/// The configuration key for the signing token as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
+		protected override string SigningTokenConfigurationKey
+		{
+			get { return "Cqrs.Azure.EventHub.EventBus.SigningToken"; }
 		}
 
 		/// <summary>

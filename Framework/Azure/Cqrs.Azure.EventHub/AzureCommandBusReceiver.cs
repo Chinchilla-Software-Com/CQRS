@@ -109,6 +109,8 @@ namespace Cqrs.Azure.ServiceBus
 
 					ICommand<TAuthenticationToken> command = AzureBusHelper.ReceiveCommand(messageBody, ReceiveCommand,
 						string.Format("partition key '{0}', sequence number '{1}' and offset '{2}'", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset),
+						ExtractSignature(eventData),
+						SigningTokenConfigurationKey,
 						() =>
 						{
 							wasSuccessfull = null;

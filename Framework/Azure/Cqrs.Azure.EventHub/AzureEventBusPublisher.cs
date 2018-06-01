@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Cqrs.Events;
@@ -69,8 +68,7 @@ namespace Cqrs.Azure.ServiceBus
 
 				try
 				{
-					var brokeredMessage = new Microsoft.ServiceBus.Messaging.EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseEvent(@event)));
-					brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
+					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, @event.GetType(), @event);
 
 					EventHubPublisher.Send(brokeredMessage);
 					wasSuccessfull = true;
@@ -142,8 +140,7 @@ namespace Cqrs.Azure.ServiceBus
 					if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-EventHub"))
 						continue;
 
-					var brokeredMessage = new Microsoft.ServiceBus.Messaging.EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseEvent(@event)));
-					brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
+					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, @event.GetType(), @event);
 
 					brokeredMessages.Add(brokeredMessage);
 					sourceEventMessages.Add(string.Format("A command was sent of type {0}.", @event.GetType().FullName));

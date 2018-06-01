@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
@@ -69,8 +68,7 @@ namespace Cqrs.Azure.ServiceBus
 				if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-EventHub"))
 					return;
 
-				var brokeredMessage = new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command)));
-				brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+				var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, command.GetType(), command);
 
 				try
 				{
@@ -139,8 +137,7 @@ namespace Cqrs.Azure.ServiceBus
 					if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-EventHub"))
 						continue;
 
-					var brokeredMessage = new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command)));
-					brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, command.GetType(), command);
 
 					brokeredMessages.Add(brokeredMessage);
 					sourceCommandMessages.Add(string.Format("A command was sent of type {0}.", command.GetType().FullName));
@@ -263,7 +260,8 @@ namespace Cqrs.Azure.ServiceBus
 
 				try
 				{
-					EventHubPublisher.Send(new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command))));
+					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, command.GetType(), command);
+					EventHubPublisher.Send(brokeredMessage);
 				}
 				catch (Exception exception)
 				{

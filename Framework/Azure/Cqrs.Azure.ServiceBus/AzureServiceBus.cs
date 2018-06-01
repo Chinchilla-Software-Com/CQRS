@@ -18,7 +18,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
@@ -174,11 +173,6 @@ namespace Cqrs.Azure.ServiceBus
 		protected HashAlgorithm Signer { get; private set; }
 
 		/// <summary>
-		/// Gets the <see cref="ILoggerSettings"/>.
-		/// </summary>
-		protected virtual ILoggerSettings LoggerSettings { get; private set; }
-
-		/// <summary>
 		/// A list of namespaces to exclude when trying to automatically determine the container.
 		/// </summary>
 		protected IList<string> ExclusionNamespaces { get; private set; }
@@ -199,7 +193,6 @@ namespace Cqrs.Azure.ServiceBus
 			short timeoutOnSendRetryMaximumCount;
 			if (ConfigurationManager.TryGetSetting("Cqrs.Azure.Servicebus.TimeoutOnSendRetryMaximumCount", out timeoutOnSendRetryMaximumCountValue) && !string.IsNullOrWhiteSpace(timeoutOnSendRetryMaximumCountValue) && short.TryParse(timeoutOnSendRetryMaximumCountValue, out timeoutOnSendRetryMaximumCount))
 				TimeoutOnSendRetryMaximumCount = timeoutOnSendRetryMaximumCount;
-			LoggerSettings = logger.LoggerSettings;
 			ExclusionNamespaces = new SynchronizedCollection<string> { "Cqrs", "System" };
 			Signer = new SHA512CryptoServiceProvider();
 		}
@@ -634,7 +627,7 @@ namespace Cqrs.Azure.ServiceBus
 				CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 			};
 			brokeredMessage.Properties.Add("Type", messageType.FullName);
-			brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", LoggerSettings.ModuleName, LoggerSettings.Instance, LoggerSettings.Environment, LoggerSettings.EnvironmentInstance));
+			brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", Logger.LoggerSettings.ModuleName, Logger.LoggerSettings.Instance, Logger.LoggerSettings.Environment, Logger.LoggerSettings.EnvironmentInstance));
 
 			// see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security</remarks>
 			string configurationKey = string.Format("{0}.SigningToken", messageType.FullName);

@@ -7,13 +7,20 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
+using System.Text;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -21,7 +28,8 @@ namespace Cqrs.Azure.ServiceBus
 	/// An <see cref="AzureBus{TAuthenticationToken}"/> that uses Azure Service Event Hubs.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public abstract class AzureEventHub<TAuthenticationToken> : AzureBus<TAuthenticationToken>
+	public abstract class AzureEventHub<TAuthenticationToken>
+		: AzureBus<TAuthenticationToken>
 	{
 		/// <summary>
 		/// Gets the public<see cref="EventHubClient"/>.
@@ -62,6 +70,11 @@ namespace Cqrs.Azure.ServiceBus
 		/// The configuration key for the event hub storage connection string as used by <see cref="IConfigurationManager"/>.
 		/// </summary>
 		protected abstract string EventHubStorageConnectionStringNameConfigurationKey { get; }
+
+		/// <summary>
+		/// The configuration key for the signing token as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
+		protected abstract string SigningTokenConfigurationKey { get; }
 
 		/// <summary>
 		/// The configuration key for the name of the private event hub as used by <see cref="IConfigurationManager"/>.
@@ -124,12 +137,24 @@ namespace Cqrs.Azure.ServiceBus
 		protected ITelemetryHelper TelemetryHelper { get; set; }
 
 		/// <summary>
+		/// The <see cref="HashAlgorithm"/> to use to sign messages.
+		/// </summary>
+		protected HashAlgorithm Signer { get; private set; }
+
+		/// <summary>
+		/// A list of namespaces to exclude when trying to automatically determine the container.
+		/// </summary>
+		protected IList<string> ExclusionNamespaces { get; private set; }
+
+		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureEventHub{TAuthenticationToken}"/>
 		/// </summary>
 		protected AzureEventHub(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
 			: base (configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
 			TelemetryHelper = new NullTelemetryHelper();
+			ExclusionNamespaces = new SynchronizedCollection<string> { "Cqrs", "System" };
+			Signer = new SHA512CryptoServiceProvider();
 		}
 
 		#region Overrides of AzureBus<TAuthenticationToken>
@@ -325,6 +350,91 @@ namespace Cqrs.Azure.ServiceBus
 				),
 				ReceiverMessageHandlerOptions ?? EventProcessorOptions.DefaultOptions
 			);
+		}
+
+		/// <summary>
+		/// Create <see cref="EventData"/> with additional properties to aid routing and tracing
+		/// </summary>
+		protected virtual EventData CreateBrokeredMessage<TMessage>(Func<TMessage, string> serialiserFunction, Type messageType, TMessage message)
+		{
+			string messageBody = serialiserFunction(message);
+			var brokeredMessage = new EventData(Encoding.UTF8.GetBytes(messageBody));
+
+			brokeredMessage.Properties.Add("CorrelationId", CorrelationIdHelper.GetCorrelationId().ToString("N"));
+			brokeredMessage.Properties.Add("Type", messageType.FullName);
+			brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", Logger.LoggerSettings.ModuleName, Logger.LoggerSettings.Instance, Logger.LoggerSettings.Environment, Logger.LoggerSettings.EnvironmentInstance));
+
+			// see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security</remarks>
+			string configurationKey = string.Format("{0}.SigningToken", messageType.FullName);
+			string signingToken;
+			if (!ConfigurationManager.TryGetSetting(configurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
+				if (!ConfigurationManager.TryGetSetting(SigningTokenConfigurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
+					signingToken = Guid.Empty.ToString("N");
+			if (!string.IsNullOrWhiteSpace(signingToken))
+				using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", signingToken, messageBody))))
+					brokeredMessage.Properties.Add("Signature", Convert.ToBase64String(Signer.ComputeHash(hashStream)));
+
+			try
+			{
+				var stackTrace = new StackTrace();
+				StackFrame[] stackFrames = stackTrace.GetFrames();
+				if (stackFrames != null)
+				{
+					foreach (StackFrame frame in stackFrames)
+					{
+						MethodBase method = frame.GetMethod();
+						if (method.ReflectedType == null)
+							continue;
+
+						try
+						{
+							if (ExclusionNamespaces.All(@namespace => !method.ReflectedType.FullName.StartsWith(@namespace)))
+							{
+								brokeredMessage.Properties.Add("Source-Method", string.Format("{0}.{1}", method.ReflectedType.FullName, method.Name));
+								break;
+							}
+						}
+						catch
+						{
+							// Just move on
+						}
+					}
+				}
+			}
+			catch
+			{
+				// Just move on
+			}
+
+			return brokeredMessage;
+		}
+
+		/// <summary>
+		/// Extract any telemetry properties from the provided <paramref name="message"/>.
+		/// </summary>
+		protected virtual IDictionary<string, string> ExtractTelemetryProperties(EventData message, string baseCommunicationType)
+		{
+			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", baseCommunicationType } };
+			object value;
+			if (message.Properties.TryGetValue("Type", out value))
+				telemetryProperties.Add("MessageType", value.ToString());
+			if (message.Properties.TryGetValue("Source", out value))
+				telemetryProperties.Add("MessageSource", value.ToString());
+			if (message.Properties.TryGetValue("Source-Method", out value))
+				telemetryProperties.Add("MessageSourceMethod", value.ToString());
+
+			return telemetryProperties;
+		}
+
+		/// <summary>
+		/// Extract the signature from the provided <paramref name="eventData"/>.
+		/// </summary>
+		protected virtual string ExtractSignature(EventData eventData)
+		{
+			object value;
+			if (eventData.Properties.TryGetValue("Signature", out value))
+				return value.ToString();
+			return null;
 		}
 	}
 }

@@ -118,7 +118,7 @@ namespace Cqrs.Azure.ServiceBus
 			var frameworks = new List<string>();
 			if (command.Frameworks != null)
 				frameworks.AddRange(command.Frameworks);
-			frameworks.Add("Azure-ServiceBus");
+			frameworks.Add(framework);
 			command.Frameworks = frameworks;
 		}
 
