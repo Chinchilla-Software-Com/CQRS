@@ -141,7 +141,7 @@ namespace Cqrs.Azure.ServiceBus
 				string filter;
 				if (!ConfigurationManager.TryGetSetting(FilterKeyConfigurationKey, out filter))
 					return;
-				if (FilterKey[topicName] == filter)
+				if (FilterKey.ContainsKey(topicName) && FilterKey[topicName] == filter)
 					return;
 				FilterKey[topicName] = filter;
 
