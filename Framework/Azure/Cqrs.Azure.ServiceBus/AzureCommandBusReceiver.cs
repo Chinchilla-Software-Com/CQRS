@@ -98,6 +98,7 @@ namespace Cqrs.Azure.ServiceBus
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, false)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.CommandBus.Receiver.UseApplicationInsightTelemetryHelper", correlationIdHelper);
+			FilterKey = new Dictionary<string, string>();
 		}
 
 		/// <summary>
