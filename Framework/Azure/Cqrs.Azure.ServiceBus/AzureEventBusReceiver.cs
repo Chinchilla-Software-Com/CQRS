@@ -69,9 +69,10 @@ namespace Cqrs.Azure.ServiceBus
 
 		/// <summary>
 		/// The <see cref="SqlFilter.SqlExpression"/> that can be applied to
-		/// the <see cref="SubscriptionClient"/> instances in the receivers
+		/// the <see cref="SubscriptionClient"/> instances in the receivers,
+		/// keyed by the topic name as there is the private and public bus
 		/// </summary>
-		protected string FilterKey { get; set; }
+		protected IDictionary<string, string> FilterKey { get; set; }
 
 		// ReSharper disable StaticMemberInGenericType
 		/// <summary>
@@ -139,9 +140,9 @@ namespace Cqrs.Azure.ServiceBus
 				string filter;
 				if (!ConfigurationManager.TryGetSetting(FilterKeyConfigurationKey, out filter))
 					return;
-				if (FilterKey == filter)
+				if (FilterKey[topicName] == filter)
 					return;
-				FilterKey = filter;
+				FilterKey[topicName] = filter;
 
 				// https://docs.microsoft.com/en-us/azure/application-insights/app-insights-analytics-reference#summarize-operator
 				// http://www.summa.com/blog/business-blog/everything-you-need-to-know-about-azure-service-bus-brokered-messaging-part-2#rulesfiltersactions
