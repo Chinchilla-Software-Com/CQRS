@@ -93,7 +93,7 @@ namespace Cqrs.Configuration
 			string sessionId;
 			try
 			{
-				sessionId = string.Format("{0}::{1}", DependencyResolver.Current.Resolve<ICorrelationIdHelper>().GetCorrelationId().ToString("N"), token);
+				sessionId = string.Format("{0}::{1}", properties["CorrelationId"], token);
 			}
 			catch
 			{
