@@ -422,6 +422,8 @@ namespace Cqrs.Azure.ServiceBus
 				telemetryProperties.Add("MessageSource", value.ToString());
 			if (message.Properties.TryGetValue("Source-Method", out value))
 				telemetryProperties.Add("MessageSourceMethod", value.ToString());
+			if (message.Properties.TryGetValue("CorrelationId", out value) && !telemetryProperties.ContainsKey("CorrelationId"))
+				telemetryProperties.Add("CorrelationId", value.ToString());
 
 			return telemetryProperties;
 		}

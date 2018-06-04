@@ -587,7 +587,7 @@ namespace Cqrs.Azure.ServiceBus
 					using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", Guid.Empty.ToString("N"), messageBody))))
 						messageIsValid = signature == Convert.ToBase64String(Signer.ComputeHash(hashStream));
 				if (!messageIsValid)
-					throw new UnAuthorisedMessageReceivedException(messageId, typeName, identifyMessage);
+					throw new UnAuthorisedMessageReceivedException(typeName, messageId, identifyMessage);
 			}
 		}
 

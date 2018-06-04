@@ -626,6 +626,7 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 			};
+			brokeredMessage.Properties.Add("CorrelationId", brokeredMessage.CorrelationId);
 			brokeredMessage.Properties.Add("Type", messageType.FullName);
 			brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", Logger.LoggerSettings.ModuleName, Logger.LoggerSettings.Instance, Logger.LoggerSettings.Environment, Logger.LoggerSettings.EnvironmentInstance));
 
@@ -687,6 +688,8 @@ namespace Cqrs.Azure.ServiceBus
 				telemetryProperties.Add("MessageSource", value.ToString());
 			if (message.Properties.TryGetValue("Source-Method", out value))
 				telemetryProperties.Add("MessageSourceMethod", value.ToString());
+			if (message.Properties.TryGetValue("CorrelationId", out value) && !telemetryProperties.ContainsKey("CorrelationId"))
+				telemetryProperties.Add("CorrelationId", value.ToString());
 
 			return telemetryProperties;
 		}
