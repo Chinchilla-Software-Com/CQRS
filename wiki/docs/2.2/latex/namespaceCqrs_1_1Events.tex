@@ -15,6 +15,8 @@ class \hyperlink{classCqrs_1_1Events_1_1DefaultEventBuilder}{Default\+Event\+Bui
 \begin{DoxyCompactList}\small\item\em Builds \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} from various input formats serialising as J\+S\+ON. \end{DoxyCompactList}\item 
 class \hyperlink{classCqrs_1_1Events_1_1DefaultJsonSerializerSettings}{Default\+Json\+Serializer\+Settings}
 \begin{DoxyCompactList}\small\item\em Default settings for J\+S\+ON serialisation and deserialisation. \end{DoxyCompactList}\item 
+class \hyperlink{classCqrs_1_1Events_1_1DefaultSnapshotBuilder}{Default\+Snapshot\+Builder}
+\begin{DoxyCompactList}\small\item\em Builds \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} from various input formats serialising as J\+S\+ON. \end{DoxyCompactList}\item 
 class \hyperlink{classCqrs_1_1Events_1_1DtoAggregateEvent}{Dto\+Aggregate\+Event}
 \begin{DoxyCompactList}\small\item\em A I\+Event$<$\+T\+Authentication\+Token$>$ for I\+Dto objects \end{DoxyCompactList}\item 
 class \hyperlink{classCqrs_1_1Events_1_1DuplicateCreateCommandEvent}{Duplicate\+Create\+Command\+Event}
@@ -53,6 +55,10 @@ class \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore}{In\+Process\+Event\
 \begin{DoxyCompactList}\small\item\em An I\+Event\+Store$<$\+T\+Authentication\+Token$>$ that uses a local (non-\/static) I\+Dictionary$<$\+T\+Key,\+T\+Value$>$. This does not manage memory in any way and will continue to grow. Mostly suitable for running tests or short lived processes. \end{DoxyCompactList}\item 
 interface \hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}
 \begin{DoxyCompactList}\small\item\em An I\+Event$<$\+T\+Authentication\+Token$>$ used specifically by a I\+Saga$<$\+T\+Authentication\+Token$>$ \end{DoxyCompactList}\item 
+interface \hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotBuilder}{I\+Snapshot\+Builder}
+\begin{DoxyCompactList}\small\item\em Builds \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} from various input formats. \end{DoxyCompactList}\item 
+interface \hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser}{I\+Snapshot\+Deserialiser}
+\begin{DoxyCompactList}\small\item\em Deserialises Snapshot from a serialised state. \end{DoxyCompactList}\item 
 class \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore}{Memory\+Cache\+Event\+Store}
 \begin{DoxyCompactList}\small\item\em A, \hyperlink{classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_a6346cb2aea4c5b4e740dc6cfb15abab8}{Event\+Store$<$\+T\+Authentication\+Token$>$} that uses a Memory\+Cache implementation, flushing out data (I.\+E. it\textquotesingle{}s not persisted) \end{DoxyCompactList}\item 
 class \hyperlink{classCqrs_1_1Events_1_1NotifyCallerEventAttribute}{Notify\+Caller\+Event\+Attribute}
@@ -69,10 +75,16 @@ class \hyperlink{classCqrs_1_1Events_1_1ReplicatedSqlEventStore}{Replicated\+Sql
 \begin{DoxyCompactList}\small\item\em A simplified Sql\+Server based \hyperlink{classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_a6346cb2aea4c5b4e740dc6cfb15abab8}{Event\+Store$<$\+T\+Authentication\+Token$>$} that uses Linq\+To\+Sql and follows a rigid schema that also replicates to multiple connections, but only reads from one connection. \end{DoxyCompactList}\item 
 class \hyperlink{classCqrs_1_1Events_1_1SagaEvent}{Saga\+Event}
 \begin{DoxyCompactList}\small\item\em An I\+Event$<$\+T\+Authentication\+Token$>$ used specifically by a I\+Saga$<$\+T\+Authentication\+Token$>$ \end{DoxyCompactList}\item 
+class \hyperlink{classCqrs_1_1Events_1_1SnapshotBuilder}{Snapshot\+Builder}
+\begin{DoxyCompactList}\small\item\em Builds \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} from various input formats. \end{DoxyCompactList}\item 
+class \hyperlink{classCqrs_1_1Events_1_1SnapshotDeserialiser}{Snapshot\+Deserialiser}
+\begin{DoxyCompactList}\small\item\em Deserialises Snapshot from a serialised state. \end{DoxyCompactList}\item 
 class \hyperlink{classCqrs_1_1Events_1_1SqlEventStore}{Sql\+Event\+Store}
 \begin{DoxyCompactList}\small\item\em A simplified Sql\+Server based \hyperlink{classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_a6346cb2aea4c5b4e740dc6cfb15abab8}{Event\+Store$<$\+T\+Authentication\+Token$>$} that uses Linq\+To\+Sql and follows a rigid schema. \end{DoxyCompactList}\item 
 class \hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}
-\begin{DoxyCompactList}\small\item\em A custom Data\+Context that supports specifying a table name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em A custom Data\+Context that supports specifying a table name. \end{DoxyCompactList}\item 
+class \hyperlink{classCqrs_1_1Events_1_1SqlSnapshotStore}{Sql\+Snapshot\+Store}
+\begin{DoxyCompactList}\small\item\em Stores the most recent \hyperlink{}{snapshots} for replay and I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ rehydration on a Snapshot\+Aggregate\+Root$<$\+T\+Authentication\+Token,\+T\+Snapshot$>$ in Sql\+Server that uses Linq\+To\+Sql and follows a rigid schema. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 

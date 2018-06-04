@@ -1,0 +1,4 @@
+var classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregateSnapshot =
+[
+    [ "CurrentRandomNumber", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregateSnapshot_a8ad5da111b062b98d51e67534565b693.html#a8ad5da111b062b98d51e67534565b693", null ]
+];

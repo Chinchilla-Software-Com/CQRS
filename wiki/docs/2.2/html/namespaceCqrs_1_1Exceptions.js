@@ -9,5 +9,6 @@ var namespaceCqrs_1_1Exceptions =
     [ "NoCommandHandlerRegisteredException", "classCqrs_1_1Exceptions_1_1NoCommandHandlerRegisteredException.html", "classCqrs_1_1Exceptions_1_1NoCommandHandlerRegisteredException" ],
     [ "NoEventHandlerRegisteredException", "classCqrs_1_1Exceptions_1_1NoEventHandlerRegisteredException.html", "classCqrs_1_1Exceptions_1_1NoEventHandlerRegisteredException" ],
     [ "NoHandlerRegisteredException", "classCqrs_1_1Exceptions_1_1NoHandlerRegisteredException.html", "classCqrs_1_1Exceptions_1_1NoHandlerRegisteredException" ],
-    [ "NoHandlersRegisteredException", "classCqrs_1_1Exceptions_1_1NoHandlersRegisteredException.html", "classCqrs_1_1Exceptions_1_1NoHandlersRegisteredException" ]
+    [ "NoHandlersRegisteredException", "classCqrs_1_1Exceptions_1_1NoHandlersRegisteredException.html", "classCqrs_1_1Exceptions_1_1NoHandlersRegisteredException" ],
+    [ "UnAuthorisedMessageReceivedException", "classCqrs_1_1Exceptions_1_1UnAuthorisedMessageReceivedException.html", "classCqrs_1_1Exceptions_1_1UnAuthorisedMessageReceivedException" ]
 ];

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['unauthorisedmessagereceivedexception',['UnAuthorisedMessageReceivedException',['../classCqrs_1_1Exceptions_1_1UnAuthorisedMessageReceivedException.html',1,'Cqrs::Exceptions']]],
   ['unitofwork',['UnitOfWork',['../classCqrs_1_1Domain_1_1UnitOfWork.html',1,'Cqrs::Domain']]],
   ['unitofworkservice',['UnitOfWorkService',['../classCqrs_1_1Services_1_1UnitOfWorkService.html',1,'Cqrs::Services']]],
   ['updatecompletedconversationreportcommand',['UpdateCompletedConversationReportCommand',['../classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1UpdateCompletedConversationReportCommand.html',1,'Cqrs::Akka::Tests::Unit::Commands']]],

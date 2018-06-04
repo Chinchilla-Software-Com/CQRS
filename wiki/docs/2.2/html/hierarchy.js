@@ -29,7 +29,8 @@ var hierarchy =
       [ "Cqrs.Services.ServiceParameterResolver< TServiceParameter, TSingleSignOnTokenResolver >", "classCqrs_1_1Services_1_1ServiceParameterResolver.html", null ]
     ] ],
     [ "Cqrs.Azure.BlobStorage.BlobStorageStore< EventData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore.html", [
-      [ "Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore< TAuthenticationToken >.RawBlobStorageEventStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_1_1RawBlobStorageEventStore.html", null ]
+      [ "Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore< TAuthenticationToken >.RawBlobStorageEventStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_1_1RawBlobStorageEventStore.html", null ],
+      [ "Cqrs.Azure.BlobStorage.Events.BlobStorageSnapshotStore.RawBlobStorageSnapshotStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStore_1_1RawBlobStorageSnapshotStore.html", null ]
     ] ],
     [ "BooleanConverter", null, [
       [ "Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.TypeConverters.BooleanConverterEx", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1BooleanConverterEx.html", null ]
@@ -96,13 +97,23 @@ var hierarchy =
         [ "Cqrs.Azure.BlobStorage.DataStores.IBlobStorageDataStoreConnectionStringFactory", "interfaceCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1IBlobStorageDataStoreConnectionStringFactory.html", [
           [ "Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1BlobStorageDataStoreConnectionStringFactory.html", null ]
         ] ],
-        [ "Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStoreConnectionStringFactory.html", null ]
+        [ "Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStoreConnectionStringFactory.html", [
+          [ "Cqrs.Azure.BlobStorage.Events.BlobStorageSnapshotStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStoreConnectionStringFactory.html", null ]
+        ] ],
+        [ "Cqrs.Azure.BlobStorage.IBlobStorageSnapshotStoreConnectionStringFactory", "interfaceCqrs_1_1Azure_1_1BlobStorage_1_1IBlobStorageSnapshotStoreConnectionStringFactory.html", [
+          [ "Cqrs.Azure.BlobStorage.Events.BlobStorageSnapshotStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStoreConnectionStringFactory.html", null ]
+        ] ]
       ] ],
       [ "Cqrs.Azure.BlobStorage.ITableStorageStoreConnectionStringFactory", "interfaceCqrs_1_1Azure_1_1BlobStorage_1_1ITableStorageStoreConnectionStringFactory.html", [
         [ "Cqrs.Azure.BlobStorage.DataStores.ITableStorageDataStoreConnectionStringFactory", "interfaceCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1ITableStorageDataStoreConnectionStringFactory.html", [
           [ "Cqrs.Azure.BlobStorage.DataStores.TableStorageDataStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1TableStorageDataStoreConnectionStringFactory.html", null ]
         ] ],
-        [ "Cqrs.Azure.BlobStorage.Events.TableStorageEventStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory.html", null ]
+        [ "Cqrs.Azure.BlobStorage.Events.TableStorageEventStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory.html", [
+          [ "Cqrs.Azure.BlobStorage.Events.TableStorageSnapshotStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory.html", null ]
+        ] ],
+        [ "Cqrs.Azure.BlobStorage.ITableStorageSnapshotStoreConnectionStringFactory", "interfaceCqrs_1_1Azure_1_1BlobStorage_1_1ITableStorageSnapshotStoreConnectionStringFactory.html", [
+          [ "Cqrs.Azure.BlobStorage.Events.TableStorageSnapshotStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory.html", null ]
+        ] ]
       ] ]
     ] ],
     [ "Cqrs.Azure.BlobStorage.TableStorageStoreExtensions", "classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStoreExtensions.html", null ],
@@ -118,6 +129,10 @@ var hierarchy =
       [ "Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStoreConnectionStringFactory.html", [
         [ "Cqrs.Ninject.Azure.DocumentDb.Events.TestAzureDocumentDbEventStoreConnectionStringFactory", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Events_1_1TestAzureDocumentDbEventStoreConnectionStringFactory.html", null ]
       ] ]
+    ] ],
+    [ "Cqrs.Azure.DocumentDb.Events.IAzureDocumentDbSnapshotStoreConnectionStringFactory", "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1IAzureDocumentDbSnapshotStoreConnectionStringFactory.html", [
+      [ "Cqrs.Azure.DocumentDb.Events.AzureDocumentDbSnapshotStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbSnapshotStoreConnectionStringFactory.html", null ],
+      [ "Cqrs.Ninject.Azure.DocumentDb.Events.TestAzureDocumentDbEventStoreConnectionStringFactory", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Events_1_1TestAzureDocumentDbEventStoreConnectionStringFactory.html", null ]
     ] ],
     [ "Cqrs.Azure.DocumentDb.Factories.AzureDocumentDbDataStoreFactory", "classCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1AzureDocumentDbDataStoreFactory.html", null ],
     [ "Cqrs.Azure.DocumentDb.Factories.IAzureDocumentDbDataStoreConnectionStringFactory", "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Factories_1_1IAzureDocumentDbDataStoreConnectionStringFactory.html", [
@@ -148,7 +163,6 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
-    [ "Cqrs.Azure.ServiceBus.AzureBusHelper< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper.html", null ],
     [ "Cqrs.Azure.ServiceBus.AzureCommandBus< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBus.html", [
       [ "Cqrs.Azure.ServiceBus.AzureCommandBusPublisher< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBusPublisher.html", null ],
       [ "Cqrs.Azure.ServiceBus.AzureCommandBusPublisher< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBusPublisher.html", null ],
@@ -168,7 +182,6 @@ var hierarchy =
     [ "Cqrs.Azure.ServiceBus.AzureQueuedCommandBusReceiver< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureQueuedCommandBusReceiver.html", null ],
     [ "Cqrs.Azure.ServiceBus.AzureQueuedEventBusReceiver< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureQueuedEventBusReceiver.html", null ],
     [ "Cqrs.Azure.ServiceBus.IAzureBusHelper< TAuthenticationToken >", "interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper.html", [
-      [ "Cqrs.Azure.ServiceBus.AzureBusHelper< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper.html", null ],
       [ "Cqrs.Azure.ServiceBus.AzureBusHelper< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper.html", null ]
     ] ],
     [ "Cqrs.Azure.ServiceBus.IMessageSerialiser< TAuthenticationToken >", "interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser.html", [
@@ -224,6 +237,7 @@ var hierarchy =
     [ "Cqrs.Configuration.BusRegistrar", "classCqrs_1_1Configuration_1_1BusRegistrar.html", [
       [ "Cqrs.Akka.Configuration.AkkaBusRegistrar< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Configuration_1_1AkkaBusRegistrar.html", null ]
     ] ],
+    [ "Cqrs.Configuration.BusRegistrar.HandlerTypeInformation", "classCqrs_1_1Configuration_1_1BusRegistrar_1_1HandlerTypeInformation.html", null ],
     [ "Cqrs.Configuration.ConfigurationExtensions", "classCqrs_1_1Configuration_1_1ConfigurationExtensions.html", null ],
     [ "Cqrs.Configuration.HandlerDelegate", "classCqrs_1_1Configuration_1_1HandlerDelegate.html", null ],
     [ "Cqrs.Configuration.HandlerDelegate< T >", "classCqrs_1_1Configuration_1_1HandlerDelegate.html", null ],
@@ -253,7 +267,9 @@ var hierarchy =
       [ "Cqrs.Domain.AggregateRepository< TAuthenticationToken >", "classCqrs_1_1Domain_1_1AggregateRepository.html", [
         [ "Cqrs.Akka.Domain.AkkaAggregateRepository< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository.html", null ]
       ] ],
-      [ "Cqrs.Snapshots.SnapshotRepository< TAuthenticationToken >", "classCqrs_1_1Snapshots_1_1SnapshotRepository.html", null ]
+      [ "Cqrs.Domain.ISnapshotAggregateRepository< TAuthenticationToken >", "interfaceCqrs_1_1Domain_1_1ISnapshotAggregateRepository.html", [
+        [ "Cqrs.Snapshots.SnapshotRepository< TAuthenticationToken >", "classCqrs_1_1Snapshots_1_1SnapshotRepository.html", null ]
+      ] ]
     ] ],
     [ "Cqrs.Domain.IAggregateRoot< TAuthenticationToken >", "interfaceCqrs_1_1Domain_1_1IAggregateRoot.html", [
       [ "Cqrs.Akka.Domain.AkkaAggregateRoot< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot.html", null ],
@@ -353,6 +369,17 @@ var hierarchy =
       ] ],
       [ "Cqrs.EventStore.EventStore< TAuthenticationToken >", "classCqrs_1_1EventStore_1_1EventStore.html", null ]
     ] ],
+    [ "Cqrs.Events.ISnapshotBuilder", "interfaceCqrs_1_1Events_1_1ISnapshotBuilder.html", [
+      [ "Cqrs.Events.SnapshotBuilder", "classCqrs_1_1Events_1_1SnapshotBuilder.html", [
+        [ "Cqrs.Events.DefaultSnapshotBuilder", "classCqrs_1_1Events_1_1DefaultSnapshotBuilder.html", null ],
+        [ "Cqrs.MongoDB.Serialisers.MongoDbSnapshotBuilder", "classCqrs_1_1MongoDB_1_1Serialisers_1_1MongoDbSnapshotBuilder.html", null ]
+      ] ]
+    ] ],
+    [ "Cqrs.Events.ISnapshotDeserialiser", "interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser.html", [
+      [ "Cqrs.Events.SnapshotDeserialiser", "classCqrs_1_1Events_1_1SnapshotDeserialiser.html", [
+        [ "Cqrs.MongoDB.Serialisers.MongoDbSnapshotDeserialiser", "classCqrs_1_1MongoDB_1_1Serialisers_1_1MongoDbSnapshotDeserialiser.html", null ]
+      ] ]
+    ] ],
     [ "Cqrs.EventStore.Bus.EventConverter", "classCqrs_1_1EventStore_1_1Bus_1_1EventConverter.html", null ],
     [ "Cqrs.EventStore.Bus.EventStoreUtilities", "classCqrs_1_1EventStore_1_1Bus_1_1EventStoreUtilities.html", null ],
     [ "Cqrs.EventStore.IEventBuilder< TAuthenticationToken >", "interfaceCqrs_1_1EventStore_1_1IEventBuilder.html", [
@@ -422,6 +449,10 @@ var hierarchy =
       [ "Cqrs.MongoDB.Tests.Integration.TestMongoEventStoreConnectionStringFactory", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoEventStoreConnectionStringFactory.html", null ],
       [ "Cqrs.Ninject.MongoDB.TestMongoDbDataStoreConnectionStringFactory", "classCqrs_1_1Ninject_1_1MongoDB_1_1TestMongoDbDataStoreConnectionStringFactory.html", null ]
     ] ],
+    [ "Cqrs.MongoDB.Events.IMongoDbSnapshotStoreConnectionStringFactory", "interfaceCqrs_1_1MongoDB_1_1Events_1_1IMongoDbSnapshotStoreConnectionStringFactory.html", [
+      [ "Cqrs.MongoDB.Events.MongoDbSnapshotStoreConnectionStringFactory", "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbSnapshotStoreConnectionStringFactory.html", null ],
+      [ "Cqrs.MongoDB.Tests.Integration.TestMongoDbSnapshotStoreConnectionStringFactory", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDbSnapshotStoreConnectionStringFactory.html", null ]
+    ] ],
     [ "Cqrs.MongoDB.Factories.IMongoDbDataStoreConnectionStringFactory", "interfaceCqrs_1_1MongoDB_1_1Factories_1_1IMongoDbDataStoreConnectionStringFactory.html", [
       [ "Cqrs.MongoDB.Factories.MongoDbDataStoreConnectionStringFactory", "classCqrs_1_1MongoDB_1_1Factories_1_1MongoDbDataStoreConnectionStringFactory.html", null ],
       [ "Cqrs.MongoDB.Tests.Integration.TestMongoDataStoreConnectionStringFactory", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDataStoreConnectionStringFactory.html", null ],
@@ -432,6 +463,7 @@ var hierarchy =
     ] ],
     [ "Cqrs.MongoDB.Tests.Integration.MongoDbDataStoreTests", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbDataStoreTests.html", null ],
     [ "Cqrs.MongoDB.Tests.Integration.MongoDbEventStoreTests", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbEventStoreTests.html", null ],
+    [ "Cqrs.MongoDB.Tests.Integration.MongoDbSnapshotStoreTests", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests.html", null ],
     [ "Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf", "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1SimplifiedNinjectWcf.html", null ],
     [ "Cqrs.Ninject.Azure.Wcf.CqrsWebHost< TAuthenticationToken, TAuthenticationTokenHelper >", "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html", null ],
     [ "Cqrs.Ninject.Configuration.SimplifiedNinjectStartUp< THostModule >", "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp.html", null ],
@@ -511,16 +543,30 @@ var hierarchy =
       [ "Cqrs.Services.UnitOfWorkService< TAuthenticationToken >", "classCqrs_1_1Services_1_1UnitOfWorkService.html", null ]
     ] ],
     [ "Cqrs.Services.WcfDataContractResolverConfiguration", "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration.html", null ],
-    [ "Cqrs.Snapshots.ISnapshotStore", "interfaceCqrs_1_1Snapshots_1_1ISnapshotStore.html", null ],
+    [ "Cqrs.Snapshots.ISnapshotStore", "interfaceCqrs_1_1Snapshots_1_1ISnapshotStore.html", [
+      [ "Cqrs.Snapshots.SnapshotStore", "classCqrs_1_1Snapshots_1_1SnapshotStore.html", [
+        [ "Cqrs.Azure.BlobStorage.Events.BlobStorageSnapshotStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStore.html", null ],
+        [ "Cqrs.Azure.BlobStorage.Events.TableStorageSnapshotStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore.html", [
+          [ "Cqrs.Azure.Storage.Events.TableStorageSnapshotStore", "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore.html", null ]
+        ] ],
+        [ "Cqrs.Azure.DocumentDb.Events.AzureDocumentDbSnapshotStore", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbSnapshotStore.html", null ],
+        [ "Cqrs.Events.SqlSnapshotStore", "classCqrs_1_1Events_1_1SqlSnapshotStore.html", null ],
+        [ "Cqrs.MongoDB.Events.MongoDbSnapshotStore", "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbSnapshotStore.html", null ]
+      ] ]
+    ] ],
     [ "Cqrs.Snapshots.ISnapshotStrategy< TAuthenticationToken >", "interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy.html", [
       [ "Cqrs.Snapshots.DefaultSnapshotStrategy< TAuthenticationToken >", "classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy.html", null ]
     ] ],
-    [ "Cqrs.Snapshots.Snapshot", "classCqrs_1_1Snapshots_1_1Snapshot.html", null ],
+    [ "Cqrs.Snapshots.Snapshot", "classCqrs_1_1Snapshots_1_1Snapshot.html", [
+      [ "Cqrs.MongoDB.Tests.Integration.MongoDbSnapshotStoreTests.TestAggregateSnapshot", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregateSnapshot.html", null ],
+      [ "Cqrs.Tests.Integrations.SnapshotTests.TestAggregateSnapshot", "classCqrs_1_1Tests_1_1Integrations_1_1SnapshotTests_1_1TestAggregateSnapshot.html", null ]
+    ] ],
     [ "Cqrs.Sql.DataStores.Converters", "classCqrs_1_1Sql_1_1DataStores_1_1Converters.html", null ],
     [ "Cqrs.Sql.DataStores.IExpressionTreeConverter", "interfaceCqrs_1_1Sql_1_1DataStores_1_1IExpressionTreeConverter.html", [
       [ "Cqrs.Sql.DataStores.ExpressionTreeConverter< TA, TB >", "classCqrs_1_1Sql_1_1DataStores_1_1ExpressionTreeConverter.html", null ]
     ] ],
     [ "Cqrs.Sql.DataStores.SqlDataStoreExtensions", "classCqrs_1_1Sql_1_1DataStores_1_1SqlDataStoreExtensions.html", null ],
+    [ "Cqrs.Tests.Integrations.SnapshotTests", "classCqrs_1_1Tests_1_1Integrations_1_1SnapshotTests.html", null ],
     [ "Cqrs.WebApi.Configuration.WebApiConfig", "classCqrs_1_1WebApi_1_1Configuration_1_1WebApiConfig.html", null ],
     [ "Cqrs.WebApi.Controllers.ClientController.ApiMethodModel", "classCqrs_1_1WebApi_1_1Controllers_1_1ClientController_1_1ApiMethodModel.html", null ],
     [ "Cqrs.WebApi.Controllers.ClientController.ApiParameterModel", "classCqrs_1_1WebApi_1_1Controllers_1_1ClientController_1_1ApiParameterModel.html", null ],
@@ -745,6 +791,10 @@ var hierarchy =
     [ "Cqrs.Services.IEventService< TSingleSignOnToken >", "interfaceCqrs_1_1Services_1_1IEventService.html", [
       [ "Cqrs.WebApi.CqrsEventApiController< TSingleSignOnToken >", "classCqrs_1_1WebApi_1_1CqrsEventApiController.html", null ]
     ] ],
+    [ "Cqrs.Events.IEventWithIdentity< int >", "interfaceCqrs_1_1Events_1_1IEventWithIdentity.html", [
+      [ "Cqrs.MongoDB.Tests.Integration.MongoDbSnapshotStoreTests.RandomNumberEvent", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1RandomNumberEvent.html", null ],
+      [ "Cqrs.Tests.Integrations.SnapshotTests.RandomNumberEvent", "classCqrs_1_1Tests_1_1Integrations_1_1SnapshotTests_1_1RandomNumberEvent.html", null ]
+    ] ],
     [ "Cqrs.Messages.IMessageHandler< TCommand >", "interfaceCqrs_1_1Messages_1_1IMessageHandler.html", [
       [ "Cqrs.Commands.ICommandHandler< TAuthenticationToken, in in TCommand >", "interfaceCqrs_1_1Commands_1_1ICommandHandler.html", null ]
     ] ],
@@ -862,6 +912,7 @@ var hierarchy =
       ] ],
       [ "Cqrs.Ninject.MongoDB.Configuration.MongoDbDataStoreModule", "classCqrs_1_1Ninject_1_1MongoDB_1_1Configuration_1_1MongoDbDataStoreModule.html", null ],
       [ "Cqrs.Ninject.MongoDB.Configuration.MongoDbEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1MongoDB_1_1Configuration_1_1MongoDbEventStoreModule.html", [
+        [ "Cqrs.MongoDB.Tests.Integration.Configuration.TestMongoDbModule< TAuthenticationToken >", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1Configuration_1_1TestMongoDbModule.html", null ],
         [ "Cqrs.Ninject.MongoDB.Configuration.TestMongoDbDataStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1MongoDB_1_1Configuration_1_1TestMongoDbDataStoreModule.html", null ]
       ] ],
       [ "Cqrs.Ninject.WebApi.Configuration.WebApiModule", "classCqrs_1_1Ninject_1_1WebApi_1_1Configuration_1_1WebApiModule.html", null ]
@@ -884,6 +935,9 @@ var hierarchy =
     [ "RawTableStorageEventStore", null, [
       [ "Cqrs.Azure.Storage.Events.TableStorageEventStore< TAuthenticationToken >.RawTableStorageEventStorer", "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer.html", null ]
     ] ],
+    [ "RawTableStorageSnapshotStore", null, [
+      [ "Cqrs.Azure.Storage.Events.TableStorageSnapshotStore.RawTableStorageSnapshotStorer", "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStorer.html", null ]
+    ] ],
     [ "ReceiveActor", null, [
       [ "Cqrs.Akka.Commands.AkkaCommandBusProxy< TAuthenticationToken >.BusActor", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBusProxy_1_1BusActor.html", null ],
       [ "Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher< TAuthenticationToken, TTarget >", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher.html", null ],
@@ -899,6 +953,10 @@ var hierarchy =
     [ "Cqrs.Ninject.Configuration.SimplifiedNinjectStartUp< WebHostModule >", "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp.html", null ],
     [ "Cqrs.Authentication.SingleSignOnTokenFactory< SingleSignOnToken >", "classCqrs_1_1Authentication_1_1SingleSignOnTokenFactory.html", [
       [ "Cqrs.Authentication.DefaultSingleSignOnTokenFactory", "classCqrs_1_1Authentication_1_1DefaultSingleSignOnTokenFactory.html", null ]
+    ] ],
+    [ "Cqrs.Snapshots.SnapshotAggregateRoot< int, TestAggregateSnapshot >", "classCqrs_1_1Snapshots_1_1SnapshotAggregateRoot.html", [
+      [ "Cqrs.MongoDB.Tests.Integration.MongoDbSnapshotStoreTests.TestAggregate", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregate.html", null ],
+      [ "Cqrs.Tests.Integrations.SnapshotTests.TestAggregate", "classCqrs_1_1Tests_1_1Integrations_1_1SnapshotTests_1_1TestAggregate.html", null ]
     ] ],
     [ "Cqrs.Azure.BlobStorage.StorageStore< TData, CloudBlobContainer >", "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore.html", [
       [ "Cqrs.Azure.BlobStorage.BlobStorageStore< TData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore.html", [
@@ -930,6 +988,10 @@ var hierarchy =
       ] ]
     ] ],
     [ "Cqrs.Azure.BlobStorage.TableStorageStore< EventDataTableEntity< EventData >, EventData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore.html", [
-      [ "Cqrs.Azure.BlobStorage.Events.TableStorageEventStore< TAuthenticationToken >.RawTableStorageEventStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStore.html", null ]
+      [ "Cqrs.Azure.BlobStorage.Events.TableStorageEventStore< TAuthenticationToken >.RawTableStorageEventStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStore.html", null ],
+      [ "Cqrs.Azure.BlobStorage.Events.TableStorageSnapshotStore.RawTableStorageSnapshotStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore.html", null ]
+    ] ],
+    [ "UnauthorizedAccessException", null, [
+      [ "Cqrs.Exceptions.UnAuthorisedMessageReceivedException", "classCqrs_1_1Exceptions_1_1UnAuthorisedMessageReceivedException.html", null ]
     ] ]
 ];

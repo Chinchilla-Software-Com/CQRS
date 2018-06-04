@@ -21,7 +21,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="21" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="21" bodyend="-1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="23" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="23" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -49,17 +49,22 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="28" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="28" bodyend="35"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="30" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="30" bodyend="37"/>
       </memberdef>
-      <memberdef kind="function" id="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a211413236ef217c73a69e8d7fe4e555e_1a211413236ef217c73a69e8d7fe4e555e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+      <memberdef kind="function" id="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a9cdb3d79c55e2eb2796639b273d49ed9_1a9cdb3d79c55e2eb2796639b273d49ed9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>bool</type>
         <definition>virtual bool Cqrs.Snapshots.DefaultSnapshotStrategy&lt; TAuthenticationToken &gt;.ShouldMakeSnapShot</definition>
-        <argsstring>(IAggregateRoot&lt; TAuthenticationToken &gt; aggregate)</argsstring>
+        <argsstring>(IAggregateRoot&lt; TAuthenticationToken &gt; aggregate, IEnumerable&lt; IEvent&lt; TAuthenticationToken &gt;&gt; uncommittedChanges=null)</argsstring>
         <name>ShouldMakeSnapShot</name>
-        <reimplements refid="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_ab1d54cd76c7ac832329cb3a6de0effcd_1ab1d54cd76c7ac832329cb3a6de0effcd">ShouldMakeSnapShot</reimplements>
+        <reimplements refid="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_aeb5fc714ec8a5b60219426f3aabc0f6c_1aeb5fc714ec8a5b60219426f3aabc0f6c">ShouldMakeSnapShot</reimplements>
         <param>
           <type><ref refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot" kindref="compound">IAggregateRoot</ref>&lt; TAuthenticationToken &gt;</type>
           <declname>aggregate</declname>
+        </param>
+        <param>
+          <type>IEnumerable&lt; <ref refid="interfaceCqrs_1_1Events_1_1IEvent" kindref="compound">IEvent</ref>&lt; TAuthenticationToken &gt;&gt;</type>
+          <declname>uncommittedChanges</declname>
+          <defval>null</defval>
         </param>
         <briefdescription>
 <para>Checks <ref refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_acdbb918ac01b526aedb5fa9a3879887a_1acdbb918ac01b526aedb5fa9a3879887a" kindref="member">IsSnapshotable</ref> and if it is, also checks if the calculated version number would be exactly dividable by <ref refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a3540a6d621d8c23816da761f929d83a7_1a3540a6d621d8c23816da761f929d83a7" kindref="member">GetSnapshotInterval</ref>. </para>        </briefdescription>
@@ -71,11 +76,18 @@
 <parameterdescription>
 <para>The IAggregateRoot&lt;TAuthenticationToken&gt; to check.</para></parameterdescription>
 </parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>uncommittedChanges</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A collection of uncommited changes to assess. If null the aggregate will be asked to provide them.</para></parameterdescription>
+</parameteritem>
 </parameterlist>
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="41" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="41" bodyend="54"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="44" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="44" bodyend="60"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="protected-func">
@@ -90,7 +102,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="59" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="59" bodyend="62"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="65" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="65" bodyend="68"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -106,34 +118,34 @@
 </parameterlist>
 </para>    </detaileddescription>
     <inheritancegraph>
-      <node id="2492">
+      <node id="2678">
         <label>ISnapshotStrategy&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy"/>
       </node>
-      <node id="2491">
+      <node id="2677">
         <label>Cqrs.Snapshots.DefaultSnapshotStrategy&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy"/>
-        <childnode refid="2492" relation="public-inheritance">
+        <childnode refid="2678" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="2494">
+      <node id="2680">
         <label>ISnapshotStrategy&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy"/>
       </node>
-      <node id="2493">
+      <node id="2679">
         <label>Cqrs.Snapshots.DefaultSnapshotStrategy&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy"/>
-        <childnode refid="2494" relation="public-inheritance">
+        <childnode refid="2680" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="20" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="19" bodyend="63"/>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="22" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="21" bodyend="69"/>
     <listofallmembers>
       <member refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a3540a6d621d8c23816da761f929d83a7_1a3540a6d621d8c23816da761f929d83a7" prot="protected" virt="virtual"><scope>Cqrs::Snapshots::DefaultSnapshotStrategy</scope><name>GetSnapshotInterval</name></member>
       <member refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_acdbb918ac01b526aedb5fa9a3879887a_1acdbb918ac01b526aedb5fa9a3879887a" prot="public" virt="virtual"><scope>Cqrs::Snapshots::DefaultSnapshotStrategy</scope><name>IsSnapshotable</name></member>
-      <member refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a211413236ef217c73a69e8d7fe4e555e_1a211413236ef217c73a69e8d7fe4e555e" prot="public" virt="virtual"><scope>Cqrs::Snapshots::DefaultSnapshotStrategy</scope><name>ShouldMakeSnapShot</name></member>
+      <member refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a9cdb3d79c55e2eb2796639b273d49ed9_1a9cdb3d79c55e2eb2796639b273d49ed9" prot="public" virt="virtual"><scope>Cqrs::Snapshots::DefaultSnapshotStrategy</scope><name>ShouldMakeSnapShot</name></member>
       <member refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_1ab8e4aa859705a1d3c094ea2276bf6367" prot="private" virt="non-virtual"><scope>Cqrs::Snapshots::DefaultSnapshotStrategy</scope><name>SnapshotInterval</name></member>
     </listofallmembers>
   </compounddef>

@@ -2,12 +2,14 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
   <compounddef id="interfaceCqrs_1_1Snapshots_1_1ISnapshotStore" kind="interface" language="C#" prot="public">
     <compoundname>Cqrs::Snapshots::ISnapshotStore</compoundname>
+    <derivedcompoundref refid="classCqrs_1_1Snapshots_1_1SnapshotStore" prot="public" virt="non-virtual">Cqrs.Snapshots.SnapshotStore</derivedcompoundref>
       <sectiondef kind="public-func">
       <memberdef kind="function" id="interfaceCqrs_1_1Snapshots_1_1ISnapshotStore_ab7bd163fc9cd5c3bd5911679030be403_1ab7bd163fc9cd5c3bd5911679030be403" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classCqrs_1_1Snapshots_1_1Snapshot" kindref="compound">Snapshot</ref></type>
         <definition>Snapshot Cqrs.Snapshots.ISnapshotStore.Get&lt; TAggregateRoot &gt;</definition>
         <argsstring>(Guid id)</argsstring>
         <name>Get&lt; TAggregateRoot &gt;</name>
+        <reimplementedby refid="classCqrs_1_1Snapshots_1_1SnapshotStore_af35423c44786c31d224d52c3796d0d3d_1af35423c44786c31d224d52c3796d0d3d">Get&lt; TAggregateRoot &gt;</reimplementedby>
         <param>
           <type>Guid</type>
           <declname>id</declname>
@@ -42,6 +44,12 @@
         <definition>void Cqrs.Snapshots.ISnapshotStore.Save</definition>
         <argsstring>(Snapshot snapshot)</argsstring>
         <name>Save</name>
+        <reimplementedby refid="classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStore_afb32196428d4c92c9542a94a1764fa59_1afb32196428d4c92c9542a94a1764fa59">Save</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Events_1_1SqlSnapshotStore_ae219c88f6d56fbceef7c738dae824666_1ae219c88f6d56fbceef7c738dae824666">Save</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbSnapshotStore_a52dd38e57e884db7529c8f57c3da7479_1a52dd38e57e884db7529c8f57c3da7479">Save</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a25ec7d179773aec79febdf0e8873b285_1a25ec7d179773aec79febdf0e8873b285">Save</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Snapshots_1_1SnapshotStore_ae96ea2bb89a0bd7f45544acc37107525_1ae96ea2bb89a0bd7f45544acc37107525">Save</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1MongoDB_1_1Events_1_1MongoDbSnapshotStore_abd129099f8ed40c140ad2b39e730035a_1abd129099f8ed40c140ad2b39e730035a">Save</reimplementedby>
         <param>
           <type><ref refid="classCqrs_1_1Snapshots_1_1Snapshot" kindref="compound">Snapshot</ref></type>
           <declname>snapshot</declname>
@@ -67,6 +75,54 @@
 <para>Stores the most recent <ref refid="classCqrs_1_1Snapshots_1_1Snapshot" kindref="compound">snapshots</ref> for replay and IAggregateRoot&lt;TAuthenticationToken&gt; rehydration on a SnapshotAggregateRoot&lt;TAuthenticationToken,TSnapshot&gt;. </para>    </briefdescription>
     <detaileddescription>
     </detaileddescription>
+    <inheritancegraph>
+      <node id="2684">
+        <label>Cqrs.Azure.BlobStorage.Events.TableStorageSnapshotStore</label>
+        <link refid="classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore"/>
+        <childnode refid="2682" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2686">
+        <label>Cqrs.Azure.DocumentDb.Events.AzureDocumentDbSnapshotStore</label>
+        <link refid="classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbSnapshotStore"/>
+        <childnode refid="2682" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2687">
+        <label>Cqrs.Events.SqlSnapshotStore</label>
+        <link refid="classCqrs_1_1Events_1_1SqlSnapshotStore"/>
+        <childnode refid="2682" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2685">
+        <label>Cqrs.Azure.Storage.Events.TableStorageSnapshotStore</label>
+        <link refid="classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore"/>
+        <childnode refid="2684" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2681">
+        <label>Cqrs.Snapshots.ISnapshotStore</label>
+        <link refid="interfaceCqrs_1_1Snapshots_1_1ISnapshotStore"/>
+      </node>
+      <node id="2683">
+        <label>Cqrs.Azure.BlobStorage.Events.BlobStorageSnapshotStore</label>
+        <link refid="classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStore"/>
+        <childnode refid="2682" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2682">
+        <label>Cqrs.Snapshots.SnapshotStore</label>
+        <link refid="classCqrs_1_1Snapshots_1_1SnapshotStore"/>
+        <childnode refid="2681" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2688">
+        <label>Cqrs.MongoDB.Events.MongoDbSnapshotStore</label>
+        <link refid="classCqrs_1_1MongoDB_1_1Events_1_1MongoDbSnapshotStore"/>
+        <childnode refid="2682" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
     <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/ISnapshotStore.cs" line="18" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/ISnapshotStore.cs" bodystart="17" bodyend="32"/>
     <listofallmembers>
       <member refid="interfaceCqrs_1_1Snapshots_1_1ISnapshotStore_ab7bd163fc9cd5c3bd5911679030be403_1ab7bd163fc9cd5c3bd5911679030be403" prot="public" virt="non-virtual"><scope>Cqrs::Snapshots::ISnapshotStore</scope><name>Get&lt; TAggregateRoot &gt;</name></member>

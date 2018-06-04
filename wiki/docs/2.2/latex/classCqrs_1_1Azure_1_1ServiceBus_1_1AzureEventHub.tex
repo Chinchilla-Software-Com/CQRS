@@ -39,7 +39,13 @@ virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_afbea0
 virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a5924517b1e88c09e3c0c1aec9c737a8d_a5924517b1e88c09e3c0c1aec9c737a8d}{Store\+Receiver\+Message\+Handler} (Action$<$ Partition\+Context, Event\+Data $>$ receiver\+Message\+Handler, Event\+Processor\+Options receiver\+Message\+Handler\+Options=null)
 \begin{DoxyCompactList}\small\item\em Stores the provided {\itshape receiver\+Message\+Handler}  and {\itshape receiver\+Message\+Handler\+Options} . \end{DoxyCompactList}\item 
 override void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af2efc497815828b6fe0b4d6621bc8b41_af2efc497815828b6fe0b4d6621bc8b41}{Apply\+Receiver\+Message\+Handler} ()
-\begin{DoxyCompactList}\small\item\em Applies the stored Receiver\+Message\+Handler and Receiver\+Message\+Handler\+Options to the \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}{Event\+Hub\+Receiver}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Applies the stored Receiver\+Message\+Handler and Receiver\+Message\+Handler\+Options to the \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}{Event\+Hub\+Receiver}. \end{DoxyCompactList}\item 
+virtual Event\+Data \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8302c7e2f88a666862b3d9fd4531b1f2_a8302c7e2f88a666862b3d9fd4531b1f2}{Create\+Brokered\+Message$<$ T\+Message $>$} (Func$<$ T\+Message, string $>$ serialiser\+Function, Type message\+Type, T\+Message message)
+\begin{DoxyCompactList}\small\item\em Create Event\+Data with additional properties to aid routing and tracing \end{DoxyCompactList}\item 
+virtual I\+Dictionary$<$ string, string $>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a913284b0c4d40aa59c20c277b45429e5_a913284b0c4d40aa59c20c277b45429e5}{Extract\+Telemetry\+Properties} (Event\+Data message, string base\+Communication\+Type)
+\begin{DoxyCompactList}\small\item\em Extract any telemetry properties from the provided {\itshape message} . \end{DoxyCompactList}\item 
+virtual string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac22def26cc02c95c6337be7d87854192_ac22def26cc02c95c6337be7d87854192}{Extract\+Signature} (Event\+Data event\+Data)
+\begin{DoxyCompactList}\small\item\em Extract the signature from the provided {\itshape event\+Data} . \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -66,6 +72,8 @@ abstract string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad7
 \begin{DoxyCompactList}\small\item\em The configuration key for the event hub connection string as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
 abstract string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad400a17bf61c218e6330cd6500458801_ad400a17bf61c218e6330cd6500458801}{Event\+Hub\+Storage\+Connection\+String\+Name\+Configuration\+Key}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \begin{DoxyCompactList}\small\item\em The configuration key for the event hub storage connection string as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
+abstract string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a7dcae4b6bcae81e87b935892e6687382_a7dcae4b6bcae81e87b935892e6687382}{Signing\+Token\+Configuration\+Key}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The configuration key for the signing token as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
 abstract string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a286a7ddc6becff4d549434d2abe82ed1_a286a7ddc6becff4d549434d2abe82ed1}{Private\+Event\+Hub\+Name\+Configuration\+Key}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \begin{DoxyCompactList}\small\item\em The configuration key for the name of the private event hub as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
 abstract string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3ef1f56ad3de3bf8337f68e73627fab2_a3ef1f56ad3de3bf8337f68e73627fab2}{Public\+Event\+Hub\+Name\+Configuration\+Key}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
@@ -85,7 +93,11 @@ Action$<$ Partition\+Context, Event\+Data $>$ \hyperlink{classCqrs_1_1Azure_1_1S
 Event\+Processor\+Options \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad3a0c2f32d5771fb1f4420fc33c75968_ad3a0c2f32d5771fb1f4420fc33c75968}{Receiver\+Message\+Handler\+Options}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \begin{DoxyCompactList}\small\item\em The Event\+Processor\+Options used for Event\+Processor\+Host.\+Register\+Event\+Processor\+Factory\+Async(\+Microsoft.\+Service\+Bus.\+Messaging.\+I\+Event\+Processor\+Factory) on \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}{Event\+Hub\+Receiver}. \end{DoxyCompactList}\item 
 I\+Telemetry\+Helper \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a4cf19edac088c5ea74408398b3dfd4a2_a4cf19edac088c5ea74408398b3dfd4a2}{Telemetry\+Helper}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
-\begin{DoxyCompactList}\small\item\em Gets the I\+Telemetry\+Helper. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Gets the I\+Telemetry\+Helper. \end{DoxyCompactList}\item 
+Hash\+Algorithm \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a7e8b703c53a0a3978fdaa28dc64c4d1e_a7e8b703c53a0a3978fdaa28dc64c4d1e}{Signer}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The Hash\+Algorithm to use to sign messages. \end{DoxyCompactList}\item 
+I\+List$<$ string $>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad25a0f517a33a99e4ae645bf14c3f7d9_ad25a0f517a33a99e4ae645bf14c3f7d9}{Exclusion\+Namespaces}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em A list of namespaces to exclude when trying to automatically determine the container. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -166,6 +178,36 @@ Checks if the public hub and consumer group name exists as per \hyperlink{classC
 {\em namespace\+Manager} & The Namespace\+Manager.\\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8302c7e2f88a666862b3d9fd4531b1f2_a8302c7e2f88a666862b3d9fd4531b1f2}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8302c7e2f88a666862b3d9fd4531b1f2_a8302c7e2f88a666862b3d9fd4531b1f2}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}!Create\+Brokered\+Message$<$ T\+Message $>$@{Create\+Brokered\+Message$<$ T\+Message $>$}}
+\index{Create\+Brokered\+Message$<$ T\+Message $>$@{Create\+Brokered\+Message$<$ T\+Message $>$}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}}
+\subsubsection{\texorpdfstring{Create\+Brokered\+Message$<$ T\+Message $>$()}{CreateBrokeredMessage< TMessage >()}}
+{\footnotesize\ttfamily virtual Event\+Data \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}$<$ T\+Authentication\+Token $>$.Create\+Brokered\+Message$<$ T\+Message $>$ (\begin{DoxyParamCaption}\item[{Func$<$ T\+Message, string $>$}]{serialiser\+Function,  }\item[{Type}]{message\+Type,  }\item[{T\+Message}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Create Event\+Data with additional properties to aid routing and tracing 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac22def26cc02c95c6337be7d87854192_ac22def26cc02c95c6337be7d87854192}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac22def26cc02c95c6337be7d87854192_ac22def26cc02c95c6337be7d87854192}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}!Extract\+Signature@{Extract\+Signature}}
+\index{Extract\+Signature@{Extract\+Signature}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}}
+\subsubsection{\texorpdfstring{Extract\+Signature()}{ExtractSignature()}}
+{\footnotesize\ttfamily virtual string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}$<$ T\+Authentication\+Token $>$.Extract\+Signature (\begin{DoxyParamCaption}\item[{Event\+Data}]{event\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Extract the signature from the provided {\itshape event\+Data} . 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a913284b0c4d40aa59c20c277b45429e5_a913284b0c4d40aa59c20c277b45429e5}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a913284b0c4d40aa59c20c277b45429e5_a913284b0c4d40aa59c20c277b45429e5}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}!Extract\+Telemetry\+Properties@{Extract\+Telemetry\+Properties}}
+\index{Extract\+Telemetry\+Properties@{Extract\+Telemetry\+Properties}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}}
+\subsubsection{\texorpdfstring{Extract\+Telemetry\+Properties()}{ExtractTelemetryProperties()}}
+{\footnotesize\ttfamily virtual I\+Dictionary$<$string, string$>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}$<$ T\+Authentication\+Token $>$.Extract\+Telemetry\+Properties (\begin{DoxyParamCaption}\item[{Event\+Data}]{message,  }\item[{string}]{base\+Communication\+Type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Extract any telemetry properties from the provided {\itshape message} . 
+
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a9855633b53ed1f67863ef9dffad0812c_a9855633b53ed1f67863ef9dffad0812c}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a9855633b53ed1f67863ef9dffad0812c_a9855633b53ed1f67863ef9dffad0812c}} 
 \index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}!Get\+Connection\+String@{Get\+Connection\+String}}
 \index{Get\+Connection\+String@{Get\+Connection\+String}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}}
@@ -359,6 +401,16 @@ Gets the publicEvent\+Processor\+Host.
 
 The configuration key for the event hub storage connection string as used by I\+Configuration\+Manager. 
 
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad25a0f517a33a99e4ae645bf14c3f7d9_ad25a0f517a33a99e4ae645bf14c3f7d9}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad25a0f517a33a99e4ae645bf14c3f7d9_ad25a0f517a33a99e4ae645bf14c3f7d9}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}!Exclusion\+Namespaces@{Exclusion\+Namespaces}}
+\index{Exclusion\+Namespaces@{Exclusion\+Namespaces}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}}
+\subsubsection{\texorpdfstring{Exclusion\+Namespaces}{ExclusionNamespaces}}
+{\footnotesize\ttfamily I\+List$<$string$>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}$<$ T\+Authentication\+Token $>$.Exclusion\+Namespaces\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+A list of namespaces to exclude when trying to automatically determine the container. 
+
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a0c091d0cb19dda3e8bfc20f0e7d30af3_a0c091d0cb19dda3e8bfc20f0e7d30af3}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a0c091d0cb19dda3e8bfc20f0e7d30af3_a0c091d0cb19dda3e8bfc20f0e7d30af3}} 
 \index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}!Private\+Event\+Hub\+Consumer\+Group\+Name@{Private\+Event\+Hub\+Consumer\+Group\+Name}}
 \index{Private\+Event\+Hub\+Consumer\+Group\+Name@{Private\+Event\+Hub\+Consumer\+Group\+Name}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}}
@@ -458,6 +510,26 @@ The \hyperlink{}{handler} used for Event\+Processor\+Host.\+Register\+Event\+Pro
 
 
 The Event\+Processor\+Options used for Event\+Processor\+Host.\+Register\+Event\+Processor\+Factory\+Async(\+Microsoft.\+Service\+Bus.\+Messaging.\+I\+Event\+Processor\+Factory) on \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}{Event\+Hub\+Receiver}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a7e8b703c53a0a3978fdaa28dc64c4d1e_a7e8b703c53a0a3978fdaa28dc64c4d1e}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a7e8b703c53a0a3978fdaa28dc64c4d1e_a7e8b703c53a0a3978fdaa28dc64c4d1e}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}!Signer@{Signer}}
+\index{Signer@{Signer}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}}
+\subsubsection{\texorpdfstring{Signer}{Signer}}
+{\footnotesize\ttfamily Hash\+Algorithm \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}$<$ T\+Authentication\+Token $>$.Signer\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The Hash\+Algorithm to use to sign messages. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a7dcae4b6bcae81e87b935892e6687382_a7dcae4b6bcae81e87b935892e6687382}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a7dcae4b6bcae81e87b935892e6687382_a7dcae4b6bcae81e87b935892e6687382}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}!Signing\+Token\+Configuration\+Key@{Signing\+Token\+Configuration\+Key}}
+\index{Signing\+Token\+Configuration\+Key@{Signing\+Token\+Configuration\+Key}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}}
+\subsubsection{\texorpdfstring{Signing\+Token\+Configuration\+Key}{SigningTokenConfigurationKey}}
+{\footnotesize\ttfamily abstract string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}$<$ T\+Authentication\+Token $>$.Signing\+Token\+Configuration\+Key\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The configuration key for the signing token as used by I\+Configuration\+Manager. 
 
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b102538e8b72f9990578fa3bcbe4c12_a2b102538e8b72f9990578fa3bcbe4c12}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b102538e8b72f9990578fa3bcbe4c12_a2b102538e8b72f9990578fa3bcbe4c12}} 
 \index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Event\+Hub}!Storage\+Connection\+String@{Storage\+Connection\+String}}

@@ -6,6 +6,7 @@ var searchData=
   ['defaulteventbuilder',['DefaultEventBuilder',['../classCqrs_1_1Events_1_1DefaultEventBuilder.html',1,'Cqrs::Events']]],
   ['defaultjsonserializersettings',['DefaultJsonSerializerSettings',['../classCqrs_1_1Events_1_1DefaultJsonSerializerSettings.html',1,'Cqrs::Events']]],
   ['defaultsinglesignontokenfactory',['DefaultSingleSignOnTokenFactory',['../classCqrs_1_1Authentication_1_1DefaultSingleSignOnTokenFactory.html',1,'Cqrs::Authentication']]],
+  ['defaultsnapshotbuilder',['DefaultSnapshotBuilder',['../classCqrs_1_1Events_1_1DefaultSnapshotBuilder.html',1,'Cqrs::Events']]],
   ['defaultsnapshotstrategy',['DefaultSnapshotStrategy',['../classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy.html',1,'Cqrs::Snapshots']]],
   ['delegateadjuster',['DelegateAdjuster',['../classCqrs_1_1Infrastructure_1_1DelegateAdjuster.html',1,'Cqrs::Infrastructure']]],
   ['dependencyresolver',['DependencyResolver',['../classCqrs_1_1Configuration_1_1DependencyResolver.html',1,'Cqrs::Configuration']]],

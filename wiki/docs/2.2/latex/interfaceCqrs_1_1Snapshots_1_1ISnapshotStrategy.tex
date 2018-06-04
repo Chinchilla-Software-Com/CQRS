@@ -14,7 +14,7 @@ Inheritance diagram for Cqrs.\+Snapshots.\+I\+Snapshot\+Strategy$<$ T\+Authentic
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-bool \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_ab1d54cd76c7ac832329cb3a6de0effcd_ab1d54cd76c7ac832329cb3a6de0effcd}{Should\+Make\+Snap\+Shot} (\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$ aggregate)
+bool \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_aeb5fc714ec8a5b60219426f3aabc0f6c_aeb5fc714ec8a5b60219426f3aabc0f6c}{Should\+Make\+Snap\+Shot} (\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$ aggregate, I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ uncommitted\+Changes=null)
 \begin{DoxyCompactList}\small\item\em Indicates if the provided {\itshape aggregate}  should have a \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} made. This does N\+OT indicate if the provided {\itshape aggregate}  can have a \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} made or not. \end{DoxyCompactList}\item 
 bool \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_a02121821312c4ce2811b31eeaffabe51_a02121821312c4ce2811b31eeaffabe51}{Is\+Snapshotable} (Type aggregate\+Type)
 \begin{DoxyCompactList}\small\item\em Indicates if the provided {\itshape aggregate\+Type}  can have a \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} made or not. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -50,11 +50,11 @@ Indicates if the provided {\itshape aggregate\+Type}  can have a \hyperlink{clas
 
 Implemented in \hyperlink{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_acdbb918ac01b526aedb5fa9a3879887a_acdbb918ac01b526aedb5fa9a3879887a}{Cqrs.\+Snapshots.\+Default\+Snapshot\+Strategy$<$ T\+Authentication\+Token $>$}.
 
-\mbox{\Hypertarget{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_ab1d54cd76c7ac832329cb3a6de0effcd_ab1d54cd76c7ac832329cb3a6de0effcd}\label{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_ab1d54cd76c7ac832329cb3a6de0effcd_ab1d54cd76c7ac832329cb3a6de0effcd}} 
+\mbox{\Hypertarget{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_aeb5fc714ec8a5b60219426f3aabc0f6c_aeb5fc714ec8a5b60219426f3aabc0f6c}\label{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_aeb5fc714ec8a5b60219426f3aabc0f6c_aeb5fc714ec8a5b60219426f3aabc0f6c}} 
 \index{Cqrs\+::\+Snapshots\+::\+I\+Snapshot\+Strategy@{Cqrs\+::\+Snapshots\+::\+I\+Snapshot\+Strategy}!Should\+Make\+Snap\+Shot@{Should\+Make\+Snap\+Shot}}
 \index{Should\+Make\+Snap\+Shot@{Should\+Make\+Snap\+Shot}!Cqrs\+::\+Snapshots\+::\+I\+Snapshot\+Strategy@{Cqrs\+::\+Snapshots\+::\+I\+Snapshot\+Strategy}}
 \subsubsection{\texorpdfstring{Should\+Make\+Snap\+Shot()}{ShouldMakeSnapShot()}}
-{\footnotesize\ttfamily bool \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy}{Cqrs.\+Snapshots.\+I\+Snapshot\+Strategy}$<$ T\+Authentication\+Token $>$.Should\+Make\+Snap\+Shot (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$}]{aggregate }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy}{Cqrs.\+Snapshots.\+I\+Snapshot\+Strategy}$<$ T\+Authentication\+Token $>$.Should\+Make\+Snap\+Shot (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$}]{aggregate,  }\item[{I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{uncommitted\+Changes = {\ttfamily null} }\end{DoxyParamCaption})}
 
 
 
@@ -64,8 +64,10 @@ Indicates if the provided {\itshape aggregate}  should have a \hyperlink{classCq
 \begin{DoxyParams}{Parameters}
 {\em aggregate} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to check.\\
 \hline
+{\em uncommitted\+Changes} & A collection of uncommited changes to assess. If null the aggregate will be asked to provide them.\\
+\hline
 \end{DoxyParams}
 
 
-Implemented in \hyperlink{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a211413236ef217c73a69e8d7fe4e555e_a211413236ef217c73a69e8d7fe4e555e}{Cqrs.\+Snapshots.\+Default\+Snapshot\+Strategy$<$ T\+Authentication\+Token $>$}.
+Implemented in \hyperlink{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a9cdb3d79c55e2eb2796639b273d49ed9_a9cdb3d79c55e2eb2796639b273d49ed9}{Cqrs.\+Snapshots.\+Default\+Snapshot\+Strategy$<$ T\+Authentication\+Token $>$}.
 

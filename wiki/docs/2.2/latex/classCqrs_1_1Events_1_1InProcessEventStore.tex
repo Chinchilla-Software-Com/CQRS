@@ -30,6 +30,10 @@ virtual I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}
 \begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . \end{DoxyCompactList}\item 
 virtual I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a2ff4e2e27cb25be2e579fde08e1c0048_a2ff4e2e27cb25be2e579fde08e1c0048}{Get\+To\+Date$<$ T $>$} (Guid aggregate\+Id, Date\+Time versioned\+Date)
 \begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . \end{DoxyCompactList}\item 
+I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a74dd36fca8006f2c739b2675c677c1ec_a74dd36fca8006f2c739b2675c677c1ec}{Get\+Between\+Dates} (Type aggregate\+Root\+Type, Guid aggregate\+Id, Date\+Time from\+Versioned\+Date, Date\+Time to\+Versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . \end{DoxyCompactList}\item 
+I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a07534ebbda76f4a40c1386866afe0f6d_a07534ebbda76f4a40c1386866afe0f6d}{Get\+Between\+Dates$<$ T $>$} (Guid aggregate\+Id, Date\+Time from\+Versioned\+Date, Date\+Time to\+Versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . \end{DoxyCompactList}\item 
 virtual I\+Enumerable$<$ \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} $>$ \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a3d04ebb3354c7a5980b3a7e9586285fc_a3d04ebb3354c7a5980b3a7e9586285fc}{Get} (Guid correlation\+Id)
 \begin{DoxyCompactList}\small\item\em Get all I\+Event$<$\+T\+Authentication\+Token$>$ instances for the given {\itshape correlation\+Id} . \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a72dbd170c7e89e1a7bd313d2b3900c64_a72dbd170c7e89e1a7bd313d2b3900c64}{Save$<$ T $>$} (\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @event)
@@ -136,6 +140,59 @@ Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape 
 
 
 Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_add6227e2978ff8656aad79b1a51bf34c_add6227e2978ff8656aad79b1a51bf34c}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1InProcessEventStore_a74dd36fca8006f2c739b2675c677c1ec_a74dd36fca8006f2c739b2675c677c1ec}\label{classCqrs_1_1Events_1_1InProcessEventStore_a74dd36fca8006f2c739b2675c677c1ec_a74dd36fca8006f2c739b2675c677c1ec}} 
+\index{Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store@{Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store}!Get\+Between\+Dates@{Get\+Between\+Dates}}
+\index{Get\+Between\+Dates@{Get\+Between\+Dates}!Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store@{Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store}}
+\subsubsection{\texorpdfstring{Get\+Between\+Dates()}{GetBetweenDates()}}
+{\footnotesize\ttfamily I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore}{Cqrs.\+Events.\+In\+Process\+Event\+Store}$<$ T\+Authentication\+Token $>$.Get\+Between\+Dates (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{from\+Versioned\+Date,  }\item[{Date\+Time}]{to\+Versioned\+Date }\end{DoxyParamCaption})}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em from\+Versioned\+Date} & Load events from and including from this Date\+Time\\
+\hline
+{\em to\+Versioned\+Date} & Load events up-\/to and including from this Date\+Time\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a0575ba2cce945342dc261eb2286c8a41_a0575ba2cce945342dc261eb2286c8a41}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1InProcessEventStore_a07534ebbda76f4a40c1386866afe0f6d_a07534ebbda76f4a40c1386866afe0f6d}\label{classCqrs_1_1Events_1_1InProcessEventStore_a07534ebbda76f4a40c1386866afe0f6d_a07534ebbda76f4a40c1386866afe0f6d}} 
+\index{Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store@{Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store}!Get\+Between\+Dates$<$ T $>$@{Get\+Between\+Dates$<$ T $>$}}
+\index{Get\+Between\+Dates$<$ T $>$@{Get\+Between\+Dates$<$ T $>$}!Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store@{Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store}}
+\subsubsection{\texorpdfstring{Get\+Between\+Dates$<$ T $>$()}{GetBetweenDates< T >()}}
+{\footnotesize\ttfamily I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore}{Cqrs.\+Events.\+In\+Process\+Event\+Store}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a74dd36fca8006f2c739b2675c677c1ec_a74dd36fca8006f2c739b2675c677c1ec}{Get\+Between\+Dates}$<$ T $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{from\+Versioned\+Date,  }\item[{Date\+Time}]{to\+Versioned\+Date }\end{DoxyParamCaption})}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em from\+Versioned\+Date} & Load events from and including from this Date\+Time\\
+\hline
+{\em to\+Versioned\+Date} & Load events up-\/to and including from this Date\+Time\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a06d24ede807dfab7c4b3a2cf85af83d2_a06d24ede807dfab7c4b3a2cf85af83d2}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}.
 
 \mbox{\Hypertarget{classCqrs_1_1Events_1_1InProcessEventStore_ab2e2cf9240ab703b81e932194b722749_ab2e2cf9240ab703b81e932194b722749}\label{classCqrs_1_1Events_1_1InProcessEventStore_ab2e2cf9240ab703b81e932194b722749_ab2e2cf9240ab703b81e932194b722749}} 
 \index{Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store@{Cqrs\+::\+Events\+::\+In\+Process\+Event\+Store}!Get\+To\+Date@{Get\+To\+Date}}

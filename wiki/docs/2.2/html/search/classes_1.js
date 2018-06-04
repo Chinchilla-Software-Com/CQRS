@@ -14,6 +14,8 @@ var searchData=
   ['blobstorageeventstoretests',['BlobStorageEventStoreTests',['../classCqrs_1_1Azure_1_1BlobStorage_1_1Test_1_1Integration_1_1BlobStorageEventStoreTests.html',1,'Cqrs::Azure::BlobStorage::Test::Integration']]],
   ['blobstoragequerybuilder',['BlobStorageQueryBuilder',['../classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1Queries_1_1BlobStorageQueryBuilder.html',1,'Cqrs::Azure::BlobStorage::Repositories::Queries']]],
   ['blobstoragerepository',['BlobStorageRepository',['../classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1BlobStorageRepository.html',1,'Cqrs::Azure::BlobStorage::Repositories']]],
+  ['blobstoragesnapshotstore',['BlobStorageSnapshotStore',['../classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStore.html',1,'Cqrs::Azure::BlobStorage::Events']]],
+  ['blobstoragesnapshotstoreconnectionstringfactory',['BlobStorageSnapshotStoreConnectionStringFactory',['../classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStoreConnectionStringFactory.html',1,'Cqrs::Azure::BlobStorage::Events']]],
   ['blobstoragestore',['BlobStorageStore',['../classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore.html',1,'Cqrs::Azure::BlobStorage']]],
   ['blobstoragestore_3c_20eventdata_20_3e',['BlobStorageStore&lt; EventData &gt;',['../classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStore.html',1,'Cqrs::Azure::BlobStorage']]],
   ['blobstoragestoreextensions',['BlobStorageStoreExtensions',['../classCqrs_1_1Azure_1_1BlobStorage_1_1BlobStorageStoreExtensions.html',1,'Cqrs::Azure::BlobStorage']]],

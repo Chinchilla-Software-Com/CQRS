@@ -1,0 +1,6 @@
+var classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStorer =
+[
+    [ "RawTableStorageSnapshotStorer", "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStorer_a76c9bac0cbad526e8b7b53c7eccce23f.html#a76c9bac0cbad526e8b7b53c7eccce23f", null ],
+    [ "CreateTableEntity", "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStorer_ae1f2f98faf5254e44ff20acbdc72c874.html#ae1f2f98faf5254e44ff20acbdc72c874", null ],
+    [ "GetSafeSourceName", "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStorer_a60d3f056786a231d63b756823d220cc9.html#a60d3f056786a231d63b756823d220cc9", null ]
+];

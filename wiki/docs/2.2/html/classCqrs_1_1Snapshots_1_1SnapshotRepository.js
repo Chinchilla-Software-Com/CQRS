@@ -5,7 +5,7 @@ var classCqrs_1_1Snapshots_1_1SnapshotRepository =
     [ "GetToDate< TAggregateRoot >", "classCqrs_1_1Snapshots_1_1SnapshotRepository_a2a55df8aa2b9a2058360ef8cdd4c1ebc.html#a2a55df8aa2b9a2058360ef8cdd4c1ebc", null ],
     [ "GetToVersion< TAggregateRoot >", "classCqrs_1_1Snapshots_1_1SnapshotRepository_abdeca9aa6a5ce75e445888b2d0092a7d.html#abdeca9aa6a5ce75e445888b2d0092a7d", null ],
     [ "Save< TAggregateRoot >", "classCqrs_1_1Snapshots_1_1SnapshotRepository_aac1a574562f8c6134d02a44cd10b8afa.html#aac1a574562f8c6134d02a44cd10b8afa", null ],
-    [ "TryMakeSnapshot", "classCqrs_1_1Snapshots_1_1SnapshotRepository_a06b3211ded753ed79c3080819b16d496.html#a06b3211ded753ed79c3080819b16d496", null ],
+    [ "TryMakeSnapshot", "classCqrs_1_1Snapshots_1_1SnapshotRepository_a82ef7d630bd09e02b573658ab8d909dd.html#a82ef7d630bd09e02b573658ab8d909dd", null ],
     [ "TryRestoreAggregateFromSnapshot< TAggregateRoot >", "classCqrs_1_1Snapshots_1_1SnapshotRepository_a1328c103474b2b394b7af61a24455a65.html#a1328c103474b2b394b7af61a24455a65", null ],
     [ "AggregateFactory", "classCqrs_1_1Snapshots_1_1SnapshotRepository_a833748fa79fd234067b61927c57bc60f.html#a833748fa79fd234067b61927c57bc60f", null ],
     [ "EventStore", "classCqrs_1_1Snapshots_1_1SnapshotRepository_a34f46341da207beab43bb96b20514976.html#a34f46341da207beab43bb96b20514976", null ],
