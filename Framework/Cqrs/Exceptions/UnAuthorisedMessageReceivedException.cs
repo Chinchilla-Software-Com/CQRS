@@ -21,7 +21,7 @@ namespace Cqrs.Exceptions
 		/// Instantiates a new instance of <see cref="UnAuthorisedMessageReceivedException"/>.
 		/// </summary>
 		public UnAuthorisedMessageReceivedException(string typeName, string id, object identifyMessage)
-			: base(string.Format("An event message arrived with the {0} was of type {1}{2} and was not authorized.", id, typeName, identifyMessage))
+			: base(string.Format("A message arrived with the {0} was of type {1}{2} and was not authorized.", id, typeName, identifyMessage))
 		{
 		}
 
