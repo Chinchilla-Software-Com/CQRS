@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-05 00:19:41</td>
+            <td class="headerValue">2018-06-05 01:34:55</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -233,166 +233,176 @@
 <span class="lineNum">     175 </span>            :                                         responseCode = &quot;200&quot;;
 <span class="lineNum">     176 </span>            :                                         return;
 <span class="lineNum">     177 </span>            :                                 }
-<span class="lineNum">     178 </span>            :                                 catch (NoHandlersRegisteredException exception)
+<span class="lineNum">     178 </span>            :                                 catch (UnAuthorisedMessageReceivedException exception)
 <span class="lineNum">     179 </span>            :                                 {
 <span class="lineNum">     180 </span>            :                                         TelemetryHelper.TrackException(exception, null, telemetryProperties);
 <span class="lineNum">     181 </span>            :                                         // Indicates a problem, unlock message in queue
-<span class="lineNum">     182 </span>            :                                         Logger.LogError(string.Format(&quot;A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but no handlers were found to process it.&quot;, eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+<span class="lineNum">     182 </span>            :                                         Logger.LogError(string.Format(&quot;An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but was not authorised.&quot;, eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
 <span class="lineNum">     183 </span>            :                                         wasSuccessfull = false;
-<span class="lineNum">     184 </span>            :                                         responseCode = &quot;501&quot;;
+<span class="lineNum">     184 </span>            :                                         responseCode = &quot;401&quot;;
 <span class="lineNum">     185 </span>            :                                         telemetryProperties.Add(&quot;ExceptionType&quot;, exception.GetType().FullName);
 <span class="lineNum">     186 </span>            :                                         telemetryProperties.Add(&quot;ExceptionMessage&quot;, exception.Message);
 <span class="lineNum">     187 </span>            :                                 }
-<span class="lineNum">     188 </span>            :                                 catch (NoHandlerRegisteredException exception)
+<span class="lineNum">     188 </span>            :                                 catch (NoHandlersRegisteredException exception)
 <span class="lineNum">     189 </span>            :                                 {
 <span class="lineNum">     190 </span>            :                                         TelemetryHelper.TrackException(exception, null, telemetryProperties);
 <span class="lineNum">     191 </span>            :                                         // Indicates a problem, unlock message in queue
-<span class="lineNum">     192 </span>            :                                         Logger.LogError(string.Format(&quot;A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'s but no handler was found to process it.&quot;, eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+<span class="lineNum">     192 </span>            :                                         Logger.LogError(string.Format(&quot;An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but no handlers were found to process it.&quot;, eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
 <span class="lineNum">     193 </span>            :                                         wasSuccessfull = false;
 <span class="lineNum">     194 </span>            :                                         responseCode = &quot;501&quot;;
 <span class="lineNum">     195 </span>            :                                         telemetryProperties.Add(&quot;ExceptionType&quot;, exception.GetType().FullName);
 <span class="lineNum">     196 </span>            :                                         telemetryProperties.Add(&quot;ExceptionMessage&quot;, exception.Message);
 <span class="lineNum">     197 </span>            :                                 }
-<span class="lineNum">     198 </span>            :                                 catch (Exception exception)
+<span class="lineNum">     198 </span>            :                                 catch (NoHandlerRegisteredException exception)
 <span class="lineNum">     199 </span>            :                                 {
-<span class="lineNum">     200 </span>            :                                         // Indicates a problem, unlock message in queue
-<span class="lineNum">     201 </span>            :                                         Logger.LogError(string.Format(&quot;An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but failed to be process.&quot;, eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
-<span class="lineNum">     202 </span>            : 
-<span class="lineNum">     203 </span>            :                                         switch (i)
-<span class="lineNum">     204 </span>            :                                         {
-<span class="lineNum">     205 </span>            :                                                 case 0:
-<span class="lineNum">     206 </span>            :                                                 case 1:
-<span class="lineNum">     207 </span>            :                                                         // 10 seconds
-<span class="lineNum">     208 </span>            :                                                         Thread.Sleep(10 * 1000);
-<span class="lineNum">     209 </span>            :                                                         break;
-<span class="lineNum">     210 </span>            :                                                 case 2:
-<span class="lineNum">     211 </span>            :                                                 case 3:
-<span class="lineNum">     212 </span>            :                                                         // 30 seconds
-<span class="lineNum">     213 </span>            :                                                         Thread.Sleep(30 * 1000);
-<span class="lineNum">     214 </span>            :                                                         break;
-<span class="lineNum">     215 </span>            :                                                 case 4:
-<span class="lineNum">     216 </span>            :                                                 case 5:
-<span class="lineNum">     217 </span>            :                                                 case 6:
-<span class="lineNum">     218 </span>            :                                                         // 1 minute
-<span class="lineNum">     219 </span>            :                                                         Thread.Sleep(60 * 1000);
-<span class="lineNum">     220 </span>            :                                                         break;
-<span class="lineNum">     221 </span>            :                                                 case 7:
-<span class="lineNum">     222 </span>            :                                                 case 8:
-<span class="lineNum">     223 </span>            :                                                         // 3 minutes
-<span class="lineNum">     224 </span>            :                                                         Thread.Sleep(3 * 60 * 1000);
-<span class="lineNum">     225 </span>            :                                                         break;
-<span class="lineNum">     226 </span>            :                                                 case 9:
-<span class="lineNum">     227 </span>            :                                                         telemetryProperties.Add(&quot;ExceptionType&quot;, exception.GetType().FullName);
-<span class="lineNum">     228 </span>            :                                                         telemetryProperties.Add(&quot;ExceptionMessage&quot;, exception.Message);
-<span class="lineNum">     229 </span>            :                                                         break;
-<span class="lineNum">     230 </span>            :                                         }
-<span class="lineNum">     231 </span>            :                                         wasSuccessfull = false;
-<span class="lineNum">     232 </span>            :                                         responseCode = &quot;500&quot;;
-<span class="lineNum">     233 </span>            :                                 }
-<span class="lineNum">     234 </span>            :                                 finally
-<span class="lineNum">     235 </span>            :                                 {
-<span class="lineNum">     236 </span>            :                                         // Eventually just accept it
-<span class="lineNum">     237 </span>            :                                         context.CheckpointAsync(eventData);
-<span class="lineNum">     238 </span>            : 
-<span class="lineNum">     239 </span>            :                                         TelemetryHelper.TrackMetric(&quot;Cqrs/Handle/Event&quot;, CurrentHandles--, telemetryProperties);
-<span class="lineNum">     240 </span>            : 
-<span class="lineNum">     241 </span>            :                                         mainStopWatch.Stop();
-<span class="lineNum">     242 </span>            :                                         if (guidAuthenticationToken != null)
-<span class="lineNum">     243 </span>            :                                                 TelemetryHelper.TrackRequest
-<span class="lineNum">     244 </span>            :                                                 (
-<span class="lineNum">     245 </span>            :                                                         telemetryName,
-<span class="lineNum">     246 </span>            :                                                         guidAuthenticationToken,
-<span class="lineNum">     247 </span>            :                                                         startedAt,
-<span class="lineNum">     248 </span>            :                                                         mainStopWatch.Elapsed,
-<span class="lineNum">     249 </span>            :                                                         responseCode,
-<span class="lineNum">     250 </span>            :                                                         wasSuccessfull == null || wasSuccessfull.Value,
-<span class="lineNum">     251 </span>            :                                                         telemetryProperties
-<span class="lineNum">     252 </span>            :                                                 );
-<span class="lineNum">     253 </span>            :                                         else if (intAuthenticationToken != null)
-<span class="lineNum">     254 </span>            :                                                 TelemetryHelper.TrackRequest
-<span class="lineNum">     255 </span>            :                                                 (
-<span class="lineNum">     256 </span>            :                                                         telemetryName,
-<span class="lineNum">     257 </span>            :                                                         intAuthenticationToken,
-<span class="lineNum">     258 </span>            :                                                         startedAt,
-<span class="lineNum">     259 </span>            :                                                         mainStopWatch.Elapsed,
-<span class="lineNum">     260 </span>            :                                                         responseCode,
-<span class="lineNum">     261 </span>            :                                                         wasSuccessfull == null || wasSuccessfull.Value,
-<span class="lineNum">     262 </span>            :                                                         telemetryProperties
-<span class="lineNum">     263 </span>            :                                                 );
-<span class="lineNum">     264 </span>            :                                         else if (stringAuthenticationToken != null)
-<span class="lineNum">     265 </span>            :                                                 TelemetryHelper.TrackRequest
-<span class="lineNum">     266 </span>            :                                                 (
-<span class="lineNum">     267 </span>            :                                                         telemetryName,
-<span class="lineNum">     268 </span>            :                                                         stringAuthenticationToken,
-<span class="lineNum">     269 </span>            :                                                         startedAt,
-<span class="lineNum">     270 </span>            :                                                         mainStopWatch.Elapsed,
-<span class="lineNum">     271 </span>            :                                                         responseCode,
-<span class="lineNum">     272 </span>            :                                                         wasSuccessfull == null || wasSuccessfull.Value,
-<span class="lineNum">     273 </span>            :                                                         telemetryProperties
-<span class="lineNum">     274 </span>            :                                                 );
-<span class="lineNum">     275 </span>            :                                         else
-<span class="lineNum">     276 </span>            :                                                 TelemetryHelper.TrackRequest
-<span class="lineNum">     277 </span>            :                                                 (
-<span class="lineNum">     278 </span>            :                                                         telemetryName,
-<span class="lineNum">     279 </span>            :                                                         authenticationToken,
-<span class="lineNum">     280 </span>            :                                                         startedAt,
-<span class="lineNum">     281 </span>            :                                                         mainStopWatch.Elapsed,
-<span class="lineNum">     282 </span>            :                                                         responseCode,
-<span class="lineNum">     283 </span>            :                                                         wasSuccessfull == null || wasSuccessfull.Value,
-<span class="lineNum">     284 </span>            :                                                         telemetryProperties
-<span class="lineNum">     285 </span>            :                                                 );
-<span class="lineNum">     286 </span>            : 
-<span class="lineNum">     287 </span>            :                                         TelemetryHelper.Flush();
-<span class="lineNum">     288 </span>            :                                 }
-<span class="lineNum">     289 </span>            :                         }
-<span class="lineNum">     290 </span>            :                 }
-<span class="lineNum">     291 </span>            : 
-<span class="lineNum">     292 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     293 </span>            :                 /// Receives a &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; from the event bus.
-<span class="lineNum">     294 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     295 </span>            :                 public virtual bool? ReceiveEvent(IEvent&lt;TAuthenticationToken&gt; @event)
-<span class="lineNum">     296 </span>            :                 {
-<span class="lineNum">     297 </span>            :                         return AzureBusHelper.DefaultReceiveEvent(@event, Routes, &quot;Azure-EventHub&quot;);
-<span class="lineNum">     298 </span>            :                 }
-<span class="lineNum">     299 </span>            : 
-<span class="lineNum">     300 </span>            :                 #region Overrides of AzureServiceBus&lt;TAuthenticationToken&gt;
+<span class="lineNum">     200 </span>            :                                         TelemetryHelper.TrackException(exception, null, telemetryProperties);
+<span class="lineNum">     201 </span>            :                                         // Indicates a problem, unlock message in queue
+<span class="lineNum">     202 </span>            :                                         Logger.LogError(string.Format(&quot;An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'s but no handler was found to process it.&quot;, eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+<span class="lineNum">     203 </span>            :                                         wasSuccessfull = false;
+<span class="lineNum">     204 </span>            :                                         responseCode = &quot;501&quot;;
+<span class="lineNum">     205 </span>            :                                         telemetryProperties.Add(&quot;ExceptionType&quot;, exception.GetType().FullName);
+<span class="lineNum">     206 </span>            :                                         telemetryProperties.Add(&quot;ExceptionMessage&quot;, exception.Message);
+<span class="lineNum">     207 </span>            :                                 }
+<span class="lineNum">     208 </span>            :                                 catch (Exception exception)
+<span class="lineNum">     209 </span>            :                                 {
+<span class="lineNum">     210 </span>            :                                         // Indicates a problem, unlock message in queue
+<span class="lineNum">     211 </span>            :                                         Logger.LogError(string.Format(&quot;An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but failed to be process.&quot;, eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span>            :                                         switch (i)
+<span class="lineNum">     214 </span>            :                                         {
+<span class="lineNum">     215 </span>            :                                                 case 0:
+<span class="lineNum">     216 </span>            :                                                 case 1:
+<span class="lineNum">     217 </span>            :                                                         // 10 seconds
+<span class="lineNum">     218 </span>            :                                                         Thread.Sleep(10 * 1000);
+<span class="lineNum">     219 </span>            :                                                         break;
+<span class="lineNum">     220 </span>            :                                                 case 2:
+<span class="lineNum">     221 </span>            :                                                 case 3:
+<span class="lineNum">     222 </span>            :                                                         // 30 seconds
+<span class="lineNum">     223 </span>            :                                                         Thread.Sleep(30 * 1000);
+<span class="lineNum">     224 </span>            :                                                         break;
+<span class="lineNum">     225 </span>            :                                                 case 4:
+<span class="lineNum">     226 </span>            :                                                 case 5:
+<span class="lineNum">     227 </span>            :                                                 case 6:
+<span class="lineNum">     228 </span>            :                                                         // 1 minute
+<span class="lineNum">     229 </span>            :                                                         Thread.Sleep(60 * 1000);
+<span class="lineNum">     230 </span>            :                                                         break;
+<span class="lineNum">     231 </span>            :                                                 case 7:
+<span class="lineNum">     232 </span>            :                                                 case 8:
+<span class="lineNum">     233 </span>            :                                                         // 3 minutes
+<span class="lineNum">     234 </span>            :                                                         Thread.Sleep(3 * 60 * 1000);
+<span class="lineNum">     235 </span>            :                                                         break;
+<span class="lineNum">     236 </span>            :                                                 case 9:
+<span class="lineNum">     237 </span>            :                                                         telemetryProperties.Add(&quot;ExceptionType&quot;, exception.GetType().FullName);
+<span class="lineNum">     238 </span>            :                                                         telemetryProperties.Add(&quot;ExceptionMessage&quot;, exception.Message);
+<span class="lineNum">     239 </span>            :                                                         break;
+<span class="lineNum">     240 </span>            :                                         }
+<span class="lineNum">     241 </span>            :                                         wasSuccessfull = false;
+<span class="lineNum">     242 </span>            :                                         responseCode = &quot;500&quot;;
+<span class="lineNum">     243 </span>            :                                 }
+<span class="lineNum">     244 </span>            :                                 finally
+<span class="lineNum">     245 </span>            :                                 {
+<span class="lineNum">     246 </span>            :                                         // Eventually just accept it
+<span class="lineNum">     247 </span>            :                                         context.CheckpointAsync(eventData);
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            :                                         TelemetryHelper.TrackMetric(&quot;Cqrs/Handle/Event&quot;, CurrentHandles--, telemetryProperties);
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span>            :                                         mainStopWatch.Stop();
+<span class="lineNum">     252 </span>            :                                         if (guidAuthenticationToken != null)
+<span class="lineNum">     253 </span>            :                                                 TelemetryHelper.TrackRequest
+<span class="lineNum">     254 </span>            :                                                 (
+<span class="lineNum">     255 </span>            :                                                         telemetryName,
+<span class="lineNum">     256 </span>            :                                                         guidAuthenticationToken,
+<span class="lineNum">     257 </span>            :                                                         startedAt,
+<span class="lineNum">     258 </span>            :                                                         mainStopWatch.Elapsed,
+<span class="lineNum">     259 </span>            :                                                         responseCode,
+<span class="lineNum">     260 </span>            :                                                         wasSuccessfull == null || wasSuccessfull.Value,
+<span class="lineNum">     261 </span>            :                                                         telemetryProperties
+<span class="lineNum">     262 </span>            :                                                 );
+<span class="lineNum">     263 </span>            :                                         else if (intAuthenticationToken != null)
+<span class="lineNum">     264 </span>            :                                                 TelemetryHelper.TrackRequest
+<span class="lineNum">     265 </span>            :                                                 (
+<span class="lineNum">     266 </span>            :                                                         telemetryName,
+<span class="lineNum">     267 </span>            :                                                         intAuthenticationToken,
+<span class="lineNum">     268 </span>            :                                                         startedAt,
+<span class="lineNum">     269 </span>            :                                                         mainStopWatch.Elapsed,
+<span class="lineNum">     270 </span>            :                                                         responseCode,
+<span class="lineNum">     271 </span>            :                                                         wasSuccessfull == null || wasSuccessfull.Value,
+<span class="lineNum">     272 </span>            :                                                         telemetryProperties
+<span class="lineNum">     273 </span>            :                                                 );
+<span class="lineNum">     274 </span>            :                                         else if (stringAuthenticationToken != null)
+<span class="lineNum">     275 </span>            :                                                 TelemetryHelper.TrackRequest
+<span class="lineNum">     276 </span>            :                                                 (
+<span class="lineNum">     277 </span>            :                                                         telemetryName,
+<span class="lineNum">     278 </span>            :                                                         stringAuthenticationToken,
+<span class="lineNum">     279 </span>            :                                                         startedAt,
+<span class="lineNum">     280 </span>            :                                                         mainStopWatch.Elapsed,
+<span class="lineNum">     281 </span>            :                                                         responseCode,
+<span class="lineNum">     282 </span>            :                                                         wasSuccessfull == null || wasSuccessfull.Value,
+<span class="lineNum">     283 </span>            :                                                         telemetryProperties
+<span class="lineNum">     284 </span>            :                                                 );
+<span class="lineNum">     285 </span>            :                                         else
+<span class="lineNum">     286 </span>            :                                                 TelemetryHelper.TrackRequest
+<span class="lineNum">     287 </span>            :                                                 (
+<span class="lineNum">     288 </span>            :                                                         telemetryName,
+<span class="lineNum">     289 </span>            :                                                         authenticationToken,
+<span class="lineNum">     290 </span>            :                                                         startedAt,
+<span class="lineNum">     291 </span>            :                                                         mainStopWatch.Elapsed,
+<span class="lineNum">     292 </span>            :                                                         responseCode,
+<span class="lineNum">     293 </span>            :                                                         wasSuccessfull == null || wasSuccessfull.Value,
+<span class="lineNum">     294 </span>            :                                                         telemetryProperties
+<span class="lineNum">     295 </span>            :                                                 );
+<span class="lineNum">     296 </span>            : 
+<span class="lineNum">     297 </span>            :                                         TelemetryHelper.Flush();
+<span class="lineNum">     298 </span>            :                                 }
+<span class="lineNum">     299 </span>            :                         }
+<span class="lineNum">     300 </span>            :                 }
 <span class="lineNum">     301 </span>            : 
 <span class="lineNum">     302 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     303 </span>            :                 /// Returns &lt;see cref=&quot;NumberOfReceiversCountConfigurationKey&quot;/&gt; from &lt;see cref=&quot;IConfigurationManager&quot;/&gt; 
-<span class="lineNum">     304 </span>            :                 /// if no value is set, returns &lt;see cref=&quot;AzureBus{TAuthenticationToken}.DefaultNumberOfReceiversCount&quot;/&gt;.
-<span class="lineNum">     305 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     306 </span>            :                 protected override int GetCurrentNumberOfReceiversCount()
-<span class="lineNum">     307 </span>            :                 {
-<span class="lineNum">     308 </span>            :                         string numberOfReceiversCountValue;
-<span class="lineNum">     309 </span>            :                         int numberOfReceiversCount;
-<span class="lineNum">     310 </span>            :                         if (ConfigurationManager.TryGetSetting(NumberOfReceiversCountConfigurationKey, out numberOfReceiversCountValue) &amp;&amp; !string.IsNullOrWhiteSpace(numberOfReceiversCountValue))
-<span class="lineNum">     311 </span>            :                         {
-<span class="lineNum">     312 </span>            :                                 if (!int.TryParse(numberOfReceiversCountValue, out numberOfReceiversCount))
-<span class="lineNum">     313 </span>            :                                         numberOfReceiversCount = DefaultNumberOfReceiversCount;
-<span class="lineNum">     314 </span>            :                         }
-<span class="lineNum">     315 </span>            :                         else
-<span class="lineNum">     316 </span>            :                                 numberOfReceiversCount = DefaultNumberOfReceiversCount;
-<span class="lineNum">     317 </span>            :                         return numberOfReceiversCount;
-<span class="lineNum">     318 </span>            :                 }
-<span class="lineNum">     319 </span>            : 
-<span class="lineNum">     320 </span>            :                 #endregion
-<span class="lineNum">     321 </span>            : 
-<span class="lineNum">     322 </span>            :                 #region Implementation of IEventReceiver
-<span class="lineNum">     323 </span>            : 
-<span class="lineNum">     324 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     325 </span>            :                 /// Starts listening and processing instances of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; from the event bus.
-<span class="lineNum">     326 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     327 </span>            :                 public void Start()
-<span class="lineNum">     328 </span>            :                 {
-<span class="lineNum">     329 </span>            :                         InstantiateReceiving();
-<span class="lineNum">     330 </span>            : 
-<span class="lineNum">     331 </span>            :                         // Callback to handle received messages
-<span class="lineNum">     332 </span>            :                         RegisterReceiverMessageHandler(ReceiveEvent);
-<span class="lineNum">     333 </span>            :                 }
-<span class="lineNum">     334 </span>            : 
-<span class="lineNum">     335 </span>            :                 #endregion
-<span class="lineNum">     336 </span>            :         }
-<span class="lineNum">     337 </span>            : }
+<span class="lineNum">     303 </span>            :                 /// Receives a &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; from the event bus.
+<span class="lineNum">     304 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     305 </span>            :                 public virtual bool? ReceiveEvent(IEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">     306 </span>            :                 {
+<span class="lineNum">     307 </span>            :                         return AzureBusHelper.DefaultReceiveEvent(@event, Routes, &quot;Azure-EventHub&quot;);
+<span class="lineNum">     308 </span>            :                 }
+<span class="lineNum">     309 </span>            : 
+<span class="lineNum">     310 </span>            :                 #region Overrides of AzureServiceBus&lt;TAuthenticationToken&gt;
+<span class="lineNum">     311 </span>            : 
+<span class="lineNum">     312 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     313 </span>            :                 /// Returns &lt;see cref=&quot;NumberOfReceiversCountConfigurationKey&quot;/&gt; from &lt;see cref=&quot;IConfigurationManager&quot;/&gt; 
+<span class="lineNum">     314 </span>            :                 /// if no value is set, returns &lt;see cref=&quot;AzureBus{TAuthenticationToken}.DefaultNumberOfReceiversCount&quot;/&gt;.
+<span class="lineNum">     315 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     316 </span>            :                 protected override int GetCurrentNumberOfReceiversCount()
+<span class="lineNum">     317 </span>            :                 {
+<span class="lineNum">     318 </span>            :                         string numberOfReceiversCountValue;
+<span class="lineNum">     319 </span>            :                         int numberOfReceiversCount;
+<span class="lineNum">     320 </span>            :                         if (ConfigurationManager.TryGetSetting(NumberOfReceiversCountConfigurationKey, out numberOfReceiversCountValue) &amp;&amp; !string.IsNullOrWhiteSpace(numberOfReceiversCountValue))
+<span class="lineNum">     321 </span>            :                         {
+<span class="lineNum">     322 </span>            :                                 if (!int.TryParse(numberOfReceiversCountValue, out numberOfReceiversCount))
+<span class="lineNum">     323 </span>            :                                         numberOfReceiversCount = DefaultNumberOfReceiversCount;
+<span class="lineNum">     324 </span>            :                         }
+<span class="lineNum">     325 </span>            :                         else
+<span class="lineNum">     326 </span>            :                                 numberOfReceiversCount = DefaultNumberOfReceiversCount;
+<span class="lineNum">     327 </span>            :                         return numberOfReceiversCount;
+<span class="lineNum">     328 </span>            :                 }
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span>            :                 #endregion
+<span class="lineNum">     331 </span>            : 
+<span class="lineNum">     332 </span>            :                 #region Implementation of IEventReceiver
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     335 </span>            :                 /// Starts listening and processing instances of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; from the event bus.
+<span class="lineNum">     336 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     337 </span>            :                 public void Start()
+<span class="lineNum">     338 </span>            :                 {
+<span class="lineNum">     339 </span>            :                         InstantiateReceiving();
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span>            :                         // Callback to handle received messages
+<span class="lineNum">     342 </span>            :                         RegisterReceiverMessageHandler(ReceiveEvent);
+<span class="lineNum">     343 </span>            :                 }
+<span class="lineNum">     344 </span>            : 
+<span class="lineNum">     345 </span>            :                 #endregion
+<span class="lineNum">     346 </span>            :         }
+<span class="lineNum">     347 </span>            : }
 </pre>
       </td>
     </tr>
