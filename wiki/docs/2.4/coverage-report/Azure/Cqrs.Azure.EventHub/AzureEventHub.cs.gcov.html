@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-05 00:19:41</td>
+            <td class="headerValue">2018-06-05 01:34:55</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -480,22 +480,24 @@
 <span class="lineNum">     422 </span>            :                                 telemetryProperties.Add(&quot;MessageSource&quot;, value.ToString());
 <span class="lineNum">     423 </span>            :                         if (message.Properties.TryGetValue(&quot;Source-Method&quot;, out value))
 <span class="lineNum">     424 </span>            :                                 telemetryProperties.Add(&quot;MessageSourceMethod&quot;, value.ToString());
-<span class="lineNum">     425 </span>            : 
-<span class="lineNum">     426 </span>            :                         return telemetryProperties;
-<span class="lineNum">     427 </span>            :                 }
-<span class="lineNum">     428 </span>            : 
-<span class="lineNum">     429 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     430 </span>            :                 /// Extract the signature from the provided &lt;paramref name=&quot;eventData&quot;/&gt;.
-<span class="lineNum">     431 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     432 </span><span class="lineCov">          1 :                 protected virtual string ExtractSignature(EventData eventData)</span>
-<span class="lineNum">     433 </span>            :                 {
-<span class="lineNum">     434 </span>            :                         object value;
-<span class="lineNum">     435 </span>            :                         if (eventData.Properties.TryGetValue(&quot;Signature&quot;, out value))
-<span class="lineNum">     436 </span>            :                                 return value.ToString();
-<span class="lineNum">     437 </span>            :                         return null;
-<span class="lineNum">     438 </span>            :                 }
-<span class="lineNum">     439 </span>            :         }
-<span class="lineNum">     440 </span>            : }
+<span class="lineNum">     425 </span>            :                         if (message.Properties.TryGetValue(&quot;CorrelationId&quot;, out value) &amp;&amp; !telemetryProperties.ContainsKey(&quot;CorrelationId&quot;))
+<span class="lineNum">     426 </span>            :                                 telemetryProperties.Add(&quot;CorrelationId&quot;, value.ToString());
+<span class="lineNum">     427 </span>            : 
+<span class="lineNum">     428 </span>            :                         return telemetryProperties;
+<span class="lineNum">     429 </span>            :                 }
+<span class="lineNum">     430 </span>            : 
+<span class="lineNum">     431 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     432 </span>            :                 /// Extract the signature from the provided &lt;paramref name=&quot;eventData&quot;/&gt;.
+<span class="lineNum">     433 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     434 </span><span class="lineCov">          1 :                 protected virtual string ExtractSignature(EventData eventData)</span>
+<span class="lineNum">     435 </span>            :                 {
+<span class="lineNum">     436 </span>            :                         object value;
+<span class="lineNum">     437 </span>            :                         if (eventData.Properties.TryGetValue(&quot;Signature&quot;, out value))
+<span class="lineNum">     438 </span>            :                                 return value.ToString();
+<span class="lineNum">     439 </span>            :                         return null;
+<span class="lineNum">     440 </span>            :                 }
+<span class="lineNum">     441 </span>            :         }
+<span class="lineNum">     442 </span>            : }
 </pre>
       </td>
     </tr>
