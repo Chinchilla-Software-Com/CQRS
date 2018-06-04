@@ -3,6 +3,7 @@ var classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore =
     [ "MongoDbEventStore", "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a37e57e6f1e4e545630c1c98a5aab46a3.html#a37e57e6f1e4e545630c1c98a5aab46a3", null ],
     [ "Get", "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a7a1ac8e59dc5bff0bb6562fb4f43e8df.html#a7a1ac8e59dc5bff0bb6562fb4f43e8df", null ],
     [ "Get", "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_ac886ca0a57ad86cb99ef0a3767db9280.html#ac886ca0a57ad86cb99ef0a3767db9280", null ],
+    [ "GetBetweenDates", "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a95637f6bebb94d505a6b3020275cfdf9.html#a95637f6bebb94d505a6b3020275cfdf9", null ],
     [ "GetCollection", "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_aa6a9499aa1dcde55d82d8e0f3b5bd077.html#aa6a9499aa1dcde55d82d8e0f3b5bd077", null ],
     [ "GetToDate", "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_aaf78eb481e17c4a7dee0efca8a4d47bf.html#aaf78eb481e17c4a7dee0efca8a4d47bf", null ],
     [ "GetToVersion", "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_ad319a5e79600fa5a10c2ecb436533a11.html#ad319a5e79600fa5a10c2ecb436533a11", null ],

@@ -1,0 +1,4 @@
+var classCqrs_1_1Tests_1_1Integrations_1_1SnapshotTests_1_1TestAggregateSnapshot =
+[
+    [ "CurrentRandomNumber", "classCqrs_1_1Tests_1_1Integrations_1_1SnapshotTests_1_1TestAggregateSnapshot_af3e9cca6524adc6ad8c91333a978999a.html#af3e9cca6524adc6ad8c91333a978999a", null ]
+];

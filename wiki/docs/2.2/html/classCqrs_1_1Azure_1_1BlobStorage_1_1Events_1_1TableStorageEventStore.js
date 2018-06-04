@@ -5,6 +5,7 @@ var classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore =
     [ "GenerateStreamName", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a5cee1f388c1a03d9cfea5ee1a9f42657.html#a5cee1f388c1a03d9cfea5ee1a9f42657", null ],
     [ "Get", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a420c94c86d8d1c2959aee8602f43c0c0.html#a420c94c86d8d1c2959aee8602f43c0c0", null ],
     [ "Get", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a9b952a9257dc6f458b98eba87684412e.html#a9b952a9257dc6f458b98eba87684412e", null ],
+    [ "GetBetweenDates", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a715c0d5258d8a9203f68a1070420fb7b.html#a715c0d5258d8a9203f68a1070420fb7b", null ],
     [ "GetToDate", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a90fb91dfb58f69deb6f5e91bae69330d.html#a90fb91dfb58f69deb6f5e91bae69330d", null ],
     [ "GetToVersion", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_ae6bd61257a3218d7ceb51a5ff54fb442.html#ae6bd61257a3218d7ceb51a5ff54fb442", null ],
     [ "PersistEvent", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_ae63921d0ace265b1b269c865080b5712.html#ae63921d0ace265b1b269c865080b5712", null ],

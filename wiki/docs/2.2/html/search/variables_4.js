@@ -1,6 +1,7 @@
 var searchData=
 [
   ['defaultmaximumconcurrentreceiverprocessescount',['DefaultMaximumConcurrentReceiverProcessesCount',['../classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus_a12c3d07b7ad1836e85a449e6adc8b5df.html#a12c3d07b7ad1836e85a449e6adc8b5df',1,'Cqrs::Azure::ServiceBus::AzureBus']]],
+  ['defaultmessagesshouldrefreshconfigurationkey',['DefaultMessagesShouldRefreshConfigurationKey',['../classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a5d1dcc91b08727fbaee0ec6d32106b16.html#a5d1dcc91b08727fbaee0ec6d32106b16',1,'Cqrs::Azure::ServiceBus::AzureBusHelper']]],
   ['defaultnumberofreceiverscount',['DefaultNumberOfReceiversCount',['../classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus_a19642a14d6cf036cbbdb68b9ba7e635d.html#a19642a14d6cf036cbbdb68b9ba7e635d',1,'Cqrs::Azure::ServiceBus::AzureBus']]],
   ['defaultprivateeventhubconsumergroupname',['DefaultPrivateEventHubConsumerGroupName',['../classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a523df6f08c43b3ca013c08555098f4ad.html#a523df6f08c43b3ca013c08555098f4ad',1,'Cqrs::Azure::ServiceBus::AzureEventHub']]],
   ['defaultprivatetopicsubscriptionname',['DefaultPrivateTopicSubscriptionName',['../classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_adbfdf69ded51320d81fce8e652af9b88.html#adbfdf69ded51320d81fce8e652af9b88',1,'Cqrs::Azure::ServiceBus::AzureServiceBus']]],

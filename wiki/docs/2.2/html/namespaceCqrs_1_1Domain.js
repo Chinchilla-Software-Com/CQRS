@@ -11,6 +11,7 @@ var namespaceCqrs_1_1Domain =
     [ "ISaga", "interfaceCqrs_1_1Domain_1_1ISaga.html", "interfaceCqrs_1_1Domain_1_1ISaga" ],
     [ "ISagaRepository", "interfaceCqrs_1_1Domain_1_1ISagaRepository.html", "interfaceCqrs_1_1Domain_1_1ISagaRepository" ],
     [ "ISagaUnitOfWork", "interfaceCqrs_1_1Domain_1_1ISagaUnitOfWork.html", "interfaceCqrs_1_1Domain_1_1ISagaUnitOfWork" ],
+    [ "ISnapshotAggregateRepository", "interfaceCqrs_1_1Domain_1_1ISnapshotAggregateRepository.html", null ],
     [ "IUnitOfWork", "interfaceCqrs_1_1Domain_1_1IUnitOfWork.html", "interfaceCqrs_1_1Domain_1_1IUnitOfWork" ],
     [ "Saga", "classCqrs_1_1Domain_1_1Saga.html", "classCqrs_1_1Domain_1_1Saga" ],
     [ "SagaEventHandler", "classCqrs_1_1Domain_1_1SagaEventHandler.html", "classCqrs_1_1Domain_1_1SagaEventHandler" ],

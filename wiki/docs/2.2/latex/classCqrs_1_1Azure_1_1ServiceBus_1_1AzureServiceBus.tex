@@ -41,7 +41,13 @@ virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_adae
 override void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a6ea94560e02fce0d920c467062f5fc98_a6ea94560e02fce0d920c467062f5fc98}{Apply\+Receiver\+Message\+Handler} ()
 \begin{DoxyCompactList}\small\item\em Applies the stored Receiver\+Message\+Handler and Receiver\+Message\+Handler\+Options to all receivers in \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ac52e1a7e17f4ffb80f95d31424101aaa_ac52e1a7e17f4ffb80f95d31424101aaa}{Private\+Service\+Bus\+Receivers} and \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ac73f294e6a99655f2ff7e391646f2e5d_ac73f294e6a99655f2ff7e391646f2e5d}{Public\+Service\+Bus\+Receivers}. \end{DoxyCompactList}\item 
 virtual Cancellation\+Token\+Source \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a8d1d5833d49b7793933825f2a13fb8b7_a8d1d5833d49b7793933825f2a13fb8b7}{Clean\+Up\+Dead\+Letters} (string topic\+Name, string topic\+Subscription\+Name)
-\begin{DoxyCompactList}\small\item\em Using a Task, clears all dead letters from the topic and subscription of the provided {\itshape topic\+Name}  and {\itshape topic\+Subscription\+Name} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Using a Task, clears all dead letters from the topic and subscription of the provided {\itshape topic\+Name}  and {\itshape topic\+Subscription\+Name} . \end{DoxyCompactList}\item 
+virtual Brokered\+Message \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_abd7070403c94e0b404ffa00c07c94a50_abd7070403c94e0b404ffa00c07c94a50}{Create\+Brokered\+Message$<$ T\+Message $>$} (Func$<$ T\+Message, string $>$ serialiser\+Function, Type message\+Type, T\+Message message)
+\begin{DoxyCompactList}\small\item\em Create a Brokered\+Message with additional properties to aid routing and tracing \end{DoxyCompactList}\item 
+virtual I\+Dictionary$<$ string, string $>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a735e3fddc6abec6a7eaa76acde57f46a_a735e3fddc6abec6a7eaa76acde57f46a}{Extract\+Telemetry\+Properties} (Brokered\+Message message, string base\+Communication\+Type)
+\begin{DoxyCompactList}\small\item\em Extract any telemetry properties from the provided {\itshape message} . \end{DoxyCompactList}\item 
+virtual string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a6efd119a61f555a4a8c456f4821e83bf_a6efd119a61f555a4a8c456f4821e83bf}{Extract\+Signature} (Brokered\+Message message)
+\begin{DoxyCompactList}\small\item\em Extract the signature from the provided {\itshape message} . \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -70,6 +76,8 @@ string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_adab1b2f0d
 \begin{DoxyCompactList}\small\item\em The name of the subscription in the public topic. \end{DoxyCompactList}\item 
 abstract string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a2cde8078f7d4d9706dec5fb066359ee0_a2cde8078f7d4d9706dec5fb066359ee0}{Message\+Bus\+Connection\+String\+Configuration\+Key}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \begin{DoxyCompactList}\small\item\em The configuration key for the message bus connection string as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
+abstract string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_af0dd6b4f7b53b1bcb6b1e0defd6b693e_af0dd6b4f7b53b1bcb6b1e0defd6b693e}{Signing\+Token\+Configuration\+Key}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The configuration key for the signing token as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
 abstract string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ad24cd58549bbf6377e692b6ae6843be9_ad24cd58549bbf6377e692b6ae6843be9}{Private\+Topic\+Name\+Configuration\+Key}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \begin{DoxyCompactList}\small\item\em The configuration key for the name of the private topic as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
 abstract string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_aec01ea2e2fb686bb3c9ff04f4d337ed6_aec01ea2e2fb686bb3c9ff04f4d337ed6}{Public\+Topic\+Name\+Configuration\+Key}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
@@ -95,7 +103,13 @@ On\+Message\+Options \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureService
 \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper}{I\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a7c537c53265bf01d550982c04579493e_a7c537c53265bf01d550982c04579493e}{Azure\+Bus\+Helper}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \begin{DoxyCompactList}\small\item\em Gets the I\+Azure\+Bus\+Helper$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
 I\+Telemetry\+Helper \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_af5f6d62cbdb3ad711ea42505491ffca3_af5f6d62cbdb3ad711ea42505491ffca3}{Telemetry\+Helper}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
-\begin{DoxyCompactList}\small\item\em Gets the I\+Telemetry\+Helper. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Gets the I\+Telemetry\+Helper. \end{DoxyCompactList}\item 
+short \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a4cc1f3523c56c534ff72c7da0e718482_a4cc1f3523c56c534ff72c7da0e718482}{Timeout\+On\+Send\+Retry\+Maximum\+Count}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The maximum number of time a retry is tried if a System.\+Timeout\+Exception is thrown while sending messages. \end{DoxyCompactList}\item 
+Hash\+Algorithm \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a3a49579c6f199f393c883b6f13fdbe39_a3a49579c6f199f393c883b6f13fdbe39}{Signer}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The Hash\+Algorithm to use to sign messages. \end{DoxyCompactList}\item 
+I\+List$<$ string $>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a1b1fe260b6437442543b15048f47abc6_a1b1fe260b6437442543b15048f47abc6}{Exclusion\+Namespaces}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em A list of namespaces to exclude when trying to automatically determine the container. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -196,6 +210,36 @@ Using a Task, clears all dead letters from the topic and subscription of the pro
 \begin{DoxyReturn}{Returns}
 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_abd7070403c94e0b404ffa00c07c94a50_abd7070403c94e0b404ffa00c07c94a50}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_abd7070403c94e0b404ffa00c07c94a50_abd7070403c94e0b404ffa00c07c94a50}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}!Create\+Brokered\+Message$<$ T\+Message $>$@{Create\+Brokered\+Message$<$ T\+Message $>$}}
+\index{Create\+Brokered\+Message$<$ T\+Message $>$@{Create\+Brokered\+Message$<$ T\+Message $>$}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}}
+\subsubsection{\texorpdfstring{Create\+Brokered\+Message$<$ T\+Message $>$()}{CreateBrokeredMessage< TMessage >()}}
+{\footnotesize\ttfamily virtual Brokered\+Message \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Service\+Bus}$<$ T\+Authentication\+Token $>$.Create\+Brokered\+Message$<$ T\+Message $>$ (\begin{DoxyParamCaption}\item[{Func$<$ T\+Message, string $>$}]{serialiser\+Function,  }\item[{Type}]{message\+Type,  }\item[{T\+Message}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Create a Brokered\+Message with additional properties to aid routing and tracing 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a6efd119a61f555a4a8c456f4821e83bf_a6efd119a61f555a4a8c456f4821e83bf}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a6efd119a61f555a4a8c456f4821e83bf_a6efd119a61f555a4a8c456f4821e83bf}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}!Extract\+Signature@{Extract\+Signature}}
+\index{Extract\+Signature@{Extract\+Signature}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}}
+\subsubsection{\texorpdfstring{Extract\+Signature()}{ExtractSignature()}}
+{\footnotesize\ttfamily virtual string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Service\+Bus}$<$ T\+Authentication\+Token $>$.Extract\+Signature (\begin{DoxyParamCaption}\item[{Brokered\+Message}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Extract the signature from the provided {\itshape message} . 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a735e3fddc6abec6a7eaa76acde57f46a_a735e3fddc6abec6a7eaa76acde57f46a}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a735e3fddc6abec6a7eaa76acde57f46a_a735e3fddc6abec6a7eaa76acde57f46a}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}!Extract\+Telemetry\+Properties@{Extract\+Telemetry\+Properties}}
+\index{Extract\+Telemetry\+Properties@{Extract\+Telemetry\+Properties}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}}
+\subsubsection{\texorpdfstring{Extract\+Telemetry\+Properties()}{ExtractTelemetryProperties()}}
+{\footnotesize\ttfamily virtual I\+Dictionary$<$string, string$>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Service\+Bus}$<$ T\+Authentication\+Token $>$.Extract\+Telemetry\+Properties (\begin{DoxyParamCaption}\item[{Brokered\+Message}]{message,  }\item[{string}]{base\+Communication\+Type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Extract any telemetry properties from the provided {\itshape message} . 
+
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a5a3b3610dc5dfebe586262c0bc787748_a5a3b3610dc5dfebe586262c0bc787748}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a5a3b3610dc5dfebe586262c0bc787748_a5a3b3610dc5dfebe586262c0bc787748}} 
 \index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}!Get\+Connection\+String@{Get\+Connection\+String}}
 \index{Get\+Connection\+String@{Get\+Connection\+String}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}}
@@ -373,6 +417,16 @@ The default name of the private topic if no I\+Configuration\+Manager value is s
 
 The default name of the public topic if no I\+Configuration\+Manager value is set. 
 
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a1b1fe260b6437442543b15048f47abc6_a1b1fe260b6437442543b15048f47abc6}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a1b1fe260b6437442543b15048f47abc6_a1b1fe260b6437442543b15048f47abc6}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}!Exclusion\+Namespaces@{Exclusion\+Namespaces}}
+\index{Exclusion\+Namespaces@{Exclusion\+Namespaces}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}}
+\subsubsection{\texorpdfstring{Exclusion\+Namespaces}{ExclusionNamespaces}}
+{\footnotesize\ttfamily I\+List$<$string$>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Service\+Bus}$<$ T\+Authentication\+Token $>$.Exclusion\+Namespaces\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+A list of namespaces to exclude when trying to automatically determine the container. 
+
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a2cde8078f7d4d9706dec5fb066359ee0_a2cde8078f7d4d9706dec5fb066359ee0}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a2cde8078f7d4d9706dec5fb066359ee0_a2cde8078f7d4d9706dec5fb066359ee0}} 
 \index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}!Message\+Bus\+Connection\+String\+Configuration\+Key@{Message\+Bus\+Connection\+String\+Configuration\+Key}}
 \index{Message\+Bus\+Connection\+String\+Configuration\+Key@{Message\+Bus\+Connection\+String\+Configuration\+Key}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}}
@@ -523,6 +577,26 @@ The \hyperlink{}{handler} used for Subscription\+Client.\+On\+Message(\+System.\
 
 The On\+Message\+Options used for Subscription\+Client.\+On\+Message(\+System.\+Action$<$\+Microsoft.\+Service\+Bus.\+Messaging.\+Brokered\+Message$>$, On\+Message\+Options) on each receiver. 
 
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a3a49579c6f199f393c883b6f13fdbe39_a3a49579c6f199f393c883b6f13fdbe39}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a3a49579c6f199f393c883b6f13fdbe39_a3a49579c6f199f393c883b6f13fdbe39}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}!Signer@{Signer}}
+\index{Signer@{Signer}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}}
+\subsubsection{\texorpdfstring{Signer}{Signer}}
+{\footnotesize\ttfamily Hash\+Algorithm \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Service\+Bus}$<$ T\+Authentication\+Token $>$.Signer\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The Hash\+Algorithm to use to sign messages. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_af0dd6b4f7b53b1bcb6b1e0defd6b693e_af0dd6b4f7b53b1bcb6b1e0defd6b693e}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_af0dd6b4f7b53b1bcb6b1e0defd6b693e_af0dd6b4f7b53b1bcb6b1e0defd6b693e}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}!Signing\+Token\+Configuration\+Key@{Signing\+Token\+Configuration\+Key}}
+\index{Signing\+Token\+Configuration\+Key@{Signing\+Token\+Configuration\+Key}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}}
+\subsubsection{\texorpdfstring{Signing\+Token\+Configuration\+Key}{SigningTokenConfigurationKey}}
+{\footnotesize\ttfamily abstract string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Service\+Bus}$<$ T\+Authentication\+Token $>$.Signing\+Token\+Configuration\+Key\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The configuration key for the signing token as used by I\+Configuration\+Manager. 
+
 \mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_af5f6d62cbdb3ad711ea42505491ffca3_af5f6d62cbdb3ad711ea42505491ffca3}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_af5f6d62cbdb3ad711ea42505491ffca3_af5f6d62cbdb3ad711ea42505491ffca3}} 
 \index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}!Telemetry\+Helper@{Telemetry\+Helper}}
 \index{Telemetry\+Helper@{Telemetry\+Helper}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}}
@@ -552,4 +626,14 @@ Specifies if an Exception is thrown if the network lock is lost.
 
 
 The configuration key that specifies if an Exception is thrown if the network lock is lost as used by I\+Configuration\+Manager. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a4cc1f3523c56c534ff72c7da0e718482_a4cc1f3523c56c534ff72c7da0e718482}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a4cc1f3523c56c534ff72c7da0e718482_a4cc1f3523c56c534ff72c7da0e718482}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}!Timeout\+On\+Send\+Retry\+Maximum\+Count@{Timeout\+On\+Send\+Retry\+Maximum\+Count}}
+\index{Timeout\+On\+Send\+Retry\+Maximum\+Count@{Timeout\+On\+Send\+Retry\+Maximum\+Count}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Service\+Bus}}
+\subsubsection{\texorpdfstring{Timeout\+On\+Send\+Retry\+Maximum\+Count}{TimeoutOnSendRetryMaximumCount}}
+{\footnotesize\ttfamily short \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Service\+Bus}$<$ T\+Authentication\+Token $>$.Timeout\+On\+Send\+Retry\+Maximum\+Count\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The maximum number of time a retry is tried if a System.\+Timeout\+Exception is thrown while sending messages. 
 

@@ -2,6 +2,7 @@ var namespaceCqrs_1_1Events =
 [
     [ "DefaultEventBuilder", "classCqrs_1_1Events_1_1DefaultEventBuilder.html", "classCqrs_1_1Events_1_1DefaultEventBuilder" ],
     [ "DefaultJsonSerializerSettings", "classCqrs_1_1Events_1_1DefaultJsonSerializerSettings.html", "classCqrs_1_1Events_1_1DefaultJsonSerializerSettings" ],
+    [ "DefaultSnapshotBuilder", "classCqrs_1_1Events_1_1DefaultSnapshotBuilder.html", "classCqrs_1_1Events_1_1DefaultSnapshotBuilder" ],
     [ "DtoAggregateEvent", "classCqrs_1_1Events_1_1DtoAggregateEvent.html", "classCqrs_1_1Events_1_1DtoAggregateEvent" ],
     [ "DuplicateCreateCommandEvent", "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent.html", "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent" ],
     [ "EventBuilder", "classCqrs_1_1Events_1_1EventBuilder.html", "classCqrs_1_1Events_1_1EventBuilder" ],
@@ -21,6 +22,8 @@ var namespaceCqrs_1_1Events =
     [ "IEventWithIdentity", "interfaceCqrs_1_1Events_1_1IEventWithIdentity.html", "interfaceCqrs_1_1Events_1_1IEventWithIdentity" ],
     [ "InProcessEventStore", "classCqrs_1_1Events_1_1InProcessEventStore.html", "classCqrs_1_1Events_1_1InProcessEventStore" ],
     [ "ISagaEvent", "interfaceCqrs_1_1Events_1_1ISagaEvent.html", "interfaceCqrs_1_1Events_1_1ISagaEvent" ],
+    [ "ISnapshotBuilder", "interfaceCqrs_1_1Events_1_1ISnapshotBuilder.html", "interfaceCqrs_1_1Events_1_1ISnapshotBuilder" ],
+    [ "ISnapshotDeserialiser", "interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser.html", "interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser" ],
     [ "MemoryCacheEventStore", "classCqrs_1_1Events_1_1MemoryCacheEventStore.html", "classCqrs_1_1Events_1_1MemoryCacheEventStore" ],
     [ "NotifyCallerEventAttribute", "classCqrs_1_1Events_1_1NotifyCallerEventAttribute.html", null ],
     [ "NotifyEveryoneEventAttribute", "classCqrs_1_1Events_1_1NotifyEveryoneEventAttribute.html", null ],
@@ -29,6 +32,9 @@ var namespaceCqrs_1_1Events =
     [ "PublicEventAttribute", "classCqrs_1_1Events_1_1PublicEventAttribute.html", null ],
     [ "ReplicatedSqlEventStore", "classCqrs_1_1Events_1_1ReplicatedSqlEventStore.html", "classCqrs_1_1Events_1_1ReplicatedSqlEventStore" ],
     [ "SagaEvent", "classCqrs_1_1Events_1_1SagaEvent.html", "classCqrs_1_1Events_1_1SagaEvent" ],
+    [ "SnapshotBuilder", "classCqrs_1_1Events_1_1SnapshotBuilder.html", "classCqrs_1_1Events_1_1SnapshotBuilder" ],
+    [ "SnapshotDeserialiser", "classCqrs_1_1Events_1_1SnapshotDeserialiser.html", "classCqrs_1_1Events_1_1SnapshotDeserialiser" ],
     [ "SqlEventStore", "classCqrs_1_1Events_1_1SqlEventStore.html", "classCqrs_1_1Events_1_1SqlEventStore" ],
-    [ "SqlEventStoreDataContext", "classCqrs_1_1Events_1_1SqlEventStoreDataContext.html", "classCqrs_1_1Events_1_1SqlEventStoreDataContext" ]
+    [ "SqlEventStoreDataContext", "classCqrs_1_1Events_1_1SqlEventStoreDataContext.html", "classCqrs_1_1Events_1_1SqlEventStoreDataContext" ],
+    [ "SqlSnapshotStore", "classCqrs_1_1Events_1_1SqlSnapshotStore.html", "classCqrs_1_1Events_1_1SqlSnapshotStore" ]
 ];

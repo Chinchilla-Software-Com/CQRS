@@ -2,7 +2,7 @@ var namespaceCqrs_1_1Azure_1_1ServiceBus =
 [
     [ "Tests", "namespaceCqrs_1_1Azure_1_1ServiceBus_1_1Tests.html", "namespaceCqrs_1_1Azure_1_1ServiceBus_1_1Tests" ],
     [ "AzureBus", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus.html", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus" ],
-    [ "AzureBusHelper", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper.html", null ],
+    [ "AzureBusHelper", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper.html", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper" ],
     [ "AzureCommandBus", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBus.html", null ],
     [ "AzureCommandBusPublisher", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBusPublisher.html", null ],
     [ "AzureCommandBusReceiver", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBusReceiver.html", null ],

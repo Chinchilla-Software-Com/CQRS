@@ -6,6 +6,9 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus =
     [ "CheckPublicTopicExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_aae464d1d93ae6600ff5ace028160dd3c.html#aae464d1d93ae6600ff5ace028160dd3c", null ],
     [ "CheckTopicExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a167ace15de6e40d5ec0b0c2e0fd95504.html#a167ace15de6e40d5ec0b0c2e0fd95504", null ],
     [ "CleanUpDeadLetters", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a8d1d5833d49b7793933825f2a13fb8b7.html#a8d1d5833d49b7793933825f2a13fb8b7", null ],
+    [ "CreateBrokeredMessage< TMessage >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_abd7070403c94e0b404ffa00c07c94a50.html#abd7070403c94e0b404ffa00c07c94a50", null ],
+    [ "ExtractSignature", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a6efd119a61f555a4a8c456f4821e83bf.html#a6efd119a61f555a4a8c456f4821e83bf", null ],
+    [ "ExtractTelemetryProperties", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a735e3fddc6abec6a7eaa76acde57f46a.html#a735e3fddc6abec6a7eaa76acde57f46a", null ],
     [ "GetConnectionString", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a5a3b3610dc5dfebe586262c0bc787748.html#a5a3b3610dc5dfebe586262c0bc787748", null ],
     [ "InstantiatePublishing", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a5c286d29b0bbfe3770f3407efda57036.html#a5c286d29b0bbfe3770f3407efda57036", null ],
     [ "InstantiateReceiving", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ad49a2d063279ec98443e7f1d69178cfa.html#ad49a2d063279ec98443e7f1d69178cfa", null ],
@@ -20,6 +23,7 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus =
     [ "BusHelper", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_aba45a2bece8e265b9f06695b1e90a2a1.html#aba45a2bece8e265b9f06695b1e90a2a1", null ],
     [ "DefaultPrivateTopicName", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a1fb185ed8605b1f985e4c108ff906b93.html#a1fb185ed8605b1f985e4c108ff906b93", null ],
     [ "DefaultPublicTopicName", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a1119f77ee8c51a575217466046f282a9.html#a1119f77ee8c51a575217466046f282a9", null ],
+    [ "ExclusionNamespaces", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a1b1fe260b6437442543b15048f47abc6.html#a1b1fe260b6437442543b15048f47abc6", null ],
     [ "MessageBusConnectionStringConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a2cde8078f7d4d9706dec5fb066359ee0.html#a2cde8078f7d4d9706dec5fb066359ee0", null ],
     [ "PrivateServiceBusPublisher", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a640c513528e0037de1813d134e4d0476.html#a640c513528e0037de1813d134e4d0476", null ],
     [ "PrivateServiceBusReceivers", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ac52e1a7e17f4ffb80f95d31424101aaa.html#ac52e1a7e17f4ffb80f95d31424101aaa", null ],
@@ -35,7 +39,10 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus =
     [ "PublicTopicSubscriptionNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_afd2996c47ea248fd1b70ad8077dcd215.html#afd2996c47ea248fd1b70ad8077dcd215", null ],
     [ "ReceiverMessageHandler", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ab662579a9bd5be761a23f43e739ff288.html#ab662579a9bd5be761a23f43e739ff288", null ],
     [ "ReceiverMessageHandlerOptions", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_abe75d8be8b9ffbc5a37164467963babd.html#abe75d8be8b9ffbc5a37164467963babd", null ],
+    [ "Signer", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a3a49579c6f199f393c883b6f13fdbe39.html#a3a49579c6f199f393c883b6f13fdbe39", null ],
+    [ "SigningTokenConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_af0dd6b4f7b53b1bcb6b1e0defd6b693e.html#af0dd6b4f7b53b1bcb6b1e0defd6b693e", null ],
     [ "TelemetryHelper", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_af5f6d62cbdb3ad711ea42505491ffca3.html#af5f6d62cbdb3ad711ea42505491ffca3", null ],
     [ "ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_afd7c5f3b9caa1ce88bcd8be049bbf099.html#afd7c5f3b9caa1ce88bcd8be049bbf099", null ],
-    [ "ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a29a4fb4d6f85c649e699cd5e7f0b4d1d.html#a29a4fb4d6f85c649e699cd5e7f0b4d1d", null ]
+    [ "ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a29a4fb4d6f85c649e699cd5e7f0b4d1d.html#a29a4fb4d6f85c649e699cd5e7f0b4d1d", null ],
+    [ "TimeoutOnSendRetryMaximumCount", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a4cc1f3523c56c534ff72c7da0e718482.html#a4cc1f3523c56c534ff72c7da0e718482", null ]
 ];

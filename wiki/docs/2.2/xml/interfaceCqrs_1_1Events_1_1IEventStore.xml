@@ -223,8 +223,8 @@
         <name>GetToVersion</name>
         <reimplementedby refid="classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a749548ae5196022867d32bbb5a8dd277_1a749548ae5196022867d32bbb5a8dd277">GetToVersion</reimplementedby>
         <reimplementedby refid="classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_a46382e3a34210cbc655be11eafdc05d6_1a46382e3a34210cbc655be11eafdc05d6">GetToVersion</reimplementedby>
-        <reimplementedby refid="classCqrs_1_1Events_1_1SqlEventStore_ae3e2b22dd0afb8aa3e685d12b9cf9f3e_1ae3e2b22dd0afb8aa3e685d12b9cf9f3e">GetToVersion</reimplementedby>
         <reimplementedby refid="classCqrs_1_1Events_1_1InProcessEventStore_a88c16e2e7051094a5444a566f69119e7_1a88c16e2e7051094a5444a566f69119e7">GetToVersion</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Events_1_1SqlEventStore_ae3e2b22dd0afb8aa3e685d12b9cf9f3e_1ae3e2b22dd0afb8aa3e685d12b9cf9f3e">GetToVersion</reimplementedby>
         <reimplementedby refid="classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_ae6bd61257a3218d7ceb51a5ff54fb442_1ae6bd61257a3218d7ceb51a5ff54fb442">GetToVersion</reimplementedby>
         <reimplementedby refid="classCqrs_1_1Events_1_1MemoryCacheEventStore_a818fe6785622ebb7b0c6033a0b8ffc89_1a818fe6785622ebb7b0c6033a0b8ffc89">GetToVersion</reimplementedby>
         <reimplementedby refid="classCqrs_1_1EventStore_1_1EventStore_aae9da24e2ad4bbe6629c9419c850e03b_1aae9da24e2ad4bbe6629c9419c850e03b">GetToVersion</reimplementedby>
@@ -422,6 +422,131 @@
         </inbodydescription>
         <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/IEventStore.cs" line="76" column="1"/>
       </memberdef>
+      <memberdef kind="function" id="interfaceCqrs_1_1Events_1_1IEventStore_a0575ba2cce945342dc261eb2286c8a41_1a0575ba2cce945342dc261eb2286c8a41" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>IEnumerable&lt; <ref refid="interfaceCqrs_1_1Events_1_1IEvent" kindref="compound">IEvent</ref>&lt; TAuthenticationToken &gt; &gt;</type>
+        <definition>IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt; &gt; Cqrs.Events.IEventStore&lt; TAuthenticationToken &gt;.GetBetweenDates</definition>
+        <argsstring>(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)</argsstring>
+        <name>GetBetweenDates</name>
+        <reimplementedby refid="classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_aae5f14188f0486b70dc9cdb577b15e1c_1aae5f14188f0486b70dc9cdb577b15e1c">GetBetweenDates</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_acbb5dac5daaf2eafbf76ab631e7827f8_1acbb5dac5daaf2eafbf76ab631e7827f8">GetBetweenDates</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Events_1_1SqlEventStore_addd080c095c2a87effa71a0310402f78_1addd080c095c2a87effa71a0310402f78">GetBetweenDates</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Events_1_1InProcessEventStore_a74dd36fca8006f2c739b2675c677c1ec_1a74dd36fca8006f2c739b2675c677c1ec">GetBetweenDates</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a715c0d5258d8a9203f68a1070420fb7b_1a715c0d5258d8a9203f68a1070420fb7b">GetBetweenDates</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1EventStore_1_1EventStore_afa60a199a0c4329278ae91625ae81ed2_1afa60a199a0c4329278ae91625ae81ed2">GetBetweenDates</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Events_1_1EventStore_add415731fcea6a9367e1031c4608c922_1add415731fcea6a9367e1031c4608c922">GetBetweenDates</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Events_1_1MemoryCacheEventStore_ac57321649252167214d1661a578c6421_1ac57321649252167214d1661a578c6421">GetBetweenDates</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a95637f6bebb94d505a6b3020275cfdf9_1a95637f6bebb94d505a6b3020275cfdf9">GetBetweenDates</reimplementedby>
+        <param>
+          <type>Type</type>
+          <declname>aggregateRootType</declname>
+        </param>
+        <param>
+          <type>Guid</type>
+          <declname>aggregateId</declname>
+        </param>
+        <param>
+          <type>DateTime</type>
+          <declname>fromVersionedDate</declname>
+        </param>
+        <param>
+          <type>DateTime</type>
+          <declname>toVersionedDate</declname>
+        </param>
+        <briefdescription>
+<para>Gets a collection of IEvent&lt;TAuthenticationToken&gt; for the IAggregateRoot&lt;TAuthenticationToken&gt; of type <emphasis>aggregateRootType</emphasis>  with the ID matching the provided <emphasis>aggregateId</emphasis>  from and including the provided <emphasis>fromVersionedDate</emphasis>  up to and including the provided <emphasis>toVersionedDate</emphasis> . </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>aggregateRootType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of the IAggregateRoot&lt;TAuthenticationToken&gt; the IEvent&lt;TAuthenticationToken&gt; was raised in.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>aggregateId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The IAggregateRoot&lt;TAuthenticationToken&gt;.Id of the IAggregateRoot&lt;TAuthenticationToken&gt;.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fromVersionedDate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load events from and including from this DateTime</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>toVersionedDate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load events up-to and including from this DateTime</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/IEventStore.cs" line="93" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="interfaceCqrs_1_1Events_1_1IEventStore_a06d24ede807dfab7c4b3a2cf85af83d2_1a06d24ede807dfab7c4b3a2cf85af83d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>IEnumerable&lt; <ref refid="interfaceCqrs_1_1Events_1_1IEvent" kindref="compound">IEvent</ref>&lt; TAuthenticationToken &gt; &gt;</type>
+        <definition>IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt; &gt; Cqrs.Events.IEventStore&lt; TAuthenticationToken &gt;.GetBetweenDates&lt; T &gt;</definition>
+        <argsstring>(Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)</argsstring>
+        <name>GetBetweenDates&lt; T &gt;</name>
+        <reimplementedby refid="classCqrs_1_1Events_1_1InProcessEventStore_a07534ebbda76f4a40c1386866afe0f6d_1a07534ebbda76f4a40c1386866afe0f6d">GetBetweenDates&lt; T &gt;</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Events_1_1EventStore_a273b6bf609a82564fda68380d381209e_1a273b6bf609a82564fda68380d381209e">GetBetweenDates&lt; T &gt;</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1EventStore_1_1EventStore_a1719bd68025a3ada1d0ab0f50f41ef7f_1a1719bd68025a3ada1d0ab0f50f41ef7f">GetBetweenDates&lt; T &gt;</reimplementedby>
+        <param>
+          <type>Guid</type>
+          <declname>aggregateId</declname>
+        </param>
+        <param>
+          <type>DateTime</type>
+          <declname>fromVersionedDate</declname>
+        </param>
+        <param>
+          <type>DateTime</type>
+          <declname>toVersionedDate</declname>
+        </param>
+        <briefdescription>
+<para>Gets a collection of IEvent&lt;TAuthenticationToken&gt; for the <emphasis>T</emphasis> aggregate root with the ID matching the provided <emphasis>aggregateId</emphasis>  from and including the provided <emphasis>fromVersionedDate</emphasis>  up to and including the provided <emphasis>toVersionedDate</emphasis> . </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of the IAggregateRoot&lt;TAuthenticationToken&gt; the IEvent&lt;TAuthenticationToken&gt; was raised in.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>aggregateId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The IAggregateRoot&lt;TAuthenticationToken&gt;.Id of the IAggregateRoot&lt;TAuthenticationToken&gt;.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fromVersionedDate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load events from and including from this DateTime</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>toVersionedDate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load events up-to and including from this DateTime</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/IEventStore.cs" line="93" column="1"/>
+      </memberdef>
       <memberdef kind="function" id="interfaceCqrs_1_1Events_1_1IEventStore_af398bb6768fa661ad97a9fa9ecfbd9fb_1af398bb6768fa661ad97a9fa9ecfbd9fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>IEnumerable&lt; <ref refid="classCqrs_1_1Events_1_1EventData" kindref="compound">EventData</ref> &gt;</type>
         <definition>IEnumerable&lt;EventData&gt; Cqrs.Events.IEventStore&lt; TAuthenticationToken &gt;.Get</definition>
@@ -455,7 +580,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/IEventStore.cs" line="90" column="1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/IEventStore.cs" line="108" column="1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -471,88 +596,90 @@
 </parameterlist>
 </para>    </detaileddescription>
     <inheritancegraph>
-      <node id="1518">
+      <node id="1621">
         <label>Cqrs::Azure::BlobStorage::Events::TableStorageEventStore&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore"/>
-        <childnode refid="1516" relation="public-inheritance">
+        <childnode refid="1619" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1522">
+      <node id="1625">
         <label>Cqrs::Events::SqlEventStore&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Events_1_1SqlEventStore"/>
-        <childnode refid="1516" relation="public-inheritance">
+        <childnode refid="1619" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1525">
+      <node id="1628">
         <label>Cqrs::Events::InProcessEventStore&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Events_1_1InProcessEventStore"/>
-        <childnode refid="1515" relation="public-inheritance">
+        <childnode refid="1618" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1520">
+      <node id="1623">
         <label>Cqrs::Azure::DocumentDb::Events::AzureDocumentDbEventStore&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore"/>
-        <childnode refid="1516" relation="public-inheritance">
+        <childnode refid="1619" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1516">
+      <node id="1619">
         <label>Cqrs::Events::EventStore&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Events_1_1EventStore"/>
-        <childnode refid="1515" relation="public-inheritance">
+        <childnode refid="1618" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1515">
+      <node id="1618">
         <label>Cqrs.Events.IEventStore&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Events_1_1IEventStore"/>
       </node>
-      <node id="1524">
+      <node id="1627">
         <label>Cqrs::MongoDB::Events::MongoDbEventStore&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore"/>
-        <childnode refid="1516" relation="public-inheritance">
+        <childnode refid="1619" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1526">
+      <node id="1629">
         <label>Cqrs::Ninject::InProcess::EventStore::InProcessEventStore&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Ninject_1_1InProcess_1_1EventStore_1_1InProcessEventStore"/>
-        <childnode refid="1525" relation="public-inheritance">
+        <childnode refid="1628" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1521">
+      <node id="1624">
         <label>Cqrs::Events::MemoryCacheEventStore&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Events_1_1MemoryCacheEventStore"/>
-        <childnode refid="1516" relation="public-inheritance">
+        <childnode refid="1619" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1517">
+      <node id="1620">
         <label>Cqrs::Azure::BlobStorage::Events::BlobStorageEventStore&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore"/>
-        <childnode refid="1516" relation="public-inheritance">
+        <childnode refid="1619" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1523">
+      <node id="1626">
         <label>Cqrs::Events::ReplicatedSqlEventStore&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Events_1_1ReplicatedSqlEventStore"/>
-        <childnode refid="1522" relation="public-inheritance">
+        <childnode refid="1625" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1519">
+      <node id="1622">
         <label>Cqrs::Azure::Storage::Events::TableStorageEventStore&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore"/>
-        <childnode refid="1518" relation="public-inheritance">
+        <childnode refid="1621" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1527">
+      <node id="1630">
         <label>Cqrs::EventStore::EventStore&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1EventStore_1_1EventStore"/>
-        <childnode refid="1515" relation="public-inheritance">
+        <childnode refid="1618" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>
-    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/IEventStore.cs" line="21" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/IEventStore.cs" bodystart="20" bodyend="91"/>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/IEventStore.cs" line="21" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/IEventStore.cs" bodystart="20" bodyend="109"/>
     <listofallmembers>
       <member refid="interfaceCqrs_1_1Events_1_1IEventStore_ae02ef6c804d0c4a92705a447bc4b2214_1ae02ef6c804d0c4a92705a447bc4b2214" prot="public" virt="non-virtual"><scope>Cqrs::Events::IEventStore</scope><name>Get</name></member>
       <member refid="interfaceCqrs_1_1Events_1_1IEventStore_af398bb6768fa661ad97a9fa9ecfbd9fb_1af398bb6768fa661ad97a9fa9ecfbd9fb" prot="public" virt="non-virtual"><scope>Cqrs::Events::IEventStore</scope><name>Get</name></member>
       <member refid="interfaceCqrs_1_1Events_1_1IEventStore_add6227e2978ff8656aad79b1a51bf34c_1add6227e2978ff8656aad79b1a51bf34c" prot="public" virt="non-virtual"><scope>Cqrs::Events::IEventStore</scope><name>Get&lt; T &gt;</name></member>
+      <member refid="interfaceCqrs_1_1Events_1_1IEventStore_a0575ba2cce945342dc261eb2286c8a41_1a0575ba2cce945342dc261eb2286c8a41" prot="public" virt="non-virtual"><scope>Cqrs::Events::IEventStore</scope><name>GetBetweenDates</name></member>
+      <member refid="interfaceCqrs_1_1Events_1_1IEventStore_a06d24ede807dfab7c4b3a2cf85af83d2_1a06d24ede807dfab7c4b3a2cf85af83d2" prot="public" virt="non-virtual"><scope>Cqrs::Events::IEventStore</scope><name>GetBetweenDates&lt; T &gt;</name></member>
       <member refid="interfaceCqrs_1_1Events_1_1IEventStore_ae7a65fcb0881dbbd62ed86ccd7336712_1ae7a65fcb0881dbbd62ed86ccd7336712" prot="public" virt="non-virtual"><scope>Cqrs::Events::IEventStore</scope><name>GetToDate</name></member>
       <member refid="interfaceCqrs_1_1Events_1_1IEventStore_ae0d3304dcab1e6c94eb51b3a0eb645cd_1ae0d3304dcab1e6c94eb51b3a0eb645cd" prot="public" virt="non-virtual"><scope>Cqrs::Events::IEventStore</scope><name>GetToDate&lt; T &gt;</name></member>
       <member refid="interfaceCqrs_1_1Events_1_1IEventStore_a88b395dbd904b44a8690b630fb2af1ca_1a88b395dbd904b44a8690b630fb2af1ca" prot="public" virt="non-virtual"><scope>Cqrs::Events::IEventStore</scope><name>GetToVersion</name></member>

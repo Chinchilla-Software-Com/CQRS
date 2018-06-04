@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.EventHub/AzureEventHubBus.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.EventHub</a> - AzureEventHubBus.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-06-04 23:26:29</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      11 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      12 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : namespace Cqrs.Azure.ServiceBus
+<span class="lineNum">      15 </span>            : {
+<span class="lineNum">      16 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      17 </span>            :         /// A event bus based on &lt;see cref=&quot;AzureEventHub{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      18 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      19 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      20 </span>            :         public abstract class AzureEventHubBus&lt;TAuthenticationToken&gt;
+<span class="lineNum">      21 </span><span class="lineCov">          1 :                 : AzureEventHub&lt;TAuthenticationToken&gt;</span>
+<span class="lineNum">      22 </span>            :         {
+<span class="lineNum">      23 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      24 </span>            :                 /// The configuration key for the event hub connection string as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      25 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      26 </span>            :                 protected override string EventHubConnectionStringNameConfigurationKey
+<span class="lineNum">      27 </span>            :                 {
+<span class="lineNum">      28 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.EventBus.ConnectionStringName&quot;; }
+<span class="lineNum">      29 </span>            :                 }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// The configuration key for the event hub storage connection string as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :                 protected override string EventHubStorageConnectionStringNameConfigurationKey
+<span class="lineNum">      35 </span>            :                 {
+<span class="lineNum">      36 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.EventBus.StorageConnectionStringName&quot;; }
+<span class="lineNum">      37 </span>            :                 }
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      40 </span>            :                 /// The configuration key for the signing token as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      41 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      42 </span>            :                 protected override string SigningTokenConfigurationKey
+<span class="lineNum">      43 </span>            :                 {
+<span class="lineNum">      44 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.EventBus.SigningToken&quot;; }
+<span class="lineNum">      45 </span>            :                 }
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      48 </span>            :                 /// The configuration key for the name of the private event hub as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      49 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      50 </span>            :                 protected override string PrivateEventHubNameConfigurationKey
+<span class="lineNum">      51 </span>            :                 {
+<span class="lineNum">      52 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.EventBus.PrivateEvent.EventHubName&quot;; }
+<span class="lineNum">      53 </span>            :                 }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      56 </span>            :                 /// The configuration key for the name of the public event hub as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      57 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      58 </span>            :                 protected override string PublicEventHubNameConfigurationKey
+<span class="lineNum">      59 </span>            :                 {
+<span class="lineNum">      60 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.EventBus.PublicEvent.EventHubName&quot;; }
+<span class="lineNum">      61 </span>            :                 }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      64 </span>            :                 /// The configuration key for the name of the consumer group name of the private event hub as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      65 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      66 </span>            :                 protected override string PrivateEventHubConsumerGroupNameConfigurationKey
+<span class="lineNum">      67 </span>            :                 {
+<span class="lineNum">      68 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.EventBus.PrivateEvent.EventHubName.ConsumerGroupName&quot;; }
+<span class="lineNum">      69 </span>            :                 }
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      72 </span>            :                 /// The configuration key for the name of the consumer group name of the public event hub as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      73 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      74 </span>            :                 protected override string PublicEventHubConsumerGroupNameConfigurationKey
+<span class="lineNum">      75 </span>            :                 {
+<span class="lineNum">      76 </span>            :                         get { return &quot;Cqrs.Azure.EventHub.EventBus.PublicEvent.EventHubName.ConsumerGroupName&quot;; }
+<span class="lineNum">      77 </span>            :                 }
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      80 </span>            :                 /// The default name of the private event hub if no &lt;see cref=&quot;IConfigurationManager&quot;/&gt; value is set.
+<span class="lineNum">      81 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      82 </span>            :                 protected override string DefaultPrivateEventHubName
+<span class="lineNum">      83 </span>            :                 {
+<span class="lineNum">      84 </span>            :                         get { return &quot;Cqrs.EventHub.EventBus.Private&quot;; }
+<span class="lineNum">      85 </span>            :                 }
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      88 </span>            :                 /// The default name of the public event hub if no &lt;see cref=&quot;IConfigurationManager&quot;/&gt; value is set.
+<span class="lineNum">      89 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      90 </span>            :                 protected override string DefaultPublicEventHubName
+<span class="lineNum">      91 </span>            :                 {
+<span class="lineNum">      92 </span>            :                         get { return &quot;Cqrs.EventHub.EventBus&quot;; }
+<span class="lineNum">      93 </span>            :                 }
+<span class="lineNum">      94 </span><span class="lineCov">          1 : </span>
+<span class="lineNum">      95 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      96 </span>            :                 /// Gets the &lt;see cref=&quot;IAzureBusHelper{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      97 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      98 </span>            :                 protected IAzureBusHelper&lt;TAuthenticationToken&gt; AzureBusHelper { get; private set; }
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     101 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;AzureEventHubBus{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     102 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     103 </span>            :                 protected AzureEventHubBus(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper, bool isAPublisher)
+<span class="lineNum">     104 </span>            :                         : base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
+<span class="lineNum">     105 </span>            :                 {
+<span class="lineNum">     106 </span>            :                         AzureBusHelper = azureBusHelper;
+<span class="lineNum">     107 </span>            :                 }
+<span class="lineNum">     108 </span>            :         }
+<span class="lineNum">     109 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.12</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

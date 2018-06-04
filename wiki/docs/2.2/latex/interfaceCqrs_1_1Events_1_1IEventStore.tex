@@ -30,6 +30,10 @@ I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+A
 \begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . \end{DoxyCompactList}\item 
 I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_ae0d3304dcab1e6c94eb51b3a0eb645cd_ae0d3304dcab1e6c94eb51b3a0eb645cd}{Get\+To\+Date$<$ T $>$} (Guid aggregate\+Id, Date\+Time versioned\+Date)
 \begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . \end{DoxyCompactList}\item 
+I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a0575ba2cce945342dc261eb2286c8a41_a0575ba2cce945342dc261eb2286c8a41}{Get\+Between\+Dates} (Type aggregate\+Root\+Type, Guid aggregate\+Id, Date\+Time from\+Versioned\+Date, Date\+Time to\+Versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . \end{DoxyCompactList}\item 
+I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a06d24ede807dfab7c4b3a2cf85af83d2_a06d24ede807dfab7c4b3a2cf85af83d2}{Get\+Between\+Dates$<$ T $>$} (Guid aggregate\+Id, Date\+Time from\+Versioned\+Date, Date\+Time to\+Versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . \end{DoxyCompactList}\item 
 I\+Enumerable$<$ \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} $>$ \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_af398bb6768fa661ad97a9fa9ecfbd9fb_af398bb6768fa661ad97a9fa9ecfbd9fb}{Get} (Guid correlation\+Id)
 \begin{DoxyCompactList}\small\item\em Get all I\+Event$<$\+T\+Authentication\+Token$>$ instances for the given {\itshape correlation\+Id} . \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -117,6 +121,59 @@ Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape 
 
 Implemented in \hyperlink{classCqrs_1_1Events_1_1EventStore_aa6ffed5d7dd365600669149da29f9e89_aa6ffed5d7dd365600669149da29f9e89}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1EventStore_1_1EventStore_aaa4ebd61c84124425380ce31e3a67600_aaa4ebd61c84124425380ce31e3a67600}{Cqrs.\+Event\+Store.\+Event\+Store$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_ab3df0015ad2f5950f5590f96384009e7_ab3df0015ad2f5950f5590f96384009e7}{Cqrs.\+Events.\+In\+Process\+Event\+Store$<$ T\+Authentication\+Token $>$}.
 
+\mbox{\Hypertarget{interfaceCqrs_1_1Events_1_1IEventStore_a0575ba2cce945342dc261eb2286c8a41_a0575ba2cce945342dc261eb2286c8a41}\label{interfaceCqrs_1_1Events_1_1IEventStore_a0575ba2cce945342dc261eb2286c8a41_a0575ba2cce945342dc261eb2286c8a41}} 
+\index{Cqrs\+::\+Events\+::\+I\+Event\+Store@{Cqrs\+::\+Events\+::\+I\+Event\+Store}!Get\+Between\+Dates@{Get\+Between\+Dates}}
+\index{Get\+Between\+Dates@{Get\+Between\+Dates}!Cqrs\+::\+Events\+::\+I\+Event\+Store@{Cqrs\+::\+Events\+::\+I\+Event\+Store}}
+\subsubsection{\texorpdfstring{Get\+Between\+Dates()}{GetBetweenDates()}}
+{\footnotesize\ttfamily I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{Cqrs.\+Events.\+I\+Event\+Store}$<$ T\+Authentication\+Token $>$.Get\+Between\+Dates (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{from\+Versioned\+Date,  }\item[{Date\+Time}]{to\+Versioned\+Date }\end{DoxyParamCaption})}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em from\+Versioned\+Date} & Load events from and including from this Date\+Time\\
+\hline
+{\em to\+Versioned\+Date} & Load events up-\/to and including from this Date\+Time\\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a95637f6bebb94d505a6b3020275cfdf9_a95637f6bebb94d505a6b3020275cfdf9}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_ac57321649252167214d1661a578c6421_ac57321649252167214d1661a578c6421}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1EventStore_add415731fcea6a9367e1031c4608c922_add415731fcea6a9367e1031c4608c922}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1EventStore_1_1EventStore_afa60a199a0c4329278ae91625ae81ed2_afa60a199a0c4329278ae91625ae81ed2}{Cqrs.\+Event\+Store.\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a715c0d5258d8a9203f68a1070420fb7b_a715c0d5258d8a9203f68a1070420fb7b}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a74dd36fca8006f2c739b2675c677c1ec_a74dd36fca8006f2c739b2675c677c1ec}{Cqrs.\+Events.\+In\+Process\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1SqlEventStore_addd080c095c2a87effa71a0310402f78_addd080c095c2a87effa71a0310402f78}{Cqrs.\+Events.\+Sql\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_acbb5dac5daaf2eafbf76ab631e7827f8_acbb5dac5daaf2eafbf76ab631e7827f8}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_aae5f14188f0486b70dc9cdb577b15e1c_aae5f14188f0486b70dc9cdb577b15e1c}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{interfaceCqrs_1_1Events_1_1IEventStore_a06d24ede807dfab7c4b3a2cf85af83d2_a06d24ede807dfab7c4b3a2cf85af83d2}\label{interfaceCqrs_1_1Events_1_1IEventStore_a06d24ede807dfab7c4b3a2cf85af83d2_a06d24ede807dfab7c4b3a2cf85af83d2}} 
+\index{Cqrs\+::\+Events\+::\+I\+Event\+Store@{Cqrs\+::\+Events\+::\+I\+Event\+Store}!Get\+Between\+Dates$<$ T $>$@{Get\+Between\+Dates$<$ T $>$}}
+\index{Get\+Between\+Dates$<$ T $>$@{Get\+Between\+Dates$<$ T $>$}!Cqrs\+::\+Events\+::\+I\+Event\+Store@{Cqrs\+::\+Events\+::\+I\+Event\+Store}}
+\subsubsection{\texorpdfstring{Get\+Between\+Dates$<$ T $>$()}{GetBetweenDates< T >()}}
+{\footnotesize\ttfamily I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{Cqrs.\+Events.\+I\+Event\+Store}$<$ T\+Authentication\+Token $>$.\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a0575ba2cce945342dc261eb2286c8a41_a0575ba2cce945342dc261eb2286c8a41}{Get\+Between\+Dates}$<$ T $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{from\+Versioned\+Date,  }\item[{Date\+Time}]{to\+Versioned\+Date }\end{DoxyParamCaption})}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em from\+Versioned\+Date} & Load events from and including from this Date\+Time\\
+\hline
+{\em to\+Versioned\+Date} & Load events up-\/to and including from this Date\+Time\\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classCqrs_1_1EventStore_1_1EventStore_a1719bd68025a3ada1d0ab0f50f41ef7f_a1719bd68025a3ada1d0ab0f50f41ef7f}{Cqrs.\+Event\+Store.\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1EventStore_a273b6bf609a82564fda68380d381209e_a273b6bf609a82564fda68380d381209e}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a07534ebbda76f4a40c1386866afe0f6d_a07534ebbda76f4a40c1386866afe0f6d}{Cqrs.\+Events.\+In\+Process\+Event\+Store$<$ T\+Authentication\+Token $>$}.
+
 \mbox{\Hypertarget{interfaceCqrs_1_1Events_1_1IEventStore_ae7a65fcb0881dbbd62ed86ccd7336712_ae7a65fcb0881dbbd62ed86ccd7336712}\label{interfaceCqrs_1_1Events_1_1IEventStore_ae7a65fcb0881dbbd62ed86ccd7336712_ae7a65fcb0881dbbd62ed86ccd7336712}} 
 \index{Cqrs\+::\+Events\+::\+I\+Event\+Store@{Cqrs\+::\+Events\+::\+I\+Event\+Store}!Get\+To\+Date@{Get\+To\+Date}}
 \index{Get\+To\+Date@{Get\+To\+Date}!Cqrs\+::\+Events\+::\+I\+Event\+Store@{Cqrs\+::\+Events\+::\+I\+Event\+Store}}
@@ -187,7 +244,7 @@ Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggrega
 \end{DoxyParams}
 
 
-Implemented in \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_ad319a5e79600fa5a10c2ecb436533a11_ad319a5e79600fa5a10c2ecb436533a11}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1EventStore_a2785f85c9d986cdf11ab6054826c195d_a2785f85c9d986cdf11ab6054826c195d}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1EventStore_1_1EventStore_aae9da24e2ad4bbe6629c9419c850e03b_aae9da24e2ad4bbe6629c9419c850e03b}{Cqrs.\+Event\+Store.\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a818fe6785622ebb7b0c6033a0b8ffc89_a818fe6785622ebb7b0c6033a0b8ffc89}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_ae6bd61257a3218d7ceb51a5ff54fb442_ae6bd61257a3218d7ceb51a5ff54fb442}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a88c16e2e7051094a5444a566f69119e7_a88c16e2e7051094a5444a566f69119e7}{Cqrs.\+Events.\+In\+Process\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1SqlEventStore_ae3e2b22dd0afb8aa3e685d12b9cf9f3e_ae3e2b22dd0afb8aa3e685d12b9cf9f3e}{Cqrs.\+Events.\+Sql\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_a46382e3a34210cbc655be11eafdc05d6_a46382e3a34210cbc655be11eafdc05d6}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a749548ae5196022867d32bbb5a8dd277_a749548ae5196022867d32bbb5a8dd277}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}.
+Implemented in \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_ad319a5e79600fa5a10c2ecb436533a11_ad319a5e79600fa5a10c2ecb436533a11}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1EventStore_a2785f85c9d986cdf11ab6054826c195d_a2785f85c9d986cdf11ab6054826c195d}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1EventStore_1_1EventStore_aae9da24e2ad4bbe6629c9419c850e03b_aae9da24e2ad4bbe6629c9419c850e03b}{Cqrs.\+Event\+Store.\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a818fe6785622ebb7b0c6033a0b8ffc89_a818fe6785622ebb7b0c6033a0b8ffc89}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_ae6bd61257a3218d7ceb51a5ff54fb442_ae6bd61257a3218d7ceb51a5ff54fb442}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1SqlEventStore_ae3e2b22dd0afb8aa3e685d12b9cf9f3e_ae3e2b22dd0afb8aa3e685d12b9cf9f3e}{Cqrs.\+Events.\+Sql\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Events_1_1InProcessEventStore_a88c16e2e7051094a5444a566f69119e7_a88c16e2e7051094a5444a566f69119e7}{Cqrs.\+Events.\+In\+Process\+Event\+Store$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_a46382e3a34210cbc655be11eafdc05d6_a46382e3a34210cbc655be11eafdc05d6}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a749548ae5196022867d32bbb5a8dd277_a749548ae5196022867d32bbb5a8dd277}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}.
 
 \mbox{\Hypertarget{interfaceCqrs_1_1Events_1_1IEventStore_af29401f4562cb504cf827b90b8391765_af29401f4562cb504cf827b90b8391765}\label{interfaceCqrs_1_1Events_1_1IEventStore_af29401f4562cb504cf827b90b8391765_af29401f4562cb504cf827b90b8391765}} 
 \index{Cqrs\+::\+Events\+::\+I\+Event\+Store@{Cqrs\+::\+Events\+::\+I\+Event\+Store}!Get\+To\+Version$<$ T $>$@{Get\+To\+Version$<$ T $>$}}

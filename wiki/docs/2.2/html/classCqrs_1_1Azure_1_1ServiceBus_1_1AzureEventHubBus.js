@@ -9,5 +9,6 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHubBus =
     [ "PrivateEventHubConsumerGroupNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHubBus_a2ef9980a763a789179a009d6e0972175.html#a2ef9980a763a789179a009d6e0972175", null ],
     [ "PrivateEventHubNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHubBus_a2ad236850ff85bdb8dcc252af7b123c7.html#a2ad236850ff85bdb8dcc252af7b123c7", null ],
     [ "PublicEventHubConsumerGroupNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHubBus_a5e03e9ddac66cf136bde75e40fc11afc.html#a5e03e9ddac66cf136bde75e40fc11afc", null ],
-    [ "PublicEventHubNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHubBus_afd3a436ec413b208d201dab7750f8f9e.html#afd3a436ec413b208d201dab7750f8f9e", null ]
+    [ "PublicEventHubNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHubBus_afd3a436ec413b208d201dab7750f8f9e.html#afd3a436ec413b208d201dab7750f8f9e", null ],
+    [ "SigningTokenConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHubBus_ae0c61b32cf3f7f12fc975a12f077eaf1.html#ae0c61b32cf3f7f12fc975a12f077eaf1", null ]
 ];

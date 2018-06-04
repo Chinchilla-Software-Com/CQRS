@@ -1,0 +1,6 @@
+var interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1IAzureDocumentDbSnapshotStoreConnectionStringFactory =
+[
+    [ "GetSnapshotStoreConnectionClient", "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1IAzureDocumentDbSnapshotStoreConnectionStringFactory_ad28e9645fa8039eede157719e4d026b3.html#ad28e9645fa8039eede157719e4d026b3", null ],
+    [ "GetSnapshotStoreConnectionCollectionName", "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1IAzureDocumentDbSnapshotStoreConnectionStringFactory_ad300bf0d143c3ad5d3bb1dfa22422645.html#ad300bf0d143c3ad5d3bb1dfa22422645", null ],
+    [ "GetSnapshotStoreConnectionDatabaseName", "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1IAzureDocumentDbSnapshotStoreConnectionStringFactory_a1a6c06eeccfae14bcacae499972a4bcf.html#a1a6c06eeccfae14bcacae499972a4bcf", null ]
+];

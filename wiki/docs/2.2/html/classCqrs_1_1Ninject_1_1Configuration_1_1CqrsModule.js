@@ -12,6 +12,8 @@ var classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule =
     [ "RegisterRepositories", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a3437afb1ea306ff4e65eb2ca22a276d9.html#a3437afb1ea306ff4e65eb2ca22a276d9", null ],
     [ "RegisterServices", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_ac6f0db82440e24190a5692d352fb4524.html#ac6f0db82440e24190a5692d352fb4524", null ],
     [ "RegisterDefaultConfigurationManager", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a7e5a1cbb5bcfda3bcc06dc24a38995e2.html#a7e5a1cbb5bcfda3bcc06dc24a38995e2", null ],
+    [ "RegisterDefaultSnapshotBuilder", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a151dd739535287d044791644b6111324.html#a151dd739535287d044791644b6111324", null ],
+    [ "RegisterDefaultSnapshotStrategy", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a79516f565ce235cc42c3c31e281824b8.html#a79516f565ce235cc42c3c31e281824b8", null ],
     [ "SetupForSqlLogging", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a10e7a8adbe03fc05ebb7003727cbe541.html#a10e7a8adbe03fc05ebb7003727cbe541", null ],
     [ "SetupForWeb", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_ae4bbc2d44f283644a328d308dc78edc5.html#ae4bbc2d44f283644a328d308dc78edc5", null ]
 ];

@@ -8,5 +8,6 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBus =
     [ "PrivateTopicSubscriptionNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBus_a112106688036d18c72fc02875b1b0a8b.html#a112106688036d18c72fc02875b1b0a8b", null ],
     [ "PublicTopicNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBus_a8428d6c874f19d4ae0cc42bb6ae3ab6d.html#a8428d6c874f19d4ae0cc42bb6ae3ab6d", null ],
     [ "PublicTopicSubscriptionNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBus_ad09814d0307b01d36fe981cf4b997e79.html#ad09814d0307b01d36fe981cf4b997e79", null ],
+    [ "SigningTokenConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBus_a9e7e85ab8c11f498539100d058d89fd0.html#a9e7e85ab8c11f498539100d058d89fd0", null ],
     [ "ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBus_aaf0a0d07f6c5c1940cb633b362aa7177.html#aaf0a0d07f6c5c1940cb633b362aa7177", null ]
 ];

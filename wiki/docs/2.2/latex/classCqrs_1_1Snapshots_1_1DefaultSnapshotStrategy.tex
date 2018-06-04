@@ -16,7 +16,7 @@ Inheritance diagram for Cqrs.\+Snapshots.\+Default\+Snapshot\+Strategy$<$ T\+Aut
 \item 
 virtual bool \hyperlink{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_acdbb918ac01b526aedb5fa9a3879887a_acdbb918ac01b526aedb5fa9a3879887a}{Is\+Snapshotable} (Type aggregate\+Type)
 \begin{DoxyCompactList}\small\item\em Indicates if the {\itshape aggregate\+Type}  is able to be snapshotted by checking if the {\itshape aggregate\+Type}  directly inherits Snapshot\+Aggregate\+Root$<$\+T\+Authentication\+Token,\+T\+Snapshot$>$ \end{DoxyCompactList}\item 
-virtual bool \hyperlink{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a211413236ef217c73a69e8d7fe4e555e_a211413236ef217c73a69e8d7fe4e555e}{Should\+Make\+Snap\+Shot} (\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$ aggregate)
+virtual bool \hyperlink{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a9cdb3d79c55e2eb2796639b273d49ed9_a9cdb3d79c55e2eb2796639b273d49ed9}{Should\+Make\+Snap\+Shot} (\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$ aggregate, I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ uncommitted\+Changes=null)
 \begin{DoxyCompactList}\small\item\em Checks \hyperlink{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_acdbb918ac01b526aedb5fa9a3879887a_acdbb918ac01b526aedb5fa9a3879887a}{Is\+Snapshotable} and if it is, also checks if the calculated version number would be exactly dividable by \hyperlink{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a3540a6d621d8c23816da761f929d83a7_a3540a6d621d8c23816da761f929d83a7}{Get\+Snapshot\+Interval}. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
@@ -65,11 +65,11 @@ Indicates if the {\itshape aggregate\+Type}  is able to be snapshotted by checki
 
 Implements \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_a02121821312c4ce2811b31eeaffabe51_a02121821312c4ce2811b31eeaffabe51}{Cqrs.\+Snapshots.\+I\+Snapshot\+Strategy$<$ T\+Authentication\+Token $>$}.
 
-\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a211413236ef217c73a69e8d7fe4e555e_a211413236ef217c73a69e8d7fe4e555e}\label{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a211413236ef217c73a69e8d7fe4e555e_a211413236ef217c73a69e8d7fe4e555e}} 
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a9cdb3d79c55e2eb2796639b273d49ed9_a9cdb3d79c55e2eb2796639b273d49ed9}\label{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a9cdb3d79c55e2eb2796639b273d49ed9_a9cdb3d79c55e2eb2796639b273d49ed9}} 
 \index{Cqrs\+::\+Snapshots\+::\+Default\+Snapshot\+Strategy@{Cqrs\+::\+Snapshots\+::\+Default\+Snapshot\+Strategy}!Should\+Make\+Snap\+Shot@{Should\+Make\+Snap\+Shot}}
 \index{Should\+Make\+Snap\+Shot@{Should\+Make\+Snap\+Shot}!Cqrs\+::\+Snapshots\+::\+Default\+Snapshot\+Strategy@{Cqrs\+::\+Snapshots\+::\+Default\+Snapshot\+Strategy}}
 \subsubsection{\texorpdfstring{Should\+Make\+Snap\+Shot()}{ShouldMakeSnapShot()}}
-{\footnotesize\ttfamily virtual bool \hyperlink{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy}{Cqrs.\+Snapshots.\+Default\+Snapshot\+Strategy}$<$ T\+Authentication\+Token $>$.Should\+Make\+Snap\+Shot (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$}]{aggregate }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily virtual bool \hyperlink{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy}{Cqrs.\+Snapshots.\+Default\+Snapshot\+Strategy}$<$ T\+Authentication\+Token $>$.Should\+Make\+Snap\+Shot (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$}]{aggregate,  }\item[{I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{uncommitted\+Changes = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 
@@ -79,8 +79,10 @@ Checks \hyperlink{classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_acdbb918ac01
 \begin{DoxyParams}{Parameters}
 {\em aggregate} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to check.\\
 \hline
+{\em uncommitted\+Changes} & A collection of uncommited changes to assess. If null the aggregate will be asked to provide them.\\
+\hline
 \end{DoxyParams}
 
 
-Implements \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_ab1d54cd76c7ac832329cb3a6de0effcd_ab1d54cd76c7ac832329cb3a6de0effcd}{Cqrs.\+Snapshots.\+I\+Snapshot\+Strategy$<$ T\+Authentication\+Token $>$}.
+Implements \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_aeb5fc714ec8a5b60219426f3aabc0f6c_aeb5fc714ec8a5b60219426f3aabc0f6c}{Cqrs.\+Snapshots.\+I\+Snapshot\+Strategy$<$ T\+Authentication\+Token $>$}.
 
