@@ -90,7 +90,17 @@ namespace Cqrs.Configuration
 				url = null;
 			}
 
-			telemetryHelper.TrackRequest(name, url, token, startTime, duration, responseCode, wasSuccessfull, properties);
+			string sessionId;
+			try
+			{
+				sessionId = string.Format("{0}::{1}", DependencyResolver.Current.Resolve<ICorrelationIdHelper>().GetCorrelationId().ToString("N"), token);
+			}
+			catch
+			{
+				sessionId = null;
+			}
+
+			telemetryHelper.TrackRequest(name, url, token, startTime, duration, responseCode, wasSuccessfull, properties, sessionId);
 		}
 	}
 }

@@ -9,6 +9,7 @@
 using System;
 using cdmdotnet.Logging;
 using System.Reflection;
+using cdmdotnet.Logging.Configuration;
 
 namespace Cqrs.Configuration
 {
@@ -36,7 +37,15 @@ namespace Cqrs.Configuration
 
 			if (useApplicationInsightTelemetryHelper)
 			{
-				var helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format("{0}\\cdmdotnet.Logging.Azure.ApplicationInsights.dll", AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), "cdmdotnet.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper }, null, null).Unwrap();
+				ITelemetryHelper helper;
+				try
+				{
+					helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format("{0}\\cdmdotnet.Logging.Azure.ApplicationInsights.dll", AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), "cdmdotnet.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, DependencyResolver.Current.Resolve<ILoggerSettings>() }, null, null).Unwrap();
+				}
+				catch
+				{
+					helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format("{0}\\cdmdotnet.Logging.Azure.ApplicationInsights.dll", AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), "cdmdotnet.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper }, null, null).Unwrap();
+				}
 				return helper;
 			}
 			return new NullTelemetryHelper();
