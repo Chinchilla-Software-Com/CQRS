@@ -151,6 +151,16 @@ namespace Cqrs.Azure.ServiceBus
 					responseCode = "200";
 					return;
 				}
+				catch (UnAuthorisedMessageReceivedException exception)
+				{
+					TelemetryHelper.TrackException(exception, null, telemetryProperties);
+					// Indicates a problem, unlock message in queue
+					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but was not authorised.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+					wasSuccessfull = false;
+					responseCode = "401";
+					telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
+					telemetryProperties.Add("ExceptionMessage", exception.Message);
+				}
 				catch (NoHandlersRegisteredException exception)
 				{
 					TelemetryHelper.TrackException(exception, null, telemetryProperties);
