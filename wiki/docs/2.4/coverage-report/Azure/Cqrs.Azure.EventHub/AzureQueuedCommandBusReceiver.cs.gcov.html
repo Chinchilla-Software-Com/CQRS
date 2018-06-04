@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-04 23:26:29</td>
+            <td class="headerValue">2018-06-04 23:47:54</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -83,7 +83,7 @@
 <span class="lineNum">      25 </span>            :         /// &lt;/summary&gt;
 <span class="lineNum">      26 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
 <span class="lineNum">      27 </span>            :         public class AzureQueuedCommandBusReceiver&lt;TAuthenticationToken&gt; : AzureCommandBusReceiver&lt;TAuthenticationToken&gt;
-<span class="lineNum">      28 </span>            :         {
+<span class="lineNum">      28 </span><span class="lineCov">          2 :         {</span>
 <span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      30 </span>            :                 /// Tracks all queues.
 <span class="lineNum">      31 </span>            :                 /// &lt;/summary&gt;
@@ -97,7 +97,7 @@
 <span class="lineNum">      39 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      40 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AzureQueuedCommandBusReceiver{TAuthenticationToken}&quot;/&gt;.
 <span class="lineNum">      41 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      42 </span><span class="lineCov">          2 :                 public AzureQueuedCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper)</span>
+<span class="lineNum">      42 </span>            :                 public AzureQueuedCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper)
 <span class="lineNum">      43 </span>            :                         : base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper)
 <span class="lineNum">      44 </span>            :                 {
 <span class="lineNum">      45 </span>            :                         QueueTracker = new ConcurrentDictionary&lt;string, ConcurrentQueue&lt;ICommand&lt;TAuthenticationToken&gt;&gt;&gt;();
@@ -107,7 +107,7 @@
 <span class="lineNum">      49 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      50 </span>            :                 /// Receives a &lt;see cref=&quot;BrokeredMessage&quot;/&gt; from the command bus, identifies a key and queues it accordingly.
 <span class="lineNum">      51 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      52 </span><span class="lineCov">          2 :                 protected override void ReceiveCommand(PartitionContext context, EventData eventData)</span>
+<span class="lineNum">      52 </span>            :                 protected override void ReceiveCommand(PartitionContext context, EventData eventData)
 <span class="lineNum">      53 </span>            :                 {
 <span class="lineNum">      54 </span>            :                         // Do a manual 10 try attempt with back-off
 <span class="lineNum">      55 </span>            :                         for (int i = 0; i &lt; 10; i++)
@@ -195,7 +195,7 @@
 <span class="lineNum">     137 </span>            :                 /// the queue is attached to &lt;see cref=&quot;DequeuAndProcessCommand&quot;/&gt; using a &lt;see cref=&quot;Thread&quot;/&gt;.
 <span class="lineNum">     138 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     139 </span>            :                 /// &lt;param name=&quot;queueName&quot;&gt;The name of the queue to check and create.&lt;/param&gt;
-<span class="lineNum">     140 </span><span class="lineCov">          2 :                 protected void CreateQueueAndAttachListenerIfNotExist(string queueName)</span>
+<span class="lineNum">     140 </span>            :                 protected void CreateQueueAndAttachListenerIfNotExist(string queueName)
 <span class="lineNum">     141 </span>            :                 {
 <span class="lineNum">     142 </span>            :                         if (!QueueTracker.ContainsKey(queueName))
 <span class="lineNum">     143 </span>            :                         {
@@ -228,7 +228,7 @@
 <span class="lineNum">     170 </span>            :                 /// and calls &lt;see cref=&quot;ReceiveCommand&quot;/&gt;. Repeats in a loop until the queue is empty.
 <span class="lineNum">     171 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     172 </span>            :                 /// &lt;param name=&quot;queueName&quot;&gt;The name of the queue process.&lt;/param&gt;
-<span class="lineNum">     173 </span><span class="lineCov">          2 :                 protected void DequeuAndProcessCommand(string queueName)</span>
+<span class="lineNum">     173 </span>            :                 protected void DequeuAndProcessCommand(string queueName)
 <span class="lineNum">     174 </span>            :                 {
 <span class="lineNum">     175 </span>            :                         SpinWait.SpinUntil
 <span class="lineNum">     176 </span>            :                         (

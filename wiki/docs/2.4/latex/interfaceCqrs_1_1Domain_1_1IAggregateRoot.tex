@@ -1,0 +1,226 @@
+\hypertarget{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{}\section{Cqrs.\+Domain.\+I\+Aggregate\+Root$<$ T\+Authentication\+Token $>$ Interface Template Reference}
+\label{interfaceCqrs_1_1Domain_1_1IAggregateRoot}\index{Cqrs.\+Domain.\+I\+Aggregate\+Root$<$ T\+Authentication\+Token $>$@{Cqrs.\+Domain.\+I\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}}
+
+
+An I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is a larger unit of encapsulation than just a class. Every transaction is scoped to a single aggregate. The lifetimes of the components of an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ are bounded by the lifetime of the entire I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.  
+
+
+Inheritance diagram for Cqrs.\+Domain.\+I\+Aggregate\+Root$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.810811cm]{interfaceCqrs_1_1Domain_1_1IAggregateRoot}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ $>$ \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_a22fda414613f5ac0d4371554d7d6473b_a22fda414613f5ac0d4371554d7d6473b}{Get\+Uncommitted\+Changes} ()
+\begin{DoxyCompactList}\small\item\em Get all applied changes that haven\textquotesingle{}t yet been committed. \end{DoxyCompactList}\item 
+void \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_af31116870bbf6566b3eec0b8bc02c6de_af31116870bbf6566b3eec0b8bc02c6de}{Mark\+Changes\+As\+Committed} ()
+\begin{DoxyCompactList}\small\item\em Mark all applied changes as committed, increment \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_ad81adab68c0984330f735a1f5a661aa7_ad81adab68c0984330f735a1f5a661aa7}{Version} and flush the internal collection of changes. \end{DoxyCompactList}\item 
+void \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_afe9329ee26ae68613059189ca64dfe60_afe9329ee26ae68613059189ca64dfe60}{Load\+From\+History} (I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ history)
+\begin{DoxyCompactList}\small\item\em Apply all the \hyperlink{}{events} in {\itshape history}  using event replay to this instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+Guid \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_a04aa3198f1371afa345a58e8fcb713d7_a04aa3198f1371afa345a58e8fcb713d7}{Id}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The identifier of this I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
+int \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_ad81adab68c0984330f735a1f5a661aa7_ad81adab68c0984330f735a1f5a661aa7}{Version}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The current version of this I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+An I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is a larger unit of encapsulation than just a class. Every transaction is scoped to a single aggregate. The lifetimes of the components of an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ are bounded by the lifetime of the entire I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. 
+
+Concretely, an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ will handle I\+Command$<$\+T\+Authentication\+Token$>$s, apply I\+Event$<$\+T\+Authentication\+Token$>$s, and have a state model encapsulated within it that allows it to implement the required command validation, thus upholding the invariants (business rules) of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. 
+
+I know I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ are transaction boundaries, but I really need to transactionally update two I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ in the same transaction. What should I do?
+
+You should re-\/think the following\+: 
+
+$\ast$ Your I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ boundaries. 
+
+$\ast$ The responsibilities of each I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. 
+
+$\ast$ What you can get away with doing in a read side or in a saga. 
+
+$\ast$ The actual non-\/functional requirements of your domain. 
+
+If you write a solution where two or more I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ are transactionally coupled, you have not understood I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. 
+
+Why is the use of Guid as identifiers a good practice? 
+
+Because they are (reasonably) globally unique, and can be generated either by the server or by the client. 
+
+What is an Rsn and what is an Id? 
+
+Because few systems are truely green field and there is usually some existing system to operate with our framework identifies 
+
+Id properties as int typed properties from an external system 
+
+and Rsn properties as Guid typed properties for internal use. 
+
+An example might be 
+
+\{ 
+
+Guid Rsn 
+
+string Name 
+
+Guid Category\+Rsn 
+
+int Category\+Id 
+
+\} 
+
+Here the category can be referenced within the C\+Q\+RS framework by it\textquotesingle{}s Rsn Guid typed identifier, but still has a reference to the external systems int typed identifier value. 
+
+How can I get the Rsn for newly created I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$? 
+
+It\textquotesingle{}s an important insight that the client can generate its own Rsns. 
+
+If the client generates a Guid and places it in the create-\/the-\/aggregate I\+Command$<$\+T\+Authentication\+Token$>$, this is a non-\/issue. Otherwise, you have to listen to the the appropriate the-\/aggregate-\/was-\/created I\+Event$<$\+T\+Authentication\+Token$>$, where the Rsn will appear be populated. 
+
+Should I allow references between I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$? 
+
+In the sense of an actual \char`\"{}memory reference\char`\"{}, absolutely not. 
+
+On the write side, an actual memory reference from one I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to another is forbidden and wrong, since I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ by definition are not allowed to reach outside of themselves. (Allowing this would mean an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is no longer a transaction boundary, meaning we can no longer sanely reason about its ability to uphold its invariants; it would also preclude sharding of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.) 
+
+Referring to another I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ using an identifier is fine. It is useless on the write side (since the identifier must be treated as an opaque value, since I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ can not reach outside of themselves). Read sides may freely use such information, however, to do interesting correlations. 
+
+How can I validate a I\+Command$<$\+T\+Authentication\+Token$>$ across a group of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$? 
+
+This is a common reaction to not being able to query across I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ anymore. There are several answers\+: 
+
+$\ast$ Do client-\/side validation. 
+
+$\ast$ Use a read side. 
+
+$\ast$ Use a saga. 
+
+$\ast$ If those are all completely impractical, then it\textquotesingle{}s time to consider if you got your I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ boundaries correct. 
+
+How can I guarantee referential integrity across I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$? 
+
+You\textquotesingle{}re still thinking in terms of foreign relations, not I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. See last question. Also, remember that just because something would be in two tables in a relational design does not in any way suggest it should be two I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. Designing an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is different. 
+
+How can I make sure a newly created user has a unique user name? 
+
+This is a commonly occurring question since we\textquotesingle{}re explicitly not performing cross-\/aggregate operations on the write side. We do, however, have a number of options\+: 
+
+$\ast$ Create a read-\/side of already allocated user names. Make the client query the read-\/side interactively as the user types in a name. 
+
+$\ast$ Create a reactive saga to flag down and inactivate accounts that were nevertheless created with a duplicate user name. (Whether by extreme coincidence or maliciously or because of a faulty client.) 
+
+How can I verify that a customer identifier really exists when I place an order? 
+
+Assuming customer and order are I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ here, it\textquotesingle{}s clear that the order I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ cannot really validate this, since that would mean reaching out of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. 
+
+Checking up on it after the fact, in a saga or just in a read side that records \char`\"{}broken\char`\"{} orders, is one option. After all, the most important thing about an order is actually recording it, and presumably any interesting data about the recipient of the order is being copied into the order I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ (referring to the customer to find the address is bad design; the order was always made to be deliverd to a particular address, whether or not that customer changes their address in the future). 
+
+Being able to use what data was recorded in this broken order means you\textquotesingle{}ve got a chance to rescue it and rectify the situation -\/ which makes a good bit more business sense rather than dropping the order on the floor because a foreign key constraint was violated! 
+
+How can I update a set of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ with a single I\+Command$<$\+T\+Authentication\+Token$>$? 
+
+A single I\+Command$<$\+T\+Authentication\+Token$>$ can\textquotesingle{}t act on a set of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. It just can\textquotesingle{}t. 
+
+First off, ask yourself whether you really need to update several I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ using just one I\+Command$<$\+T\+Authentication\+Token$>$. What in the situation makes this a requirement? 
+
+However, here\textquotesingle{}s what you could do. Allow a new kind of \char`\"{}bulk command\char`\"{}, conceptually containing the command you want to issue, and a set of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ (specified either explicitly or implicitly) that you want to issue it on. The write side isn\textquotesingle{}t powerful enough to make the bulk action, but it\textquotesingle{}s able to create a corresponding \char`\"{}bulk event\char`\"{}. A saga captures the event, and issues the I\+Command$<$\+T\+Authentication\+Token$>$ on each of the specified I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$s. The saga can do rollback or send an email, as appropriate, if some of the I\+Command$<$\+T\+Authentication\+Token$>$ fail. 
+
+There are some advantages to this approach\+: we store the intent of the bulk action in the event store. The saga automates rollback or equivalent. 
+
+Still, having to resort to this solution is a strong indication that your I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ boundaries are not drawn correctly. You might want to consider changing your I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ boundaries rather than building a saga for this. 
+
+What is sharding? 
+
+A way to distribute large amounts of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ on several write-\/side nodes. We can shard I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ easily because they are completely self-\/reliant. 
+
+We can shard I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ easily because they don\textquotesingle{}t have any external references. 
+
+Can an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ send an I\+Event$<$\+T\+Authentication\+Token$>$ to another I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$? 
+
+No. 
+
+The factoring of your I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ and I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ will typically already make this idea impossible to express in code. But there\textquotesingle{}s a deeper philosophical reason\+: go back and re-\/read the first sentence in the answer to \char`\"{}\+What is an $<$see cref=\char`\"{}\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{I\+Aggregate\+Root}\{T\+Authentication\+Token\}\char`\"{}/$>$?\char`\"{}. If you manage to circumvent the I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ and just push I\+Event$<$\+T\+Authentication\+Token$>$ into another I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ somehow, you will have taken away that I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$\textquotesingle{}s chance to participate in validation of changes. That\textquotesingle{}s ultimately why we only allow I\+Event$<$\+T\+Authentication\+Token$>$ to be created as a result of I\+Command$<$\+T\+Authentication\+Token$>$s validated by a I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ on an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. 
+
+Can I call a read side from my I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$? 
+
+No. 
+
+How do I send e-\/mail in a C\+Q\+RS system? 
+
+In an \hyperlink{interfaceCqrs_1_1Events_1_1IEventHandler}{I\+Event\+Handler$<$\+T\+Authentication\+Token,\+T\+Event$>$} outside of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. Do not do it in the I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$, as if the I\+Event$<$\+T\+Authentication\+Token$>$ artefacts are not persisted due to losing a race with another I\+Command$<$\+T\+Authentication\+Token$>$ then the email will have been sent on a false premise. 
+
+$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$$\ast$ 
+
+Also see \href{http://cqrs.nu/Faq/aggregates}{\tt http\+://cqrs.\+nu/\+Faq/aggregates}. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{interfaceCqrs_1_1Domain_1_1IAggregateRoot_a22fda414613f5ac0d4371554d7d6473b_a22fda414613f5ac0d4371554d7d6473b}\label{interfaceCqrs_1_1Domain_1_1IAggregateRoot_a22fda414613f5ac0d4371554d7d6473b_a22fda414613f5ac0d4371554d7d6473b}} 
+\index{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root}!Get\+Uncommitted\+Changes@{Get\+Uncommitted\+Changes}}
+\index{Get\+Uncommitted\+Changes@{Get\+Uncommitted\+Changes}!Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root}}
+\subsubsection{\texorpdfstring{Get\+Uncommitted\+Changes()}{GetUncommittedChanges()}}
+{\footnotesize\ttfamily I\+Enumerable$<$\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ $>$ \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{Cqrs.\+Domain.\+I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$.Get\+Uncommitted\+Changes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get all applied changes that haven\textquotesingle{}t yet been committed. 
+
+
+
+Implemented in \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a2d11510fec0129ba318f63f7103aeec0_a2d11510fec0129ba318f63f7103aeec0}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot_a625e885ec7885a686f729ed1efe3a8fa_a625e885ec7885a686f729ed1efe3a8fa}{Cqrs.\+Domain.\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRootProxy_afa620ced4762b0539da23ca063fed489_afa620ced4762b0539da23ca063fed489}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root\+Proxy$<$ T\+Authentication\+Token, T\+Aggregate\+Root $>$}.
+
+\mbox{\Hypertarget{interfaceCqrs_1_1Domain_1_1IAggregateRoot_afe9329ee26ae68613059189ca64dfe60_afe9329ee26ae68613059189ca64dfe60}\label{interfaceCqrs_1_1Domain_1_1IAggregateRoot_afe9329ee26ae68613059189ca64dfe60_afe9329ee26ae68613059189ca64dfe60}} 
+\index{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root}!Load\+From\+History@{Load\+From\+History}}
+\index{Load\+From\+History@{Load\+From\+History}!Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root}}
+\subsubsection{\texorpdfstring{Load\+From\+History()}{LoadFromHistory()}}
+{\footnotesize\ttfamily void \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{Cqrs.\+Domain.\+I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$.Load\+From\+History (\begin{DoxyParamCaption}\item[{I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{history }\end{DoxyParamCaption})}
+
+
+
+Apply all the \hyperlink{}{events} in {\itshape history}  using event replay to this instance. 
+
+
+
+Implemented in \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_af6d84b07d4e9475bb88e769ac9081830_af6d84b07d4e9475bb88e769ac9081830}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot_aec873ad6e4c98309cad2d9f1c534aebb_aec873ad6e4c98309cad2d9f1c534aebb}{Cqrs.\+Domain.\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRootProxy_ae611077a51a215aef7fd0e106734b386_ae611077a51a215aef7fd0e106734b386}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root\+Proxy$<$ T\+Authentication\+Token, T\+Aggregate\+Root $>$}.
+
+\mbox{\Hypertarget{interfaceCqrs_1_1Domain_1_1IAggregateRoot_af31116870bbf6566b3eec0b8bc02c6de_af31116870bbf6566b3eec0b8bc02c6de}\label{interfaceCqrs_1_1Domain_1_1IAggregateRoot_af31116870bbf6566b3eec0b8bc02c6de_af31116870bbf6566b3eec0b8bc02c6de}} 
+\index{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root}!Mark\+Changes\+As\+Committed@{Mark\+Changes\+As\+Committed}}
+\index{Mark\+Changes\+As\+Committed@{Mark\+Changes\+As\+Committed}!Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root}}
+\subsubsection{\texorpdfstring{Mark\+Changes\+As\+Committed()}{MarkChangesAsCommitted()}}
+{\footnotesize\ttfamily void \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{Cqrs.\+Domain.\+I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$.Mark\+Changes\+As\+Committed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Mark all applied changes as committed, increment \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_ad81adab68c0984330f735a1f5a661aa7_ad81adab68c0984330f735a1f5a661aa7}{Version} and flush the internal collection of changes. 
+
+
+
+Implemented in \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a0d2615067175e5f8249bb2dc3d17ee0b_a0d2615067175e5f8249bb2dc3d17ee0b}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}, \hyperlink{classCqrs_1_1Domain_1_1AggregateRoot_adab968b830e186cb832583910bf6f3a6_adab968b830e186cb832583910bf6f3a6}{Cqrs.\+Domain.\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}, and \hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRootProxy_aaa8a46fee21b6133ae4d1b2f60983d7e_aaa8a46fee21b6133ae4d1b2f60983d7e}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root\+Proxy$<$ T\+Authentication\+Token, T\+Aggregate\+Root $>$}.
+
+
+
+\subsection{Property Documentation}
+\mbox{\Hypertarget{interfaceCqrs_1_1Domain_1_1IAggregateRoot_a04aa3198f1371afa345a58e8fcb713d7_a04aa3198f1371afa345a58e8fcb713d7}\label{interfaceCqrs_1_1Domain_1_1IAggregateRoot_a04aa3198f1371afa345a58e8fcb713d7_a04aa3198f1371afa345a58e8fcb713d7}} 
+\index{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root}!Id@{Id}}
+\index{Id@{Id}!Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root}}
+\subsubsection{\texorpdfstring{Id}{Id}}
+{\footnotesize\ttfamily Guid \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{Cqrs.\+Domain.\+I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$.Id\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+The identifier of this I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. 
+
+\mbox{\Hypertarget{interfaceCqrs_1_1Domain_1_1IAggregateRoot_ad81adab68c0984330f735a1f5a661aa7_ad81adab68c0984330f735a1f5a661aa7}\label{interfaceCqrs_1_1Domain_1_1IAggregateRoot_ad81adab68c0984330f735a1f5a661aa7_ad81adab68c0984330f735a1f5a661aa7}} 
+\index{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root}!Version@{Version}}
+\index{Version@{Version}!Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root@{Cqrs\+::\+Domain\+::\+I\+Aggregate\+Root}}
+\subsubsection{\texorpdfstring{Version}{Version}}
+{\footnotesize\ttfamily int \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{Cqrs.\+Domain.\+I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$.Version\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+The current version of this I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. 
+

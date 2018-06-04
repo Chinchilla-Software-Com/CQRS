@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">14</td>
-            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntry">17</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-04 23:26:29</td>
+            <td class="headerValue">2018-06-04 23:47:54</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -80,7 +80,7 @@
 <span class="lineNum">      22 </span>            : using Microsoft.ServiceBus.Messaging;
 <span class="lineNum">      23 </span>            : using System.Text;
 <span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span><span class="lineCov">          1 : namespace Cqrs.Azure.ServiceBus</span>
+<span class="lineNum">      25 </span>            : namespace Cqrs.Azure.ServiceBus
 <span class="lineNum">      26 </span>            : {
 <span class="lineNum">      27 </span>            :         /// &lt;summary&gt;
 <span class="lineNum">      28 </span>            :         /// An &lt;see cref=&quot;AzureBus{TAuthenticationToken}&quot;/&gt; that uses Azure Service Event Hubs.
@@ -88,7 +88,7 @@
 <span class="lineNum">      30 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
 <span class="lineNum">      31 </span>            :         public abstract class AzureEventHub&lt;TAuthenticationToken&gt;
 <span class="lineNum">      32 </span>            :                 : AzureBus&lt;TAuthenticationToken&gt;
-<span class="lineNum">      33 </span>            :         {
+<span class="lineNum">      33 </span><span class="lineCov">          1 :         {</span>
 <span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      35 </span>            :                 /// Gets the public&lt;see cref=&quot;EventHubClient&quot;/&gt;.
 <span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
@@ -184,7 +184,7 @@
 <span class="lineNum">     126 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     127 </span>            :                 protected Action&lt;PartitionContext, EventData&gt; ReceiverMessageHandler { get; private set; }
 <span class="lineNum">     128 </span>            : 
-<span class="lineNum">     129 </span><span class="lineCov">          1 :                 /// &lt;summary&gt;</span>
+<span class="lineNum">     129 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     130 </span>            :                 /// The &lt;see cref=&quot;EventProcessorOptions&quot; /&gt; used for &lt;see cref=&quot;EventProcessorHost.RegisterEventProcessorFactoryAsync(Microsoft.ServiceBus.Messaging.IEventProcessorFactory)&quot;/&gt; on &lt;see cref=&quot;EventHubReceiver&quot;/&gt;.
 <span class="lineNum">     131 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     132 </span>            :                 protected EventProcessorOptions ReceiverMessageHandlerOptions { get; private set; }
@@ -195,7 +195,7 @@
 <span class="lineNum">     137 </span>            :                 protected ITelemetryHelper TelemetryHelper { get; set; }
 <span class="lineNum">     138 </span>            : 
 <span class="lineNum">     139 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     140 </span><span class="lineCov">          1 :                 /// The &lt;see cref=&quot;HashAlgorithm&quot;/&gt; to use to sign messages.</span>
+<span class="lineNum">     140 </span>            :                 /// The &lt;see cref=&quot;HashAlgorithm&quot;/&gt; to use to sign messages.
 <span class="lineNum">     141 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     142 </span>            :                 protected HashAlgorithm Signer { get; private set; }
 <span class="lineNum">     143 </span>            : 
@@ -220,10 +220,10 @@
 <span class="lineNum">     162 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     163 </span>            :                 /// Gets the connection string for the bus from &lt;see cref=&quot;AzureBus{TAuthenticationToken}.ConfigurationManager&quot;/&gt;
 <span class="lineNum">     164 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     165 </span>            :                 protected override string GetConnectionString()
+<span class="lineNum">     165 </span><span class="lineCov">          1 :                 protected override string GetConnectionString()</span>
 <span class="lineNum">     166 </span>            :                 {
 <span class="lineNum">     167 </span>            :                         string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(EventHubConnectionStringNameConfigurationKey)].ConnectionString;
-<span class="lineNum">     168 </span><span class="lineCov">          1 :                         if (string.IsNullOrWhiteSpace(connectionString))</span>
+<span class="lineNum">     168 </span>            :                         if (string.IsNullOrWhiteSpace(connectionString))
 <span class="lineNum">     169 </span>            :                                 throw new ConfigurationErrorsException(string.Format(&quot;Configuration is missing required information. Make sure the appSetting '{0}' is defined and a matching connection string with the name that matches the value of the appSetting value '{0}'.&quot;, EventHubConnectionStringNameConfigurationKey));
 <span class="lineNum">     170 </span>            :                         return connectionString;
 <span class="lineNum">     171 </span>            :                 }
@@ -232,14 +232,14 @@
 <span class="lineNum">     174 </span>            :                 /// Calls &lt;see cref=&quot;AzureBus{TAuthenticationToken}.SetConnectionStrings&quot;/&gt;
 <span class="lineNum">     175 </span>            :                 /// and then sets the required storage connection string.
 <span class="lineNum">     176 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     177 </span>            :                 protected override void SetConnectionStrings()
+<span class="lineNum">     177 </span><span class="lineCov">          1 :                 protected override void SetConnectionStrings()</span>
 <span class="lineNum">     178 </span>            :                 {
 <span class="lineNum">     179 </span>            :                         base.SetConnectionStrings();
 <span class="lineNum">     180 </span>            :                         StorageConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(EventHubStorageConnectionStringNameConfigurationKey)].ConnectionString;
 <span class="lineNum">     181 </span>            :                         if (string.IsNullOrWhiteSpace(StorageConnectionString))
 <span class="lineNum">     182 </span>            :                                 throw new ConfigurationErrorsException(string.Format(&quot;Configuration is missing required information. Make sure the appSetting '{0}' is defined and a matching connection string with the name that matches the value of the appSetting value '{0}'.&quot;, EventHubStorageConnectionStringNameConfigurationKey));
 <span class="lineNum">     183 </span>            :                         Logger.LogDebug(string.Format(&quot;Storage connection string settings set to {0}.&quot;, StorageConnectionString));
-<span class="lineNum">     184 </span><span class="lineCov">          1 :                 }</span>
+<span class="lineNum">     184 </span>            :                 }
 <span class="lineNum">     185 </span>            : 
 <span class="lineNum">     186 </span>            :                 #endregion
 <span class="lineNum">     187 </span>            : 
@@ -248,7 +248,7 @@
 <span class="lineNum">     190 </span>            :                 /// calling &lt;see cref=&quot;CheckPrivateHubExists&quot;/&gt; and &lt;see cref=&quot;CheckPublicHubExists&quot;/&gt;
 <span class="lineNum">     191 </span>            :                 /// then calling &lt;see cref=&quot;AzureBus{TAuthenticationToken}.StartSettingsChecking&quot;/&gt;
 <span class="lineNum">     192 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     193 </span>            :                 protected override void InstantiatePublishing()
+<span class="lineNum">     193 </span><span class="lineCov">          1 :                 protected override void InstantiatePublishing()</span>
 <span class="lineNum">     194 </span>            :                 {
 <span class="lineNum">     195 </span>            :                         NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
 <span class="lineNum">     196 </span>            :                         CheckPrivateHubExists(namespaceManager);
@@ -259,16 +259,16 @@
 <span class="lineNum">     201 </span>            :                 }
 <span class="lineNum">     202 </span>            : 
 <span class="lineNum">     203 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     204 </span><span class="lineCov">          1 :                 /// Instantiate receiving on this bus by</span>
+<span class="lineNum">     204 </span>            :                 /// Instantiate receiving on this bus by
 <span class="lineNum">     205 </span>            :                 /// calling &lt;see cref=&quot;CheckPrivateHubExists&quot;/&gt; and &lt;see cref=&quot;CheckPublicHubExists&quot;/&gt;
 <span class="lineNum">     206 </span>            :                 /// then InstantiateReceiving for private and public topics,
 <span class="lineNum">     207 </span>            :                 /// then calling &lt;see cref=&quot;AzureBus{TAuthenticationToken}.StartSettingsChecking&quot;/&gt;
 <span class="lineNum">     208 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     209 </span>            :                 protected override void InstantiateReceiving()
+<span class="lineNum">     209 </span><span class="lineCov">          1 :                 protected override void InstantiateReceiving()</span>
 <span class="lineNum">     210 </span>            :                 {
 <span class="lineNum">     211 </span>            :                         NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
 <span class="lineNum">     212 </span>            : 
-<span class="lineNum">     213 </span><span class="lineCov">          1 :                         CheckPrivateHubExists(namespaceManager);</span>
+<span class="lineNum">     213 </span>            :                         CheckPrivateHubExists(namespaceManager);
 <span class="lineNum">     214 </span>            :                         CheckPublicHubExists(namespaceManager);
 <span class="lineNum">     215 </span>            : 
 <span class="lineNum">     216 </span>            :                         EventHubReceiver = new EventProcessorHost(PublicEventHubName, PublicEventHubConsumerGroupName, ConnectionString, StorageConnectionString);
@@ -277,14 +277,14 @@
 <span class="lineNum">     219 </span>            :                         if (EventHubPublisher != null)
 <span class="lineNum">     220 </span>            :                                 return;
 <span class="lineNum">     221 </span>            : 
-<span class="lineNum">     222 </span><span class="lineCov">          1 :                         StartSettingsChecking();</span>
+<span class="lineNum">     222 </span>            :                         StartSettingsChecking();
 <span class="lineNum">     223 </span>            :                 }
 <span class="lineNum">     224 </span>            : 
 <span class="lineNum">     225 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     226 </span>            :                 /// Checks if the private hub and consumer group name exists as per &lt;see cref=&quot;PrivateEventHubName&quot;/&gt; and &lt;see cref=&quot;PrivateEventHubConsumerGroupName&quot;/&gt;.
 <span class="lineNum">     227 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     228 </span>            :                 /// &lt;param name=&quot;namespaceManager&quot;&gt;The &lt;see cref=&quot;NamespaceManager&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">     229 </span>            :                 protected virtual void CheckPrivateHubExists(NamespaceManager namespaceManager)
+<span class="lineNum">     229 </span><span class="lineCov">          1 :                 protected virtual void CheckPrivateHubExists(NamespaceManager namespaceManager)</span>
 <span class="lineNum">     230 </span>            :                 {
 <span class="lineNum">     231 </span>            :                         CheckHubExists(namespaceManager, PrivateEventHubName = ConfigurationManager.GetSetting(PrivateEventHubNameConfigurationKey) ?? DefaultPrivateEventHubName, PrivateEventHubConsumerGroupName = ConfigurationManager.GetSetting(PrivateEventHubConsumerGroupNameConfigurationKey) ?? DefaultPrivateEventHubConsumerGroupName);
 <span class="lineNum">     232 </span>            :                 }
@@ -293,16 +293,16 @@
 <span class="lineNum">     235 </span>            :                 /// Checks if the public hub and consumer group name exists as per &lt;see cref=&quot;PublicEventHubName&quot;/&gt; and &lt;see cref=&quot;PublicEventHubConsumerGroupName&quot;/&gt;.
 <span class="lineNum">     236 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     237 </span>            :                 /// &lt;param name=&quot;namespaceManager&quot;&gt;The &lt;see cref=&quot;NamespaceManager&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">     238 </span>            :                 protected virtual void CheckPublicHubExists(NamespaceManager namespaceManager)
+<span class="lineNum">     238 </span><span class="lineCov">          1 :                 protected virtual void CheckPublicHubExists(NamespaceManager namespaceManager)</span>
 <span class="lineNum">     239 </span>            :                 {
 <span class="lineNum">     240 </span>            :                         CheckHubExists(namespaceManager, PublicEventHubName = ConfigurationManager.GetSetting(PublicEventHubNameConfigurationKey) ?? DefaultPublicEventHubName, PublicEventHubConsumerGroupName = ConfigurationManager.GetSetting(PublicEventHubConsumerGroupNameConfigurationKey) ?? DefaultPublicEventHubConsumerGroupName);
 <span class="lineNum">     241 </span>            :                 }
 <span class="lineNum">     242 </span>            : 
 <span class="lineNum">     243 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     244 </span>            :                 /// Checks if a event hub by the provided &lt;paramref name=&quot;hubName&quot;/&gt; exists and
-<span class="lineNum">     245 </span><span class="lineCov">          1 :                 /// Checks if a consumer group by the provided &lt;paramref name=&quot;consumerGroupNames&quot;/&gt; exists.</span>
+<span class="lineNum">     245 </span>            :                 /// Checks if a consumer group by the provided &lt;paramref name=&quot;consumerGroupNames&quot;/&gt; exists.
 <span class="lineNum">     246 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     247 </span>            :                 protected virtual void CheckHubExists(NamespaceManager namespaceManager, string hubName, string consumerGroupNames)
+<span class="lineNum">     247 </span><span class="lineCov">          1 :                 protected virtual void CheckHubExists(NamespaceManager namespaceManager, string hubName, string consumerGroupNames)</span>
 <span class="lineNum">     248 </span>            :                 {
 <span class="lineNum">     249 </span>            :                         // Configure Queue Settings
 <span class="lineNum">     250 </span>            :                         var eventHubDescription = new EventHubDescription(hubName)
@@ -311,7 +311,7 @@
 <span class="lineNum">     253 </span>            :                                 
 <span class="lineNum">     254 </span>            :                         };
 <span class="lineNum">     255 </span>            : 
-<span class="lineNum">     256 </span><span class="lineCov">          1 :                         // Create the topic if it does not exist already</span>
+<span class="lineNum">     256 </span>            :                         // Create the topic if it does not exist already
 <span class="lineNum">     257 </span>            :                         namespaceManager.CreateEventHubIfNotExists(eventHubDescription);
 <span class="lineNum">     258 </span>            : 
 <span class="lineNum">     259 </span>            :                         var subscriptionDescription = new SubscriptionDescription(eventHubDescription.Path, consumerGroupNames);
@@ -325,7 +325,7 @@
 <span class="lineNum">     267 </span>            :                 /// and that &lt;see cref=&quot;StorageConnectionString&quot;/&gt; have changed.
 <span class="lineNum">     268 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     269 </span>            :                 /// &lt;returns&gt;&lt;/returns&gt;
-<span class="lineNum">     270 </span>            :                 protected override bool ValidateSettingsHaveChanged()
+<span class="lineNum">     270 </span><span class="lineCov">          1 :                 protected override bool ValidateSettingsHaveChanged()</span>
 <span class="lineNum">     271 </span>            :                 {
 <span class="lineNum">     272 </span>            :                         return base.ValidateSettingsHaveChanged()
 <span class="lineNum">     273 </span>            :                                 ||
@@ -336,7 +336,7 @@
 <span class="lineNum">     278 </span>            :                 /// Triggers settings checking on &lt;see cref=&quot;EventHubPublisher&quot;/&gt; and &lt;see cref=&quot;EventHubReceiver&quot;/&gt;,
 <span class="lineNum">     279 </span>            :                 /// then calls &lt;see cref=&quot;InstantiateReceiving&quot;/&gt; and &lt;see cref=&quot;InstantiatePublishing&quot;/&gt;.
 <span class="lineNum">     280 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     281 </span>            :                 protected override void TriggerSettingsChecking()
+<span class="lineNum">     281 </span><span class="lineCov">          1 :                 protected override void TriggerSettingsChecking()</span>
 <span class="lineNum">     282 </span>            :                 {
 <span class="lineNum">     283 </span>            :                         // Let's wrap up using this event hub and start the switch
 <span class="lineNum">     284 </span>            :                         if (EventHubPublisher != null)
@@ -354,7 +354,7 @@
 <span class="lineNum">     296 </span>            :                         }
 <span class="lineNum">     297 </span>            :                         // Restart configuration, we order this intentionally with the receiver first as if this triggers the cancellation we know this isn't a publisher as well
 <span class="lineNum">     298 </span>            :                         if (EventHubReceiver != null)
-<span class="lineNum">     299 </span><span class="lineCov">          1 :                         {</span>
+<span class="lineNum">     299 </span>            :                         {
 <span class="lineNum">     300 </span>            :                                 Logger.LogDebug(&quot;Recursively calling into InstantiateReceiving.&quot;);
 <span class="lineNum">     301 </span>            :                                 InstantiateReceiving();
 <span class="lineNum">     302 </span>            : 
@@ -364,7 +364,7 @@
 <span class="lineNum">     306 </span>            :                                         // Callback to handle received messages
 <span class="lineNum">     307 </span>            :                                         Logger.LogDebug(&quot;Re-registering onMessage handler.&quot;);
 <span class="lineNum">     308 </span>            :                                         ApplyReceiverMessageHandler();
-<span class="lineNum">     309 </span><span class="lineCov">          1 :                                 }</span>
+<span class="lineNum">     309 </span>            :                                 }
 <span class="lineNum">     310 </span>            :                                 else
 <span class="lineNum">     311 </span>            :                                         Logger.LogWarning(&quot;No onMessage handler was found to re-bind.&quot;);
 <span class="lineNum">     312 </span>            :                         }
@@ -373,13 +373,13 @@
 <span class="lineNum">     315 </span>            :                         {
 <span class="lineNum">     316 </span>            :                                 Logger.LogDebug(&quot;Recursively calling into InstantiatePublishing.&quot;);
 <span class="lineNum">     317 </span>            :                                 InstantiatePublishing();
-<span class="lineNum">     318 </span><span class="lineCov">          1 :                         }</span>
+<span class="lineNum">     318 </span>            :                         }
 <span class="lineNum">     319 </span>            :                 }
 <span class="lineNum">     320 </span>            : 
 <span class="lineNum">     321 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     322 </span>            :                 /// Registers the provided &lt;paramref name=&quot;receiverMessageHandler&quot;/&gt; with the provided &lt;paramref name=&quot;receiverMessageHandlerOptions&quot;/&gt;.
 <span class="lineNum">     323 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     324 </span>            :                 protected virtual void RegisterReceiverMessageHandler(Action&lt;PartitionContext, EventData&gt; receiverMessageHandler, EventProcessorOptions receiverMessageHandlerOptions = null)
+<span class="lineNum">     324 </span><span class="lineCov">          1 :                 protected virtual void RegisterReceiverMessageHandler(Action&lt;PartitionContext, EventData&gt; receiverMessageHandler, EventProcessorOptions receiverMessageHandlerOptions = null)</span>
 <span class="lineNum">     325 </span>            :                 {
 <span class="lineNum">     326 </span>            :                         StoreReceiverMessageHandler(receiverMessageHandler, receiverMessageHandlerOptions);
 <span class="lineNum">     327 </span>            : 
@@ -389,7 +389,7 @@
 <span class="lineNum">     331 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     332 </span>            :                 /// Stores the provided &lt;paramref name=&quot;receiverMessageHandler&quot;/&gt; and &lt;paramref name=&quot;receiverMessageHandlerOptions&quot;/&gt;.
 <span class="lineNum">     333 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     334 </span>            :                 protected virtual void StoreReceiverMessageHandler(Action&lt;PartitionContext, EventData&gt; receiverMessageHandler, EventProcessorOptions receiverMessageHandlerOptions = null)
+<span class="lineNum">     334 </span><span class="lineCov">          1 :                 protected virtual void StoreReceiverMessageHandler(Action&lt;PartitionContext, EventData&gt; receiverMessageHandler, EventProcessorOptions receiverMessageHandlerOptions = null)</span>
 <span class="lineNum">     335 </span>            :                 {
 <span class="lineNum">     336 </span>            :                         ReceiverMessageHandler = receiverMessageHandler;
 <span class="lineNum">     337 </span>            :                         ReceiverMessageHandlerOptions = receiverMessageHandlerOptions;
@@ -398,7 +398,7 @@
 <span class="lineNum">     340 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     341 </span>            :                 /// Applies the stored ReceiverMessageHandler and ReceiverMessageHandlerOptions to the &lt;see cref=&quot;EventHubReceiver&quot;/&gt;.
 <span class="lineNum">     342 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     343 </span>            :                 protected override void ApplyReceiverMessageHandler()
+<span class="lineNum">     343 </span><span class="lineCov">          1 :                 protected override void ApplyReceiverMessageHandler()</span>
 <span class="lineNum">     344 </span>            :                 {
 <span class="lineNum">     345 </span>            :                         EventHubReceiver.RegisterEventProcessorFactoryAsync
 <span class="lineNum">     346 </span>            :                         (
@@ -413,7 +413,7 @@
 <span class="lineNum">     355 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     356 </span>            :                 /// Create &lt;see cref=&quot;EventData&quot;/&gt; with additional properties to aid routing and tracing
 <span class="lineNum">     357 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     358 </span>            :                 protected virtual EventData CreateBrokeredMessage&lt;TMessage&gt;(Func&lt;TMessage, string&gt; serialiserFunction, Type messageType, TMessage message)
+<span class="lineNum">     358 </span><span class="lineCov">          1 :                 protected virtual EventData CreateBrokeredMessage&lt;TMessage&gt;(Func&lt;TMessage, string&gt; serialiserFunction, Type messageType, TMessage message)</span>
 <span class="lineNum">     359 </span>            :                 {
 <span class="lineNum">     360 </span>            :                         string messageBody = serialiserFunction(message);
 <span class="lineNum">     361 </span>            :                         var brokeredMessage = new EventData(Encoding.UTF8.GetBytes(messageBody));
@@ -470,7 +470,7 @@
 <span class="lineNum">     412 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     413 </span>            :                 /// Extract any telemetry properties from the provided &lt;paramref name=&quot;message&quot;/&gt;.
 <span class="lineNum">     414 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     415 </span>            :                 protected virtual IDictionary&lt;string, string&gt; ExtractTelemetryProperties(EventData message, string baseCommunicationType)
+<span class="lineNum">     415 </span><span class="lineCov">          1 :                 protected virtual IDictionary&lt;string, string&gt; ExtractTelemetryProperties(EventData message, string baseCommunicationType)</span>
 <span class="lineNum">     416 </span>            :                 {
 <span class="lineNum">     417 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, baseCommunicationType } };
 <span class="lineNum">     418 </span>            :                         object value;
@@ -487,7 +487,7 @@
 <span class="lineNum">     429 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     430 </span>            :                 /// Extract the signature from the provided &lt;paramref name=&quot;eventData&quot;/&gt;.
 <span class="lineNum">     431 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     432 </span>            :                 protected virtual string ExtractSignature(EventData eventData)
+<span class="lineNum">     432 </span><span class="lineCov">          1 :                 protected virtual string ExtractSignature(EventData eventData)</span>
 <span class="lineNum">     433 </span>            :                 {
 <span class="lineNum">     434 </span>            :                         object value;
 <span class="lineNum">     435 </span>            :                         if (eventData.Properties.TryGetValue(&quot;Signature&quot;, out value))

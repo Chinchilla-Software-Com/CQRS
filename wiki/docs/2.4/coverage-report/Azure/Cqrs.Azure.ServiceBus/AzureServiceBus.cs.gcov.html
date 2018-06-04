@@ -1,0 +1,777 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.ServiceBus/AzureServiceBus.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.ServiceBus</a> - AzureServiceBus.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-06-04 23:47:54</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Configuration;
+<span class="lineNum">      12 </span>            : using System.Diagnostics;
+<span class="lineNum">      13 </span>            : using System.IO;
+<span class="lineNum">      14 </span>            : using System.Linq;
+<span class="lineNum">      15 </span>            : using System.Reflection;
+<span class="lineNum">      16 </span>            : using System.Security.Cryptography;
+<span class="lineNum">      17 </span>            : using System.Text;
+<span class="lineNum">      18 </span>            : using System.Threading;
+<span class="lineNum">      19 </span>            : using System.Threading.Tasks;
+<span class="lineNum">      20 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      21 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      22 </span>            : using Cqrs.Bus;
+<span class="lineNum">      23 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      24 </span>            : using Cqrs.Exceptions;
+<span class="lineNum">      25 </span>            : using Cqrs.Messages;
+<span class="lineNum">      26 </span>            : using Microsoft.ServiceBus;
+<span class="lineNum">      27 </span>            : using Microsoft.ServiceBus.Messaging;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : namespace Cqrs.Azure.ServiceBus
+<span class="lineNum">      30 </span>            : {
+<span class="lineNum">      31 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :         /// An &lt;see cref=&quot;AzureBus{TAuthenticationToken}&quot;/&gt; that uses Azure Service Bus.
+<span class="lineNum">      33 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      35 </span>            :         public abstract class AzureServiceBus&lt;TAuthenticationToken&gt;
+<span class="lineNum">      36 </span>            :                 : AzureBus&lt;TAuthenticationToken&gt;
+<span class="lineNum">      37 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// Gets the private &lt;see cref=&quot;TopicClient&quot;/&gt; publisher.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span>            :                 protected TopicClient PrivateServiceBusPublisher { get; private set; }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      44 </span>            :                 /// Gets the public &lt;see cref=&quot;TopicClient&quot;/&gt; publisher.
+<span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      46 </span>            :                 protected TopicClient PublicServiceBusPublisher { get; private set; }
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      49 </span>            :                 /// Gets the private &lt;see cref=&quot;SubscriptionClient&quot;/&gt; receivers.
+<span class="lineNum">      50 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      51 </span>            :                 protected IDictionary&lt;int, SubscriptionClient&gt; PrivateServiceBusReceivers { get; private set; }
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      54 </span>            :                 /// Gets the public &lt;see cref=&quot;SubscriptionClient&quot;/&gt; receivers.
+<span class="lineNum">      55 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      56 </span>            :                 protected IDictionary&lt;int, SubscriptionClient&gt; PublicServiceBusReceivers { get; private set; }
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      59 </span>            :                 /// The name of the private topic.
+<span class="lineNum">      60 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      61 </span>            :                 protected string PrivateTopicName { get; private set; }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      64 </span>            :                 /// The name of the public topic.
+<span class="lineNum">      65 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      66 </span>            :                 protected string PublicTopicName { get; private set; }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      69 </span>            :                 /// The name of the subscription in the private topic.
+<span class="lineNum">      70 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      71 </span>            :                 protected string PrivateTopicSubscriptionName { get; private set; }
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      74 </span>            :                 /// The name of the subscription in the public topic.
+<span class="lineNum">      75 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      76 </span>            :                 protected string PublicTopicSubscriptionName { get; private set; }
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      79 </span>            :                 /// The configuration key for the message bus connection string as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      80 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      81 </span>            :                 protected abstract string MessageBusConnectionStringConfigurationKey { get; }
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      84 </span>            :                 /// The configuration key for the signing token as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      85 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      86 </span>            :                 protected abstract string SigningTokenConfigurationKey { get; }
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      89 </span>            :                 /// The configuration key for the name of the private topic as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      90 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      91 </span>            :                 protected abstract string PrivateTopicNameConfigurationKey { get; }
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      94 </span>            :                 /// The configuration key for the name of the public topic as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      95 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      96 </span>            :                 protected abstract string PublicTopicNameConfigurationKey { get; }
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      99 </span>            :                 /// The default name of the private topic if no &lt;see cref=&quot;IConfigurationManager&quot;/&gt; value is set.
+<span class="lineNum">     100 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     101 </span>            :                 protected abstract string DefaultPrivateTopicName { get; }
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     104 </span>            :                 /// The default name of the public topic if no &lt;see cref=&quot;IConfigurationManager&quot;/&gt; value is set.
+<span class="lineNum">     105 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     106 </span>            :                 protected abstract string DefaultPublicTopicName { get; }
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     109 </span>            :                 /// The configuration key for the name of the subscription in the private topic as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">     110 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     111 </span>            :                 protected abstract string PrivateTopicSubscriptionNameConfigurationKey { get; }
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     114 </span>            :                 /// The configuration key for the name of the subscription in the public topic as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">     115 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     116 </span>            :                 protected abstract string PublicTopicSubscriptionNameConfigurationKey { get; }
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     119 </span>            :                 /// The configuration key that
+<span class="lineNum">     120 </span>            :                 /// specifies if an &lt;see cref=&quot;Exception&quot;/&gt; is thrown if the network lock is lost
+<span class="lineNum">     121 </span>            :                 /// as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">     122 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     123 </span>            :                 protected abstract string ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey { get; }
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     126 </span>            :                 /// Specifies if an &lt;see cref=&quot;Exception&quot;/&gt; is thrown if the network lock is lost.
+<span class="lineNum">     127 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     128 </span>            :                 protected bool ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete { get; private set; }
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     131 </span>            :                 /// The default name of the subscription in the private topic if no &lt;see cref=&quot;IConfigurationManager&quot;/&gt; value is set.
+<span class="lineNum">     132 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     133 </span>            :                 protected const string DefaultPrivateTopicSubscriptionName = &quot;Root&quot;;
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     136 </span>            :                 /// The default name of the subscription in the public topic if no &lt;see cref=&quot;IConfigurationManager&quot;/&gt; value is set.
+<span class="lineNum">     137 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     138 </span>            :                 protected const string DefaultPublicTopicSubscriptionName = &quot;Root&quot;;
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     141 </span>            :                 /// The &lt;see cref=&quot;Action{TBrokeredMessage}&quot;&gt;handler&lt;/see&gt; used for &lt;see cref=&quot;SubscriptionClient.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage}, OnMessageOptions)&quot;/&gt; on each receiver.
+<span class="lineNum">     142 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     143 </span>            :                 protected Action&lt;BrokeredMessage&gt; ReceiverMessageHandler { get; set; }
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     146 </span>            :                 /// The &lt;see cref=&quot;OnMessageOptions&quot; /&gt; used for &lt;see cref=&quot;SubscriptionClient.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage}, OnMessageOptions)&quot;/&gt; on each receiver.
+<span class="lineNum">     147 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     148 </span>            :                 protected OnMessageOptions ReceiverMessageHandlerOptions { get; set; }
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     151 </span>            :                 /// Gets the &lt;see cref=&quot;IBusHelper&quot;/&gt;.
+<span class="lineNum">     152 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     153 </span>            :                 protected IBusHelper BusHelper { get; private set; }
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     156 </span>            :                 /// Gets the &lt;see cref=&quot;IAzureBusHelper{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     157 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     158 </span>            :                 protected IAzureBusHelper&lt;TAuthenticationToken&gt; AzureBusHelper { get; private set; }
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     161 </span>            :                 /// Gets the &lt;see cref=&quot;ITelemetryHelper&quot;/&gt;.
+<span class="lineNum">     162 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     163 </span>            :                 protected ITelemetryHelper TelemetryHelper { get; set; }
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     166 </span>            :                 /// The maximum number of time a retry is tried if a &lt;see cref=&quot;System.TimeoutException&quot;/&gt; is thrown while sending messages.
+<span class="lineNum">     167 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     168 </span>            :                 protected short TimeoutOnSendRetryMaximumCount { get; private set; }
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     171 </span>            :                 /// The &lt;see cref=&quot;HashAlgorithm&quot;/&gt; to use to sign messages.
+<span class="lineNum">     172 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     173 </span>            :                 protected HashAlgorithm Signer { get; private set; }
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     176 </span>            :                 /// A list of namespaces to exclude when trying to automatically determine the container.
+<span class="lineNum">     177 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     178 </span>            :                 protected IList&lt;string&gt; ExclusionNamespaces { get; private set; }
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     181 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AzureServiceBus{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">     182 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     183 </span><span class="lineCov">          1 :                 protected AzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper, IBusHelper busHelper, bool isAPublisher)</span>
+<span class="lineNum">     184 </span>            :                         : base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
+<span class="lineNum">     185 </span>            :                 {
+<span class="lineNum">     186 </span>            :                         AzureBusHelper = azureBusHelper;
+<span class="lineNum">     187 </span>            :                         BusHelper = busHelper;
+<span class="lineNum">     188 </span>            :                         TelemetryHelper = new NullTelemetryHelper();
+<span class="lineNum">     189 </span>            :                         PrivateServiceBusReceivers = new Dictionary&lt;int, SubscriptionClient&gt;();
+<span class="lineNum">     190 </span>            :                         PublicServiceBusReceivers = new Dictionary&lt;int, SubscriptionClient&gt;();
+<span class="lineNum">     191 </span>            :                         TimeoutOnSendRetryMaximumCount = 1;
+<span class="lineNum">     192 </span>            :                         string timeoutOnSendRetryMaximumCountValue;
+<span class="lineNum">     193 </span>            :                         short timeoutOnSendRetryMaximumCount;
+<span class="lineNum">     194 </span>            :                         if (ConfigurationManager.TryGetSetting(&quot;Cqrs.Azure.Servicebus.TimeoutOnSendRetryMaximumCount&quot;, out timeoutOnSendRetryMaximumCountValue) &amp;&amp; !string.IsNullOrWhiteSpace(timeoutOnSendRetryMaximumCountValue) &amp;&amp; short.TryParse(timeoutOnSendRetryMaximumCountValue, out timeoutOnSendRetryMaximumCount))
+<span class="lineNum">     195 </span>            :                                 TimeoutOnSendRetryMaximumCount = timeoutOnSendRetryMaximumCount;
+<span class="lineNum">     196 </span>            :                         ExclusionNamespaces = new SynchronizedCollection&lt;string&gt; { &quot;Cqrs&quot;, &quot;System&quot; };
+<span class="lineNum">     197 </span>            :                         Signer = new SHA512CryptoServiceProvider();
+<span class="lineNum">     198 </span>            :                 }
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span>            :                 #region Overrides of AzureBus&lt;TAuthenticationToken&gt;
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     203 </span>            :                 /// Gets the connection string for the bus from &lt;see cref=&quot;AzureBus{TAuthenticationToken}.ConfigurationManager&quot;/&gt;
+<span class="lineNum">     204 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     205 </span><span class="lineCov">          1 :                 protected override string GetConnectionString()</span>
+<span class="lineNum">     206 </span>            :                 {
+<span class="lineNum">     207 </span>            :                         string connectionString = ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey);
+<span class="lineNum">     208 </span>            :                         if (string.IsNullOrWhiteSpace(connectionString))
+<span class="lineNum">     209 </span>            :                                 throw new ConfigurationErrorsException(string.Format(&quot;Configuration is missing required information. Make sure the appSetting '{0}' is defined and has a valid connection string value.&quot;, MessageBusConnectionStringConfigurationKey));
+<span class="lineNum">     210 </span>            :                         return connectionString;
+<span class="lineNum">     211 </span>            :                 }
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span>            :                 #endregion
+<span class="lineNum">     214 </span>            : 
+<span class="lineNum">     215 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     216 </span>            :                 /// Instantiate publishing on this bus by
+<span class="lineNum">     217 </span>            :                 /// calling &lt;see cref=&quot;CheckPrivateTopicExists&quot;/&gt; and &lt;see cref=&quot;CheckPublicTopicExists&quot;/&gt;
+<span class="lineNum">     218 </span>            :                 /// then calling &lt;see cref=&quot;AzureBus{TAuthenticationToken}.StartSettingsChecking&quot;/&gt;
+<span class="lineNum">     219 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     220 </span><span class="lineCov">          1 :                 protected override void InstantiatePublishing()</span>
+<span class="lineNum">     221 </span>            :                 {
+<span class="lineNum">     222 </span>            :                         NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
+<span class="lineNum">     223 </span>            :                         CheckPrivateTopicExists(namespaceManager);
+<span class="lineNum">     224 </span>            :                         CheckPublicTopicExists(namespaceManager);
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span>            :                         PrivateServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PrivateTopicName);
+<span class="lineNum">     227 </span>            :                         PublicServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PublicTopicName);
+<span class="lineNum">     228 </span>            :                         StartSettingsChecking();
+<span class="lineNum">     229 </span>            :                 }
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     232 </span>            :                 /// Instantiate receiving on this bus by
+<span class="lineNum">     233 </span>            :                 /// calling &lt;see cref=&quot;CheckPrivateTopicExists&quot;/&gt; and &lt;see cref=&quot;CheckPublicTopicExists&quot;/&gt;
+<span class="lineNum">     234 </span>            :                 /// then InstantiateReceiving for private and public topics,
+<span class="lineNum">     235 </span>            :                 /// calls &lt;see cref=&quot;CleanUpDeadLetters&quot;/&gt; for the private and public topics,
+<span class="lineNum">     236 </span>            :                 /// then calling &lt;see cref=&quot;AzureBus{TAuthenticationToken}.StartSettingsChecking&quot;/&gt;
+<span class="lineNum">     237 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     238 </span><span class="lineCov">          1 :                 protected override void InstantiateReceiving()</span>
+<span class="lineNum">     239 </span>            :                 {
+<span class="lineNum">     240 </span>            :                         NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
+<span class="lineNum">     241 </span>            : 
+<span class="lineNum">     242 </span>            :                         CheckPrivateTopicExists(namespaceManager);
+<span class="lineNum">     243 </span>            :                         CheckPublicTopicExists(namespaceManager);
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            :                         try
+<span class="lineNum">     246 </span>            :                         {
+<span class="lineNum">     247 </span>            :                                 InstantiateReceiving(namespaceManager, PrivateServiceBusReceivers, PrivateTopicName, PrivateTopicSubscriptionName);
+<span class="lineNum">     248 </span>            :                         }
+<span class="lineNum">     249 </span>            :                         catch (UriFormatException exception)
+<span class="lineNum">     250 </span>            :                         {
+<span class="lineNum">     251 </span>            :                                 throw new InvalidConfigurationException(&quot;The connection string for one of the private Service Bus receivers may be invalid.&quot;, exception);
+<span class="lineNum">     252 </span>            :                         }
+<span class="lineNum">     253 </span>            :                         try
+<span class="lineNum">     254 </span>            :                         {
+<span class="lineNum">     255 </span>            :                                 InstantiateReceiving(namespaceManager, PublicServiceBusReceivers, PublicTopicName, PublicTopicSubscriptionName);
+<span class="lineNum">     256 </span>            :                         }
+<span class="lineNum">     257 </span>            :                         catch (UriFormatException exception)
+<span class="lineNum">     258 </span>            :                         {
+<span class="lineNum">     259 </span>            :                                 throw new InvalidConfigurationException(&quot;The connection string for one of the public Service Bus receivers may be invalid.&quot;, exception);
+<span class="lineNum">     260 </span>            :                         }
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span>            :                         bool enableDeadLetterCleanUp;
+<span class="lineNum">     263 </span>            :                         string enableDeadLetterCleanUpValue = ConfigurationManager.GetSetting(&quot;Cqrs.Azure.Servicebus.EnableDeadLetterCleanUp&quot;);
+<span class="lineNum">     264 </span>            :                         if (bool.TryParse(enableDeadLetterCleanUpValue, out enableDeadLetterCleanUp) &amp;&amp; enableDeadLetterCleanUp)
+<span class="lineNum">     265 </span>            :                         {
+<span class="lineNum">     266 </span>            :                                 CleanUpDeadLetters(PrivateTopicName, PrivateTopicSubscriptionName);
+<span class="lineNum">     267 </span>            :                                 CleanUpDeadLetters(PublicTopicName, PublicTopicSubscriptionName);
+<span class="lineNum">     268 </span>            :                         }
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span>            :                         // If this is also a publisher, then it will the check over there and that will handle this
+<span class="lineNum">     271 </span>            :                         // we only need to check one of these
+<span class="lineNum">     272 </span>            :                         if (PublicServiceBusPublisher != null)
+<span class="lineNum">     273 </span>            :                                 return;
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span>            :                         StartSettingsChecking();
+<span class="lineNum">     276 </span>            :                 }
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     279 </span>            :                 /// Creates &lt;see cref=&quot;AzureBus{TAuthenticationToken}.NumberOfReceiversCount&quot;/&gt; &lt;see cref=&quot;SubscriptionClient&quot;/&gt;.
+<span class="lineNum">     280 </span>            :                 /// If flushing is required, any flushed &lt;see cref=&quot;SubscriptionClient&quot;/&gt; has &lt;see cref=&quot;ClientEntity.Close()&quot;/&gt; called on it first.
+<span class="lineNum">     281 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     282 </span>            :                 /// &lt;param name=&quot;namespaceManager&quot;&gt;The &lt;see cref=&quot;NamespaceManager&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     283 </span>            :                 /// &lt;param name=&quot;serviceBusReceivers&quot;&gt;The receivers collection to place &lt;see cref=&quot;SubscriptionClient&quot;/&gt; instances into.&lt;/param&gt;
+<span class="lineNum">     284 </span>            :                 /// &lt;param name=&quot;topicName&quot;&gt;The topic name.&lt;/param&gt;
+<span class="lineNum">     285 </span>            :                 /// &lt;param name=&quot;topicSubscriptionName&quot;&gt;The topic subscription name.&lt;/param&gt;
+<span class="lineNum">     286 </span><span class="lineCov">          1 :                 protected virtual void InstantiateReceiving(NamespaceManager namespaceManager, IDictionary&lt;int, SubscriptionClient&gt; serviceBusReceivers, string topicName, string topicSubscriptionName)</span>
+<span class="lineNum">     287 </span>            :                 {
+<span class="lineNum">     288 </span>            :                         for (int i = 0; i &lt; NumberOfReceiversCount; i++)
+<span class="lineNum">     289 </span>            :                         {
+<span class="lineNum">     290 </span>            :                                 SubscriptionClient serviceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, topicName, topicSubscriptionName);
+<span class="lineNum">     291 </span>            :                                 if (serviceBusReceivers.ContainsKey(i))
+<span class="lineNum">     292 </span>            :                                         serviceBusReceivers[i] = serviceBusReceiver;
+<span class="lineNum">     293 </span>            :                                 else
+<span class="lineNum">     294 </span>            :                                         serviceBusReceivers.Add(i, serviceBusReceiver);
+<span class="lineNum">     295 </span>            :                         }
+<span class="lineNum">     296 </span>            :                         // Remove any if the number has decreased
+<span class="lineNum">     297 </span>            :                         for (int i = NumberOfReceiversCount; i &lt; serviceBusReceivers.Count; i++)
+<span class="lineNum">     298 </span>            :                         {
+<span class="lineNum">     299 </span>            :                                 SubscriptionClient serviceBusReceiver;
+<span class="lineNum">     300 </span>            :                                 if (serviceBusReceivers.TryGetValue(i, out serviceBusReceiver))
+<span class="lineNum">     301 </span>            :                                         serviceBusReceiver.Close();
+<span class="lineNum">     302 </span>            :                                 serviceBusReceivers.Remove(i);
+<span class="lineNum">     303 </span>            :                         }
+<span class="lineNum">     304 </span>            :                 }
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     307 </span>            :                 /// Checks if the private topic and subscription name exists as per &lt;see cref=&quot;PrivateTopicName&quot;/&gt; and &lt;see cref=&quot;PrivateTopicSubscriptionName&quot;/&gt;.
+<span class="lineNum">     308 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     309 </span>            :                 /// &lt;param name=&quot;namespaceManager&quot;&gt;The &lt;see cref=&quot;NamespaceManager&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     310 </span><span class="lineCov">          1 :                 protected virtual void CheckPrivateTopicExists(NamespaceManager namespaceManager)</span>
+<span class="lineNum">     311 </span>            :                 {
+<span class="lineNum">     312 </span>            :                         CheckTopicExists(namespaceManager, PrivateTopicName = ConfigurationManager.GetSetting(PrivateTopicNameConfigurationKey) ?? DefaultPrivateTopicName, PrivateTopicSubscriptionName = ConfigurationManager.GetSetting(PrivateTopicSubscriptionNameConfigurationKey) ?? DefaultPrivateTopicSubscriptionName);
+<span class="lineNum">     313 </span>            :                 }
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     316 </span>            :                 /// Checks if the public topic and subscription name exists as per &lt;see cref=&quot;PublicTopicName&quot;/&gt; and &lt;see cref=&quot;PublicTopicSubscriptionName&quot;/&gt;.
+<span class="lineNum">     317 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     318 </span>            :                 /// &lt;param name=&quot;namespaceManager&quot;&gt;The &lt;see cref=&quot;NamespaceManager&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     319 </span><span class="lineCov">          1 :                 protected virtual void CheckPublicTopicExists(NamespaceManager namespaceManager)</span>
+<span class="lineNum">     320 </span>            :                 {
+<span class="lineNum">     321 </span>            :                         CheckTopicExists(namespaceManager, PublicTopicName = ConfigurationManager.GetSetting(PublicTopicNameConfigurationKey) ?? DefaultPublicTopicName, PublicTopicSubscriptionName = ConfigurationManager.GetSetting(PublicTopicSubscriptionNameConfigurationKey) ?? DefaultPublicTopicSubscriptionName);
+<span class="lineNum">     322 </span>            :                 }
+<span class="lineNum">     323 </span>            : 
+<span class="lineNum">     324 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     325 </span>            :                 /// Checks if a topic by the provided &lt;paramref name=&quot;topicName&quot;/&gt; exists and
+<span class="lineNum">     326 </span>            :                 /// Checks if a subscription name by the provided &lt;paramref name=&quot;subscriptionName&quot;/&gt; exists.
+<span class="lineNum">     327 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     328 </span><span class="lineCov">          1 :                 protected virtual void CheckTopicExists(NamespaceManager namespaceManager, string topicName, string subscriptionName)</span>
+<span class="lineNum">     329 </span>            :                 {
+<span class="lineNum">     330 </span>            :                         // Configure Queue Settings
+<span class="lineNum">     331 </span>            :                         var eventTopicDescription = new TopicDescription(topicName)
+<span class="lineNum">     332 </span>            :                         {
+<span class="lineNum">     333 </span>            :                                 MaxSizeInMegabytes = 5120,
+<span class="lineNum">     334 </span>            :                                 DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
+<span class="lineNum">     335 </span>            :                                 EnablePartitioning = true,
+<span class="lineNum">     336 </span>            :                                 EnableBatchedOperations = true
+<span class="lineNum">     337 </span>            :                         };
+<span class="lineNum">     338 </span>            :                         // Create the topic if it does not exist already
+<span class="lineNum">     339 </span>            :                         if (!namespaceManager.TopicExists(eventTopicDescription.Path))
+<span class="lineNum">     340 </span>            :                                 namespaceManager.CreateTopic(eventTopicDescription);
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span>            :                         if (!namespaceManager.SubscriptionExists(eventTopicDescription.Path, subscriptionName))
+<span class="lineNum">     343 </span>            :                                 namespaceManager.CreateSubscription
+<span class="lineNum">     344 </span>            :                                 (
+<span class="lineNum">     345 </span>            :                                         new SubscriptionDescription(eventTopicDescription.Path, subscriptionName)
+<span class="lineNum">     346 </span>            :                                         {
+<span class="lineNum">     347 </span>            :                                                 DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
+<span class="lineNum">     348 </span>            :                                                 EnableBatchedOperations = true,
+<span class="lineNum">     349 </span>            :                                                 EnableDeadLetteringOnFilterEvaluationExceptions = true
+<span class="lineNum">     350 </span>            :                                         }
+<span class="lineNum">     351 </span>            :                                 );
+<span class="lineNum">     352 </span>            :                 }
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     355 </span>            :                 /// Triggers settings checking on both public and private publishers and receivers,
+<span class="lineNum">     356 </span>            :                 /// then calls &lt;see cref=&quot;InstantiatePublishing&quot;/&gt; if &lt;see cref=&quot;PublicServiceBusPublisher&quot;/&gt; is not null.
+<span class="lineNum">     357 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     358 </span><span class="lineCov">          1 :                 protected override void TriggerSettingsChecking()</span>
+<span class="lineNum">     359 </span>            :                 {
+<span class="lineNum">     360 </span>            :                         // First refresh the EventBlackListProcessing property
+<span class="lineNum">     361 </span>            :                         bool throwExceptionOnReceiverMessageLockLostExceptionDuringComplete;
+<span class="lineNum">     362 </span>            :                         if (!ConfigurationManager.TryGetSetting(ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey, out throwExceptionOnReceiverMessageLockLostExceptionDuringComplete))
+<span class="lineNum">     363 </span>            :                                 throwExceptionOnReceiverMessageLockLostExceptionDuringComplete = true;
+<span class="lineNum">     364 </span>            :                         ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete = throwExceptionOnReceiverMessageLockLostExceptionDuringComplete;
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span>            :                         TriggerSettingsChecking(PrivateServiceBusPublisher, PrivateServiceBusReceivers);
+<span class="lineNum">     367 </span>            :                         TriggerSettingsChecking(PublicServiceBusPublisher, PublicServiceBusReceivers);
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span>            :                         // Restart configuration, we order this intentionally with the publisher second as if this triggers the cancellation there's nothing else to process here
+<span class="lineNum">     370 </span>            :                         // we also only need to check one of the publishers
+<span class="lineNum">     371 </span>            :                         if (PublicServiceBusPublisher != null)
+<span class="lineNum">     372 </span>            :                         {
+<span class="lineNum">     373 </span>            :                                 Logger.LogDebug(&quot;Recursively calling into InstantiatePublishing.&quot;);
+<span class="lineNum">     374 </span>            :                                 InstantiatePublishing();
+<span class="lineNum">     375 </span>            :                         }
+<span class="lineNum">     376 </span>            :                 }
+<span class="lineNum">     377 </span>            : 
+<span class="lineNum">     378 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     379 </span>            :                 /// Triggers settings checking on the provided &lt;paramref name=&quot;serviceBusPublisher&quot;/&gt; and &lt;paramref name=&quot;serviceBusReceivers&quot;/&gt;,
+<span class="lineNum">     380 </span>            :                 /// then calls &lt;see cref=&quot;InstantiateReceiving()&quot;/&gt;.
+<span class="lineNum">     381 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     382 </span><span class="lineCov">          1 :                 protected virtual void TriggerSettingsChecking(TopicClient serviceBusPublisher, IDictionary&lt;int, SubscriptionClient&gt; serviceBusReceivers)</span>
+<span class="lineNum">     383 </span>            :                 {
+<span class="lineNum">     384 </span>            :                         // Let's wrap up using this message bus and start the switch
+<span class="lineNum">     385 </span>            :                         if (serviceBusPublisher != null)
+<span class="lineNum">     386 </span>            :                         {
+<span class="lineNum">     387 </span>            :                                 serviceBusPublisher.Close();
+<span class="lineNum">     388 </span>            :                                 Logger.LogDebug(&quot;Publishing service bus closed.&quot;);
+<span class="lineNum">     389 </span>            :                         }
+<span class="lineNum">     390 </span>            :                         foreach (SubscriptionClient serviceBusReceiver in serviceBusReceivers.Values)
+<span class="lineNum">     391 </span>            :                         {
+<span class="lineNum">     392 </span>            :                                 // Let's wrap up using this message bus and start the switch
+<span class="lineNum">     393 </span>            :                                 if (serviceBusReceiver != null)
+<span class="lineNum">     394 </span>            :                                 {
+<span class="lineNum">     395 </span>            :                                         serviceBusReceiver.Close();
+<span class="lineNum">     396 </span>            :                                         Logger.LogDebug(&quot;Receiving service bus closed.&quot;);
+<span class="lineNum">     397 </span>            :                                 }
+<span class="lineNum">     398 </span>            :                                 // Restart configuration, we order this intentionally with the receiver first as if this triggers the cancellation we know this isn't a publisher as well
+<span class="lineNum">     399 </span>            :                                 if (serviceBusReceiver != null)
+<span class="lineNum">     400 </span>            :                                 {
+<span class="lineNum">     401 </span>            :                                         Logger.LogDebug(&quot;Recursively calling into InstantiateReceiving.&quot;);
+<span class="lineNum">     402 </span>            :                                         InstantiateReceiving();
+<span class="lineNum">     403 </span>            : 
+<span class="lineNum">     404 </span>            :                                         // This will be the case of a connection setting change re-connection
+<span class="lineNum">     405 </span>            :                                         if (ReceiverMessageHandler != null &amp;&amp; ReceiverMessageHandlerOptions != null)
+<span class="lineNum">     406 </span>            :                                         {
+<span class="lineNum">     407 </span>            :                                                 // Callback to handle received messages
+<span class="lineNum">     408 </span>            :                                                 Logger.LogDebug(&quot;Re-registering onMessage handler.&quot;);
+<span class="lineNum">     409 </span>            :                                                 ApplyReceiverMessageHandler();
+<span class="lineNum">     410 </span>            :                                         }
+<span class="lineNum">     411 </span>            :                                         else
+<span class="lineNum">     412 </span>            :                                                 Logger.LogWarning(&quot;No onMessage handler was found to re-bind.&quot;);
+<span class="lineNum">     413 </span>            :                                 }
+<span class="lineNum">     414 </span>            :                         }
+<span class="lineNum">     415 </span>            :                 }
+<span class="lineNum">     416 </span>            : 
+<span class="lineNum">     417 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     418 </span>            :                 /// Registers the provided &lt;paramref name=&quot;receiverMessageHandler&quot;/&gt; with the provided &lt;paramref name=&quot;receiverMessageHandlerOptions&quot;/&gt;.
+<span class="lineNum">     419 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     420 </span><span class="lineCov">          1 :                 protected virtual void RegisterReceiverMessageHandler(Action&lt;BrokeredMessage&gt; receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)</span>
+<span class="lineNum">     421 </span>            :                 {
+<span class="lineNum">     422 </span>            :                         StoreReceiverMessageHandler(receiverMessageHandler, receiverMessageHandlerOptions);
+<span class="lineNum">     423 </span>            : 
+<span class="lineNum">     424 </span>            :                         ApplyReceiverMessageHandler();
+<span class="lineNum">     425 </span>            :                 }
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     428 </span>            :                 /// Stores the provided &lt;paramref name=&quot;receiverMessageHandler&quot;/&gt; and &lt;paramref name=&quot;receiverMessageHandlerOptions&quot;/&gt;.
+<span class="lineNum">     429 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     430 </span><span class="lineCov">          1 :                 protected virtual void StoreReceiverMessageHandler(Action&lt;BrokeredMessage&gt; receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)</span>
+<span class="lineNum">     431 </span>            :                 {
+<span class="lineNum">     432 </span>            :                         ReceiverMessageHandler = receiverMessageHandler;
+<span class="lineNum">     433 </span>            :                         ReceiverMessageHandlerOptions = receiverMessageHandlerOptions;
+<span class="lineNum">     434 </span>            :                 }
+<span class="lineNum">     435 </span>            : 
+<span class="lineNum">     436 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     437 </span>            :                 /// Applies the stored ReceiverMessageHandler and ReceiverMessageHandlerOptions to all receivers in
+<span class="lineNum">     438 </span>            :                 /// &lt;see cref=&quot;PrivateServiceBusReceivers&quot;/&gt; and &lt;see cref=&quot;PublicServiceBusReceivers&quot;/&gt;.
+<span class="lineNum">     439 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     440 </span><span class="lineCov">          1 :                 protected override void ApplyReceiverMessageHandler()</span>
+<span class="lineNum">     441 </span>            :                 {
+<span class="lineNum">     442 </span>            :                         foreach (SubscriptionClient serviceBusReceiver in PrivateServiceBusReceivers.Values)
+<span class="lineNum">     443 </span>            :                                 serviceBusReceiver
+<span class="lineNum">     444 </span>            :                                         .OnMessage
+<span class="lineNum">     445 </span>            :                                         (
+<span class="lineNum">     446 </span>            :                                                 message =&gt;
+<span class="lineNum">     447 </span>            :                                                 {
+<span class="lineNum">     448 </span>            :                                                         BusHelper.SetWasPrivateBusUsed(true);
+<span class="lineNum">     449 </span>            :                                                         ReceiverMessageHandler(message);
+<span class="lineNum">     450 </span>            :                                                 },
+<span class="lineNum">     451 </span>            :                                                 ReceiverMessageHandlerOptions
+<span class="lineNum">     452 </span>            :                                         );
+<span class="lineNum">     453 </span>            :                         foreach (SubscriptionClient serviceBusReceiver in PublicServiceBusReceivers.Values)
+<span class="lineNum">     454 </span>            :                                 serviceBusReceiver
+<span class="lineNum">     455 </span>            :                                         .OnMessage
+<span class="lineNum">     456 </span>            :                                         (
+<span class="lineNum">     457 </span>            :                                                 message =&gt;
+<span class="lineNum">     458 </span>            :                                                 {
+<span class="lineNum">     459 </span>            :                                                         BusHelper.SetWasPrivateBusUsed(false);
+<span class="lineNum">     460 </span>            :                                                         ReceiverMessageHandler(message);
+<span class="lineNum">     461 </span>            :                                                 },
+<span class="lineNum">     462 </span>            :                                                 ReceiverMessageHandlerOptions
+<span class="lineNum">     463 </span>            :                                         );
+<span class="lineNum">     464 </span>            :                 }
+<span class="lineNum">     465 </span>            : 
+<span class="lineNum">     466 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     467 </span>            :                 /// Using a &lt;see cref=&quot;Task&quot;/&gt;, clears all dead letters from the topic and subscription of the 
+<span class="lineNum">     468 </span>            :                 /// provided &lt;paramref name=&quot;topicName&quot;/&gt; and &lt;paramref name=&quot;topicSubscriptionName&quot;/&gt;.
+<span class="lineNum">     469 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     470 </span>            :                 /// &lt;param name=&quot;topicName&quot;&gt;The name of the topic.&lt;/param&gt;
+<span class="lineNum">     471 </span>            :                 /// &lt;param name=&quot;topicSubscriptionName&quot;&gt;The name of the subscription.&lt;/param&gt;
+<span class="lineNum">     472 </span>            :                 /// &lt;returns&gt;&lt;/returns&gt;
+<span class="lineNum">     473 </span><span class="lineCov">          1 :                 protected virtual CancellationTokenSource CleanUpDeadLetters(string topicName, string topicSubscriptionName)</span>
+<span class="lineNum">     474 </span>            :                 {
+<span class="lineNum">     475 </span>            :                         var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
+<span class="lineNum">     476 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Servicebus&quot; } };
+<span class="lineNum">     477 </span>            :                         int lockIssues = 0;
+<span class="lineNum">     478 </span>            : 
+<span class="lineNum">     479 </span>            :                         Action&lt;BrokeredMessage, IMessage&gt; leaveDeadlLetterInQueue = (deadLetterBrokeredMessage, deadLetterMessage) =&gt;
+<span class="lineNum">     480 </span>            :                         {
+<span class="lineNum">     481 </span>            :                                 // Remove message from queue
+<span class="lineNum">     482 </span>            :                                 try
+<span class="lineNum">     483 </span>            :                                 {
+<span class="lineNum">     484 </span>            :                                         deadLetterBrokeredMessage.Abandon();
+<span class="lineNum">     485 </span>            :                                         lockIssues = 0;
+<span class="lineNum">     486 </span>            :                                 }
+<span class="lineNum">     487 </span>            :                                 catch (MessageLockLostException)
+<span class="lineNum">     488 </span>            :                                 {
+<span class="lineNum">     489 </span>            :                                         lockIssues++;
+<span class="lineNum">     490 </span>            :                                         Logger.LogWarning(string.Format(&quot;The lock supplied for abandon for the skipped dead-letter message '{0}' is invalid.&quot;, deadLetterBrokeredMessage.MessageId));
+<span class="lineNum">     491 </span>            :                                 }
+<span class="lineNum">     492 </span>            :                                 Logger.LogDebug(string.Format(&quot;A dead-letter message of type {0} arrived with the id '{1}' but left in the queue due to settings.&quot;, deadLetterMessage.GetType().FullName, deadLetterBrokeredMessage.MessageId));
+<span class="lineNum">     493 </span>            :                         };
+<span class="lineNum">     494 </span>            :                         Action&lt;BrokeredMessage&gt; removeDeadlLetterFromQueue = deadLetterBrokeredMessage =&gt;
+<span class="lineNum">     495 </span>            :                         {
+<span class="lineNum">     496 </span>            :                                 // Remove message from queue
+<span class="lineNum">     497 </span>            :                                 try
+<span class="lineNum">     498 </span>            :                                 {
+<span class="lineNum">     499 </span>            :                                         deadLetterBrokeredMessage.Complete();
+<span class="lineNum">     500 </span>            :                                         lockIssues = 0;
+<span class="lineNum">     501 </span>            :                                 }
+<span class="lineNum">     502 </span>            :                                 catch (MessageLockLostException)
+<span class="lineNum">     503 </span>            :                                 {
+<span class="lineNum">     504 </span>            :                                         lockIssues++;
+<span class="lineNum">     505 </span>            :                                         Logger.LogWarning(string.Format(&quot;The lock supplied for complete for the skipped dead-letter message '{0}' is invalid.&quot;, deadLetterBrokeredMessage.MessageId));
+<span class="lineNum">     506 </span>            :                                 }
+<span class="lineNum">     507 </span>            :                                 Logger.LogDebug(string.Format(&quot;A dead-letter message arrived with the id '{0}' but was removed as processing was skipped due to settings.&quot;, deadLetterBrokeredMessage.MessageId));
+<span class="lineNum">     508 </span>            :                         };
+<span class="lineNum">     509 </span>            : 
+<span class="lineNum">     510 </span>            :                         Task.Factory.StartNewSafely(() =&gt;
+<span class="lineNum">     511 </span>            :                         {
+<span class="lineNum">     512 </span>            :                                 int loop = 0;
+<span class="lineNum">     513 </span>            :                                 while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
+<span class="lineNum">     514 </span>            :                                 {
+<span class="lineNum">     515 </span>            :                                         lockIssues = 0;
+<span class="lineNum">     516 </span>            :                                         MessagingFactory factory = MessagingFactory.CreateFromConnectionString(ConnectionString);
+<span class="lineNum">     517 </span>            :                                         string deadLetterPath = SubscriptionClient.FormatDeadLetterPath(topicName, topicSubscriptionName);
+<span class="lineNum">     518 </span>            :                                         MessageReceiver client = factory.CreateMessageReceiver(deadLetterPath, ReceiveMode.PeekLock);
+<span class="lineNum">     519 </span>            : 
+<span class="lineNum">     520 </span>            :                                         IEnumerable&lt;BrokeredMessage&gt; brokeredMessages = client.ReceiveBatch(1000);
+<span class="lineNum">     521 </span>            : 
+<span class="lineNum">     522 </span>            :                                         foreach (BrokeredMessage brokeredMessage in brokeredMessages)
+<span class="lineNum">     523 </span>            :                                         {
+<span class="lineNum">     524 </span>            :                                                 if (lockIssues &gt; 10)
+<span class="lineNum">     525 </span>            :                                                         break;
+<span class="lineNum">     526 </span>            :                                                 try
+<span class="lineNum">     527 </span>            :                                                 {
+<span class="lineNum">     528 </span>            :                                                         Logger.LogDebug(string.Format(&quot;A dead-letter message arrived with the id '{0}'.&quot;, brokeredMessage.MessageId));
+<span class="lineNum">     529 </span>            :                                                         string messageBody = brokeredMessage.GetBody&lt;string&gt;();
+<span class="lineNum">     530 </span>            : 
+<span class="lineNum">     531 </span>            :                                                         // Closure protection
+<span class="lineNum">     532 </span>            :                                                         BrokeredMessage message = brokeredMessage;
+<span class="lineNum">     533 </span>            :                                                         try
+<span class="lineNum">     534 </span>            :                                                         {
+<span class="lineNum">     535 </span>            :                                                                 AzureBusHelper.ReceiveEvent
+<span class="lineNum">     536 </span>            :                                                                 (
+<span class="lineNum">     537 </span>            :                                                                         messageBody,
+<span class="lineNum">     538 </span>            :                                                                         @event =&gt;
+<span class="lineNum">     539 </span>            :                                                                         {
+<span class="lineNum">     540 </span>            :                                                                                 bool isRequired = BusHelper.IsEventRequired(@event.GetType());
+<span class="lineNum">     541 </span>            :                                                                                 if (!isRequired)
+<span class="lineNum">     542 </span>            :                                                                                         removeDeadlLetterFromQueue(message);
+<span class="lineNum">     543 </span>            :                                                                                 else
+<span class="lineNum">     544 </span>            :                                                                                         leaveDeadlLetterInQueue(message, @event);
+<span class="lineNum">     545 </span>            :                                                                                 return true;
+<span class="lineNum">     546 </span>            :                                                                         },
+<span class="lineNum">     547 </span>            :                                                                         string.Format(&quot;id '{0}'&quot;, brokeredMessage.MessageId),
+<span class="lineNum">     548 </span>            :                                                                         ExtractSignature(message),
+<span class="lineNum">     549 </span>            :                                                                         SigningTokenConfigurationKey,
+<span class="lineNum">     550 </span>            :                                                                         () =&gt;
+<span class="lineNum">     551 </span>            :                                                                         {
+<span class="lineNum">     552 </span>            :                                                                                 removeDeadlLetterFromQueue(message);
+<span class="lineNum">     553 </span>            :                                                                         },
+<span class="lineNum">     554 </span>            :                                                                         () =&gt; { }
+<span class="lineNum">     555 </span>            :                                                                 );
+<span class="lineNum">     556 </span>            :                                                         }
+<span class="lineNum">     557 </span>            :                                                         catch
+<span class="lineNum">     558 </span>            :                                                         {
+<span class="lineNum">     559 </span>            :                                                                 AzureBusHelper.ReceiveCommand
+<span class="lineNum">     560 </span>            :                                                                 (
+<span class="lineNum">     561 </span>            :                                                                         messageBody,
+<span class="lineNum">     562 </span>            :                                                                         command =&gt;
+<span class="lineNum">     563 </span>            :                                                                         {
+<span class="lineNum">     564 </span>            :                                                                                 bool isRequired = BusHelper.IsEventRequired(command.GetType());
+<span class="lineNum">     565 </span>            :                                                                                 if (!isRequired)
+<span class="lineNum">     566 </span>            :                                                                                         removeDeadlLetterFromQueue(message);
+<span class="lineNum">     567 </span>            :                                                                                 else
+<span class="lineNum">     568 </span>            :                                                                                         leaveDeadlLetterInQueue(message, command);
+<span class="lineNum">     569 </span>            :                                                                                 return true;
+<span class="lineNum">     570 </span>            :                                                                         },
+<span class="lineNum">     571 </span>            :                                                                         string.Format(&quot;id '{0}'&quot;, brokeredMessage.MessageId),
+<span class="lineNum">     572 </span>            :                                                                         ExtractSignature(message),
+<span class="lineNum">     573 </span>            :                                                                         SigningTokenConfigurationKey,
+<span class="lineNum">     574 </span>            :                                                                         () =&gt;
+<span class="lineNum">     575 </span>            :                                                                         {
+<span class="lineNum">     576 </span>            :                                                                                 removeDeadlLetterFromQueue(message);
+<span class="lineNum">     577 </span>            :                                                                         },
+<span class="lineNum">     578 </span>            :                                                                         () =&gt; { }
+<span class="lineNum">     579 </span>            :                                                                 );
+<span class="lineNum">     580 </span>            :                                                         }
+<span class="lineNum">     581 </span>            :                                                 }
+<span class="lineNum">     582 </span>            :                                                 catch (Exception exception)
+<span class="lineNum">     583 </span>            :                                                 {
+<span class="lineNum">     584 </span>            :                                                         TelemetryHelper.TrackException(exception, null, telemetryProperties);
+<span class="lineNum">     585 </span>            :                                                         // Indicates a problem, unlock message in queue
+<span class="lineNum">     586 </span>            :                                                         Logger.LogError(string.Format(&quot;A dead-letter message arrived with the id '{0}' but failed to be process.&quot;, brokeredMessage.MessageId), exception: exception);
+<span class="lineNum">     587 </span>            :                                                         try
+<span class="lineNum">     588 </span>            :                                                         {
+<span class="lineNum">     589 </span>            :                                                                 brokeredMessage.Abandon();
+<span class="lineNum">     590 </span>            :                                                         }
+<span class="lineNum">     591 </span>            :                                                         catch (MessageLockLostException)
+<span class="lineNum">     592 </span>            :                                                         {
+<span class="lineNum">     593 </span>            :                                                                 lockIssues++;
+<span class="lineNum">     594 </span>            :                                                                 Logger.LogWarning(string.Format(&quot;The lock supplied for abandon for the skipped dead-letter message '{0}' is invalid.&quot;, brokeredMessage.MessageId));
+<span class="lineNum">     595 </span>            :                                                         }
+<span class="lineNum">     596 </span>            :                                                 }
+<span class="lineNum">     597 </span>            :                                         }
+<span class="lineNum">     598 </span>            : 
+<span class="lineNum">     599 </span>            :                                         client.Close();
+<span class="lineNum">     600 </span>            : 
+<span class="lineNum">     601 </span>            :                                         if (loop++ % 5 == 0)
+<span class="lineNum">     602 </span>            :                                         {
+<span class="lineNum">     603 </span>            :                                                 loop = 0;
+<span class="lineNum">     604 </span>            :                                                 Thread.Yield();
+<span class="lineNum">     605 </span>            :                                         }
+<span class="lineNum">     606 </span>            :                                         else
+<span class="lineNum">     607 </span>            :                                                 Thread.Sleep(500);
+<span class="lineNum">     608 </span>            :                                 }
+<span class="lineNum">     609 </span>            :                                 try
+<span class="lineNum">     610 </span>            :                                 {
+<span class="lineNum">     611 </span>            :                                         brokeredMessageRenewCancellationTokenSource.Dispose();
+<span class="lineNum">     612 </span>            :                                 }
+<span class="lineNum">     613 </span>            :                                 catch (ObjectDisposedException) { }
+<span class="lineNum">     614 </span>            :                         }, brokeredMessageRenewCancellationTokenSource.Token);
+<span class="lineNum">     615 </span>            : 
+<span class="lineNum">     616 </span>            :                         return brokeredMessageRenewCancellationTokenSource;
+<span class="lineNum">     617 </span>            :                 }
+<span class="lineNum">     618 </span>            : 
+<span class="lineNum">     619 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     620 </span>            :                 /// Create a &lt;see cref=&quot;BrokeredMessage&quot;/&gt; with additional properties to aid routing and tracing
+<span class="lineNum">     621 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     622 </span><span class="lineCov">          1 :                 protected virtual BrokeredMessage CreateBrokeredMessage&lt;TMessage&gt;(Func&lt;TMessage, string&gt; serialiserFunction, Type messageType, TMessage message)</span>
+<span class="lineNum">     623 </span>            :                 {
+<span class="lineNum">     624 </span>            :                         string messageBody = serialiserFunction(message);
+<span class="lineNum">     625 </span>            :                         var brokeredMessage = new BrokeredMessage(messageBody)
+<span class="lineNum">     626 </span>            :                         {
+<span class="lineNum">     627 </span>            :                                 CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
+<span class="lineNum">     628 </span>            :                         };
+<span class="lineNum">     629 </span>            :                         brokeredMessage.Properties.Add(&quot;Type&quot;, messageType.FullName);
+<span class="lineNum">     630 </span>            :                         brokeredMessage.Properties.Add(&quot;Source&quot;, string.Format(&quot;{0}/{1}/{2}/{3}&quot;, Logger.LoggerSettings.ModuleName, Logger.LoggerSettings.Instance, Logger.LoggerSettings.Environment, Logger.LoggerSettings.EnvironmentInstance));
+<span class="lineNum">     631 </span>            : 
+<span class="lineNum">     632 </span>            :                         // see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security&lt;/remarks&gt;
+<span class="lineNum">     633 </span>            :                         string configurationKey = string.Format(&quot;{0}.SigningToken&quot;, messageType.FullName);
+<span class="lineNum">     634 </span>            :                         string signingToken;
+<span class="lineNum">     635 </span>            :                         if (!ConfigurationManager.TryGetSetting(configurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
+<span class="lineNum">     636 </span>            :                                 if (!ConfigurationManager.TryGetSetting(SigningTokenConfigurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
+<span class="lineNum">     637 </span>            :                                         signingToken = Guid.Empty.ToString(&quot;N&quot;);
+<span class="lineNum">     638 </span>            :                         if (!string.IsNullOrWhiteSpace(signingToken))
+<span class="lineNum">     639 </span>            :                                 using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(&quot;{0}{1}&quot;, signingToken, messageBody))))
+<span class="lineNum">     640 </span>            :                                         brokeredMessage.Properties.Add(&quot;Signature&quot;, Convert.ToBase64String(Signer.ComputeHash(hashStream)));
+<span class="lineNum">     641 </span>            : 
+<span class="lineNum">     642 </span>            :                         try
+<span class="lineNum">     643 </span>            :                         {
+<span class="lineNum">     644 </span>            :                                 var stackTrace = new StackTrace();
+<span class="lineNum">     645 </span>            :                                 StackFrame[] stackFrames = stackTrace.GetFrames();
+<span class="lineNum">     646 </span>            :                                 if (stackFrames != null)
+<span class="lineNum">     647 </span>            :                                 {
+<span class="lineNum">     648 </span>            :                                         foreach (StackFrame frame in stackFrames)
+<span class="lineNum">     649 </span>            :                                         {
+<span class="lineNum">     650 </span>            :                                                 MethodBase method = frame.GetMethod();
+<span class="lineNum">     651 </span>            :                                                 if (method.ReflectedType == null)
+<span class="lineNum">     652 </span>            :                                                         continue;
+<span class="lineNum">     653 </span>            : 
+<span class="lineNum">     654 </span>            :                                                 try
+<span class="lineNum">     655 </span>            :                                                 {
+<span class="lineNum">     656 </span>            :                                                         if (ExclusionNamespaces.All(@namespace =&gt; !method.ReflectedType.FullName.StartsWith(@namespace)))
+<span class="lineNum">     657 </span>            :                                                         {
+<span class="lineNum">     658 </span>            :                                                                 brokeredMessage.Properties.Add(&quot;Source-Method&quot;, string.Format(&quot;{0}.{1}&quot;, method.ReflectedType.FullName, method.Name));
+<span class="lineNum">     659 </span>            :                                                                 break;
+<span class="lineNum">     660 </span>            :                                                         }
+<span class="lineNum">     661 </span>            :                                                 }
+<span class="lineNum">     662 </span>            :                                                 catch
+<span class="lineNum">     663 </span>            :                                                 {
+<span class="lineNum">     664 </span>            :                                                         // Just move on
+<span class="lineNum">     665 </span>            :                                                 }
+<span class="lineNum">     666 </span>            :                                         }
+<span class="lineNum">     667 </span>            :                                 }
+<span class="lineNum">     668 </span>            :                         }
+<span class="lineNum">     669 </span>            :                         catch
+<span class="lineNum">     670 </span>            :                         {
+<span class="lineNum">     671 </span>            :                                 // Just move on
+<span class="lineNum">     672 </span>            :                         }
+<span class="lineNum">     673 </span>            : 
+<span class="lineNum">     674 </span>            :                         return brokeredMessage;
+<span class="lineNum">     675 </span>            :                 }
+<span class="lineNum">     676 </span>            : 
+<span class="lineNum">     677 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     678 </span>            :                 /// Extract any telemetry properties from the provided &lt;paramref name=&quot;message&quot;/&gt;.
+<span class="lineNum">     679 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     680 </span><span class="lineCov">          1 :                 protected virtual IDictionary&lt;string, string&gt; ExtractTelemetryProperties(BrokeredMessage message, string baseCommunicationType)</span>
+<span class="lineNum">     681 </span>            :                 {
+<span class="lineNum">     682 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, baseCommunicationType } };
+<span class="lineNum">     683 </span>            :                         object value;
+<span class="lineNum">     684 </span>            :                         if (message.Properties.TryGetValue(&quot;Type&quot;, out value))
+<span class="lineNum">     685 </span>            :                                 telemetryProperties.Add(&quot;MessageType&quot;, value.ToString());
+<span class="lineNum">     686 </span>            :                         if (message.Properties.TryGetValue(&quot;Source&quot;, out value))
+<span class="lineNum">     687 </span>            :                                 telemetryProperties.Add(&quot;MessageSource&quot;, value.ToString());
+<span class="lineNum">     688 </span>            :                         if (message.Properties.TryGetValue(&quot;Source-Method&quot;, out value))
+<span class="lineNum">     689 </span>            :                                 telemetryProperties.Add(&quot;MessageSourceMethod&quot;, value.ToString());
+<span class="lineNum">     690 </span>            : 
+<span class="lineNum">     691 </span>            :                         return telemetryProperties;
+<span class="lineNum">     692 </span>            :                 }
+<span class="lineNum">     693 </span>            : 
+<span class="lineNum">     694 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     695 </span>            :                 /// Extract the signature from the provided &lt;paramref name=&quot;message&quot;/&gt;.
+<span class="lineNum">     696 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     697 </span><span class="lineCov">          1 :                 protected virtual string ExtractSignature(BrokeredMessage message)</span>
+<span class="lineNum">     698 </span>            :                 {
+<span class="lineNum">     699 </span>            :                         object value;
+<span class="lineNum">     700 </span>            :                         if (message.Properties.TryGetValue(&quot;Signature&quot;, out value))
+<span class="lineNum">     701 </span>            :                                 return value.ToString();
+<span class="lineNum">     702 </span>            :                         return null;
+<span class="lineNum">     703 </span>            :                 }
+<span class="lineNum">     704 </span>            :         }
+<span class="lineNum">     705 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.12</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

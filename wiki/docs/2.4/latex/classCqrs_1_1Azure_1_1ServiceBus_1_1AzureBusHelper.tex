@@ -1,0 +1,496 @@
+\hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{}\section{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$ Class Template Reference}
+\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}\index{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$@{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}}
+
+
+A helper for \hyperlink{namespaceCqrs_1_1Azure}{Azure} Service \hyperlink{namespaceCqrs_1_1Bus}{Bus} and Event Hub.  
+
+
+Inheritance diagram for Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_af4ca8255d3eb87180c5e24996e1f6e15_af4ca8255d3eb87180c5e24996e1f6e15}{Azure\+Bus\+Helper} (\hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}$<$ T\+Authentication\+Token $>$ authentication\+Token\+Helper, I\+Correlation\+Id\+Helper correlation\+Id\+Helper, I\+Logger logger, \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser}{I\+Message\+Serialiser}$<$ T\+Authentication\+Token $>$ message\+Serialiser, \hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper}{I\+Bus\+Helper} bus\+Helper, \hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} configuration\+Manager, \hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver} dependency\+Resolver)
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_af4ca8255d3eb87180c5e24996e1f6e15_af4ca8255d3eb87180c5e24996e1f6e15}{Azure\+Bus\+Helper$<$\+T\+Authentication\+Token$>$}. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_abdcc74e09f97a259f16d04e2af454002_abdcc74e09f97a259f16d04e2af454002}{Prepare\+Command$<$ T\+Command $>$} (T\+Command command, string framework)
+\begin{DoxyCompactList}\small\item\em Prepares a I\+Command$<$\+T\+Authentication\+Token$>$ to be sent specifying the framework it is sent via. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a4d03f55a58a018fbbf6fd518ad9b24f8_a4d03f55a58a018fbbf6fd518ad9b24f8}{Prepare\+And\+Validate\+Command$<$ T\+Command $>$} (T\+Command command, string framework)
+\begin{DoxyCompactList}\small\item\em Prepares and validates a I\+Command$<$\+T\+Authentication\+Token$>$ to be sent specifying the framework it is sent via. \end{DoxyCompactList}\item 
+virtual \hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a89f4ae84aad951fa8f4809f3b23a1893_a89f4ae84aad951fa8f4809f3b23a1893}{Receive\+Command} (string message\+Body, Func$<$ \hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}$<$ T\+Authentication\+Token $>$, bool?$>$ receive\+Command\+Handler, string message\+Id, string signature, string signing\+Token\+Configuration\+Key, Action skipped\+Action=null, Action lock\+Refresh\+Action=null)
+\begin{DoxyCompactList}\small\item\em Deserialises and processes the {\itshape message\+Body}  received from the network through the provided {\itshape receive\+Command\+Handler} . \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ae35c260f46f8aa7ba928815187b9088e_ae35c260f46f8aa7ba928815187b9088e}{Default\+Receive\+Command} (\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}$<$ T\+Authentication\+Token $>$ command, \hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager} route\+Manager, string framework)
+\begin{DoxyCompactList}\small\item\em The default command handler that check if the I\+Command$<$\+T\+Authentication\+Token$>$ has already been processed by this framework, checks if the I\+Command$<$\+T\+Authentication\+Token$>$ is required, finds the handler from the provided {\itshape route\+Manager} . \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_afb3ade39a8f8fd39c871c687701d80f4_afb3ade39a8f8fd39c871c687701d80f4}{Prepare\+Event$<$ T\+Event $>$} (T\+Event @event, string framework)
+\begin{DoxyCompactList}\small\item\em Prepares an I\+Event$<$\+T\+Authentication\+Token$>$ to be sent specifying the framework it is sent via. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ab0f6ff2ee04ad3b58e6713caebd3b560_ab0f6ff2ee04ad3b58e6713caebd3b560}{Prepare\+And\+Validate\+Event$<$ T\+Event $>$} (T\+Event @event, string framework)
+\begin{DoxyCompactList}\small\item\em Prepares and validates an I\+Event$<$\+T\+Authentication\+Token$>$ to be sent specifying the framework it is sent via. \end{DoxyCompactList}\item 
+virtual \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ab1feda11b64b606f36d517ce5ce8ca59_ab1feda11b64b606f36d517ce5ce8ca59}{Receive\+Event} (string message\+Body, Func$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$, bool?$>$ receive\+Event\+Handler, string message\+Id, string signature, string signing\+Token\+Configuration\+Key, Action skipped\+Action=null, Action lock\+Refresh\+Action=null)
+\begin{DoxyCompactList}\small\item\em Deserialises and processes the {\itshape message\+Body}  received from the network through the provided {\itshape receive\+Event\+Handler} . \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_aa4ef095148aae1af508fcd7b51f538d3_aa4ef095148aae1af508fcd7b51f538d3}{Refresh\+Lock} (Cancellation\+Token\+Source brokered\+Message\+Renew\+Cancellation\+Token\+Source, Brokered\+Message message, string type=\char`\"{}message\char`\"{})
+\begin{DoxyCompactList}\small\item\em Refreshes the network lock. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a0139f99e393214427b9a711bf27cae40_a0139f99e393214427b9a711bf27cae40}{Default\+Receive\+Event} (\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @event, \hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager} route\+Manager, string framework)
+\begin{DoxyCompactList}\small\item\em The default event handler that check if the I\+Event$<$\+T\+Authentication\+Token$>$ has already been processed by this framework, checks if the I\+Event$<$\+T\+Authentication\+Token$>$ is required, finds the handler from the provided {\itshape route\+Manager} . \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a3b8dd8410756ffdc67782dde8f2519ff_a3b8dd8410756ffdc67782dde8f2519ff}{Register\+Handler$<$ T\+Message $>$} (I\+Telemetry\+Helper telemetry\+Helper, \hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager} route\+Manger, Action$<$ T\+Message $>$ handler, Type targeted\+Type, bool hold\+Message\+Lock=true)
+\begin{DoxyCompactList}\small\item\em Manually registers the provided {\itshape handler}  on the provided {\itshape route\+Manger}  \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ac1955fe076ac3ef09a2cad1121c36ba2_ac1955fe076ac3ef09a2cad1121c36ba2}{Register\+Global\+Event\+Handler$<$ T\+Message $>$} (I\+Telemetry\+Helper telemetry\+Helper, \hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager} route\+Manger, Action$<$ T\+Message $>$ handler, bool hold\+Message\+Lock=true)
+\begin{DoxyCompactList}\small\item\em Register an event handler that will listen and respond to all events. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a6f35e150ca60f71a73c2f9a6e03f9f56_a6f35e150ca60f71a73c2f9a6e03f9f56}{Verify\+Signature} (string signing\+Token\+Configuration\+Key, string signature, string messagetype, string message\+Id, string type\+Name, object identify\+Message, string message\+Body)
+\begin{DoxyCompactList}\small\item\em Verifies that the signature is authorised. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a5d1dcc91b08727fbaee0ec6d32106b16_a5d1dcc91b08727fbaee0ec6d32106b16}{Default\+Messages\+Should\+Refresh\+Configuration\+Key} = \char`\"{}Cqrs.\+Azure.\+Messages.\+Should\+Refresh\char`\"{}
+\begin{DoxyCompactList}\small\item\em The configuration key for the default message refreshing setting as used by I\+Configuration\+Manager. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_abe32e0fe4ef131a0ae209b75eadcbbcd_abe32e0fe4ef131a0ae209b75eadcbbcd}{Authentication\+Token\+Helper}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Authentication\+Token\+Helper$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
+I\+Correlation\+Id\+Helper \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a5c9a3cd9afaf6d915afc08c34c4731be_a5c9a3cd9afaf6d915afc08c34c4731be}{Correlation\+Id\+Helper}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Correlation\+Id\+Helper. \end{DoxyCompactList}\item 
+I\+Logger \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_afc8a2a2592bbd8332d1f7dcafc4de5eb_afc8a2a2592bbd8332d1f7dcafc4de5eb}{Logger}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Logger. \end{DoxyCompactList}\item 
+\hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser}{I\+Message\+Serialiser}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a6bb1cf0ca846ef1589a3b54a1cff17ed_a6bb1cf0ca846ef1589a3b54a1cff17ed}{Message\+Serialiser}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Message\+Serialiser$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
+\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper}{I\+Bus\+Helper} \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a1a827b64ae73d8c368852e77dc94a2b1_a1a827b64ae73d8c368852e77dc94a2b1}{Bus\+Helper}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Bus\+Helper. \end{DoxyCompactList}\item 
+\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_aae005b5dd2d891bfe8e959c6360ff5a4_aae005b5dd2d891bfe8e959c6360ff5a4}{Configuration\+Manager}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Configuration\+Manager. \end{DoxyCompactList}\item 
+\hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver} \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a39d23fe045229940190c71577a49b715_a39d23fe045229940190c71577a49b715}{Dependency\+Resolver}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Dependency\+Resolver. \end{DoxyCompactList}\item 
+Hash\+Algorithm \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ae01bc83b9283d35b4ecf3087503846d1_ae01bc83b9283d35b4ecf3087503846d1}{Signer}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The Hash\+Algorithm to use to sign messages. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A helper for \hyperlink{namespaceCqrs_1_1Azure}{Azure} Service \hyperlink{namespaceCqrs_1_1Bus}{Bus} and Event Hub. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of the authentication token.\\
+\hline
+\end{DoxyTemplParams}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_af4ca8255d3eb87180c5e24996e1f6e15_af4ca8255d3eb87180c5e24996e1f6e15}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_af4ca8255d3eb87180c5e24996e1f6e15_af4ca8255d3eb87180c5e24996e1f6e15}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Azure\+Bus\+Helper@{Azure\+Bus\+Helper}}
+\index{Azure\+Bus\+Helper@{Azure\+Bus\+Helper}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Azure\+Bus\+Helper()}{AzureBusHelper()}}
+{\footnotesize\ttfamily \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Azure\+Bus\+Helper} (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}$<$ T\+Authentication\+Token $>$}]{authentication\+Token\+Helper,  }\item[{I\+Correlation\+Id\+Helper}]{correlation\+Id\+Helper,  }\item[{I\+Logger}]{logger,  }\item[{\hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser}{I\+Message\+Serialiser}$<$ T\+Authentication\+Token $>$}]{message\+Serialiser,  }\item[{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper}{I\+Bus\+Helper}}]{bus\+Helper,  }\item[{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}}]{configuration\+Manager,  }\item[{\hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver}}]{dependency\+Resolver }\end{DoxyParamCaption})}
+
+
+
+Instantiates a new instance of \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_af4ca8255d3eb87180c5e24996e1f6e15_af4ca8255d3eb87180c5e24996e1f6e15}{Azure\+Bus\+Helper$<$\+T\+Authentication\+Token$>$}. 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ae35c260f46f8aa7ba928815187b9088e_ae35c260f46f8aa7ba928815187b9088e}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ae35c260f46f8aa7ba928815187b9088e_ae35c260f46f8aa7ba928815187b9088e}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Default\+Receive\+Command@{Default\+Receive\+Command}}
+\index{Default\+Receive\+Command@{Default\+Receive\+Command}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Default\+Receive\+Command()}{DefaultReceiveCommand()}}
+{\footnotesize\ttfamily virtual bool \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Default\+Receive\+Command (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}$<$ T\+Authentication\+Token $>$}]{command,  }\item[{\hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager}}]{route\+Manager,  }\item[{string}]{framework }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+The default command handler that check if the I\+Command$<$\+T\+Authentication\+Token$>$ has already been processed by this framework, checks if the I\+Command$<$\+T\+Authentication\+Token$>$ is required, finds the handler from the provided {\itshape route\+Manager} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & The I\+Command$<$\+T\+Authentication\+Token$>$ to process.\\
+\hline
+{\em route\+Manager} & The Route\+Manager to get the I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ from.\\
+\hline
+{\em framework} & The current framework.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True indicates the {\itshape command}  was successfully handled by a handler. False indicates the {\itshape command}  wasn\textquotesingle{}t handled, but didn\textquotesingle{}t throw an error, so by convention, that means it was skipped. Null indicates the command{\itshape command}  wasn\textquotesingle{}t handled as it was already handled. 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_a3c632e92e0e38110f9e7721fb31700d1_a3c632e92e0e38110f9e7721fb31700d1}{Cqrs.\+Azure.\+Service\+Bus.\+I\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a0139f99e393214427b9a711bf27cae40_a0139f99e393214427b9a711bf27cae40}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a0139f99e393214427b9a711bf27cae40_a0139f99e393214427b9a711bf27cae40}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Default\+Receive\+Event@{Default\+Receive\+Event}}
+\index{Default\+Receive\+Event@{Default\+Receive\+Event}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Default\+Receive\+Event()}{DefaultReceiveEvent()}}
+{\footnotesize\ttfamily virtual bool \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Default\+Receive\+Event (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @}]{event,  }\item[{\hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager}}]{route\+Manager,  }\item[{string}]{framework }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+The default event handler that check if the I\+Event$<$\+T\+Authentication\+Token$>$ has already been processed by this framework, checks if the I\+Event$<$\+T\+Authentication\+Token$>$ is required, finds the handler from the provided {\itshape route\+Manager} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The I\+Event$<$\+T\+Authentication\+Token$>$ to process.\\
+\hline
+{\em route\+Manager} & The Route\+Manager to get the I\+Event\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ from.\\
+\hline
+{\em framework} & The current framework.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True indicates the {\itshape event}  was successfully handled by a handler. False indicates the {\itshape event}  wasn\textquotesingle{}t handled, but didn\textquotesingle{}t throw an error, so by convention, that means it was skipped. Null indicates the {\itshape event}  wasn\textquotesingle{}t handled as it was already handled. 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_a29758e82b2fd6c7e3ed6b19547887db9_a29758e82b2fd6c7e3ed6b19547887db9}{Cqrs.\+Azure.\+Service\+Bus.\+I\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a4d03f55a58a018fbbf6fd518ad9b24f8_a4d03f55a58a018fbbf6fd518ad9b24f8}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a4d03f55a58a018fbbf6fd518ad9b24f8_a4d03f55a58a018fbbf6fd518ad9b24f8}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Prepare\+And\+Validate\+Command$<$ T\+Command $>$@{Prepare\+And\+Validate\+Command$<$ T\+Command $>$}}
+\index{Prepare\+And\+Validate\+Command$<$ T\+Command $>$@{Prepare\+And\+Validate\+Command$<$ T\+Command $>$}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Prepare\+And\+Validate\+Command$<$ T\+Command $>$()}{PrepareAndValidateCommand< TCommand >()}}
+{\footnotesize\ttfamily virtual bool \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Prepare\+And\+Validate\+Command$<$ T\+Command $>$ (\begin{DoxyParamCaption}\item[{T\+Command}]{command,  }\item[{string}]{framework }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Prepares and validates a I\+Command$<$\+T\+Authentication\+Token$>$ to be sent specifying the framework it is sent via. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Command} & The Type ofI\+Command$<$\+T\+Authentication\+Token$>$ being sent.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em command} & The I\+Command$<$\+T\+Authentication\+Token$>$ to send.\\
+\hline
+{\em framework} & The framework the {\itshape command}  is being sent from.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_a283ee2cf9241a5364dd5569a9f12fa10_a283ee2cf9241a5364dd5569a9f12fa10}{Cqrs.\+Azure.\+Service\+Bus.\+I\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Command} : {\em I\+Command$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ab0f6ff2ee04ad3b58e6713caebd3b560_ab0f6ff2ee04ad3b58e6713caebd3b560}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ab0f6ff2ee04ad3b58e6713caebd3b560_ab0f6ff2ee04ad3b58e6713caebd3b560}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Prepare\+And\+Validate\+Event$<$ T\+Event $>$@{Prepare\+And\+Validate\+Event$<$ T\+Event $>$}}
+\index{Prepare\+And\+Validate\+Event$<$ T\+Event $>$@{Prepare\+And\+Validate\+Event$<$ T\+Event $>$}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Prepare\+And\+Validate\+Event$<$ T\+Event $>$()}{PrepareAndValidateEvent< TEvent >()}}
+{\footnotesize\ttfamily virtual bool \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Prepare\+And\+Validate\+Event$<$ T\+Event $>$ (\begin{DoxyParamCaption}\item[{T\+Event @}]{event,  }\item[{string}]{framework }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Prepares and validates an I\+Event$<$\+T\+Authentication\+Token$>$ to be sent specifying the framework it is sent via. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Event} & The Type ofI\+Event$<$\+T\+Authentication\+Token$>$ being sent.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The I\+Event$<$\+T\+Authentication\+Token$>$ to send.\\
+\hline
+{\em framework} & The framework the {\itshape event}  is being sent from.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_ac5cbeb6e8bbdb1a98501f0b746c12abd_ac5cbeb6e8bbdb1a98501f0b746c12abd}{Cqrs.\+Azure.\+Service\+Bus.\+I\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Event} : {\em I\+Event$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_abdcc74e09f97a259f16d04e2af454002_abdcc74e09f97a259f16d04e2af454002}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_abdcc74e09f97a259f16d04e2af454002_abdcc74e09f97a259f16d04e2af454002}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Prepare\+Command$<$ T\+Command $>$@{Prepare\+Command$<$ T\+Command $>$}}
+\index{Prepare\+Command$<$ T\+Command $>$@{Prepare\+Command$<$ T\+Command $>$}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Prepare\+Command$<$ T\+Command $>$()}{PrepareCommand< TCommand >()}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Prepare\+Command$<$ T\+Command $>$ (\begin{DoxyParamCaption}\item[{T\+Command}]{command,  }\item[{string}]{framework }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Prepares a I\+Command$<$\+T\+Authentication\+Token$>$ to be sent specifying the framework it is sent via. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Command} & The Type ofI\+Command$<$\+T\+Authentication\+Token$>$ being sent.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em command} & The I\+Command$<$\+T\+Authentication\+Token$>$ to send.\\
+\hline
+{\em framework} & The framework the {\itshape command}  is being sent from.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_ad25c4130a4357504cfccba49999493c7_ad25c4130a4357504cfccba49999493c7}{Cqrs.\+Azure.\+Service\+Bus.\+I\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Command} : {\em I\+Command$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_afb3ade39a8f8fd39c871c687701d80f4_afb3ade39a8f8fd39c871c687701d80f4}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_afb3ade39a8f8fd39c871c687701d80f4_afb3ade39a8f8fd39c871c687701d80f4}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Prepare\+Event$<$ T\+Event $>$@{Prepare\+Event$<$ T\+Event $>$}}
+\index{Prepare\+Event$<$ T\+Event $>$@{Prepare\+Event$<$ T\+Event $>$}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Prepare\+Event$<$ T\+Event $>$()}{PrepareEvent< TEvent >()}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Prepare\+Event$<$ T\+Event $>$ (\begin{DoxyParamCaption}\item[{T\+Event @}]{event,  }\item[{string}]{framework }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Prepares an I\+Event$<$\+T\+Authentication\+Token$>$ to be sent specifying the framework it is sent via. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Event} & The Type ofI\+Event$<$\+T\+Authentication\+Token$>$ being sent.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The I\+Event$<$\+T\+Authentication\+Token$>$ to send.\\
+\hline
+{\em framework} & The framework the {\itshape event}  is being sent from.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_ab7d1fa5162adc0f01edcf9039bb43c2c_ab7d1fa5162adc0f01edcf9039bb43c2c}{Cqrs.\+Azure.\+Service\+Bus.\+I\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Event} : {\em I\+Event$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a89f4ae84aad951fa8f4809f3b23a1893_a89f4ae84aad951fa8f4809f3b23a1893}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a89f4ae84aad951fa8f4809f3b23a1893_a89f4ae84aad951fa8f4809f3b23a1893}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Receive\+Command@{Receive\+Command}}
+\index{Receive\+Command@{Receive\+Command}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Receive\+Command()}{ReceiveCommand()}}
+{\footnotesize\ttfamily virtual \hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}$<$T\+Authentication\+Token$>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Receive\+Command (\begin{DoxyParamCaption}\item[{string}]{message\+Body,  }\item[{Func$<$ \hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}$<$ T\+Authentication\+Token $>$, bool?$>$}]{receive\+Command\+Handler,  }\item[{string}]{message\+Id,  }\item[{string}]{signature,  }\item[{string}]{signing\+Token\+Configuration\+Key,  }\item[{Action}]{skipped\+Action = {\ttfamily null},  }\item[{Action}]{lock\+Refresh\+Action = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Deserialises and processes the {\itshape message\+Body}  received from the network through the provided {\itshape receive\+Command\+Handler} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message\+Body} & A serialised I\+Message.\\
+\hline
+{\em receive\+Command\+Handler} & The handler method that will process the I\+Command$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em message\+Id} & The network id of the I\+Message.\\
+\hline
+{\em signature} & The signature of the I\+Message.\\
+\hline
+{\em signing\+Token\+Configuration\+Key} & The configuration key for the signing token as used by I\+Configuration\+Manager.\\
+\hline
+{\em skipped\+Action} & The Action to call when the I\+Command$<$\+T\+Authentication\+Token$>$ is being skipped.\\
+\hline
+{\em lock\+Refresh\+Action} & The Action to call to refresh the network lock.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The I\+Command$<$\+T\+Authentication\+Token$>$ that was processed.
+\end{DoxyReturn}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_ac68564203a196da2eb860e9cc11f8f4d_ac68564203a196da2eb860e9cc11f8f4d}{Cqrs.\+Azure.\+Service\+Bus.\+I\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ab1feda11b64b606f36d517ce5ce8ca59_ab1feda11b64b606f36d517ce5ce8ca59}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ab1feda11b64b606f36d517ce5ce8ca59_ab1feda11b64b606f36d517ce5ce8ca59}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Receive\+Event@{Receive\+Event}}
+\index{Receive\+Event@{Receive\+Event}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Receive\+Event()}{ReceiveEvent()}}
+{\footnotesize\ttfamily virtual \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$T\+Authentication\+Token$>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Receive\+Event (\begin{DoxyParamCaption}\item[{string}]{message\+Body,  }\item[{Func$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$, bool?$>$}]{receive\+Event\+Handler,  }\item[{string}]{message\+Id,  }\item[{string}]{signature,  }\item[{string}]{signing\+Token\+Configuration\+Key,  }\item[{Action}]{skipped\+Action = {\ttfamily null},  }\item[{Action}]{lock\+Refresh\+Action = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Deserialises and processes the {\itshape message\+Body}  received from the network through the provided {\itshape receive\+Event\+Handler} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message\+Body} & A serialised I\+Message.\\
+\hline
+{\em receive\+Event\+Handler} & The handler method that will process the I\+Event$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em message\+Id} & The network id of the I\+Message.\\
+\hline
+{\em signature} & The signature of the I\+Message.\\
+\hline
+{\em signing\+Token\+Configuration\+Key} & The configuration key for the signing token as used by I\+Configuration\+Manager.\\
+\hline
+{\em skipped\+Action} & The Action to call when the I\+Event$<$\+T\+Authentication\+Token$>$ is being skipped.\\
+\hline
+{\em lock\+Refresh\+Action} & The Action to call to refresh the network lock.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The I\+Event$<$\+T\+Authentication\+Token$>$ that was processed.
+\end{DoxyReturn}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_abca50d70da26664a7f2ff26b4059c903_abca50d70da26664a7f2ff26b4059c903}{Cqrs.\+Azure.\+Service\+Bus.\+I\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_aa4ef095148aae1af508fcd7b51f538d3_aa4ef095148aae1af508fcd7b51f538d3}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_aa4ef095148aae1af508fcd7b51f538d3_aa4ef095148aae1af508fcd7b51f538d3}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Refresh\+Lock@{Refresh\+Lock}}
+\index{Refresh\+Lock@{Refresh\+Lock}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Refresh\+Lock()}{RefreshLock()}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Refresh\+Lock (\begin{DoxyParamCaption}\item[{Cancellation\+Token\+Source}]{brokered\+Message\+Renew\+Cancellation\+Token\+Source,  }\item[{Brokered\+Message}]{message,  }\item[{string}]{type = {\ttfamily \char`\"{}message\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Refreshes the network lock. 
+
+
+
+Implements \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_a51988703dad9dc41c834e620e4e6e31a_a51988703dad9dc41c834e620e4e6e31a}{Cqrs.\+Azure.\+Service\+Bus.\+I\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ac1955fe076ac3ef09a2cad1121c36ba2_ac1955fe076ac3ef09a2cad1121c36ba2}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ac1955fe076ac3ef09a2cad1121c36ba2_ac1955fe076ac3ef09a2cad1121c36ba2}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Register\+Global\+Event\+Handler$<$ T\+Message $>$@{Register\+Global\+Event\+Handler$<$ T\+Message $>$}}
+\index{Register\+Global\+Event\+Handler$<$ T\+Message $>$@{Register\+Global\+Event\+Handler$<$ T\+Message $>$}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Register\+Global\+Event\+Handler$<$ T\+Message $>$()}{RegisterGlobalEventHandler< TMessage >()}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Register\+Global\+Event\+Handler$<$ T\+Message $>$ (\begin{DoxyParamCaption}\item[{I\+Telemetry\+Helper}]{telemetry\+Helper,  }\item[{\hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager}}]{route\+Manger,  }\item[{Action$<$ T\+Message $>$}]{handler,  }\item[{bool}]{hold\+Message\+Lock = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Register an event handler that will listen and respond to all events. 
+
+
+
+Implements \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_aef39e7d297ccaa36b02ccc3012dc5906_aef39e7d297ccaa36b02ccc3012dc5906}{Cqrs.\+Azure.\+Service\+Bus.\+I\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Message} : {\em I\+Message}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a3b8dd8410756ffdc67782dde8f2519ff_a3b8dd8410756ffdc67782dde8f2519ff}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a3b8dd8410756ffdc67782dde8f2519ff_a3b8dd8410756ffdc67782dde8f2519ff}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Register\+Handler$<$ T\+Message $>$@{Register\+Handler$<$ T\+Message $>$}}
+\index{Register\+Handler$<$ T\+Message $>$@{Register\+Handler$<$ T\+Message $>$}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Register\+Handler$<$ T\+Message $>$()}{RegisterHandler< TMessage >()}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Register\+Handler$<$ T\+Message $>$ (\begin{DoxyParamCaption}\item[{I\+Telemetry\+Helper}]{telemetry\+Helper,  }\item[{\hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager}}]{route\+Manger,  }\item[{Action$<$ T\+Message $>$}]{handler,  }\item[{Type}]{targeted\+Type,  }\item[{bool}]{hold\+Message\+Lock = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Manually registers the provided {\itshape handler}  on the provided {\itshape route\+Manger}  
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Message} & The Type of I\+Message the {\itshape handler}  can handle.\\
+\hline
+\end{DoxyTemplParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_a1fe0ff74b4e5cce3d0b5a81dbaa273e0_a1fe0ff74b4e5cce3d0b5a81dbaa273e0}{Cqrs.\+Azure.\+Service\+Bus.\+I\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Message} : {\em I\+Message}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a6f35e150ca60f71a73c2f9a6e03f9f56_a6f35e150ca60f71a73c2f9a6e03f9f56}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a6f35e150ca60f71a73c2f9a6e03f9f56_a6f35e150ca60f71a73c2f9a6e03f9f56}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Verify\+Signature@{Verify\+Signature}}
+\index{Verify\+Signature@{Verify\+Signature}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Verify\+Signature()}{VerifySignature()}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Verify\+Signature (\begin{DoxyParamCaption}\item[{string}]{signing\+Token\+Configuration\+Key,  }\item[{string}]{signature,  }\item[{string}]{messagetype,  }\item[{string}]{message\+Id,  }\item[{string}]{type\+Name,  }\item[{object}]{identify\+Message,  }\item[{string}]{message\+Body }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Verifies that the signature is authorised. 
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a5d1dcc91b08727fbaee0ec6d32106b16_a5d1dcc91b08727fbaee0ec6d32106b16}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a5d1dcc91b08727fbaee0ec6d32106b16_a5d1dcc91b08727fbaee0ec6d32106b16}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Default\+Messages\+Should\+Refresh\+Configuration\+Key@{Default\+Messages\+Should\+Refresh\+Configuration\+Key}}
+\index{Default\+Messages\+Should\+Refresh\+Configuration\+Key@{Default\+Messages\+Should\+Refresh\+Configuration\+Key}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Default\+Messages\+Should\+Refresh\+Configuration\+Key}{DefaultMessagesShouldRefreshConfigurationKey}}
+{\footnotesize\ttfamily const string \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Default\+Messages\+Should\+Refresh\+Configuration\+Key = \char`\"{}Cqrs.\+Azure.\+Messages.\+Should\+Refresh\char`\"{}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The configuration key for the default message refreshing setting as used by I\+Configuration\+Manager. 
+
+
+
+\subsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_abe32e0fe4ef131a0ae209b75eadcbbcd_abe32e0fe4ef131a0ae209b75eadcbbcd}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_abe32e0fe4ef131a0ae209b75eadcbbcd_abe32e0fe4ef131a0ae209b75eadcbbcd}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Authentication\+Token\+Helper@{Authentication\+Token\+Helper}}
+\index{Authentication\+Token\+Helper@{Authentication\+Token\+Helper}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Authentication\+Token\+Helper}{AuthenticationTokenHelper}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}$<$T\+Authentication\+Token$>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Authentication_1_1AuthenticationTokenHelper}{Authentication\+Token\+Helper}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Authentication\+Token\+Helper$<$\+T\+Authentication\+Token$>$. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a1a827b64ae73d8c368852e77dc94a2b1_a1a827b64ae73d8c368852e77dc94a2b1}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a1a827b64ae73d8c368852e77dc94a2b1_a1a827b64ae73d8c368852e77dc94a2b1}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Bus\+Helper@{Bus\+Helper}}
+\index{Bus\+Helper@{Bus\+Helper}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Bus\+Helper}{BusHelper}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper}{I\+Bus\+Helper} \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Bus_1_1BusHelper}{Bus\+Helper}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Bus\+Helper. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_aae005b5dd2d891bfe8e959c6360ff5a4_aae005b5dd2d891bfe8e959c6360ff5a4}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_aae005b5dd2d891bfe8e959c6360ff5a4_aae005b5dd2d891bfe8e959c6360ff5a4}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Configuration\+Manager@{Configuration\+Manager}}
+\index{Configuration\+Manager@{Configuration\+Manager}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Configuration\+Manager}{ConfigurationManager}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Configuration_1_1ConfigurationManager}{Configuration\+Manager}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Configuration\+Manager. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a5c9a3cd9afaf6d915afc08c34c4731be_a5c9a3cd9afaf6d915afc08c34c4731be}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a5c9a3cd9afaf6d915afc08c34c4731be_a5c9a3cd9afaf6d915afc08c34c4731be}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Correlation\+Id\+Helper@{Correlation\+Id\+Helper}}
+\index{Correlation\+Id\+Helper@{Correlation\+Id\+Helper}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Correlation\+Id\+Helper}{CorrelationIdHelper}}
+{\footnotesize\ttfamily I\+Correlation\+Id\+Helper \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Correlation\+Id\+Helper\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Correlation\+Id\+Helper. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a39d23fe045229940190c71577a49b715_a39d23fe045229940190c71577a49b715}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a39d23fe045229940190c71577a49b715_a39d23fe045229940190c71577a49b715}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Dependency\+Resolver@{Dependency\+Resolver}}
+\index{Dependency\+Resolver@{Dependency\+Resolver}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Dependency\+Resolver}{DependencyResolver}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver} \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Configuration_1_1DependencyResolver}{Dependency\+Resolver}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Dependency\+Resolver. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_afc8a2a2592bbd8332d1f7dcafc4de5eb_afc8a2a2592bbd8332d1f7dcafc4de5eb}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_afc8a2a2592bbd8332d1f7dcafc4de5eb_afc8a2a2592bbd8332d1f7dcafc4de5eb}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Logger@{Logger}}
+\index{Logger@{Logger}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Logger}{Logger}}
+{\footnotesize\ttfamily I\+Logger \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Logger\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Logger. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a6bb1cf0ca846ef1589a3b54a1cff17ed_a6bb1cf0ca846ef1589a3b54a1cff17ed}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a6bb1cf0ca846ef1589a3b54a1cff17ed_a6bb1cf0ca846ef1589a3b54a1cff17ed}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Message\+Serialiser@{Message\+Serialiser}}
+\index{Message\+Serialiser@{Message\+Serialiser}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Message\+Serialiser}{MessageSerialiser}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser}{I\+Message\+Serialiser}$<$T\+Authentication\+Token$>$ \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1MessageSerialiser}{Message\+Serialiser}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Message\+Serialiser$<$\+T\+Authentication\+Token$>$. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ae01bc83b9283d35b4ecf3087503846d1_ae01bc83b9283d35b4ecf3087503846d1}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ae01bc83b9283d35b4ecf3087503846d1_ae01bc83b9283d35b4ecf3087503846d1}} 
+\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}!Signer@{Signer}}
+\index{Signer@{Signer}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+Azure\+Bus\+Helper}}
+\subsubsection{\texorpdfstring{Signer}{Signer}}
+{\footnotesize\ttfamily Hash\+Algorithm \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Signer\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The Hash\+Algorithm to use to sign messages. 
+

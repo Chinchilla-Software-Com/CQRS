@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">8</td>
-            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">11</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-04 23:26:29</td>
+            <td class="headerValue">2018-06-04 23:47:54</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -126,9 +126,9 @@
 <span class="lineNum">      68 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt; up to and including the provided &lt;paramref name=&quot;version&quot;/&gt;.
 <span class="lineNum">      69 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">      70 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
-<span class="lineNum">      71 </span><span class="lineCov">          1 :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;</span>
+<span class="lineNum">      71 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
 <span class="lineNum">      72 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
-<span class="lineNum">      73 </span>            :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetToVersion(Type aggregateRootType, Guid aggregateId, int version)
+<span class="lineNum">      73 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetToVersion(Type aggregateRootType, Guid aggregateId, int version)</span>
 <span class="lineNum">      74 </span>            :                 {
 <span class="lineNum">      75 </span>            :                         string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 <span class="lineNum">      76 </span>            : 
@@ -140,7 +140,7 @@
 <span class="lineNum">      82 </span>            :                         return query
 <span class="lineNum">      83 </span>            :                                 .Select(EventDeserialiser.Deserialise)
 <span class="lineNum">      84 </span>            :                                 .ToList();
-<span class="lineNum">      85 </span><span class="lineCov">          1 :                 }</span>
+<span class="lineNum">      85 </span>            :                 }
 <span class="lineNum">      86 </span>            : 
 <span class="lineNum">      87 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      88 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt; up to and including the provided &lt;paramref name=&quot;versionedDate&quot;/&gt;.
@@ -148,18 +148,18 @@
 <span class="lineNum">      90 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
 <span class="lineNum">      91 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
 <span class="lineNum">      92 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
-<span class="lineNum">      93 </span>            :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetToDate(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+<span class="lineNum">      93 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetToDate(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)</span>
 <span class="lineNum">      94 </span>            :                 {
 <span class="lineNum">      95 </span>            :                         string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 <span class="lineNum">      96 </span>            : 
 <span class="lineNum">      97 </span>            :                         IEnumerable&lt;EventData&gt; query = BlobStorageStore
 <span class="lineNum">      98 </span>            :                                 .GetByFolder(streamName)
 <span class="lineNum">      99 </span>            :                                 .Where(eventData =&gt; eventData.AggregateId == streamName &amp;&amp; eventData.Timestamp &lt;= versionedDate)
-<span class="lineNum">     100 </span><span class="lineCov">          1 :                                 .OrderByDescending(eventData =&gt; eventData.Version);</span>
+<span class="lineNum">     100 </span>            :                                 .OrderByDescending(eventData =&gt; eventData.Version);
 <span class="lineNum">     101 </span>            : 
 <span class="lineNum">     102 </span>            :                         return query
 <span class="lineNum">     103 </span>            :                                 .Select(EventDeserialiser.Deserialise)
-<span class="lineNum">     104 </span><span class="lineCov">          1 :                                 .ToList();</span>
+<span class="lineNum">     104 </span>            :                                 .ToList();
 <span class="lineNum">     105 </span>            :                 }
 <span class="lineNum">     106 </span>            : 
 <span class="lineNum">     107 </span>            :                 /// &lt;summary&gt;
@@ -169,12 +169,12 @@
 <span class="lineNum">     111 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
 <span class="lineNum">     112 </span>            :                 /// &lt;param name=&quot;fromVersionedDate&quot;&gt;Load events from and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
 <span class="lineNum">     113 </span>            :                 /// &lt;param name=&quot;toVersionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
-<span class="lineNum">     114 </span>            :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetBetweenDates(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate,
+<span class="lineNum">     114 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetBetweenDates(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate,</span>
 <span class="lineNum">     115 </span>            :                         DateTime toVersionedDate)
 <span class="lineNum">     116 </span>            :                 {
 <span class="lineNum">     117 </span>            :                         string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 <span class="lineNum">     118 </span>            : 
-<span class="lineNum">     119 </span><span class="lineCov">          1 :                         IEnumerable&lt;EventData&gt; query = BlobStorageStore</span>
+<span class="lineNum">     119 </span>            :                         IEnumerable&lt;EventData&gt; query = BlobStorageStore
 <span class="lineNum">     120 </span>            :                                 .GetByFolder(streamName)
 <span class="lineNum">     121 </span>            :                                 .Where(eventData =&gt; eventData.AggregateId == streamName &amp;&amp; eventData.Timestamp &gt;= fromVersionedDate &amp;&amp; eventData.Timestamp &lt;= toVersionedDate)
 <span class="lineNum">     122 </span>            :                                 .OrderByDescending(eventData =&gt; eventData.Version);
@@ -188,7 +188,7 @@
 <span class="lineNum">     130 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances for the given &lt;paramref name=&quot;correlationId&quot;/&gt;.
 <span class="lineNum">     131 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     132 </span>            :                 /// &lt;param name=&quot;correlationId&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances to retrieve.&lt;/param&gt;
-<span class="lineNum">     133 </span>            :                 public override IEnumerable&lt;EventData&gt; Get(Guid correlationId)
+<span class="lineNum">     133 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;EventData&gt; Get(Guid correlationId)</span>
 <span class="lineNum">     134 </span>            :                 {
 <span class="lineNum">     135 </span>            :                         IEnumerable&lt;EventData&gt; query = BlobStorageStore
 <span class="lineNum">     136 </span>            :                                 .GetByFolder(string.Format(&quot;..\\by-correlation\\{0:N}&quot;, correlationId))
@@ -202,7 +202,7 @@
 <span class="lineNum">     144 </span>            :                 /// Persist the provided &lt;paramref name=&quot;eventData&quot;/&gt; into storage.
 <span class="lineNum">     145 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     146 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;EventData&quot;/&gt; to persist.&lt;/param&gt;
-<span class="lineNum">     147 </span>            :                 protected override void PersistEvent(EventData eventData)
+<span class="lineNum">     147 </span><span class="lineCov">          1 :                 protected override void PersistEvent(EventData eventData)</span>
 <span class="lineNum">     148 </span>            :                 {
 <span class="lineNum">     149 </span>            :                         Logger.LogDebug(&quot;Adding data to the blob storage event-store aggregate folder&quot;, &quot;BlobStorageStore\\Add&quot;);
 <span class="lineNum">     150 </span>            :                         BlobStorageStore.Add(eventData);
@@ -217,11 +217,11 @@
 <span class="lineNum">     159 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     160 </span>            :                 public class RawBlobStorageEventStore
 <span class="lineNum">     161 </span>            :                         : BlobStorageStore&lt;EventData&gt;
-<span class="lineNum">     162 </span>            :                 {
+<span class="lineNum">     162 </span><span class="lineCov">          1 :                 {</span>
 <span class="lineNum">     163 </span>            :                         /// &lt;summary&gt;
 <span class="lineNum">     164 </span>            :                         /// Initializes a new instance of the &lt;see cref=&quot;RawBlobStorageEventStore&quot;/&gt; class using the specified container.
 <span class="lineNum">     165 </span>            :                         /// &lt;/summary&gt;
-<span class="lineNum">     166 </span>            :                         public RawBlobStorageEventStore(ILogger logger, IBlobStorageStoreConnectionStringFactory blobStorageEventStoreConnectionStringFactory)
+<span class="lineNum">     166 </span><span class="lineCov">          1 :                         public RawBlobStorageEventStore(ILogger logger, IBlobStorageStoreConnectionStringFactory blobStorageEventStoreConnectionStringFactory)</span>
 <span class="lineNum">     167 </span>            :                                 : base(logger)
 <span class="lineNum">     168 </span>            :                         {
 <span class="lineNum">     169 </span>            :                                 GetContainerName = blobStorageEventStoreConnectionStringFactory.GetBaseContainerName;
@@ -236,7 +236,7 @@
 <span class="lineNum">     178 </span>            :                         /// &lt;summary&gt;
 <span class="lineNum">     179 </span>            :                         /// Add the provided &lt;paramref name=&quot;data&quot;/&gt; into the correlation folder.
 <span class="lineNum">     180 </span>            :                         /// &lt;/summary&gt;
-<span class="lineNum">     181 </span>            :                         public virtual void AddToCorrelationFolder(EventData data)
+<span class="lineNum">     181 </span><span class="lineCov">          1 :                         public virtual void AddToCorrelationFolder(EventData data)</span>
 <span class="lineNum">     182 </span>            :                         {
 <span class="lineNum">     183 </span>            :                                 AsyncSaveData
 <span class="lineNum">     184 </span>            :                                 (

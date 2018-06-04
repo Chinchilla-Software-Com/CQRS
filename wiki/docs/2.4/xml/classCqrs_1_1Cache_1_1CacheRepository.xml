@@ -1,0 +1,380 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="classCqrs_1_1Cache_1_1CacheRepository" kind="class" language="C#" prot="public">
+    <compoundname>Cqrs::Cache::CacheRepository</compoundname>
+    <basecompoundref refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository" prot="public" virt="non-virtual">Cqrs::Domain::IAggregateRepository&lt; TAuthenticationToken &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>TAuthenticationToken</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="property">
+      <memberdef kind="property" id="classCqrs_1_1Cache_1_1CacheRepository_1ac68ae9dc475a8599964c2e9fe7bd8663" prot="private" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="yes" privatesettable="no" protectedsettable="no">
+        <type><ref refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository" kindref="compound">IAggregateRepository</ref>&lt; TAuthenticationToken &gt;</type>
+        <definition>IAggregateRepository&lt;TAuthenticationToken&gt; Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;.Repository</definition>
+        <argsstring></argsstring>
+        <name>Repository</name>
+        <briefdescription>
+<para>Sets or set the IAggregateRepository&lt;TAuthenticationToken&gt; that will be used, and cached over. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" line="29" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Cache_1_1CacheRepository_1a4e57b55900181cf5ce31513a367e2fff" prot="private" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="yes" privatesettable="no" protectedsettable="no">
+        <type><ref refid="interfaceCqrs_1_1Events_1_1IEventStore" kindref="compound">IEventStore</ref>&lt; TAuthenticationToken &gt;</type>
+        <definition>IEventStore&lt;TAuthenticationToken&gt; Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;.EventStore</definition>
+        <argsstring></argsstring>
+        <name>EventStore</name>
+        <briefdescription>
+<para>Gets or sets the IEventStore&lt;TAuthenticationToken&gt; used to retrieve events from when a cache hit occurs. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" line="34" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Cache_1_1CacheRepository_1a00474b296eeebc3845533914fc25d92a" prot="private" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="yes" privatesettable="no" protectedsettable="no">
+        <type>MemoryCache</type>
+        <definition>MemoryCache Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;.Cache</definition>
+        <argsstring></argsstring>
+        <name>Cache</name>
+        <briefdescription>
+<para>Gets or sets the MemoryCache used. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" line="39" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Cache_1_1CacheRepository_1a8dd4fdf4d8b0143578a5b118d8864471" prot="private" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="yes" privatesettable="no" protectedsettable="no">
+        <type>Func&lt; CacheItemPolicy &gt;</type>
+        <definition>Func&lt;CacheItemPolicy&gt; Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;.PolicyFactory</definition>
+        <argsstring></argsstring>
+        <name>PolicyFactory</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" line="41" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classCqrs_1_1Cache_1_1CacheRepository_1a442b01d11e0d0c1bbf69f4f9c2dc5dde" prot="private" static="yes" mutable="no">
+        <type>readonly ConcurrentDictionary&lt; string, object &gt;</type>
+        <definition>readonly ConcurrentDictionary&lt;string, object&gt; Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;.Locks</definition>
+        <argsstring></argsstring>
+        <name>Locks</name>
+        <initializer>= new ConcurrentDictionary&lt;string, object&gt;()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" line="43" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classCqrs_1_1Cache_1_1CacheRepository_a6c567e999a85f5803a920ce4912833a9_1a6c567e999a85f5803a920ce4912833a9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;.CacheRepository</definition>
+        <argsstring>(IAggregateRepository&lt; TAuthenticationToken &gt; repository, IEventStore&lt; TAuthenticationToken &gt; eventStore)</argsstring>
+        <name>CacheRepository</name>
+        <param>
+          <type><ref refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository" kindref="compound">IAggregateRepository</ref>&lt; TAuthenticationToken &gt;</type>
+          <declname>repository</declname>
+        </param>
+        <param>
+          <type><ref refid="interfaceCqrs_1_1Events_1_1IEventStore" kindref="compound">IEventStore</ref>&lt; TAuthenticationToken &gt;</type>
+          <declname>eventStore</declname>
+        </param>
+        <briefdescription>
+<para>Instantiates a new instance of <ref refid="classCqrs_1_1Cache_1_1CacheRepository_a6c567e999a85f5803a920ce4912833a9_1a6c567e999a85f5803a920ce4912833a9" kindref="member">CacheRepository&lt;TAuthenticationToken&gt;</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" line="48" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" bodystart="48" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Cache_1_1CacheRepository_a69df7ee1dc2e4cd38431ab987655eab3_1a69df7ee1dc2e4cd38431ab987655eab3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;.Save&lt; TAggregateRoot &gt;</definition>
+        <argsstring>(TAggregateRoot aggregate, int? expectedVersion=null)</argsstring>
+        <name>Save&lt; TAggregateRoot &gt;</name>
+        <reimplements refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository_a306baf8aa6faabe893f93e5db5d3517d_1a306baf8aa6faabe893f93e5db5d3517d">Save&lt; TAggregateRoot &gt;</reimplements>
+        <param>
+          <type>TAggregateRoot</type>
+          <declname>aggregate</declname>
+        </param>
+        <param>
+          <type>int?</type>
+          <declname>expectedVersion</declname>
+          <defval>null</defval>
+        </param>
+        <briefdescription>
+<para>Locks the cache, adds the provided <emphasis>aggregate</emphasis>  to the cache if not already in it, then calls IAggregateRepository&lt;TAuthenticationToken&gt;.Save&lt;TAggregateRoot&gt; on Repository. In the event of an Exception the <emphasis>aggregate</emphasis>  is always ejected out of the <ref refid="namespaceCqrs_1_1Cache" kindref="compound">Cache</ref>. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TAggregateRoot</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of the IAggregateRoot&lt;TAuthenticationToken&gt;.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The IAggregateRoot&lt;TAuthenticationToken&gt; to save and persist.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>expectedVersion</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The version number the IAggregateRoot&lt;TAuthenticationToken&gt; is expected to be at.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" line="76" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" bodystart="76" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Cache_1_1CacheRepository_a037acba636aedf23ff376ac0b749ec0c_1a037acba636aedf23ff376ac0b749ec0c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>TAggregateRoot</type>
+        <definition>virtual TAggregateRoot Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;.Get&lt; TAggregateRoot &gt;</definition>
+        <argsstring>(Guid aggregateId, IList&lt; IEvent&lt; TAuthenticationToken &gt;&gt; events=null)</argsstring>
+        <name>Get&lt; TAggregateRoot &gt;</name>
+        <reimplements refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository_a890633fddbd05bd3b9e9968a2de095bb_1a890633fddbd05bd3b9e9968a2de095bb">Get&lt; TAggregateRoot &gt;</reimplements>
+        <param>
+          <type>Guid</type>
+          <declname>aggregateId</declname>
+        </param>
+        <param>
+          <type>IList&lt; <ref refid="interfaceCqrs_1_1Events_1_1IEvent" kindref="compound">IEvent</ref>&lt; TAuthenticationToken &gt;&gt;</type>
+          <declname>events</declname>
+          <defval>null</defval>
+        </param>
+        <briefdescription>
+<para>Locks the cache, checks if the aggregate is tracked in the <ref refid="namespaceCqrs_1_1Cache" kindref="compound">Cache</ref>, if it is retrieves the aggregate from the <ref refid="namespaceCqrs_1_1Cache" kindref="compound">Cache</ref> and then uses either the provided <emphasis>events</emphasis>  or makes a call IEventStore&lt;TAuthenticationToken&gt;.Get(System.Type,System.Guid,bool,int) on the <ref refid="namespaceCqrs_1_1EventStore" kindref="compound">EventStore</ref> and rehydrates the cached aggregate with any new events from it&apos;s cached version. If the aggregate is not in the <ref refid="namespaceCqrs_1_1Cache" kindref="compound">Cache</ref> IAggregateRepository&lt;TAuthenticationToken&gt;.Get&lt;TAggregateRoot&gt; is called on the Repository. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TAggregateRoot</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of the IAggregateRoot&lt;TAuthenticationToken&gt;.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>aggregateId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ID of the IAggregateRoot&lt;TAuthenticationToken&gt; to get.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>events</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A collection of IEvent&lt;TAuthenticationToken&gt; to replay on the retrieved IAggregateRoot&lt;TAuthenticationToken&gt;. If null, the IEventStore&lt;TAuthenticationToken&gt; will be used to retrieve a list of IEvent&lt;TAuthenticationToken&gt; for you. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" line="109" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" bodystart="109" bodyend="144"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Cache_1_1CacheRepository_af23acddeed34def6d7a5e8d8df00ecd8_1af23acddeed34def6d7a5e8d8df00ecd8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>TAggregateRoot</type>
+        <definition>TAggregateRoot Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;.GetToVersion&lt; TAggregateRoot &gt;</definition>
+        <argsstring>(Guid aggregateId, int version, IList&lt; IEvent&lt; TAuthenticationToken &gt;&gt; events=null)</argsstring>
+        <name>GetToVersion&lt; TAggregateRoot &gt;</name>
+        <reimplements refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository_aa0d6b4b9b117357e1676cae829fe2a5c_1aa0d6b4b9b117357e1676cae829fe2a5c">GetToVersion&lt; TAggregateRoot &gt;</reimplements>
+        <param>
+          <type>Guid</type>
+          <declname>aggregateId</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>version</declname>
+        </param>
+        <param>
+          <type>IList&lt; <ref refid="interfaceCqrs_1_1Events_1_1IEvent" kindref="compound">IEvent</ref>&lt; TAuthenticationToken &gt;&gt;</type>
+          <declname>events</declname>
+          <defval>null</defval>
+        </param>
+        <briefdescription>
+<para>Retrieves an IAggregateRoot&lt;TAuthenticationToken&gt; of type <emphasis>TAggregateRoot</emphasis>  up to and including the provided <emphasis>version</emphasis> . </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TAggregateRoot</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of the IAggregateRoot&lt;TAuthenticationToken&gt;.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>aggregateId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The identifier of the IAggregateRoot&lt;TAuthenticationToken&gt; to retrieve.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load events up-to and including from this version</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>events</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A collection of IEvent&lt;TAuthenticationToken&gt; to replay on the retrieved IAggregateRoot&lt;TAuthenticationToken&gt;. If null, the IEventStore&lt;TAuthenticationToken&gt; will be used to retrieve a list of IEvent&lt;TAuthenticationToken&gt; for you. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" line="156" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" bodystart="156" bodyend="160"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Cache_1_1CacheRepository_aef9be4db697afa9bd98e264888c389ea_1aef9be4db697afa9bd98e264888c389ea" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>TAggregateRoot</type>
+        <definition>TAggregateRoot Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;.GetToDate&lt; TAggregateRoot &gt;</definition>
+        <argsstring>(Guid aggregateId, DateTime versionedDate, IList&lt; IEvent&lt; TAuthenticationToken &gt;&gt; events=null)</argsstring>
+        <name>GetToDate&lt; TAggregateRoot &gt;</name>
+        <reimplements refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository_a32308a27ce03c5d406e16b17430dd040_1a32308a27ce03c5d406e16b17430dd040">GetToDate&lt; TAggregateRoot &gt;</reimplements>
+        <param>
+          <type>Guid</type>
+          <declname>aggregateId</declname>
+        </param>
+        <param>
+          <type>DateTime</type>
+          <declname>versionedDate</declname>
+        </param>
+        <param>
+          <type>IList&lt; <ref refid="interfaceCqrs_1_1Events_1_1IEvent" kindref="compound">IEvent</ref>&lt; TAuthenticationToken &gt;&gt;</type>
+          <declname>events</declname>
+          <defval>null</defval>
+        </param>
+        <briefdescription>
+<para>Retrieves an IAggregateRoot&lt;TAuthenticationToken&gt; of type <emphasis>TAggregateRoot</emphasis>  up to and including the provided <emphasis>versionedDate</emphasis> . </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TAggregateRoot</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of the IAggregateRoot&lt;TAuthenticationToken&gt;.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>aggregateId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The identifier of the IAggregateRoot&lt;TAuthenticationToken&gt; to retrieve.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>versionedDate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load events up-to and including from this DateTime</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>events</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A collection of IEvent&lt;TAuthenticationToken&gt; to replay on the retrieved IAggregateRoot&lt;TAuthenticationToken&gt;. If null, the IEventStore&lt;TAuthenticationToken&gt; will be used to retrieve a list of IEvent&lt;TAuthenticationToken&gt; for you. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" line="172" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" bodystart="172" bodyend="176"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classCqrs_1_1Cache_1_1CacheRepository_1ad2c9c59e285ee2c5f29b59314b152843" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;.IsTracked</definition>
+        <argsstring>(Guid id)</argsstring>
+        <name>IsTracked</name>
+        <param>
+          <type>Guid</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" line="178" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" bodystart="178" bodyend="181"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Uses MemoryCache.Default to provide a caching mechanism to improve performance of a IAggregateRepository&lt;TAuthenticationToken&gt;. </para>    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TAuthenticationToken</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of authentication token.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="1129">
+        <label>IAggregateRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository"/>
+      </node>
+      <node id="1128">
+        <label>Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Cache_1_1CacheRepository"/>
+        <childnode refid="1129" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1131">
+        <label>IAggregateRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository"/>
+      </node>
+      <node id="1130">
+        <label>Cqrs.Cache.CacheRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Cache_1_1CacheRepository"/>
+        <childnode refid="1131" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" line="25" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Cache/CacheRepository.cs" bodystart="23" bodyend="182"/>
+    <listofallmembers>
+      <member refid="classCqrs_1_1Cache_1_1CacheRepository_1a00474b296eeebc3845533914fc25d92a" prot="private" virt="non-virtual"><scope>Cqrs::Cache::CacheRepository</scope><name>Cache</name></member>
+      <member refid="classCqrs_1_1Cache_1_1CacheRepository_a6c567e999a85f5803a920ce4912833a9_1a6c567e999a85f5803a920ce4912833a9" prot="public" virt="non-virtual"><scope>Cqrs::Cache::CacheRepository</scope><name>CacheRepository</name></member>
+      <member refid="classCqrs_1_1Cache_1_1CacheRepository_1a4e57b55900181cf5ce31513a367e2fff" prot="private" virt="non-virtual"><scope>Cqrs::Cache::CacheRepository</scope><name>EventStore</name></member>
+      <member refid="classCqrs_1_1Cache_1_1CacheRepository_a037acba636aedf23ff376ac0b749ec0c_1a037acba636aedf23ff376ac0b749ec0c" prot="public" virt="virtual"><scope>Cqrs::Cache::CacheRepository</scope><name>Get&lt; TAggregateRoot &gt;</name></member>
+      <member refid="classCqrs_1_1Cache_1_1CacheRepository_aef9be4db697afa9bd98e264888c389ea_1aef9be4db697afa9bd98e264888c389ea" prot="public" virt="non-virtual"><scope>Cqrs::Cache::CacheRepository</scope><name>GetToDate&lt; TAggregateRoot &gt;</name></member>
+      <member refid="classCqrs_1_1Cache_1_1CacheRepository_af23acddeed34def6d7a5e8d8df00ecd8_1af23acddeed34def6d7a5e8d8df00ecd8" prot="public" virt="non-virtual"><scope>Cqrs::Cache::CacheRepository</scope><name>GetToVersion&lt; TAggregateRoot &gt;</name></member>
+      <member refid="classCqrs_1_1Cache_1_1CacheRepository_1ad2c9c59e285ee2c5f29b59314b152843" prot="private" virt="non-virtual"><scope>Cqrs::Cache::CacheRepository</scope><name>IsTracked</name></member>
+      <member refid="classCqrs_1_1Cache_1_1CacheRepository_1a442b01d11e0d0c1bbf69f4f9c2dc5dde" prot="private" virt="non-virtual"><scope>Cqrs::Cache::CacheRepository</scope><name>Locks</name></member>
+      <member refid="classCqrs_1_1Cache_1_1CacheRepository_1a8dd4fdf4d8b0143578a5b118d8864471" prot="private" virt="non-virtual"><scope>Cqrs::Cache::CacheRepository</scope><name>PolicyFactory</name></member>
+      <member refid="classCqrs_1_1Cache_1_1CacheRepository_1ac68ae9dc475a8599964c2e9fe7bd8663" prot="private" virt="non-virtual"><scope>Cqrs::Cache::CacheRepository</scope><name>Repository</name></member>
+      <member refid="classCqrs_1_1Cache_1_1CacheRepository_a69df7ee1dc2e4cd38431ab987655eab3_1a69df7ee1dc2e4cd38431ab987655eab3" prot="public" virt="virtual"><scope>Cqrs::Cache::CacheRepository</scope><name>Save&lt; TAggregateRoot &gt;</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

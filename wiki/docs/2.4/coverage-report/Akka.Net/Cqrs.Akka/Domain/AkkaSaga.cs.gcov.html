@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">11</td>
-            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">14</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-04 23:26:29</td>
+            <td class="headerValue">2018-06-04 23:47:54</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -132,9 +132,9 @@
 <span class="lineNum">      74 </span>            :                 protected ICommandPublisher&lt;TAuthenticationToken&gt; CommandPublisher { get; set; }
 <span class="lineNum">      75 </span>            : 
 <span class="lineNum">      76 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      77 </span><span class="lineCov">          1 :                 /// Instantiates a new instance of &lt;see cref=&quot;AkkaSaga{TAuthenticationToken}&quot;/&gt;</span>
+<span class="lineNum">      77 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AkkaSaga{TAuthenticationToken}&quot;/&gt;
 <span class="lineNum">      78 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      79 </span>            :                 protected AkkaSaga(ISagaUnitOfWork&lt;TAuthenticationToken&gt; unitOfWork, ILogger logger, IAkkaSagaRepository&lt;TAuthenticationToken&gt; repository, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICommandPublisher&lt;TAuthenticationToken&gt; commandPublisher)
+<span class="lineNum">      79 </span><span class="lineCov">          1 :                 protected AkkaSaga(ISagaUnitOfWork&lt;TAuthenticationToken&gt; unitOfWork, ILogger logger, IAkkaSagaRepository&lt;TAuthenticationToken&gt; repository, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICommandPublisher&lt;TAuthenticationToken&gt; commandPublisher)</span>
 <span class="lineNum">      80 </span>            :                 {
 <span class="lineNum">      81 </span>            :                         UnitOfWork = unitOfWork;
 <span class="lineNum">      82 </span>            :                         Logger = logger;
@@ -152,10 +152,10 @@
 <span class="lineNum">      94 </span>            :                 /// User overridable callback.
 <span class="lineNum">      95 </span>            :                 ///                 &lt;p/&gt;
 <span class="lineNum">      96 </span>            :                 ///                 Is called when an Actor is started.
-<span class="lineNum">      97 </span><span class="lineCov">          1 :                 ///                 Actors are automatically started asynchronously when created.</span>
+<span class="lineNum">      97 </span>            :                 ///                 Actors are automatically started asynchronously when created.
 <span class="lineNum">      98 </span>            :                 ///                 Empty default implementation.
 <span class="lineNum">      99 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     100 </span>            :                 protected override void PreStart()
+<span class="lineNum">     100 </span><span class="lineCov">          1 :                 protected override void PreStart()</span>
 <span class="lineNum">     101 </span>            :                 {
 <span class="lineNum">     102 </span>            :                         base.PreStart();
 <span class="lineNum">     103 </span>            :                         Repository.LoadSagaHistory(this, throwExceptionOnNoEvents: false);
@@ -164,10 +164,10 @@
 <span class="lineNum">     106 </span>            :                 #endregion
 <span class="lineNum">     107 </span>            : 
 <span class="lineNum">     108 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     109 </span><span class="lineCov">          1 :                 /// Executes the provided &lt;paramref name=&quot;action&quot;/&gt; passing it the provided &lt;paramref name=&quot;event&quot;/&gt;,</span>
+<span class="lineNum">     109 </span>            :                 /// Executes the provided &lt;paramref name=&quot;action&quot;/&gt; passing it the provided &lt;paramref name=&quot;event&quot;/&gt;,
 <span class="lineNum">     110 </span>            :                 /// then calls &lt;see cref=&quot;AggregateRepository{TAuthenticationToken}.PublishEvent&quot;/&gt;
 <span class="lineNum">     111 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     112 </span>            :                 protected virtual void Execute&lt;TEvent&gt;(Action&lt;TEvent&gt; action, TEvent @event)
+<span class="lineNum">     112 </span><span class="lineCov">          1 :                 protected virtual void Execute&lt;TEvent&gt;(Action&lt;TEvent&gt; action, TEvent @event)</span>
 <span class="lineNum">     113 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
 <span class="lineNum">     114 </span>            :                 {
 <span class="lineNum">     115 </span>            :                         UnitOfWork.Add(this);
@@ -189,28 +189,28 @@
 <span class="lineNum">     131 </span>            :                         }
 <span class="lineNum">     132 </span>            :                 }
 <span class="lineNum">     133 </span>            : 
-<span class="lineNum">     134 </span><span class="lineCov">          1 :                 /// &lt;summary&gt;</span>
+<span class="lineNum">     134 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     135 </span>            :                 /// Get all applied changes that haven't yet been committed.
 <span class="lineNum">     136 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     137 </span>            :                 public virtual IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges()
+<span class="lineNum">     137 </span><span class="lineCov">          1 :                 public virtual IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges()</span>
 <span class="lineNum">     138 </span>            :                 {
 <span class="lineNum">     139 </span>            :                         return Changes;
 <span class="lineNum">     140 </span>            :                 }
 <span class="lineNum">     141 </span>            : 
-<span class="lineNum">     142 </span><span class="lineCov">          1 :                 /// &lt;summary&gt;</span>
+<span class="lineNum">     142 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     143 </span>            :                 /// Mark all applied changes as committed, increment &lt;see cref=&quot;Version&quot;/&gt; and flush the internal collection of changes.
 <span class="lineNum">     144 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     145 </span>            :                 public virtual void MarkChangesAsCommitted()
+<span class="lineNum">     145 </span><span class="lineCov">          1 :                 public virtual void MarkChangesAsCommitted()</span>
 <span class="lineNum">     146 </span>            :                 {
 <span class="lineNum">     147 </span>            :                         Version = Version + Changes.Count;
 <span class="lineNum">     148 </span>            :                         Changes = new ReadOnlyCollection&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt;(new List&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt;());
 <span class="lineNum">     149 </span>            :                 }
 <span class="lineNum">     150 </span>            : 
 <span class="lineNum">     151 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     152 </span><span class="lineCov">          1 :                 /// Apply all the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; in &lt;paramref name=&quot;history&quot;/&gt;</span>
+<span class="lineNum">     152 </span>            :                 /// Apply all the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; in &lt;paramref name=&quot;history&quot;/&gt;
 <span class="lineNum">     153 </span>            :                 /// using event replay to this instance.
 <span class="lineNum">     154 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     155 </span>            :                 public virtual void LoadFromHistory(IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; history)
+<span class="lineNum">     155 </span><span class="lineCov">          1 :                 public virtual void LoadFromHistory(IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; history)</span>
 <span class="lineNum">     156 </span>            :                 {
 <span class="lineNum">     157 </span>            :                         Type sagaType = GetType();
 <span class="lineNum">     158 </span>            :                         foreach (ISagaEvent&lt;TAuthenticationToken&gt; @event in history.OrderBy(e =&gt; e.Version))
@@ -224,28 +224,28 @@
 <span class="lineNum">     166 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     167 </span>            :                 /// Get all pending commands that haven't yet been published yet.
 <span class="lineNum">     168 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     169 </span>            :                 public virtual IEnumerable&lt;ICommand&lt;TAuthenticationToken&gt;&gt; GetUnpublishedCommands()
+<span class="lineNum">     169 </span><span class="lineCov">          1 :                 public virtual IEnumerable&lt;ICommand&lt;TAuthenticationToken&gt;&gt; GetUnpublishedCommands()</span>
 <span class="lineNum">     170 </span>            :                 {
-<span class="lineNum">     171 </span><span class="lineCov">          1 :                         return Commands;</span>
+<span class="lineNum">     171 </span>            :                         return Commands;
 <span class="lineNum">     172 </span>            :                 }
 <span class="lineNum">     173 </span>            : 
 <span class="lineNum">     174 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     175 </span>            :                 /// Queue the provided &lt;paramref name=&quot;command&quot;/&gt; for publishing.
 <span class="lineNum">     176 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     177 </span>            :                 protected virtual void QueueCommand(ICommand&lt;TAuthenticationToken&gt; command)
+<span class="lineNum">     177 </span><span class="lineCov">          1 :                 protected virtual void QueueCommand(ICommand&lt;TAuthenticationToken&gt; command)</span>
 <span class="lineNum">     178 </span>            :                 {
-<span class="lineNum">     179 </span><span class="lineCov">          1 :                         Commands = new ReadOnlyCollection&lt;ICommand&lt;TAuthenticationToken&gt;&gt;(Commands.Concat(new[] { command }).ToList());</span>
+<span class="lineNum">     179 </span>            :                         Commands = new ReadOnlyCollection&lt;ICommand&lt;TAuthenticationToken&gt;&gt;(Commands.Concat(new[] { command }).ToList());
 <span class="lineNum">     180 </span>            :                 }
 <span class="lineNum">     181 </span>            : 
 <span class="lineNum">     182 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     183 </span>            :                 /// Mark all published commands as published and flush the internal collection of commands.
 <span class="lineNum">     184 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     185 </span>            :                 public virtual void MarkCommandsAsPublished()
+<span class="lineNum">     185 </span><span class="lineCov">          1 :                 public virtual void MarkCommandsAsPublished()</span>
 <span class="lineNum">     186 </span>            :                 {
 <span class="lineNum">     187 </span>            :                         Commands = new ReadOnlyCollection&lt;ICommand&lt;TAuthenticationToken&gt;&gt;(new List&lt;ICommand&lt;TAuthenticationToken&gt;&gt;());
 <span class="lineNum">     188 </span>            :                 }
 <span class="lineNum">     189 </span>            : 
-<span class="lineNum">     190 </span><span class="lineCov">          1 :                 /// &lt;summary&gt;</span>
+<span class="lineNum">     190 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     191 </span>            :                 /// Call the &quot;Apply&quot; method with a signature matching the provided &lt;paramref name=&quot;event&quot;/&gt; without using event replay to this instance.
 <span class="lineNum">     192 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     193 </span>            :                 /// &lt;remarks&gt;
@@ -253,7 +253,7 @@
 <span class="lineNum">     195 </span>            :                 /// If no method exists, nothing is applied
 <span class="lineNum">     196 </span>            :                 /// The parameter type must match exactly the &lt;see cref=&quot;Type&quot;/&gt; of the provided &lt;paramref name=&quot;event&quot;/&gt;.
 <span class="lineNum">     197 </span>            :                 /// &lt;/remarks&gt;
-<span class="lineNum">     198 </span>            :                 protected virtual void ApplyChange(ISagaEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">     198 </span><span class="lineCov">          1 :                 protected virtual void ApplyChange(ISagaEvent&lt;TAuthenticationToken&gt; @event)</span>
 <span class="lineNum">     199 </span>            :                 {
 <span class="lineNum">     200 </span>            :                         ApplyChange(@event, false);
 <span class="lineNum">     201 </span>            :                 }
@@ -261,18 +261,18 @@
 <span class="lineNum">     203 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     204 </span>            :                 /// Calls &lt;see cref=&quot;SetId&quot;/&gt;, then &lt;see cref=&quot;ApplyChange(Cqrs.Events.ISagaEvent{TAuthenticationToken})&quot;/&gt;.
 <span class="lineNum">     205 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     206 </span>            :                 protected virtual void ApplyChange(IEvent&lt;TAuthenticationToken&gt; @event)
+<span class="lineNum">     206 </span><span class="lineCov">          1 :                 protected virtual void ApplyChange(IEvent&lt;TAuthenticationToken&gt; @event)</span>
 <span class="lineNum">     207 </span>            :                 {
 <span class="lineNum">     208 </span>            :                         var sagaEvent = new SagaEvent&lt;TAuthenticationToken&gt;(@event);
 <span class="lineNum">     209 </span>            :                         // Set ID
 <span class="lineNum">     210 </span>            :                         SetId(sagaEvent);
 <span class="lineNum">     211 </span>            :                         ApplyChange(sagaEvent);
-<span class="lineNum">     212 </span><span class="lineCov">          1 :                 }</span>
+<span class="lineNum">     212 </span>            :                 }
 <span class="lineNum">     213 </span>            : 
 <span class="lineNum">     214 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     215 </span>            :                 /// Sets the &lt;see cref=&quot;IEvent{TAuthenticationToken}.Id&quot;/&gt; from &lt;see cref=&quot;ISagaEvent{TAuthenticationToken}.Event&quot;/&gt; back onto &lt;paramref name=&quot;sagaEvent&quot;/&gt;.
 <span class="lineNum">     216 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     217 </span>            :                 protected virtual void SetId(ISagaEvent&lt;TAuthenticationToken&gt; sagaEvent)
+<span class="lineNum">     217 </span><span class="lineCov">          1 :                 protected virtual void SetId(ISagaEvent&lt;TAuthenticationToken&gt; sagaEvent)</span>
 <span class="lineNum">     218 </span>            :                 {
 <span class="lineNum">     219 </span>            :                         sagaEvent.Rsn = sagaEvent.Event.GetIdentity();
 <span class="lineNum">     220 </span>            :                 }
@@ -294,7 +294,7 @@
 <span class="lineNum">     236 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     237 </span>            :                 /// Dynamically calls the &quot;Apply&quot; method, passing it the &lt;see cref=&quot;ISagaEvent{TAuthenticationToken}.Event&quot;/&gt; of the provided &lt;paramref name=&quot;sagaEvent&quot;/&gt;.
 <span class="lineNum">     238 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     239 </span>            :                 protected virtual void Apply(ISagaEvent&lt;TAuthenticationToken&gt; sagaEvent)
+<span class="lineNum">     239 </span><span class="lineCov">          1 :                 protected virtual void Apply(ISagaEvent&lt;TAuthenticationToken&gt; sagaEvent)</span>
 <span class="lineNum">     240 </span>            :                 {
 <span class="lineNum">     241 </span>            :                         this.AsDynamic().Apply(sagaEvent.Event);
 <span class="lineNum">     242 </span>            :                 }

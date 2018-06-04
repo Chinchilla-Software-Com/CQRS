@@ -1,0 +1,6 @@
+var classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Converters_1_1ObjectToMultipartDataByteArrayConverter =
+[
+    [ "ObjectToMultipartDataByteArrayConverter", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Converters_1_1ObjectToMultipartDataByteArrayConverter_a1e647950d2959aa53e54a17ba86df058.html#a1e647950d2959aa53e54a17ba86df058", null ],
+    [ "Convert", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Converters_1_1ObjectToMultipartDataByteArrayConverter_af7bd8ac108a7e95f5961a14064595f84.html#af7bd8ac108a7e95f5961a14064595f84", null ],
+    [ "Settings", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Converters_1_1ObjectToMultipartDataByteArrayConverter.html#ac913661be8c2ce59d56888ba09c1f690", null ]
+];

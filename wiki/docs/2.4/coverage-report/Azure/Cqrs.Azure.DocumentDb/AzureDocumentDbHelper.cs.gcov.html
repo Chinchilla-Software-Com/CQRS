@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-04 23:26:29</td>
+            <td class="headerValue">2018-06-04 23:47:54</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -81,8 +81,8 @@
 <span class="lineNum">      23 </span>            :         /// A helper for Azure Document DB.
 <span class="lineNum">      24 </span>            :         /// &lt;/summary&gt;
 <span class="lineNum">      25 </span>            :         public class AzureDocumentDbHelper : IAzureDocumentDbHelper
-<span class="lineNum">      26 </span>            :         {
-<span class="lineNum">      27 </span><span class="lineCov">          1 :                 /// &lt;summary&gt;</span>
+<span class="lineNum">      26 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      27 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      28 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ILogger&quot;/&gt;.
 <span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">      30 </span>            :                 protected ILogger Logger { get; private set; }
@@ -95,8 +95,8 @@
 <span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      38 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AzureDocumentDbHelper&quot;/&gt;.
 <span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      40 </span>            :                 public AzureDocumentDbHelper(ILogger logger, IAzureDocumentDbConnectionCache azureDocumentDbConnectionCache)
-<span class="lineNum">      41 </span><span class="lineCov">          1 :                 {</span>
+<span class="lineNum">      40 </span><span class="lineCov">          1 :                 public AzureDocumentDbHelper(ILogger logger, IAzureDocumentDbConnectionCache azureDocumentDbConnectionCache)</span>
+<span class="lineNum">      41 </span>            :                 {
 <span class="lineNum">      42 </span>            :                         Logger = logger;
 <span class="lineNum">      43 </span>            :                         AzureDocumentDbConnectionCache = azureDocumentDbConnectionCache;
 <span class="lineNum">      44 </span>            :                 }
@@ -106,8 +106,8 @@
 <span class="lineNum">      48 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">      49 </span>            :                 /// &lt;param name=&quot;client&quot;&gt;The &lt;see cref=&quot;DocumentClient&quot;/&gt; to use.&lt;/param&gt;
 <span class="lineNum">      50 </span>            :                 /// &lt;param name=&quot;databaseName&quot;&gt;The name of the database to get.&lt;/param&gt;
-<span class="lineNum">      51 </span>            :                 public async Task&lt;Database&gt; CreateOrReadDatabase(DocumentClient client, string databaseName)
-<span class="lineNum">      52 </span><span class="lineCov">          1 :                 {</span>
+<span class="lineNum">      51 </span><span class="lineCov">          1 :                 public async Task&lt;Database&gt; CreateOrReadDatabase(DocumentClient client, string databaseName)</span>
+<span class="lineNum">      52 </span>            :                 {
 <span class="lineNum">      53 </span>            :                         Logger.LogDebug(&quot;Getting Azure database&quot;, &quot;AzureDocumentDbHelper\\CreateOrReadDatabase&quot;);
 <span class="lineNum">      54 </span>            :                         DateTime start = DateTime.Now;
 <span class="lineNum">      55 </span>            :                         Database result;
@@ -167,8 +167,8 @@
 <span class="lineNum">     109 </span>            :                 /// &lt;param name=&quot;database&quot;&gt;The &lt;see cref=&quot;Database&quot;/&gt; to look in.&lt;/param&gt;
 <span class="lineNum">     110 </span>            :                 /// &lt;param name=&quot;collectionName&quot;&gt;The name of the collection to get.&lt;/param&gt;
 <span class="lineNum">     111 </span>            :                 /// &lt;param name=&quot;uniqiueIndexPropertyNames&quot;&gt;Any unique properties the collection should enforce.&lt;/param&gt;
-<span class="lineNum">     112 </span>            :                 public async Task&lt;DocumentCollection&gt; CreateOrReadCollection(DocumentClient client, Database database, string collectionName, string[] uniqiueIndexPropertyNames = null)
-<span class="lineNum">     113 </span><span class="lineCov">          1 :                 {</span>
+<span class="lineNum">     112 </span><span class="lineCov">          1 :                 public async Task&lt;DocumentCollection&gt; CreateOrReadCollection(DocumentClient client, Database database, string collectionName, string[] uniqiueIndexPropertyNames = null)</span>
+<span class="lineNum">     113 </span>            :                 {
 <span class="lineNum">     114 </span>            :                         Logger.LogDebug(&quot;Getting Azure collection&quot;, &quot;AzureDocumentDbHelper\\CreateOrReadCollection&quot;);
 <span class="lineNum">     115 </span>            :                         DateTime start = DateTime.Now;
 <span class="lineNum">     116 </span>            :                         DocumentCollection result;
@@ -239,7 +239,7 @@
 <span class="lineNum">     181 </span>            :                 /// Process the provided &lt;paramref name=&quot;documentClientException&quot;/&gt; checking for operations that can be retired.
 <span class="lineNum">     182 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     183 </span>            :                 /// &lt;param name=&quot;documentClientException&quot;&gt;The &lt;see cref=&quot;DocumentClientException&quot;/&gt; to check.&lt;/param&gt;
-<span class="lineNum">     184 </span>            :                 protected virtual void ProcessFaultTollerantExceptions(DocumentClientException documentClientException)
+<span class="lineNum">     184 </span><span class="lineCov">          1 :                 protected virtual void ProcessFaultTollerantExceptions(DocumentClientException documentClientException)</span>
 <span class="lineNum">     185 </span>            :                 {
 <span class="lineNum">     186 </span>            :                         var statusCode = (int)documentClientException.StatusCode;
 <span class="lineNum">     187 </span>            :                         if (statusCode == 429 || statusCode == 503)
@@ -257,7 +257,7 @@
 <span class="lineNum">     199 </span>            :                 /// Execute the provided &lt;paramref name=&quot;func&quot;/&gt; in a fault tolerant way.
 <span class="lineNum">     200 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     201 </span>            :                 /// &lt;param name=&quot;func&quot;&gt;The &lt;see cref=&quot;Func{T}&quot;/&gt; to execute.&lt;/param&gt;
-<span class="lineNum">     202 </span>            :                 public virtual T ExecuteFaultTollerantFunction&lt;T&gt;(Func&lt;T&gt; func)
+<span class="lineNum">     202 </span><span class="lineCov">          1 :                 public virtual T ExecuteFaultTollerantFunction&lt;T&gt;(Func&lt;T&gt; func)</span>
 <span class="lineNum">     203 </span>            :                 {
 <span class="lineNum">     204 </span>            :                         while (true)
 <span class="lineNum">     205 </span>            :                         {
@@ -288,7 +288,7 @@
 <span class="lineNum">     230 </span>            :                 /// Execute the provided &lt;paramref name=&quot;func&quot;/&gt; in a fault tolerant way.
 <span class="lineNum">     231 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     232 </span>            :                 /// &lt;param name=&quot;func&quot;&gt;The &lt;see cref=&quot;Action&quot;/&gt; to execute.&lt;/param&gt;
-<span class="lineNum">     233 </span>            :                 public virtual void ExecuteFaultTollerantFunction(Action func)
+<span class="lineNum">     233 </span><span class="lineCov">          1 :                 public virtual void ExecuteFaultTollerantFunction(Action func)</span>
 <span class="lineNum">     234 </span>            :                 {
 <span class="lineNum">     235 </span>            :                         while (true)
 <span class="lineNum">     236 </span>            :                         {

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-04 23:26:29</td>
+            <td class="headerValue">2018-06-04 23:47:54</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -79,8 +79,8 @@
 <span class="lineNum">      21 </span>            :         /// This allows for manual mirroring of data while reading from the fastest/closest location possible.
 <span class="lineNum">      22 </span>            :         /// &lt;/summary&gt;
 <span class="lineNum">      23 </span>            :         public class TableStorageEventStoreConnectionStringFactory
-<span class="lineNum">      24 </span><span class="lineCov">          1 :                 : ITableStorageStoreConnectionStringFactory</span>
-<span class="lineNum">      25 </span>            :         {
+<span class="lineNum">      24 </span>            :                 : ITableStorageStoreConnectionStringFactory
+<span class="lineNum">      25 </span><span class="lineCov">          1 :         {</span>
 <span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      27 </span>            :                 /// The name of the app setting in &lt;see cref=&quot;IConfigurationManager&quot;/&gt; that will have the connection string of the readable storage account if using a separate storage account for reads and writes.
 <span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
@@ -114,8 +114,8 @@
 <span class="lineNum">      56 </span>            : 
 <span class="lineNum">      57 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      58 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;TableStorageEventStoreConnectionStringFactory&quot;/&gt;.
-<span class="lineNum">      59 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
-<span class="lineNum">      60 </span>            :                 public TableStorageEventStoreConnectionStringFactory(IConfigurationManager configurationManager, ILogger logger)
+<span class="lineNum">      59 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      60 </span><span class="lineCov">          1 :                 public TableStorageEventStoreConnectionStringFactory(IConfigurationManager configurationManager, ILogger logger)</span>
 <span class="lineNum">      61 </span>            :                 {
 <span class="lineNum">      62 </span>            :                         ConfigurationManager = configurationManager;
 <span class="lineNum">      63 </span>            :                         Logger = logger;
@@ -124,8 +124,8 @@
 <span class="lineNum">      66 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      67 </span>            :                 /// Gets all writeable connection strings. If using a single storage account, then &lt;see cref=&quot;TableStorageEventStoreConnectionStringKey&quot;/&gt; will most likely be returned.
 <span class="lineNum">      68 </span>            :                 /// If a value for &lt;see cref=&quot;TableStorageWritableEventStoreConnectionStringKey&quot;/&gt; is found, it will append &quot;.1&quot;, &quot;.2&quot; etc returning any additionally found connection string values in &lt;see cref=&quot;ConfigurationManager&quot;/&gt;.
-<span class="lineNum">      69 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
-<span class="lineNum">      70 </span>            :                 public virtual IEnumerable&lt;string&gt; GetWritableConnectionStrings()
+<span class="lineNum">      69 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      70 </span><span class="lineCov">          1 :                 public virtual IEnumerable&lt;string&gt; GetWritableConnectionStrings()</span>
 <span class="lineNum">      71 </span>            :                 {
 <span class="lineNum">      72 </span>            :                         Logger.LogDebug(&quot;Getting table storage writeable connection strings&quot;, &quot;TableStorageEventStoreConnectionStringFactory\\GetWritableConnectionStrings&quot;);
 <span class="lineNum">      73 </span>            :                         try
@@ -167,8 +167,8 @@
 <span class="lineNum">     109 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     110 </span>            :                 /// Gets the readable connection string. If using a single storage account, then &lt;see cref=&quot;TableStorageEventStoreConnectionStringKey&quot;/&gt; will most likely be returned.
 <span class="lineNum">     111 </span>            :                 /// If a value for &lt;see cref=&quot;TableStorageReadableEventStoreConnectionStringKey&quot;/&gt; is found, that will be returned instead.
-<span class="lineNum">     112 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
-<span class="lineNum">     113 </span>            :                 public virtual string GetReadableConnectionString()
+<span class="lineNum">     112 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     113 </span><span class="lineCov">          1 :                 public virtual string GetReadableConnectionString()</span>
 <span class="lineNum">     114 </span>            :                 {
 <span class="lineNum">     115 </span>            :                         Logger.LogDebug(&quot;Getting table storage readable connection strings&quot;, &quot;TableStorageEventStoreConnectionStringFactory\\GetReadableConnectionStrings&quot;);
 <span class="lineNum">     116 </span>            :                         try
@@ -198,8 +198,8 @@
 <span class="lineNum">     140 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     141 </span>            :                 /// Returns the name of the base contain to be used.
 <span class="lineNum">     142 </span>            :                 /// This will be the value from &lt;see cref=&quot;ConfigurationManager&quot;/&gt; keyed &lt;see cref=&quot;TableStorageBaseContainerNameKey&quot;/&gt;.
-<span class="lineNum">     143 </span><span class="lineCov">          1 :                 /// &lt;/summary&gt;</span>
-<span class="lineNum">     144 </span>            :                 public virtual string GetBaseContainerName()
+<span class="lineNum">     143 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     144 </span><span class="lineCov">          1 :                 public virtual string GetBaseContainerName()</span>
 <span class="lineNum">     145 </span>            :                 {
 <span class="lineNum">     146 </span>            :                         Logger.LogDebug(&quot;Getting table storage base container name&quot;, &quot;TableStorageEventStoreConnectionStringFactory\\GetBaseContainerName&quot;);
 <span class="lineNum">     147 </span>            :                         try
