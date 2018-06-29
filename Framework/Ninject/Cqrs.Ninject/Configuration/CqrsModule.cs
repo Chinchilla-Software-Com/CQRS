@@ -131,6 +131,9 @@ namespace Cqrs.Ninject.Configuration
 			Bind<IQueryFactory>()
 				.To<QueryFactory>()
 				.InSingletonScope();
+			Bind<IHashAlgorithmFactory>()
+				.To<BuiltInHashAlgorithmFactory>()
+				.InSingletonScope();
 		}
 
 		/// <summary>

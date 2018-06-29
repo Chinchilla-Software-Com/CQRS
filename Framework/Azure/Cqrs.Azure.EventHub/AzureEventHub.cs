@@ -21,6 +21,7 @@ using Cqrs.Configuration;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using System.Text;
+using Cqrs.Bus;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -137,9 +138,9 @@ namespace Cqrs.Azure.ServiceBus
 		protected ITelemetryHelper TelemetryHelper { get; set; }
 
 		/// <summary>
-		/// The <see cref="HashAlgorithm"/> to use to sign messages.
+		/// The <see cref="IHashAlgorithmFactory"/> to use to sign messages.
 		/// </summary>
-		protected HashAlgorithm Signer { get; private set; }
+		protected IHashAlgorithmFactory Signer { get; private set; }
 
 		/// <summary>
 		/// A list of namespaces to exclude when trying to automatically determine the container.
@@ -149,12 +150,12 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureEventHub{TAuthenticationToken}"/>
 		/// </summary>
-		protected AzureEventHub(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)
+		protected AzureEventHub(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IHashAlgorithmFactory hashAlgorithmFactory, bool isAPublisher)
 			: base (configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 		{
 			TelemetryHelper = new NullTelemetryHelper();
 			ExclusionNamespaces = new SynchronizedCollection<string> { "Cqrs", "System" };
-			Signer = new SHA512CryptoServiceProvider();
+			Signer = hashAlgorithmFactory;
 		}
 
 		#region Overrides of AzureBus<TAuthenticationToken>
@@ -367,12 +368,13 @@ namespace Cqrs.Azure.ServiceBus
 			// see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security</remarks>
 			string configurationKey = string.Format("{0}.SigningToken", messageType.FullName);
 			string signingToken;
+			HashAlgorithm signer = Signer.Create();
 			if (!ConfigurationManager.TryGetSetting(configurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
 				if (!ConfigurationManager.TryGetSetting(SigningTokenConfigurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
 					signingToken = Guid.Empty.ToString("N");
 			if (!string.IsNullOrWhiteSpace(signingToken))
 				using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", signingToken, messageBody))))
-					brokeredMessage.Properties.Add("Signature", Convert.ToBase64String(Signer.ComputeHash(hashStream)));
+					brokeredMessage.Properties.Add("Signature", Convert.ToBase64String(signer.ComputeHash(hashStream)));
 
 			try
 			{

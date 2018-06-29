@@ -43,7 +43,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureBusHelper{TAuthenticationToken}"/>.
 		/// </summary>
-		public AzureBusHelper(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IBusHelper busHelper, IConfigurationManager configurationManager, IDependencyResolver dependencyResolver)
+		public AzureBusHelper(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IBusHelper busHelper, IHashAlgorithmFactory hashAlgorithmFactory, IConfigurationManager configurationManager, IDependencyResolver dependencyResolver)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
@@ -52,7 +52,7 @@ namespace Cqrs.Azure.ServiceBus
 			BusHelper = busHelper;
 			DependencyResolver = dependencyResolver;
 			ConfigurationManager = configurationManager;
-			Signer = new SHA512CryptoServiceProvider();
+			Signer = hashAlgorithmFactory;
 		}
 
 		/// <summary>
@@ -96,9 +96,9 @@ namespace Cqrs.Azure.ServiceBus
 		protected const string DefaultMessagesShouldRefreshConfigurationKey = "Cqrs.Azure.Messages.ShouldRefresh";
 
 		/// <summary>
-		/// The <see cref="HashAlgorithm"/> to use to sign messages.
+		/// The <see cref="IHashAlgorithmFactory"/> to use to sign messages.
 		/// </summary>
-		protected HashAlgorithm Signer { get; private set; }
+		protected IHashAlgorithmFactory Signer { get; private set; }
 
 		/// <summary>
 		/// Prepares a <see cref="ICommand{TAuthenticationToken}"/> to be sent specifying the framework it is sent via.
@@ -577,15 +577,16 @@ namespace Cqrs.Azure.ServiceBus
 				// see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security</remarks>
 				string configurationKey = string.Format("{0}.SigningToken", typeName);
 				string signingToken;
+				HashAlgorithm signer = Signer.Create();
 				if (ConfigurationManager.TryGetSetting(configurationKey, out signingToken) && !string.IsNullOrWhiteSpace(signingToken))
 					using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", signingToken, messageBody))))
-						messageIsValid = signature == Convert.ToBase64String(Signer.ComputeHash(hashStream));
+						messageIsValid = signature == Convert.ToBase64String(signer.ComputeHash(hashStream));
 				if (!messageIsValid && ConfigurationManager.TryGetSetting(signingTokenConfigurationKey, out signingToken) && !string.IsNullOrWhiteSpace(signingToken))
 					using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", signingToken, messageBody))))
-						messageIsValid = signature == Convert.ToBase64String(Signer.ComputeHash(hashStream));
+						messageIsValid = signature == Convert.ToBase64String(signer.ComputeHash(hashStream));
 				if (!messageIsValid)
 					using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", Guid.Empty.ToString("N"), messageBody))))
-						messageIsValid = signature == Convert.ToBase64String(Signer.ComputeHash(hashStream));
+						messageIsValid = signature == Convert.ToBase64String(signer.ComputeHash(hashStream));
 				if (!messageIsValid)
 					throw new UnAuthorisedMessageReceivedException(typeName, messageId, identifyMessage);
 			}

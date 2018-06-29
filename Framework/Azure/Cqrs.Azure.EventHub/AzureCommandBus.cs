@@ -10,6 +10,7 @@ using System;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
+using Cqrs.Bus;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -100,8 +101,8 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Instantiate a new instance of <see cref="AzureCommandBus{TAuthenticationToken}"/>.
 		/// </summary>
-		protected AzureCommandBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, bool isAPublisher)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
+		protected AzureCommandBus(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IHashAlgorithmFactory hashAlgorithmFactory, IAzureBusHelper<TAuthenticationToken> azureBusHelper, bool isAPublisher)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, hashAlgorithmFactory, isAPublisher)
 		{
 			AzureBusHelper = azureBusHelper;
 		}
