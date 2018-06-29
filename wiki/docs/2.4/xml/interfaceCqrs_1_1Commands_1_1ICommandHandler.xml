@@ -20,50 +20,50 @@
 <para>Validate the ICommand&lt;TAuthenticationToken&gt; on its own merits. Ask an IAggregateRoot&lt;TAuthenticationToken&gt; to handle the ICommand&lt;TAuthenticationToken&gt;. If validation is successful, 0..n IEvent&lt;TAuthenticationToken&gt; artefacts (1 is common) are queued for publishing. Attempt to persist the new IEvent&lt;TAuthenticationToken&gt; artefacts. If there&apos;s a concurrency conflict during this step, either give up, or retry things. Dispatch the queued IEvent&lt;TAuthenticationToken&gt; artefacts. </para><para>Should a ICommandHandler&lt;TAuthenticationToken,TCommand&gt; affect one or several IAggregateRoot&lt;TAuthenticationToken&gt;s?</para><para>Only one.</para><para>Do I put logic in ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</para><para>Yes. Exactly what logic depends on your factoring. The logic for validating the ICommand&lt;TAuthenticationToken&gt; on its own merits always gets executed in the ICommandHandler&lt;TAuthenticationToken,TCommand&gt;, although we recommend refactoring these into an ICommandValidator&lt;TAuthenticationToken,TCommand&gt;. Provided validation is successful we recommend a more functional factoring, where the IAggregateRoot&lt;TAuthenticationToken&gt; exists independently of the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; and the next step would be to load the IAggregateRoot&lt;TAuthenticationToken&gt; from the IUnitOfWork&lt;TAuthenticationToken&gt; and request the IAggregateRoot&lt;TAuthenticationToken&gt; handle the ICommand&lt;TAuthenticationToken&gt; itself. The IUnitOfWork&lt;TAuthenticationToken&gt; should then have uncommitted IEvent&lt;TAuthenticationToken&gt; artefacts as a results of asking the IAggregateRoot&lt;TAuthenticationToken&gt; to handle the ICommand&lt;TAuthenticationToken&gt;. Finally the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; should instruct the IUnitOfWork&lt;TAuthenticationToken&gt; to IUnitOfWork&lt;TAuthenticationToken&gt;.Commit all uncommited IEvent&lt;TAuthenticationToken&gt; artefacts.</para><para>However you have it, the logic boils down to validation and some sequence of steps that lead to the ICommand&lt;TAuthenticationToken&gt; becoming an Exception or IEvent&lt;TAuthenticationToken&gt;(s). If you&apos;re tempted to go beyond this, see the rest of the remarks.</para><para>Can I call a read side (such as a read store, data store or IAggregateRepository&lt;TAuthenticationToken&gt;) from my ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</para><para>No.</para><para>Can I do logging, security, or auditing in my ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</para><para>Yes. The decorator pattern comes in handy here to separate those concerns neatly.</para><para>How are conflicts between concurrent ICommand&lt;TAuthenticationToken&gt;s handled in the ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</para><para>The place where the new IEvent&lt;TAuthenticationToken&gt; artefacts for the IAggregateRoot&lt;TAuthenticationToken&gt; are persisted is the only place in the system where we need to worry about concurrency conflicts. The IEventStore&lt;TAuthenticationToken&gt; knows the sequence number of the latest IEvent&lt;TAuthenticationToken&gt; applied on that IAggregateRoot&lt;TAuthenticationToken&gt;, and the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; knows the sequence number of the last IEvent&lt;TAuthenticationToken&gt; it read. If these numbers do not agree, it means some other thread or process got there first. The ICommandHandler&lt;TAuthenticationToken,TCommand&gt; can then load up the events again and make a new attempt.</para><para>Should I do things that have side-effects in the outside world (such as sending email) directly in a ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</para><para>No, since a concurrency conflict will mean the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; logic will be run again. Do such things in an Apply IEvent&lt;TAuthenticationToken&gt; method in an IAggregateRoot&lt;TAuthenticationToken&gt;. <hruler/>
  Also see <ulink url="http://cqrs.nu/Faq/command-handlers">http://cqrs.nu/Faq/command-handlers</ulink>. </para>    </detaileddescription>
     <inheritancegraph>
-      <node id="1160">
+      <node id="1167">
         <label>IMessageHandler&lt; TCommand &gt;</label>
         <link refid="interfaceCqrs_1_1Messages_1_1IMessageHandler"/>
       </node>
-      <node id="1161">
+      <node id="1168">
         <label>ICommandHandle</label>
         <link refid="interfaceCqrs_1_1Commands_1_1ICommandHandle"/>
-        <childnode refid="1162" relation="public-inheritance">
+        <childnode refid="1169" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1162">
+      <node id="1169">
         <label>IHandler</label>
         <link refid="interfaceCqrs_1_1Messages_1_1IHandler"/>
       </node>
-      <node id="1159">
+      <node id="1166">
         <label>Cqrs.Commands.ICommandHandler&lt; TAuthenticationToken, in in TCommand &gt;</label>
         <link refid="interfaceCqrs_1_1Commands_1_1ICommandHandler"/>
-        <childnode refid="1160" relation="public-inheritance">
+        <childnode refid="1167" relation="public-inheritance">
         </childnode>
-        <childnode refid="1161" relation="public-inheritance">
+        <childnode refid="1168" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="1164">
+      <node id="1171">
         <label>IMessageHandler&lt; TCommand &gt;</label>
         <link refid="interfaceCqrs_1_1Messages_1_1IMessageHandler"/>
       </node>
-      <node id="1165">
+      <node id="1172">
         <label>ICommandHandle</label>
         <link refid="interfaceCqrs_1_1Commands_1_1ICommandHandle"/>
-        <childnode refid="1166" relation="public-inheritance">
+        <childnode refid="1173" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1166">
+      <node id="1173">
         <label>IHandler</label>
         <link refid="interfaceCqrs_1_1Messages_1_1IHandler"/>
       </node>
-      <node id="1163">
+      <node id="1170">
         <label>Cqrs.Commands.ICommandHandler&lt; TAuthenticationToken, in in TCommand &gt;</label>
         <link refid="interfaceCqrs_1_1Commands_1_1ICommandHandler"/>
-        <childnode refid="1164" relation="public-inheritance">
+        <childnode refid="1171" relation="public-inheritance">
         </childnode>
-        <childnode refid="1165" relation="public-inheritance">
+        <childnode refid="1172" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>

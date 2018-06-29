@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"classCqrs_1_1Services_1_1ServiceChannelFactory_a8b483162bcc271fa8212c72e13e28f55.html#a8b483162bcc271fa8212c72e13e28f55":[1,0,0,20,12,0],
+"classCqrs_1_1Services_1_1ServiceChannelFactory_a90572d83f68b4ba72687bb8c755b0845.html#a90572d83f68b4ba72687bb8c755b0845":[1,0,0,20,12,1],
 "classCqrs_1_1Services_1_1ServiceParameterResolver.html":[1,0,0,20,13],
 "classCqrs_1_1Services_1_1ServiceParameterResolver_ad7afabf942df245316a2b27d31ee30bd.html#ad7afabf942df245316a2b27d31ee30bd":[1,0,0,20,13,0],
 "classCqrs_1_1Services_1_1ServiceRequest.html":[1,0,0,20,14],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "classCqrs_1_1WebApi_1_1HelpPageConfig_a1596c74d98fd628b646885dcac056cc1.html#a1596c74d98fd628b646885dcac056cc1":[1,0,0,25,8,1],
 "classCqrs_1_1WebApi_1_1HelpPageConfig_a36bf3691c8b3cbe26fa3e72456170271.html#a36bf3691c8b3cbe26fa3e72456170271":[1,0,0,25,8,2],
 "classCqrs_1_1WebApi_1_1HelpPageConfig_a62d6b1d61b668f53f5394b26e1c0b0fa.html#a62d6b1d61b668f53f5394b26e1c0b0fa":[1,0,0,25,8,4],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_a9015771102b0ab21da20a0684fe6a88a.html#a9015771102b0ab21da20a0684fe6a88a":[1,0,0,25,8,3],
-"classCqrs_1_1WebApi_1_1HttpResponseMessage.html":[1,0,0,25,9],
-"classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub.html":[1,0,0,25,4,0,2]
+"classCqrs_1_1WebApi_1_1HelpPageConfig_a9015771102b0ab21da20a0684fe6a88a.html#a9015771102b0ab21da20a0684fe6a88a":[1,0,0,25,8,3]
 };

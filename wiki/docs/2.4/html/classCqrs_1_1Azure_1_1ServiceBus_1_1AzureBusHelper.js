@@ -1,6 +1,6 @@
 var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper =
 [
-    [ "AzureBusHelper", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_af4ca8255d3eb87180c5e24996e1f6e15.html#af4ca8255d3eb87180c5e24996e1f6e15", null ],
+    [ "AzureBusHelper", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_aed54a79efffdf9799a3baae46c2b7fb4.html#aed54a79efffdf9799a3baae46c2b7fb4", null ],
     [ "DefaultReceiveCommand", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ae35c260f46f8aa7ba928815187b9088e.html#ae35c260f46f8aa7ba928815187b9088e", null ],
     [ "DefaultReceiveEvent", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a0139f99e393214427b9a711bf27cae40.html#a0139f99e393214427b9a711bf27cae40", null ],
     [ "PrepareAndValidateCommand< TCommand >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a4d03f55a58a018fbbf6fd518ad9b24f8.html#a4d03f55a58a018fbbf6fd518ad9b24f8", null ],
@@ -21,5 +21,5 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper =
     [ "DependencyResolver", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a39d23fe045229940190c71577a49b715.html#a39d23fe045229940190c71577a49b715", null ],
     [ "Logger", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_afc8a2a2592bbd8332d1f7dcafc4de5eb.html#afc8a2a2592bbd8332d1f7dcafc4de5eb", null ],
     [ "MessageSerialiser", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a6bb1cf0ca846ef1589a3b54a1cff17ed.html#a6bb1cf0ca846ef1589a3b54a1cff17ed", null ],
-    [ "Signer", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ae01bc83b9283d35b4ecf3087503846d1.html#ae01bc83b9283d35b4ecf3087503846d1", null ]
+    [ "Signer", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ab7901a2e7cdeb4010126506a6c301d00.html#ab7901a2e7cdeb4010126506a6c301d00", null ]
 ];

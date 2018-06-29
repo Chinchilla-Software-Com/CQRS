@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-25 08:28:09</td>
+            <td class="headerValue">2018-06-29 14:24:52</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -101,7 +101,7 @@
 <span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      44 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AzureBusHelper{TAuthenticationToken}&quot;/&gt;.
 <span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      46 </span><span class="lineCov">          1 :                 public AzureBusHelper(IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IBusHelper busHelper, IConfigurationManager configurationManager, IDependencyResolver dependencyResolver)</span>
+<span class="lineNum">      46 </span><span class="lineCov">          1 :                 public AzureBusHelper(IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IBusHelper busHelper, IHashAlgorithmFactory hashAlgorithmFactory, IConfigurationManager configurationManager, IDependencyResolver dependencyResolver)</span>
 <span class="lineNum">      47 </span>            :                 {
 <span class="lineNum">      48 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
 <span class="lineNum">      49 </span>            :                         CorrelationIdHelper = correlationIdHelper;
@@ -110,7 +110,7 @@
 <span class="lineNum">      52 </span>            :                         BusHelper = busHelper;
 <span class="lineNum">      53 </span>            :                         DependencyResolver = dependencyResolver;
 <span class="lineNum">      54 </span>            :                         ConfigurationManager = configurationManager;
-<span class="lineNum">      55 </span>            :                         Signer = new SHA512CryptoServiceProvider();
+<span class="lineNum">      55 </span>            :                         Signer = hashAlgorithmFactory;
 <span class="lineNum">      56 </span>            :                 }
 <span class="lineNum">      57 </span>            : 
 <span class="lineNum">      58 </span>            :                 /// &lt;summary&gt;
@@ -154,9 +154,9 @@
 <span class="lineNum">      96 </span>            :                 protected const string DefaultMessagesShouldRefreshConfigurationKey = &quot;Cqrs.Azure.Messages.ShouldRefresh&quot;;
 <span class="lineNum">      97 </span>            : 
 <span class="lineNum">      98 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      99 </span>            :                 /// The &lt;see cref=&quot;HashAlgorithm&quot;/&gt; to use to sign messages.
+<span class="lineNum">      99 </span>            :                 /// The &lt;see cref=&quot;IHashAlgorithmFactory&quot;/&gt; to use to sign messages.
 <span class="lineNum">     100 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     101 </span>            :                 protected HashAlgorithm Signer { get; private set; }
+<span class="lineNum">     101 </span>            :                 protected IHashAlgorithmFactory Signer { get; private set; }
 <span class="lineNum">     102 </span>            : 
 <span class="lineNum">     103 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     104 </span>            :                 /// Prepares a &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; to be sent specifying the framework it is sent via.
@@ -635,51 +635,52 @@
 <span class="lineNum">     577 </span>            :                                 // see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security&lt;/remarks&gt;
 <span class="lineNum">     578 </span>            :                                 string configurationKey = string.Format(&quot;{0}.SigningToken&quot;, typeName);
 <span class="lineNum">     579 </span>            :                                 string signingToken;
-<span class="lineNum">     580 </span>            :                                 if (ConfigurationManager.TryGetSetting(configurationKey, out signingToken) &amp;&amp; !string.IsNullOrWhiteSpace(signingToken))
-<span class="lineNum">     581 </span>            :                                         using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(&quot;{0}{1}&quot;, signingToken, messageBody))))
-<span class="lineNum">     582 </span>            :                                                 messageIsValid = signature == Convert.ToBase64String(Signer.ComputeHash(hashStream));
-<span class="lineNum">     583 </span>            :                                 if (!messageIsValid &amp;&amp; ConfigurationManager.TryGetSetting(signingTokenConfigurationKey, out signingToken) &amp;&amp; !string.IsNullOrWhiteSpace(signingToken))
-<span class="lineNum">     584 </span>            :                                         using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(&quot;{0}{1}&quot;, signingToken, messageBody))))
-<span class="lineNum">     585 </span>            :                                                 messageIsValid = signature == Convert.ToBase64String(Signer.ComputeHash(hashStream));
-<span class="lineNum">     586 </span>            :                                 if (!messageIsValid)
-<span class="lineNum">     587 </span>            :                                         using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(&quot;{0}{1}&quot;, Guid.Empty.ToString(&quot;N&quot;), messageBody))))
-<span class="lineNum">     588 </span>            :                                                 messageIsValid = signature == Convert.ToBase64String(Signer.ComputeHash(hashStream));
-<span class="lineNum">     589 </span>            :                                 if (!messageIsValid)
-<span class="lineNum">     590 </span>            :                                         throw new UnAuthorisedMessageReceivedException(typeName, messageId, identifyMessage);
-<span class="lineNum">     591 </span>            :                         }
-<span class="lineNum">     592 </span>            :                 }
-<span class="lineNum">     593 </span>            : 
-<span class="lineNum">     594 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     595 </span>            :                 /// Manually registers the provided &lt;paramref name=&quot;handler&quot;/&gt; 
-<span class="lineNum">     596 </span>            :                 /// on the provided &lt;paramref name=&quot;routeManger&quot;/&gt;
-<span class="lineNum">     597 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     598 </span>            :                 /// &lt;typeparam name=&quot;TMessage&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IMessage&quot;/&gt; the &lt;paramref name=&quot;handler&quot;/&gt; can handle.&lt;/typeparam&gt;
-<span class="lineNum">     599 </span><span class="lineCov">          1 :                 public virtual void RegisterHandler&lt;TMessage&gt;(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
-<span class="lineNum">     600 </span>            :                         where TMessage : IMessage
-<span class="lineNum">     601 </span>            :                 {
-<span class="lineNum">     602 </span>            :                         Action&lt;TMessage&gt; registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
-<span class="lineNum">     603 </span>            : 
-<span class="lineNum">     604 </span>            :                         routeManger.RegisterHandler(registerableHandler, targetedType);
-<span class="lineNum">     605 </span>            : 
-<span class="lineNum">     606 </span>            :                         telemetryHelper.TrackEvent(string.Format(&quot;Cqrs/RegisterHandler/{0}&quot;, typeof(TMessage).FullName), new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Bus&quot; } });
-<span class="lineNum">     607 </span>            :                         telemetryHelper.Flush();
-<span class="lineNum">     608 </span>            :                 }
-<span class="lineNum">     609 </span>            : 
-<span class="lineNum">     610 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     611 </span>            :                 /// Register an event handler that will listen and respond to all events.
-<span class="lineNum">     612 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     613 </span><span class="lineCov">          1 :                 public virtual void RegisterGlobalEventHandler&lt;TMessage&gt;(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action&lt;TMessage&gt; handler, bool holdMessageLock = true)</span>
-<span class="lineNum">     614 </span>            :                         where TMessage : IMessage
-<span class="lineNum">     615 </span>            :                 {
-<span class="lineNum">     616 </span>            :                         Action&lt;TMessage&gt; registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
-<span class="lineNum">     617 </span>            : 
-<span class="lineNum">     618 </span>            :                         routeManger.RegisterGlobalEventHandler(registerableHandler);
-<span class="lineNum">     619 </span>            : 
-<span class="lineNum">     620 </span>            :                         telemetryHelper.TrackEvent(string.Format(&quot;Cqrs/RegisterGlobalEventHandler/{0}&quot;, typeof(TMessage).FullName), new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Bus&quot; } });
-<span class="lineNum">     621 </span>            :                         telemetryHelper.Flush();
-<span class="lineNum">     622 </span>            :                 }
-<span class="lineNum">     623 </span>            :         }
-<span class="lineNum">     624 </span>            : }
+<span class="lineNum">     580 </span>            :                                 HashAlgorithm signer = Signer.Create();
+<span class="lineNum">     581 </span>            :                                 if (ConfigurationManager.TryGetSetting(configurationKey, out signingToken) &amp;&amp; !string.IsNullOrWhiteSpace(signingToken))
+<span class="lineNum">     582 </span>            :                                         using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(&quot;{0}{1}&quot;, signingToken, messageBody))))
+<span class="lineNum">     583 </span>            :                                                 messageIsValid = signature == Convert.ToBase64String(signer.ComputeHash(hashStream));
+<span class="lineNum">     584 </span>            :                                 if (!messageIsValid &amp;&amp; ConfigurationManager.TryGetSetting(signingTokenConfigurationKey, out signingToken) &amp;&amp; !string.IsNullOrWhiteSpace(signingToken))
+<span class="lineNum">     585 </span>            :                                         using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(&quot;{0}{1}&quot;, signingToken, messageBody))))
+<span class="lineNum">     586 </span>            :                                                 messageIsValid = signature == Convert.ToBase64String(signer.ComputeHash(hashStream));
+<span class="lineNum">     587 </span>            :                                 if (!messageIsValid)
+<span class="lineNum">     588 </span>            :                                         using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(&quot;{0}{1}&quot;, Guid.Empty.ToString(&quot;N&quot;), messageBody))))
+<span class="lineNum">     589 </span>            :                                                 messageIsValid = signature == Convert.ToBase64String(signer.ComputeHash(hashStream));
+<span class="lineNum">     590 </span>            :                                 if (!messageIsValid)
+<span class="lineNum">     591 </span>            :                                         throw new UnAuthorisedMessageReceivedException(typeName, messageId, identifyMessage);
+<span class="lineNum">     592 </span>            :                         }
+<span class="lineNum">     593 </span>            :                 }
+<span class="lineNum">     594 </span>            : 
+<span class="lineNum">     595 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     596 </span>            :                 /// Manually registers the provided &lt;paramref name=&quot;handler&quot;/&gt; 
+<span class="lineNum">     597 </span>            :                 /// on the provided &lt;paramref name=&quot;routeManger&quot;/&gt;
+<span class="lineNum">     598 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     599 </span>            :                 /// &lt;typeparam name=&quot;TMessage&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IMessage&quot;/&gt; the &lt;paramref name=&quot;handler&quot;/&gt; can handle.&lt;/typeparam&gt;
+<span class="lineNum">     600 </span><span class="lineCov">          1 :                 public virtual void RegisterHandler&lt;TMessage&gt;(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
+<span class="lineNum">     601 </span>            :                         where TMessage : IMessage
+<span class="lineNum">     602 </span>            :                 {
+<span class="lineNum">     603 </span>            :                         Action&lt;TMessage&gt; registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
+<span class="lineNum">     604 </span>            : 
+<span class="lineNum">     605 </span>            :                         routeManger.RegisterHandler(registerableHandler, targetedType);
+<span class="lineNum">     606 </span>            : 
+<span class="lineNum">     607 </span>            :                         telemetryHelper.TrackEvent(string.Format(&quot;Cqrs/RegisterHandler/{0}&quot;, typeof(TMessage).FullName), new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Bus&quot; } });
+<span class="lineNum">     608 </span>            :                         telemetryHelper.Flush();
+<span class="lineNum">     609 </span>            :                 }
+<span class="lineNum">     610 </span>            : 
+<span class="lineNum">     611 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     612 </span>            :                 /// Register an event handler that will listen and respond to all events.
+<span class="lineNum">     613 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     614 </span><span class="lineCov">          1 :                 public virtual void RegisterGlobalEventHandler&lt;TMessage&gt;(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action&lt;TMessage&gt; handler, bool holdMessageLock = true)</span>
+<span class="lineNum">     615 </span>            :                         where TMessage : IMessage
+<span class="lineNum">     616 </span>            :                 {
+<span class="lineNum">     617 </span>            :                         Action&lt;TMessage&gt; registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
+<span class="lineNum">     618 </span>            : 
+<span class="lineNum">     619 </span>            :                         routeManger.RegisterGlobalEventHandler(registerableHandler);
+<span class="lineNum">     620 </span>            : 
+<span class="lineNum">     621 </span>            :                         telemetryHelper.TrackEvent(string.Format(&quot;Cqrs/RegisterGlobalEventHandler/{0}&quot;, typeof(TMessage).FullName), new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Bus&quot; } });
+<span class="lineNum">     622 </span>            :                         telemetryHelper.Flush();
+<span class="lineNum">     623 </span>            :                 }
+<span class="lineNum">     624 </span>            :         }
+<span class="lineNum">     625 </span>            : }
 </pre>
       </td>
     </tr>

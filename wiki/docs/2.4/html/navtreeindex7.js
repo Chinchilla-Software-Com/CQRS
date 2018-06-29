@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbSnapshotStoreConnectionStringFactory_a84a0a9bfa7319b87dde12633e2e0c364.html#a84a0a9bfa7319b87dde12633e2e0c364":[1,0,0,17,2,7,3],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbSnapshotStoreConnectionStringFactory_a8aa88ef4e6b5d0d2608987ff6211d159.html#a8aa88ef4e6b5d0d2608987ff6211d159":[1,0,0,17,2,7,4],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbSnapshotStoreConnectionStringFactory_abe5f66b50fd726fac198836a54e8437b.html#abe5f66b50fd726fac198836a54e8437b":[1,0,0,17,2,7,1],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbSnapshotStoreConnectionStringFactory_ac7887125d11922bce590cc541fc84e62.html#ac7887125d11922bce590cc541fc84e62":[1,0,0,17,2,7,2],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbSnapshotStoreConnectionStringFactory_ae98d3531ef7434f0a60568f5a76c684c.html#ae98d3531ef7434f0a60568f5a76c684c":[1,0,0,17,2,7,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX7 =
 "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_a806a400a3eec26d81ab200a425ef6121.html#a806a400a3eec26d81ab200a425ef6121":[1,0,0,18,1,2,1,0,1,1],
 "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_ab80bf02927363075fc0be6cd180a3398.html#ab80bf02927363075fc0be6cd180a3398":[1,0,0,18,1,2,1,0,1,2],
 "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventPublisherModule.html":[1,0,0,18,1,2,1,0,2],
-"classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureQueuedEventBusReceiverModule.html":[1,0,0,18,1,2,1,0,3],
-"classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureQueuedEventBusReceiverModule_a12f2d9690d8632d636dc569b800f8d3c.html#a12f2d9690d8632d636dc569b800f8d3c":[1,0,0,18,1,2,1,0,3,0],
-"classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1SimplifiedNinjectWcf.html":[1,0,0,18,1,3,0,0]
+"classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureQueuedEventBusReceiverModule.html":[1,0,0,18,1,2,1,0,3]
 };
