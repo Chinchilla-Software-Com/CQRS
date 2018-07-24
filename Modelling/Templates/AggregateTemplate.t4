@@ -790,10 +790,10 @@ switch(aggregateTechnology)
 		{
 			Logger.LogDebug("Entered", "<#= className #>/<#= relationshipName #>");
 <#
-			var activity = this.Element.Package.OwnedElements
-				.Where(x => x is IActivity)
-				.Cast<IActivity>()
-				.SingleOrDefault(x => x.Name == relationshipName);
+		var activity = this.Element.Package.OwnedElements
+			.Where(x => x is IActivity)
+			.Cast<IActivity>()
+			.SingleOrDefault(x => x.Name == relationshipName || x.Name == string.Format("{0}.{1}", className, relationshipName));
 
 			if (activity != null)
 			{

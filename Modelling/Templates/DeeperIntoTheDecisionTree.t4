@@ -34,13 +34,18 @@ protected string DeeperIntoTheDecisionTree(IActivityNode node, int depth, string
 				OnMethodSignatures.AppendFormat("{0}{1} {2}", (i == 0) ? string.Empty : ", ", GetFullDisplayType(relationshipProperty), GetLowercaseFirstCharacter(relationshipProperty.Name));
 				#><#+ Write((i == 0) ? string.Empty : ", "); #><#+ Write(GetLowercaseFirstCharacter(relationshipProperty.Name)); #><#+
 			}
-				OnMethodSignatures.AppendLine(", ref " + @event.Name + " " + GetLowercaseFirstCharacter(@event.Name) + "Event);");
-#>, ref <#+ Write(GetLowercaseFirstCharacter(@event.Name)); #>Event);
+			if (relationshipProperties.Any())
+			{
+				OnMethodSignatures.Append(", ");
+#>, <#+
+			}
+			OnMethodSignatures.AppendLine("ref " + @event.Name + " " + GetLowercaseFirstCharacter(@event.Name) + "Event);");
+#>ref <#+ Write(GetLowercaseFirstCharacter(@event.Name)); #>Event);
 <#+ ManualIndent(depth); #>if (<#+ Write(GetLowercaseFirstCharacter(@event.Name)); #>Event != null)
 <#+ ManualIndent(depth); #>{
-<#+ ManualIndent(depth); #>	Log.LogDebug("Pre", "<#+ Write(className + "/" + methodName); #>/ApplyChange/Decision<#+ Write(edgeName); #>Matched/<#+ Write(@event.Name); #>");
+<#+ ManualIndent(depth); #>	Logger.LogDebug("Pre", "<#+ Write(className + "/" + methodName); #>/ApplyChange/Decision<#+ Write(edgeName); #>Matched/<#+ Write(@event.Name); #>");
 <#+ ManualIndent(depth); #>	ApplyChange(<#+ Write(GetLowercaseFirstCharacter(@event.Name)); #>Event);
-<#+ ManualIndent(depth); #>	Log.LogDebug("Post", "<#+ Write(className + "/" + methodName); #>/ApplyChange/Decision<#+ Write(edgeName); #>Matched/<#+ Write(@event.Name); #>");
+<#+ ManualIndent(depth); #>	Logger.LogDebug("Post", "<#+ Write(className + "/" + methodName); #>/ApplyChange/Decision<#+ Write(edgeName); #>Matched/<#+ Write(@event.Name); #>");
 <#+ ManualIndent(depth); #>}
 <#+
 			return OnMethodSignatures.ToString();
@@ -53,6 +58,15 @@ protected string DeeperIntoTheDecisionTree(IActivityNode node, int depth, string
 			.Select(edge => edge.Target)
 			.Cast<IDecisionNode>()
 			.SingleOrDefault();
+	if (decisionNode == null)
+	{
+		var sendSignalActionNode = node.Outgoings
+			.Where(edge => edge.Target is ISendSignalAction)
+			.Select(edge => edge.Target)
+			.Cast<ISendSignalAction>()
+			.SingleOrDefault();
+		OnMethodSignatures.Append(DeeperIntoTheDecisionTree(sendSignalActionNode, depth, className, methodName, relationshipProperties, null, edgeName));
+	}
 	if (decisionNode != null)
 	{
 		foreach (IActivityEdge edge in decisionNode.Outgoings.OrderByDescending(x => x.Guard))
@@ -69,7 +83,7 @@ protected string DeeperIntoTheDecisionTree(IActivityNode node, int depth, string
 #>
 	
 <#+ ManualIndent(depth); #>bool isDecision<#+ Write(thisEdgeName); #>AMatch = <#+ Write(operation); #>;
-<#+ ManualIndent(depth); #>Log.LogDebug("Pre", "<#+ Write(className + "/" + methodName); #>/Decision<#+ Write(thisEdgeName); #>IsAMatch");
+<#+ ManualIndent(depth); #>Logger.LogDebug("Pre", "<#+ Write(className + "/" + methodName); #>/Decision<#+ Write(thisEdgeName); #>IsAMatch");
 <#+ ManualIndent(depth); #>On<#+ Write(methodName); #>Decision<#+ Write(thisEdgeName); #>IsAMatch(<#+
 				OnMethodSignatures.AppendLine();
 				OnMethodSignatures.AppendFormat("		partial void On{0}Decision{1}IsAMatch(", methodName, thisEdgeName);
@@ -82,10 +96,10 @@ protected string DeeperIntoTheDecisionTree(IActivityNode node, int depth, string
 				}
 				OnMethodSignatures.AppendLine(", ref bool isDecision" + thisEdgeName + "AMatch);");
 #>, ref isDecision<#+ Write(thisEdgeName); #>AMatch);
-<#+ ManualIndent(depth); #>Log.LogDebug("Post", "<#+ Write(className + "/" + methodName); #>/Decision<#+ Write(thisEdgeName); #>IsAMatch");
+<#+ ManualIndent(depth); #>Logger.LogDebug("Post", "<#+ Write(className + "/" + methodName); #>/Decision<#+ Write(thisEdgeName); #>IsAMatch");
 <#+ ManualIndent(depth); #>if (isDecision<#+ Write(thisEdgeName); #>AMatch)
 <#+ ManualIndent(depth); #>{
-<#+ ManualIndent(depth); #>	Log.LogDebug("Matched", "<#+ Write(className + "/" + methodName); #>/Decision<#+ Write(thisEdgeName); #>");
+<#+ ManualIndent(depth); #>	Logger.LogDebug("Matched", "<#+ Write(className + "/" + methodName); #>/Decision<#+ Write(thisEdgeName); #>");
 <#+
 				OnMethodSignatures.Append(DeeperIntoTheDecisionTree(edge.Target, depth + 1, className, methodName, relationshipProperties, null, thisEdgeName));
 #>
@@ -100,7 +114,7 @@ protected string DeeperIntoTheDecisionTree(IActivityNode node, int depth, string
 #>
 <#+ ManualIndent(depth); #>else
 <#+ ManualIndent(depth); #>{
-<#+ ManualIndent(depth); #>	Log.LogDebug("Not Matched", "<#+ Write(className + "/" + methodName); #>/Decision<#+ Write(thisEdgeName); #>");
+<#+ ManualIndent(depth); #>	Logger.LogDebug("Not Matched", "<#+ Write(className + "/" + methodName); #>/Decision<#+ Write(thisEdgeName); #>");
 <#+
 				OnMethodSignatures.Append(DeeperIntoTheDecisionTree(edge.Target, depth + 1, className, methodName, relationshipProperties, null, edgeName ?? "Not"));
 #>
