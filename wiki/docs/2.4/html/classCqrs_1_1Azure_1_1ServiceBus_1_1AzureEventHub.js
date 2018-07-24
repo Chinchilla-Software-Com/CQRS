@@ -1,6 +1,6 @@
 var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub =
 [
-    [ "AzureEventHub", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_adef2c26639ae4a7725c397da7fd90000.html#adef2c26639ae4a7725c397da7fd90000", null ],
+    [ "AzureEventHub", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b548165ac5b1e3d0312af5c62e3c6cd.html#a2b548165ac5b1e3d0312af5c62e3c6cd", null ],
     [ "ApplyReceiverMessageHandler", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af2efc497815828b6fe0b4d6621bc8b41.html#af2efc497815828b6fe0b4d6621bc8b41", null ],
     [ "CheckHubExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac62e15208566056ffad05f46a303de8f.html#ac62e15208566056ffad05f46a303de8f", null ],
     [ "CheckPrivateHubExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a5eea5010c95290cb4081679538a06555.html#a5eea5010c95290cb4081679538a06555", null ],
@@ -35,7 +35,7 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub =
     [ "PublicEventHubNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3ef1f56ad3de3bf8337f68e73627fab2.html#a3ef1f56ad3de3bf8337f68e73627fab2", null ],
     [ "ReceiverMessageHandler", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8c9faa7096d72a45803e6e63a1b3cf30.html#a8c9faa7096d72a45803e6e63a1b3cf30", null ],
     [ "ReceiverMessageHandlerOptions", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad3a0c2f32d5771fb1f4420fc33c75968.html#ad3a0c2f32d5771fb1f4420fc33c75968", null ],
-    [ "Signer", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a7e8b703c53a0a3978fdaa28dc64c4d1e.html#a7e8b703c53a0a3978fdaa28dc64c4d1e", null ],
+    [ "Signer", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a001a89909f92a45909cb95c2c0acf9fa.html#a001a89909f92a45909cb95c2c0acf9fa", null ],
     [ "SigningTokenConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a7dcae4b6bcae81e87b935892e6687382.html#a7dcae4b6bcae81e87b935892e6687382", null ],
     [ "StorageConnectionString", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b102538e8b72f9990578fa3bcbe4c12.html#a2b102538e8b72f9990578fa3bcbe4c12", null ],
     [ "TelemetryHelper", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a4cf19edac088c5ea74408398b3dfd4a2.html#a4cf19edac088c5ea74408398b3dfd4a2", null ]

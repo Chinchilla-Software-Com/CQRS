@@ -90,6 +90,7 @@ var searchData=
   ['ihandler',['IHandler',['../interfaceCqrs_1_1Messages_1_1IHandler.html',1,'Cqrs::Messages']]],
   ['ihandlerregistrar',['IHandlerRegistrar',['../interfaceCqrs_1_1Bus_1_1IHandlerRegistrar.html',1,'Cqrs::Bus']]],
   ['ihandlerresolver',['IHandlerResolver',['../interfaceCqrs_1_1Akka_1_1Configuration_1_1IHandlerResolver.html',1,'Cqrs::Akka::Configuration']]],
+  ['ihashalgorithmfactory',['IHashAlgorithmFactory',['../interfaceCqrs_1_1Bus_1_1IHashAlgorithmFactory.html',1,'Cqrs::Bus']]],
   ['imessage',['IMessage',['../interfaceCqrs_1_1Messages_1_1IMessage.html',1,'Cqrs::Messages']]],
   ['imessagehandler',['IMessageHandler',['../interfaceCqrs_1_1Messages_1_1IMessageHandler.html',1,'Cqrs::Messages']]],
   ['imessagehandler_3c_20tcommand_20_3e',['IMessageHandler&lt; TCommand &gt;',['../interfaceCqrs_1_1Messages_1_1IMessageHandler.html',1,'Cqrs::Messages']]],

@@ -207,6 +207,9 @@ var hierarchy =
       ] ],
       [ "Cqrs.Bus.RouteManager", "classCqrs_1_1Bus_1_1RouteManager.html", null ]
     ] ],
+    [ "Cqrs.Bus.IHashAlgorithmFactory", "interfaceCqrs_1_1Bus_1_1IHashAlgorithmFactory.html", [
+      [ "Cqrs.Bus.BuiltInHashAlgorithmFactory", "classCqrs_1_1Bus_1_1BuiltInHashAlgorithmFactory.html", null ]
+    ] ],
     [ "Cqrs.Bus.IStoreLastEventProcessed", "interfaceCqrs_1_1Bus_1_1IStoreLastEventProcessed.html", [
       [ "Cqrs.Bus.FileBasedLastEventProcessedStore", "classCqrs_1_1Bus_1_1FileBasedLastEventProcessedStore.html", null ],
       [ "Cqrs.EventStore.Bus.EventStoreBasedLastEventProcessedStore", "classCqrs_1_1EventStore_1_1Bus_1_1EventStoreBasedLastEventProcessedStore.html", null ]

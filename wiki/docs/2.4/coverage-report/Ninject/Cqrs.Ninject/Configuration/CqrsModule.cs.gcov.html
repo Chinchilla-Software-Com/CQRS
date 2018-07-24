@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-25 08:28:09</td>
+            <td class="headerValue">2018-06-29 14:24:52</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -189,169 +189,172 @@
 <span class="lineNum">     131 </span>            :                         Bind&lt;IQueryFactory&gt;()
 <span class="lineNum">     132 </span>            :                                 .To&lt;QueryFactory&gt;()
 <span class="lineNum">     133 </span>            :                                 .InSingletonScope();
-<span class="lineNum">     134 </span>            :                 }
-<span class="lineNum">     135 </span>            : 
-<span class="lineNum">     136 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     137 </span>            :                 /// Register the all components for the &lt;see cref=&quot;ILogger&quot;/&gt;
-<span class="lineNum">     138 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     139 </span><span class="lineCov">          1 :                 public virtual void RegisterLoggerComponents()</span>
-<span class="lineNum">     140 </span>            :                 {
-<span class="lineNum">     141 </span>            :                         bool isCorrelationIdHelperBound = Kernel.GetBindings(typeof(ICorrelationIdHelper)).Any();
-<span class="lineNum">     142 </span>            :                         if (!isCorrelationIdHelperBound)
-<span class="lineNum">     143 </span>            :                         {
-<span class="lineNum">     144 </span>            :                                 if (SetupForWeb)
-<span class="lineNum">     145 </span>            :                                         Bind&lt;ICorrelationIdHelper&gt;()
-<span class="lineNum">     146 </span>            :                                                 .To&lt;WebCorrelationIdHelper&gt;()
-<span class="lineNum">     147 </span>            :                                                 .InSingletonScope();
-<span class="lineNum">     148 </span>            :                                 else
-<span class="lineNum">     149 </span>            :                                         Bind&lt;ICorrelationIdHelper&gt;()
-<span class="lineNum">     150 </span>            :                                                 .To&lt;CorrelationIdHelper&gt;()
-<span class="lineNum">     151 </span>            :                                                 .InSingletonScope();
-<span class="lineNum">     152 </span>            :                         }
-<span class="lineNum">     153 </span>            : 
-<span class="lineNum">     154 </span>            :                         bool isLoggerBound = Kernel.GetBindings(typeof(ILogger)).Any();
-<span class="lineNum">     155 </span>            :                         if (!isLoggerBound)
-<span class="lineNum">     156 </span>            :                         {
-<span class="lineNum">     157 </span>            :                                 if (SetupForSqlLogging)
-<span class="lineNum">     158 </span>            :                                         Bind&lt;ILogger&gt;()
-<span class="lineNum">     159 </span>            :                                                 .To&lt;SqlLogger&gt;()
-<span class="lineNum">     160 </span>            :                                                 .InSingletonScope();
-<span class="lineNum">     161 </span>            :                                 else
-<span class="lineNum">     162 </span>            :                                         Bind&lt;ILogger&gt;()
-<span class="lineNum">     163 </span>            :                                                 .To&lt;ConsoleLogger&gt;()
-<span class="lineNum">     164 </span>            :                                                 .InSingletonScope();
-<span class="lineNum">     165 </span>            :                         }
-<span class="lineNum">     166 </span>            : 
-<span class="lineNum">     167 </span>            :                         bool isLoggerSettingsBound = Kernel.GetBindings(typeof(ILoggerSettings)).Any();
-<span class="lineNum">     168 </span>            :                         if (!isLoggerSettingsBound)
-<span class="lineNum">     169 </span>            :                         {
-<span class="lineNum">     170 </span>            :                                 Bind&lt;ILoggerSettings&gt;()
-<span class="lineNum">     171 </span>            :                                         .To&lt;LoggerSettings&gt;()
-<span class="lineNum">     172 </span>            :                                         .InSingletonScope();
-<span class="lineNum">     173 </span>            :                         }
-<span class="lineNum">     174 </span>            : 
-<span class="lineNum">     175 </span>            :                         bool isTelemetryHelperBound = Kernel.GetBindings(typeof(ITelemetryHelper)).Any();
-<span class="lineNum">     176 </span>            :                         if (!isTelemetryHelperBound)
-<span class="lineNum">     177 </span>            :                         {
-<span class="lineNum">     178 </span>            :                                 Bind&lt;ITelemetryHelper&gt;()
-<span class="lineNum">     179 </span>            :                                         .To&lt;NullTelemetryHelper&gt;()
-<span class="lineNum">     180 </span>            :                                         .InSingletonScope();
-<span class="lineNum">     181 </span>            :                         }
-<span class="lineNum">     182 </span>            :                 }
-<span class="lineNum">     183 </span>            : 
-<span class="lineNum">     184 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     185 </span>            :                 /// Register the all &lt;see cref=&quot;IAutomapHelper&quot;/&gt;
-<span class="lineNum">     186 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     187 </span><span class="lineCov">          1 :                 public virtual void RegisterAutomapperComponents()</span>
-<span class="lineNum">     188 </span>            :                 {
-<span class="lineNum">     189 </span>            :                         Bind&lt;IAutomapHelper&gt;()
-<span class="lineNum">     190 </span>            :                                 .To&lt;AutomapHelper&gt;()
-<span class="lineNum">     191 </span>            :                                 .InSingletonScope();
-<span class="lineNum">     192 </span>            :                 }
-<span class="lineNum">     193 </span>            : 
-<span class="lineNum">     194 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     195 </span>            :                 /// Register the all repositories
-<span class="lineNum">     196 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     197 </span><span class="lineCov">          1 :                 public virtual void RegisterRepositories()</span>
-<span class="lineNum">     198 </span>            :                 {
-<span class="lineNum">     199 </span>            :                 }
-<span class="lineNum">     200 </span>            : 
-<span class="lineNum">     201 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     202 </span>            :                 /// Register the all query builders
-<span class="lineNum">     203 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     204 </span><span class="lineCov">          1 :                 public virtual void RegisterQueryBuilders()</span>
-<span class="lineNum">     205 </span>            :                 {
-<span class="lineNum">     206 </span>            :                 }
-<span class="lineNum">     207 </span>            : 
-<span class="lineNum">     208 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     209 </span>            :                 /// Register the all services
-<span class="lineNum">     210 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     211 </span><span class="lineCov">          1 :                 public virtual void RegisterServices()</span>
-<span class="lineNum">     212 </span>            :                 {
-<span class="lineNum">     213 </span>            :                 }
-<span class="lineNum">     214 </span>            : 
-<span class="lineNum">     215 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     216 </span>            :                 /// Register the all caching stuffs
-<span class="lineNum">     217 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     218 </span><span class="lineCov">          1 :                 public virtual void RegisterCaching()</span>
-<span class="lineNum">     219 </span>            :                 {
-<span class="lineNum">     220 </span>            :                         if (Kernel.GetBindings(typeof (IContextItemCollectionFactory)).Any())
-<span class="lineNum">     221 </span>            :                                 Kernel.Unbind&lt;IContextItemCollectionFactory&gt;();
-<span class="lineNum">     222 </span>            :                         if (Kernel.GetBindings(typeof(IContextItemCollection)).Any())
-<span class="lineNum">     223 </span>            :                                 Kernel.Unbind&lt;IContextItemCollection&gt;();
-<span class="lineNum">     224 </span>            :                         if (SetupForWeb)
-<span class="lineNum">     225 </span>            :                         {
-<span class="lineNum">     226 </span>            :                                 Bind&lt;IContextItemCollectionFactory&gt;()
-<span class="lineNum">     227 </span>            :                                         .To&lt;WebContextItemCollectionFactory&gt;()
-<span class="lineNum">     228 </span>            :                                         .InSingletonScope();
-<span class="lineNum">     229 </span>            :                                 Bind&lt;IContextItemCollection&gt;()
-<span class="lineNum">     230 </span>            :                                         .To&lt;WebContextItemCollection&gt;()
+<span class="lineNum">     134 </span>            :                         Bind&lt;IHashAlgorithmFactory&gt;()
+<span class="lineNum">     135 </span>            :                                 .To&lt;BuiltInHashAlgorithmFactory&gt;()
+<span class="lineNum">     136 </span>            :                                 .InSingletonScope();
+<span class="lineNum">     137 </span>            :                 }
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     140 </span>            :                 /// Register the all components for the &lt;see cref=&quot;ILogger&quot;/&gt;
+<span class="lineNum">     141 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     142 </span><span class="lineCov">          1 :                 public virtual void RegisterLoggerComponents()</span>
+<span class="lineNum">     143 </span>            :                 {
+<span class="lineNum">     144 </span>            :                         bool isCorrelationIdHelperBound = Kernel.GetBindings(typeof(ICorrelationIdHelper)).Any();
+<span class="lineNum">     145 </span>            :                         if (!isCorrelationIdHelperBound)
+<span class="lineNum">     146 </span>            :                         {
+<span class="lineNum">     147 </span>            :                                 if (SetupForWeb)
+<span class="lineNum">     148 </span>            :                                         Bind&lt;ICorrelationIdHelper&gt;()
+<span class="lineNum">     149 </span>            :                                                 .To&lt;WebCorrelationIdHelper&gt;()
+<span class="lineNum">     150 </span>            :                                                 .InSingletonScope();
+<span class="lineNum">     151 </span>            :                                 else
+<span class="lineNum">     152 </span>            :                                         Bind&lt;ICorrelationIdHelper&gt;()
+<span class="lineNum">     153 </span>            :                                                 .To&lt;CorrelationIdHelper&gt;()
+<span class="lineNum">     154 </span>            :                                                 .InSingletonScope();
+<span class="lineNum">     155 </span>            :                         }
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            :                         bool isLoggerBound = Kernel.GetBindings(typeof(ILogger)).Any();
+<span class="lineNum">     158 </span>            :                         if (!isLoggerBound)
+<span class="lineNum">     159 </span>            :                         {
+<span class="lineNum">     160 </span>            :                                 if (SetupForSqlLogging)
+<span class="lineNum">     161 </span>            :                                         Bind&lt;ILogger&gt;()
+<span class="lineNum">     162 </span>            :                                                 .To&lt;SqlLogger&gt;()
+<span class="lineNum">     163 </span>            :                                                 .InSingletonScope();
+<span class="lineNum">     164 </span>            :                                 else
+<span class="lineNum">     165 </span>            :                                         Bind&lt;ILogger&gt;()
+<span class="lineNum">     166 </span>            :                                                 .To&lt;ConsoleLogger&gt;()
+<span class="lineNum">     167 </span>            :                                                 .InSingletonScope();
+<span class="lineNum">     168 </span>            :                         }
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            :                         bool isLoggerSettingsBound = Kernel.GetBindings(typeof(ILoggerSettings)).Any();
+<span class="lineNum">     171 </span>            :                         if (!isLoggerSettingsBound)
+<span class="lineNum">     172 </span>            :                         {
+<span class="lineNum">     173 </span>            :                                 Bind&lt;ILoggerSettings&gt;()
+<span class="lineNum">     174 </span>            :                                         .To&lt;LoggerSettings&gt;()
+<span class="lineNum">     175 </span>            :                                         .InSingletonScope();
+<span class="lineNum">     176 </span>            :                         }
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span>            :                         bool isTelemetryHelperBound = Kernel.GetBindings(typeof(ITelemetryHelper)).Any();
+<span class="lineNum">     179 </span>            :                         if (!isTelemetryHelperBound)
+<span class="lineNum">     180 </span>            :                         {
+<span class="lineNum">     181 </span>            :                                 Bind&lt;ITelemetryHelper&gt;()
+<span class="lineNum">     182 </span>            :                                         .To&lt;NullTelemetryHelper&gt;()
+<span class="lineNum">     183 </span>            :                                         .InSingletonScope();
+<span class="lineNum">     184 </span>            :                         }
+<span class="lineNum">     185 </span>            :                 }
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     188 </span>            :                 /// Register the all &lt;see cref=&quot;IAutomapHelper&quot;/&gt;
+<span class="lineNum">     189 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     190 </span><span class="lineCov">          1 :                 public virtual void RegisterAutomapperComponents()</span>
+<span class="lineNum">     191 </span>            :                 {
+<span class="lineNum">     192 </span>            :                         Bind&lt;IAutomapHelper&gt;()
+<span class="lineNum">     193 </span>            :                                 .To&lt;AutomapHelper&gt;()
+<span class="lineNum">     194 </span>            :                                 .InSingletonScope();
+<span class="lineNum">     195 </span>            :                 }
+<span class="lineNum">     196 </span>            : 
+<span class="lineNum">     197 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     198 </span>            :                 /// Register the all repositories
+<span class="lineNum">     199 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     200 </span><span class="lineCov">          1 :                 public virtual void RegisterRepositories()</span>
+<span class="lineNum">     201 </span>            :                 {
+<span class="lineNum">     202 </span>            :                 }
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     205 </span>            :                 /// Register the all query builders
+<span class="lineNum">     206 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     207 </span><span class="lineCov">          1 :                 public virtual void RegisterQueryBuilders()</span>
+<span class="lineNum">     208 </span>            :                 {
+<span class="lineNum">     209 </span>            :                 }
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     212 </span>            :                 /// Register the all services
+<span class="lineNum">     213 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     214 </span><span class="lineCov">          1 :                 public virtual void RegisterServices()</span>
+<span class="lineNum">     215 </span>            :                 {
+<span class="lineNum">     216 </span>            :                 }
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     219 </span>            :                 /// Register the all caching stuffs
+<span class="lineNum">     220 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     221 </span><span class="lineCov">          1 :                 public virtual void RegisterCaching()</span>
+<span class="lineNum">     222 </span>            :                 {
+<span class="lineNum">     223 </span>            :                         if (Kernel.GetBindings(typeof (IContextItemCollectionFactory)).Any())
+<span class="lineNum">     224 </span>            :                                 Kernel.Unbind&lt;IContextItemCollectionFactory&gt;();
+<span class="lineNum">     225 </span>            :                         if (Kernel.GetBindings(typeof(IContextItemCollection)).Any())
+<span class="lineNum">     226 </span>            :                                 Kernel.Unbind&lt;IContextItemCollection&gt;();
+<span class="lineNum">     227 </span>            :                         if (SetupForWeb)
+<span class="lineNum">     228 </span>            :                         {
+<span class="lineNum">     229 </span>            :                                 Bind&lt;IContextItemCollectionFactory&gt;()
+<span class="lineNum">     230 </span>            :                                         .To&lt;WebContextItemCollectionFactory&gt;()
 <span class="lineNum">     231 </span>            :                                         .InSingletonScope();
-<span class="lineNum">     232 </span>            :                         }
-<span class="lineNum">     233 </span>            :                         else
-<span class="lineNum">     234 </span>            :                         {
-<span class="lineNum">     235 </span>            :                                 Bind&lt;IContextItemCollectionFactory&gt;()
-<span class="lineNum">     236 </span>            :                                         .To&lt;ThreadedContextItemCollectionFactory&gt;()
-<span class="lineNum">     237 </span>            :                                         .InSingletonScope();
-<span class="lineNum">     238 </span>            :                                 Bind&lt;IContextItemCollection&gt;()
-<span class="lineNum">     239 </span>            :                                         .To&lt;ThreadedContextItemCollection&gt;()
+<span class="lineNum">     232 </span>            :                                 Bind&lt;IContextItemCollection&gt;()
+<span class="lineNum">     233 </span>            :                                         .To&lt;WebContextItemCollection&gt;()
+<span class="lineNum">     234 </span>            :                                         .InSingletonScope();
+<span class="lineNum">     235 </span>            :                         }
+<span class="lineNum">     236 </span>            :                         else
+<span class="lineNum">     237 </span>            :                         {
+<span class="lineNum">     238 </span>            :                                 Bind&lt;IContextItemCollectionFactory&gt;()
+<span class="lineNum">     239 </span>            :                                         .To&lt;ThreadedContextItemCollectionFactory&gt;()
 <span class="lineNum">     240 </span>            :                                         .InSingletonScope();
-<span class="lineNum">     241 </span>            :                         }
-<span class="lineNum">     242 </span>            :                 }
-<span class="lineNum">     243 </span>            : 
-<span class="lineNum">     244 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     245 </span>            :                 /// Register the all Cqrs requirements
-<span class="lineNum">     246 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     247 </span><span class="lineCov">          1 :                 public virtual void RegisterCqrsRequirements()</span>
-<span class="lineNum">     248 </span>            :                 {
-<span class="lineNum">     249 </span>            :                         Bind&lt;IUnitOfWork&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">     250 </span>            :                                 .To&lt;UnitOfWork&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">     251 </span>            :                                 .InTransientScope();
-<span class="lineNum">     252 </span>            :                         Bind&lt;ISagaUnitOfWork&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">     253 </span>            :                                 .To&lt;SagaUnitOfWork&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">     241 </span>            :                                 Bind&lt;IContextItemCollection&gt;()
+<span class="lineNum">     242 </span>            :                                         .To&lt;ThreadedContextItemCollection&gt;()
+<span class="lineNum">     243 </span>            :                                         .InSingletonScope();
+<span class="lineNum">     244 </span>            :                         }
+<span class="lineNum">     245 </span>            :                 }
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     248 </span>            :                 /// Register the all Cqrs requirements
+<span class="lineNum">     249 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     250 </span><span class="lineCov">          1 :                 public virtual void RegisterCqrsRequirements()</span>
+<span class="lineNum">     251 </span>            :                 {
+<span class="lineNum">     252 </span>            :                         Bind&lt;IUnitOfWork&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">     253 </span>            :                                 .To&lt;UnitOfWork&lt;TAuthenticationToken&gt;&gt;()
 <span class="lineNum">     254 </span>            :                                 .InTransientScope();
-<span class="lineNum">     255 </span>            :                         Bind&lt;IAggregateRepository&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">     256 </span>            :                                 .To&lt;AggregateRepository&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">     257 </span>            :                                 .InSingletonScope();
-<span class="lineNum">     258 </span>            :                         Bind&lt;ISnapshotAggregateRepository&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">     259 </span>            :                                 .To&lt;SnapshotRepository&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">     255 </span>            :                         Bind&lt;ISagaUnitOfWork&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">     256 </span>            :                                 .To&lt;SagaUnitOfWork&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">     257 </span>            :                                 .InTransientScope();
+<span class="lineNum">     258 </span>            :                         Bind&lt;IAggregateRepository&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">     259 </span>            :                                 .To&lt;AggregateRepository&lt;TAuthenticationToken&gt;&gt;()
 <span class="lineNum">     260 </span>            :                                 .InSingletonScope();
-<span class="lineNum">     261 </span>            :                         Bind&lt;ISagaRepository&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">     262 </span>            :                                 .To&lt;SagaRepository&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">     261 </span>            :                         Bind&lt;ISnapshotAggregateRepository&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">     262 </span>            :                                 .To&lt;SnapshotRepository&lt;TAuthenticationToken&gt;&gt;()
 <span class="lineNum">     263 </span>            :                                 .InSingletonScope();
-<span class="lineNum">     264 </span>            :                         Bind&lt;IAggregateFactory&gt;()
-<span class="lineNum">     265 </span>            :                                 .To&lt;AggregateFactory&gt;()
+<span class="lineNum">     264 </span>            :                         Bind&lt;ISagaRepository&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">     265 </span>            :                                 .To&lt;SagaRepository&lt;TAuthenticationToken&gt;&gt;()
 <span class="lineNum">     266 </span>            :                                 .InSingletonScope();
-<span class="lineNum">     267 </span>            : 
-<span class="lineNum">     268 </span>            :                         Bind&lt;IAuthenticationTokenHelper&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">     269 </span>            :                                 .To&lt;TAuthenticationTokenHelper&gt;()
-<span class="lineNum">     270 </span>            :                                 .InSingletonScope();
-<span class="lineNum">     271 </span>            : 
-<span class="lineNum">     272 </span>            :                         Bind&lt;IStoreLastEventProcessed&gt;()
-<span class="lineNum">     273 </span>            :                                 .To&lt;FileBasedLastEventProcessedStore&gt;()
-<span class="lineNum">     274 </span>            :                                 .InSingletonScope();
-<span class="lineNum">     275 </span>            : 
-<span class="lineNum">     276 </span>            :                         Bind&lt;IBusHelper&gt;()
-<span class="lineNum">     277 </span>            :                                 .To&lt;BusHelper&gt;()
-<span class="lineNum">     278 </span>            :                                 .InSingletonScope();
-<span class="lineNum">     279 </span>            : 
-<span class="lineNum">     280 </span>            :                         if (RegisterDefaultConfigurationManager)
-<span class="lineNum">     281 </span>            :                                 Bind&lt;IConfigurationManager&gt;()
-<span class="lineNum">     282 </span>            :                                         .To&lt;ConfigurationManager&gt;()
-<span class="lineNum">     283 </span>            :                                         .InSingletonScope();
-<span class="lineNum">     284 </span>            : 
-<span class="lineNum">     285 </span>            :                         if (RegisterDefaultSnapshotStrategy)
-<span class="lineNum">     286 </span>            :                                 Bind&lt;ISnapshotStrategy&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">     287 </span>            :                                         .To&lt;DefaultSnapshotStrategy&lt;TAuthenticationToken&gt;&gt;()
-<span class="lineNum">     288 </span>            :                                         .InSingletonScope();
-<span class="lineNum">     289 </span>            : 
-<span class="lineNum">     290 </span>            :                         if (RegisterDefaultSnapshotBuilder)
-<span class="lineNum">     291 </span>            :                                 Bind&lt;ISnapshotBuilder&gt;()
-<span class="lineNum">     292 </span>            :                                         .To&lt;DefaultSnapshotBuilder&gt;()
-<span class="lineNum">     293 </span>            :                                         .InSingletonScope();
-<span class="lineNum">     294 </span>            :                 }
-<span class="lineNum">     295 </span>            :         }
-<span class="lineNum">     296 </span>            : }
+<span class="lineNum">     267 </span>            :                         Bind&lt;IAggregateFactory&gt;()
+<span class="lineNum">     268 </span>            :                                 .To&lt;AggregateFactory&gt;()
+<span class="lineNum">     269 </span>            :                                 .InSingletonScope();
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span>            :                         Bind&lt;IAuthenticationTokenHelper&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">     272 </span>            :                                 .To&lt;TAuthenticationTokenHelper&gt;()
+<span class="lineNum">     273 </span>            :                                 .InSingletonScope();
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span>            :                         Bind&lt;IStoreLastEventProcessed&gt;()
+<span class="lineNum">     276 </span>            :                                 .To&lt;FileBasedLastEventProcessedStore&gt;()
+<span class="lineNum">     277 </span>            :                                 .InSingletonScope();
+<span class="lineNum">     278 </span>            : 
+<span class="lineNum">     279 </span>            :                         Bind&lt;IBusHelper&gt;()
+<span class="lineNum">     280 </span>            :                                 .To&lt;BusHelper&gt;()
+<span class="lineNum">     281 </span>            :                                 .InSingletonScope();
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span>            :                         if (RegisterDefaultConfigurationManager)
+<span class="lineNum">     284 </span>            :                                 Bind&lt;IConfigurationManager&gt;()
+<span class="lineNum">     285 </span>            :                                         .To&lt;ConfigurationManager&gt;()
+<span class="lineNum">     286 </span>            :                                         .InSingletonScope();
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span>            :                         if (RegisterDefaultSnapshotStrategy)
+<span class="lineNum">     289 </span>            :                                 Bind&lt;ISnapshotStrategy&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">     290 </span>            :                                         .To&lt;DefaultSnapshotStrategy&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">     291 </span>            :                                         .InSingletonScope();
+<span class="lineNum">     292 </span>            : 
+<span class="lineNum">     293 </span>            :                         if (RegisterDefaultSnapshotBuilder)
+<span class="lineNum">     294 </span>            :                                 Bind&lt;ISnapshotBuilder&gt;()
+<span class="lineNum">     295 </span>            :                                         .To&lt;DefaultSnapshotBuilder&gt;()
+<span class="lineNum">     296 </span>            :                                         .InSingletonScope();
+<span class="lineNum">     297 </span>            :                 }
+<span class="lineNum">     298 </span>            :         }
+<span class="lineNum">     299 </span>            : }
 </pre>
       </td>
     </tr>
