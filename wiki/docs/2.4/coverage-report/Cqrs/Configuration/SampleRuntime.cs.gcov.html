@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-29 14:24:52</td>
+            <td class="headerValue">2018-08-02 14:21:33</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -78,252 +78,263 @@
 <span class="lineNum">      20 </span>            : using Cqrs.Domain.Factories;
 <span class="lineNum">      21 </span>            : using Cqrs.Events;
 <span class="lineNum">      22 </span>            : using Cqrs.Repositories.Queries;
-<span class="lineNum">      23 </span>            : 
-<span class="lineNum">      24 </span>            : namespace Cqrs.Configuration
-<span class="lineNum">      25 </span>            : {
-<span class="lineNum">      26 </span>            :         /// &lt;summary&gt;
-<span class="lineNum">      27 </span>            :         /// A sample runtime to use in proof of concept projects to get something running very quickly. Doesn't save anything. All data is lost when recycled and may cause terrible memory usage.
-<span class="lineNum">      28 </span>            :         /// &lt;/summary&gt;
-<span class="lineNum">      29 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
-<span class="lineNum">      30 </span>            :         /// &lt;typeparam name=&quot;TCommandHanderOrEventHandler&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of any &lt;see cref=&quot;ICommandHandle&quot;/&gt; or &lt;see cref=&quot;IEventHandler&quot;/&gt;.&lt;/typeparam&gt;
-<span class="lineNum">      31 </span>            :         public class SampleRuntime&lt;TAuthenticationToken, TCommandHanderOrEventHandler&gt;
-<span class="lineNum">      32 </span>            :                 : IDisposable
-<span class="lineNum">      33 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      35 </span>            :                 /// The &lt;see cref=&quot;Func{TResult}&quot;/&gt; used to create the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt;
-<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      37 </span>            :                 protected static Func&lt;IDependencyResolver, IEventStore&lt;TAuthenticationToken&gt;&gt; EventStoreCreator { get; set; }
-<span class="lineNum">      38 </span>            : 
-<span class="lineNum">      39 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      40 </span>            :                 /// A custom dependency resolver.
-<span class="lineNum">      41 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      42 </span>            :                 public static Func&lt;IDependencyResolver, Type, object&gt; CustomResolver { get; set; }
-<span class="lineNum">      43 </span>            : 
-<span class="lineNum">      44 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      45 </span>            :                 /// Instaiance a new instance of the &lt;see cref=&quot;SampleRuntime{TAuthenticationToken,TCommandHanderOrEventHandler}&quot;/&gt;
-<span class="lineNum">      46 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      47 </span><span class="lineCov">          1 :                 public SampleRuntime()</span>
-<span class="lineNum">      48 </span>            :                 {
-<span class="lineNum">      49 </span>            :                         SetEventStoreCreator();
-<span class="lineNum">      50 </span>            :                         StartDependencyResolver();
-<span class="lineNum">      51 </span>            :                         RegisterHandlers();
-<span class="lineNum">      52 </span>            :                 }
-<span class="lineNum">      53 </span>            : 
-<span class="lineNum">      54 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      55 </span>            :                 /// Sets the &lt;see cref=&quot;EventStoreCreator&quot;/&gt; to use &lt;see cref=&quot;InProcessEventStore{TAuthenticationToken}&quot;/&gt;
-<span class="lineNum">      56 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      57 </span><span class="lineCov">          1 :                 protected virtual void SetEventStoreCreator()</span>
-<span class="lineNum">      58 </span>            :                 {
-<span class="lineNum">      59 </span>            :                         EventStoreCreator = dependencyResolver =&gt; new InProcessEventStore&lt;TAuthenticationToken&gt;();
-<span class="lineNum">      60 </span>            :                 }
-<span class="lineNum">      61 </span>            : 
-<span class="lineNum">      62 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      63 </span>            :                 /// Starts the &lt;see cref=&quot;IDependencyResolver&quot;/&gt;.
-<span class="lineNum">      64 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      65 </span><span class="lineCov">          1 :                 protected virtual void StartDependencyResolver()</span>
-<span class="lineNum">      66 </span>            :                 {
-<span class="lineNum">      67 </span>            :                         MockDependencyResolver.Start();
-<span class="lineNum">      68 </span>            :                 }
-<span class="lineNum">      69 </span>            : 
-<span class="lineNum">      70 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      71 </span>            :                 /// Registers the all &lt;see cref=&quot;IEventHandler&quot;/&gt; and &lt;see cref=&quot;ICommandHandle&quot;/&gt;.
-<span class="lineNum">      72 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      73 </span><span class="lineCov">          1 :                 protected virtual void RegisterHandlers()</span>
-<span class="lineNum">      74 </span>            :                 {
-<span class="lineNum">      75 </span>            :                         new BusRegistrar(DependencyResolver.Current)
-<span class="lineNum">      76 </span>            :                                 .Register(typeof(TCommandHanderOrEventHandler));
-<span class="lineNum">      77 </span>            :                 }
-<span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      80 </span>            :                 /// Prints out the statistics of this run such as the number of event raised to the &lt;see cref=&quot;Console&quot;/&gt;.
-<span class="lineNum">      81 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      82 </span><span class="lineCov">          1 :                 public virtual void PrintStatsticsToConsole()</span>
-<span class="lineNum">      83 </span>            :                 {
-<span class="lineNum">      84 </span>            :                         var inProcStore = DependencyResolver.Current.Resolve&lt;IEventStore&lt;TAuthenticationToken&gt;&gt;() as InProcessEventStore&lt;TAuthenticationToken&gt;;
-<span class="lineNum">      85 </span>            :                         if (inProcStore != null)
-<span class="lineNum">      86 </span>            :                         {
-<span class="lineNum">      87 </span>            :                                 var inMemoryDb = typeof(InProcessEventStore&lt;TAuthenticationToken&gt;).GetProperty(&quot;InMemoryDb&quot;, BindingFlags.Instance | BindingFlags.NonPublic).GetValue(inProcStore, null) as IDictionary&lt;Guid, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt;;
-<span class="lineNum">      88 </span>            :                                 Console.WriteLine(&quot;{0:N0} event{1} {2} raised.&quot;, inMemoryDb.Count, inMemoryDb.Count == 1 ? null : &quot;s&quot;, inMemoryDb.Count == 1 ? &quot;was&quot; : &quot;were&quot;);
-<span class="lineNum">      89 </span>            :                         }
-<span class="lineNum">      90 </span>            :                 }
-<span class="lineNum">      91 </span>            : 
-<span class="lineNum">      92 </span>            :                 #region Implementation of IDisposable
-<span class="lineNum">      93 </span>            : 
-<span class="lineNum">      94 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      95 </span>            :                 /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-<span class="lineNum">      96 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      97 </span><span class="lineCov">          1 :                 public void Dispose()</span>
-<span class="lineNum">      98 </span>            :                 {
-<span class="lineNum">      99 </span>            :                         var mockDependencyResolver = (MockDependencyResolver)DependencyResolver.Current;
-<span class="lineNum">     100 </span>            :                         mockDependencyResolver.Dispose();
-<span class="lineNum">     101 </span>            :                 }
-<span class="lineNum">     102 </span>            : 
-<span class="lineNum">     103 </span>            :                 #endregion
-<span class="lineNum">     104 </span>            : 
-<span class="lineNum">     105 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     106 </span>            :                 /// Provides an ability to resolve a minimum known set of objects.
-<span class="lineNum">     107 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     108 </span>            :                 protected class MockDependencyResolver
-<span class="lineNum">     109 </span>            :                         : DependencyResolver
-<span class="lineNum">     110 </span>            :                         , IDisposable
-<span class="lineNum">     111 </span><span class="lineCov">          1 :                 {</span>
-<span class="lineNum">     112 </span>            :                         private IContextItemCollectionFactory ContextFactory { get; set; }
-<span class="lineNum">     113 </span>            : 
-<span class="lineNum">     114 </span>            :                         private ICorrelationIdHelper CorrelationIdHelper { get; set; }
-<span class="lineNum">     115 </span>            : 
-<span class="lineNum">     116 </span>            :                         private IConfigurationManager ConfigurationManager { get; set; }
-<span class="lineNum">     117 </span>            : 
-<span class="lineNum">     118 </span>            :                         private ILogger Logger { get; set; }
-<span class="lineNum">     119 </span>            : 
-<span class="lineNum">     120 </span>            :                         private IEventStore&lt;TAuthenticationToken&gt; EventStore { get; set; }
-<span class="lineNum">     121 </span>            : 
-<span class="lineNum">     122 </span>            :                         private InProcessBus&lt;TAuthenticationToken&gt; Bus { get; set; }
-<span class="lineNum">     123 </span>            : 
-<span class="lineNum">     124 </span>            :                         private IAggregateRepository&lt;TAuthenticationToken&gt; AggregateRepository { get; set; }
-<span class="lineNum">     125 </span>            : 
-<span class="lineNum">     126 </span>            :                         static MockDependencyResolver()
-<span class="lineNum">     127 </span>            :                         {
-<span class="lineNum">     128 </span>            :                                 Current = new MockDependencyResolver();
-<span class="lineNum">     129 </span>            :                         }
-<span class="lineNum">     130 </span>            : 
-<span class="lineNum">     131 </span>            :                         /// &lt;summary&gt;
-<span class="lineNum">     132 </span>            :                         /// Starts the &lt;see cref=&quot;IDependencyResolver&quot;/&gt;.
-<span class="lineNum">     133 </span>            :                         /// &lt;/summary&gt;
-<span class="lineNum">     134 </span><span class="lineCov">          1 :                         public static void Start() { }</span>
-<span class="lineNum">     135 </span>            : 
-<span class="lineNum">     136 </span>            :                         private MockDependencyResolver()
-<span class="lineNum">     137 </span>            :                         {
-<span class="lineNum">     138 </span>            :                                 ContextFactory = new ThreadedContextItemCollectionFactory();
-<span class="lineNum">     139 </span>            :                                 CorrelationIdHelper = new CorrelationIdHelper((ThreadedContextItemCollectionFactory)ContextFactory);
-<span class="lineNum">     140 </span>            :                                 ConfigurationManager = new ConfigurationManager();
-<span class="lineNum">     141 </span>            :                                 Logger = new TraceLogger(new LoggerSettings(), CorrelationIdHelper);
-<span class="lineNum">     142 </span>            :                                 EventStore = EventStoreCreator(this);
-<span class="lineNum">     143 </span>            : 
-<span class="lineNum">     144 </span>            :                                 Bus = new InProcessBus&lt;TAuthenticationToken&gt;
-<span class="lineNum">     145 </span>            :                                 (
-<span class="lineNum">     146 </span>            :                                         (IAuthenticationTokenHelper&lt;TAuthenticationToken&gt;)new DefaultAuthenticationTokenHelper(ContextFactory),
-<span class="lineNum">     147 </span>            :                                         CorrelationIdHelper,
-<span class="lineNum">     148 </span>            :                                         this,
-<span class="lineNum">     149 </span>            :                                         Logger,
-<span class="lineNum">     150 </span>            :                                         ConfigurationManager,
-<span class="lineNum">     151 </span>            :                                         new BusHelper(ConfigurationManager, ContextFactory)
-<span class="lineNum">     152 </span>            :                                 );
-<span class="lineNum">     153 </span>            : 
-<span class="lineNum">     154 </span>            :                                 AggregateRepository = new AggregateRepository&lt;TAuthenticationToken&gt;
-<span class="lineNum">     155 </span>            :                                 (
-<span class="lineNum">     156 </span>            :                                         new AggregateFactory(this, Logger),
-<span class="lineNum">     157 </span>            :                                         EventStore,
-<span class="lineNum">     158 </span>            :                                         Bus,
-<span class="lineNum">     159 </span>            :                                         CorrelationIdHelper,
-<span class="lineNum">     160 </span>            :                                         ConfigurationManager
-<span class="lineNum">     161 </span>            :                                 );
-<span class="lineNum">     162 </span>            :                         }
-<span class="lineNum">     163 </span>            : 
-<span class="lineNum">     164 </span>            :                         #region Implementation of IDependencyResolver
-<span class="lineNum">     165 </span>            : 
-<span class="lineNum">     166 </span>            :                         /// &lt;summary&gt;
-<span class="lineNum">     167 </span>            :                         /// Resolves a single instance for the specified &lt;typeparamref name=&quot;T&quot;/&gt;.
-<span class="lineNum">     168 </span>            :                         ///             Different implementations may return the first or last instance found or may return an exception.
-<span class="lineNum">     169 </span>            :                         /// &lt;/summary&gt;
-<span class="lineNum">     170 </span>            :                         /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;T:System.Type&quot;/&gt; of object you want to resolve.&lt;/typeparam&gt;
-<span class="lineNum">     171 </span>            :                         /// &lt;returns&gt;
-<span class="lineNum">     172 </span>            :                         /// An instance of type &lt;typeparamref name=&quot;T&quot;/&gt;.
-<span class="lineNum">     173 </span>            :                         /// &lt;/returns&gt;
-<span class="lineNum">     174 </span><span class="lineCov">          1 :                         public override T Resolve&lt;T&gt;()</span>
-<span class="lineNum">     175 </span>            :                         {
-<span class="lineNum">     176 </span>            :                                 return (T)Resolve(typeof(T));
-<span class="lineNum">     177 </span>            :                         }
-<span class="lineNum">     178 </span>            : 
-<span class="lineNum">     179 </span>            :                         /// &lt;summary&gt;
-<span class="lineNum">     180 </span>            :                         /// Resolves a single instance for the specified &lt;paramref name=&quot;type&quot;/&gt;.
-<span class="lineNum">     181 </span>            :                         ///             Different implementations may return the first or last instance found or may return an exception.
-<span class="lineNum">     182 </span>            :                         /// &lt;/summary&gt;
-<span class="lineNum">     183 </span>            :                         /// &lt;param name=&quot;type&quot;&gt;The &lt;see cref=&quot;T:System.Type&quot;/&gt; of object you want to resolve.&lt;/param&gt;
-<span class="lineNum">     184 </span>            :                         /// &lt;returns&gt;
-<span class="lineNum">     185 </span>            :                         /// An instance of type &lt;paramref name=&quot;type&quot;/&gt;.
-<span class="lineNum">     186 </span>            :                         /// &lt;/returns&gt;
-<span class="lineNum">     187 </span><span class="lineCov">          1 :                         public override object Resolve(Type type)</span>
-<span class="lineNum">     188 </span>            :                         {
-<span class="lineNum">     189 </span>            :                                 if (type == typeof(IContextItemCollectionFactory))
-<span class="lineNum">     190 </span>            :                                         return ContextFactory;
-<span class="lineNum">     191 </span>            :                                 if (type == typeof(ICorrelationIdHelper))
-<span class="lineNum">     192 </span>            :                                         return CorrelationIdHelper;
-<span class="lineNum">     193 </span>            :                                 if (type == typeof(IConfigurationManager))
-<span class="lineNum">     194 </span>            :                                         return ConfigurationManager;
-<span class="lineNum">     195 </span>            :                                 if (type == typeof(IEventHandlerRegistrar))
-<span class="lineNum">     196 </span>            :                                         return Bus;
-<span class="lineNum">     197 </span>            :                                 if (type == typeof(ICommandHandlerRegistrar))
-<span class="lineNum">     198 </span>            :                                         return Bus;
-<span class="lineNum">     199 </span>            :                                 if (type == typeof(IEventPublisher&lt;TAuthenticationToken&gt;))
-<span class="lineNum">     200 </span>            :                                         return Bus;
-<span class="lineNum">     201 </span>            :                                 if (type == typeof(ICommandPublisher&lt;TAuthenticationToken&gt;))
-<span class="lineNum">     202 </span>            :                                         return Bus;
-<span class="lineNum">     203 </span>            :                                 if (type == typeof(IEventReceiver&lt;TAuthenticationToken&gt;))
-<span class="lineNum">     204 </span>            :                                         return Bus;
-<span class="lineNum">     205 </span>            :                                 if (type == typeof(ICommandReceiver&lt;TAuthenticationToken&gt;))
-<span class="lineNum">     206 </span>            :                                         return Bus;
-<span class="lineNum">     207 </span>            :                                 if (type == typeof(IEventReceiver))
-<span class="lineNum">     208 </span>            :                                         return Bus;
-<span class="lineNum">     209 </span>            :                                 if (type == typeof(ICommandReceiver))
-<span class="lineNum">     210 </span>            :                                         return Bus;
-<span class="lineNum">     211 </span>            :                                 if (type == typeof(ILogger))
-<span class="lineNum">     212 </span>            :                                         return Logger;
-<span class="lineNum">     213 </span>            :                                 if (type == typeof(IUnitOfWork&lt;TAuthenticationToken&gt;))
-<span class="lineNum">     214 </span>            :                                         return new UnitOfWork&lt;TAuthenticationToken&gt;(AggregateRepository);
-<span class="lineNum">     215 </span>            :                                 if (type == typeof(IAggregateRepository&lt;TAuthenticationToken&gt;))
-<span class="lineNum">     216 </span>            :                                         return AggregateRepository;
-<span class="lineNum">     217 </span>            :                                 if (type == typeof(IEventStore&lt;TAuthenticationToken&gt;))
-<span class="lineNum">     218 </span>            :                                         return EventStore;
-<span class="lineNum">     219 </span>            :                                 if (type == typeof(IEventBuilder&lt;TAuthenticationToken&gt;))
-<span class="lineNum">     220 </span>            :                                         return new DefaultEventBuilder&lt;TAuthenticationToken&gt;();
-<span class="lineNum">     221 </span>            :                                 if (type == typeof(IEventDeserialiser&lt;TAuthenticationToken&gt;))
-<span class="lineNum">     222 </span>            :                                         return new EventDeserialiser&lt;TAuthenticationToken&gt;();
-<span class="lineNum">     223 </span>            :                                 if (type == typeof(IAuthenticationTokenHelper&lt;TAuthenticationToken&gt;))
-<span class="lineNum">     224 </span>            :                                         return new AuthenticationTokenHelper&lt;TAuthenticationToken&gt;(ContextFactory);
-<span class="lineNum">     225 </span>            :                                 if (type == typeof(IQueryFactory))
-<span class="lineNum">     226 </span>            :                                         return new QueryFactory(this);
-<span class="lineNum">     227 </span>            : 
-<span class="lineNum">     228 </span>            :                                 if (typeof(ICommandHandle).IsAssignableFrom(type))
-<span class="lineNum">     229 </span>            :                                         return Activator.CreateInstance(type, Resolve&lt;IUnitOfWork&lt;TAuthenticationToken&gt;&gt;());
-<span class="lineNum">     230 </span>            :                                 if (typeof(IEventHandler).IsAssignableFrom(type))
-<span class="lineNum">     231 </span>            :                                         return Activator.CreateInstance(type);
-<span class="lineNum">     232 </span>            : 
-<span class="lineNum">     233 </span>            :                                 if (CustomResolver != null)
-<span class="lineNum">     234 </span>            :                                 {
-<span class="lineNum">     235 </span>            :                                         try
-<span class="lineNum">     236 </span>            :                                         {
-<span class="lineNum">     237 </span>            :                                                 object result = CustomResolver(this, type);
-<span class="lineNum">     238 </span>            :                                                 if (result != null)
-<span class="lineNum">     239 </span>            :                                                         return result;
-<span class="lineNum">     240 </span>            :                                         }
-<span class="lineNum">     241 </span>            :                                         catch { /* */ }
-<span class="lineNum">     242 </span>            :                                 }
+<span class="lineNum">      23 </span>            : using Cqrs.Snapshots;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : namespace Cqrs.Configuration
+<span class="lineNum">      26 </span>            : {
+<span class="lineNum">      27 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      28 </span>            :         /// A sample runtime to use in proof of concept projects to get something running very quickly. Doesn't save anything. All data is lost when recycled and may cause terrible memory usage.
+<span class="lineNum">      29 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      30 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      31 </span>            :         /// &lt;typeparam name=&quot;TCommandHanderOrEventHandler&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of any &lt;see cref=&quot;ICommandHandle&quot;/&gt; or &lt;see cref=&quot;IEventHandler&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      32 </span>            :         public class SampleRuntime&lt;TAuthenticationToken, TCommandHanderOrEventHandler&gt;
+<span class="lineNum">      33 </span>            :                 : IDisposable
+<span class="lineNum">      34 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      35 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      36 </span>            :                 /// The &lt;see cref=&quot;Func{TResult}&quot;/&gt; used to create the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      37 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      38 </span>            :                 protected static Func&lt;IDependencyResolver, IEventStore&lt;TAuthenticationToken&gt;&gt; EventStoreCreator { get; set; }
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      41 </span>            :                 /// A custom dependency resolver.
+<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      43 </span>            :                 public static Func&lt;IDependencyResolver, Type, object&gt; CustomResolver { get; set; }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      46 </span>            :                 /// Instaiance a new instance of the &lt;see cref=&quot;SampleRuntime{TAuthenticationToken,TCommandHanderOrEventHandler}&quot;/&gt;
+<span class="lineNum">      47 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      48 </span><span class="lineCov">          1 :                 public SampleRuntime()</span>
+<span class="lineNum">      49 </span>            :                 {
+<span class="lineNum">      50 </span>            :                         SetEventStoreCreator();
+<span class="lineNum">      51 </span>            :                         StartDependencyResolver();
+<span class="lineNum">      52 </span>            :                         RegisterHandlers();
+<span class="lineNum">      53 </span>            :                 }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      56 </span>            :                 /// Sets the &lt;see cref=&quot;EventStoreCreator&quot;/&gt; to use &lt;see cref=&quot;InProcessEventStore{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      57 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      58 </span><span class="lineCov">          1 :                 protected virtual void SetEventStoreCreator()</span>
+<span class="lineNum">      59 </span>            :                 {
+<span class="lineNum">      60 </span>            :                         EventStoreCreator = dependencyResolver =&gt; new InProcessEventStore&lt;TAuthenticationToken&gt;();
+<span class="lineNum">      61 </span>            :                 }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      64 </span>            :                 /// Starts the &lt;see cref=&quot;IDependencyResolver&quot;/&gt;.
+<span class="lineNum">      65 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      66 </span><span class="lineCov">          1 :                 protected virtual void StartDependencyResolver()</span>
+<span class="lineNum">      67 </span>            :                 {
+<span class="lineNum">      68 </span>            :                         MockDependencyResolver.Start();
+<span class="lineNum">      69 </span>            :                 }
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      72 </span>            :                 /// Registers the all &lt;see cref=&quot;IEventHandler&quot;/&gt; and &lt;see cref=&quot;ICommandHandle&quot;/&gt;.
+<span class="lineNum">      73 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      74 </span><span class="lineCov">          1 :                 protected virtual void RegisterHandlers()</span>
+<span class="lineNum">      75 </span>            :                 {
+<span class="lineNum">      76 </span>            :                         new BusRegistrar(DependencyResolver.Current)
+<span class="lineNum">      77 </span>            :                                 .Register(typeof(TCommandHanderOrEventHandler));
+<span class="lineNum">      78 </span>            :                 }
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      81 </span>            :                 /// Prints out the statistics of this run such as the number of event raised to the &lt;see cref=&quot;Console&quot;/&gt;.
+<span class="lineNum">      82 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      83 </span><span class="lineCov">          1 :                 public virtual void PrintStatsticsToConsole()</span>
+<span class="lineNum">      84 </span>            :                 {
+<span class="lineNum">      85 </span>            :                         var inProcStore = DependencyResolver.Current.Resolve&lt;IEventStore&lt;TAuthenticationToken&gt;&gt;() as InProcessEventStore&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      86 </span>            :                         if (inProcStore != null)
+<span class="lineNum">      87 </span>            :                         {
+<span class="lineNum">      88 </span>            :                                 var inMemoryDb = typeof(InProcessEventStore&lt;TAuthenticationToken&gt;).GetProperty(&quot;InMemoryDb&quot;, BindingFlags.Instance | BindingFlags.NonPublic).GetValue(inProcStore, null) as IDictionary&lt;Guid, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt;;
+<span class="lineNum">      89 </span>            :                                 Console.WriteLine(&quot;{0:N0} event{1} {2} raised.&quot;, inMemoryDb.Count, inMemoryDb.Count == 1 ? null : &quot;s&quot;, inMemoryDb.Count == 1 ? &quot;was&quot; : &quot;were&quot;);
+<span class="lineNum">      90 </span>            :                         }
+<span class="lineNum">      91 </span>            :                 }
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :                 #region Implementation of IDisposable
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      96 </span>            :                 /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+<span class="lineNum">      97 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      98 </span><span class="lineCov">          1 :                 public void Dispose()</span>
+<span class="lineNum">      99 </span>            :                 {
+<span class="lineNum">     100 </span>            :                         var mockDependencyResolver = (MockDependencyResolver)DependencyResolver.Current;
+<span class="lineNum">     101 </span>            :                         mockDependencyResolver.Dispose();
+<span class="lineNum">     102 </span>            :                 }
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            :                 #endregion
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     107 </span>            :                 /// Provides an ability to resolve a minimum known set of objects.
+<span class="lineNum">     108 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     109 </span>            :                 protected class MockDependencyResolver
+<span class="lineNum">     110 </span>            :                         : DependencyResolver
+<span class="lineNum">     111 </span>            :                         , IDisposable
+<span class="lineNum">     112 </span><span class="lineCov">          1 :                 {</span>
+<span class="lineNum">     113 </span>            :                         private IContextItemCollectionFactory ContextFactory { get; set; }
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            :                         private ICorrelationIdHelper CorrelationIdHelper { get; set; }
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span>            :                         private IConfigurationManager ConfigurationManager { get; set; }
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span>            :                         private ILogger Logger { get; set; }
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :                         private IEventStore&lt;TAuthenticationToken&gt; EventStore { get; set; }
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :                         private InProcessBus&lt;TAuthenticationToken&gt; Bus { get; set; }
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :                         private IAggregateRepository&lt;TAuthenticationToken&gt; AggregateRepository { get; set; }
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            :                         private ISnapshotAggregateRepository&lt;TAuthenticationToken&gt; SnapshotAggregateRepository { get; set; }
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            :                         static MockDependencyResolver()
+<span class="lineNum">     130 </span>            :                         {
+<span class="lineNum">     131 </span>            :                                 Current = new MockDependencyResolver();
+<span class="lineNum">     132 </span>            :                         }
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     135 </span>            :                         /// Starts the &lt;see cref=&quot;IDependencyResolver&quot;/&gt;.
+<span class="lineNum">     136 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     137 </span><span class="lineCov">          1 :                         public static void Start() { }</span>
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :                         private MockDependencyResolver()
+<span class="lineNum">     140 </span>            :                         {
+<span class="lineNum">     141 </span>            :                                 ContextFactory = new ThreadedContextItemCollectionFactory();
+<span class="lineNum">     142 </span>            :                                 CorrelationIdHelper = new CorrelationIdHelper((ThreadedContextItemCollectionFactory)ContextFactory);
+<span class="lineNum">     143 </span>            :                                 ConfigurationManager = new ConfigurationManager();
+<span class="lineNum">     144 </span>            :                                 Logger = new TraceLogger(new LoggerSettings(), CorrelationIdHelper);
+<span class="lineNum">     145 </span>            :                                 EventStore = EventStoreCreator(this);
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            :                                 Bus = new InProcessBus&lt;TAuthenticationToken&gt;
+<span class="lineNum">     148 </span>            :                                 (
+<span class="lineNum">     149 </span>            :                                         (IAuthenticationTokenHelper&lt;TAuthenticationToken&gt;)new DefaultAuthenticationTokenHelper(ContextFactory),
+<span class="lineNum">     150 </span>            :                                         CorrelationIdHelper,
+<span class="lineNum">     151 </span>            :                                         this,
+<span class="lineNum">     152 </span>            :                                         Logger,
+<span class="lineNum">     153 </span>            :                                         ConfigurationManager,
+<span class="lineNum">     154 </span>            :                                         new BusHelper(ConfigurationManager, ContextFactory)
+<span class="lineNum">     155 </span>            :                                 );
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            :                                 AggregateRepository = new AggregateRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">     158 </span>            :                                 (
+<span class="lineNum">     159 </span>            :                                         new AggregateFactory(this, Logger),
+<span class="lineNum">     160 </span>            :                                         EventStore,
+<span class="lineNum">     161 </span>            :                                         Bus,
+<span class="lineNum">     162 </span>            :                                         CorrelationIdHelper,
+<span class="lineNum">     163 </span>            :                                         ConfigurationManager
+<span class="lineNum">     164 </span>            :                                 );
+<span class="lineNum">     165 </span>            :                                 SnapshotAggregateRepository = new SnapshotRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">     166 </span>            :                                 (
+<span class="lineNum">     167 </span>            :                                         new SqlSnapshotStore(ConfigurationManager, new SnapshotDeserialiser(), Logger, CorrelationIdHelper, new DefaultSnapshotBuilder()),
+<span class="lineNum">     168 </span>            :                                         new DefaultSnapshotStrategy&lt;TAuthenticationToken&gt;(),
+<span class="lineNum">     169 </span>            :                                         AggregateRepository,
+<span class="lineNum">     170 </span>            :                                         EventStore,
+<span class="lineNum">     171 </span>            :                                         new AggregateFactory(this, Logger)
+<span class="lineNum">     172 </span>            :                                 );
+<span class="lineNum">     173 </span>            :                         }
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            :                         #region Implementation of IDependencyResolver
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     178 </span>            :                         /// Resolves a single instance for the specified &lt;typeparamref name=&quot;T&quot;/&gt;.
+<span class="lineNum">     179 </span>            :                         ///             Different implementations may return the first or last instance found or may return an exception.
+<span class="lineNum">     180 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     181 </span>            :                         /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;T:System.Type&quot;/&gt; of object you want to resolve.&lt;/typeparam&gt;
+<span class="lineNum">     182 </span>            :                         /// &lt;returns&gt;
+<span class="lineNum">     183 </span>            :                         /// An instance of type &lt;typeparamref name=&quot;T&quot;/&gt;.
+<span class="lineNum">     184 </span>            :                         /// &lt;/returns&gt;
+<span class="lineNum">     185 </span><span class="lineCov">          1 :                         public override T Resolve&lt;T&gt;()</span>
+<span class="lineNum">     186 </span>            :                         {
+<span class="lineNum">     187 </span>            :                                 return (T)Resolve(typeof(T));
+<span class="lineNum">     188 </span>            :                         }
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     191 </span>            :                         /// Resolves a single instance for the specified &lt;paramref name=&quot;type&quot;/&gt;.
+<span class="lineNum">     192 </span>            :                         ///             Different implementations may return the first or last instance found or may return an exception.
+<span class="lineNum">     193 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     194 </span>            :                         /// &lt;param name=&quot;type&quot;&gt;The &lt;see cref=&quot;T:System.Type&quot;/&gt; of object you want to resolve.&lt;/param&gt;
+<span class="lineNum">     195 </span>            :                         /// &lt;returns&gt;
+<span class="lineNum">     196 </span>            :                         /// An instance of type &lt;paramref name=&quot;type&quot;/&gt;.
+<span class="lineNum">     197 </span>            :                         /// &lt;/returns&gt;
+<span class="lineNum">     198 </span><span class="lineCov">          1 :                         public override object Resolve(Type type)</span>
+<span class="lineNum">     199 </span>            :                         {
+<span class="lineNum">     200 </span>            :                                 if (type == typeof(IContextItemCollectionFactory))
+<span class="lineNum">     201 </span>            :                                         return ContextFactory;
+<span class="lineNum">     202 </span>            :                                 if (type == typeof(ICorrelationIdHelper))
+<span class="lineNum">     203 </span>            :                                         return CorrelationIdHelper;
+<span class="lineNum">     204 </span>            :                                 if (type == typeof(IConfigurationManager))
+<span class="lineNum">     205 </span>            :                                         return ConfigurationManager;
+<span class="lineNum">     206 </span>            :                                 if (type == typeof(IEventHandlerRegistrar))
+<span class="lineNum">     207 </span>            :                                         return Bus;
+<span class="lineNum">     208 </span>            :                                 if (type == typeof(ICommandHandlerRegistrar))
+<span class="lineNum">     209 </span>            :                                         return Bus;
+<span class="lineNum">     210 </span>            :                                 if (type == typeof(IEventPublisher&lt;TAuthenticationToken&gt;))
+<span class="lineNum">     211 </span>            :                                         return Bus;
+<span class="lineNum">     212 </span>            :                                 if (type == typeof(ICommandPublisher&lt;TAuthenticationToken&gt;))
+<span class="lineNum">     213 </span>            :                                         return Bus;
+<span class="lineNum">     214 </span>            :                                 if (type == typeof(IEventReceiver&lt;TAuthenticationToken&gt;))
+<span class="lineNum">     215 </span>            :                                         return Bus;
+<span class="lineNum">     216 </span>            :                                 if (type == typeof(ICommandReceiver&lt;TAuthenticationToken&gt;))
+<span class="lineNum">     217 </span>            :                                         return Bus;
+<span class="lineNum">     218 </span>            :                                 if (type == typeof(IEventReceiver))
+<span class="lineNum">     219 </span>            :                                         return Bus;
+<span class="lineNum">     220 </span>            :                                 if (type == typeof(ICommandReceiver))
+<span class="lineNum">     221 </span>            :                                         return Bus;
+<span class="lineNum">     222 </span>            :                                 if (type == typeof(ILogger))
+<span class="lineNum">     223 </span>            :                                         return Logger;
+<span class="lineNum">     224 </span>            :                                 if (type == typeof(IUnitOfWork&lt;TAuthenticationToken&gt;))
+<span class="lineNum">     225 </span>            :                                         return new UnitOfWork&lt;TAuthenticationToken&gt;(SnapshotAggregateRepository, AggregateRepository);
+<span class="lineNum">     226 </span>            :                                 if (type == typeof(IAggregateRepository&lt;TAuthenticationToken&gt;))
+<span class="lineNum">     227 </span>            :                                         return AggregateRepository;
+<span class="lineNum">     228 </span>            :                                 if (type == typeof(IEventStore&lt;TAuthenticationToken&gt;))
+<span class="lineNum">     229 </span>            :                                         return EventStore;
+<span class="lineNum">     230 </span>            :                                 if (type == typeof(IEventBuilder&lt;TAuthenticationToken&gt;))
+<span class="lineNum">     231 </span>            :                                         return new DefaultEventBuilder&lt;TAuthenticationToken&gt;();
+<span class="lineNum">     232 </span>            :                                 if (type == typeof(IEventDeserialiser&lt;TAuthenticationToken&gt;))
+<span class="lineNum">     233 </span>            :                                         return new EventDeserialiser&lt;TAuthenticationToken&gt;();
+<span class="lineNum">     234 </span>            :                                 if (type == typeof(IAuthenticationTokenHelper&lt;TAuthenticationToken&gt;))
+<span class="lineNum">     235 </span>            :                                         return new AuthenticationTokenHelper&lt;TAuthenticationToken&gt;(ContextFactory);
+<span class="lineNum">     236 </span>            :                                 if (type == typeof(IQueryFactory))
+<span class="lineNum">     237 </span>            :                                         return new QueryFactory(this);
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span>            :                                 if (typeof(ICommandHandle).IsAssignableFrom(type))
+<span class="lineNum">     240 </span>            :                                         return Activator.CreateInstance(type, Resolve&lt;IUnitOfWork&lt;TAuthenticationToken&gt;&gt;());
+<span class="lineNum">     241 </span>            :                                 if (typeof(IEventHandler).IsAssignableFrom(type))
+<span class="lineNum">     242 </span>            :                                         return Activator.CreateInstance(type);
 <span class="lineNum">     243 </span>            : 
-<span class="lineNum">     244 </span>            :                                 return Activator.CreateInstance(type);
-<span class="lineNum">     245 </span>            :                         }
-<span class="lineNum">     246 </span>            : 
-<span class="lineNum">     247 </span>            :                         #endregion
-<span class="lineNum">     248 </span>            : 
-<span class="lineNum">     249 </span>            :                         #region Implementation of IDisposable
-<span class="lineNum">     250 </span>            : 
-<span class="lineNum">     251 </span>            :                         /// &lt;summary&gt;
-<span class="lineNum">     252 </span>            :                         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-<span class="lineNum">     253 </span>            :                         /// &lt;/summary&gt;
-<span class="lineNum">     254 </span><span class="lineCov">          1 :                         public void Dispose()</span>
-<span class="lineNum">     255 </span>            :                         {
-<span class="lineNum">     256 </span>            :                                 ContextFactory = null;
-<span class="lineNum">     257 </span>            :                                 CorrelationIdHelper = null;
-<span class="lineNum">     258 </span>            :                                 ConfigurationManager = null;
-<span class="lineNum">     259 </span>            :                                 Logger = null;
-<span class="lineNum">     260 </span>            :                                 EventStore = null;
-<span class="lineNum">     261 </span>            :                                 Bus = null;
-<span class="lineNum">     262 </span>            :                                 AggregateRepository = null;
-<span class="lineNum">     263 </span>            :                         }
-<span class="lineNum">     264 </span>            : 
-<span class="lineNum">     265 </span>            :                         #endregion
-<span class="lineNum">     266 </span>            :                 }
-<span class="lineNum">     267 </span>            :         }
-<span class="lineNum">     268 </span>            : }
+<span class="lineNum">     244 </span>            :                                 if (CustomResolver != null)
+<span class="lineNum">     245 </span>            :                                 {
+<span class="lineNum">     246 </span>            :                                         try
+<span class="lineNum">     247 </span>            :                                         {
+<span class="lineNum">     248 </span>            :                                                 object result = CustomResolver(this, type);
+<span class="lineNum">     249 </span>            :                                                 if (result != null)
+<span class="lineNum">     250 </span>            :                                                         return result;
+<span class="lineNum">     251 </span>            :                                         }
+<span class="lineNum">     252 </span>            :                                         catch { /* */ }
+<span class="lineNum">     253 </span>            :                                 }
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span>            :                                 return Activator.CreateInstance(type);
+<span class="lineNum">     256 </span>            :                         }
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span>            :                         #endregion
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span>            :                         #region Implementation of IDisposable
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     263 </span>            :                         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+<span class="lineNum">     264 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     265 </span><span class="lineCov">          1 :                         public void Dispose()</span>
+<span class="lineNum">     266 </span>            :                         {
+<span class="lineNum">     267 </span>            :                                 ContextFactory = null;
+<span class="lineNum">     268 </span>            :                                 CorrelationIdHelper = null;
+<span class="lineNum">     269 </span>            :                                 ConfigurationManager = null;
+<span class="lineNum">     270 </span>            :                                 Logger = null;
+<span class="lineNum">     271 </span>            :                                 EventStore = null;
+<span class="lineNum">     272 </span>            :                                 Bus = null;
+<span class="lineNum">     273 </span>            :                                 AggregateRepository = null;
+<span class="lineNum">     274 </span>            :                         }
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span>            :                         #endregion
+<span class="lineNum">     277 </span>            :                 }
+<span class="lineNum">     278 </span>            :         }
+<span class="lineNum">     279 </span>            : }
 </pre>
       </td>
     </tr>

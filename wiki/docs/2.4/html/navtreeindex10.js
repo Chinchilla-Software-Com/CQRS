@@ -1,5 +1,12 @@
 var NAVTREEINDEX10 =
 {
+"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_aa62add44755ea01cd6b98a7d5e7a9bd0.html#aa62add44755ea01cd6b98a7d5e7a9bd0":[1,0,0,25,8,0,1],
+"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_aaccd19bfc417660ef3560b5f2742b5a1.html#aaccd19bfc417660ef3560b5f2742b5a1":[1,0,0,25,8,0,3],
+"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_ac58e3523e24fb4c936146839e4a717a9.html#ac58e3523e24fb4c936146839e4a717a9":[1,0,0,25,8,0,9],
+"classCqrs_1_1WebApi_1_1HelpPageConfig_a1596c74d98fd628b646885dcac056cc1.html#a1596c74d98fd628b646885dcac056cc1":[1,0,0,25,8,1],
+"classCqrs_1_1WebApi_1_1HelpPageConfig_a36bf3691c8b3cbe26fa3e72456170271.html#a36bf3691c8b3cbe26fa3e72456170271":[1,0,0,25,8,2],
+"classCqrs_1_1WebApi_1_1HelpPageConfig_a62d6b1d61b668f53f5394b26e1c0b0fa.html#a62d6b1d61b668f53f5394b26e1c0b0fa":[1,0,0,25,8,4],
+"classCqrs_1_1WebApi_1_1HelpPageConfig_a9015771102b0ab21da20a0684fe6a88a.html#a9015771102b0ab21da20a0684fe6a88a":[1,0,0,25,8,3],
 "classCqrs_1_1WebApi_1_1HttpResponseMessage.html":[1,0,0,25,9],
 "classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub.html":[1,0,0,25,4,0,2],
 "classCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1NotificationHub_a0188fd4fea68476ffc3b375482c7b56c.html#a0188fd4fea68476ffc3b375482c7b56c":[1,0,0,25,4,0,2,5],
@@ -47,8 +54,8 @@ var NAVTREEINDEX10 =
 "functions_e.html":[1,3,0,5],
 "functions_enum.html":[1,3,3],
 "functions_f.html":[1,3,0,6],
-"functions_func.html":[1,3,1,0],
 "functions_func.html":[1,3,1],
+"functions_func.html":[1,3,1,0],
 "functions_func_b.html":[1,3,1,1],
 "functions_func_c.html":[1,3,1,2],
 "functions_func_d.html":[1,3,1,3],
@@ -242,12 +249,5 @@ var NAVTREEINDEX10 =
 "interfaceCqrs_1_1Commands_1_1ICommandPublisher_aeeb487ad5686d9c44d214b1daaf7833a.html#aeeb487ad5686d9c44d214b1daaf7833a":[1,0,0,5,6,0],
 "interfaceCqrs_1_1Commands_1_1ICommandPublisher_af0f033c0b949e5650032e4f00b11b595.html#af0f033c0b949e5650032e4f00b11b595":[1,0,0,5,6,1],
 "interfaceCqrs_1_1Commands_1_1ICommandReceiver.html":[1,0,0,5,7],
-"interfaceCqrs_1_1Commands_1_1ICommandSender.html":[1,0,0,5,8],
-"interfaceCqrs_1_1Commands_1_1ICommandSender_a3fb3ec40a3e862f721a7c9204e67e832.html#a3fb3ec40a3e862f721a7c9204e67e832":[1,0,0,5,8,1],
-"interfaceCqrs_1_1Commands_1_1ICommandSender_a551d69f8679399fc0ce0fd99dead507a.html#a551d69f8679399fc0ce0fd99dead507a":[1,0,0,5,8,0],
-"interfaceCqrs_1_1Commands_1_1ICommandValidator.html":[1,0,0,5,9],
-"interfaceCqrs_1_1Commands_1_1ICommandValidator_a8ac558179848dcb0ee56d2c3e7ad8cd9.html#a8ac558179848dcb0ee56d2c3e7ad8cd9":[1,0,0,5,9,0],
-"interfaceCqrs_1_1Commands_1_1ICommandWithIdentity.html":[1,0,0,5,10],
-"interfaceCqrs_1_1Commands_1_1ICommandWithIdentity_ae3a9a077d39c0b87d8bf0f3fa44fd8cd.html#ae3a9a077d39c0b87d8bf0f3fa44fd8cd":[1,0,0,5,10,0],
-"interfaceCqrs_1_1Commands_1_1ICommand_a79acca2013a08295cef32f1917d97e96.html#a79acca2013a08295cef32f1917d97e96":[1,0,0,5,3,1]
+"interfaceCqrs_1_1Commands_1_1ICommandSender.html":[1,0,0,5,8]
 };
