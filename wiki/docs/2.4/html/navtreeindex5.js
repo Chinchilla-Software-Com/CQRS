@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"classCqrs_1_1Domain_1_1DtoAggregateRoot.html":[1,0,0,8,4],
 "classCqrs_1_1Domain_1_1DtoAggregateRoot_aa99d95d5b4b1fb8a59beda77f7e12c20.html#aa99d95d5b4b1fb8a59beda77f7e12c20":[1,0,0,8,4,0],
 "classCqrs_1_1Domain_1_1Exceptions_1_1AggregateNotFoundException.html":[1,0,0,8,0,0],
 "classCqrs_1_1Domain_1_1Exceptions_1_1AggregateNotFoundException_a44057befbb31c652727d04c5b34211ee.html#a44057befbb31c652727d04c5b34211ee":[1,0,0,8,0,0,0],
@@ -103,14 +104,16 @@ var NAVTREEINDEX5 =
 "classCqrs_1_1Domain_1_1Saga_aff4c0901a61eb54cbc8520d8f5c0653a.html#aff4c0901a61eb54cbc8520d8f5c0653a":[1,0,0,8,13,13],
 "classCqrs_1_1Domain_1_1Saga_affa39972d1946ab9f5d2474b17acbdd4.html#affa39972d1946ab9f5d2474b17acbdd4":[1,0,0,8,13,1],
 "classCqrs_1_1Domain_1_1UnitOfWork.html":[1,0,0,8,17],
-"classCqrs_1_1Domain_1_1UnitOfWork.html#a48fb458ec42e7ad4c4bb02570677b4fc":[1,0,0,8,17,7],
-"classCqrs_1_1Domain_1_1UnitOfWork.html#aa8b82890134ba09d6ac9cec8254a4603":[1,0,0,8,17,6],
-"classCqrs_1_1Domain_1_1UnitOfWork_a0592865d52ba0eafb9a5ad1fbdad9729.html#a0592865d52ba0eafb9a5ad1fbdad9729":[1,0,0,8,17,3],
-"classCqrs_1_1Domain_1_1UnitOfWork_a717facda044d5025e9d7abdec4f54acd.html#a717facda044d5025e9d7abdec4f54acd":[1,0,0,8,17,0],
-"classCqrs_1_1Domain_1_1UnitOfWork_a7401e41dd8ce4457551c252ca6402d31.html#a7401e41dd8ce4457551c252ca6402d31":[1,0,0,8,17,2],
-"classCqrs_1_1Domain_1_1UnitOfWork_a840214f97d3661c7b5a739df65fadc9f.html#a840214f97d3661c7b5a739df65fadc9f":[1,0,0,8,17,1],
-"classCqrs_1_1Domain_1_1UnitOfWork_aac25e1b9946b0d0337bda627671d0dae.html#aac25e1b9946b0d0337bda627671d0dae":[1,0,0,8,17,4],
-"classCqrs_1_1Domain_1_1UnitOfWork_ab5458f49a206e61b94aaaa4b1ac81911.html#ab5458f49a206e61b94aaaa4b1ac81911":[1,0,0,8,17,5],
+"classCqrs_1_1Domain_1_1UnitOfWork.html#a26535c79d89a84f8632ef5e07b15ac6e":[1,0,0,8,17,8],
+"classCqrs_1_1Domain_1_1UnitOfWork.html#a48fb458ec42e7ad4c4bb02570677b4fc":[1,0,0,8,17,9],
+"classCqrs_1_1Domain_1_1UnitOfWork.html#aa8b82890134ba09d6ac9cec8254a4603":[1,0,0,8,17,7],
+"classCqrs_1_1Domain_1_1UnitOfWork_a0592865d52ba0eafb9a5ad1fbdad9729.html#a0592865d52ba0eafb9a5ad1fbdad9729":[1,0,0,8,17,4],
+"classCqrs_1_1Domain_1_1UnitOfWork_a717facda044d5025e9d7abdec4f54acd.html#a717facda044d5025e9d7abdec4f54acd":[1,0,0,8,17,1],
+"classCqrs_1_1Domain_1_1UnitOfWork_a7401e41dd8ce4457551c252ca6402d31.html#a7401e41dd8ce4457551c252ca6402d31":[1,0,0,8,17,3],
+"classCqrs_1_1Domain_1_1UnitOfWork_a840214f97d3661c7b5a739df65fadc9f.html#a840214f97d3661c7b5a739df65fadc9f":[1,0,0,8,17,2],
+"classCqrs_1_1Domain_1_1UnitOfWork_a9ec92dbd580f3885f7cf5a9ad360e1ac.html#a9ec92dbd580f3885f7cf5a9ad360e1ac":[1,0,0,8,17,0],
+"classCqrs_1_1Domain_1_1UnitOfWork_aac25e1b9946b0d0337bda627671d0dae.html#aac25e1b9946b0d0337bda627671d0dae":[1,0,0,8,17,5],
+"classCqrs_1_1Domain_1_1UnitOfWork_ab5458f49a206e61b94aaaa4b1ac81911.html#ab5458f49a206e61b94aaaa4b1ac81911":[1,0,0,8,17,6],
 "classCqrs_1_1Entities_1_1DateRange.html":[1,0,0,9,0],
 "classCqrs_1_1Entities_1_1DateRange_adc6535de6e11720964fd355281444721.html#adc6535de6e11720964fd355281444721":[1,0,0,9,0,0],
 "classCqrs_1_1Entities_1_1DecimalRange.html":[1,0,0,9,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX5 =
 "classCqrs_1_1Events_1_1EventData_a0079e7f2307d3fc54063317edb71ffc2.html#a0079e7f2307d3fc54063317edb71ffc2":[1,0,0,10,6,1],
 "classCqrs_1_1Events_1_1EventData_a020c856c1e3a97d8783ccf0ba86c6f59.html#a020c856c1e3a97d8783ccf0ba86c6f59":[1,0,0,10,6,5],
 "classCqrs_1_1Events_1_1EventData_a0387ea22e5cdc085caf113a82f5ace18.html#a0387ea22e5cdc085caf113a82f5ace18":[1,0,0,10,6,0],
-"classCqrs_1_1Events_1_1EventData_a11b4f2ea845000dea4148a94d4c6ba93.html#a11b4f2ea845000dea4148a94d4c6ba93":[1,0,0,10,6,6],
-"classCqrs_1_1Events_1_1EventData_a562ea218ea8f517a980452097239c774.html#a562ea218ea8f517a980452097239c774":[1,0,0,10,6,2],
-"classCqrs_1_1Events_1_1EventData_a6abb7d888f3bba44c081587aacab0181.html#a6abb7d888f3bba44c081587aacab0181":[1,0,0,10,6,8],
-"classCqrs_1_1Events_1_1EventData_a8d854d86e700a99f7cede8cda598d271.html#a8d854d86e700a99f7cede8cda598d271":[1,0,0,10,6,3]
+"classCqrs_1_1Events_1_1EventData_a11b4f2ea845000dea4148a94d4c6ba93.html#a11b4f2ea845000dea4148a94d4c6ba93":[1,0,0,10,6,6]
 };

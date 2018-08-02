@@ -160,6 +160,7 @@ var NAVTREEINDEX4 =
 "classCqrs_1_1Configuration_1_1ITelemetryHelperExtensions_aba815675738eed8509d2ad4d327b591d.html#aba815675738eed8509d2ad4d327b591d":[1,0,0,6,7,2],
 "classCqrs_1_1Configuration_1_1SampleRuntime.html":[1,0,0,6,8],
 "classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html":[1,0,0,6,8,0],
+"classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html#a3b1f319d6f4c8365204702834ded3e23":[1,0,0,6,8,0,11],
 "classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html#a4536ce4749af30a33bf8808d7e8fdd44":[1,0,0,6,8,0,5],
 "classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html#a585e180ac45655945f4c579dcc08fadb":[1,0,0,6,8,0,9],
 "classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html#a5ea7fe1794f8c8efa6214e22e8645790":[1,0,0,6,8,0,6],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "classCqrs_1_1Domain_1_1AggregateRoot_ab84d521c8c3bffd3c2e58959984d1e88.html#ab84d521c8c3bffd3c2e58959984d1e88":[1,0,0,8,3,8],
 "classCqrs_1_1Domain_1_1AggregateRoot_adab968b830e186cb832583910bf6f3a6.html#adab968b830e186cb832583910bf6f3a6":[1,0,0,8,3,6],
 "classCqrs_1_1Domain_1_1AggregateRoot_adde40f553bdfcac309b3785751c7d3fc.html#adde40f553bdfcac309b3785751c7d3fc":[1,0,0,8,3,4],
-"classCqrs_1_1Domain_1_1AggregateRoot_aec873ad6e4c98309cad2d9f1c534aebb.html#aec873ad6e4c98309cad2d9f1c534aebb":[1,0,0,8,3,5],
-"classCqrs_1_1Domain_1_1DtoAggregateRoot.html":[1,0,0,8,4]
+"classCqrs_1_1Domain_1_1AggregateRoot_aec873ad6e4c98309cad2d9f1c534aebb.html#aec873ad6e4c98309cad2d9f1c534aebb":[1,0,0,8,3,5]
 };

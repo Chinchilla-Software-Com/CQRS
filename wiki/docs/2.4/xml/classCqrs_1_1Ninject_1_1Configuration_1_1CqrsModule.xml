@@ -90,7 +90,7 @@
           <defval>null</defval>
         </param>
         <briefdescription>
-<para>Instantiate a new instance of the <ref refid="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a31a1047d3940842b760ad2a796aa1606_1a31a1047d3940842b760ad2a796aa1606" kindref="member">CqrsModule&lt;TAuthenticationToken,TAuthenticationTokenHelper&gt;</ref> that uses the provided <emphasis>configurationManager</emphasis>  to read the following configuration settings: &quot;Cqrs.SetupForWeb&quot;: If set to true the system will be configured for hosting in IIS or some other web-server that provides access to System.Web.HttpContext.Current. &quot;Cqrs.SetupForSqlLogging&quot;: If set to true the SqlLogger will be bootstrapped by default, otherwise the ConsoleLogger will be bootstrapped by default. &quot;Cqrs.RegisterDefaultConfigurationManager&quot;: If set true the ConfigurationManager will be registered. If you want to use the <ref refid="namespaceCqrs_1_1Ninject_1_1Azure" kindref="compound">Azure</ref> one leave this as false (the default) and register it yourself. </para>        </briefdescription>
+<para>Instantiate a new instance of the <ref refid="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a31a1047d3940842b760ad2a796aa1606_1a31a1047d3940842b760ad2a796aa1606" kindref="member">CqrsModule&lt;TAuthenticationToken,TAuthenticationTokenHelper&gt;</ref> that uses the provided <emphasis>configurationManager</emphasis>  to read the following configuration settings: &quot;Cqrs.SetupForWeb&quot;: If set to true the system will be configured for hosting in IIS or some other web-server that provides access to System.Web.HttpContext.Current. &quot;Cqrs.SetupForSqlLogging&quot;: If set to true the SqlLogger will be bootstrapped by default, otherwise the ConsoleLogger will be bootstrapped by default. &quot;Cqrs.RegisterDefaultConfigurationManager&quot;: If set true the ConfigurationManager will be registered. If you want to use the <ref refid="namespaceCqrs_1_1Ninject_1_1Azure" kindref="compound">Azure</ref> one leave this as false (the default) and register it yourself. &quot;Cqrs.RegisterDefaultSnapshotStrategy&quot;: If set true the DefaultSnapshotBuilder will be registered. &quot;Cqrs.RegisterDefaultSnapshotBuilder&quot;: If set true the DefaultSnapshotBuilder will be registered. </para>        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
@@ -103,12 +103,12 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="70" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="70" bodyend="92"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="72" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="72" bodyend="94"/>
       </memberdef>
-      <memberdef kind="function" id="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a197055fca498bff31fd9a91a2a07292d_1a197055fca498bff31fd9a91a2a07292d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a6ab750b5adea25eb8e2f0107fdfc9a47_1a6ab750b5adea25eb8e2f0107fdfc9a47" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>Cqrs.Ninject.Configuration.CqrsModule&lt; TAuthenticationToken, TAuthenticationTokenHelper &gt;.CqrsModule</definition>
-        <argsstring>(bool setupForWeb, bool setupForSqlLogging, bool registerDefaultConfigurationManager=false)</argsstring>
+        <argsstring>(bool setupForWeb, bool setupForSqlLogging, bool registerDefaultConfigurationManager=false, bool registerDefaultSnapshotStrategy=true, bool registerDefaultSnapshotBuilder=true)</argsstring>
         <name>CqrsModule</name>
         <param>
           <type>bool</type>
@@ -122,6 +122,16 @@
           <type>bool</type>
           <declname>registerDefaultConfigurationManager</declname>
           <defval>false</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>registerDefaultSnapshotStrategy</declname>
+          <defval>true</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>registerDefaultSnapshotBuilder</declname>
+          <defval>true</defval>
         </param>
         <briefdescription>
 <para>Instantiate a new instance of the <ref refid="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a31a1047d3940842b760ad2a796aa1606_1a31a1047d3940842b760ad2a796aa1606" kindref="member">CqrsModule&lt;TAuthenticationToken,TAuthenticationTokenHelper&gt;</ref>. </para>        </briefdescription>
@@ -147,11 +157,25 @@
 <parameterdescription>
 <para>Set this to true to use ConfigurationManager. If you want to use the <ref refid="namespaceCqrs_1_1Ninject_1_1Azure" kindref="compound">Azure</ref> one leave this as false (the default) and register it yourself.</para></parameterdescription>
 </parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>registerDefaultSnapshotStrategy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If set true the DefaultSnapshotBuilder will be registered.</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>registerDefaultSnapshotBuilder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If set true the DefaultSnapshotBuilder will be registered.</para></parameterdescription>
+</parameteritem>
 </parameterlist>
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="100" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="100" bodyend="105"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="104" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="104" bodyend="111"/>
       </memberdef>
       <memberdef kind="function" id="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a8cf4c81c21496699b2f32112b23308fe_1a8cf4c81c21496699b2f32112b23308fe" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>override void</type>
@@ -164,7 +188,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="112" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="112" bodyend="122"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="118" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="118" bodyend="128"/>
       </memberdef>
       <memberdef kind="function" id="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_afae0f84460f7cf9d1f9b62ec148b02ad_1afae0f84460f7cf9d1f9b62ec148b02ad" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -177,7 +201,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="129" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="129" bodyend="137"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="135" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="135" bodyend="143"/>
       </memberdef>
       <memberdef kind="function" id="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a7bb448b4c38d7a4628a30ba709dc8a36_1a7bb448b4c38d7a4628a30ba709dc8a36" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -190,7 +214,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="142" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="142" bodyend="185"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="148" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="148" bodyend="191"/>
       </memberdef>
       <memberdef kind="function" id="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a5c3b6741270b2cb16aa1a1a84c57041b_1a5c3b6741270b2cb16aa1a1a84c57041b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -203,7 +227,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="190" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="190" bodyend="195"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="196" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="196" bodyend="201"/>
       </memberdef>
       <memberdef kind="function" id="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a3437afb1ea306ff4e65eb2ca22a276d9_1a3437afb1ea306ff4e65eb2ca22a276d9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -216,7 +240,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="200" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="200" bodyend="202"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="206" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="206" bodyend="208"/>
       </memberdef>
       <memberdef kind="function" id="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_afc0f6417f69d5424fe7bba7a6724970f_1afc0f6417f69d5424fe7bba7a6724970f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -229,7 +253,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="207" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="207" bodyend="209"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="213" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="213" bodyend="215"/>
       </memberdef>
       <memberdef kind="function" id="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_ac6f0db82440e24190a5692d352fb4524_1ac6f0db82440e24190a5692d352fb4524" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -242,7 +266,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="214" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="214" bodyend="216"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="220" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="220" bodyend="222"/>
       </memberdef>
       <memberdef kind="function" id="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a6ca61a712ab7efc28eb38e7f74853e3e_1a6ca61a712ab7efc28eb38e7f74853e3e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -255,7 +279,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="221" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="221" bodyend="245"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="227" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="227" bodyend="251"/>
       </memberdef>
       <memberdef kind="function" id="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a61a20168f5dc9dab74bb2f7fad7c0adb_1a61a20168f5dc9dab74bb2f7fad7c0adb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -268,7 +292,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="250" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="250" bodyend="297"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="256" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="256" bodyend="300"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -324,10 +348,10 @@
         <label>NinjectModule</label>
       </node>
     </collaborationgraph>
-    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="36" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="34" bodyend="298"/>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" line="36" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Ninject/Cqrs.Ninject/Configuration/CqrsModule.cs" bodystart="34" bodyend="301"/>
     <listofallmembers>
       <member refid="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a31a1047d3940842b760ad2a796aa1606_1a31a1047d3940842b760ad2a796aa1606" prot="public" virt="non-virtual"><scope>Cqrs::Ninject::Configuration::CqrsModule</scope><name>CqrsModule</name></member>
-      <member refid="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a197055fca498bff31fd9a91a2a07292d_1a197055fca498bff31fd9a91a2a07292d" prot="public" virt="non-virtual"><scope>Cqrs::Ninject::Configuration::CqrsModule</scope><name>CqrsModule</name></member>
+      <member refid="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a6ab750b5adea25eb8e2f0107fdfc9a47_1a6ab750b5adea25eb8e2f0107fdfc9a47" prot="public" virt="non-virtual"><scope>Cqrs::Ninject::Configuration::CqrsModule</scope><name>CqrsModule</name></member>
       <member refid="classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule_ae5b77cb7b9b0b826a603fea25609a1ac_1ae5b77cb7b9b0b826a603fea25609a1ac" prot="public" virt="non-virtual"><scope>Cqrs::Ninject::Configuration::CqrsModule</scope><name>IsRegistered</name></member>
       <member refid="classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule_a622339cf7b08ce97d23c9b2f00cedea3_1a622339cf7b08ce97d23c9b2f00cedea3" prot="public" virt="non-virtual"><scope>Cqrs::Ninject::Configuration::CqrsModule</scope><name>IsRegistered&lt; T &gt;</name></member>
       <member refid="classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a8cf4c81c21496699b2f32112b23308fe_1a8cf4c81c21496699b2f32112b23308fe" prot="public" virt="non-virtual"><scope>Cqrs::Ninject::Configuration::CqrsModule</scope><name>Load</name></member>

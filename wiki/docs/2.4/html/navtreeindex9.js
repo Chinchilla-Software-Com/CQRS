@@ -1,5 +1,12 @@
 var NAVTREEINDEX9 =
 {
+"classCqrs_1_1Services_1_1EventService_a7da2e2ec8d77d5972cea45a7ad482f39.html#a7da2e2ec8d77d5972cea45a7ad482f39":[1,0,0,20,1,5],
+"classCqrs_1_1Services_1_1EventService_a9a68d774ac754e39be56d3e0449f14d7.html#a9a68d774ac754e39be56d3e0449f14d7":[1,0,0,20,1,2],
+"classCqrs_1_1Services_1_1EventService_ac5896c2eb4efbdb42b3cad774b688e45.html#ac5896c2eb4efbdb42b3cad774b688e45":[1,0,0,20,1,0],
+"classCqrs_1_1Services_1_1EventService_acd30fea6829b27ee802126c36f8875b4.html#acd30fea6829b27ee802126c36f8875b4":[1,0,0,20,1,8],
+"classCqrs_1_1Services_1_1EventService_aef315bb1094123bb9b4ab7bd7be9392b.html#aef315bb1094123bb9b4ab7bd7be9392b":[1,0,0,20,1,1],
+"classCqrs_1_1Services_1_1ServiceChannelFactory.html":[1,0,0,20,12],
+"classCqrs_1_1Services_1_1ServiceChannelFactory_a0ef5c8298659383821b3b8901351db42.html#a0ef5c8298659383821b3b8901351db42":[1,0,0,20,12,2],
 "classCqrs_1_1Services_1_1ServiceChannelFactory_a8b483162bcc271fa8212c72e13e28f55.html#a8b483162bcc271fa8212c72e13e28f55":[1,0,0,20,12,0],
 "classCqrs_1_1Services_1_1ServiceChannelFactory_a90572d83f68b4ba72687bb8c755b0845.html#a90572d83f68b4ba72687bb8c755b0845":[1,0,0,20,12,1],
 "classCqrs_1_1Services_1_1ServiceParameterResolver.html":[1,0,0,20,13],
@@ -242,12 +249,5 @@ var NAVTREEINDEX9 =
 "classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_a528ebdf311a769ae18fea4e8a155998f.html#a528ebdf311a769ae18fea4e8a155998f":[1,0,0,25,8,0,5],
 "classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_a5d4fbf202d00e1a969a763e64b69084d.html#a5d4fbf202d00e1a969a763e64b69084d":[1,0,0,25,8,0,6],
 "classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_a67b06cda1fda4cd45f659da08600a142.html#a67b06cda1fda4cd45f659da08600a142":[1,0,0,25,8,0,2],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_a8bf0fee0f939dfcdc81f402ba0e07c22.html#a8bf0fee0f939dfcdc81f402ba0e07c22":[1,0,0,25,8,0,7],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_aa62add44755ea01cd6b98a7d5e7a9bd0.html#aa62add44755ea01cd6b98a7d5e7a9bd0":[1,0,0,25,8,0,1],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_aaccd19bfc417660ef3560b5f2742b5a1.html#aaccd19bfc417660ef3560b5f2742b5a1":[1,0,0,25,8,0,3],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_ac58e3523e24fb4c936146839e4a717a9.html#ac58e3523e24fb4c936146839e4a717a9":[1,0,0,25,8,0,9],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_a1596c74d98fd628b646885dcac056cc1.html#a1596c74d98fd628b646885dcac056cc1":[1,0,0,25,8,1],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_a36bf3691c8b3cbe26fa3e72456170271.html#a36bf3691c8b3cbe26fa3e72456170271":[1,0,0,25,8,2],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_a62d6b1d61b668f53f5394b26e1c0b0fa.html#a62d6b1d61b668f53f5394b26e1c0b0fa":[1,0,0,25,8,4],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_a9015771102b0ab21da20a0684fe6a88a.html#a9015771102b0ab21da20a0684fe6a88a":[1,0,0,25,8,3]
+"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_a8bf0fee0f939dfcdc81f402ba0e07c22.html#a8bf0fee0f939dfcdc81f402ba0e07c22":[1,0,0,25,8,0,7]
 };

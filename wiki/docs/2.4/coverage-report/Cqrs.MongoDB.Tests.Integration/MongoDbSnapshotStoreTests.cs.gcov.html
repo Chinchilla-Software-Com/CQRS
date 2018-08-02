@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-06-29 14:24:52</td>
+            <td class="headerValue">2018-08-02 14:21:33</td>
             <td></td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -108,7 +108,7 @@
 <span class="lineNum">      50 </span>            :                         NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule&lt;int&gt;());
 <span class="lineNum">      51 </span>            :                         NinjectDependencyResolver.ModulesToLoad.Add(new TestMongoDbModule&lt;int&gt;());
 <span class="lineNum">      52 </span>            :                         NinjectDependencyResolver.Start();
-<span class="lineNum">      53 </span>            :                         var unitOfWork = new UnitOfWork&lt;int&gt;(DependencyResolver.Current.Resolve&lt;ISnapshotAggregateRepository&lt;int&gt;&gt;());
+<span class="lineNum">      53 </span>            :                         var unitOfWork = new UnitOfWork&lt;int&gt;(DependencyResolver.Current.Resolve&lt;ISnapshotAggregateRepository&lt;int&gt;&gt;(), DependencyResolver.Current.Resolve&lt;IAggregateRepository&lt;int&gt;&gt;());
 <span class="lineNum">      54 </span>            :                         var aggregate = DependencyResolver.Current.Resolve&lt;IAggregateFactory&gt;().Create&lt;TestAggregate&gt;(Guid.NewGuid());
 <span class="lineNum">      55 </span>            :                         unitOfWork.Add(aggregate);
 <span class="lineNum">      56 </span>            :                         try

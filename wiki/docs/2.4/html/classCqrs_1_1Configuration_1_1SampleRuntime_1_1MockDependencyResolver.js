@@ -10,5 +10,6 @@ var classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver =
     [ "ContextFactory", "classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html#aa85b2b3a8acf57e8c8797d52c77d2833", null ],
     [ "CorrelationIdHelper", "classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html#a822583ca7b25e86726fa2456356072c6", null ],
     [ "EventStore", "classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html#a585e180ac45655945f4c579dcc08fadb", null ],
-    [ "Logger", "classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html#a82ef703b4eeb04bc0075d9110410c195", null ]
+    [ "Logger", "classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html#a82ef703b4eeb04bc0075d9110410c195", null ],
+    [ "SnapshotAggregateRepository", "classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver.html#a3b1f319d6f4c8365204702834ded3e23", null ]
 ];
