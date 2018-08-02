@@ -20,6 +20,7 @@ using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
 using Cqrs.Repositories.Queries;
+using Cqrs.Snapshots;
 
 namespace Cqrs.Configuration
 {
@@ -123,6 +124,8 @@ namespace Cqrs.Configuration
 
 			private IAggregateRepository<TAuthenticationToken> AggregateRepository { get; set; }
 
+			private ISnapshotAggregateRepository<TAuthenticationToken> SnapshotAggregateRepository { get; set; }
+
 			static MockDependencyResolver()
 			{
 				Current = new MockDependencyResolver();
@@ -158,6 +161,14 @@ namespace Cqrs.Configuration
 					Bus,
 					CorrelationIdHelper,
 					ConfigurationManager
+				);
+				SnapshotAggregateRepository = new SnapshotRepository<TAuthenticationToken>
+				(
+					new SqlSnapshotStore(ConfigurationManager, new SnapshotDeserialiser(), Logger, CorrelationIdHelper, new DefaultSnapshotBuilder()),
+					new DefaultSnapshotStrategy<TAuthenticationToken>(),
+					AggregateRepository,
+					EventStore,
+					new AggregateFactory(this, Logger)
 				);
 			}
 
@@ -211,7 +222,7 @@ namespace Cqrs.Configuration
 				if (type == typeof(ILogger))
 					return Logger;
 				if (type == typeof(IUnitOfWork<TAuthenticationToken>))
-					return new UnitOfWork<TAuthenticationToken>(AggregateRepository);
+					return new UnitOfWork<TAuthenticationToken>(SnapshotAggregateRepository, AggregateRepository);
 				if (type == typeof(IAggregateRepository<TAuthenticationToken>))
 					return AggregateRepository;
 				if (type == typeof(IEventStore<TAuthenticationToken>))

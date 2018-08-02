@@ -50,7 +50,7 @@ namespace Cqrs.MongoDB.Tests.Integration
 			NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule<int>());
 			NinjectDependencyResolver.ModulesToLoad.Add(new TestMongoDbModule<int>());
 			NinjectDependencyResolver.Start();
-			var unitOfWork = new UnitOfWork<int>(DependencyResolver.Current.Resolve<ISnapshotAggregateRepository<int>>());
+			var unitOfWork = new UnitOfWork<int>(DependencyResolver.Current.Resolve<ISnapshotAggregateRepository<int>>(), DependencyResolver.Current.Resolve<IAggregateRepository<int>>());
 			var aggregate = DependencyResolver.Current.Resolve<IAggregateFactory>().Create<TestAggregate>(Guid.NewGuid());
 			unitOfWork.Add(aggregate);
 			try

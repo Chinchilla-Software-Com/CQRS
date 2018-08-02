@@ -24,7 +24,21 @@ namespace Cqrs.Domain
 	{
 		private IAggregateRepository<TAuthenticationToken> Repository { get; set; }
 
+		private ISnapshotAggregateRepository<TAuthenticationToken> SnapshotRepository { get; set; }
+
 		private Dictionary<Guid, IAggregateDescriptor<TAuthenticationToken>> TrackedAggregates { get; set; }
+
+		/// <summary>
+		/// Instantiates a new instance of <see cref="UnitOfWork{TAuthenticationToken}"/>
+		/// </summary>
+		public UnitOfWork(ISnapshotAggregateRepository<TAuthenticationToken> snapshotRepository, IAggregateRepository<TAuthenticationToken> repository)
+			: this(repository)
+		{
+			if (snapshotRepository == null)
+				throw new ArgumentNullException("snapshotRepository");
+
+			SnapshotRepository = snapshotRepository;
+		}
 
 		/// <summary>
 		/// Instantiates a new instance of <see cref="UnitOfWork{TAuthenticationToken}"/>
@@ -71,7 +85,7 @@ namespace Cqrs.Domain
 				return trackedAggregate;
 			}
 
-			var aggregate = Repository.Get<TAggregateRoot>(id);
+			var aggregate = (useSnapshots ? SnapshotRepository : Repository).Get<TAggregateRoot>(id);
 			if (expectedVersion != null && aggregate.Version != expectedVersion)
 				throw new ConcurrencyException(id);
 			Add(aggregate);

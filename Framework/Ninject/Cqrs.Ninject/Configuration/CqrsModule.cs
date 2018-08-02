@@ -65,6 +65,8 @@ namespace Cqrs.Ninject.Configuration
 		/// "Cqrs.SetupForWeb": If set to true the system will be configured for hosting in IIS or some other web-server that provides access to System.Web.HttpContext.Current.
 		/// "Cqrs.SetupForSqlLogging": If set to true the <see cref="SqlLogger"/> will be bootstrapped by default, otherwise the <see cref="ConsoleLogger"/> will be bootstrapped by default.
 		/// "Cqrs.RegisterDefaultConfigurationManager": If set true the <see cref="ConfigurationManager"/> will be registered. If you want to use the Azure one leave this as false (the default) and register it yourself.
+		/// "Cqrs.RegisterDefaultSnapshotStrategy": If set true the <see cref="DefaultSnapshotBuilder"/> will be registered.
+		/// "Cqrs.RegisterDefaultSnapshotBuilder": If set true the <see cref="DefaultSnapshotBuilder"/> will be registered.
 		/// </summary>
 		/// <param name="configurationManager">The <see cref="IConfigurationManager"/> to use, if one isn't provided then <see cref="ConfigurationManager"/> is instantiate, used and then disposed.</param>
 		public CqrsModule(IConfigurationManager configurationManager = null)
@@ -97,11 +99,15 @@ namespace Cqrs.Ninject.Configuration
 		/// <param name="setupForWeb">Set this to true if you will host this in IIS or some other web-server that provides access to System.Web.HttpContext.Current.</param>
 		/// <param name="setupForSqlLogging">Set this to true to use <see cref="SqlLogger"/> otherwise the <see cref="ConsoleLogger"/> will be bootstrapped by default.</param>
 		/// <param name="registerDefaultConfigurationManager">Set this to true to use <see cref="ConfigurationManager"/>. If you want to use the Azure one leave this as false (the default) and register it yourself.</param>
-		public CqrsModule(bool setupForWeb, bool setupForSqlLogging, bool registerDefaultConfigurationManager = false)
+		/// <param name="registerDefaultSnapshotStrategy">If set true the <see cref="DefaultSnapshotBuilder"/> will be registered.</param>
+		/// <param name="registerDefaultSnapshotBuilder">If set true the <see cref="DefaultSnapshotBuilder"/> will be registered.</param>
+		public CqrsModule(bool setupForWeb, bool setupForSqlLogging, bool registerDefaultConfigurationManager = false, bool registerDefaultSnapshotStrategy = true, bool registerDefaultSnapshotBuilder = true)
 		{
 			SetupForWeb = setupForWeb;
 			SetupForSqlLogging = setupForSqlLogging;
 			RegisterDefaultConfigurationManager = registerDefaultConfigurationManager;
+			RegisterDefaultSnapshotStrategy = registerDefaultSnapshotStrategy;
+			RegisterDefaultSnapshotBuilder = registerDefaultSnapshotBuilder;
 		}
 
 		#region Overrides of NinjectModule
@@ -257,9 +263,6 @@ namespace Cqrs.Ninject.Configuration
 				.InTransientScope();
 			Bind<IAggregateRepository<TAuthenticationToken>>()
 				.To<AggregateRepository<TAuthenticationToken>>()
-				.InSingletonScope();
-			Bind<ISnapshotAggregateRepository<TAuthenticationToken>>()
-				.To<SnapshotRepository<TAuthenticationToken>>()
 				.InSingletonScope();
 			Bind<ISagaRepository<TAuthenticationToken>>()
 				.To<SagaRepository<TAuthenticationToken>>()

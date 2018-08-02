@@ -6,7 +6,6 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System;
 using Cqrs.Snapshots;
 
 namespace Cqrs.Events
