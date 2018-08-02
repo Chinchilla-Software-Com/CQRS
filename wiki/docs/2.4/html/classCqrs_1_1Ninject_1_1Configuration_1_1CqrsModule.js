@@ -1,7 +1,7 @@
 var classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule =
 [
     [ "CqrsModule", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a31a1047d3940842b760ad2a796aa1606.html#a31a1047d3940842b760ad2a796aa1606", null ],
-    [ "CqrsModule", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a6ab750b5adea25eb8e2f0107fdfc9a47.html#a6ab750b5adea25eb8e2f0107fdfc9a47", null ],
+    [ "CqrsModule", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_ac17039525e66b01c67a7fb588e241345.html#ac17039525e66b01c67a7fb588e241345", null ],
     [ "Load", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a8cf4c81c21496699b2f32112b23308fe.html#a8cf4c81c21496699b2f32112b23308fe", null ],
     [ "RegisterAutomapperComponents", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a5c3b6741270b2cb16aa1a1a84c57041b.html#a5c3b6741270b2cb16aa1a1a84c57041b", null ],
     [ "RegisterCaching", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a6ca61a712ab7efc28eb38e7f74853e3e.html#a6ca61a712ab7efc28eb38e7f74853e3e", null ],
@@ -12,6 +12,7 @@ var classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule =
     [ "RegisterRepositories", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a3437afb1ea306ff4e65eb2ca22a276d9.html#a3437afb1ea306ff4e65eb2ca22a276d9", null ],
     [ "RegisterServices", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_ac6f0db82440e24190a5692d352fb4524.html#ac6f0db82440e24190a5692d352fb4524", null ],
     [ "RegisterDefaultConfigurationManager", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a7e5a1cbb5bcfda3bcc06dc24a38995e2.html#a7e5a1cbb5bcfda3bcc06dc24a38995e2", null ],
+    [ "RegisterDefaultSnapshotAggregateRepository", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_ace2719e6bb393336cc5b7d4e7e0550e3.html#ace2719e6bb393336cc5b7d4e7e0550e3", null ],
     [ "RegisterDefaultSnapshotBuilder", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a151dd739535287d044791644b6111324.html#a151dd739535287d044791644b6111324", null ],
     [ "RegisterDefaultSnapshotStrategy", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a79516f565ce235cc42c3c31e281824b8.html#a79516f565ce235cc42c3c31e281824b8", null ],
     [ "SetupForSqlLogging", "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_a10e7a8adbe03fc05ebb7003727cbe541.html#a10e7a8adbe03fc05ebb7003727cbe541", null ],

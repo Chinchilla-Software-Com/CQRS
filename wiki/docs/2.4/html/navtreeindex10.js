@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_a8bf0fee0f939dfcdc81f402ba0e07c22.html#a8bf0fee0f939dfcdc81f402ba0e07c22":[1,0,0,25,8,0,7],
 "classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_aa62add44755ea01cd6b98a7d5e7a9bd0.html#aa62add44755ea01cd6b98a7d5e7a9bd0":[1,0,0,25,8,0,1],
 "classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_aaccd19bfc417660ef3560b5f2742b5a1.html#aaccd19bfc417660ef3560b5f2742b5a1":[1,0,0,25,8,0,3],
 "classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_ac58e3523e24fb4c936146839e4a717a9.html#ac58e3523e24fb4c936146839e4a717a9":[1,0,0,25,8,0,9],
@@ -45,8 +46,8 @@ var NAVTREEINDEX10 =
 "classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_ae3870009eab2cb1bf22b447d9fa51ec8.html#ae3870009eab2cb1bf22b447d9fa51ec8":[1,0,2,0,0,3],
 "classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_af216b6d4045dc5bb33fc0c4c36b7a67e.html#af216b6d4045dc5bb33fc0c4c36b7a67e":[1,0,2,0,0,0],
 "classes.html":[1,1],
-"functions.html":[1,3,0,0],
 "functions.html":[1,3,0],
+"functions.html":[1,3,0,0],
 "functions_a.html":[1,3,0,1],
 "functions_b.html":[1,3,0,2],
 "functions_c.html":[1,3,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "interfaceCqrs_1_1Commands_1_1ICommandPublisher.html":[1,0,0,5,6],
 "interfaceCqrs_1_1Commands_1_1ICommandPublisher_aeeb487ad5686d9c44d214b1daaf7833a.html#aeeb487ad5686d9c44d214b1daaf7833a":[1,0,0,5,6,0],
 "interfaceCqrs_1_1Commands_1_1ICommandPublisher_af0f033c0b949e5650032e4f00b11b595.html#af0f033c0b949e5650032e4f00b11b595":[1,0,0,5,6,1],
-"interfaceCqrs_1_1Commands_1_1ICommandReceiver.html":[1,0,0,5,7],
-"interfaceCqrs_1_1Commands_1_1ICommandSender.html":[1,0,0,5,8]
+"interfaceCqrs_1_1Commands_1_1ICommandReceiver.html":[1,0,0,5,7]
 };
