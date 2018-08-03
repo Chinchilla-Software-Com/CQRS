@@ -380,8 +380,9 @@ if (!relationships.Any())
 		/// Instantiates the <see cref="<#= className #>CommandHandler"/> class registering any <see cref="Akka.Actor.ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
 		/// </summary>
 		public <#= className #>CommandHandler(Cqrs.Akka.Domain.IAkkaAggregateResolver aggregateResolver, IDependencyResolver dependencyResolver, ILogger logger)
-			: this (dependencyResolver, logger)
 		{
+			DependencyResolver = dependencyResolver;
+			Logger = logger;
 			AggregateResolver = aggregateResolver;
 		}
 <#
@@ -395,6 +396,8 @@ if (!relationships.Any())
 		public <#= className #>CommandHandler(IUnitOfWork<<#= authenticationTokenType #>> unitOfWork, IDependencyResolver dependencyResolver, ILogger logger)
 			: this (dependencyResolver, logger)
 		{
+			DependencyResolver = dependencyResolver;
+			Logger = logger;
 			UnitOfWork = unitOfWork;
 		}
 <#
@@ -402,9 +405,20 @@ if (!relationships.Any())
 #>
 
 		public <#= className #>CommandHandler(IDependencyResolver dependencyResolver, ILogger logger)
+			: this (null, dependencyResolver, logger)
 		{
-			DependencyResolver = dependencyResolver;
-			Logger = logger;
+<#
+		if (aggregateTechnology == "Akka")
+		{
+#>
+			try
+			{
+				AggregateResolver = dependencyResolver.Resolve<Cqrs.Akka.Domain.IAkkaAggregateResolver>();
+			}
+			catch { }
+<#
+		}
+#>
 		}
 	}
 }
