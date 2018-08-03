@@ -275,7 +275,9 @@ var hierarchy =
       ] ]
     ] ],
     [ "Cqrs.Domain.IAggregateRoot< TAuthenticationToken >", "interfaceCqrs_1_1Domain_1_1IAggregateRoot.html", [
-      [ "Cqrs.Akka.Domain.AkkaAggregateRoot< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot.html", null ],
+      [ "Cqrs.Akka.Domain.AkkaAggregateRoot< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot.html", [
+        [ "Cqrs.Akka.Snapshots.AkkaSnapshotAggregateRoot< TAuthenticationToken, TSnapshot >", "classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotAggregateRoot.html", null ]
+      ] ],
       [ "Cqrs.Akka.Domain.AkkaAggregateRootProxy< TAuthenticationToken, TAggregateRoot >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRootProxy.html", null ],
       [ "Cqrs.Domain.AggregateRoot< TAuthenticationToken >", "classCqrs_1_1Domain_1_1AggregateRoot.html", [
         [ "Cqrs.Domain.DtoAggregateRoot< TAuthenticationToken, TDto >", "classCqrs_1_1Domain_1_1DtoAggregateRoot.html", null ],

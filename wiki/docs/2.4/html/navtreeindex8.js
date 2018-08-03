@@ -1,5 +1,11 @@
 var NAVTREEINDEX8 =
 {
+"classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusPublisherModule_a9f583dad8324f3d06ca9cc90af34fbe4.html#a9f583dad8324f3d06ca9cc90af34fbe4":[1,0,0,18,1,2,1,0,0,1],
+"classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule.html":[1,0,0,18,1,2,1,0,1],
+"classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_a240eed04165b4f23ca27aee357d44b28.html#a240eed04165b4f23ca27aee357d44b28":[1,0,0,18,1,2,1,0,1,3],
+"classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_a421f5ac0599f0d3d5be569cc954be73b.html#a421f5ac0599f0d3d5be569cc954be73b":[1,0,0,18,1,2,1,0,1,0],
+"classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_a67b8ec2c2762bf04c0568bead3d03cbf.html#a67b8ec2c2762bf04c0568bead3d03cbf":[1,0,0,18,1,2,1,0,1,4],
+"classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_a806a400a3eec26d81ab200a425ef6121.html#a806a400a3eec26d81ab200a425ef6121":[1,0,0,18,1,2,1,0,1,1],
 "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule_ab80bf02927363075fc0be6cd180a3398.html#ab80bf02927363075fc0be6cd180a3398":[1,0,0,18,1,2,1,0,1,2],
 "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureEventPublisherModule.html":[1,0,0,18,1,2,1,0,2],
 "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1EventBus_1_1Configuration_1_1AzureQueuedEventBusReceiverModule.html":[1,0,0,18,1,2,1,0,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX8 =
 "classCqrs_1_1Services_1_1BasicServiceParameterResolver_a74e001363a0226b4fbf5d3796e1230a9.html#a74e001363a0226b4fbf5d3796e1230a9":[1,0,0,20,0,1],
 "classCqrs_1_1Services_1_1BasicServiceParameterResolver_a78d53a2ee367086bca9f2d2118746836.html#a78d53a2ee367086bca9f2d2118746836":[1,0,0,20,0,7],
 "classCqrs_1_1Services_1_1BasicServiceParameterResolver_a8c598f2f49a83190c315afc88e5630d5.html#a8c598f2f49a83190c315afc88e5630d5":[1,0,0,20,0,2],
-"classCqrs_1_1Services_1_1BasicServiceParameterResolver_ab1de06b3744da74df0708545666c9f6f.html#ab1de06b3744da74df0708545666c9f6f":[1,0,0,20,0,5],
-"classCqrs_1_1Services_1_1BasicServiceParameterResolver_adbc4b10f8931db30768d7ca84bdb0260.html#adbc4b10f8931db30768d7ca84bdb0260":[1,0,0,20,0,4],
-"classCqrs_1_1Services_1_1BasicServiceParameterResolver_af82f43a2f64aa5c33a3692a2a689367b.html#af82f43a2f64aa5c33a3692a2a689367b":[1,0,0,20,0,0],
-"classCqrs_1_1Services_1_1EventService.html":[1,0,0,20,1],
-"classCqrs_1_1Services_1_1EventService_a07e516aae58050ab225f5ce5f1830ff6.html#a07e516aae58050ab225f5ce5f1830ff6":[1,0,0,20,1,7],
-"classCqrs_1_1Services_1_1EventService_a1556310c97fbf05df7804d53f91f8511.html#a1556310c97fbf05df7804d53f91f8511":[1,0,0,20,1,3],
-"classCqrs_1_1Services_1_1EventService_a16030e800b05cea77fd2183db7296804.html#a16030e800b05cea77fd2183db7296804":[1,0,0,20,1,4]
+"classCqrs_1_1Services_1_1BasicServiceParameterResolver_ab1de06b3744da74df0708545666c9f6f.html#ab1de06b3744da74df0708545666c9f6f":[1,0,0,20,0,5]
 };

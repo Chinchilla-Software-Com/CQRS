@@ -49,7 +49,7 @@ var searchData=
   ['servicehost',['ServiceHost',['../namespaceCqrs_1_1Ninject_1_1ServiceHost.html',1,'Cqrs::Ninject']]],
   ['services',['Services',['../namespaceCqrs_1_1Services.html',1,'Cqrs']]],
   ['signalr',['SignalR',['../namespaceCqrs_1_1WebApi_1_1SignalR.html',1,'Cqrs::WebApi']]],
-  ['snapshots',['Snapshots',['../namespaceCqrs_1_1Snapshots.html',1,'Cqrs']]],
+  ['snapshots',['Snapshots',['../namespaceCqrs_1_1Akka_1_1Snapshots.html',1,'Cqrs.Akka.Snapshots'],['../namespaceCqrs_1_1Snapshots.html',1,'Cqrs.Snapshots']]],
   ['sql',['Sql',['../namespaceCqrs_1_1Sql.html',1,'Cqrs']]],
   ['storage',['Storage',['../namespaceCqrs_1_1Azure_1_1Storage.html',1,'Cqrs::Azure']]],
   ['test',['Test',['../namespaceCqrs_1_1Azure_1_1BlobStorage_1_1Test.html',1,'Cqrs.Azure.BlobStorage.Test'],['../namespaceCqrs_1_1Azure_1_1Storage_1_1Test.html',1,'Cqrs.Azure.Storage.Test']]],

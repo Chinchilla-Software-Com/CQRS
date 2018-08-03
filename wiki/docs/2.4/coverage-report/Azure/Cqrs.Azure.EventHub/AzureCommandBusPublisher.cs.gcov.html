@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">9</td>
-            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-08-02 21:04:27</td>
+            <td class="headerValue">2018-08-03 23:00:39</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -87,11 +87,11 @@
 <span class="lineNum">      29 </span>            :         public class AzureCommandBusPublisher&lt;TAuthenticationToken&gt;
 <span class="lineNum">      30 </span>            :                 : AzureCommandBus&lt;TAuthenticationToken&gt;
 <span class="lineNum">      31 </span>            :                 , IPublishAndWaitCommandPublisher&lt;TAuthenticationToken&gt;
-<span class="lineNum">      32 </span>            :         {
+<span class="lineNum">      32 </span><span class="lineCov">          2 :         {</span>
 <span class="lineNum">      33 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      34 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AzureCommandBusPublisher{TAuthenticationToken}&quot;/&gt;.
 <span class="lineNum">      35 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      36 </span><span class="lineCov">          2 :                 public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IHashAlgorithmFactory hashAlgorithmFactory, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper)</span>
+<span class="lineNum">      36 </span>            :                 public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IHashAlgorithmFactory hashAlgorithmFactory, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper)
 <span class="lineNum">      37 </span>            :                         : base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, hashAlgorithmFactory, azureBusHelper, true)
 <span class="lineNum">      38 </span>            :                 {
 <span class="lineNum">      39 </span>            :                         TelemetryHelper = configurationManager.CreateTelemetryHelper(&quot;Cqrs.Azure.EventHub.EventBus.Publisher.UseApplicationInsightTelemetryHelper&quot;, correlationIdHelper);
@@ -102,7 +102,7 @@
 <span class="lineNum">      44 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      45 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;command&quot;/&gt; on the command bus.
 <span class="lineNum">      46 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      47 </span><span class="lineCov">          2 :                 public virtual void Publish&lt;TCommand&gt;(TCommand command)</span>
+<span class="lineNum">      47 </span>            :                 public virtual void Publish&lt;TCommand&gt;(TCommand command)
 <span class="lineNum">      48 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
 <span class="lineNum">      49 </span>            :                 {
 <span class="lineNum">      50 </span>            :                         if (command == null)
@@ -152,7 +152,7 @@
 <span class="lineNum">      94 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">      95 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;commands&quot;/&gt; on the command bus.
 <span class="lineNum">      96 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      97 </span><span class="lineCov">          2 :                 public virtual void Publish&lt;TCommand&gt;(IEnumerable&lt;TCommand&gt; commands)</span>
+<span class="lineNum">      97 </span>            :                 public virtual void Publish&lt;TCommand&gt;(IEnumerable&lt;TCommand&gt; commands)
 <span class="lineNum">      98 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
 <span class="lineNum">      99 </span>            :                 {
 <span class="lineNum">     100 </span>            :                         if (commands == null)
@@ -233,7 +233,7 @@
 <span class="lineNum">     175 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     176 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
 <span class="lineNum">     177 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
-<span class="lineNum">     178 </span><span class="lineCov">          2 :                 public virtual TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     178 </span>            :                 public virtual TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)
 <span class="lineNum">     179 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
 <span class="lineNum">     180 </span>            :                 {
 <span class="lineNum">     181 </span>            :                         return PublishAndWait&lt;TCommand, TEvent&gt;(command, -1, eventReceiver);
@@ -245,7 +245,7 @@
 <span class="lineNum">     187 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
 <span class="lineNum">     188 </span>            :                 /// &lt;param name=&quot;millisecondsTimeout&quot;&gt;The number of milliseconds to wait, or &lt;see cref=&quot;F:System.Threading.Timeout.Infinite&quot;/&gt; (-1) to wait indefinitely.&lt;/param&gt;
 <span class="lineNum">     189 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
-<span class="lineNum">     190 </span><span class="lineCov">          2 :                 public virtual TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, int millisecondsTimeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     190 </span>            :                 public virtual TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, int millisecondsTimeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)
 <span class="lineNum">     191 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
 <span class="lineNum">     192 </span>            :                 {
 <span class="lineNum">     193 </span>            :                         return PublishAndWait(command, events =&gt; (TEvent)events.SingleOrDefault(@event =&gt; @event is TEvent), millisecondsTimeout, eventReceiver);
@@ -257,7 +257,7 @@
 <span class="lineNum">     199 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
 <span class="lineNum">     200 </span>            :                 /// &lt;param name=&quot;timeout&quot;&gt;A &lt;see cref=&quot;T:System.TimeSpan&quot;/&gt; that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.&lt;/param&gt;
 <span class="lineNum">     201 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
-<span class="lineNum">     202 </span><span class="lineCov">          2 :                 public virtual TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, TimeSpan timeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     202 </span>            :                 public virtual TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, TimeSpan timeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)
 <span class="lineNum">     203 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
 <span class="lineNum">     204 </span>            :                 {
 <span class="lineNum">     205 </span>            :                         long num = (long)timeout.TotalMilliseconds;
@@ -272,7 +272,7 @@
 <span class="lineNum">     214 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;typeparamref name=&quot;TCommand&quot;/&gt; to send.&lt;/param&gt;
 <span class="lineNum">     215 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
 <span class="lineNum">     216 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
-<span class="lineNum">     217 </span><span class="lineCov">          2 :                 public virtual TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     217 </span>            :                 public virtual TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)
 <span class="lineNum">     218 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
 <span class="lineNum">     219 </span>            :                 {
 <span class="lineNum">     220 </span>            :                         return PublishAndWait(command, condition, -1, eventReceiver);
@@ -285,7 +285,7 @@
 <span class="lineNum">     227 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
 <span class="lineNum">     228 </span>            :                 /// &lt;param name=&quot;millisecondsTimeout&quot;&gt;The number of milliseconds to wait, or &lt;see cref=&quot;F:System.Threading.Timeout.Infinite&quot;/&gt; (-1) to wait indefinitely.&lt;/param&gt;
 <span class="lineNum">     229 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
-<span class="lineNum">     230 </span><span class="lineCov">          2 :                 public virtual TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, int millisecondsTimeout,</span>
+<span class="lineNum">     230 </span>            :                 public virtual TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, int millisecondsTimeout,
 <span class="lineNum">     231 </span>            :                         IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null) where TCommand : ICommand&lt;TAuthenticationToken&gt;
 <span class="lineNum">     232 </span>            :                 {
 <span class="lineNum">     233 </span>            :                         if (command == null)
@@ -357,7 +357,7 @@
 <span class="lineNum">     299 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns the &lt;typeparamref name=&quot;TEvent&quot;/&gt; that is desired, return null to keep trying.&lt;/param&gt;
 <span class="lineNum">     300 </span>            :                 /// &lt;param name=&quot;timeout&quot;&gt;A &lt;see cref=&quot;T:System.TimeSpan&quot;/&gt; that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.&lt;/param&gt;
 <span class="lineNum">     301 </span>            :                 /// &lt;param name=&quot;eventReceiver&quot;&gt;If provided, is the &lt;see cref=&quot;IEventReceiver{TAuthenticationToken}&quot; /&gt; that the event is expected to be returned on.&lt;/param&gt;
-<span class="lineNum">     302 </span><span class="lineCov">          2 :                 public virtual TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, TimeSpan timeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)</span>
+<span class="lineNum">     302 </span>            :                 public virtual TEvent PublishAndWait&lt;TCommand, TEvent&gt;(TCommand command, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt; condition, TimeSpan timeout, IEventReceiver&lt;TAuthenticationToken&gt; eventReceiver = null)
 <span class="lineNum">     303 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;
 <span class="lineNum">     304 </span>            :                 {
 <span class="lineNum">     305 </span>            :                         long num = (long)timeout.TotalMilliseconds;

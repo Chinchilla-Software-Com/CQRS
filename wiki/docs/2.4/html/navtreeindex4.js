@@ -1,5 +1,11 @@
 var NAVTREEINDEX4 =
 {
+"classCqrs_1_1Azure_1_1Storage_1_1Test_1_1Integration_1_1TableStorageDataStoreTests_a4c23960b33f58ea56707d736616a9f53.html#a4c23960b33f58ea56707d736616a9f53":[1,0,0,2,5,2,0,0,0],
+"classCqrs_1_1Azure_1_1Storage_1_1Test_1_1Integration_1_1TableStorageEventStoreTests.html":[1,0,0,2,5,2,0,1],
+"classCqrs_1_1Azure_1_1Storage_1_1Test_1_1Integration_1_1TableStorageEventStoreTests_aa7c476f27ce9940048ac7abde7cfabcb.html#aa7c476f27ce9940048ac7abde7cfabcb":[1,0,0,2,5,2,0,1,0],
+"classCqrs_1_1Azure_1_1WebJobs_1_1CqrsJobHost.html":[1,0,0,2,6,0],
+"classCqrs_1_1Azure_1_1WebJobs_1_1CqrsJobHost_a836ef65628bb4b63942beedfb17f1269.html#a836ef65628bb4b63942beedfb17f1269":[1,0,0,2,6,0,0],
+"classCqrs_1_1Azure_1_1WebJobs_1_1CqrsJobHost_a840ffdd7a98109cce3efd3ae3562941e.html#a840ffdd7a98109cce3efd3ae3562941e":[1,0,0,2,6,0,1],
 "classCqrs_1_1Azure_1_1WebJobs_1_1CqrsJobHost_afd124af2c14bb654b6fefd6842ceebeb.html#afd124af2c14bb654b6fefd6842ceebeb":[1,0,0,2,6,0,2],
 "classCqrs_1_1Bus_1_1BuiltInHashAlgorithmFactory.html":[1,0,0,3,0],
 "classCqrs_1_1Bus_1_1BuiltInHashAlgorithmFactory_adbfcb13cf0ffe18e405bc6a50f0642f4.html#adbfcb13cf0ffe18e405bc6a50f0642f4":[1,0,0,3,0,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX4 =
 "classCqrs_1_1Domain_1_1AggregateRoot.html#ac71dbd3410def1a743843c00cf894f6d":[1,0,0,8,3,9],
 "classCqrs_1_1Domain_1_1AggregateRoot_a15f351663975c1d8e2cdc37b8c4d970f.html#a15f351663975c1d8e2cdc37b8c4d970f":[1,0,0,8,3,10],
 "classCqrs_1_1Domain_1_1AggregateRoot_a1db2322dd7442e1e0c3c07332124eb2f.html#a1db2322dd7442e1e0c3c07332124eb2f":[1,0,0,8,3,0],
-"classCqrs_1_1Domain_1_1AggregateRoot_a625e885ec7885a686f729ed1efe3a8fa.html#a625e885ec7885a686f729ed1efe3a8fa":[1,0,0,8,3,3],
-"classCqrs_1_1Domain_1_1AggregateRoot_a7e299b13c7556731e52670aa6d782296.html#a7e299b13c7556731e52670aa6d782296":[1,0,0,8,3,1],
-"classCqrs_1_1Domain_1_1AggregateRoot_aaf87b883f3f89addff957c7071a67203.html#aaf87b883f3f89addff957c7071a67203":[1,0,0,8,3,2],
-"classCqrs_1_1Domain_1_1AggregateRoot_ab84d521c8c3bffd3c2e58959984d1e88.html#ab84d521c8c3bffd3c2e58959984d1e88":[1,0,0,8,3,8],
-"classCqrs_1_1Domain_1_1AggregateRoot_adab968b830e186cb832583910bf6f3a6.html#adab968b830e186cb832583910bf6f3a6":[1,0,0,8,3,6],
-"classCqrs_1_1Domain_1_1AggregateRoot_adde40f553bdfcac309b3785751c7d3fc.html#adde40f553bdfcac309b3785751c7d3fc":[1,0,0,8,3,4],
-"classCqrs_1_1Domain_1_1AggregateRoot_aec873ad6e4c98309cad2d9f1c534aebb.html#aec873ad6e4c98309cad2d9f1c534aebb":[1,0,0,8,3,5]
+"classCqrs_1_1Domain_1_1AggregateRoot_a625e885ec7885a686f729ed1efe3a8fa.html#a625e885ec7885a686f729ed1efe3a8fa":[1,0,0,8,3,3]
 };

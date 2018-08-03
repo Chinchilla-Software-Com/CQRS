@@ -44,50 +44,50 @@
 <para>public class ConfirmOrder { public Guid OrderRsn; } </para><para>What does a ICommand&lt;TAuthenticationToken&gt; or an IEvent&lt;TAuthenticationToken&gt; look like?</para><para>An ICommand&lt;TAuthenticationToken&gt; or IEvent&lt;TAuthenticationToken&gt; is simply a data structure that contain data for reading, and no behavior. We call such structures &quot;Data Transfer Objects&quot; (DTOs). The name indicates the purpose. In many languages they are represented as classes, but they are not true classes in the real OO sense.</para><para>What is the difference between a ICommand&lt;TAuthenticationToken&gt; and an IEvent&lt;TAuthenticationToken&gt;?</para><para>Their intent.</para><para>What is immutability? Why is a ICommand&lt;TAuthenticationToken&gt; or IEvent&lt;TAuthenticationToken&gt; immutable?</para><para>For the purpose of this question, immutability is not having any setters, or other methods which change internal state. The string type in is a familiar example; you never actually change an existing string value, you just create new string values based on old ones.</para><para>An ICommand&lt;TAuthenticationToken&gt; is immutable because their expected usage is to be sent directly to the domain model side for processing. They do not need to change during their projected lifetime in traveling from client to server. Sometimes however business logic dictates that a decision may be made to construct a ICommand&lt;TAuthenticationToken&gt; and local variables should be used.</para><para>An IEvent&lt;TAuthenticationToken&gt; is immutable because they represent domain actions that took place in the past. Unless you&apos;re Marty McFly, you can&apos;t change the past, and sometimes not even then.</para><para>What is command upgrading?</para><para>Upgrading an ICommand&lt;TAuthenticationToken&gt; becomes necessary when new requirements cause an existing ICommand&lt;TAuthenticationToken&gt; not to be sufficient. Maybe a new field needs to be added, for example, or maybe an existing field should really have been split into several different ones.</para><para>How do I upgrade my ICommand&lt;TAuthenticationToken&gt;s?</para><para>How you do the upgrade depends how much control you have over your clients. If you can deploy your client updates and server updates together, just change things in both and deploy the updates. Job done. If not, it&apos;s usually best to have the updated ICommand&lt;TAuthenticationToken&gt; be a new type and have the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; accept both for a while.</para><para>Could you give an example of names of some versioned ICommand&lt;TAuthenticationToken&gt;?</para><para>Sure.</para><para>UploadFile UploadFile_v2 UploadFile_v3</para><para>It&apos;s just a convention, but a sane one. <hruler/>
  Also see <ulink url="http://cqrs.nu/Faq/commands-and-events">http://cqrs.nu/Faq/commands-and-events</ulink>. </para>    </detaileddescription>
     <inheritancegraph>
-      <node id="1153">
+      <node id="1162">
         <label>Cqrs.Commands.ICommand&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Commands_1_1ICommand"/>
-        <childnode refid="1154" relation="public-inheritance">
+        <childnode refid="1163" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1155">
+      <node id="1164">
         <label>IMessage</label>
         <link refid="interfaceCqrs_1_1Messages_1_1IMessage"/>
       </node>
-      <node id="1157">
+      <node id="1166">
         <label>Cqrs::Commands::ICommandWithIdentity&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Commands_1_1ICommandWithIdentity"/>
-        <childnode refid="1153" relation="public-inheritance">
+        <childnode refid="1162" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1156">
+      <node id="1165">
         <label>Cqrs::Commands::DtoCommand&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Commands_1_1DtoCommand"/>
-        <childnode refid="1153" relation="public-inheritance">
+        <childnode refid="1162" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1154">
+      <node id="1163">
         <label>IMessageWithAuthenticationToken&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Messages_1_1IMessageWithAuthenticationToken"/>
-        <childnode refid="1155" relation="public-inheritance">
+        <childnode refid="1164" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="1158">
+      <node id="1167">
         <label>Cqrs.Commands.ICommand&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Commands_1_1ICommand"/>
-        <childnode refid="1159" relation="public-inheritance">
+        <childnode refid="1168" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1160">
+      <node id="1169">
         <label>IMessage</label>
         <link refid="interfaceCqrs_1_1Messages_1_1IMessage"/>
       </node>
-      <node id="1159">
+      <node id="1168">
         <label>IMessageWithAuthenticationToken&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Messages_1_1IMessageWithAuthenticationToken"/>
-        <childnode refid="1160" relation="public-inheritance">
+        <childnode refid="1169" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>
