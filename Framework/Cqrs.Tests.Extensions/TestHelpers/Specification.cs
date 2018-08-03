@@ -76,6 +76,17 @@ namespace Cqrs.Tests.Extensions.TestHelpers
 		}
 
 		/// <summary>
+		/// Get the latest <see cref="Snapshots.Snapshot"/> from storage.
+		/// </summary>
+		/// <param name="aggregateRootType">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/> to find a snapshot for.</param>
+		/// <param name="id">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to get the most recent <see cref="Snapshots.Snapshot"/> of.</param>
+		/// <returns>The most recent <see cref="Snapshots.Snapshot"/> of</returns>
+		public Snapshot Get(Type aggregateRootType, Guid id)
+		{
+			return Snapshot;
+		}
+
+		/// <summary>
 		/// Saves the provided <paramref name="snapshot"/> into storage.
 		/// </summary>
 		/// <param name="snapshot">the <see cref="Snapshots.Snapshot"/> to save and store.</param>

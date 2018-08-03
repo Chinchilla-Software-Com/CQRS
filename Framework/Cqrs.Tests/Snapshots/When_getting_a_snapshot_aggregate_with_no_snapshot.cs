@@ -44,6 +44,17 @@ namespace Cqrs.Tests.Snapshots
 			}
 
 			/// <summary>
+			/// Get the latest <see cref="Snapshot"/> from storage.
+			/// </summary>
+			/// <param name="aggregateRootType">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/> to find a snapshot for.</param>
+			/// <param name="id">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to get the most recent <see cref="Snapshot"/> of.</param>
+			/// <returns>The most recent <see cref="Snapshot"/> of</returns>
+			public Snapshot Get(Type aggregateRootType, Guid id)
+			{
+				return null;
+			}
+
+			/// <summary>
 			/// Does absolutely nothing.
 			/// </summary>
 			public void Save(Snapshot snapshot)

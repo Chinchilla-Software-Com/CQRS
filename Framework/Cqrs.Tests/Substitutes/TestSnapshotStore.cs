@@ -17,6 +17,12 @@ namespace Cqrs.Tests.Substitutes
 			return new TestSnapshotAggregateSnapshot();
 		}
 
+		public Snapshot Get(Type aggregateRootType, Guid id)
+		{
+			VerifyGet = true;
+			return new TestSnapshotAggregateSnapshot();
+		}
+
 		public void Save(Snapshot snapshot)
 		{
 			VerifySave = true;

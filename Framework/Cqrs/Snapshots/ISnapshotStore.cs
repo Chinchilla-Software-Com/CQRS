@@ -25,6 +25,14 @@ namespace Cqrs.Snapshots
 		Snapshot Get<TAggregateRoot>(Guid id);
 
 		/// <summary>
+		/// Get the latest <see cref="Snapshot"/> from storage.
+		/// </summary>
+		/// <param name="aggregateRootType">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/> to find a snapshot for.</param>
+		/// <param name="id">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to get the most recent <see cref="Snapshot"/> of.</param>
+		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
+		Snapshot Get(Type aggregateRootType, Guid id);
+
+		/// <summary>
 		/// Saves the provided <paramref name="snapshot"/> into storage.
 		/// </summary>
 		/// <param name="snapshot">the <see cref="Snapshot"/> to save and store.</param>

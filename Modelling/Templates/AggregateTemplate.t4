@@ -220,7 +220,7 @@ switch(aggregateTechnology)
 	{
 #>
 			UnitOfWork = DependencyResolver.Resolve<IUnitOfWork<<#= authenticationTokenType #>>>();
-			Repository = DependencyResolver.Resolve<IAkkaAggregateRepository<<#= authenticationTokenType #>>>();
+			Repository = DependencyResolver.Resolve<IAkka<#= isSnapshotable ? "Snapshot" : "" #>AggregateRepository<<#= authenticationTokenType #>>>();
 			CorrelationIdHelper = DependencyResolver.Resolve<ICorrelationIdHelper>();
 			AuthenticationTokenHelper = DependencyResolver.Resolve<IAuthenticationTokenHelper<<#= authenticationTokenType #>>>();
 
