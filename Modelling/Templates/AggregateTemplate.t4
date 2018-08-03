@@ -24,12 +24,12 @@ string baseClass = GetBaseClass(this.Element);
 bool isSnapshotable = stereoTypeProperties.PropertyInstances
 	.Single(property => property.Name == "IsSnapshotable")
 	.Value == "true";
+string aggregateTechnology = GetAggregateTechnology(this.Element);
 if (string.IsNullOrWhiteSpace(baseClass) && isSnapshotable)
-	baseClass = string.Format("SnapshotAggregateRoot<" + authenticationTokenType + ", {0}.{0}Snapshot>", className);
+	baseClass = string.Format("{1}SnapshotAggregateRoot<" + authenticationTokenType + ", {0}.{0}Snapshot>", className, aggregateTechnology == "Akka" ? "Akka" : string.Empty);
 
 // using statements
 WriteUsingStatements(this.Element);
-string aggregateTechnology = GetAggregateTechnology(this.Element);
 switch(aggregateTechnology)
 {
 	case "Akka":
@@ -37,6 +37,7 @@ switch(aggregateTechnology)
 			baseClass = "AkkaAggregateRoot<" + authenticationTokenType + ">";
 #>using Akka.Actor;
 using Cqrs.Akka.Domain;
+using Cqrs.Akka.Snapshots;
 <#
 		break;
 	default:
@@ -173,8 +174,17 @@ switch(aggregateTechnology)
 			string targetElementName = ((INamedElement)relationship.TargetElement).Name;
 			IList<IProperty> relationshipProperties = GetPropertyList((IClass)relationship.SourceElement).Where(property=> property.Type != relationship.TargetElement && property.Type != relationship.SourceElement).ToList();
 			IEnumerable<IAssociation> eventRelationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.Name == relationship.Name && associationEnd.SourceElement == this.Element);
+			string commandName = string.Format("{0}Command", ((INamedElement)relationship.SourceElement).Name);
+
+			var commandHandler = relationship.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+			if (commandHandler != null)
+			{
+				string aggregateRootMethod = commandHandler.PropertyInstances.Single(property => property.Name == "AggregateRootMethod").Value;
+				if (!string.IsNullOrWhiteSpace(aggregateRootMethod))
+					relationshipName = aggregateRootMethod;
+			}
 #>
-			Receive<<#= ((INamedElement)relationship.SourceElement).Name #>Command>(command => Execute(<#= relationshipName #>, command));
+			Receive<<#= commandName #>>(command => Execute(<#= relationshipName #>, command));
 <#
 		}
 		break;
@@ -210,7 +220,7 @@ switch(aggregateTechnology)
 	{
 #>
 			UnitOfWork = DependencyResolver.Resolve<IUnitOfWork<<#= authenticationTokenType #>>>();
-			Repository = DependencyResolver.Resolve<IAkkaRepository<<#= authenticationTokenType #>>>();
+			Repository = DependencyResolver.Resolve<IAkkaAggregateRepository<<#= authenticationTokenType #>>>();
 			CorrelationIdHelper = DependencyResolver.Resolve<ICorrelationIdHelper>();
 			AuthenticationTokenHelper = DependencyResolver.Resolve<IAuthenticationTokenHelper<<#= authenticationTokenType #>>>();
 
