@@ -1,5 +1,11 @@
 var NAVTREEINDEX5 =
 {
+"classCqrs_1_1Domain_1_1AggregateRoot_a7e299b13c7556731e52670aa6d782296.html#a7e299b13c7556731e52670aa6d782296":[1,0,0,8,3,1],
+"classCqrs_1_1Domain_1_1AggregateRoot_aaf87b883f3f89addff957c7071a67203.html#aaf87b883f3f89addff957c7071a67203":[1,0,0,8,3,2],
+"classCqrs_1_1Domain_1_1AggregateRoot_ab84d521c8c3bffd3c2e58959984d1e88.html#ab84d521c8c3bffd3c2e58959984d1e88":[1,0,0,8,3,8],
+"classCqrs_1_1Domain_1_1AggregateRoot_adab968b830e186cb832583910bf6f3a6.html#adab968b830e186cb832583910bf6f3a6":[1,0,0,8,3,6],
+"classCqrs_1_1Domain_1_1AggregateRoot_adde40f553bdfcac309b3785751c7d3fc.html#adde40f553bdfcac309b3785751c7d3fc":[1,0,0,8,3,4],
+"classCqrs_1_1Domain_1_1AggregateRoot_aec873ad6e4c98309cad2d9f1c534aebb.html#aec873ad6e4c98309cad2d9f1c534aebb":[1,0,0,8,3,5],
 "classCqrs_1_1Domain_1_1DtoAggregateRoot.html":[1,0,0,8,4],
 "classCqrs_1_1Domain_1_1DtoAggregateRoot_aa99d95d5b4b1fb8a59beda77f7e12c20.html#aa99d95d5b4b1fb8a59beda77f7e12c20":[1,0,0,8,4,0],
 "classCqrs_1_1Domain_1_1Exceptions_1_1AggregateNotFoundException.html":[1,0,0,8,0,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX5 =
 "classCqrs_1_1Events_1_1EventBuilder_abcc2515f98e4852ab656f1868e7a344c.html#abcc2515f98e4852ab656f1868e7a344c":[1,0,0,10,5,1],
 "classCqrs_1_1Events_1_1EventBuilder_aefa7bfaea90123e143e108d46efc6603.html#aefa7bfaea90123e143e108d46efc6603":[1,0,0,10,5,3],
 "classCqrs_1_1Events_1_1EventData.html":[1,0,0,10,6],
-"classCqrs_1_1Events_1_1EventDataResolver.html":[1,0,0,10,7],
-"classCqrs_1_1Events_1_1EventDataResolver_a62be7cd15bb38f3a4054a62e787c473d.html#a62be7cd15bb38f3a4054a62e787c473d":[1,0,0,10,7,1],
-"classCqrs_1_1Events_1_1EventDataResolver_ade34415acd009dd3f9f3a43169da43e9.html#ade34415acd009dd3f9f3a43169da43e9":[1,0,0,10,7,0],
-"classCqrs_1_1Events_1_1EventData_a0079e7f2307d3fc54063317edb71ffc2.html#a0079e7f2307d3fc54063317edb71ffc2":[1,0,0,10,6,1],
-"classCqrs_1_1Events_1_1EventData_a020c856c1e3a97d8783ccf0ba86c6f59.html#a020c856c1e3a97d8783ccf0ba86c6f59":[1,0,0,10,6,5],
-"classCqrs_1_1Events_1_1EventData_a0387ea22e5cdc085caf113a82f5ace18.html#a0387ea22e5cdc085caf113a82f5ace18":[1,0,0,10,6,0],
-"classCqrs_1_1Events_1_1EventData_a11b4f2ea845000dea4148a94d4c6ba93.html#a11b4f2ea845000dea4148a94d4c6ba93":[1,0,0,10,6,6]
+"classCqrs_1_1Events_1_1EventDataResolver.html":[1,0,0,10,7]
 };

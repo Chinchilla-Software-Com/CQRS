@@ -1,5 +1,11 @@
 var NAVTREEINDEX9 =
 {
+"classCqrs_1_1Services_1_1BasicServiceParameterResolver_adbc4b10f8931db30768d7ca84bdb0260.html#adbc4b10f8931db30768d7ca84bdb0260":[1,0,0,20,0,4],
+"classCqrs_1_1Services_1_1BasicServiceParameterResolver_af82f43a2f64aa5c33a3692a2a689367b.html#af82f43a2f64aa5c33a3692a2a689367b":[1,0,0,20,0,0],
+"classCqrs_1_1Services_1_1EventService.html":[1,0,0,20,1],
+"classCqrs_1_1Services_1_1EventService_a07e516aae58050ab225f5ce5f1830ff6.html#a07e516aae58050ab225f5ce5f1830ff6":[1,0,0,20,1,7],
+"classCqrs_1_1Services_1_1EventService_a1556310c97fbf05df7804d53f91f8511.html#a1556310c97fbf05df7804d53f91f8511":[1,0,0,20,1,3],
+"classCqrs_1_1Services_1_1EventService_a16030e800b05cea77fd2183db7296804.html#a16030e800b05cea77fd2183db7296804":[1,0,0,20,1,4],
 "classCqrs_1_1Services_1_1EventService_a1c12d11de253a85f7257c412bca1532b.html#a1c12d11de253a85f7257c412bca1532b":[1,0,0,20,1,6],
 "classCqrs_1_1Services_1_1EventService_a7da2e2ec8d77d5972cea45a7ad482f39.html#a7da2e2ec8d77d5972cea45a7ad482f39":[1,0,0,20,1,5],
 "classCqrs_1_1Services_1_1EventService_a9a68d774ac754e39be56d3e0449f14d7.html#a9a68d774ac754e39be56d3e0449f14d7":[1,0,0,20,1,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX9 =
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1FromStringConverterAdapter_a8861572dad983012fbe36488b2b6913a.html#a8861572dad983012fbe36488b2b6913a":[1,0,0,25,3,0,1,1,1,0],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1FromStringConverterAdapter_aac70ae2f2845154556163073178d0438.html#aac70ae2f2845154556163073178d0438":[1,0,0,25,3,0,1,1,1,1],
 "classCqrs_1_1WebApi_1_1HelpPageConfig.html":[1,0,0,25,8],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent.html":[1,0,0,25,8,0],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_a02e51969b7b6c8af4790757dc26cc480.html#a02e51969b7b6c8af4790757dc26cc480":[1,0,0,25,8,0,0],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_a413c824200dd34f9a0329641fbea731d.html#a413c824200dd34f9a0329641fbea731d":[1,0,0,25,8,0,8],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_a4b16a2634b2d298f5cca25ab9ca40d32.html#a4b16a2634b2d298f5cca25ab9ca40d32":[1,0,0,25,8,0,4],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_a528ebdf311a769ae18fea4e8a155998f.html#a528ebdf311a769ae18fea4e8a155998f":[1,0,0,25,8,0,5],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_a5d4fbf202d00e1a969a763e64b69084d.html#a5d4fbf202d00e1a969a763e64b69084d":[1,0,0,25,8,0,6],
-"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent_a67b06cda1fda4cd45f659da08600a142.html#a67b06cda1fda4cd45f659da08600a142":[1,0,0,25,8,0,2]
+"classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent.html":[1,0,0,25,8,0]
 };

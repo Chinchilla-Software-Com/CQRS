@@ -1,5 +1,11 @@
 var NAVTREEINDEX2 =
 {
+"classCqrs_1_1Azure_1_1BlobStorage_1_1Factories_1_1BlobStorageDataStoreFactory_a5df6d152d265ee439183ef60b3deb666.html#a5df6d152d265ee439183ef60b3deb666":[1,0,0,2,0,2,0,1],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1BlobStorageRepository.html":[1,0,0,2,0,3,1],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1BlobStorageRepository_a11ec03d2f22e21b2a84556fd26077909.html#a11ec03d2f22e21b2a84556fd26077909":[1,0,0,2,0,3,1,0],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1BlobStorageRepository_a7c5a3ca4d92cf4954508fb3e583eb49e.html#a7c5a3ca4d92cf4954508fb3e583eb49e":[1,0,0,2,0,3,1,1],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1Queries_1_1BlobStorageQueryBuilder.html":[1,0,0,2,0,3,0,0],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1Queries_1_1BlobStorageQueryBuilder_a5987844de032c5473714dafcee7f4ae1.html#a5987844de032c5473714dafcee7f4ae1":[1,0,0,2,0,3,0,0,1],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1Queries_1_1BlobStorageQueryBuilder_ae6519f289d2b7be9d322dfa7171dea8b.html#ae6519f289d2b7be9d322dfa7171dea8b":[1,0,0,2,0,3,0,0,0],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1TableStorageRepository.html":[1,0,0,2,0,3,2],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1TableStorageRepository_a2c98507c1cdd4ed740a8d881a4e779e1.html#a2c98507c1cdd4ed740a8d881a4e779e1":[1,0,0,2,0,3,2,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX2 =
 "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureQueuedCommandHubReceiverModule_a2513051554179e7d2a4d800375300b53.html#a2513051554179e7d2a4d800375300b53":[1,0,0,2,3,0,0,6,0],
 "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventBusPublisherModule.html":[1,0,0,2,3,1,0,0],
 "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventBusReceiverModule.html":[1,0,0,2,3,1,0,1],
-"classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubPublisherModule.html":[1,0,0,2,3,1,0,2],
-"classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubPublisherModule_a1053c9b0a8d649bb63f1404563186677.html#a1053c9b0a8d649bb63f1404563186677":[1,0,0,2,3,1,0,2,0],
-"classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubPublisherModule_a86c95fe05f75c63d85a52a3052f3b016.html#a86c95fe05f75c63d85a52a3052f3b016":[1,0,0,2,3,1,0,2,2],
-"classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubPublisherModule_adc517a90b48388fb0f8ce5e56094aff5.html#adc517a90b48388fb0f8ce5e56094aff5":[1,0,0,2,3,1,0,2,1],
-"classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubReceiverModule.html":[1,0,0,2,3,1,0,3],
-"classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubReceiverModule_a2da94c97ebabdf7645a558ccf21f5de2.html#a2da94c97ebabdf7645a558ccf21f5de2":[1,0,0,2,3,1,0,3,0],
-"classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubReceiverModule_a7164b8ca5e4e768d46659cff6289156a.html#a7164b8ca5e4e768d46659cff6289156a":[1,0,0,2,3,1,0,3,2]
+"classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubPublisherModule.html":[1,0,0,2,3,1,0,2]
 };
