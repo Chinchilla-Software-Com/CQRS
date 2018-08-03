@@ -12,5 +12,6 @@ var namespaceCqrs_1_1Akka_1_1Domain =
     [ "IAkkaAggregateRootProxy", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRootProxy.html", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRootProxy" ],
     [ "IAkkaSagaProxy", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaProxy.html", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaProxy" ],
     [ "IAkkaSagaRepository", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaRepository.html", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaRepository" ],
-    [ "IAkkaSagaResolver", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaResolver.html", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaResolver" ]
+    [ "IAkkaSagaResolver", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaResolver.html", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaResolver" ],
+    [ "IAkkaSnapshotAggregateRepository", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSnapshotAggregateRepository.html", null ]
 ];

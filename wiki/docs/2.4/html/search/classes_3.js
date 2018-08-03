@@ -2,6 +2,7 @@ var searchData=
 [
   ['daterange',['DateRange',['../classCqrs_1_1Entities_1_1DateRange.html',1,'Cqrs::Entities']]],
   ['decimalrange',['DecimalRange',['../classCqrs_1_1Entities_1_1DecimalRange.html',1,'Cqrs::Entities']]],
+  ['defaultakkasnapshotstrategy',['DefaultAkkaSnapshotStrategy',['../classCqrs_1_1Akka_1_1Snapshots_1_1DefaultAkkaSnapshotStrategy.html',1,'Cqrs::Akka::Snapshots']]],
   ['defaultauthenticationtokenhelper',['DefaultAuthenticationTokenHelper',['../classCqrs_1_1Authentication_1_1DefaultAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],
   ['defaulteventbuilder',['DefaultEventBuilder',['../classCqrs_1_1Events_1_1DefaultEventBuilder.html',1,'Cqrs::Events']]],
   ['defaultjsonserializersettings',['DefaultJsonSerializerSettings',['../classCqrs_1_1Events_1_1DefaultJsonSerializerSettings.html',1,'Cqrs::Events']]],

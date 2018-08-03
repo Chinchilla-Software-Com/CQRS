@@ -264,13 +264,17 @@ var hierarchy =
     ] ],
     [ "Cqrs.Domain.IAggregateRepository< TAuthenticationToken >", "interfaceCqrs_1_1Domain_1_1IAggregateRepository.html", [
       [ "Cqrs.Akka.Domain.IAkkaAggregateRepository< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository.html", [
-        [ "Cqrs.Akka.Domain.AkkaAggregateRepository< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository.html", null ]
+        [ "Cqrs.Akka.Domain.AkkaAggregateRepository< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository.html", null ],
+        [ "Cqrs.Akka.Domain.IAkkaSnapshotAggregateRepository< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSnapshotAggregateRepository.html", [
+          [ "Cqrs.Akka.Snapshots.AkkaSnapshotRepository< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository.html", null ]
+        ] ]
       ] ],
       [ "Cqrs.Cache.CacheRepository< TAuthenticationToken >", "classCqrs_1_1Cache_1_1CacheRepository.html", null ],
       [ "Cqrs.Domain.AggregateRepository< TAuthenticationToken >", "classCqrs_1_1Domain_1_1AggregateRepository.html", [
         [ "Cqrs.Akka.Domain.AkkaAggregateRepository< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository.html", null ]
       ] ],
       [ "Cqrs.Domain.ISnapshotAggregateRepository< TAuthenticationToken >", "interfaceCqrs_1_1Domain_1_1ISnapshotAggregateRepository.html", [
+        [ "Cqrs.Akka.Domain.IAkkaSnapshotAggregateRepository< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSnapshotAggregateRepository.html", null ],
         [ "Cqrs.Snapshots.SnapshotRepository< TAuthenticationToken >", "classCqrs_1_1Snapshots_1_1SnapshotRepository.html", null ]
       ] ]
     ] ],
@@ -560,7 +564,9 @@ var hierarchy =
       ] ]
     ] ],
     [ "Cqrs.Snapshots.ISnapshotStrategy< TAuthenticationToken >", "interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy.html", [
-      [ "Cqrs.Snapshots.DefaultSnapshotStrategy< TAuthenticationToken >", "classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy.html", null ]
+      [ "Cqrs.Snapshots.DefaultSnapshotStrategy< TAuthenticationToken >", "classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy.html", [
+        [ "Cqrs.Akka.Snapshots.DefaultAkkaSnapshotStrategy< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Snapshots_1_1DefaultAkkaSnapshotStrategy.html", null ]
+      ] ]
     ] ],
     [ "Cqrs.Snapshots.Snapshot", "classCqrs_1_1Snapshots_1_1Snapshot.html", [
       [ "Cqrs.MongoDB.Tests.Integration.MongoDbSnapshotStoreTests.TestAggregateSnapshot", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregateSnapshot.html", null ],

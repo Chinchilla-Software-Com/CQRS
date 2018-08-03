@@ -16,6 +16,8 @@ Inheritance diagram for Cqrs.\+Snapshots.\+Snapshot\+Store\+:\begin{figure}[H]
 \item 
 virtual \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_af35423c44786c31d224d52c3796d0d3d_af35423c44786c31d224d52c3796d0d3d}{Get$<$ T\+Aggregate\+Root $>$} (Guid id)
 \begin{DoxyCompactList}\small\item\em Get the latest \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} from storage. \end{DoxyCompactList}\item 
+\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_a08ec0d8ff97742e3503a3778bb92076e_a08ec0d8ff97742e3503a3778bb92076e}{Get} (Type aggregate\+Root\+Type, Guid id)
+\begin{DoxyCompactList}\small\item\em Get the latest \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} from storage. \end{DoxyCompactList}\item 
 abstract void \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_ae96ea2bb89a0bd7f45544acc37107525_ae96ea2bb89a0bd7f45544acc37107525}{Save} (\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} snapshot)
 \begin{DoxyCompactList}\small\item\em Saves the provided {\itshape snapshot}  into storage. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
@@ -99,10 +101,34 @@ Generate a unique stream name based on the provided {\itshape aggregate\+Root\+T
 
 Reimplemented in \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a95503a8721d083d070495cb4f884c0cf_a95503a8721d083d070495cb4f884c0cf}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store}.
 
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_a08ec0d8ff97742e3503a3778bb92076e_a08ec0d8ff97742e3503a3778bb92076e}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_a08ec0d8ff97742e3503a3778bb92076e_a08ec0d8ff97742e3503a3778bb92076e}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Get@{Get}}
+\index{Get@{Get}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} Cqrs.\+Snapshots.\+Snapshot\+Store.\+Get (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{id }\end{DoxyParamCaption})}
+
+
+
+Get the latest \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} from storage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & The Type of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to find a snapshot for.\\
+\hline
+{\em id} & The identifier of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to get the most recent \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} of.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The most recent \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} of
+\end{DoxyReturn}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStore_a25efb06a4a6fcc9246d4572777c95dd5_a25efb06a4a6fcc9246d4572777c95dd5}{Cqrs.\+Snapshots.\+I\+Snapshot\+Store}.
+
 \mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_ab2ecab1a665c0f2097929d028fe4ac69_ab2ecab1a665c0f2097929d028fe4ac69}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_ab2ecab1a665c0f2097929d028fe4ac69_ab2ecab1a665c0f2097929d028fe4ac69}} 
 \index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Get@{Get}}
 \index{Get@{Get}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
-\subsubsection{\texorpdfstring{Get()}{Get()}}
+\subsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily abstract \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} Cqrs.\+Snapshots.\+Snapshot\+Store.\+Get (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{string}]{stream\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
 
 
@@ -120,7 +146,7 @@ Implemented in \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbSnapshotStore
 \index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Get$<$ T\+Aggregate\+Root $>$@{Get$<$ T\+Aggregate\+Root $>$}}
 \index{Get$<$ T\+Aggregate\+Root $>$@{Get$<$ T\+Aggregate\+Root $>$}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
 \subsubsection{\texorpdfstring{Get$<$ T\+Aggregate\+Root $>$()}{Get< TAggregateRoot >()}}
-{\footnotesize\ttfamily virtual \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_ab2ecab1a665c0f2097929d028fe4ac69_ab2ecab1a665c0f2097929d028fe4ac69}{Cqrs.\+Snapshots.\+Snapshot\+Store.\+Get}$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily virtual \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_a08ec0d8ff97742e3503a3778bb92076e_a08ec0d8ff97742e3503a3778bb92076e}{Cqrs.\+Snapshots.\+Snapshot\+Store.\+Get}$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 
 

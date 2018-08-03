@@ -4,6 +4,7 @@
     <compoundname>Cqrs::Akka::Domain::IAkkaAggregateRepository</compoundname>
     <basecompoundref refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository" prot="public" virt="non-virtual">Cqrs::Domain::IAggregateRepository&lt; TAuthenticationToken &gt;</basecompoundref>
     <derivedcompoundref refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository" prot="public" virt="non-virtual">Cqrs.Akka.Domain.AkkaAggregateRepository&lt; TAuthenticationToken &gt;</derivedcompoundref>
+    <derivedcompoundref refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSnapshotAggregateRepository" prot="public" virt="non-virtual">Cqrs.Akka.Domain.IAkkaSnapshotAggregateRepository&lt; TAuthenticationToken &gt;</derivedcompoundref>
     <templateparamlist>
       <param>
         <type>TAuthenticationToken</type>
@@ -15,6 +16,7 @@
         <definition>void Cqrs.Akka.Domain.IAkkaAggregateRepository&lt; TAuthenticationToken &gt;.LoadAggregateHistory&lt; TAggregateRoot &gt;</definition>
         <argsstring>(TAggregateRoot aggregate, IList&lt; IEvent&lt; TAuthenticationToken &gt;&gt; events=null, bool throwExceptionOnNoEvents=true)</argsstring>
         <name>LoadAggregateHistory&lt; TAggregateRoot &gt;</name>
+        <reimplementedby refid="classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a22974b2e02f76de5ad76369130fbb8f4_1a22974b2e02f76de5ad76369130fbb8f4">LoadAggregateHistory&lt; TAggregateRoot &gt;</reimplementedby>
         <param>
           <type>TAggregateRoot</type>
           <declname>aggregate</declname>
@@ -87,9 +89,21 @@
         <childnode refid="110" relation="public-inheritance">
         </childnode>
       </node>
+      <node id="113">
+        <label>Cqrs::Akka::Domain::IAkkaSnapshotAggregateRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSnapshotAggregateRepository"/>
+        <childnode refid="110" relation="public-inheritance">
+        </childnode>
+      </node>
       <node id="111">
         <label>IAggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository"/>
+      </node>
+      <node id="114">
+        <label>Cqrs::Akka::Snapshots::AkkaSnapshotRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository"/>
+        <childnode refid="113" relation="public-inheritance">
+        </childnode>
       </node>
       <node id="110">
         <label>Cqrs.Akka.Domain.IAkkaAggregateRepository&lt; TAuthenticationToken &gt;</label>
@@ -99,14 +113,14 @@
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="114">
+      <node id="116">
         <label>IAggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository"/>
       </node>
-      <node id="113">
+      <node id="115">
         <label>Cqrs.Akka.Domain.IAkkaAggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository"/>
-        <childnode refid="114" relation="public-inheritance">
+        <childnode refid="116" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>
