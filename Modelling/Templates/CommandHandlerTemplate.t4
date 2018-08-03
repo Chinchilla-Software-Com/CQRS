@@ -84,6 +84,12 @@ if (!relationships.Any())
 		aggregateRootName = stereoTypeProperties.PropertyInstances.Single(property => property.Name == "AggregateRoot").Value;
 	if (isSimple && !string.IsNullOrWhiteSpace(aggregateRootName))
 	{
+			var aggregateRoot = AllElements(FindDomainElement(this.Element), "AggregateRoot").OfType<INamedElement>().Single(e => e.Name == aggregateRootName);
+			var aggregateRootStereoTypeProperties = aggregateRoot.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+			bool isSnapshotable = aggregateRootStereoTypeProperties.PropertyInstances
+				.Single(property => property.Name == "IsSnapshotable")
+				.Value == "true";
+
 #>
 			<#= aggregateRootName #> item = null;
 			On<#= className #>(command, ref item);
@@ -101,7 +107,7 @@ if (!relationships.Any())
 		else
 		{
 #>
-				item = UnitOfWork.Get<<#= aggregateRootName #>>(command.Rsn);
+				item = UnitOfWork.Get<<#= aggregateRootName #>>(command.Rsn, useSnapshots: <#= isSnapshotable.ToString().ToLowerInvariant() #>);
 <#
 		}
 #>
@@ -298,8 +304,13 @@ if (!relationships.Any())
 				}
 				else
 				{
+					var aggregateRoot = AllElements(FindDomainElement(this.Element), "AggregateRoot").OfType<INamedElement>().Single(e => e.Name == targetElementName);
+					var aggregateRootStereoTypeProperties = aggregateRoot.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+					bool isSnapshotable = aggregateRootStereoTypeProperties.PropertyInstances
+						.Single(property => property.Name == "IsSnapshotable")
+						.Value == "true";
 #>
-					item = UnitOfWork.Get<<#= targetElementName #>>(command.Rsn);
+					item = UnitOfWork.Get<<#= targetElementName #>>(command.Rsn, useSnapshots: <#= isSnapshotable.ToString().ToLowerInvariant() #>);
 <#
 				}
 #>
