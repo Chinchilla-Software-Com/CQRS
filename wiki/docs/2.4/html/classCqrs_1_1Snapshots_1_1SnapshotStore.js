@@ -3,6 +3,7 @@ var classCqrs_1_1Snapshots_1_1SnapshotStore =
     [ "SnapshotStore", "classCqrs_1_1Snapshots_1_1SnapshotStore_aa8ab186f864443c7d9647a4522864a84.html#aa8ab186f864443c7d9647a4522864a84", null ],
     [ "BuildEventData", "classCqrs_1_1Snapshots_1_1SnapshotStore_a61f0715eab97e305cd2bf04a5b74565e.html#a61f0715eab97e305cd2bf04a5b74565e", null ],
     [ "GenerateStreamName", "classCqrs_1_1Snapshots_1_1SnapshotStore_a8ff909b77429c8a924376962bba36849.html#a8ff909b77429c8a924376962bba36849", null ],
+    [ "Get", "classCqrs_1_1Snapshots_1_1SnapshotStore_a08ec0d8ff97742e3503a3778bb92076e.html#a08ec0d8ff97742e3503a3778bb92076e", null ],
     [ "Get", "classCqrs_1_1Snapshots_1_1SnapshotStore_ab2ecab1a665c0f2097929d028fe4ac69.html#ab2ecab1a665c0f2097929d028fe4ac69", null ],
     [ "Get< TAggregateRoot >", "classCqrs_1_1Snapshots_1_1SnapshotStore_af35423c44786c31d224d52c3796d0d3d.html#af35423c44786c31d224d52c3796d0d3d", null ],
     [ "Save", "classCqrs_1_1Snapshots_1_1SnapshotStore_ae96ea2bb89a0bd7f45544acc37107525.html#ae96ea2bb89a0bd7f45544acc37107525", null ],

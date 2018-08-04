@@ -15,6 +15,7 @@ var searchData=
   ['iakkasagaproxy_3c_20tsaga_20_3e',['IAkkaSagaProxy&lt; TSaga &gt;',['../interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaProxy.html',1,'Cqrs::Akka::Domain']]],
   ['iakkasagarepository',['IAkkaSagaRepository',['../interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaRepository.html',1,'Cqrs::Akka::Domain']]],
   ['iakkasagaresolver',['IAkkaSagaResolver',['../interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaResolver.html',1,'Cqrs::Akka::Domain']]],
+  ['iakkasnapshotaggregaterepository',['IAkkaSnapshotAggregateRepository',['../interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSnapshotAggregateRepository.html',1,'Cqrs::Akka::Domain']]],
   ['iandquerypredicate',['IAndQueryPredicate',['../interfaceCqrs_1_1Repositories_1_1Queries_1_1IAndQueryPredicate.html',1,'Cqrs::Repositories::Queries']]],
   ['iauthenticationtokenhelper',['IAuthenticationTokenHelper',['../interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],
   ['iauthenticationtokenhelper_3c_20guid_20_3e',['IAuthenticationTokenHelper&lt; Guid &gt;',['../interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],

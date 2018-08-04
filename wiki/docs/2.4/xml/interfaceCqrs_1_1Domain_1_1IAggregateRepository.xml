@@ -19,6 +19,7 @@
         <name>Save&lt; TAggregateRoot &gt;</name>
         <reimplementedby refid="classCqrs_1_1Snapshots_1_1SnapshotRepository_aac1a574562f8c6134d02a44cd10b8afa_1aac1a574562f8c6134d02a44cd10b8afa">Save&lt; TAggregateRoot &gt;</reimplementedby>
         <reimplementedby refid="classCqrs_1_1Domain_1_1AggregateRepository_aff9e828d19a091a4275f635bee4b3c9b_1aff9e828d19a091a4275f635bee4b3c9b">Save&lt; TAggregateRoot &gt;</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_adf399a4ea283ae725bf8f1229d6da30a_1adf399a4ea283ae725bf8f1229d6da30a">Save&lt; TAggregateRoot &gt;</reimplementedby>
         <reimplementedby refid="classCqrs_1_1Cache_1_1CacheRepository_a69df7ee1dc2e4cd38431ab987655eab3_1a69df7ee1dc2e4cd38431ab987655eab3">Save&lt; TAggregateRoot &gt;</reimplementedby>
         <param>
           <type>TAggregateRoot</type>
@@ -66,6 +67,7 @@
         <argsstring>(Guid aggregateId, IList&lt; IEvent&lt; TAuthenticationToken &gt;&gt; events=null)</argsstring>
         <name>Get&lt; TAggregateRoot &gt;</name>
         <reimplementedby refid="classCqrs_1_1Snapshots_1_1SnapshotRepository_acdbea47afc87de1da613a6eff3ceef0f_1acdbea47afc87de1da613a6eff3ceef0f">Get&lt; TAggregateRoot &gt;</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a953067de4f1ed8c4528e92bf896fbf79_1a953067de4f1ed8c4528e92bf896fbf79">Get&lt; TAggregateRoot &gt;</reimplementedby>
         <reimplementedby refid="classCqrs_1_1Cache_1_1CacheRepository_a037acba636aedf23ff376ac0b749ec0c_1a037acba636aedf23ff376ac0b749ec0c">Get&lt; TAggregateRoot &gt;</reimplementedby>
         <reimplementedby refid="classCqrs_1_1Domain_1_1AggregateRepository_a0e55881812d463129df34189d29544b6_1a0e55881812d463129df34189d29544b6">Get&lt; TAggregateRoot &gt;</reimplementedby>
         <param>
@@ -114,6 +116,7 @@
         <argsstring>(Guid aggregateId, int version, IList&lt; IEvent&lt; TAuthenticationToken &gt;&gt; events=null)</argsstring>
         <name>GetToVersion&lt; TAggregateRoot &gt;</name>
         <reimplementedby refid="classCqrs_1_1Snapshots_1_1SnapshotRepository_abdeca9aa6a5ce75e445888b2d0092a7d_1abdeca9aa6a5ce75e445888b2d0092a7d">GetToVersion&lt; TAggregateRoot &gt;</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a6a5de2c23b04b9ae9862029b70f6d8d7_1a6a5de2c23b04b9ae9862029b70f6d8d7">GetToVersion&lt; TAggregateRoot &gt;</reimplementedby>
         <reimplementedby refid="classCqrs_1_1Domain_1_1AggregateRepository_a1369ca3e53e602ce236bd9a645d54335_1a1369ca3e53e602ce236bd9a645d54335">GetToVersion&lt; TAggregateRoot &gt;</reimplementedby>
         <reimplementedby refid="classCqrs_1_1Cache_1_1CacheRepository_af23acddeed34def6d7a5e8d8df00ecd8_1af23acddeed34def6d7a5e8d8df00ecd8">GetToVersion&lt; TAggregateRoot &gt;</reimplementedby>
         <param>
@@ -173,6 +176,7 @@
         <argsstring>(Guid aggregateId, DateTime versionedDate, IList&lt; IEvent&lt; TAuthenticationToken &gt;&gt; events=null)</argsstring>
         <name>GetToDate&lt; TAggregateRoot &gt;</name>
         <reimplementedby refid="classCqrs_1_1Snapshots_1_1SnapshotRepository_a2a55df8aa2b9a2058360ef8cdd4c1ebc_1a2a55df8aa2b9a2058360ef8cdd4c1ebc">GetToDate&lt; TAggregateRoot &gt;</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a3c6f3596a5eb42eeefcdf6ed536fb690_1a3c6f3596a5eb42eeefcdf6ed536fb690">GetToDate&lt; TAggregateRoot &gt;</reimplementedby>
         <reimplementedby refid="classCqrs_1_1Domain_1_1AggregateRepository_aaf2dba9114b4626ef1abb10879e38bed_1aaf2dba9114b4626ef1abb10879e38bed">GetToDate&lt; TAggregateRoot &gt;</reimplementedby>
         <reimplementedby refid="classCqrs_1_1Cache_1_1CacheRepository_aef9be4db697afa9bd98e264888c389ea_1aef9be4db697afa9bd98e264888c389ea">GetToDate&lt; TAggregateRoot &gt;</reimplementedby>
         <param>
@@ -240,45 +244,59 @@
 </parameterlist>
 </para>    </detaileddescription>
     <inheritancegraph>
-      <node id="1394">
+      <node id="1421">
         <label>Cqrs::Akka::Domain::AkkaAggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository"/>
-        <childnode refid="1393" relation="public-inheritance">
+        <childnode refid="1420" relation="public-inheritance">
         </childnode>
-        <childnode refid="1396" relation="public-inheritance">
+        <childnode refid="1425" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1398">
+      <node id="1422">
+        <label>Cqrs::Akka::Domain::IAkkaSnapshotAggregateRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSnapshotAggregateRepository"/>
+        <childnode refid="1420" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1426" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1427">
         <label>Cqrs::Snapshots::SnapshotRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Snapshots_1_1SnapshotRepository"/>
-        <childnode refid="1397" relation="public-inheritance">
+        <childnode refid="1426" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1393">
+      <node id="1420">
         <label>Cqrs::Akka::Domain::IAkkaAggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository"/>
-        <childnode refid="1392" relation="public-inheritance">
+        <childnode refid="1419" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1395">
+      <node id="1424">
         <label>Cqrs::Cache::CacheRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Cache_1_1CacheRepository"/>
-        <childnode refid="1392" relation="public-inheritance">
+        <childnode refid="1419" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1397">
+      <node id="1426">
         <label>Cqrs::Domain::ISnapshotAggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Domain_1_1ISnapshotAggregateRepository"/>
-        <childnode refid="1392" relation="public-inheritance">
+        <childnode refid="1419" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1396">
+      <node id="1423">
+        <label>Cqrs::Akka::Snapshots::AkkaSnapshotRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository"/>
+        <childnode refid="1422" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1425">
         <label>Cqrs::Domain::AggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Domain_1_1AggregateRepository"/>
-        <childnode refid="1392" relation="public-inheritance">
+        <childnode refid="1419" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1392">
+      <node id="1419">
         <label>Cqrs.Domain.IAggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository"/>
       </node>

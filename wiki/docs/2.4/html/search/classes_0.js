@@ -24,6 +24,7 @@ var searchData=
   ['akkasagaproxy',['AkkaSagaProxy',['../classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaProxy.html',1,'Cqrs::Akka::Domain']]],
   ['akkasagarepository',['AkkaSagaRepository',['../classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository.html',1,'Cqrs::Akka::Domain']]],
   ['akkasnapshotaggregateroot',['AkkaSnapshotAggregateRoot',['../classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotAggregateRoot.html',1,'Cqrs::Akka::Snapshots']]],
+  ['akkasnapshotrepository',['AkkaSnapshotRepository',['../classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository.html',1,'Cqrs::Akka::Snapshots']]],
   ['akkaunittests',['AkkaUnitTests',['../classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1AkkaUnitTests.html',1,'Cqrs::Akka::Tests::Unit']]],
   ['andquerypredicate',['AndQueryPredicate',['../classCqrs_1_1Repositories_1_1Queries_1_1AndQueryPredicate.html',1,'Cqrs::Repositories::Queries']]],
   ['apimethodmodel',['ApiMethodModel',['../classCqrs_1_1WebApi_1_1Controllers_1_1ClientController_1_1ApiMethodModel.html',1,'Cqrs::WebApi::Controllers::ClientController']]],
