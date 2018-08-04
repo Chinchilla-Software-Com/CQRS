@@ -206,7 +206,7 @@ namespace Cqrs.Akka.Snapshots
 		{
 			int snapshotVersion = TryRestoreAggregateFromSnapshot(aggregate.Id, aggregate);
 
-			IEnumerable<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get<TAggregateRoot>(aggregate.Id, false, snapshotVersion).Where(desc => desc.Version > snapshotVersion);
+			IEnumerable<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get(aggregate.GetType(), aggregate.Id, false, snapshotVersion).Where(desc => desc.Version > snapshotVersion);
 			aggregate.LoadFromHistory(theseEvents);
 		}
 

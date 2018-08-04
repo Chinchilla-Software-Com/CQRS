@@ -11,6 +11,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Akka.Actor;
+using Akka.Event;
+using cdmdotnet.Logging;
 using Cqrs.Akka.Configuration;
 using Cqrs.Akka.Domain;
 using Cqrs.Configuration;
@@ -18,6 +20,7 @@ using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Ninject.Configuration;
 using Ninject;
+using Ninject.Activation;
 
 namespace Cqrs.Ninject.Akka
 {
@@ -108,6 +111,14 @@ namespace Cqrs.Ninject.Akka
 				};
 
 			NinjectDependencyResolver.Start(kernel, prepareProvidedKernel);
+
+			// Setup an actor that will handle deadletter type messages
+			var deadletterWatchMonitorProps = Props.Create(() => new DeadletterToLoggerProxy(Current.Resolve<ILogger>()));
+			var deadletterWatchActorRef = system.ActorOf(deadletterWatchMonitorProps, "DeadLetterMonitoringActor");
+
+			// subscribe to the event stream for messages of type "DeadLetter"
+			system.EventStream.Subscribe(deadletterWatchActorRef, typeof(DeadLetter));
+
 		}
 
 		/// <summary>
@@ -195,55 +206,66 @@ namespace Cqrs.Ninject.Akka
 		/// </summary>
 		public virtual object AkkaResolve(Type serviceType, object rsn, bool isAForcedActorSearch = false)
 		{
-			IActorRef actorReference;
-			try
+			do
 			{
-				if (AkkaActors.TryGetValue(serviceType, out actorReference))
-					return actorReference;
-				if (!isAForcedActorSearch)
-					return base.Resolve(serviceType);
-			}
-			catch (ActivationException) { throw; }
-			catch ( /*ActorInitialization*/Exception) { /* */ }
-
-			Props properties;
-			Type typeToTest = serviceType;
-			while (typeToTest != null)
-			{
-				Type[] types = typeToTest.GenericTypeArguments;
-				if (types.Length == 1)
+				IActorRef actorReference;
+				try
 				{
-					Type aggregateType = typeof (AkkaAggregateRoot<>).MakeGenericType(typeToTest.GenericTypeArguments.Single());
-					if (typeToTest == aggregateType)
-					{
-						typeToTest = aggregateType;
-						break;
-					}
-					Type sagaType = typeof (AkkaSaga<>).MakeGenericType(typeToTest.GenericTypeArguments.Single());
-					if (typeToTest == sagaType)
-					{
-						typeToTest = sagaType;
-						break;
-					}
+					if (AkkaActors.TryGetValue(serviceType, out actorReference))
+						return actorReference;
+					if (!isAForcedActorSearch)
+						return base.Resolve(serviceType);
 				}
-				typeToTest = typeToTest.BaseType;
-			}
+				catch (ActivationException) { throw; }
+				catch ( /*ActorInitialization*/Exception) { /* */ }
 
-			// This sorts out an out-of-order binder issue
-			if (AggregateFactory == null)
-				AggregateFactory = Resolve<IAggregateFactory>();
+				Props properties;
+				Type typeToTest = serviceType;
+				while (typeToTest != null)
+				{
+					Type[] types = typeToTest.GenericTypeArguments;
+					if (types.Length == 1)
+					{
+						Type aggregateType = typeof (AkkaAggregateRoot<>).MakeGenericType(typeToTest.GenericTypeArguments.Single());
+						if (typeToTest == aggregateType)
+						{
+							typeToTest = aggregateType;
+							break;
+						}
+						Type sagaType = typeof (AkkaSaga<>).MakeGenericType(typeToTest.GenericTypeArguments.Single());
+						if (typeToTest == sagaType)
+						{
+							typeToTest = sagaType;
+							break;
+						}
+					}
+					typeToTest = typeToTest.BaseType;
+				}
 
-			if (typeToTest == null || !(typeToTest).IsAssignableFrom(serviceType))
-				properties = Props.Create(() => (ActorBase)RootResolve(serviceType));
-			else
-				properties = Props.Create(() => (ActorBase) AggregateFactory.Create(serviceType, rsn as Guid?, false));
-			string actorName = serviceType.FullName.Replace("`", string.Empty);
-			int index = actorName.IndexOf("[[", StringComparison.Ordinal);
-			if (index > -1)
-				actorName = actorName.Substring(0, index);
-			actorReference = AkkaSystem.ActorOf(properties, string.Format("{0}~{1}", actorName, rsn));
-			AkkaActors.Add(serviceType, actorReference);
-			return actorReference;
+				// This sorts out an out-of-order binder issue
+				if (AggregateFactory == null)
+					AggregateFactory = Resolve<IAggregateFactory>();
+
+				if (typeToTest == null || !(typeToTest).IsAssignableFrom(serviceType))
+					properties = Props.Create(() => (ActorBase)RootResolve(serviceType));
+				else
+					properties = Props.Create(() => (ActorBase) AggregateFactory.Create(serviceType, rsn as Guid?, false));
+				string actorName = serviceType.FullName.Replace("`", string.Empty);
+				int index = actorName.IndexOf("[[", StringComparison.Ordinal);
+				if (index > -1)
+					actorName = actorName.Substring(0, index);
+				try
+				{
+					actorReference = AkkaSystem.ActorOf(properties, string.Format("{0}~{1}", actorName, rsn));
+				}
+				catch (InvalidActorNameException)
+				{
+					// This means that the actor has been created since we tried to get it... funnily enough concurrency doesn't actually mean concurrency.
+					continue;
+				}
+				AkkaActors.Add(serviceType, actorReference);
+				return actorReference;
+			} while (true);
 		}
 	}
 }

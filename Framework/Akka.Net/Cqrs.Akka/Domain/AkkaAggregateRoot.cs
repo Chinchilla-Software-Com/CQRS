@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Akka.Actor;
 using cdmdotnet.Logging;
+using Cqrs.Akka.Snapshots;
 using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Domain;
@@ -103,7 +104,8 @@ namespace Cqrs.Akka.Domain
 		protected virtual void Execute<TCommand>(Action<TCommand> action, TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			UnitOfWork.Add(this);
+			Type baseType = GetType().BaseType;
+			UnitOfWork.Add(this, baseType != null && baseType.Name == typeof(AkkaSnapshotAggregateRoot<,>).Name);
 			try
 			{
 				AuthenticationTokenHelper.SetAuthenticationToken(command.AuthenticationToken);

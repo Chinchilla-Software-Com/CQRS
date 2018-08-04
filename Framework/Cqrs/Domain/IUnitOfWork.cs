@@ -20,7 +20,7 @@ namespace Cqrs.Domain
 		/// Add an item into the <see cref="IUnitOfWork{TAuthenticationToken}"/> ready to be committed.
 		/// </summary>
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
-		void Add<TAggregateRoot>(TAggregateRoot aggregate)
+		void Add<TAggregateRoot>(TAggregateRoot aggregate, bool useSnapshots = false)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>;
 
 		/// <summary>

@@ -13,17 +13,7 @@ var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => pr
 string authenticationTokenType = GetDomainAuthenticationTokenType(this.Element);
 string aggregateTechnology = GetAggregateTechnology(this.Element);
 
-string commandPublisher;
-switch(aggregateTechnology)
-{
-	case "Akka":
-		commandPublisher = "Cqrs.Akka.Commands.IAkkaCommandPublisherProxy";
-		break;
-	default:
-		commandPublisher = "ICommandPublisher";
-		break;
-}
-
+string commandPublisher = "ICommandPublisher";
 bool hasRepository= stereoTypeProperties.PropertyInstances
 	.Any(property => property.Name == "BuildRepository" && property.Value == "true");
 if (hasRepository)
