@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_aeb34e21116be39f3f34e5970001f3762.html#aeb34e21116be39f3f34e5970001f3762":[1,0,0,2,0,1,7,6],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_af0ddf382c977759aa45d3971fb21cbed.html#af0ddf382c977759aa45d3971fb21cbed":[1,0,0,2,0,1,7,1],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore.html":[1,0,0,2,0,1,6,0],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore.html#a7bb0abf790674757876ca684b8320093":[1,0,0,2,0,1,6,0,6],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore_a19d6dadf022ad205c9bf6e380f4da06e.html#a19d6dadf022ad205c9bf6e380f4da06e":[1,0,0,2,0,1,6,0,0],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore_a3f0c5381b2169d014d5e9c0e1b00e43d.html#a3f0c5381b2169d014d5e9c0e1b00e43d":[1,0,0,2,0,1,6,0,5],
@@ -246,8 +249,5 @@ var NAVTREEINDEX2 =
 "classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a0986cecb40fc143751abb4605f507975.html#a0986cecb40fc143751abb4605f507975":[1,0,0,2,2,10,6],
 "classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a0cf4a79ec6bcc1021182f95ddc27edea.html#a0cf4a79ec6bcc1021182f95ddc27edea":[1,0,0,2,2,10,4],
 "classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a4fbbe06abc4c5664243b7be029a4031f.html#a4fbbe06abc4c5664243b7be029a4031f":[1,0,0,2,2,10,1],
-"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a665571c992cc75f8acc156af72285020.html#a665571c992cc75f8acc156af72285020":[1,0,0,2,2,10,0],
-"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_ab3c996b8e717aec1e4fc2a70fea52d53.html#ab3c996b8e717aec1e4fc2a70fea52d53":[1,0,0,2,2,10,2],
-"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_ade4db14c86a07454b713e1fb711692e2.html#ade4db14c86a07454b713e1fb711692e2":[1,0,0,2,2,10,7],
-"classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureCommandBusPublisherModule.html":[1,0,0,2,3,0,0,0]
+"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a665571c992cc75f8acc156af72285020.html#a665571c992cc75f8acc156af72285020":[1,0,0,2,2,10,0]
 };

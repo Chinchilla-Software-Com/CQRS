@@ -1,6 +1,7 @@
 var searchData=
 [
   ['daterange',['DateRange',['../classCqrs_1_1Entities_1_1DateRange.html',1,'Cqrs::Entities']]],
+  ['deadlettertologgerproxy',['DeadletterToLoggerProxy',['../classCqrs_1_1Akka_1_1Domain_1_1DeadletterToLoggerProxy.html',1,'Cqrs::Akka::Domain']]],
   ['decimalrange',['DecimalRange',['../classCqrs_1_1Entities_1_1DecimalRange.html',1,'Cqrs::Entities']]],
   ['defaultakkasnapshotstrategy',['DefaultAkkaSnapshotStrategy',['../classCqrs_1_1Akka_1_1Snapshots_1_1DefaultAkkaSnapshotStrategy.html',1,'Cqrs::Akka::Snapshots']]],
   ['defaultauthenticationtokenhelper',['DefaultAuthenticationTokenHelper',['../classCqrs_1_1Authentication_1_1DefaultAuthenticationTokenHelper.html',1,'Cqrs::Authentication']]],

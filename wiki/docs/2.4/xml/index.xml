@@ -154,6 +154,11 @@
   </compound>
   <compound refid="classCqrs_1_1Akka_1_1Domain_1_1Commands_1_1GetAkkaSagaVersion" kind="class"><name>Cqrs::Akka::Domain::Commands::GetAkkaSagaVersion</name>
   </compound>
+  <compound refid="classCqrs_1_1Akka_1_1Domain_1_1DeadletterToLoggerProxy" kind="class"><name>Cqrs::Akka::Domain::DeadletterToLoggerProxy</name>
+    <member refid="classCqrs_1_1Akka_1_1Domain_1_1DeadletterToLoggerProxy_1a46dcf85df8d8a967340eac22f3cc0604" kind="property"><name>Logger</name></member>
+    <member refid="classCqrs_1_1Akka_1_1Domain_1_1DeadletterToLoggerProxy_abc265a56e0952ad0c0e2f2572f8f96df_1abc265a56e0952ad0c0e2f2572f8f96df" kind="function"><name>DeadletterToLoggerProxy</name></member>
+    <member refid="classCqrs_1_1Akka_1_1Domain_1_1DeadletterToLoggerProxy_1a9ccc768afc09d54723be918f64d8cbf8" kind="function"><name>HandleDeadletter</name></member>
+  </compound>
   <compound refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository" kind="interface"><name>Cqrs::Akka::Domain::IAkkaAggregateRepository</name>
     <member refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository_a9010b259daf5d09f7269277361015ddf_1a9010b259daf5d09f7269277361015ddf" kind="function"><name>LoadAggregateHistory&lt; TAggregateRoot &gt;</name></member>
   </compound>
@@ -1866,6 +1871,7 @@
     <member refid="classCqrs_1_1Domain_1_1AggregateDescriptor_1affb720ba919e24f65b6f39768009292f" kind="property"><name>Aggregate</name></member>
     <member refid="classCqrs_1_1Domain_1_1AggregateDescriptor_a331ded9ae32aef7619ccb11b809fda24_1a331ded9ae32aef7619ccb11b809fda24" kind="property"><name>Aggregate</name></member>
     <member refid="classCqrs_1_1Domain_1_1AggregateDescriptor_a4b3e2f8a5b158741a0d249b3bce99613_1a4b3e2f8a5b158741a0d249b3bce99613" kind="property"><name>Version</name></member>
+    <member refid="classCqrs_1_1Domain_1_1AggregateDescriptor_a802e4d980bdbd7c198f459d1add8ae39_1a802e4d980bdbd7c198f459d1add8ae39" kind="property"><name>UseSnapshots</name></member>
   </compound>
   <compound refid="classCqrs_1_1Domain_1_1AggregateRepository" kind="class"><name>Cqrs::Domain::AggregateRepository</name>
     <member refid="classCqrs_1_1Domain_1_1AggregateRepository_a99c8546ada9058c0488727b01c626528_1a99c8546ada9058c0488727b01c626528" kind="property"><name>EventStore</name></member>
@@ -1972,6 +1978,7 @@
   </compound>
   <compound refid="interfaceCqrs_1_1Domain_1_1IAggregateDescriptor" kind="interface"><name>Cqrs::Domain::IAggregateDescriptor</name>
     <member refid="interfaceCqrs_1_1Domain_1_1IAggregateDescriptor_a983091a281aa626874578a394bfe1549_1a983091a281aa626874578a394bfe1549" kind="property"><name>Version</name></member>
+    <member refid="interfaceCqrs_1_1Domain_1_1IAggregateDescriptor_afaef3fe173a15795b6d6b8a07a926115_1afaef3fe173a15795b6d6b8a07a926115" kind="property"><name>UseSnapshots</name></member>
     <member refid="interfaceCqrs_1_1Domain_1_1IAggregateDescriptor_a356ebf44e40b55efa81b9b43b3b7f7ee_1a356ebf44e40b55efa81b9b43b3b7f7ee" kind="property"><name>Aggregate</name></member>
   </compound>
   <compound refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository" kind="interface"><name>Cqrs::Domain::IAggregateRepository</name>
@@ -2000,10 +2007,10 @@
     <member refid="interfaceCqrs_1_1Domain_1_1ISaga_a4ce7c6cb939b5d6a5afb7538da3d1680_1a4ce7c6cb939b5d6a5afb7538da3d1680" kind="function"><name>MarkCommandsAsPublished</name></member>
   </compound>
   <compound refid="interfaceCqrs_1_1Domain_1_1ISagaDescriptor" kind="interface"><name>Cqrs::Domain::ISagaDescriptor</name>
-  </compound>
-  <compound refid="interfaceCqrs_1_1Domain_1_1ISagaDescriptor" kind="interface"><name>Cqrs::Domain::ISagaDescriptor</name>
     <member refid="interfaceCqrs_1_1Domain_1_1ISagaDescriptor_a7a590b8845cf59d9d1727956743c3676_1a7a590b8845cf59d9d1727956743c3676" kind="property"><name>Version</name></member>
     <member refid="interfaceCqrs_1_1Domain_1_1ISagaDescriptor_ae3988cd7de80a19382e66788d375ca72_1ae3988cd7de80a19382e66788d375ca72" kind="property"><name>Saga</name></member>
+  </compound>
+  <compound refid="interfaceCqrs_1_1Domain_1_1ISagaDescriptor" kind="interface"><name>Cqrs::Domain::ISagaDescriptor</name>
   </compound>
   <compound refid="interfaceCqrs_1_1Domain_1_1ISagaRepository" kind="interface"><name>Cqrs::Domain::ISagaRepository</name>
     <member refid="interfaceCqrs_1_1Domain_1_1ISagaRepository_ad539cdc70f3168d0335c9510742e25cd_1ad539cdc70f3168d0335c9510742e25cd" kind="function"><name>Save&lt; TSaga &gt;</name></member>
@@ -2017,7 +2024,7 @@
   <compound refid="interfaceCqrs_1_1Domain_1_1ISnapshotAggregateRepository" kind="interface"><name>Cqrs::Domain::ISnapshotAggregateRepository</name>
   </compound>
   <compound refid="interfaceCqrs_1_1Domain_1_1IUnitOfWork" kind="interface"><name>Cqrs::Domain::IUnitOfWork</name>
-    <member refid="interfaceCqrs_1_1Domain_1_1IUnitOfWork_a786ebca85b4ef7294b98280230ef1397_1a786ebca85b4ef7294b98280230ef1397" kind="function"><name>Add&lt; TAggregateRoot &gt;</name></member>
+    <member refid="interfaceCqrs_1_1Domain_1_1IUnitOfWork_a1899165061529d5c9e77429b1fa72189_1a1899165061529d5c9e77429b1fa72189" kind="function"><name>Add&lt; TAggregateRoot &gt;</name></member>
     <member refid="interfaceCqrs_1_1Domain_1_1IUnitOfWork_aee78f81d472577a65356bc1c05207180_1aee78f81d472577a65356bc1c05207180" kind="function"><name>Get&lt; TAggregateRoot &gt;</name></member>
     <member refid="interfaceCqrs_1_1Domain_1_1IUnitOfWork_a449dde9a112fcce6aaab0e4c8b3b9a71_1a449dde9a112fcce6aaab0e4c8b3b9a71" kind="function"><name>GetToVersion&lt; TAggregateRoot &gt;</name></member>
     <member refid="interfaceCqrs_1_1Domain_1_1IUnitOfWork_a9878de7ddb925b1ef2193b8734d79a3a_1a9878de7ddb925b1ef2193b8734d79a3a" kind="function"><name>GetToDate&lt; TAggregateRoot &gt;</name></member>
@@ -2094,11 +2101,11 @@
     <member refid="classCqrs_1_1Domain_1_1UnitOfWork_1a48fb458ec42e7ad4c4bb02570677b4fc" kind="property"><name>TrackedAggregates</name></member>
     <member refid="classCqrs_1_1Domain_1_1UnitOfWork_a9ec92dbd580f3885f7cf5a9ad360e1ac_1a9ec92dbd580f3885f7cf5a9ad360e1ac" kind="function"><name>UnitOfWork</name></member>
     <member refid="classCqrs_1_1Domain_1_1UnitOfWork_a717facda044d5025e9d7abdec4f54acd_1a717facda044d5025e9d7abdec4f54acd" kind="function"><name>UnitOfWork</name></member>
-    <member refid="classCqrs_1_1Domain_1_1UnitOfWork_a840214f97d3661c7b5a739df65fadc9f_1a840214f97d3661c7b5a739df65fadc9f" kind="function"><name>Add&lt; TAggregateRoot &gt;</name></member>
-    <member refid="classCqrs_1_1Domain_1_1UnitOfWork_a0592865d52ba0eafb9a5ad1fbdad9729_1a0592865d52ba0eafb9a5ad1fbdad9729" kind="function"><name>Get&lt; TAggregateRoot &gt;</name></member>
-    <member refid="classCqrs_1_1Domain_1_1UnitOfWork_ab5458f49a206e61b94aaaa4b1ac81911_1ab5458f49a206e61b94aaaa4b1ac81911" kind="function"><name>GetToVersion&lt; TAggregateRoot &gt;</name></member>
-    <member refid="classCqrs_1_1Domain_1_1UnitOfWork_aac25e1b9946b0d0337bda627671d0dae_1aac25e1b9946b0d0337bda627671d0dae" kind="function"><name>GetToDate&lt; TAggregateRoot &gt;</name></member>
-    <member refid="classCqrs_1_1Domain_1_1UnitOfWork_a7401e41dd8ce4457551c252ca6402d31_1a7401e41dd8ce4457551c252ca6402d31" kind="function"><name>Commit</name></member>
+    <member refid="classCqrs_1_1Domain_1_1UnitOfWork_a91bd702e09fb175e7b6bb4ee2a66bb61_1a91bd702e09fb175e7b6bb4ee2a66bb61" kind="function"><name>Add&lt; TAggregateRoot &gt;</name></member>
+    <member refid="classCqrs_1_1Domain_1_1UnitOfWork_a72f0ec98b1ea4b74af7d0daa5cb73c03_1a72f0ec98b1ea4b74af7d0daa5cb73c03" kind="function"><name>Get&lt; TAggregateRoot &gt;</name></member>
+    <member refid="classCqrs_1_1Domain_1_1UnitOfWork_aa0e705ac7f323abfb552bcbce2a7d692_1aa0e705ac7f323abfb552bcbce2a7d692" kind="function"><name>GetToVersion&lt; TAggregateRoot &gt;</name></member>
+    <member refid="classCqrs_1_1Domain_1_1UnitOfWork_ac5f0efae335bee99f820d1c53b3e9f93_1ac5f0efae335bee99f820d1c53b3e9f93" kind="function"><name>GetToDate&lt; TAggregateRoot &gt;</name></member>
+    <member refid="classCqrs_1_1Domain_1_1UnitOfWork_a132dd26611fc71d676727f71f1412edd_1a132dd26611fc71d676727f71f1412edd" kind="function"><name>Commit</name></member>
     <member refid="classCqrs_1_1Domain_1_1UnitOfWork_1aa9741bc355f1f26708c3966c31db66b0" kind="function"><name>IsTracked</name></member>
   </compound>
   <compound refid="classCqrs_1_1Entities_1_1DateRange" kind="class"><name>Cqrs::Entities::DateRange</name>
@@ -3749,8 +3756,6 @@
     <member refid="classCqrs_1_1WebApi_1_1Controllers_1_1ClientController_1_1ApiParameterModel_a10222cdb87160250e4722834d8ebda3b_1a10222cdb87160250e4722834d8ebda3b" kind="function"><name>ApiParameterModel</name></member>
   </compound>
   <compound refid="classCqrs_1_1WebApi_1_1CqrsApiController" kind="class"><name>Cqrs::WebApi::CqrsApiController</name>
-  </compound>
-  <compound refid="classCqrs_1_1WebApi_1_1CqrsApiController" kind="class"><name>Cqrs::WebApi::CqrsApiController</name>
     <member refid="classCqrs_1_1WebApi_1_1CqrsApiController_aaa147c2d0aa2a0c70995d9820b826354_1aaa147c2d0aa2a0c70995d9820b826354" kind="property"><name>CorrelationIdHelper</name></member>
     <member refid="classCqrs_1_1WebApi_1_1CqrsApiController_a959520b25b0cdd893961b8915c8f9836_1a959520b25b0cdd893961b8915c8f9836" kind="property"><name>Logger</name></member>
     <member refid="classCqrs_1_1WebApi_1_1CqrsApiController_a16e156e1b4457ee2d3c599b37d544889_1a16e156e1b4457ee2d3c599b37d544889" kind="property"><name>ConfigurationManager</name></member>
@@ -3771,6 +3776,8 @@
     <member refid="classCqrs_1_1WebApi_1_1CqrsApiController_afdb548b1b8e410f57d44e41130520ba0_1afdb548b1b8e410f57d44e41130520ba0" kind="function"><name>CreateRequest</name></member>
     <member refid="classCqrs_1_1WebApi_1_1CqrsApiController_a1c488ce0da71bad35897884a2fead0c2_1a1c488ce0da71bad35897884a2fead0c2" kind="function"><name>CreateRequestWithData&lt; TParameters &gt;</name></member>
   </compound>
+  <compound refid="classCqrs_1_1WebApi_1_1CqrsApiController" kind="class"><name>Cqrs::WebApi::CqrsApiController</name>
+  </compound>
   <compound refid="classCqrs_1_1WebApi_1_1CqrsEventApiController" kind="class"><name>Cqrs::WebApi::CqrsEventApiController</name>
     <member refid="classCqrs_1_1WebApi_1_1CqrsEventApiController_ac5f102242d785de8f366b380a7f54503_1ac5f102242d785de8f366b380a7f54503" kind="property"><name>AuthenticationTokenHelper</name></member>
     <member refid="classCqrs_1_1WebApi_1_1CqrsEventApiController_a5d008d6964d062848e47f81b104beed6_1a5d008d6964d062848e47f81b104beed6" kind="property"><name>EventStore</name></member>
@@ -3781,13 +3788,13 @@
     <member refid="classCqrs_1_1WebApi_1_1CqrsEventApiController_1a8e0354bf6d5b5e0e300ab5d1e0d38e19" kind="function"><name>GetEventData</name></member>
   </compound>
   <compound refid="classCqrs_1_1WebApi_1_1CqrsHttpApplicationWithSignalR" kind="class"><name>Cqrs::WebApi::CqrsHttpApplicationWithSignalR</name>
+  </compound>
+  <compound refid="classCqrs_1_1WebApi_1_1CqrsHttpApplicationWithSignalR" kind="class"><name>Cqrs::WebApi::CqrsHttpApplicationWithSignalR</name>
     <member refid="classCqrs_1_1WebApi_1_1CqrsHttpApplicationWithSignalR_a6ef991dea376ee2be7ef583e3adc81f8_1a6ef991dea376ee2be7ef583e3adc81f8" kind="function"><name>Application_Start</name></member>
     <member refid="classCqrs_1_1WebApi_1_1CqrsHttpApplicationWithSignalR_a5b7fc4a7dc4cc17148e98e32e43aa009_1a5b7fc4a7dc4cc17148e98e32e43aa009" kind="function"><name>RegisterSignalR</name></member>
     <member refid="classCqrs_1_1WebApi_1_1CqrsHttpApplicationWithSignalR_ac21486e20584b991b4986f53bb145a9c_1ac21486e20584b991b4986f53bb145a9c" kind="function"><name>RegisterDefaultRoutes</name></member>
     <member refid="classCqrs_1_1WebApi_1_1CqrsHttpApplicationWithSignalR_ab5d52d7aa452f7080617108a9b451591_1ab5d52d7aa452f7080617108a9b451591" kind="function"><name>ConfigureMvcOrWebApi</name></member>
     <member refid="classCqrs_1_1WebApi_1_1CqrsHttpApplicationWithSignalR_abf63269a4bcd6c638b6003b58145183f_1abf63269a4bcd6c638b6003b58145183f" kind="function"><name>RegisterSignalR</name></member>
-  </compound>
-  <compound refid="classCqrs_1_1WebApi_1_1CqrsHttpApplicationWithSignalR" kind="class"><name>Cqrs::WebApi::CqrsHttpApplicationWithSignalR</name>
   </compound>
   <compound refid="classCqrs_1_1WebApi_1_1Events_1_1Handlers_1_1EventToHubProxy" kind="class"><name>Cqrs::WebApi::Events::Handlers::EventToHubProxy</name>
     <member refid="classCqrs_1_1WebApi_1_1Events_1_1Handlers_1_1EventToHubProxy_a120e7cd3ad97d9e6382df657b9c98c4c_1a120e7cd3ad97d9e6382df657b9c98c4c" kind="property"><name>Logger</name></member>
@@ -4357,6 +4364,8 @@
   </compound>
   <compound refid="namespaceAkka_1_1Actor" kind="namespace"><name>Akka::Actor</name>
   </compound>
+  <compound refid="namespaceAkka_1_1Event" kind="namespace"><name>Akka::Event</name>
+  </compound>
   <compound refid="namespacecdmdotnet_1_1AutoMapper" kind="namespace"><name>cdmdotnet::AutoMapper</name>
   </compound>
   <compound refid="namespacecdmdotnet_1_1Logging" kind="namespace"><name>cdmdotnet::Logging</name>
@@ -4751,6 +4760,8 @@
   <compound refid="namespaceNewtonsoft_1_1Json_1_1Converters" kind="namespace"><name>Newtonsoft::Json::Converters</name>
   </compound>
   <compound refid="namespaceNinject" kind="namespace"><name>Ninject</name>
+  </compound>
+  <compound refid="namespaceNinject_1_1Activation" kind="namespace"><name>Ninject::Activation</name>
   </compound>
   <compound refid="namespaceNinject_1_1Extensions_1_1Wcf" kind="namespace"><name>Ninject::Extensions::Wcf</name>
   </compound>
@@ -5245,6 +5256,8 @@
   <compound refid="DateRange_8cs" kind="file"><name>DateRange.cs</name>
   </compound>
   <compound refid="DateTimeConverterISO8601_8cs" kind="file"><name>DateTimeConverterISO8601.cs</name>
+  </compound>
+  <compound refid="DeadletterMonitor_8cs" kind="file"><name>DeadletterMonitor.cs</name>
   </compound>
   <compound refid="DecimalRange_8cs" kind="file"><name>DecimalRange.cs</name>
   </compound>

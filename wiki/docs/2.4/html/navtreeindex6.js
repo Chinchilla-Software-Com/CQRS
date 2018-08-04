@@ -1,5 +1,8 @@
 var NAVTREEINDEX6 =
 {
+"classCqrs_1_1Events_1_1DtoAggregateEvent_ad5f763ecd79dc9b4882ed15239242d17.html#ad5f763ecd79dc9b4882ed15239242d17":[1,0,0,10,3,5],
+"classCqrs_1_1Events_1_1DtoAggregateEvent_af5bed152d656cb758312f499f87e69de.html#af5bed152d656cb758312f499f87e69de":[1,0,0,10,3,1],
+"classCqrs_1_1Events_1_1DuplicateCreateCommandEvent.html":[1,0,0,10,4],
 "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent_a06ead08bb17fa98576201f301971fad2.html#a06ead08bb17fa98576201f301971fad2":[1,0,0,10,4,0],
 "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent_a6b837c04369ac127fc34f84799c3d70a.html#a6b837c04369ac127fc34f84799c3d70a":[1,0,0,10,4,5],
 "classCqrs_1_1Events_1_1DuplicateCreateCommandEvent_a7a47624fa44952499c87458257184079.html#a7a47624fa44952499c87458257184079":[1,0,0,10,4,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX6 =
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventData.html":[1,0,0,17,2,3],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventData_a3e0d14163cbc3e11505d63b15ddd1337.html#a3e0d14163cbc3e11505d63b15ddd1337":[1,0,0,17,2,3,0],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventData_a5650b3e9bac3dd255e8267394e67749a.html#a5650b3e9bac3dd255e8267394e67749a":[1,0,0,17,2,3,2],
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventData_acdd39bdfc67a9becd0734f4bf056b74b.html#acdd39bdfc67a9becd0734f4bf056b74b":[1,0,0,17,2,3,1],
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore.html":[1,0,0,17,2,4],
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory.html":[1,0,0,17,2,5],
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_a0e1916a92e01f0b5cf15695478170d68.html#a0e1916a92e01f0b5cf15695478170d68":[1,0,0,17,2,5,4]
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventData_acdd39bdfc67a9becd0734f4bf056b74b.html#acdd39bdfc67a9becd0734f4bf056b74b":[1,0,0,17,2,3,1]
 };

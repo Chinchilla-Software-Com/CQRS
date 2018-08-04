@@ -954,6 +954,7 @@ var hierarchy =
       [ "Cqrs.Akka.Commands.ConcurrentAkkaCommandPublisher< TAuthenticationToken, TTarget >", "classCqrs_1_1Akka_1_1Commands_1_1ConcurrentAkkaCommandPublisher.html", null ],
       [ "Cqrs.Akka.Domain.AkkaAggregateRoot< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot.html", null ],
       [ "Cqrs.Akka.Domain.AkkaSaga< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga.html", null ],
+      [ "Cqrs.Akka.Domain.DeadletterToLoggerProxy", "classCqrs_1_1Akka_1_1Domain_1_1DeadletterToLoggerProxy.html", null ],
       [ "Cqrs.Akka.Events.AkkaEventBusProxy< TAuthenticationToken >.BusActor", "classCqrs_1_1Akka_1_1Events_1_1AkkaEventBusProxy_1_1BusActor.html", null ],
       [ "Cqrs.Akka.Events.AkkaEventHandler< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Events_1_1AkkaEventHandler.html", null ]
     ] ],

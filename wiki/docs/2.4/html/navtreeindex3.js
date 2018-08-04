@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_ab3c996b8e717aec1e4fc2a70fea52d53.html#ab3c996b8e717aec1e4fc2a70fea52d53":[1,0,0,2,2,10,2],
+"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_ade4db14c86a07454b713e1fb711692e2.html#ade4db14c86a07454b713e1fb711692e2":[1,0,0,2,2,10,7],
+"classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureCommandBusPublisherModule.html":[1,0,0,2,3,0,0,0],
 "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule.html":[1,0,0,2,3,0,0,1],
 "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureCommandBusSenderModule.html":[1,0,0,2,3,0,0,2],
 "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureCommandHubPublisherModule.html":[1,0,0,2,3,0,0,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX3 =
 "classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_a25a32a83c14eb5068f5bc9bcacfa15f6.html#a25a32a83c14eb5068f5bc9bcacfa15f6":[1,0,0,2,5,0,0,0],
 "classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_a54f00f53521e285568f19c29527d6466.html#a54f00f53521e285568f19c29527d6466":[1,0,0,2,5,0,0,4],
 "classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_a61e3fc6404283606ec41a5e5a3c72ac8.html#a61e3fc6404283606ec41a5e5a3c72ac8":[1,0,0,2,5,0,0,3],
-"classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_a79043a9d497f4027cf87e5ff78fe6098.html#a79043a9d497f4027cf87e5ff78fe6098":[1,0,0,2,5,0,0,2],
-"classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_a9afab2cca66ca4453b2ab56916578c7d.html#a9afab2cca66ca4453b2ab56916578c7d":[1,0,0,2,5,0,0,6],
-"classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_abf8e295af6e0925f1c9c3550b931a4a8.html#abf8e295af6e0925f1c9c3550b931a4a8":[1,0,0,2,5,0,0,1],
-"classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_ae9aeb3daf2648a03db25f2a3ddfd87ee.html#ae9aeb3daf2648a03db25f2a3ddfd87ee":[1,0,0,2,5,0,0,5]
+"classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_a79043a9d497f4027cf87e5ff78fe6098.html#a79043a9d497f4027cf87e5ff78fe6098":[1,0,0,2,5,0,0,2]
 };

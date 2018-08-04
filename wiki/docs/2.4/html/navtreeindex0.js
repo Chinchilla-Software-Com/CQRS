@@ -129,6 +129,9 @@ var NAVTREEINDEX0 =
 "classCqrs_1_1Akka_1_1Domain_1_1Commands_1_1GetAkkaAggregateRootVersion.html":[1,0,0,0,2,0,1],
 "classCqrs_1_1Akka_1_1Domain_1_1Commands_1_1GetAkkaSagaId.html":[1,0,0,0,2,0,2],
 "classCqrs_1_1Akka_1_1Domain_1_1Commands_1_1GetAkkaSagaVersion.html":[1,0,0,0,2,0,3],
+"classCqrs_1_1Akka_1_1Domain_1_1DeadletterToLoggerProxy.html":[1,0,0,0,2,7],
+"classCqrs_1_1Akka_1_1Domain_1_1DeadletterToLoggerProxy.html#a46dcf85df8d8a967340eac22f3cc0604":[1,0,0,0,2,7,1],
+"classCqrs_1_1Akka_1_1Domain_1_1DeadletterToLoggerProxy_abc265a56e0952ad0c0e2f2572f8f96df.html#abc265a56e0952ad0c0e2f2572f8f96df":[1,0,0,0,2,7,0],
 "classCqrs_1_1Akka_1_1Events_1_1AkkaEventBus.html":[1,0,0,0,3,0],
 "classCqrs_1_1Akka_1_1Events_1_1AkkaEventBusProxy.html":[1,0,0,0,3,1],
 "classCqrs_1_1Akka_1_1Events_1_1AkkaEventBusProxy_1_1BusActor.html":[1,0,0,0,3,1,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX0 =
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded.html":[1,0,0,0,5,0,2,1],
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a025b7df73452f8e22337eabc4d11fab9.html#a025b7df73452f8e22337eabc4d11fab9":[1,0,0,0,5,0,2,1,0],
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a08eef17f722c411bea6ad6adb871ddfb.html#a08eef17f722c411bea6ad6adb871ddfb":[1,0,0,0,5,0,2,1,6],
-"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a1a8b4fd91323c4c9140051dff5f2bff6.html#a1a8b4fd91323c4c9140051dff5f2bff6":[1,0,0,0,5,0,2,1,2],
-"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a26f068ae3ca8f1e84277f133f8fc4620.html#a26f068ae3ca8f1e84277f133f8fc4620":[1,0,0,0,5,0,2,1,5],
-"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a84f8392985be189ed8394d308c76692f.html#a84f8392985be189ed8394d308c76692f":[1,0,0,0,5,0,2,1,4],
-"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a99ad268bb52a4214a4b717bb8ecea6b6.html#a99ad268bb52a4214a4b717bb8ecea6b6":[1,0,0,0,5,0,2,1,1]
+"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a1a8b4fd91323c4c9140051dff5f2bff6.html#a1a8b4fd91323c4c9140051dff5f2bff6":[1,0,0,0,5,0,2,1,2]
 };

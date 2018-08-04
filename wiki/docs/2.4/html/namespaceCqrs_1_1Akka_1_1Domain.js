@@ -7,6 +7,7 @@ var namespaceCqrs_1_1Akka_1_1Domain =
     [ "AkkaSaga", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga.html", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga" ],
     [ "AkkaSagaProxy", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaProxy.html", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaProxy" ],
     [ "AkkaSagaRepository", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository.html", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository" ],
+    [ "DeadletterToLoggerProxy", "classCqrs_1_1Akka_1_1Domain_1_1DeadletterToLoggerProxy.html", "classCqrs_1_1Akka_1_1Domain_1_1DeadletterToLoggerProxy" ],
     [ "IAkkaAggregateRepository", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository.html", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository" ],
     [ "IAkkaAggregateResolver", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateResolver.html", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateResolver" ],
     [ "IAkkaAggregateRootProxy", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRootProxy.html", "interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRootProxy" ],

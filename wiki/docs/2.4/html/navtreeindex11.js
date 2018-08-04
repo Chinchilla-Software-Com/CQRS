@@ -1,5 +1,8 @@
 var NAVTREEINDEX11 =
 {
+"interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser_af6e1bca15164a08308969794b089c31b.html#af6e1bca15164a08308969794b089c31b":[1,0,0,2,4,15,3],
+"interfaceCqrs_1_1Bus_1_1IBusHelper.html":[1,0,0,3,3],
+"interfaceCqrs_1_1Bus_1_1IBusHelper_a20c51abf04c3c0682fcb5da4c1a371ba.html#a20c51abf04c3c0682fcb5da4c1a371ba":[1,0,0,3,3,6],
 "interfaceCqrs_1_1Bus_1_1IBusHelper_a29751c186da5e2b042067af6a1be6d5d.html#a29751c186da5e2b042067af6a1be6d5d":[1,0,0,3,3,1],
 "interfaceCqrs_1_1Bus_1_1IBusHelper_a40a395ea6d92a6162c8e584a39284bbc.html#a40a395ea6d92a6162c8e584a39284bbc":[1,0,0,3,3,7],
 "interfaceCqrs_1_1Bus_1_1IBusHelper_a6e3d49a9367f3709d216f02be0277eea.html#a6e3d49a9367f3709d216f02be0277eea":[1,0,0,3,3,2],
@@ -94,8 +97,8 @@ var NAVTREEINDEX11 =
 "interfaceCqrs_1_1Domain_1_1ISaga_abba76d72857107a14328c8b555f3883f.html#abba76d72857107a14328c8b555f3883f":[1,0,0,8,8,1],
 "interfaceCqrs_1_1Domain_1_1ISnapshotAggregateRepository.html":[1,0,0,8,11],
 "interfaceCqrs_1_1Domain_1_1IUnitOfWork.html":[1,0,0,8,12],
+"interfaceCqrs_1_1Domain_1_1IUnitOfWork_a1899165061529d5c9e77429b1fa72189.html#a1899165061529d5c9e77429b1fa72189":[1,0,0,8,12,0],
 "interfaceCqrs_1_1Domain_1_1IUnitOfWork_a449dde9a112fcce6aaab0e4c8b3b9a71.html#a449dde9a112fcce6aaab0e4c8b3b9a71":[1,0,0,8,12,4],
-"interfaceCqrs_1_1Domain_1_1IUnitOfWork_a786ebca85b4ef7294b98280230ef1397.html#a786ebca85b4ef7294b98280230ef1397":[1,0,0,8,12,0],
 "interfaceCqrs_1_1Domain_1_1IUnitOfWork_a9878de7ddb925b1ef2193b8734d79a3a.html#a9878de7ddb925b1ef2193b8734d79a3a":[1,0,0,8,12,3],
 "interfaceCqrs_1_1Domain_1_1IUnitOfWork_ade600c9bf9e8380c24eaf1e7e0df6e01.html#ade600c9bf9e8380c24eaf1e7e0df6e01":[1,0,0,8,12,1],
 "interfaceCqrs_1_1Domain_1_1IUnitOfWork_aee78f81d472577a65356bc1c05207180.html#aee78f81d472577a65356bc1c05207180":[1,0,0,8,12,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX11 =
 "interfaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1IFormDataConverterLogger_a53cf31f01e5ceb5efcc8ed3d874c319a.html#a53cf31f01e5ceb5efcc8ed3d874c319a":[1,0,0,25,3,0,1,0,1,0],
 "interfaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1IFormDataConverterLogger_a7da0b7749a50f6fed2cb5ab0d8efef2a.html#a7da0b7749a50f6fed2cb5ab0d8efef2a":[1,0,0,25,3,0,1,0,1,1],
 "interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub.html":[1,0,0,25,4,0,0],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_a6a50d35b8df69bb6d5fa9d31902c8ace.html#a6a50d35b8df69bb6d5fa9d31902c8ace":[1,0,0,25,4,0,0,1],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_a85bd03a0bf9c2083822c4b67691f4297.html#a85bd03a0bf9c2083822c4b67691f4297":[1,0,0,25,4,0,0,3],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_a88cb05c6807058bfe2bff48427a45ad2.html#a88cb05c6807058bfe2bff48427a45ad2":[1,0,0,25,4,0,0,2],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_ada48332e18931747c81997f8350f4066.html#ada48332e18931747c81997f8350f4066":[1,0,0,25,4,0,0,0]
+"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_a6a50d35b8df69bb6d5fa9d31902c8ace.html#a6a50d35b8df69bb6d5fa9d31902c8ace":[1,0,0,25,4,0,0,1]
 };

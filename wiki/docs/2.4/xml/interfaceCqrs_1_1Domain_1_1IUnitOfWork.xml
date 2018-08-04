@@ -9,15 +9,20 @@
       </param>
     </templateparamlist>
       <sectiondef kind="public-func">
-      <memberdef kind="function" id="interfaceCqrs_1_1Domain_1_1IUnitOfWork_a786ebca85b4ef7294b98280230ef1397_1a786ebca85b4ef7294b98280230ef1397" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="interfaceCqrs_1_1Domain_1_1IUnitOfWork_a1899165061529d5c9e77429b1fa72189_1a1899165061529d5c9e77429b1fa72189" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void Cqrs.Domain.IUnitOfWork&lt; TAuthenticationToken &gt;.Add&lt; TAggregateRoot &gt;</definition>
-        <argsstring>(TAggregateRoot aggregate)</argsstring>
+        <argsstring>(TAggregateRoot aggregate, bool useSnapshots=false)</argsstring>
         <name>Add&lt; TAggregateRoot &gt;</name>
-        <reimplementedby refid="classCqrs_1_1Domain_1_1UnitOfWork_a840214f97d3661c7b5a739df65fadc9f_1a840214f97d3661c7b5a739df65fadc9f">Add&lt; TAggregateRoot &gt;</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Domain_1_1UnitOfWork_a91bd702e09fb175e7b6bb4ee2a66bb61_1a91bd702e09fb175e7b6bb4ee2a66bb61">Add&lt; TAggregateRoot &gt;</reimplementedby>
         <param>
           <type>TAggregateRoot</type>
           <declname>aggregate</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>useSnapshots</declname>
+          <defval>false</defval>
         </param>
         <briefdescription>
 <para>Add an item into the IUnitOfWork&lt;TAuthenticationToken&gt; ready to be committed. </para>        </briefdescription>
@@ -40,7 +45,7 @@
         <definition>TAggregateRoot Cqrs.Domain.IUnitOfWork&lt; TAuthenticationToken &gt;.Get&lt; TAggregateRoot &gt;</definition>
         <argsstring>(Guid id, int? expectedVersion=null, bool useSnapshots=false)</argsstring>
         <name>Get&lt; TAggregateRoot &gt;</name>
-        <reimplementedby refid="classCqrs_1_1Domain_1_1UnitOfWork_a0592865d52ba0eafb9a5ad1fbdad9729_1a0592865d52ba0eafb9a5ad1fbdad9729">Get&lt; TAggregateRoot &gt;</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Domain_1_1UnitOfWork_a72f0ec98b1ea4b74af7d0daa5cb73c03_1a72f0ec98b1ea4b74af7d0daa5cb73c03">Get&lt; TAggregateRoot &gt;</reimplementedby>
         <param>
           <type>Guid</type>
           <declname>id</declname>
@@ -76,7 +81,7 @@
         <definition>TAggregateRoot Cqrs.Domain.IUnitOfWork&lt; TAuthenticationToken &gt;.GetToVersion&lt; TAggregateRoot &gt;</definition>
         <argsstring>(Guid id, int version)</argsstring>
         <name>GetToVersion&lt; TAggregateRoot &gt;</name>
-        <reimplementedby refid="classCqrs_1_1Domain_1_1UnitOfWork_ab5458f49a206e61b94aaaa4b1ac81911_1ab5458f49a206e61b94aaaa4b1ac81911">GetToVersion&lt; TAggregateRoot &gt;</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Domain_1_1UnitOfWork_aa0e705ac7f323abfb552bcbce2a7d692_1aa0e705ac7f323abfb552bcbce2a7d692">GetToVersion&lt; TAggregateRoot &gt;</reimplementedby>
         <param>
           <type>Guid</type>
           <declname>id</declname>
@@ -121,7 +126,7 @@
         <definition>TAggregateRoot Cqrs.Domain.IUnitOfWork&lt; TAuthenticationToken &gt;.GetToDate&lt; TAggregateRoot &gt;</definition>
         <argsstring>(Guid id, DateTime versionedDate)</argsstring>
         <name>GetToDate&lt; TAggregateRoot &gt;</name>
-        <reimplementedby refid="classCqrs_1_1Domain_1_1UnitOfWork_aac25e1b9946b0d0337bda627671d0dae_1aac25e1b9946b0d0337bda627671d0dae">GetToDate&lt; TAggregateRoot &gt;</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Domain_1_1UnitOfWork_ac5f0efae335bee99f820d1c53b3e9f93_1ac5f0efae335bee99f820d1c53b3e9f93">GetToDate&lt; TAggregateRoot &gt;</reimplementedby>
         <param>
           <type>Guid</type>
           <declname>id</declname>
@@ -166,7 +171,7 @@
         <definition>void Cqrs.Domain.IUnitOfWork&lt; TAuthenticationToken &gt;.Commit</definition>
         <argsstring>()</argsstring>
         <name>Commit</name>
-        <reimplementedby refid="classCqrs_1_1Domain_1_1UnitOfWork_a7401e41dd8ce4457551c252ca6402d31_1a7401e41dd8ce4457551c252ca6402d31">Commit</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Domain_1_1UnitOfWork_a132dd26611fc71d676727f71f1412edd_1a132dd26611fc71d676727f71f1412edd">Commit</reimplementedby>
         <briefdescription>
 <para>Commit any changed AggregateRoot&lt;TAuthenticationToken&gt; added to this IUnitOfWork&lt;TAuthenticationToken&gt; via Add&lt;T&gt; </para>        </briefdescription>
         <detaileddescription>
@@ -181,20 +186,20 @@
     <detaileddescription>
     </detaileddescription>
     <inheritancegraph>
-      <node id="1468">
+      <node id="1472">
         <label>Cqrs::Domain::UnitOfWork&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Domain_1_1UnitOfWork"/>
-        <childnode refid="1467" relation="public-inheritance">
+        <childnode refid="1471" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1467">
+      <node id="1471">
         <label>Cqrs.Domain.IUnitOfWork&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Domain_1_1IUnitOfWork"/>
       </node>
     </inheritancegraph>
     <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/IUnitOfWork.cs" line="18" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/IUnitOfWork.cs" bodystart="17" bodyend="55"/>
     <listofallmembers>
-      <member refid="interfaceCqrs_1_1Domain_1_1IUnitOfWork_a786ebca85b4ef7294b98280230ef1397_1a786ebca85b4ef7294b98280230ef1397" prot="public" virt="non-virtual"><scope>Cqrs::Domain::IUnitOfWork</scope><name>Add&lt; TAggregateRoot &gt;</name></member>
+      <member refid="interfaceCqrs_1_1Domain_1_1IUnitOfWork_a1899165061529d5c9e77429b1fa72189_1a1899165061529d5c9e77429b1fa72189" prot="public" virt="non-virtual"><scope>Cqrs::Domain::IUnitOfWork</scope><name>Add&lt; TAggregateRoot &gt;</name></member>
       <member refid="interfaceCqrs_1_1Domain_1_1IUnitOfWork_ade600c9bf9e8380c24eaf1e7e0df6e01_1ade600c9bf9e8380c24eaf1e7e0df6e01" prot="public" virt="non-virtual"><scope>Cqrs::Domain::IUnitOfWork</scope><name>Commit</name></member>
       <member refid="interfaceCqrs_1_1Domain_1_1IUnitOfWork_aee78f81d472577a65356bc1c05207180_1aee78f81d472577a65356bc1c05207180" prot="public" virt="non-virtual"><scope>Cqrs::Domain::IUnitOfWork</scope><name>Get&lt; TAggregateRoot &gt;</name></member>
       <member refid="interfaceCqrs_1_1Domain_1_1IUnitOfWork_a9878de7ddb925b1ef2193b8734d79a3a_1a9878de7ddb925b1ef2193b8734d79a3a" prot="public" virt="non-virtual"><scope>Cqrs::Domain::IUnitOfWork</scope><name>GetToDate&lt; TAggregateRoot &gt;</name></member>

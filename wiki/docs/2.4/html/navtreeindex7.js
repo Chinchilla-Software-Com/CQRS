@@ -1,5 +1,8 @@
 var NAVTREEINDEX7 =
 {
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore.html":[1,0,0,17,2,4],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory.html":[1,0,0,17,2,5],
+"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_a0e1916a92e01f0b5cf15695478170d68.html#a0e1916a92e01f0b5cf15695478170d68":[1,0,0,17,2,5,4],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_a13fe1d0f10313e37c9eb1788db98cb23.html#a13fe1d0f10313e37c9eb1788db98cb23":[1,0,0,17,2,5,8],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_a282bda17095c8ea293f5305ea0d1b83c.html#a282bda17095c8ea293f5305ea0d1b83c":[1,0,0,17,2,5,2],
 "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStoreConnectionStringFactory_a5ea3576b77bf46894277b0bba8f5d2bb.html#a5ea3576b77bf46894277b0bba8f5d2bb":[1,0,0,17,2,5,6],
@@ -246,8 +249,5 @@ var NAVTREEINDEX7 =
 "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Events_1_1TestAzureDocumentDbEventStoreConnectionStringFactory_af6557ce689bd544454de70c97be4f216.html#af6557ce689bd544454de70c97be4f216":[1,0,0,18,1,1,1,0,3],
 "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories_1_1TestAzureDocumentDbDataStoreConnectionStringFactory.html":[1,0,0,18,1,1,2,0],
 "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories_1_1TestAzureDocumentDbDataStoreConnectionStringFactory.html#a23134af0b95125fdb978153f3a04b332":[1,0,0,18,1,1,2,0,4],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories_1_1TestAzureDocumentDbDataStoreConnectionStringFactory_ab4b864396b790819609d3337dfb3f75d.html#ab4b864396b790819609d3337dfb3f75d":[1,0,0,18,1,1,2,0,1],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories_1_1TestAzureDocumentDbDataStoreConnectionStringFactory_ad55763a7e19193cfecf2abca3759f2c6.html#ad55763a7e19193cfecf2abca3759f2c6":[1,0,0,18,1,1,2,0,0],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories_1_1TestAzureDocumentDbDataStoreConnectionStringFactory_ae0da37bd91333ad782058d32d4de2594.html#ae0da37bd91333ad782058d32d4de2594":[1,0,0,18,1,1,2,0,3],
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories_1_1TestAzureDocumentDbDataStoreConnectionStringFactory_aeac8ecfdbb2d1d7f18105f2e535c51fe.html#aeac8ecfdbb2d1d7f18105f2e535c51fe":[1,0,0,18,1,1,2,0,2]
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories_1_1TestAzureDocumentDbDataStoreConnectionStringFactory_ab4b864396b790819609d3337dfb3f75d.html#ab4b864396b790819609d3337dfb3f75d":[1,0,0,18,1,1,2,0,1]
 };

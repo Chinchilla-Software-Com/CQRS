@@ -129,26 +129,26 @@
     <detaileddescription>
 <para>From an implementation perspective, a Saga&lt;TAuthenticationToken&gt; is a state machine that is driven forward by incoming IEvent&lt;TAuthenticationToken&gt; (which may come from many AggregateRoot&lt;TAuthenticationToken&gt; or other Saga&lt;TAuthenticationToken&gt;). Some states will have side effects, such as sending ICommand&lt;TAuthenticationToken&gt;, talking to external web services, or sending emails. </para><para>Isn&apos;t a Saga&lt;TAuthenticationToken&gt; just leaked domain logic? No. A Saga&lt;TAuthenticationToken&gt; can doing things that no individual AggregateRoot&lt;TAuthenticationToken&gt; can sensibly do. Thus, it&apos;s not a logic leak since the logic didn&apos;t belong in an AggregateRoot&lt;TAuthenticationToken&gt; anyway. Furthermore, we&apos;re not breaking encapsulation in any way, since Saga&lt;TAuthenticationToken&gt; operate with ICommand&lt;TAuthenticationToken&gt; and IEvent&lt;TAuthenticationToken&gt;, which are part of the public API.</para><para>How can I make my Saga&lt;TAuthenticationToken&gt; react to an IEvent&lt;TAuthenticationToken&gt; that did not happen? The Saga&lt;TAuthenticationToken&gt;, besides reacting to domain IEvent&lt;TAuthenticationToken&gt;, can be &quot;woken up&quot; by recurrent internal alarms. Implementing such alarms is easy. See cron in Unix, or triggered WebJobs in <ref refid="namespaceCqrs_1_1Azure" kindref="compound">Azure</ref> for examples.</para><para>How does the Saga&lt;TAuthenticationToken&gt; interact with the write side? By sending an ICommand&lt;TAuthenticationToken&gt; to it. </para>    </detaileddescription>
     <inheritancegraph>
-      <node id="1439">
+      <node id="1443">
         <label>Cqrs.Domain.ISaga&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Domain_1_1ISaga"/>
       </node>
-      <node id="1440">
+      <node id="1444">
         <label>Cqrs::Akka::Domain::AkkaSaga&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga"/>
-        <childnode refid="1439" relation="public-inheritance">
+        <childnode refid="1443" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1441">
+      <node id="1445">
         <label>Cqrs::Akka::Domain::AkkaSagaProxy&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaProxy"/>
-        <childnode refid="1439" relation="public-inheritance">
+        <childnode refid="1443" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1442">
+      <node id="1446">
         <label>Cqrs::Domain::Saga&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Domain_1_1Saga"/>
-        <childnode refid="1439" relation="public-inheritance">
+        <childnode refid="1443" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>
