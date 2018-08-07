@@ -1,6 +1,6 @@
 var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus =
 [
-    [ "AzureServiceBus", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a44845c00c29574c2fa2d43a8a6b124ca.html#a44845c00c29574c2fa2d43a8a6b124ca", null ],
+    [ "AzureServiceBus", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a09e34bafdb96fb8136efa428df9f80b2.html#a09e34bafdb96fb8136efa428df9f80b2", null ],
     [ "ApplyReceiverMessageHandler", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a6ea94560e02fce0d920c467062f5fc98.html#a6ea94560e02fce0d920c467062f5fc98", null ],
     [ "CheckPrivateTopicExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_add2d99ff99f1af5470082b1de340c04a.html#add2d99ff99f1af5470082b1de340c04a", null ],
     [ "CheckPublicTopicExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_aae464d1d93ae6600ff5ace028160dd3c.html#aae464d1d93ae6600ff5ace028160dd3c", null ],
@@ -39,7 +39,7 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus =
     [ "PublicTopicSubscriptionNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_afd2996c47ea248fd1b70ad8077dcd215.html#afd2996c47ea248fd1b70ad8077dcd215", null ],
     [ "ReceiverMessageHandler", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ab662579a9bd5be761a23f43e739ff288.html#ab662579a9bd5be761a23f43e739ff288", null ],
     [ "ReceiverMessageHandlerOptions", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_abe75d8be8b9ffbc5a37164467963babd.html#abe75d8be8b9ffbc5a37164467963babd", null ],
-    [ "Signer", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a3a49579c6f199f393c883b6f13fdbe39.html#a3a49579c6f199f393c883b6f13fdbe39", null ],
+    [ "Signer", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_aef1f30f0a2a1a4fcbab9a780bec4a185.html#aef1f30f0a2a1a4fcbab9a780bec4a185", null ],
     [ "SigningTokenConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_af0dd6b4f7b53b1bcb6b1e0defd6b693e.html#af0dd6b4f7b53b1bcb6b1e0defd6b693e", null ],
     [ "TelemetryHelper", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_af5f6d62cbdb3ad711ea42505491ffca3.html#af5f6d62cbdb3ad711ea42505491ffca3", null ],
     [ "ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_afd7c5f3b9caa1ce88bcd8be049bbf099.html#afd7c5f3b9caa1ce88bcd8be049bbf099", null ],

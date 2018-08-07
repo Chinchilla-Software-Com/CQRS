@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2018-08-04 21:22:32</td>
+            <td class="headerValue">2018-08-07 14:45:13</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -226,9 +226,9 @@
 <span class="lineNum">     168 </span>            :                 protected short TimeoutOnSendRetryMaximumCount { get; private set; }
 <span class="lineNum">     169 </span>            : 
 <span class="lineNum">     170 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     171 </span>            :                 /// The &lt;see cref=&quot;HashAlgorithm&quot;/&gt; to use to sign messages.
+<span class="lineNum">     171 </span>            :                 /// The &lt;see cref=&quot;IHashAlgorithmFactory&quot;/&gt; to use to sign messages.
 <span class="lineNum">     172 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     173 </span>            :                 protected HashAlgorithm Signer { get; private set; }
+<span class="lineNum">     173 </span>            :                 protected IHashAlgorithmFactory Signer { get; private set; }
 <span class="lineNum">     174 </span>            : 
 <span class="lineNum">     175 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     176 </span>            :                 /// A list of namespaces to exclude when trying to automatically determine the container.
@@ -238,7 +238,7 @@
 <span class="lineNum">     180 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     181 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AzureServiceBus{TAuthenticationToken}&quot;/&gt;
 <span class="lineNum">     182 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     183 </span><span class="lineCov">          1 :                 protected AzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper, IBusHelper busHelper, bool isAPublisher)</span>
+<span class="lineNum">     183 </span><span class="lineCov">          1 :                 protected AzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper, IBusHelper busHelper, IHashAlgorithmFactory hashAlgorithmFactory, bool isAPublisher)</span>
 <span class="lineNum">     184 </span>            :                         : base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, isAPublisher)
 <span class="lineNum">     185 </span>            :                 {
 <span class="lineNum">     186 </span>            :                         AzureBusHelper = azureBusHelper;
@@ -252,7 +252,7 @@
 <span class="lineNum">     194 </span>            :                         if (ConfigurationManager.TryGetSetting(&quot;Cqrs.Azure.Servicebus.TimeoutOnSendRetryMaximumCount&quot;, out timeoutOnSendRetryMaximumCountValue) &amp;&amp; !string.IsNullOrWhiteSpace(timeoutOnSendRetryMaximumCountValue) &amp;&amp; short.TryParse(timeoutOnSendRetryMaximumCountValue, out timeoutOnSendRetryMaximumCount))
 <span class="lineNum">     195 </span>            :                                 TimeoutOnSendRetryMaximumCount = timeoutOnSendRetryMaximumCount;
 <span class="lineNum">     196 </span>            :                         ExclusionNamespaces = new SynchronizedCollection&lt;string&gt; { &quot;Cqrs&quot;, &quot;System&quot; };
-<span class="lineNum">     197 </span>            :                         Signer = new SHA512CryptoServiceProvider();
+<span class="lineNum">     197 </span>            :                         Signer = hashAlgorithmFactory;
 <span class="lineNum">     198 </span>            :                 }
 <span class="lineNum">     199 </span>            : 
 <span class="lineNum">     200 </span>            :                 #region Overrides of AzureBus&lt;TAuthenticationToken&gt;
@@ -691,79 +691,80 @@
 <span class="lineNum">     633 </span>            :                         // see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security&lt;/remarks&gt;
 <span class="lineNum">     634 </span>            :                         string configurationKey = string.Format(&quot;{0}.SigningToken&quot;, messageType.FullName);
 <span class="lineNum">     635 </span>            :                         string signingToken;
-<span class="lineNum">     636 </span>            :                         if (!ConfigurationManager.TryGetSetting(configurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
-<span class="lineNum">     637 </span>            :                                 if (!ConfigurationManager.TryGetSetting(SigningTokenConfigurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
-<span class="lineNum">     638 </span>            :                                         signingToken = Guid.Empty.ToString(&quot;N&quot;);
-<span class="lineNum">     639 </span>            :                         if (!string.IsNullOrWhiteSpace(signingToken))
-<span class="lineNum">     640 </span>            :                                 using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(&quot;{0}{1}&quot;, signingToken, messageBody))))
-<span class="lineNum">     641 </span>            :                                         brokeredMessage.Properties.Add(&quot;Signature&quot;, Convert.ToBase64String(Signer.ComputeHash(hashStream)));
-<span class="lineNum">     642 </span>            : 
-<span class="lineNum">     643 </span>            :                         try
-<span class="lineNum">     644 </span>            :                         {
-<span class="lineNum">     645 </span>            :                                 var stackTrace = new StackTrace();
-<span class="lineNum">     646 </span>            :                                 StackFrame[] stackFrames = stackTrace.GetFrames();
-<span class="lineNum">     647 </span>            :                                 if (stackFrames != null)
-<span class="lineNum">     648 </span>            :                                 {
-<span class="lineNum">     649 </span>            :                                         foreach (StackFrame frame in stackFrames)
-<span class="lineNum">     650 </span>            :                                         {
-<span class="lineNum">     651 </span>            :                                                 MethodBase method = frame.GetMethod();
-<span class="lineNum">     652 </span>            :                                                 if (method.ReflectedType == null)
-<span class="lineNum">     653 </span>            :                                                         continue;
-<span class="lineNum">     654 </span>            : 
-<span class="lineNum">     655 </span>            :                                                 try
-<span class="lineNum">     656 </span>            :                                                 {
-<span class="lineNum">     657 </span>            :                                                         if (ExclusionNamespaces.All(@namespace =&gt; !method.ReflectedType.FullName.StartsWith(@namespace)))
-<span class="lineNum">     658 </span>            :                                                         {
-<span class="lineNum">     659 </span>            :                                                                 brokeredMessage.Properties.Add(&quot;Source-Method&quot;, string.Format(&quot;{0}.{1}&quot;, method.ReflectedType.FullName, method.Name));
-<span class="lineNum">     660 </span>            :                                                                 break;
-<span class="lineNum">     661 </span>            :                                                         }
-<span class="lineNum">     662 </span>            :                                                 }
-<span class="lineNum">     663 </span>            :                                                 catch
-<span class="lineNum">     664 </span>            :                                                 {
-<span class="lineNum">     665 </span>            :                                                         // Just move on
-<span class="lineNum">     666 </span>            :                                                 }
-<span class="lineNum">     667 </span>            :                                         }
-<span class="lineNum">     668 </span>            :                                 }
-<span class="lineNum">     669 </span>            :                         }
-<span class="lineNum">     670 </span>            :                         catch
-<span class="lineNum">     671 </span>            :                         {
-<span class="lineNum">     672 </span>            :                                 // Just move on
-<span class="lineNum">     673 </span>            :                         }
-<span class="lineNum">     674 </span>            : 
-<span class="lineNum">     675 </span>            :                         return brokeredMessage;
-<span class="lineNum">     676 </span>            :                 }
-<span class="lineNum">     677 </span>            : 
-<span class="lineNum">     678 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     679 </span>            :                 /// Extract any telemetry properties from the provided &lt;paramref name=&quot;message&quot;/&gt;.
-<span class="lineNum">     680 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     681 </span><span class="lineCov">          1 :                 protected virtual IDictionary&lt;string, string&gt; ExtractTelemetryProperties(BrokeredMessage message, string baseCommunicationType)</span>
-<span class="lineNum">     682 </span>            :                 {
-<span class="lineNum">     683 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, baseCommunicationType } };
-<span class="lineNum">     684 </span>            :                         object value;
-<span class="lineNum">     685 </span>            :                         if (message.Properties.TryGetValue(&quot;Type&quot;, out value))
-<span class="lineNum">     686 </span>            :                                 telemetryProperties.Add(&quot;MessageType&quot;, value.ToString());
-<span class="lineNum">     687 </span>            :                         if (message.Properties.TryGetValue(&quot;Source&quot;, out value))
-<span class="lineNum">     688 </span>            :                                 telemetryProperties.Add(&quot;MessageSource&quot;, value.ToString());
-<span class="lineNum">     689 </span>            :                         if (message.Properties.TryGetValue(&quot;Source-Method&quot;, out value))
-<span class="lineNum">     690 </span>            :                                 telemetryProperties.Add(&quot;MessageSourceMethod&quot;, value.ToString());
-<span class="lineNum">     691 </span>            :                         if (message.Properties.TryGetValue(&quot;CorrelationId&quot;, out value) &amp;&amp; !telemetryProperties.ContainsKey(&quot;CorrelationId&quot;))
-<span class="lineNum">     692 </span>            :                                 telemetryProperties.Add(&quot;CorrelationId&quot;, value.ToString());
-<span class="lineNum">     693 </span>            : 
-<span class="lineNum">     694 </span>            :                         return telemetryProperties;
-<span class="lineNum">     695 </span>            :                 }
-<span class="lineNum">     696 </span>            : 
-<span class="lineNum">     697 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     698 </span>            :                 /// Extract the signature from the provided &lt;paramref name=&quot;message&quot;/&gt;.
-<span class="lineNum">     699 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     700 </span><span class="lineCov">          1 :                 protected virtual string ExtractSignature(BrokeredMessage message)</span>
-<span class="lineNum">     701 </span>            :                 {
-<span class="lineNum">     702 </span>            :                         object value;
-<span class="lineNum">     703 </span>            :                         if (message.Properties.TryGetValue(&quot;Signature&quot;, out value))
-<span class="lineNum">     704 </span>            :                                 return value.ToString();
-<span class="lineNum">     705 </span>            :                         return null;
-<span class="lineNum">     706 </span>            :                 }
-<span class="lineNum">     707 </span>            :         }
-<span class="lineNum">     708 </span>            : }
+<span class="lineNum">     636 </span>            :                         HashAlgorithm signer = Signer.Create();
+<span class="lineNum">     637 </span>            :                         if (!ConfigurationManager.TryGetSetting(configurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
+<span class="lineNum">     638 </span>            :                                 if (!ConfigurationManager.TryGetSetting(SigningTokenConfigurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
+<span class="lineNum">     639 </span>            :                                         signingToken = Guid.Empty.ToString(&quot;N&quot;);
+<span class="lineNum">     640 </span>            :                         if (!string.IsNullOrWhiteSpace(signingToken))
+<span class="lineNum">     641 </span>            :                                 using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(&quot;{0}{1}&quot;, signingToken, messageBody))))
+<span class="lineNum">     642 </span>            :                                         brokeredMessage.Properties.Add(&quot;Signature&quot;, Convert.ToBase64String(signer.ComputeHash(hashStream)));
+<span class="lineNum">     643 </span>            : 
+<span class="lineNum">     644 </span>            :                         try
+<span class="lineNum">     645 </span>            :                         {
+<span class="lineNum">     646 </span>            :                                 var stackTrace = new StackTrace();
+<span class="lineNum">     647 </span>            :                                 StackFrame[] stackFrames = stackTrace.GetFrames();
+<span class="lineNum">     648 </span>            :                                 if (stackFrames != null)
+<span class="lineNum">     649 </span>            :                                 {
+<span class="lineNum">     650 </span>            :                                         foreach (StackFrame frame in stackFrames)
+<span class="lineNum">     651 </span>            :                                         {
+<span class="lineNum">     652 </span>            :                                                 MethodBase method = frame.GetMethod();
+<span class="lineNum">     653 </span>            :                                                 if (method.ReflectedType == null)
+<span class="lineNum">     654 </span>            :                                                         continue;
+<span class="lineNum">     655 </span>            : 
+<span class="lineNum">     656 </span>            :                                                 try
+<span class="lineNum">     657 </span>            :                                                 {
+<span class="lineNum">     658 </span>            :                                                         if (ExclusionNamespaces.All(@namespace =&gt; !method.ReflectedType.FullName.StartsWith(@namespace)))
+<span class="lineNum">     659 </span>            :                                                         {
+<span class="lineNum">     660 </span>            :                                                                 brokeredMessage.Properties.Add(&quot;Source-Method&quot;, string.Format(&quot;{0}.{1}&quot;, method.ReflectedType.FullName, method.Name));
+<span class="lineNum">     661 </span>            :                                                                 break;
+<span class="lineNum">     662 </span>            :                                                         }
+<span class="lineNum">     663 </span>            :                                                 }
+<span class="lineNum">     664 </span>            :                                                 catch
+<span class="lineNum">     665 </span>            :                                                 {
+<span class="lineNum">     666 </span>            :                                                         // Just move on
+<span class="lineNum">     667 </span>            :                                                 }
+<span class="lineNum">     668 </span>            :                                         }
+<span class="lineNum">     669 </span>            :                                 }
+<span class="lineNum">     670 </span>            :                         }
+<span class="lineNum">     671 </span>            :                         catch
+<span class="lineNum">     672 </span>            :                         {
+<span class="lineNum">     673 </span>            :                                 // Just move on
+<span class="lineNum">     674 </span>            :                         }
+<span class="lineNum">     675 </span>            : 
+<span class="lineNum">     676 </span>            :                         return brokeredMessage;
+<span class="lineNum">     677 </span>            :                 }
+<span class="lineNum">     678 </span>            : 
+<span class="lineNum">     679 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     680 </span>            :                 /// Extract any telemetry properties from the provided &lt;paramref name=&quot;message&quot;/&gt;.
+<span class="lineNum">     681 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     682 </span><span class="lineCov">          1 :                 protected virtual IDictionary&lt;string, string&gt; ExtractTelemetryProperties(BrokeredMessage message, string baseCommunicationType)</span>
+<span class="lineNum">     683 </span>            :                 {
+<span class="lineNum">     684 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, baseCommunicationType } };
+<span class="lineNum">     685 </span>            :                         object value;
+<span class="lineNum">     686 </span>            :                         if (message.Properties.TryGetValue(&quot;Type&quot;, out value))
+<span class="lineNum">     687 </span>            :                                 telemetryProperties.Add(&quot;MessageType&quot;, value.ToString());
+<span class="lineNum">     688 </span>            :                         if (message.Properties.TryGetValue(&quot;Source&quot;, out value))
+<span class="lineNum">     689 </span>            :                                 telemetryProperties.Add(&quot;MessageSource&quot;, value.ToString());
+<span class="lineNum">     690 </span>            :                         if (message.Properties.TryGetValue(&quot;Source-Method&quot;, out value))
+<span class="lineNum">     691 </span>            :                                 telemetryProperties.Add(&quot;MessageSourceMethod&quot;, value.ToString());
+<span class="lineNum">     692 </span>            :                         if (message.Properties.TryGetValue(&quot;CorrelationId&quot;, out value) &amp;&amp; !telemetryProperties.ContainsKey(&quot;CorrelationId&quot;))
+<span class="lineNum">     693 </span>            :                                 telemetryProperties.Add(&quot;CorrelationId&quot;, value.ToString());
+<span class="lineNum">     694 </span>            : 
+<span class="lineNum">     695 </span>            :                         return telemetryProperties;
+<span class="lineNum">     696 </span>            :                 }
+<span class="lineNum">     697 </span>            : 
+<span class="lineNum">     698 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     699 </span>            :                 /// Extract the signature from the provided &lt;paramref name=&quot;message&quot;/&gt;.
+<span class="lineNum">     700 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     701 </span><span class="lineCov">          1 :                 protected virtual string ExtractSignature(BrokeredMessage message)</span>
+<span class="lineNum">     702 </span>            :                 {
+<span class="lineNum">     703 </span>            :                         object value;
+<span class="lineNum">     704 </span>            :                         if (message.Properties.TryGetValue(&quot;Signature&quot;, out value))
+<span class="lineNum">     705 </span>            :                                 return value.ToString();
+<span class="lineNum">     706 </span>            :                         return null;
+<span class="lineNum">     707 </span>            :                 }
+<span class="lineNum">     708 </span>            :         }
+<span class="lineNum">     709 </span>            : }
 </pre>
       </td>
     </tr>
