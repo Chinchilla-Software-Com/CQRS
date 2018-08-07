@@ -1,6 +1,6 @@
 var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBus =
 [
-    [ "AzureEventBus", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBus_aaaf74d2e4e79924b7231750478508ed6.html#aaaf74d2e4e79924b7231750478508ed6", null ],
+    [ "AzureEventBus", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBus_aeef9b7bc17c3b114a95fe2134e7c0e7a.html#aeef9b7bc17c3b114a95fe2134e7c0e7a", null ],
     [ "DefaultPrivateTopicName", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBus_ad1951d2d7ccbf739e9390437d960b3f5.html#ad1951d2d7ccbf739e9390437d960b3f5", null ],
     [ "DefaultPublicTopicName", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBus_a252a4ac7c235b7fbb44849fbdb08b0eb.html#a252a4ac7c235b7fbb44849fbdb08b0eb", null ],
     [ "MessageBusConnectionStringConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventBus_a01cf73f187e77b2116e1f7dc68c3e7e6.html#a01cf73f187e77b2116e1f7dc68c3e7e6", null ],
