@@ -37,7 +37,7 @@ namespace $safeprojectname$.Areas.HelpPage
 		[SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "bsonspec", Justification = "Part of a URI.")]
 		public static void Register(HttpConfiguration config)
 		{
-			Cqrs.WebApi.HelpPageConfig<SingleSignOnToken>.CreateXmlDocumentation();
+			Cqrs.WebApi.HelpPageConfig<SingleSignOnToken>.CreateXmlDocumentation(Assembly.GetAssembly(typeof(HelpPageConfig)));
 
 			// Uncomment the following to use the documentation from XML documentation file.
 			config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml")));

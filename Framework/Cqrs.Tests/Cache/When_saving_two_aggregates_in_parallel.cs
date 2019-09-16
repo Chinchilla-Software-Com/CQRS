@@ -7,6 +7,7 @@ using Cqrs.Cache;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Authentication;
+using Cqrs.Configuration;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
 
@@ -30,7 +31,7 @@ namespace Cqrs.Tests.Cache
 			_testStore = new TestInMemoryEventStore();
 			var dependencyResolver = new TestDependencyResolver(null);
 			var aggregateFactory = new AggregateFactory(dependencyResolver, dependencyResolver.Resolve<ILogger>());
-			_rep1 = new CacheRepository<ISingleSignOnToken>(new AggregateRepository<ISingleSignOnToken>(aggregateFactory, _testStore, new TestEventPublisher(), new NullCorrelationIdHelper()), _testStore);
+			_rep1 = new CacheRepository<ISingleSignOnToken>(new AggregateRepository<ISingleSignOnToken>(aggregateFactory, _testStore, new TestEventPublisher(), new NullCorrelationIdHelper(), new ConfigurationManager()), _testStore);
 
 			_aggregate1 = new TestAggregate(Guid.NewGuid());
 			_aggregate2 = new TestAggregate(Guid.NewGuid());

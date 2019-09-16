@@ -48,7 +48,7 @@ namespace <#= classNamespace #>.Services
 	/// A <see cref="DataContractResolver"/> for using  <see cref="I<#= className #>Service.Create<#= className #>"/> via WCF
 	/// </summary>
 	<#= GetGeneratedCodeAttribute() #>
-	public partial class <#= className #>ServiceCreate<#= className #>ParametersResolver : ServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
+	public partial class <#= className #>ServiceCreate<#= className #>ParametersResolver : BasicServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
 	{
 		public <#= className #>ServiceCreate<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
 			: base(singleSignOnTokenResolver, eventDataResolver)
@@ -67,7 +67,7 @@ if (index > 0)
 }
 #>
 		public <#= className #>ServiceCreate<#= className #>ParametersResolver()
-			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
+			: base(new EventDataResolver<<#= authenticationTokenType #>>())
 		{
 		}
 
@@ -153,7 +153,7 @@ if (index > 0)
 	/// A <see cref="DataContractResolver"/> for using  <see cref="I<#= className #>Service.Update<#= className #>"/> via WCF
 	/// </summary>
 	<#= GetGeneratedCodeAttribute() #>
-	public partial class <#= className #>ServiceUpdate<#= className #>ParametersResolver : ServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
+	public partial class <#= className #>ServiceUpdate<#= className #>ParametersResolver : BasicServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
 	{
 		public <#= className #>ServiceUpdate<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
 			: base(singleSignOnTokenResolver, eventDataResolver)
@@ -172,7 +172,7 @@ if (index > 0)
 }
 #>
 		public <#= className #>ServiceUpdate<#= className #>ParametersResolver()
-			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
+			: base(new EventDataResolver<<#= authenticationTokenType #>>())
 		{
 		}
 
@@ -258,7 +258,7 @@ if (index > 0)
 	/// A <see cref="DataContractResolver"/> for using  <see cref="I<#= className #>Service.Delete<#= className #>"/> via WCF
 	/// </summary>
 	<#= GetGeneratedCodeAttribute() #>
-	public partial class <#= className #>ServiceDelete<#= className #>ParametersResolver : ServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
+	public partial class <#= className #>ServiceDelete<#= className #>ParametersResolver : BasicServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
 	{
 		public <#= className #>ServiceDelete<#= className #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
 			: base(singleSignOnTokenResolver, eventDataResolver)
@@ -276,7 +276,7 @@ if (index > 0)
 }
 #>
 		public <#= className #>ServiceDelete<#= className #>ParametersResolver()
-			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
+			: base(new EventDataResolver<<#= authenticationTokenType #>>())
 		{
 		}
 
@@ -361,12 +361,14 @@ if (index > 0)
 			string relationshipName = relationship.Name;
 			if (string.IsNullOrWhiteSpace(relationshipName))
 				relationshipName = ((INamedElement)relationship.SourceElement).Name;
+			if (relationshipName.EndsWith("CommandHandler"))
+				relationshipName = relationshipName.Substring(0, relationshipName.Length - 14);
 #>
 	/// <summary>
 	/// A <see cref="DataContractResolver"/> for using <see cref="I<#= className #>Service.<#= relationshipName #>"/> via WCF
 	/// </summary>
 	<#= GetGeneratedCodeAttribute() #>
-	public partial class <#= className #>Service<#= relationshipName #>ParametersResolver : ServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
+	public partial class <#= className #>Service<#= relationshipName #>ParametersResolver : BasicServiceParameterResolver<I<#= className #>Service, <#= authenticationTokenType #>>
 	{
 		public <#= className #>Service<#= relationshipName #>ParametersResolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
 			: base(singleSignOnTokenResolver, eventDataResolver)
@@ -384,7 +386,7 @@ if (index > 0)
 }
 #>
 		public <#= className #>Service<#= relationshipName #>ParametersResolver()
-			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
+			: base(new EventDataResolver<<#= authenticationTokenType #>>())
 		{
 		}
 

@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">2</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryLo">50.0 %</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-01</td>
+            <td class="headerValue">2017-09-22</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -74,39 +74,58 @@
 <span class="lineNum">      16 </span>            : 
 <span class="lineNum">      17 </span>            : namespace Cqrs.Akka.Domain
 <span class="lineNum">      18 </span>            : {
-<span class="lineNum">      19 </span>            :         public class AkkaAggregateRepository&lt;TAuthenticationToken&gt;
-<span class="lineNum">      20 </span>            :                 : AggregateRepository&lt;TAuthenticationToken&gt;
-<span class="lineNum">      21 </span>            :                 , IAkkaAggregateRepository&lt;TAuthenticationToken&gt;
-<span class="lineNum">      22 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      23 </span>            :                 protected IAkkaEventPublisherProxy&lt;TAuthenticationToken&gt; EventPublisher { get; private set; }
-<span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span><span class="lineNoCov">          0 :                 public AkkaAggregateRepository(IAggregateFactory aggregateFactory, IEventStore&lt;TAuthenticationToken&gt; eventStore, IEventPublisher&lt;TAuthenticationToken&gt; publisher, ICorrelationIdHelper correlationIdHelper, IAkkaEventPublisherProxy&lt;TAuthenticationToken&gt; eventPublisher)</span>
-<span class="lineNum">      26 </span>            :                         : base(aggregateFactory, eventStore, publisher, correlationIdHelper)
-<span class="lineNum">      27 </span>            :                 {
-<span class="lineNum">      28 </span>            :                         EventPublisher = eventPublisher;
-<span class="lineNum">      29 </span>            :                 }
-<span class="lineNum">      30 </span>            : 
-<span class="lineNum">      31 </span>            :                 #region Overrides of Repository&lt;TAuthenticationToken&gt;
-<span class="lineNum">      32 </span>            : 
-<span class="lineNum">      33 </span><span class="lineCov">          1 :                 protected override TAggregateRoot CreateAggregate&lt;TAggregateRoot&gt;(Guid id)</span>
-<span class="lineNum">      34 </span>            :                 {
-<span class="lineNum">      35 </span>            :                         var aggregate = AggregateFactory.Create&lt;TAggregateRoot&gt;();
-<span class="lineNum">      36 </span>            : 
-<span class="lineNum">      37 </span>            :                         return aggregate;
-<span class="lineNum">      38 </span>            :                 }
-<span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span><span class="lineCov">          1 :                 protected override void PublishEvent(IEvent&lt;TAuthenticationToken&gt; @event)</span>
-<span class="lineNum">      41 </span>            :                 {
-<span class="lineNum">      42 </span>            :                         Task.Factory.StartNewSafely(() =&gt;
-<span class="lineNum">      43 </span>            :                         {
-<span class="lineNum">      44 </span>            :                                 EventPublisher.Publish(@event);
-<span class="lineNum">      45 </span>            :                                 base.PublishEvent(@event);
-<span class="lineNum">      46 </span>            :                         });
-<span class="lineNum">      47 </span>            :                 }
-<span class="lineNum">      48 </span>            : 
-<span class="lineNum">      49 </span>            :                 #endregion
-<span class="lineNum">      50 </span>            :         }
-<span class="lineNum">      51 </span>            : }
+<span class="lineNum">      19 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      20 </span>            :         /// A &lt;see cref=&quot;AggregateRepository{TAuthenticationToken}&quot;/&gt; that is safe to use within Akka.NET
+<span class="lineNum">      21 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      22 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      23 </span>            :         public class AkkaAggregateRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      24 </span>            :                 : AggregateRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      25 </span>            :                 , IAkkaAggregateRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      26 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      27 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      28 </span>            :                 /// Gets the &lt;see cref=&quot;IAkkaEventPublisherProxy{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      30 </span>            :                 protected IAkkaEventPublisherProxy&lt;TAuthenticationToken&gt; EventPublisher { get; private set; }
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      33 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AkkaAggregateRepository{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      34 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      35 </span><span class="lineCov">          1 :                 public AkkaAggregateRepository(IAggregateFactory aggregateFactory, IEventStore&lt;TAuthenticationToken&gt; eventStore, IEventPublisher&lt;TAuthenticationToken&gt; publisher, ICorrelationIdHelper correlationIdHelper, IAkkaEventPublisherProxy&lt;TAuthenticationToken&gt; eventPublisher)</span>
+<span class="lineNum">      36 </span>            :                         : base(aggregateFactory, eventStore, publisher, correlationIdHelper)
+<span class="lineNum">      37 </span>            :                 {
+<span class="lineNum">      38 </span>            :                         EventPublisher = eventPublisher;
+<span class="lineNum">      39 </span>            :                 }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 #region Overrides of Repository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      44 </span>            :                 /// Calls &lt;see cref=&quot;IAggregateFactory.Create&quot;/&gt; to get a, &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt;.
+<span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      46 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      47 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The id of the &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; to create.&lt;/param&gt;
+<span class="lineNum">      48 </span><span class="lineCov">          1 :                 protected override TAggregateRoot CreateAggregate&lt;TAggregateRoot&gt;(Guid id)</span>
+<span class="lineNum">      49 </span>            :                 {
+<span class="lineNum">      50 </span>            :                         var aggregate = AggregateFactory.Create&lt;TAggregateRoot&gt;();
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :                         return aggregate;
+<span class="lineNum">      53 </span>            :                 }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      56 </span>            :                 /// Publish the saved &lt;paramref name=&quot;event&quot;/&gt; asynchronously on &lt;see cref=&quot;EventPublisher&quot;/&gt;,
+<span class="lineNum">      57 </span>            :                 /// then calls &lt;see cref=&quot;AggregateRepository{TAuthenticationToken}.PublishEvent&quot;/&gt;
+<span class="lineNum">      58 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      59 </span><span class="lineCov">          1 :                 protected override void PublishEvent(IEvent&lt;TAuthenticationToken&gt; @event)</span>
+<span class="lineNum">      60 </span>            :                 {
+<span class="lineNum">      61 </span>            :                         Task.Factory.StartNewSafely(() =&gt;
+<span class="lineNum">      62 </span>            :                         {
+<span class="lineNum">      63 </span>            :                                 EventPublisher.Publish(@event);
+<span class="lineNum">      64 </span>            :                                 base.PublishEvent(@event);
+<span class="lineNum">      65 </span>            :                         });
+<span class="lineNum">      66 </span>            :                 }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                 #endregion
+<span class="lineNum">      69 </span>            :         }
+<span class="lineNum">      70 </span>            : }
 </pre>
       </td>
     </tr>

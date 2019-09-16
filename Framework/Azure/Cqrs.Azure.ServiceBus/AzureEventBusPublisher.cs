@@ -21,17 +21,28 @@ using Cqrs.Messages;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	// The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
+	/// <summary>
+	/// An <see cref="IEventPublisher{TAuthenticationToken}"/> that resolves handlers and executes the handler.
+	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	// The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
-	public class AzureEventBusPublisher<TAuthenticationToken> : AzureEventBus<TAuthenticationToken>, IEventPublisher<TAuthenticationToken>
+	public class AzureEventBusPublisher<TAuthenticationToken>
+		: AzureEventBus<TAuthenticationToken>
+		, IEventPublisher<TAuthenticationToken>
 	{
-		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureEventBusPublisher{TAuthenticationToken}"/>.
+		/// </summary>
+		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper, IHashAlgorithmFactory hashAlgorithmFactory)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, hashAlgorithmFactory, true)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
 
+		/// <summary>
+		/// The debugger variable window value.
+		/// </summary>
 		internal string DebuggerDisplay
 		{
 			get
@@ -41,7 +52,7 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					connectionString = string.Concat(connectionString, "=", GetConnectionString());
 				}
-				catch { /**/ }
+				catch { /* */ }
 				return string.Format(CultureInfo.InvariantCulture, "{0}, PrivateTopicName : {1}, PrivateTopicSubscriptionName : {2}, PublicTopicName : {3}, PublicTopicSubscriptionName : {4}",
 					connectionString, PrivateTopicName, PrivateTopicSubscriptionName, PublicTopicName, PublicTopicSubscriptionName);
 			}
@@ -49,9 +60,18 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Implementation of IEventPublisher<TAuthenticationToken>
 
+		/// <summary>
+		/// Publishes the provided <paramref name="event"/> on the event bus.
+		/// </summary>
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
+			if (@event == null)
+			{
+				Logger.LogDebug("No event to publish.");
+				return;
+			}
+			Type eventType = @event.GetType();
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = null;
@@ -59,39 +79,50 @@ namespace Cqrs.Azure.ServiceBus
 			bool telemeterOverall = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
-			string telemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+			string telemetryName = string.Format("{0}/{1}/{2}", eventType.FullName, @event.GetIdentity(), @event.Id);
 			var telemeteredEvent = @event as ITelemeteredMessage;
 			if (telemeteredEvent != null)
 				telemetryName = telemeteredEvent.TelemetryName;
-			telemetryName = string.Format("Event/{0}", telemetryName);
+			else
+				telemetryName = string.Format("Event/{0}", telemetryName);
 
 			try
 			{
 				if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-ServiceBus"))
 					return;
 
-				var privateEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PrivateEventAttribute;
-				var publicEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PublicEventAttribute;
+				bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(eventType);
+				bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(eventType);
 
-				// We only add telemetry for overall operations if two occured
-				telemeterOverall = publicEventAttribute != null && privateEventAttribute != null;
+				// We only add telemetry for overall operations if two occurred
+				telemeterOverall = isPublicBusRequired != null && isPublicBusRequired.Value && isPrivateBusRequired != null && isPrivateBusRequired.Value;
 
 				// Backwards compatibility and simplicity
 				bool wasSuccessfull;
 				Stopwatch stopWatch = Stopwatch.StartNew();
-				if (publicEventAttribute == null && privateEventAttribute == null)
+				if ((isPublicBusRequired == null || !isPublicBusRequired.Value) && (isPrivateBusRequired == null || !isPrivateBusRequired.Value))
 				{
 					stopWatch.Restart();
 					responseCode = "200";
 					wasSuccessfull = false;
 					try
 					{
-						var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
+						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
+						int count = 1;
+						do
 						{
-							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-						};
-						brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
-						PublicServiceBusPublisher.Send(brokeredMessage);
+							try
+							{
+								PublicServiceBusPublisher.Send(brokeredMessage);
+								break;
+							}
+							catch (TimeoutException)
+							{
+								if (count >= TimeoutOnSendRetryMaximumCount)
+									throw;
+							}
+							count++;
+						} while (true);
 						wasSuccessfull = true;
 					}
 					catch (QuotaExceededException exception)
@@ -110,21 +141,31 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Default Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
-					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
+					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
 				}
-				if (publicEventAttribute != null)
+				if ((isPublicBusRequired != null && isPublicBusRequired.Value))
 				{
 					stopWatch.Restart();
 					responseCode = "200";
 					wasSuccessfull = false;
 					try
 					{
-						var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
+						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
+						int count = 1;
+						do
 						{
-							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-						};
-						brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
-						PublicServiceBusPublisher.Send(brokeredMessage);
+							try
+							{
+								PublicServiceBusPublisher.Send(brokeredMessage);
+								break;
+							}
+							catch (TimeoutException)
+							{
+								if (count >= TimeoutOnSendRetryMaximumCount)
+									throw;
+							}
+							count++;
+						} while (true);
 						wasSuccessfull = true;
 					}
 					catch (QuotaExceededException exception)
@@ -143,21 +184,31 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Public Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
-					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
+					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
 				}
-				if (privateEventAttribute != null)
+				if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
 				{
 					stopWatch.Restart();
 					responseCode = "200";
 					wasSuccessfull = false;
 					try
 					{
-						var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
+						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
+						int count = 1;
+						do
 						{
-							CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-						};
-						brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
-						PrivateServiceBusPublisher.Send(brokeredMessage);
+							try
+							{
+								PrivateServiceBusPublisher.Send(brokeredMessage);
+								break;
+							}
+							catch (TimeoutException)
+							{
+								if (count >= TimeoutOnSendRetryMaximumCount)
+									throw;
+							}
+							count++;
+						} while (true);
 						wasSuccessfull = true;
 					}
 					catch (QuotaExceededException exception)
@@ -177,7 +228,7 @@ namespace Cqrs.Azure.ServiceBus
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Private Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
 
-					Logger.LogDebug(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
+					Logger.LogDebug(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
 				}
 				mainWasSuccessfull = true;
 			}
@@ -189,10 +240,23 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// Publishes the provided <paramref name="events"/> on the event bus.
+		/// </summary>
 		public virtual void Publish<TEvent>(IEnumerable<TEvent> events)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
+			if (events == null)
+			{
+				Logger.LogDebug("No events to publish.");
+				return;
+			}
 			IList<TEvent> sourceEvents = events.ToList();
+			if (!sourceEvents.Any())
+			{
+				Logger.LogDebug("An empty collection of events to publish.");
+				return;
+			}
 
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
@@ -204,7 +268,8 @@ namespace Cqrs.Azure.ServiceBus
 			string telemetryNames = string.Empty;
 			foreach (TEvent @event in sourceEvents)
 			{
-				string subTelemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+				Type eventType = @event.GetType();
+				string subTelemetryName = string.Format("{0}/{1}/{2}", eventType.FullName, @event.GetIdentity(), @event.Id);
 				var telemeteredEvent = @event as ITelemeteredMessage;
 				if (telemeteredEvent != null)
 					subTelemetryName = telemeteredEvent.TelemetryName;
@@ -224,30 +289,28 @@ namespace Cqrs.Azure.ServiceBus
 					if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-ServiceBus"))
 						continue;
 
-					var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
-					{
-						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-					};
-					brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
+					Type eventType = @event.GetType();
 
-					var privateEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PrivateEventAttribute;
-					var publicEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PublicEventAttribute;
+					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
 
-					if
-						(
-						// Backwards compatibility and simplicity
-						(publicEventAttribute == null && privateEventAttribute == null)
-						||
-						publicEventAttribute != null
-						)
+					bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(eventType);
+					bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(eventType);
+
+					// Backwards compatibility and simplicity
+					if ((isPublicBusRequired == null || !isPublicBusRequired.Value) && (isPrivateBusRequired == null || !isPrivateBusRequired.Value))
 					{
 						publicBrokeredMessages.Add(brokeredMessage);
-						sourceEventMessages.Add(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
+						sourceEventMessages.Add(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
 					}
-					if (privateEventAttribute != null)
+					if ((isPublicBusRequired != null && isPublicBusRequired.Value))
+					{
+						publicBrokeredMessages.Add(brokeredMessage);
+						sourceEventMessages.Add(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
+					}
+					if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
 					{
 						privateBrokeredMessages.Add(brokeredMessage);
-						sourceEventMessages.Add(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
+						sourceEventMessages.Add(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
 					}
 				}
 
@@ -260,7 +323,24 @@ namespace Cqrs.Azure.ServiceBus
 				wasSuccessfull = false;
 				try
 				{
-					PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
+					int count = 1;
+					do
+					{
+						try
+						{
+							if (publicBrokeredMessages.Any())
+								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
+							else
+								Logger.LogDebug("An empty collection of public events to publish post validation.");
+							break;
+						}
+						catch (TimeoutException)
+						{
+							if (count >= TimeoutOnSendRetryMaximumCount)
+								throw;
+						}
+						count++;
+					} while (true);
 					wasSuccessfull = true;
 				}
 				catch (QuotaExceededException exception)
@@ -285,7 +365,24 @@ namespace Cqrs.Azure.ServiceBus
 				wasSuccessfull = false;
 				try
 				{
-					PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
+					int count = 1;
+					do
+					{
+						try
+						{
+							if (privateBrokeredMessages.Any())
+								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
+							else
+								Logger.LogDebug("An empty collection of private events to publish post validation.");
+							break;
+						}
+						catch (TimeoutException)
+						{
+							if (count >= TimeoutOnSendRetryMaximumCount)
+								throw;
+						}
+						count++;
+					} while (true);
 					wasSuccessfull = true;
 				}
 				catch (QuotaExceededException exception)

@@ -6,7 +6,7 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IPackage" />
       </metaclasses>
       <properties>
-        <property name="AuthenticationTokenType" displayName="AuthenticationTokenType: The data type of the authentication token" defaultValue="Cqrs.Authentication.ISingleSignOnToken">
+        <property name="AuthenticationTokenType" displayName="AuthenticationTokenType: The data type of the authentication token" defaultValue="System.Guid">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.String"/>
           </propertyType>
@@ -81,47 +81,47 @@
         <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
       </metaclasses>
       <properties>
-        <property name="BuildCreateCommand" displayName="BuildCreateCommand: Automatically adds a Create event, command, event handler and command handler" defaultValue="true">
+        <property name="BuildCreateCommand" displayName="BuildCreateCommand: Automatically adds a Create event, command, event handler and command handler" defaultValue="false">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
-        <property name="BuildUpdateCommand" displayName="BuildUpdateCommand: Automatically adds a Update event, command, event handler and command handler" defaultValue="true">
+        <property name="BuildUpdateCommand" displayName="BuildUpdateCommand: Automatically adds a Update event, command, event handler and command handler" defaultValue="false">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
-        <property name="BuildDeleteCommand" displayName="BuildDeleteCommand: Automatically adds a Delete event, command, event handler and command handler" defaultValue="true">
+        <property name="BuildDeleteCommand" displayName="BuildDeleteCommand: Automatically adds a Delete event, command, event handler and command handler" defaultValue="false">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
-        <property name="BuildCreateServiceMethod" displayName="BuildCreateServiceMethod: Automatically adds a Create method to the aggregate service" defaultValue="true">
+        <property name="BuildCreateServiceMethod" displayName="BuildCreateServiceMethod: Automatically adds a Create method to the aggregate service" defaultValue="false">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
-        <property name="BuildUpdateServiceMethod" displayName="BuildUpdateServiceMethod: Automatically adds a Update method to the aggregate service" defaultValue="true">
+        <property name="BuildUpdateServiceMethod" displayName="BuildUpdateServiceMethod: Automatically adds a Update method to the aggregate service" defaultValue="false">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
-        <property name="BuildDeleteServiceMethod" displayName="BuildDeleteServiceMethod: Automatically adds a Delete method to the aggregate service" defaultValue="true">
+        <property name="BuildDeleteServiceMethod" displayName="BuildDeleteServiceMethod: Automatically adds a Delete method to the aggregate service" defaultValue="false">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
-        <property name="BuildCreateControllerMethod" displayName="BuildCreateControllerMethod: Automatically adds a Create method to the aggregate MVC controller" defaultValue="true">
+        <property name="BuildCreateControllerMethod" displayName="BuildCreateControllerMethod: Automatically adds a Create method to the aggregate MVC controller" defaultValue="false">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
-        <property name="BuildUpdateControllerMethod" displayName="BuildUpdateControllerMethod: Automatically adds a Update method to the aggregate MVC controller" defaultValue="true">
+        <property name="BuildUpdateControllerMethod" displayName="BuildUpdateControllerMethod: Automatically adds a Update method to the aggregate MVC controller" defaultValue="false">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
-        <property name="BuildDeleteControllerMethod" displayName="BuildDeleteControllerMethod: Automatically adds a Delete method to the aggregate MVC controller" defaultValue="true">
+        <property name="BuildDeleteControllerMethod" displayName="BuildDeleteControllerMethod: Automatically adds a Delete method to the aggregate MVC controller" defaultValue="false">
           <propertyType>
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
@@ -151,7 +151,24 @@
             <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
-        <property name="AggregateTechnology" displayName="Aggregate Technology: What technology are you using for aggregate processing of THIS aggregate." defaultValue="BuiltIn">
+        <property name="AggregateTechnology" displayName="Event Technology: What technology are you using for event processing of THIS aggregate." defaultValue="BuiltIn">
+          <propertyType>
+            <enumerationTypeMoniker name="/CqrsProfile/AggregateTechnology"/>
+          </propertyType>
+        </property>
+      </properties>
+    </stereotype>
+    <stereotype name="Saga" displayName="Saga/Process Manager">
+      <metaclasses>
+        <metaclassMoniker name="/CqrsProfile/Microsoft.VisualStudio.Uml.Classes.IClass" />
+      </metaclasses>
+      <properties>
+        <property name="IsSnapshotable" displayName="IsSnapshotable: Indicates if the saga supports snapshots." defaultValue="false">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
+          </propertyType>
+        </property>
+        <property name="EventTechnology" displayName="Event Technology: What technology are you using for event processing of THIS saga." defaultValue="BuiltIn">
           <propertyType>
             <enumerationTypeMoniker name="/CqrsProfile/AggregateTechnology"/>
           </propertyType>
@@ -329,6 +346,11 @@
         <property name="AggregateTechnology" displayName="Aggregate Technology: What technology are you using for aggregate processing of THIS aggregate." defaultValue="BuiltIn">
           <propertyType>
             <enumerationTypeMoniker name="/CqrsProfile/AggregateTechnology"/>
+          </propertyType>
+        </property>
+        <property name="CreateDontUpdateEntity" displayName="Create Don't Update Entity: Indicates that this handler (if it is an entity event hander) will create an entity not update it." defaultValue="false">
+          <propertyType>
+            <externalTypeMoniker name="/CqrsProfile/System.Boolean"/>
           </propertyType>
         </property>
       </properties>

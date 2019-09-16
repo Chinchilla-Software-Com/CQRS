@@ -46,7 +46,6 @@ items:
     - id: TDbEntity
     content.vb: >-
       Public Class SqlDataStore(Of TEntity, TDbEntity As {Class, New})
-
           Implements IDataStore(Of TEntity), IOrderedQueryable(Of TEntity), IQueryable(Of TEntity), IEnumerable(Of TEntity), IOrderedQueryable, IQueryable, IEnumerable, IDisposable
   inheritance:
   - System.Object
@@ -68,9 +67,9 @@ items:
   - System.Object.GetType
   - System.Object.MemberwiseClone
   extensionMethods:
+  - Cqrs.DataStores.IDataStore{`0}.Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(System.Linq.Expressions.Expression{System.Func{{TEntity},System.Boolean}})
   - Cqrs.DataStores.IDataStore{`0}.Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
   - Cqrs.DataStores.IDataStore{`0}.Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
-  - Cqrs.DataStores.IDataStore{`0}.Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(System.Linq.Expressions.Expression{System.Func{{TEntity},System.Boolean}})
   nameWithType.vb: SqlDataStore(Of TEntity, TDbEntity)
   modifiers.csharp:
   - public
@@ -378,7 +377,7 @@ items:
   assemblies:
   - Cqrs.Sql
   namespace: Cqrs.Sql.DataStores
-  summary: "\nAdd the provided <span class=\"paramref\">data</span> to the data store and persist the change.\n"
+  summary: "\nAdd the provided <code data-dev-comment-type=\"paramref\">data</code> to the data store and persist the change.\n"
   example: []
   syntax:
     content: public void Add(TEntity data)
@@ -417,7 +416,7 @@ items:
   assemblies:
   - Cqrs.Sql
   namespace: Cqrs.Sql.DataStores
-  summary: "\nAdd the provided <span class=\"paramref\">data</span> to the data store and persist the change.\n"
+  summary: "\nAdd the provided <code data-dev-comment-type=\"paramref\">data</code> to the data store and persist the change.\n"
   example: []
   syntax:
     content: public void Add(IEnumerable<TEntity> data)
@@ -457,7 +456,7 @@ items:
   assemblies:
   - Cqrs.Sql
   namespace: Cqrs.Sql.DataStores
-  summary: "\nWill NOT mark the <span class=\"paramref\">data</span> as logically (or soft) deleted. This will destroy and delete the row in the SQL Server.\n"
+  summary: "\nWill NOT mark the <code data-dev-comment-type=\"paramref\">data</code> as logically (or soft) deleted. This will destroy and delete the row in the SQL Server.\n"
   example: []
   syntax:
     content: public void Remove(TEntity data)
@@ -496,7 +495,7 @@ items:
   assemblies:
   - Cqrs.Sql
   namespace: Cqrs.Sql.DataStores
-  summary: "\nRemove the provided <span class=\"paramref\">data</span> (normally by <xref href=\"Cqrs.Entities.IEntity.Rsn\" data-throw-if-not-resolved=\"false\"></xref>) from the data store and persist the change.\n"
+  summary: "\nRemove the provided <code data-dev-comment-type=\"paramref\">data</code> (normally by <xref href=\"Cqrs.Entities.IEntity.Rsn\" data-throw-if-not-resolved=\"false\"></xref>) from the data store and persist the change.\n"
   example: []
   syntax:
     content: public void Destroy(TEntity data)
@@ -571,7 +570,7 @@ items:
   assemblies:
   - Cqrs.Sql
   namespace: Cqrs.Sql.DataStores
-  summary: "\nUpdate the provided <span class=\"paramref\">data</span> in the data store and persist the change.\n"
+  summary: "\nUpdate the provided <code data-dev-comment-type=\"paramref\">data</code> in the data store and persist the change.\n"
   example: []
   syntax:
     content: public void Update(TEntity data)
@@ -1140,90 +1139,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.DataStores.IDataStore{`0}.Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
-  commentId: M:Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(Cqrs.DataStores.IDataStore{``0},System.String)
-  parent: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions
-  definition: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(Cqrs.DataStores.IDataStore{``0},System.String)
-  name: GetByName<TData>(String)
-  nameWithType: BlobStorageStoreExtensions.GetByName<TData>(String)
-  fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName<TData>(System.String)
-  nameWithType.vb: BlobStorageStoreExtensions.GetByName(Of TData)(String)
-  fullName.vb: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName(Of TData)(System.String)
-  name.vb: GetByName(Of TData)(String)
-  spec.csharp:
-  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
-    name: GetByName<TData>
-    nameWithType: BlobStorageStoreExtensions.GetByName<TData>
-    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName<TData>
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.String
-    name: String
-    nameWithType: String
-    fullName: System.String
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
-    name: GetByName(Of TData)
-    nameWithType: BlobStorageStoreExtensions.GetByName(Of TData)
-    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName(Of TData)
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.String
-    name: String
-    nameWithType: String
-    fullName: System.String
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.DataStores.IDataStore{`0}.Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
-  commentId: M:Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(Cqrs.DataStores.IDataStore{``0},System.String)
-  parent: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions
-  definition: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(Cqrs.DataStores.IDataStore{``0},System.String)
-  name: GetByFolder<TData>(String)
-  nameWithType: BlobStorageStoreExtensions.GetByFolder<TData>(String)
-  fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder<TData>(System.String)
-  nameWithType.vb: BlobStorageStoreExtensions.GetByFolder(Of TData)(String)
-  fullName.vb: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder(Of TData)(System.String)
-  name.vb: GetByFolder(Of TData)(String)
-  spec.csharp:
-  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
-    name: GetByFolder<TData>
-    nameWithType: BlobStorageStoreExtensions.GetByFolder<TData>
-    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder<TData>
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.String
-    name: String
-    nameWithType: String
-    fullName: System.String
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
-    name: GetByFolder(Of TData)
-    nameWithType: BlobStorageStoreExtensions.GetByFolder(Of TData)
-    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder(Of TData)
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.String
-    name: String
-    nameWithType: String
-    fullName: System.String
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.DataStores.IDataStore{`0}.Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(System.Linq.Expressions.Expression{System.Func{{TEntity},System.Boolean}})
   commentId: M:Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
   parent: Cqrs.Sql.DataStores.SqlDataStoreExtensions
@@ -1319,6 +1234,90 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.DataStores.IDataStore{`0}.Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
+  commentId: M:Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(Cqrs.DataStores.IDataStore{``0},System.String)
+  parent: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions
+  definition: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(Cqrs.DataStores.IDataStore{``0},System.String)
+  name: GetByName<TData>(String)
+  nameWithType: BlobStorageStoreExtensions.GetByName<TData>(String)
+  fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName<TData>(System.String)
+  nameWithType.vb: BlobStorageStoreExtensions.GetByName(Of TData)(String)
+  fullName.vb: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName(Of TData)(System.String)
+  name.vb: GetByName(Of TData)(String)
+  spec.csharp:
+  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
+    name: GetByName<TData>
+    nameWithType: BlobStorageStoreExtensions.GetByName<TData>
+    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName<TData>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
+    name: GetByName(Of TData)
+    nameWithType: BlobStorageStoreExtensions.GetByName(Of TData)
+    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName(Of TData)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.DataStores.IDataStore{`0}.Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
+  commentId: M:Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(Cqrs.DataStores.IDataStore{``0},System.String)
+  parent: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions
+  definition: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(Cqrs.DataStores.IDataStore{``0},System.String)
+  name: GetByFolder<TData>(String)
+  nameWithType: BlobStorageStoreExtensions.GetByFolder<TData>(String)
+  fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder<TData>(System.String)
+  nameWithType.vb: BlobStorageStoreExtensions.GetByFolder(Of TData)(String)
+  fullName.vb: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder(Of TData)(System.String)
+  name.vb: GetByFolder(Of TData)(String)
+  spec.csharp:
+  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
+    name: GetByFolder<TData>
+    nameWithType: BlobStorageStoreExtensions.GetByFolder<TData>
+    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder<TData>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
+    name: GetByFolder(Of TData)
+    nameWithType: BlobStorageStoreExtensions.GetByFolder(Of TData)
+    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder(Of TData)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
   - name: )
     nameWithType: )
     fullName: )
@@ -1469,6 +1468,142 @@ references:
   name: System.Collections
   nameWithType: System.Collections
   fullName: System.Collections
+- uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
+  commentId: M:Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
+  isExternal: true
+  name: Where<TEntity, TDbEntity>(IDataStore<TEntity>, Expression<Func<TEntity, Boolean>>)
+  nameWithType: SqlDataStoreExtensions.Where<TEntity, TDbEntity>(IDataStore<TEntity>, Expression<Func<TEntity, Boolean>>)
+  fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where<TEntity, TDbEntity>(Cqrs.DataStores.IDataStore<TEntity>, System.Linq.Expressions.Expression<System.Func<TEntity, System.Boolean>>)
+  nameWithType.vb: SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)(IDataStore(Of TEntity), Expression(Of Func(Of TEntity, Boolean)))
+  fullName.vb: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)(Cqrs.DataStores.IDataStore(Of TEntity), System.Linq.Expressions.Expression(Of System.Func(Of TEntity, System.Boolean)))
+  name.vb: Where(Of TEntity, TDbEntity)(IDataStore(Of TEntity), Expression(Of Func(Of TEntity, Boolean)))
+  spec.csharp:
+  - uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
+    name: Where<TEntity, TDbEntity>
+    nameWithType: SqlDataStoreExtensions.Where<TEntity, TDbEntity>
+    fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where<TEntity, TDbEntity>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    nameWithType: Expression
+    fullName: System.Linq.Expressions.Expression
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
+    name: Where(Of TEntity, TDbEntity)
+    nameWithType: SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)
+    fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    nameWithType: Expression
+    fullName: System.Linq.Expressions.Expression
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions
+  commentId: T:Cqrs.Sql.DataStores.SqlDataStoreExtensions
+  parent: Cqrs.Sql.DataStores
+  isExternal: false
+  name: SqlDataStoreExtensions
+  nameWithType: SqlDataStoreExtensions
+  fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions
 - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(Cqrs.DataStores.IDataStore{``0},System.String)
   commentId: M:Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(Cqrs.DataStores.IDataStore{``0},System.String)
   isExternal: true
@@ -1622,142 +1757,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
-  commentId: M:Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
-  isExternal: true
-  name: Where<TEntity, TDbEntity>(IDataStore<TEntity>, Expression<Func<TEntity, Boolean>>)
-  nameWithType: SqlDataStoreExtensions.Where<TEntity, TDbEntity>(IDataStore<TEntity>, Expression<Func<TEntity, Boolean>>)
-  fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where<TEntity, TDbEntity>(Cqrs.DataStores.IDataStore<TEntity>, System.Linq.Expressions.Expression<System.Func<TEntity, System.Boolean>>)
-  nameWithType.vb: SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)(IDataStore(Of TEntity), Expression(Of Func(Of TEntity, Boolean)))
-  fullName.vb: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)(Cqrs.DataStores.IDataStore(Of TEntity), System.Linq.Expressions.Expression(Of System.Func(Of TEntity, System.Boolean)))
-  name.vb: Where(Of TEntity, TDbEntity)(IDataStore(Of TEntity), Expression(Of Func(Of TEntity, Boolean)))
-  spec.csharp:
-  - uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
-    name: Where<TEntity, TDbEntity>
-    nameWithType: SqlDataStoreExtensions.Where<TEntity, TDbEntity>
-    fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where<TEntity, TDbEntity>
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: Cqrs.DataStores.IDataStore`1
-    name: IDataStore
-    nameWithType: IDataStore
-    fullName: Cqrs.DataStores.IDataStore
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TEntity
-    nameWithType: TEntity
-    fullName: TEntity
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    nameWithType: Expression
-    fullName: System.Linq.Expressions.Expression
-    isExternal: true
-  - name: <
-    nameWithType: <
-    fullName: <
-  - uid: System.Func`2
-    name: Func
-    nameWithType: Func
-    fullName: System.Func
-    isExternal: true
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TEntity
-    nameWithType: TEntity
-    fullName: TEntity
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Boolean
-    name: Boolean
-    nameWithType: Boolean
-    fullName: System.Boolean
-    isExternal: true
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
-    name: Where(Of TEntity, TDbEntity)
-    nameWithType: SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)
-    fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: Cqrs.DataStores.IDataStore`1
-    name: IDataStore
-    nameWithType: IDataStore
-    fullName: Cqrs.DataStores.IDataStore
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TEntity
-    nameWithType: TEntity
-    fullName: TEntity
-  - name: )
-    nameWithType: )
-    fullName: )
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    nameWithType: Expression
-    fullName: System.Linq.Expressions.Expression
-    isExternal: true
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - uid: System.Func`2
-    name: Func
-    nameWithType: Func
-    fullName: System.Func
-    isExternal: true
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TEntity
-    nameWithType: TEntity
-    fullName: TEntity
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Boolean
-    name: Boolean
-    nameWithType: Boolean
-    fullName: System.Boolean
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  - name: )
-    nameWithType: )
-    fullName: )
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions
-  commentId: T:Cqrs.Sql.DataStores.SqlDataStoreExtensions
-  parent: Cqrs.Sql.DataStores
-  isExternal: false
-  name: SqlDataStoreExtensions
-  nameWithType: SqlDataStoreExtensions
-  fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions
 - uid: Cqrs.Azure.BlobStorage
   commentId: N:Cqrs.Azure.BlobStorage
   isExternal: false

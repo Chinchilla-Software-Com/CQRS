@@ -19,7 +19,9 @@ using cdmdotnet.StateManagement;
 using cdmdotnet.StateManagement.Threaded;
 using cdmdotnet.StateManagement.Web;
 using Cqrs.Configuration;
+using Cqrs.Events;
 using Cqrs.Repositories.Queries;
+using Cqrs.Snapshots;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Configuration
@@ -48,11 +50,29 @@ namespace Cqrs.Ninject.Configuration
 		protected bool RegisterDefaultConfigurationManager { get; private set; }
 
 		/// <summary>
+		/// Indicates that the <see cref="ISnapshotStrategy{TAuthenticationToken}"/> should be registered automatically.
+		/// </summary>
+		protected bool RegisterDefaultSnapshotStrategy { get; private set; }
+
+		/// <summary>
+		/// Indicates that the <see cref="ISnapshotAggregateRepository{TAuthenticationToken}"/> should be registered automatically.
+		/// </summary>
+		protected bool RegisterDefaultSnapshotAggregateRepository { get; private set; }
+
+		/// <summary>
+		/// Indicates that the <see cref="ISnapshotBuilder"/> should be registered automatically.
+		/// </summary>
+		protected bool RegisterDefaultSnapshotBuilder { get; private set; }
+
+		/// <summary>
 		/// Instantiate a new instance of the <see cref="CqrsModule{TAuthenticationToken,TAuthenticationTokenHelper}"/> that uses the provided <paramref name="configurationManager"/>
 		/// to read the following configuration settings:
 		/// "Cqrs.SetupForWeb": If set to true the system will be configured for hosting in IIS or some other web-server that provides access to System.Web.HttpContext.Current.
 		/// "Cqrs.SetupForSqlLogging": If set to true the <see cref="SqlLogger"/> will be bootstrapped by default, otherwise the <see cref="ConsoleLogger"/> will be bootstrapped by default.
 		/// "Cqrs.RegisterDefaultConfigurationManager": If set true the <see cref="ConfigurationManager"/> will be registered. If you want to use the Azure one leave this as false (the default) and register it yourself.
+		/// "Cqrs.RegisterDefaultSnapshotStrategy": If set true the <see cref="DefaultSnapshotStrategy{TAuthenticationToken}"/> will be registered.
+		/// "Cqrs.RegisterDefaultSnapshotAggregateRepository": If set true the <see cref="SnapshotRepository{TAuthenticationToken}"/> will be registered.
+		/// "Cqrs.RegisterDefaultSnapshotBuilder": If set true the <see cref="DefaultSnapshotBuilder"/> will be registered.
 		/// </summary>
 		/// <param name="configurationManager">The <see cref="IConfigurationManager"/> to use, if one isn't provided then <see cref="ConfigurationManager"/> is instantiate, used and then disposed.</param>
 		public CqrsModule(IConfigurationManager configurationManager = null)
@@ -67,6 +87,21 @@ namespace Cqrs.Ninject.Configuration
 			bool registerDefaultConfigurationManager;
 			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultConfigurationManager", out registerDefaultConfigurationManager))
 				RegisterDefaultConfigurationManager = registerDefaultConfigurationManager;
+			bool registerDefaultSnapshotAggregateRepository;
+			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultSnapshotAggregateRepository", out registerDefaultSnapshotAggregateRepository))
+				RegisterDefaultSnapshotAggregateRepository = registerDefaultSnapshotAggregateRepository;
+			else
+				RegisterDefaultSnapshotAggregateRepository = true;
+			bool registerDefaultSnapshotStrategy;
+			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultSnapshotStrategy", out registerDefaultSnapshotStrategy))
+				RegisterDefaultSnapshotStrategy = registerDefaultSnapshotStrategy;
+			else
+				RegisterDefaultSnapshotStrategy = true;
+			bool registerDefaultSnapshotBuilder;
+			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultSnapshotBuilder", out registerDefaultSnapshotBuilder))
+				RegisterDefaultSnapshotBuilder = registerDefaultSnapshotBuilder;
+			else
+				RegisterDefaultSnapshotBuilder = true;
 		}
 
 		/// <summary>
@@ -75,11 +110,17 @@ namespace Cqrs.Ninject.Configuration
 		/// <param name="setupForWeb">Set this to true if you will host this in IIS or some other web-server that provides access to System.Web.HttpContext.Current.</param>
 		/// <param name="setupForSqlLogging">Set this to true to use <see cref="SqlLogger"/> otherwise the <see cref="ConsoleLogger"/> will be bootstrapped by default.</param>
 		/// <param name="registerDefaultConfigurationManager">Set this to true to use <see cref="ConfigurationManager"/>. If you want to use the Azure one leave this as false (the default) and register it yourself.</param>
-		public CqrsModule(bool setupForWeb, bool setupForSqlLogging, bool registerDefaultConfigurationManager = false)
+		/// <param name="registerDefaultSnapshotAggregateRepository">If set true the <see cref="SnapshotRepository{TAuthenticationToken}"/> will be registered.</param>
+		/// <param name="registerDefaultSnapshotStrategy">If set true the <see cref="DefaultSnapshotStrategy{TAuthenticationToken}"/> will be registered.</param>
+		/// <param name="registerDefaultSnapshotBuilder">If set true the <see cref="DefaultSnapshotBuilder"/> will be registered.</param>
+		public CqrsModule(bool setupForWeb, bool setupForSqlLogging, bool registerDefaultConfigurationManager = false, bool registerDefaultSnapshotAggregateRepository = true, bool registerDefaultSnapshotStrategy = true, bool registerDefaultSnapshotBuilder = true)
 		{
 			SetupForWeb = setupForWeb;
 			SetupForSqlLogging = setupForSqlLogging;
 			RegisterDefaultConfigurationManager = registerDefaultConfigurationManager;
+			RegisterDefaultSnapshotAggregateRepository = registerDefaultSnapshotAggregateRepository;
+			RegisterDefaultSnapshotStrategy = registerDefaultSnapshotStrategy;
+			RegisterDefaultSnapshotBuilder = registerDefaultSnapshotBuilder;
 		}
 
 		#region Overrides of NinjectModule
@@ -108,6 +149,9 @@ namespace Cqrs.Ninject.Configuration
 		{
 			Bind<IQueryFactory>()
 				.To<QueryFactory>()
+				.InSingletonScope();
+			Bind<IHashAlgorithmFactory>()
+				.To<BuiltInHashAlgorithmFactory>()
 				.InSingletonScope();
 		}
 
@@ -233,6 +277,12 @@ namespace Cqrs.Ninject.Configuration
 			Bind<IAggregateRepository<TAuthenticationToken>>()
 				.To<AggregateRepository<TAuthenticationToken>>()
 				.InSingletonScope();
+
+			if (RegisterDefaultSnapshotAggregateRepository)
+				Bind<ISnapshotAggregateRepository<TAuthenticationToken>>()
+					.To<SnapshotRepository<TAuthenticationToken>>()
+					.InSingletonScope();
+
 			Bind<ISagaRepository<TAuthenticationToken>>()
 				.To<SagaRepository<TAuthenticationToken>>()
 				.InSingletonScope();
@@ -255,6 +305,16 @@ namespace Cqrs.Ninject.Configuration
 			if (RegisterDefaultConfigurationManager)
 				Bind<IConfigurationManager>()
 					.To<ConfigurationManager>()
+					.InSingletonScope();
+
+			if (RegisterDefaultSnapshotStrategy)
+				Bind<ISnapshotStrategy<TAuthenticationToken>>()
+					.To<DefaultSnapshotStrategy<TAuthenticationToken>>()
+					.InSingletonScope();
+
+			if (RegisterDefaultSnapshotBuilder)
+				Bind<ISnapshotBuilder>()
+					.To<DefaultSnapshotBuilder>()
 					.InSingletonScope();
 		}
 	}

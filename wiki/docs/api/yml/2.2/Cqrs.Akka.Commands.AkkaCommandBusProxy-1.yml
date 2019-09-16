@@ -11,8 +11,6 @@ items:
   - Cqrs.Akka.Commands.AkkaCommandBusProxy`1.CorrelationIdHelper
   - Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Publish``1(``0)
   - Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Publish``1(System.Collections.Generic.IEnumerable{``0})
-  - Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Send``1(``0)
-  - Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Send``1(System.Collections.Generic.IEnumerable{``0})
   langs:
   - csharp
   - vb
@@ -40,7 +38,6 @@ items:
       description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the authentication token.
     content.vb: >-
       Public Class AkkaCommandBusProxy(Of TAuthenticationToken)
-
           Implements IAkkaCommandPublisherProxy(Of TAuthenticationToken), ICommandPublisher(Of TAuthenticationToken)
   inheritance:
   - System.Object
@@ -82,10 +79,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBusProxy.cs
-    startLine: 26
+    startLine: 29
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Akka.Commands.AkkaCommandBusProxy%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public AkkaCommandBusProxy(IDependencyResolver dependencyResolver, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
     parameters:
@@ -122,10 +121,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CommandHandlerResolver
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBusProxy.cs
-    startLine: 33
+    startLine: 39
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets the <xref href=\"Akka.Actor.IActorRef\" data-throw-if-not-resolved=\"false\"></xref> that we send/proxy the command to.\n"
+  example: []
   syntax:
     content: protected IActorRef CommandHandlerResolver { get; }
     parameters: []
@@ -159,10 +160,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CorrelationIdHelper
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBusProxy.cs
-    startLine: 35
+    startLine: 44
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets or sets the <xref href=\"cdmdotnet.Logging.ICorrelationIdHelper\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected ICorrelationIdHelper CorrelationIdHelper { get; }
     parameters: []
@@ -196,10 +199,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AuthenticationTokenHelper
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBusProxy.cs
-    startLine: 37
+    startLine: 49
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets or sets the <xref href=\"Cqrs.Authentication.IAuthenticationTokenHelper%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; }
     parameters: []
@@ -233,10 +238,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Publish
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBusProxy.cs
-    startLine: 41
+    startLine: 56
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> on the command bus.\n"
+  example: []
   syntax:
     content: 'public virtual void Publish<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
@@ -257,46 +264,6 @@ items:
   - Overridable
   fullName.vb: Cqrs.Akka.Commands.AkkaCommandBusProxy(Of TAuthenticationToken).Publish(Of TCommand)(TCommand)
   name.vb: Publish(Of TCommand)(TCommand)
-- uid: Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Send``1(``0)
-  commentId: M:Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Send``1(``0)
-  id: Send``1(``0)
-  parent: Cqrs.Akka.Commands.AkkaCommandBusProxy`1
-  langs:
-  - csharp
-  - vb
-  name: Send<TCommand>(TCommand)
-  nameWithType: AkkaCommandBusProxy<TAuthenticationToken>.Send<TCommand>(TCommand)
-  fullName: Cqrs.Akka.Commands.AkkaCommandBusProxy<TAuthenticationToken>.Send<TCommand>(TCommand)
-  type: Method
-  source:
-    remote:
-      path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBusProxy.cs
-      branch: features/documentation
-      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
-    id: Send
-    path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBusProxy.cs
-    startLine: 52
-  assemblies:
-  - Cqrs.Akka
-  namespace: Cqrs.Akka.Commands
-  syntax:
-    content: 'public virtual void Send<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
-    parameters:
-    - id: command
-      type: '{TCommand}'
-    typeParameters:
-    - id: TCommand
-    content.vb: Public Overridable Sub Send(Of TCommand As ICommand(Of TAuthenticationToken))(command As TCommand)
-  overload: Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Send*
-  nameWithType.vb: AkkaCommandBusProxy(Of TAuthenticationToken).Send(Of TCommand)(TCommand)
-  modifiers.csharp:
-  - public
-  - virtual
-  modifiers.vb:
-  - Public
-  - Overridable
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBusProxy(Of TAuthenticationToken).Send(Of TCommand)(TCommand)
-  name.vb: Send(Of TCommand)(TCommand)
 - uid: Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Publish``1(System.Collections.Generic.IEnumerable{``0})
   commentId: M:Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Publish``1(System.Collections.Generic.IEnumerable{``0})
   id: Publish``1(System.Collections.Generic.IEnumerable{``0})
@@ -315,10 +282,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Publish
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBusProxy.cs
-    startLine: 58
+    startLine: 70
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">commands</code> on the command bus.\n"
+  example: []
   syntax:
     content: 'public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
@@ -339,46 +308,6 @@ items:
   - Overridable
   fullName.vb: Cqrs.Akka.Commands.AkkaCommandBusProxy(Of TAuthenticationToken).Publish(Of TCommand)(System.Collections.Generic.IEnumerable(Of TCommand))
   name.vb: Publish(Of TCommand)(IEnumerable(Of TCommand))
-- uid: Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Send``1(System.Collections.Generic.IEnumerable{``0})
-  commentId: M:Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Send``1(System.Collections.Generic.IEnumerable{``0})
-  id: Send``1(System.Collections.Generic.IEnumerable{``0})
-  parent: Cqrs.Akka.Commands.AkkaCommandBusProxy`1
-  langs:
-  - csharp
-  - vb
-  name: Send<TCommand>(IEnumerable<TCommand>)
-  nameWithType: AkkaCommandBusProxy<TAuthenticationToken>.Send<TCommand>(IEnumerable<TCommand>)
-  fullName: Cqrs.Akka.Commands.AkkaCommandBusProxy<TAuthenticationToken>.Send<TCommand>(System.Collections.Generic.IEnumerable<TCommand>)
-  type: Method
-  source:
-    remote:
-      path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBusProxy.cs
-      branch: features/documentation
-      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
-    id: Send
-    path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBusProxy.cs
-    startLine: 74
-  assemblies:
-  - Cqrs.Akka
-  namespace: Cqrs.Akka.Commands
-  syntax:
-    content: 'public virtual void Send<TCommand>(IEnumerable<TCommand> commands)where TCommand : ICommand<TAuthenticationToken>'
-    parameters:
-    - id: commands
-      type: System.Collections.Generic.IEnumerable{{TCommand}}
-    typeParameters:
-    - id: TCommand
-    content.vb: Public Overridable Sub Send(Of TCommand As ICommand(Of TAuthenticationToken))(commands As IEnumerable(Of TCommand))
-  overload: Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Send*
-  nameWithType.vb: AkkaCommandBusProxy(Of TAuthenticationToken).Send(Of TCommand)(IEnumerable(Of TCommand))
-  modifiers.csharp:
-  - public
-  - virtual
-  modifiers.vb:
-  - Public
-  - Overridable
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBusProxy(Of TAuthenticationToken).Send(Of TCommand)(System.Collections.Generic.IEnumerable(Of TCommand))
-  name.vb: Send(Of TCommand)(IEnumerable(Of TCommand))
 references:
 - uid: Cqrs.Commands.ICommandPublisher`1
   commentId: T:Cqrs.Commands.ICommandPublisher`1
@@ -891,6 +820,43 @@ references:
   name: Cqrs.Commands
   nameWithType: Cqrs.Commands
   fullName: Cqrs.Commands
+- uid: Cqrs.Akka.Commands.AkkaCommandBusProxy`1
+  commentId: T:Cqrs.Akka.Commands.AkkaCommandBusProxy`1
+  isExternal: false
+  name: AkkaCommandBusProxy<TAuthenticationToken>
+  nameWithType: AkkaCommandBusProxy<TAuthenticationToken>
+  fullName: Cqrs.Akka.Commands.AkkaCommandBusProxy<TAuthenticationToken>
+  nameWithType.vb: AkkaCommandBusProxy(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBusProxy(Of TAuthenticationToken)
+  name.vb: AkkaCommandBusProxy(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Akka.Commands.AkkaCommandBusProxy`1
+    name: AkkaCommandBusProxy
+    nameWithType: AkkaCommandBusProxy
+    fullName: Cqrs.Akka.Commands.AkkaCommandBusProxy
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Akka.Commands.AkkaCommandBusProxy`1
+    name: AkkaCommandBusProxy
+    nameWithType: AkkaCommandBusProxy
+    fullName: Cqrs.Akka.Commands.AkkaCommandBusProxy
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Akka.Commands.AkkaCommandBusProxy`1.#ctor*
   commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBusProxy`1.#ctor
   isExternal: false
@@ -1124,14 +1090,6 @@ references:
   name: TCommand
   nameWithType: TCommand
   fullName: TCommand
-- uid: Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Send*
-  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBusProxy`1.Send
-  isExternal: false
-  name: Send
-  nameWithType: AkkaCommandBusProxy<TAuthenticationToken>.Send
-  fullName: Cqrs.Akka.Commands.AkkaCommandBusProxy<TAuthenticationToken>.Send
-  nameWithType.vb: AkkaCommandBusProxy(Of TAuthenticationToken).Send
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBusProxy(Of TAuthenticationToken).Send
 - uid: Cqrs.Commands.ICommandPublisher{{TAuthenticationToken}}.Publish``1(System.Collections.Generic.IEnumerable{{TCommand}})
   commentId: M:Cqrs.Commands.ICommandPublisher{`0}.Publish``1(System.Collections.Generic.IEnumerable{``0})
   parent: Cqrs.Commands.ICommandPublisher{{TAuthenticationToken}}

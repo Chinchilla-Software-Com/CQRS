@@ -34,19 +34,19 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: BlobStorageStore
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 20
+    startLine: 24
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nA <xref href=\"System.Collections.Generic.IEnumerable%601\" data-throw-if-not-resolved=\"false\"></xref> that uses Azure Blobl Storage for storage.\n"
+  example: []
   syntax:
     content: 'public class BlobStorageStore<TData> : StorageStore<TData, CloudBlobContainer>, IEnumerable<TData>, IEnumerable'
     typeParameters:
     - id: TData
     content.vb: >-
       Public Class BlobStorageStore(Of TData)
-
           Inherits StorageStore(Of TData, CloudBlobContainer)
-
           Implements IEnumerable(Of TData), IEnumerable
   inheritance:
   - System.Object
@@ -119,7 +119,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 28
+    startLine: 32
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -156,7 +156,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetEnumerator
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 41
+    startLine: 45
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -196,7 +196,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Expression
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 58
+    startLine: 62
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -239,7 +239,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ElementType
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 75
+    startLine: 79
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -282,7 +282,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Provider
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 92
+    startLine: 96
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -325,10 +325,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AsyncSaveData
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 103
+    startLine: 110
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nSave the provided <code data-dev-comment-type=\"paramref\">data</code> asynchronously.\n"
+  example: []
   syntax:
     content: protected virtual void AsyncSaveData<TResult>(TData data, Func<TData, CloudBlockBlob, TResult> function, Func<TData, string> customFilenameFunction = null)
     parameters:
@@ -369,10 +371,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Add
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 139
+    startLine: 149
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nAdd the provided <code data-dev-comment-type=\"paramref\">data</code> to the data store and persist the change.\n"
+  example: []
   syntax:
     content: public override void Add(TData data)
     parameters:
@@ -407,10 +411,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Destroy
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 162
+    startLine: 175
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nRemove the provided <code data-dev-comment-type=\"paramref\">data</code> (normally by <xref href=\"Cqrs.Entities.IEntity.Rsn\" data-throw-if-not-resolved=\"false\"></xref>) from the data store and persist the change.\n"
+  example: []
   syntax:
     content: public override void Destroy(TData data)
     parameters:
@@ -445,10 +451,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: RemoveAll
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 182
+    startLine: 198
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nRemove all contents (normally by use of a truncate operation) from the data store and persist the change.\n"
+  example: []
   syntax:
     content: public override void RemoveAll()
     content.vb: Public Overrides Sub RemoveAll
@@ -480,10 +488,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Update
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 188
+    startLine: 207
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nUpdate the provided <code data-dev-comment-type=\"paramref\">data</code> in the data store and persist the change.\n"
+  example: []
   syntax:
     content: public override void Update(TData data)
     parameters:
@@ -518,11 +528,11 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateSource
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 201
+    startLine: 220
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
-  summary: "\nCreates a <xref href=\"Microsoft.WindowsAzure.Storage.Blob.CloudBlobContainer\" data-throw-if-not-resolved=\"false\"></xref> with the specified name <span class=\"paramref\">containerName</span> if it doesn&apos;t already exist.\n"
+  summary: "\nCreates a <xref href=\"Microsoft.WindowsAzure.Storage.Blob.CloudBlobContainer\" data-throw-if-not-resolved=\"false\"></xref> with the specified name <code data-dev-comment-type=\"paramref\">containerName</code> if it doesn&apos;t already exist.\n"
   example: []
   syntax:
     content: protected override CloudBlobContainer CreateSource(CloudStorageAccount storageAccount, string containerName, bool isPublic = true)
@@ -567,7 +577,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: OpenStreamsForReading
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 227
+    startLine: 246
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -613,7 +623,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetBlobReference
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 253
+    startLine: 272
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -659,10 +669,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetByName
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 258
+    startLine: 280
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nGet <code data-dev-comment-type=\"typeparamref\">TData</code> by its name.\n"
+  example: []
   syntax:
     content: public virtual TData GetByName(string name)
     parameters:
@@ -698,10 +710,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetByFolder
     path: Framework/Azure/Cqrs.Azure.BlobStorage/BlobStorageStore.cs
-    startLine: 270
+    startLine: 295
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nGet all <code data-dev-comment-type=\"typeparamref\">TData</code> items in the folder.\n"
+  example: []
   syntax:
     content: public virtual IEnumerable<TData> GetByFolder(string folderName)
     parameters:
@@ -720,6 +734,45 @@ items:
   - Overridable
   fullName.vb: Cqrs.Azure.BlobStorage.BlobStorageStore(Of TData).GetByFolder(System.String)
 references:
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.BlobStorage
   commentId: N:Cqrs.Azure.BlobStorage
   isExternal: false
@@ -1942,45 +1995,6 @@ references:
   - name: TSource
     nameWithType: TSource
     fullName: TSource
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Collections.Generic.IEnumerable`1
-  commentId: T:System.Collections.Generic.IEnumerable`1
-  isExternal: true
-  name: IEnumerable<T>
-  nameWithType: IEnumerable<T>
-  fullName: System.Collections.Generic.IEnumerable<T>
-  nameWithType.vb: IEnumerable(Of T)
-  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
-  name.vb: IEnumerable(Of T)
-  spec.csharp:
-  - uid: System.Collections.Generic.IEnumerable`1
-    name: IEnumerable
-    nameWithType: IEnumerable
-    fullName: System.Collections.Generic.IEnumerable
-    isExternal: true
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: T
-    nameWithType: T
-    fullName: T
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: System.Collections.Generic.IEnumerable`1
-    name: IEnumerable
-    nameWithType: IEnumerable
-    fullName: System.Collections.Generic.IEnumerable
-    isExternal: true
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: T
-    nameWithType: T
-    fullName: T
   - name: )
     nameWithType: )
     fullName: )
@@ -3220,6 +3234,13 @@ references:
   fullName: Cqrs.Azure.BlobStorage.BlobStorageStore<TData>.Add
   nameWithType.vb: BlobStorageStore(Of TData).Add
   fullName.vb: Cqrs.Azure.BlobStorage.BlobStorageStore(Of TData).Add
+- uid: Cqrs.Entities.IEntity.Rsn
+  commentId: P:Cqrs.Entities.IEntity.Rsn
+  parent: Cqrs.Entities.IEntity
+  isExternal: false
+  name: Rsn
+  nameWithType: IEntity.Rsn
+  fullName: Cqrs.Entities.IEntity.Rsn
 - uid: Cqrs.Azure.BlobStorage.BlobStorageStore`1.Destroy*
   commentId: Overload:Cqrs.Azure.BlobStorage.BlobStorageStore`1.Destroy
   isExternal: false
@@ -3228,6 +3249,19 @@ references:
   fullName: Cqrs.Azure.BlobStorage.BlobStorageStore<TData>.Destroy
   nameWithType.vb: BlobStorageStore(Of TData).Destroy
   fullName.vb: Cqrs.Azure.BlobStorage.BlobStorageStore(Of TData).Destroy
+- uid: Cqrs.Entities.IEntity
+  commentId: T:Cqrs.Entities.IEntity
+  parent: Cqrs.Entities
+  isExternal: false
+  name: IEntity
+  nameWithType: IEntity
+  fullName: Cqrs.Entities.IEntity
+- uid: Cqrs.Entities
+  commentId: N:Cqrs.Entities
+  isExternal: false
+  name: Cqrs.Entities
+  nameWithType: Cqrs.Entities
+  fullName: Cqrs.Entities
 - uid: Cqrs.Azure.BlobStorage.BlobStorageStore`1.RemoveAll*
   commentId: Overload:Cqrs.Azure.BlobStorage.BlobStorageStore`1.RemoveAll
   isExternal: false

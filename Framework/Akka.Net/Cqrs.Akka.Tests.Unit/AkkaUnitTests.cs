@@ -12,6 +12,7 @@ using System.Threading;
 using cdmdotnet.Logging;
 using cdmdotnet.Logging.Configuration;
 using cdmdotnet.StateManagement;
+using cdmdotnet.StateManagement.Threaded;
 using cdmdotnet.StateManagement.Web;
 using Cqrs.Akka.Commands;
 using Cqrs.Akka.Domain;
@@ -59,7 +60,7 @@ namespace Cqrs.Akka.Tests.Unit
 			correlationIdHelper.SetCorrelationId(correlationId);
 			ILogger logger = new ConsoleLogger(new LoggerSettings(), correlationIdHelper);
 			IConfigurationManager configurationManager = new ConfigurationManager();
-			IBusHelper busHelper = new BusHelper(configurationManager);
+			IBusHelper busHelper = new BusHelper(configurationManager, new ThreadedContextItemCollectionFactory());
 
 			var kernel = new StandardKernel();
 			kernel.Bind<ILogger>().ToConstant(logger);
@@ -124,7 +125,7 @@ namespace Cqrs.Akka.Tests.Unit
 			FinalCommandReached.Add(correlationId, false);
 
 			// Act
-			commandBusProxy.Send(command);
+			commandBusProxy.Publish(command);
 
 			// Assert
 			SpinWait.SpinUntil

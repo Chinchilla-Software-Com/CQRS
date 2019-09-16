@@ -48,20 +48,22 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TableStorageStore
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 20
+    startLine: 26
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nA <xref href=\"Cqrs.DataStores.IDataStore%601\" data-throw-if-not-resolved=\"false\"></xref> that uses Azure Storage for storage.\n"
+  example: []
   syntax:
     content: 'public abstract class TableStorageStore<TData, TCollectionItemData> : StorageStore<TData, CloudTable>, IEnumerable<TData>, IDataStore<TCollectionItemData>, IOrderedQueryable<TCollectionItemData>, IQueryable<TCollectionItemData>, IEnumerable<TCollectionItemData>, IOrderedQueryable, IQueryable, IEnumerable, IDisposable where TData : TableEntity, new ()'
     typeParameters:
     - id: TData
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of <xref href="Microsoft.WindowsAzure.Storage.Table.TableEntity" data-throw-if-not-resolved="false"></xref> Azure Table Storage will contain.
     - id: TCollectionItemData
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of <xref href="Cqrs.Entities.IEntity" data-throw-if-not-resolved="false"></xref> the <xref href="Cqrs.DataStores.IDataStore%601" data-throw-if-not-resolved="false"></xref> will contain.
     content.vb: >-
       Public MustInherit Class TableStorageStore(Of TData As {TableEntity, New}, TCollectionItemData)
-
           Inherits StorageStore(Of TData, CloudTable)
-
           Implements IEnumerable(Of TData), IDataStore(Of TCollectionItemData), IOrderedQueryable(Of TCollectionItemData), IQueryable(Of TCollectionItemData), IEnumerable(Of TCollectionItemData), IOrderedQueryable, IQueryable, IEnumerable, IDisposable
   inheritance:
   - System.Object
@@ -115,9 +117,9 @@ items:
   - System.Object.GetType
   - System.Object.MemberwiseClone
   extensionMethods:
+  - Cqrs.DataStores.IDataStore{`1}.Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(System.Linq.Expressions.Expression{System.Func{{TCollectionItemData},System.Boolean}})
   - Cqrs.DataStores.IDataStore{`1}.Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
   - Cqrs.DataStores.IDataStore{`1}.Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
-  - Cqrs.DataStores.IDataStore{`1}.Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(System.Linq.Expressions.Expression{System.Func{{TCollectionItemData},System.Boolean}})
   nameWithType.vb: TableStorageStore(Of TData, TCollectionItemData)
   modifiers.csharp:
   - public
@@ -147,10 +149,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Collection
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 25
+    startLine: 34
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nGets or set the <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableQuery\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public TableQuery<TData> Collection { get; }
     parameters: []
@@ -184,7 +188,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 30
+    startLine: 39
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -221,10 +225,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Initialise
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 37
+    startLine: 49
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nInitialises the <xref href=\"Cqrs.Azure.BlobStorage.StorageStore%602\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected override void Initialise(IStorageStoreConnectionStringFactory tableStorageDataStoreConnectionStringFactory)
     parameters:
@@ -260,7 +266,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: System.Collections.Generic.IEnumerable<TCollectionItemData>.GetEnumerator
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 53
+    startLine: 65
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -296,7 +302,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetEnumerator
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 64
+    startLine: 76
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -336,7 +342,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Expression
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 79
+    startLine: 91
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -381,7 +387,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ElementType
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 93
+    startLine: 105
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -426,7 +432,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Provider
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 107
+    startLine: 119
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
@@ -471,10 +477,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AsyncSaveData
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 117
+    startLine: 132
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nSave the provided <code data-dev-comment-type=\"paramref\">data</code> asynchronously.\n"
+  example: []
   syntax:
     content: protected virtual void AsyncSaveData<TSaveData, TResult>(TSaveData data, Func<TSaveData, CloudTable, TResult> function, Func<TSaveData, string> customFilenameFunction = null)
     parameters:
@@ -516,15 +524,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateTableEntity
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 142
+    startLine: 161
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nCreates a new instance of <xref href=\"Microsoft.WindowsAzure.Storage.Table.ITableEntity\" data-throw-if-not-resolved=\"false\"></xref> populating it with the provided <code data-dev-comment-type=\"paramref\">data</code>.\n"
+  example: []
   syntax:
     content: protected abstract ITableEntity CreateTableEntity(TCollectionItemData data)
     parameters:
     - id: data
       type: '{TCollectionItemData}'
+      description: The data to store.
     return:
       type: Microsoft.WindowsAzure.Storage.Table.ITableEntity
     content.vb: Protected MustOverride Function CreateTableEntity(data As TCollectionItemData) As ITableEntity
@@ -555,10 +566,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Add
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 146
+    startLine: 168
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nAdd the provided <code data-dev-comment-type=\"paramref\">data</code> to the data store and persist the change.\n"
+  example: []
   syntax:
     content: public override void Add(TData data)
     parameters:
@@ -593,10 +606,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Add
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 151
+    startLine: 176
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nAdd the provided <code data-dev-comment-type=\"paramref\">data</code> to the data store and persist the change.\n"
+  example: []
   syntax:
     content: public virtual void Add(ITableEntity data)
     parameters:
@@ -630,10 +645,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Add
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 183
+    startLine: 211
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nAdd the provided <code data-dev-comment-type=\"paramref\">data</code> to the data store and persist the change.\n"
+  example: []
   syntax:
     content: public override void Add(IEnumerable<TData> data)
     parameters:
@@ -669,10 +686,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Add
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 188
+    startLine: 219
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nAdd the provided <code data-dev-comment-type=\"paramref\">data</code> to the data store and persist the change.\n"
+  example: []
   syntax:
     content: public virtual void Add(IEnumerable<ITableEntity> data)
     parameters:
@@ -707,10 +726,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Destroy
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 215
+    startLine: 249
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nRemove the provided <code data-dev-comment-type=\"paramref\">data</code> (normally by <xref href=\"Cqrs.Entities.IEntity.Rsn\" data-throw-if-not-resolved=\"false\"></xref>) from the data store and persist the change.\n"
+  example: []
   syntax:
     content: public override void Destroy(TData data)
     parameters:
@@ -745,10 +766,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Add
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 277
+    startLine: 314
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nAdd the provided <code data-dev-comment-type=\"paramref\">data</code> to the data store and persist the change.\n"
+  example: []
   syntax:
     content: public virtual void Add(TCollectionItemData data)
     parameters:
@@ -784,10 +807,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Add
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 283
+    startLine: 323
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nAdd the provided <code data-dev-comment-type=\"paramref\">data</code> to the data store and persist the change.\n"
+  example: []
   syntax:
     content: public virtual void Add(IEnumerable<TCollectionItemData> data)
     parameters:
@@ -824,11 +849,11 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Remove
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 292
+    startLine: 332
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
-  summary: "\nWill mark the <span class=\"paramref\">data</span> as logically (or soft).\n"
+  summary: "\nWill mark the <code data-dev-comment-type=\"paramref\">data</code> as logically (or soft).\n"
   example: []
   syntax:
     content: public abstract void Remove(TCollectionItemData data)
@@ -865,10 +890,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Destroy
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 294
+    startLine: 337
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nRemove the provided <code data-dev-comment-type=\"paramref\">data</code> (normally by <xref href=\"Cqrs.Entities.IEntity.Rsn\" data-throw-if-not-resolved=\"false\"></xref>) from the data store and persist the change.\n"
+  example: []
   syntax:
     content: public virtual void Destroy(TCollectionItemData data)
     parameters:
@@ -904,10 +931,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: RemoveAll
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 299
+    startLine: 345
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nRemove all contents (normally by use of a truncate operation) from the data store and persist the change.\n"
+  example: []
   syntax:
     content: public override void RemoveAll()
     content.vb: Public Overrides Sub RemoveAll
@@ -941,10 +970,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Update
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 305
+    startLine: 354
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nUpdate the provided <code data-dev-comment-type=\"paramref\">data</code> in the data store and persist the change.\n"
+  example: []
   syntax:
     content: public virtual void Update(TCollectionItemData data)
     parameters:
@@ -980,10 +1011,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Update
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 310
+    startLine: 362
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nUpdate the provided <code data-dev-comment-type=\"paramref\">data</code> in the data store and persist the change.\n"
+  example: []
   syntax:
     content: public override void Update(TData data)
     parameters:
@@ -1018,10 +1051,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetUpdatableTableEntity
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 342
+    startLine: 397
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nGets a <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableOperation\" data-throw-if-not-resolved=\"false\"></xref> for updating.\n"
+  example: []
   syntax:
     content: protected abstract TableOperation GetUpdatableTableEntity(TCollectionItemData data)
     parameters:
@@ -1057,10 +1092,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetUpdatableTableEntity
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 344
+    startLine: 402
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nGets a <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableOperation\" data-throw-if-not-resolved=\"false\"></xref> for updating.\n"
+  example: []
   syntax:
     content: protected abstract TableOperation GetUpdatableTableEntity(TData data)
     parameters:
@@ -1096,11 +1133,11 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateSource
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 352
+    startLine: 410
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
-  summary: "\nCreates a <xref href=\"Microsoft.WindowsAzure.Storage.Table.CloudTable\" data-throw-if-not-resolved=\"false\"></xref> with the specified name <span class=\"paramref\">sourceName</span> if it doesn&apos;t already exist.\n"
+  summary: "\nCreates a <xref href=\"Microsoft.WindowsAzure.Storage.Table.CloudTable\" data-throw-if-not-resolved=\"false\"></xref> with the specified name <code data-dev-comment-type=\"paramref\">sourceName</code> if it doesn&apos;t already exist.\n"
   example: []
   syntax:
     content: protected override CloudTable CreateSource(CloudStorageAccount storageAccount, string sourceName, bool isPublic = true)
@@ -1145,10 +1182,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetByKeyAndRow
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 383
+    startLine: 444
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nRetrieves the data from Azure Storage using <xref href=\"Cqrs.Azure.BlobStorage.TableStorageStore%602.Collection\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public virtual TData GetByKeyAndRow(Guid rsn)
     parameters:
@@ -1184,10 +1223,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetByKey
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 399
+    startLine: 463
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nRetrieves the data from Azure Storage using <xref href=\"Cqrs.Azure.BlobStorage.TableStorageStore%602.Collection\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public virtual IEnumerable<TData> GetByKey()
     return:
@@ -1220,17 +1261,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ReplaceValues
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 410
+    startLine: 483
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nExtracts <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableResult.Result\" data-throw-if-not-resolved=\"false\"></xref> of the provided <code data-dev-comment-type=\"paramref\">retrievedResult</code>\nIf <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableResult.Result\" data-throw-if-not-resolved=\"false\"></xref> is a <xref href=\"Cqrs.Azure.BlobStorage.IEventDataTableEntity%601\" data-throw-if-not-resolved=\"false\"></xref>\nthen <xref href=\"Cqrs.Azure.BlobStorage.IEventDataTableEntity%601.EventData\" data-throw-if-not-resolved=\"false\"></xref> is replaced with <code data-dev-comment-type=\"paramref\">data</code>.\nOtherwise <xref href=\"Microsoft.WindowsAzure.Storage.Table.TableResult.Result\" data-throw-if-not-resolved=\"false\"></xref> is a <xref href=\"Cqrs.Azure.BlobStorage.IEntityTableEntity%601\" data-throw-if-not-resolved=\"false\"></xref>\nand <xref href=\"Cqrs.Azure.BlobStorage.IEntityTableEntity%601.Entity\" data-throw-if-not-resolved=\"false\"></xref> is replaced with <code data-dev-comment-type=\"paramref\">data</code>.\n"
+  example: []
   syntax:
     content: protected virtual ITableEntity ReplaceValues(TableResult retrievedResult, TData data)
     parameters:
     - id: retrievedResult
       type: Microsoft.WindowsAzure.Storage.Table.TableResult
+      description: The existing data to update.
     - id: data
       type: '{TData}'
+      description: The new data to store.
     return:
       type: Microsoft.WindowsAzure.Storage.Table.ITableEntity
     content.vb: Protected Overridable Function ReplaceValues(retrievedResult As TableResult, data As TData) As ITableEntity
@@ -1261,15 +1306,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetSafeSourceName
     path: Framework/Azure/Cqrs.Azure.BlobStorage/TableStorageStore.cs
-    startLine: 424
+    startLine: 501
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage
+  summary: "\nGets the provided <code data-dev-comment-type=\"paramref\">sourceName</code> in a safe to use format.\n"
+  example: []
   syntax:
     content: protected override string GetSafeSourceName(string sourceName)
     parameters:
     - id: sourceName
       type: System.String
+      description: The name to make safe.
     return:
       type: System.String
     content.vb: Protected Overrides Function GetSafeSourceName(sourceName As String) As String
@@ -1284,6 +1332,64 @@ items:
   - Overrides
   fullName.vb: Cqrs.Azure.BlobStorage.TableStorageStore(Of TData, TCollectionItemData).GetSafeSourceName(System.String)
 references:
+- uid: Cqrs.DataStores.IDataStore`1
+  commentId: T:Cqrs.DataStores.IDataStore`1
+  isExternal: false
+  name: IDataStore<TData>
+  nameWithType: IDataStore<TData>
+  fullName: Cqrs.DataStores.IDataStore<TData>
+  nameWithType.vb: IDataStore(Of TData)
+  fullName.vb: Cqrs.DataStores.IDataStore(Of TData)
+  name.vb: IDataStore(Of TData)
+  spec.csharp:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: Microsoft.WindowsAzure.Storage.Table.TableEntity
+  commentId: T:Microsoft.WindowsAzure.Storage.Table.TableEntity
+  parent: Microsoft.WindowsAzure.Storage.Table
+  isExternal: true
+  name: TableEntity
+  nameWithType: TableEntity
+  fullName: Microsoft.WindowsAzure.Storage.Table.TableEntity
+- uid: Cqrs.Entities.IEntity
+  commentId: T:Cqrs.Entities.IEntity
+  parent: Cqrs.Entities
+  isExternal: false
+  name: IEntity
+  nameWithType: IEntity
+  fullName: Cqrs.Entities.IEntity
 - uid: Cqrs.Azure.BlobStorage
   commentId: N:Cqrs.Azure.BlobStorage
   isExternal: false
@@ -2633,90 +2739,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.DataStores.IDataStore{`1}.Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
-  commentId: M:Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(Cqrs.DataStores.IDataStore{``0},System.String)
-  parent: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions
-  definition: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(Cqrs.DataStores.IDataStore{``0},System.String)
-  name: GetByName<TCollectionItemData>(String)
-  nameWithType: BlobStorageStoreExtensions.GetByName<TCollectionItemData>(String)
-  fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName<TCollectionItemData>(System.String)
-  nameWithType.vb: BlobStorageStoreExtensions.GetByName(Of TCollectionItemData)(String)
-  fullName.vb: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName(Of TCollectionItemData)(System.String)
-  name.vb: GetByName(Of TCollectionItemData)(String)
-  spec.csharp:
-  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
-    name: GetByName<TCollectionItemData>
-    nameWithType: BlobStorageStoreExtensions.GetByName<TCollectionItemData>
-    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName<TCollectionItemData>
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.String
-    name: String
-    nameWithType: String
-    fullName: System.String
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
-    name: GetByName(Of TCollectionItemData)
-    nameWithType: BlobStorageStoreExtensions.GetByName(Of TCollectionItemData)
-    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName(Of TCollectionItemData)
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.String
-    name: String
-    nameWithType: String
-    fullName: System.String
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.DataStores.IDataStore{`1}.Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
-  commentId: M:Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(Cqrs.DataStores.IDataStore{``0},System.String)
-  parent: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions
-  definition: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(Cqrs.DataStores.IDataStore{``0},System.String)
-  name: GetByFolder<TCollectionItemData>(String)
-  nameWithType: BlobStorageStoreExtensions.GetByFolder<TCollectionItemData>(String)
-  fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder<TCollectionItemData>(System.String)
-  nameWithType.vb: BlobStorageStoreExtensions.GetByFolder(Of TCollectionItemData)(String)
-  fullName.vb: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder(Of TCollectionItemData)(System.String)
-  name.vb: GetByFolder(Of TCollectionItemData)(String)
-  spec.csharp:
-  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
-    name: GetByFolder<TCollectionItemData>
-    nameWithType: BlobStorageStoreExtensions.GetByFolder<TCollectionItemData>
-    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder<TCollectionItemData>
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.String
-    name: String
-    nameWithType: String
-    fullName: System.String
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
-    name: GetByFolder(Of TCollectionItemData)
-    nameWithType: BlobStorageStoreExtensions.GetByFolder(Of TCollectionItemData)
-    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder(Of TCollectionItemData)
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.String
-    name: String
-    nameWithType: String
-    fullName: System.String
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.DataStores.IDataStore{`1}.Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(System.Linq.Expressions.Expression{System.Func{{TCollectionItemData},System.Boolean}})
   commentId: M:Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
   parent: Cqrs.Sql.DataStores.SqlDataStoreExtensions
@@ -2815,12 +2837,108 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.DataStores.IDataStore{`1}.Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
+  commentId: M:Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(Cqrs.DataStores.IDataStore{``0},System.String)
+  parent: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions
+  definition: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(Cqrs.DataStores.IDataStore{``0},System.String)
+  name: GetByName<TCollectionItemData>(String)
+  nameWithType: BlobStorageStoreExtensions.GetByName<TCollectionItemData>(String)
+  fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName<TCollectionItemData>(System.String)
+  nameWithType.vb: BlobStorageStoreExtensions.GetByName(Of TCollectionItemData)(String)
+  fullName.vb: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName(Of TCollectionItemData)(System.String)
+  name.vb: GetByName(Of TCollectionItemData)(String)
+  spec.csharp:
+  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
+    name: GetByName<TCollectionItemData>
+    nameWithType: BlobStorageStoreExtensions.GetByName<TCollectionItemData>
+    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName<TCollectionItemData>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(System.String)
+    name: GetByName(Of TCollectionItemData)
+    nameWithType: BlobStorageStoreExtensions.GetByName(Of TCollectionItemData)
+    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName(Of TCollectionItemData)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.DataStores.IDataStore{`1}.Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
+  commentId: M:Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(Cqrs.DataStores.IDataStore{``0},System.String)
+  parent: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions
+  definition: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(Cqrs.DataStores.IDataStore{``0},System.String)
+  name: GetByFolder<TCollectionItemData>(String)
+  nameWithType: BlobStorageStoreExtensions.GetByFolder<TCollectionItemData>(String)
+  fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder<TCollectionItemData>(System.String)
+  nameWithType.vb: BlobStorageStoreExtensions.GetByFolder(Of TCollectionItemData)(String)
+  fullName.vb: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder(Of TCollectionItemData)(System.String)
+  name.vb: GetByFolder(Of TCollectionItemData)(String)
+  spec.csharp:
+  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
+    name: GetByFolder<TCollectionItemData>
+    nameWithType: BlobStorageStoreExtensions.GetByFolder<TCollectionItemData>
+    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder<TCollectionItemData>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder``1(System.String)
+    name: GetByFolder(Of TCollectionItemData)
+    nameWithType: BlobStorageStoreExtensions.GetByFolder(Of TCollectionItemData)
+    fullName: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByFolder(Of TCollectionItemData)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: System
   commentId: N:System
   isExternal: false
   name: System
   nameWithType: System
   fullName: System
+- uid: Microsoft.WindowsAzure.Storage.Table
+  commentId: N:Microsoft.WindowsAzure.Storage.Table
+  isExternal: false
+  name: Microsoft.WindowsAzure.Storage.Table
+  nameWithType: Microsoft.WindowsAzure.Storage.Table
+  fullName: Microsoft.WindowsAzure.Storage.Table
+- uid: Cqrs.Entities
+  commentId: N:Cqrs.Entities
+  isExternal: false
+  name: Cqrs.Entities
+  nameWithType: Cqrs.Entities
+  fullName: Cqrs.Entities
 - uid: Cqrs.Azure.BlobStorage.StorageStore`2
   commentId: T:Cqrs.Azure.BlobStorage.StorageStore`2
   isExternal: false
@@ -2915,43 +3033,6 @@ references:
   name: System.Collections.Generic
   nameWithType: System.Collections.Generic
   fullName: System.Collections.Generic
-- uid: Cqrs.DataStores.IDataStore`1
-  commentId: T:Cqrs.DataStores.IDataStore`1
-  isExternal: false
-  name: IDataStore<TData>
-  nameWithType: IDataStore<TData>
-  fullName: Cqrs.DataStores.IDataStore<TData>
-  nameWithType.vb: IDataStore(Of TData)
-  fullName.vb: Cqrs.DataStores.IDataStore(Of TData)
-  name.vb: IDataStore(Of TData)
-  spec.csharp:
-  - uid: Cqrs.DataStores.IDataStore`1
-    name: IDataStore
-    nameWithType: IDataStore
-    fullName: Cqrs.DataStores.IDataStore
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TData
-    nameWithType: TData
-    fullName: TData
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.DataStores.IDataStore`1
-    name: IDataStore
-    nameWithType: IDataStore
-    fullName: Cqrs.DataStores.IDataStore
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TData
-    nameWithType: TData
-    fullName: TData
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.DataStores
   commentId: N:Cqrs.DataStores
   isExternal: false
@@ -3798,6 +3879,142 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
+  commentId: M:Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
+  isExternal: true
+  name: Where<TEntity, TDbEntity>(IDataStore<TEntity>, Expression<Func<TEntity, Boolean>>)
+  nameWithType: SqlDataStoreExtensions.Where<TEntity, TDbEntity>(IDataStore<TEntity>, Expression<Func<TEntity, Boolean>>)
+  fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where<TEntity, TDbEntity>(Cqrs.DataStores.IDataStore<TEntity>, System.Linq.Expressions.Expression<System.Func<TEntity, System.Boolean>>)
+  nameWithType.vb: SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)(IDataStore(Of TEntity), Expression(Of Func(Of TEntity, Boolean)))
+  fullName.vb: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)(Cqrs.DataStores.IDataStore(Of TEntity), System.Linq.Expressions.Expression(Of System.Func(Of TEntity, System.Boolean)))
+  name.vb: Where(Of TEntity, TDbEntity)(IDataStore(Of TEntity), Expression(Of Func(Of TEntity, Boolean)))
+  spec.csharp:
+  - uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
+    name: Where<TEntity, TDbEntity>
+    nameWithType: SqlDataStoreExtensions.Where<TEntity, TDbEntity>
+    fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where<TEntity, TDbEntity>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    nameWithType: Expression
+    fullName: System.Linq.Expressions.Expression
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
+    name: Where(Of TEntity, TDbEntity)
+    nameWithType: SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)
+    fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    nameWithType: Expression
+    fullName: System.Linq.Expressions.Expression
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions
+  commentId: T:Cqrs.Sql.DataStores.SqlDataStoreExtensions
+  parent: Cqrs.Sql.DataStores
+  isExternal: false
+  name: SqlDataStoreExtensions
+  nameWithType: SqlDataStoreExtensions
+  fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions
 - uid: Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(Cqrs.DataStores.IDataStore{``0},System.String)
   commentId: M:Cqrs.Azure.BlobStorage.BlobStorageStoreExtensions.GetByName``1(Cqrs.DataStores.IDataStore{``0},System.String)
   isExternal: true
@@ -3951,148 +4168,14 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
-  commentId: M:Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
-  isExternal: true
-  name: Where<TEntity, TDbEntity>(IDataStore<TEntity>, Expression<Func<TEntity, Boolean>>)
-  nameWithType: SqlDataStoreExtensions.Where<TEntity, TDbEntity>(IDataStore<TEntity>, Expression<Func<TEntity, Boolean>>)
-  fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where<TEntity, TDbEntity>(Cqrs.DataStores.IDataStore<TEntity>, System.Linq.Expressions.Expression<System.Func<TEntity, System.Boolean>>)
-  nameWithType.vb: SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)(IDataStore(Of TEntity), Expression(Of Func(Of TEntity, Boolean)))
-  fullName.vb: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)(Cqrs.DataStores.IDataStore(Of TEntity), System.Linq.Expressions.Expression(Of System.Func(Of TEntity, System.Boolean)))
-  name.vb: Where(Of TEntity, TDbEntity)(IDataStore(Of TEntity), Expression(Of Func(Of TEntity, Boolean)))
-  spec.csharp:
-  - uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
-    name: Where<TEntity, TDbEntity>
-    nameWithType: SqlDataStoreExtensions.Where<TEntity, TDbEntity>
-    fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where<TEntity, TDbEntity>
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: Cqrs.DataStores.IDataStore`1
-    name: IDataStore
-    nameWithType: IDataStore
-    fullName: Cqrs.DataStores.IDataStore
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TEntity
-    nameWithType: TEntity
-    fullName: TEntity
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    nameWithType: Expression
-    fullName: System.Linq.Expressions.Expression
-    isExternal: true
-  - name: <
-    nameWithType: <
-    fullName: <
-  - uid: System.Func`2
-    name: Func
-    nameWithType: Func
-    fullName: System.Func
-    isExternal: true
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TEntity
-    nameWithType: TEntity
-    fullName: TEntity
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Boolean
-    name: Boolean
-    nameWithType: Boolean
-    fullName: System.Boolean
-    isExternal: true
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where``2(Cqrs.DataStores.IDataStore{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
-    name: Where(Of TEntity, TDbEntity)
-    nameWithType: SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)
-    fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions.Where(Of TEntity, TDbEntity)
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: Cqrs.DataStores.IDataStore`1
-    name: IDataStore
-    nameWithType: IDataStore
-    fullName: Cqrs.DataStores.IDataStore
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TEntity
-    nameWithType: TEntity
-    fullName: TEntity
-  - name: )
-    nameWithType: )
-    fullName: )
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    nameWithType: Expression
-    fullName: System.Linq.Expressions.Expression
-    isExternal: true
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - uid: System.Func`2
-    name: Func
-    nameWithType: Func
-    fullName: System.Func
-    isExternal: true
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TEntity
-    nameWithType: TEntity
-    fullName: TEntity
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.Boolean
-    name: Boolean
-    nameWithType: Boolean
-    fullName: System.Boolean
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  - name: )
-    nameWithType: )
-    fullName: )
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.Sql.DataStores.SqlDataStoreExtensions
-  commentId: T:Cqrs.Sql.DataStores.SqlDataStoreExtensions
-  parent: Cqrs.Sql.DataStores
-  isExternal: false
-  name: SqlDataStoreExtensions
-  nameWithType: SqlDataStoreExtensions
-  fullName: Cqrs.Sql.DataStores.SqlDataStoreExtensions
 - uid: Cqrs.Sql.DataStores
   commentId: N:Cqrs.Sql.DataStores
   isExternal: false
   name: Cqrs.Sql.DataStores
   nameWithType: Cqrs.Sql.DataStores
   fullName: Cqrs.Sql.DataStores
+- uid: Microsoft.WindowsAzure.Storage.Table.TableQuery
+  commentId: T:Microsoft.WindowsAzure.Storage.Table.TableQuery
 - uid: Cqrs.Azure.BlobStorage.TableStorageStore`2.Collection*
   commentId: Overload:Cqrs.Azure.BlobStorage.TableStorageStore`2.Collection
   isExternal: false
@@ -4180,12 +4263,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Microsoft.WindowsAzure.Storage.Table
-  commentId: N:Microsoft.WindowsAzure.Storage.Table
-  isExternal: false
-  name: Microsoft.WindowsAzure.Storage.Table
-  nameWithType: Microsoft.WindowsAzure.Storage.Table
-  fullName: Microsoft.WindowsAzure.Storage.Table
 - uid: Cqrs.Azure.BlobStorage.TableStorageStore`2
   commentId: T:Cqrs.Azure.BlobStorage.TableStorageStore`2
   isExternal: false
@@ -4500,13 +4577,6 @@ references:
   name: System.Linq.Expressions
   nameWithType: System.Linq.Expressions
   fullName: System.Linq.Expressions
-- uid: System.Type
-  commentId: T:System.Type
-  parent: System
-  isExternal: true
-  name: Type
-  nameWithType: Type
-  fullName: System.Type
 - uid: Cqrs.Azure.BlobStorage.TableStorageStore`2.ElementType*
   commentId: Overload:Cqrs.Azure.BlobStorage.TableStorageStore`2.ElementType
   isExternal: false
@@ -4802,6 +4872,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Microsoft.WindowsAzure.Storage.Table.ITableEntity
+  commentId: T:Microsoft.WindowsAzure.Storage.Table.ITableEntity
+  parent: Microsoft.WindowsAzure.Storage.Table
+  isExternal: true
+  name: ITableEntity
+  nameWithType: ITableEntity
+  fullName: Microsoft.WindowsAzure.Storage.Table.ITableEntity
 - uid: Cqrs.Azure.BlobStorage.TableStorageStore`2.CreateTableEntity*
   commentId: Overload:Cqrs.Azure.BlobStorage.TableStorageStore`2.CreateTableEntity
   isExternal: false
@@ -4816,13 +4893,6 @@ references:
   name: TCollectionItemData
   nameWithType: TCollectionItemData
   fullName: TCollectionItemData
-- uid: Microsoft.WindowsAzure.Storage.Table.ITableEntity
-  commentId: T:Microsoft.WindowsAzure.Storage.Table.ITableEntity
-  parent: Microsoft.WindowsAzure.Storage.Table
-  isExternal: true
-  name: ITableEntity
-  nameWithType: ITableEntity
-  fullName: Microsoft.WindowsAzure.Storage.Table.ITableEntity
 - uid: TCollectionItemData
   isExternal: false
   name: TCollectionItemData
@@ -4891,6 +4961,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Entities.IEntity.Rsn
+  commentId: P:Cqrs.Entities.IEntity.Rsn
+  parent: Cqrs.Entities.IEntity
+  isExternal: false
+  name: Rsn
+  nameWithType: IEntity.Rsn
+  fullName: Cqrs.Entities.IEntity.Rsn
 - uid: Cqrs.Azure.BlobStorage.TableStorageStore`2.Destroy*
   commentId: Overload:Cqrs.Azure.BlobStorage.TableStorageStore`2.Destroy
   isExternal: false
@@ -5395,6 +5472,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Microsoft.WindowsAzure.Storage.Table.TableOperation
+  commentId: T:Microsoft.WindowsAzure.Storage.Table.TableOperation
+  parent: Microsoft.WindowsAzure.Storage.Table
+  isExternal: true
+  name: TableOperation
+  nameWithType: TableOperation
+  fullName: Microsoft.WindowsAzure.Storage.Table.TableOperation
 - uid: Cqrs.Azure.BlobStorage.TableStorageStore`2.GetUpdatableTableEntity*
   commentId: Overload:Cqrs.Azure.BlobStorage.TableStorageStore`2.GetUpdatableTableEntity
   isExternal: false
@@ -5403,13 +5487,6 @@ references:
   fullName: Cqrs.Azure.BlobStorage.TableStorageStore<TData, TCollectionItemData>.GetUpdatableTableEntity
   nameWithType.vb: TableStorageStore(Of TData, TCollectionItemData).GetUpdatableTableEntity
   fullName.vb: Cqrs.Azure.BlobStorage.TableStorageStore(Of TData, TCollectionItemData).GetUpdatableTableEntity
-- uid: Microsoft.WindowsAzure.Storage.Table.TableOperation
-  commentId: T:Microsoft.WindowsAzure.Storage.Table.TableOperation
-  parent: Microsoft.WindowsAzure.Storage.Table
-  isExternal: true
-  name: TableOperation
-  nameWithType: TableOperation
-  fullName: Microsoft.WindowsAzure.Storage.Table.TableOperation
 - uid: Microsoft.WindowsAzure.Storage.Table.CloudTable
   commentId: T:Microsoft.WindowsAzure.Storage.Table.CloudTable
   parent: Microsoft.WindowsAzure.Storage.Table
@@ -5452,6 +5529,14 @@ references:
   name: Microsoft.WindowsAzure.Storage
   nameWithType: Microsoft.WindowsAzure.Storage
   fullName: Microsoft.WindowsAzure.Storage
+- uid: Cqrs.Azure.BlobStorage.TableStorageStore`2.Collection
+  commentId: P:Cqrs.Azure.BlobStorage.TableStorageStore`2.Collection
+  isExternal: false
+  name: Collection
+  nameWithType: TableStorageStore<TData, TCollectionItemData>.Collection
+  fullName: Cqrs.Azure.BlobStorage.TableStorageStore<TData, TCollectionItemData>.Collection
+  nameWithType.vb: TableStorageStore(Of TData, TCollectionItemData).Collection
+  fullName.vb: Cqrs.Azure.BlobStorage.TableStorageStore(Of TData, TCollectionItemData).Collection
 - uid: Cqrs.Azure.BlobStorage.TableStorageStore`2.GetByKeyAndRow*
   commentId: Overload:Cqrs.Azure.BlobStorage.TableStorageStore`2.GetByKeyAndRow
   isExternal: false
@@ -5475,6 +5560,98 @@ references:
   fullName: Cqrs.Azure.BlobStorage.TableStorageStore<TData, TCollectionItemData>.GetByKey
   nameWithType.vb: TableStorageStore(Of TData, TCollectionItemData).GetByKey
   fullName.vb: Cqrs.Azure.BlobStorage.TableStorageStore(Of TData, TCollectionItemData).GetByKey
+- uid: Microsoft.WindowsAzure.Storage.Table.TableResult.Result
+  commentId: P:Microsoft.WindowsAzure.Storage.Table.TableResult.Result
+- uid: Cqrs.Azure.BlobStorage.IEventDataTableEntity`1
+  commentId: T:Cqrs.Azure.BlobStorage.IEventDataTableEntity`1
+  isExternal: false
+  name: IEventDataTableEntity<TEventData>
+  nameWithType: IEventDataTableEntity<TEventData>
+  fullName: Cqrs.Azure.BlobStorage.IEventDataTableEntity<TEventData>
+  nameWithType.vb: IEventDataTableEntity(Of TEventData)
+  fullName.vb: Cqrs.Azure.BlobStorage.IEventDataTableEntity(Of TEventData)
+  name.vb: IEventDataTableEntity(Of TEventData)
+  spec.csharp:
+  - uid: Cqrs.Azure.BlobStorage.IEventDataTableEntity`1
+    name: IEventDataTableEntity
+    nameWithType: IEventDataTableEntity
+    fullName: Cqrs.Azure.BlobStorage.IEventDataTableEntity
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEventData
+    nameWithType: TEventData
+    fullName: TEventData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.BlobStorage.IEventDataTableEntity`1
+    name: IEventDataTableEntity
+    nameWithType: IEventDataTableEntity
+    fullName: Cqrs.Azure.BlobStorage.IEventDataTableEntity
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEventData
+    nameWithType: TEventData
+    fullName: TEventData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Azure.BlobStorage.IEventDataTableEntity`1.EventData
+  commentId: P:Cqrs.Azure.BlobStorage.IEventDataTableEntity`1.EventData
+  isExternal: false
+  name: EventData
+  nameWithType: IEventDataTableEntity<TEventData>.EventData
+  fullName: Cqrs.Azure.BlobStorage.IEventDataTableEntity<TEventData>.EventData
+  nameWithType.vb: IEventDataTableEntity(Of TEventData).EventData
+  fullName.vb: Cqrs.Azure.BlobStorage.IEventDataTableEntity(Of TEventData).EventData
+- uid: Cqrs.Azure.BlobStorage.IEntityTableEntity`1
+  commentId: T:Cqrs.Azure.BlobStorage.IEntityTableEntity`1
+  isExternal: false
+  name: IEntityTableEntity<TEntity>
+  nameWithType: IEntityTableEntity<TEntity>
+  fullName: Cqrs.Azure.BlobStorage.IEntityTableEntity<TEntity>
+  nameWithType.vb: IEntityTableEntity(Of TEntity)
+  fullName.vb: Cqrs.Azure.BlobStorage.IEntityTableEntity(Of TEntity)
+  name.vb: IEntityTableEntity(Of TEntity)
+  spec.csharp:
+  - uid: Cqrs.Azure.BlobStorage.IEntityTableEntity`1
+    name: IEntityTableEntity
+    nameWithType: IEntityTableEntity
+    fullName: Cqrs.Azure.BlobStorage.IEntityTableEntity
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.BlobStorage.IEntityTableEntity`1
+    name: IEntityTableEntity
+    nameWithType: IEntityTableEntity
+    fullName: Cqrs.Azure.BlobStorage.IEntityTableEntity
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEntity
+    nameWithType: TEntity
+    fullName: TEntity
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Azure.BlobStorage.IEntityTableEntity`1.Entity
+  commentId: P:Cqrs.Azure.BlobStorage.IEntityTableEntity`1.Entity
+  isExternal: false
+  name: Entity
+  nameWithType: IEntityTableEntity<TEntity>.Entity
+  fullName: Cqrs.Azure.BlobStorage.IEntityTableEntity<TEntity>.Entity
+  nameWithType.vb: IEntityTableEntity(Of TEntity).Entity
+  fullName.vb: Cqrs.Azure.BlobStorage.IEntityTableEntity(Of TEntity).Entity
 - uid: Cqrs.Azure.BlobStorage.TableStorageStore`2.ReplaceValues*
   commentId: Overload:Cqrs.Azure.BlobStorage.TableStorageStore`2.ReplaceValues
   isExternal: false

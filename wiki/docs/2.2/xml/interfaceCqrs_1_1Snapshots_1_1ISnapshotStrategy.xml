@@ -9,15 +9,20 @@
       </param>
     </templateparamlist>
       <sectiondef kind="public-func">
-      <memberdef kind="function" id="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_ab1d54cd76c7ac832329cb3a6de0effcd_1ab1d54cd76c7ac832329cb3a6de0effcd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_aeb5fc714ec8a5b60219426f3aabc0f6c_1aeb5fc714ec8a5b60219426f3aabc0f6c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
         <definition>bool Cqrs.Snapshots.ISnapshotStrategy&lt; TAuthenticationToken &gt;.ShouldMakeSnapShot</definition>
-        <argsstring>(IAggregateRoot&lt; TAuthenticationToken &gt; aggregate)</argsstring>
+        <argsstring>(IAggregateRoot&lt; TAuthenticationToken &gt; aggregate, IEnumerable&lt; IEvent&lt; TAuthenticationToken &gt;&gt; uncommittedChanges=null)</argsstring>
         <name>ShouldMakeSnapShot</name>
-        <reimplementedby refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a211413236ef217c73a69e8d7fe4e555e_1a211413236ef217c73a69e8d7fe4e555e">ShouldMakeSnapShot</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a9cdb3d79c55e2eb2796639b273d49ed9_1a9cdb3d79c55e2eb2796639b273d49ed9">ShouldMakeSnapShot</reimplementedby>
         <param>
           <type><ref refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot" kindref="compound">IAggregateRoot</ref>&lt; TAuthenticationToken &gt;</type>
           <declname>aggregate</declname>
+        </param>
+        <param>
+          <type>IEnumerable&lt; <ref refid="interfaceCqrs_1_1Events_1_1IEvent" kindref="compound">IEvent</ref>&lt; TAuthenticationToken &gt;&gt;</type>
+          <declname>uncommittedChanges</declname>
+          <defval>null</defval>
         </param>
         <briefdescription>
 <para>Indicates if the provided <emphasis>aggregate</emphasis>  should have a <ref refid="classCqrs_1_1Snapshots_1_1Snapshot" kindref="compound">Snapshot</ref> made. This does NOT indicate if the provided <emphasis>aggregate</emphasis>  can have a <ref refid="classCqrs_1_1Snapshots_1_1Snapshot" kindref="compound">Snapshot</ref> made or not. </para>        </briefdescription>
@@ -29,11 +34,18 @@
 <parameterdescription>
 <para>The IAggregateRoot&lt;TAuthenticationToken&gt; to check.</para></parameterdescription>
 </parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>uncommittedChanges</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A collection of uncommited changes to assess. If null the aggregate will be asked to provide them.</para></parameterdescription>
+</parameteritem>
 </parameterlist>
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Snapshots/ISnapshotStrategy.cs" line="25" column="1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/ISnapshotStrategy.cs" line="28" column="1"/>
       </memberdef>
       <memberdef kind="function" id="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_a02121821312c4ce2811b31eeaffabe51_1a02121821312c4ce2811b31eeaffabe51" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -59,7 +71,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Snapshots/ISnapshotStrategy.cs" line="31" column="1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/ISnapshotStrategy.cs" line="34" column="1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -75,21 +87,21 @@
 </parameterlist>
 </para>    </detaileddescription>
     <inheritancegraph>
-      <node id="2467">
+      <node id="2690">
         <label>Cqrs.Snapshots.ISnapshotStrategy&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy"/>
       </node>
-      <node id="2468">
+      <node id="2691">
         <label>Cqrs::Snapshots::DefaultSnapshotStrategy&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy"/>
-        <childnode refid="2467" relation="public-inheritance">
+        <childnode refid="2690" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>
-    <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Snapshots/ISnapshotStrategy.cs" line="19" column="1" bodyfile="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Snapshots/ISnapshotStrategy.cs" bodystart="18" bodyend="32"/>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/ISnapshotStrategy.cs" line="21" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Snapshots/ISnapshotStrategy.cs" bodystart="20" bodyend="35"/>
     <listofallmembers>
       <member refid="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_a02121821312c4ce2811b31eeaffabe51_1a02121821312c4ce2811b31eeaffabe51" prot="public" virt="non-virtual"><scope>Cqrs::Snapshots::ISnapshotStrategy</scope><name>IsSnapshotable</name></member>
-      <member refid="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_ab1d54cd76c7ac832329cb3a6de0effcd_1ab1d54cd76c7ac832329cb3a6de0effcd" prot="public" virt="non-virtual"><scope>Cqrs::Snapshots::ISnapshotStrategy</scope><name>ShouldMakeSnapShot</name></member>
+      <member refid="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy_aeb5fc714ec8a5b60219426f3aabc0f6c_1aeb5fc714ec8a5b60219426f3aabc0f6c" prot="public" virt="non-virtual"><scope>Cqrs::Snapshots::ISnapshotStrategy</scope><name>ShouldMakeSnapShot</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

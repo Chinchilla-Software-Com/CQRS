@@ -1,7 +1,6 @@
 var namespaceCqrs_1_1Akka_1_1Domain =
 [
     [ "Commands", "namespaceCqrs_1_1Akka_1_1Domain_1_1Commands.html", "namespaceCqrs_1_1Akka_1_1Domain_1_1Commands" ],
-    [ "Factories", "namespaceCqrs_1_1Akka_1_1Domain_1_1Factories.html", "namespaceCqrs_1_1Akka_1_1Domain_1_1Factories" ],
     [ "AkkaAggregateRepository", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository.html", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository" ],
     [ "AkkaAggregateRoot", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot.html", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot" ],
     [ "AkkaAggregateRootProxy", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRootProxy.html", "classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRootProxy" ],

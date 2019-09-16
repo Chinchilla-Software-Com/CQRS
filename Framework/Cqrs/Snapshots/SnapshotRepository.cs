@@ -21,7 +21,8 @@ namespace Cqrs.Snapshots
 	/// utilising <see cref="Snapshot">snapshots</see> for optimised rehydration.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of authentication token.</typeparam>
-	public class SnapshotRepository<TAuthenticationToken> : IAggregateRepository<TAuthenticationToken>
+	public class SnapshotRepository<TAuthenticationToken>
+		: ISnapshotAggregateRepository<TAuthenticationToken>
 	{
 		/// <summary>
 		/// Gets or sets the <see cref="ISnapshotStore"/>.
@@ -69,8 +70,11 @@ namespace Cqrs.Snapshots
 		public void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			TryMakeSnapshot(aggregate);
+			// We need to grab these first as the changes will have been commitedd already by the time we go to make the snapshot.
+			IEnumerable<IEvent<TAuthenticationToken>> uncommittedChanges = aggregate.GetUncommittedChanges();
+			// Save the evets first then snapshot the system.
 			Repository.Save(aggregate, expectedVersion);
+			TryMakeSnapshot(aggregate, uncommittedChanges);
 		}
 
 		/// <summary>
@@ -97,6 +101,38 @@ namespace Cqrs.Snapshots
 			aggregate.LoadFromHistory(theseEvents);
 
 			return aggregate;
+		}
+
+		/// <summary>
+		/// Retrieves an <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <typeparamref name="TAggregateRoot"/> up to and including the provided <paramref name="version"/>.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
+		/// <param name="aggregateId">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to retrieve.</param>
+		/// <param name="version">Load events up-to and including from this version</param>
+		/// <param name="events">
+		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
+		/// </param>
+		public TAggregateRoot GetToVersion<TAggregateRoot>(Guid aggregateId, int version, IList<IEvent<TAuthenticationToken>> events = null)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
+		{
+			throw new InvalidOperationException("Verion replay is not appriopriate with snapshots.");
+		}
+
+		/// <summary>
+		/// Retrieves an <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <typeparamref name="TAggregateRoot"/> up to and including the provided <paramref name="versionedDate"/>.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
+		/// <param name="aggregateId">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to retrieve.</param>
+		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		/// <param name="events">
+		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
+		/// </param>
+		public TAggregateRoot GetToDate<TAggregateRoot>(Guid aggregateId, DateTime versionedDate, IList<IEvent<TAuthenticationToken>> events = null)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
+		{
+			throw new InvalidOperationException("Verion replay is not appriopriate with snapshots.");
 		}
 
 		/// <summary>
@@ -130,20 +166,21 @@ namespace Cqrs.Snapshots
 		/// The <see cref="Snapshot.Version"/> is calculated, finally <see cref="ISnapshotStore.Save"/> is called on <see cref="SnapshotStore"/>.
 		/// </summary>
 		/// <param name="aggregate">The <see cref="IAggregateRoot{TAuthenticationToken}"/> to try and snapshot.</param>
-		protected virtual void TryMakeSnapshot(IAggregateRoot<TAuthenticationToken> aggregate)
+		/// <param name="uncommittedChanges">A collection of uncommited changes to assess. If null the aggregate will be asked to provide them.</param>
+		protected virtual void TryMakeSnapshot(IAggregateRoot<TAuthenticationToken> aggregate, IEnumerable<IEvent<TAuthenticationToken>> uncommittedChanges)
 		{
-			if (!SnapshotStrategy.ShouldMakeSnapShot(aggregate))
+			if (!SnapshotStrategy.ShouldMakeSnapShot(aggregate, uncommittedChanges))
 				return;
 			dynamic snapshot = aggregate.AsDynamic().GetSnapshot().RealObject;
 			var rsnapshot = snapshot as Snapshot;
 			if (rsnapshot != null)
 			{
-				rsnapshot.Version = aggregate.Version + aggregate.GetUncommittedChanges().Count();
+				rsnapshot.Version = aggregate.Version;
 				SnapshotStore.Save(rsnapshot);
 			}
 			else
 			{
-				snapshot.Version = aggregate.Version + aggregate.GetUncommittedChanges().Count();
+				snapshot.Version = aggregate.Version;
 				SnapshotStore.Save(snapshot);
 			}
 		}

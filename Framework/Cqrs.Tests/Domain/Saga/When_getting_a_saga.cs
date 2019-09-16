@@ -27,7 +27,7 @@ namespace Cqrs.Tests.Domain.Saga
 			_dependencyResolver = new TestDependencyResolver(eventStore, _commandPublisher);
 			var sagaFactory = new AggregateFactory(_dependencyResolver, _dependencyResolver.Resolve<ILogger>());
 			var testEventPublisher = new TestEventPublisher();
-			_unitOfWork = new SagaUnitOfWork<ISingleSignOnToken>(new SagaRepository<ISingleSignOnToken>(sagaFactory, eventStore, testEventPublisher, new NullCorrelationIdHelper()));
+			_unitOfWork = new SagaUnitOfWork<ISingleSignOnToken>(new SagaRepository<ISingleSignOnToken>(sagaFactory, eventStore, testEventPublisher, null, new NullCorrelationIdHelper()));
 		}
 
 		[Test]

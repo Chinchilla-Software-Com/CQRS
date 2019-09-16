@@ -256,6 +256,8 @@ namespace <#= classNamespace #>.Services
 			string sourceElementName = ((INamedElement)relationship.SourceElement).Name;
 			IList<IProperty> relationshipProperties = GetPropertyList((IClass)relationship.SourceElement).Where(property=> property.Type != relationship.TargetElement && property.Type != relationship.SourceElement).ToList();
 			IEnumerable<IAssociation> eventRelationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.Name == relationship.Name && associationEnd.SourceElement == this.Element);
+			if (relationshipName.EndsWith("CommandHandler"))
+				relationshipName = relationshipName.Substring(0, relationshipName.Length - 14);
 #>
 
 		public IServiceResponse <#= relationshipName #>(<#
@@ -294,9 +296,9 @@ namespace <#= classNamespace #>.Services
 				return CompleteResponse(new ServiceResponse { State = serviceResponseStateType.Value });
 
 			UnitOfWorkService.Commit(this);
-			return CompleteResponse(new ServiceResponse());
-
 			Logger.LogDebug("Exited", "<#= className #>/<#= relationshipName #>");
+
+			return CompleteResponse(new ServiceResponse());
 		}
 
 		partial void On<#= relationshipName #>(<#= methodSignatureParameter #>, ref <#= sourceElementName #>Command command, ref ServiceResponseStateType? serviceResponseStateType);

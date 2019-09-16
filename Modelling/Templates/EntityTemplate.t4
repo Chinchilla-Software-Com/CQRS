@@ -22,6 +22,8 @@ string entityPersistenceTechnology = GetEntityPersistenceTechnology(this.Element
 var tableNameProperty = stereoTypeProperties.PropertyInstances
 	.SingleOrDefault(property => property.Name == "TableName");
 string tableName = tableNameProperty != null && !string.IsNullOrWhiteSpace(tableNameProperty.Value) ? tableNameProperty.Value : className + "Entity";
+if (tableName.EndsWith("EntityEntity"))
+	tableName = tableName.Substring(0, tableName.Length - 6);
 
 if (string.IsNullOrWhiteSpace(baseClass))
 {
@@ -44,7 +46,6 @@ using Cqrs.Azure.DocumentDb.Entities;
 <# } #> 
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
-using System.Runtime.Serialization;
 
 namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 {

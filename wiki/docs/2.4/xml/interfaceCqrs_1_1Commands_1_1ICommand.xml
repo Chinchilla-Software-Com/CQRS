@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="interfaceCqrs_1_1Commands_1_1ICommand" kind="interface" language="C#" prot="public">
+    <compoundname>Cqrs::Commands::ICommand</compoundname>
+    <basecompoundref refid="interfaceCqrs_1_1Messages_1_1IMessageWithAuthenticationToken" prot="public" virt="non-virtual">Cqrs::Messages::IMessageWithAuthenticationToken&lt; TAuthenticationToken &gt;</basecompoundref>
+    <derivedcompoundref refid="classCqrs_1_1Commands_1_1DtoCommand" prot="public" virt="non-virtual">Cqrs.Commands.DtoCommand&lt; TAuthenticationToken, TDto &gt;</derivedcompoundref>
+    <derivedcompoundref refid="interfaceCqrs_1_1Commands_1_1ICommandWithIdentity" prot="public" virt="non-virtual">Cqrs.Commands.ICommandWithIdentity&lt; TAuthenticationToken &gt;</derivedcompoundref>
+    <templateparamlist>
+      <param>
+        <type>TAuthenticationToken</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="property">
+      <memberdef kind="property" id="interfaceCqrs_1_1Commands_1_1ICommand_a79acca2013a08295cef32f1917d97e96_1a79acca2013a08295cef32f1917d97e96" prot="public" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="yes" privatesettable="no" protectedsettable="no">
+        <type>Guid</type>
+        <definition>Guid Cqrs.Commands.ICommand&lt; TAuthenticationToken &gt;.Id</definition>
+        <argsstring></argsstring>
+        <name>Id</name>
+        <briefdescription>
+<para>The identifier of the command itself. In some cases this may be the IAggregateRoot&lt;TAuthenticationToken&gt; or ISaga&lt;TAuthenticationToken&gt; this command targets. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Commands/ICommand.cs" line="74" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Commands/ICommand.cs" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="interfaceCqrs_1_1Commands_1_1ICommand_a8b207da81f36bd4426e83e2ec948eb49_1a8b207da81f36bd4426e83e2ec948eb49" prot="public" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="yes" privatesettable="no" protectedsettable="no">
+        <type>int</type>
+        <definition>int Cqrs.Commands.ICommand&lt; TAuthenticationToken &gt;.ExpectedVersion</definition>
+        <argsstring></argsstring>
+        <name>ExpectedVersion</name>
+        <briefdescription>
+<para>The expected version number the targeted IAggregateRoot&lt;TAuthenticationToken&gt; or ISaga&lt;TAuthenticationToken&gt; is expected to be. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Commands/ICommand.cs" line="79" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Commands/ICommand.cs" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>People request changes to the domain by sending ICommand&lt;TAuthenticationToken&gt;s. They are named with a verb in the imperative mood plus and may include the IAggregateRoot&lt;TAuthenticationToken&gt; type, for example ConfirmOrder. Unlike an IEvent&lt;TAuthenticationToken&gt;, a ICommand&lt;TAuthenticationToken&gt; is not a statement of fact; it&apos;s only a request, and thus may be refused. (A typical way to convey refusal is to raise a specifically typed IEvent&lt;TAuthenticationToken&gt; stating the ICommand&lt;TAuthenticationToken&gt; didn&apos;t happen for a specific reason). </para>    </briefdescription>
+    <detaileddescription>
+<para>public class ConfirmOrder { public Guid OrderRsn; } </para><para>What does a ICommand&lt;TAuthenticationToken&gt; or an IEvent&lt;TAuthenticationToken&gt; look like?</para><para>An ICommand&lt;TAuthenticationToken&gt; or IEvent&lt;TAuthenticationToken&gt; is simply a data structure that contain data for reading, and no behavior. We call such structures &quot;Data Transfer Objects&quot; (DTOs). The name indicates the purpose. In many languages they are represented as classes, but they are not true classes in the real OO sense.</para><para>What is the difference between a ICommand&lt;TAuthenticationToken&gt; and an IEvent&lt;TAuthenticationToken&gt;?</para><para>Their intent.</para><para>What is immutability? Why is a ICommand&lt;TAuthenticationToken&gt; or IEvent&lt;TAuthenticationToken&gt; immutable?</para><para>For the purpose of this question, immutability is not having any setters, or other methods which change internal state. The string type in is a familiar example; you never actually change an existing string value, you just create new string values based on old ones.</para><para>An ICommand&lt;TAuthenticationToken&gt; is immutable because their expected usage is to be sent directly to the domain model side for processing. They do not need to change during their projected lifetime in traveling from client to server. Sometimes however business logic dictates that a decision may be made to construct a ICommand&lt;TAuthenticationToken&gt; and local variables should be used.</para><para>An IEvent&lt;TAuthenticationToken&gt; is immutable because they represent domain actions that took place in the past. Unless you&apos;re Marty McFly, you can&apos;t change the past, and sometimes not even then.</para><para>What is command upgrading?</para><para>Upgrading an ICommand&lt;TAuthenticationToken&gt; becomes necessary when new requirements cause an existing ICommand&lt;TAuthenticationToken&gt; not to be sufficient. Maybe a new field needs to be added, for example, or maybe an existing field should really have been split into several different ones.</para><para>How do I upgrade my ICommand&lt;TAuthenticationToken&gt;s?</para><para>How you do the upgrade depends how much control you have over your clients. If you can deploy your client updates and server updates together, just change things in both and deploy the updates. Job done. If not, it&apos;s usually best to have the updated ICommand&lt;TAuthenticationToken&gt; be a new type and have the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; accept both for a while.</para><para>Could you give an example of names of some versioned ICommand&lt;TAuthenticationToken&gt;?</para><para>Sure.</para><para>UploadFile UploadFile_v2 UploadFile_v3</para><para>It&apos;s just a convention, but a sane one. <hruler/>
+ Also see <ulink url="http://cqrs.nu/Faq/commands-and-events">http://cqrs.nu/Faq/commands-and-events</ulink>. </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="1193">
+        <label>Cqrs.Commands.ICommand&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Commands_1_1ICommand"/>
+        <childnode refid="1194" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1195">
+        <label>IMessage</label>
+        <link refid="interfaceCqrs_1_1Messages_1_1IMessage"/>
+      </node>
+      <node id="1197">
+        <label>Cqrs::Commands::ICommandWithIdentity&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Commands_1_1ICommandWithIdentity"/>
+        <childnode refid="1193" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1196">
+        <label>Cqrs::Commands::DtoCommand&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Commands_1_1DtoCommand"/>
+        <childnode refid="1193" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1194">
+        <label>IMessageWithAuthenticationToken&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Messages_1_1IMessageWithAuthenticationToken"/>
+        <childnode refid="1195" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1198">
+        <label>Cqrs.Commands.ICommand&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Commands_1_1ICommand"/>
+        <childnode refid="1199" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1200">
+        <label>IMessage</label>
+        <link refid="interfaceCqrs_1_1Messages_1_1IMessage"/>
+      </node>
+      <node id="1199">
+        <label>IMessageWithAuthenticationToken&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Messages_1_1IMessageWithAuthenticationToken"/>
+        <childnode refid="1200" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Commands/ICommand.cs" line="69" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Commands/ICommand.cs" bodystart="68" bodyend="80"/>
+    <listofallmembers>
+      <member refid="interfaceCqrs_1_1Messages_1_1IMessageWithAuthenticationToken_ac80645a12251d6d8766b0ee18e0386f1_1ac80645a12251d6d8766b0ee18e0386f1" prot="public" virt="non-virtual"><scope>Cqrs::Commands::ICommand</scope><name>AuthenticationToken</name></member>
+      <member refid="interfaceCqrs_1_1Messages_1_1IMessage_a9037d871a75ac76b190130aa56fe63a8_1a9037d871a75ac76b190130aa56fe63a8" prot="public" virt="non-virtual"><scope>Cqrs::Commands::ICommand</scope><name>CorrelationId</name></member>
+      <member refid="interfaceCqrs_1_1Commands_1_1ICommand_a8b207da81f36bd4426e83e2ec948eb49_1a8b207da81f36bd4426e83e2ec948eb49" prot="public" virt="non-virtual"><scope>Cqrs::Commands::ICommand</scope><name>ExpectedVersion</name></member>
+      <member refid="interfaceCqrs_1_1Messages_1_1IMessage_af147de5bb9a480ba75b5bb9f0ef12132_1af147de5bb9a480ba75b5bb9f0ef12132" prot="public" virt="non-virtual"><scope>Cqrs::Commands::ICommand</scope><name>Frameworks</name></member>
+      <member refid="interfaceCqrs_1_1Commands_1_1ICommand_a79acca2013a08295cef32f1917d97e96_1a79acca2013a08295cef32f1917d97e96" prot="public" virt="non-virtual"><scope>Cqrs::Commands::ICommand</scope><name>Id</name></member>
+      <member refid="interfaceCqrs_1_1Messages_1_1IMessage_aff9a2d35971384fb440954c3163eaeef_1aff9a2d35971384fb440954c3163eaeef" prot="public" virt="non-virtual"><scope>Cqrs::Commands::ICommand</scope><name>OriginatingFramework</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -2,17 +2,33 @@
 <package>
 	<metadata>
 		<id>Cqrs.Azure.DocumentDb</id>
-		<title>Microsoft Azure DocumentDB (CosmosDB) for CQRS.NET</title>
+		<title>Microsoft Azure Cosmos DB (DocumentDB) for CQRS.NET</title>
 		<version>$version$</version>
 		<authors>Chinchilla Software</authors>
 		<licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
 		<projectUrl>http://chinchilla-software-com.github.io/CQRS/</projectUrl>
 		<iconUrl>http://chinchilla-software-com.github.io/CQRS/wiki/ChinChilla-Software-Red.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>Use Azure DocumentDB as an event store, read store and data store in CQRS.NET</description>
+		<description>Use Azure Cosmos DB (DocumentDB) as an event store, read store and data store in CQRS.NET</description>
 		<copyright>Copyright 2014</copyright>
 		<tags>CQRS CQRS.NET Event-Sourcing EventStore Azure DocumentDb CosmosDb Cosmos DocDb NoSQL</tags>
 		<releaseNotes>
+			Version 2.4
+
+			* Upgraded to Microsoft.Azure.DocumentDB version 1.21.1 package to enable built-in unique index support.
+			* Added support for snapshots.
+
+			Version 2.3
+
+			* Added GetToVersion To the EventStore so you can get events up to a set version
+			* Added GetToDate To the EventStore so you can get events up to a specific date
+			* Added GetBetweenDates To the EventStore so you can get events between specific dates
+
+			Version 2.2
+
+			* Deprecated AzureDocumentDbEventBuilder. Use Cqrs.Events.DefaultEventBuilder as a replacement.
+			* Deprecated AzureDocumentDbEventDeserialiser. Use Cqrs.Events.EventDeserialiser as a replacement.
+
 			Version 2.0
 
 			* Added configurable setting "Cqrs.Azure.DocumentDb.UseSingleCollectionForAllDataStores" to enable control over the use of a single collection (cheaper) for all data stores or one collection per data store (more flexible). The default value is true.

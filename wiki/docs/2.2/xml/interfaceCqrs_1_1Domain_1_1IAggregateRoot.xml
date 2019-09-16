@@ -22,7 +22,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Domain/IAggregateRoot.cs" line="148" column="1" bodyfile="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Domain/IAggregateRoot.cs" bodystart="148" bodyend="-1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/IAggregateRoot.cs" line="148" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/IAggregateRoot.cs" bodystart="148" bodyend="-1"/>
       </memberdef>
       <memberdef kind="property" id="interfaceCqrs_1_1Domain_1_1IAggregateRoot_ad81adab68c0984330f735a1f5a661aa7_1ad81adab68c0984330f735a1f5a661aa7" prot="public" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="no" privatesettable="no" protectedsettable="no">
         <type>int</type>
@@ -35,7 +35,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Domain/IAggregateRoot.cs" line="154" column="1" bodyfile="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Domain/IAggregateRoot.cs" bodystart="154" bodyend="-1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/IAggregateRoot.cs" line="154" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/IAggregateRoot.cs" bodystart="154" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -53,7 +53,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Domain/IAggregateRoot.cs" line="159" column="1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/IAggregateRoot.cs" line="159" column="1"/>
       </memberdef>
       <memberdef kind="function" id="interfaceCqrs_1_1Domain_1_1IAggregateRoot_af31116870bbf6566b3eec0b8bc02c6de_1af31116870bbf6566b3eec0b8bc02c6de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -69,7 +69,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Domain/IAggregateRoot.cs" line="164" column="1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/IAggregateRoot.cs" line="164" column="1"/>
       </memberdef>
       <memberdef kind="function" id="interfaceCqrs_1_1Domain_1_1IAggregateRoot_afe9329ee26ae68613059189ca64dfe60_1afe9329ee26ae68613059189ca64dfe60" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -89,7 +89,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Domain/IAggregateRoot.cs" line="170" column="1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/IAggregateRoot.cs" line="170" column="1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -97,42 +97,42 @@
     <detaileddescription>
 <para>Concretely, an IAggregateRoot&lt;TAuthenticationToken&gt; will handle ICommand&lt;TAuthenticationToken&gt;s, apply IEvent&lt;TAuthenticationToken&gt;s, and have a state model encapsulated within it that allows it to implement the required command validation, thus upholding the invariants (business rules) of the IAggregateRoot&lt;TAuthenticationToken&gt;. </para><para>I know IAggregateRoot&lt;TAuthenticationToken&gt; are transaction boundaries, but I really need to transactionally update two IAggregateRoot&lt;TAuthenticationToken&gt; in the same transaction. What should I do?</para><para>You should re-think the following: </para><para>* Your IAggregateRoot&lt;TAuthenticationToken&gt; boundaries. </para><para>* The responsibilities of each IAggregateRoot&lt;TAuthenticationToken&gt;. </para><para>* What you can get away with doing in a read side or in a saga. </para><para>* The actual non-functional requirements of your domain. </para><para>If you write a solution where two or more IAggregateRoot&lt;TAuthenticationToken&gt; are transactionally coupled, you have not understood IAggregateRoot&lt;TAuthenticationToken&gt;. </para><para>Why is the use of Guid as identifiers a good practice? </para><para>Because they are (reasonably) globally unique, and can be generated either by the server or by the client. </para><para>What is an Rsn and what is an Id? </para><para>Because few systems are truely green field and there is usually some existing system to operate with our framework identifies </para><para>Id properties as int typed properties from an external system </para><para>and Rsn properties as Guid typed properties for internal use. </para><para>An example might be </para><para>{ </para><para>Guid Rsn </para><para>string Name </para><para>Guid CategoryRsn </para><para>int CategoryId </para><para>} </para><para>Here the category can be referenced within the CQRS framework by it&apos;s Rsn Guid typed identifier, but still has a reference to the external systems int typed identifier value. </para><para>How can I get the Rsn for newly created IAggregateRoot&lt;TAuthenticationToken&gt;? </para><para>It&apos;s an important insight that the client can generate its own Rsns. </para><para>If the client generates a Guid and places it in the create-the-aggregate ICommand&lt;TAuthenticationToken&gt;, this is a non-issue. Otherwise, you have to listen to the the appropriate the-aggregate-was-created IEvent&lt;TAuthenticationToken&gt;, where the Rsn will appear be populated. </para><para>Should I allow references between IAggregateRoot&lt;TAuthenticationToken&gt;? </para><para>In the sense of an actual &quot;memory reference&quot;, absolutely not. </para><para>On the write side, an actual memory reference from one IAggregateRoot&lt;TAuthenticationToken&gt; to another is forbidden and wrong, since IAggregateRoot&lt;TAuthenticationToken&gt; by definition are not allowed to reach outside of themselves. (Allowing this would mean an IAggregateRoot&lt;TAuthenticationToken&gt; is no longer a transaction boundary, meaning we can no longer sanely reason about its ability to uphold its invariants; it would also preclude sharding of IAggregateRoot&lt;TAuthenticationToken&gt;.) </para><para>Referring to another IAggregateRoot&lt;TAuthenticationToken&gt; using an identifier is fine. It is useless on the write side (since the identifier must be treated as an opaque value, since IAggregateRoot&lt;TAuthenticationToken&gt; can not reach outside of themselves). Read sides may freely use such information, however, to do interesting correlations. </para><para>How can I validate a ICommand&lt;TAuthenticationToken&gt; across a group of IAggregateRoot&lt;TAuthenticationToken&gt;? </para><para>This is a common reaction to not being able to query across IAggregateRoot&lt;TAuthenticationToken&gt; anymore. There are several answers: </para><para>* Do client-side validation. </para><para>* Use a read side. </para><para>* Use a saga. </para><para>* If those are all completely impractical, then it&apos;s time to consider if you got your IAggregateRoot&lt;TAuthenticationToken&gt; boundaries correct. </para><para>How can I guarantee referential integrity across IAggregateRoot&lt;TAuthenticationToken&gt;? </para><para>You&apos;re still thinking in terms of foreign relations, not IAggregateRoot&lt;TAuthenticationToken&gt;. See last question. Also, remember that just because something would be in two tables in a relational design does not in any way suggest it should be two IAggregateRoot&lt;TAuthenticationToken&gt;. Designing an IAggregateRoot&lt;TAuthenticationToken&gt; is different. </para><para>How can I make sure a newly created user has a unique user name? </para><para>This is a commonly occurring question since we&apos;re explicitly not performing cross-aggregate operations on the write side. We do, however, have a number of options: </para><para>* Create a read-side of already allocated user names. Make the client query the read-side interactively as the user types in a name. </para><para>* Create a reactive saga to flag down and inactivate accounts that were nevertheless created with a duplicate user name. (Whether by extreme coincidence or maliciously or because of a faulty client.) </para><para>How can I verify that a customer identifier really exists when I place an order? </para><para>Assuming customer and order are IAggregateRoot&lt;TAuthenticationToken&gt; here, it&apos;s clear that the order IAggregateRoot&lt;TAuthenticationToken&gt; cannot really validate this, since that would mean reaching out of the IAggregateRoot&lt;TAuthenticationToken&gt;. </para><para>Checking up on it after the fact, in a saga or just in a read side that records &quot;broken&quot; orders, is one option. After all, the most important thing about an order is actually recording it, and presumably any interesting data about the recipient of the order is being copied into the order IAggregateRoot&lt;TAuthenticationToken&gt; (referring to the customer to find the address is bad design; the order was always made to be deliverd to a particular address, whether or not that customer changes their address in the future). </para><para>Being able to use what data was recorded in this broken order means you&apos;ve got a chance to rescue it and rectify the situation - which makes a good bit more business sense rather than dropping the order on the floor because a foreign key constraint was violated! </para><para>How can I update a set of IAggregateRoot&lt;TAuthenticationToken&gt; with a single ICommand&lt;TAuthenticationToken&gt;? </para><para>A single ICommand&lt;TAuthenticationToken&gt; can&apos;t act on a set of IAggregateRoot&lt;TAuthenticationToken&gt;. It just can&apos;t. </para><para>First off, ask yourself whether you really need to update several IAggregateRoot&lt;TAuthenticationToken&gt; using just one ICommand&lt;TAuthenticationToken&gt;. What in the situation makes this a requirement? </para><para>However, here&apos;s what you could do. Allow a new kind of &quot;bulk command&quot;, conceptually containing the command you want to issue, and a set of IAggregateRoot&lt;TAuthenticationToken&gt; (specified either explicitly or implicitly) that you want to issue it on. The write side isn&apos;t powerful enough to make the bulk action, but it&apos;s able to create a corresponding &quot;bulk event&quot;. A saga captures the event, and issues the ICommand&lt;TAuthenticationToken&gt; on each of the specified IAggregateRoot&lt;TAuthenticationToken&gt;s. The saga can do rollback or send an email, as appropriate, if some of the ICommand&lt;TAuthenticationToken&gt; fail. </para><para>There are some advantages to this approach: we store the intent of the bulk action in the event store. The saga automates rollback or equivalent. </para><para>Still, having to resort to this solution is a strong indication that your IAggregateRoot&lt;TAuthenticationToken&gt; boundaries are not drawn correctly. You might want to consider changing your IAggregateRoot&lt;TAuthenticationToken&gt; boundaries rather than building a saga for this. </para><para>What is sharding? </para><para>A way to distribute large amounts of IAggregateRoot&lt;TAuthenticationToken&gt; on several write-side nodes. We can shard IAggregateRoot&lt;TAuthenticationToken&gt; easily because they are completely self-reliant. </para><para>We can shard IAggregateRoot&lt;TAuthenticationToken&gt; easily because they don&apos;t have any external references. </para><para>Can an IAggregateRoot&lt;TAuthenticationToken&gt; send an IEvent&lt;TAuthenticationToken&gt; to another IAggregateRoot&lt;TAuthenticationToken&gt;? </para><para>No. </para><para>The factoring of your IAggregateRoot&lt;TAuthenticationToken&gt; and ICommandHandler&lt;TAuthenticationToken,TCommand&gt; will typically already make this idea impossible to express in code. But there&apos;s a deeper philosophical reason: go back and re-read the first sentence in the answer to &quot;What is an &lt;see cref=&quot;<ref refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot" kindref="compound">IAggregateRoot</ref>{TAuthenticationToken}&quot;/&gt;?&quot;. If you manage to circumvent the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; and just push IEvent&lt;TAuthenticationToken&gt; into another IAggregateRoot&lt;TAuthenticationToken&gt; somehow, you will have taken away that IAggregateRoot&lt;TAuthenticationToken&gt;&apos;s chance to participate in validation of changes. That&apos;s ultimately why we only allow IEvent&lt;TAuthenticationToken&gt; to be created as a result of ICommand&lt;TAuthenticationToken&gt;s validated by a ICommandHandler&lt;TAuthenticationToken,TCommand&gt; on an IAggregateRoot&lt;TAuthenticationToken&gt;. </para><para>Can I call a read side from my IAggregateRoot&lt;TAuthenticationToken&gt;? </para><para>No. </para><para>How do I send e-mail in a CQRS system? </para><para>In an <ref refid="interfaceCqrs_1_1Events_1_1IEventHandler" kindref="compound">IEventHandler&lt;TAuthenticationToken,TEvent&gt;</ref> outside of the IAggregateRoot&lt;TAuthenticationToken&gt;. Do not do it in the ICommandHandler&lt;TAuthenticationToken,TCommand&gt;, as if the IEvent&lt;TAuthenticationToken&gt; artefacts are not persisted due to losing a race with another ICommand&lt;TAuthenticationToken&gt; then the email will have been sent on a false premise. </para><para>******************************************** </para><para>Also see <ulink url="http://cqrs.nu/Faq/aggregates">http://cqrs.nu/Faq/aggregates</ulink>. </para>    </detaileddescription>
     <inheritancegraph>
-      <node id="1297">
+      <node id="1389">
         <label>Cqrs::Snapshots::SnapshotAggregateRoot&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Snapshots_1_1SnapshotAggregateRoot"/>
-        <childnode refid="1295" relation="public-inheritance">
+        <childnode refid="1387" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1295">
+      <node id="1387">
         <label>Cqrs::Domain::AggregateRoot&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Domain_1_1AggregateRoot"/>
-        <childnode refid="1292" relation="public-inheritance">
+        <childnode refid="1384" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1294">
+      <node id="1386">
         <label>Cqrs::Akka::Domain::AkkaAggregateRootProxy&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRootProxy"/>
-        <childnode refid="1292" relation="public-inheritance">
+        <childnode refid="1384" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1293">
+      <node id="1385">
         <label>Cqrs::Akka::Domain::AkkaAggregateRoot&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot"/>
-        <childnode refid="1292" relation="public-inheritance">
+        <childnode refid="1384" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1296">
+      <node id="1388">
         <label>Cqrs::Domain::DtoAggregateRoot&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Domain_1_1DtoAggregateRoot"/>
-        <childnode refid="1295" relation="public-inheritance">
+        <childnode refid="1387" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1292">
+      <node id="1384">
         <label>Cqrs.Domain.IAggregateRoot&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot"/>
       </node>
     </inheritancegraph>
-    <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Domain/IAggregateRoot.cs" line="143" column="1" bodyfile="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Domain/IAggregateRoot.cs" bodystart="142" bodyend="171"/>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/IAggregateRoot.cs" line="143" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Domain/IAggregateRoot.cs" bodystart="142" bodyend="171"/>
     <listofallmembers>
       <member refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot_a22fda414613f5ac0d4371554d7d6473b_1a22fda414613f5ac0d4371554d7d6473b" prot="public" virt="non-virtual"><scope>Cqrs::Domain::IAggregateRoot</scope><name>GetUncommittedChanges</name></member>
       <member refid="interfaceCqrs_1_1Domain_1_1IAggregateRoot_a04aa3198f1371afa345a58e8fcb713d7_1a04aa3198f1371afa345a58e8fcb713d7" prot="public" virt="non-virtual"><scope>Cqrs::Domain::IAggregateRoot</scope><name>Id</name></member>

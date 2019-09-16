@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="interfaceCqrs_1_1Commands_1_1ICommandHandler" kind="interface" language="C#" prot="public">
+    <compoundname>Cqrs::Commands::ICommandHandler</compoundname>
+    <basecompoundref refid="interfaceCqrs_1_1Messages_1_1IMessageHandler" prot="public" virt="non-virtual">Cqrs.Messages.IMessageHandler&lt; TCommand &gt;</basecompoundref>
+    <basecompoundref refid="interfaceCqrs_1_1Commands_1_1ICommandHandle" prot="public" virt="non-virtual">Cqrs.Commands.ICommandHandle</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>TAuthenticationToken</type>
+      </param>
+      <param>
+        <type>in</type>
+        <declname>TCommand</declname>
+        <defname>TCommand</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+<para>An ICommandHandler&lt;TAuthenticationToken,TCommand&gt; receives an ICommand&lt;TAuthenticationToken&gt; and brokers a result from the appropriate IAggregateRoot&lt;TAuthenticationToken&gt;. &quot;A result&quot; is either a successful application of the command, or an exception. This is the common sequence of steps an ICommandHandler&lt;TAuthenticationToken,TCommand&gt; might follow: </para>    </briefdescription>
+    <detaileddescription>
+<para>Validate the ICommand&lt;TAuthenticationToken&gt; on its own merits. Ask an IAggregateRoot&lt;TAuthenticationToken&gt; to handle the ICommand&lt;TAuthenticationToken&gt;. If validation is successful, 0..n IEvent&lt;TAuthenticationToken&gt; artefacts (1 is common) are queued for publishing. Attempt to persist the new IEvent&lt;TAuthenticationToken&gt; artefacts. If there&apos;s a concurrency conflict during this step, either give up, or retry things. Dispatch the queued IEvent&lt;TAuthenticationToken&gt; artefacts. </para><para>Should a ICommandHandler&lt;TAuthenticationToken,TCommand&gt; affect one or several IAggregateRoot&lt;TAuthenticationToken&gt;s?</para><para>Only one.</para><para>Do I put logic in ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</para><para>Yes. Exactly what logic depends on your factoring. The logic for validating the ICommand&lt;TAuthenticationToken&gt; on its own merits always gets executed in the ICommandHandler&lt;TAuthenticationToken,TCommand&gt;, although we recommend refactoring these into an ICommandValidator&lt;TAuthenticationToken,TCommand&gt;. Provided validation is successful we recommend a more functional factoring, where the IAggregateRoot&lt;TAuthenticationToken&gt; exists independently of the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; and the next step would be to load the IAggregateRoot&lt;TAuthenticationToken&gt; from the IUnitOfWork&lt;TAuthenticationToken&gt; and request the IAggregateRoot&lt;TAuthenticationToken&gt; handle the ICommand&lt;TAuthenticationToken&gt; itself. The IUnitOfWork&lt;TAuthenticationToken&gt; should then have uncommitted IEvent&lt;TAuthenticationToken&gt; artefacts as a results of asking the IAggregateRoot&lt;TAuthenticationToken&gt; to handle the ICommand&lt;TAuthenticationToken&gt;. Finally the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; should instruct the IUnitOfWork&lt;TAuthenticationToken&gt; to IUnitOfWork&lt;TAuthenticationToken&gt;.Commit all uncommited IEvent&lt;TAuthenticationToken&gt; artefacts.</para><para>However you have it, the logic boils down to validation and some sequence of steps that lead to the ICommand&lt;TAuthenticationToken&gt; becoming an Exception or IEvent&lt;TAuthenticationToken&gt;(s). If you&apos;re tempted to go beyond this, see the rest of the remarks.</para><para>Can I call a read side (such as a read store, data store or IAggregateRepository&lt;TAuthenticationToken&gt;) from my ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</para><para>No.</para><para>Can I do logging, security, or auditing in my ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</para><para>Yes. The decorator pattern comes in handy here to separate those concerns neatly.</para><para>How are conflicts between concurrent ICommand&lt;TAuthenticationToken&gt;s handled in the ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</para><para>The place where the new IEvent&lt;TAuthenticationToken&gt; artefacts for the IAggregateRoot&lt;TAuthenticationToken&gt; are persisted is the only place in the system where we need to worry about concurrency conflicts. The IEventStore&lt;TAuthenticationToken&gt; knows the sequence number of the latest IEvent&lt;TAuthenticationToken&gt; applied on that IAggregateRoot&lt;TAuthenticationToken&gt;, and the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; knows the sequence number of the last IEvent&lt;TAuthenticationToken&gt; it read. If these numbers do not agree, it means some other thread or process got there first. The ICommandHandler&lt;TAuthenticationToken,TCommand&gt; can then load up the events again and make a new attempt.</para><para>Should I do things that have side-effects in the outside world (such as sending email) directly in a ICommandHandler&lt;TAuthenticationToken,TCommand&gt;?</para><para>No, since a concurrency conflict will mean the ICommandHandler&lt;TAuthenticationToken,TCommand&gt; logic will be run again. Do such things in an Apply IEvent&lt;TAuthenticationToken&gt; method in an IAggregateRoot&lt;TAuthenticationToken&gt;. <hruler/>
+ Also see <ulink url="http://cqrs.nu/Faq/command-handlers">http://cqrs.nu/Faq/command-handlers</ulink>. </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="1207">
+        <label>IMessageHandler&lt; TCommand &gt;</label>
+        <link refid="interfaceCqrs_1_1Messages_1_1IMessageHandler"/>
+      </node>
+      <node id="1208">
+        <label>ICommandHandle</label>
+        <link refid="interfaceCqrs_1_1Commands_1_1ICommandHandle"/>
+        <childnode refid="1209" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1209">
+        <label>IHandler</label>
+        <link refid="interfaceCqrs_1_1Messages_1_1IHandler"/>
+      </node>
+      <node id="1206">
+        <label>Cqrs.Commands.ICommandHandler&lt; TAuthenticationToken, in in TCommand &gt;</label>
+        <link refid="interfaceCqrs_1_1Commands_1_1ICommandHandler"/>
+        <childnode refid="1207" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1208" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1211">
+        <label>IMessageHandler&lt; TCommand &gt;</label>
+        <link refid="interfaceCqrs_1_1Messages_1_1IMessageHandler"/>
+      </node>
+      <node id="1212">
+        <label>ICommandHandle</label>
+        <link refid="interfaceCqrs_1_1Commands_1_1ICommandHandle"/>
+        <childnode refid="1213" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1213">
+        <label>IHandler</label>
+        <link refid="interfaceCqrs_1_1Messages_1_1IHandler"/>
+      </node>
+      <node id="1210">
+        <label>Cqrs.Commands.ICommandHandler&lt; TAuthenticationToken, in in TCommand &gt;</label>
+        <link refid="interfaceCqrs_1_1Commands_1_1ICommandHandler"/>
+        <childnode refid="1211" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1212" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Commands/ICommandHandler.cs" line="69" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Commands/ICommandHandler.cs" bodystart="65" bodyend="70"/>
+    <listofallmembers>
+      <member refid="interfaceCqrs_1_1Messages_1_1IMessageHandler_a4d68d2c919afce06ce893caabd73f424_1a4d68d2c919afce06ce893caabd73f424" prot="public" virt="non-virtual"><scope>Cqrs::Commands::ICommandHandler</scope><name>Handle</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

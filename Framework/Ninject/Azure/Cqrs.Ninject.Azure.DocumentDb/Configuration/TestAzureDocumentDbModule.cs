@@ -16,7 +16,8 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 	/// A <see cref="INinjectModule"/> that wires up <see cref="TestAzureDocumentDbDataStoreConnectionStringFactory"/> as the
 	/// <see cref="IAzureDocumentDbDataStoreConnectionStringFactory"/>.
 	/// </summary>
-	public class TestAzureDocumentDbModule : AzureDocumentDbModule
+	public class TestAzureDocumentDbModule
+		: AzureDocumentDbModule
 	{
 		/// <summary>
 		/// Register the all factories

@@ -20,6 +20,12 @@ namespace Cqrs.Events
 		: IEvent<TAuthenticationToken>
 	{
 		/// <summary>
+		/// The identity of the <see cref="ISaga{TAuthenticationToken}" /> being targeted.
+		/// </summary>
+		[DataMember]
+		Guid Rsn { get; set; }
+
+		/// <summary>
 		/// The <see cref="IEvent{TAuthenticationToken}"/> this <see cref="ISagaEvent{TAuthenticationToken}"/> encases.
 		/// </summary>
 		[DataMember]

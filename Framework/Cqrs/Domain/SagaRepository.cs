@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using cdmdotnet.Logging;
+using Cqrs.Commands;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
@@ -33,6 +34,11 @@ namespace Cqrs.Domain
 		protected IEventPublisher<TAuthenticationToken> Publisher { get; private set; }
 
 		/// <summary>
+		/// Gets or sets the Publisher used to publish an <see cref="ICommand{TAuthenticationToken}"/>
+		/// </summary>
+		protected ICommandPublisher<TAuthenticationToken> CommandPublisher { get; private set; }
+
+		/// <summary>
 		/// Gets or set the <see cref="IAggregateFactory"/>.
 		/// </summary>
 		protected IAggregateFactory SagaFactory { get; private set; }
@@ -45,11 +51,12 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Instantiates a new instance of <see cref="SagaRepository{TAuthenticationToken}"/>
 		/// </summary>
-		public SagaRepository(IAggregateFactory sagaFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICorrelationIdHelper correlationIdHelper)
+		public SagaRepository(IAggregateFactory sagaFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICommandPublisher<TAuthenticationToken> commandPublisher, ICorrelationIdHelper correlationIdHelper)
 		{
 			EventStore = eventStore;
 			Publisher = publisher;
 			CorrelationIdHelper = correlationIdHelper;
+			CommandPublisher = commandPublisher;
 			SagaFactory = sagaFactory;
 		}
 
@@ -63,8 +70,12 @@ namespace Cqrs.Domain
 			where TSaga : ISaga<TAuthenticationToken>
 		{
 			IList<ISagaEvent<TAuthenticationToken>> uncommittedChanges = saga.GetUncommittedChanges().ToList();
+			IEnumerable<ICommand<TAuthenticationToken>> commandsToPublish = saga.GetUnpublishedCommands();
 			if (!uncommittedChanges.Any())
+			{
+				PublishCommand(commandsToPublish);
 				return;
+			}
 
 			if (expectedVersion != null)
 			{
@@ -79,9 +90,9 @@ namespace Cqrs.Domain
 			int version = saga.Version;
 			foreach (ISagaEvent<TAuthenticationToken> @event in uncommittedChanges)
 			{
-				if (@event.Id == Guid.Empty)
-					@event.Id = saga.Id;
-				if (@event.Id == Guid.Empty)
+				if (@event.Rsn == Guid.Empty)
+					@event.Rsn = saga.Id;
+				if (@event.Rsn == Guid.Empty)
 					throw new AggregateOrEventMissingIdException(saga.GetType(), @event.GetType());
 
 				i++;
@@ -97,6 +108,8 @@ namespace Cqrs.Domain
 			saga.MarkChangesAsCommitted();
 			foreach (ISagaEvent<TAuthenticationToken> @event in eventsToPublish)
 				PublishEvent(@event);
+
+			PublishCommand(commandsToPublish);
 		}
 
 		/// <summary>
@@ -105,6 +118,14 @@ namespace Cqrs.Domain
 		protected virtual void PublishEvent(ISagaEvent<TAuthenticationToken> @event)
 		{
 			Publisher.Publish(@event);
+		}
+
+		/// <summary>
+		/// Publish the <paramref name="commands"/>.
+		/// </summary>
+		protected virtual void PublishCommand(IEnumerable<ICommand<TAuthenticationToken>> commands)
+		{
+			CommandPublisher.Publish(commands);
 		}
 
 		/// <summary>
@@ -147,7 +168,7 @@ namespace Cqrs.Domain
 		protected virtual TSaga LoadSaga<TSaga>(Guid id, IList<ISagaEvent<TAuthenticationToken>> events = null)
 			where TSaga : ISaga<TAuthenticationToken>
 		{
-			var saga = SagaFactory.Create<TSaga>(id);
+			var saga = SagaFactory.Create<TSaga>(id, false);
 
 			LoadSagaHistory(saga, events);
 			return saga;
@@ -163,7 +184,7 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="ISaga{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-		/// <param name="throwExceptionOnNoEvents">If true will throw an instance of <see cref="AggregateNotFoundException{TSaga,TAuthenticationToken}"/> if no aggregate events or provided or found in the <see cref="EventStore"/>.</param>
+		/// <param name="throwExceptionOnNoEvents">If true will throw an instance of <see cref="SagaNotFoundException{TSaga,TAuthenticationToken}"/> if no aggregate events or provided or found in the <see cref="EventStore"/>.</param>
 		public virtual void LoadSagaHistory<TSaga>(TSaga saga, IList<ISagaEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)
 			where TSaga : ISaga<TAuthenticationToken>
 		{

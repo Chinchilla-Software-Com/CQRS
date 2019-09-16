@@ -24,18 +24,27 @@ using Microsoft.ServiceBus.Messaging;
 namespace Cqrs.Azure.ServiceBus
 {
 	/// <summary>
-	/// A <see cref="ICommandPublisher{TAuthenticationToken}"/> that resolves handlers , executes the handler and then publishes the <see cref="ICommand{TAuthenticationToken}"/> on the public command bus.
+	/// A <see cref="ICommandPublisher{TAuthenticationToken}"/> that resolves handlers , executes the handler and then publishes the <see cref="ICommand{TAuthenticationToken}"/> on the private command bus.
 	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	// The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
-	public class AzureCommandBusPublisher<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, IPublishAndWaitCommandPublisher<TAuthenticationToken>
+	public class AzureCommandBusPublisher<TAuthenticationToken>
+		: AzureCommandBus<TAuthenticationToken>
+		, IPublishAndWaitCommandPublisher<TAuthenticationToken>
 	{
-		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureCommandBusPublisher{TAuthenticationToken}"/>.
+		/// </summary>
+		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper, IHashAlgorithmFactory hashAlgorithmFactory)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, hashAlgorithmFactory, true)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.CommandBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
 
+		/// <summary>
+		/// The debugger variable window value.
+		/// </summary>
 		internal string DebuggerDisplay
 		{
 			get
@@ -45,7 +54,7 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					connectionString = string.Concat(connectionString, "=", GetConnectionString());
 				}
-				catch { /**/ }
+				catch { /* */ }
 				return string.Format(CultureInfo.InvariantCulture, "{0}, PrivateTopicName : {1}, PrivateTopicSubscriptionName : {2}, PublicTopicName : {3}, PublicTopicSubscriptionName : {4}",
 					connectionString, PrivateTopicName, PrivateTopicSubscriptionName, PublicTopicName, PublicTopicSubscriptionName);
 			}
@@ -53,80 +62,216 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Implementation of ICommandPublisher<TAuthenticationToken>
 
+		/// <summary>
+		/// Publishes the provided <paramref name="command"/> on the command bus.
+		/// </summary>
 		public virtual void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
+			if (command == null)
+			{
+				Logger.LogDebug("No command to publish.");
+				return;
+			}
+			Type commandType = command.GetType();
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = "200";
-			bool wasSuccessfull = false;
+			bool mainWasSuccessfull = false;
+			bool telemeterOverall = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
-			string telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+			string telemetryName = string.Format("{0}/{1}/{2}", commandType.FullName, command.GetIdentity(), command.Id);
 			var telemeteredCommand = command as ITelemeteredMessage;
 			if (telemeteredCommand != null)
 				telemetryName = telemeteredCommand.TelemetryName;
-			telemetryName = string.Format("Command/{0}", telemetryName);
+			else
+				telemetryName = string.Format("Command/{0}", telemetryName);
 
 			try
 			{
 				if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
 					return;
 
-				try
-				{
-					var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
-					{
-						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-					};
-					brokeredMessage.Properties.Add("Type", command.GetType().FullName);
-					PrivateServiceBusPublisher.Send(brokeredMessage);
-				}
-				catch (QuotaExceededException exception)
-				{
-					responseCode = "429";
-					Logger.LogError("The size of the command being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
-					throw;
-				}
-				catch (Exception exception)
-				{
-					responseCode = "500";
-					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
-					throw;
-				}
+				bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(commandType);
+				bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(commandType);
 
-				Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
-				wasSuccessfull = true;
+				// We only add telemetry for overall operations if two occurred
+				telemeterOverall = isPublicBusRequired != null && isPublicBusRequired.Value && isPrivateBusRequired != null && isPrivateBusRequired.Value;
+
+				// Backwards compatibility and simplicity
+				bool wasSuccessfull;
+				Stopwatch stopWatch = Stopwatch.StartNew();
+				if ((isPublicBusRequired == null || !isPublicBusRequired.Value) && (isPrivateBusRequired == null || !isPrivateBusRequired.Value))
+				{
+					stopWatch.Restart();
+					responseCode = "200";
+					wasSuccessfull = false;
+					try
+					{
+						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, commandType, command);
+						int count = 1;
+						do
+						{
+							try
+							{
+								PublicServiceBusPublisher.Send(brokeredMessage);
+								break;
+							}
+							catch (TimeoutException)
+							{
+								if (count >= TimeoutOnSendRetryMaximumCount)
+									throw;
+							}
+							count++;
+						} while (true);
+						wasSuccessfull = true;
+					}
+					catch (QuotaExceededException exception)
+					{
+						responseCode = "429";
+						Logger.LogError("The size of the command being sent was too large or the topic has reached it's limit.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+						throw;
+					}
+					catch (Exception exception)
+					{
+						responseCode = "500";
+						Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+						throw;
+					}
+					finally
+					{
+						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Command", telemetryName, "Default Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+					}
+					Logger.LogDebug(string.Format("An command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+				}
+				if ((isPublicBusRequired != null && isPublicBusRequired.Value))
+				{
+					stopWatch.Restart();
+					responseCode = "200";
+					wasSuccessfull = false;
+					try
+					{
+						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, commandType, command);
+						int count = 1;
+						do
+						{
+							try
+							{
+								PublicServiceBusPublisher.Send(brokeredMessage);
+								break;
+							}
+							catch (TimeoutException)
+							{
+								if (count >= TimeoutOnSendRetryMaximumCount)
+									throw;
+							}
+							count++;
+						} while (true);
+						wasSuccessfull = true;
+					}
+					catch (QuotaExceededException exception)
+					{
+						responseCode = "429";
+						Logger.LogError("The size of the command being sent was too large or the topic has reached it's limit.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+						throw;
+					}
+					catch (Exception exception)
+					{
+						responseCode = "500";
+						Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+						throw;
+					}
+					finally
+					{
+						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Command", telemetryName, "Public Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+					}
+					Logger.LogDebug(string.Format("An command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+				}
+				if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
+				{
+					stopWatch.Restart();
+					responseCode = "200";
+					wasSuccessfull = false;
+					try
+					{
+						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, commandType, command);
+						int count = 1;
+						do
+						{
+							try
+							{
+								PrivateServiceBusPublisher.Send(brokeredMessage);
+								break;
+							}
+							catch (TimeoutException)
+							{
+								if (count >= TimeoutOnSendRetryMaximumCount)
+									throw;
+							}
+							count++;
+						} while (true);
+						wasSuccessfull = true;
+					}
+					catch (QuotaExceededException exception)
+					{
+						responseCode = "429";
+						Logger.LogError("The size of the command being sent was too large or the topic has reached it's limit.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+						throw;
+					}
+					catch (Exception exception)
+					{
+						responseCode = "500";
+						Logger.LogError("An issue occurred while trying to publish an command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
+						throw;
+					}
+					finally
+					{
+						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Command", telemetryName, "Private Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+					}
+
+					Logger.LogDebug(string.Format("An command was published on the private bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+				}
+				mainWasSuccessfull = true;
 			}
 			finally
 			{
 				mainStopWatch.Stop();
-				TelemetryHelper.TrackDependency("Azure/Servicebus/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+				if (telemeterOverall)
+					TelemetryHelper.TrackDependency("Azure/Servicebus/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, mainWasSuccessfull, telemetryProperties);
 			}
 		}
 
-		public virtual void Send<TCommand>(TCommand command)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			Publish(command);
-		}
-
+		/// <summary>
+		/// Publishes the provided <paramref name="commands"/> on the command bus.
+		/// </summary>
 		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
+			if (commands == null)
+			{
+				Logger.LogDebug("No commands to publish.");
+				return;
+			}
 			IList<TCommand> sourceCommands = commands.ToList();
+			if (!sourceCommands.Any())
+			{
+				Logger.LogDebug("An empty collection of commands to publish.");
+				return;
+			}
 
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = "200";
-			bool wasSuccessfull = false;
+			bool mainWasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
 			string telemetryName = "Commands";
 			string telemetryNames = string.Empty;
 			foreach (TCommand command in sourceCommands)
 			{
-				string subTelemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+				Type commandType = command.GetType();
+				string subTelemetryName = string.Format("{0}/{1}", commandType.FullName, command.Id);
 				var telemeteredCommand = command as ITelemeteredMessage;
 				if (telemeteredCommand != null)
 					subTelemetryName = telemeteredCommand.TelemetryName;
@@ -139,55 +284,135 @@ namespace Cqrs.Azure.ServiceBus
 			try
 			{
 				IList<string> sourceCommandMessages = new List<string>();
-				IList<BrokeredMessage> brokeredMessages = new List<BrokeredMessage>(sourceCommands.Count);
+				IList<BrokeredMessage> privateBrokeredMessages = new List<BrokeredMessage>(sourceCommands.Count);
+				IList<BrokeredMessage> publicBrokeredMessages = new List<BrokeredMessage>(sourceCommands.Count);
 				foreach (TCommand command in sourceCommands)
 				{
+					Type commandType = command.GetType();
 					if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
 						continue;
 
-					var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
-					{
-						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-					};
-					brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, commandType, command);
 
-					brokeredMessages.Add(brokeredMessage);
-					sourceCommandMessages.Add(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+					bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(commandType);
+					bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(commandType);
+
+					// Backwards compatibility and simplicity
+					if ((isPublicBusRequired == null || !isPublicBusRequired.Value) && (isPrivateBusRequired == null || !isPrivateBusRequired.Value))
+					{
+						publicBrokeredMessages.Add(brokeredMessage);
+						sourceCommandMessages.Add(string.Format("A command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+					}
+					if ((isPublicBusRequired != null && isPublicBusRequired.Value))
+					{
+						publicBrokeredMessages.Add(brokeredMessage);
+						sourceCommandMessages.Add(string.Format("A command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+					}
+					if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
+					{
+						privateBrokeredMessages.Add(brokeredMessage);
+						sourceCommandMessages.Add(string.Format("A command was published on the private bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+					}
 				}
 
+				bool wasSuccessfull;
+				Stopwatch stopWatch = Stopwatch.StartNew();
+
+				// Backwards compatibility and simplicity
+				stopWatch.Restart();
+				responseCode = "200";
+				wasSuccessfull = false;
 				try
 				{
-					PrivateServiceBusPublisher.SendBatch(brokeredMessages);
+					int count = 1;
+					do
+					{
+						try
+						{
+							if (publicBrokeredMessages.Any())
+								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
+							else
+								Logger.LogDebug("An empty collection of public commands to publish post validation.");
+							break;
+						}
+						catch (TimeoutException)
+						{
+							if (count >= TimeoutOnSendRetryMaximumCount)
+								throw;
+						}
+						count++;
+					} while (true);
+					wasSuccessfull = true;
 				}
 				catch (QuotaExceededException exception)
 				{
 					responseCode = "429";
-					Logger.LogError("The size of the command being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Commands", sourceCommands } });
+					Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Command", publicBrokeredMessages } });
 					throw;
 				}
 				catch (Exception exception)
 				{
 					responseCode = "500";
-					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Commands", sourceCommands } });
+					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", publicBrokeredMessages } });
 					throw;
+				}
+				finally
+				{
+					TelemetryHelper.TrackDependency("Azure/Servicebus/CommandBus", "Command", telemetryName, "Public Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+				}
+
+				stopWatch.Restart();
+				responseCode = "200";
+				wasSuccessfull = false;
+				try
+				{
+					int count = 1;
+					do
+					{
+						try
+						{
+							if (privateBrokeredMessages.Any())
+								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
+							else
+								Logger.LogDebug("An empty collection of private commands to publish post validation.");
+							break;
+						}
+						catch (TimeoutException)
+						{
+							if (count >= TimeoutOnSendRetryMaximumCount)
+								throw;
+						}
+						count++;
+					} while (true);
+					wasSuccessfull = true;
+				}
+				catch (QuotaExceededException exception)
+				{
+					responseCode = "429";
+					Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Command", privateBrokeredMessages } });
+					throw;
+				}
+				catch (Exception exception)
+				{
+					responseCode = "500";
+					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", privateBrokeredMessages } });
+					throw;
+				}
+				finally
+				{
+					TelemetryHelper.TrackDependency("Azure/Servicebus/CommandBus", "Command", telemetryName, "Private Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 				}
 
 				foreach (string message in sourceCommandMessages)
 					Logger.LogInfo(message);
 
-				wasSuccessfull = true;
+				mainWasSuccessfull = true;
 			}
 			finally
 			{
 				mainStopWatch.Stop();
-				TelemetryHelper.TrackDependency("Azure/Servicebus/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+				TelemetryHelper.TrackDependency("Azure/Servicebus/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, mainWasSuccessfull, telemetryProperties);
 			}
-		}
-
-		public virtual void Send<TCommand>(IEnumerable<TCommand> commands)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			Publish(commands);
 		}
 
 		/// <summary>
@@ -250,13 +475,19 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout,
 			IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
 		{
+			if (command == null)
+			{
+				Logger.LogDebug("No command to publish.");
+				return (TEvent)(object)null;
+			}
+			Type commandType = command.GetType();
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = "200";
 			bool wasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
-			string telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+			string telemetryName = string.Format("{0}/{1}", commandType.FullName, command.Id);
 			var telemeteredCommand = command as ITelemeteredMessage;
 			if (telemeteredCommand != null)
 				telemetryName = telemeteredCommand.TelemetryName;
@@ -276,12 +507,22 @@ namespace Cqrs.Azure.ServiceBus
 
 				try
 				{
-					var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseCommand(command))
+					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, commandType, command);
+					int count = 1;
+					do
 					{
-						CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
-					};
-					brokeredMessage.Properties.Add("Type", command.GetType().FullName);
-					PrivateServiceBusPublisher.Send(brokeredMessage);
+						try
+						{
+							PrivateServiceBusPublisher.Send(brokeredMessage);
+							break;
+						}
+						catch (TimeoutException)
+						{
+							if (count >= TimeoutOnSendRetryMaximumCount)
+								throw;
+						}
+						count++;
+					} while (true);
 				}
 				catch (QuotaExceededException exception)
 				{
@@ -295,7 +536,7 @@ namespace Cqrs.Azure.ServiceBus
 					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
 					throw;
 				}
-				Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+				Logger.LogInfo(string.Format("A command was sent of type {0}.", commandType.FullName));
 				wasSuccessfull = true;
 			}
 			finally

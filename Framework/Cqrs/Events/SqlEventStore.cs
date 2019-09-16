@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Linq;
 using System.Linq;
 using cdmdotnet.Logging;
@@ -24,7 +25,8 @@ namespace Cqrs.Events
 	/// A simplified SqlServer based <see cref="EventStore{TAuthenticationToken}"/> that uses LinqToSql and follows a rigid schema.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class SqlEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken> 
+	public class SqlEventStore<TAuthenticationToken>
+		: EventStore<TAuthenticationToken> 
 	{
 		internal const string SqlEventStoreDbFileOrServerOrConnectionApplicationKey = @"SqlEventStoreDbFileOrServerOrConnection";
 
@@ -33,6 +35,8 @@ namespace Cqrs.Events
 		internal const string OldSqlEventStoreGetByCorrelationIdCommandTimeout = @"SqlEventStoreGetByCorrelationIdCommandTimeout";
 
 		internal const string SqlEventStoreGetByCorrelationIdCommandTimeout = @"Cqrs.SqlEventStore.GetByCorrelationId.CommandTimeout";
+
+		internal const string SqlEventStoreTableNameApplicationKeyPattern = @"Cqrs.SqlEventStore.CustomTableNames.{0}";
 
 		/// <summary>
 		/// Gets or sets the <see cref="IConfigurationManager"/>.
@@ -61,7 +65,7 @@ namespace Cqrs.Events
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
-			using (DataContext dbDataContext = CreateDbDataContext())
+			using (DataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
 			{
 				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
 					.AsQueryable()
@@ -70,6 +74,76 @@ namespace Cqrs.Events
 
 				if (useLastEventOnly)
 					query = query.AsQueryable().Take(1);
+
+				return query
+					.Select(EventDeserialiser.Deserialise)
+					.ToList();
+			}
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="version"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="version">Load events up-to and including from this version</param>
+		public override IEnumerable<IEvent<TAuthenticationToken>> GetToVersion(Type aggregateRootType, Guid aggregateId, int version)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			using (DataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+			{
+				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
+					.AsQueryable()
+					.Where(eventData => eventData.AggregateId == streamName && eventData.Version <= version)
+					.OrderByDescending(eventData => eventData.Version);
+
+				return query
+					.Select(EventDeserialiser.Deserialise)
+					.ToList();
+			}
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="versionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		public override IEnumerable<IEvent<TAuthenticationToken>> GetToDate(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			using (DataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+			{
+				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
+					.AsQueryable()
+					.Where(eventData => eventData.AggregateId == streamName && eventData.Timestamp <= versionedDate)
+					.OrderByDescending(eventData => eventData.Version);
+
+				return query
+					.Select(EventDeserialiser.Deserialise)
+					.ToList();
+			}
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> from and including the provided <paramref name="fromVersionedDate"/> up to and including the provided <paramref name="toVersionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
+		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		public override IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			using (DataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+			{
+				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
+					.AsQueryable()
+					.Where(eventData => eventData.AggregateId == streamName && eventData.Timestamp >= fromVersionedDate && eventData.Timestamp <= toVersionedDate)
+					.OrderByDescending(eventData => eventData.Version);
 
 				return query
 					.Select(EventDeserialiser.Deserialise)
@@ -108,7 +182,7 @@ namespace Cqrs.Events
 		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
 		protected override void PersistEvent(EventData eventData)
 		{
-			using (DataContext dbDataContext = CreateDbDataContext())
+			using (DataContext dbDataContext = CreateDbDataContext(eventData.AggregateId.Substring(0, eventData.AggregateId.IndexOf("/", StringComparison.InvariantCultureIgnoreCase))))
 			{
 				Add(dbDataContext, eventData);
 			}
@@ -119,7 +193,7 @@ namespace Cqrs.Events
 		/// <summary>
 		/// Creates a new <see cref="DataContext"/> using connection string settings from <see cref="ConfigurationManager"/>.
 		/// </summary>
-		protected virtual DataContext CreateDbDataContext()
+		protected virtual DataContext CreateDbDataContext(string aggregateRootTypeName = null)
 		{
 			string connectionStringKey;
 			string applicationKey;
@@ -135,16 +209,26 @@ namespace Cqrs.Events
 			}
 			else
 			{
-				try
-				{
-					connectionStringKey = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey].ConnectionString;
-				}
-				catch (NullReferenceException exception)
-				{
-					throw new MissingConnectionStringException(applicationKey, exception);
-				}
+				ConnectionStringSettings connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey];
+				if (connectionString == null)
+					throw new MissingConnectionStringException(applicationKey);
+				connectionStringKey = connectionString.ConnectionString;
 			}
-			return new DataContext(connectionStringKey);
+
+			string tableName;
+			if (!string.IsNullOrWhiteSpace(aggregateRootTypeName) && ConfigurationManager.TryGetSetting(string.Format(SqlEventStoreTableNameApplicationKeyPattern, aggregateRootTypeName), out tableName) && !string.IsNullOrEmpty(tableName))
+			{
+				bool autoname;
+				if (bool.TryParse(tableName, out autoname))
+				{
+					if (autoname)
+						return SqlEventStoreDataContext.New<EventData>(aggregateRootTypeName.Replace(".", "_"), connectionStringKey);
+				}
+				else
+					return SqlEventStoreDataContext.New<EventData>(tableName, connectionStringKey);
+			}
+
+			return new SqlEventStoreDataContext(connectionStringKey);
 		}
 
 		/// <summary>

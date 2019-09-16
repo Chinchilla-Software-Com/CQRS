@@ -12,29 +12,62 @@ using System.Linq;
 using System.Text;
 using Cqrs.Configuration;
 using cdmdotnet.Logging;
+using Cqrs.DataStores;
+using Cqrs.Exceptions;
 
 namespace Cqrs.Azure.BlobStorage.DataStores
 {
+	/// <summary>
+	/// A factory for getting connection strings and container names for <see cref="IDataStore{TData}"/> access.
+	/// This factory supports reading and writing from separate storage accounts. Specifically you can have as many different storage accounts as you want to configure when writing.
+	/// This allows for manual mirroring of data while reading from the fastest/closest location possible.
+	/// </summary>
 	public class TableStorageDataStoreConnectionStringFactory : ITableStorageDataStoreConnectionStringFactory
 	{
+		/// <summary>
+		/// The name of the app setting in <see cref="IConfigurationManager"/> that will have the connection string of the readable storage account if using a separate storage account for reads and writes.
+		/// </summary>
 		public static string TableStorageReadableDataStoreConnectionStringKey = "Cqrs.Azure.TableStorage.DataStore.Read.ConnectionStringName";
 
+		/// <summary>
+		/// The name of the app setting in <see cref="IConfigurationManager"/> that will have the connection string of the writeable storage account if using a separate storage account for reads and writes.
+		/// This value gets appended with a ".1", ".2" etc allowing you to write to as many different locations as possible.
+		/// </summary>
 		public static string TableStorageWritableDataStoreConnectionStringKey = "Cqrs.Azure.TableStorage.DataStore.Write.ConnectionStringName";
 
+		/// <summary>
+		/// The name of the app setting in <see cref="IConfigurationManager"/> that will have the connection string if using a single storage account for both reads and writes.
+		/// </summary>
 		public static string TableStorageDataStoreConnectionStringKey = "Cqrs.Azure.TableStorage.DataStore.ConnectionStringName";
 
+		/// <summary>
+		/// The name of the app setting in <see cref="IConfigurationManager"/> that will have the base name of the container used.
+		/// </summary>
 		public static string TableStorageBaseContainerNameKey = "Cqrs.Azure.TableStorage.DataStore.BaseContainerName";
 
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="TableStorageDataStoreConnectionStringFactory"/>.
+		/// </summary>
 		public TableStorageDataStoreConnectionStringFactory(IConfigurationManager configurationManager, ILogger logger)
 		{
 			ConfigurationManager = configurationManager;
 			Logger = logger;
 		}
 
+		/// <summary>
+		/// Gets all writeable connection strings. If using a single storage account, then <see cref="TableStorageDataStoreConnectionStringKey"/> will most likely be returned.
+		/// If a value for <see cref="TableStorageWritableDataStoreConnectionStringKey"/> is found, it will append ".1", ".2" etc returning any additionally found connection string values in <see cref="ConfigurationManager"/>.
+		/// </summary>
 		public virtual IEnumerable<string> GetWritableConnectionStrings()
 		{
 			Logger.LogDebug("Getting table storage writeable connection strings", "TableStorageDataStoreConnectionStringFactory\\GetWritableConnectionStrings");
@@ -65,7 +98,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 			}
 			catch (NullReferenceException exception)
 			{
-				throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the cloud storage connection string.", TableStorageDataStoreConnectionStringKey), exception);
+				throw new MissingApplicationSettingException(TableStorageDataStoreConnectionStringKey, string.Format("No application setting named '{0}' was found in the configuration file with the cloud storage connection string.", TableStorageDataStoreConnectionStringKey), exception);
 			}
 			finally
 			{
@@ -73,6 +106,10 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Gets the readable connection string. If using a single storage account, then <see cref="TableStorageDataStoreConnectionStringKey"/> will most likely be returned.
+		/// If a value for <see cref="TableStorageReadableDataStoreConnectionStringKey"/> is found, that will be returned instead.
+		/// </summary>
 		public virtual string GetReadableConnectionString()
 		{
 			Logger.LogDebug("Getting table storage readable connection strings", "TableStorageDataStoreConnectionStringFactory\\GetReadableConnectionStrings");
@@ -92,7 +129,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 			}
 			catch (NullReferenceException exception)
 			{
-				throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the cloud storage connection string.", TableStorageDataStoreConnectionStringKey), exception);
+				throw new MissingApplicationSettingException(TableStorageDataStoreConnectionStringKey, string.Format("No application setting named '{0}' was found in the configuration file with the cloud storage connection string.", TableStorageDataStoreConnectionStringKey), exception);
 			}
 			finally
 			{
@@ -100,6 +137,10 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Returns the name of the base contain to be used.
+		/// This will be the value from <see cref="ConfigurationManager"/> keyed <see cref="TableStorageBaseContainerNameKey"/>.
+		/// </summary>
 		public string GetBaseContainerName()
 		{
 			Logger.LogDebug("Getting table storage base container name", "TableStorageDataStoreConnectionStringFactory\\GetContainerName");
@@ -114,7 +155,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 			}
 			catch (NullReferenceException exception)
 			{
-				throw new NullReferenceException(string.Format("No application setting named '{0}' in the configuration file.", TableStorageBaseContainerNameKey), exception);
+				throw new MissingApplicationSettingException(TableStorageBaseContainerNameKey, exception);
 			}
 			finally
 			{
@@ -122,6 +163,10 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Returns <see cref="GetBaseContainerName"/>.
+		/// </summary>
+		/// <returns><see cref="GetBaseContainerName"/></returns>
 		public virtual string GetContainerName()
 		{
 			return GetBaseContainerName();
@@ -133,6 +178,11 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 			'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
 			'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
 		};
+
+		/// <summary>
+		/// Generates the name of the table for <typeparamref name="TData"/> that matches naming rules for Azure Storage.
+		/// </summary>
+		/// <typeparam name="TData">The <see cref="Type"/> of data to read or write.</typeparam>
 		/// <remarks>https://blogs.msdn.microsoft.com/jmstall/2014/06/12/azure-storage-naming-rules/</remarks>
 		public virtual string GetTableName<TData>()
 		{

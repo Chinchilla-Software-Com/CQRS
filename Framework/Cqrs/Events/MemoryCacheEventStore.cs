@@ -112,6 +112,100 @@ namespace Cqrs.Events
 		}
 
 		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="version"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="version">Load events up-to and including from this version</param>
+		public override IEnumerable<IEvent<TAuthenticationToken>> GetToVersion(Type aggregateRootType, Guid aggregateId, int version)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			if (!EventStoreByType.Contains(streamName))
+			{
+				Logger.LogDebug(string.Format("The event store has no items '{0}'.", streamName));
+				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
+			}
+
+			CacheItem item = EventStoreByType.GetCacheItem(streamName);
+			if (item == null)
+			{
+				Logger.LogDebug(string.Format("The event store had an item '{0}' but doesn't now.", streamName));
+				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
+			}
+
+			var events = item.Value as IEnumerable<EventData>;
+			if (events == null)
+			{
+				if (item.Value == null)
+					Logger.LogDebug(string.Format("The event store had an item '{0}' but it was null.", streamName));
+				else
+					Logger.LogWarning(string.Format("The event store had an item '{0}' but it was of type {1}.", streamName, item.Value.GetType()));
+				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
+			}
+			IEnumerable<EventData> query = events
+				.Where(eventData => eventData.Version <= version)
+				.OrderByDescending(eventData => eventData.Version);
+
+			return query
+				.Select(EventDeserialiser.Deserialise)
+				.ToList();
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="versionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		public override IEnumerable<IEvent<TAuthenticationToken>> GetToDate(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			if (!EventStoreByType.Contains(streamName))
+			{
+				Logger.LogDebug(string.Format("The event store has no items '{0}'.", streamName));
+				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
+			}
+
+			CacheItem item = EventStoreByType.GetCacheItem(streamName);
+			if (item == null)
+			{
+				Logger.LogDebug(string.Format("The event store had an item '{0}' but doesn't now.", streamName));
+				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
+			}
+
+			var events = item.Value as IEnumerable<EventData>;
+			if (events == null)
+			{
+				if (item.Value == null)
+					Logger.LogDebug(string.Format("The event store had an item '{0}' but it was null.", streamName));
+				else
+					Logger.LogWarning(string.Format("The event store had an item '{0}' but it was of type {1}.", streamName, item.Value.GetType()));
+				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
+			}
+			IEnumerable<EventData> query = events
+				.Where(eventData => eventData.Timestamp <= versionedDate)
+				.OrderByDescending(eventData => eventData.Version);
+
+			return query
+				.Select(EventDeserialiser.Deserialise)
+				.ToList();
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> from and including the provided <paramref name="fromVersionedDate"/> up to and including the provided <paramref name="toVersionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
+		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		public override IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
 		/// Get all <see cref="IEvent{TAuthenticationToken}"/> instances for the given <paramref name="correlationId"/>.
 		/// </summary>
 		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>

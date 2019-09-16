@@ -6,7 +6,7 @@
 
 	private string TemplateHelperVersionNumber
 	{
-		get { return "1.601.932"; }
+		get { return "1.500.0.1"; }
 	}
 	
 	private string WebsiteURL
@@ -89,12 +89,7 @@
 		return element.IsAbstract ? " abstract" : string.Empty;
 	}
 
-	private string GetFullDisplayType(IMultiplicityElement property)
-	{
-		return this.GetFullDisplayType(property, true);
-	}
-	
-	private string GetFullDisplayType(IMultiplicityElement property, bool onlyStructAsNullable)
+	private string GetFullDisplayType(IMultiplicityElement property, bool onlyStructAsNullable = true, bool editableCollection = false)
 	{
 		var typedProperty = property as ITypedElement;
 
@@ -105,6 +100,7 @@
 		bool isStruct = false;
 		bool isEnum = false;
 		bool isEntity = false;
+		bool isAggregate = false;
 
 		typeName = ElementType(typedProperty);
 		if (typeName.StartsWith("Root::"))
@@ -116,12 +112,13 @@
 		canBeMultiple = property.UpperValue != null ? property.UpperValue.ToString() == "*" : false;
 		isStruct = typedProperty != null && typedProperty.Type != null && (typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Struct", StringComparison.InvariantCultureIgnoreCase)) || typeName == "int" || typeName == "integer");
 		isEnum = (typedProperty.Type as IEnumeration) != null;
-		isEntity = typedProperty != null && typedProperty.Type != null && typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Entity", StringComparison.InvariantCultureIgnoreCase) && !typedProperty.Type.Name.EndsWith("Entity"));
+		isEntity = typedProperty != null && typedProperty.Type != null && typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("Entity", StringComparison.InvariantCultureIgnoreCase) && !typeName .EndsWith("Entity"));
+		isAggregate = typedProperty != null && typedProperty.Type != null && typedProperty.Type.AppliedStereotypes.Any(p => p.Name.Equals("AggregateRoot", StringComparison.InvariantCultureIgnoreCase) && !typedProperty.Name.EndsWith("Entity"));
 
 		return string.Format("{0}{1}{2}{3}{4}"
-			, canBeMultiple && isUnique ? "ICollection<" : canBeMultiple ? "IEnumerable<" : string.Empty
+			, canBeMultiple && isUnique ? editableCollection ? "IList<" : "ICollection<" : canBeMultiple ? editableCollection ? "IList<" : "IEnumerable<" : string.Empty
 			, typeName
-			, isEntity ? "Entity" : string.Empty
+			, isEntity && isAggregate ? "Entity" : string.Empty
 			, canBeMultiple ? ">" : string.Empty
 			, !canBeMultiple && canBeEmpty && (!onlyStructAsNullable || isStruct || isEnum) ? "?" : string.Empty);
 	}
@@ -304,6 +301,14 @@
 		if (aggregateStereoTypeProperties != null)
 		{
 			var propertyInstance = aggregateStereoTypeProperties.PropertyInstances.SingleOrDefault(property => property.Name == "AggregateTechnology");
+			if (propertyInstance != null)
+				aggregateTechnology = propertyInstance.Value;
+		}
+
+		var sagaStereoTypeProperties = t.AppliedStereotypes.SingleOrDefault(property => property.Name == "Saga");
+		if (sagaStereoTypeProperties != null)
+		{
+			var propertyInstance = sagaStereoTypeProperties.PropertyInstances.SingleOrDefault(property => property.Name == "EventTechnology");
 			if (propertyInstance != null)
 				aggregateTechnology = propertyInstance.Value;
 		}

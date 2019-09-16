@@ -81,7 +81,7 @@ namespace <#= classNamespace #>
 	/// A <see cref="DataContractResolver"/> for using <see cref="I<#= className #>.<#= collectionMethod.Name #>"/> via WCF
 	/// </summary>
 	<#= GetGeneratedCodeAttribute() #>
-	public partial class <#= className #><#= collectionMethod.Name #>Resolver : ServiceParameterResolver<I<#= className #>, <#= authenticationTokenType #>>
+	public partial class <#= className #><#= collectionMethod.Name #>Resolver : BasicServiceParameterResolver<I<#= className #>, <#= authenticationTokenType #>>
 	{
 		public <#= className #><#= collectionMethod.Name #>Resolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
 			: base(singleSignOnTokenResolver, eventDataResolver)
@@ -99,7 +99,7 @@ authenticationTokenTypeResolver = authenticationTokenTypeResolver + "Resolver";
 }
 #>
 		public <#= className #><#= collectionMethod.Name #>Resolver()
-			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
+			: base(new EventDataResolver<<#= authenticationTokenType #>>())
 		{
 		}
 

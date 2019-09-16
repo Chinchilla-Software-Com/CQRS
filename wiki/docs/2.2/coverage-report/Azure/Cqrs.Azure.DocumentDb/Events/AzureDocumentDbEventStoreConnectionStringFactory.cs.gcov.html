@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">7</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-01</td>
+            <td class="headerValue">2017-09-22</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -67,56 +67,84 @@
 <span class="lineNum">       9 </span>            : using System;
 <span class="lineNum">      10 </span>            : using cdmdotnet.Logging;
 <span class="lineNum">      11 </span>            : using Cqrs.Configuration;
-<span class="lineNum">      12 </span>            : using Microsoft.Azure.Documents.Client;
-<span class="lineNum">      13 </span>            : 
-<span class="lineNum">      14 </span>            : namespace Cqrs.Azure.DocumentDb.Events
-<span class="lineNum">      15 </span>            : {
-<span class="lineNum">      16 </span>            :         public class AzureDocumentDbEventStoreConnectionStringFactory : IAzureDocumentDbEventStoreConnectionStringFactory
-<span class="lineNum">      17 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      18 </span>            :                 protected ILogger Logger { get; private set; }
-<span class="lineNum">      19 </span>            : 
-<span class="lineNum">      20 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
-<span class="lineNum">      21 </span>            : 
-<span class="lineNum">      22 </span><span class="lineNoCov">          0 :                 public AzureDocumentDbEventStoreConnectionStringFactory(ILogger logger, IConfigurationManager configurationManager)</span>
-<span class="lineNum">      23 </span>            :                 {
-<span class="lineNum">      24 </span>            :                         Logger = logger;
-<span class="lineNum">      25 </span>            :                         ConfigurationManager = configurationManager;
-<span class="lineNum">      26 </span>            :                 }
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span><span class="lineNoCov">          0 :                 public virtual DocumentClient GetEventStoreConnectionClient()</span>
-<span class="lineNum">      29 </span>            :                 {
-<span class="lineNum">      30 </span>            :                         Logger.LogDebug(&quot;Getting Azure document client&quot;, &quot;AzureDocumentDbEventStoreConnectionStringFactory\\GetEventStoreConnectionClient&quot;);
-<span class="lineNum">      31 </span>            :                         try
-<span class="lineNum">      32 </span>            :                         {
-<span class="lineNum">      33 </span>            :                                 return new DocumentClient(GetEventStoreConnectionUrl(), GetEventStoreConnectionAuthorisationKey());
-<span class="lineNum">      34 </span>            :                         }
-<span class="lineNum">      35 </span>            :                         finally
-<span class="lineNum">      36 </span>            :                         {
-<span class="lineNum">      37 </span>            :                                 Logger.LogDebug(&quot;Getting Azure document client... Done&quot;, &quot;AzureDocumentDbEventStoreConnectionStringFactory\\GetEventStoreConnectionClient&quot;);
-<span class="lineNum">      38 </span>            :                         }
+<span class="lineNum">      12 </span>            : using Cqrs.Events;
+<span class="lineNum">      13 </span>            : using Microsoft.Azure.Documents.Client;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : namespace Cqrs.Azure.DocumentDb.Events
+<span class="lineNum">      16 </span>            : {
+<span class="lineNum">      17 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      18 </span>            :         /// A factory for getting connections and database names for &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; access.
+<span class="lineNum">      19 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      20 </span>            :         public class AzureDocumentDbEventStoreConnectionStringFactory : IAzureDocumentDbEventStoreConnectionStringFactory
+<span class="lineNum">      21 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      22 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ILogger&quot;/&gt;.
+<span class="lineNum">      24 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      25 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      28 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      30 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      33 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AzureDocumentDbEventStoreConnectionStringFactory&quot;/&gt;.
+<span class="lineNum">      34 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      35 </span><span class="lineCov">          1 :                 public AzureDocumentDbEventStoreConnectionStringFactory(ILogger logger, IConfigurationManager configurationManager)</span>
+<span class="lineNum">      36 </span>            :                 {
+<span class="lineNum">      37 </span>            :                         Logger = logger;
+<span class="lineNum">      38 </span>            :                         ConfigurationManager = configurationManager;
 <span class="lineNum">      39 </span>            :                 }
 <span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span><span class="lineNoCov">          0 :                 public virtual string GetEventStoreConnectionDatabaseName()</span>
-<span class="lineNum">      42 </span>            :                 {
-<span class="lineNum">      43 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.DatabaseName&quot;) ?? ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.LogStreamName&quot;) ?? &quot;CqrsEventStore&quot;;
-<span class="lineNum">      44 </span>            :                 }
-<span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span><span class="lineNoCov">          0 :                 public string GetEventStoreConnectionCollectionName()</span>
-<span class="lineNum">      47 </span>            :                 {
-<span class="lineNum">      48 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.CollectionName&quot;) ?? &quot;CqrsEventStore&quot;;
-<span class="lineNum">      49 </span>            :                 }
-<span class="lineNum">      50 </span>            : 
-<span class="lineNum">      51 </span><span class="lineNoCov">          0 :                 protected virtual Uri GetEventStoreConnectionUrl()</span>
-<span class="lineNum">      52 </span>            :                 {
-<span class="lineNum">      53 </span>            :                         return new Uri(ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.Url&quot;));
-<span class="lineNum">      54 </span>            :                 }
-<span class="lineNum">      55 </span>            : 
-<span class="lineNum">      56 </span><span class="lineNoCov">          0 :                 protected virtual string GetEventStoreConnectionAuthorisationKey()</span>
-<span class="lineNum">      57 </span>            :                 {
-<span class="lineNum">      58 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.AuthorisationKey&quot;);
-<span class="lineNum">      59 </span>            :                 }
-<span class="lineNum">      60 </span>            :         }
-<span class="lineNum">      61 </span>            : }
+<span class="lineNum">      41 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      42 </span>            :                 /// Gets the current &lt;see cref=&quot;DocumentClient&quot;/&gt;.
+<span class="lineNum">      43 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      44 </span><span class="lineCov">          1 :                 public virtual DocumentClient GetEventStoreConnectionClient()</span>
+<span class="lineNum">      45 </span>            :                 {
+<span class="lineNum">      46 </span>            :                         Logger.LogDebug(&quot;Getting Azure document client&quot;, &quot;AzureDocumentDbEventStoreConnectionStringFactory\\GetEventStoreConnectionClient&quot;);
+<span class="lineNum">      47 </span>            :                         try
+<span class="lineNum">      48 </span>            :                         {
+<span class="lineNum">      49 </span>            :                                 return new DocumentClient(GetEventStoreConnectionUrl(), GetEventStoreConnectionAuthorisationKey());
+<span class="lineNum">      50 </span>            :                         }
+<span class="lineNum">      51 </span>            :                         finally
+<span class="lineNum">      52 </span>            :                         {
+<span class="lineNum">      53 </span>            :                                 Logger.LogDebug(&quot;Getting Azure document client... Done&quot;, &quot;AzureDocumentDbEventStoreConnectionStringFactory\\GetEventStoreConnectionClient&quot;);
+<span class="lineNum">      54 </span>            :                         }
+<span class="lineNum">      55 </span>            :                 }
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      58 </span>            :                 /// Gets the current database name.
+<span class="lineNum">      59 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      60 </span><span class="lineCov">          1 :                 public virtual string GetEventStoreConnectionDatabaseName()</span>
+<span class="lineNum">      61 </span>            :                 {
+<span class="lineNum">      62 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.DatabaseName&quot;) ?? ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.LogStreamName&quot;) ?? &quot;CqrsEventStore&quot;;
+<span class="lineNum">      63 </span>            :                 }
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      66 </span>            :                 /// Gets the current collection name.
+<span class="lineNum">      67 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      68 </span><span class="lineCov">          1 :                 public string GetEventStoreConnectionCollectionName()</span>
+<span class="lineNum">      69 </span>            :                 {
+<span class="lineNum">      70 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.CollectionName&quot;) ?? &quot;CqrsEventStore&quot;;
+<span class="lineNum">      71 </span>            :                 }
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      74 </span>            :                 /// Gets the current connection &lt;see cref=&quot;Uri&quot;/&gt; from the &lt;see cref=&quot;ConfigurationManager&quot;/&gt;.
+<span class="lineNum">      75 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      76 </span><span class="lineCov">          1 :                 protected virtual Uri GetEventStoreConnectionUrl()</span>
+<span class="lineNum">      77 </span>            :                 {
+<span class="lineNum">      78 </span>            :                         return new Uri(ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.Url&quot;));
+<span class="lineNum">      79 </span>            :                 }
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      82 </span>            :                 /// Gets the current connection authorisation key from the &lt;see cref=&quot;ConfigurationManager&quot;/&gt;.
+<span class="lineNum">      83 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      84 </span><span class="lineCov">          1 :                 protected virtual string GetEventStoreConnectionAuthorisationKey()</span>
+<span class="lineNum">      85 </span>            :                 {
+<span class="lineNum">      86 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.AuthorisationKey&quot;);
+<span class="lineNum">      87 </span>            :                 }
+<span class="lineNum">      88 </span>            :         }
+<span class="lineNum">      89 </span>            : }
 </pre>
       </td>
     </tr>

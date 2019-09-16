@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">4</td>
             <td class="headerCovTableEntry">25</td>
-            <td class="headerCovTableEntryLo">16.0 %</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-01</td>
+            <td class="headerValue">2017-09-22</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -71,423 +71,500 @@
 <span class="lineNum">      13 </span>            : using System.Threading.Tasks;
 <span class="lineNum">      14 </span>            : using cdmdotnet.Logging;
 <span class="lineNum">      15 </span>            : using Cqrs.DataStores;
-<span class="lineNum">      16 </span>            : using Microsoft.WindowsAzure.Storage;
-<span class="lineNum">      17 </span>            : using Microsoft.WindowsAzure.Storage.Table;
-<span class="lineNum">      18 </span>            : 
-<span class="lineNum">      19 </span>            : namespace Cqrs.Azure.BlobStorage
-<span class="lineNum">      20 </span>            : {
-<span class="lineNum">      21 </span>            :         public abstract class TableStorageStore&lt;TData, TCollectionItemData&gt;
-<span class="lineNum">      22 </span>            :                 : StorageStore&lt;TData, CloudTable&gt;
-<span class="lineNum">      23 </span>            :                 , IDataStore&lt;TCollectionItemData&gt;
-<span class="lineNum">      24 </span>            :                 where TData : TableEntity, new()
-<span class="lineNum">      25 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      26 </span>            :                 public TableQuery&lt;TData&gt; Collection { get; private set; }
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      29 </span>            :                 /// Initializes a new instance of the &lt;see cref=&quot;TableStorageStore{TData,TCollectionItemData}&quot;/&gt; class using the specified container.
-<span class="lineNum">      30 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      31 </span><span class="lineCov">          1 :                 protected TableStorageStore(ILogger logger)</span>
-<span class="lineNum">      32 </span>            :                         : base(logger)
-<span class="lineNum">      33 </span>            :                 {
-<span class="lineNum">      34 </span>            :                 }
-<span class="lineNum">      35 </span>            : 
-<span class="lineNum">      36 </span>            :                 #region Overrides of StorageStore&lt;TData,CloudTable&gt;
-<span class="lineNum">      37 </span>            : 
-<span class="lineNum">      38 </span><span class="lineNoCov">          0 :                 protected override void Initialise(IStorageStoreConnectionStringFactory tableStorageDataStoreConnectionStringFactory)</span>
-<span class="lineNum">      39 </span>            :                 {
-<span class="lineNum">      40 </span>            :                         base.Initialise(tableStorageDataStoreConnectionStringFactory);
-<span class="lineNum">      41 </span>            :                         Collection = new TableQuery&lt;TData&gt;();
-<span class="lineNum">      42 </span>            :                 }
-<span class="lineNum">      43 </span>            : 
-<span class="lineNum">      44 </span>            :                 #endregion
-<span class="lineNum">      45 </span>            : 
-<span class="lineNum">      46 </span>            :                 #region Implementation of IEnumerable
-<span class="lineNum">      47 </span>            : 
-<span class="lineNum">      48 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      49 </span>            :                 /// Returns an enumerator that iterates through the collection.
-<span class="lineNum">      50 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      51 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">      52 </span>            :                 /// A &lt;see cref=&quot;T:System.Collections.Generic.IEnumerator`1&quot;/&gt; that can be used to iterate through the collection.
-<span class="lineNum">      53 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">      54 </span>            :                 IEnumerator&lt;TCollectionItemData&gt; IEnumerable&lt;TCollectionItemData&gt;.GetEnumerator()
-<span class="lineNum">      55 </span>            :                 {
-<span class="lineNum">      56 </span>            :                         throw new NotImplementedException(&quot;Use IEnumerable&lt;TData&gt;.GetEnumerator() directly&quot;);
-<span class="lineNum">      57 </span>            :                 }
-<span class="lineNum">      58 </span>            : 
-<span class="lineNum">      59 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      60 </span>            :                 /// Returns an enumerator that iterates through the collection.
-<span class="lineNum">      61 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      62 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">      63 </span>            :                 /// A &lt;see cref=&quot;T:System.Collections.Generic.IEnumerator`1&quot;/&gt; that can be used to iterate through the collection.
-<span class="lineNum">      64 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">      65 </span><span class="lineCov">          1 :                 public override IEnumerator&lt;TData&gt; GetEnumerator()</span>
-<span class="lineNum">      66 </span>            :                 {
-<span class="lineNum">      67 </span>            :                         return Collection.GetEnumerator();
-<span class="lineNum">      68 </span>            :                 }
-<span class="lineNum">      69 </span>            : 
-<span class="lineNum">      70 </span>            :                 #endregion
-<span class="lineNum">      71 </span>            : 
-<span class="lineNum">      72 </span>            :                 #region Implementation of IQueryable
-<span class="lineNum">      73 </span>            : 
-<span class="lineNum">      74 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      75 </span>            :                 /// Gets the expression tree that is associated with the instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
-<span class="lineNum">      76 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      77 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">      78 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.Expressions.Expression&quot;/&gt; that is associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
-<span class="lineNum">      79 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">      80 </span>            :                 public override Expression Expression
-<span class="lineNum">      81 </span>            :                 {
-<span class="lineNum">      82 </span>            :                         get
-<span class="lineNum">      83 </span>            :                         {
-<span class="lineNum">      84 </span>            :                                 return Collection.Expression;
-<span class="lineNum">      85 </span>            :                         }
-<span class="lineNum">      86 </span>            :                 }
-<span class="lineNum">      87 </span>            : 
-<span class="lineNum">      88 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      89 </span>            :                 /// Gets the type of the element(s) that are returned when the expression tree associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt; is executed.
-<span class="lineNum">      90 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      91 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">      92 </span>            :                 /// A &lt;see cref=&quot;T:System.Type&quot;/&gt; that represents the type of the element(s) that are returned when the expression tree associated with this object is executed.
-<span class="lineNum">      93 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">      94 </span>            :                 public override Type ElementType
-<span class="lineNum">      95 </span>            :                 {
-<span class="lineNum">      96 </span>            :                         get
-<span class="lineNum">      97 </span>            :                         {
-<span class="lineNum">      98 </span>            :                                 return Collection.ElementType;
-<span class="lineNum">      99 </span>            :                         }
-<span class="lineNum">     100 </span>            :                 }
-<span class="lineNum">     101 </span>            : 
-<span class="lineNum">     102 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     103 </span>            :                 /// Gets the query provider that is associated with this data source.
-<span class="lineNum">     104 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     105 </span>            :                 /// &lt;returns&gt;
-<span class="lineNum">     106 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.IQueryProvider&quot;/&gt; that is associated with this data source.
-<span class="lineNum">     107 </span>            :                 /// &lt;/returns&gt;
-<span class="lineNum">     108 </span>            :                 public override IQueryProvider Provider
-<span class="lineNum">     109 </span>            :                 {
-<span class="lineNum">     110 </span>            :                         get
-<span class="lineNum">     111 </span>            :                         {
-<span class="lineNum">     112 </span>            :                                 return Collection.Provider;
-<span class="lineNum">     113 </span>            :                         }
-<span class="lineNum">     114 </span>            :                 }
-<span class="lineNum">     115 </span>            : 
-<span class="lineNum">     116 </span>            :                 #endregion
-<span class="lineNum">     117 </span>            : 
-<span class="lineNum">     118 </span><span class="lineNoCov">          0 :                 protected virtual void AsyncSaveData&lt;TSaveData, TResult&gt;(TSaveData data, Func&lt;TSaveData, CloudTable, TResult&gt; function, Func&lt;TSaveData, string&gt; customFilenameFunction = null)</span>
-<span class="lineNum">     119 </span>            :                 {
-<span class="lineNum">     120 </span>            :                         IList&lt;Task&gt; persistTasks = new List&lt;Task&gt;();
-<span class="lineNum">     121 </span>            :                         foreach (Tuple&lt;CloudStorageAccount, CloudTable&gt; tuple in WritableCollection)
-<span class="lineNum">     122 </span>            :                         {
-<span class="lineNum">     123 </span>            :                                 TSaveData taskData = data;
-<span class="lineNum">     124 </span>            :                                 CloudTable table = tuple.Item2;
-<span class="lineNum">     125 </span>            :                                 Task task = Task.Factory.StartNewSafely
-<span class="lineNum">     126 </span>            :                                 (
-<span class="lineNum">     127 </span>            :                                         () =&gt;
-<span class="lineNum">     128 </span>            :                                         {
-<span class="lineNum">     129 </span>            :                                                 AzureStorageRetryPolicy.ExecuteAction(() =&gt; function(taskData, table));
-<span class="lineNum">     130 </span>            :                                         }
-<span class="lineNum">     131 </span>            :                                 );
-<span class="lineNum">     132 </span>            :                                 persistTasks.Add(task);
-<span class="lineNum">     133 </span>            :                         }
-<span class="lineNum">     134 </span>            : 
-<span class="lineNum">     135 </span>            :                         bool anyFailed = Task.Factory.ContinueWhenAll(persistTasks.ToArray(), tasks =&gt;
-<span class="lineNum">     136 </span>            :                         {
-<span class="lineNum">     137 </span>            :                                 return tasks.Any(task =&gt; task.IsFaulted);
-<span class="lineNum">     138 </span>            :                         }).Result;
-<span class="lineNum">     139 </span>            :                         if (anyFailed)
-<span class="lineNum">     140 </span>            :                                 throw new AggregateException(&quot;Persisting data to table storage failed. Check the logs for more details.&quot;);
-<span class="lineNum">     141 </span>            :                 }
-<span class="lineNum">     142 </span>            : 
-<span class="lineNum">     143 </span><span class="lineNoCov">          0 :                 protected abstract ITableEntity CreateTableEntity(TCollectionItemData data);</span>
-<span class="lineNum">     144 </span>            : 
-<span class="lineNum">     145 </span>            :                 #region Implementation of IDataStore&lt;TData&gt;
-<span class="lineNum">     146 </span>            : 
-<span class="lineNum">     147 </span><span class="lineNoCov">          0 :                 public override void Add(TData data)</span>
-<span class="lineNum">     148 </span>            :                 {
-<span class="lineNum">     149 </span>            :                         Add(data);
-<span class="lineNum">     150 </span>            :                 }
-<span class="lineNum">     151 </span>            : 
-<span class="lineNum">     152 </span><span class="lineNoCov">          0 :                 public virtual void Add(ITableEntity data)</span>
-<span class="lineNum">     153 </span>            :                 {
-<span class="lineNum">     154 </span>            :                         AsyncSaveData
-<span class="lineNum">     155 </span>            :                         (
-<span class="lineNum">     156 </span>            :                                 data,
-<span class="lineNum">     157 </span>            :                                 (taskData, table) =&gt;
-<span class="lineNum">     158 </span>            :                                 {
-<span class="lineNum">     159 </span>            :                                         try
-<span class="lineNum">     160 </span>            :                                         {
-<span class="lineNum">     161 </span>            :                                                 TableOperation insertOperation = TableOperation.Insert(taskData);
-<span class="lineNum">     162 </span>            : 
-<span class="lineNum">     163 </span>            :                                                 // Execute the insert operation.
-<span class="lineNum">     164 </span>            :                                                 return table.Execute(insertOperation);
-<span class="lineNum">     165 </span>            :                                         }
-<span class="lineNum">     166 </span>            :                                         catch (StorageException exception)
-<span class="lineNum">     167 </span>            :                                         {
-<span class="lineNum">     168 </span>            :                                                 var extendedErrorInformation = exception.RequestInformation.ExtendedErrorInformation;
-<span class="lineNum">     169 </span>            :                                                 if (extendedErrorInformation != null)
-<span class="lineNum">     170 </span>            :                                                         Logger.LogError(&quot;There was an issue persisting data to table storage.&quot;, exception: exception);
-<span class="lineNum">     171 </span>            :                                                 else
-<span class="lineNum">     172 </span>            :                                                         Logger.LogError(string.Format(&quot;There was an issue persisting data to table storage. Specifically {0} :: {1}&quot;, exception.RequestInformation.ExtendedErrorInformation.ErrorCode, exception.RequestInformation.ExtendedErrorInformation.ErrorMessage), exception: exception);
-<span class="lineNum">     173 </span>            :                                                 throw;
-<span class="lineNum">     174 </span>            :                                         }
-<span class="lineNum">     175 </span>            :                                         catch (Exception exception)
-<span class="lineNum">     176 </span>            :                                         {
-<span class="lineNum">     177 </span>            :                                                 Logger.LogError(&quot;There was an issue persisting data to table storage.&quot;, exception: exception);
-<span class="lineNum">     178 </span>            :                                                 throw;
-<span class="lineNum">     179 </span>            :                                         }
-<span class="lineNum">     180 </span>            :                                 }
-<span class="lineNum">     181 </span>            :                         );
-<span class="lineNum">     182 </span>            :                 }
-<span class="lineNum">     183 </span>            : 
-<span class="lineNum">     184 </span><span class="lineNoCov">          0 :                 public override void Add(IEnumerable&lt;TData&gt; data)</span>
-<span class="lineNum">     185 </span>            :                 {
-<span class="lineNum">     186 </span>            :                         Add(data);
-<span class="lineNum">     187 </span>            :                 }
-<span class="lineNum">     188 </span>            : 
-<span class="lineNum">     189 </span><span class="lineNoCov">          0 :                 public virtual void Add(IEnumerable&lt;ITableEntity&gt; data)</span>
-<span class="lineNum">     190 </span>            :                 {
-<span class="lineNum">     191 </span>            :                         AsyncSaveData
-<span class="lineNum">     192 </span>            :                         (
-<span class="lineNum">     193 </span>            :                                 data,
-<span class="lineNum">     194 </span>            :                                 (taskData, table) =&gt;
-<span class="lineNum">     195 </span>            :                                 {
-<span class="lineNum">     196 </span>            :                                         try
-<span class="lineNum">     197 </span>            :                                         {
-<span class="lineNum">     198 </span>            :                                                 // Create the batch operation.
-<span class="lineNum">     199 </span>            :                                                 TableBatchOperation batchOperation = new TableBatchOperation();
-<span class="lineNum">     200 </span>            : 
-<span class="lineNum">     201 </span>            :                                                 foreach (TData item in taskData)
-<span class="lineNum">     202 </span>            :                                                         batchOperation.Insert(item);
-<span class="lineNum">     203 </span>            : 
-<span class="lineNum">     204 </span>            :                                                 // Execute the insert operation.
-<span class="lineNum">     205 </span>            :                                                 return table.ExecuteBatch(batchOperation);
-<span class="lineNum">     206 </span>            :                                         }
-<span class="lineNum">     207 </span>            :                                         catch (Exception exception)
-<span class="lineNum">     208 </span>            :                                         {
-<span class="lineNum">     209 </span>            :                                                 Logger.LogError(&quot;There was an issue persisting data to table storage.&quot;, exception: exception);
-<span class="lineNum">     210 </span>            :                                                 throw;
-<span class="lineNum">     211 </span>            :                                         }
-<span class="lineNum">     212 </span>            :                                 }
-<span class="lineNum">     213 </span>            :                         );
-<span class="lineNum">     214 </span>            :                 }
-<span class="lineNum">     215 </span>            : 
-<span class="lineNum">     216 </span><span class="lineNoCov">          0 :                 public override void Destroy(TData data)</span>
-<span class="lineNum">     217 </span>            :                 {
-<span class="lineNum">     218 </span>            :                         AsyncSaveData
-<span class="lineNum">     219 </span>            :                         (
-<span class="lineNum">     220 </span>            :                                 data,
-<span class="lineNum">     221 </span>            :                                 (taskData, table) =&gt;
-<span class="lineNum">     222 </span>            :                                 {
-<span class="lineNum">     223 </span>            :                                         try
-<span class="lineNum">     224 </span>            :                                         {
-<span class="lineNum">     225 </span>            :                                                 // Create a retrieve operation that takes a customer entity.
-<span class="lineNum">     226 </span>            :                                                 TableOperation retrieveOperation = GetUpdatableTableEntity(taskData);
-<span class="lineNum">     227 </span>            : 
-<span class="lineNum">     228 </span>            :                                                 // Execute the operation.
-<span class="lineNum">     229 </span>            :                                                 TableResult retrievedResult = table.Execute(retrieveOperation);
-<span class="lineNum">     230 </span>            :                                                 ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
+<span class="lineNum">      16 </span>            : using Cqrs.Entities;
+<span class="lineNum">      17 </span>            : using Microsoft.WindowsAzure.Storage;
+<span class="lineNum">      18 </span>            : using Microsoft.WindowsAzure.Storage.Table;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : namespace Cqrs.Azure.BlobStorage
+<span class="lineNum">      21 </span>            : {
+<span class="lineNum">      22 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :         /// A &lt;see cref=&quot;IDataStore{TData}&quot;/&gt; that uses Azure Storage for storage.
+<span class="lineNum">      24 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      25 </span>            :         /// &lt;typeparam name=&quot;TData&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;TableEntity&quot;/&gt; Azure Table Storage will contain.&lt;/typeparam&gt;
+<span class="lineNum">      26 </span>            :         /// &lt;typeparam name=&quot;TCollectionItemData&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IEntity&quot;/&gt; the &lt;see cref=&quot;IDataStore{TData}&quot;/&gt; will contain.&lt;/typeparam&gt;
+<span class="lineNum">      27 </span>            :         public abstract class TableStorageStore&lt;TData, TCollectionItemData&gt;
+<span class="lineNum">      28 </span>            :                 : StorageStore&lt;TData, CloudTable&gt;
+<span class="lineNum">      29 </span>            :                 , IDataStore&lt;TCollectionItemData&gt;
+<span class="lineNum">      30 </span>            :                 where TData : TableEntity, new()
+<span class="lineNum">      31 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      32 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      33 </span>            :                 /// Gets or set the &lt;see cref=&quot;TableQuery&quot;/&gt;.
+<span class="lineNum">      34 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      35 </span>            :                 public TableQuery&lt;TData&gt; Collection { get; private set; }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :                 /// Initializes a new instance of the &lt;see cref=&quot;TableStorageStore{TData,TCollectionItemData}&quot;/&gt; class using the specified container.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span><span class="lineCov">          1 :                 protected TableStorageStore(ILogger logger)</span>
+<span class="lineNum">      41 </span>            :                         : base(logger)
+<span class="lineNum">      42 </span>            :                 {
+<span class="lineNum">      43 </span>            :                 }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 #region Overrides of StorageStore&lt;TData,CloudTable&gt;
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      48 </span>            :                 /// Initialises the &lt;see cref=&quot;StorageStore{TData,TSource}&quot;/&gt;.
+<span class="lineNum">      49 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      50 </span><span class="lineCov">          1 :                 protected override void Initialise(IStorageStoreConnectionStringFactory tableStorageDataStoreConnectionStringFactory)</span>
+<span class="lineNum">      51 </span>            :                 {
+<span class="lineNum">      52 </span>            :                         base.Initialise(tableStorageDataStoreConnectionStringFactory);
+<span class="lineNum">      53 </span>            :                         Collection = new TableQuery&lt;TData&gt;();
+<span class="lineNum">      54 </span>            :                 }
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 #endregion
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                 #region Implementation of IEnumerable
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      61 </span>            :                 /// Returns an enumerator that iterates through the collection.
+<span class="lineNum">      62 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      63 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">      64 </span>            :                 /// A &lt;see cref=&quot;T:System.Collections.Generic.IEnumerator`1&quot;/&gt; that can be used to iterate through the collection.
+<span class="lineNum">      65 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">      66 </span>            :                 IEnumerator&lt;TCollectionItemData&gt; IEnumerable&lt;TCollectionItemData&gt;.GetEnumerator()
+<span class="lineNum">      67 </span>            :                 {
+<span class="lineNum">      68 </span>            :                         throw new NotImplementedException(&quot;Use IEnumerable&lt;TData&gt;.GetEnumerator() directly&quot;);
+<span class="lineNum">      69 </span>            :                 }
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      72 </span>            :                 /// Returns an enumerator that iterates through the collection.
+<span class="lineNum">      73 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      74 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">      75 </span>            :                 /// A &lt;see cref=&quot;T:System.Collections.Generic.IEnumerator`1&quot;/&gt; that can be used to iterate through the collection.
+<span class="lineNum">      76 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">      77 </span><span class="lineCov">          1 :                 public override IEnumerator&lt;TData&gt; GetEnumerator()</span>
+<span class="lineNum">      78 </span>            :                 {
+<span class="lineNum">      79 </span>            :                         return Collection.GetEnumerator();
+<span class="lineNum">      80 </span>            :                 }
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                 #endregion
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            :                 #region Implementation of IQueryable
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      87 </span>            :                 /// Gets the expression tree that is associated with the instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
+<span class="lineNum">      88 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      89 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">      90 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.Expressions.Expression&quot;/&gt; that is associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
+<span class="lineNum">      91 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">      92 </span>            :                 public override Expression Expression
+<span class="lineNum">      93 </span>            :                 {
+<span class="lineNum">      94 </span>            :                         get
+<span class="lineNum">      95 </span>            :                         {
+<span class="lineNum">      96 </span>            :                                 return Collection.Expression;
+<span class="lineNum">      97 </span>            :                         }
+<span class="lineNum">      98 </span>            :                 }
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     101 </span>            :                 /// Gets the type of the element(s) that are returned when the expression tree associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt; is executed.
+<span class="lineNum">     102 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     103 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     104 </span>            :                 /// A &lt;see cref=&quot;T:System.Type&quot;/&gt; that represents the type of the element(s) that are returned when the expression tree associated with this object is executed.
+<span class="lineNum">     105 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     106 </span>            :                 public override Type ElementType
+<span class="lineNum">     107 </span>            :                 {
+<span class="lineNum">     108 </span>            :                         get
+<span class="lineNum">     109 </span>            :                         {
+<span class="lineNum">     110 </span>            :                                 return Collection.ElementType;
+<span class="lineNum">     111 </span>            :                         }
+<span class="lineNum">     112 </span>            :                 }
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     115 </span>            :                 /// Gets the query provider that is associated with this data source.
+<span class="lineNum">     116 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     117 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     118 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.IQueryProvider&quot;/&gt; that is associated with this data source.
+<span class="lineNum">     119 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     120 </span>            :                 public override IQueryProvider Provider
+<span class="lineNum">     121 </span>            :                 {
+<span class="lineNum">     122 </span>            :                         get
+<span class="lineNum">     123 </span>            :                         {
+<span class="lineNum">     124 </span>            :                                 return Collection.Provider;
+<span class="lineNum">     125 </span>            :                         }
+<span class="lineNum">     126 </span>            :                 }
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            :                 #endregion
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     131 </span>            :                 /// Save the provided &lt;paramref name=&quot;data&quot;/&gt; asynchronously.
+<span class="lineNum">     132 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     133 </span><span class="lineCov">          1 :                 protected virtual void AsyncSaveData&lt;TSaveData, TResult&gt;(TSaveData data, Func&lt;TSaveData, CloudTable, TResult&gt; function, Func&lt;TSaveData, string&gt; customFilenameFunction = null)</span>
+<span class="lineNum">     134 </span>            :                 {
+<span class="lineNum">     135 </span>            :                         IList&lt;Task&gt; persistTasks = new List&lt;Task&gt;();
+<span class="lineNum">     136 </span>            :                         foreach (Tuple&lt;CloudStorageAccount, CloudTable&gt; tuple in WritableCollection)
+<span class="lineNum">     137 </span>            :                         {
+<span class="lineNum">     138 </span>            :                                 TSaveData taskData = data;
+<span class="lineNum">     139 </span>            :                                 CloudTable table = tuple.Item2;
+<span class="lineNum">     140 </span>            :                                 Task task = Task.Factory.StartNewSafely
+<span class="lineNum">     141 </span>            :                                 (
+<span class="lineNum">     142 </span>            :                                         () =&gt;
+<span class="lineNum">     143 </span>            :                                         {
+<span class="lineNum">     144 </span>            :                                                 AzureStorageRetryPolicy.ExecuteAction(() =&gt; function(taskData, table));
+<span class="lineNum">     145 </span>            :                                         }
+<span class="lineNum">     146 </span>            :                                 );
+<span class="lineNum">     147 </span>            :                                 persistTasks.Add(task);
+<span class="lineNum">     148 </span>            :                         }
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span>            :                         bool anyFailed = Task.Factory.ContinueWhenAll(persistTasks.ToArray(), tasks =&gt;
+<span class="lineNum">     151 </span>            :                         {
+<span class="lineNum">     152 </span>            :                                 return tasks.Any(task =&gt; task.IsFaulted);
+<span class="lineNum">     153 </span>            :                         }).Result;
+<span class="lineNum">     154 </span>            :                         if (anyFailed)
+<span class="lineNum">     155 </span>            :                                 throw new AggregateException(&quot;Persisting data to table storage failed. Check the logs for more details.&quot;);
+<span class="lineNum">     156 </span>            :                 }
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     159 </span>            :                 /// Creates a new instance of &lt;see cref=&quot;ITableEntity&quot;/&gt; populating it with the provided &lt;paramref name=&quot;data&quot;/&gt;.
+<span class="lineNum">     160 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     161 </span>            :                 /// &lt;param name=&quot;data&quot;&gt;The data to store.&lt;/param&gt;
+<span class="lineNum">     162 </span><span class="lineCov">          1 :                 protected abstract ITableEntity CreateTableEntity(TCollectionItemData data);</span>
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span>            :                 #region Implementation of IDataStore&lt;TData&gt;
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     167 </span>            :                 /// Add the provided &lt;paramref name=&quot;data&quot;/&gt; to the data store and persist the change.
+<span class="lineNum">     168 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     169 </span><span class="lineCov">          1 :                 public override void Add(TData data)</span>
+<span class="lineNum">     170 </span>            :                 {
+<span class="lineNum">     171 </span>            :                         Add(data);
+<span class="lineNum">     172 </span>            :                 }
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     175 </span>            :                 /// Add the provided &lt;paramref name=&quot;data&quot;/&gt; to the data store and persist the change.
+<span class="lineNum">     176 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     177 </span><span class="lineCov">          1 :                 public virtual void Add(ITableEntity data)</span>
+<span class="lineNum">     178 </span>            :                 {
+<span class="lineNum">     179 </span>            :                         AsyncSaveData
+<span class="lineNum">     180 </span>            :                         (
+<span class="lineNum">     181 </span>            :                                 data,
+<span class="lineNum">     182 </span>            :                                 (taskData, table) =&gt;
+<span class="lineNum">     183 </span>            :                                 {
+<span class="lineNum">     184 </span>            :                                         try
+<span class="lineNum">     185 </span>            :                                         {
+<span class="lineNum">     186 </span>            :                                                 TableOperation insertOperation = TableOperation.Insert(taskData);
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span>            :                                                 // Execute the insert operation.
+<span class="lineNum">     189 </span>            :                                                 return table.Execute(insertOperation);
+<span class="lineNum">     190 </span>            :                                         }
+<span class="lineNum">     191 </span>            :                                         catch (StorageException exception)
+<span class="lineNum">     192 </span>            :                                         {
+<span class="lineNum">     193 </span>            :                                                 var extendedErrorInformation = exception.RequestInformation.ExtendedErrorInformation;
+<span class="lineNum">     194 </span>            :                                                 if (extendedErrorInformation != null)
+<span class="lineNum">     195 </span>            :                                                         Logger.LogError(&quot;There was an issue persisting data to table storage.&quot;, exception: exception);
+<span class="lineNum">     196 </span>            :                                                 else
+<span class="lineNum">     197 </span>            :                                                         Logger.LogError(string.Format(&quot;There was an issue persisting data to table storage. Specifically {0} :: {1}&quot;, exception.RequestInformation.ExtendedErrorInformation.ErrorCode, exception.RequestInformation.ExtendedErrorInformation.ErrorMessage), exception: exception);
+<span class="lineNum">     198 </span>            :                                                 throw;
+<span class="lineNum">     199 </span>            :                                         }
+<span class="lineNum">     200 </span>            :                                         catch (Exception exception)
+<span class="lineNum">     201 </span>            :                                         {
+<span class="lineNum">     202 </span>            :                                                 Logger.LogError(&quot;There was an issue persisting data to table storage.&quot;, exception: exception);
+<span class="lineNum">     203 </span>            :                                                 throw;
+<span class="lineNum">     204 </span>            :                                         }
+<span class="lineNum">     205 </span>            :                                 }
+<span class="lineNum">     206 </span>            :                         );
+<span class="lineNum">     207 </span>            :                 }
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     210 </span>            :                 /// Add the provided &lt;paramref name=&quot;data&quot;/&gt; to the data store and persist the change.
+<span class="lineNum">     211 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     212 </span><span class="lineCov">          1 :                 public override void Add(IEnumerable&lt;TData&gt; data)</span>
+<span class="lineNum">     213 </span>            :                 {
+<span class="lineNum">     214 </span>            :                         Add(data);
+<span class="lineNum">     215 </span>            :                 }
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     218 </span>            :                 /// Add the provided &lt;paramref name=&quot;data&quot;/&gt; to the data store and persist the change.
+<span class="lineNum">     219 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     220 </span><span class="lineCov">          1 :                 public virtual void Add(IEnumerable&lt;ITableEntity&gt; data)</span>
+<span class="lineNum">     221 </span>            :                 {
+<span class="lineNum">     222 </span>            :                         AsyncSaveData
+<span class="lineNum">     223 </span>            :                         (
+<span class="lineNum">     224 </span>            :                                 data,
+<span class="lineNum">     225 </span>            :                                 (taskData, table) =&gt;
+<span class="lineNum">     226 </span>            :                                 {
+<span class="lineNum">     227 </span>            :                                         try
+<span class="lineNum">     228 </span>            :                                         {
+<span class="lineNum">     229 </span>            :                                                 // Create the batch operation.
+<span class="lineNum">     230 </span>            :                                                 TableBatchOperation batchOperation = new TableBatchOperation();
 <span class="lineNum">     231 </span>            : 
-<span class="lineNum">     232 </span>            :                                                 TableOperation deleteOperation = TableOperation.Delete(tableEntity);
-<span class="lineNum">     233 </span>            : 
-<span class="lineNum">     234 </span>            :                                                 // Execute the delete operation.
-<span class="lineNum">     235 </span>            :                                                 return table.Execute(deleteOperation);
-<span class="lineNum">     236 </span>            :                                         }
-<span class="lineNum">     237 </span>            :                                         catch (Exception exception)
-<span class="lineNum">     238 </span>            :                                         {
-<span class="lineNum">     239 </span>            :                                                 Logger.LogError(&quot;There was an issue deleting data from table storage.&quot;, exception: exception);
-<span class="lineNum">     240 </span>            :                                                 throw;
-<span class="lineNum">     241 </span>            :                                         }
-<span class="lineNum">     242 </span>            :                                 }
-<span class="lineNum">     243 </span>            :                         );
-<span class="lineNum">     244 </span>            :                 }
-<span class="lineNum">     245 </span>            : 
-<span class="lineNum">     246 </span>            :                 /*
-<span class="lineNum">     247 </span>            :                 public virtual void Destroy(ITableEntity data)
-<span class="lineNum">     248 </span>            :                 {
-<span class="lineNum">     249 </span>            :                         AsyncSaveData
-<span class="lineNum">     250 </span>            :                         (
-<span class="lineNum">     251 </span>            :                                 data,
-<span class="lineNum">     252 </span>            :                                 (taskData, table) =&gt;
-<span class="lineNum">     253 </span>            :                                 {
-<span class="lineNum">     254 </span>            :                                         try
-<span class="lineNum">     255 </span>            :                                         {
-<span class="lineNum">     256 </span>            :                                                 // Create a retrieve operation that takes a customer entity.
-<span class="lineNum">     257 </span>            :                                                 TableOperation retrieveOperation = GetUpdatableTableEntity(taskData);
-<span class="lineNum">     258 </span>            : 
-<span class="lineNum">     259 </span>            :                                                 // Execute the operation.
-<span class="lineNum">     260 </span>            :                                                 TableResult retrievedResult = table.Execute(retrieveOperation);
-<span class="lineNum">     261 </span>            :                                                 ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
-<span class="lineNum">     262 </span>            : 
-<span class="lineNum">     263 </span>            :                                                 TableOperation deleteOperation = TableOperation.Delete(tableEntity);
-<span class="lineNum">     264 </span>            : 
-<span class="lineNum">     265 </span>            :                                                 // Execute the delete operation.
-<span class="lineNum">     266 </span>            :                                                 return table.Execute(deleteOperation);
-<span class="lineNum">     267 </span>            :                                         }
-<span class="lineNum">     268 </span>            :                                         catch (Exception exception)
-<span class="lineNum">     269 </span>            :                                         {
-<span class="lineNum">     270 </span>            :                                                 Logger.LogError(&quot;There was an issue deleting data from table storage.&quot;, exception: exception);
-<span class="lineNum">     271 </span>            :                                                 throw;
-<span class="lineNum">     272 </span>            :                                         }
-<span class="lineNum">     273 </span>            :                                 }
-<span class="lineNum">     274 </span>            :                         );
-<span class="lineNum">     275 </span>            :                 }
-<span class="lineNum">     276 </span>            :                 */
-<span class="lineNum">     277 </span>            : 
-<span class="lineNum">     278 </span><span class="lineNoCov">          0 :                 public virtual void Add(TCollectionItemData data)</span>
-<span class="lineNum">     279 </span>            :                 {
-<span class="lineNum">     280 </span>            :                         // Create the TableOperation object that inserts the customer entity.
-<span class="lineNum">     281 </span>            :                         Add(CreateTableEntity(data));
-<span class="lineNum">     282 </span>            :                 }
-<span class="lineNum">     283 </span>            : 
-<span class="lineNum">     284 </span><span class="lineNoCov">          0 :                 public virtual void Add(IEnumerable&lt;TCollectionItemData&gt; data)</span>
-<span class="lineNum">     285 </span>            :                 {
-<span class="lineNum">     286 </span>            :                         // Create the TableOperation object that inserts the customer entity.
-<span class="lineNum">     287 </span>            :                         Add(data.Select(tdata =&gt; (TData)CreateTableEntity(tdata)));
-<span class="lineNum">     288 </span>            :                 }
-<span class="lineNum">     289 </span>            : 
-<span class="lineNum">     290 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     291 </span>            :                 /// Will mark the &lt;paramref name=&quot;data&quot;/&gt; as logically (or soft).
-<span class="lineNum">     292 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     293 </span><span class="lineCov">          1 :                 public abstract void Remove(TCollectionItemData data);</span>
-<span class="lineNum">     294 </span>            : 
-<span class="lineNum">     295 </span><span class="lineNoCov">          0 :                 public virtual void Destroy(TCollectionItemData data)</span>
-<span class="lineNum">     296 </span>            :                 {
-<span class="lineNum">     297 </span>            :                         Destroy((TData)CreateTableEntity(data));
-<span class="lineNum">     298 </span>            :                 }
-<span class="lineNum">     299 </span>            : 
-<span class="lineNum">     300 </span><span class="lineNoCov">          0 :                 public override void RemoveAll()</span>
-<span class="lineNum">     301 </span>            :                 {
-<span class="lineNum">     302 </span>            :                         foreach (Tuple&lt;CloudStorageAccount, CloudTable&gt; tuple in WritableCollection)
-<span class="lineNum">     303 </span>            :                                 tuple.Item2.DeleteIfExists();
-<span class="lineNum">     304 </span>            :                 }
-<span class="lineNum">     305 </span>            : 
-<span class="lineNum">     306 </span><span class="lineNoCov">          0 :                 public virtual void Update(TCollectionItemData data)</span>
-<span class="lineNum">     307 </span>            :                 {
-<span class="lineNum">     308 </span>            :                         Update((TData)CreateTableEntity(data));
+<span class="lineNum">     232 </span>            :                                                 foreach (TData item in taskData)
+<span class="lineNum">     233 </span>            :                                                         batchOperation.Insert(item);
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span>            :                                                 // Execute the insert operation.
+<span class="lineNum">     236 </span>            :                                                 return table.ExecuteBatch(batchOperation);
+<span class="lineNum">     237 </span>            :                                         }
+<span class="lineNum">     238 </span>            :                                         catch (Exception exception)
+<span class="lineNum">     239 </span>            :                                         {
+<span class="lineNum">     240 </span>            :                                                 Logger.LogError(&quot;There was an issue persisting data to table storage.&quot;, exception: exception);
+<span class="lineNum">     241 </span>            :                                                 throw;
+<span class="lineNum">     242 </span>            :                                         }
+<span class="lineNum">     243 </span>            :                                 }
+<span class="lineNum">     244 </span>            :                         );
+<span class="lineNum">     245 </span>            :                 }
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     248 </span>            :                 /// Remove the provided &lt;paramref name=&quot;data&quot;/&gt; (normally by &lt;see cref=&quot;IEntity.Rsn&quot;/&gt;) from the data store and persist the change.
+<span class="lineNum">     249 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     250 </span><span class="lineCov">          1 :                 public override void Destroy(TData data)</span>
+<span class="lineNum">     251 </span>            :                 {
+<span class="lineNum">     252 </span>            :                         AsyncSaveData
+<span class="lineNum">     253 </span>            :                         (
+<span class="lineNum">     254 </span>            :                                 data,
+<span class="lineNum">     255 </span>            :                                 (taskData, table) =&gt;
+<span class="lineNum">     256 </span>            :                                 {
+<span class="lineNum">     257 </span>            :                                         try
+<span class="lineNum">     258 </span>            :                                         {
+<span class="lineNum">     259 </span>            :                                                 // Create a retrieve operation that takes a customer entity.
+<span class="lineNum">     260 </span>            :                                                 TableOperation retrieveOperation = GetUpdatableTableEntity(taskData);
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span>            :                                                 // Execute the operation.
+<span class="lineNum">     263 </span>            :                                                 TableResult retrievedResult = table.Execute(retrieveOperation);
+<span class="lineNum">     264 </span>            :                                                 ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span>            :                                                 TableOperation deleteOperation = TableOperation.Delete(tableEntity);
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span>            :                                                 // Execute the delete operation.
+<span class="lineNum">     269 </span>            :                                                 return table.Execute(deleteOperation);
+<span class="lineNum">     270 </span>            :                                         }
+<span class="lineNum">     271 </span>            :                                         catch (Exception exception)
+<span class="lineNum">     272 </span>            :                                         {
+<span class="lineNum">     273 </span>            :                                                 Logger.LogError(&quot;There was an issue deleting data from table storage.&quot;, exception: exception);
+<span class="lineNum">     274 </span>            :                                                 throw;
+<span class="lineNum">     275 </span>            :                                         }
+<span class="lineNum">     276 </span>            :                                 }
+<span class="lineNum">     277 </span>            :                         );
+<span class="lineNum">     278 </span>            :                 }
+<span class="lineNum">     279 </span>            : 
+<span class="lineNum">     280 </span>            :                 /*
+<span class="lineNum">     281 </span>            :                 public virtual void Destroy(ITableEntity data)
+<span class="lineNum">     282 </span>            :                 {
+<span class="lineNum">     283 </span>            :                         AsyncSaveData
+<span class="lineNum">     284 </span>            :                         (
+<span class="lineNum">     285 </span>            :                                 data,
+<span class="lineNum">     286 </span>            :                                 (taskData, table) =&gt;
+<span class="lineNum">     287 </span>            :                                 {
+<span class="lineNum">     288 </span>            :                                         try
+<span class="lineNum">     289 </span>            :                                         {
+<span class="lineNum">     290 </span>            :                                                 // Create a retrieve operation that takes a customer entity.
+<span class="lineNum">     291 </span>            :                                                 TableOperation retrieveOperation = GetUpdatableTableEntity(taskData);
+<span class="lineNum">     292 </span>            : 
+<span class="lineNum">     293 </span>            :                                                 // Execute the operation.
+<span class="lineNum">     294 </span>            :                                                 TableResult retrievedResult = table.Execute(retrieveOperation);
+<span class="lineNum">     295 </span>            :                                                 ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
+<span class="lineNum">     296 </span>            : 
+<span class="lineNum">     297 </span>            :                                                 TableOperation deleteOperation = TableOperation.Delete(tableEntity);
+<span class="lineNum">     298 </span>            : 
+<span class="lineNum">     299 </span>            :                                                 // Execute the delete operation.
+<span class="lineNum">     300 </span>            :                                                 return table.Execute(deleteOperation);
+<span class="lineNum">     301 </span>            :                                         }
+<span class="lineNum">     302 </span>            :                                         catch (Exception exception)
+<span class="lineNum">     303 </span>            :                                         {
+<span class="lineNum">     304 </span>            :                                                 Logger.LogError(&quot;There was an issue deleting data from table storage.&quot;, exception: exception);
+<span class="lineNum">     305 </span>            :                                                 throw;
+<span class="lineNum">     306 </span>            :                                         }
+<span class="lineNum">     307 </span>            :                                 }
+<span class="lineNum">     308 </span>            :                         );
 <span class="lineNum">     309 </span>            :                 }
-<span class="lineNum">     310 </span>            : 
-<span class="lineNum">     311 </span><span class="lineNoCov">          0 :                 public override void Update(TData data)</span>
-<span class="lineNum">     312 </span>            :                 {
-<span class="lineNum">     313 </span>            :                         AsyncSaveData
-<span class="lineNum">     314 </span>            :                         (
-<span class="lineNum">     315 </span>            :                                 data,
-<span class="lineNum">     316 </span>            :                                 (taskData, table) =&gt;
-<span class="lineNum">     317 </span>            :                                 {
-<span class="lineNum">     318 </span>            :                                         try
-<span class="lineNum">     319 </span>            :                                         {
-<span class="lineNum">     320 </span>            :                                                 // Create a retrieve operation that takes a customer entity.
-<span class="lineNum">     321 </span>            :                                                 TableOperation retrieveOperation = GetUpdatableTableEntity(taskData);
-<span class="lineNum">     322 </span>            : 
-<span class="lineNum">     323 </span>            :                                                 // Execute the operation.
-<span class="lineNum">     324 </span>            :                                                 TableResult retrievedResult = table.Execute(retrieveOperation);
-<span class="lineNum">     325 </span>            :                                                 ITableEntity tableEntity = ReplaceValues(retrievedResult, data);
-<span class="lineNum">     326 </span>            : 
-<span class="lineNum">     327 </span>            :                                                 TableOperation updateOperation = TableOperation.Replace(tableEntity);
-<span class="lineNum">     328 </span>            : 
-<span class="lineNum">     329 </span>            :                                                 // Execute the update operation.
-<span class="lineNum">     330 </span>            :                                                 return table.Execute(updateOperation);
-<span class="lineNum">     331 </span>            :                                         }
-<span class="lineNum">     332 </span>            :                                         catch (Exception exception)
-<span class="lineNum">     333 </span>            :                                         {
-<span class="lineNum">     334 </span>            :                                                 Logger.LogError(&quot;There was an issue updating data in table storage.&quot;, exception: exception);
-<span class="lineNum">     335 </span>            :                                                 throw;
-<span class="lineNum">     336 </span>            :                                         }
-<span class="lineNum">     337 </span>            :                                 }
-<span class="lineNum">     338 </span>            :                         );
-<span class="lineNum">     339 </span>            :                 }
-<span class="lineNum">     340 </span>            : 
-<span class="lineNum">     341 </span>            :                 #endregion
+<span class="lineNum">     310 </span>            :                 */
+<span class="lineNum">     311 </span>            : 
+<span class="lineNum">     312 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     313 </span>            :                 /// Add the provided &lt;paramref name=&quot;data&quot;/&gt; to the data store and persist the change.
+<span class="lineNum">     314 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     315 </span><span class="lineCov">          1 :                 public virtual void Add(TCollectionItemData data)</span>
+<span class="lineNum">     316 </span>            :                 {
+<span class="lineNum">     317 </span>            :                         // Create the TableOperation object that inserts the customer entity.
+<span class="lineNum">     318 </span>            :                         Add(CreateTableEntity(data));
+<span class="lineNum">     319 </span>            :                 }
+<span class="lineNum">     320 </span>            : 
+<span class="lineNum">     321 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     322 </span>            :                 /// Add the provided &lt;paramref name=&quot;data&quot;/&gt; to the data store and persist the change.
+<span class="lineNum">     323 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     324 </span><span class="lineCov">          1 :                 public virtual void Add(IEnumerable&lt;TCollectionItemData&gt; data)</span>
+<span class="lineNum">     325 </span>            :                 {
+<span class="lineNum">     326 </span>            :                         // Create the TableOperation object that inserts the customer entity.
+<span class="lineNum">     327 </span>            :                         Add(data.Select(tdata =&gt; (TData)CreateTableEntity(tdata)));
+<span class="lineNum">     328 </span>            :                 }
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     331 </span>            :                 /// Will mark the &lt;paramref name=&quot;data&quot;/&gt; as logically (or soft).
+<span class="lineNum">     332 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     333 </span><span class="lineCov">          1 :                 public abstract void Remove(TCollectionItemData data);</span>
+<span class="lineNum">     334 </span>            : 
+<span class="lineNum">     335 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     336 </span>            :                 /// Remove the provided &lt;paramref name=&quot;data&quot;/&gt; (normally by &lt;see cref=&quot;IEntity.Rsn&quot;/&gt;) from the data store and persist the change.
+<span class="lineNum">     337 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     338 </span><span class="lineCov">          1 :                 public virtual void Destroy(TCollectionItemData data)</span>
+<span class="lineNum">     339 </span>            :                 {
+<span class="lineNum">     340 </span>            :                         Destroy((TData)CreateTableEntity(data));
+<span class="lineNum">     341 </span>            :                 }
 <span class="lineNum">     342 </span>            : 
-<span class="lineNum">     343 </span><span class="lineNoCov">          0 :                 protected abstract TableOperation GetUpdatableTableEntity(TCollectionItemData data);</span>
-<span class="lineNum">     344 </span>            : 
-<span class="lineNum">     345 </span><span class="lineNoCov">          0 :                 protected abstract TableOperation GetUpdatableTableEntity(TData data);</span>
-<span class="lineNum">     346 </span>            : 
-<span class="lineNum">     347 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     348 </span>            :                 /// Creates a &lt;see cref=&quot;CloudTable&quot;/&gt; with the specified name &lt;paramref name=&quot;sourceName&quot;/&gt; if it doesn't already exist.
-<span class="lineNum">     349 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     350 </span>            :                 /// &lt;param name=&quot;storageAccount&quot;&gt;The storage account to create the &lt;see cref=&quot;CloudTable&quot;/&gt; is&lt;/param&gt;
-<span class="lineNum">     351 </span>            :                 /// &lt;param name=&quot;sourceName&quot;&gt;The name of the &lt;see cref=&quot;CloudTable&quot;/&gt;.&lt;/param&gt;
-<span class="lineNum">     352 </span>            :                 /// &lt;param name=&quot;isPublic&quot;&gt;Whether or not this &lt;see cref=&quot;CloudTable&quot;/&gt; is publicly accessible.&lt;/param&gt;
-<span class="lineNum">     353 </span><span class="lineCov">          1 :                 protected override CloudTable CreateSource(CloudStorageAccount storageAccount, string sourceName, bool isPublic = true)</span>
-<span class="lineNum">     354 </span>            :                 {
-<span class="lineNum">     355 </span>            :                         // Create the table client.
-<span class="lineNum">     356 </span>            :                         CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-<span class="lineNum">     357 </span>            : 
-<span class="lineNum">     358 </span>            :                         // Retrieve a reference to the table.
-<span class="lineNum">     359 </span>            :                         CloudTable table = tableClient.GetTableReference(GetSafeSourceName(sourceName));
-<span class="lineNum">     360 </span>            : 
-<span class="lineNum">     361 </span>            :                         // Create the table if it doesn't exist.
-<span class="lineNum">     362 </span>            :                         try
-<span class="lineNum">     363 </span>            :                         {
-<span class="lineNum">     364 </span>            :                                 table.CreateIfNotExists();
-<span class="lineNum">     365 </span>            :                         }
-<span class="lineNum">     366 </span>            :                         catch (StorageException exception)
-<span class="lineNum">     367 </span>            :                         {
-<span class="lineNum">     368 </span>            :                                 var extendedErrorInformation = exception.RequestInformation.ExtendedErrorInformation;
-<span class="lineNum">     369 </span>            :                                 if (extendedErrorInformation != null)
-<span class="lineNum">     370 </span>            :                                         Logger.LogError(&quot;There was an issue creating the table.&quot;, exception: exception);
-<span class="lineNum">     371 </span>            :                                 else
-<span class="lineNum">     372 </span>            :                                         Logger.LogError(string.Format(&quot;There was an issue creating the table. Specifically {0} :: {1}&quot;, exception.RequestInformation.ExtendedErrorInformation.ErrorCode, exception.RequestInformation.ExtendedErrorInformation.ErrorMessage), exception: exception);
-<span class="lineNum">     373 </span>            :                                 throw;
-<span class="lineNum">     374 </span>            :                         }
-<span class="lineNum">     375 </span>            :                         catch (Exception exception)
-<span class="lineNum">     376 </span>            :                         {
-<span class="lineNum">     377 </span>            :                                 Logger.LogError(&quot;There was an issue creating the table.&quot;, exception: exception);
-<span class="lineNum">     378 </span>            :                                 throw;
-<span class="lineNum">     379 </span>            :                         }
+<span class="lineNum">     343 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     344 </span>            :                 /// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+<span class="lineNum">     345 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     346 </span><span class="lineCov">          1 :                 public override void RemoveAll()</span>
+<span class="lineNum">     347 </span>            :                 {
+<span class="lineNum">     348 </span>            :                         foreach (Tuple&lt;CloudStorageAccount, CloudTable&gt; tuple in WritableCollection)
+<span class="lineNum">     349 </span>            :                                 tuple.Item2.DeleteIfExists();
+<span class="lineNum">     350 </span>            :                 }
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     353 </span>            :                 /// Update the provided &lt;paramref name=&quot;data&quot;/&gt; in the data store and persist the change.
+<span class="lineNum">     354 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     355 </span><span class="lineCov">          1 :                 public virtual void Update(TCollectionItemData data)</span>
+<span class="lineNum">     356 </span>            :                 {
+<span class="lineNum">     357 </span>            :                         Update((TData)CreateTableEntity(data));
+<span class="lineNum">     358 </span>            :                 }
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     361 </span>            :                 /// Update the provided &lt;paramref name=&quot;data&quot;/&gt; in the data store and persist the change.
+<span class="lineNum">     362 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     363 </span><span class="lineCov">          1 :                 public override void Update(TData data)</span>
+<span class="lineNum">     364 </span>            :                 {
+<span class="lineNum">     365 </span>            :                         AsyncSaveData
+<span class="lineNum">     366 </span>            :                         (
+<span class="lineNum">     367 </span>            :                                 data,
+<span class="lineNum">     368 </span>            :                                 (taskData, table) =&gt;
+<span class="lineNum">     369 </span>            :                                 {
+<span class="lineNum">     370 </span>            :                                         try
+<span class="lineNum">     371 </span>            :                                         {
+<span class="lineNum">     372 </span>            :                                                 // Create a retrieve operation that takes a customer entity.
+<span class="lineNum">     373 </span>            :                                                 TableOperation retrieveOperation = GetUpdatableTableEntity(taskData);
+<span class="lineNum">     374 </span>            : 
+<span class="lineNum">     375 </span>            :                                                 // Execute the operation.
+<span class="lineNum">     376 </span>            :                                                 TableResult retrievedResult = table.Execute(retrieveOperation);
+<span class="lineNum">     377 </span>            :                                                 ITableEntity tableEntity = ReplaceValues(retrievedResult, data);
+<span class="lineNum">     378 </span>            : 
+<span class="lineNum">     379 </span>            :                                                 TableOperation updateOperation = TableOperation.Replace(tableEntity);
 <span class="lineNum">     380 </span>            : 
-<span class="lineNum">     381 </span>            :                         return table;
-<span class="lineNum">     382 </span>            :                 }
-<span class="lineNum">     383 </span>            : 
-<span class="lineNum">     384 </span><span class="lineNoCov">          0 :                 public virtual TData GetByKeyAndRow(Guid rsn)</span>
-<span class="lineNum">     385 </span>            :                 {
-<span class="lineNum">     386 </span>            :                         // Create the table query.
-<span class="lineNum">     387 </span>            :                         var rangeQuery = Collection.Where
-<span class="lineNum">     388 </span>            :                         (
-<span class="lineNum">     389 </span>            :                                 TableQuery.CombineFilters
-<span class="lineNum">     390 </span>            :                                 (
-<span class="lineNum">     391 </span>            :                                         TableQuery.GenerateFilterCondition(&quot;PartitionKey&quot;, QueryComparisons.Equal, StorageStore&lt;object, object&gt;.GetSafeStorageKey(typeof(TCollectionItemData).FullName)),
-<span class="lineNum">     392 </span>            :                                         TableOperators.And,
-<span class="lineNum">     393 </span>            :                                         TableQuery.GenerateFilterCondition(&quot;RowKey&quot;, QueryComparisons.Equal, StorageStore&lt;object, object&gt;.GetSafeStorageKey(rsn.ToString(&quot;N&quot;)))
-<span class="lineNum">     394 </span>            :                                 )
-<span class="lineNum">     395 </span>            :                         );
-<span class="lineNum">     396 </span>            : 
-<span class="lineNum">     397 </span>            :                         return ReadableSource.ExecuteQuery(rangeQuery).Single();
-<span class="lineNum">     398 </span>            :                 }
+<span class="lineNum">     381 </span>            :                                                 // Execute the update operation.
+<span class="lineNum">     382 </span>            :                                                 return table.Execute(updateOperation);
+<span class="lineNum">     383 </span>            :                                         }
+<span class="lineNum">     384 </span>            :                                         catch (Exception exception)
+<span class="lineNum">     385 </span>            :                                         {
+<span class="lineNum">     386 </span>            :                                                 Logger.LogError(&quot;There was an issue updating data in table storage.&quot;, exception: exception);
+<span class="lineNum">     387 </span>            :                                                 throw;
+<span class="lineNum">     388 </span>            :                                         }
+<span class="lineNum">     389 </span>            :                                 }
+<span class="lineNum">     390 </span>            :                         );
+<span class="lineNum">     391 </span>            :                 }
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span>            :                 #endregion
+<span class="lineNum">     394 </span>            : 
+<span class="lineNum">     395 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     396 </span>            :                 /// Gets a &lt;see cref=&quot;TableOperation&quot;/&gt; for updating.
+<span class="lineNum">     397 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     398 </span><span class="lineCov">          1 :                 protected abstract TableOperation GetUpdatableTableEntity(TCollectionItemData data);</span>
 <span class="lineNum">     399 </span>            : 
-<span class="lineNum">     400 </span><span class="lineNoCov">          0 :                 public virtual IEnumerable&lt;TData&gt; GetByKey()</span>
-<span class="lineNum">     401 </span>            :                 {
-<span class="lineNum">     402 </span>            :                         // Create the table query.
-<span class="lineNum">     403 </span>            :                         var rangeQuery = Collection.Where
-<span class="lineNum">     404 </span>            :                         (
-<span class="lineNum">     405 </span>            :                                 TableQuery.GenerateFilterCondition(&quot;PartitionKey&quot;, QueryComparisons.Equal, StorageStore&lt;object, object&gt;.GetSafeStorageKey(typeof(TCollectionItemData).FullName))
-<span class="lineNum">     406 </span>            :                         );
-<span class="lineNum">     407 </span>            : 
-<span class="lineNum">     408 </span>            :                         return ReadableSource.ExecuteQuery(rangeQuery);
-<span class="lineNum">     409 </span>            :                 }
-<span class="lineNum">     410 </span>            : 
-<span class="lineNum">     411 </span><span class="lineNoCov">          0 :                 protected virtual ITableEntity ReplaceValues(TableResult retrievedResult, TData data)</span>
+<span class="lineNum">     400 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     401 </span>            :                 /// Gets a &lt;see cref=&quot;TableOperation&quot;/&gt; for updating.
+<span class="lineNum">     402 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     403 </span><span class="lineCov">          1 :                 protected abstract TableOperation GetUpdatableTableEntity(TData data);</span>
+<span class="lineNum">     404 </span>            : 
+<span class="lineNum">     405 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     406 </span>            :                 /// Creates a &lt;see cref=&quot;CloudTable&quot;/&gt; with the specified name &lt;paramref name=&quot;sourceName&quot;/&gt; if it doesn't already exist.
+<span class="lineNum">     407 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     408 </span>            :                 /// &lt;param name=&quot;storageAccount&quot;&gt;The storage account to create the &lt;see cref=&quot;CloudTable&quot;/&gt; is&lt;/param&gt;
+<span class="lineNum">     409 </span>            :                 /// &lt;param name=&quot;sourceName&quot;&gt;The name of the &lt;see cref=&quot;CloudTable&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     410 </span>            :                 /// &lt;param name=&quot;isPublic&quot;&gt;Whether or not this &lt;see cref=&quot;CloudTable&quot;/&gt; is publicly accessible.&lt;/param&gt;
+<span class="lineNum">     411 </span><span class="lineCov">          1 :                 protected override CloudTable CreateSource(CloudStorageAccount storageAccount, string sourceName, bool isPublic = true)</span>
 <span class="lineNum">     412 </span>            :                 {
-<span class="lineNum">     413 </span>            :                         ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
-<span class="lineNum">     414 </span>            :                         var eventTableEntity = tableEntity as IEventDataTableEntity&lt;TData&gt;;
-<span class="lineNum">     415 </span>            :                         if (eventTableEntity != null)
-<span class="lineNum">     416 </span>            :                                 eventTableEntity.EventData = data;
-<span class="lineNum">     417 </span>            :                         else
-<span class="lineNum">     418 </span>            :                                 ((IEntityTableEntity&lt;TCollectionItemData&gt;)tableEntity).Entity = ((IEntityTableEntity&lt;TCollectionItemData&gt;)data).Entity;
-<span class="lineNum">     419 </span>            : 
-<span class="lineNum">     420 </span>            :                         return tableEntity;
-<span class="lineNum">     421 </span>            :                 }
-<span class="lineNum">     422 </span>            : 
-<span class="lineNum">     423 </span>            :                 #region Overrides of StorageStore&lt;TData,CloudTable&gt;
-<span class="lineNum">     424 </span>            : 
-<span class="lineNum">     425 </span><span class="lineNoCov">          0 :                 protected override string GetSafeSourceName(string sourceName)</span>
-<span class="lineNum">     426 </span>            :                 {
-<span class="lineNum">     427 </span>            :                         return GetSafeSourceName(sourceName, false);
-<span class="lineNum">     428 </span>            :                 }
-<span class="lineNum">     429 </span>            : 
-<span class="lineNum">     430 </span>            :                 #endregion
-<span class="lineNum">     431 </span>            :         }
-<span class="lineNum">     432 </span>            : }
+<span class="lineNum">     413 </span>            :                         // Create the table client.
+<span class="lineNum">     414 </span>            :                         CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+<span class="lineNum">     415 </span>            : 
+<span class="lineNum">     416 </span>            :                         // Retrieve a reference to the table.
+<span class="lineNum">     417 </span>            :                         CloudTable table = tableClient.GetTableReference(GetSafeSourceName(sourceName));
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span>            :                         // Create the table if it doesn't exist.
+<span class="lineNum">     420 </span>            :                         try
+<span class="lineNum">     421 </span>            :                         {
+<span class="lineNum">     422 </span>            :                                 table.CreateIfNotExists();
+<span class="lineNum">     423 </span>            :                         }
+<span class="lineNum">     424 </span>            :                         catch (StorageException exception)
+<span class="lineNum">     425 </span>            :                         {
+<span class="lineNum">     426 </span>            :                                 var extendedErrorInformation = exception.RequestInformation.ExtendedErrorInformation;
+<span class="lineNum">     427 </span>            :                                 if (extendedErrorInformation != null)
+<span class="lineNum">     428 </span>            :                                         Logger.LogError(&quot;There was an issue creating the table.&quot;, exception: exception);
+<span class="lineNum">     429 </span>            :                                 else
+<span class="lineNum">     430 </span>            :                                         Logger.LogError(string.Format(&quot;There was an issue creating the table. Specifically {0} :: {1}&quot;, exception.RequestInformation.ExtendedErrorInformation.ErrorCode, exception.RequestInformation.ExtendedErrorInformation.ErrorMessage), exception: exception);
+<span class="lineNum">     431 </span>            :                                 throw;
+<span class="lineNum">     432 </span>            :                         }
+<span class="lineNum">     433 </span>            :                         catch (Exception exception)
+<span class="lineNum">     434 </span>            :                         {
+<span class="lineNum">     435 </span>            :                                 Logger.LogError(&quot;There was an issue creating the table.&quot;, exception: exception);
+<span class="lineNum">     436 </span>            :                                 throw;
+<span class="lineNum">     437 </span>            :                         }
+<span class="lineNum">     438 </span>            : 
+<span class="lineNum">     439 </span>            :                         return table;
+<span class="lineNum">     440 </span>            :                 }
+<span class="lineNum">     441 </span>            : 
+<span class="lineNum">     442 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     443 </span>            :                 /// Retrieves the data from Azure Storage using &lt;see cref=&quot;Collection&quot;/&gt;.
+<span class="lineNum">     444 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     445 </span><span class="lineCov">          1 :                 public virtual TData GetByKeyAndRow(Guid rsn)</span>
+<span class="lineNum">     446 </span>            :                 {
+<span class="lineNum">     447 </span>            :                         // Create the table query.
+<span class="lineNum">     448 </span>            :                         var rangeQuery = Collection.Where
+<span class="lineNum">     449 </span>            :                         (
+<span class="lineNum">     450 </span>            :                                 TableQuery.CombineFilters
+<span class="lineNum">     451 </span>            :                                 (
+<span class="lineNum">     452 </span>            :                                         TableQuery.GenerateFilterCondition(&quot;PartitionKey&quot;, QueryComparisons.Equal, StorageStore&lt;object, object&gt;.GetSafeStorageKey(typeof(TCollectionItemData).FullName)),
+<span class="lineNum">     453 </span>            :                                         TableOperators.And,
+<span class="lineNum">     454 </span>            :                                         TableQuery.GenerateFilterCondition(&quot;RowKey&quot;, QueryComparisons.Equal, StorageStore&lt;object, object&gt;.GetSafeStorageKey(rsn.ToString(&quot;N&quot;)))
+<span class="lineNum">     455 </span>            :                                 )
+<span class="lineNum">     456 </span>            :                         );
+<span class="lineNum">     457 </span>            : 
+<span class="lineNum">     458 </span>            :                         return ReadableSource.ExecuteQuery(rangeQuery).Single();
+<span class="lineNum">     459 </span>            :                 }
+<span class="lineNum">     460 </span>            : 
+<span class="lineNum">     461 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     462 </span>            :                 /// Retrieves the data from Azure Storage using &lt;see cref=&quot;Collection&quot;/&gt;.
+<span class="lineNum">     463 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     464 </span><span class="lineCov">          1 :                 public virtual IEnumerable&lt;TData&gt; GetByKey()</span>
+<span class="lineNum">     465 </span>            :                 {
+<span class="lineNum">     466 </span>            :                         // Create the table query.
+<span class="lineNum">     467 </span>            :                         var rangeQuery = Collection.Where
+<span class="lineNum">     468 </span>            :                         (
+<span class="lineNum">     469 </span>            :                                 TableQuery.GenerateFilterCondition(&quot;PartitionKey&quot;, QueryComparisons.Equal, StorageStore&lt;object, object&gt;.GetSafeStorageKey(typeof(TCollectionItemData).FullName))
+<span class="lineNum">     470 </span>            :                         );
+<span class="lineNum">     471 </span>            : 
+<span class="lineNum">     472 </span>            :                         return ReadableSource.ExecuteQuery(rangeQuery);
+<span class="lineNum">     473 </span>            :                 }
+<span class="lineNum">     474 </span>            : 
+<span class="lineNum">     475 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     476 </span>            :                 /// Extracts &lt;see cref=&quot;TableResult.Result&quot;/&gt; of the provided &lt;paramref name=&quot;retrievedResult&quot;/&gt;
+<span class="lineNum">     477 </span>            :                 /// If &lt;see cref=&quot;TableResult.Result&quot;/&gt; is a &lt;see cref=&quot;IEventDataTableEntity{TData}&quot;/&gt;
+<span class="lineNum">     478 </span>            :                 /// then &lt;see cref=&quot;IEventDataTableEntity{TEventData}.EventData&quot;/&gt; is replaced with &lt;paramref name=&quot;data&quot;/&gt;.
+<span class="lineNum">     479 </span>            :                 /// Otherwise &lt;see cref=&quot;TableResult.Result&quot;/&gt; is a &lt;see cref=&quot;IEntityTableEntity{TCollectionItemData}&quot;/&gt;
+<span class="lineNum">     480 </span>            :                 /// and &lt;see cref=&quot;IEntityTableEntity{TCollectionItemData}.Entity&quot;/&gt; is replaced with &lt;paramref name=&quot;data&quot;/&gt;.
+<span class="lineNum">     481 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     482 </span>            :                 /// &lt;param name=&quot;retrievedResult&quot;&gt;The existing data to update.&lt;/param&gt;
+<span class="lineNum">     483 </span>            :                 /// &lt;param name=&quot;data&quot;&gt;The new data to store.&lt;/param&gt;
+<span class="lineNum">     484 </span><span class="lineCov">          1 :                 protected virtual ITableEntity ReplaceValues(TableResult retrievedResult, TData data)</span>
+<span class="lineNum">     485 </span>            :                 {
+<span class="lineNum">     486 </span>            :                         ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
+<span class="lineNum">     487 </span>            :                         var eventTableEntity = tableEntity as IEventDataTableEntity&lt;TData&gt;;
+<span class="lineNum">     488 </span>            :                         if (eventTableEntity != null)
+<span class="lineNum">     489 </span>            :                                 eventTableEntity.EventData = data;
+<span class="lineNum">     490 </span>            :                         else
+<span class="lineNum">     491 </span>            :                                 ((IEntityTableEntity&lt;TCollectionItemData&gt;)tableEntity).Entity = ((IEntityTableEntity&lt;TCollectionItemData&gt;)data).Entity;
+<span class="lineNum">     492 </span>            : 
+<span class="lineNum">     493 </span>            :                         return tableEntity;
+<span class="lineNum">     494 </span>            :                 }
+<span class="lineNum">     495 </span>            : 
+<span class="lineNum">     496 </span>            :                 #region Overrides of StorageStore&lt;TData,CloudTable&gt;
+<span class="lineNum">     497 </span>            : 
+<span class="lineNum">     498 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     499 </span>            :                 /// Gets the provided &lt;paramref name=&quot;sourceName&quot;/&gt; in a safe to use format.
+<span class="lineNum">     500 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     501 </span>            :                 /// &lt;param name=&quot;sourceName&quot;&gt;The name to make safe.&lt;/param&gt;
+<span class="lineNum">     502 </span><span class="lineCov">          1 :                 protected override string GetSafeSourceName(string sourceName)</span>
+<span class="lineNum">     503 </span>            :                 {
+<span class="lineNum">     504 </span>            :                         return GetSafeSourceName(sourceName, false);
+<span class="lineNum">     505 </span>            :                 }
+<span class="lineNum">     506 </span>            : 
+<span class="lineNum">     507 </span>            :                 #endregion
+<span class="lineNum">     508 </span>            :         }
+<span class="lineNum">     509 </span>            : }
 </pre>
       </td>
     </tr>

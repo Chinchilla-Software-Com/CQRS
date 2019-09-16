@@ -35,6 +35,20 @@ namespace Cqrs.Bus
 		bool IsEventRequired(string configurationKey);
 
 		/// <summary>
+		/// Checks if the private bus is required to send the message. Note, this does not imply the public bus is not required as well.
+		/// </summary>
+		/// <param name="messageType">The <see cref="Type"/> of the message being processed.</param>
+		/// <returns>Null for unconfigured, True for private bus transmission, false otherwise.</returns>
+		bool? IsPrivateBusRequired(Type messageType);
+
+		/// <summary>
+		/// Checks if the public bus is required to send the message. Note, this does not imply the public bus is not required as well.
+		/// </summary>
+		/// <param name="messageType">The <see cref="Type"/> of the message being processed.</param>
+		/// <returns>Null for unconfigured, True for private bus transmission, false otherwise.</returns>
+		bool? IsPublicBusRequired(Type messageType);
+
+		/// <summary>
 		/// Build a message handler that implements telemetry capturing as well as off thread handling.
 		/// </summary>
 		Action<TMessage> BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper telemetryHelper, Action<TMessage> handler, bool holdMessageLock, string source)
@@ -45,5 +59,15 @@ namespace Cqrs.Bus
 		/// </summary>
 		Action<TMessage> BuildActionHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock)
 			where TMessage : IMessage;
+
+		/// <summary>
+		/// Indicates if the message was received via the private bus or not. If false, this implies the public was use used.
+		/// </summary>
+		bool GetWasPrivateBusUsed();
+
+		/// <summary>
+		/// Set whether the message was received via the private bus or not. If false, this indicates the public was use used.
+		/// </summary>
+		bool SetWasPrivateBusUsed(bool wasPrivate);
 	}
 }

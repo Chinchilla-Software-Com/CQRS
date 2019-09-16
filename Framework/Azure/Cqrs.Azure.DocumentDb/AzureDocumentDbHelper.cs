@@ -9,29 +9,45 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
 using Cqrs.Domain.Exceptions;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.Documents.Linq;
+using System.Collections.ObjectModel;
 
 namespace Cqrs.Azure.DocumentDb
 {
+	/// <summary>
+	/// A helper for Azure Document DB.
+	/// </summary>
 	public class AzureDocumentDbHelper : IAzureDocumentDbHelper
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>.
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Gets the <see cref="IAzureDocumentDbConnectionCache"/>
+		/// </summary>
 		protected IAzureDocumentDbConnectionCache AzureDocumentDbConnectionCache { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureDocumentDbHelper"/>.
+		/// </summary>
 		public AzureDocumentDbHelper(ILogger logger, IAzureDocumentDbConnectionCache azureDocumentDbConnectionCache)
 		{
 			Logger = logger;
 			AzureDocumentDbConnectionCache = azureDocumentDbConnectionCache;
 		}
 
+		/// <summary>
+		/// Gets a <see cref="Database"/> creating one if it doesn't already exist.
+		/// </summary>
+		/// <param name="client">The <see cref="DocumentClient"/> to use.</param>
+		/// <param name="databaseName">The name of the database to get.</param>
 		public async Task<Database> CreateOrReadDatabase(DocumentClient client, string databaseName)
 		{
 			Logger.LogDebug("Getting Azure database", "AzureDocumentDbHelper\\CreateOrReadDatabase");
@@ -47,7 +63,7 @@ namespace Cqrs.Azure.DocumentDb
 				}
 				finally
 				{
-					Logger.LogDebug(string.Format("Returning cached database took... Done"), "AzureDocumentDbHelper\\CreateOrReadDatabase");
+					Logger.LogDebug("Returning cached database took... Done", "AzureDocumentDbHelper\\CreateOrReadDatabase");
 				}
 			}
 			try
@@ -68,7 +84,7 @@ namespace Cqrs.Azure.DocumentDb
 					}
 					finally
 					{
-						Logger.LogDebug(string.Format("Returning the existing database... Done"), "AzureDocumentDbHelper\\CreateOrReadDatabase");
+						Logger.LogDebug("Returning the existing database... Done", "AzureDocumentDbHelper\\CreateOrReadDatabase");
 					}
 				}
 				Logger.LogDebug("Creating and returning a new database", "AzureDocumentDbHelper\\CreateOrReadDatabase");
@@ -86,6 +102,13 @@ namespace Cqrs.Azure.DocumentDb
 			}
 		}
 
+		/// <summary>
+		/// Gets a <see cref="DocumentCollection"/> creating one if it doesn't already exist.
+		/// </summary>
+		/// <param name="client">The <see cref="DocumentClient"/> to use.</param>
+		/// <param name="database">The <see cref="Database"/> to look in.</param>
+		/// <param name="collectionName">The name of the collection to get.</param>
+		/// <param name="uniqiueIndexPropertyNames">Any unique properties the collection should enforce.</param>
 		public async Task<DocumentCollection> CreateOrReadCollection(DocumentClient client, Database database, string collectionName, string[] uniqiueIndexPropertyNames = null)
 		{
 			Logger.LogDebug("Getting Azure collection", "AzureDocumentDbHelper\\CreateOrReadCollection");
@@ -101,7 +124,7 @@ namespace Cqrs.Azure.DocumentDb
 				}
 				finally
 				{
-					Logger.LogDebug(string.Format("Returning cached collection took... Done"), "AzureDocumentDbHelper\\CreateOrReadCollection");
+					Logger.LogDebug("Returning cached collection took... Done", "AzureDocumentDbHelper\\CreateOrReadCollection");
 				}
 			}
 			try
@@ -122,131 +145,28 @@ namespace Cqrs.Azure.DocumentDb
 					}
 					finally
 					{
-						Logger.LogDebug(string.Format("Returning the existing document collection... Done"), "AzureDocumentDbHelper\\CreateOrReadCollection");
+						Logger.LogDebug("Returning the existing document collection... Done", "AzureDocumentDbHelper\\CreateOrReadCollection");
 					}
 				}
 				Logger.LogDebug("Creating and returning a new collection", "AzureDocumentDbHelper\\CreateOrReadCollection");
 				start = DateTime.Now;
-				result = ExecuteFaultTollerantFunction(() => client.CreateDocumentCollectionAsync(database.SelfLink, new DocumentCollection { Id = collectionName }).Result);
+
+				DocumentCollection myCollection = new DocumentCollection();
+				myCollection.Id = collectionName;
 				if (uniqiueIndexPropertyNames != null)
 				{
-					StringBuilder body = new StringBuilder(@"
-function()
-{
-	var context = getContext();
-	var collection = context.getCollection();
-	var request = context.getRequest();
+					var paths = new Collection<string>{string.Format("/{0}", uniqiueIndexPropertyNames.First().Replace('.', '/'))};
+					foreach (string name in uniqiueIndexPropertyNames.Skip(1))
+						paths.Add(string.Format("/{0}", name.Replace('.', '/')));
 
-	// document to be created in the current operation
-	var documentToCreate = request.getBody();
-
-	function lookForDuplicates(propertyNames, propertyValues, continuation)
-	{
-		var queryString = 'SELECT * FROM c WHERE ';
-		var queryParameters = [];
-		for (index = 0; index < propertyNames.length; index++)
-		{
-			if (index > 0)
-				queryString = queryString + ' AND';
-			queryString = queryString + ' c.' + propertyNames[index] + ' = @property' + index;
-			queryParameters.push({ name: '@property' + index, value: propertyValues[index] });
-		}
-		var query =
-		{
-			query: queryString,
-			parameters: queryParameters
-		};
-		var requestOptions =
-		{
-			continuation: continuation
-		};
-
-		var isAccepted = collection.queryDocuments(collection.getSelfLink(), query, requestOptions,
-			function(err, results, responseOptions)
-			{
-				if (err)
-				{
-					throw new Error('Error querying for documents with duplicate: ' + err.message);
-				}
-				if (results.length > 0)
-				{
-					// At least one document with property exists.
-					throw new Error('Document with the property: ' + JSON.stringify(propertyNames) + ' and value: ' + JSON.stringify(propertyValues) + ', already exists: ' + JSON.stringify(results[0]));
-				}
-				else if (responseOptions.continuation)
-				{
-					// Else if the query came back empty, but with a continuation token; repeat the query w/ the token.
-					// This is highly unlikely; but is included to serve as an example for larger queries.
-					lookForDuplicates(propertyNames, propertyValues, responseOptions.continuation);
-				}
-				else
-				{
-					// Success, no duplicates found! Do nothing.
-				}
-			}
-		);
-
-		// If we hit execution bounds - throw an exception.
-		// This is highly unlikely; but is included to serve as an example for more complex operations.
-		if (!isAccepted)
-		{
-			throw new Error('Timeout querying for document with duplicates.');
-		}
-	}
-
-");
-					string propertyNames = uniqiueIndexPropertyNames.Aggregate("", (current, uniqiueIndexPropertyName) => string.Format("{0}{1}\"{2}\"", current, string.IsNullOrWhiteSpace(current) ? string.Empty : ", ", uniqiueIndexPropertyName));
-					string propertyValues = uniqiueIndexPropertyNames.Aggregate("", (current, uniqiueIndexPropertyName) => string.Format("{0}{1}documentToCreate[\"{2}\"]", current, string.IsNullOrWhiteSpace(current) ? string.Empty : ", ", uniqiueIndexPropertyName));
-					foreach (string uniqiueIndexPropertyName in uniqiueIndexPropertyNames)
+					myCollection.UniqueKeyPolicy = new UniqueKeyPolicy
 					{
-						/*
-						if (uniqiueIndexPropertyName.Contains("::"))
-						{
-							string[] values = uniqiueIndexPropertyName.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
-							string preFilter = null;
-							string propertyName = values[0];
-							string subPropertyName = values[1];
-							if (values.Length == 3)
-							{
-								preFilter = values[0];
-								propertyName = values[1];
-								subPropertyName = values[2];
-							}
-							body.Append(@"
-	if (!(""" + propertyName + @""" in documentToCreate)) {
-		throw new Error('Document must include a """ + propertyName + @""" property.');
-	}
-	// get property
-	var propertyData = documentToCreate[""" + propertyName + @"""];
-	var property = JSON.parse(propertyData);
-");
-						}
-						else
-						{
-							body.Append(@"
-	if (!(""" + uniqiueIndexPropertyName + @""" in documentToCreate)) {
-		throw new Error('Document must include a """ + uniqiueIndexPropertyName + @""" property.');
-	lookForDuplicates(""" + uniqiueIndexPropertyName + @""", documentToCreate[""" + uniqiueIndexPropertyName + @"""]);");
-						}
-						*/
-							body.Append(@"
-	if (!(""" + uniqiueIndexPropertyName + @""" in documentToCreate))
-		throw new Error('Document must include a """ + uniqiueIndexPropertyName + @""" property.');");
-					}
-
-					body.Append(@"
-	lookForDuplicates([" + propertyNames + @"], [" + propertyValues + @"]);
-}");
-
-					var trigger = new Trigger
-					{
-						Id = "ValidateUniqueConstraints",
-						Body = body.ToString(),
-						TriggerOperation = TriggerOperation.Create,
-						TriggerType = TriggerType.Pre
+						UniqueKeys = new Collection<UniqueKey>{new UniqueKey { Paths = paths } }
 					};
-					ExecuteFaultTollerantFunction(() => client.CreateTriggerAsync(result.SelfLink, trigger).Result);
 				}
+
+				result = ExecuteFaultTollerantFunction(() => client.CreateDocumentCollectionAsync(database.SelfLink, myCollection).Result);
+
 				Logger.LogDebug(string.Format("Getting Azure document collection took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadCollection");
 				// AzureDocumentDbConnectionCache.SetDocumentCollection(documentCollectionCacheKey, result);
 				return result;
@@ -257,6 +177,10 @@ function()
 			}
 		}
 
+		/// <summary>
+		/// Process the provided <paramref name="documentClientException"/> checking for operations that can be retired.
+		/// </summary>
+		/// <param name="documentClientException">The <see cref="DocumentClientException"/> to check.</param>
 		protected virtual void ProcessFaultTollerantExceptions(DocumentClientException documentClientException)
 		{
 			var statusCode = (int)documentClientException.StatusCode;
@@ -267,10 +191,14 @@ function()
 				Logger.LogWarning("Non-fault tolerant exception raised via DocumentClientException.", "AzureDocumentDbDataStore\\ProcessFaultTollerantExceptions");
 				if (documentClientException.Error.Message == "Resource with specified id or name already exists.")
 					throw new DuplicateCreateCommandException(documentClientException);
-				throw new DocumentDbException("Non-fault tolerant exception raised.", documentClientException);
+				throw new DocumentDbException(documentClientException);
 			}
 		}
 
+		/// <summary>
+		/// Execute the provided <paramref name="func"/> in a fault tolerant way.
+		/// </summary>
+		/// <param name="func">The <see cref="Func{T}"/> to execute.</param>
 		public virtual T ExecuteFaultTollerantFunction<T>(Func<T> func)
 		{
 			while (true)
@@ -298,6 +226,10 @@ function()
 			}
 		}
 
+		/// <summary>
+		/// Execute the provided <paramref name="func"/> in a fault tolerant way.
+		/// </summary>
+		/// <param name="func">The <see cref="Action"/> to execute.</param>
 		public virtual void ExecuteFaultTollerantFunction(Action func)
 		{
 			while (true)

@@ -1,0 +1,352 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver" kind="class" language="C#" prot="public" abstract="yes">
+    <compoundname>Cqrs::Bus::QueuedCommandBusReceiver</compoundname>
+    <basecompoundref refid="interfaceCqrs_1_1Commands_1_1ICommandReceiver" prot="public" virt="non-virtual">Cqrs.Commands.ICommandReceiver&lt; TAuthenticationToken &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>TAuthenticationToken</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="property">
+      <memberdef kind="property" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_1a2fc62989429929acd8ea66808a8c4a78" prot="protected" static="yes" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="no" privatesettable="yes" protectedsettable="no">
+        <type>ConcurrentDictionary&lt; string, ConcurrentQueue&lt; <ref refid="interfaceCqrs_1_1Commands_1_1ICommand" kindref="compound">ICommand</ref>&lt; TAuthenticationToken &gt; &gt; &gt;</type>
+        <definition>ConcurrentDictionary&lt;string, ConcurrentQueue&lt;ICommand&lt;TAuthenticationToken&gt; &gt; &gt; Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.QueueTracker</definition>
+        <argsstring></argsstring>
+        <name>QueueTracker</name>
+        <briefdescription>
+<para>The queues keyed by an identifier. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="32" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ac633e2d140fc90fab100acba4afa136b_1ac633e2d140fc90fab100acba4afa136b" prot="protected" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="no" privatesettable="yes" protectedsettable="no">
+        <type>ReaderWriterLockSlim</type>
+        <definition>ReaderWriterLockSlim Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.QueueTrackerLock</definition>
+        <argsstring></argsstring>
+        <name>QueueTrackerLock</name>
+        <briefdescription>
+<para>A ReaderWriterLockSlim for providing a lock mechanism around the main <ref refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_1a2fc62989429929acd8ea66808a8c4a78" kindref="member">QueueTracker</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="37" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a809cb92ece6c52bbbe3abc347be0470d_1a809cb92ece6c52bbbe3abc347be0470d" prot="protected" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="no" privatesettable="yes" protectedsettable="no">
+        <type><ref refid="interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper" kindref="compound">IAuthenticationTokenHelper</ref>&lt; TAuthenticationToken &gt;</type>
+        <definition>IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.AuthenticationTokenHelper</definition>
+        <argsstring></argsstring>
+        <name>AuthenticationTokenHelper</name>
+        <briefdescription>
+<para>Gets or sets the IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="42" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a4cf8781cab9cb844892eb032cfca773f_1a4cf8781cab9cb844892eb032cfca773f" prot="protected" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="no" privatesettable="yes" protectedsettable="no">
+        <type>ICorrelationIdHelper</type>
+        <definition>ICorrelationIdHelper Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.CorrelationIdHelper</definition>
+        <argsstring></argsstring>
+        <name>CorrelationIdHelper</name>
+        <briefdescription>
+<para>Gets or sets the ICorrelationIdHelper </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="47" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a0d0174c10f6cde11cd5a9d76092f3058_1a0d0174c10f6cde11cd5a9d76092f3058" prot="protected" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="no" privatesettable="yes" protectedsettable="no">
+        <type>ILogger</type>
+        <definition>ILogger Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.Logger</definition>
+        <argsstring></argsstring>
+        <name>Logger</name>
+        <briefdescription>
+<para>Gets or sets the ILogger </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="52" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_acd7c3367d16742abd5e650f6bacf4df9_1acd7c3367d16742abd5e650f6bacf4df9" prot="protected" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="no" privatesettable="yes" protectedsettable="no">
+        <type><ref refid="interfaceCqrs_1_1Configuration_1_1IConfigurationManager" kindref="compound">IConfigurationManager</ref></type>
+        <definition>IConfigurationManager Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.ConfigurationManager</definition>
+        <argsstring></argsstring>
+        <name>ConfigurationManager</name>
+        <briefdescription>
+<para>Gets or sets the IConfigurationManager </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="57" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_acc1fa8c5074a43382bcf21805b4ee709_1acc1fa8c5074a43382bcf21805b4ee709" prot="protected" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="no" privatesettable="yes" protectedsettable="no">
+        <type><ref refid="interfaceCqrs_1_1Bus_1_1IBusHelper" kindref="compound">IBusHelper</ref></type>
+        <definition>IBusHelper Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.BusHelper</definition>
+        <argsstring></argsstring>
+        <name>BusHelper</name>
+        <briefdescription>
+<para>Gets or sets the <ref refid="interfaceCqrs_1_1Bus_1_1IBusHelper" kindref="compound">IBusHelper</ref> </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="62" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad69fe38758694599261bad82e6c6378c_1ad69fe38758694599261bad82e6c6378c" prot="protected" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="no" privatesettable="no" protectedsettable="no">
+        <type>abstract IDictionary&lt; Type, IList&lt; Action&lt; <ref refid="interfaceCqrs_1_1Messages_1_1IMessage" kindref="compound">IMessage</ref> &gt; &gt; &gt;</type>
+        <definition>abstract IDictionary&lt;Type, IList&lt;Action&lt;IMessage&gt; &gt; &gt; Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.Routes</definition>
+        <argsstring></argsstring>
+        <name>Routes</name>
+        <briefdescription>
+<para>Gets or sets the routes or handlers that will be executed as the commands arrive. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="67" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aefae09fd32d799ac59d35eb706f76654_1aefae09fd32d799ac59d35eb706f76654" prot="public" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="no" privatesettable="no" protectedsettable="no">
+        <type>int</type>
+        <definition>int Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.QueueCount</definition>
+        <argsstring></argsstring>
+        <name>QueueCount</name>
+        <briefdescription>
+<para>The current number of queues in <ref refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_1a2fc62989429929acd8ea66808a8c4a78" kindref="member">QueueTracker</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="196" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="197" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a959facef20063d615b427eafa4290e0f_1a959facef20063d615b427eafa4290e0f" prot="public" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="no" privatesettable="no" protectedsettable="no">
+        <type>ICollection&lt; string &gt;</type>
+        <definition>ICollection&lt;string&gt; Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.QueueNames</definition>
+        <argsstring></argsstring>
+        <name>QueueNames</name>
+        <briefdescription>
+<para>Gets the names of all queues in <ref refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_1a2fc62989429929acd8ea66808a8c4a78" kindref="member">QueueTracker</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="215" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="216" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aa5158357f8e2007f06b640d4a4129781_1aa5158357f8e2007f06b640d4a4129781" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.QueuedCommandBusReceiver</definition>
+        <argsstring>(IAuthenticationTokenHelper&lt; TAuthenticationToken &gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IConfigurationManager configurationManager, IBusHelper busHelper)</argsstring>
+        <name>QueuedCommandBusReceiver</name>
+        <param>
+          <type><ref refid="interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper" kindref="compound">IAuthenticationTokenHelper</ref>&lt; TAuthenticationToken &gt;</type>
+          <declname>authenticationTokenHelper</declname>
+        </param>
+        <param>
+          <type>ICorrelationIdHelper</type>
+          <declname>correlationIdHelper</declname>
+        </param>
+        <param>
+          <type>ILogger</type>
+          <declname>logger</declname>
+        </param>
+        <param>
+          <type><ref refid="interfaceCqrs_1_1Configuration_1_1IConfigurationManager" kindref="compound">IConfigurationManager</ref></type>
+          <declname>configurationManager</declname>
+        </param>
+        <param>
+          <type><ref refid="interfaceCqrs_1_1Bus_1_1IBusHelper" kindref="compound">IBusHelper</ref></type>
+          <declname>busHelper</declname>
+        </param>
+        <briefdescription>
+<para>Instantiates a new instance of <ref refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aa5158357f8e2007f06b640d4a4129781_1aa5158357f8e2007f06b640d4a4129781" kindref="member">QueuedCommandBusReceiver&lt;TAuthenticationToken&gt;</ref>. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="72" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="72" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ab27ff7119814cdc22bf9a5811340e4e7_1ab27ff7119814cdc22bf9a5811340e4e7" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.EnqueueCommand</definition>
+        <argsstring>(string targetQueueName, ICommand&lt; TAuthenticationToken &gt; command)</argsstring>
+        <name>EnqueueCommand</name>
+        <param>
+          <type>string</type>
+          <declname>targetQueueName</declname>
+        </param>
+        <param>
+          <type><ref refid="interfaceCqrs_1_1Commands_1_1ICommand" kindref="compound">ICommand</ref>&lt; TAuthenticationToken &gt;</type>
+          <declname>command</declname>
+        </param>
+        <briefdescription>
+<para>Places the provided <emphasis>command</emphasis>  into the appropriate queue in the <ref refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_1a2fc62989429929acd8ea66808a8c4a78" kindref="member">QueueTracker</ref>. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>targetQueueName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the target queue to place the command into</para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>command</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ICommand&lt;TAuthenticationToken&gt; to handle.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="88" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="88" bodyend="92"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad703e46b4a8318debac37ea747163f30_1ad703e46b4a8318debac37ea747163f30" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.CreateQueueAndAttachListenerIfNotExist</definition>
+        <argsstring>(string queueName)</argsstring>
+        <name>CreateQueueAndAttachListenerIfNotExist</name>
+        <param>
+          <type>string</type>
+          <declname>queueName</declname>
+        </param>
+        <briefdescription>
+<para>Checks if the queue exists, if it doesn&apos;t it creates a new queue in <ref refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_1a2fc62989429929acd8ea66808a8c4a78" kindref="member">QueueTracker</ref> and then starts a separate Thread running <ref refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a6e00e819b9738c694fd05815938cb433_1a6e00e819b9738c694fd05815938cb433" kindref="member">DequeuAndProcessCommand</ref>. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>queueName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the queue.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="98" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="98" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a6e00e819b9738c694fd05815938cb433_1a6e00e819b9738c694fd05815938cb433" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.DequeuAndProcessCommand</definition>
+        <argsstring>(string queueName)</argsstring>
+        <name>DequeuAndProcessCommand</name>
+        <param>
+          <type>string</type>
+          <declname>queueName</declname>
+        </param>
+        <briefdescription>
+<para>Infinitely runs a loop checking if the queue exists in <ref refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_1a2fc62989429929acd8ea66808a8c4a78" kindref="member">QueueTracker</ref> and then dequeues ICommand&lt;TAuthenticationToken&gt; one at a time, pausing for 0.1 seconds between loops. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>queueName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the queue.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="131" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="131" bodyend="191"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aad9ab381afcc8346479ab9cabdf1046a_1aad9ab381afcc8346479ab9cabdf1046a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.ReceiveCommand</definition>
+        <argsstring>(ICommand&lt; TAuthenticationToken &gt; command)</argsstring>
+        <name>ReceiveCommand</name>
+        <param>
+          <type><ref refid="interfaceCqrs_1_1Commands_1_1ICommand" kindref="compound">ICommand</ref>&lt; TAuthenticationToken &gt;</type>
+          <declname>command</declname>
+        </param>
+        <briefdescription>
+<para>Receives a ICommand&lt;TAuthenticationToken&gt; from the command bus. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="236" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="236" bodyend="270"/>
+      </memberdef>
+      <memberdef kind="function" id="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad8bf3c1f9d9b0444cb85784cb9e59823_1ad8bf3c1f9d9b0444cb85784cb9e59823" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>abstract void</type>
+        <definition>abstract void Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;.Start</definition>
+        <argsstring>()</argsstring>
+        <name>Start</name>
+        <briefdescription>
+<para>Starts listening and processing instances of ICommand&lt;TAuthenticationToken&gt; from the command bus. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="279" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Receives instances of a ICommand&lt;TAuthenticationToken&gt; from the command bus, places them into one of several internal concurrent queues and then processes the commands one at a time per queue. </para>    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TAuthenticationToken</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of authentication token.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="1162">
+        <label>ICommandReceiver&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Commands_1_1ICommandReceiver"/>
+      </node>
+      <node id="1161">
+        <label>Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver"/>
+        <childnode refid="1162" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1164">
+        <label>ICommandReceiver&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Commands_1_1ICommandReceiver"/>
+      </node>
+      <node id="1163">
+        <label>Cqrs.Bus.QueuedCommandBusReceiver&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver"/>
+        <childnode refid="1164" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" line="28" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Bus/QueuedCommandBusReceiver.cs" bodystart="27" bodyend="282"/>
+    <listofallmembers>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a809cb92ece6c52bbbe3abc347be0470d_1a809cb92ece6c52bbbe3abc347be0470d" prot="protected" virt="non-virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>AuthenticationTokenHelper</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_acc1fa8c5074a43382bcf21805b4ee709_1acc1fa8c5074a43382bcf21805b4ee709" prot="protected" virt="non-virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>BusHelper</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_acd7c3367d16742abd5e650f6bacf4df9_1acd7c3367d16742abd5e650f6bacf4df9" prot="protected" virt="non-virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>ConfigurationManager</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a4cf8781cab9cb844892eb032cfca773f_1a4cf8781cab9cb844892eb032cfca773f" prot="protected" virt="non-virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>CorrelationIdHelper</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad703e46b4a8318debac37ea747163f30_1ad703e46b4a8318debac37ea747163f30" prot="protected" virt="virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>CreateQueueAndAttachListenerIfNotExist</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a6e00e819b9738c694fd05815938cb433_1a6e00e819b9738c694fd05815938cb433" prot="protected" virt="virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>DequeuAndProcessCommand</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ab27ff7119814cdc22bf9a5811340e4e7_1ab27ff7119814cdc22bf9a5811340e4e7" prot="protected" virt="virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>EnqueueCommand</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a0d0174c10f6cde11cd5a9d76092f3058_1a0d0174c10f6cde11cd5a9d76092f3058" prot="protected" virt="non-virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>Logger</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aefae09fd32d799ac59d35eb706f76654_1aefae09fd32d799ac59d35eb706f76654" prot="public" virt="non-virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>QueueCount</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aa5158357f8e2007f06b640d4a4129781_1aa5158357f8e2007f06b640d4a4129781" prot="protected" virt="non-virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>QueuedCommandBusReceiver</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a959facef20063d615b427eafa4290e0f_1a959facef20063d615b427eafa4290e0f" prot="public" virt="non-virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>QueueNames</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_1a2fc62989429929acd8ea66808a8c4a78" prot="protected" virt="non-virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>QueueTracker</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ac633e2d140fc90fab100acba4afa136b_1ac633e2d140fc90fab100acba4afa136b" prot="protected" virt="non-virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>QueueTrackerLock</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aad9ab381afcc8346479ab9cabdf1046a_1aad9ab381afcc8346479ab9cabdf1046a" prot="public" virt="virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>ReceiveCommand</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad69fe38758694599261bad82e6c6378c_1ad69fe38758694599261bad82e6c6378c" prot="protected" virt="non-virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>Routes</name></member>
+      <member refid="classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad8bf3c1f9d9b0444cb85784cb9e59823_1ad8bf3c1f9d9b0444cb85784cb9e59823" prot="public" virt="pure-virtual"><scope>Cqrs::Bus::QueuedCommandBusReceiver</scope><name>Start</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

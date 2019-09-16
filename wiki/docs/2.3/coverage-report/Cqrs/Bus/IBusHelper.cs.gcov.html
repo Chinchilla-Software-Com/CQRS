@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Bus/IBusHelper.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Bus</a> - IBusHelper.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-20</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using cdmdotnet.Logging;
+<span class="lineNum">      11 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      12 </span>            : using Cqrs.Messages;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : namespace Cqrs.Bus
+<span class="lineNum">      15 </span>            : {
+<span class="lineNum">      16 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      17 </span>            :         /// A helper for command and event buses.
+<span class="lineNum">      18 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      19 </span>            :         public interface IBusHelper
+<span class="lineNum">      20 </span>            :         {
+<span class="lineNum">      21 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :                 /// Checks if a white-list or black-list approach is taken, then checks the &lt;see cref=&quot;IConfigurationManager&quot;/&gt; to see if a key exists defining if the event is required or not.
+<span class="lineNum">      23 </span>            :                 /// If the event is required and it cannot be resolved, an error will be raised.
+<span class="lineNum">      24 </span>            :                 /// Otherwise the event will be marked as processed.
+<span class="lineNum">      25 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      26 </span>            :                 /// &lt;param name=&quot;messageType&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the message being processed.&lt;/param&gt;
+<span class="lineNum">      27 </span><span class="lineCov">          1 :                 bool IsEventRequired(Type messageType);</span>
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      30 </span>            :                 /// Checks if a white-list or black-list approach is taken, then checks the &lt;see cref=&quot;IConfigurationManager&quot;/&gt; to see if a key exists defining if the event is required or not.
+<span class="lineNum">      31 </span>            :                 /// If the event is required and it cannot be resolved, an error will be raised.
+<span class="lineNum">      32 </span>            :                 /// Otherwise the event will be marked as processed.
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :                 /// &lt;param name=&quot;configurationKey&quot;&gt;The configuration key to check.&lt;/param&gt;
+<span class="lineNum">      35 </span><span class="lineCov">          3 :                 bool IsEventRequired(string configurationKey);</span>
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :                 /// Checks if the private bus is required to send the message. Note, this does not imply the public bus is not required as well.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span>            :                 /// &lt;param name=&quot;messageType&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the message being processed.&lt;/param&gt;
+<span class="lineNum">      41 </span>            :                 /// &lt;returns&gt;Null for unconfigured, True for private bus transmission, false otherwise.&lt;/returns&gt;
+<span class="lineNum">      42 </span>            :                 bool? IsPrivateBusRequired(Type messageType);
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      45 </span>            :                 /// Checks if the public bus is required to send the message. Note, this does not imply the public bus is not required as well.
+<span class="lineNum">      46 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      47 </span>            :                 /// &lt;param name=&quot;messageType&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the message being processed.&lt;/param&gt;
+<span class="lineNum">      48 </span>            :                 /// &lt;returns&gt;Null for unconfigured, True for private bus transmission, false otherwise.&lt;/returns&gt;
+<span class="lineNum">      49 </span>            :                 bool? IsPublicBusRequired(Type messageType);
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      52 </span>            :                 /// Build a message handler that implements telemetry capturing as well as off thread handling.
+<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      54 </span>            :                 Action&lt;TMessage&gt; BuildTelemeteredActionHandler&lt;TMessage, TAuthenticationToken&gt;(ITelemetryHelper telemetryHelper, Action&lt;TMessage&gt; handler, bool holdMessageLock, string source)
+<span class="lineNum">      55 </span>            :                         where TMessage : IMessage;
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      58 </span>            :                 /// Build a message handler that implements telemetry capturing as well as off thread handling.
+<span class="lineNum">      59 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      60 </span>            :                 Action&lt;TMessage&gt; BuildActionHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; handler, bool holdMessageLock)
+<span class="lineNum">      61 </span>            :                         where TMessage : IMessage;
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      64 </span>            :                 /// Indicates if the message was received via the private bus or not. If false, this implies the public was use used.
+<span class="lineNum">      65 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      66 </span>            :                 bool GetWasPrivateBusUsed();
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      69 </span>            :                 /// Set whether the message was received via the private bus or not. If false, this indicates the public was use used.
+<span class="lineNum">      70 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      71 </span>            :                 bool SetWasPrivateBusUsed(bool wasPrivate);
+<span class="lineNum">      72 </span>            :         }
+<span class="lineNum">      73 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

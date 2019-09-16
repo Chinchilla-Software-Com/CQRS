@@ -17,6 +17,7 @@ using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
+using Cqrs.Messages;
 
 namespace Cqrs.Akka.Configuration
 {
@@ -25,8 +26,14 @@ namespace Cqrs.Akka.Configuration
 	/// </summary>
 	public class AkkaBusRegistrar<TAuthenticationToken> : BusRegistrar
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="IHandlerResolver"/>.
+		/// </summary>
 		protected IHandlerResolver HandlerResolver { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AkkaBusRegistrar{TAuthenticationToken}"/>.
+		/// </summary>
 		public AkkaBusRegistrar(IDependencyResolver dependencyResolver, IHandlerResolver handlerResolver)
 			: base(dependencyResolver)
 		{
@@ -35,6 +42,11 @@ namespace Cqrs.Akka.Configuration
 
 		#region Overrides of BusRegistrar
 
+		/// <summary>
+		/// Builds a <see cref="HandlerDelegate"/> that will resolve the provided <paramref name="executorType"/> and invoke the Handle method, when executed.
+		/// </summary>
+		/// <param name="executorType">The type of <see cref="IHandler"/> to resolve.></param>
+		/// <param name="resolveMessageHandlerInterface">Not used.</param>
 		protected override HandlerDelegate BuildDelegateAction(Type executorType, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface)
 		{
 			Type targetedType = executorType;
@@ -76,6 +88,12 @@ namespace Cqrs.Akka.Configuration
 			return new HandlerDelegate { Delegate = handlerDelegate, TargetedType = targetedType };
 		}
 
+		/// <summary>
+		/// Invokes <paramref name="handlerDelegate"/>, fetching the corresponding "HoldMessageLock" configuration setting 
+		/// </summary>
+		/// <param name="registerExecutorMethod">The <see cref="MethodInfo"/> to use to invoke <paramref name="handlerDelegate"/>.</param>
+		/// <param name="trueForEventsFalseForCommands">Indicates if this is registers <see cref="IEventHandler"/> or <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/>.</param>
+		/// <param name="handlerDelegate">The actual <see cref="HandlerDelegate"/> that gets executed.</param>
 		protected override void InvokeHandlerDelegate(MethodInfo registerExecutorMethod, bool trueForEventsFalseForCommands, HandlerDelegate handlerDelegate)
 		{
 			base.InvokeHandlerDelegate(registerExecutorMethod, trueForEventsFalseForCommands, handlerDelegate);

@@ -54,6 +54,14 @@ namespace Cqrs.Domain
 		{
 			Lock = new ReaderWriterLockSlim();
 			Changes = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(new List<IEvent<TAuthenticationToken>>());
+			Initialise();
+		}
+
+		/// <summary>
+		/// Initialise any properties
+		/// </summary>
+		protected virtual void Initialise()
+		{
 		}
 
 		/// <summary>
@@ -91,7 +99,7 @@ namespace Cqrs.Domain
 			foreach (IEvent<TAuthenticationToken> @event in history.OrderBy(e => e.Version))
 			{
 				if (@event.Version != Version + 1)
-					throw new EventsOutOfOrderException(@event.Id, aggregateType, Version + 1, @event.Version);
+					throw new EventsOutOfOrderException(@event.GetIdentity(), aggregateType, Version + 1, @event.Version);
 				ApplyChange(@event, true);
 			}
 		}
@@ -111,18 +119,48 @@ namespace Cqrs.Domain
 
 		private void ApplyChange(IEvent<TAuthenticationToken> @event, bool isEventReplay)
 		{
+			ApplyChanges(new[] {@event}, isEventReplay);
+		}
+
+		/// <summary>
+		/// Call the "Apply" method with a signature matching each <see cref="IEvent{TAuthenticationToken}"/> in the provided <paramref name="events"/> without using event replay to this instance.
+		/// </summary>
+		/// <remarks>
+		/// This means a method named "Apply", with return type void and one parameter must exist to be applied.
+		/// If no method exists, nothing is applied
+		/// The parameter type must match exactly the <see cref="Type"/> of the <see cref="IEvent{TAuthenticationToken}"/> in the provided <paramref name="events"/>.
+		/// </remarks>
+		protected virtual void ApplyChanges(IEnumerable<IEvent<TAuthenticationToken>> events)
+		{
+			ApplyChanges(events, false);
+		}
+
+		private void ApplyChanges(IEnumerable<IEvent<TAuthenticationToken>> events, bool isEventReplay)
+		{
 			Lock.EnterWriteLock();
+			IList<IEvent<TAuthenticationToken>> changes = new List<IEvent<TAuthenticationToken>>();
 			try
 			{
-				this.AsDynamic().Apply(@event);
-				if (!isEventReplay)
+				try
 				{
-					Changes = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(Changes.Concat(new[] { @event }).ToList());
+					dynamic dynamicThis = this.AsDynamic();
+					foreach (IEvent<TAuthenticationToken> @event in events)
+					{
+						dynamicThis.Apply(@event);
+						if (!isEventReplay)
+						{
+							changes.Add(@event);
+						}
+						else
+						{
+							Id = @event.GetIdentity();
+							Version++;
+						}
+					}
 				}
-				else
+				finally
 				{
-					Id = @event.Id;
-					Version++;
+					Changes = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(Changes.Concat(changes).ToList());
 				}
 			}
 			finally

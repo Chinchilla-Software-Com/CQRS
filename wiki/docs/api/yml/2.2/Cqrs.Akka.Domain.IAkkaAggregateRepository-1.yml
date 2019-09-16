@@ -20,17 +20,19 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: IAkkaAggregateRepository
     path: Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaAggregateRepository.cs
-    startLine: 14
+    startLine: 20
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nA <xref href=\"Cqrs.Domain.AggregateRepository%601\" data-throw-if-not-resolved=\"false\"></xref> that is safe to use within Akka.NET\n"
+  example: []
   syntax:
     content: 'public interface IAkkaAggregateRepository<TAuthenticationToken> : IAggregateRepository<TAuthenticationToken>'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of authentication token.
     content.vb: >-
       Public Interface IAkkaAggregateRepository(Of TAuthenticationToken)
-
           Inherits IAggregateRepository(Of TAuthenticationToken)
   inheritedMembers:
   - Cqrs.Domain.IAggregateRepository{{TAuthenticationToken}}.Save``1({TAggregateRoot},System.Nullable{System.Int32})
@@ -62,27 +64,77 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: LoadAggregateHistory
     path: Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaAggregateRepository.cs
-    startLine: 16
+    startLine: 33
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Domain
+  summary: "\nIf <code data-dev-comment-type=\"paramref\">events</code> is null, loads the events from <xref href=\"Cqrs.Events.IEventStore%601\" data-throw-if-not-resolved=\"false\"></xref>, checks for duplicates and then\nrehydrates the <code data-dev-comment-type=\"paramref\">aggregate</code> with the events.\n"
+  example: []
   syntax:
     content: 'void LoadAggregateHistory<TAggregateRoot>(TAggregateRoot aggregate, IList<IEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)where TAggregateRoot : IAggregateRoot<TAuthenticationToken>'
     parameters:
     - id: aggregate
       type: '{TAggregateRoot}'
+      description: The <code data-dev-comment-type="typeparamref">TAggregateRoot</code> to rehydrate.
     - id: events
       type: System.Collections.Generic.IList{Cqrs.Events.IEvent{{TAuthenticationToken}}}
+      description: "\nA collection of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> to replay on the retrieved <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\nIf null, the <xref href=\"Cqrs.Events.IEventStore%601\" data-throw-if-not-resolved=\"false\"></xref> will be used to retrieve a list of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> for you.\n"
     - id: throwExceptionOnNoEvents
       type: System.Boolean
+      description: If true will throw an instance of <xref href="Cqrs.Domain.Exceptions.AggregateNotFoundException%602" data-throw-if-not-resolved="false"></xref> if no aggregate events or provided or found in the <xref href="Cqrs.Events.IEventStore%601" data-throw-if-not-resolved="false"></xref>.
     typeParameters:
     - id: TAggregateRoot
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref>.
     content.vb: Sub LoadAggregateHistory(Of TAggregateRoot As IAggregateRoot(Of TAuthenticationToken))(aggregate As TAggregateRoot, events As IList(Of IEvent(Of TAuthenticationToken)) = Nothing, throwExceptionOnNoEvents As Boolean = True)
   overload: Cqrs.Akka.Domain.IAkkaAggregateRepository`1.LoadAggregateHistory*
   nameWithType.vb: IAkkaAggregateRepository(Of TAuthenticationToken).LoadAggregateHistory(Of TAggregateRoot)(TAggregateRoot, IList(Of IEvent(Of TAuthenticationToken)), Boolean)
   fullName.vb: Cqrs.Akka.Domain.IAkkaAggregateRepository(Of TAuthenticationToken).LoadAggregateHistory(Of TAggregateRoot)(TAggregateRoot, System.Collections.Generic.IList(Of Cqrs.Events.IEvent(Of TAuthenticationToken)), System.Boolean)
   name.vb: LoadAggregateHistory(Of TAggregateRoot)(TAggregateRoot, IList(Of IEvent(Of TAuthenticationToken)), Boolean)
 references:
+- uid: Cqrs.Domain.AggregateRepository`1
+  commentId: T:Cqrs.Domain.AggregateRepository`1
+  isExternal: false
+  name: AggregateRepository<TAuthenticationToken>
+  nameWithType: AggregateRepository<TAuthenticationToken>
+  fullName: Cqrs.Domain.AggregateRepository<TAuthenticationToken>
+  nameWithType.vb: AggregateRepository(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.AggregateRepository(Of TAuthenticationToken)
+  name.vb: AggregateRepository(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.AggregateRepository`1
+    name: AggregateRepository
+    nameWithType: AggregateRepository
+    fullName: Cqrs.Domain.AggregateRepository
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.AggregateRepository`1
+    name: AggregateRepository
+    nameWithType: AggregateRepository
+    fullName: Cqrs.Domain.AggregateRepository
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: Cqrs.Akka.Domain
   commentId: N:Cqrs.Akka.Domain
   isExternal: false
@@ -261,6 +313,12 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
 - uid: Cqrs.Domain.IAggregateRepository`1.Save``1(``0,System.Nullable{System.Int32})
   commentId: M:Cqrs.Domain.IAggregateRepository`1.Save``1(``0,System.Nullable{System.Int32})
   isExternal: true
@@ -512,6 +570,166 @@ references:
   name: Cqrs.Domain
   nameWithType: Cqrs.Domain
   fullName: Cqrs.Domain
+- uid: Cqrs.Events.IEventStore`1
+  commentId: T:Cqrs.Events.IEventStore`1
+  isExternal: false
+  name: IEventStore<TAuthenticationToken>
+  nameWithType: IEventStore<TAuthenticationToken>
+  fullName: Cqrs.Events.IEventStore<TAuthenticationToken>
+  nameWithType.vb: IEventStore(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEventStore(Of TAuthenticationToken)
+  name.vb: IEventStore(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEventStore`1
+    name: IEventStore
+    nameWithType: IEventStore
+    fullName: Cqrs.Events.IEventStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEventStore`1
+    name: IEventStore
+    nameWithType: IEventStore
+    fullName: Cqrs.Events.IEventStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  isExternal: false
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.Exceptions.AggregateNotFoundException`2
+  commentId: T:Cqrs.Domain.Exceptions.AggregateNotFoundException`2
+  isExternal: false
+  name: AggregateNotFoundException<TAggregateRoot, TAuthenticationToken>
+  nameWithType: AggregateNotFoundException<TAggregateRoot, TAuthenticationToken>
+  fullName: Cqrs.Domain.Exceptions.AggregateNotFoundException<TAggregateRoot, TAuthenticationToken>
+  nameWithType.vb: AggregateNotFoundException(Of TAggregateRoot, TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.Exceptions.AggregateNotFoundException(Of TAggregateRoot, TAuthenticationToken)
+  name.vb: AggregateNotFoundException(Of TAggregateRoot, TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.Exceptions.AggregateNotFoundException`2
+    name: AggregateNotFoundException
+    nameWithType: AggregateNotFoundException
+    fullName: Cqrs.Domain.Exceptions.AggregateNotFoundException
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAggregateRoot
+    nameWithType: TAggregateRoot
+    fullName: TAggregateRoot
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.Exceptions.AggregateNotFoundException`2
+    name: AggregateNotFoundException
+    nameWithType: AggregateNotFoundException
+    fullName: Cqrs.Domain.Exceptions.AggregateNotFoundException
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAggregateRoot
+    nameWithType: TAggregateRoot
+    fullName: TAggregateRoot
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Akka.Domain.IAkkaAggregateRepository`1.LoadAggregateHistory*
   commentId: Overload:Cqrs.Akka.Domain.IAkkaAggregateRepository`1.LoadAggregateHistory
   isExternal: false
@@ -643,9 +861,3 @@ references:
   name: System.Collections.Generic
   nameWithType: System.Collections.Generic
   fullName: System.Collections.Generic
-- uid: System
-  commentId: N:System
-  isExternal: false
-  name: System
-  nameWithType: System
-  fullName: System

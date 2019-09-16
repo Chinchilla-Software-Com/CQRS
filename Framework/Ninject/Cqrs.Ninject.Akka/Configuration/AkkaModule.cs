@@ -12,9 +12,11 @@ using System.Reflection;
 using Cqrs.Akka.Commands;
 using Cqrs.Akka.Domain;
 using Cqrs.Akka.Events;
+using Cqrs.Akka.Snapshots;
 using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Ninject.Configuration;
+using Cqrs.Snapshots;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Akka.Configuration
@@ -38,6 +40,9 @@ namespace Cqrs.Ninject.Akka.Configuration
 			Bind<IAkkaEventPublisherProxy<TAuthenticationToken>>().To<AkkaEventBusProxy<TAuthenticationToken>>().InSingletonScope();
 			Bind<IAkkaCommandPublisher<TAuthenticationToken>>().To<AkkaCommandBus<TAuthenticationToken>>().InSingletonScope();
 			Bind<IAkkaCommandPublisherProxy<TAuthenticationToken>>().To<AkkaCommandBusProxy<TAuthenticationToken>>().InSingletonScope();
+
+			Bind<IAkkaSnapshotAggregateRepository<TAuthenticationToken>>().To<AkkaSnapshotRepository<TAuthenticationToken>>().InSingletonScope();
+			Rebind<ISnapshotStrategy<TAuthenticationToken>>().To<DefaultAkkaSnapshotStrategy<TAuthenticationToken>>().InSingletonScope();
 
 			BusRegistrar.GetEventHandlerRegistrar = (messageType, handlerDelegateTargetedType) =>
 			{

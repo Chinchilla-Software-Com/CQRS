@@ -24,10 +24,19 @@ namespace Cqrs.Akka.Commands
 		: ReceiveActor
 		, IConcurrentAkkaCommandPublisher<TAuthenticationToken, TTarget>
 	{
+		/// <summary>
+		/// Gets the <see cref="IActorRef"/>.
+		/// </summary>
 		protected IActorRef ActorReference { get; private set; }
 
+		/// <summary>
+		/// Gets the <see cref="ICommandReceiver{TAuthenticationToken}"/>.
+		/// </summary>
 		protected ICommandReceiver<TAuthenticationToken> CommandReceiver { get; private set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="ConcurrentAkkaCommandPublisher{TAuthenticationToken,TTarget}"/>.
+		/// </summary>
 		public ConcurrentAkkaCommandPublisher(IActorRef actorReference, ICommandReceiver<TAuthenticationToken> commandReceiver)
 		{
 			ActorReference = actorReference;
@@ -36,6 +45,12 @@ namespace Cqrs.Akka.Commands
 
 		#region Implementation of ICommandPublisher<TAuthenticationToken>
 
+		/// <summary>
+		/// Publishes the provided <paramref name="command"/> on the <see cref="CommandReceiver"/>.
+		/// </summary>
+		/// <remarks>
+		/// This is for when a command originated outside Akka and now needs to be pushed into Akka.
+		/// </remarks>
 		public void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
@@ -44,12 +59,12 @@ namespace Cqrs.Akka.Commands
 			CommandReceiver.ReceiveCommand(command);
 		}
 
-		public void Send<TCommand>(TCommand command)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			Publish(command);
-		}
-
+		/// <summary>
+		/// Publishes the provided <paramref name="commands"/> on the <see cref="CommandReceiver"/>.
+		/// </summary>
+		/// <remarks>
+		/// This is for when a command originated outside Akka and now needs to be pushed into Akka.
+		/// </remarks>
 		public void Publish<TCommand>(IEnumerable<TCommand> commands)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
@@ -57,12 +72,6 @@ namespace Cqrs.Akka.Commands
 			// This is for when a command originated outside Akka and now needs to be pushed into Akka
 			foreach (TCommand command in commands)
 				CommandReceiver.ReceiveCommand(command);
-		}
-
-		public void Send<TCommand>(IEnumerable<TCommand> commands)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			Publish(commands);
 		}
 
 		/// <summary>

@@ -18,7 +18,8 @@ namespace Cqrs.MongoDB.Events
 	/// <summary>
 	/// A factory for getting connection strings and database names for <see cref="IEventStore{TAuthenticationToken}"/> access.
 	/// </summary>
-	public class MongoDbEventStoreConnectionStringFactory : IMongoDbEventStoreConnectionStringFactory
+	public class MongoDbEventStoreConnectionStringFactory
+		: IMongoDbEventStoreConnectionStringFactory
 	{
 		/// <summary>
 		/// Backwards compatibility with version 1.
@@ -83,7 +84,7 @@ namespace Cqrs.MongoDB.Events
 					}
 				}
 
-				ConnectionStringSettings connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[MongoDbConnectionStringKey];
+				ConnectionStringSettings connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey];
 				// If the connection string doesn't exist this value IS the connection string itself
 				if (connectionString == null)
 					return applicationKey;

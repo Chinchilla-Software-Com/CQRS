@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
+using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using Microsoft.ServiceBus.Messaging;
@@ -21,19 +22,35 @@ using SpinWait = Cqrs.Infrastructure.SpinWait;
 
 namespace Cqrs.Azure.ServiceBus
 {
+	/// <summary>
+	/// A concurrent implementation of <see cref="AzureEventBusReceiver{TAuthenticationToken}"/> that resides in memory.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureQueuedEventBusReceiver<TAuthenticationToken> : AzureEventBusReceiver<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Tracks all queues.
+		/// </summary>
 		protected static ConcurrentDictionary<string, ConcurrentQueue<IEvent<TAuthenticationToken>>> QueueTracker { get; private set; }
 
+		/// <summary>
+		/// Gets the <see cref="ReaderWriterLockSlim"/>.
+		/// </summary>
 		protected ReaderWriterLockSlim QueueTrackerLock { get; private set; }
 
-		public AzureQueuedEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper)
+		/// <summary>
+		/// Receives a <see cref="BrokeredMessage"/> from the event bus, identifies a key and queues it accordingly.
+		/// </summary>
+		public AzureQueuedEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IHashAlgorithmFactory hashAlgorithmFactory, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, hashAlgorithmFactory, azureBusHelper)
 		{
 			QueueTracker = new ConcurrentDictionary<string, ConcurrentQueue<IEvent<TAuthenticationToken>>>();
 			QueueTrackerLock = new ReaderWriterLockSlim();
 		}
 
+		/// <summary>
+		/// Receives a <see cref="BrokeredMessage"/> from the event bus, identifies a key and queues it accordingly.
+		/// </summary>
 		protected override void ReceiveEvent(PartitionContext context, EventData eventData)
 		{
 			// Do a manual 10 try attempt with back-off
@@ -108,12 +125,20 @@ namespace Cqrs.Azure.ServiceBus
 			context.CheckpointAsync(eventData);
 		}
 
+		/// <summary>
+		/// Adds the provided <paramref name="event"/> to the <see cref="QueueTracker"/> of the queue <paramref name="targetQueueName"/>.
+		/// </summary>
 		private void EnqueueEvent(string targetQueueName, IEvent<TAuthenticationToken> @event)
 		{
 			var queue = QueueTracker.GetOrAdd(targetQueueName, new ConcurrentQueue<IEvent<TAuthenticationToken>>());
 			queue.Enqueue(@event);
 		}
 
+		/// <summary>
+		/// Creates the queue of the name <paramref name="queueName"/> if it does not already exist,
+		/// the queue is attached to <see cref="DequeuAndProcessEvent"/> using a <see cref="Thread"/>.
+		/// </summary>
+		/// <param name="queueName">The name of the queue to check and create.</param>
 		protected void CreateQueueAndAttachListenerIfNotExist(string queueName)
 		{
 			if (!QueueTracker.ContainsKey(queueName))
@@ -142,6 +167,11 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// Takes an <see cref="IEvent{TAuthenticationToken}"/> off the queue of <paramref name="queueName"/>
+		/// and calls <see cref="ReceiveEvent"/>. Repeats in a loop until the queue is empty.
+		/// </summary>
+		/// <param name="queueName">The name of the queue process.</param>
 		protected void DequeuAndProcessEvent(string queueName)
 		{
 			SpinWait.SpinUntil
@@ -204,6 +234,9 @@ namespace Cqrs.Azure.ServiceBus
 			);
 		}
 
+		/// <summary>
+		/// The number of queues currently known.
+		/// </summary>
 		public int QueueCount
 		{
 			get
@@ -220,6 +253,9 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// The name of all currently known queues.
+		/// </summary>
 		public ICollection<string> QueueNames
 		{
 			get

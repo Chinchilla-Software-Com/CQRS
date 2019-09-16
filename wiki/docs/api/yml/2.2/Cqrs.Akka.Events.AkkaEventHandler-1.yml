@@ -24,19 +24,20 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AkkaEventHandler
     path: Framework/Akka.Net/Cqrs.Akka/Events/AkkaEventHandler.cs
-    startLine: 17
+    startLine: 21
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Events
+  summary: "\nExecutes event handler methods.\n"
+  example: []
   syntax:
     content: 'public abstract class AkkaEventHandler<TAuthenticationToken> : ReceiveActor, IInternalActor, IInitializableActor'
     typeParameters:
     - id: TAuthenticationToken
+      description: ''
     content.vb: >-
       Public MustInherit Class AkkaEventHandler(Of TAuthenticationToken)
-
           Inherits ReceiveActor
-
           Implements IInternalActor, IInitializableActor
   inheritance:
   - System.Object
@@ -127,10 +128,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Logger
     path: Framework/Akka.Net/Cqrs.Akka/Events/AkkaEventHandler.cs
-    startLine: 20
+    startLine: 27
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Events
+  summary: "\nGets or sets the <xref href=\"cdmdotnet.Logging.ILogger\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected ILogger Logger { get; set; }
     parameters: []
@@ -164,10 +167,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CorrelationIdHelper
     path: Framework/Akka.Net/Cqrs.Akka/Events/AkkaEventHandler.cs
-    startLine: 22
+    startLine: 32
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Events
+  summary: "\nGets or sets the <xref href=\"cdmdotnet.Logging.ICorrelationIdHelper\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected ICorrelationIdHelper CorrelationIdHelper { get; }
     parameters: []
@@ -201,10 +206,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AuthenticationTokenHelper
     path: Framework/Akka.Net/Cqrs.Akka/Events/AkkaEventHandler.cs
-    startLine: 24
+    startLine: 37
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Events
+  summary: "\nGets or sets the <xref href=\"Cqrs.Authentication.IAuthenticationTokenHelper%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; }
     parameters: []
@@ -238,10 +245,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Akka.Net/Cqrs.Akka/Events/AkkaEventHandler.cs
-    startLine: 26
+    startLine: 42
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Events
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Akka.Events.AkkaEventHandler%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected AkkaEventHandler(ILogger logger, ICorrelationIdHelper correlationIdHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper)
     parameters:
@@ -278,10 +287,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Execute
     path: Framework/Akka.Net/Cqrs.Akka/Events/AkkaEventHandler.cs
-    startLine: 33
+    startLine: 53
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Events
+  summary: "\nExecute the provided <code data-dev-comment-type=\"paramref\">handler</code> passing it the <code data-dev-comment-type=\"paramref\">event</code>,\nthen calls <xref href=\"Akka.Actor.ActorRefImplicitSenderExtensions.Tell(Akka.Actor.IActorRef%2cSystem.Object)\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: 'protected virtual void Execute<TEvent>(Action<TEvent> handler, TEvent event)where TEvent : IEvent<TAuthenticationToken>'
     parameters:
@@ -3013,6 +3024,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: cdmdotnet.Logging.ILogger
+  commentId: T:cdmdotnet.Logging.ILogger
+  parent: cdmdotnet.Logging
+  isExternal: true
+  name: ILogger
+  nameWithType: ILogger
+  fullName: cdmdotnet.Logging.ILogger
 - uid: Cqrs.Akka.Events.AkkaEventHandler`1.Logger*
   commentId: Overload:Cqrs.Akka.Events.AkkaEventHandler`1.Logger
   isExternal: false
@@ -3021,19 +3039,19 @@ references:
   fullName: Cqrs.Akka.Events.AkkaEventHandler<TAuthenticationToken>.Logger
   nameWithType.vb: AkkaEventHandler(Of TAuthenticationToken).Logger
   fullName.vb: Cqrs.Akka.Events.AkkaEventHandler(Of TAuthenticationToken).Logger
-- uid: cdmdotnet.Logging.ILogger
-  commentId: T:cdmdotnet.Logging.ILogger
-  parent: cdmdotnet.Logging
-  isExternal: true
-  name: ILogger
-  nameWithType: ILogger
-  fullName: cdmdotnet.Logging.ILogger
 - uid: cdmdotnet.Logging
   commentId: N:cdmdotnet.Logging
   isExternal: false
   name: cdmdotnet.Logging
   nameWithType: cdmdotnet.Logging
   fullName: cdmdotnet.Logging
+- uid: cdmdotnet.Logging.ICorrelationIdHelper
+  commentId: T:cdmdotnet.Logging.ICorrelationIdHelper
+  parent: cdmdotnet.Logging
+  isExternal: true
+  name: ICorrelationIdHelper
+  nameWithType: ICorrelationIdHelper
+  fullName: cdmdotnet.Logging.ICorrelationIdHelper
 - uid: Cqrs.Akka.Events.AkkaEventHandler`1.CorrelationIdHelper*
   commentId: Overload:Cqrs.Akka.Events.AkkaEventHandler`1.CorrelationIdHelper
   isExternal: false
@@ -3042,13 +3060,43 @@ references:
   fullName: Cqrs.Akka.Events.AkkaEventHandler<TAuthenticationToken>.CorrelationIdHelper
   nameWithType.vb: AkkaEventHandler(Of TAuthenticationToken).CorrelationIdHelper
   fullName.vb: Cqrs.Akka.Events.AkkaEventHandler(Of TAuthenticationToken).CorrelationIdHelper
-- uid: cdmdotnet.Logging.ICorrelationIdHelper
-  commentId: T:cdmdotnet.Logging.ICorrelationIdHelper
-  parent: cdmdotnet.Logging
-  isExternal: true
-  name: ICorrelationIdHelper
-  nameWithType: ICorrelationIdHelper
-  fullName: cdmdotnet.Logging.ICorrelationIdHelper
+- uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
+  commentId: T:Cqrs.Authentication.IAuthenticationTokenHelper`1
+  isExternal: false
+  name: IAuthenticationTokenHelper<TAuthenticationToken>
+  nameWithType: IAuthenticationTokenHelper<TAuthenticationToken>
+  fullName: Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>
+  nameWithType.vb: IAuthenticationTokenHelper(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken)
+  name.vb: IAuthenticationTokenHelper(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
+    name: IAuthenticationTokenHelper
+    nameWithType: IAuthenticationTokenHelper
+    fullName: Cqrs.Authentication.IAuthenticationTokenHelper
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
+    name: IAuthenticationTokenHelper
+    nameWithType: IAuthenticationTokenHelper
+    fullName: Cqrs.Authentication.IAuthenticationTokenHelper
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Akka.Events.AkkaEventHandler`1.AuthenticationTokenHelper*
   commentId: Overload:Cqrs.Akka.Events.AkkaEventHandler`1.AuthenticationTokenHelper
   isExternal: false
@@ -3095,20 +3143,26 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
-  commentId: T:Cqrs.Authentication.IAuthenticationTokenHelper`1
+- uid: Cqrs.Authentication
+  commentId: N:Cqrs.Authentication
   isExternal: false
-  name: IAuthenticationTokenHelper<TAuthenticationToken>
-  nameWithType: IAuthenticationTokenHelper<TAuthenticationToken>
-  fullName: Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>
-  nameWithType.vb: IAuthenticationTokenHelper(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken)
-  name.vb: IAuthenticationTokenHelper(Of TAuthenticationToken)
+  name: Cqrs.Authentication
+  nameWithType: Cqrs.Authentication
+  fullName: Cqrs.Authentication
+- uid: Cqrs.Akka.Events.AkkaEventHandler`1
+  commentId: T:Cqrs.Akka.Events.AkkaEventHandler`1
+  isExternal: false
+  name: AkkaEventHandler<TAuthenticationToken>
+  nameWithType: AkkaEventHandler<TAuthenticationToken>
+  fullName: Cqrs.Akka.Events.AkkaEventHandler<TAuthenticationToken>
+  nameWithType.vb: AkkaEventHandler(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Akka.Events.AkkaEventHandler(Of TAuthenticationToken)
+  name.vb: AkkaEventHandler(Of TAuthenticationToken)
   spec.csharp:
-  - uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
-    name: IAuthenticationTokenHelper
-    nameWithType: IAuthenticationTokenHelper
-    fullName: Cqrs.Authentication.IAuthenticationTokenHelper
+  - uid: Cqrs.Akka.Events.AkkaEventHandler`1
+    name: AkkaEventHandler
+    nameWithType: AkkaEventHandler
+    fullName: Cqrs.Akka.Events.AkkaEventHandler
   - name: <
     nameWithType: <
     fullName: <
@@ -3119,10 +3173,10 @@ references:
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
-    name: IAuthenticationTokenHelper
-    nameWithType: IAuthenticationTokenHelper
-    fullName: Cqrs.Authentication.IAuthenticationTokenHelper
+  - uid: Cqrs.Akka.Events.AkkaEventHandler`1
+    name: AkkaEventHandler
+    nameWithType: AkkaEventHandler
+    fullName: Cqrs.Akka.Events.AkkaEventHandler
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
@@ -3132,12 +3186,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Authentication
-  commentId: N:Cqrs.Authentication
-  isExternal: false
-  name: Cqrs.Authentication
-  nameWithType: Cqrs.Authentication
-  fullName: Cqrs.Authentication
 - uid: Cqrs.Akka.Events.AkkaEventHandler`1.#ctor*
   commentId: Overload:Cqrs.Akka.Events.AkkaEventHandler`1.#ctor
   isExternal: false
@@ -3146,6 +3194,8 @@ references:
   fullName: Cqrs.Akka.Events.AkkaEventHandler<TAuthenticationToken>.AkkaEventHandler
   nameWithType.vb: AkkaEventHandler(Of TAuthenticationToken).AkkaEventHandler
   fullName.vb: Cqrs.Akka.Events.AkkaEventHandler(Of TAuthenticationToken).AkkaEventHandler
+- uid: Akka.Actor.ActorRefImplicitSenderExtensions.Tell(Akka.Actor.IActorRef,System.Object)
+  commentId: M:Akka.Actor.ActorRefImplicitSenderExtensions.Tell(Akka.Actor.IActorRef,System.Object)
 - uid: Cqrs.Akka.Events.AkkaEventHandler`1.Execute*
   commentId: Overload:Cqrs.Akka.Events.AkkaEventHandler`1.Execute
   isExternal: false

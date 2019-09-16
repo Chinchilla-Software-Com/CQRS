@@ -29,19 +29,20 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AzureDocumentDbEventStore
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Events/AzureDocumentDbEventStore.cs
-    startLine: 20
+    startLine: 26
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Events
+  summary: "\nA DocumentDb based <xref href=\"Cqrs.Events.EventStore%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: 'public class AzureDocumentDbEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken>, IEventStore<TAuthenticationToken>'
     typeParameters:
     - id: TAuthenticationToken
+      description: The <see cref="!:Type"></see> of the authentication token.
     content.vb: >-
       Public Class AzureDocumentDbEventStore(Of TAuthenticationToken)
-
           Inherits EventStore(Of TAuthenticationToken)
-
           Implements IEventStore(Of TAuthenticationToken)
   inheritance:
   - System.Object
@@ -88,10 +89,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: UniqueIndexProperties
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Events/AzureDocumentDbEventStore.cs
-    startLine: 22
+    startLine: 31
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Events
+  summary: "\nThe properties that must be unique.\n"
+  example: []
   syntax:
     content: protected readonly string[] UniqueIndexProperties
     return:
@@ -123,10 +126,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AzureDocumentDbEventStoreConnectionStringFactory
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Events/AzureDocumentDbEventStore.cs
-    startLine: 24
+    startLine: 36
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Events
+  summary: "\nGets or sets the <xref href=\"Cqrs.Azure.DocumentDb.Events.IAzureDocumentDbEventStoreConnectionStringFactory\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected IAzureDocumentDbEventStoreConnectionStringFactory AzureDocumentDbEventStoreConnectionStringFactory { get; }
     parameters: []
@@ -160,10 +165,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AzureDocumentDbHelper
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Events/AzureDocumentDbEventStore.cs
-    startLine: 26
+    startLine: 41
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Events
+  summary: "\nGets or sets the <xref href=\"Cqrs.Azure.DocumentDb.IAzureDocumentDbHelper\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected IAzureDocumentDbHelper AzureDocumentDbHelper { get; }
     parameters: []
@@ -197,10 +204,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Events/AzureDocumentDbEventStore.cs
-    startLine: 28
+    startLine: 46
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Events
+  summary: "\nInstantiate a new instance of <xref href=\"Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public AzureDocumentDbEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IAzureDocumentDbHelper azureDocumentDbHelper, IAzureDocumentDbEventStoreConnectionStringFactory azureDocumentDbEventStoreConnectionStringFactory)
     parameters:
@@ -241,21 +250,27 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Get
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Events/AzureDocumentDbEventStore.cs
-    startLine: 35
+    startLine: 60
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Events
+  summary: "\nGets a collection of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> for the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> of type <code data-dev-comment-type=\"paramref\">aggregateRootType</code> with the ID matching the provided <code data-dev-comment-type=\"paramref\">aggregateId</code>.\n"
+  example: []
   syntax:
     content: public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = null)
     parameters:
     - id: aggregateRootType
       type: Type
+      description: <see cref="!:Type"></see> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref> the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> was raised in.
     - id: aggregateId
       type: Guid
+      description: The <xref href="Cqrs.Domain.IAggregateRoot%601.Id" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref>.
     - id: useLastEventOnly
       type: System.Boolean
+      description: Loads only the last event<xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref>.
     - id: fromVersion
       type: System.Int32
+      description: Load events starting from this version
     return:
       type: IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}}
     content.vb: Public Overrides Function Get(aggregateRootType As Type, aggregateId As Guid, useLastEventOnly As Boolean = False, fromVersion As Integer = Nothing) As IEnumerable(Of IEvent(Of TAuthenticationToken))
@@ -286,15 +301,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Get
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Events/AzureDocumentDbEventStore.cs
-    startLine: 40
+    startLine: 69
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Events
+  summary: "\nGet all <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> instances for the given <code data-dev-comment-type=\"paramref\">correlationId</code>.\n"
+  example: []
   syntax:
     content: public override IEnumerable<EventData> Get(Guid correlationId)
     parameters:
     - id: correlationId
       type: Guid
+      description: The <xref href="Cqrs.Messages.IMessage.CorrelationId" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> instances to retrieve.
     return:
       type: IEnumerable{Cqrs.Events.EventData}
     content.vb: Public Overrides Function Get(correlationId As Guid) As IEnumerable(Of EventData)
@@ -325,23 +343,30 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetAsync
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Events/AzureDocumentDbEventStore.cs
-    startLine: 45
+    startLine: 82
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Events
+  summary: "\nGets a collection of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> for the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> of type <code data-dev-comment-type=\"typeparamref\">T</code> with the ID matching the provided <code data-dev-comment-type=\"paramref\">aggregateId</code>.\n"
+  example: []
   syntax:
     content: protected Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = null)
     parameters:
     - id: aggregateId
       type: Guid
+      description: The <xref href="Cqrs.Domain.IAggregateRoot%601.Id" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref>.
     - id: useLastEventOnly
       type: System.Boolean
+      description: Loads only the last event<xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref>.
     - id: fromVersion
       type: System.Int32
+      description: Load events starting from this version
     typeParameters:
     - id: T
+      description: <see cref="!:Type"></see> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref> the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> was raised in.
     return:
       type: Task{IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}}}
+      description: ''
     content.vb: Protected Function GetAsync(Of T)(aggregateId As Guid, useLastEventOnly As Boolean = False, fromVersion As Integer = Nothing) As Task(Of IEnumerable(Of IEvent(Of TAuthenticationToken)))
   overload: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1.GetAsync*
   nameWithType.vb: AzureDocumentDbEventStore(Of TAuthenticationToken).GetAsync(Of T)(Guid, Boolean, Int32)
@@ -369,21 +394,27 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetAsync
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Events/AzureDocumentDbEventStore.cs
-    startLine: 50
+    startLine: 94
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Events
+  summary: "\nGets a collection of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> for the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> of type <code data-dev-comment-type=\"paramref\">aggregateRootType</code> with the ID matching the provided <code data-dev-comment-type=\"paramref\">aggregateId</code>.\n"
+  example: []
   syntax:
     content: protected Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = null)
     parameters:
     - id: aggregateRootType
       type: Type
+      description: <see cref="!:Type"></see> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref> the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> was raised in.
     - id: aggregateId
       type: Guid
+      description: The <xref href="Cqrs.Domain.IAggregateRoot%601.Id" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref>.
     - id: useLastEventOnly
       type: System.Boolean
+      description: Loads only the last event<xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref>.
     - id: fromVersion
       type: System.Int32
+      description: Load events starting from this version
     return:
       type: Task{IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}}}
     content.vb: Protected Function GetAsync(aggregateRootType As Type, aggregateId As Guid, useLastEventOnly As Boolean = False, fromVersion As Integer = Nothing) As Task(Of IEnumerable(Of IEvent(Of TAuthenticationToken)))
@@ -412,15 +443,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetAsync
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Events/AzureDocumentDbEventStore.cs
-    startLine: 73
+    startLine: 121
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Events
+  summary: "\nGet all <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> instances for the given <code data-dev-comment-type=\"paramref\">correlationId</code>.\n"
+  example: []
   syntax:
     content: protected Task<IEnumerable<EventData>> GetAsync(Guid correlationId)
     parameters:
     - id: correlationId
       type: Guid
+      description: The <xref href="Cqrs.Messages.IMessage.CorrelationId" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> instances to retrieve.
     return:
       type: Task{IEnumerable{Cqrs.Events.EventData}}
     content.vb: Protected Function GetAsync(correlationId As Guid) As Task(Of IEnumerable(Of EventData))
@@ -449,15 +483,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PersistEvent
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Events/AzureDocumentDbEventStore.cs
-    startLine: 94
+    startLine: 146
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Events
+  summary: "\nPersist the provided <code data-dev-comment-type=\"paramref\">eventData</code> into storage.\n"
+  example: []
   syntax:
     content: protected override void PersistEvent(EventData eventData)
     parameters:
     - id: eventData
       type: Cqrs.Events.EventData
+      description: The <xref href="Cqrs.Events.EventData" data-throw-if-not-resolved="false"></xref> to persist.
     content.vb: Protected Overrides Sub PersistEvent(eventData As EventData)
   overridden: Cqrs.Events.EventStore{{TAuthenticationToken}}.PersistEvent(Cqrs.Events.EventData)
   overload: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1.PersistEvent*
@@ -470,6 +507,43 @@ items:
   - Overrides
   fullName.vb: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore(Of TAuthenticationToken).PersistEvent(Cqrs.Events.EventData)
 references:
+- uid: Cqrs.Events.EventStore`1
+  commentId: T:Cqrs.Events.EventStore`1
+  isExternal: false
+  name: EventStore<TAuthenticationToken>
+  nameWithType: EventStore<TAuthenticationToken>
+  fullName: Cqrs.Events.EventStore<TAuthenticationToken>
+  nameWithType.vb: EventStore(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken)
+  name.vb: EventStore(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.EventStore`1
+    name: EventStore
+    nameWithType: EventStore
+    fullName: Cqrs.Events.EventStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.EventStore`1
+    name: EventStore
+    nameWithType: EventStore
+    fullName: Cqrs.Events.EventStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.DocumentDb.Events
   commentId: N:Cqrs.Azure.DocumentDb.Events
   isExternal: false
@@ -1077,43 +1151,6 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: Cqrs.Events.EventStore`1
-  commentId: T:Cqrs.Events.EventStore`1
-  isExternal: false
-  name: EventStore<TAuthenticationToken>
-  nameWithType: EventStore<TAuthenticationToken>
-  fullName: Cqrs.Events.EventStore<TAuthenticationToken>
-  nameWithType.vb: EventStore(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Events.EventStore(Of TAuthenticationToken)
-  name.vb: EventStore(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Events.EventStore`1
-    name: EventStore
-    nameWithType: EventStore
-    fullName: Cqrs.Events.EventStore
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Events.EventStore`1
-    name: EventStore
-    nameWithType: EventStore
-    fullName: Cqrs.Events.EventStore
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Events
   commentId: N:Cqrs.Events
   isExternal: false
@@ -1682,6 +1719,13 @@ references:
   - name: ()
     nameWithType: ()
     fullName: ()
+- uid: Cqrs.Azure.DocumentDb.Events.IAzureDocumentDbEventStoreConnectionStringFactory
+  commentId: T:Cqrs.Azure.DocumentDb.Events.IAzureDocumentDbEventStoreConnectionStringFactory
+  parent: Cqrs.Azure.DocumentDb.Events
+  isExternal: false
+  name: IAzureDocumentDbEventStoreConnectionStringFactory
+  nameWithType: IAzureDocumentDbEventStoreConnectionStringFactory
+  fullName: Cqrs.Azure.DocumentDb.Events.IAzureDocumentDbEventStoreConnectionStringFactory
 - uid: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1.AzureDocumentDbEventStoreConnectionStringFactory*
   commentId: Overload:Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1.AzureDocumentDbEventStoreConnectionStringFactory
   isExternal: false
@@ -1690,13 +1734,13 @@ references:
   fullName: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore<TAuthenticationToken>.AzureDocumentDbEventStoreConnectionStringFactory
   nameWithType.vb: AzureDocumentDbEventStore(Of TAuthenticationToken).AzureDocumentDbEventStoreConnectionStringFactory
   fullName.vb: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore(Of TAuthenticationToken).AzureDocumentDbEventStoreConnectionStringFactory
-- uid: Cqrs.Azure.DocumentDb.Events.IAzureDocumentDbEventStoreConnectionStringFactory
-  commentId: T:Cqrs.Azure.DocumentDb.Events.IAzureDocumentDbEventStoreConnectionStringFactory
-  parent: Cqrs.Azure.DocumentDb.Events
+- uid: Cqrs.Azure.DocumentDb.IAzureDocumentDbHelper
+  commentId: T:Cqrs.Azure.DocumentDb.IAzureDocumentDbHelper
+  parent: Cqrs.Azure.DocumentDb
   isExternal: false
-  name: IAzureDocumentDbEventStoreConnectionStringFactory
-  nameWithType: IAzureDocumentDbEventStoreConnectionStringFactory
-  fullName: Cqrs.Azure.DocumentDb.Events.IAzureDocumentDbEventStoreConnectionStringFactory
+  name: IAzureDocumentDbHelper
+  nameWithType: IAzureDocumentDbHelper
+  fullName: Cqrs.Azure.DocumentDb.IAzureDocumentDbHelper
 - uid: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1.AzureDocumentDbHelper*
   commentId: Overload:Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1.AzureDocumentDbHelper
   isExternal: false
@@ -1705,19 +1749,49 @@ references:
   fullName: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore<TAuthenticationToken>.AzureDocumentDbHelper
   nameWithType.vb: AzureDocumentDbEventStore(Of TAuthenticationToken).AzureDocumentDbHelper
   fullName.vb: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore(Of TAuthenticationToken).AzureDocumentDbHelper
-- uid: Cqrs.Azure.DocumentDb.IAzureDocumentDbHelper
-  commentId: T:Cqrs.Azure.DocumentDb.IAzureDocumentDbHelper
-  parent: Cqrs.Azure.DocumentDb
-  isExternal: false
-  name: IAzureDocumentDbHelper
-  nameWithType: IAzureDocumentDbHelper
-  fullName: Cqrs.Azure.DocumentDb.IAzureDocumentDbHelper
 - uid: Cqrs.Azure.DocumentDb
   commentId: N:Cqrs.Azure.DocumentDb
   isExternal: false
   name: Cqrs.Azure.DocumentDb
   nameWithType: Cqrs.Azure.DocumentDb
   fullName: Cqrs.Azure.DocumentDb
+- uid: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1
+  commentId: T:Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1
+  isExternal: false
+  name: AzureDocumentDbEventStore<TAuthenticationToken>
+  nameWithType: AzureDocumentDbEventStore<TAuthenticationToken>
+  fullName: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore<TAuthenticationToken>
+  nameWithType.vb: AzureDocumentDbEventStore(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore(Of TAuthenticationToken)
+  name.vb: AzureDocumentDbEventStore(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1
+    name: AzureDocumentDbEventStore
+    nameWithType: AzureDocumentDbEventStore
+    fullName: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1
+    name: AzureDocumentDbEventStore
+    nameWithType: AzureDocumentDbEventStore
+    fullName: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1.#ctor*
   commentId: Overload:Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1.#ctor
   isExternal: false
@@ -1881,6 +1955,88 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  isExternal: false
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IAggregateRoot`1.Id
+  commentId: P:Cqrs.Domain.IAggregateRoot`1.Id
+  isExternal: false
+  name: Id
+  nameWithType: IAggregateRoot<TAuthenticationToken>.Id
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>.Id
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken).Id
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken).Id
 - uid: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1.Get*
   commentId: Overload:Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1.Get
   isExternal: false
@@ -2010,6 +2166,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Messages.IMessage.CorrelationId
+  commentId: P:Cqrs.Messages.IMessage.CorrelationId
+  parent: Cqrs.Messages.IMessage
+  isExternal: false
+  name: CorrelationId
+  nameWithType: IMessage.CorrelationId
+  fullName: Cqrs.Messages.IMessage.CorrelationId
 - uid: IEnumerable{Cqrs.Events.EventData}
   commentId: '!:IEnumerable{Cqrs.Events.EventData}'
   definition: IEnumerable`1
@@ -2051,6 +2214,19 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Messages.IMessage
+  commentId: T:Cqrs.Messages.IMessage
+  parent: Cqrs.Messages
+  isExternal: false
+  name: IMessage
+  nameWithType: IMessage
+  fullName: Cqrs.Messages.IMessage
+- uid: Cqrs.Messages
+  commentId: N:Cqrs.Messages
+  isExternal: false
+  name: Cqrs.Messages
+  nameWithType: Cqrs.Messages
+  fullName: Cqrs.Messages
 - uid: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1.GetAsync*
   commentId: Overload:Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore`1.GetAsync
   isExternal: false
@@ -2241,6 +2417,13 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Events.EventData
+  commentId: T:Cqrs.Events.EventData
+  parent: Cqrs.Events
+  isExternal: false
+  name: EventData
+  nameWithType: EventData
+  fullName: Cqrs.Events.EventData
 - uid: Cqrs.Events.EventStore{{TAuthenticationToken}}.PersistEvent(Cqrs.Events.EventData)
   commentId: M:Cqrs.Events.EventStore{`0}.PersistEvent(Cqrs.Events.EventData)
   parent: Cqrs.Events.EventStore{{TAuthenticationToken}}
@@ -2288,13 +2471,6 @@ references:
   fullName: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore<TAuthenticationToken>.PersistEvent
   nameWithType.vb: AzureDocumentDbEventStore(Of TAuthenticationToken).PersistEvent
   fullName.vb: Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore(Of TAuthenticationToken).PersistEvent
-- uid: Cqrs.Events.EventData
-  commentId: T:Cqrs.Events.EventData
-  parent: Cqrs.Events
-  isExternal: false
-  name: EventData
-  nameWithType: EventData
-  fullName: Cqrs.Events.EventData
 - uid: Cqrs.Events.EventStore`1.PersistEvent(Cqrs.Events.EventData)
   commentId: M:Cqrs.Events.EventStore`1.PersistEvent(Cqrs.Events.EventData)
   isExternal: false

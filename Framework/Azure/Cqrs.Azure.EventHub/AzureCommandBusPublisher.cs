@@ -10,9 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
+using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
@@ -22,19 +22,36 @@ using EventData = Microsoft.ServiceBus.Messaging.EventData;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	public class AzureCommandBusPublisher<TAuthenticationToken> : AzureCommandBus<TAuthenticationToken>, IPublishAndWaitCommandPublisher<TAuthenticationToken>
+	/// <summary>
+	/// A <see cref="ICommandPublisher{TAuthenticationToken}"/> that resolves handlers , executes the handler and then publishes the <see cref="ICommand{TAuthenticationToken}"/> on the private command bus.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	public class AzureCommandBusPublisher<TAuthenticationToken>
+		: AzureCommandBus<TAuthenticationToken>
+		, IPublishAndWaitCommandPublisher<TAuthenticationToken>
 	{
-		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, true)
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureCommandBusPublisher{TAuthenticationToken}"/>.
+		/// </summary>
+		public AzureCommandBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IHashAlgorithmFactory hashAlgorithmFactory, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, hashAlgorithmFactory, azureBusHelper, true)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventHub.EventBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
 
 		#region Implementation of ICommandSender<TAuthenticationToken>
 
+		/// <summary>
+		/// Publishes the provided <paramref name="command"/> on the command bus.
+		/// </summary>
 		public virtual void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
+			if (command == null)
+			{
+				Logger.LogDebug("No command to publish.");
+				return;
+			}
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = "200";
@@ -52,8 +69,7 @@ namespace Cqrs.Azure.ServiceBus
 				if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-EventHub"))
 					return;
 
-				var brokeredMessage = new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command)));
-				brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+				var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, command.GetType(), command);
 
 				try
 				{
@@ -75,16 +91,23 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
-		public virtual void Send<TCommand>(TCommand command)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			Publish(command);
-		}
-
+		/// <summary>
+		/// Publishes the provided <paramref name="commands"/> on the command bus.
+		/// </summary>
 		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
+			if (commands == null)
+			{
+				Logger.LogDebug("No commands to publish.");
+				return;
+			}
 			IList<TCommand> sourceCommands = commands.ToList();
+			if (!sourceCommands.Any())
+			{
+				Logger.LogDebug("An empty collection of commands to publish.");
+				return;
+			}
 
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
@@ -115,8 +138,7 @@ namespace Cqrs.Azure.ServiceBus
 					if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-EventHub"))
 						continue;
 
-					var brokeredMessage = new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command)));
-					brokeredMessage.Properties.Add("Type", command.GetType().FullName);
+					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, command.GetType(), command);
 
 					brokeredMessages.Add(brokeredMessage);
 					sourceCommandMessages.Add(string.Format("A command was sent of type {0}.", command.GetType().FullName));
@@ -124,7 +146,10 @@ namespace Cqrs.Azure.ServiceBus
 
 				try
 				{
-					EventHubPublisher.SendBatch(brokeredMessages);
+					if (brokeredMessages.Any())
+						EventHubPublisher.SendBatch(brokeredMessages);
+					else
+						Logger.LogDebug("An empty collection of commands to publish post validation.");
 				}
 				catch (Exception exception)
 				{
@@ -143,12 +168,6 @@ namespace Cqrs.Azure.ServiceBus
 				mainStopWatch.Stop();
 				TelemetryHelper.TrackDependency("Azure/EventHub/CommandBus", "Command", telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 			}
-		}
-
-		public virtual void Send<TCommand>(IEnumerable<TCommand> commands)
-			where TCommand : ICommand<TAuthenticationToken>
-		{
-			Publish(commands);
 		}
 
 		/// <summary>
@@ -211,6 +230,11 @@ namespace Cqrs.Azure.ServiceBus
 		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout,
 			IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
 		{
+			if (command == null)
+			{
+				Logger.LogDebug("No command to publish.");
+				return (TEvent)(object)null;
+			}
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = "200";
@@ -237,7 +261,8 @@ namespace Cqrs.Azure.ServiceBus
 
 				try
 				{
-					EventHubPublisher.Send(new EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseCommand(command))));
+					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, command.GetType(), command);
+					EventHubPublisher.Send(brokeredMessage);
 				}
 				catch (Exception exception)
 				{

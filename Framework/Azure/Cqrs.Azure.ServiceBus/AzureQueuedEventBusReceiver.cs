@@ -20,19 +20,35 @@ using SpinWait = Cqrs.Infrastructure.SpinWait;
 
 namespace Cqrs.Azure.ServiceBus
 {
+	/// <summary>
+	/// A concurrent implementation of <see cref="AzureEventBusReceiver{TAuthenticationToken}"/> that resides in memory.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureQueuedEventBusReceiver<TAuthenticationToken> : AzureEventBusReceiver<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Tracks all queues.
+		/// </summary>
 		protected static ConcurrentDictionary<string, ConcurrentQueue<IEvent<TAuthenticationToken>>> QueueTracker { get; private set; }
 
+		/// <summary>
+		/// Gets the <see cref="ReaderWriterLockSlim"/>.
+		/// </summary>
 		protected ReaderWriterLockSlim QueueTrackerLock { get; private set; }
 
-		public AzureQueuedEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper)
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureQueuedEventBusReceiver{TAuthenticationToken}"/>.
+		/// </summary>
+		public AzureQueuedEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper, IHashAlgorithmFactory hashAlgorithmFactory)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, hashAlgorithmFactory)
 		{
 			QueueTracker = new ConcurrentDictionary<string, ConcurrentQueue<IEvent<TAuthenticationToken>>>();
 			QueueTrackerLock = new ReaderWriterLockSlim();
 		}
 
+		/// <summary>
+		/// Receives a <see cref="BrokeredMessage"/> from the event bus, identifies a key and queues it accordingly.
+		/// </summary>
 		protected override void ReceiveEvent(BrokeredMessage message)
 		{
 			try
@@ -75,12 +91,20 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// Adds the provided <paramref name="event"/> to the <see cref="QueueTracker"/> of the queue <paramref name="targetQueueName"/>.
+		/// </summary>
 		private void EnqueueEvent(string targetQueueName, IEvent<TAuthenticationToken> @event)
 		{
 			var queue = QueueTracker.GetOrAdd(targetQueueName, new ConcurrentQueue<IEvent<TAuthenticationToken>>());
 			queue.Enqueue(@event);
 		}
 
+		/// <summary>
+		/// Creates the queue of the name <paramref name="queueName"/> if it does not already exist,
+		/// the queue is attached to <see cref="DequeuAndProcessEvent"/> using a <see cref="Thread"/>.
+		/// </summary>
+		/// <param name="queueName">The name of the queue to check and create.</param>
 		protected void CreateQueueAndAttachListenerIfNotExist(string queueName)
 		{
 			if (!QueueTracker.ContainsKey(queueName))
@@ -109,6 +133,11 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// Takes an <see cref="IEvent{TAuthenticationToken}"/> off the queue of <paramref name="queueName"/>
+		/// and calls <see cref="ReceiveEvent"/>. Repeats in a loop until the queue is empty.
+		/// </summary>
+		/// <param name="queueName">The name of the queue process.</param>
 		protected void DequeuAndProcessEvent(string queueName)
 		{
 			SpinWait.SpinUntil
@@ -171,6 +200,9 @@ namespace Cqrs.Azure.ServiceBus
 			);
 		}
 
+		/// <summary>
+		/// The number of queues currently known.
+		/// </summary>
 		public int QueueCount
 		{
 			get
@@ -187,6 +219,9 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// The name of all currently known queues.
+		/// </summary>
 		public ICollection<string> QueueNames
 		{
 			get

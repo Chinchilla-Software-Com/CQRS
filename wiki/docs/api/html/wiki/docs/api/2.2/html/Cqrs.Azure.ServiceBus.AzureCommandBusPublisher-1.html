@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class AzureCommandBusPublisher&lt;TAuthenticationToken&gt;
    | CQRS.NET API Reference Documentation version 2.2 ">
-    <meta name="generator" content="docfx 2.21.2.0">
+    <meta name="generator" content="docfx 2.22.2.0">
     
     <link rel="shortcut icon" href="../../../../../favicon.ico">
     <link rel="stylesheet" href="../../../../../styles/docfx.vendor.css">
@@ -80,7 +80,7 @@
   
   <h1 id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1" class="text-break">Class AzureCommandBusPublisher&lt;TAuthenticationToken&gt;
   </h1>
-  <div class="markdown level0 summary"><p>A <a class="xref" href="Cqrs.Commands.ICommandPublisher-1.html">ICommandPublisher&lt;TAuthenticationToken&gt;</a> that resolves handlers , executes the handler and then publishes the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> on the public command bus.</p>
+  <div class="markdown level0 summary"><p>A <a class="xref" href="Cqrs.Commands.ICommandPublisher-1.html">ICommandPublisher&lt;TAuthenticationToken&gt;</a> that resolves handlers , executes the handler and then publishes the <a class="xref" href="Cqrs.Commands.ICommand-1.html">ICommand&lt;TAuthenticationToken&gt;</a> on the private command bus.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -178,7 +178,7 @@
       <a class="xref" href="Cqrs.Azure.ServiceBus.AzureServiceBus-1.html#Cqrs_Azure_ServiceBus_AzureServiceBus_1_InstantiateReceiving_NamespaceManager_IDictionary_System_Int32_SubscriptionClient__System_String_System_String_">AzureServiceBus&lt;TAuthenticationToken&gt;.InstantiateReceiving(NamespaceManager, IDictionary&lt;Int32, SubscriptionClient&gt;, String, String)</a>
     </div>
     <div>
-      <a class="xref" href="Cqrs.Azure.ServiceBus.AzureServiceBus-1.html#Cqrs_Azure_ServiceBus_AzureServiceBus_1_CheckPrivateEventTopicExists_NamespaceManager_">AzureServiceBus&lt;TAuthenticationToken&gt;.CheckPrivateEventTopicExists(NamespaceManager)</a>
+      <a class="xref" href="Cqrs.Azure.ServiceBus.AzureServiceBus-1.html#Cqrs_Azure_ServiceBus_AzureServiceBus_1_CheckPrivateTopicExists_NamespaceManager_">AzureServiceBus&lt;TAuthenticationToken&gt;.CheckPrivateTopicExists(NamespaceManager)</a>
     </div>
     <div>
       <a class="xref" href="Cqrs.Azure.ServiceBus.AzureServiceBus-1.html#Cqrs_Azure_ServiceBus_AzureServiceBus_1_CheckPublicTopicExists_NamespaceManager_">AzureServiceBus&lt;TAuthenticationToken&gt;.CheckPublicTopicExists(NamespaceManager)</a>
@@ -285,7 +285,8 @@
     <tbody>
       <tr>
         <td><span class="parametername">TAuthenticationToken</span></td>
-        <td></td>
+        <td><p>The <see cref="!:Type"></see> of the authentication token.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -293,7 +294,8 @@
   </h3>
   <a id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1__ctor_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.#ctor*"></a>
   <h4 id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1__ctor_Cqrs_Configuration_IConfigurationManager_Cqrs_Azure_ServiceBus_IMessageSerialiser__0__Cqrs_Authentication_IAuthenticationTokenHelper__0__ICorrelationIdHelper_ILogger_Cqrs_Azure_ServiceBus_IAzureBusHelper__0__Cqrs_Bus_IBusHelper_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.#ctor(Cqrs.Configuration.IConfigurationManager,Cqrs.Azure.ServiceBus.IMessageSerialiser{`0},Cqrs.Authentication.IAuthenticationTokenHelper{`0},ICorrelationIdHelper,ILogger,Cqrs.Azure.ServiceBus.IAzureBusHelper{`0},Cqrs.Bus.IBusHelper)">AzureCommandBusPublisher(IConfigurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt;, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt;, ICorrelationIdHelper, ILogger, IAzureBusHelper&lt;TAuthenticationToken&gt;, IBusHelper)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Instantiates a new instance of <a class="xref" href="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher-1.html">AzureCommandBusPublisher&lt;TAuthenticationToken&gt;</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -350,7 +352,8 @@
   </h3>
   <a id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_Publish_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Publish*"></a>
   <h4 id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_Publish__1___0_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Publish``1(``0)">Publish&lt;TCommand&gt;(TCommand)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Publishes the provided <code data-dev-comment-type="paramref">command</code> on the command bus.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -392,7 +395,8 @@
       <div><a class="xref" href="Cqrs.Commands.ICommandPublisher-1.html#Cqrs_Commands_ICommandPublisher_1_Publish__1___0_">ICommandPublisher&lt;TAuthenticationToken&gt;.Publish&lt;TCommand&gt;(TCommand)</a></div>
   <a id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_Publish_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Publish*"></a>
   <h4 id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_Publish__1_IEnumerable___0__" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Publish``1(IEnumerable{``0})">Publish&lt;TCommand&gt;(IEnumerable&lt;TCommand&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Publishes the provided <code data-dev-comment-type="paramref">commands</code> on the command bus.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -432,7 +436,7 @@
   </table>
   <a id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_PublishAndWait_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait*"></a>
   <h4 id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_PublishAndWait__2___0_Cqrs_Events_IEventReceiver__0__" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait``2(``0,Cqrs.Events.IEventReceiver{`0})">PublishAndWait&lt;TCommand, TEvent&gt;(TCommand, IEventReceiver&lt;TAuthenticationToken&gt;)</h4>
-  <div class="markdown level1 summary"><p>Publishes the provided <span class="paramref">command</span> and waits for an event of <span class="typeparamref">TEvent</span></p>
+  <div class="markdown level1 summary"><p>Publishes the provided <code data-dev-comment-type="paramref">command</code> and waits for an event of <code data-dev-comment-type="typeparamref">TEvent</code></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -452,7 +456,7 @@
       <tr>
         <td><span class="xref">TCommand</span></td>
         <td><span class="parametername">command</span></td>
-        <td><p>The <span class="typeparamref">TCommand</span> to publish.</p>
+        <td><p>The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.</p>
 </td>
       </tr>
       <tr>
@@ -501,7 +505,7 @@
       <div><a class="xref" href="Cqrs.Commands.IPublishAndWaitCommandPublisher-1.html#Cqrs_Commands_IPublishAndWaitCommandPublisher_1_PublishAndWait__2___0_Cqrs_Events_IEventReceiver__0__">IPublishAndWaitCommandPublisher&lt;TAuthenticationToken&gt;.PublishAndWait&lt;TCommand, TEvent&gt;(TCommand, IEventReceiver&lt;TAuthenticationToken&gt;)</a></div>
   <a id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_PublishAndWait_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait*"></a>
   <h4 id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_PublishAndWait__2___0_Func_IEnumerable_Cqrs_Events_IEvent__0_____1__Cqrs_Events_IEventReceiver__0__" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait``2(``0,Func{IEnumerable{Cqrs.Events.IEvent{`0}},``1},Cqrs.Events.IEventReceiver{`0})">PublishAndWait&lt;TCommand, TEvent&gt;(TCommand, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt;, IEventReceiver&lt;TAuthenticationToken&gt;)</h4>
-  <div class="markdown level1 summary"><p>Publishes the provided <span class="paramref">command</span> and waits until the specified condition is satisfied an event of <span class="typeparamref">TEvent</span></p>
+  <div class="markdown level1 summary"><p>Publishes the provided <code data-dev-comment-type="paramref">command</code> and waits until the specified condition is satisfied an event of <code data-dev-comment-type="typeparamref">TEvent</code></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -521,13 +525,13 @@
       <tr>
         <td><span class="xref">TCommand</span></td>
         <td><span class="parametername">command</span></td>
-        <td><p>The <span class="typeparamref">TCommand</span> to publish.</p>
+        <td><p>The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">Func</span>&lt;<span class="xref">IEnumerable</span>&lt;<a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent</a>&lt;TAuthenticationToken&gt;&gt;, TEvent&gt;</td>
         <td><span class="parametername">condition</span></td>
-        <td><p>A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.</p>
+        <td><p>A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.</p>
 </td>
       </tr>
       <tr>
@@ -574,7 +578,7 @@
   </table>
   <a id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_PublishAndWait_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait*"></a>
   <h4 id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_PublishAndWait__2___0_Func_IEnumerable_Cqrs_Events_IEvent__0_____1__System_Int32_Cqrs_Events_IEventReceiver__0__" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait``2(``0,Func{IEnumerable{Cqrs.Events.IEvent{`0}},``1},System.Int32,Cqrs.Events.IEventReceiver{`0})">PublishAndWait&lt;TCommand, TEvent&gt;(TCommand, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt;, Int32, IEventReceiver&lt;TAuthenticationToken&gt;)</h4>
-  <div class="markdown level1 summary"><p>Publishes the provided <span class="paramref">command</span> and waits for an event of <span class="typeparamref">TEvent</span> or exits if the specified timeout is expired.</p>
+  <div class="markdown level1 summary"><p>Publishes the provided <code data-dev-comment-type="paramref">command</code> and waits for an event of <code data-dev-comment-type="typeparamref">TEvent</code> or exits if the specified timeout is expired.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -594,13 +598,13 @@
       <tr>
         <td><span class="xref">TCommand</span></td>
         <td><span class="parametername">command</span></td>
-        <td><p>The <span class="typeparamref">TCommand</span> to publish.</p>
+        <td><p>The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">Func</span>&lt;<span class="xref">IEnumerable</span>&lt;<a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent</a>&lt;TAuthenticationToken&gt;&gt;, TEvent&gt;</td>
         <td><span class="parametername">condition</span></td>
-        <td><p>A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.</p>
+        <td><p>A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.</p>
 </td>
       </tr>
       <tr>
@@ -653,7 +657,7 @@
   </table>
   <a id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_PublishAndWait_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait*"></a>
   <h4 id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_PublishAndWait__2___0_Func_IEnumerable_Cqrs_Events_IEvent__0_____1__TimeSpan_Cqrs_Events_IEventReceiver__0__" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait``2(``0,Func{IEnumerable{Cqrs.Events.IEvent{`0}},``1},TimeSpan,Cqrs.Events.IEventReceiver{`0})">PublishAndWait&lt;TCommand, TEvent&gt;(TCommand, Func&lt;IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt;, TEvent&gt;, TimeSpan, IEventReceiver&lt;TAuthenticationToken&gt;)</h4>
-  <div class="markdown level1 summary"><p>Publishes the provided <span class="paramref">command</span> and waits for an event of <span class="typeparamref">TEvent</span> or exits if the specified timeout is expired.</p>
+  <div class="markdown level1 summary"><p>Publishes the provided <code data-dev-comment-type="paramref">command</code> and waits for an event of <code data-dev-comment-type="typeparamref">TEvent</code> or exits if the specified timeout is expired.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -673,13 +677,13 @@
       <tr>
         <td><span class="xref">TCommand</span></td>
         <td><span class="parametername">command</span></td>
-        <td><p>The <span class="typeparamref">TCommand</span> to publish.</p>
+        <td><p>The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">Func</span>&lt;<span class="xref">IEnumerable</span>&lt;<a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent</a>&lt;TAuthenticationToken&gt;&gt;, TEvent&gt;</td>
         <td><span class="parametername">condition</span></td>
-        <td><p>A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.</p>
+        <td><p>A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.</p>
 </td>
       </tr>
       <tr>
@@ -732,7 +736,7 @@
   </table>
   <a id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_PublishAndWait_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait*"></a>
   <h4 id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_PublishAndWait__2___0_System_Int32_Cqrs_Events_IEventReceiver__0__" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait``2(``0,System.Int32,Cqrs.Events.IEventReceiver{`0})">PublishAndWait&lt;TCommand, TEvent&gt;(TCommand, Int32, IEventReceiver&lt;TAuthenticationToken&gt;)</h4>
-  <div class="markdown level1 summary"><p>Publishes the provided <span class="paramref">command</span> and waits for an event of <span class="typeparamref">TEvent</span> or exits if the specified timeout is expired.</p>
+  <div class="markdown level1 summary"><p>Publishes the provided <code data-dev-comment-type="paramref">command</code> and waits for an event of <code data-dev-comment-type="typeparamref">TEvent</code> or exits if the specified timeout is expired.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -752,7 +756,7 @@
       <tr>
         <td><span class="xref">TCommand</span></td>
         <td><span class="parametername">command</span></td>
-        <td><p>The <span class="typeparamref">TCommand</span> to publish.</p>
+        <td><p>The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.</p>
 </td>
       </tr>
       <tr>
@@ -807,7 +811,7 @@
       <div><a class="xref" href="Cqrs.Commands.IPublishAndWaitCommandPublisher-1.html#Cqrs_Commands_IPublishAndWaitCommandPublisher_1_PublishAndWait__2___0_System_Int32_Cqrs_Events_IEventReceiver__0__">IPublishAndWaitCommandPublisher&lt;TAuthenticationToken&gt;.PublishAndWait&lt;TCommand, TEvent&gt;(TCommand, Int32, IEventReceiver&lt;TAuthenticationToken&gt;)</a></div>
   <a id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_PublishAndWait_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait*"></a>
   <h4 id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_PublishAndWait__2___0_TimeSpan_Cqrs_Events_IEventReceiver__0__" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.PublishAndWait``2(``0,TimeSpan,Cqrs.Events.IEventReceiver{`0})">PublishAndWait&lt;TCommand, TEvent&gt;(TCommand, TimeSpan, IEventReceiver&lt;TAuthenticationToken&gt;)</h4>
-  <div class="markdown level1 summary"><p>Publishes the provided <span class="paramref">command</span> and waits for an event of <span class="typeparamref">TEvent</span> or exits if the specified timeout is expired.</p>
+  <div class="markdown level1 summary"><p>Publishes the provided <code data-dev-comment-type="paramref">command</code> and waits for an event of <code data-dev-comment-type="typeparamref">TEvent</code> or exits if the specified timeout is expired.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -827,7 +831,7 @@
       <tr>
         <td><span class="xref">TCommand</span></td>
         <td><span class="parametername">command</span></td>
-        <td><p>The <span class="typeparamref">TCommand</span> to publish.</p>
+        <td><p>The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.</p>
 </td>
       </tr>
       <tr>
@@ -874,86 +878,6 @@
       </tr>
       <tr>
         <td><span class="parametername">TEvent</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_Send_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send*"></a>
-  <h4 id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_Send__1___0_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send``1(``0)">Send&lt;TCommand&gt;(TCommand)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void Send&lt;TCommand&gt;(TCommand command)where TCommand : ICommand&lt;TAuthenticationToken&gt;</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TCommand</span></td>
-        <td><span class="parametername">command</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TCommand</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_Send_" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send*"></a>
-  <h4 id="Cqrs_Azure_ServiceBus_AzureCommandBusPublisher_1_Send__1_IEnumerable___0__" data-uid="Cqrs.Azure.ServiceBus.AzureCommandBusPublisher`1.Send``1(IEnumerable{``0})">Send&lt;TCommand&gt;(IEnumerable&lt;TCommand&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void Send&lt;TCommand&gt;(IEnumerable&lt;TCommand&gt; commands)where TCommand : ICommand&lt;TAuthenticationToken&gt;</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerable</span>&lt;TCommand&gt;</td>
-        <td><span class="parametername">commands</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TCommand</span></td>
         <td></td>
       </tr>
     </tbody>

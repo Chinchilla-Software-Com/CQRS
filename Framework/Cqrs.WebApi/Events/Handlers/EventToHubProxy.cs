@@ -59,7 +59,9 @@ namespace Cqrs.WebApi.Events.Handlers
 			var notifyEveryoneEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyEveryoneEventAttribute)) as NotifyEveryoneEventAttribute;
 			var notifyEveryoneExceptCallerEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyEveryoneExceptCallerEventAttribute)) as NotifyEveryoneExceptCallerEventAttribute;
 
-			string userToken = ((object)AuthenticationTokenHelper.GetAuthenticationToken() ?? string.Empty).ToString().Replace(".", string.Empty);
+			string userToken = ((object)AuthenticationTokenHelper.GetAuthenticationToken() ?? string.Empty).ToString()
+				.Replace(".", string.Empty)
+				.Replace("-", string.Empty);
 
 			if (notifyCallerEventAttribute != null)
 			{

@@ -14,12 +14,18 @@ using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
+	/// <summary>
+	/// A default implementation of <see cref="IEventProcessor"/> suitable for most situations and conditions.
+	/// </summary>
 	internal class DefaultEventProcessor : IEventProcessor
 	{
 		protected ILogger Logger { get; private set; }
 
 		protected Action<PartitionContext, EventData> ReceiverMessageHandler { get; private set; }
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DefaultEventProcessor"/> class.
+		/// </summary>
 		public DefaultEventProcessor(ILogger logger, Action<PartitionContext, EventData> receiverMessageHandler)
 		{
 			Logger = logger;
@@ -35,7 +41,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <returns>
 		/// The task that indicates that the Open operation is complete.
 		/// </returns>
-		public Task OpenAsync(PartitionContext context)
+		public virtual Task OpenAsync(PartitionContext context)
 		{
 			Logger.LogInfo("Open Async");
 			return Task.FromResult<object>(null);
@@ -49,7 +55,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <returns>
 		/// The task that indicates that <see cref="M:Microsoft.ServiceBus.Messaging.IEventProcessor.ProcessEventsAsync(Microsoft.ServiceBus.Messaging.PartitionContext,System.Collections.Generic.IEnumerable{Microsoft.ServiceBus.Messaging.EventData})"/> is complete.
 		/// </returns>
-		public Task ProcessEventsAsync(PartitionContext context, IEnumerable<EventData> messages)
+		public virtual Task ProcessEventsAsync(PartitionContext context, IEnumerable<EventData> messages)
 		{
 			Task results = new TaskFactory().StartNew(() =>
 			{
@@ -68,7 +74,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <returns>
 		/// A task indicating that the Close operation is complete.
 		/// </returns>
-		public Task CloseAsync(PartitionContext context, CloseReason reason)
+		public virtual Task CloseAsync(PartitionContext context, CloseReason reason)
 		{
 			return Task.FromResult<object>(null);
 		}

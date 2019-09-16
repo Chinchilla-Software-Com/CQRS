@@ -21,17 +21,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: RawBlobStorageEventStore
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Events/BlobStorageEventStore.cs
-    startLine: 70
+    startLine: 97
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Events
+  summary: "\nThe raw <xref href=\"Cqrs.Azure.BlobStorage.BlobStorageStore%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: 'public class RawBlobStorageEventStore : BlobStorageStore<EventData>, IEnumerable<EventData>, IEnumerable'
     content.vb: >-
       Public Class RawBlobStorageEventStore
-
           Inherits BlobStorageStore(Of EventData)
-
           Implements IEnumerable(Of EventData), IEnumerable
   inheritance:
   - System.Object
@@ -118,7 +118,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Events/BlobStorageEventStore.cs
-    startLine: 76
+    startLine: 103
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Events
@@ -157,24 +157,65 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AddToCorrelationFolder
     path: Framework/Azure/Cqrs.Azure.BlobStorage/Events/BlobStorageEventStore.cs
-    startLine: 88
+    startLine: 118
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.Events
+  summary: "\nAdd the provided <code data-dev-comment-type=\"paramref\">data</code> into the correlation folder.\n"
+  example: []
   syntax:
-    content: public void AddToCorrelationFolder(EventData data)
+    content: public virtual void AddToCorrelationFolder(EventData data)
     parameters:
     - id: data
       type: Cqrs.Events.EventData
-    content.vb: Public Sub AddToCorrelationFolder(data As EventData)
+    content.vb: Public Overridable Sub AddToCorrelationFolder(data As EventData)
   overload: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore`1.RawBlobStorageEventStore.AddToCorrelationFolder*
   nameWithType.vb: BlobStorageEventStore(Of TAuthenticationToken).RawBlobStorageEventStore.AddToCorrelationFolder(EventData)
   modifiers.csharp:
   - public
+  - virtual
   modifiers.vb:
   - Public
+  - Overridable
   fullName.vb: Cqrs.Azure.BlobStorage.Events.BlobStorageEventStore(Of TAuthenticationToken).RawBlobStorageEventStore.AddToCorrelationFolder(Cqrs.Events.EventData)
 references:
+- uid: Cqrs.Azure.BlobStorage.BlobStorageStore`1
+  commentId: T:Cqrs.Azure.BlobStorage.BlobStorageStore`1
+  isExternal: false
+  name: BlobStorageStore<TData>
+  nameWithType: BlobStorageStore<TData>
+  fullName: Cqrs.Azure.BlobStorage.BlobStorageStore<TData>
+  nameWithType.vb: BlobStorageStore(Of TData)
+  fullName.vb: Cqrs.Azure.BlobStorage.BlobStorageStore(Of TData)
+  name.vb: BlobStorageStore(Of TData)
+  spec.csharp:
+  - uid: Cqrs.Azure.BlobStorage.BlobStorageStore`1
+    name: BlobStorageStore
+    nameWithType: BlobStorageStore
+    fullName: Cqrs.Azure.BlobStorage.BlobStorageStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.BlobStorage.BlobStorageStore`1
+    name: BlobStorageStore
+    nameWithType: BlobStorageStore
+    fullName: Cqrs.Azure.BlobStorage.BlobStorageStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.BlobStorage.Events
   commentId: N:Cqrs.Azure.BlobStorage.Events
   isExternal: false
@@ -2178,43 +2219,6 @@ references:
   name: Cqrs.Azure.BlobStorage
   nameWithType: Cqrs.Azure.BlobStorage
   fullName: Cqrs.Azure.BlobStorage
-- uid: Cqrs.Azure.BlobStorage.BlobStorageStore`1
-  commentId: T:Cqrs.Azure.BlobStorage.BlobStorageStore`1
-  isExternal: false
-  name: BlobStorageStore<TData>
-  nameWithType: BlobStorageStore<TData>
-  fullName: Cqrs.Azure.BlobStorage.BlobStorageStore<TData>
-  nameWithType.vb: BlobStorageStore(Of TData)
-  fullName.vb: Cqrs.Azure.BlobStorage.BlobStorageStore(Of TData)
-  name.vb: BlobStorageStore(Of TData)
-  spec.csharp:
-  - uid: Cqrs.Azure.BlobStorage.BlobStorageStore`1
-    name: BlobStorageStore
-    nameWithType: BlobStorageStore
-    fullName: Cqrs.Azure.BlobStorage.BlobStorageStore
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TData
-    nameWithType: TData
-    fullName: TData
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Azure.BlobStorage.BlobStorageStore`1
-    name: BlobStorageStore
-    nameWithType: BlobStorageStore
-    fullName: Cqrs.Azure.BlobStorage.BlobStorageStore
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TData
-    nameWithType: TData
-    fullName: TData
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: System.Collections.Generic.IEnumerable`1
   commentId: T:System.Collections.Generic.IEnumerable`1
   isExternal: true

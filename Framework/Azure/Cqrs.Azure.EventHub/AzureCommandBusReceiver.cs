@@ -18,17 +18,28 @@ using Cqrs.Configuration;
 using cdmdotnet.Logging;
 using Cqrs.Messages;
 using Microsoft.ServiceBus.Messaging;
+using Cqrs.Exceptions;
 
 namespace Cqrs.Azure.ServiceBus
 {
+	/// <summary>
+	/// A <see cref="ICommandReceiver{TAuthenticationToken}"/> that receives network messages, resolves handlers and executes the handler.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureCommandBusReceiver<TAuthenticationToken>
 		: AzureCommandBus<TAuthenticationToken>
 		, ICommandHandlerRegistrar
 		, ICommandReceiver<TAuthenticationToken>
 	{
 		// ReSharper disable StaticMemberInGenericType
-		private static RouteManager Routes { get; set; }
+		/// <summary>
+		/// Gets the <see cref="RouteManager"/>.
+		/// </summary>
+		public static RouteManager Routes { get; private set; }
 
+		/// <summary>
+		/// The number of handles currently being executed.
+		/// </summary>
 		protected static long CurrentHandles { get; set; }
 		// ReSharper restore StaticMemberInGenericType
 
@@ -37,12 +48,21 @@ namespace Cqrs.Azure.ServiceBus
 			Routes = new RouteManager();
 		}
 
-		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, false)
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureCommandBusReceiver{TAuthenticationToken}"/>.
+		/// </summary>
+		public AzureCommandBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IHashAlgorithmFactory hashAlgorithmFactory, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, hashAlgorithmFactory, azureBusHelper, false)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventHub.CommandBus.Receiver.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
 
+		/// <summary>
+		/// Register a command handler that will listen and respond to commands.
+		/// </summary>
+		/// <remarks>
+		/// In many cases the <paramref name="targetedType"/> will be the handler class itself, what you actually want is the target of what is being updated.
+		/// </remarks>
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
@@ -50,7 +70,7 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		/// <summary>
-		/// Register an event or command handler that will listen and respond to events or commands.
+		/// Register a command handler that will listen and respond to commands.
 		/// </summary>
 		public void RegisterHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
 			where TMessage : IMessage
@@ -58,6 +78,9 @@ namespace Cqrs.Azure.ServiceBus
 			RegisterHandler(handler, null, holdMessageLock);
 		}
 
+		/// <summary>
+		/// Receives <see cref="EventData"/> from the command bus.
+		/// </summary>
 		protected virtual void ReceiveCommand(PartitionContext context, EventData eventData)
 		{
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
@@ -67,6 +90,9 @@ namespace Cqrs.Azure.ServiceBus
 			bool? wasSuccessfull = true;
 			string telemetryName = string.Format("Cqrs/Handle/Command/{0}", eventData.SequenceNumber);
 			ISingleSignOnToken authenticationToken = null;
+			Guid? guidAuthenticationToken = null;
+			string stringAuthenticationToken = null;
+			int? intAuthenticationToken = null;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/EventHub" } };
 			object value;
@@ -83,6 +109,8 @@ namespace Cqrs.Azure.ServiceBus
 
 					ICommand<TAuthenticationToken> command = AzureBusHelper.ReceiveCommand(messageBody, ReceiveCommand,
 						string.Format("partition key '{0}', sequence number '{1}' and offset '{2}'", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset),
+						ExtractSignature(eventData),
+						SigningTokenConfigurationKey,
 						() =>
 						{
 							wasSuccessfull = null;
@@ -101,6 +129,12 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
 							authenticationToken = command.AuthenticationToken as ISingleSignOnToken;
+							if (AuthenticationTokenIsGuid)
+								guidAuthenticationToken = command.AuthenticationToken as Guid?;
+							if (AuthenticationTokenIsString)
+								stringAuthenticationToken = command.AuthenticationToken as string;
+							if (AuthenticationTokenIsInt)
+								intAuthenticationToken = command.AuthenticationToken as int?;
 
 							var telemeteredMessage = command as ITelemeteredMessage;
 							if (telemeteredMessage != null)
@@ -116,6 +150,36 @@ namespace Cqrs.Azure.ServiceBus
 					wasSuccessfull = true;
 					responseCode = "200";
 					return;
+				}
+				catch (UnAuthorisedMessageReceivedException exception)
+				{
+					TelemetryHelper.TrackException(exception, null, telemetryProperties);
+					// Indicates a problem, unlock message in queue
+					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but was not authorised.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+					wasSuccessfull = false;
+					responseCode = "401";
+					telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
+					telemetryProperties.Add("ExceptionMessage", exception.Message);
+				}
+				catch (NoHandlersRegisteredException exception)
+				{
+					TelemetryHelper.TrackException(exception, null, telemetryProperties);
+					// Indicates a problem, unlock message in queue
+					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but no handlers were found to process it.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+					wasSuccessfull = false;
+					responseCode = "501";
+					telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
+					telemetryProperties.Add("ExceptionMessage", exception.Message);
+				}
+				catch (NoHandlerRegisteredException exception)
+				{
+					TelemetryHelper.TrackException(exception, null, telemetryProperties);
+					// Indicates a problem, unlock message in queue
+					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but no handler was found to process it.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+					wasSuccessfull = false;
+					responseCode = "501";
+					telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
+					telemetryProperties.Add("ExceptionMessage", exception.Message);
 				}
 				catch (Exception exception)
 				{
@@ -161,22 +225,59 @@ namespace Cqrs.Azure.ServiceBus
 					TelemetryHelper.TrackMetric("Cqrs/Handle/Command", CurrentHandles--, telemetryProperties);
 
 					mainStopWatch.Stop();
-					TelemetryHelper.TrackRequest
-					(
-						telemetryName,
-						authenticationToken,
-						startedAt,
-						mainStopWatch.Elapsed,
-						responseCode,
-						wasSuccessfull == null || wasSuccessfull.Value,
-						telemetryProperties
-					);
+					if (guidAuthenticationToken != null)
+						TelemetryHelper.TrackRequest
+						(
+							telemetryName,
+							guidAuthenticationToken,
+							startedAt,
+							mainStopWatch.Elapsed,
+							responseCode,
+							wasSuccessfull == null || wasSuccessfull.Value,
+							telemetryProperties
+						);
+					else if (intAuthenticationToken != null)
+						TelemetryHelper.TrackRequest
+						(
+							telemetryName,
+							intAuthenticationToken,
+							startedAt,
+							mainStopWatch.Elapsed,
+							responseCode,
+							wasSuccessfull == null || wasSuccessfull.Value,
+							telemetryProperties
+						);
+					else if (stringAuthenticationToken != null)
+						TelemetryHelper.TrackRequest
+						(
+							telemetryName,
+							stringAuthenticationToken,
+							startedAt,
+							mainStopWatch.Elapsed,
+							responseCode,
+							wasSuccessfull == null || wasSuccessfull.Value,
+							telemetryProperties
+						);
+					else
+						TelemetryHelper.TrackRequest
+						(
+							telemetryName,
+							authenticationToken,
+							startedAt,
+							mainStopWatch.Elapsed,
+							responseCode,
+							wasSuccessfull == null || wasSuccessfull.Value,
+							telemetryProperties
+						);
 
 					TelemetryHelper.Flush();
 				}
 			}
 		}
 
+		/// <summary>
+		/// Receives a <see cref="ICommand{TAuthenticationToken}"/> from the command bus.
+		/// </summary>
 		public virtual bool? ReceiveCommand(ICommand<TAuthenticationToken> command)
 		{
 			return AzureBusHelper.DefaultReceiveCommand(command, Routes, "Azure-EventHub");
@@ -184,6 +285,9 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Implementation of ICommandReceiver
 
+		/// <summary>
+		/// Starts listening and processing instances of <see cref="ICommand{TAuthenticationToken}"/> from the command bus.
+		/// </summary>
 		public void Start()
 		{
 			InstantiateReceiving();

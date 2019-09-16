@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">2</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryLo">50.0 %</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-01</td>
+            <td class="headerValue">2017-09-22</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -73,50 +73,57 @@
 <span class="lineNum">      15 </span>            : 
 <span class="lineNum">      16 </span>            : namespace Cqrs.Azure.BlobStorage.DataStores
 <span class="lineNum">      17 </span>            : {
-<span class="lineNum">      18 </span>            :         public class BlobStorageDataStore&lt;TData&gt;
-<span class="lineNum">      19 </span>            :                 : BlobStorageStore&lt;TData&gt;
-<span class="lineNum">      20 </span>            :                 , IDataStore&lt;TData&gt;
-<span class="lineNum">      21 </span>            :                 where TData : Entity
-<span class="lineNum">      22 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      23 </span>            :                 internal Func&lt;string&gt; GenerateFolderName { get; set; }
-<span class="lineNum">      24 </span>            : 
-<span class="lineNum">      25 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      26 </span>            :                 /// Initializes a new instance of the &lt;see cref=&quot;BlobStorage&quot;/&gt; class using the specified container.
-<span class="lineNum">      27 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      28 </span><span class="lineCov">          1 :                 public BlobStorageDataStore(ILogger logger, IBlobStorageDataStoreConnectionStringFactory blobStorageDataStoreConnectionStringFactory)</span>
-<span class="lineNum">      29 </span>            :                         : base(logger)
-<span class="lineNum">      30 </span>            :                 {
-<span class="lineNum">      31 </span>            :                         GetContainerName = blobStorageDataStoreConnectionStringFactory.GetBaseContainerName;
-<span class="lineNum">      32 </span>            :                         IsContainerPublic = blobStorageDataStoreConnectionStringFactory.IsContainerPublic&lt;TData&gt;;
-<span class="lineNum">      33 </span>            :                         GenerateFolderName = blobStorageDataStoreConnectionStringFactory.GetEntityName&lt;TData&gt;;
-<span class="lineNum">      34 </span>            :                         GenerateFileName = data =&gt; string.Format(&quot;{0}\\{1}&quot;, GenerateFolderName(), data.Rsn.ToString(&quot;N&quot;));
-<span class="lineNum">      35 </span>            : 
-<span class="lineNum">      36 </span>            :                         // ReSharper disable DoNotCallOverridableMethodsInConstructor
-<span class="lineNum">      37 </span>            :                         Initialise(blobStorageDataStoreConnectionStringFactory);
-<span class="lineNum">      38 </span>            :                         // ReSharper restore DoNotCallOverridableMethodsInConstructor
-<span class="lineNum">      39 </span>            :                 }
-<span class="lineNum">      40 </span>            : 
-<span class="lineNum">      41 </span>            :                 #region Implementation of IDataStore&lt;TData&gt;
-<span class="lineNum">      42 </span>            : 
-<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      44 </span>            :                 /// Will mark the &lt;paramref name=&quot;data&quot;/&gt; as logically (or soft).
-<span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      46 </span><span class="lineCov">          1 :                 public void Remove(TData data)</span>
-<span class="lineNum">      47 </span>            :                 {
-<span class="lineNum">      48 </span>            :                         data.IsLogicallyDeleted = true;
-<span class="lineNum">      49 </span>            :                         Update(data);
-<span class="lineNum">      50 </span>            :                 }
-<span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span>            :                 #endregion
-<span class="lineNum">      53 </span>            : 
-<span class="lineNum">      54 </span><span class="lineNoCov">          0 :                 public virtual IEnumerable&lt;TData&gt; GetByFolder()</span>
-<span class="lineNum">      55 </span>            :                 {
-<span class="lineNum">      56 </span>            :                         string folderName = GenerateFolderName();
-<span class="lineNum">      57 </span>            :                         return OpenStreamsForReading(folderName: folderName)
-<span class="lineNum">      58 </span>            :                                 .Select(Deserialise);
-<span class="lineNum">      59 </span>            :                 }
-<span class="lineNum">      60 </span>            :         }
-<span class="lineNum">      61 </span>            : }
+<span class="lineNum">      18 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      19 </span>            :         /// A &lt;see cref=&quot;IDataStore{TData}&quot;/&gt; that uses Azure Blob Storage for storage.
+<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      21 </span>            :         /// &lt;typeparam name=&quot;TData&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IEntity&quot;/&gt; the &lt;see cref=&quot;IDataStore{TData}&quot;/&gt; will contain.&lt;/typeparam&gt;
+<span class="lineNum">      22 </span>            :         public class BlobStorageDataStore&lt;TData&gt;
+<span class="lineNum">      23 </span>            :                 : BlobStorageStore&lt;TData&gt;
+<span class="lineNum">      24 </span>            :                 , IDataStore&lt;TData&gt;
+<span class="lineNum">      25 </span>            :                 where TData : Entity
+<span class="lineNum">      26 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      27 </span>            :                 internal Func&lt;string&gt; GenerateFolderName { get; set; }
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      30 </span>            :                 /// Initializes a new instance of the &lt;see cref=&quot;BlobStorage&quot;/&gt; class using the specified container.
+<span class="lineNum">      31 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      32 </span><span class="lineCov">          1 :                 public BlobStorageDataStore(ILogger logger, IBlobStorageDataStoreConnectionStringFactory blobStorageDataStoreConnectionStringFactory)</span>
+<span class="lineNum">      33 </span>            :                         : base(logger)
+<span class="lineNum">      34 </span>            :                 {
+<span class="lineNum">      35 </span>            :                         GetContainerName = blobStorageDataStoreConnectionStringFactory.GetBaseContainerName;
+<span class="lineNum">      36 </span>            :                         IsContainerPublic = blobStorageDataStoreConnectionStringFactory.IsContainerPublic&lt;TData&gt;;
+<span class="lineNum">      37 </span>            :                         GenerateFolderName = blobStorageDataStoreConnectionStringFactory.GetEntityName&lt;TData&gt;;
+<span class="lineNum">      38 </span>            :                         GenerateFileName = data =&gt; string.Format(&quot;{0}\\{1}&quot;, GenerateFolderName(), data.Rsn.ToString(&quot;N&quot;));
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :                         // ReSharper disable DoNotCallOverridableMethodsInConstructor
+<span class="lineNum">      41 </span>            :                         Initialise(blobStorageDataStoreConnectionStringFactory);
+<span class="lineNum">      42 </span>            :                         // ReSharper restore DoNotCallOverridableMethodsInConstructor
+<span class="lineNum">      43 </span>            :                 }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 #region Implementation of IDataStore&lt;TData&gt;
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      48 </span>            :                 /// Will mark the &lt;paramref name=&quot;data&quot;/&gt; as logically (or soft).
+<span class="lineNum">      49 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      50 </span><span class="lineCov">          1 :                 public void Remove(TData data)</span>
+<span class="lineNum">      51 </span>            :                 {
+<span class="lineNum">      52 </span>            :                         data.IsLogicallyDeleted = true;
+<span class="lineNum">      53 </span>            :                         Update(data);
+<span class="lineNum">      54 </span>            :                 }
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 #endregion
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      59 </span>            :                 /// Get all &lt;typeparamref name=&quot;TData&quot;/&gt; items in the folder.
+<span class="lineNum">      60 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      61 </span><span class="lineCov">          1 :                 public virtual IEnumerable&lt;TData&gt; GetByFolder()</span>
+<span class="lineNum">      62 </span>            :                 {
+<span class="lineNum">      63 </span>            :                         string folderName = GenerateFolderName();
+<span class="lineNum">      64 </span>            :                         return OpenStreamsForReading(folderName: folderName)
+<span class="lineNum">      65 </span>            :                                 .Select(Deserialise);
+<span class="lineNum">      66 </span>            :                 }
+<span class="lineNum">      67 </span>            :         }
+<span class="lineNum">      68 </span>            : }
 </pre>
       </td>
     </tr>

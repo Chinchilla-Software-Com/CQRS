@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IAkkaSagaRepository&lt;TAuthenticationToken&gt;
    | CQRS.NET API Reference Documentation version 2.2 ">
-    <meta name="generator" content="docfx 2.21.2.0">
+    <meta name="generator" content="docfx 2.22.2.0">
     
     <link rel="shortcut icon" href="../../../../../favicon.ico">
     <link rel="stylesheet" href="../../../../../styles/docfx.vendor.css">
@@ -80,7 +80,8 @@
   
   <h1 id="Cqrs_Akka_Domain_IAkkaSagaRepository_1" data-uid="Cqrs.Akka.Domain.IAkkaSagaRepository`1" class="text-break">Interface IAkkaSagaRepository&lt;TAuthenticationToken&gt;
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>A <a class="xref" href="Cqrs.Domain.SagaRepository-1.html">SagaRepository&lt;TAuthenticationToken&gt;</a> that is safe to use within Akka.NET</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -108,7 +109,8 @@
     <tbody>
       <tr>
         <td><span class="parametername">TAuthenticationToken</span></td>
-        <td></td>
+        <td><p>The <span class="xref">System.Type</span> of authentication token.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -116,7 +118,9 @@
   </h3>
   <a id="Cqrs_Akka_Domain_IAkkaSagaRepository_1_LoadSagaHistory_" data-uid="Cqrs.Akka.Domain.IAkkaSagaRepository`1.LoadSagaHistory*"></a>
   <h4 id="Cqrs_Akka_Domain_IAkkaSagaRepository_1_LoadSagaHistory__1___0_System_Collections_Generic_IList_Cqrs_Events_ISagaEvent__0___System_Boolean_" data-uid="Cqrs.Akka.Domain.IAkkaSagaRepository`1.LoadSagaHistory``1(``0,System.Collections.Generic.IList{Cqrs.Events.ISagaEvent{`0}},System.Boolean)">LoadSagaHistory&lt;TSaga&gt;(TSaga, IList&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt;, Boolean)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>If <code data-dev-comment-type="paramref">events</code> is null, loads the events from an <a class="xref" href="Cqrs.Events.IEventStore-1.html">IEventStore&lt;TAuthenticationToken&gt;</a>, checks for duplicates and then
+rehydrates the <code data-dev-comment-type="paramref">saga</code> with the events.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -135,17 +139,21 @@
       <tr>
         <td><span class="xref">TSaga</span></td>
         <td><span class="parametername">saga</span></td>
-        <td></td>
+        <td><p>The <code data-dev-comment-type="typeparamref">TSaga</code> to rehydrate.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="Cqrs.Events.ISagaEvent-1.html">ISagaEvent</a>&lt;TAuthenticationToken&gt;&gt;</td>
         <td><span class="parametername">events</span></td>
-        <td></td>
+        <td><p>A collection of <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> to replay on the retrieved <a class="xref" href="Cqrs.Domain.ISaga-1.html">ISaga&lt;TAuthenticationToken&gt;</a>.
+If null, the <a class="xref" href="Cqrs.Events.IEventStore-1.html">IEventStore&lt;TAuthenticationToken&gt;</a> will be used to retrieve a list of <a class="xref" href="Cqrs.Events.IEvent-1.html">IEvent&lt;TAuthenticationToken&gt;</a> for you.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">throwExceptionOnNoEvents</span></td>
-        <td></td>
+        <td><p>If true will throw an instance of <a class="xref" href="Cqrs.Domain.Exceptions.SagaNotFoundException-2.html">SagaNotFoundException&lt;TSaga, TAuthenticationToken&gt;</a> if no aggregate events or provided or found in the <a class="xref" href="Cqrs.Events.IEventStore-1.html">IEventStore&lt;TAuthenticationToken&gt;</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -160,7 +168,8 @@
     <tbody>
       <tr>
         <td><span class="parametername">TSaga</span></td>
-        <td></td>
+        <td><p>The <span class="xref">System.Type</span> of <a class="xref" href="Cqrs.Domain.ISaga-1.html">ISaga&lt;TAuthenticationToken&gt;</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>

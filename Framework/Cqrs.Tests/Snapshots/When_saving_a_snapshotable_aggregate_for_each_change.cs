@@ -3,6 +3,7 @@ using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
 using Cqrs.Authentication;
+using Cqrs.Configuration;
 using Cqrs.Snapshots;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
@@ -25,7 +26,7 @@ namespace Cqrs.Tests.Snapshots
 			var snapshotStrategy = new DefaultSnapshotStrategy<ISingleSignOnToken>();
 			var dependencyResolver = new TestDependencyResolver(null);
 			var aggregateFactory = new AggregateFactory(dependencyResolver, dependencyResolver.Resolve<ILogger>());
-			var repository = new SnapshotRepository<ISingleSignOnToken>(_snapshotStore, snapshotStrategy, new AggregateRepository<ISingleSignOnToken>(aggregateFactory, eventStore, eventPublisher, new NullCorrelationIdHelper()), eventStore, aggregateFactory);
+			var repository = new SnapshotRepository<ISingleSignOnToken>(_snapshotStore, snapshotStrategy, new AggregateRepository<ISingleSignOnToken>(aggregateFactory, eventStore, eventPublisher, new NullCorrelationIdHelper(), new ConfigurationManager()), eventStore, aggregateFactory);
 			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(repository);
 			_aggregate = new TestSnapshotAggregate();
 

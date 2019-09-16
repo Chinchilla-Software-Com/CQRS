@@ -30,14 +30,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: IAzureBusHelper
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IAzureBusHelper.cs
-    startLine: 19
+    startLine: 23
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nA helper for Azure Service Bus and Event Hub.\n"
+  example: []
   syntax:
     content: public interface IAzureBusHelper<TAuthenticationToken>
     typeParameters:
     - id: TAuthenticationToken
+      description: The <see cref="!:Type"></see> of the authentication token.
     content.vb: Public Interface IAzureBusHelper(Of TAuthenticationToken)
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken)
   modifiers.csharp:
@@ -66,19 +69,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrepareCommand
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IAzureBusHelper.cs
-    startLine: 21
+    startLine: 31
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nPrepares a <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> to be sent specifying the framework it is sent via.\n"
+  example: []
   syntax:
     content: 'void PrepareCommand<TCommand>(TCommand command, string framework)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
+      description: The <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> to send.
     - id: framework
       type: System.String
+      description: The framework the <code data-dev-comment-type="paramref">command</code> is being sent from.
     typeParameters:
     - id: TCommand
+      description: The <see cref="!:Type"></see> of<xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> being sent.
     content.vb: Sub PrepareCommand(Of TCommand As ICommand(Of TAuthenticationToken))(command As TCommand, framework As String)
   overload: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.PrepareCommand*
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).PrepareCommand(Of TCommand)(TCommand, String)
@@ -102,19 +110,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrepareAndValidateCommand
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IAzureBusHelper.cs
-    startLine: 24
+    startLine: 40
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nPrepares and validates a <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> to be sent specifying the framework it is sent via.\n"
+  example: []
   syntax:
     content: 'bool PrepareAndValidateCommand<TCommand>(TCommand command, string framework)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
+      description: The <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> to send.
     - id: framework
       type: System.String
+      description: The framework the <code data-dev-comment-type="paramref">command</code> is being sent from.
     typeParameters:
     - id: TCommand
+      description: The <see cref="!:Type"></see> of<xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> being sent.
     return:
       type: System.Boolean
     content.vb: Function PrepareAndValidateCommand(Of TCommand As ICommand(Of TAuthenticationToken))(command As TCommand, framework As String) As Boolean
@@ -140,25 +153,33 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ReceiveCommand
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IAzureBusHelper.cs
-    startLine: 27
+    startLine: 52
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nDeserialises and processes the <code data-dev-comment-type=\"paramref\">messageBody</code> received from the network through the provided <code data-dev-comment-type=\"paramref\">receiveCommandHandler</code>.\n"
+  example: []
   syntax:
     content: ICommand<TAuthenticationToken> ReceiveCommand(string messageBody, Func<ICommand<TAuthenticationToken>, bool ? > receiveCommandHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)
     parameters:
     - id: messageBody
       type: System.String
+      description: A serialised <xref href="Cqrs.Messages.IMessage" data-throw-if-not-resolved="false"></xref>.
     - id: receiveCommandHandler
       type: Func{Cqrs.Commands.ICommand{{TAuthenticationToken}},System.Nullable{System.Boolean}}
+      description: The handler method that will process the <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref>.
     - id: messageId
       type: System.String
+      description: The network id of the <xref href="Cqrs.Messages.IMessage" data-throw-if-not-resolved="false"></xref>.
     - id: skippedAction
       type: Action
+      description: The <see cref="!:Action"></see> to call when the <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> is being skipped.
     - id: lockRefreshAction
       type: Action
+      description: The <see cref="!:Action"></see> to call to refresh the network lock.
     return:
       type: Cqrs.Commands.ICommand{{TAuthenticationToken}}
+      description: The <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> that was processed.
     content.vb: Function ReceiveCommand(messageBody As String, receiveCommandHandler As Func(Of ICommand(Of TAuthenticationToken), Boolean?), messageId As String, skippedAction As Action = Nothing, lockRefreshAction As Action = Nothing) As ICommand(Of TAuthenticationToken)
   overload: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand*
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).ReceiveCommand(String, Func(Of ICommand(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
@@ -182,23 +203,27 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DefaultReceiveCommand
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IAzureBusHelper.cs
-    startLine: 34
+    startLine: 68
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe default command handler that\ncheck if the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> has already been processed by this framework,\nchecks if the <xref href=\"Cqrs.Commands.ICommand%601\" data-throw-if-not-resolved=\"false\"></xref> is required,\nfinds the handler from the provided <code data-dev-comment-type=\"paramref\">routeManager</code>.\n"
   example: []
   syntax:
     content: bool ? DefaultReceiveCommand(ICommand<TAuthenticationToken> command, RouteManager routeManager, string framework)
     parameters:
     - id: command
       type: Cqrs.Commands.ICommand{{TAuthenticationToken}}
+      description: The <xref href="Cqrs.Commands.ICommand%601" data-throw-if-not-resolved="false"></xref> to process.
     - id: routeManager
       type: Cqrs.Bus.RouteManager
+      description: The <xref href="Cqrs.Bus.RouteManager" data-throw-if-not-resolved="false"></xref> to get the <xref href="Cqrs.Commands.ICommandHandler%602" data-throw-if-not-resolved="false"></xref> from.
     - id: framework
       type: System.String
+      description: The current framework.
     return:
       type: System.Nullable{System.Boolean}
-      description: "\nTrue indicates the <span class=\"paramref\">command</span> was successfully handled by a handler.\nFalse indicates the <span class=\"paramref\">command</span> wasn&apos;t handled, but didn&apos;t throw an error, so by convention, that means it was skipped.\nNull indicates the command<span class=\"paramref\">command</span> wasn&apos;t handled as it was already handled.\n"
+      description: "\nTrue indicates the <code data-dev-comment-type=\"paramref\">command</code> was successfully handled by a handler.\nFalse indicates the <code data-dev-comment-type=\"paramref\">command</code> wasn&apos;t handled, but didn&apos;t throw an error, so by convention, that means it was skipped.\nNull indicates the command<code data-dev-comment-type=\"paramref\">command</code> wasn&apos;t handled as it was already handled.\n"
     content.vb: Function DefaultReceiveCommand(command As ICommand(Of TAuthenticationToken), routeManager As RouteManager, framework As String) As Boolean?
   overload: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.DefaultReceiveCommand*
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).DefaultReceiveCommand(ICommand(Of TAuthenticationToken), RouteManager, String)
@@ -222,19 +247,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrepareEvent
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IAzureBusHelper.cs
-    startLine: 36
+    startLine: 76
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nPrepares an <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> to be sent specifying the framework it is sent via.\n"
+  example: []
   syntax:
     content: 'void PrepareEvent<TEvent>(TEvent event, string framework)where TEvent : IEvent<TAuthenticationToken>'
     parameters:
     - id: event
       type: '{TEvent}'
+      description: The <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> to send.
     - id: framework
       type: System.String
+      description: The framework the <code data-dev-comment-type="paramref">event</code> is being sent from.
     typeParameters:
     - id: TEvent
+      description: The <see cref="!:Type"></see> of<xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> being sent.
     content.vb: Sub PrepareEvent(Of TEvent As IEvent(Of TAuthenticationToken))(event As TEvent, framework As String)
   overload: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.PrepareEvent*
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).PrepareEvent(Of TEvent)(TEvent, String)
@@ -258,19 +288,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrepareAndValidateEvent
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IAzureBusHelper.cs
-    startLine: 39
+    startLine: 85
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nPrepares and validates an <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> to be sent specifying the framework it is sent via.\n"
+  example: []
   syntax:
     content: 'bool PrepareAndValidateEvent<TEvent>(TEvent event, string framework)where TEvent : IEvent<TAuthenticationToken>'
     parameters:
     - id: event
       type: '{TEvent}'
+      description: The <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> to send.
     - id: framework
       type: System.String
+      description: The framework the <code data-dev-comment-type="paramref">event</code> is being sent from.
     typeParameters:
     - id: TEvent
+      description: The <see cref="!:Type"></see> of<xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> being sent.
     return:
       type: System.Boolean
     content.vb: Function PrepareAndValidateEvent(Of TEvent As IEvent(Of TAuthenticationToken))(event As TEvent, framework As String) As Boolean
@@ -296,26 +331,34 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ReceiveEvent
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IAzureBusHelper.cs
-    startLine: 42
+    startLine: 97
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nDeserialises and processes the <code data-dev-comment-type=\"paramref\">messageBody</code> received from the network through the provided <code data-dev-comment-type=\"paramref\">receiveEventHandler</code>.\n"
+  example: []
   syntax:
-    content: IEvent<TAuthenticationToken> ReceiveEvent(string messageBody, Func<IEvent<TAuthenticationToken>, bool ? > receiveCommandHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)
+    content: IEvent<TAuthenticationToken> ReceiveEvent(string messageBody, Func<IEvent<TAuthenticationToken>, bool ? > receiveEventHandler, string messageId, Action skippedAction = null, Action lockRefreshAction = null)
     parameters:
     - id: messageBody
       type: System.String
-    - id: receiveCommandHandler
+      description: A serialised <xref href="Cqrs.Messages.IMessage" data-throw-if-not-resolved="false"></xref>.
+    - id: receiveEventHandler
       type: Func{Cqrs.Events.IEvent{{TAuthenticationToken}},System.Nullable{System.Boolean}}
+      description: The handler method that will process the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref>.
     - id: messageId
       type: System.String
+      description: The network id of the <xref href="Cqrs.Messages.IMessage" data-throw-if-not-resolved="false"></xref>.
     - id: skippedAction
       type: Action
+      description: The <see cref="!:Action"></see> to call when the <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> is being skipped.
     - id: lockRefreshAction
       type: Action
+      description: The <see cref="!:Action"></see> to call to refresh the network lock.
     return:
       type: Cqrs.Events.IEvent{{TAuthenticationToken}}
-    content.vb: Function ReceiveEvent(messageBody As String, receiveCommandHandler As Func(Of IEvent(Of TAuthenticationToken), Boolean?), messageId As String, skippedAction As Action = Nothing, lockRefreshAction As Action = Nothing) As IEvent(Of TAuthenticationToken)
+      description: The <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> that was processed.
+    content.vb: Function ReceiveEvent(messageBody As String, receiveEventHandler As Func(Of IEvent(Of TAuthenticationToken), Boolean?), messageId As String, skippedAction As Action = Nothing, lockRefreshAction As Action = Nothing) As IEvent(Of TAuthenticationToken)
   overload: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveEvent*
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).ReceiveEvent(String, Func(Of IEvent(Of TAuthenticationToken), Nullable(Of Boolean)), String, Action, Action)
   fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).ReceiveEvent(System.String, Func(Of Cqrs.Events.IEvent(Of TAuthenticationToken), System.Nullable(Of System.Boolean)), System.String, Action, Action)
@@ -338,10 +381,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: RefreshLock
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IAzureBusHelper.cs
-    startLine: 44
+    startLine: 102
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nRefreshes the network lock.\n"
+  example: []
   syntax:
     content: void RefreshLock(CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
     parameters:
@@ -373,23 +418,27 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DefaultReceiveEvent
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IAzureBusHelper.cs
-    startLine: 51
+    startLine: 118
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nThe default event handler that\ncheck if the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> has already been processed by this framework,\nchecks if the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> is required,\nfinds the handler from the provided <code data-dev-comment-type=\"paramref\">routeManager</code>.\n"
   example: []
   syntax:
     content: bool ? DefaultReceiveEvent(IEvent<TAuthenticationToken> event, RouteManager routeManager, string framework)
     parameters:
     - id: event
       type: Cqrs.Events.IEvent{{TAuthenticationToken}}
+      description: The <xref href="Cqrs.Events.IEvent%601" data-throw-if-not-resolved="false"></xref> to process.
     - id: routeManager
       type: Cqrs.Bus.RouteManager
+      description: The <xref href="Cqrs.Bus.RouteManager" data-throw-if-not-resolved="false"></xref> to get the <xref href="Cqrs.Events.IEventHandler%602" data-throw-if-not-resolved="false"></xref> from.
     - id: framework
       type: System.String
+      description: The current framework.
     return:
       type: System.Nullable{System.Boolean}
-      description: "\nTrue indicates the <span class=\"paramref\">event</span> was successfully handled by a handler.\nFalse indicates the <span class=\"paramref\">event</span> wasn&apos;t handled, but didn&apos;t throw an error, so by convention, that means it was skipped.\nNull indicates the <span class=\"paramref\">event</span> wasn&apos;t handled as it was already handled.\n"
+      description: "\nTrue indicates the <code data-dev-comment-type=\"paramref\">event</code> was successfully handled by a handler.\nFalse indicates the <code data-dev-comment-type=\"paramref\">event</code> wasn&apos;t handled, but didn&apos;t throw an error, so by convention, that means it was skipped.\nNull indicates the <code data-dev-comment-type=\"paramref\">event</code> wasn&apos;t handled as it was already handled.\n"
     content.vb: Function DefaultReceiveEvent(event As IEvent(Of TAuthenticationToken), routeManager As RouteManager, framework As String) As Boolean?
   overload: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.DefaultReceiveEvent*
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).DefaultReceiveEvent(IEvent(Of TAuthenticationToken), RouteManager, String)
@@ -413,10 +462,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: RegisterHandler
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IAzureBusHelper.cs
-    startLine: 53
+    startLine: 125
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
+  summary: "\nManually registers the provided <code data-dev-comment-type=\"paramref\">handler</code> \non the provided <code data-dev-comment-type=\"paramref\">routeManger</code>\n"
+  example: []
   syntax:
     content: 'void RegisterHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)where TMessage : IMessage'
     parameters:
@@ -432,6 +483,7 @@ items:
       type: System.Boolean
     typeParameters:
     - id: TMessage
+      description: The <see cref="!:Type"></see> of <xref href="Cqrs.Messages.IMessage" data-throw-if-not-resolved="false"></xref> the <code data-dev-comment-type="paramref">handler</code> can handle.
     content.vb: Sub RegisterHandler(Of TMessage As IMessage)(telemetryHelper As ITelemetryHelper, routeManger As RouteManager, handler As Action(Of TMessage), targetedType As Type, holdMessageLock As Boolean = True)
   overload: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.RegisterHandler*
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).RegisterHandler(Of TMessage)(ITelemetryHelper, RouteManager, Action(Of TMessage), Type, Boolean)
@@ -455,7 +507,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: RegisterGlobalEventHandler
     path: Framework/Azure/Cqrs.Azure.ServiceBus/IAzureBusHelper.cs
-    startLine: 59
+    startLine: 131
   assemblies:
   - Cqrs.Azure.ServiceBus
   namespace: Cqrs.Azure.ServiceBus
@@ -486,6 +538,43 @@ references:
   name: Cqrs.Azure.ServiceBus
   nameWithType: Cqrs.Azure.ServiceBus
   fullName: Cqrs.Azure.ServiceBus
+- uid: Cqrs.Commands.ICommand`1
+  commentId: T:Cqrs.Commands.ICommand`1
+  isExternal: false
+  name: ICommand<TAuthenticationToken>
+  nameWithType: ICommand<TAuthenticationToken>
+  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>
+  nameWithType.vb: ICommand(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken)
+  name.vb: ICommand(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommand`1
+    name: ICommand
+    nameWithType: ICommand
+    fullName: Cqrs.Commands.ICommand
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.PrepareCommand*
   commentId: Overload:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.PrepareCommand
   isExternal: false
@@ -533,6 +622,13 @@ references:
   name: Boolean
   nameWithType: Boolean
   fullName: System.Boolean
+- uid: Cqrs.Messages.IMessage
+  commentId: T:Cqrs.Messages.IMessage
+  parent: Cqrs.Messages
+  isExternal: false
+  name: IMessage
+  nameWithType: IMessage
+  fullName: Cqrs.Messages.IMessage
 - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand*
   commentId: Overload:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.ReceiveCommand
   isExternal: false
@@ -681,6 +777,12 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Messages
+  commentId: N:Cqrs.Messages
+  isExternal: false
+  name: Cqrs.Messages
+  nameWithType: Cqrs.Messages
+  fullName: Cqrs.Messages
 - uid: Func`2
   isExternal: true
   name: Func<, >
@@ -731,49 +833,68 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Commands.ICommand`1
-  commentId: T:Cqrs.Commands.ICommand`1
-  isExternal: false
-  name: ICommand<TAuthenticationToken>
-  nameWithType: ICommand<TAuthenticationToken>
-  fullName: Cqrs.Commands.ICommand<TAuthenticationToken>
-  nameWithType.vb: ICommand(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Commands.ICommand(Of TAuthenticationToken)
-  name.vb: ICommand(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Commands.ICommand`1
-    name: ICommand
-    nameWithType: ICommand
-    fullName: Cqrs.Commands.ICommand
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Commands.ICommand`1
-    name: ICommand
-    nameWithType: ICommand
-    fullName: Cqrs.Commands.ICommand
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Commands
   commentId: N:Cqrs.Commands
   isExternal: false
   name: Cqrs.Commands
   nameWithType: Cqrs.Commands
   fullName: Cqrs.Commands
+- uid: Cqrs.Bus.RouteManager
+  commentId: T:Cqrs.Bus.RouteManager
+  parent: Cqrs.Bus
+  isExternal: false
+  name: RouteManager
+  nameWithType: RouteManager
+  fullName: Cqrs.Bus.RouteManager
+- uid: Cqrs.Commands.ICommandHandler`2
+  commentId: T:Cqrs.Commands.ICommandHandler`2
+  isExternal: false
+  name: ICommandHandler<TAuthenticationToken, TCommand>
+  nameWithType: ICommandHandler<TAuthenticationToken, TCommand>
+  fullName: Cqrs.Commands.ICommandHandler<TAuthenticationToken, TCommand>
+  nameWithType.vb: ICommandHandler(Of TAuthenticationToken, TCommand)
+  fullName.vb: Cqrs.Commands.ICommandHandler(Of TAuthenticationToken, TCommand)
+  name.vb: ICommandHandler(Of TAuthenticationToken, TCommand)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommandHandler`2
+    name: ICommandHandler
+    nameWithType: ICommandHandler
+    fullName: Cqrs.Commands.ICommandHandler
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommandHandler`2
+    name: ICommandHandler
+    nameWithType: ICommandHandler
+    fullName: Cqrs.Commands.ICommandHandler
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.DefaultReceiveCommand*
   commentId: Overload:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.DefaultReceiveCommand
   isExternal: false
@@ -782,13 +903,6 @@ references:
   fullName: Cqrs.Azure.ServiceBus.IAzureBusHelper<TAuthenticationToken>.DefaultReceiveCommand
   nameWithType.vb: IAzureBusHelper(Of TAuthenticationToken).DefaultReceiveCommand
   fullName.vb: Cqrs.Azure.ServiceBus.IAzureBusHelper(Of TAuthenticationToken).DefaultReceiveCommand
-- uid: Cqrs.Bus.RouteManager
-  commentId: T:Cqrs.Bus.RouteManager
-  parent: Cqrs.Bus
-  isExternal: false
-  name: RouteManager
-  nameWithType: RouteManager
-  fullName: Cqrs.Bus.RouteManager
 - uid: System.Nullable{System.Boolean}
   commentId: T:System.Nullable{System.Boolean}
   parent: System
@@ -875,6 +989,43 @@ references:
   - name: T
     nameWithType: T
     fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
   - name: )
     nameWithType: )
     fullName: )
@@ -1048,43 +1199,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Events.IEvent`1
-  commentId: T:Cqrs.Events.IEvent`1
-  isExternal: false
-  name: IEvent<TAuthenticationToken>
-  nameWithType: IEvent<TAuthenticationToken>
-  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
-  nameWithType.vb: IEvent(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
-  name.vb: IEvent(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Events.IEvent`1
-    name: IEvent
-    nameWithType: IEvent
-    fullName: Cqrs.Events.IEvent
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: Cqrs.Events
   commentId: N:Cqrs.Events
   isExternal: false
@@ -1109,6 +1223,55 @@ references:
   name: BrokeredMessage
   nameWithType: BrokeredMessage
   fullName: BrokeredMessage
+- uid: Cqrs.Events.IEventHandler`2
+  commentId: T:Cqrs.Events.IEventHandler`2
+  isExternal: false
+  name: IEventHandler<TAuthenticationToken, TEvent>
+  nameWithType: IEventHandler<TAuthenticationToken, TEvent>
+  fullName: Cqrs.Events.IEventHandler<TAuthenticationToken, TEvent>
+  nameWithType.vb: IEventHandler(Of TAuthenticationToken, TEvent)
+  fullName.vb: Cqrs.Events.IEventHandler(Of TAuthenticationToken, TEvent)
+  name.vb: IEventHandler(Of TAuthenticationToken, TEvent)
+  spec.csharp:
+  - uid: Cqrs.Events.IEventHandler`2
+    name: IEventHandler
+    nameWithType: IEventHandler
+    fullName: Cqrs.Events.IEventHandler
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TEvent
+    nameWithType: TEvent
+    fullName: TEvent
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEventHandler`2
+    name: IEventHandler
+    nameWithType: IEventHandler
+    fullName: Cqrs.Events.IEventHandler
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TEvent
+    nameWithType: TEvent
+    fullName: TEvent
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.ServiceBus.IAzureBusHelper`1.DefaultReceiveEvent*
   commentId: Overload:Cqrs.Azure.ServiceBus.IAzureBusHelper`1.DefaultReceiveEvent
   isExternal: false

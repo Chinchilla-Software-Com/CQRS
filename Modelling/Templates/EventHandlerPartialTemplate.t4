@@ -16,9 +16,29 @@ string className = ClassifierName(this.Element);
 string entityName = stereoTypeProperties.PropertyInstances
 	.Single(property => property.Name == "EntityName")
 	.Value;
-string eventName = stereoTypeProperties.PropertyInstances
+if (string.IsNullOrWhiteSpace(entityName))
+	entityName = null;
+string evName = stereoTypeProperties.PropertyInstances
 	.Single(property => property.Name == "EventName")
 	.Value;
+if (string.IsNullOrWhiteSpace(evName))
+	evName = null;
+
+IList<string> eventNames = new List<string>();
+if (!string.IsNullOrWhiteSpace(evName))
+	eventNames.Add(evName);
+
+IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.TargetElement == this.Element);
+// related events etc
+foreach(IAssociation relationship in relationships)
+{
+	var eventLink = relationship.SourceElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+	if (eventLink != null)
+	{
+		if (!eventNames.Contains(((INamedElement)relationship.SourceElement).Name))
+			eventNames.Add(string.Format("{0}.{1}", GetNamespace(((INamedElement)relationship.SourceElement).Namespace), ((INamedElement)relationship.SourceElement).Name));
+	}
+}
 
 // using statements
 #>
@@ -29,40 +49,17 @@ using Cqrs.Entities;
 
 namespace <#= classNamespace #>.Handlers
 {
-<#
-	// Class and Attributes
-#>
 	public <#= GetAbstract(this.Element) #> partial class <#= entityName ?? className #>EventHandler
+	{<#
+	foreach(string eventName in eventNames)
 	{
-		protected IAutomapHelper AutomapHelper { get; private set; }
-
-		public <#= entityName ?? className #>EventHandler(ILogger logger, IAutomapHelper automapHelper)
-<#
-string eventHandlerTechnology = GetEventHandlerTechnology(this.Element);
-switch(eventHandlerTechnology)
-{
-	case "Akka":
 #>
-			: this()
-<#
-		break;
-	default:
-#>
-			: this(logger)
-<#
-		// for now do nothing
-		break;
-}
-#>
-		{
-			Logger = logger;
-			AutomapHelper = automapHelper;
-		}
 
 		partial void OnHandle(<#= eventName #> @event)
 		{
 			throw new NotImplementedException();
 		}
+<# } #>
 	}
 }
 <#+

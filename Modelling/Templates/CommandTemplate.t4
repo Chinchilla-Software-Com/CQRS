@@ -20,12 +20,11 @@ string className = ClassifierName(this.Element);
 string baseClass = GetBaseClass(this.Element);
 if (!string.IsNullOrWhiteSpace(baseClass))
 	baseClass = baseClass + ", ";
-baseClass = baseClass + "ICommand<" + authenticationTokenType + ">";
+baseClass = baseClass + "ICommandWithIdentity<" + authenticationTokenType + ">";
 
 // using statements
 WriteUsingStatements(this.Element);
 #>
-using System.Runtime.Serialization;
 using Cqrs.Commands;
 using Cqrs.Messages;
 
@@ -41,14 +40,10 @@ namespace <#= classNamespace #>
 		#region Implementation of ICommand
 
 		/// <summary>
-		/// The Rsn of the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> being targeted.
+		/// The Id of the <see cref="ICommand{TAuthenticationToken}" /> itself.
 		/// </summary>
 		[DataMember]
-		public Guid Id
-		{
-			get { return Rsn; }
-			set { Rsn = value; }
-		}
+		public Guid Id { get; set; }
 
 		/// <summary>
 		/// The version number you expect this command to shift the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> to. I.E. +1 from what you know it's current version to be.
@@ -76,10 +71,6 @@ namespace <#= classNamespace #>
 		[DataMember]
 		public Guid CorrelationId { get; set; }
 
-		[DataMember]
-		[Obsolete("Use Frameworks, It's far more flexible and OriginatingFramework")]
-		public FrameworkType Framework { get; set; }
-
 		/// <summary>
 		/// The originating framework this message was sent from.
 		/// </summary>
@@ -92,15 +83,9 @@ namespace <#= classNamespace #>
 		[DataMember]
 		public IEnumerable<string> Frameworks { get; set; }
 
-		[Obsolete("Use CorrelationId")]
-		[DataMember]
-		public Guid CorrolationId
-		{
-			get { return CorrelationId; }
-			set { CorrelationId = value; }
-		}
-
 		#endregion
+
+		#region Implementation of ICommandWithIdentity
 
 		/// <summary>
 		/// The Rsn of the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> being targeted.
@@ -108,6 +93,7 @@ namespace <#= classNamespace #>
 		[DataMember]
 		public Guid Rsn { get; set; }
 
+		#endregion
 <#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element)
 			.Where(property=> property.Type != this)
@@ -127,10 +113,10 @@ namespace <#= classNamespace #>
 */
 			}
 #>
+
 <# WriteSummaryComment(collectionProperty.Description); #>
 		[DataMember]
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; set; }
-
 <#
 		}
 #>
@@ -156,6 +142,7 @@ namespace <#= classNamespace #>
 		}
 #>)
 		{
+			Id = Guid.NewGuid();
 			Rsn = rsn;
 <#
 		foreach(IProperty collectionProperty in collectionProperties)

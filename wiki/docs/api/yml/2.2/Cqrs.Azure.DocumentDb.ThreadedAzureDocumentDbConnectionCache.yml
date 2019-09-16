@@ -5,6 +5,8 @@ items:
   id: ThreadedAzureDocumentDbConnectionCache
   parent: Cqrs.Azure.DocumentDb
   children:
+  - Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.#ctor(IContextItemCollectionFactory)
+  - Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.Cache
   - Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.SetClient(System.String,DocumentClient)
   - Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.SetDatabase(System.String,Database)
   - Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.SetDocumentCollection(System.String,DocumentCollection)
@@ -25,17 +27,17 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ThreadedAzureDocumentDbConnectionCache
     path: Framework/Azure/Cqrs.Azure.DocumentDb/ThreadedAzureDocumentDbConnectionCache.cs
-    startLine: 14
+    startLine: 17
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nA cache manager for DocumentDB clients, databases and collections that is thread based.\n"
+  example: []
   syntax:
     content: 'public class ThreadedAzureDocumentDbConnectionCache : object, IAzureDocumentDbConnectionCache'
     content.vb: >-
       Public Class ThreadedAzureDocumentDbConnectionCache
-
           Inherits Object
-
           Implements IAzureDocumentDbConnectionCache
   inheritance:
   - System.Object
@@ -47,6 +49,78 @@ items:
   modifiers.vb:
   - Public
   - Class
+- uid: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.Cache
+  commentId: P:Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.Cache
+  id: Cache
+  parent: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache
+  langs:
+  - csharp
+  - vb
+  name: Cache
+  nameWithType: ThreadedAzureDocumentDbConnectionCache.Cache
+  fullName: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.Cache
+  type: Property
+  source:
+    remote:
+      path: Framework/Azure/Cqrs.Azure.DocumentDb/ThreadedAzureDocumentDbConnectionCache.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Cache
+    path: Framework/Azure/Cqrs.Azure.DocumentDb/ThreadedAzureDocumentDbConnectionCache.cs
+    startLine: 22
+  assemblies:
+  - Cqrs.Azure.DocumentDb
+  namespace: Cqrs.Azure.DocumentDb
+  summary: "\nGets the <see cref=\"!:IContextItemCollection\">cache</see> used.\n"
+  example: []
+  syntax:
+    content: protected IContextItemCollection Cache { get; }
+    parameters: []
+    return:
+      type: IContextItemCollection
+    content.vb: Protected ReadOnly Property Cache As IContextItemCollection
+  overload: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.Cache*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.#ctor(IContextItemCollectionFactory)
+  commentId: M:Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.#ctor(IContextItemCollectionFactory)
+  id: '#ctor(IContextItemCollectionFactory)'
+  parent: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache
+  langs:
+  - csharp
+  - vb
+  name: ThreadedAzureDocumentDbConnectionCache(IContextItemCollectionFactory)
+  nameWithType: ThreadedAzureDocumentDbConnectionCache.ThreadedAzureDocumentDbConnectionCache(IContextItemCollectionFactory)
+  fullName: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.ThreadedAzureDocumentDbConnectionCache(IContextItemCollectionFactory)
+  type: Constructor
+  source:
+    remote:
+      path: Framework/Azure/Cqrs.Azure.DocumentDb/ThreadedAzureDocumentDbConnectionCache.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: .ctor
+    path: Framework/Azure/Cqrs.Azure.DocumentDb/ThreadedAzureDocumentDbConnectionCache.cs
+    startLine: 27
+  assemblies:
+  - Cqrs.Azure.DocumentDb
+  namespace: Cqrs.Azure.DocumentDb
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: public ThreadedAzureDocumentDbConnectionCache(IContextItemCollectionFactory factory)
+    parameters:
+    - id: factory
+      type: IContextItemCollectionFactory
+    content.vb: Public Sub New(factory As IContextItemCollectionFactory)
+  overload: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
 - uid: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.TryGetClient(System.String,DocumentClient@)
   commentId: M:Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.TryGetClient(System.String,DocumentClient@)
   id: TryGetClient(System.String,DocumentClient@)
@@ -65,19 +139,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TryGetClient
     path: Framework/Azure/Cqrs.Azure.DocumentDb/ThreadedAzureDocumentDbConnectionCache.cs
-    startLine: 16
+    startLine: 38
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nGets the <see cref=\"!:DocumentClient\"></see>.\n"
+  example: []
   syntax:
     content: public bool TryGetClient(string key, out DocumentClient client)
     parameters:
     - id: key
       type: System.String
+      description: The name of the <see cref="!:DocumentClient"></see> to get.
     - id: client
       type: DocumentClient
+      description: If the <see cref="!:DocumentClient"></see> is found, it is returned here; otherwise null is returned. This parameter is passed uninitialized.
     return:
       type: System.Boolean
+      description: true if the  <see cref="!:DocumentClient"></see> is found; otherwise, false.
     content.vb: Public Function TryGetClient(key As String, ByRef client As DocumentClient) As Boolean
   overload: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.TryGetClient*
   implements:
@@ -107,17 +186,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: SetClient
     path: Framework/Azure/Cqrs.Azure.DocumentDb/ThreadedAzureDocumentDbConnectionCache.cs
-    startLine: 34
+    startLine: 59
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nSets the provided <code data-dev-comment-type=\"paramref\">client</code>.\n"
+  example: []
   syntax:
     content: public void SetClient(string key, DocumentClient client)
     parameters:
     - id: key
       type: System.String
+      description: The name of the <see cref="!:DocumentClient"></see> to get.
     - id: client
       type: DocumentClient
+      description: The <see cref="!:DocumentClient"></see> to set.
     content.vb: Public Sub SetClient(key As String, client As DocumentClient)
   overload: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.SetClient*
   implements:
@@ -144,19 +227,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TryGetDatabase
     path: Framework/Azure/Cqrs.Azure.DocumentDb/ThreadedAzureDocumentDbConnectionCache.cs
-    startLine: 39
+    startLine: 70
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nGets the <see cref=\"!:Database\"></see>.\n"
+  example: []
   syntax:
     content: public bool TryGetDatabase(string key, out Database database)
     parameters:
     - id: key
       type: System.String
+      description: The name of the <see cref="!:Database"></see> to get.
     - id: database
       type: Database
+      description: If the <see cref="!:Database"></see> is found, it is returned here; otherwise null is returned. This parameter is passed uninitialized.
     return:
       type: System.Boolean
+      description: true if the  <see cref="!:Database"></see> is found; otherwise, false.
     content.vb: Public Function TryGetDatabase(key As String, ByRef database As Database) As Boolean
   overload: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.TryGetDatabase*
   implements:
@@ -186,17 +274,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: SetDatabase
     path: Framework/Azure/Cqrs.Azure.DocumentDb/ThreadedAzureDocumentDbConnectionCache.cs
-    startLine: 57
+    startLine: 91
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nSets the provided <code data-dev-comment-type=\"paramref\">database</code>.\n"
+  example: []
   syntax:
     content: public void SetDatabase(string key, Database database)
     parameters:
     - id: key
       type: System.String
+      description: The name of the <see cref="!:Database"></see> to get.
     - id: database
       type: Database
+      description: The <see cref="!:Database"></see> to set.
     content.vb: Public Sub SetDatabase(key As String, database As Database)
   overload: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.SetDatabase*
   implements:
@@ -223,19 +315,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: TryGetDocumentCollection
     path: Framework/Azure/Cqrs.Azure.DocumentDb/ThreadedAzureDocumentDbConnectionCache.cs
-    startLine: 62
+    startLine: 102
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nGets the <see cref=\"!:DocumentCollection\"></see>.\n"
+  example: []
   syntax:
     content: public bool TryGetDocumentCollection(string key, out DocumentCollection documentCollection)
     parameters:
     - id: key
       type: System.String
+      description: The name of the <see cref="!:DocumentCollection"></see> to get.
     - id: documentCollection
       type: DocumentCollection
+      description: If the <see cref="!:DocumentCollection"></see> is found, it is returned here; otherwise null is returned. This parameter is passed uninitialized.
     return:
       type: System.Boolean
+      description: true if the  <see cref="!:DocumentCollection"></see> is found; otherwise, false.
     content.vb: Public Function TryGetDocumentCollection(key As String, ByRef documentCollection As DocumentCollection) As Boolean
   overload: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.TryGetDocumentCollection*
   implements:
@@ -265,17 +362,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: SetDocumentCollection
     path: Framework/Azure/Cqrs.Azure.DocumentDb/ThreadedAzureDocumentDbConnectionCache.cs
-    startLine: 80
+    startLine: 123
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb
+  summary: "\nSets the provided <code data-dev-comment-type=\"paramref\">documentCollection</code>.\n"
+  example: []
   syntax:
     content: public void SetDocumentCollection(string key, DocumentCollection documentCollection)
     parameters:
     - id: key
       type: System.String
+      description: The name of the <see cref="!:DocumentCollection"></see> to get.
     - id: documentCollection
       type: DocumentCollection
+      description: The <see cref="!:DocumentCollection"></see> to set.
     content.vb: Public Sub SetDocumentCollection(key As String, documentCollection As DocumentCollection)
   overload: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.SetDocumentCollection*
   implements:
@@ -311,6 +412,36 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.Cache*
+  commentId: Overload:Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.Cache
+  isExternal: false
+  name: Cache
+  nameWithType: ThreadedAzureDocumentDbConnectionCache.Cache
+  fullName: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.Cache
+- uid: IContextItemCollection
+  commentId: '!:IContextItemCollection'
+  isExternal: true
+  name: IContextItemCollection
+  nameWithType: IContextItemCollection
+  fullName: IContextItemCollection
+- uid: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache
+  commentId: T:Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache
+  isExternal: false
+  name: ThreadedAzureDocumentDbConnectionCache
+  nameWithType: ThreadedAzureDocumentDbConnectionCache
+  fullName: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache
+- uid: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.#ctor*
+  commentId: Overload:Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.#ctor
+  isExternal: false
+  name: ThreadedAzureDocumentDbConnectionCache
+  nameWithType: ThreadedAzureDocumentDbConnectionCache.ThreadedAzureDocumentDbConnectionCache
+  fullName: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.ThreadedAzureDocumentDbConnectionCache
+- uid: IContextItemCollectionFactory
+  commentId: '!:IContextItemCollectionFactory'
+  isExternal: true
+  name: IContextItemCollectionFactory
+  nameWithType: IContextItemCollectionFactory
+  fullName: IContextItemCollectionFactory
 - uid: Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.TryGetClient*
   commentId: Overload:Cqrs.Azure.DocumentDb.ThreadedAzureDocumentDbConnectionCache.TryGetClient
   isExternal: false

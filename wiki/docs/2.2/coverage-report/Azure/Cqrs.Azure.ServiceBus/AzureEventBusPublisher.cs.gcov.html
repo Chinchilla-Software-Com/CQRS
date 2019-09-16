@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">3</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryMed">75.0 %</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-01</td>
+            <td class="headerValue">2017-09-22</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -79,305 +79,322 @@
 <span class="lineNum">      21 </span>            : 
 <span class="lineNum">      22 </span>            : namespace Cqrs.Azure.ServiceBus
 <span class="lineNum">      23 </span>            : {
-<span class="lineNum">      24 </span>            :         // The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
-<span class="lineNum">      25 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
-<span class="lineNum">      26 </span>            :         [DebuggerDisplay(&quot;{DebuggerDisplay,nq}&quot;)]
-<span class="lineNum">      27 </span>            :         public class AzureEventBusPublisher&lt;TAuthenticationToken&gt; : AzureEventBus&lt;TAuthenticationToken&gt;, IEventPublisher&lt;TAuthenticationToken&gt;
-<span class="lineNum">      28 </span><span class="lineCov">          2 :         {</span>
-<span class="lineNum">      29 </span><span class="lineNoCov">          0 :                 public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper, IBusHelper busHelper)</span>
-<span class="lineNum">      30 </span>            :                         : base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
-<span class="lineNum">      31 </span>            :                 {
-<span class="lineNum">      32 </span>            :                         TelemetryHelper = configurationManager.CreateTelemetryHelper(&quot;Cqrs.Azure.EventBus.Publisher.UseApplicationInsightTelemetryHelper&quot;, correlationIdHelper);
-<span class="lineNum">      33 </span>            :                 }
-<span class="lineNum">      34 </span>            : 
-<span class="lineNum">      35 </span>            :                 internal string DebuggerDisplay
-<span class="lineNum">      36 </span>            :                 {
-<span class="lineNum">      37 </span>            :                         get
-<span class="lineNum">      38 </span>            :                         {
-<span class="lineNum">      39 </span>            :                                 string connectionString = string.Format(&quot;ConnectionString : {0}&quot;, MessageBusConnectionStringConfigurationKey);
-<span class="lineNum">      40 </span>            :                                 try
-<span class="lineNum">      41 </span>            :                                 {
-<span class="lineNum">      42 </span>            :                                         connectionString = string.Concat(connectionString, &quot;=&quot;, GetConnectionString());
-<span class="lineNum">      43 </span>            :                                 }
-<span class="lineNum">      44 </span>            :                                 catch { /**/ }
-<span class="lineNum">      45 </span>            :                                 return string.Format(CultureInfo.InvariantCulture, &quot;{0}, PrivateTopicName : {1}, PrivateTopicSubscriptionName : {2}, PublicTopicName : {3}, PublicTopicSubscriptionName : {4}&quot;,
-<span class="lineNum">      46 </span>            :                                         connectionString, PrivateTopicName, PrivateTopicSubscriptionName, PublicTopicName, PublicTopicSubscriptionName);
-<span class="lineNum">      47 </span>            :                         }
-<span class="lineNum">      48 </span>            :                 }
-<span class="lineNum">      49 </span>            : 
-<span class="lineNum">      50 </span>            :                 #region Implementation of IEventPublisher&lt;TAuthenticationToken&gt;
-<span class="lineNum">      51 </span>            : 
-<span class="lineNum">      52 </span><span class="lineCov">          2 :                 public virtual void Publish&lt;TEvent&gt;(TEvent @event)</span>
-<span class="lineNum">      53 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
-<span class="lineNum">      54 </span>            :                 {
-<span class="lineNum">      55 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
-<span class="lineNum">      56 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
-<span class="lineNum">      57 </span>            :                         string responseCode = null;
-<span class="lineNum">      58 </span>            :                         bool mainWasSuccessfull = false;
-<span class="lineNum">      59 </span>            :                         bool telemeterOverall = false;
+<span class="lineNum">      24 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      25 </span>            :         /// An &lt;see cref=&quot;IEventPublisher{TAuthenticationToken}&quot;/&gt; that resolves handlers and executes the handler.
+<span class="lineNum">      26 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      27 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      28 </span>            :         // The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
+<span class="lineNum">      29 </span>            :         [DebuggerDisplay(&quot;{DebuggerDisplay,nq}&quot;)]
+<span class="lineNum">      30 </span>            :         public class AzureEventBusPublisher&lt;TAuthenticationToken&gt;
+<span class="lineNum">      31 </span>            :                 : AzureEventBus&lt;TAuthenticationToken&gt;
+<span class="lineNum">      32 </span>            :                 , IEventPublisher&lt;TAuthenticationToken&gt;
+<span class="lineNum">      33 </span><span class="lineCov">          2 :         {</span>
+<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      35 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AzureEventBusPublisher{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      37 </span><span class="lineCov">          2 :                 public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper&lt;TAuthenticationToken&gt; azureBusHelper, IBusHelper busHelper)</span>
+<span class="lineNum">      38 </span>            :                         : base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, true)
+<span class="lineNum">      39 </span>            :                 {
+<span class="lineNum">      40 </span>            :                         TelemetryHelper = configurationManager.CreateTelemetryHelper(&quot;Cqrs.Azure.EventBus.Publisher.UseApplicationInsightTelemetryHelper&quot;, correlationIdHelper);
+<span class="lineNum">      41 </span>            :                 }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      44 </span>            :                 /// The debugger variable window value.
+<span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      46 </span>            :                 internal string DebuggerDisplay
+<span class="lineNum">      47 </span>            :                 {
+<span class="lineNum">      48 </span>            :                         get
+<span class="lineNum">      49 </span>            :                         {
+<span class="lineNum">      50 </span>            :                                 string connectionString = string.Format(&quot;ConnectionString : {0}&quot;, MessageBusConnectionStringConfigurationKey);
+<span class="lineNum">      51 </span>            :                                 try
+<span class="lineNum">      52 </span>            :                                 {
+<span class="lineNum">      53 </span>            :                                         connectionString = string.Concat(connectionString, &quot;=&quot;, GetConnectionString());
+<span class="lineNum">      54 </span>            :                                 }
+<span class="lineNum">      55 </span>            :                                 catch { /* */ }
+<span class="lineNum">      56 </span>            :                                 return string.Format(CultureInfo.InvariantCulture, &quot;{0}, PrivateTopicName : {1}, PrivateTopicSubscriptionName : {2}, PublicTopicName : {3}, PublicTopicSubscriptionName : {4}&quot;,
+<span class="lineNum">      57 </span>            :                                         connectionString, PrivateTopicName, PrivateTopicSubscriptionName, PublicTopicName, PublicTopicSubscriptionName);
+<span class="lineNum">      58 </span>            :                         }
+<span class="lineNum">      59 </span>            :                 }
 <span class="lineNum">      60 </span>            : 
-<span class="lineNum">      61 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Servicebus&quot; } };
-<span class="lineNum">      62 </span>            :                         string telemetryName = string.Format(&quot;{0}/{1}&quot;, @event.GetType().FullName, @event.Id);
-<span class="lineNum">      63 </span>            :                         var telemeteredEvent = @event as ITelemeteredMessage;
-<span class="lineNum">      64 </span>            :                         if (telemeteredEvent != null)
-<span class="lineNum">      65 </span>            :                                 telemetryName = telemeteredEvent.TelemetryName;
-<span class="lineNum">      66 </span>            :                         telemetryName = string.Format(&quot;Event/{0}&quot;, telemetryName);
-<span class="lineNum">      67 </span>            : 
-<span class="lineNum">      68 </span>            :                         try
-<span class="lineNum">      69 </span>            :                         {
-<span class="lineNum">      70 </span>            :                                 if (!AzureBusHelper.PrepareAndValidateEvent(@event, &quot;Azure-ServiceBus&quot;))
-<span class="lineNum">      71 </span>            :                                         return;
-<span class="lineNum">      72 </span>            : 
-<span class="lineNum">      73 </span>            :                                 var privateEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PrivateEventAttribute;
-<span class="lineNum">      74 </span>            :                                 var publicEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PublicEventAttribute;
-<span class="lineNum">      75 </span>            : 
-<span class="lineNum">      76 </span>            :                                 // We only add telemetry for overall operations if two occured
-<span class="lineNum">      77 </span>            :                                 telemeterOverall = publicEventAttribute != null &amp;&amp; privateEventAttribute != null;
-<span class="lineNum">      78 </span>            : 
-<span class="lineNum">      79 </span>            :                                 // Backwards compatibility and simplicity
-<span class="lineNum">      80 </span>            :                                 bool wasSuccessfull;
-<span class="lineNum">      81 </span>            :                                 Stopwatch stopWatch = Stopwatch.StartNew();
-<span class="lineNum">      82 </span>            :                                 if (publicEventAttribute == null &amp;&amp; privateEventAttribute == null)
-<span class="lineNum">      83 </span>            :                                 {
-<span class="lineNum">      84 </span>            :                                         stopWatch.Restart();
-<span class="lineNum">      85 </span>            :                                         responseCode = &quot;200&quot;;
-<span class="lineNum">      86 </span>            :                                         wasSuccessfull = false;
-<span class="lineNum">      87 </span>            :                                         try
-<span class="lineNum">      88 </span>            :                                         {
-<span class="lineNum">      89 </span>            :                                                 var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
-<span class="lineNum">      90 </span>            :                                                 {
-<span class="lineNum">      91 </span>            :                                                         CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
-<span class="lineNum">      92 </span>            :                                                 };
-<span class="lineNum">      93 </span>            :                                                 brokeredMessage.Properties.Add(&quot;Type&quot;, @event.GetType().FullName);
-<span class="lineNum">      94 </span>            :                                                 PublicServiceBusPublisher.Send(brokeredMessage);
-<span class="lineNum">      95 </span>            :                                                 wasSuccessfull = true;
-<span class="lineNum">      96 </span>            :                                         }
-<span class="lineNum">      97 </span>            :                                         catch (QuotaExceededException exception)
-<span class="lineNum">      98 </span>            :                                         {
-<span class="lineNum">      99 </span>            :                                                 responseCode = &quot;429&quot;;
-<span class="lineNum">     100 </span>            :                                                 Logger.LogError(&quot;The size of the event being sent was too large or the topic has reached it's limit.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Event&quot;, @event } });
-<span class="lineNum">     101 </span>            :                                                 throw;
-<span class="lineNum">     102 </span>            :                                         }
-<span class="lineNum">     103 </span>            :                                         catch (Exception exception)
-<span class="lineNum">     104 </span>            :                                         {
-<span class="lineNum">     105 </span>            :                                                 responseCode = &quot;500&quot;;
-<span class="lineNum">     106 </span>            :                                                 Logger.LogError(&quot;An issue occurred while trying to publish an event.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Event&quot;, @event } });
-<span class="lineNum">     107 </span>            :                                                 throw;
-<span class="lineNum">     108 </span>            :                                         }
-<span class="lineNum">     109 </span>            :                                         finally
-<span class="lineNum">     110 </span>            :                                         {
-<span class="lineNum">     111 </span>            :                                                 TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, &quot;Default Bus&quot;, startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
-<span class="lineNum">     112 </span>            :                                         }
-<span class="lineNum">     113 </span>            :                                         Logger.LogDebug(string.Format(&quot;An event was published on the public bus with the id '{0}' was of type {1}.&quot;, @event.Id, @event.GetType().FullName));
-<span class="lineNum">     114 </span>            :                                 }
-<span class="lineNum">     115 </span>            :                                 if (publicEventAttribute != null)
-<span class="lineNum">     116 </span>            :                                 {
-<span class="lineNum">     117 </span>            :                                         stopWatch.Restart();
-<span class="lineNum">     118 </span>            :                                         responseCode = &quot;200&quot;;
-<span class="lineNum">     119 </span>            :                                         wasSuccessfull = false;
-<span class="lineNum">     120 </span>            :                                         try
-<span class="lineNum">     121 </span>            :                                         {
-<span class="lineNum">     122 </span>            :                                                 var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
-<span class="lineNum">     123 </span>            :                                                 {
-<span class="lineNum">     124 </span>            :                                                         CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
-<span class="lineNum">     125 </span>            :                                                 };
-<span class="lineNum">     126 </span>            :                                                 brokeredMessage.Properties.Add(&quot;Type&quot;, @event.GetType().FullName);
-<span class="lineNum">     127 </span>            :                                                 PublicServiceBusPublisher.Send(brokeredMessage);
-<span class="lineNum">     128 </span>            :                                                 wasSuccessfull = true;
-<span class="lineNum">     129 </span>            :                                         }
-<span class="lineNum">     130 </span>            :                                         catch (QuotaExceededException exception)
-<span class="lineNum">     131 </span>            :                                         {
-<span class="lineNum">     132 </span>            :                                                 responseCode = &quot;429&quot;;
-<span class="lineNum">     133 </span>            :                                                 Logger.LogError(&quot;The size of the event being sent was too large.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Event&quot;, @event } });
-<span class="lineNum">     134 </span>            :                                                 throw;
-<span class="lineNum">     135 </span>            :                                         }
-<span class="lineNum">     136 </span>            :                                         catch (Exception exception)
-<span class="lineNum">     137 </span>            :                                         {
-<span class="lineNum">     138 </span>            :                                                 responseCode = &quot;500&quot;;
-<span class="lineNum">     139 </span>            :                                                 Logger.LogError(&quot;An issue occurred while trying to publish an event.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Event&quot;, @event } });
-<span class="lineNum">     140 </span>            :                                                 throw;
-<span class="lineNum">     141 </span>            :                                         }
-<span class="lineNum">     142 </span>            :                                         finally
-<span class="lineNum">     143 </span>            :                                         {
-<span class="lineNum">     144 </span>            :                                                 TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, &quot;Public Bus&quot;, startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
-<span class="lineNum">     145 </span>            :                                         }
-<span class="lineNum">     146 </span>            :                                         Logger.LogDebug(string.Format(&quot;An event was published on the public bus with the id '{0}' was of type {1}.&quot;, @event.Id, @event.GetType().FullName));
-<span class="lineNum">     147 </span>            :                                 }
-<span class="lineNum">     148 </span>            :                                 if (privateEventAttribute != null)
-<span class="lineNum">     149 </span>            :                                 {
-<span class="lineNum">     150 </span>            :                                         stopWatch.Restart();
-<span class="lineNum">     151 </span>            :                                         responseCode = &quot;200&quot;;
-<span class="lineNum">     152 </span>            :                                         wasSuccessfull = false;
-<span class="lineNum">     153 </span>            :                                         try
-<span class="lineNum">     154 </span>            :                                         {
-<span class="lineNum">     155 </span>            :                                                 var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
-<span class="lineNum">     156 </span>            :                                                 {
-<span class="lineNum">     157 </span>            :                                                         CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
-<span class="lineNum">     158 </span>            :                                                 };
-<span class="lineNum">     159 </span>            :                                                 brokeredMessage.Properties.Add(&quot;Type&quot;, @event.GetType().FullName);
-<span class="lineNum">     160 </span>            :                                                 PrivateServiceBusPublisher.Send(brokeredMessage);
-<span class="lineNum">     161 </span>            :                                                 wasSuccessfull = true;
-<span class="lineNum">     162 </span>            :                                         }
-<span class="lineNum">     163 </span>            :                                         catch (QuotaExceededException exception)
-<span class="lineNum">     164 </span>            :                                         {
-<span class="lineNum">     165 </span>            :                                                 responseCode = &quot;429&quot;;
-<span class="lineNum">     166 </span>            :                                                 Logger.LogError(&quot;The size of the event being sent was too large.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Event&quot;, @event } });
-<span class="lineNum">     167 </span>            :                                                 throw;
-<span class="lineNum">     168 </span>            :                                         }
-<span class="lineNum">     169 </span>            :                                         catch (Exception exception)
-<span class="lineNum">     170 </span>            :                                         {
-<span class="lineNum">     171 </span>            :                                                 responseCode = &quot;500&quot;;
-<span class="lineNum">     172 </span>            :                                                 Logger.LogError(&quot;An issue occurred while trying to publish an event.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Event&quot;, @event } });
-<span class="lineNum">     173 </span>            :                                                 throw;
-<span class="lineNum">     174 </span>            :                                         }
-<span class="lineNum">     175 </span>            :                                         finally
-<span class="lineNum">     176 </span>            :                                         {
-<span class="lineNum">     177 </span>            :                                                 TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, &quot;Private Bus&quot;, startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
-<span class="lineNum">     178 </span>            :                                         }
-<span class="lineNum">     179 </span>            : 
-<span class="lineNum">     180 </span>            :                                         Logger.LogDebug(string.Format(&quot;An event was published on the private bus with the id '{0}' was of type {1}.&quot;, @event.Id, @event.GetType().FullName));
-<span class="lineNum">     181 </span>            :                                 }
-<span class="lineNum">     182 </span>            :                                 mainWasSuccessfull = true;
-<span class="lineNum">     183 </span>            :                         }
-<span class="lineNum">     184 </span>            :                         finally
-<span class="lineNum">     185 </span>            :                         {
-<span class="lineNum">     186 </span>            :                                 mainStopWatch.Stop();
-<span class="lineNum">     187 </span>            :                                 if (telemeterOverall)
-<span class="lineNum">     188 </span>            :                                         TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, mainWasSuccessfull, telemetryProperties);
-<span class="lineNum">     189 </span>            :                         }
-<span class="lineNum">     190 </span>            :                 }
-<span class="lineNum">     191 </span>            : 
-<span class="lineNum">     192 </span><span class="lineCov">          2 :                 public virtual void Publish&lt;TEvent&gt;(IEnumerable&lt;TEvent&gt; events)</span>
-<span class="lineNum">     193 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
-<span class="lineNum">     194 </span>            :                 {
-<span class="lineNum">     195 </span>            :                         IList&lt;TEvent&gt; sourceEvents = events.ToList();
-<span class="lineNum">     196 </span>            : 
-<span class="lineNum">     197 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
-<span class="lineNum">     198 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
-<span class="lineNum">     199 </span>            :                         string responseCode = null;
-<span class="lineNum">     200 </span>            :                         bool mainWasSuccessfull = false;
-<span class="lineNum">     201 </span>            : 
-<span class="lineNum">     202 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Servicebus&quot; } };
-<span class="lineNum">     203 </span>            :                         string telemetryName = &quot;Events&quot;;
-<span class="lineNum">     204 </span>            :                         string telemetryNames = string.Empty;
-<span class="lineNum">     205 </span>            :                         foreach (TEvent @event in sourceEvents)
-<span class="lineNum">     206 </span>            :                         {
-<span class="lineNum">     207 </span>            :                                 string subTelemetryName = string.Format(&quot;{0}/{1}&quot;, @event.GetType().FullName, @event.Id);
-<span class="lineNum">     208 </span>            :                                 var telemeteredEvent = @event as ITelemeteredMessage;
-<span class="lineNum">     209 </span>            :                                 if (telemeteredEvent != null)
-<span class="lineNum">     210 </span>            :                                         subTelemetryName = telemeteredEvent.TelemetryName;
-<span class="lineNum">     211 </span>            :                                 telemetryNames = string.Format(&quot;{0}{1},&quot;, telemetryNames, subTelemetryName);
-<span class="lineNum">     212 </span>            :                         }
-<span class="lineNum">     213 </span>            :                         if (telemetryNames.Length &gt; 0)
-<span class="lineNum">     214 </span>            :                                 telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
-<span class="lineNum">     215 </span>            :                         telemetryProperties.Add(&quot;Events&quot;, telemetryNames);
-<span class="lineNum">     216 </span>            : 
-<span class="lineNum">     217 </span>            :                         try
-<span class="lineNum">     218 </span>            :                         {
-<span class="lineNum">     219 </span>            :                                 IList&lt;string&gt; sourceEventMessages = new List&lt;string&gt;();
-<span class="lineNum">     220 </span>            :                                 IList&lt;BrokeredMessage&gt; privateBrokeredMessages = new List&lt;BrokeredMessage&gt;(sourceEvents.Count);
-<span class="lineNum">     221 </span>            :                                 IList&lt;BrokeredMessage&gt; publicBrokeredMessages = new List&lt;BrokeredMessage&gt;(sourceEvents.Count);
-<span class="lineNum">     222 </span>            :                                 foreach (TEvent @event in sourceEvents)
-<span class="lineNum">     223 </span>            :                                 {
-<span class="lineNum">     224 </span>            :                                         if (!AzureBusHelper.PrepareAndValidateEvent(@event, &quot;Azure-ServiceBus&quot;))
-<span class="lineNum">     225 </span>            :                                                 continue;
-<span class="lineNum">     226 </span>            : 
-<span class="lineNum">     227 </span>            :                                         var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
-<span class="lineNum">     228 </span>            :                                         {
-<span class="lineNum">     229 </span>            :                                                 CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
-<span class="lineNum">     230 </span>            :                                         };
-<span class="lineNum">     231 </span>            :                                         brokeredMessage.Properties.Add(&quot;Type&quot;, @event.GetType().FullName);
-<span class="lineNum">     232 </span>            : 
-<span class="lineNum">     233 </span>            :                                         var privateEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PrivateEventAttribute;
-<span class="lineNum">     234 </span>            :                                         var publicEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PublicEventAttribute;
-<span class="lineNum">     235 </span>            : 
-<span class="lineNum">     236 </span>            :                                         if
-<span class="lineNum">     237 </span>            :                                                 (
-<span class="lineNum">     238 </span>            :                                                 // Backwards compatibility and simplicity
-<span class="lineNum">     239 </span>            :                                                 (publicEventAttribute == null &amp;&amp; privateEventAttribute == null)
-<span class="lineNum">     240 </span>            :                                                 ||
-<span class="lineNum">     241 </span>            :                                                 publicEventAttribute != null
-<span class="lineNum">     242 </span>            :                                                 )
-<span class="lineNum">     243 </span>            :                                         {
-<span class="lineNum">     244 </span>            :                                                 publicBrokeredMessages.Add(brokeredMessage);
-<span class="lineNum">     245 </span>            :                                                 sourceEventMessages.Add(string.Format(&quot;An event was published on the public bus with the id '{0}' was of type {1}.&quot;, @event.Id, @event.GetType().FullName));
-<span class="lineNum">     246 </span>            :                                         }
-<span class="lineNum">     247 </span>            :                                         if (privateEventAttribute != null)
-<span class="lineNum">     248 </span>            :                                         {
-<span class="lineNum">     249 </span>            :                                                 privateBrokeredMessages.Add(brokeredMessage);
-<span class="lineNum">     250 </span>            :                                                 sourceEventMessages.Add(string.Format(&quot;An event was published on the private bus with the id '{0}' was of type {1}.&quot;, @event.Id, @event.GetType().FullName));
-<span class="lineNum">     251 </span>            :                                         }
-<span class="lineNum">     252 </span>            :                                 }
-<span class="lineNum">     253 </span>            : 
-<span class="lineNum">     254 </span>            :                                 bool wasSuccessfull;
-<span class="lineNum">     255 </span>            :                                 Stopwatch stopWatch = Stopwatch.StartNew();
-<span class="lineNum">     256 </span>            : 
-<span class="lineNum">     257 </span>            :                                 // Backwards compatibility and simplicity
-<span class="lineNum">     258 </span>            :                                 stopWatch.Restart();
-<span class="lineNum">     259 </span>            :                                 responseCode = &quot;200&quot;;
-<span class="lineNum">     260 </span>            :                                 wasSuccessfull = false;
-<span class="lineNum">     261 </span>            :                                 try
-<span class="lineNum">     262 </span>            :                                 {
-<span class="lineNum">     263 </span>            :                                         PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
-<span class="lineNum">     264 </span>            :                                         wasSuccessfull = true;
-<span class="lineNum">     265 </span>            :                                 }
-<span class="lineNum">     266 </span>            :                                 catch (QuotaExceededException exception)
-<span class="lineNum">     267 </span>            :                                 {
-<span class="lineNum">     268 </span>            :                                         responseCode = &quot;429&quot;;
-<span class="lineNum">     269 </span>            :                                         Logger.LogError(&quot;The size of the event being sent was too large.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Events&quot;, publicBrokeredMessages } });
-<span class="lineNum">     270 </span>            :                                         throw;
-<span class="lineNum">     271 </span>            :                                 }
-<span class="lineNum">     272 </span>            :                                 catch (Exception exception)
-<span class="lineNum">     273 </span>            :                                 {
-<span class="lineNum">     274 </span>            :                                         responseCode = &quot;500&quot;;
-<span class="lineNum">     275 </span>            :                                         Logger.LogError(&quot;An issue occurred while trying to publish an event.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Events&quot;, publicBrokeredMessages } });
-<span class="lineNum">     276 </span>            :                                         throw;
-<span class="lineNum">     277 </span>            :                                 }
-<span class="lineNum">     278 </span>            :                                 finally
+<span class="lineNum">      61 </span>            :                 #region Implementation of IEventPublisher&lt;TAuthenticationToken&gt;
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      64 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;event&quot;/&gt; on the event bus.
+<span class="lineNum">      65 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      66 </span><span class="lineCov">          2 :                 public virtual void Publish&lt;TEvent&gt;(TEvent @event)</span>
+<span class="lineNum">      67 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
+<span class="lineNum">      68 </span>            :                 {
+<span class="lineNum">      69 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+<span class="lineNum">      70 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
+<span class="lineNum">      71 </span>            :                         string responseCode = null;
+<span class="lineNum">      72 </span>            :                         bool mainWasSuccessfull = false;
+<span class="lineNum">      73 </span>            :                         bool telemeterOverall = false;
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Servicebus&quot; } };
+<span class="lineNum">      76 </span>            :                         string telemetryName = string.Format(&quot;{0}/{1}&quot;, @event.GetType().FullName, @event.Id);
+<span class="lineNum">      77 </span>            :                         var telemeteredEvent = @event as ITelemeteredMessage;
+<span class="lineNum">      78 </span>            :                         if (telemeteredEvent != null)
+<span class="lineNum">      79 </span>            :                                 telemetryName = telemeteredEvent.TelemetryName;
+<span class="lineNum">      80 </span>            :                         telemetryName = string.Format(&quot;Event/{0}&quot;, telemetryName);
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                         try
+<span class="lineNum">      83 </span>            :                         {
+<span class="lineNum">      84 </span>            :                                 if (!AzureBusHelper.PrepareAndValidateEvent(@event, &quot;Azure-ServiceBus&quot;))
+<span class="lineNum">      85 </span>            :                                         return;
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :                                 var privateEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PrivateEventAttribute;
+<span class="lineNum">      88 </span>            :                                 var publicEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PublicEventAttribute;
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :                                 // We only add telemetry for overall operations if two occured
+<span class="lineNum">      91 </span>            :                                 telemeterOverall = publicEventAttribute != null &amp;&amp; privateEventAttribute != null;
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :                                 // Backwards compatibility and simplicity
+<span class="lineNum">      94 </span>            :                                 bool wasSuccessfull;
+<span class="lineNum">      95 </span>            :                                 Stopwatch stopWatch = Stopwatch.StartNew();
+<span class="lineNum">      96 </span>            :                                 if (publicEventAttribute == null &amp;&amp; privateEventAttribute == null)
+<span class="lineNum">      97 </span>            :                                 {
+<span class="lineNum">      98 </span>            :                                         stopWatch.Restart();
+<span class="lineNum">      99 </span>            :                                         responseCode = &quot;200&quot;;
+<span class="lineNum">     100 </span>            :                                         wasSuccessfull = false;
+<span class="lineNum">     101 </span>            :                                         try
+<span class="lineNum">     102 </span>            :                                         {
+<span class="lineNum">     103 </span>            :                                                 var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
+<span class="lineNum">     104 </span>            :                                                 {
+<span class="lineNum">     105 </span>            :                                                         CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
+<span class="lineNum">     106 </span>            :                                                 };
+<span class="lineNum">     107 </span>            :                                                 brokeredMessage.Properties.Add(&quot;Type&quot;, @event.GetType().FullName);
+<span class="lineNum">     108 </span>            :                                                 PublicServiceBusPublisher.Send(brokeredMessage);
+<span class="lineNum">     109 </span>            :                                                 wasSuccessfull = true;
+<span class="lineNum">     110 </span>            :                                         }
+<span class="lineNum">     111 </span>            :                                         catch (QuotaExceededException exception)
+<span class="lineNum">     112 </span>            :                                         {
+<span class="lineNum">     113 </span>            :                                                 responseCode = &quot;429&quot;;
+<span class="lineNum">     114 </span>            :                                                 Logger.LogError(&quot;The size of the event being sent was too large or the topic has reached it's limit.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Event&quot;, @event } });
+<span class="lineNum">     115 </span>            :                                                 throw;
+<span class="lineNum">     116 </span>            :                                         }
+<span class="lineNum">     117 </span>            :                                         catch (Exception exception)
+<span class="lineNum">     118 </span>            :                                         {
+<span class="lineNum">     119 </span>            :                                                 responseCode = &quot;500&quot;;
+<span class="lineNum">     120 </span>            :                                                 Logger.LogError(&quot;An issue occurred while trying to publish an event.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Event&quot;, @event } });
+<span class="lineNum">     121 </span>            :                                                 throw;
+<span class="lineNum">     122 </span>            :                                         }
+<span class="lineNum">     123 </span>            :                                         finally
+<span class="lineNum">     124 </span>            :                                         {
+<span class="lineNum">     125 </span>            :                                                 TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, &quot;Default Bus&quot;, startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     126 </span>            :                                         }
+<span class="lineNum">     127 </span>            :                                         Logger.LogDebug(string.Format(&quot;An event was published on the public bus with the id '{0}' was of type {1}.&quot;, @event.Id, @event.GetType().FullName));
+<span class="lineNum">     128 </span>            :                                 }
+<span class="lineNum">     129 </span>            :                                 if (publicEventAttribute != null)
+<span class="lineNum">     130 </span>            :                                 {
+<span class="lineNum">     131 </span>            :                                         stopWatch.Restart();
+<span class="lineNum">     132 </span>            :                                         responseCode = &quot;200&quot;;
+<span class="lineNum">     133 </span>            :                                         wasSuccessfull = false;
+<span class="lineNum">     134 </span>            :                                         try
+<span class="lineNum">     135 </span>            :                                         {
+<span class="lineNum">     136 </span>            :                                                 var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
+<span class="lineNum">     137 </span>            :                                                 {
+<span class="lineNum">     138 </span>            :                                                         CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
+<span class="lineNum">     139 </span>            :                                                 };
+<span class="lineNum">     140 </span>            :                                                 brokeredMessage.Properties.Add(&quot;Type&quot;, @event.GetType().FullName);
+<span class="lineNum">     141 </span>            :                                                 PublicServiceBusPublisher.Send(brokeredMessage);
+<span class="lineNum">     142 </span>            :                                                 wasSuccessfull = true;
+<span class="lineNum">     143 </span>            :                                         }
+<span class="lineNum">     144 </span>            :                                         catch (QuotaExceededException exception)
+<span class="lineNum">     145 </span>            :                                         {
+<span class="lineNum">     146 </span>            :                                                 responseCode = &quot;429&quot;;
+<span class="lineNum">     147 </span>            :                                                 Logger.LogError(&quot;The size of the event being sent was too large.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Event&quot;, @event } });
+<span class="lineNum">     148 </span>            :                                                 throw;
+<span class="lineNum">     149 </span>            :                                         }
+<span class="lineNum">     150 </span>            :                                         catch (Exception exception)
+<span class="lineNum">     151 </span>            :                                         {
+<span class="lineNum">     152 </span>            :                                                 responseCode = &quot;500&quot;;
+<span class="lineNum">     153 </span>            :                                                 Logger.LogError(&quot;An issue occurred while trying to publish an event.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Event&quot;, @event } });
+<span class="lineNum">     154 </span>            :                                                 throw;
+<span class="lineNum">     155 </span>            :                                         }
+<span class="lineNum">     156 </span>            :                                         finally
+<span class="lineNum">     157 </span>            :                                         {
+<span class="lineNum">     158 </span>            :                                                 TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, &quot;Public Bus&quot;, startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     159 </span>            :                                         }
+<span class="lineNum">     160 </span>            :                                         Logger.LogDebug(string.Format(&quot;An event was published on the public bus with the id '{0}' was of type {1}.&quot;, @event.Id, @event.GetType().FullName));
+<span class="lineNum">     161 </span>            :                                 }
+<span class="lineNum">     162 </span>            :                                 if (privateEventAttribute != null)
+<span class="lineNum">     163 </span>            :                                 {
+<span class="lineNum">     164 </span>            :                                         stopWatch.Restart();
+<span class="lineNum">     165 </span>            :                                         responseCode = &quot;200&quot;;
+<span class="lineNum">     166 </span>            :                                         wasSuccessfull = false;
+<span class="lineNum">     167 </span>            :                                         try
+<span class="lineNum">     168 </span>            :                                         {
+<span class="lineNum">     169 </span>            :                                                 var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
+<span class="lineNum">     170 </span>            :                                                 {
+<span class="lineNum">     171 </span>            :                                                         CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
+<span class="lineNum">     172 </span>            :                                                 };
+<span class="lineNum">     173 </span>            :                                                 brokeredMessage.Properties.Add(&quot;Type&quot;, @event.GetType().FullName);
+<span class="lineNum">     174 </span>            :                                                 PrivateServiceBusPublisher.Send(brokeredMessage);
+<span class="lineNum">     175 </span>            :                                                 wasSuccessfull = true;
+<span class="lineNum">     176 </span>            :                                         }
+<span class="lineNum">     177 </span>            :                                         catch (QuotaExceededException exception)
+<span class="lineNum">     178 </span>            :                                         {
+<span class="lineNum">     179 </span>            :                                                 responseCode = &quot;429&quot;;
+<span class="lineNum">     180 </span>            :                                                 Logger.LogError(&quot;The size of the event being sent was too large.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Event&quot;, @event } });
+<span class="lineNum">     181 </span>            :                                                 throw;
+<span class="lineNum">     182 </span>            :                                         }
+<span class="lineNum">     183 </span>            :                                         catch (Exception exception)
+<span class="lineNum">     184 </span>            :                                         {
+<span class="lineNum">     185 </span>            :                                                 responseCode = &quot;500&quot;;
+<span class="lineNum">     186 </span>            :                                                 Logger.LogError(&quot;An issue occurred while trying to publish an event.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Event&quot;, @event } });
+<span class="lineNum">     187 </span>            :                                                 throw;
+<span class="lineNum">     188 </span>            :                                         }
+<span class="lineNum">     189 </span>            :                                         finally
+<span class="lineNum">     190 </span>            :                                         {
+<span class="lineNum">     191 </span>            :                                                 TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, &quot;Private Bus&quot;, startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     192 </span>            :                                         }
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span>            :                                         Logger.LogDebug(string.Format(&quot;An event was published on the private bus with the id '{0}' was of type {1}.&quot;, @event.Id, @event.GetType().FullName));
+<span class="lineNum">     195 </span>            :                                 }
+<span class="lineNum">     196 </span>            :                                 mainWasSuccessfull = true;
+<span class="lineNum">     197 </span>            :                         }
+<span class="lineNum">     198 </span>            :                         finally
+<span class="lineNum">     199 </span>            :                         {
+<span class="lineNum">     200 </span>            :                                 mainStopWatch.Stop();
+<span class="lineNum">     201 </span>            :                                 if (telemeterOverall)
+<span class="lineNum">     202 </span>            :                                         TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, mainWasSuccessfull, telemetryProperties);
+<span class="lineNum">     203 </span>            :                         }
+<span class="lineNum">     204 </span>            :                 }
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     207 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;events&quot;/&gt; on the event bus.
+<span class="lineNum">     208 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     209 </span><span class="lineCov">          2 :                 public virtual void Publish&lt;TEvent&gt;(IEnumerable&lt;TEvent&gt; events)</span>
+<span class="lineNum">     210 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
+<span class="lineNum">     211 </span>            :                 {
+<span class="lineNum">     212 </span>            :                         IList&lt;TEvent&gt; sourceEvents = events.ToList();
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            :                         DateTimeOffset startedAt = DateTimeOffset.UtcNow;
+<span class="lineNum">     215 </span>            :                         Stopwatch mainStopWatch = Stopwatch.StartNew();
+<span class="lineNum">     216 </span>            :                         string responseCode = null;
+<span class="lineNum">     217 </span>            :                         bool mainWasSuccessfull = false;
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, &quot;Azure/Servicebus&quot; } };
+<span class="lineNum">     220 </span>            :                         string telemetryName = &quot;Events&quot;;
+<span class="lineNum">     221 </span>            :                         string telemetryNames = string.Empty;
+<span class="lineNum">     222 </span>            :                         foreach (TEvent @event in sourceEvents)
+<span class="lineNum">     223 </span>            :                         {
+<span class="lineNum">     224 </span>            :                                 string subTelemetryName = string.Format(&quot;{0}/{1}&quot;, @event.GetType().FullName, @event.Id);
+<span class="lineNum">     225 </span>            :                                 var telemeteredEvent = @event as ITelemeteredMessage;
+<span class="lineNum">     226 </span>            :                                 if (telemeteredEvent != null)
+<span class="lineNum">     227 </span>            :                                         subTelemetryName = telemeteredEvent.TelemetryName;
+<span class="lineNum">     228 </span>            :                                 telemetryNames = string.Format(&quot;{0}{1},&quot;, telemetryNames, subTelemetryName);
+<span class="lineNum">     229 </span>            :                         }
+<span class="lineNum">     230 </span>            :                         if (telemetryNames.Length &gt; 0)
+<span class="lineNum">     231 </span>            :                                 telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
+<span class="lineNum">     232 </span>            :                         telemetryProperties.Add(&quot;Events&quot;, telemetryNames);
+<span class="lineNum">     233 </span>            : 
+<span class="lineNum">     234 </span>            :                         try
+<span class="lineNum">     235 </span>            :                         {
+<span class="lineNum">     236 </span>            :                                 IList&lt;string&gt; sourceEventMessages = new List&lt;string&gt;();
+<span class="lineNum">     237 </span>            :                                 IList&lt;BrokeredMessage&gt; privateBrokeredMessages = new List&lt;BrokeredMessage&gt;(sourceEvents.Count);
+<span class="lineNum">     238 </span>            :                                 IList&lt;BrokeredMessage&gt; publicBrokeredMessages = new List&lt;BrokeredMessage&gt;(sourceEvents.Count);
+<span class="lineNum">     239 </span>            :                                 foreach (TEvent @event in sourceEvents)
+<span class="lineNum">     240 </span>            :                                 {
+<span class="lineNum">     241 </span>            :                                         if (!AzureBusHelper.PrepareAndValidateEvent(@event, &quot;Azure-ServiceBus&quot;))
+<span class="lineNum">     242 </span>            :                                                 continue;
+<span class="lineNum">     243 </span>            : 
+<span class="lineNum">     244 </span>            :                                         var brokeredMessage = new BrokeredMessage(MessageSerialiser.SerialiseEvent(@event))
+<span class="lineNum">     245 </span>            :                                         {
+<span class="lineNum">     246 </span>            :                                                 CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
+<span class="lineNum">     247 </span>            :                                         };
+<span class="lineNum">     248 </span>            :                                         brokeredMessage.Properties.Add(&quot;Type&quot;, @event.GetType().FullName);
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span>            :                                         var privateEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PrivateEventAttribute;
+<span class="lineNum">     251 </span>            :                                         var publicEventAttribute = Attribute.GetCustomAttribute(typeof(TEvent), typeof(PrivateEventAttribute)) as PublicEventAttribute;
+<span class="lineNum">     252 </span>            : 
+<span class="lineNum">     253 </span>            :                                         if
+<span class="lineNum">     254 </span>            :                                                 (
+<span class="lineNum">     255 </span>            :                                                 // Backwards compatibility and simplicity
+<span class="lineNum">     256 </span>            :                                                 (publicEventAttribute == null &amp;&amp; privateEventAttribute == null)
+<span class="lineNum">     257 </span>            :                                                 ||
+<span class="lineNum">     258 </span>            :                                                 publicEventAttribute != null
+<span class="lineNum">     259 </span>            :                                                 )
+<span class="lineNum">     260 </span>            :                                         {
+<span class="lineNum">     261 </span>            :                                                 publicBrokeredMessages.Add(brokeredMessage);
+<span class="lineNum">     262 </span>            :                                                 sourceEventMessages.Add(string.Format(&quot;An event was published on the public bus with the id '{0}' was of type {1}.&quot;, @event.Id, @event.GetType().FullName));
+<span class="lineNum">     263 </span>            :                                         }
+<span class="lineNum">     264 </span>            :                                         if (privateEventAttribute != null)
+<span class="lineNum">     265 </span>            :                                         {
+<span class="lineNum">     266 </span>            :                                                 privateBrokeredMessages.Add(brokeredMessage);
+<span class="lineNum">     267 </span>            :                                                 sourceEventMessages.Add(string.Format(&quot;An event was published on the private bus with the id '{0}' was of type {1}.&quot;, @event.Id, @event.GetType().FullName));
+<span class="lineNum">     268 </span>            :                                         }
+<span class="lineNum">     269 </span>            :                                 }
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span>            :                                 bool wasSuccessfull;
+<span class="lineNum">     272 </span>            :                                 Stopwatch stopWatch = Stopwatch.StartNew();
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span>            :                                 // Backwards compatibility and simplicity
+<span class="lineNum">     275 </span>            :                                 stopWatch.Restart();
+<span class="lineNum">     276 </span>            :                                 responseCode = &quot;200&quot;;
+<span class="lineNum">     277 </span>            :                                 wasSuccessfull = false;
+<span class="lineNum">     278 </span>            :                                 try
 <span class="lineNum">     279 </span>            :                                 {
-<span class="lineNum">     280 </span>            :                                         TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, &quot;Public Bus&quot;, startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
-<span class="lineNum">     281 </span>            :                                 }
-<span class="lineNum">     282 </span>            : 
-<span class="lineNum">     283 </span>            :                                 stopWatch.Restart();
-<span class="lineNum">     284 </span>            :                                 responseCode = &quot;200&quot;;
-<span class="lineNum">     285 </span>            :                                 wasSuccessfull = false;
-<span class="lineNum">     286 </span>            :                                 try
-<span class="lineNum">     287 </span>            :                                 {
-<span class="lineNum">     288 </span>            :                                         PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
-<span class="lineNum">     289 </span>            :                                         wasSuccessfull = true;
-<span class="lineNum">     290 </span>            :                                 }
-<span class="lineNum">     291 </span>            :                                 catch (QuotaExceededException exception)
-<span class="lineNum">     292 </span>            :                                 {
-<span class="lineNum">     293 </span>            :                                         responseCode = &quot;429&quot;;
-<span class="lineNum">     294 </span>            :                                         Logger.LogError(&quot;The size of the event being sent was too large.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Events&quot;, privateBrokeredMessages } });
-<span class="lineNum">     295 </span>            :                                         throw;
-<span class="lineNum">     296 </span>            :                                 }
-<span class="lineNum">     297 </span>            :                                 catch (Exception exception)
-<span class="lineNum">     298 </span>            :                                 {
-<span class="lineNum">     299 </span>            :                                         responseCode = &quot;500&quot;;
-<span class="lineNum">     300 </span>            :                                         Logger.LogError(&quot;An issue occurred while trying to publish an event.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Events&quot;, privateBrokeredMessages } });
-<span class="lineNum">     301 </span>            :                                         throw;
-<span class="lineNum">     302 </span>            :                                 }
-<span class="lineNum">     303 </span>            :                                 finally
+<span class="lineNum">     280 </span>            :                                         PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
+<span class="lineNum">     281 </span>            :                                         wasSuccessfull = true;
+<span class="lineNum">     282 </span>            :                                 }
+<span class="lineNum">     283 </span>            :                                 catch (QuotaExceededException exception)
+<span class="lineNum">     284 </span>            :                                 {
+<span class="lineNum">     285 </span>            :                                         responseCode = &quot;429&quot;;
+<span class="lineNum">     286 </span>            :                                         Logger.LogError(&quot;The size of the event being sent was too large.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Events&quot;, publicBrokeredMessages } });
+<span class="lineNum">     287 </span>            :                                         throw;
+<span class="lineNum">     288 </span>            :                                 }
+<span class="lineNum">     289 </span>            :                                 catch (Exception exception)
+<span class="lineNum">     290 </span>            :                                 {
+<span class="lineNum">     291 </span>            :                                         responseCode = &quot;500&quot;;
+<span class="lineNum">     292 </span>            :                                         Logger.LogError(&quot;An issue occurred while trying to publish an event.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Events&quot;, publicBrokeredMessages } });
+<span class="lineNum">     293 </span>            :                                         throw;
+<span class="lineNum">     294 </span>            :                                 }
+<span class="lineNum">     295 </span>            :                                 finally
+<span class="lineNum">     296 </span>            :                                 {
+<span class="lineNum">     297 </span>            :                                         TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, &quot;Public Bus&quot;, startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     298 </span>            :                                 }
+<span class="lineNum">     299 </span>            : 
+<span class="lineNum">     300 </span>            :                                 stopWatch.Restart();
+<span class="lineNum">     301 </span>            :                                 responseCode = &quot;200&quot;;
+<span class="lineNum">     302 </span>            :                                 wasSuccessfull = false;
+<span class="lineNum">     303 </span>            :                                 try
 <span class="lineNum">     304 </span>            :                                 {
-<span class="lineNum">     305 </span>            :                                         TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, &quot;Private Bus&quot;, startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
-<span class="lineNum">     306 </span>            :                                 }
-<span class="lineNum">     307 </span>            : 
-<span class="lineNum">     308 </span>            :                                 foreach (string message in sourceEventMessages)
-<span class="lineNum">     309 </span>            :                                         Logger.LogInfo(message);
-<span class="lineNum">     310 </span>            : 
-<span class="lineNum">     311 </span>            :                                 mainWasSuccessfull = true;
-<span class="lineNum">     312 </span>            :                         }
-<span class="lineNum">     313 </span>            :                         finally
-<span class="lineNum">     314 </span>            :                         {
-<span class="lineNum">     315 </span>            :                                 mainStopWatch.Stop();
-<span class="lineNum">     316 </span>            :                                 TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, mainWasSuccessfull, telemetryProperties);
-<span class="lineNum">     317 </span>            :                         }
-<span class="lineNum">     318 </span>            :                 }
-<span class="lineNum">     319 </span>            : 
-<span class="lineNum">     320 </span>            :                 #endregion
-<span class="lineNum">     321 </span>            :         }
-<span class="lineNum">     322 </span>            : }
+<span class="lineNum">     305 </span>            :                                         PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
+<span class="lineNum">     306 </span>            :                                         wasSuccessfull = true;
+<span class="lineNum">     307 </span>            :                                 }
+<span class="lineNum">     308 </span>            :                                 catch (QuotaExceededException exception)
+<span class="lineNum">     309 </span>            :                                 {
+<span class="lineNum">     310 </span>            :                                         responseCode = &quot;429&quot;;
+<span class="lineNum">     311 </span>            :                                         Logger.LogError(&quot;The size of the event being sent was too large.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Events&quot;, privateBrokeredMessages } });
+<span class="lineNum">     312 </span>            :                                         throw;
+<span class="lineNum">     313 </span>            :                                 }
+<span class="lineNum">     314 </span>            :                                 catch (Exception exception)
+<span class="lineNum">     315 </span>            :                                 {
+<span class="lineNum">     316 </span>            :                                         responseCode = &quot;500&quot;;
+<span class="lineNum">     317 </span>            :                                         Logger.LogError(&quot;An issue occurred while trying to publish an event.&quot;, exception: exception, metaData: new Dictionary&lt;string, object&gt; { { &quot;Events&quot;, privateBrokeredMessages } });
+<span class="lineNum">     318 </span>            :                                         throw;
+<span class="lineNum">     319 </span>            :                                 }
+<span class="lineNum">     320 </span>            :                                 finally
+<span class="lineNum">     321 </span>            :                                 {
+<span class="lineNum">     322 </span>            :                                         TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, &quot;Private Bus&quot;, startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+<span class="lineNum">     323 </span>            :                                 }
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span>            :                                 foreach (string message in sourceEventMessages)
+<span class="lineNum">     326 </span>            :                                         Logger.LogInfo(message);
+<span class="lineNum">     327 </span>            : 
+<span class="lineNum">     328 </span>            :                                 mainWasSuccessfull = true;
+<span class="lineNum">     329 </span>            :                         }
+<span class="lineNum">     330 </span>            :                         finally
+<span class="lineNum">     331 </span>            :                         {
+<span class="lineNum">     332 </span>            :                                 mainStopWatch.Stop();
+<span class="lineNum">     333 </span>            :                                 TelemetryHelper.TrackDependency(&quot;Azure/Servicebus/EventBus&quot;, &quot;Event&quot;, telemetryName, null, startedAt, mainStopWatch.Elapsed, responseCode, mainWasSuccessfull, telemetryProperties);
+<span class="lineNum">     334 </span>            :                         }
+<span class="lineNum">     335 </span>            :                 }
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span>            :                 #endregion
+<span class="lineNum">     338 </span>            :         }
+<span class="lineNum">     339 </span>            : }
 </pre>
       </td>
     </tr>

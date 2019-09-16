@@ -17,13 +17,11 @@
 
 using System.Collections;
 using System.Diagnostics;
-using cdmdotnet.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Microsoft.WindowsAzure.Storage.Table
 {
-	using Microsoft.WindowsAzure.Storage.Core;
 	using System;
 	using System.Collections.Generic;
 	using System.Globalization;
@@ -38,6 +36,9 @@ namespace Microsoft.WindowsAzure.Storage.Table
 	/// </summary>
 	public static class EntityPropertyConverter
 	{
+		/// <summary>
+		/// The default <see cref="JsonSerializerSettings"/> to use.
+		/// </summary>
 		public static JsonSerializerSettings DefaultSettings { get; private set; }
 
 		static EntityPropertyConverter()
@@ -239,6 +240,10 @@ namespace Microsoft.WindowsAzure.Storage.Table
 			return success;
 		}
 
+		/// <summary>
+		/// Returns <see cref="DefaultSettings"/>
+		/// </summary>
+		/// <returns><see cref="DefaultSettings"/></returns>
 		static JsonSerializerSettings GetSerialisationSettings()
 		{
 			return DefaultSettings;
@@ -436,6 +441,10 @@ namespace Microsoft.WindowsAzure.Storage.Table
 				return GetSerialiser().Deserialize(jsonTextReader, type);
 		}
 
+		/// <summary>
+		/// Creates a new <see cref="JsonSerializer"/> using the settings from <see cref="GetSerialisationSettings"/>.
+		/// </summary>
+		/// <returns>A new instance of <see cref="JsonSerializer"/>.</returns>
 		static JsonSerializer GetSerialiser()
 		{
 			JsonSerializerSettings settings = GetSerialisationSettings();

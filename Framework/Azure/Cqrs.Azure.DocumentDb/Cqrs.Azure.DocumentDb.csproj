@@ -15,6 +15,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>a3313b42</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,6 +27,8 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug\Cqrs.Azure.DocumentDb.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1998</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -37,10 +40,12 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Release\Cqrs.Azure.DocumentDb.xml</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1998</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cdmdotnet.Logging, Version=1.2.91.71, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\cdmdotnet.Logging.1.2.91.71\lib\net40\cdmdotnet.Logging.dll</HintPath>
+    <Reference Include="cdmdotnet.Logging, Version=1.2.100.77, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\cdmdotnet.Logging.1.2.100.77\lib\net40\cdmdotnet.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="cdmdotnet.Performance, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -51,12 +56,12 @@
       <HintPath>..\..\..\packages\cdmdotnet.StateManagement.3.0.13.9\lib\net40\cdmdotnet.StateManagement.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Azure.Documents.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Azure.DocumentDB.1.0.0\lib\net40\Microsoft.Azure.Documents.Client.dll</HintPath>
+    <Reference Include="Microsoft.Azure.Documents.Client, Version=1.21.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Azure.DocumentDB.1.21.1\lib\net45\Microsoft.Azure.Documents.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Azure.Documents.Client.TransientFaultHandling, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Azure.DocumentDB.TransientFaultHandling.1.0.0\lib\net45\Microsoft.Azure.Documents.Client.TransientFaultHandling.dll</HintPath>
+    <Reference Include="Microsoft.Azure.Documents.Client.TransientFaultHandling, Version=1.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Azure.DocumentDB.TransientFaultHandling.1.5.0\lib\net45\Microsoft.Azure.Documents.Client.TransientFaultHandling.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -83,15 +88,16 @@
     <Compile Include="AzureDocumentDbHelper.cs" />
     <Compile Include="DataStores\AzureDocumentDbDataStoreExtensions.cs" />
     <Compile Include="DocumentDbException.cs" />
+    <Compile Include="Events\AzureDocumentDbSnapshotStore.cs" />
+    <Compile Include="Events\AzureDocumentDbSnapshotStoreConnectionStringFactory.cs" />
+    <Compile Include="Events\IAzureDocumentDbSnapshotStoreConnectionStringFactory.cs" />
     <Compile Include="GlobalAzureDocumentDbConnectionCache.cs" />
     <Compile Include="Repositories\AzureRepository.cs" />
     <Compile Include="ThreadedAzureDocumentDbConnectionCache.cs" />
     <Compile Include="IAzureDocumentDbConnectionCache.cs" />
     <Compile Include="DataStores\AzureDocumentDbDataStore.cs" />
     <Compile Include="Entities\AzureDocumentDbEntity.cs" />
-    <Compile Include="Events\AzureDocumentDbEventDeserialiser.cs" />
     <Compile Include="Events\AzureDocumentDbEventStore.cs" />
-    <Compile Include="Events\AzureDocumentDbEventBuilder.cs" />
     <Compile Include="Events\AzureDocumentDbEventStoreConnectionStringFactory.cs" />
     <Compile Include="Events\IAzureDocumentDbEventStoreConnectionStringFactory.cs" />
     <Compile Include="Factories\AzureDocumentDbDataStoreFactory.cs" />
@@ -117,6 +123,9 @@
     </None>
     <None Include="Tools\install.ps1" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tools\Create-Log-Table.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -124,10 +133,12 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.Azure.DocumentDB.1.21.1\build\Microsoft.Azure.DocumentDB.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Azure.DocumentDB.1.21.1\build\Microsoft.Azure.DocumentDB.targets'))" />
   </Target>
   <PropertyGroup>
     <PreBuildEvent>COPY /Y "$(SolutionDir)Framework\Cqrs\Tools\install.ps1" "$(ProjectDir)Tools\install.ps1"</PreBuildEvent>
   </PropertyGroup>
+  <Import Project="..\..\..\packages\Microsoft.Azure.DocumentDB.1.21.1\build\Microsoft.Azure.DocumentDB.targets" Condition="Exists('..\..\..\packages\Microsoft.Azure.DocumentDB.1.21.1\build\Microsoft.Azure.DocumentDB.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

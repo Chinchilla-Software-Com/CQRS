@@ -12,12 +12,24 @@ using Microsoft.Azure.Documents.Client;
 
 namespace Cqrs.Azure.DocumentDb.Factories
 {
+	/// <summary>
+	/// A factory for getting connections and database names for <see cref="IDataStore{TAuthenticationToken}"/> access.
+	/// </summary>
 	public interface IAzureDocumentDbDataStoreConnectionStringFactory
 	{
+		/// <summary>
+		/// Gets the current <see cref="DocumentClient"/>.
+		/// </summary>
 		DocumentClient GetAzureDocumentDbConnectionClient();
 
+		/// <summary>
+		/// Gets the current database name.
+		/// </summary>
 		string GetAzureDocumentDbDatabaseName();
 
+		/// <summary>
+		/// Gets the current collection name.
+		/// </summary>
 		string GetAzureDocumentDbCollectionName();
 
 		/// <summary>

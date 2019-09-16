@@ -113,6 +113,8 @@ namespace <#= classNamespace #>.Services
 			string targetElementName = ((INamedElement)relationship.TargetElement).Name;
 			IList<IProperty> relationshipProperties = GetPropertyList((IClass)relationship.SourceElement).Where(property=> property.Type != relationship.TargetElement && property.Type != relationship.SourceElement).ToList();
 			IEnumerable<IAssociation> eventRelationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.Name == relationship.Name && associationEnd.SourceElement == this.Element);
+			if (relationshipName.EndsWith("CommandHandler"))
+				relationshipName = relationshipName.Substring(0, relationshipName.Length - 14);
 #>
 
 		[OperationContract]
@@ -138,6 +140,8 @@ namespace <#= classNamespace #>.Services
 			string targetElementName = ((INamedElement)relationship.TargetElement).Name;
 			IList<IProperty> relationshipProperties = GetPropertyList((IClass)relationship.SourceElement).Where(property=> property.Type != relationship.TargetElement && property.Type != relationship.SourceElement).ToList();
 			IEnumerable<IAssociation> eventRelationships = this.Element.GetRelatedLinks<IAssociation>().Where(associationEnd => associationEnd.Name == relationship.Name && associationEnd.SourceElement == this.Element);
+			if (relationshipName.EndsWith("CommandHandler"))
+				relationshipName = relationshipName.Substring(0, relationshipName.Length - 14);
 #>
 
 	/// <summary>

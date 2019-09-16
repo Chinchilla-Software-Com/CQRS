@@ -33,15 +33,16 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: BlobStorageDataStoreConnectionStringFactory
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 17
+    startLine: 23
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nA factory for getting connection strings and container names for <xref href=\"Cqrs.DataStores.IDataStore%601\" data-throw-if-not-resolved=\"false\"></xref> access.\nThis factory supports reading and writing from separate storage accounts. Specifically you can have as many different storage accounts as you want to configure when writing.\nThis allows for manual mirroring of data while reading from the fastest/closest location possible.\n"
+  example: []
   syntax:
     content: 'public class BlobStorageDataStoreConnectionStringFactory : IBlobStorageDataStoreConnectionStringFactory, IBlobStorageStoreConnectionStringFactory, IStorageStoreConnectionStringFactory'
     content.vb: >-
       Public Class BlobStorageDataStoreConnectionStringFactory
-
           Implements IBlobStorageDataStoreConnectionStringFactory, IBlobStorageStoreConnectionStringFactory, IStorageStoreConnectionStringFactory
   inheritance:
   - System.Object
@@ -81,10 +82,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: BlobStorageReadableDataStoreConnectionStringKey
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 19
+    startLine: 28
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nThe name of the app setting in <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> that will have the connection string of the readable storage account if using a separate storage account for reads and writes.\n"
+  example: []
   syntax:
     content: public static string BlobStorageReadableDataStoreConnectionStringKey
     return:
@@ -114,10 +117,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: BlobStorageWritableDataStoreConnectionStringKey
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 21
+    startLine: 34
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nThe name of the app setting in <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> that will have the connection string of the writeable storage account if using a separate storage account for reads and writes.\nThis value gets appended with a &quot;.1&quot;, &quot;.2&quot; etc allowing you to write to as many different locations as possible.\n"
+  example: []
   syntax:
     content: public static string BlobStorageWritableDataStoreConnectionStringKey
     return:
@@ -147,10 +152,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: BlobStorageDataStoreConnectionStringKey
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 23
+    startLine: 39
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nThe name of the app setting in <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> that will have the connection string if using a single storage account for both reads and writes.\n"
+  example: []
   syntax:
     content: public static string BlobStorageDataStoreConnectionStringKey
     return:
@@ -180,10 +187,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: BlobStorageBaseContainerNameKey
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 25
+    startLine: 44
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nThe name of the app setting in <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> that will have the base name of the container used.\n"
+  example: []
   syntax:
     content: public static string BlobStorageBaseContainerNameKey
     return:
@@ -213,10 +222,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: BlobStorageIsContainerPublicKey
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 27
+    startLine: 49
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nThe name of the app setting in <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> that will indicate if the container is public or not.\n"
+  example: []
   syntax:
     content: public static string BlobStorageIsContainerPublicKey
     return:
@@ -246,10 +257,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: ConfigurationManager
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 29
+    startLine: 54
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nGets or sets the <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected IConfigurationManager ConfigurationManager { get; }
     parameters: []
@@ -281,10 +294,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Logger
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 31
+    startLine: 59
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nGets or sets the <xref href=\"cdmdotnet.Logging.ILogger\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: protected ILogger Logger { get; }
     parameters: []
@@ -316,10 +331,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 33
+    startLine: 64
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public BlobStorageDataStoreConnectionStringFactory(IConfigurationManager configurationManager, ILogger logger)
     parameters:
@@ -351,10 +368,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetWritableConnectionStrings
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 39
+    startLine: 74
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nGets all writeable connection strings. If using a single storage account, then <xref href=\"Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageDataStoreConnectionStringKey\" data-throw-if-not-resolved=\"false\"></xref> will most likely be returned.\nIf a value for <xref href=\"Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageWritableDataStoreConnectionStringKey\" data-throw-if-not-resolved=\"false\"></xref> is found, it will append &quot;.1&quot;, &quot;.2&quot; etc returning any additionally found connection string values in <xref href=\"Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.ConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public virtual IEnumerable<string> GetWritableConnectionStrings()
     return:
@@ -387,10 +406,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetReadableConnectionString
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 77
+    startLine: 116
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nGets the readable connection string. If using a single storage account, then <xref href=\"Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageDataStoreConnectionStringKey\" data-throw-if-not-resolved=\"false\"></xref> will most likely be returned.\nIf a value for <xref href=\"Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageReadableDataStoreConnectionStringKey\" data-throw-if-not-resolved=\"false\"></xref> is found, that will be returned instead.\n"
+  example: []
   syntax:
     content: public virtual string GetReadableConnectionString()
     return:
@@ -423,10 +444,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetBaseContainerName
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 104
+    startLine: 147
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nReturns the name of the base contain to be used.\nThis will be the value from <xref href=\"Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.ConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> keyed <xref href=\"Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageBaseContainerNameKey\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: public virtual string GetBaseContainerName()
     return:
@@ -459,16 +482,19 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetContainerName
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 126
+    startLine: 173
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nReturns <xref href=\"Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetBaseContainerName\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetEntityName%60%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
   syntax:
     content: 'public virtual string GetContainerName<TData>()where TData : Entity'
     typeParameters:
     - id: TData
     return:
       type: System.String
+      description: <xref href="Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetBaseContainerName" data-throw-if-not-resolved="false"></xref> and <xref href="Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetEntityName%60%601" data-throw-if-not-resolved="false"></xref>
     content.vb: Public Overridable Function GetContainerName(Of TData As Entity) As String
   overload: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetContainerName*
   implements:
@@ -500,10 +526,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: IsContainerPublic
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 138
+    startLine: 188
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nGet if the container is public or not.\n"
+  example: []
   syntax:
     content: 'public virtual bool IsContainerPublic<TData>()where TData : Entity'
     typeParameters:
@@ -541,10 +569,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: GetEntityName
     path: Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/BlobStorageDataStoreConnectionStringFactory.cs
-    startLine: 149
+    startLine: 202
   assemblies:
   - Cqrs.Azure.BlobStorage
   namespace: Cqrs.Azure.BlobStorage.DataStores
+  summary: "\nGets the name of the entity that is safe for container use.\n"
+  example: []
   syntax:
     content: 'public virtual string GetEntityName<TData>()where TData : Entity'
     typeParameters:
@@ -565,6 +595,43 @@ items:
   fullName.vb: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetEntityName(Of TData)()
   name.vb: GetEntityName(Of TData)()
 references:
+- uid: Cqrs.DataStores.IDataStore`1
+  commentId: T:Cqrs.DataStores.IDataStore`1
+  isExternal: false
+  name: IDataStore<TData>
+  nameWithType: IDataStore<TData>
+  fullName: Cqrs.DataStores.IDataStore<TData>
+  nameWithType.vb: IDataStore(Of TData)
+  fullName.vb: Cqrs.DataStores.IDataStore(Of TData)
+  name.vb: IDataStore(Of TData)
+  spec.csharp:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.BlobStorage.DataStores
   commentId: N:Cqrs.Azure.BlobStorage.DataStores
   isExternal: false
@@ -890,19 +957,6 @@ references:
   name: Cqrs.Azure.BlobStorage
   nameWithType: Cqrs.Azure.BlobStorage
   fullName: Cqrs.Azure.BlobStorage
-- uid: System.String
-  commentId: T:System.String
-  parent: System
-  isExternal: true
-  name: String
-  nameWithType: String
-  fullName: System.String
-- uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.ConfigurationManager*
-  commentId: Overload:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.ConfigurationManager
-  isExternal: false
-  name: ConfigurationManager
-  nameWithType: BlobStorageDataStoreConnectionStringFactory.ConfigurationManager
-  fullName: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.ConfigurationManager
 - uid: Cqrs.Configuration.IConfigurationManager
   commentId: T:Cqrs.Configuration.IConfigurationManager
   parent: Cqrs.Configuration
@@ -910,18 +964,25 @@ references:
   name: IConfigurationManager
   nameWithType: IConfigurationManager
   fullName: Cqrs.Configuration.IConfigurationManager
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
 - uid: Cqrs.Configuration
   commentId: N:Cqrs.Configuration
   isExternal: false
   name: Cqrs.Configuration
   nameWithType: Cqrs.Configuration
   fullName: Cqrs.Configuration
-- uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.Logger*
-  commentId: Overload:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.Logger
+- uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.ConfigurationManager*
+  commentId: Overload:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.ConfigurationManager
   isExternal: false
-  name: Logger
-  nameWithType: BlobStorageDataStoreConnectionStringFactory.Logger
-  fullName: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.Logger
+  name: ConfigurationManager
+  nameWithType: BlobStorageDataStoreConnectionStringFactory.ConfigurationManager
+  fullName: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.ConfigurationManager
 - uid: cdmdotnet.Logging.ILogger
   commentId: T:cdmdotnet.Logging.ILogger
   parent: cdmdotnet.Logging
@@ -929,18 +990,36 @@ references:
   name: ILogger
   nameWithType: ILogger
   fullName: cdmdotnet.Logging.ILogger
+- uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.Logger*
+  commentId: Overload:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.Logger
+  isExternal: false
+  name: Logger
+  nameWithType: BlobStorageDataStoreConnectionStringFactory.Logger
+  fullName: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.Logger
 - uid: cdmdotnet.Logging
   commentId: N:cdmdotnet.Logging
   isExternal: false
   name: cdmdotnet.Logging
   nameWithType: cdmdotnet.Logging
   fullName: cdmdotnet.Logging
+- uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory
+  commentId: T:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory
+  isExternal: false
+  name: BlobStorageDataStoreConnectionStringFactory
+  nameWithType: BlobStorageDataStoreConnectionStringFactory
+  fullName: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory
 - uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.#ctor*
   commentId: Overload:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.#ctor
   isExternal: false
   name: BlobStorageDataStoreConnectionStringFactory
   nameWithType: BlobStorageDataStoreConnectionStringFactory.BlobStorageDataStoreConnectionStringFactory
   fullName: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageDataStoreConnectionStringFactory
+- uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageDataStoreConnectionStringKey
+  commentId: F:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageDataStoreConnectionStringKey
+- uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageWritableDataStoreConnectionStringKey
+  commentId: F:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageWritableDataStoreConnectionStringKey
+- uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.ConfigurationManager
+  commentId: P:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.ConfigurationManager
 - uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetWritableConnectionStrings*
   commentId: Overload:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetWritableConnectionStrings
   isExternal: false
@@ -1065,6 +1144,8 @@ references:
   name: System.Collections.Generic
   nameWithType: System.Collections.Generic
   fullName: System.Collections.Generic
+- uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageReadableDataStoreConnectionStringKey
+  commentId: F:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageReadableDataStoreConnectionStringKey
 - uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetReadableConnectionString*
   commentId: Overload:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetReadableConnectionString
   isExternal: false
@@ -1100,6 +1181,8 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageBaseContainerNameKey
+  commentId: F:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.BlobStorageBaseContainerNameKey
 - uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetBaseContainerName*
   commentId: Overload:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetBaseContainerName
   isExternal: false
@@ -1135,6 +1218,10 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetBaseContainerName
+  commentId: M:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetBaseContainerName
+- uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetEntityName``1
+  commentId: M:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetEntityName``1
 - uid: Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetContainerName*
   commentId: Overload:Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory.GetContainerName
   isExternal: false

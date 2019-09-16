@@ -84,6 +84,12 @@ if (!relationships.Any())
 		aggregateRootName = stereoTypeProperties.PropertyInstances.Single(property => property.Name == "AggregateRoot").Value;
 	if (isSimple && !string.IsNullOrWhiteSpace(aggregateRootName))
 	{
+			var aggregateRoot = AllElements(FindDomainElement(this.Element), "AggregateRoot").OfType<INamedElement>().Single(e => e.Name == aggregateRootName);
+			var aggregateRootStereoTypeProperties = aggregateRoot.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+			bool isSnapshotable = aggregateRootStereoTypeProperties.PropertyInstances
+				.Single(property => property.Name == "IsSnapshotable")
+				.Value == "true";
+
 #>
 			<#= aggregateRootName #> item = null;
 			On<#= className #>(command, ref item);
@@ -101,7 +107,7 @@ if (!relationships.Any())
 		else
 		{
 #>
-				item = UnitOfWork.Get<<#= aggregateRootName #>>(command.Rsn);
+				item = UnitOfWork.Get<<#= aggregateRootName #>>(command.Rsn, useSnapshots: <#= isSnapshotable.ToString().ToLowerInvariant() #>);
 <#
 		}
 #>
@@ -231,6 +237,14 @@ if (!relationships.Any())
 		{
 			string targetElementName = ((INamedElement)relationship.TargetElement).Name;
 			aggregateTechnology = GetAggregateTechnology(relationship.TargetElement);
+			string relationshipName = relationship.Name;
+			var commandHandler = relationship.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+			if (commandHandler != null)
+			{
+				string aggregateRootMethod = commandHandler.PropertyInstances.Single(property => property.Name == "AggregateRootMethod").Value;
+				if (!string.IsNullOrWhiteSpace(aggregateRootMethod))
+					relationshipName = aggregateRootMethod;
+			}
 #>
 		#region Implementation of ICommandHandler<in <#= className #>>
 
@@ -276,7 +290,7 @@ if (!relationships.Any())
 			{
 #>
 				<#= targetElementName #> item = null;
-				On<#= relationship.Name #>(command, ref item);
+				On<#= relationshipName #>(command, ref item);
 				if (item == null)
 <#
 				if (createsNewInstance)
@@ -290,12 +304,17 @@ if (!relationships.Any())
 				}
 				else
 				{
+					var aggregateRoot = AllElements(FindDomainElement(this.Element), "AggregateRoot").OfType<INamedElement>().Single(e => e.Name == targetElementName);
+					var aggregateRootStereoTypeProperties = aggregateRoot.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+					bool isSnapshotable = aggregateRootStereoTypeProperties.PropertyInstances
+						.Single(property => property.Name == "IsSnapshotable")
+						.Value == "true";
 #>
-					item = UnitOfWork.Get<<#= targetElementName #>>(command.Rsn);
+					item = UnitOfWork.Get<<#= targetElementName #>>(command.Rsn, useSnapshots: <#= isSnapshotable.ToString().ToLowerInvariant() #>);
 <#
 				}
 #>
-				item.<#= relationship.Name #>(<#
+				item.<#= relationshipName #>(<#
 				int processedProperties= 0;
 				for (int i = 0; i < collectionProperties.Count; i++)
 				{
@@ -315,7 +334,7 @@ if (!relationships.Any())
 				processedProperties++;
 				}
 #>);
-				On<#= relationship.Name #>Handled(command, item);
+				On<#= relationshipName #>Handled(command, item);
 				OnAddToUnitOfWork(command, item);
 				UnitOfWork.Add(item);
 				OnAddedToUnitOfWork(command, item);
@@ -332,9 +351,9 @@ if (!relationships.Any())
 
 		partial void OnHandle(<#= className #>Command command, ref bool continueExecution);
 
-		partial void On<#= relationship.Name #>(<#= className #>Command command, ref <#= targetElementName #> item);
+		partial void On<#= relationshipName #>(<#= className #>Command command, ref <#= targetElementName #> item);
 
-		partial void On<#= relationship.Name #>Handled(<#= className #>Command command, <#= targetElementName #> item);
+		partial void On<#= relationshipName #>Handled(<#= className #>Command command, <#= targetElementName #> item);
 
 		partial void OnAddToUnitOfWork(<#= className #>Command command, <#= targetElementName #> item);
 
@@ -358,7 +377,7 @@ if (!relationships.Any())
 		protected Cqrs.Akka.Domain.IAkkaAggregateResolver AggregateResolver { get; private set; }
 
 		/// <summary>
-		/// Instantiates the <see cref="<#= className #>CommandHandler"/> class registering any <see cref="ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
+		/// Instantiates the <see cref="<#= className #>CommandHandler"/> class registering any <see cref="Akka.Actor.ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
 		/// </summary>
 		public <#= className #>CommandHandler(Cqrs.Akka.Domain.IAkkaAggregateResolver aggregateResolver, IDependencyResolver dependencyResolver, ILogger logger)
 			: this (dependencyResolver, logger)

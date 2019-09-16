@@ -31,13 +31,13 @@
             <td class="headerValue">2.2</td>
             <td></td>
             <td class="headerItem">Artefacts:</td>
-            <td class="headerCovTableEntry">3</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntryMed">75.0 %</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-01</td>
+            <td class="headerValue">2017-09-22</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -73,46 +73,73 @@
 <span class="lineNum">      15 </span>            : 
 <span class="lineNum">      16 </span>            : namespace Cqrs.Akka.Domain
 <span class="lineNum">      17 </span>            : {
-<span class="lineNum">      18 </span>            :         public class AkkaSagaProxy&lt;TAuthenticationToken, TSaga&gt;
-<span class="lineNum">      19 </span>            :                 : IAkkaSagaProxy&lt;TSaga&gt;
-<span class="lineNum">      20 </span>            :                 , ISaga&lt;TAuthenticationToken&gt;
-<span class="lineNum">      21 </span>            :                 // TODO think about if this is necessary again.
-<span class="lineNum">      22 </span>            :                 // where TSaga : ISaga&lt;TAuthenticationToken&gt;
-<span class="lineNum">      23 </span><span class="lineNoCov">          0 :         {</span>
-<span class="lineNum">      24 </span>            :                 public IActorRef ActorReference { get; internal set; }
-<span class="lineNum">      25 </span>            : 
-<span class="lineNum">      26 </span>            :                 public TSaga Saga { get; protected set; }
-<span class="lineNum">      27 </span>            : 
-<span class="lineNum">      28 </span>            :                 #region Implementation of ISaga&lt;TAuthenticationToken&gt;
-<span class="lineNum">      29 </span>            : 
-<span class="lineNum">      30 </span>            :                 public virtual Guid Id
-<span class="lineNum">      31 </span>            :                 {
-<span class="lineNum">      32 </span>            :                         get { return ActorReference.Ask&lt;Guid&gt;(new GetAkkaSagaId()).Result; }
-<span class="lineNum">      33 </span>            :                 }
-<span class="lineNum">      34 </span>            : 
-<span class="lineNum">      35 </span>            :                 public virtual int Version
-<span class="lineNum">      36 </span>            :                 {
-<span class="lineNum">      37 </span>            :                         get { return ActorReference.Ask&lt;int&gt;(new GetAkkaSagaVersion()).Result; }
-<span class="lineNum">      38 </span>            :                 }
-<span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span><span class="lineCov">          1 :                 public virtual IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges()</span>
-<span class="lineNum">      41 </span>            :                 {
-<span class="lineNum">      42 </span>            :                         return ((ISaga&lt;TAuthenticationToken&gt;)Saga).GetUncommittedChanges();
-<span class="lineNum">      43 </span>            :                 }
-<span class="lineNum">      44 </span>            : 
-<span class="lineNum">      45 </span><span class="lineCov">          1 :                 public virtual void MarkChangesAsCommitted()</span>
-<span class="lineNum">      46 </span>            :                 {
-<span class="lineNum">      47 </span>            :                         ((ISaga&lt;TAuthenticationToken&gt;)Saga).MarkChangesAsCommitted();
-<span class="lineNum">      48 </span>            :                 }
-<span class="lineNum">      49 </span>            : 
-<span class="lineNum">      50 </span><span class="lineCov">          1 :                 public virtual void LoadFromHistory(IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; history)</span>
-<span class="lineNum">      51 </span>            :                 {
-<span class="lineNum">      52 </span>            :                         ((ISaga&lt;TAuthenticationToken&gt;)Saga).LoadFromHistory(history);
-<span class="lineNum">      53 </span>            :                 }
-<span class="lineNum">      54 </span>            : 
-<span class="lineNum">      55 </span>            :                 #endregion
-<span class="lineNum">      56 </span>            :         }
-<span class="lineNum">      57 </span>            : }
+<span class="lineNum">      18 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      19 </span>            :         /// A remote proxy to an &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      21 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      22 </span>            :         /// &lt;typeparam name=&quot;TSaga&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      23 </span>            :         public class AkkaSagaProxy&lt;TAuthenticationToken, TSaga&gt;
+<span class="lineNum">      24 </span>            :                 : IAkkaSagaProxy&lt;TSaga&gt;
+<span class="lineNum">      25 </span>            :                 , ISaga&lt;TAuthenticationToken&gt;
+<span class="lineNum">      26 </span>            :                 // TODO think about if this is necessary again.
+<span class="lineNum">      27 </span>            :                 // where TSaga : ISaga&lt;TAuthenticationToken&gt;
+<span class="lineNum">      28 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      30 </span>            :                 /// Gets the &lt;see cref=&quot;IActorRef&quot;/&gt;.
+<span class="lineNum">      31 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      32 </span>            :                 public IActorRef ActorReference { get; internal set; }
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      35 </span>            :                 /// Gets the &lt;typeparamref name=&quot;TSaga&quot;/&gt;.
+<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      37 </span>            :                 public TSaga Saga { get; protected set; }
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            :                 #region Implementation of ISaga&lt;TAuthenticationToken&gt;
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      42 </span>            :                 /// The identifier of the &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      43 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      44 </span>            :                 public virtual Guid Id
+<span class="lineNum">      45 </span>            :                 {
+<span class="lineNum">      46 </span>            :                         get { return ActorReference.Ask&lt;Guid&gt;(new GetAkkaSagaId()).Result; }
+<span class="lineNum">      47 </span>            :                 }
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      50 </span>            :                 /// The current version of this &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      51 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      52 </span>            :                 public virtual int Version
+<span class="lineNum">      53 </span>            :                 {
+<span class="lineNum">      54 </span>            :                         get { return ActorReference.Ask&lt;int&gt;(new GetAkkaSagaVersion()).Result; }
+<span class="lineNum">      55 </span>            :                 }
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      58 </span>            :                 /// Get all applied changes that haven't yet been committed.
+<span class="lineNum">      59 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      60 </span><span class="lineCov">          1 :                 public virtual IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges()</span>
+<span class="lineNum">      61 </span>            :                 {
+<span class="lineNum">      62 </span>            :                         return ((ISaga&lt;TAuthenticationToken&gt;)Saga).GetUncommittedChanges();
+<span class="lineNum">      63 </span>            :                 }
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      66 </span>            :                 /// Mark all applied changes as committed, increment &lt;see cref=&quot;Version&quot;/&gt; and flush the internal collection of changes.
+<span class="lineNum">      67 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      68 </span><span class="lineCov">          1 :                 public virtual void MarkChangesAsCommitted()</span>
+<span class="lineNum">      69 </span>            :                 {
+<span class="lineNum">      70 </span>            :                         ((ISaga&lt;TAuthenticationToken&gt;)Saga).MarkChangesAsCommitted();
+<span class="lineNum">      71 </span>            :                 }
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      74 </span>            :                 /// Apply all the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; in &lt;paramref name=&quot;history&quot;/&gt;
+<span class="lineNum">      75 </span>            :                 /// using event replay to this instance.
+<span class="lineNum">      76 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      77 </span><span class="lineCov">          1 :                 public virtual void LoadFromHistory(IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; history)</span>
+<span class="lineNum">      78 </span>            :                 {
+<span class="lineNum">      79 </span>            :                         ((ISaga&lt;TAuthenticationToken&gt;)Saga).LoadFromHistory(history);
+<span class="lineNum">      80 </span>            :                 }
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                 #endregion
+<span class="lineNum">      83 </span>            :         }
+<span class="lineNum">      84 </span>            : }
 </pre>
       </td>
     </tr>

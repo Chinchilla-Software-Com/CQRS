@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2017-08-01</td>
+            <td class="headerValue">2017-09-22</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -56,247 +56,255 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<span class="lineNum">       1 </span>            : ﻿using System;
-<span class="lineNum">       2 </span>            : using System.Collections.Concurrent;
-<span class="lineNum">       3 </span>            : using System.Collections.Generic;
-<span class="lineNum">       4 </span>            : using System.Linq;
-<span class="lineNum">       5 </span>            : using Akka.Actor;
-<span class="lineNum">       6 </span>            : using Cqrs.Akka.Configuration;
-<span class="lineNum">       7 </span>            : using Cqrs.Akka.Domain;
-<span class="lineNum">       8 </span>            : using Cqrs.Configuration;
-<span class="lineNum">       9 </span>            : using Cqrs.Domain;
-<span class="lineNum">      10 </span>            : using Cqrs.Domain.Factories;
-<span class="lineNum">      11 </span>            : using Cqrs.Ninject.Configuration;
-<span class="lineNum">      12 </span>            : using Ninject;
-<span class="lineNum">      13 </span>            : 
-<span class="lineNum">      14 </span>            : namespace Cqrs.Ninject.Akka
-<span class="lineNum">      15 </span>            : {
-<span class="lineNum">      16 </span>            :         /// &lt;summary&gt;
-<span class="lineNum">      17 </span>            :         /// Provides an ability to resolve instances of objects and Akka.NET objects using Ninject
-<span class="lineNum">      18 </span>            :         /// &lt;/summary&gt;
-<span class="lineNum">      19 </span>            :         public class AkkaNinjectDependencyResolver
-<span class="lineNum">      20 </span>            :                 : NinjectDependencyResolver
-<span class="lineNum">      21 </span>            :                 , IAkkaAggregateResolver
-<span class="lineNum">      22 </span>            :                 , IAkkaSagaResolver
-<span class="lineNum">      23 </span>            :                 , IHandlerResolver
-<span class="lineNum">      24 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      25 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      26 </span>            :                 /// The inner resolver used by Akka.NET
-<span class="lineNum">      27 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      28 </span>            :                 protected global::Akka.DI.Ninject.NinjectDependencyResolver RawAkkaNinjectDependencyResolver { get; set; }
-<span class="lineNum">      29 </span>            : 
-<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      31 </span>            :                 /// The &lt;see cref=&quot;ActorSystem&quot;/&gt; as part of Akka.NET.
-<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      33 </span>            :                 protected ActorSystem AkkaSystem { get; private set; }
-<span class="lineNum">      34 </span>            : 
-<span class="lineNum">      35 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      36 </span>            :                 /// A generic type, quick reference, lookup for fast resolving of Akka.NET objects since the patterns calls for them to be treated like statics
-<span class="lineNum">      37 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      38 </span>            :                 protected IDictionary&lt;Type, IActorRef&gt; AkkaActors { get; private set; }
-<span class="lineNum">      39 </span>            : 
-<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      41 </span>            :                 /// The &lt;see cref=&quot;IAggregateFactory&quot;/&gt; that will be used to create new instances of Akka.NET objects.
-<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      43 </span>            :                 protected IAggregateFactory AggregateFactory { get; private set; }
-<span class="lineNum">      44 </span>            : 
-<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      46 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AkkaNinjectDependencyResolver&quot;/&gt;
-<span class="lineNum">      47 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      48 </span><span class="lineCov">          1 :                 public AkkaNinjectDependencyResolver(IKernel kernel, ActorSystem system)</span>
-<span class="lineNum">      49 </span>            :                         : base(kernel)
-<span class="lineNum">      50 </span>            :                 {
-<span class="lineNum">      51 </span>            :                         RawAkkaNinjectDependencyResolver = new global::Akka.DI.Ninject.NinjectDependencyResolver(kernel, AkkaSystem = system);
-<span class="lineNum">      52 </span>            :                         AkkaActors = new ConcurrentDictionary&lt;Type, IActorRef&gt;();
-<span class="lineNum">      53 </span>            :                         // ReSharper disable DoNotCallOverridableMethodsInConstructor
-<span class="lineNum">      54 </span>            :                         AggregateFactory = Resolve&lt;IAggregateFactory&gt;();
-<span class="lineNum">      55 </span>            :                         // ReSharper restore DoNotCallOverridableMethodsInConstructor
-<span class="lineNum">      56 </span>            :                 }
-<span class="lineNum">      57 </span>            : 
-<span class="lineNum">      58 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      59 </span>            :                 /// Checks if an instance of &lt;see cref=&quot;IDependencyResolver&quot;/&gt; is already registered, if one is registered, it in unregistered and this instance is registered as the &lt;see cref=&quot;IDependencyResolver&quot;/&gt;.
-<span class="lineNum">      60 </span>            :                 /// It then checks if an instance of &lt;see cref=&quot;IAkkaAggregateResolver&quot;/&gt; is already registered, if one is registered, it in unregistered and this instance is registered as the &lt;see cref=&quot;IAkkaAggregateResolver&quot;/&gt;
-<span class="lineNum">      61 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      62 </span><span class="lineCov">          1 :                 protected override void BindDependencyResolver()</span>
-<span class="lineNum">      63 </span>            :                 {
-<span class="lineNum">      64 </span>            :                         bool isDependencyResolverBound = Kernel.GetBindings(typeof(IDependencyResolver)).Any();
-<span class="lineNum">      65 </span>            :                         if (isDependencyResolverBound)
-<span class="lineNum">      66 </span>            :                                 Kernel.Unbind&lt;IDependencyResolver&gt;();
-<span class="lineNum">      67 </span>            :                         Kernel.Bind&lt;IDependencyResolver&gt;()
-<span class="lineNum">      68 </span>            :                                 .ToConstant(this)
-<span class="lineNum">      69 </span>            :                                 .InSingletonScope();
-<span class="lineNum">      70 </span>            : 
-<span class="lineNum">      71 </span>            :                         isDependencyResolverBound = Kernel.GetBindings(typeof(IAkkaAggregateResolver)).Any();
-<span class="lineNum">      72 </span>            :                         if (!isDependencyResolverBound)
-<span class="lineNum">      73 </span>            :                         {
-<span class="lineNum">      74 </span>            :                                 Kernel.Bind&lt;IAkkaAggregateResolver&gt;()
-<span class="lineNum">      75 </span>            :                                         .ToConstant(this)
-<span class="lineNum">      76 </span>            :                                         .InSingletonScope();
-<span class="lineNum">      77 </span>            :                         }
-<span class="lineNum">      78 </span>            :                 }
-<span class="lineNum">      79 </span>            : 
-<span class="lineNum">      80 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      81 </span>            :                 /// Starts the &lt;see cref=&quot;AkkaNinjectDependencyResolver&quot;/&gt;
-<span class="lineNum">      82 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      83 </span>            :                 /// &lt;remarks&gt;
-<span class="lineNum">      84 </span>            :                 /// This exists so the static constructor can be triggered.
-<span class="lineNum">      85 </span>            :                 /// &lt;/remarks&gt;
-<span class="lineNum">      86 </span><span class="lineCov">          1 :                 public new static void Start(IKernel kernel = null, bool prepareProvidedKernel = false)</span>
-<span class="lineNum">      87 </span>            :                 {
-<span class="lineNum">      88 </span>            :                         // Create the ActorSystem and Dependency Resolver
-<span class="lineNum">      89 </span>            :                         ActorSystem system = ActorSystem.Create(&quot;Cqrs&quot;);
-<span class="lineNum">      90 </span>            : 
-<span class="lineNum">      91 </span>            :                         Func&lt;IKernel, NinjectDependencyResolver&gt; originalDependencyResolverCreator = DependencyResolverCreator;
-<span class="lineNum">      92 </span>            :                         Func&lt;IKernel, NinjectDependencyResolver&gt; dependencyResolverCreator = container =&gt; new AkkaNinjectDependencyResolver(container, system);
-<span class="lineNum">      93 </span>            :                         if (originalDependencyResolverCreator == null)
-<span class="lineNum">      94 </span>            :                                 DependencyResolverCreator = dependencyResolverCreator;
-<span class="lineNum">      95 </span>            :                         else
-<span class="lineNum">      96 </span>            :                                 DependencyResolverCreator = container =&gt;
-<span class="lineNum">      97 </span>            :                                 {
-<span class="lineNum">      98 </span>            :                                         originalDependencyResolverCreator(container);
-<span class="lineNum">      99 </span>            :                                         return dependencyResolverCreator(container);
-<span class="lineNum">     100 </span>            :                                 };
-<span class="lineNum">     101 </span>            : 
-<span class="lineNum">     102 </span>            :                         NinjectDependencyResolver.Start(kernel, prepareProvidedKernel);
-<span class="lineNum">     103 </span>            :                 }
-<span class="lineNum">     104 </span>            : 
-<span class="lineNum">     105 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     106 </span>            :                 /// Calls &lt;see cref=&quot;ActorSystem.Shutdown&quot;/&gt;
-<span class="lineNum">     107 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     108 </span><span class="lineCov">          1 :                 public static void Stop()</span>
-<span class="lineNum">     109 </span>            :                 {
-<span class="lineNum">     110 </span>            :                         var di = Current as AkkaNinjectDependencyResolver;
-<span class="lineNum">     111 </span>            :                         if (di != null)
-<span class="lineNum">     112 </span>            :                                 di.AkkaSystem.Shutdown();
-<span class="lineNum">     113 </span>            :                 }
-<span class="lineNum">     114 </span>            : 
-<span class="lineNum">     115 </span>            :                 #region Overrides of NinjectDependencyResolver
-<span class="lineNum">     116 </span>            : 
-<span class="lineNum">     117 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     118 </span>            :                 /// Resolves instances of &lt;paramref name=&quot;serviceType&quot;/&gt; using &lt;see cref=&quot;Resolve(System.Type, Object)&quot;/&gt;.
-<span class="lineNum">     119 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     120 </span><span class="lineCov">          1 :                 public override object Resolve(Type serviceType)</span>
-<span class="lineNum">     121 </span>            :                 {
-<span class="lineNum">     122 </span>            :                         return Resolve(serviceType, null);
-<span class="lineNum">     123 </span>            :                 }
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Concurrent;
+<span class="lineNum">      11 </span>            : using System.Collections.Generic;
+<span class="lineNum">      12 </span>            : using System.Linq;
+<span class="lineNum">      13 </span>            : using Akka.Actor;
+<span class="lineNum">      14 </span>            : using Cqrs.Akka.Configuration;
+<span class="lineNum">      15 </span>            : using Cqrs.Akka.Domain;
+<span class="lineNum">      16 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      17 </span>            : using Cqrs.Domain;
+<span class="lineNum">      18 </span>            : using Cqrs.Domain.Factories;
+<span class="lineNum">      19 </span>            : using Cqrs.Ninject.Configuration;
+<span class="lineNum">      20 </span>            : using Ninject;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : namespace Cqrs.Ninject.Akka
+<span class="lineNum">      23 </span>            : {
+<span class="lineNum">      24 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      25 </span>            :         /// Provides an ability to resolve instances of objects and Akka.NET objects using Ninject
+<span class="lineNum">      26 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      27 </span>            :         public class AkkaNinjectDependencyResolver
+<span class="lineNum">      28 </span>            :                 : NinjectDependencyResolver
+<span class="lineNum">      29 </span>            :                 , IAkkaAggregateResolver
+<span class="lineNum">      30 </span>            :                 , IAkkaSagaResolver
+<span class="lineNum">      31 </span>            :                 , IHandlerResolver
+<span class="lineNum">      32 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      33 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      34 </span>            :                 /// The inner resolver used by Akka.NET
+<span class="lineNum">      35 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      36 </span>            :                 protected global::Akka.DI.Ninject.NinjectDependencyResolver RawAkkaNinjectDependencyResolver { get; set; }
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// The &lt;see cref=&quot;ActorSystem&quot;/&gt; as part of Akka.NET.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span>            :                 protected ActorSystem AkkaSystem { get; private set; }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      44 </span>            :                 /// A generic type, quick reference, lookup for fast resolving of Akka.NET objects since the patterns calls for them to be treated like statics
+<span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      46 </span>            :                 protected IDictionary&lt;Type, IActorRef&gt; AkkaActors { get; private set; }
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      49 </span>            :                 /// The &lt;see cref=&quot;IAggregateFactory&quot;/&gt; that will be used to create new instances of Akka.NET objects.
+<span class="lineNum">      50 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      51 </span>            :                 protected IAggregateFactory AggregateFactory { get; private set; }
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      54 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AkkaNinjectDependencyResolver&quot;/&gt;
+<span class="lineNum">      55 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      56 </span><span class="lineCov">          1 :                 public AkkaNinjectDependencyResolver(IKernel kernel, ActorSystem system)</span>
+<span class="lineNum">      57 </span>            :                         : base(kernel)
+<span class="lineNum">      58 </span>            :                 {
+<span class="lineNum">      59 </span>            :                         RawAkkaNinjectDependencyResolver = new global::Akka.DI.Ninject.NinjectDependencyResolver(kernel, AkkaSystem = system);
+<span class="lineNum">      60 </span>            :                         AkkaActors = new ConcurrentDictionary&lt;Type, IActorRef&gt;();
+<span class="lineNum">      61 </span>            :                         // ReSharper disable DoNotCallOverridableMethodsInConstructor
+<span class="lineNum">      62 </span>            :                         AggregateFactory = Resolve&lt;IAggregateFactory&gt;();
+<span class="lineNum">      63 </span>            :                         // ReSharper restore DoNotCallOverridableMethodsInConstructor
+<span class="lineNum">      64 </span>            :                 }
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      67 </span>            :                 /// Checks if an instance of &lt;see cref=&quot;IDependencyResolver&quot;/&gt; is already registered, if one is registered, it in unregistered and this instance is registered as the &lt;see cref=&quot;IDependencyResolver&quot;/&gt;.
+<span class="lineNum">      68 </span>            :                 /// It then checks if an instance of &lt;see cref=&quot;IAkkaAggregateResolver&quot;/&gt; is already registered, if one is registered, it in unregistered and this instance is registered as the &lt;see cref=&quot;IAkkaAggregateResolver&quot;/&gt;
+<span class="lineNum">      69 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      70 </span><span class="lineCov">          1 :                 protected override void BindDependencyResolver()</span>
+<span class="lineNum">      71 </span>            :                 {
+<span class="lineNum">      72 </span>            :                         bool isDependencyResolverBound = Kernel.GetBindings(typeof(IDependencyResolver)).Any();
+<span class="lineNum">      73 </span>            :                         if (isDependencyResolverBound)
+<span class="lineNum">      74 </span>            :                                 Kernel.Unbind&lt;IDependencyResolver&gt;();
+<span class="lineNum">      75 </span>            :                         Kernel.Bind&lt;IDependencyResolver&gt;()
+<span class="lineNum">      76 </span>            :                                 .ToConstant(this)
+<span class="lineNum">      77 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :                         isDependencyResolverBound = Kernel.GetBindings(typeof(IAkkaAggregateResolver)).Any();
+<span class="lineNum">      80 </span>            :                         if (!isDependencyResolverBound)
+<span class="lineNum">      81 </span>            :                         {
+<span class="lineNum">      82 </span>            :                                 Kernel.Bind&lt;IAkkaAggregateResolver&gt;()
+<span class="lineNum">      83 </span>            :                                         .ToConstant(this)
+<span class="lineNum">      84 </span>            :                                         .InSingletonScope();
+<span class="lineNum">      85 </span>            :                         }
+<span class="lineNum">      86 </span>            :                 }
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      89 </span>            :                 /// Starts the &lt;see cref=&quot;AkkaNinjectDependencyResolver&quot;/&gt;
+<span class="lineNum">      90 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      91 </span>            :                 /// &lt;remarks&gt;
+<span class="lineNum">      92 </span>            :                 /// This exists so the static constructor can be triggered.
+<span class="lineNum">      93 </span>            :                 /// &lt;/remarks&gt;
+<span class="lineNum">      94 </span><span class="lineCov">          1 :                 public new static void Start(IKernel kernel = null, bool prepareProvidedKernel = false)</span>
+<span class="lineNum">      95 </span>            :                 {
+<span class="lineNum">      96 </span>            :                         // Create the ActorSystem and Dependency Resolver
+<span class="lineNum">      97 </span>            :                         ActorSystem system = ActorSystem.Create(&quot;Cqrs&quot;);
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span>            :                         Func&lt;IKernel, NinjectDependencyResolver&gt; originalDependencyResolverCreator = DependencyResolverCreator;
+<span class="lineNum">     100 </span>            :                         Func&lt;IKernel, NinjectDependencyResolver&gt; dependencyResolverCreator = container =&gt; new AkkaNinjectDependencyResolver(container, system);
+<span class="lineNum">     101 </span>            :                         if (originalDependencyResolverCreator == null)
+<span class="lineNum">     102 </span>            :                                 DependencyResolverCreator = dependencyResolverCreator;
+<span class="lineNum">     103 </span>            :                         else
+<span class="lineNum">     104 </span>            :                                 DependencyResolverCreator = container =&gt;
+<span class="lineNum">     105 </span>            :                                 {
+<span class="lineNum">     106 </span>            :                                         originalDependencyResolverCreator(container);
+<span class="lineNum">     107 </span>            :                                         return dependencyResolverCreator(container);
+<span class="lineNum">     108 </span>            :                                 };
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :                         NinjectDependencyResolver.Start(kernel, prepareProvidedKernel);
+<span class="lineNum">     111 </span>            :                 }
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     114 </span>            :                 /// Calls &lt;see cref=&quot;ActorSystem.Shutdown&quot;/&gt;
+<span class="lineNum">     115 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     116 </span><span class="lineCov">          1 :                 public static void Stop()</span>
+<span class="lineNum">     117 </span>            :                 {
+<span class="lineNum">     118 </span>            :                         var di = Current as AkkaNinjectDependencyResolver;
+<span class="lineNum">     119 </span>            :                         if (di != null)
+<span class="lineNum">     120 </span>            :                                 di.AkkaSystem.Shutdown();
+<span class="lineNum">     121 </span>            :                 }
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :                 #region Overrides of NinjectDependencyResolver
 <span class="lineNum">     124 </span>            : 
-<span class="lineNum">     125 </span>            :                 #endregion
-<span class="lineNum">     126 </span>            : 
-<span class="lineNum">     127 </span>            :                 #region Implementation of IAkkaAggregateResolver
-<span class="lineNum">     128 </span>            : 
-<span class="lineNum">     129 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     130 </span>            :                 /// Resolves instances of &lt;typeparamref name=&quot;TAggregate&quot;/&gt; using &lt;see cref=&quot;AkkaResolve&quot;/&gt;.
-<span class="lineNum">     131 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     132 </span><span class="lineCov">          1 :                 public virtual IActorRef ResolveActor&lt;TAggregate, TAuthenticationToken&gt;(Guid rsn)</span>
-<span class="lineNum">     133 </span>            :                         where TAggregate : IAggregateRoot&lt;TAuthenticationToken&gt;
-<span class="lineNum">     134 </span>            :                 {
-<span class="lineNum">     135 </span>            :                         return (IActorRef)AkkaResolve(typeof(TAggregate), rsn, true);
-<span class="lineNum">     136 </span>            :                 }
-<span class="lineNum">     137 </span>            : 
-<span class="lineNum">     138 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     139 </span>            :                 /// Resolves instances of &lt;typeparamref name=&quot;T&quot;/&gt; using &lt;see cref=&quot;AkkaResolve&quot;/&gt;.
-<span class="lineNum">     140 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     141 </span><span class="lineCov">          1 :                 public IActorRef ResolveActor&lt;T&gt;()</span>
+<span class="lineNum">     125 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     126 </span>            :                 /// Resolves instances of &lt;paramref name=&quot;serviceType&quot;/&gt; using &lt;see cref=&quot;Resolve(System.Type, Object)&quot;/&gt;.
+<span class="lineNum">     127 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     128 </span><span class="lineCov">          1 :                 public override object Resolve(Type serviceType)</span>
+<span class="lineNum">     129 </span>            :                 {
+<span class="lineNum">     130 </span>            :                         return Resolve(serviceType, null);
+<span class="lineNum">     131 </span>            :                 }
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            :                 #endregion
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span>            :                 #region Implementation of IAkkaAggregateResolver
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     138 </span>            :                 /// Resolves instances of &lt;typeparamref name=&quot;TAggregate&quot;/&gt; using &lt;see cref=&quot;AkkaResolve&quot;/&gt;.
+<span class="lineNum">     139 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     140 </span><span class="lineCov">          1 :                 public virtual IActorRef ResolveActor&lt;TAggregate, TAuthenticationToken&gt;(Guid rsn)</span>
+<span class="lineNum">     141 </span>            :                         where TAggregate : IAggregateRoot&lt;TAuthenticationToken&gt;
 <span class="lineNum">     142 </span>            :                 {
-<span class="lineNum">     143 </span>            :                         return (IActorRef)AkkaResolve(typeof(T), null, true);
+<span class="lineNum">     143 </span>            :                         return (IActorRef)AkkaResolve(typeof(TAggregate), rsn, true);
 <span class="lineNum">     144 </span>            :                 }
 <span class="lineNum">     145 </span>            : 
-<span class="lineNum">     146 </span>            :                 #endregion
-<span class="lineNum">     147 </span>            : 
-<span class="lineNum">     148 </span>            :                 #region Implementation of IAkkaSagaResolver
-<span class="lineNum">     149 </span>            : 
-<span class="lineNum">     150 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     151 </span>            :                 /// Resolves instances of &lt;typeparamref name=&quot;TSaga&quot;/&gt; using &lt;see cref=&quot;ResolveSagaActor{TSaga,TAuthenticationToken}&quot;/&gt;.
-<span class="lineNum">     152 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     153 </span>            :                 IActorRef IAkkaSagaResolver.ResolveActor&lt;TSaga, TAuthenticationToken&gt;(Guid rsn)
-<span class="lineNum">     154 </span>            :                 {
-<span class="lineNum">     155 </span>            :                         return ResolveSagaActor&lt;TSaga, TAuthenticationToken&gt;(rsn);
-<span class="lineNum">     156 </span>            :                 }
+<span class="lineNum">     146 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     147 </span>            :                 /// Resolves instances of &lt;typeparamref name=&quot;T&quot;/&gt; using &lt;see cref=&quot;AkkaResolve&quot;/&gt;.
+<span class="lineNum">     148 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     149 </span><span class="lineCov">          1 :                 public IActorRef ResolveActor&lt;T&gt;()</span>
+<span class="lineNum">     150 </span>            :                 {
+<span class="lineNum">     151 </span>            :                         return (IActorRef)AkkaResolve(typeof(T), null, true);
+<span class="lineNum">     152 </span>            :                 }
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span>            :                 #endregion
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span>            :                 #region Implementation of IAkkaSagaResolver
 <span class="lineNum">     157 </span>            : 
 <span class="lineNum">     158 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     159 </span>            :                 /// Resolves instances of &lt;typeparamref name=&quot;TSaga&quot;/&gt; using &lt;see cref=&quot;AkkaResolve&quot;/&gt;.
+<span class="lineNum">     159 </span>            :                 /// Resolves instances of &lt;typeparamref name=&quot;TSaga&quot;/&gt; using &lt;see cref=&quot;ResolveSagaActor{TSaga,TAuthenticationToken}&quot;/&gt;.
 <span class="lineNum">     160 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     161 </span><span class="lineCov">          1 :                 public virtual IActorRef ResolveSagaActor&lt;TSaga, TAuthenticationToken&gt;(Guid rsn)</span>
-<span class="lineNum">     162 </span>            :                         where TSaga : ISaga&lt;TAuthenticationToken&gt;
-<span class="lineNum">     163 </span>            :                 {
-<span class="lineNum">     164 </span>            :                         return (IActorRef)AkkaResolve(typeof(TSaga), rsn, true);
-<span class="lineNum">     165 </span>            :                 }
-<span class="lineNum">     166 </span>            : 
-<span class="lineNum">     167 </span>            :                 #endregion
-<span class="lineNum">     168 </span>            : 
-<span class="lineNum">     169 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     170 </span>            :                 /// Resolves instances of &lt;paramref name=&quot;serviceType&quot;/&gt; using &lt;see cref=&quot;IDependencyResolver.Resolve{T}&quot;/&gt;.
-<span class="lineNum">     171 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     172 </span><span class="lineCov">          1 :                 protected virtual object RootResolve(Type serviceType)</span>
-<span class="lineNum">     173 </span>            :                 {
-<span class="lineNum">     174 </span>            :                         return base.Resolve(serviceType);
-<span class="lineNum">     175 </span>            :                 }
+<span class="lineNum">     161 </span>            :                 IActorRef IAkkaSagaResolver.ResolveActor&lt;TSaga, TAuthenticationToken&gt;(Guid rsn)
+<span class="lineNum">     162 </span>            :                 {
+<span class="lineNum">     163 </span>            :                         return ResolveSagaActor&lt;TSaga, TAuthenticationToken&gt;(rsn);
+<span class="lineNum">     164 </span>            :                 }
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     167 </span>            :                 /// Resolves instances of &lt;typeparamref name=&quot;TSaga&quot;/&gt; using &lt;see cref=&quot;AkkaResolve&quot;/&gt;.
+<span class="lineNum">     168 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     169 </span><span class="lineCov">          1 :                 public virtual IActorRef ResolveSagaActor&lt;TSaga, TAuthenticationToken&gt;(Guid rsn)</span>
+<span class="lineNum">     170 </span>            :                         where TSaga : ISaga&lt;TAuthenticationToken&gt;
+<span class="lineNum">     171 </span>            :                 {
+<span class="lineNum">     172 </span>            :                         return (IActorRef)AkkaResolve(typeof(TSaga), rsn, true);
+<span class="lineNum">     173 </span>            :                 }
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            :                 #endregion
 <span class="lineNum">     176 </span>            : 
 <span class="lineNum">     177 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     178 </span>            :                 /// Resolves instances of &lt;paramref name=&quot;serviceType&quot;/&gt; using &lt;see cref=&quot;AkkaResolve&quot;/&gt;.
+<span class="lineNum">     178 </span>            :                 /// Resolves instances of &lt;paramref name=&quot;serviceType&quot;/&gt; using &lt;see cref=&quot;IDependencyResolver.Resolve{T}&quot;/&gt;.
 <span class="lineNum">     179 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     180 </span><span class="lineCov">          1 :                 public virtual object Resolve(Type serviceType, object rsn)</span>
+<span class="lineNum">     180 </span><span class="lineCov">          1 :                 protected virtual object RootResolve(Type serviceType)</span>
 <span class="lineNum">     181 </span>            :                 {
-<span class="lineNum">     182 </span>            :                         return AkkaResolve(serviceType, rsn);
+<span class="lineNum">     182 </span>            :                         return base.Resolve(serviceType);
 <span class="lineNum">     183 </span>            :                 }
 <span class="lineNum">     184 </span>            : 
 <span class="lineNum">     185 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     186 </span>            :                 /// Resolves instances of &lt;paramref name=&quot;serviceType&quot;/&gt; looking up &lt;see cref=&quot;AkkaActors&quot;/&gt;, then &lt;see cref=&quot;IDependencyResolver.Resolve{T}&quot;/&gt; and finally &lt;see cref=&quot;AggregateFactory&quot;/&gt;.
+<span class="lineNum">     186 </span>            :                 /// Resolves instances of &lt;paramref name=&quot;serviceType&quot;/&gt; using &lt;see cref=&quot;AkkaResolve&quot;/&gt;.
 <span class="lineNum">     187 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     188 </span><span class="lineCov">          1 :                 public virtual object AkkaResolve(Type serviceType, object rsn, bool isAForcedActorSearch = false)</span>
+<span class="lineNum">     188 </span><span class="lineCov">          1 :                 public virtual object Resolve(Type serviceType, object rsn)</span>
 <span class="lineNum">     189 </span>            :                 {
-<span class="lineNum">     190 </span>            :                         IActorRef actorReference;
-<span class="lineNum">     191 </span>            :                         try
-<span class="lineNum">     192 </span>            :                         {
-<span class="lineNum">     193 </span>            :                                 if (AkkaActors.TryGetValue(serviceType, out actorReference))
-<span class="lineNum">     194 </span>            :                                         return actorReference;
-<span class="lineNum">     195 </span>            :                                 if (!isAForcedActorSearch)
-<span class="lineNum">     196 </span>            :                                         return base.Resolve(serviceType);
-<span class="lineNum">     197 </span>            :                         }
-<span class="lineNum">     198 </span>            :                         catch (ActivationException) { throw; }
-<span class="lineNum">     199 </span>            :                         catch ( /*ActorInitialization*/Exception) { /* */ }
-<span class="lineNum">     200 </span>            : 
-<span class="lineNum">     201 </span>            :                         Props properties;
-<span class="lineNum">     202 </span>            :                         Type typeToTest = serviceType;
-<span class="lineNum">     203 </span>            :                         while (typeToTest != null)
-<span class="lineNum">     204 </span>            :                         {
-<span class="lineNum">     205 </span>            :                                 Type[] types = typeToTest.GenericTypeArguments;
-<span class="lineNum">     206 </span>            :                                 if (types.Length == 1)
-<span class="lineNum">     207 </span>            :                                 {
-<span class="lineNum">     208 </span>            :                                         Type aggregateType = typeof (AkkaAggregateRoot&lt;&gt;).MakeGenericType(typeToTest.GenericTypeArguments.Single());
-<span class="lineNum">     209 </span>            :                                         if (typeToTest == aggregateType)
-<span class="lineNum">     210 </span>            :                                         {
-<span class="lineNum">     211 </span>            :                                                 typeToTest = aggregateType;
-<span class="lineNum">     212 </span>            :                                                 break;
-<span class="lineNum">     213 </span>            :                                         }
-<span class="lineNum">     214 </span>            :                                         Type sagaType = typeof (AkkaSaga&lt;&gt;).MakeGenericType(typeToTest.GenericTypeArguments.Single());
-<span class="lineNum">     215 </span>            :                                         if (typeToTest == sagaType)
-<span class="lineNum">     216 </span>            :                                         {
-<span class="lineNum">     217 </span>            :                                                 typeToTest = sagaType;
-<span class="lineNum">     218 </span>            :                                                 break;
-<span class="lineNum">     219 </span>            :                                         }
-<span class="lineNum">     220 </span>            :                                 }
-<span class="lineNum">     221 </span>            :                                 typeToTest = typeToTest.BaseType;
-<span class="lineNum">     222 </span>            :                         }
-<span class="lineNum">     223 </span>            : 
-<span class="lineNum">     224 </span>            :                         // This sorts out an out-of-order binder issue
-<span class="lineNum">     225 </span>            :                         if (AggregateFactory == null)
-<span class="lineNum">     226 </span>            :                                 AggregateFactory = Resolve&lt;IAggregateFactory&gt;();
-<span class="lineNum">     227 </span>            : 
-<span class="lineNum">     228 </span>            :                         if (typeToTest == null || !(typeToTest).IsAssignableFrom(serviceType))
-<span class="lineNum">     229 </span>            :                                 properties = Props.Create(() =&gt; (ActorBase)RootResolve(serviceType));
-<span class="lineNum">     230 </span>            :                         else
-<span class="lineNum">     231 </span>            :                                 properties = Props.Create(() =&gt; (ActorBase) AggregateFactory.Create(serviceType, rsn as Guid?, false));
-<span class="lineNum">     232 </span>            :                         string actorName = serviceType.FullName.Replace(&quot;`&quot;, string.Empty);
-<span class="lineNum">     233 </span>            :                         int index = actorName.IndexOf(&quot;[[&quot;, StringComparison.Ordinal);
-<span class="lineNum">     234 </span>            :                         if (index &gt; -1)
-<span class="lineNum">     235 </span>            :                                 actorName = actorName.Substring(0, index);
-<span class="lineNum">     236 </span>            :                         actorReference = AkkaSystem.ActorOf(properties, string.Format(&quot;{0}~{1}&quot;, actorName, rsn));
-<span class="lineNum">     237 </span>            :                         AkkaActors.Add(serviceType, actorReference);
-<span class="lineNum">     238 </span>            :                         return actorReference;
-<span class="lineNum">     239 </span>            :                 }
-<span class="lineNum">     240 </span>            :         }
-<span class="lineNum">     241 </span>            : }
+<span class="lineNum">     190 </span>            :                         return AkkaResolve(serviceType, rsn);
+<span class="lineNum">     191 </span>            :                 }
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     194 </span>            :                 /// Resolves instances of &lt;paramref name=&quot;serviceType&quot;/&gt; looking up &lt;see cref=&quot;AkkaActors&quot;/&gt;, then &lt;see cref=&quot;IDependencyResolver.Resolve{T}&quot;/&gt; and finally &lt;see cref=&quot;AggregateFactory&quot;/&gt;.
+<span class="lineNum">     195 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     196 </span><span class="lineCov">          1 :                 public virtual object AkkaResolve(Type serviceType, object rsn, bool isAForcedActorSearch = false)</span>
+<span class="lineNum">     197 </span>            :                 {
+<span class="lineNum">     198 </span>            :                         IActorRef actorReference;
+<span class="lineNum">     199 </span>            :                         try
+<span class="lineNum">     200 </span>            :                         {
+<span class="lineNum">     201 </span>            :                                 if (AkkaActors.TryGetValue(serviceType, out actorReference))
+<span class="lineNum">     202 </span>            :                                         return actorReference;
+<span class="lineNum">     203 </span>            :                                 if (!isAForcedActorSearch)
+<span class="lineNum">     204 </span>            :                                         return base.Resolve(serviceType);
+<span class="lineNum">     205 </span>            :                         }
+<span class="lineNum">     206 </span>            :                         catch (ActivationException) { throw; }
+<span class="lineNum">     207 </span>            :                         catch ( /*ActorInitialization*/Exception) { /* */ }
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span>            :                         Props properties;
+<span class="lineNum">     210 </span>            :                         Type typeToTest = serviceType;
+<span class="lineNum">     211 </span>            :                         while (typeToTest != null)
+<span class="lineNum">     212 </span>            :                         {
+<span class="lineNum">     213 </span>            :                                 Type[] types = typeToTest.GenericTypeArguments;
+<span class="lineNum">     214 </span>            :                                 if (types.Length == 1)
+<span class="lineNum">     215 </span>            :                                 {
+<span class="lineNum">     216 </span>            :                                         Type aggregateType = typeof (AkkaAggregateRoot&lt;&gt;).MakeGenericType(typeToTest.GenericTypeArguments.Single());
+<span class="lineNum">     217 </span>            :                                         if (typeToTest == aggregateType)
+<span class="lineNum">     218 </span>            :                                         {
+<span class="lineNum">     219 </span>            :                                                 typeToTest = aggregateType;
+<span class="lineNum">     220 </span>            :                                                 break;
+<span class="lineNum">     221 </span>            :                                         }
+<span class="lineNum">     222 </span>            :                                         Type sagaType = typeof (AkkaSaga&lt;&gt;).MakeGenericType(typeToTest.GenericTypeArguments.Single());
+<span class="lineNum">     223 </span>            :                                         if (typeToTest == sagaType)
+<span class="lineNum">     224 </span>            :                                         {
+<span class="lineNum">     225 </span>            :                                                 typeToTest = sagaType;
+<span class="lineNum">     226 </span>            :                                                 break;
+<span class="lineNum">     227 </span>            :                                         }
+<span class="lineNum">     228 </span>            :                                 }
+<span class="lineNum">     229 </span>            :                                 typeToTest = typeToTest.BaseType;
+<span class="lineNum">     230 </span>            :                         }
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span>            :                         // This sorts out an out-of-order binder issue
+<span class="lineNum">     233 </span>            :                         if (AggregateFactory == null)
+<span class="lineNum">     234 </span>            :                                 AggregateFactory = Resolve&lt;IAggregateFactory&gt;();
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span>            :                         if (typeToTest == null || !(typeToTest).IsAssignableFrom(serviceType))
+<span class="lineNum">     237 </span>            :                                 properties = Props.Create(() =&gt; (ActorBase)RootResolve(serviceType));
+<span class="lineNum">     238 </span>            :                         else
+<span class="lineNum">     239 </span>            :                                 properties = Props.Create(() =&gt; (ActorBase) AggregateFactory.Create(serviceType, rsn as Guid?, false));
+<span class="lineNum">     240 </span>            :                         string actorName = serviceType.FullName.Replace(&quot;`&quot;, string.Empty);
+<span class="lineNum">     241 </span>            :                         int index = actorName.IndexOf(&quot;[[&quot;, StringComparison.Ordinal);
+<span class="lineNum">     242 </span>            :                         if (index &gt; -1)
+<span class="lineNum">     243 </span>            :                                 actorName = actorName.Substring(0, index);
+<span class="lineNum">     244 </span>            :                         actorReference = AkkaSystem.ActorOf(properties, string.Format(&quot;{0}~{1}&quot;, actorName, rsn));
+<span class="lineNum">     245 </span>            :                         AkkaActors.Add(serviceType, actorReference);
+<span class="lineNum">     246 </span>            :                         return actorReference;
+<span class="lineNum">     247 </span>            :                 }
+<span class="lineNum">     248 </span>            :         }
+<span class="lineNum">     249 </span>            : }
 </pre>
       </td>
     </tr>

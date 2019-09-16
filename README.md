@@ -1,19 +1,20 @@
 # CQRS.NET
 #### https://www.nuget.org/packages/Cqrs
-Nightly build packages and symbols available at https://cqrs-nightly-nuget-builds.azurewebsites.net/
+Nightly build packages and symbols available at http://nightlies.chinchillasoftware.co.nz/
 
 ## The framework
-A lightweight enterprise framework to write CQRS, event-sourced and micro-service applications in hybrid multi-datacentre, on-premise and Azure environments. Currently published as nuget packages @ http://www.nuget.org. It is written in C# and targets .NET 4.0 (where possible) and .NET 4.5. CQRS.NET borrows heavily from CQRSlite (https://github.com/gautema/cqrslite), from some point in 2013.
+A lightweight enterprise Function as a service (FaaS) framework to write function based serverless and micro-service applications in hybrid multi-datacentre, on-premise and Azure environments, offering modern patterns such as CQRS and event-sourcing. Offering a superior combination of serverless, micro-service and traditional deployments both in the cloud and on-premise to suit any business. Deployments can be inter-conntected with each other sharing data and resourcing or independant and issolated while providing a consistent framework and guideline for both development, deployment, DevOps and administration.
 
-CQRS.NET has been designed with modularity in mind... see the number of technology packages below you can chose from. Every package and design choice made should be interchangeable with custom code if needed.
+CQRS.NET has been designed with modularity in mind... see the number of technology packages below you can chose from. Modularity applies to both development concerns like storage as well as operational modularity such as serverless or micro-service deployment, PaaS, VMs or container packaging. Every package and design choice made should be interchangeable with custom code if needed.
 
-![CQRS.NET](https://raw.githubusercontent.com/Chinchilla-Software-Com/CQRS/master/wiki/CQRS-Process-Flow-Level-2.png)
+![CQRS.NET](https://raw.githubusercontent.com/Chinchilla-Software-Com/CQRS/master/wiki/stack/FaaS.png)
 
 ## Tutorials and getting started
-For those new to CQRS.NET, we strongly suggest you have a look at our basic [Hello World Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Hello-World-Example-1) that covers basic commands and events.
-Or you have a look at our basic [Northwind Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Tutorial-1:-Step-1:-Quick-Northwind-sample.) which takes a look into queries, views, read stores and read models, then commands, eents aggregates and event handlers.
+For those new to CQRS.NET, we strongly suggest you have a look at our basic [Hello World Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Hello-World-Example-1) that covers the basics of sending messages between a website and a function via commands and events, including pushing real-time messages back to the browser without refreshing your screen in a very simplcity micro-service kinda of way.
 
-And for those looking for a more thorough tutorial we suggest you start with the [getting started](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Getting-Started) section in the [wiki](https://github.com/Chinchilla-Software-Com/CQRS/wiki)
+Or you can have a look at our basic [Northwind Tutorial](https://github.com/Chinchilla-Software-Com/CQRS/wiki/Tutorial-1:-Step-1:-Quick-Northwind-sample.) which takes you through  converting an existing legacy website covering some queries, views, read stores and read models, then getting into actioning function with commands, events aggregates and event handlers (the function itself). This takes you on the micro-service path as well while keeping it very simple and running all the services in one website to keep the tutorial simple. At any stage you can start to break up the well structured code into separate API endpoints.
+
+And for those looking for a more thorough tutorial including a deep, deep dive into best practises we suggest you start with the [A Beginner's Guide](https://github.com/Chinchilla-Software-Com/CQRS/wiki/A-Beginner's-Guide-To-Implementing-CQRS-ES) section in the [wiki](https://github.com/Chinchilla-Software-Com/CQRS/wiki). This covers much, much more than just functions, but modern coding practises that really do work in the cloud.
 
 ## Documentation
 [CQRS.NET API reference documentation](http://chinchilla-software-com.github.io/CQRS/wiki/docs) is available to browse. We are adding more and more documentation as we edit each file. By version 3.0 we aim to have all public methods and classes documented.

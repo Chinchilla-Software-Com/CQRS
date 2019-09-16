@@ -33,7 +33,7 @@ namespace Cqrs.WebApi.Controllers
 			var apiExplorer = GlobalConfiguration.Configuration.Services.GetApiExplorer();
 			var apiMethods = apiExplorer.ApiDescriptions.Select(ad => new ApiMethodModel(ad)).ToList();
 
-			string host = Url.Content(Request.RequestUri.AbsoluteUri.Substring(0, Request.RequestUri.AbsoluteUri.Length - Request.RequestUri.AbsolutePath.Length));
+			string host = Url.Content(Request.RequestUri.AbsoluteUri.Substring(0, Request.RequestUri.AbsoluteUri.Length - Request.RequestUri.PathAndQuery.Length));
 			string path = Url.Content("~/");
 			if (path.StartsWith(host))
 				host = null;
@@ -51,10 +51,17 @@ namespace Cqrs.WebApi.Controllers
 		'success' : function(data, textStatus, jqXHR) {{}},
 		'setHeaders' : function()
 		{{
-			if (window.api.useXToken && typeof(Cookies) === 'function')
+			if (window.api.useXToken)
 			{{
 				var headers = {{}};
-				headers[window.api.cookieTokenName] = Cookies.get(window.api.cookieTokenName);
+				if (typeof(Cookies) === 'function')
+				{{
+					headers[window.api.cookieTokenName] = Cookies.get(window.api.cookieTokenName);
+				}}
+				else (typeof(Storage) !== ""undefined"")
+				{{
+					headers[window.api.cookieTokenName] = sessionStorage[window.api.cookieTokenName] || localStorage[window.api.cookieTokenName];
+				}}
 				return headers;
 			}}
 			return {{}}
@@ -76,7 +83,7 @@ $.each(window.api.metadata, function (i, action)
 	{{
 		window.api[action.ControllerName] = {{}};
 	}}
-	window.api[action.ControllerName][action.ActionName] = function (parameters)
+	window.api[action.ControllerName][action.ActionName] = function (parameters, successFunction, errorFunction, statusCodeFunctions)
 	{{
 		var url = '{1}{2}' + action.Url;
 		var data = {{}};
@@ -88,11 +95,12 @@ $.each(window.api.metadata, function (i, action)
 			bodyParameters = 1;
 			data = parameters;
 		}}
-		else if (action.Parameters.length == 2 && action.Parameters[0].Name == 'entity' && action.Parameters[1].Name == 'rsn')
+		else if (action.Parameters.length == 2 && ((action.Parameters[0].Name == 'entity' && action.Parameters[1].Name == 'rsn') || (action.Parameters[1].Name == 'parameters' && action.Parameters[0].Name == 'rsn')))
 		{{
 			bodyParameters = 1;
-			url = url.substring(0, url.length - 5) + parameters['Rsn'];
-			data = parameters;
+			url = url
+			url = url.replace(/\/\{{rsn\}}/g, '\/' + parameters['Rsn']);
+			data = (action.Parameters[1].Name == 'parameters' && Object.keys(parameters).length <= 1) ? null : parameters;
 		}}
 		else
 		{{
@@ -125,7 +133,7 @@ $.each(window.api.metadata, function (i, action)
 			}});
 		}}
 
-		if (bodyParameters == 1 && complexParameters == 0)
+		if (bodyParameters == 1 && complexParameters == 0 && lastBodyParameter != null && lastBodyParameter != '')
 			data = data[lastBodyParameter];
 
 		if (bodyParameters == 0 && complexParameters == 0)
@@ -140,9 +148,9 @@ $.each(window.api.metadata, function (i, action)
 				headers: window.api.globalHandlers['setHeaders'](),
 				beforeSend: window.api.globalHandlers['before'],
 				complete: window.api.globalHandlers['complete'],
-				error: window.api.globalHandlers['error'],
-				success: window.api.globalHandlers['success'],
-				statusCode: {{
+				error: (errorFunction || window.api.globalHandlers['error']),
+				success: (successFunction || window.api.globalHandlers['success']),
+				statusCode: ( statusCodeFunctions || {{
 					202: window.api.globalHandlers['202'],
 					300: window.api.globalHandlers['300'],
 					400: window.api.globalHandlers['400'],
@@ -151,7 +159,7 @@ $.each(window.api.metadata, function (i, action)
 					404: window.api.globalHandlers['404'],
 					412: window.api.globalHandlers['412'],
 					500: window.api.globalHandlers['500']
-				}}
+				}})
 			}});
 		return $.ajax({{
 			type: action.Method,
@@ -160,9 +168,9 @@ $.each(window.api.metadata, function (i, action)
 			headers: window.api.globalHandlers['setHeaders'](),
 			beforeSend: window.api.globalHandlers['before'],
 			complete: window.api.globalHandlers['complete'],
-			error: window.api.globalHandlers['error'],
-			success: window.api.globalHandlers['success'],
-			statusCode: {{
+			error: (errorFunction || window.api.globalHandlers['error']),
+			success: (successFunction || window.api.globalHandlers['success']),
+			statusCode: ( statusCodeFunctions || {{
 				202: window.api.globalHandlers['202'],
 				300: window.api.globalHandlers['300'],
 				400: window.api.globalHandlers['400'],
@@ -171,7 +179,7 @@ $.each(window.api.metadata, function (i, action)
 				404: window.api.globalHandlers['404'],
 				412: window.api.globalHandlers['412'],
 				500: window.api.globalHandlers['500']
-			}}
+			}})
 		}});
 	}};
 }});",

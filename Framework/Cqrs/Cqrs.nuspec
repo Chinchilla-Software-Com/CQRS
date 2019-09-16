@@ -9,65 +9,23 @@
 		<projectUrl>http://chinchilla-software-com.github.io/CQRS/</projectUrl>
 		<iconUrl>http://chinchilla-software-com.github.io/CQRS/wiki/ChinChilla-Software-Red.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>A lightweight enterprise framework to write CQRS, event-sourced and micro-service applications in hybrid multi-datacentre, on-premise and Azure environments.</description>
+		<description>A lightweight enterprise Function as a Service (FaaS) framework to write function based serverless and micro-service applications in hybrid multi-datacentre, on-premise and Azure environments.</description>
 		<summary>
-			Written in C# and targets .NET 4.0, with the exception of some Azure packages which target .NET 4.5.
+			A lightweight enterprise Function as a service (FaaS) framework to write function based serverless and micro-service applications in hybrid multi-datacentre, on-premise and Azure environments, offering modern patterns such as CQRS and event-sourcing. Offering a superior combination of serverless, micro-service and traditional deployments both in the cloud and on-premise to suit any business. Deployments can be inter-conntected with each other sharing data and resourcing or independant and issolated while providing a consistent framework and guideline for both development, deployment, DevOps and administration.
 
-			CQRS.NET has been designed with modularity in mind. There are a number of supplementary technology packages you can chose from. Every package and design choice made should be interchangeable with custom code if needed.
+			CQRS.NET has been designed with modularity in mind... see the number of technology packages below you can chose from. Modularity applies to both development concerns like storage as well as operational modularity such as serverless or micro-service deployment, PaaS, VMs or container packaging. Every package and design choice made should be interchangeable with custom code if needed.
 		</summary>
 		<copyright>Copyright 2013</copyright>
-		<tags>CQRS CQRS.NET Pub/Sub Microservices Event-Sourcing</tags>
+		<tags>Serverless Microservices CQRS CQRS.NET Pub/Sub Event-Sourcing</tags>
 
 		<releaseNotes>
-			Version 2.2
+			Version 2.4
 
-			* Added configuration transformations to required app.config and web.config settings are more obvious and set by default.
-			* Refactored CqrsHttpApplication from the Cqrs.WebApi package here without a requirement on SignalR.
-			* Added several base level Hosts for WebAPI, WCF WebJobs and console to base themselves off.
-			* Relocated InProcessEventStore here.
-			* Added new Exceptions.
-			* ReplicatedSqlEventStore was relocated from the Cqrs.Sql package into this package.
-			* Moved MultipleCommandHandlersRegisteredException to Cqrs.Exceptions
-			* Moved MultipleHandlersRegisteredException to Cqrs.Exceptions
-			* Moved NoCommandHandlerRegisteredException to Cqrs.Exceptions
-			* Moved NoEventHandlerRegisteredException to Cqrs.Exceptions
-			* Moved NoHandlerRegisteredException to Cqrs.Exceptions
-			* Moved NoHandlersRegisteredException to Cqrs.Exceptions
+			see https://github.com/Chinchilla-Software-Com/CQRS/releases/tag/releases%2F2.4%2F2.4.1619.839
 
-			Version 2.1
+			Version 2.3
 
-			* Renamed and deprecated Cqrs.Domain.IRepository to Cqrs.Domain.IAggregateRepository.
-			* Renamed and deprecated Cqrs.Domain.Repository to Cqrs.Domain.AggregateRepository.
-			* #11. Added Saga/Process Manager via a new Cqrs.Domain.Saga class. This is an event handler with access to the Command Bus for sending command and uses an EventStore for state management.
-			* #17. Added an authentication helper based on integers and Guids, see DefaultAuthenticationTokenHelper.
-			* #18. Added IPublishAndWaitCommandPublisher to replace the deprecated ISendAndWaitCommandSender.
-			* #18. Added IPublishAndWaitCommandPublisher to InProcessBus.
-			* #19. Added support for multiple write and read connection strings for simplified SQL data store.
-
-			Version 2.0
-
-			* Added built-in Linq To SQL data store and event store modules to speed up time to market. This enables the use of just the one CQRS package to get to market. This adds a new configuration property "SqlDataStoreDbFileOrServerOrConnection" to the appSettings.
-			* Added Sql script for creating an event store table on SqlServer. Look in the Tool folder of the nuget package folder.
-			* An example for using the new Sql modules for data persistence and event sourcing can be found at our GitHub repository. Look for the 'Samples\CqrsWeb' Project.
-			* Added a repository builder and data-store builder to entities in UML.
-			* Added code generation for the base Host class.
-			* Added an event store service class so event can be queried by CorrelationId for external services that don't have access to the bus network.
-			* Added new stereo type on relationships to visually model aggregate to event EventHandlers.
-			* Added new stereo type on relationships to visually model event to command converter EventHandlers.
-			* Added new stereo type on relationships to visually model command to aggregate CommandHandlers.
-			* Added a new companion package Cqrs.WebApi that provides the base for ASP.NET Web API usage with CQRS.NET.
-			* Added configurable setting to enable certain events and commands to not be required to be handled by the service bus (useful when you want an instance of the system to just run a subset of all possible events that might be received by a poorly configured bus). Currently only AzureService bus support this.
-			* Added configurable setting to change the default behaviour of the "certain events and commands are required or not" settings into a white-list or black-list.
-			* Added a tokens "TokenWithUserRsn", "TokenWithCompanyRsn" and "TokenWithUserRsnAndCompanyRsn".
-			* Added MemoryCacheEventStore.
-			* Added SendAndWait to command senders.
-			* Added the EventStoreRetentionLevel Attribute to allow custom event publishers to use a standardised metric to decide hot, warm and cold storage of events.
-			* Added public/private event attributes.
-			* Added public/private notification attributes.
-			* Added telemetry data collection on repositories and event-stores.
-			* Added ability to send a collection of commands and events.
-			* Deprecated the ICommandSender and replaced it with the ICommandPublisher.
-			* Allowed the JsonSettings in draw default from DefaultJsonSerializerSettings so that custom contract resolvers and converters added without needing to inherit and implement a customise classes.
+			see https://github.com/Chinchilla-Software-Com/CQRS/releases/tag/releases%2F2.3%2F2.3.1595.820
 		</releaseNotes>
 	</metadata>
 	<files>

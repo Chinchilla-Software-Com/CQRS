@@ -18,40 +18,71 @@ using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using cdmdotnet.Logging;
+using Cqrs.Exceptions;
 using Cqrs.Messages;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	// The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
+	/// <summary>
+	/// A <see cref="IEventReceiver{TAuthenticationToken}"/> that receives network messages, resolves handlers and executes the handler.
+	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	// The “,nq” suffix here just asks the expression evaluator to remove the quotes when displaying the final value (nq = no quotes).
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public class AzureEventBusReceiver<TAuthenticationToken>
 		: AzureEventBus<TAuthenticationToken>
 		, IEventHandlerRegistrar
 		, IEventReceiver<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The configuration key for
+		/// the number of receiver <see cref="SubscriptionClient"/> instances to create
+		/// as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected virtual string NumberOfReceiversCountConfigurationKey
 		{
 			get { return "Cqrs.Azure.EventBus.NumberOfReceiversCount"; }
 		}
 
+		/// <summary>
+		/// The configuration key for
+		/// <see cref="OnMessageOptions.MaxConcurrentCalls"/>.
+		/// as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected virtual string MaximumConcurrentReceiverProcessesCountConfigurationKey
 		{
 			get { return "Cqrs.Azure.EventBus.MaximumConcurrentReceiverProcessesCount"; }
 		}
 
+		/// <summary>
+		/// The configuration key for
+		/// the <see cref="SqlFilter.SqlExpression"/> that can be applied to
+		/// the <see cref="SubscriptionClient"/> instances in the receivers
+		/// as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
 		protected virtual string FilterKeyConfigurationKey
 		{
 			get { return "Cqrs.Azure.EventBus.TopicName.SubscriptionName.Filter"; }
 		}
 
-		protected string FilterKey { get; set; }
+		/// <summary>
+		/// The <see cref="SqlFilter.SqlExpression"/> that can be applied to
+		/// the <see cref="SubscriptionClient"/> instances in the receivers,
+		/// keyed by the topic name as there is the private and public bus
+		/// </summary>
+		protected IDictionary<string, string> FilterKey { get; set; }
 
 		// ReSharper disable StaticMemberInGenericType
-		protected static RouteManager Routes { get; private set; }
+		/// <summary>
+		/// Gets the <see cref="RouteManager"/>.
+		/// </summary>
+		public static RouteManager Routes { get; private set; }
 
+		/// <summary>
+		/// The number of handles currently being executed.
+		/// </summary>
 		protected static long CurrentHandles { get; set; }
 		// ReSharper restore StaticMemberInGenericType
 
@@ -60,12 +91,19 @@ namespace Cqrs.Azure.ServiceBus
 			Routes = new RouteManager();
 		}
 
-		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, false)
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureEventBusReceiver{TAuthenticationToken}"/>.
+		/// </summary>
+		public AzureEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper, IBusHelper busHelper, IHashAlgorithmFactory hashAlgorithmFactory)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, hashAlgorithmFactory, false)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventBus.Receiver.UseApplicationInsightTelemetryHelper", correlationIdHelper);
+			FilterKey = new Dictionary<string, string>();
 		}
 
+		/// <summary>
+		/// The debugger variable window value.
+		/// </summary>
 		internal string DebuggerDisplay
 		{
 			get
@@ -75,30 +113,23 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					connectionString = string.Concat(connectionString, "=", GetConnectionString());
 				}
-				catch { /**/ }
+				catch { /* */ }
 				return string.Format(CultureInfo.InvariantCulture, "{0}, PrivateTopicName : {1}, PrivateTopicSubscriptionName : {2}, PublicTopicName : {3}, PublicTopicSubscriptionName : {4}, FilterKey : {5}, NumberOfReceiversCount : {6}",
 					connectionString, PrivateTopicName, PrivateTopicSubscriptionName, PublicTopicName, PublicTopicSubscriptionName, FilterKey, NumberOfReceiversCount);
 			}
 		}
 
-		public void Start()
-		{
-			InstantiateReceiving();
-
-			// Configure the callback options
-			OnMessageOptions options = new OnMessageOptions
-			{
-				AutoComplete = false,
-				AutoRenewTimeout = TimeSpan.FromMinutes(1),
-				MaxConcurrentCalls = MaximumConcurrentReceiverProcessesCount
-			};
-
-			// Callback to handle received messages
-			RegisterReceiverMessageHandler(ReceiveEvent, options);
-		}
-
 		#region Overrides of AzureServiceBus<TAuthenticationToken>
 
+		/// <summary>
+		/// Calls <see cref="AzureServiceBus{TAuthenticationToken}.InstantiateReceiving()"/>
+		/// then uses a <see cref="Task"/> to apply the <see cref="FilterKey"/> as a <see cref="RuleDescription"/>
+		/// to the <see cref="SubscriptionClient"/> instances in <paramref name="serviceBusReceivers"/>.
+		/// </summary>
+		/// <param name="namespaceManager">The <see cref="NamespaceManager"/>.</param>
+		/// <param name="serviceBusReceivers">The receivers collection to place <see cref="SubscriptionClient"/> instances into.</param>
+		/// <param name="topicName">The topic name.</param>
+		/// <param name="topicSubscriptionName">The topic subscription name.</param>
 		protected override void InstantiateReceiving(NamespaceManager namespaceManager, IDictionary<int, SubscriptionClient> serviceBusReceivers, string topicName, string topicSubscriptionName)
 		{
 			base.InstantiateReceiving(namespaceManager, serviceBusReceivers, topicName, topicSubscriptionName);
@@ -110,9 +141,9 @@ namespace Cqrs.Azure.ServiceBus
 				string filter;
 				if (!ConfigurationManager.TryGetSetting(FilterKeyConfigurationKey, out filter))
 					return;
-				if (FilterKey == filter)
+				if (FilterKey.ContainsKey(topicName) && FilterKey[topicName] == filter)
 					return;
-				FilterKey = filter;
+				FilterKey[topicName] = filter;
 
 				// https://docs.microsoft.com/en-us/azure/application-insights/app-insights-analytics-reference#summarize-operator
 				// http://www.summa.com/blog/business-blog/everything-you-need-to-know-about-azure-service-bus-brokered-messaging-part-2#rulesfiltersactions
@@ -195,8 +226,11 @@ namespace Cqrs.Azure.ServiceBus
 		#endregion
 
 		/// <summary>
-		/// Register an event or command handler that will listen and respond to events or commands.
+		/// Register an event handler that will listen and respond to events.
 		/// </summary>
+		/// <remarks>
+		/// In many cases the <paramref name="targetedType"/> will be the handler class itself, what you actually want is the target of what is being updated.
+		/// </remarks>
 		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
@@ -204,7 +238,7 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		/// <summary>
-		/// Register an event or command handler that will listen and respond to events or commands.
+		/// Register an event handler that will listen and respond to events.
 		/// </summary>
 		public void RegisterHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = false)
 			where TMessage : IMessage
@@ -215,11 +249,15 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
-		public void RegisterGlobalEventHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true) where TMessage : IMessage
+		public void RegisterGlobalEventHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
+			where TMessage : IMessage
 		{
 			AzureBusHelper.RegisterGlobalEventHandler(TelemetryHelper, Routes, handler, holdMessageLock);
 		}
 
+		/// <summary>
+		/// Receives a <see cref="BrokeredMessage"/> from the event bus.
+		/// </summary>
 		protected virtual void ReceiveEvent(BrokeredMessage message)
 		{
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
@@ -229,11 +267,11 @@ namespace Cqrs.Azure.ServiceBus
 			bool? wasSuccessfull = true;
 			string telemetryName = string.Format("Cqrs/Handle/Event/{0}", message.MessageId);
 			ISingleSignOnToken authenticationToken = null;
+			Guid? guidAuthenticationToken = null;
+			string stringAuthenticationToken = null;
+			int? intAuthenticationToken = null;
 
-			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
-			object value;
-			if (message.Properties.TryGetValue("Type", out value))
-				telemetryProperties.Add("MessageType", value.ToString());
+			IDictionary<string, string> telemetryProperties = ExtractTelemetryProperties(message, "Azure/Servicebus");
 			TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles++, telemetryProperties);
 			var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
 			try
@@ -243,6 +281,8 @@ namespace Cqrs.Azure.ServiceBus
 
 				IEvent<TAuthenticationToken> @event = AzureBusHelper.ReceiveEvent(messageBody, ReceiveEvent,
 					string.Format("id '{0}'", message.MessageId),
+					ExtractSignature(message),
+					SigningTokenConfigurationKey,
 					() =>
 					{
 						wasSuccessfull = null;
@@ -270,8 +310,14 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					if (@event != null)
 					{
-						telemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+						telemetryName = string.Format("{0}/{1}/{2}", @event.GetType().FullName, @event.GetIdentity(), @event.Id);
 						authenticationToken = @event.AuthenticationToken as ISingleSignOnToken;
+						if (AuthenticationTokenIsGuid)
+							guidAuthenticationToken = @event.AuthenticationToken as Guid?;
+						if (AuthenticationTokenIsString)
+							stringAuthenticationToken = @event.AuthenticationToken as string;
+						if (AuthenticationTokenIsInt)
+							intAuthenticationToken = @event.AuthenticationToken as int?;
 
 						var telemeteredMessage = @event as ITelemeteredMessage;
 						if (telemeteredMessage != null)
@@ -322,6 +368,39 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				responseCode = "599";
 			}
+			catch (UnAuthorisedMessageReceivedException exception)
+			{
+				TelemetryHelper.TrackException(exception, null, telemetryProperties);
+				// Indicates a problem, unlock message in queue
+				Logger.LogError(string.Format("An event message arrived with the id '{0}' but was not authorised.", message.MessageId), exception: exception);
+				message.DeadLetter("UnAuthorisedMessageReceivedException", exception.Message);
+				wasSuccessfull = false;
+				responseCode = "401";
+				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
+				telemetryProperties.Add("ExceptionMessage", exception.Message);
+			}
+			catch (NoHandlersRegisteredException exception)
+			{
+				TelemetryHelper.TrackException(exception, null, telemetryProperties);
+				// Indicates a problem, unlock message in queue
+				Logger.LogError(string.Format("An event message arrived with the id '{0}' but no handlers were found to process it.", message.MessageId), exception: exception);
+				message.DeadLetter("NoHandlersRegisteredException", exception.Message);
+				wasSuccessfull = false;
+				responseCode = "501";
+				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
+				telemetryProperties.Add("ExceptionMessage", exception.Message);
+			}
+			catch (NoHandlerRegisteredException exception)
+			{
+				TelemetryHelper.TrackException(exception, null, telemetryProperties);
+				// Indicates a problem, unlock message in queue
+				Logger.LogError(string.Format("An event message arrived with the id '{0}' but no handler was found to process it.", message.MessageId), exception: exception);
+				message.DeadLetter("NoHandlerRegisteredException", exception.Message);
+				wasSuccessfull = false;
+				responseCode = "501";
+				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
+				telemetryProperties.Add("ExceptionMessage", exception.Message);
+			}
 			catch (Exception exception)
 			{
 				TelemetryHelper.TrackException(exception, null, telemetryProperties);
@@ -340,21 +419,58 @@ namespace Cqrs.Azure.ServiceBus
 				TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles--, telemetryProperties);
 
 				mainStopWatch.Stop();
-				TelemetryHelper.TrackRequest
-				(
-					telemetryName,
-					authenticationToken,
-					startedAt,
-					mainStopWatch.Elapsed,
-					responseCode,
-					wasSuccessfull == null || wasSuccessfull.Value,
-					telemetryProperties
-				);
+				if (guidAuthenticationToken != null)
+					TelemetryHelper.TrackRequest
+					(
+						telemetryName,
+						guidAuthenticationToken,
+						startedAt,
+						mainStopWatch.Elapsed,
+						responseCode,
+						wasSuccessfull == null || wasSuccessfull.Value,
+						telemetryProperties
+					);
+				else if (intAuthenticationToken != null)
+					TelemetryHelper.TrackRequest
+					(
+						telemetryName,
+						intAuthenticationToken,
+						startedAt,
+						mainStopWatch.Elapsed,
+						responseCode,
+						wasSuccessfull == null || wasSuccessfull.Value,
+						telemetryProperties
+					);
+				else if (stringAuthenticationToken != null)
+					TelemetryHelper.TrackRequest
+					(
+						telemetryName,
+						stringAuthenticationToken,
+						startedAt,
+						mainStopWatch.Elapsed,
+						responseCode,
+						wasSuccessfull == null || wasSuccessfull.Value,
+						telemetryProperties
+					);
+				else
+					TelemetryHelper.TrackRequest
+					(
+						telemetryName,
+						authenticationToken,
+						startedAt,
+						mainStopWatch.Elapsed,
+						responseCode,
+						wasSuccessfull == null || wasSuccessfull.Value,
+						telemetryProperties
+					);
 
 				TelemetryHelper.Flush();
 			}
 		}
 
+		/// <summary>
+		/// Receives a <see cref="IEvent{TAuthenticationToken}"/> from the event bus.
+		/// </summary>
 		public virtual bool? ReceiveEvent(IEvent<TAuthenticationToken> @event)
 		{
 			return AzureBusHelper.DefaultReceiveEvent(@event, Routes, "Azure-ServiceBus");
@@ -362,6 +478,10 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Overrides of AzureServiceBus<TAuthenticationToken>
 
+		/// <summary>
+		/// Returns <see cref="NumberOfReceiversCountConfigurationKey"/> from <see cref="IConfigurationManager"/> 
+		/// if no value is set, returns <see cref="AzureBus{TAuthenticationToken}.DefaultNumberOfReceiversCount"/>.
+		/// </summary>
 		protected override int GetCurrentNumberOfReceiversCount()
 		{
 			string numberOfReceiversCountValue;
@@ -376,6 +496,10 @@ namespace Cqrs.Azure.ServiceBus
 			return numberOfReceiversCount;
 		}
 
+		/// <summary>
+		/// Returns <see cref="MaximumConcurrentReceiverProcessesCountConfigurationKey"/> from <see cref="IConfigurationManager"/> 
+		/// if no value is set, returns <see cref="AzureBus{TAuthenticationToken}.DefaultMaximumConcurrentReceiverProcessesCount"/>.
+		/// </summary>
 		protected override int GetCurrentMaximumConcurrentReceiverProcessesCount()
 		{
 			string maximumConcurrentReceiverProcessesCountValue;
@@ -388,6 +512,29 @@ namespace Cqrs.Azure.ServiceBus
 			else
 				maximumConcurrentReceiverProcessesCount = DefaultMaximumConcurrentReceiverProcessesCount;
 			return maximumConcurrentReceiverProcessesCount;
+		}
+
+		#endregion
+
+		#region Implementation of IEventReceiver
+
+		/// <summary>
+		/// Starts listening and processing instances of <see cref="IEvent{TAuthenticationToken}"/> from the event bus.
+		/// </summary>
+		public void Start()
+		{
+			InstantiateReceiving();
+
+			// Configure the callback options
+			OnMessageOptions options = new OnMessageOptions
+			{
+				AutoComplete = false,
+				AutoRenewTimeout = TimeSpan.FromMinutes(1),
+				MaxConcurrentCalls = MaximumConcurrentReceiverProcessesCount
+			};
+
+			// Callback to handle received messages
+			RegisterReceiverMessageHandler(ReceiveEvent, options);
 		}
 
 		#endregion

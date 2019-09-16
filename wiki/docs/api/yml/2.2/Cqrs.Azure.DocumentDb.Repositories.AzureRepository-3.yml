@@ -22,21 +22,24 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AzureRepository
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Repositories/AzureRepository.cs
-    startLine: 19
+    startLine: 25
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Repositories
+  summary: "\nProvides basic repository methods for operations with an <xref href=\"Cqrs.DataStores.IDataStore%601\" data-throw-if-not-resolved=\"false\"></xref> using Azure DocumentDB (CosmosDB).\n"
+  example: []
   syntax:
     content: 'public abstract class AzureRepository<TQueryStrategy, TQueryBuilder, TData> : Repository<TQueryStrategy, TQueryBuilder, TData>, IRepository<TQueryStrategy, TData> where TQueryStrategy : IQueryStrategy where TQueryBuilder : QueryBuilder<TQueryStrategy, TData> where TData : AzureDocumentDbEntity'
     typeParameters:
     - id: TQueryStrategy
+      description: The <see cref="!:Type"></see> of <xref href="Cqrs.Repositories.Queries.IQueryStrategy" data-throw-if-not-resolved="false"></xref>.
     - id: TQueryBuilder
+      description: The <see cref="!:Type"></see> of the <xref href="Cqrs.Repositories.Queries.QueryBuilder%602" data-throw-if-not-resolved="false"></xref> that will be used to build queries.
     - id: TData
+      description: The <see cref="!:Type"></see> of data held in storage.
     content.vb: >-
       Public MustInherit Class AzureRepository(Of TQueryStrategy As IQueryStrategy, TQueryBuilder As QueryBuilder(Of TQueryStrategy, TData), TData As AzureDocumentDbEntity)
-
           Inherits Repository(Of TQueryStrategy, TQueryBuilder, TData)
-
           Implements IRepository(Of TQueryStrategy, TData)
   inheritance:
   - System.Object
@@ -86,10 +89,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: .ctor
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Repositories/AzureRepository.cs
-    startLine: 24
+    startLine: 33
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Repositories
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Azure.DocumentDb.Repositories.AzureRepository%603\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected AzureRepository(Func<IDataStore<TData>> createDataStoreFunction, TQueryBuilder queryBuilder)
     parameters:
@@ -124,17 +129,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Load
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Repositories/AzureRepository.cs
-    startLine: 29
+    startLine: 43
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Repositories
+  summary: "\nLoad the <code data-dev-comment-type=\"typeparamref\">TData</code> from Azure DocumentDB (CosmosDB) identified by the provided <code data-dev-comment-type=\"paramref\">rsn</code>.\n"
+  example: []
   syntax:
     content: public override TData Load(Guid rsn, bool throwExceptionOnMissingEntity = true)
     parameters:
     - id: rsn
       type: Guid
+      description: The identifier if the <code data-dev-comment-type="typeparamref">TData</code> to load.
     - id: throwExceptionOnMissingEntity
       type: System.Boolean
+      description: If true will throw an <see cref="!:Exception"></see> if no data is found in storage.
     return:
       type: '{TData}'
     content.vb: Public Overrides Function Load(rsn As Guid, throwExceptionOnMissingEntity As Boolean = True) As TData
@@ -165,15 +174,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CreateQueryable
     path: Framework/Azure/Cqrs.Azure.DocumentDb/Repositories/AzureRepository.cs
-    startLine: 39
+    startLine: 57
   assemblies:
   - Cqrs.Azure.DocumentDb
   namespace: Cqrs.Azure.DocumentDb.Repositories
+  summary: "\nCalls <xref href=\"Cqrs.Repositories.Repository%603.CreateDataStoreFunction\" data-throw-if-not-resolved=\"false\"></xref> passing the <code data-dev-comment-type=\"paramref\">predicate</code>.\n"
+  example: []
   syntax:
     content: protected override IQueryable<TData> CreateQueryable(Expression<Func<TData, bool>> predicate)
     parameters:
     - id: predicate
       type: Expression{Func{{TData},System.Boolean}}
+      description: A function defining a filter if required.
     return:
       type: IQueryable{{TData}}
     content.vb: Protected Overrides Function CreateQueryable(predicate As Expression(Of Func(Of TData, Boolean))) As IQueryable(Of TData)
@@ -188,6 +200,99 @@ items:
   fullName.vb: Cqrs.Azure.DocumentDb.Repositories.AzureRepository(Of TQueryStrategy, TQueryBuilder, TData).CreateQueryable(Expression(Of Func(Of TData, System.Boolean)))
   name.vb: CreateQueryable(Expression(Of Func(Of TData, Boolean)))
 references:
+- uid: Cqrs.DataStores.IDataStore`1
+  commentId: T:Cqrs.DataStores.IDataStore`1
+  isExternal: false
+  name: IDataStore<TData>
+  nameWithType: IDataStore<TData>
+  fullName: Cqrs.DataStores.IDataStore<TData>
+  nameWithType.vb: IDataStore(Of TData)
+  fullName.vb: Cqrs.DataStores.IDataStore(Of TData)
+  name.vb: IDataStore(Of TData)
+  spec.csharp:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.DataStores.IDataStore`1
+    name: IDataStore
+    nameWithType: IDataStore
+    fullName: Cqrs.DataStores.IDataStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Repositories.Queries.IQueryStrategy
+  commentId: T:Cqrs.Repositories.Queries.IQueryStrategy
+  parent: Cqrs.Repositories.Queries
+  isExternal: false
+  name: IQueryStrategy
+  nameWithType: IQueryStrategy
+  fullName: Cqrs.Repositories.Queries.IQueryStrategy
+- uid: Cqrs.Repositories.Queries.QueryBuilder`2
+  commentId: T:Cqrs.Repositories.Queries.QueryBuilder`2
+  isExternal: false
+  name: QueryBuilder<TQueryStrategy, TData>
+  nameWithType: QueryBuilder<TQueryStrategy, TData>
+  fullName: Cqrs.Repositories.Queries.QueryBuilder<TQueryStrategy, TData>
+  nameWithType.vb: QueryBuilder(Of TQueryStrategy, TData)
+  fullName.vb: Cqrs.Repositories.Queries.QueryBuilder(Of TQueryStrategy, TData)
+  name.vb: QueryBuilder(Of TQueryStrategy, TData)
+  spec.csharp:
+  - uid: Cqrs.Repositories.Queries.QueryBuilder`2
+    name: QueryBuilder
+    nameWithType: QueryBuilder
+    fullName: Cqrs.Repositories.Queries.QueryBuilder
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Repositories.Queries.QueryBuilder`2
+    name: QueryBuilder
+    nameWithType: QueryBuilder
+    fullName: Cqrs.Repositories.Queries.QueryBuilder
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Azure.DocumentDb.Repositories
   commentId: N:Cqrs.Azure.DocumentDb.Repositories
   isExternal: false
@@ -890,6 +995,12 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: Cqrs.Repositories.Queries
+  commentId: N:Cqrs.Repositories.Queries
+  isExternal: false
+  name: Cqrs.Repositories.Queries
+  nameWithType: Cqrs.Repositories.Queries
+  fullName: Cqrs.Repositories.Queries
 - uid: System
   commentId: N:System
   isExternal: false
@@ -1573,6 +1684,67 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Azure.DocumentDb.Repositories.AzureRepository`3
+  commentId: T:Cqrs.Azure.DocumentDb.Repositories.AzureRepository`3
+  isExternal: false
+  name: AzureRepository<TQueryStrategy, TQueryBuilder, TData>
+  nameWithType: AzureRepository<TQueryStrategy, TQueryBuilder, TData>
+  fullName: Cqrs.Azure.DocumentDb.Repositories.AzureRepository<TQueryStrategy, TQueryBuilder, TData>
+  nameWithType.vb: AzureRepository(Of TQueryStrategy, TQueryBuilder, TData)
+  fullName.vb: Cqrs.Azure.DocumentDb.Repositories.AzureRepository(Of TQueryStrategy, TQueryBuilder, TData)
+  name.vb: AzureRepository(Of TQueryStrategy, TQueryBuilder, TData)
+  spec.csharp:
+  - uid: Cqrs.Azure.DocumentDb.Repositories.AzureRepository`3
+    name: AzureRepository
+    nameWithType: AzureRepository
+    fullName: Cqrs.Azure.DocumentDb.Repositories.AzureRepository
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TQueryBuilder
+    nameWithType: TQueryBuilder
+    fullName: TQueryBuilder
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Azure.DocumentDb.Repositories.AzureRepository`3
+    name: AzureRepository
+    nameWithType: AzureRepository
+    fullName: Cqrs.Azure.DocumentDb.Repositories.AzureRepository
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TQueryStrategy
+    nameWithType: TQueryStrategy
+    fullName: TQueryStrategy
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TQueryBuilder
+    nameWithType: TQueryBuilder
+    fullName: TQueryBuilder
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TData
+    nameWithType: TData
+    fullName: TData
   - name: )
     nameWithType: )
     fullName: )

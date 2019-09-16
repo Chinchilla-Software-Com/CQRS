@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.Remoting.Channels;
 using cdmdotnet.Logging;
+using cdmdotnet.Logging.Configuration;
 using Cqrs.Authentication;
+using Cqrs.Bus;
+using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.MongoDB.Events;
 using Cqrs.MongoDB.Serialisers;
@@ -15,6 +20,7 @@ using Cqrs.Ninject.MongoDB.Configuration;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using Ninject.Modules;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
@@ -24,16 +30,69 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 		private static void Main(string[] args)
 		{
 			int argumentCount = args.Length;
-			new Program<SingleSignOnToken>().Run();
+
+			Console.WriteLine(@"This application will replay a collection of events.
+
+It works by scanning any subfolders for .net assemblies and looking for events it can republish on an event bus.
+
+For this to work we suggest you create a subfolder and place any assemblies you want to process in that folder.
+You will also need to adjust/modify the .config file for this application with any required configuration your assemblies need. Once you have done that you will be ready to proceed.
+
+Have you created your subfolder, added your assemblies and configured the .config file? Press Y if so to proceed. Press any other key to exit the application and configure your environment.
+
+Press Y to proceed.");
+			ConsoleKeyInfo character = Console.ReadKey();
+			Console.WriteLine();
+			if (!(new[] {'y', 'Y'}.Contains(character.KeyChar)))
+				return;
+
+			IProgram program;
+			string authenticationType = ConfigurationManager.AppSettings["Cqrs.AuthenticationTokenType"] ?? string.Empty;
+
+			if (authenticationType.ToLowerInvariant() == "int" || authenticationType.ToLowerInvariant() == "integer")
+				program = new Program<int>();
+			else if (authenticationType.ToLowerInvariant() == "guid")
+				program = new Program<Guid>();
+			else if (authenticationType.ToLowerInvariant() == "string" || authenticationType.ToLowerInvariant() == "text")
+				program = new Program<string>();
+			else if (authenticationType == "SingleSignOnToken")
+				program = new Program<SingleSignOnToken>();
+			else if (authenticationType == "SingleSignOnTokenWithUserRsn")
+				program = new Program<SingleSignOnTokenWithUserRsn>();
+			else if (authenticationType == "SingleSignOnTokenWithCompanyRsn")
+				program = new Program<SingleSignOnTokenWithCompanyRsn>();
+			else if (authenticationType == "SingleSignOnTokenWithUserRsnAndCompanyRsn")
+				program = new Program<SingleSignOnTokenWithUserRsnAndCompanyRsn>();
+			else if (authenticationType == "ISingleSignOnToken")
+				program = new Program<ISingleSignOnToken>();
+			else if (authenticationType == "ISingleSignOnTokenWithUserRsn")
+				program = new Program<ISingleSignOnTokenWithUserRsn>();
+			else if (authenticationType == "ISingleSignOnTokenWithCompanyRsn")
+				program = new Program<ISingleSignOnTokenWithCompanyRsn>();
+			else if (authenticationType == "ISingleSignOnTokenWithUserRsnAndCompanyRsn")
+				program = new Program<ISingleSignOnTokenWithUserRsnAndCompanyRsn>();
+			else
+				program = new Program<Guid>();
+			program.Run();
 		}
 	}
 
+	interface IProgram
+	{
+		void Run();
+	}
+
 	class Program<TAuthenticationToken>
+		: IProgram
 	{
 		private bool LoadAllDataFirst { get; set; }
 
+		private IDictionary<string, Assembly> LoadableAssemblies { get; set; }
+
 		public virtual void Run()
 		{
+			LoadableAssemblies = new Dictionary<string, Assembly>();
+
 			bool loadAllDataFirst;
 			if (!bool.TryParse(ConfigurationManager.AppSettings["LoadAllDataFirst"], out loadAllDataFirst))
 				loadAllDataFirst = true;
@@ -41,7 +100,7 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 
 			StartResolver();
 
-			var logger = NinjectDependencyResolver.Current.Resolve<ILogger>();
+			var logger = DependencyResolver.Current.Resolve<ILogger>();
 			logger.LogInfo(LoadAllDataFirst ? "All data will be loaded first." : "Events will be sent to the event bus as they are found.", "Run");
 
 			// Find event store
@@ -67,7 +126,8 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 				if (DateTime.TryParse(toDateValue, out toDate1))
 					toDate = toDate1;
 			}
-			IEnumerable<IEvent<TAuthenticationToken>> events = LoadEventsFromEventStore(eventPublisher, eventStore, fromDate, toDate, ScanAndPickTypes());
+
+			IEnumerable<IEvent<TAuthenticationToken>> events = LoadEventsFromEventStore(eventPublisher, eventStore, fromDate, toDate, ScanAndPickTypes<IEvent<TAuthenticationToken>>("Events"));
 
 			if (LoadAllDataFirst)
 			{
@@ -79,9 +139,48 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 		protected virtual void StartResolver()
 		{
 			NinjectDependencyResolver.ModulesToLoad.Add(new CqrsModule<TAuthenticationToken, AuthenticationTokenHelper<TAuthenticationToken>>(false, false, true));
-			NinjectDependencyResolver.ModulesToLoad.Add(new AzureEventBusPublisherModule<TAuthenticationToken>());
-			NinjectDependencyResolver.ModulesToLoad.Add(new MongoDbEventStoreModule<TAuthenticationToken>());
+			bool useAzureServiceBusEventBus = bool.Parse(ConfigurationManager.AppSettings["EventBus.AzureServiceBus"]);
+			bool useInProcessEventBus = bool.Parse(ConfigurationManager.AppSettings["EventBus.InProcessBus"]);
+			if (useAzureServiceBusEventBus)
+				NinjectDependencyResolver.ModulesToLoad.Add(new AzureEventBusPublisherModule<TAuthenticationToken>());
+			if (useInProcessEventBus)
+				NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule<TAuthenticationToken>());
+			bool useMongoDbEventStore = bool.Parse(ConfigurationManager.AppSettings["EventStore.MongoDB"]);
+			bool useSqlEventStore = bool.Parse(ConfigurationManager.AppSettings["EventStore.SQL"]);
+			if (useMongoDbEventStore)
+				NinjectDependencyResolver.ModulesToLoad.Add(new MongoDbEventStoreModule<TAuthenticationToken>());
+			if (useSqlEventStore)
+				NinjectDependencyResolver.ModulesToLoad.Add(new SimplifiedSqlModule<TAuthenticationToken>());
+
+			string[] additionalNinjectModules = (ConfigurationManager.AppSettings["AdditionalNinjectModules"] ?? string.Empty).Split(',');
+			if (additionalNinjectModules.Any())
+			{
+				IEnumerable<Type> ninjectModuleTypes = ScanAndPickTypes<NinjectModule>("Ninject Modules", true)
+					.Where(type => additionalNinjectModules.Contains(type.FullName) || additionalNinjectModules.Contains(type.Name));
+
+				foreach (Type ninjectModuleType in ninjectModuleTypes)
+				{
+					NinjectDependencyResolver.ModulesToLoad.Add((NinjectModule)Activator.CreateInstance(ninjectModuleType));
+				}
+			}
+
 			NinjectDependencyResolver.Start();
+			if (useInProcessEventBus)
+			{
+				Type[] eventHandlerTypes = ScanAndPickTypes<IEventHandler>("Event Handlers");
+				Type iEventType = typeof(IEventHandler);
+				var eventHandlerRegistrar = new BusRegistrar(DependencyResolver.Current);
+				eventHandlerRegistrar.Register
+				(
+					true,
+					eventHandlerRegistrar.ResolveEventHandlerInterface,
+					true,
+					eventHandlerTypes
+						.Where(eventHandlerType => iEventType.IsAssignableFrom(eventHandlerType))
+						.Select(eventHandlerType => new BusRegistrar.HandlerTypeInformation { Type = eventHandlerType, Interfaces = eventHandlerRegistrar.ResolveEventHandlerInterface(eventHandlerType) })
+						.ToArray()
+				);
+			}
 		}
 
 		/// <summary>
@@ -89,9 +188,9 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 		/// </summary>
 		protected virtual IEventStore<TAuthenticationToken> FindEventStore()
 		{
-			var logger = NinjectDependencyResolver.Current.Resolve<ILogger>();
+			var logger = DependencyResolver.Current.Resolve<ILogger>();
 			logger.LogInfo("Locating event store.", "FindEventStore");
-			return NinjectDependencyResolver.Current.Resolve<IEventStore<TAuthenticationToken>>();
+			return DependencyResolver.Current.Resolve<IEventStore<TAuthenticationToken>>();
 		}
 
 		/// <summary>
@@ -99,31 +198,48 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 		/// </summary>
 		protected virtual IEventPublisher<TAuthenticationToken> FindEventPublisher()
 		{
-			var logger = NinjectDependencyResolver.Current.Resolve<ILogger>();
+			var logger = DependencyResolver.Current.Resolve<ILogger>();
 			logger.LogInfo("Locating event publisher.", "FindEventPublisher");
-			return NinjectDependencyResolver.Current.Resolve<IEventPublisher<TAuthenticationToken>>();
+			return DependencyResolver.Current.Resolve<IEventPublisher<TAuthenticationToken>>();
 		}
 
-		protected virtual Type[] ScanAndPickTypes()
+		protected virtual Type[] ScanAndPickTypes<TType>(string typeName, bool defaultToAll = false)
 		{
-			var logger = NinjectDependencyResolver.Current.Resolve<ILogger>();
-			logger.LogInfo("Scanning all assemblies for events.", "ScanAndPickTypes");
+			var logger = DependencyResolver.Current == null ? new ConsoleLogger(new LoggerSettings(), new NullCorrelationIdHelper()) : DependencyResolver.Current.Resolve<ILogger>();
+			logger.LogInfo(string.Format("Scanning all assemblies for {0}.", typeName.ToLowerInvariant()), "ScanAndPickTypes");
 			string folder = AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory;
-			IEnumerable<string> fileNames = Directory.EnumerateFiles(folder, "*.dll");
+			List<string> fileNames = Directory.EnumerateFiles(folder, "*.dll").ToList();
+			fileNames.AddRange
+			(
+				Directory.EnumerateDirectories(folder).SelectMany(subFolder => Directory.EnumerateFiles(subFolder, "*.dll"))
+			);
 			IList<Type> allLocatedTypes = new List<Type>();
-			Type iEventType = typeof (IEvent<TAuthenticationToken>);
+			Type iEventType = typeof(TType);
 			int index = 0;
-			Console.WriteLine("0: All Events");
+			Console.WriteLine("{0}: All {1}", index++, typeName.ToLowerInvariant());
 
 			string[] extraDataTypesToLoad = ConfigurationManager.AppSettings["Cqrs.MongoDb.ExtraDataTypesToLoad"].Split(';');
-			Type basicStructSerialiserType = typeof (BasicStructSerialiser<>);
+			Type basicStructSerialiserType = typeof(BasicStructSerialiser<>);
+
+			// Pre-load all the assemblies so we don't get any error if out-of-order loading occurs.
+			foreach (string fileName in fileNames)
+				Assembly.LoadFrom(fileName);
+
+			AppDomain.CurrentDomain.AssemblyResolve += (sender, arguments) =>
+			{
+				Assembly assembly;
+				if (LoadableAssemblies.TryGetValue(arguments.Name, out assembly))
+					return assembly;
+				Console.WriteLine("You need to add {0} to your working folder as it couldn't be resolved{1}.", arguments.Name, arguments.RequestingAssembly == null ? null : " while loading " + arguments.RequestingAssembly);
+				return null;
+			};
 
 			foreach (string fileName in fileNames)
 			{
-				Assembly assembly = Assembly.LoadFile(fileName);
+				Assembly assembly = Assembly.LoadFrom(fileName);
 				List<Type> types = assembly
 					.GetTypes()
-					.Where(type => iEventType.IsAssignableFrom(type) || extraDataTypesToLoad.Any(extraDataType => type.AssemblyQualifiedName.StartsWith(extraDataType)))
+					.Where(type => iEventType.IsAssignableFrom(type) || (extraDataTypesToLoad.Any(extraDataType => !string.IsNullOrWhiteSpace(extraDataType) && type.AssemblyQualifiedName.StartsWith(extraDataType))))
 					.ToList();
 
 				if (!types.Any())
@@ -141,20 +257,47 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 					}
 					Console.WriteLine("\t" + index++ + ": " + type.FullName);
 					allLocatedTypes.Add(type);
+					if (!LoadableAssemblies.ContainsKey(assembly.FullName))
+						LoadableAssemblies.Add(assembly.FullName, assembly);
+					if (!LoadableAssemblies.ContainsKey(assembly.GetName().Name))
+						LoadableAssemblies.Add(assembly.GetName().Name, assembly);
 
 					var classMap = new BsonClassMap(type);
 					classMap.AutoMap();
-					BsonClassMap.RegisterClassMap(classMap);
+					if (!type.IsInterface)
+					{
+						try
+						{
+							BsonClassMap.RegisterClassMap(classMap);
+						}
+						catch { /* */ }
+					}
 				}
 			}
 
-			Console.WriteLine("Enter the events you want: e.g. 1,14,57");
-			string indexes = Console.ReadLine();
+			string indexes = null;
+			if (!defaultToAll)
+			{
+				Console.WriteLine("Enter the {0} you want: e.g. 1,14,57,101-115,600", typeName.ToLowerInvariant());
+				indexes = Console.ReadLine();
+			}
 			if (string.IsNullOrWhiteSpace(indexes) || indexes == "0")
 				return allLocatedTypes.ToArray();
 
 			string[] indexParts = indexes.Split(',');
-			IEnumerable<Type> selectedTypes = indexParts.Select(indexPart => allLocatedTypes[int.Parse(indexPart.Trim())]);
+			var selectedTypes = new List<Type>();
+			foreach (string indexPart in indexParts)
+			{
+				int rangeIndex = indexPart.IndexOf("-");
+				if (rangeIndex == -1)
+					selectedTypes.Add(allLocatedTypes[int.Parse(indexPart.Trim()) - 1]);
+				else
+				{
+					int skip = int.Parse(indexPart.Substring(0, rangeIndex).Trim()) - 1;
+					int take = int.Parse(indexPart.Substring(rangeIndex + 1).Trim()) - skip;
+					selectedTypes.AddRange(allLocatedTypes.Skip(skip).Take(take));
+				}
+			}
 
 			return selectedTypes.ToArray();
 		}
@@ -164,7 +307,11 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 		/// </summary>
 		protected virtual IEnumerable<IEvent<TAuthenticationToken>> LoadEventsFromEventStore(IEventPublisher<TAuthenticationToken> eventPublisher, IEventStore<TAuthenticationToken> eventStore, DateTime? fromDate = null, DateTime? toDate = null, params Type[] eventTypes)
 		{
-			var logger = NinjectDependencyResolver.Current.Resolve<ILogger>();
+			bool resumeOnError;
+			if (!bool.TryParse(ConfigurationManager.AppSettings["ResumeOnError"], out resumeOnError))
+				resumeOnError = false;
+
+			var logger = DependencyResolver.Current.Resolve<ILogger>();
 			MongoDbEventStore<TAuthenticationToken> mongoDbEventStore = eventStore as MongoDbEventStore<TAuthenticationToken>;
 			if (mongoDbEventStore != null)
 			{
@@ -199,6 +346,7 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 				int resultsCount = 0;
 				IMongoQueryable<MongoDbEventData> runQuery = query.Take(limitCount).Skip(skipCount);
 				var results = new List<IEvent<TAuthenticationToken>>();
+
 				do
 				{
 					IList<MongoDbEventData> subResults = runQuery.ToList();
@@ -207,12 +355,22 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 
 					foreach (MongoDbEventData eventData in subResults.Where(eventData => eventTypeNames.Any(eventTypeName => eventData.EventType.StartsWith(eventTypeName))))
 					{
-						IEvent<TAuthenticationToken> @event = NinjectDependencyResolver.Current.Resolve<IEventDeserialiser<TAuthenticationToken>>().Deserialise(eventData);
-						if (LoadAllDataFirst)
-							results.Add(@event);
-						else
-							PublishEventOnTheEventBus(logger, eventPublisher, @event);
-						resultsCount++;
+						try
+						{
+							IEvent<TAuthenticationToken> @event = DependencyResolver.Current.Resolve<IEventDeserialiser<TAuthenticationToken>>().Deserialise(eventData);
+							if (LoadAllDataFirst)
+								results.Add(@event);
+							else
+								PublishEventOnTheEventBus(logger, eventPublisher, @event);
+							resultsCount++;
+						}
+						catch (Exception exception)
+						{
+							logger.LogError("Failed to process message", exception: exception);
+							if (resumeOnError)
+								continue;
+							throw;
+						}
 					}
 
 					logger.LogProgress(string.Format("Captured {0:N0} items, walked past {1:N0} items and currently have {2:N0} events.", subResults.Count, skipCount, resultsCount), "LoadEventsFromEventStore");
@@ -224,15 +382,94 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 				return results;
 			}
 
+			SqlEventStore<TAuthenticationToken> sqlEventStore = eventStore as SqlEventStore<TAuthenticationToken>;
+			if (sqlEventStore != null)
+			{
+				IQueryable<EventData> query = new ExposedSqlEventStore(sqlEventStore).RawQuery
+					.OrderBy(eventData => eventData.Timestamp);
+
+				return LoadEventsFromEventStore(eventPublisher, query, fromDate, toDate, eventTypes);
+			}
+
 			throw new NotImplementedException();
 		}
+
+		protected virtual IEnumerable<IEvent<TAuthenticationToken>> LoadEventsFromEventStore(IEventPublisher<TAuthenticationToken> eventPublisher, IQueryable<EventData> query, DateTime? fromDate = null, DateTime? toDate = null, params Type[] eventTypes)
+		{
+			bool resumeOnError;
+			if (!bool.TryParse(ConfigurationManager.AppSettings["ResumeOnError"], out resumeOnError))
+				resumeOnError = false;
+
+			var logger = DependencyResolver.Current.Resolve<ILogger>();
+			IList<string> eventTypeNames = new List<string>();
+
+			Expression<Func<EventData, bool>> subQuery = PredicateBuilder.True<EventData>();
+			foreach (Type eventType in eventTypes)
+			{
+				string assemblyQualifiedName = eventType.AssemblyQualifiedName;
+				string[] assemblyQualifiedNameParts = assemblyQualifiedName.Split(',');
+				if (assemblyQualifiedNameParts.Length > 0)
+					assemblyQualifiedName = assemblyQualifiedNameParts[0].Trim() + ", " + assemblyQualifiedNameParts[1].Trim();
+				eventTypeNames.Add(assemblyQualifiedName);
+				subQuery = subQuery.Or(eventData => eventData.EventType.StartsWith(assemblyQualifiedName));
+			}
+
+			if (fromDate != null)
+				query = query.Where(eventData => eventData.Timestamp >= fromDate.Value);
+			if (toDate != null)
+				query = query.Where(eventData => eventData.Timestamp <= toDate.Value);
+
+			int skipCount = 0;
+			int limitCount;
+			if (!int.TryParse(ConfigurationManager.AppSettings["Cqrs.SQL.RecordsetSize"], out limitCount))
+				limitCount = 50000;
+			int resultsCount = 0;
+			IQueryable<EventData> runQuery = query.Take(limitCount).Skip(skipCount);
+			var results = new List<IEvent<TAuthenticationToken>>();
+
+			do
+			{
+				IList<EventData> subResults = runQuery.ToList();
+				if (!subResults.Any())
+					break;
+
+				foreach (EventData eventData in subResults.Where(eventData => eventTypeNames.Any(eventTypeName => eventData.EventType.StartsWith(eventTypeName))))
+				{
+					try
+					{
+						IEvent<TAuthenticationToken> @event = DependencyResolver.Current.Resolve<IEventDeserialiser<TAuthenticationToken>>().Deserialise(eventData);
+						if (LoadAllDataFirst)
+							results.Add(@event);
+						else
+							PublishEventOnTheEventBus(logger, eventPublisher, @event);
+						resultsCount++;
+					}
+					catch (Exception exception)
+					{
+						logger.LogError("Failed to process message", exception: exception);
+						if (!resumeOnError)
+						{
+							Console.WriteLine("Review the above fatal issue, then press any key to continue.");
+							Console.ReadKey();
+						}
+					}
+				}
+
+				logger.LogProgress(string.Format("Captured {0:N0} items, walked past {1:N0} items and currently have {2:N0} events.", subResults.Count, skipCount, resultsCount), "LoadEventsFromEventStore");
+				skipCount = skipCount + subResults.Count;
+				runQuery = query.Take(limitCount).Skip(skipCount);
+			} while (true);
+
+			return results;
+		}
+
 
 		/// <summary>
 		/// Publish the loaded <see cref="IEvent{TAuthenticationToken}">events</see> on <see cref="IEventPublisher{TAuthenticationToken}">event bus</see>.
 		/// </summary>
 		protected virtual void PublishEventsOnTheEventBus(IEventPublisher<TAuthenticationToken> eventPublisher, IEnumerable<IEvent<TAuthenticationToken>> events)
 		{
-			var logger = NinjectDependencyResolver.Current.Resolve<ILogger>();
+			var logger = DependencyResolver.Current.Resolve<ILogger>();
 			IList<IEvent<TAuthenticationToken>> eventsToPublish = events.ToList();
 			int eventCount = eventsToPublish.Count;
 			for (int index = 0; index < eventCount; index++)
@@ -253,6 +490,8 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 		/// </summary>
 		protected virtual void PublishEventOnTheEventBus(ILogger logger, IEventPublisher<TAuthenticationToken> eventPublisher, IEvent<TAuthenticationToken> @event)
 		{
+			var eventWithIdentity = @event as IEventWithIdentity<TAuthenticationToken>;
+			Guid rsn = @event.GetIdentity();
 			// Flush tracking information so it gets processed again.
 			@event.Frameworks = null;
 			@event.OriginatingFramework = null;
@@ -270,11 +509,28 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 				}
 				catch (Exception exception)
 				{
-					logger.LogError(string.Format("Publishing event {0} failed to be published.", @event.Id), "PublishEventOnTheEventBus", exception);
+					string exceptionMessage = eventWithIdentity == null
+						? "Publishing event {0} failed to be published."
+						: "Publishing event {0} with identifier {1} failed to be published.";
+					logger.LogError(string.Format(exceptionMessage, @event.Id, rsn), "PublishEventOnTheEventBus", exception);
+
+					bool resumeOnError;
+					if (!bool.TryParse(ConfigurationManager.AppSettings["ResumeOnError"], out resumeOnError))
+						resumeOnError = false;
+
+					if (!resumeOnError)
+					{
+						Console.WriteLine("Review the above issue, then press any key to continue.");
+						Console.ReadKey();
+					}
+
 					return;
 				}
 			} while (loopCount < 10);
-			logger.LogError(string.Format("Publishing event {0} failed to be published due to an event bus timeout... we tried 10 times before moving on.", @event.Id), "PublishEventOnTheEventBus");
+			string message = eventWithIdentity == null
+				? "Publishing event {0} failed to be published due to an event bus timeout... we tried 10 times before moving on."
+				: "Publishing event {0} with identifier {1} failed to be published due to an event bus timeout... we tried 10 times before moving on.";
+			logger.LogError(string.Format(message, @event.Id, rsn), "PublishEventOnTheEventBus");
 		}
 
 		public class ExposedMongoEventStore
@@ -287,6 +543,21 @@ namespace Cqrs.Diagnostics.EventStoreToEventBusReplay
 			}
 
 			internal IMongoCollection<MongoDbEventData> MongoCollection { get; set; }
+		}
+
+		public class ExposedSqlEventStore
+		{
+			public ExposedSqlEventStore(SqlEventStore<TAuthenticationToken> sqlEventStore)
+			{
+				MethodInfo methodInfo = sqlEventStore.GetType().GetMethod("CreateDbDataContext", BindingFlags.Instance | BindingFlags.NonPublic);
+				DataContext dbDataContext = (DataContext)methodInfo.Invoke(sqlEventStore, new object[] { null });
+				methodInfo = sqlEventStore.GetType().GetMethod("GetEventStoreTable", BindingFlags.Instance | BindingFlags.NonPublic);
+
+				RawQuery = ((Table<EventData>)methodInfo.Invoke(sqlEventStore, new object[] { dbDataContext }))
+					.AsQueryable();
+			}
+
+			internal IQueryable<EventData> RawQuery { get; set; }
 		}
 	}
 

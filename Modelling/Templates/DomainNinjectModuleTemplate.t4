@@ -54,7 +54,8 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 			RegisterFactories();
 			RegisterServices();
 			RegisterRepositories();
-			RegisterCqrsCommandHandlers();
+			if (bool.Parse(System.Configuration.ConfigurationManager.AppSettings["Cqrs.Handlers.AutoRegisterAllHandlers"] ?? "true"))
+				RegisterCqrsCommandHandlers();
 		}
 
 		#endregion
@@ -240,8 +241,20 @@ string authenticationToken = GetDomainAuthenticationTokenType(this.Element);
 #>
 			Bind<<#= moduleName #>.Repositories.I<#= elementName #>Repository>()
 				.To<<#= moduleName #>.Repositories.<#= elementName #>Repository>()
+<#
+				switch(technology)
+				{
+					case "SimplifiedSql" :
+#>
+				.InThreadScope();
+<#
+						break;
+					default :
+#>
 				.InSingletonScope();
 <#
+						break;
+				}
 			}
 		}
 
@@ -262,8 +275,20 @@ string authenticationToken = GetDomainAuthenticationTokenType(this.Element);
 #>
 			Bind<<#= moduleName #>.Entities.Repositories.I<#= elementName #>Repository>()
 				.To<<#= moduleName #>.Entities.Repositories.<#= elementName #>Repository>()
+<#
+				switch(technology)
+				{
+					case "SimplifiedSql" :
+#>
+				.InThreadScope();
+<#
+						break;
+					default :
+#>
 				.InSingletonScope();
 <#
+						break;
+				}
 			}
 		}
 #>

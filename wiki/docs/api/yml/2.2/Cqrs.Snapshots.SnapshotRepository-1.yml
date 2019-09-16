@@ -42,7 +42,6 @@ items:
       description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of authentication token.
     content.vb: >-
       Public Class SnapshotRepository(Of TAuthenticationToken)
-
           Implements IAggregateRepository(Of TAuthenticationToken)
   inheritance:
   - System.Object
@@ -375,7 +374,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Snapshots
-  summary: "\nRetrieves an <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> of type <span class=\"typeparamref\">TAggregateRoot</span>,\nFirst using <xref href=\"Cqrs.Snapshots.SnapshotRepository%601.TryRestoreAggregateFromSnapshot%60%601(System.Guid%2c%60%600)\" data-throw-if-not-resolved=\"false\"></xref>, otherwise via <xref href=\"Cqrs.Domain.IAggregateRepository%601.Get%60%601(System.Guid%2cSystem.Collections.Generic.IList%7bCqrs.Events.IEvent%7b%600%7d%7d)\" data-throw-if-not-resolved=\"false\"></xref> on <xref href=\"Cqrs.Snapshots.SnapshotRepository%601.Repository\" data-throw-if-not-resolved=\"false\"></xref>\nThen does rehydration.\n"
+  summary: "\nRetrieves an <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> of type <code data-dev-comment-type=\"typeparamref\">TAggregateRoot</code>,\nFirst using <xref href=\"Cqrs.Snapshots.SnapshotRepository%601.TryRestoreAggregateFromSnapshot%60%601(System.Guid%2c%60%600)\" data-throw-if-not-resolved=\"false\"></xref>, otherwise via <xref href=\"Cqrs.Domain.IAggregateRepository%601.Get%60%601(System.Guid%2cSystem.Collections.Generic.IList%7bCqrs.Events.IEvent%7b%600%7d%7d)\" data-throw-if-not-resolved=\"false\"></xref> on <xref href=\"Cqrs.Snapshots.SnapshotRepository%601.Repository\" data-throw-if-not-resolved=\"false\"></xref>\nThen does rehydration.\n"
   example: []
   syntax:
     content: 'public TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)where TAggregateRoot : IAggregateRoot<TAuthenticationToken>'
@@ -424,24 +423,24 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Snapshots
-  summary: "\nCalls <xref href=\"Cqrs.Snapshots.ISnapshotStrategy%601.IsSnapshotable(System.Type)\" data-throw-if-not-resolved=\"false\"></xref> on <xref href=\"Cqrs.Snapshots.SnapshotRepository%601.SnapshotStrategy\" data-throw-if-not-resolved=\"false\"></xref>\nIf the <span class=\"typeparamref\">TAggregateRoot</span> is snapshot-able <xref href=\"Cqrs.Snapshots.ISnapshotStore.Get%60%601(System.Guid)\" data-throw-if-not-resolved=\"false\"></xref> is called on <xref href=\"Cqrs.Snapshots.SnapshotRepository%601.SnapshotStore\" data-throw-if-not-resolved=\"false\"></xref>.\nThe Restore method is then called on\n"
-  remarks: There may be more events after the snapshot that still need to rehydrated into the <span class="typeparamref">TAggregateRoot</span> after restoration.
+  summary: "\nCalls <xref href=\"Cqrs.Snapshots.ISnapshotStrategy%601.IsSnapshotable(System.Type)\" data-throw-if-not-resolved=\"false\"></xref> on <xref href=\"Cqrs.Snapshots.SnapshotRepository%601.SnapshotStrategy\" data-throw-if-not-resolved=\"false\"></xref>\nIf the <code data-dev-comment-type=\"typeparamref\">TAggregateRoot</code> is snapshot-able <xref href=\"Cqrs.Snapshots.ISnapshotStore.Get%60%601(System.Guid)\" data-throw-if-not-resolved=\"false\"></xref> is called on <xref href=\"Cqrs.Snapshots.SnapshotRepository%601.SnapshotStore\" data-throw-if-not-resolved=\"false\"></xref>.\nThe Restore method is then called on\n"
+  remarks: There may be more events after the snapshot that still need to rehydrated into the <code data-dev-comment-type="typeparamref">TAggregateRoot</code> after restoration.
   example: []
   syntax:
     content: protected virtual int TryRestoreAggregateFromSnapshot<TAggregateRoot>(Guid id, TAggregateRoot aggregate)
     parameters:
     - id: id
       type: System.Guid
-      description: The identifier of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref> to restore, since the <span class="paramref">aggregate</span> may be completely uninitialised.
+      description: The identifier of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref> to restore, since the <code data-dev-comment-type="paramref">aggregate</code> may be completely uninitialised.
     - id: aggregate
       type: '{TAggregateRoot}'
-      description: The <span class="typeparamref">TAggregateRoot</span>
+      description: The <code data-dev-comment-type="typeparamref">TAggregateRoot</code>
     typeParameters:
     - id: TAggregateRoot
       description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the <xref href="Cqrs.Domain.IAggregateRoot%601" data-throw-if-not-resolved="false"></xref>.
     return:
       type: System.Int32
-      description: -1 if no restoration was made, otherwise version number the <span class="typeparamref">TAggregateRoot</span> was rehydrated to.
+      description: -1 if no restoration was made, otherwise version number the <code data-dev-comment-type="typeparamref">TAggregateRoot</code> was rehydrated to.
     content.vb: Protected Overridable Function TryRestoreAggregateFromSnapshot(Of TAggregateRoot)(id As Guid, aggregate As TAggregateRoot) As Integer
   overload: Cqrs.Snapshots.SnapshotRepository`1.TryRestoreAggregateFromSnapshot*
   nameWithType.vb: SnapshotRepository(Of TAuthenticationToken).TryRestoreAggregateFromSnapshot(Of TAggregateRoot)(Guid, TAggregateRoot)

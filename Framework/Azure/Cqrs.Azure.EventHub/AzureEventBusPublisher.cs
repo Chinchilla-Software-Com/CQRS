@@ -10,36 +10,53 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using cdmdotnet.Logging;
+using Cqrs.Bus;
 using Cqrs.Messages;
 using Microsoft.ServiceBus.Messaging;
 
 namespace Cqrs.Azure.ServiceBus
 {
-	public class AzureEventBusPublisher<TAuthenticationToken> : AzureEventHubBus<TAuthenticationToken>, IEventPublisher<TAuthenticationToken>
+	/// <summary>
+	/// An <see cref="IEventPublisher{TAuthenticationToken}"/> that resolves handlers and executes the handler.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	public class AzureEventBusPublisher<TAuthenticationToken>
+		: AzureEventHubBus<TAuthenticationToken>
+		, IEventPublisher<TAuthenticationToken>
 	{
-		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, true)
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AzureEventBusPublisher{TAuthenticationToken}"/>.
+		/// </summary>
+		public AzureEventBusPublisher(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IHashAlgorithmFactory hashAlgorithmFactory, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, hashAlgorithmFactory, azureBusHelper, true)
 		{
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventHub.EventBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
 
 		#region Implementation of IEventPublisher<TAuthenticationToken>
 
+		/// <summary>
+		/// Publishes the provided <paramref name="event"/> on the event bus.
+		/// </summary>
 		public virtual void Publish<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
+			if (@event == null)
+			{
+				Logger.LogDebug("No event to publish.");
+				return;
+			}
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = "200";
 			bool wasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/EventHub" } };
-			string telemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+			string telemetryName = string.Format("{0}/{1}/{2}", @event.GetType().FullName, @event.GetIdentity(), @event.Id);
 			var telemeteredEvent = @event as ITelemeteredMessage;
 			if (telemeteredEvent != null)
 				telemetryName = telemeteredEvent.TelemetryName;
@@ -52,8 +69,7 @@ namespace Cqrs.Azure.ServiceBus
 
 				try
 				{
-					var brokeredMessage = new Microsoft.ServiceBus.Messaging.EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseEvent(@event)));
-					brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
+					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, @event.GetType(), @event);
 
 					EventHubPublisher.Send(brokeredMessage);
 					wasSuccessfull = true;
@@ -78,10 +94,23 @@ namespace Cqrs.Azure.ServiceBus
 			Logger.LogInfo(string.Format("An event was published with the id '{0}' was of type {1}.", @event.Id, @event.GetType().FullName));
 		}
 
+		/// <summary>
+		/// Publishes the provided <paramref name="events"/> on the event bus.
+		/// </summary>
 		public virtual void Publish<TEvent>(IEnumerable<TEvent> events)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
+			if (events == null)
+			{
+				Logger.LogDebug("No events to publish.");
+				return;
+			}
 			IList<TEvent> sourceEvents = events.ToList();
+			if (!sourceEvents.Any())
+			{
+				Logger.LogDebug("An empty collection of events to publish.");
+				return;
+			}
 
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
@@ -93,7 +122,7 @@ namespace Cqrs.Azure.ServiceBus
 			string telemetryNames = string.Empty;
 			foreach (TEvent @event in sourceEvents)
 			{
-				string subTelemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+				string subTelemetryName = string.Format("{0}/{1}/{2}", @event.GetType().FullName, @event.GetIdentity(), @event.Id);
 				var telemeteredEvent = @event as ITelemeteredMessage;
 				if (telemeteredEvent != null)
 					subTelemetryName = telemeteredEvent.TelemetryName;
@@ -112,8 +141,7 @@ namespace Cqrs.Azure.ServiceBus
 					if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-EventHub"))
 						continue;
 
-					var brokeredMessage = new Microsoft.ServiceBus.Messaging.EventData(Encoding.UTF8.GetBytes(MessageSerialiser.SerialiseEvent(@event)));
-					brokeredMessage.Properties.Add("Type", @event.GetType().FullName);
+					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, @event.GetType(), @event);
 
 					brokeredMessages.Add(brokeredMessage);
 					sourceEventMessages.Add(string.Format("A command was sent of type {0}.", @event.GetType().FullName));
@@ -121,7 +149,10 @@ namespace Cqrs.Azure.ServiceBus
 
 				try
 				{
-					EventHubPublisher.SendBatch(brokeredMessages);
+					if (brokeredMessages.Any())
+						EventHubPublisher.SendBatch(brokeredMessages);
+					else
+						Logger.LogDebug("An empty collection of events to publish post validation.");
 					wasSuccessfull = true;
 				}
 				catch (QuotaExceededException exception)

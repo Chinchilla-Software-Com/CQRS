@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class BlobStorageEventStoreConnectionStringFactory
    | CQRS.NET API Reference Documentation version 2.2 ">
-    <meta name="generator" content="docfx 2.21.2.0">
+    <meta name="generator" content="docfx 2.22.2.0">
     
     <link rel="shortcut icon" href="../../../../../favicon.ico">
     <link rel="stylesheet" href="../../../../../styles/docfx.vendor.css">
@@ -80,7 +80,10 @@
   
   <h1 id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory" class="text-break">Class BlobStorageEventStoreConnectionStringFactory
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>A factory for getting connection strings and container names for <a class="xref" href="Cqrs.Events.IEventStore-1.html">IEventStore&lt;TAuthenticationToken&gt;</a> access.
+This factory supports reading and writing from separate storage accounts. Specifically you can have as many different storage accounts as you want to configure when writing.
+This allows for manual mirroring of data while reading from the fastest/closest location possible.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -121,7 +124,8 @@
   </h3>
   <a id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory__ctor_" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.#ctor*"></a>
   <h4 id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory__ctor_Cqrs_Configuration_IConfigurationManager_cdmdotnet_Logging_ILogger_" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.#ctor(Cqrs.Configuration.IConfigurationManager,cdmdotnet.Logging.ILogger)">BlobStorageEventStoreConnectionStringFactory(IConfigurationManager, ILogger)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Instantiates a new instance of <a class="xref" href="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.html">BlobStorageEventStoreConnectionStringFactory</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -152,7 +156,8 @@
   <h3 id="fields">Fields
   </h3>
   <h4 id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_BlobStorageBaseContainerNameKey" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.BlobStorageBaseContainerNameKey">BlobStorageBaseContainerNameKey</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The name of the app setting in <a class="xref" href="Cqrs.Configuration.IConfigurationManager.html">IConfigurationManager</a> that will have the base name of the container used.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -174,7 +179,8 @@
     </tbody>
   </table>
   <h4 id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_BlobStorageEventStoreConnectionStringKey" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.BlobStorageEventStoreConnectionStringKey">BlobStorageEventStoreConnectionStringKey</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The name of the app setting in <a class="xref" href="Cqrs.Configuration.IConfigurationManager.html">IConfigurationManager</a> that will have the connection string if using a single storage account for both reads and writes.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -196,7 +202,8 @@
     </tbody>
   </table>
   <h4 id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_BlobStorageReadableEventStoreConnectionStringKey" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.BlobStorageReadableEventStoreConnectionStringKey">BlobStorageReadableEventStoreConnectionStringKey</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The name of the app setting in <a class="xref" href="Cqrs.Configuration.IConfigurationManager.html">IConfigurationManager</a> that will have the connection string of the readable storage account if using a separate storage account for reads and writes.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -218,7 +225,9 @@
     </tbody>
   </table>
   <h4 id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_BlobStorageWritableEventStoreConnectionStringKey" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.BlobStorageWritableEventStoreConnectionStringKey">BlobStorageWritableEventStoreConnectionStringKey</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The name of the app setting in <a class="xref" href="Cqrs.Configuration.IConfigurationManager.html">IConfigurationManager</a> that will have the connection string of the writeable storage account if using a separate storage account for reads and writes.
+This value gets appended with a &quot;.1&quot;, &quot;.2&quot; etc allowing you to write to as many different locations as possible.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -243,7 +252,8 @@
   </h3>
   <a id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_ConfigurationManager_" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.ConfigurationManager*"></a>
   <h4 id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_ConfigurationManager" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.ConfigurationManager">ConfigurationManager</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="Cqrs.Configuration.IConfigurationManager.html">IConfigurationManager</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -266,7 +276,8 @@
   </table>
   <a id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_Logger_" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.Logger*"></a>
   <h4 id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_Logger" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.Logger">Logger</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">cdmdotnet.Logging.ILogger</span>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -291,7 +302,9 @@
   </h3>
   <a id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_GetBaseContainerName_" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.GetBaseContainerName*"></a>
   <h4 id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_GetBaseContainerName" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.GetBaseContainerName">GetBaseContainerName()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns the name of the base contain to be used.
+This will be the value from <a class="xref" href="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.html#Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_ConfigurationManager">ConfigurationManager</a> keyed <a class="xref" href="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.html#Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_BlobStorageBaseContainerNameKey">BlobStorageBaseContainerNameKey</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -316,7 +329,9 @@
       <div><a class="xref" href="Cqrs.Azure.BlobStorage.IBlobStorageStoreConnectionStringFactory.html#Cqrs_Azure_BlobStorage_IBlobStorageStoreConnectionStringFactory_GetBaseContainerName">IBlobStorageStoreConnectionStringFactory.GetBaseContainerName()</a></div>
   <a id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_GetReadableConnectionString_" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.GetReadableConnectionString*"></a>
   <h4 id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_GetReadableConnectionString" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.GetReadableConnectionString">GetReadableConnectionString()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the readable connection string. If using a single storage account, then <a class="xref" href="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.html#Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_BlobStorageEventStoreConnectionStringKey">BlobStorageEventStoreConnectionStringKey</a> will most likely be returned.
+If a value for <a class="xref" href="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.html#Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_BlobStorageReadableEventStoreConnectionStringKey">BlobStorageReadableEventStoreConnectionStringKey</a> is found, that will be returned instead.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -341,7 +356,9 @@
       <div><a class="xref" href="Cqrs.Azure.BlobStorage.IStorageStoreConnectionStringFactory.html#Cqrs_Azure_BlobStorage_IStorageStoreConnectionStringFactory_GetReadableConnectionString">IStorageStoreConnectionStringFactory.GetReadableConnectionString()</a></div>
   <a id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_GetWritableConnectionStrings_" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.GetWritableConnectionStrings*"></a>
   <h4 id="Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_GetWritableConnectionStrings" data-uid="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.GetWritableConnectionStrings">GetWritableConnectionStrings()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets all writeable connection strings. If using a single storage account, then <a class="xref" href="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.html#Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_BlobStorageEventStoreConnectionStringKey">BlobStorageEventStoreConnectionStringKey</a> will most likely be returned.
+If a value for <a class="xref" href="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.html#Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_BlobStorageWritableEventStoreConnectionStringKey">BlobStorageWritableEventStoreConnectionStringKey</a> is found, it will append &quot;.1&quot;, &quot;.2&quot; etc returning any additionally found connection string values in <a class="xref" href="Cqrs.Azure.BlobStorage.Events.BlobStorageEventStoreConnectionStringFactory.html#Cqrs_Azure_BlobStorage_Events_BlobStorageEventStoreConnectionStringFactory_ConfigurationManager">ConfigurationManager</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">

@@ -15,7 +15,8 @@ namespace Cqrs.Snapshots
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken"></typeparam>
 	/// <typeparam name="TSnapshot"></typeparam>
-	public abstract class SnapshotAggregateRoot<TAuthenticationToken, TSnapshot> : AggregateRoot<TAuthenticationToken>
+	public abstract class SnapshotAggregateRoot<TAuthenticationToken, TSnapshot>
+		: AggregateRoot<TAuthenticationToken>
 		where TSnapshot : Snapshot
 	{
 		/// <summary>

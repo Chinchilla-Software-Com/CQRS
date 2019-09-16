@@ -91,6 +91,11 @@ namespace Cqrs.Events
 		#region Implementation of ISagaEvent<TAuthenticationToken,TEvent>
 
 		/// <summary>
+		/// The identity of the <see cref="ISaga{TAuthenticationToken}" /> being targeted.
+		/// </summary>
+		public Guid Rsn { get; set; }
+
+		/// <summary>
 		/// The <see cref="IEvent{TAuthenticationToken}"/> this <see cref="ISagaEvent{TAuthenticationToken}"/> encases.
 		/// </summary>
 		[DataMember]

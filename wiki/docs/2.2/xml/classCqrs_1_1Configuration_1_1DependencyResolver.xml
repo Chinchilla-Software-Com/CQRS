@@ -3,6 +3,7 @@
   <compounddef id="classCqrs_1_1Configuration_1_1DependencyResolver" kind="class" language="C#" prot="public" abstract="yes">
     <compoundname>Cqrs::Configuration::DependencyResolver</compoundname>
     <basecompoundref refid="interfaceCqrs_1_1Configuration_1_1IDependencyResolver" prot="public" virt="non-virtual">Cqrs.Configuration.IDependencyResolver</basecompoundref>
+    <derivedcompoundref refid="classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver" prot="public" virt="non-virtual">Cqrs.Configuration.SampleRuntime&lt; TAuthenticationToken, TCommandHanderOrEventHandler &gt;.MockDependencyResolver</derivedcompoundref>
     <derivedcompoundref refid="classCqrs_1_1Ninject_1_1Configuration_1_1NinjectDependencyResolver" prot="public" virt="non-virtual">Cqrs.Ninject.Configuration.NinjectDependencyResolver</derivedcompoundref>
       <sectiondef kind="property">
       <memberdef kind="property" id="classCqrs_1_1Configuration_1_1DependencyResolver_aaede4bbd564000f2becf65e8be863fff_1aaede4bbd564000f2becf65e8be863fff" prot="public" static="yes" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="no" privatesettable="no" protectedsettable="yes">
@@ -16,7 +17,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Configuration/DependencyResolver.cs" line="13" column="1" bodyfile="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Configuration/DependencyResolver.cs" bodystart="13" bodyend="-1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/DependencyResolver.cs" line="21" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/DependencyResolver.cs" bodystart="21" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -27,6 +28,7 @@
         <name>Resolve&lt; T &gt;</name>
         <reimplements refid="interfaceCqrs_1_1Configuration_1_1IDependencyResolver_a9dc7694a365209a5ef05270a7cfa7b6b_1a9dc7694a365209a5ef05270a7cfa7b6b">Resolve&lt; T &gt;</reimplements>
         <reimplementedby refid="classCqrs_1_1Ninject_1_1Configuration_1_1NinjectDependencyResolver_ab044ba98051bdd3111e0c1be6259de10_1ab044ba98051bdd3111e0c1be6259de10">Resolve&lt; T &gt;</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver_a8f91ae00213bf65aa3349a7dcd82d24d_1a8f91ae00213bf65aa3349a7dcd82d24d">Resolve&lt; T &gt;</reimplementedby>
         <briefdescription>
 <para>Resolves a single instance for the specified <emphasis>T</emphasis> . Different implementations may return the first or last instance found or may return an exception. </para>        </briefdescription>
         <detaileddescription>
@@ -42,7 +44,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Configuration/DependencyResolver.cs" line="23" column="1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/DependencyResolver.cs" line="31" column="1"/>
       </memberdef>
       <memberdef kind="function" id="classCqrs_1_1Configuration_1_1DependencyResolver_aaeeb3ad2e0ef44bd98469d843210205c_1aaeeb3ad2e0ef44bd98469d843210205c" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>abstract object</type>
@@ -52,6 +54,7 @@
         <reimplements refid="interfaceCqrs_1_1Configuration_1_1IDependencyResolver_aa455096b7b94fc1d64904bc67830ec06_1aa455096b7b94fc1d64904bc67830ec06">Resolve</reimplements>
         <reimplementedby refid="classCqrs_1_1Ninject_1_1Configuration_1_1NinjectDependencyResolver_ab9da7f1556cc1ef205d03d3ff62017c0_1ab9da7f1556cc1ef205d03d3ff62017c0">Resolve</reimplementedby>
         <reimplementedby refid="classCqrs_1_1Ninject_1_1Akka_1_1AkkaNinjectDependencyResolver_adace29de71f10e34e952bd41e48106a6_1adace29de71f10e34e952bd41e48106a6">Resolve</reimplementedby>
+        <reimplementedby refid="classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver_ac4e52e995e2f8ff243d2af624d229461_1ac4e52e995e2f8ff243d2af624d229461">Resolve</reimplementedby>
         <param>
           <type>Type</type>
           <declname>type</declname>
@@ -71,7 +74,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Configuration/DependencyResolver.cs" line="31" column="1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/DependencyResolver.cs" line="39" column="1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -79,42 +82,48 @@
     <detaileddescription>
     </detaileddescription>
     <inheritancegraph>
-      <node id="1158">
+      <node id="1230">
+        <label>Cqrs.Configuration.SampleRuntime&lt; TAuthenticationToken, TCommandHanderOrEventHandler &gt;.MockDependencyResolver</label>
+        <link refid="classCqrs_1_1Configuration_1_1SampleRuntime_1_1MockDependencyResolver"/>
+        <childnode refid="1228" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1231">
         <label>Cqrs.Ninject.Configuration.NinjectDependencyResolver</label>
         <link refid="classCqrs_1_1Ninject_1_1Configuration_1_1NinjectDependencyResolver"/>
-        <childnode refid="1156" relation="public-inheritance">
+        <childnode refid="1228" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1159">
+      <node id="1232">
         <label>Cqrs.Ninject.Akka.AkkaNinjectDependencyResolver</label>
         <link refid="classCqrs_1_1Ninject_1_1Akka_1_1AkkaNinjectDependencyResolver"/>
-        <childnode refid="1158" relation="public-inheritance">
+        <childnode refid="1231" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="1157">
+      <node id="1229">
         <label>IDependencyResolver</label>
         <link refid="interfaceCqrs_1_1Configuration_1_1IDependencyResolver"/>
       </node>
-      <node id="1156">
+      <node id="1228">
         <label>Cqrs.Configuration.DependencyResolver</label>
         <link refid="classCqrs_1_1Configuration_1_1DependencyResolver"/>
-        <childnode refid="1157" relation="public-inheritance">
+        <childnode refid="1229" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="1161">
+      <node id="1234">
         <label>IDependencyResolver</label>
         <link refid="interfaceCqrs_1_1Configuration_1_1IDependencyResolver"/>
       </node>
-      <node id="1160">
+      <node id="1233">
         <label>Cqrs.Configuration.DependencyResolver</label>
         <link refid="classCqrs_1_1Configuration_1_1DependencyResolver"/>
-        <childnode refid="1161" relation="public-inheritance">
+        <childnode refid="1234" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Configuration/DependencyResolver.cs" line="9" column="1" bodyfile="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Cqrs/Configuration/DependencyResolver.cs" bodystart="8" bodyend="34"/>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/DependencyResolver.cs" line="17" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Configuration/DependencyResolver.cs" bodystart="16" bodyend="42"/>
     <listofallmembers>
       <member refid="classCqrs_1_1Configuration_1_1DependencyResolver_aaede4bbd564000f2becf65e8be863fff_1aaede4bbd564000f2becf65e8be863fff" prot="public" virt="non-virtual"><scope>Cqrs::Configuration::DependencyResolver</scope><name>Current</name></member>
       <member refid="classCqrs_1_1Configuration_1_1DependencyResolver_aaeeb3ad2e0ef44bd98469d843210205c_1aaeeb3ad2e0ef44bd98469d843210205c" prot="public" virt="pure-virtual"><scope>Cqrs::Configuration::DependencyResolver</scope><name>Resolve</name></member>

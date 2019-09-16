@@ -1,0 +1,327 @@
+\hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{}\section{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository$<$ T\+Authentication\+Token $>$ Class Template Reference}
+\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}\index{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository$<$ T\+Authentication\+Token $>$@{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository$<$ T\+Authentication\+Token $>$}}
+
+
+Provides basic repository methods for operations with instances of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ utilising \hyperlink{}{snapshots} for optimised rehydration.  
+
+
+Inheritance diagram for Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.328482cm]{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a59f8c7dabed645143699a8849627c213_a59f8c7dabed645143699a8849627c213}{Akka\+Snapshot\+Repository} (\hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStore}{I\+Snapshot\+Store} snapshot\+Store, \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy}{I\+Snapshot\+Strategy}$<$ T\+Authentication\+Token $>$ snapshot\+Strategy, \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository}{I\+Aggregate\+Repository}$<$ T\+Authentication\+Token $>$ repository, \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}$<$ T\+Authentication\+Token $>$ event\+Store, \hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{I\+Aggregate\+Factory} aggregate\+Factory)
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of Snapshot\+Repository$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
+void \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_adf399a4ea283ae725bf8f1229d6da30a_adf399a4ea283ae725bf8f1229d6da30a}{Save$<$ T\+Aggregate\+Root $>$} (T\+Aggregate\+Root aggregate, int? expected\+Version=null)
+\begin{DoxyCompactList}\small\item\em Calls \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_ae9df38e7f69f1cae3c080fcf8a998a18_ae9df38e7f69f1cae3c080fcf8a998a18}{Try\+Make\+Snapshot} then I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Save$<$\+T\+Aggregate\+Root$>$ on \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a4961f1b8481f1205c143172185bae3bb_a4961f1b8481f1205c143172185bae3bb}{Repository}. \end{DoxyCompactList}\item 
+T\+Aggregate\+Root \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a953067de4f1ed8c4528e92bf896fbf79_a953067de4f1ed8c4528e92bf896fbf79}{Get$<$ T\+Aggregate\+Root $>$} (Guid aggregate\+Id, I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ events=null)
+\begin{DoxyCompactList}\small\item\em Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root} , First using \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_aeec6fc99d17848302d908361ea407908_aeec6fc99d17848302d908361ea407908}{Try\+Restore\+Aggregate\+From\+Snapshot$<$\+T\+Aggregate\+Root$>$}, otherwise via I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Get$<$\+T\+Aggregate\+Root$>$ on \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a4961f1b8481f1205c143172185bae3bb_a4961f1b8481f1205c143172185bae3bb}{Repository} Then does rehydration. \end{DoxyCompactList}\item 
+T\+Aggregate\+Root \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a6a5de2c23b04b9ae9862029b70f6d8d7_a6a5de2c23b04b9ae9862029b70f6d8d7}{Get\+To\+Version$<$ T\+Aggregate\+Root $>$} (Guid aggregate\+Id, int version, I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ events=null)
+\begin{DoxyCompactList}\small\item\em Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root}  up to and including the provided {\itshape version} . \end{DoxyCompactList}\item 
+T\+Aggregate\+Root \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a3c6f3596a5eb42eeefcdf6ed536fb690_a3c6f3596a5eb42eeefcdf6ed536fb690}{Get\+To\+Date$<$ T\+Aggregate\+Root $>$} (Guid aggregate\+Id, Date\+Time versioned\+Date, I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ events=null)
+\begin{DoxyCompactList}\small\item\em Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root}  up to and including the provided {\itshape versioned\+Date} . \end{DoxyCompactList}\item 
+void \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a22974b2e02f76de5ad76369130fbb8f4_a22974b2e02f76de5ad76369130fbb8f4}{Load\+Aggregate\+History$<$ T\+Aggregate\+Root $>$} (T\+Aggregate\+Root aggregate, I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ events=null, bool throw\+Exception\+On\+No\+Events=true)
+\begin{DoxyCompactList}\small\item\em If {\itshape events}  is null, loads the events from I\+Event\+Store$<$\+T\+Authentication\+Token$>$, checks for duplicates and then rehydrates the {\itshape aggregate}  with the events. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual int \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_aeec6fc99d17848302d908361ea407908_aeec6fc99d17848302d908361ea407908}{Try\+Restore\+Aggregate\+From\+Snapshot$<$ T\+Aggregate\+Root $>$} (Guid id, T\+Aggregate\+Root aggregate)
+\begin{DoxyCompactList}\small\item\em Calls I\+Snapshot\+Strategy$<$\+T\+Authentication\+Token$>$.\+Is\+Snapshotable on \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_ad230c1d7f2d70973cdf116b14fcd0ab0_ad230c1d7f2d70973cdf116b14fcd0ab0}{Snapshot\+Strategy} If the {\itshape T\+Aggregate\+Root}  is snapshot-\/able I\+Snapshot\+Store.\+Get$<$\+T\+Aggregate\+Root$>$ is called on \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a83f16c1598f3df2a8889fdf5cab5dfb9_a83f16c1598f3df2a8889fdf5cab5dfb9}{Snapshot\+Store}. The Restore method is then called on \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_ae9df38e7f69f1cae3c080fcf8a998a18_ae9df38e7f69f1cae3c080fcf8a998a18}{Try\+Make\+Snapshot} (\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$ aggregate, I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$ uncommitted\+Changes)
+\begin{DoxyCompactList}\small\item\em Calls I\+Snapshot\+Strategy$<$\+T\+Authentication\+Token$>$.\+Should\+Make\+Snap\+Shot on \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_ad230c1d7f2d70973cdf116b14fcd0ab0_ad230c1d7f2d70973cdf116b14fcd0ab0}{Snapshot\+Strategy} If the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is snapshot-\/able Snapshot\+Aggregate\+Root$<$\+T\+Authentication\+Token,\+T\+Snapshot$>$.\+Get\+Snapshot is called The Snapshot.\+Version is calculated, finally I\+Snapshot\+Store.\+Save is called on \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a83f16c1598f3df2a8889fdf5cab5dfb9_a83f16c1598f3df2a8889fdf5cab5dfb9}{Snapshot\+Store}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStore}{I\+Snapshot\+Store} \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a83f16c1598f3df2a8889fdf5cab5dfb9_a83f16c1598f3df2a8889fdf5cab5dfb9}{Snapshot\+Store}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Snapshot\+Store. \end{DoxyCompactList}\item 
+\hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy}{I\+Snapshot\+Strategy}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_ad230c1d7f2d70973cdf116b14fcd0ab0_ad230c1d7f2d70973cdf116b14fcd0ab0}{Snapshot\+Strategy}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Snapshot\+Strategy$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
+\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository}{I\+Aggregate\+Repository}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a4961f1b8481f1205c143172185bae3bb_a4961f1b8481f1205c143172185bae3bb}{Repository}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
+\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}$<$ T\+Authentication\+Token $>$ \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a72905e056029898df21f5644bce4ab69_a72905e056029898df21f5644bce4ab69}{Event\+Store}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Event\+Store$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
+\hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{I\+Aggregate\+Factory} \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a359251dfcca7e157ace7dac46bdf18ef_a359251dfcca7e157ace7dac46bdf18ef}{Aggregate\+Factory}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Aggregate\+Factory. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Provides basic repository methods for operations with instances of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ utilising \hyperlink{}{snapshots} for optimised rehydration. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of authentication token.\\
+\hline
+\end{DoxyTemplParams}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a59f8c7dabed645143699a8849627c213_a59f8c7dabed645143699a8849627c213}\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a59f8c7dabed645143699a8849627c213_a59f8c7dabed645143699a8849627c213}} 
+\index{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}!Akka\+Snapshot\+Repository@{Akka\+Snapshot\+Repository}}
+\index{Akka\+Snapshot\+Repository@{Akka\+Snapshot\+Repository}!Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Akka\+Snapshot\+Repository()}{AkkaSnapshotRepository()}}
+{\footnotesize\ttfamily \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Akka\+Snapshot\+Repository} (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStore}{I\+Snapshot\+Store}}]{snapshot\+Store,  }\item[{\hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy}{I\+Snapshot\+Strategy}$<$ T\+Authentication\+Token $>$}]{snapshot\+Strategy,  }\item[{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository}{I\+Aggregate\+Repository}$<$ T\+Authentication\+Token $>$}]{repository,  }\item[{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}$<$ T\+Authentication\+Token $>$}]{event\+Store,  }\item[{\hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{I\+Aggregate\+Factory}}]{aggregate\+Factory }\end{DoxyParamCaption})}
+
+
+
+Instantiates a new instance of Snapshot\+Repository$<$\+T\+Authentication\+Token$>$. 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a953067de4f1ed8c4528e92bf896fbf79_a953067de4f1ed8c4528e92bf896fbf79}\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a953067de4f1ed8c4528e92bf896fbf79_a953067de4f1ed8c4528e92bf896fbf79}} 
+\index{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}!Get$<$ T\+Aggregate\+Root $>$@{Get$<$ T\+Aggregate\+Root $>$}}
+\index{Get$<$ T\+Aggregate\+Root $>$@{Get$<$ T\+Aggregate\+Root $>$}!Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Get$<$ T\+Aggregate\+Root $>$()}{Get< TAggregateRoot >()}}
+{\footnotesize\ttfamily T\+Aggregate\+Root \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.Get$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{events = {\ttfamily null} }\end{DoxyParamCaption})}
+
+
+
+Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root} , First using \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_aeec6fc99d17848302d908361ea407908_aeec6fc99d17848302d908361ea407908}{Try\+Restore\+Aggregate\+From\+Snapshot$<$\+T\+Aggregate\+Root$>$}, otherwise via I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Get$<$\+T\+Aggregate\+Root$>$ on \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a4961f1b8481f1205c143172185bae3bb_a4961f1b8481f1205c143172185bae3bb}{Repository} Then does rehydration. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The identifier of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to retrieve.\\
+\hline
+{\em events} & A collection of I\+Event$<$\+T\+Authentication\+Token$>$ to replay on the retrieved I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. If null, the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ will be used to retrieve a list of I\+Event$<$\+T\+Authentication\+Token$>$ for you. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a890633fddbd05bd3b9e9968a2de095bb_a890633fddbd05bd3b9e9968a2de095bb}{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Aggregate\+Root} : {\em I\+Aggregate\+Root$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a3c6f3596a5eb42eeefcdf6ed536fb690_a3c6f3596a5eb42eeefcdf6ed536fb690}\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a3c6f3596a5eb42eeefcdf6ed536fb690_a3c6f3596a5eb42eeefcdf6ed536fb690}} 
+\index{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}!Get\+To\+Date$<$ T\+Aggregate\+Root $>$@{Get\+To\+Date$<$ T\+Aggregate\+Root $>$}}
+\index{Get\+To\+Date$<$ T\+Aggregate\+Root $>$@{Get\+To\+Date$<$ T\+Aggregate\+Root $>$}!Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Get\+To\+Date$<$ T\+Aggregate\+Root $>$()}{GetToDate< TAggregateRoot >()}}
+{\footnotesize\ttfamily T\+Aggregate\+Root \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.Get\+To\+Date$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{versioned\+Date,  }\item[{I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{events = {\ttfamily null} }\end{DoxyParamCaption})}
+
+
+
+Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root}  up to and including the provided {\itshape versioned\+Date} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The identifier of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to retrieve.\\
+\hline
+{\em versioned\+Date} & Load events up-\/to and including from this Date\+Time\\
+\hline
+{\em events} & A collection of I\+Event$<$\+T\+Authentication\+Token$>$ to replay on the retrieved I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. If null, the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ will be used to retrieve a list of I\+Event$<$\+T\+Authentication\+Token$>$ for you. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a32308a27ce03c5d406e16b17430dd040_a32308a27ce03c5d406e16b17430dd040}{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Aggregate\+Root} : {\em I\+Aggregate\+Root$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a6a5de2c23b04b9ae9862029b70f6d8d7_a6a5de2c23b04b9ae9862029b70f6d8d7}\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a6a5de2c23b04b9ae9862029b70f6d8d7_a6a5de2c23b04b9ae9862029b70f6d8d7}} 
+\index{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}!Get\+To\+Version$<$ T\+Aggregate\+Root $>$@{Get\+To\+Version$<$ T\+Aggregate\+Root $>$}}
+\index{Get\+To\+Version$<$ T\+Aggregate\+Root $>$@{Get\+To\+Version$<$ T\+Aggregate\+Root $>$}!Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Get\+To\+Version$<$ T\+Aggregate\+Root $>$()}{GetToVersion< TAggregateRoot >()}}
+{\footnotesize\ttfamily T\+Aggregate\+Root \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.Get\+To\+Version$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{int}]{version,  }\item[{I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{events = {\ttfamily null} }\end{DoxyParamCaption})}
+
+
+
+Retrieves an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Aggregate\+Root}  up to and including the provided {\itshape version} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The identifier of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to retrieve.\\
+\hline
+{\em version} & Load events up-\/to and including from this version\\
+\hline
+{\em events} & A collection of I\+Event$<$\+T\+Authentication\+Token$>$ to replay on the retrieved I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. If null, the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ will be used to retrieve a list of I\+Event$<$\+T\+Authentication\+Token$>$ for you. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_aa0d6b4b9b117357e1676cae829fe2a5c_aa0d6b4b9b117357e1676cae829fe2a5c}{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Aggregate\+Root} : {\em I\+Aggregate\+Root$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a22974b2e02f76de5ad76369130fbb8f4_a22974b2e02f76de5ad76369130fbb8f4}\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a22974b2e02f76de5ad76369130fbb8f4_a22974b2e02f76de5ad76369130fbb8f4}} 
+\index{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}!Load\+Aggregate\+History$<$ T\+Aggregate\+Root $>$@{Load\+Aggregate\+History$<$ T\+Aggregate\+Root $>$}}
+\index{Load\+Aggregate\+History$<$ T\+Aggregate\+Root $>$@{Load\+Aggregate\+History$<$ T\+Aggregate\+Root $>$}!Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Load\+Aggregate\+History$<$ T\+Aggregate\+Root $>$()}{LoadAggregateHistory< TAggregateRoot >()}}
+{\footnotesize\ttfamily void \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.Load\+Aggregate\+History$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{T\+Aggregate\+Root}]{aggregate,  }\item[{I\+List$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{events = {\ttfamily null},  }\item[{bool}]{throw\+Exception\+On\+No\+Events = {\ttfamily true} }\end{DoxyParamCaption})}
+
+
+
+If {\itshape events}  is null, loads the events from I\+Event\+Store$<$\+T\+Authentication\+Token$>$, checks for duplicates and then rehydrates the {\itshape aggregate}  with the events. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate} & The {\itshape T\+Aggregate\+Root}  to rehydrate.\\
+\hline
+{\em events} & A collection of I\+Event$<$\+T\+Authentication\+Token$>$ to replay on the retrieved I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. If null, the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ will be used to retrieve a list of I\+Event$<$\+T\+Authentication\+Token$>$ for you. \\
+\hline
+{\em throw\+Exception\+On\+No\+Events} & If true will throw an instance of Aggregate\+Not\+Found\+Exception$<$\+T\+Aggregate\+Root,\+T\+Authentication\+Token$>$ if no aggregate events or provided or found in the I\+Event\+Store$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository_a9010b259daf5d09f7269277361015ddf_a9010b259daf5d09f7269277361015ddf}{Cqrs.\+Akka.\+Domain.\+I\+Akka\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Aggregate\+Root} : {\em I\+Aggregate\+Root$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_adf399a4ea283ae725bf8f1229d6da30a_adf399a4ea283ae725bf8f1229d6da30a}\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_adf399a4ea283ae725bf8f1229d6da30a_adf399a4ea283ae725bf8f1229d6da30a}} 
+\index{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}!Save$<$ T\+Aggregate\+Root $>$@{Save$<$ T\+Aggregate\+Root $>$}}
+\index{Save$<$ T\+Aggregate\+Root $>$@{Save$<$ T\+Aggregate\+Root $>$}!Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Save$<$ T\+Aggregate\+Root $>$()}{Save< TAggregateRoot >()}}
+{\footnotesize\ttfamily void \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.Save$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{T\+Aggregate\+Root}]{aggregate,  }\item[{int?}]{expected\+Version = {\ttfamily null} }\end{DoxyParamCaption})}
+
+
+
+Calls \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_ae9df38e7f69f1cae3c080fcf8a998a18_ae9df38e7f69f1cae3c080fcf8a998a18}{Try\+Make\+Snapshot} then I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Save$<$\+T\+Aggregate\+Root$>$ on \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a4961f1b8481f1205c143172185bae3bb_a4961f1b8481f1205c143172185bae3bb}{Repository}. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to save and persist.\\
+\hline
+{\em expected\+Version} & The version number the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is expected to be at.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository_a306baf8aa6faabe893f93e5db5d3517d_a306baf8aa6faabe893f93e5db5d3517d}{Cqrs.\+Domain.\+I\+Aggregate\+Repository$<$ T\+Authentication\+Token $>$}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Aggregate\+Root} : {\em I\+Aggregate\+Root$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_ae9df38e7f69f1cae3c080fcf8a998a18_ae9df38e7f69f1cae3c080fcf8a998a18}\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_ae9df38e7f69f1cae3c080fcf8a998a18_ae9df38e7f69f1cae3c080fcf8a998a18}} 
+\index{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}!Try\+Make\+Snapshot@{Try\+Make\+Snapshot}}
+\index{Try\+Make\+Snapshot@{Try\+Make\+Snapshot}!Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Try\+Make\+Snapshot()}{TryMakeSnapshot()}}
+{\footnotesize\ttfamily virtual void \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.Try\+Make\+Snapshot (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot}{I\+Aggregate\+Root}$<$ T\+Authentication\+Token $>$}]{aggregate,  }\item[{I\+Enumerable$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$$>$}]{uncommitted\+Changes }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Calls I\+Snapshot\+Strategy$<$\+T\+Authentication\+Token$>$.\+Should\+Make\+Snap\+Shot on \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_ad230c1d7f2d70973cdf116b14fcd0ab0_ad230c1d7f2d70973cdf116b14fcd0ab0}{Snapshot\+Strategy} If the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ is snapshot-\/able Snapshot\+Aggregate\+Root$<$\+T\+Authentication\+Token,\+T\+Snapshot$>$.\+Get\+Snapshot is called The Snapshot.\+Version is calculated, finally I\+Snapshot\+Store.\+Save is called on \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a83f16c1598f3df2a8889fdf5cab5dfb9_a83f16c1598f3df2a8889fdf5cab5dfb9}{Snapshot\+Store}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to try and snapshot.\\
+\hline
+{\em uncommitted\+Changes} & A collection of uncommited changes to assess. If null the aggregate will be asked to provide them.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_aeec6fc99d17848302d908361ea407908_aeec6fc99d17848302d908361ea407908}\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_aeec6fc99d17848302d908361ea407908_aeec6fc99d17848302d908361ea407908}} 
+\index{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}!Try\+Restore\+Aggregate\+From\+Snapshot$<$ T\+Aggregate\+Root $>$@{Try\+Restore\+Aggregate\+From\+Snapshot$<$ T\+Aggregate\+Root $>$}}
+\index{Try\+Restore\+Aggregate\+From\+Snapshot$<$ T\+Aggregate\+Root $>$@{Try\+Restore\+Aggregate\+From\+Snapshot$<$ T\+Aggregate\+Root $>$}!Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Try\+Restore\+Aggregate\+From\+Snapshot$<$ T\+Aggregate\+Root $>$()}{TryRestoreAggregateFromSnapshot< TAggregateRoot >()}}
+{\footnotesize\ttfamily virtual int \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.Try\+Restore\+Aggregate\+From\+Snapshot$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{id,  }\item[{T\+Aggregate\+Root}]{aggregate }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Calls I\+Snapshot\+Strategy$<$\+T\+Authentication\+Token$>$.\+Is\+Snapshotable on \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_ad230c1d7f2d70973cdf116b14fcd0ab0_ad230c1d7f2d70973cdf116b14fcd0ab0}{Snapshot\+Strategy} If the {\itshape T\+Aggregate\+Root}  is snapshot-\/able I\+Snapshot\+Store.\+Get$<$\+T\+Aggregate\+Root$>$ is called on \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a83f16c1598f3df2a8889fdf5cab5dfb9_a83f16c1598f3df2a8889fdf5cab5dfb9}{Snapshot\+Store}. The Restore method is then called on 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The identifier of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to restore, since the {\itshape aggregate}  may be completely uninitialised.\\
+\hline
+{\em aggregate} & The {\itshape T\+Aggregate\+Root} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+-\/1 if no restoration was made, otherwise version number the {\itshape T\+Aggregate\+Root}  was rehydrated to.
+\end{DoxyReturn}
+
+
+There may be more events after the snapshot that still need to rehydrated into the {\itshape T\+Aggregate\+Root}  after restoration.
+
+\subsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a359251dfcca7e157ace7dac46bdf18ef_a359251dfcca7e157ace7dac46bdf18ef}\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a359251dfcca7e157ace7dac46bdf18ef_a359251dfcca7e157ace7dac46bdf18ef}} 
+\index{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}!Aggregate\+Factory@{Aggregate\+Factory}}
+\index{Aggregate\+Factory@{Aggregate\+Factory}!Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Aggregate\+Factory}{AggregateFactory}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{I\+Aggregate\+Factory} \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Domain_1_1Factories_1_1AggregateFactory}{Aggregate\+Factory}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Aggregate\+Factory. 
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a72905e056029898df21f5644bce4ab69_a72905e056029898df21f5644bce4ab69}\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a72905e056029898df21f5644bce4ab69_a72905e056029898df21f5644bce4ab69}} 
+\index{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}!Event\+Store@{Event\+Store}}
+\index{Event\+Store@{Event\+Store}!Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Event\+Store}{EventStore}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}$<$T\+Authentication\+Token$>$ \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Events_1_1EventStore}{Event\+Store}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Event\+Store$<$\+T\+Authentication\+Token$>$. 
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a4961f1b8481f1205c143172185bae3bb_a4961f1b8481f1205c143172185bae3bb}\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a4961f1b8481f1205c143172185bae3bb_a4961f1b8481f1205c143172185bae3bb}} 
+\index{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}!Repository@{Repository}}
+\index{Repository@{Repository}!Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Repository}{Repository}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository}{I\+Aggregate\+Repository}$<$T\+Authentication\+Token$>$ \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.Repository\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$. 
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a83f16c1598f3df2a8889fdf5cab5dfb9_a83f16c1598f3df2a8889fdf5cab5dfb9}\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a83f16c1598f3df2a8889fdf5cab5dfb9_a83f16c1598f3df2a8889fdf5cab5dfb9}} 
+\index{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}!Snapshot\+Store@{Snapshot\+Store}}
+\index{Snapshot\+Store@{Snapshot\+Store}!Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Snapshot\+Store}{SnapshotStore}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStore}{I\+Snapshot\+Store} \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.\hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore}{Snapshot\+Store}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Snapshot\+Store. 
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_ad230c1d7f2d70973cdf116b14fcd0ab0_ad230c1d7f2d70973cdf116b14fcd0ab0}\label{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_ad230c1d7f2d70973cdf116b14fcd0ab0_ad230c1d7f2d70973cdf116b14fcd0ab0}} 
+\index{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}!Snapshot\+Strategy@{Snapshot\+Strategy}}
+\index{Snapshot\+Strategy@{Snapshot\+Strategy}!Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository@{Cqrs\+::\+Akka\+::\+Snapshots\+::\+Akka\+Snapshot\+Repository}}
+\subsubsection{\texorpdfstring{Snapshot\+Strategy}{SnapshotStrategy}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy}{I\+Snapshot\+Strategy}$<$T\+Authentication\+Token$>$ \hyperlink{classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository}{Cqrs.\+Akka.\+Snapshots.\+Akka\+Snapshot\+Repository}$<$ T\+Authentication\+Token $>$.Snapshot\+Strategy\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Snapshot\+Strategy$<$\+T\+Authentication\+Token$>$. 
+

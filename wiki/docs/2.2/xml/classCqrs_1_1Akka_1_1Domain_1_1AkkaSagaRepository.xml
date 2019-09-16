@@ -16,19 +16,19 @@
         <argsstring></argsstring>
         <name>EventPublisher</name>
         <briefdescription>
-        </briefdescription>
+<para>Gets the IAkkaEventPublisherProxy&lt;TAuthenticationToken&gt; </para>        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" line="23" column="1" bodyfile="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" bodystart="23" bodyend="-1"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" line="31" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" bodystart="31" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
-      <memberdef kind="function" id="classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a8297f64e2b7a7be7bcc999c89dcece05_1a8297f64e2b7a7be7bcc999c89dcece05" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a69f3c0de994f3e966f6ee475482af5f5_1a69f3c0de994f3e966f6ee475482af5f5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>Cqrs.Akka.Domain.AkkaSagaRepository&lt; TAuthenticationToken &gt;.AkkaSagaRepository</definition>
-        <argsstring>(IAggregateFactory aggregateFactory, IEventStore&lt; TAuthenticationToken &gt; eventStore, IEventPublisher&lt; TAuthenticationToken &gt; publisher, ICorrelationIdHelper correlationIdHelper, IAkkaEventPublisherProxy&lt; TAuthenticationToken &gt; eventPublisher)</argsstring>
+        <argsstring>(IAggregateFactory aggregateFactory, IEventStore&lt; TAuthenticationToken &gt; eventStore, IEventPublisher&lt; TAuthenticationToken &gt; publisher, ICommandPublisher&lt; TAuthenticationToken &gt; commandPublisher, ICorrelationIdHelper correlationIdHelper, IAkkaEventPublisherProxy&lt; TAuthenticationToken &gt; eventPublisher)</argsstring>
         <name>AkkaSagaRepository</name>
         <param>
           <type><ref refid="interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory" kindref="compound">IAggregateFactory</ref></type>
@@ -43,6 +43,10 @@
           <declname>publisher</declname>
         </param>
         <param>
+          <type><ref refid="interfaceCqrs_1_1Commands_1_1ICommandPublisher" kindref="compound">ICommandPublisher</ref>&lt; TAuthenticationToken &gt;</type>
+          <declname>commandPublisher</declname>
+        </param>
+        <param>
           <type>ICorrelationIdHelper</type>
           <declname>correlationIdHelper</declname>
         </param>
@@ -51,12 +55,12 @@
           <declname>eventPublisher</declname>
         </param>
         <briefdescription>
-        </briefdescription>
+<para>Instantiates a new instance of <ref refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a69f3c0de994f3e966f6ee475482af5f5_1a69f3c0de994f3e966f6ee475482af5f5" kindref="member">AkkaSagaRepository&lt;TAuthenticationToken&gt;</ref> </para>        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" line="25" column="1" bodyfile="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" bodystart="25" bodyend="29"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" line="36" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" bodystart="36" bodyend="40"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="protected-func">
@@ -92,7 +96,7 @@
 </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" line="33" column="1" bodyfile="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" bodystart="33" bodyend="38"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" line="49" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" bodystart="49" bodyend="54"/>
       </memberdef>
       <memberdef kind="function" id="classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a7f6375bb99e680792466fb420232a535_1a7f6375bb99e680792466fb420232a535" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>override void</type>
@@ -105,18 +109,26 @@
           <declname>event</declname>
         </param>
         <briefdescription>
-<para>Publish the saved <emphasis>event</emphasis> . </para>        </briefdescription>
+<para>Publish the saved <emphasis>event</emphasis>  asynchronously on <ref refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a25957859d1f98ea7f434983c562e9724_1a25957859d1f98ea7f434983c562e9724" kindref="member">EventPublisher</ref>, then calls SagaRepository&lt;TAuthenticationToken&gt;.PublishEvent </para>        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" line="40" column="1" bodyfile="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" bodystart="40" bodyend="47"/>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" line="60" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" bodystart="60" bodyend="67"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
-    </briefdescription>
+<para>A <ref refid="classCqrs_1_1Domain_1_1SagaRepository_ab444c7f3ace1ee0350d9f396345c395d_1ab444c7f3ace1ee0350d9f396345c395d" kindref="member">SagaRepository&lt;TAuthenticationToken&gt;</ref> that is safe to use within Akka.NET </para>    </briefdescription>
     <detaileddescription>
-    </detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TAuthenticationToken</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of authentication token.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>    </detaileddescription>
     <inheritancegraph>
       <node id="93">
         <label>Cqrs.Akka.Domain.AkkaSagaRepository&lt; TAuthenticationToken &gt;</label>
@@ -169,9 +181,10 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" line="22" column="1" bodyfile="/mnt/y/cdmdotnet/CQRS.XsamX/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" bodystart="19" bodyend="50"/>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" line="27" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Akka.Net/Cqrs.Akka/Domain/AkkaSagaRepository.cs" bodystart="24" bodyend="70"/>
     <listofallmembers>
-      <member refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a8297f64e2b7a7be7bcc999c89dcece05_1a8297f64e2b7a7be7bcc999c89dcece05" prot="public" virt="non-virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>AkkaSagaRepository</name></member>
+      <member refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a69f3c0de994f3e966f6ee475482af5f5_1a69f3c0de994f3e966f6ee475482af5f5" prot="public" virt="non-virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>AkkaSagaRepository</name></member>
+      <member refid="classCqrs_1_1Domain_1_1SagaRepository_a65911c8ed6a372f3cccb4c175f198abb_1a65911c8ed6a372f3cccb4c175f198abb" prot="protected" virt="non-virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>CommandPublisher</name></member>
       <member refid="classCqrs_1_1Domain_1_1SagaRepository_a654f9f7c2130864d63515f1504a750fd_1a654f9f7c2130864d63515f1504a750fd" prot="protected" virt="non-virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>CorrelationIdHelper</name></member>
       <member refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a2c7263d0e58d2b31149ec685d5be934a_1a2c7263d0e58d2b31149ec685d5be934a" prot="protected" virt="virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>CreateSaga&lt; TSaga &gt;</name></member>
       <member refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a25957859d1f98ea7f434983c562e9724_1a25957859d1f98ea7f434983c562e9724" prot="protected" virt="non-virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>EventPublisher</name></member>
@@ -180,10 +193,11 @@
       <member refid="classCqrs_1_1Domain_1_1SagaRepository_acc59a4478bb992b03690f0cda3e4e362_1acc59a4478bb992b03690f0cda3e4e362" prot="protected" virt="virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>LoadSaga&lt; TSaga &gt;</name></member>
       <member refid="classCqrs_1_1Domain_1_1SagaRepository_af6af9066681e47bc4ff2e14358321fb8_1af6af9066681e47bc4ff2e14358321fb8" prot="public" virt="virtual" ambiguityscope="Cqrs::Domain::SagaRepository."><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>LoadSagaHistory&lt; TSaga &gt;</name></member>
       <member refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaRepository_a77233d8c2230c0a69a993faaac0101a9_1a77233d8c2230c0a69a993faaac0101a9" prot="public" virt="non-virtual" ambiguityscope="Cqrs::Akka::Domain::IAkkaSagaRepository."><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>LoadSagaHistory&lt; TSaga &gt;</name></member>
+      <member refid="classCqrs_1_1Domain_1_1SagaRepository_acf126ad11c6a5996012885d14f9c45c2_1acf126ad11c6a5996012885d14f9c45c2" prot="protected" virt="virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>PublishCommand</name></member>
       <member refid="classCqrs_1_1Domain_1_1SagaRepository_a94707dc4549d096ea3cf5d241117495a_1a94707dc4549d096ea3cf5d241117495a" prot="protected" virt="non-virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>Publisher</name></member>
       <member refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a7f6375bb99e680792466fb420232a535_1a7f6375bb99e680792466fb420232a535" prot="protected" virt="virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>PublishEvent</name></member>
       <member refid="classCqrs_1_1Domain_1_1SagaRepository_a578164fa38728f3a23ca41d8c81611e0_1a578164fa38728f3a23ca41d8c81611e0" prot="protected" virt="non-virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>SagaFactory</name></member>
-      <member refid="classCqrs_1_1Domain_1_1SagaRepository_a2981231b25fa89133ab50796cd352fbf_1a2981231b25fa89133ab50796cd352fbf" prot="public" virt="non-virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>SagaRepository</name></member>
+      <member refid="classCqrs_1_1Domain_1_1SagaRepository_ab444c7f3ace1ee0350d9f396345c395d_1ab444c7f3ace1ee0350d9f396345c395d" prot="public" virt="non-virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>SagaRepository</name></member>
       <member refid="classCqrs_1_1Domain_1_1SagaRepository_a84cae424cb01de22864ae7d960007cd0_1a84cae424cb01de22864ae7d960007cd0" prot="public" virt="virtual"><scope>Cqrs::Akka::Domain::AkkaSagaRepository</scope><name>Save&lt; TSaga &gt;</name></member>
     </listofallmembers>
   </compounddef>

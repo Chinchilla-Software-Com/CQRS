@@ -391,7 +391,7 @@ namespace Cqrs.Bus
 			bool wasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "InProcessBus" } };
-			string telemetryName = string.Format("{0}/{1}", eventName, @event.Id);
+			string telemetryName = string.Format("{0}/{1}/{2}", eventName, @event.GetIdentity(), @event.Id);
 			var telemeteredEvent = @event as ITelemeteredMessage;
 			if (telemeteredEvent != null)
 				telemetryName = telemeteredEvent.TelemetryName;
@@ -472,7 +472,7 @@ namespace Cqrs.Bus
 			string telemetryNames = string.Empty;
 			foreach (TEvent @event in sourceEvents)
 			{
-				string subTelemetryName = string.Format("{0}/{1}", @event.GetType().FullName, @event.Id);
+				string subTelemetryName = string.Format("{0}/{1}/{2}", @event.GetType().FullName, @event.GetIdentity(), @event.Id);
 				var telemeteredCommand = @event as ITelemeteredMessage;
 				if (telemeteredCommand != null)
 					subTelemetryName = telemeteredCommand.TelemetryName;
@@ -656,7 +656,7 @@ namespace Cqrs.Bus
 		{
 			Action<TMessage> registerableHandler = BusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(TelemetryHelper, handler, holdMessageLock, "In-Process/Bus");
 
-			Routes.RegisterHandler(registerableHandler, null);
+			Routes.RegisterGlobalEventHandler(registerableHandler, holdMessageLock);
 
 			TelemetryHelper.TrackEvent(string.Format("Cqrs/RegisterGlobalEventHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "In-Process/Bus" } });
 			TelemetryHelper.Flush();

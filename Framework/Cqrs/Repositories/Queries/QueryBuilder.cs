@@ -290,7 +290,14 @@ namespace Cqrs.Repositories.Queries
 		/// </summary>
 		protected virtual TQueryStrategy GetNullQueryStrategy()
 		{
-			return Activator.CreateInstance<TQueryStrategy>();
+			try
+			{
+				return Activator.CreateInstance<TQueryStrategy>();
+			}
+			catch (MissingMethodException)
+			{
+				return DependencyResolver.Resolve<TQueryStrategy>();
+			}
 		}
 
 		/// <summary>

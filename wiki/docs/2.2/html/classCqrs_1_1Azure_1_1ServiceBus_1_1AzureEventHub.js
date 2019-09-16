@@ -2,9 +2,12 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub =
 [
     [ "AzureEventHub", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_adef2c26639ae4a7725c397da7fd90000.html#adef2c26639ae4a7725c397da7fd90000", null ],
     [ "ApplyReceiverMessageHandler", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af2efc497815828b6fe0b4d6621bc8b41.html#af2efc497815828b6fe0b4d6621bc8b41", null ],
-    [ "CheckHubExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af9cafb2d7025844b0bf37ee6a6a0f635.html#af9cafb2d7025844b0bf37ee6a6a0f635", null ],
-    [ "CheckPrivateEventHubExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af43ec28c427d2d45370ef2401864db4b.html#af43ec28c427d2d45370ef2401864db4b", null ],
+    [ "CheckHubExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac62e15208566056ffad05f46a303de8f.html#ac62e15208566056ffad05f46a303de8f", null ],
+    [ "CheckPrivateHubExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a5eea5010c95290cb4081679538a06555.html#a5eea5010c95290cb4081679538a06555", null ],
     [ "CheckPublicHubExists", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ae60a7cddcb566ff8f5cf2ac2db17733e.html#ae60a7cddcb566ff8f5cf2ac2db17733e", null ],
+    [ "CreateBrokeredMessage< TMessage >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8302c7e2f88a666862b3d9fd4531b1f2.html#a8302c7e2f88a666862b3d9fd4531b1f2", null ],
+    [ "ExtractSignature", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac22def26cc02c95c6337be7d87854192.html#ac22def26cc02c95c6337be7d87854192", null ],
+    [ "ExtractTelemetryProperties", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a913284b0c4d40aa59c20c277b45429e5.html#a913284b0c4d40aa59c20c277b45429e5", null ],
     [ "GetConnectionString", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a9855633b53ed1f67863ef9dffad0812c.html#a9855633b53ed1f67863ef9dffad0812c", null ],
     [ "InstantiatePublishing", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3747fb9fcb3de2a72c8a6d7bbd92db95.html#a3747fb9fcb3de2a72c8a6d7bbd92db95", null ],
     [ "InstantiateReceiving", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_aa725781eddb65bdfe456a4fecb36fb6b.html#aa725781eddb65bdfe456a4fecb36fb6b", null ],
@@ -21,6 +24,7 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub =
     [ "EventHubPublisher", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a5f64ce36efaee0f676816c803620d05e.html#a5f64ce36efaee0f676816c803620d05e", null ],
     [ "EventHubReceiver", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35.html#a1b12b47dbb9b9afe2014477a2e457c35", null ],
     [ "EventHubStorageConnectionStringNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad400a17bf61c218e6330cd6500458801.html#ad400a17bf61c218e6330cd6500458801", null ],
+    [ "ExclusionNamespaces", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad25a0f517a33a99e4ae645bf14c3f7d9.html#ad25a0f517a33a99e4ae645bf14c3f7d9", null ],
     [ "PrivateEventHubConsumerGroupName", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a0c091d0cb19dda3e8bfc20f0e7d30af3.html#a0c091d0cb19dda3e8bfc20f0e7d30af3", null ],
     [ "PrivateEventHubConsumerGroupNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad2095d284821cff883fef5a2a5aec90e.html#ad2095d284821cff883fef5a2a5aec90e", null ],
     [ "PrivateEventHubName", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac6802047e00a92ea4b0ae6b69ef7310a.html#ac6802047e00a92ea4b0ae6b69ef7310a", null ],
@@ -31,6 +35,8 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub =
     [ "PublicEventHubNameConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3ef1f56ad3de3bf8337f68e73627fab2.html#a3ef1f56ad3de3bf8337f68e73627fab2", null ],
     [ "ReceiverMessageHandler", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8c9faa7096d72a45803e6e63a1b3cf30.html#a8c9faa7096d72a45803e6e63a1b3cf30", null ],
     [ "ReceiverMessageHandlerOptions", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad3a0c2f32d5771fb1f4420fc33c75968.html#ad3a0c2f32d5771fb1f4420fc33c75968", null ],
+    [ "Signer", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a7e8b703c53a0a3978fdaa28dc64c4d1e.html#a7e8b703c53a0a3978fdaa28dc64c4d1e", null ],
+    [ "SigningTokenConfigurationKey", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a7dcae4b6bcae81e87b935892e6687382.html#a7dcae4b6bcae81e87b935892e6687382", null ],
     [ "StorageConnectionString", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b102538e8b72f9990578fa3bcbe4c12.html#a2b102538e8b72f9990578fa3bcbe4c12", null ],
     [ "TelemetryHelper", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a4cf19edac088c5ea74408398b3dfd4a2.html#a4cf19edac088c5ea74408398b3dfd4a2", null ]
 ];

@@ -27,8 +27,6 @@ items:
   - Cqrs.Akka.Commands.AkkaCommandBus`1.RegisterHandler``1(System.Action{``0},System.Boolean)
   - Cqrs.Akka.Commands.AkkaCommandBus`1.RegisterHandler``1(System.Action{``0},System.Type,System.Boolean)
   - Cqrs.Akka.Commands.AkkaCommandBus`1.Routes
-  - Cqrs.Akka.Commands.AkkaCommandBus`1.Send``1(``0)
-  - Cqrs.Akka.Commands.AkkaCommandBus`1.Send``1(System.Collections.Generic.IEnumerable{``0})
   langs:
   - csharp
   - vb
@@ -56,7 +54,6 @@ items:
       description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the authentication token.
     content.vb: >-
       Public Class AkkaCommandBus(Of TAuthenticationToken)
-
           Implements IAkkaCommandPublisher(Of TAuthenticationToken), IPublishAndWaitCommandPublisher(Of TAuthenticationToken), ICommandPublisher(Of TAuthenticationToken), ICommandHandlerRegistrar, IHandlerRegistrar
   inheritance:
   - System.Object
@@ -101,10 +98,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Routes
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 31
+    startLine: 34
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets the <xref href=\"Cqrs.Bus.RouteManager\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected static RouteManager Routes { get; }
     parameters: []
@@ -140,10 +139,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: AuthenticationTokenHelper
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 33
+    startLine: 39
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets or sets the <xref href=\"Cqrs.Authentication.IAuthenticationTokenHelper%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; }
     parameters: []
@@ -177,10 +178,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CorrelationIdHelper
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 35
+    startLine: 44
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets or sets the <xref href=\"cdmdotnet.Logging.ICorrelationIdHelper\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected ICorrelationIdHelper CorrelationIdHelper { get; }
     parameters: []
@@ -214,10 +217,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: DependencyResolver
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 37
+    startLine: 49
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets or sets the <xref href=\"Cqrs.Configuration.IDependencyResolver\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected IDependencyResolver DependencyResolver { get; }
     parameters: []
@@ -233,54 +238,6 @@ items:
   - Protected
   - ReadOnly
   fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).DependencyResolver
-- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.#ctor(Cqrs.Bus.IBusHelper,Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,Cqrs.Configuration.IDependencyResolver,cdmdotnet.Logging.ILogger,Cqrs.Commands.ICommandPublisher{`0},Cqrs.Commands.ICommandReceiver{`0})
-  commentId: M:Cqrs.Akka.Commands.AkkaCommandBus`1.#ctor(Cqrs.Bus.IBusHelper,Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,Cqrs.Configuration.IDependencyResolver,cdmdotnet.Logging.ILogger,Cqrs.Commands.ICommandPublisher{`0},Cqrs.Commands.ICommandReceiver{`0})
-  id: '#ctor(Cqrs.Bus.IBusHelper,Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,Cqrs.Configuration.IDependencyResolver,cdmdotnet.Logging.ILogger,Cqrs.Commands.ICommandPublisher{`0},Cqrs.Commands.ICommandReceiver{`0})'
-  parent: Cqrs.Akka.Commands.AkkaCommandBus`1
-  langs:
-  - csharp
-  - vb
-  name: AkkaCommandBus(IBusHelper, IAuthenticationTokenHelper<TAuthenticationToken>, ICorrelationIdHelper, IDependencyResolver, ILogger, ICommandPublisher<TAuthenticationToken>, ICommandReceiver<TAuthenticationToken>)
-  nameWithType: AkkaCommandBus<TAuthenticationToken>.AkkaCommandBus(IBusHelper, IAuthenticationTokenHelper<TAuthenticationToken>, ICorrelationIdHelper, IDependencyResolver, ILogger, ICommandPublisher<TAuthenticationToken>, ICommandReceiver<TAuthenticationToken>)
-  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.AkkaCommandBus(Cqrs.Bus.IBusHelper, Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>, cdmdotnet.Logging.ICorrelationIdHelper, Cqrs.Configuration.IDependencyResolver, cdmdotnet.Logging.ILogger, Cqrs.Commands.ICommandPublisher<TAuthenticationToken>, Cqrs.Commands.ICommandReceiver<TAuthenticationToken>)
-  type: Constructor
-  source:
-    remote:
-      path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-      branch: features/documentation
-      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
-    id: .ctor
-    path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 44
-  assemblies:
-  - Cqrs.Akka
-  namespace: Cqrs.Akka.Commands
-  syntax:
-    content: public AkkaCommandBus(IBusHelper busHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger, ICommandPublisher<TAuthenticationToken> commandPublisher, ICommandReceiver<TAuthenticationToken> commandReceiver)
-    parameters:
-    - id: busHelper
-      type: Cqrs.Bus.IBusHelper
-    - id: authenticationTokenHelper
-      type: Cqrs.Authentication.IAuthenticationTokenHelper{{TAuthenticationToken}}
-    - id: correlationIdHelper
-      type: cdmdotnet.Logging.ICorrelationIdHelper
-    - id: dependencyResolver
-      type: Cqrs.Configuration.IDependencyResolver
-    - id: logger
-      type: cdmdotnet.Logging.ILogger
-    - id: commandPublisher
-      type: Cqrs.Commands.ICommandPublisher{{TAuthenticationToken}}
-    - id: commandReceiver
-      type: Cqrs.Commands.ICommandReceiver{{TAuthenticationToken}}
-    content.vb: Public Sub New(busHelper As IBusHelper, authenticationTokenHelper As IAuthenticationTokenHelper(Of TAuthenticationToken), correlationIdHelper As ICorrelationIdHelper, dependencyResolver As IDependencyResolver, logger As ILogger, commandPublisher As ICommandPublisher(Of TAuthenticationToken), commandReceiver As ICommandReceiver(Of TAuthenticationToken))
-  overload: Cqrs.Akka.Commands.AkkaCommandBus`1.#ctor*
-  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).AkkaCommandBus(IBusHelper, IAuthenticationTokenHelper(Of TAuthenticationToken), ICorrelationIdHelper, IDependencyResolver, ILogger, ICommandPublisher(Of TAuthenticationToken), ICommandReceiver(Of TAuthenticationToken))
-  modifiers.csharp:
-  - public
-  modifiers.vb:
-  - Public
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).AkkaCommandBus(Cqrs.Bus.IBusHelper, Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken), cdmdotnet.Logging.ICorrelationIdHelper, Cqrs.Configuration.IDependencyResolver, cdmdotnet.Logging.ILogger, Cqrs.Commands.ICommandPublisher(Of TAuthenticationToken), Cqrs.Commands.ICommandReceiver(Of TAuthenticationToken))
-  name.vb: AkkaCommandBus(IBusHelper, IAuthenticationTokenHelper(Of TAuthenticationToken), ICorrelationIdHelper, IDependencyResolver, ILogger, ICommandPublisher(Of TAuthenticationToken), ICommandReceiver(Of TAuthenticationToken))
 - uid: Cqrs.Akka.Commands.AkkaCommandBus`1.BusHelper
   commentId: P:Cqrs.Akka.Commands.AkkaCommandBus`1.BusHelper
   id: BusHelper
@@ -299,10 +256,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: BusHelper
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 56
+    startLine: 54
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets or sets the <xref href=\"Cqrs.Bus.IBusHelper\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected IBusHelper BusHelper { get; }
     parameters: []
@@ -336,10 +295,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Logger
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 58
+    startLine: 59
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets or sets the <xref href=\"cdmdotnet.Logging.ILogger\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected ILogger Logger { get; }
     parameters: []
@@ -373,10 +334,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CommandPublisher
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 60
+    startLine: 64
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets or sets the <xref href=\"Cqrs.Commands.ICommandPublisher%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected ICommandPublisher<TAuthenticationToken> CommandPublisher { get; }
     parameters: []
@@ -410,10 +373,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: CommandReceiver
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 62
+    startLine: 69
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets or sets the <xref href=\"Cqrs.Commands.ICommandReceiver%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected ICommandReceiver<TAuthenticationToken> CommandReceiver { get; }
     parameters: []
@@ -447,10 +412,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: EventWaits
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 64
+    startLine: 74
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nGets or sets the current list of events waiting to be evaluated for <xref href=\"Cqrs.Akka.Commands.AkkaCommandBus%601.PublishAndWait%60%602(%60%600%2cCqrs.Events.IEventReceiver%7b%600%7d)\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
   syntax:
     content: protected IDictionary<Guid, IList<IEvent<TAuthenticationToken>>> EventWaits { get; }
     parameters: []
@@ -466,6 +433,56 @@ items:
   - Protected
   - ReadOnly
   fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).EventWaits
+- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.#ctor(Cqrs.Bus.IBusHelper,Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,Cqrs.Configuration.IDependencyResolver,cdmdotnet.Logging.ILogger,Cqrs.Commands.ICommandPublisher{`0},Cqrs.Commands.ICommandReceiver{`0})
+  commentId: M:Cqrs.Akka.Commands.AkkaCommandBus`1.#ctor(Cqrs.Bus.IBusHelper,Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,Cqrs.Configuration.IDependencyResolver,cdmdotnet.Logging.ILogger,Cqrs.Commands.ICommandPublisher{`0},Cqrs.Commands.ICommandReceiver{`0})
+  id: '#ctor(Cqrs.Bus.IBusHelper,Cqrs.Authentication.IAuthenticationTokenHelper{`0},cdmdotnet.Logging.ICorrelationIdHelper,Cqrs.Configuration.IDependencyResolver,cdmdotnet.Logging.ILogger,Cqrs.Commands.ICommandPublisher{`0},Cqrs.Commands.ICommandReceiver{`0})'
+  parent: Cqrs.Akka.Commands.AkkaCommandBus`1
+  langs:
+  - csharp
+  - vb
+  name: AkkaCommandBus(IBusHelper, IAuthenticationTokenHelper<TAuthenticationToken>, ICorrelationIdHelper, IDependencyResolver, ILogger, ICommandPublisher<TAuthenticationToken>, ICommandReceiver<TAuthenticationToken>)
+  nameWithType: AkkaCommandBus<TAuthenticationToken>.AkkaCommandBus(IBusHelper, IAuthenticationTokenHelper<TAuthenticationToken>, ICorrelationIdHelper, IDependencyResolver, ILogger, ICommandPublisher<TAuthenticationToken>, ICommandReceiver<TAuthenticationToken>)
+  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.AkkaCommandBus(Cqrs.Bus.IBusHelper, Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>, cdmdotnet.Logging.ICorrelationIdHelper, Cqrs.Configuration.IDependencyResolver, cdmdotnet.Logging.ILogger, Cqrs.Commands.ICommandPublisher<TAuthenticationToken>, Cqrs.Commands.ICommandReceiver<TAuthenticationToken>)
+  type: Constructor
+  source:
+    remote:
+      path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: .ctor
+    path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
+    startLine: 84
+  assemblies:
+  - Cqrs.Akka
+  namespace: Cqrs.Akka.Commands
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Akka.Commands.AkkaCommandBus%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
+  syntax:
+    content: public AkkaCommandBus(IBusHelper busHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger, ICommandPublisher<TAuthenticationToken> commandPublisher, ICommandReceiver<TAuthenticationToken> commandReceiver)
+    parameters:
+    - id: busHelper
+      type: Cqrs.Bus.IBusHelper
+    - id: authenticationTokenHelper
+      type: Cqrs.Authentication.IAuthenticationTokenHelper{{TAuthenticationToken}}
+    - id: correlationIdHelper
+      type: cdmdotnet.Logging.ICorrelationIdHelper
+    - id: dependencyResolver
+      type: Cqrs.Configuration.IDependencyResolver
+    - id: logger
+      type: cdmdotnet.Logging.ILogger
+    - id: commandPublisher
+      type: Cqrs.Commands.ICommandPublisher{{TAuthenticationToken}}
+    - id: commandReceiver
+      type: Cqrs.Commands.ICommandReceiver{{TAuthenticationToken}}
+    content.vb: Public Sub New(busHelper As IBusHelper, authenticationTokenHelper As IAuthenticationTokenHelper(Of TAuthenticationToken), correlationIdHelper As ICorrelationIdHelper, dependencyResolver As IDependencyResolver, logger As ILogger, commandPublisher As ICommandPublisher(Of TAuthenticationToken), commandReceiver As ICommandReceiver(Of TAuthenticationToken))
+  overload: Cqrs.Akka.Commands.AkkaCommandBus`1.#ctor*
+  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).AkkaCommandBus(IBusHelper, IAuthenticationTokenHelper(Of TAuthenticationToken), ICorrelationIdHelper, IDependencyResolver, ILogger, ICommandPublisher(Of TAuthenticationToken), ICommandReceiver(Of TAuthenticationToken))
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).AkkaCommandBus(Cqrs.Bus.IBusHelper, Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken), cdmdotnet.Logging.ICorrelationIdHelper, Cqrs.Configuration.IDependencyResolver, cdmdotnet.Logging.ILogger, Cqrs.Commands.ICommandPublisher(Of TAuthenticationToken), Cqrs.Commands.ICommandReceiver(Of TAuthenticationToken))
+  name.vb: AkkaCommandBus(IBusHelper, IAuthenticationTokenHelper(Of TAuthenticationToken), ICorrelationIdHelper, IDependencyResolver, ILogger, ICommandPublisher(Of TAuthenticationToken), ICommandReceiver(Of TAuthenticationToken))
 - uid: Cqrs.Akka.Commands.AkkaCommandBus`1.PrepareCommand``1(``0)
   commentId: M:Cqrs.Akka.Commands.AkkaCommandBus`1.PrepareCommand``1(``0)
   id: PrepareCommand``1(``0)
@@ -484,10 +501,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrepareCommand
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 66
+    startLine: 104
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nSets the\n<xref href=\"Cqrs.Messages.IMessageWithAuthenticationToken%601.AuthenticationToken\" data-throw-if-not-resolved=\"false\"></xref>,\n<xref href=\"Cqrs.Messages.IMessage.CorrelationId\" data-throw-if-not-resolved=\"false\"></xref>,\n<xref href=\"Cqrs.Messages.IMessage.OriginatingFramework\" data-throw-if-not-resolved=\"false\"></xref> to &quot;Akka&quot; and\nadds a value of &quot;Akka&quot; to the <xref href=\"Cqrs.Messages.IMessage.Frameworks\" data-throw-if-not-resolved=\"false\"></xref>\nif not already done so\n"
+  example: []
   syntax:
     content: 'protected virtual void PrepareCommand<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
@@ -524,10 +543,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PrepareAndValidateCommand
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 83
+    startLine: 132
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nLocates a suitable <xref href=\"Cqrs.Commands.ICommandValidator%602\" data-throw-if-not-resolved=\"false\"></xref> to validate the provided <code data-dev-comment-type=\"paramref\">command</code> and validates the provided <code data-dev-comment-type=\"paramref\">command</code> if one is located\nCalls <xref href=\"Cqrs.Akka.Commands.AkkaCommandBus%601.PrepareCommand%60%601(%60%600)\" data-throw-if-not-resolved=\"false\"></xref>\nChecks if the provided <code data-dev-comment-type=\"paramref\">command</code> is required to be processed\nLocates a single <xref href=\"Cqrs.Bus.RouteHandlerDelegate\" data-throw-if-not-resolved=\"false\"></xref> for the provided <code data-dev-comment-type=\"paramref\">command</code>\n"
+  example: []
   syntax:
     content: 'protected virtual bool PrepareAndValidateCommand<TCommand>(TCommand command, out RouteHandlerDelegate commandHandler)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
@@ -539,6 +560,7 @@ items:
     - id: TCommand
     return:
       type: System.Boolean
+      description: "\nFalse if a suitable <xref href=\"Cqrs.Commands.ICommandValidator%602\" data-throw-if-not-resolved=\"false\"></xref> is located and the provided <code data-dev-comment-type=\"paramref\">command</code> fails validation,\nFalse if no <xref href=\"Cqrs.Bus.RouteHandlerDelegate\" data-throw-if-not-resolved=\"false\"></xref> is found but the command isn&apos;t required to be handled,\nTrue otherwise.\n"
     content.vb: Protected Overridable Function PrepareAndValidateCommand(Of TCommand As ICommand(Of TAuthenticationToken))(command As TCommand, ByRef commandHandler As RouteHandlerDelegate) As Boolean
   overload: Cqrs.Akka.Commands.AkkaCommandBus`1.PrepareAndValidateCommand*
   nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).PrepareAndValidateCommand(Of TCommand)(TCommand, ByRef RouteHandlerDelegate)
@@ -568,10 +590,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Publish
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 130
+    startLine: 182
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> on the command bus.\n"
+  example: []
   syntax:
     content: 'public virtual void Publish<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
@@ -592,46 +616,6 @@ items:
   - Overridable
   fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).Publish(Of TCommand)(TCommand)
   name.vb: Publish(Of TCommand)(TCommand)
-- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.Send``1(``0)
-  commentId: M:Cqrs.Akka.Commands.AkkaCommandBus`1.Send``1(``0)
-  id: Send``1(``0)
-  parent: Cqrs.Akka.Commands.AkkaCommandBus`1
-  langs:
-  - csharp
-  - vb
-  name: Send<TCommand>(TCommand)
-  nameWithType: AkkaCommandBus<TAuthenticationToken>.Send<TCommand>(TCommand)
-  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.Send<TCommand>(TCommand)
-  type: Method
-  source:
-    remote:
-      path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-      branch: features/documentation
-      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
-    id: Send
-    path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 145
-  assemblies:
-  - Cqrs.Akka
-  namespace: Cqrs.Akka.Commands
-  syntax:
-    content: 'public virtual void Send<TCommand>(TCommand command)where TCommand : ICommand<TAuthenticationToken>'
-    parameters:
-    - id: command
-      type: '{TCommand}'
-    typeParameters:
-    - id: TCommand
-    content.vb: Public Overridable Sub Send(Of TCommand As ICommand(Of TAuthenticationToken))(command As TCommand)
-  overload: Cqrs.Akka.Commands.AkkaCommandBus`1.Send*
-  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).Send(Of TCommand)(TCommand)
-  modifiers.csharp:
-  - public
-  - virtual
-  modifiers.vb:
-  - Public
-  - Overridable
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).Send(Of TCommand)(TCommand)
-  name.vb: Send(Of TCommand)(TCommand)
 - uid: Cqrs.Akka.Commands.AkkaCommandBus`1.Publish``1(System.Collections.Generic.IEnumerable{``0})
   commentId: M:Cqrs.Akka.Commands.AkkaCommandBus`1.Publish``1(System.Collections.Generic.IEnumerable{``0})
   id: Publish``1(System.Collections.Generic.IEnumerable{``0})
@@ -650,10 +634,12 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: Publish
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 151
+    startLine: 200
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">commands</code> on the command bus.\n"
+  example: []
   syntax:
     content: 'public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
@@ -674,46 +660,6 @@ items:
   - Overridable
   fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).Publish(Of TCommand)(System.Collections.Generic.IEnumerable(Of TCommand))
   name.vb: Publish(Of TCommand)(IEnumerable(Of TCommand))
-- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.Send``1(System.Collections.Generic.IEnumerable{``0})
-  commentId: M:Cqrs.Akka.Commands.AkkaCommandBus`1.Send``1(System.Collections.Generic.IEnumerable{``0})
-  id: Send``1(System.Collections.Generic.IEnumerable{``0})
-  parent: Cqrs.Akka.Commands.AkkaCommandBus`1
-  langs:
-  - csharp
-  - vb
-  name: Send<TCommand>(IEnumerable<TCommand>)
-  nameWithType: AkkaCommandBus<TAuthenticationToken>.Send<TCommand>(IEnumerable<TCommand>)
-  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.Send<TCommand>(System.Collections.Generic.IEnumerable<TCommand>)
-  type: Method
-  source:
-    remote:
-      path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-      branch: features/documentation
-      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
-    id: Send
-    path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 169
-  assemblies:
-  - Cqrs.Akka
-  namespace: Cqrs.Akka.Commands
-  syntax:
-    content: 'public virtual void Send<TCommand>(IEnumerable<TCommand> commands)where TCommand : ICommand<TAuthenticationToken>'
-    parameters:
-    - id: commands
-      type: System.Collections.Generic.IEnumerable{{TCommand}}
-    typeParameters:
-    - id: TCommand
-    content.vb: Public Overridable Sub Send(Of TCommand As ICommand(Of TAuthenticationToken))(commands As IEnumerable(Of TCommand))
-  overload: Cqrs.Akka.Commands.AkkaCommandBus`1.Send*
-  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).Send(Of TCommand)(IEnumerable(Of TCommand))
-  modifiers.csharp:
-  - public
-  - virtual
-  modifiers.vb:
-  - Public
-  - Overridable
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).Send(Of TCommand)(System.Collections.Generic.IEnumerable(Of TCommand))
-  name.vb: Send(Of TCommand)(IEnumerable(Of TCommand))
 - uid: Cqrs.Akka.Commands.AkkaCommandBus`1.PublishAndWait``2(``0,Cqrs.Events.IEventReceiver{`0})
   commentId: M:Cqrs.Akka.Commands.AkkaCommandBus`1.PublishAndWait``2(``0,Cqrs.Events.IEventReceiver{`0})
   id: PublishAndWait``2(``0,Cqrs.Events.IEventReceiver{`0})
@@ -732,18 +678,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 180
+    startLine: 223
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span>\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code>\n"
   example: []
   syntax:
     content: 'public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to publish.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
     - id: eventReceiver
       type: Cqrs.Events.IEventReceiver{{TAuthenticationToken}}
       description: If provided, is the <xref href="Cqrs.Events.IEventReceiver%601" data-throw-if-not-resolved="false"></xref> that the event is expected to be returned on.
@@ -783,18 +729,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 192
+    startLine: 235
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to publish.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
     - id: millisecondsTimeout
       type: System.Int32
       description: The number of milliseconds to wait, or <xref href="System.Threading.Timeout.Infinite" data-throw-if-not-resolved="false"></xref> (-1) to wait indefinitely.
@@ -837,18 +783,18 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 204
+    startLine: 247
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to publish.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
     - id: timeout
       type: System.TimeSpan
       description: A <xref href="System.TimeSpan" data-throw-if-not-resolved="false"></xref> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.
@@ -891,21 +837,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 219
+    startLine: 262
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits until the specified condition is satisfied an event of <span class=\"typeparamref\">TEvent</span>\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits until the specified condition is satisfied an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code>\n"
   example: []
   syntax:
     content: 'public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to publish.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
     - id: condition
       type: System.Func{System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}},{TEvent}}
-      description: A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.
+      description: A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.
     - id: eventReceiver
       type: Cqrs.Events.IEventReceiver{{TAuthenticationToken}}
       description: If provided, is the <xref href="Cqrs.Events.IEventReceiver%601" data-throw-if-not-resolved="false"></xref> that the event is expected to be returned on.
@@ -945,21 +891,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 232
+    startLine: 275
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to publish.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
     - id: condition
       type: System.Func{System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}},{TEvent}}
-      description: A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.
+      description: A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.
     - id: millisecondsTimeout
       type: System.Int32
       description: The number of milliseconds to wait, or <xref href="System.Threading.Timeout.Infinite" data-throw-if-not-resolved="false"></xref> (-1) to wait indefinitely.
@@ -1002,21 +948,21 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: PublishAndWait
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 262
+    startLine: 305
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
-  summary: "\nPublishes the provided <span class=\"paramref\">command</span> and waits for an event of <span class=\"typeparamref\">TEvent</span> or exits if the specified timeout is expired.\n"
+  summary: "\nPublishes the provided <code data-dev-comment-type=\"paramref\">command</code> and waits for an event of <code data-dev-comment-type=\"typeparamref\">TEvent</code> or exits if the specified timeout is expired.\n"
   example: []
   syntax:
     content: 'public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)where TCommand : ICommand<TAuthenticationToken>'
     parameters:
     - id: command
       type: '{TCommand}'
-      description: The <span class="typeparamref">TCommand</span> to publish.
+      description: The <code data-dev-comment-type="typeparamref">TCommand</code> to publish.
     - id: condition
       type: System.Func{System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{{TAuthenticationToken}}},{TEvent}}
-      description: A delegate to be executed over and over until it returns the <span class="typeparamref">TEvent</span> that is desired, return null to keep trying.
+      description: A delegate to be executed over and over until it returns the <code data-dev-comment-type="typeparamref">TEvent</code> that is desired, return null to keep trying.
     - id: timeout
       type: System.TimeSpan
       description: A <xref href="System.TimeSpan" data-throw-if-not-resolved="false"></xref> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.
@@ -1059,7 +1005,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: RegisterHandler
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 278
+    startLine: 321
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
@@ -1105,7 +1051,7 @@ items:
       repo: https://github.com/Chinchilla-Software-Com/CQRS.git
     id: RegisterHandler
     path: Framework/Akka.Net/Cqrs.Akka/Commands/AkkaCommandBus.cs
-    startLine: 287
+    startLine: 330
   assemblies:
   - Cqrs.Akka
   namespace: Cqrs.Akka.Commands
@@ -1725,6 +1671,13 @@ references:
   name: Cqrs.Bus
   nameWithType: Cqrs.Bus
   fullName: Cqrs.Bus
+- uid: Cqrs.Bus.RouteManager
+  commentId: T:Cqrs.Bus.RouteManager
+  parent: Cqrs.Bus
+  isExternal: false
+  name: RouteManager
+  nameWithType: RouteManager
+  fullName: Cqrs.Bus.RouteManager
 - uid: Cqrs.Akka.Commands.AkkaCommandBus`1.Routes*
   commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.Routes
   isExternal: false
@@ -1733,13 +1686,43 @@ references:
   fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.Routes
   nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).Routes
   fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).Routes
-- uid: Cqrs.Bus.RouteManager
-  commentId: T:Cqrs.Bus.RouteManager
-  parent: Cqrs.Bus
+- uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
+  commentId: T:Cqrs.Authentication.IAuthenticationTokenHelper`1
   isExternal: false
-  name: RouteManager
-  nameWithType: RouteManager
-  fullName: Cqrs.Bus.RouteManager
+  name: IAuthenticationTokenHelper<TAuthenticationToken>
+  nameWithType: IAuthenticationTokenHelper<TAuthenticationToken>
+  fullName: Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>
+  nameWithType.vb: IAuthenticationTokenHelper(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken)
+  name.vb: IAuthenticationTokenHelper(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
+    name: IAuthenticationTokenHelper
+    nameWithType: IAuthenticationTokenHelper
+    fullName: Cqrs.Authentication.IAuthenticationTokenHelper
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
+    name: IAuthenticationTokenHelper
+    nameWithType: IAuthenticationTokenHelper
+    fullName: Cqrs.Authentication.IAuthenticationTokenHelper
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: Cqrs.Akka.Commands.AkkaCommandBus`1.AuthenticationTokenHelper*
   commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.AuthenticationTokenHelper
   isExternal: false
@@ -1786,20 +1769,106 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
-  commentId: T:Cqrs.Authentication.IAuthenticationTokenHelper`1
+- uid: Cqrs.Authentication
+  commentId: N:Cqrs.Authentication
   isExternal: false
-  name: IAuthenticationTokenHelper<TAuthenticationToken>
-  nameWithType: IAuthenticationTokenHelper<TAuthenticationToken>
-  fullName: Cqrs.Authentication.IAuthenticationTokenHelper<TAuthenticationToken>
-  nameWithType.vb: IAuthenticationTokenHelper(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Authentication.IAuthenticationTokenHelper(Of TAuthenticationToken)
-  name.vb: IAuthenticationTokenHelper(Of TAuthenticationToken)
+  name: Cqrs.Authentication
+  nameWithType: Cqrs.Authentication
+  fullName: Cqrs.Authentication
+- uid: cdmdotnet.Logging.ICorrelationIdHelper
+  commentId: T:cdmdotnet.Logging.ICorrelationIdHelper
+  parent: cdmdotnet.Logging
+  isExternal: true
+  name: ICorrelationIdHelper
+  nameWithType: ICorrelationIdHelper
+  fullName: cdmdotnet.Logging.ICorrelationIdHelper
+- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.CorrelationIdHelper*
+  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.CorrelationIdHelper
+  isExternal: false
+  name: CorrelationIdHelper
+  nameWithType: AkkaCommandBus<TAuthenticationToken>.CorrelationIdHelper
+  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.CorrelationIdHelper
+  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).CorrelationIdHelper
+  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).CorrelationIdHelper
+- uid: cdmdotnet.Logging
+  commentId: N:cdmdotnet.Logging
+  isExternal: false
+  name: cdmdotnet.Logging
+  nameWithType: cdmdotnet.Logging
+  fullName: cdmdotnet.Logging
+- uid: Cqrs.Configuration.IDependencyResolver
+  commentId: T:Cqrs.Configuration.IDependencyResolver
+  parent: Cqrs.Configuration
+  isExternal: false
+  name: IDependencyResolver
+  nameWithType: IDependencyResolver
+  fullName: Cqrs.Configuration.IDependencyResolver
+- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.DependencyResolver*
+  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.DependencyResolver
+  isExternal: false
+  name: DependencyResolver
+  nameWithType: AkkaCommandBus<TAuthenticationToken>.DependencyResolver
+  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.DependencyResolver
+  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).DependencyResolver
+  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).DependencyResolver
+- uid: Cqrs.Configuration
+  commentId: N:Cqrs.Configuration
+  isExternal: false
+  name: Cqrs.Configuration
+  nameWithType: Cqrs.Configuration
+  fullName: Cqrs.Configuration
+- uid: Cqrs.Bus.IBusHelper
+  commentId: T:Cqrs.Bus.IBusHelper
+  parent: Cqrs.Bus
+  isExternal: false
+  name: IBusHelper
+  nameWithType: IBusHelper
+  fullName: Cqrs.Bus.IBusHelper
+- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.BusHelper*
+  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.BusHelper
+  isExternal: false
+  name: BusHelper
+  nameWithType: AkkaCommandBus<TAuthenticationToken>.BusHelper
+  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.BusHelper
+  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).BusHelper
+  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).BusHelper
+- uid: cdmdotnet.Logging.ILogger
+  commentId: T:cdmdotnet.Logging.ILogger
+  parent: cdmdotnet.Logging
+  isExternal: true
+  name: ILogger
+  nameWithType: ILogger
+  fullName: cdmdotnet.Logging.ILogger
+- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.Logger*
+  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.Logger
+  isExternal: false
+  name: Logger
+  nameWithType: AkkaCommandBus<TAuthenticationToken>.Logger
+  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.Logger
+  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).Logger
+  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).Logger
+- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.CommandPublisher*
+  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.CommandPublisher
+  isExternal: false
+  name: CommandPublisher
+  nameWithType: AkkaCommandBus<TAuthenticationToken>.CommandPublisher
+  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.CommandPublisher
+  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).CommandPublisher
+  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).CommandPublisher
+- uid: Cqrs.Commands.ICommandReceiver`1
+  commentId: T:Cqrs.Commands.ICommandReceiver`1
+  isExternal: false
+  name: ICommandReceiver<TAuthenticationToken>
+  nameWithType: ICommandReceiver<TAuthenticationToken>
+  fullName: Cqrs.Commands.ICommandReceiver<TAuthenticationToken>
+  nameWithType.vb: ICommandReceiver(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Commands.ICommandReceiver(Of TAuthenticationToken)
+  name.vb: ICommandReceiver(Of TAuthenticationToken)
   spec.csharp:
-  - uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
-    name: IAuthenticationTokenHelper
-    nameWithType: IAuthenticationTokenHelper
-    fullName: Cqrs.Authentication.IAuthenticationTokenHelper
+  - uid: Cqrs.Commands.ICommandReceiver`1
+    name: ICommandReceiver
+    nameWithType: ICommandReceiver
+    fullName: Cqrs.Commands.ICommandReceiver
   - name: <
     nameWithType: <
     fullName: <
@@ -1810,10 +1879,10 @@ references:
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: Cqrs.Authentication.IAuthenticationTokenHelper`1
-    name: IAuthenticationTokenHelper
-    nameWithType: IAuthenticationTokenHelper
-    fullName: Cqrs.Authentication.IAuthenticationTokenHelper
+  - uid: Cqrs.Commands.ICommandReceiver`1
+    name: ICommandReceiver
+    nameWithType: ICommandReceiver
+    fullName: Cqrs.Commands.ICommandReceiver
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
@@ -1823,76 +1892,14 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Authentication
-  commentId: N:Cqrs.Authentication
+- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.CommandReceiver*
+  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.CommandReceiver
   isExternal: false
-  name: Cqrs.Authentication
-  nameWithType: Cqrs.Authentication
-  fullName: Cqrs.Authentication
-- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.CorrelationIdHelper*
-  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.CorrelationIdHelper
-  isExternal: false
-  name: CorrelationIdHelper
-  nameWithType: AkkaCommandBus<TAuthenticationToken>.CorrelationIdHelper
-  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.CorrelationIdHelper
-  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).CorrelationIdHelper
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).CorrelationIdHelper
-- uid: cdmdotnet.Logging.ICorrelationIdHelper
-  commentId: T:cdmdotnet.Logging.ICorrelationIdHelper
-  parent: cdmdotnet.Logging
-  isExternal: true
-  name: ICorrelationIdHelper
-  nameWithType: ICorrelationIdHelper
-  fullName: cdmdotnet.Logging.ICorrelationIdHelper
-- uid: cdmdotnet.Logging
-  commentId: N:cdmdotnet.Logging
-  isExternal: false
-  name: cdmdotnet.Logging
-  nameWithType: cdmdotnet.Logging
-  fullName: cdmdotnet.Logging
-- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.DependencyResolver*
-  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.DependencyResolver
-  isExternal: false
-  name: DependencyResolver
-  nameWithType: AkkaCommandBus<TAuthenticationToken>.DependencyResolver
-  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.DependencyResolver
-  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).DependencyResolver
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).DependencyResolver
-- uid: Cqrs.Configuration.IDependencyResolver
-  commentId: T:Cqrs.Configuration.IDependencyResolver
-  parent: Cqrs.Configuration
-  isExternal: false
-  name: IDependencyResolver
-  nameWithType: IDependencyResolver
-  fullName: Cqrs.Configuration.IDependencyResolver
-- uid: Cqrs.Configuration
-  commentId: N:Cqrs.Configuration
-  isExternal: false
-  name: Cqrs.Configuration
-  nameWithType: Cqrs.Configuration
-  fullName: Cqrs.Configuration
-- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.#ctor*
-  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.#ctor
-  isExternal: false
-  name: AkkaCommandBus
-  nameWithType: AkkaCommandBus<TAuthenticationToken>.AkkaCommandBus
-  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.AkkaCommandBus
-  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).AkkaCommandBus
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).AkkaCommandBus
-- uid: Cqrs.Bus.IBusHelper
-  commentId: T:Cqrs.Bus.IBusHelper
-  parent: Cqrs.Bus
-  isExternal: false
-  name: IBusHelper
-  nameWithType: IBusHelper
-  fullName: Cqrs.Bus.IBusHelper
-- uid: cdmdotnet.Logging.ILogger
-  commentId: T:cdmdotnet.Logging.ILogger
-  parent: cdmdotnet.Logging
-  isExternal: true
-  name: ILogger
-  nameWithType: ILogger
-  fullName: cdmdotnet.Logging.ILogger
+  name: CommandReceiver
+  nameWithType: AkkaCommandBus<TAuthenticationToken>.CommandReceiver
+  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.CommandReceiver
+  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).CommandReceiver
+  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).CommandReceiver
 - uid: Cqrs.Commands.ICommandReceiver{{TAuthenticationToken}}
   commentId: T:Cqrs.Commands.ICommandReceiver{`0}
   parent: Cqrs.Commands
@@ -1931,75 +1938,8 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Commands.ICommandReceiver`1
-  commentId: T:Cqrs.Commands.ICommandReceiver`1
-  isExternal: false
-  name: ICommandReceiver<TAuthenticationToken>
-  nameWithType: ICommandReceiver<TAuthenticationToken>
-  fullName: Cqrs.Commands.ICommandReceiver<TAuthenticationToken>
-  nameWithType.vb: ICommandReceiver(Of TAuthenticationToken)
-  fullName.vb: Cqrs.Commands.ICommandReceiver(Of TAuthenticationToken)
-  name.vb: ICommandReceiver(Of TAuthenticationToken)
-  spec.csharp:
-  - uid: Cqrs.Commands.ICommandReceiver`1
-    name: ICommandReceiver
-    nameWithType: ICommandReceiver
-    fullName: Cqrs.Commands.ICommandReceiver
-  - name: <
-    nameWithType: <
-    fullName: <
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: '>'
-    nameWithType: '>'
-    fullName: '>'
-  spec.vb:
-  - uid: Cqrs.Commands.ICommandReceiver`1
-    name: ICommandReceiver
-    nameWithType: ICommandReceiver
-    fullName: Cqrs.Commands.ICommandReceiver
-  - name: '(Of '
-    nameWithType: '(Of '
-    fullName: '(Of '
-  - name: TAuthenticationToken
-    nameWithType: TAuthenticationToken
-    fullName: TAuthenticationToken
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.BusHelper*
-  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.BusHelper
-  isExternal: false
-  name: BusHelper
-  nameWithType: AkkaCommandBus<TAuthenticationToken>.BusHelper
-  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.BusHelper
-  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).BusHelper
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).BusHelper
-- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.Logger*
-  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.Logger
-  isExternal: false
-  name: Logger
-  nameWithType: AkkaCommandBus<TAuthenticationToken>.Logger
-  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.Logger
-  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).Logger
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).Logger
-- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.CommandPublisher*
-  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.CommandPublisher
-  isExternal: false
-  name: CommandPublisher
-  nameWithType: AkkaCommandBus<TAuthenticationToken>.CommandPublisher
-  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.CommandPublisher
-  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).CommandPublisher
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).CommandPublisher
-- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.CommandReceiver*
-  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.CommandReceiver
-  isExternal: false
-  name: CommandReceiver
-  nameWithType: AkkaCommandBus<TAuthenticationToken>.CommandReceiver
-  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.CommandReceiver
-  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).CommandReceiver
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).CommandReceiver
+- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.PublishAndWait``2(``0,Cqrs.Events.IEventReceiver{`0})
+  commentId: M:Cqrs.Akka.Commands.AkkaCommandBus`1.PublishAndWait``2(``0,Cqrs.Events.IEventReceiver{`0})
 - uid: Cqrs.Akka.Commands.AkkaCommandBus`1.EventWaits*
   commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.EventWaits
   isExternal: false
@@ -2163,6 +2103,80 @@ references:
   name: System.Collections.Generic
   nameWithType: System.Collections.Generic
   fullName: System.Collections.Generic
+- uid: Cqrs.Akka.Commands.AkkaCommandBus`1
+  commentId: T:Cqrs.Akka.Commands.AkkaCommandBus`1
+  isExternal: false
+  name: AkkaCommandBus<TAuthenticationToken>
+  nameWithType: AkkaCommandBus<TAuthenticationToken>
+  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>
+  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken)
+  name.vb: AkkaCommandBus(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Akka.Commands.AkkaCommandBus`1
+    name: AkkaCommandBus
+    nameWithType: AkkaCommandBus
+    fullName: Cqrs.Akka.Commands.AkkaCommandBus
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Akka.Commands.AkkaCommandBus`1
+    name: AkkaCommandBus
+    nameWithType: AkkaCommandBus
+    fullName: Cqrs.Akka.Commands.AkkaCommandBus
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.#ctor*
+  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.#ctor
+  isExternal: false
+  name: AkkaCommandBus
+  nameWithType: AkkaCommandBus<TAuthenticationToken>.AkkaCommandBus
+  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.AkkaCommandBus
+  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).AkkaCommandBus
+  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).AkkaCommandBus
+- uid: Cqrs.Messages.IMessageWithAuthenticationToken`1.AuthenticationToken
+  commentId: P:Cqrs.Messages.IMessageWithAuthenticationToken`1.AuthenticationToken
+  isExternal: false
+  name: AuthenticationToken
+  nameWithType: IMessageWithAuthenticationToken<TAuthenticationToken>.AuthenticationToken
+  fullName: Cqrs.Messages.IMessageWithAuthenticationToken<TAuthenticationToken>.AuthenticationToken
+  nameWithType.vb: IMessageWithAuthenticationToken(Of TAuthenticationToken).AuthenticationToken
+  fullName.vb: Cqrs.Messages.IMessageWithAuthenticationToken(Of TAuthenticationToken).AuthenticationToken
+- uid: Cqrs.Messages.IMessage.CorrelationId
+  commentId: P:Cqrs.Messages.IMessage.CorrelationId
+  parent: Cqrs.Messages.IMessage
+  isExternal: false
+  name: CorrelationId
+  nameWithType: IMessage.CorrelationId
+  fullName: Cqrs.Messages.IMessage.CorrelationId
+- uid: Cqrs.Messages.IMessage.OriginatingFramework
+  commentId: P:Cqrs.Messages.IMessage.OriginatingFramework
+  parent: Cqrs.Messages.IMessage
+  isExternal: false
+  name: OriginatingFramework
+  nameWithType: IMessage.OriginatingFramework
+  fullName: Cqrs.Messages.IMessage.OriginatingFramework
+- uid: Cqrs.Messages.IMessage.Frameworks
+  commentId: P:Cqrs.Messages.IMessage.Frameworks
+  parent: Cqrs.Messages.IMessage
+  isExternal: false
+  name: Frameworks
+  nameWithType: IMessage.Frameworks
+  fullName: Cqrs.Messages.IMessage.Frameworks
 - uid: Cqrs.Akka.Commands.AkkaCommandBus`1.PrepareCommand*
   commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.PrepareCommand
   isExternal: false
@@ -2177,11 +2191,82 @@ references:
   name: TCommand
   nameWithType: TCommand
   fullName: TCommand
+- uid: Cqrs.Messages.IMessage
+  commentId: T:Cqrs.Messages.IMessage
+  parent: Cqrs.Messages
+  isExternal: false
+  name: IMessage
+  nameWithType: IMessage
+  fullName: Cqrs.Messages.IMessage
 - uid: TCommand
   isExternal: false
   name: TCommand
   nameWithType: TCommand
   fullName: TCommand
+- uid: Cqrs.Messages
+  commentId: N:Cqrs.Messages
+  isExternal: false
+  name: Cqrs.Messages
+  nameWithType: Cqrs.Messages
+  fullName: Cqrs.Messages
+- uid: Cqrs.Commands.ICommandValidator`2
+  commentId: T:Cqrs.Commands.ICommandValidator`2
+  isExternal: false
+  name: ICommandValidator<TAuthenticationToken, TCommand>
+  nameWithType: ICommandValidator<TAuthenticationToken, TCommand>
+  fullName: Cqrs.Commands.ICommandValidator<TAuthenticationToken, TCommand>
+  nameWithType.vb: ICommandValidator(Of TAuthenticationToken, TCommand)
+  fullName.vb: Cqrs.Commands.ICommandValidator(Of TAuthenticationToken, TCommand)
+  name.vb: ICommandValidator(Of TAuthenticationToken, TCommand)
+  spec.csharp:
+  - uid: Cqrs.Commands.ICommandValidator`2
+    name: ICommandValidator
+    nameWithType: ICommandValidator
+    fullName: Cqrs.Commands.ICommandValidator
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Commands.ICommandValidator`2
+    name: ICommandValidator
+    nameWithType: ICommandValidator
+    fullName: Cqrs.Commands.ICommandValidator
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TCommand
+    nameWithType: TCommand
+    fullName: TCommand
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.PrepareCommand``1(``0)
+  commentId: M:Cqrs.Akka.Commands.AkkaCommandBus`1.PrepareCommand``1(``0)
+- uid: Cqrs.Bus.RouteHandlerDelegate
+  commentId: T:Cqrs.Bus.RouteHandlerDelegate
+  parent: Cqrs.Bus
+  isExternal: false
+  name: RouteHandlerDelegate
+  nameWithType: RouteHandlerDelegate
+  fullName: Cqrs.Bus.RouteHandlerDelegate
 - uid: Cqrs.Akka.Commands.AkkaCommandBus`1.PrepareAndValidateCommand*
   commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.PrepareAndValidateCommand
   isExternal: false
@@ -2190,13 +2275,6 @@ references:
   fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.PrepareAndValidateCommand
   nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).PrepareAndValidateCommand
   fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).PrepareAndValidateCommand
-- uid: Cqrs.Bus.RouteHandlerDelegate
-  commentId: T:Cqrs.Bus.RouteHandlerDelegate
-  parent: Cqrs.Bus
-  isExternal: false
-  name: RouteHandlerDelegate
-  nameWithType: RouteHandlerDelegate
-  fullName: Cqrs.Bus.RouteHandlerDelegate
 - uid: System.Boolean
   commentId: T:System.Boolean
   parent: System
@@ -2287,14 +2365,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: Cqrs.Akka.Commands.AkkaCommandBus`1.Send*
-  commentId: Overload:Cqrs.Akka.Commands.AkkaCommandBus`1.Send
-  isExternal: false
-  name: Send
-  nameWithType: AkkaCommandBus<TAuthenticationToken>.Send
-  fullName: Cqrs.Akka.Commands.AkkaCommandBus<TAuthenticationToken>.Send
-  nameWithType.vb: AkkaCommandBus(Of TAuthenticationToken).Send
-  fullName.vb: Cqrs.Akka.Commands.AkkaCommandBus(Of TAuthenticationToken).Send
 - uid: Cqrs.Commands.ICommandPublisher{{TAuthenticationToken}}.Publish``1(System.Collections.Generic.IEnumerable{{TCommand}})
   commentId: M:Cqrs.Commands.ICommandPublisher{`0}.Publish``1(System.Collections.Generic.IEnumerable{``0})
   parent: Cqrs.Commands.ICommandPublisher{{TAuthenticationToken}}

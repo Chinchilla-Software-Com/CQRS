@@ -13,16 +13,25 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using cdmdotnet.Logging;
 using Cqrs.DataStores;
+using Cqrs.Entities;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Cqrs.Azure.BlobStorage
 {
+	/// <summary>
+	/// A <see cref="IDataStore{TData}"/> that uses Azure Storage for storage.
+	/// </summary>
+	/// <typeparam name="TData">The <see cref="Type"/> of <see cref="TableEntity"/> Azure Table Storage will contain.</typeparam>
+	/// <typeparam name="TCollectionItemData">The <see cref="Type"/> of <see cref="IEntity"/> the <see cref="IDataStore{TData}"/> will contain.</typeparam>
 	public abstract class TableStorageStore<TData, TCollectionItemData>
 		: StorageStore<TData, CloudTable>
 		, IDataStore<TCollectionItemData>
 		where TData : TableEntity, new()
 	{
+		/// <summary>
+		/// Gets or set the <see cref="TableQuery"/>.
+		/// </summary>
 		public TableQuery<TData> Collection { get; private set; }
 
 		/// <summary>
@@ -35,6 +44,9 @@ namespace Cqrs.Azure.BlobStorage
 
 		#region Overrides of StorageStore<TData,CloudTable>
 
+		/// <summary>
+		/// Initialises the <see cref="StorageStore{TData,TSource}"/>.
+		/// </summary>
 		protected override void Initialise(IStorageStoreConnectionStringFactory tableStorageDataStoreConnectionStringFactory)
 		{
 			base.Initialise(tableStorageDataStoreConnectionStringFactory);
@@ -115,6 +127,9 @@ namespace Cqrs.Azure.BlobStorage
 
 		#endregion
 
+		/// <summary>
+		/// Save the provided <paramref name="data"/> asynchronously.
+		/// </summary>
 		protected virtual void AsyncSaveData<TSaveData, TResult>(TSaveData data, Func<TSaveData, CloudTable, TResult> function, Func<TSaveData, string> customFilenameFunction = null)
 		{
 			IList<Task> persistTasks = new List<Task>();
@@ -140,15 +155,25 @@ namespace Cqrs.Azure.BlobStorage
 				throw new AggregateException("Persisting data to table storage failed. Check the logs for more details.");
 		}
 
+		/// <summary>
+		/// Creates a new instance of <see cref="ITableEntity"/> populating it with the provided <paramref name="data"/>.
+		/// </summary>
+		/// <param name="data">The data to store.</param>
 		protected abstract ITableEntity CreateTableEntity(TCollectionItemData data);
 
 		#region Implementation of IDataStore<TData>
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public override void Add(TData data)
 		{
 			Add(data);
 		}
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public virtual void Add(ITableEntity data)
 		{
 			AsyncSaveData
@@ -181,11 +206,17 @@ namespace Cqrs.Azure.BlobStorage
 			);
 		}
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public override void Add(IEnumerable<TData> data)
 		{
 			Add(data);
 		}
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public virtual void Add(IEnumerable<ITableEntity> data)
 		{
 			AsyncSaveData
@@ -213,6 +244,9 @@ namespace Cqrs.Azure.BlobStorage
 			);
 		}
 
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
 		public override void Destroy(TData data)
 		{
 			AsyncSaveData
@@ -275,12 +309,18 @@ namespace Cqrs.Azure.BlobStorage
 		}
 		*/
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public virtual void Add(TCollectionItemData data)
 		{
 			// Create the TableOperation object that inserts the customer entity.
 			Add(CreateTableEntity(data));
 		}
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public virtual void Add(IEnumerable<TCollectionItemData> data)
 		{
 			// Create the TableOperation object that inserts the customer entity.
@@ -292,22 +332,34 @@ namespace Cqrs.Azure.BlobStorage
 		/// </summary>
 		public abstract void Remove(TCollectionItemData data);
 
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
 		public virtual void Destroy(TCollectionItemData data)
 		{
 			Destroy((TData)CreateTableEntity(data));
 		}
 
+		/// <summary>
+		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+		/// </summary>
 		public override void RemoveAll()
 		{
 			foreach (Tuple<CloudStorageAccount, CloudTable> tuple in WritableCollection)
 				tuple.Item2.DeleteIfExists();
 		}
 
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
 		public virtual void Update(TCollectionItemData data)
 		{
 			Update((TData)CreateTableEntity(data));
 		}
 
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
 		public override void Update(TData data)
 		{
 			AsyncSaveData
@@ -340,8 +392,14 @@ namespace Cqrs.Azure.BlobStorage
 
 		#endregion
 
+		/// <summary>
+		/// Gets a <see cref="TableOperation"/> for updating.
+		/// </summary>
 		protected abstract TableOperation GetUpdatableTableEntity(TCollectionItemData data);
 
+		/// <summary>
+		/// Gets a <see cref="TableOperation"/> for updating.
+		/// </summary>
 		protected abstract TableOperation GetUpdatableTableEntity(TData data);
 
 		/// <summary>
@@ -381,6 +439,9 @@ namespace Cqrs.Azure.BlobStorage
 			return table;
 		}
 
+		/// <summary>
+		/// Retrieves the data from Azure Storage using <see cref="Collection"/>.
+		/// </summary>
 		public virtual TData GetByKeyAndRow(Guid rsn)
 		{
 			// Create the table query.
@@ -397,6 +458,9 @@ namespace Cqrs.Azure.BlobStorage
 			return ReadableSource.ExecuteQuery(rangeQuery).Single();
 		}
 
+		/// <summary>
+		/// Retrieves the data from Azure Storage using <see cref="Collection"/>.
+		/// </summary>
 		public virtual IEnumerable<TData> GetByKey()
 		{
 			// Create the table query.
@@ -408,6 +472,15 @@ namespace Cqrs.Azure.BlobStorage
 			return ReadableSource.ExecuteQuery(rangeQuery);
 		}
 
+		/// <summary>
+		/// Extracts <see cref="TableResult.Result"/> of the provided <paramref name="retrievedResult"/>
+		/// If <see cref="TableResult.Result"/> is a <see cref="IEventDataTableEntity{TData}"/>
+		/// then <see cref="IEventDataTableEntity{TEventData}.EventData"/> is replaced with <paramref name="data"/>.
+		/// Otherwise <see cref="TableResult.Result"/> is a <see cref="IEntityTableEntity{TCollectionItemData}"/>
+		/// and <see cref="IEntityTableEntity{TCollectionItemData}.Entity"/> is replaced with <paramref name="data"/>.
+		/// </summary>
+		/// <param name="retrievedResult">The existing data to update.</param>
+		/// <param name="data">The new data to store.</param>
 		protected virtual ITableEntity ReplaceValues(TableResult retrievedResult, TData data)
 		{
 			ITableEntity tableEntity = (ITableEntity)retrievedResult.Result;
@@ -422,6 +495,10 @@ namespace Cqrs.Azure.BlobStorage
 
 		#region Overrides of StorageStore<TData,CloudTable>
 
+		/// <summary>
+		/// Gets the provided <paramref name="sourceName"/> in a safe to use format.
+		/// </summary>
+		/// <param name="sourceName">The name to make safe.</param>
 		protected override string GetSafeSourceName(string sourceName)
 		{
 			return GetSafeSourceName(sourceName, false);

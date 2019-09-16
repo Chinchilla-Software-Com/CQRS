@@ -4,6 +4,7 @@ using Cqrs.Domain;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Domain.Factories;
 using Cqrs.Authentication;
+using Cqrs.Configuration;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
 
@@ -23,7 +24,7 @@ namespace Cqrs.Tests.Domain
 			_dependencyResolver = new TestDependencyResolver(eventStore);
 			var aggregateFactory = new AggregateFactory(_dependencyResolver, _dependencyResolver.Resolve<ILogger>());
 			var testEventPublisher = new TestEventPublisher();
-			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(new AggregateRepository<ISingleSignOnToken>(aggregateFactory, eventStore, testEventPublisher, new NullCorrelationIdHelper()));
+			_unitOfWork = new UnitOfWork<ISingleSignOnToken>(new AggregateRepository<ISingleSignOnToken>(aggregateFactory, eventStore, testEventPublisher, new NullCorrelationIdHelper(), new ConfigurationManager()));
 		}
 
 		[Test]

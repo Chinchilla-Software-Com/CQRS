@@ -51,8 +51,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cdmdotnet.Logging, Version=1.2.91.71, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\cdmdotnet.Logging.1.2.91.71\lib\net40\cdmdotnet.Logging.dll</HintPath>
+    <Reference Include="cdmdotnet.Logging, Version=1.2.100.77, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\cdmdotnet.Logging.1.2.100.77\lib\net40\cdmdotnet.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="cdmdotnet.Performance, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -95,7 +95,24 @@
     <Compile Include="Authentication\SingleSignOnTokenFactory.cs" />
     <Compile Include="Authentication\SingleSignOnTokenResolver.cs" />
     <Compile Include="Bus\BusHelper.cs" />
+    <Compile Include="Bus\BuiltInHashAlgorithmFactory.cs" />
+    <Compile Include="Bus\IHashAlgorithmFactory.cs" />
     <Compile Include="Bus\IBusHelper.cs" />
+    <Compile Include="Commands\CommandExtensions.cs" />
+    <Compile Include="Commands\ICommandWithIdentity.cs" />
+    <Compile Include="Configuration\SqlSampleRuntime.cs" />
+    <Compile Include="Configuration\SampleRuntime.cs" />
+    <Compile Include="Domain\ISnapshotAggregateRepository.cs" />
+    <Compile Include="Events\DefaultSnapshotBuilder.cs" />
+    <Compile Include="Events\SnapshotBuilder.cs" />
+    <Compile Include="Events\ISnapshotBuilder.cs" />
+    <Compile Include="Events\SnapshotDeserialiser.cs" />
+    <Compile Include="Events\EventExtensions.cs" />
+    <Compile Include="Events\ISnapshotDeserialiser.cs" />
+    <Compile Include="Events\IEventWithIdentity.cs" />
+    <Compile Include="Events\SqlEventStoreDataContext.cs" />
+    <Compile Include="Events\SqlSnapshotStore.cs" />
+    <Compile Include="Exceptions\UnAuthorisedMessageReceivedException.cs" />
     <Compile Include="Exceptions\NoHandlersRegisteredException.cs" />
     <Compile Include="Exceptions\MultipleHandlersRegisteredException.cs" />
     <Compile Include="Bus\QueuedCommandBusReceiver.cs" />
@@ -275,6 +292,7 @@
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Configuration\BusRegistrar.cs" />
     <Compile Include="Snapshots\SnapshotRepository.cs" />
+    <Compile Include="Snapshots\SnapshotStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -303,13 +321,16 @@
     <None Include="Packaging\app.config.install.xdt">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Packaging\web.config.install.xdt" />
+    <None Include="Packaging\web.config.install.xdt">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="tools\install.ps1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\Authentication\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="tools\Create-Log-Table.sql" />
     <Content Include="tools\EventStoreTable-SqlServer-Migration.sql" />
     <Content Include="tools\EventStoreTable-SqlServer.sql" />
   </ItemGroup>

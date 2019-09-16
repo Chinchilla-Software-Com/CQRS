@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using cdmdotnet.Logging;
 using Cqrs.Authentication;
@@ -82,7 +90,17 @@ namespace Cqrs.Configuration
 				url = null;
 			}
 
-			telemetryHelper.TrackRequest(name, url, token, startTime, duration, responseCode, wasSuccessfull, properties);
+			string sessionId;
+			try
+			{
+				sessionId = string.Format("{0}::{1}", properties["CorrelationId"], token);
+			}
+			catch
+			{
+				sessionId = null;
+			}
+
+			telemetryHelper.TrackRequest(name, url, token, startTime, duration, responseCode, wasSuccessfull, properties, sessionId);
 		}
 	}
 }

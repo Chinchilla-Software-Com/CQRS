@@ -10,6 +10,7 @@ using System;
 using Cqrs.Azure.DocumentDb.Events;
 using Cqrs.Events;
 using Cqrs.Ninject.Azure.DocumentDb.Events;
+using Cqrs.Snapshots;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
@@ -19,7 +20,8 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 	/// <see cref="IAzureDocumentDbEventStoreConnectionStringFactory"/>.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class TestAzureDocumentDbEventStoreModule<TAuthenticationToken> : AzureDocumentDbEventStoreModule<TAuthenticationToken>
+	public class TestAzureDocumentDbEventStoreModule<TAuthenticationToken>
+		: AzureDocumentDbEventStoreModule<TAuthenticationToken>
 	{
 		/// <summary>
 		/// Register the <see cref="IAzureDocumentDbEventStoreConnectionStringFactory"/> and <see cref="IEventStore{TAuthenticationToken}"/>
@@ -29,9 +31,15 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Configuration
 			Bind<IAzureDocumentDbEventStoreConnectionStringFactory>()
 				.To<TestAzureDocumentDbEventStoreConnectionStringFactory>()
 				.InSingletonScope();
+			Bind<IAzureDocumentDbSnapshotStoreConnectionStringFactory>()
+				.To<TestAzureDocumentDbEventStoreConnectionStringFactory>()
+				.InSingletonScope();
 
 			Bind<IEventStore<TAuthenticationToken>>()
 				.To<AzureDocumentDbEventStore<TAuthenticationToken>>()
+				.InSingletonScope();
+			Bind<ISnapshotStore>()
+				.To<AzureDocumentDbSnapshotStore>()
 				.InSingletonScope();
 		}
 	}

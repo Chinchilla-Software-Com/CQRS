@@ -83,7 +83,7 @@ switch(eventHandlerTechnology)
 		baseClass = "ReceiveActor";
 #>
 		/// <summary>
-		/// Instantiates the <see cref="<#= className #>EventHandler"/> class registering any <see cref="ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
+		/// Instantiates the <see cref="<#= className #>EventHandler"/> class registering any <see cref="Akka.Actor.ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
 		/// </summary>
 		public <#= className #>EventHandler()
 		{
@@ -147,6 +147,10 @@ foreach(IAssociation relationship in relationships)
 			repositoryName = entityNameAsInterface.Substring(lastIndex + 1);
 			entityNameAsInterface = string.Format("{0}Repositories.I{1}", entityNameAsInterface.Substring(0, lastIndex) + 1, repositoryName);
 		}
+		
+		var entityStereoTypeProperties = relationship.AppliedStereotypes.Single(property => property.Name == "EventHandler");
+		bool createDontUpdateEntity = entityStereoTypeProperties.PropertyInstances
+			.Any(property => property.Name == "CreateDontUpdateEntity" && property.Value == "true");
 #>
 
 		#region Implementation of IEventHandler<in <#= eventName #>>
@@ -160,6 +164,7 @@ foreach(IAssociation relationship in relationships)
 
 			bool singleItemNotCollection = true;
 			OnPreGet(@event, ref singleItemNotCollection);
+			bool isANewEntity = <#= createDontUpdateEntity.ToString().ToLowerInvariant() #>;
 			if (singleItemNotCollection)
 			{
 				<#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #> entity = null;
@@ -175,7 +180,25 @@ foreach(IAssociation relationship in relationships)
 						Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Rsn manually provided.", eventTypeName, @event.Rsn));
 					if (!throwExceptionOnMissingEntity)
 						Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Can expect no value from the repository without an exception.", eventTypeName, @event.Rsn));
-					entity = <#= className #>Repository.Load(rsn.Value, throwExceptionOnMissingEntity) ?? new <#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #>{ Rsn = rsn.Value };
+<#
+				if (createDontUpdateEntity)
+				{
+#>
+					entity = new <#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #>{ Rsn = rsn.Value };
+<#
+				}
+				else
+				{
+#>
+					entity = <#= className #>Repository.Load(rsn.Value, throwExceptionOnMissingEntity);
+					if (entity == null)
+					{
+					  entity = new <#= entityName #><#= isAggregateTo ? "Entity" : string.Empty #>{ Rsn = rsn.Value };
+					  isANewEntity = true;
+					}
+<#
+				}
+#>
 				}
 				else
 					Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Entity manually provided.", eventTypeName, @event.Rsn));
@@ -203,7 +226,7 @@ foreach(IAssociation relationship in relationships)
 				OnEntityUpdated(@event, ref entity);
 
 				bool continueWithRepositorySave = true;
-				bool createDontUpdate = false;
+				bool createDontUpdate = <#= createDontUpdateEntity.ToString().ToLowerInvariant() #> || isANewEntity;
 				OnSaveEntity(@event, ref entity, ref continueWithRepositorySave, ref createDontUpdate);
 				if (continueWithRepositorySave)
 				{

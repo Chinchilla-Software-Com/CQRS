@@ -43,7 +43,6 @@ items:
       description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of authentication token.
     content.vb: >-
       Public Class SagaRepository(Of TAuthenticationToken)
-
           Implements ISagaRepository(Of TAuthenticationToken)
   inheritance:
   - System.Object
@@ -290,7 +289,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Domain
-  summary: "\nSave and persist the provided <span class=\"paramref\">saga</span>, optionally providing the version number the <xref href=\"Cqrs.Domain.ISaga%601\" data-throw-if-not-resolved=\"false\"></xref> is expected to be at.\n"
+  summary: "\nSave and persist the provided <code data-dev-comment-type=\"paramref\">saga</code>, optionally providing the version number the <xref href=\"Cqrs.Domain.ISaga%601\" data-throw-if-not-resolved=\"false\"></xref> is expected to be at.\n"
   example: []
   syntax:
     content: 'public virtual void Save<TSaga>(TSaga saga, int ? expectedVersion = null)where TSaga : ISaga<TAuthenticationToken>'
@@ -339,7 +338,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Domain
-  summary: "\nPublish the saved <span class=\"paramref\">event</span>.\n"
+  summary: "\nPublish the saved <code data-dev-comment-type=\"paramref\">event</code>.\n"
   example: []
   syntax:
     content: protected virtual void PublishEvent(ISagaEvent<TAuthenticationToken> event)
@@ -379,7 +378,7 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Domain
-  summary: "\nRetrieves an <xref href=\"Cqrs.Domain.ISaga%601\" data-throw-if-not-resolved=\"false\"></xref> of type <span class=\"typeparamref\">TSaga</span>.\n"
+  summary: "\nRetrieves an <xref href=\"Cqrs.Domain.ISaga%601\" data-throw-if-not-resolved=\"false\"></xref> of type <code data-dev-comment-type=\"typeparamref\">TSaga</code>.\n"
   example: []
   syntax:
     content: 'public virtual TSaga Get<TSaga>(Guid sagaId, IList<ISagaEvent<TAuthenticationToken>> events = null)where TSaga : ISaga<TAuthenticationToken>'
@@ -430,14 +429,14 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Domain
-  summary: "\nCalls <xref href=\"Cqrs.Domain.Factories.IAggregateFactory.Create(System.Type%2cSystem.Nullable%7bSystem.Guid%7d%2cSystem.Boolean)\" data-throw-if-not-resolved=\"false\"></xref> to get a, <span class=\"typeparamref\">TSaga</span>.\n"
+  summary: "\nCalls <xref href=\"Cqrs.Domain.Factories.IAggregateFactory.Create(System.Type%2cSystem.Nullable%7bSystem.Guid%7d%2cSystem.Boolean)\" data-throw-if-not-resolved=\"false\"></xref> to get a, <code data-dev-comment-type=\"typeparamref\">TSaga</code>.\n"
   example: []
   syntax:
     content: 'protected virtual TSaga CreateSaga<TSaga>(Guid id)where TSaga : ISaga<TAuthenticationToken>'
     parameters:
     - id: id
       type: System.Guid
-      description: The id of the <span class="typeparamref">TSaga</span> to create.
+      description: The id of the <code data-dev-comment-type="typeparamref">TSaga</code> to create.
     typeParameters:
     - id: TSaga
       description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of <xref href="Cqrs.Domain.ISaga%601" data-throw-if-not-resolved="false"></xref>.
@@ -476,14 +475,14 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Domain
-  summary: "\nCalls <xref href=\"Cqrs.Domain.Factories.IAggregateFactory.Create(System.Type%2cSystem.Nullable%7bSystem.Guid%7d%2cSystem.Boolean)\" data-throw-if-not-resolved=\"false\"></xref> to get a, <span class=\"typeparamref\">TSaga</span> and then calls <xref href=\"Cqrs.Domain.SagaRepository%601.LoadSagaHistory%60%601(%60%600%2cSystem.Collections.Generic.IList%7bCqrs.Events.ISagaEvent%7b%600%7d%7d%2cSystem.Boolean)\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  summary: "\nCalls <xref href=\"Cqrs.Domain.Factories.IAggregateFactory.Create(System.Type%2cSystem.Nullable%7bSystem.Guid%7d%2cSystem.Boolean)\" data-throw-if-not-resolved=\"false\"></xref> to get a, <code data-dev-comment-type=\"typeparamref\">TSaga</code> and then calls <xref href=\"Cqrs.Domain.SagaRepository%601.LoadSagaHistory%60%601(%60%600%2cSystem.Collections.Generic.IList%7bCqrs.Events.ISagaEvent%7b%600%7d%7d%2cSystem.Boolean)\" data-throw-if-not-resolved=\"false\"></xref>.\n"
   example: []
   syntax:
     content: 'protected virtual TSaga LoadSaga<TSaga>(Guid id, IList<ISagaEvent<TAuthenticationToken>> events = null)where TSaga : ISaga<TAuthenticationToken>'
     parameters:
     - id: id
       type: System.Guid
-      description: The id of the <span class="typeparamref">TSaga</span> to create.
+      description: The id of the <code data-dev-comment-type="typeparamref">TSaga</code> to create.
     - id: events
       type: System.Collections.Generic.IList{Cqrs.Events.ISagaEvent{{TAuthenticationToken}}}
       description: "\nA collection of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> to replay on the retrieved <xref href=\"Cqrs.Domain.ISaga%601\" data-throw-if-not-resolved=\"false\"></xref>.\nIf null, the <xref href=\"Cqrs.Events.IEventStore%601\" data-throw-if-not-resolved=\"false\"></xref> will be used to retrieve a list of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> for you.\n"
@@ -525,20 +524,20 @@ items:
   assemblies:
   - Cqrs
   namespace: Cqrs.Domain
-  summary: "\nIf <span class=\"paramref\">events</span> is null, loads the events from <xref href=\"Cqrs.Domain.SagaRepository%601.EventStore\" data-throw-if-not-resolved=\"false\"></xref>, checks for duplicates and then\nrehydrates the <span class=\"paramref\">saga</span> with the events.\n"
+  summary: "\nIf <code data-dev-comment-type=\"paramref\">events</code> is null, loads the events from <xref href=\"Cqrs.Domain.SagaRepository%601.EventStore\" data-throw-if-not-resolved=\"false\"></xref>, checks for duplicates and then\nrehydrates the <code data-dev-comment-type=\"paramref\">saga</code> with the events.\n"
   example: []
   syntax:
     content: 'public virtual void LoadSagaHistory<TSaga>(TSaga saga, IList<ISagaEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)where TSaga : ISaga<TAuthenticationToken>'
     parameters:
     - id: saga
       type: '{TSaga}'
-      description: The <span class="typeparamref">TSaga</span> to rehydrate.
+      description: The <code data-dev-comment-type="typeparamref">TSaga</code> to rehydrate.
     - id: events
       type: System.Collections.Generic.IList{Cqrs.Events.ISagaEvent{{TAuthenticationToken}}}
       description: "\nA collection of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> to replay on the retrieved <xref href=\"Cqrs.Domain.ISaga%601\" data-throw-if-not-resolved=\"false\"></xref>.\nIf null, the <xref href=\"Cqrs.Events.IEventStore%601\" data-throw-if-not-resolved=\"false\"></xref> will be used to retrieve a list of <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> for you.\n"
     - id: throwExceptionOnNoEvents
       type: System.Boolean
-      description: If true will throw an instance of <xref href="Cqrs.Domain.Exceptions.AggregateNotFoundException%602" data-throw-if-not-resolved="false"></xref> if no aggregate events or provided or found in the <xref href="Cqrs.Domain.SagaRepository%601.EventStore" data-throw-if-not-resolved="false"></xref>.
+      description: If true will throw an instance of <xref href="Cqrs.Domain.Exceptions.SagaNotFoundException%602" data-throw-if-not-resolved="false"></xref> if no aggregate events or provided or found in the <xref href="Cqrs.Domain.SagaRepository%601.EventStore" data-throw-if-not-resolved="false"></xref>.
     typeParameters:
     - id: TSaga
       description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of <xref href="Cqrs.Domain.ISaga%601" data-throw-if-not-resolved="false"></xref>.
@@ -2141,26 +2140,26 @@ references:
   fullName: Cqrs.Domain.SagaRepository<TAuthenticationToken>.LoadSaga
   nameWithType.vb: SagaRepository(Of TAuthenticationToken).LoadSaga
   fullName.vb: Cqrs.Domain.SagaRepository(Of TAuthenticationToken).LoadSaga
-- uid: Cqrs.Domain.Exceptions.AggregateNotFoundException`2
-  commentId: T:Cqrs.Domain.Exceptions.AggregateNotFoundException`2
+- uid: Cqrs.Domain.Exceptions.SagaNotFoundException`2
+  commentId: T:Cqrs.Domain.Exceptions.SagaNotFoundException`2
   isExternal: false
-  name: AggregateNotFoundException<TAggregateRoot, TAuthenticationToken>
-  nameWithType: AggregateNotFoundException<TAggregateRoot, TAuthenticationToken>
-  fullName: Cqrs.Domain.Exceptions.AggregateNotFoundException<TAggregateRoot, TAuthenticationToken>
-  nameWithType.vb: AggregateNotFoundException(Of TAggregateRoot, TAuthenticationToken)
-  fullName.vb: Cqrs.Domain.Exceptions.AggregateNotFoundException(Of TAggregateRoot, TAuthenticationToken)
-  name.vb: AggregateNotFoundException(Of TAggregateRoot, TAuthenticationToken)
+  name: SagaNotFoundException<TSaga, TAuthenticationToken>
+  nameWithType: SagaNotFoundException<TSaga, TAuthenticationToken>
+  fullName: Cqrs.Domain.Exceptions.SagaNotFoundException<TSaga, TAuthenticationToken>
+  nameWithType.vb: SagaNotFoundException(Of TSaga, TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.Exceptions.SagaNotFoundException(Of TSaga, TAuthenticationToken)
+  name.vb: SagaNotFoundException(Of TSaga, TAuthenticationToken)
   spec.csharp:
-  - uid: Cqrs.Domain.Exceptions.AggregateNotFoundException`2
-    name: AggregateNotFoundException
-    nameWithType: AggregateNotFoundException
-    fullName: Cqrs.Domain.Exceptions.AggregateNotFoundException
+  - uid: Cqrs.Domain.Exceptions.SagaNotFoundException`2
+    name: SagaNotFoundException
+    nameWithType: SagaNotFoundException
+    fullName: Cqrs.Domain.Exceptions.SagaNotFoundException
   - name: <
     nameWithType: <
     fullName: <
-  - name: TAggregateRoot
-    nameWithType: TAggregateRoot
-    fullName: TAggregateRoot
+  - name: TSaga
+    nameWithType: TSaga
+    fullName: TSaga
   - name: ', '
     nameWithType: ', '
     fullName: ', '
@@ -2171,16 +2170,16 @@ references:
     nameWithType: '>'
     fullName: '>'
   spec.vb:
-  - uid: Cqrs.Domain.Exceptions.AggregateNotFoundException`2
-    name: AggregateNotFoundException
-    nameWithType: AggregateNotFoundException
-    fullName: Cqrs.Domain.Exceptions.AggregateNotFoundException
+  - uid: Cqrs.Domain.Exceptions.SagaNotFoundException`2
+    name: SagaNotFoundException
+    nameWithType: SagaNotFoundException
+    fullName: Cqrs.Domain.Exceptions.SagaNotFoundException
   - name: '(Of '
     nameWithType: '(Of '
     fullName: '(Of '
-  - name: TAggregateRoot
-    nameWithType: TAggregateRoot
-    fullName: TAggregateRoot
+  - name: TSaga
+    nameWithType: TSaga
+    fullName: TSaga
   - name: ', '
     nameWithType: ', '
     fullName: ', '

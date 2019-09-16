@@ -10,7 +10,8 @@ using System.Runtime.Serialization;
 
 namespace Cqrs.Domain
 {
-	internal class AggregateDescriptor<TAggregateRoot, TAuthenticationToken> : IAggregateDescriptor<TAuthenticationToken>
+	internal class AggregateDescriptor<TAggregateRoot, TAuthenticationToken>
+		: IAggregateDescriptor<TAuthenticationToken>
 		where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 	{
 		IAggregateRoot<TAuthenticationToken> IAggregateDescriptor<TAuthenticationToken>.Aggregate
@@ -23,5 +24,8 @@ namespace Cqrs.Domain
 
 		[DataMember]
 		public int Version { get; set; }
+
+		[DataMember]
+		public bool UseSnapshots { get; set; }
 	}
 }
