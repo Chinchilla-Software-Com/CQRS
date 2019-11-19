@@ -9,7 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Events;
 using Cqrs.Messages;

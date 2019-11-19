@@ -1,4 +1,5 @@
-﻿#region Copyright
+﻿#if NET40
+#region Copyright
 // // -----------------------------------------------------------------------
 // // <copyright company="Chinchilla Software Limited">
 // // 	Copyright Chinchilla Software Limited. All rights reserved.
@@ -13,7 +14,7 @@ using System.Reflection;
 using System.Security;
 using System.Web;
 using System.Web.SessionState;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;
@@ -302,3 +303,4 @@ namespace Cqrs.Hosts
 		#endregion
 	}
 }
+#endif

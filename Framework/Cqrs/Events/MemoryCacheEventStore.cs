@@ -12,7 +12,7 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Domain;
 using Cqrs.Messages;

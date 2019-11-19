@@ -11,7 +11,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;

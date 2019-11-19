@@ -1,4 +1,6 @@
-﻿#region Copyright
+﻿#if NET40
+
+#region Copyright
 // // -----------------------------------------------------------------------
 // // <copyright company="Chinchilla Software Limited">
 // // 	Copyright Chinchilla Software Limited. All rights reserved.
@@ -11,7 +13,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Linq;
 using System.Linq;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.DataStores;
 using Cqrs.Domain;
@@ -52,7 +54,7 @@ namespace Cqrs.Events
 			ConfigurationManager = configurationManager;
 		}
 
-		#region Overrides of EventStore<TAuthenticationToken>
+#region Overrides of EventStore<TAuthenticationToken>
 
 		/// <summary>
 		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/>.
@@ -188,7 +190,7 @@ namespace Cqrs.Events
 			}
 		}
 
-		#endregion
+#endregion
 
 		/// <summary>
 		/// Creates a new <see cref="DataContext"/> using connection string settings from <see cref="ConfigurationManager"/>.
@@ -267,3 +269,4 @@ namespace Cqrs.Events
 		}
 	}
 }
+#endif

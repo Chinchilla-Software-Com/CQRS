@@ -8,7 +8,7 @@
 
 using System;
 using System.Reflection;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Domain.Exceptions;
 

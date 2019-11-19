@@ -7,7 +7,7 @@
 #endregion
 
 using System;
-using cdmdotnet.StateManagement;
+using Chinchilla.StateManagement;
 
 namespace Cqrs.Authentication
 {

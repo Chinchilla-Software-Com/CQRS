@@ -13,7 +13,7 @@ using System.Linq;
 using System.Threading;
 using Cqrs.Authentication;
 using Cqrs.Commands;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Exceptions;
 using Cqrs.Messages;

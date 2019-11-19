@@ -29,9 +29,9 @@ namespace Cqrs.Repositories.Queries
 		/// <summary>
 		/// Filter to all items not logically deleted.
 		/// </summary>
-		public virtual IQueryPredicate IsNotLogicallyDeleted()
+		public virtual IQueryPredicate IsNotDeleted()
 		{
-			return BuildQueryPredicate(IsNotLogicallyDeleted);
+			return BuildQueryPredicate(IsNotDeleted);
 		}
 
 		/// <summary>

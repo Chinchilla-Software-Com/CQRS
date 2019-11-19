@@ -1,4 +1,6 @@
-﻿#region Copyright
+﻿#if NET40
+
+#region Copyright
 // // -----------------------------------------------------------------------
 // // <copyright company="Chinchilla Software Limited">
 // // 	Copyright Chinchilla Software Limited. All rights reserved.
@@ -13,7 +15,7 @@ using System.Data.Linq;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Transactions;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Entities;
 
@@ -192,7 +194,7 @@ namespace Cqrs.DataStores
 			}
 		}
 
-		#region Implementation of IEnumerable
+#region Implementation of IEnumerable
 
 		/// <summary>
 		/// Returns an enumerator that iterates through the collection.
@@ -216,9 +218,9 @@ namespace Cqrs.DataStores
 			return GetEnumerator();
 		}
 
-		#endregion
+#endregion
 
-		#region Implementation of IQueryable
+#region Implementation of IQueryable
 
 		/// <summary>
 		/// Gets the expression tree that is associated with the instance of <see cref="T:System.Linq.IQueryable"/>.
@@ -253,9 +255,9 @@ namespace Cqrs.DataStores
 			get { return Table.AsQueryable().Provider; }
 		}
 
-		#endregion
+#endregion
 
-		#region Implementation of IDisposable
+#region Implementation of IDisposable
 
 		/// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -267,9 +269,9 @@ namespace Cqrs.DataStores
 			DbDataContext = null;
 		}
 
-		#endregion
+#endregion
 
-		#region Implementation of IDataStore<TData>
+#region Implementation of IDataStore<TData>
 
 		/// <summary>
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
@@ -336,7 +338,7 @@ namespace Cqrs.DataStores
 		}
 
 		/// <summary>
-		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsLogicallyDeleted"/> to true in the data store and persist the change.
+		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsDeleted"/> to true in the data store and persist the change.
 		/// </summary>
 		public virtual void Remove(TData data)
 		{
@@ -344,7 +346,7 @@ namespace Cqrs.DataStores
 			try
 			{
 				DateTime start = DateTime.Now;
-				data.IsLogicallyDeleted = true;
+				data.IsDeleted = true;
 				Update(data);
 				DateTime end = DateTime.Now;
 				Logger.LogDebug(string.Format("Removing data from the Sql database took {0}.", end - start), "SqlDataStore\\Remove");
@@ -479,6 +481,7 @@ namespace Cqrs.DataStores
 			}
 		}
 
-		#endregion
+#endregion
 	}
 }
+#endif

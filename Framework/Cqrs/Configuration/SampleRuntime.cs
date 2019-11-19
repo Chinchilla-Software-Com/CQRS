@@ -9,10 +9,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
-using cdmdotnet.StateManagement;
-using cdmdotnet.StateManagement.Threaded;
+using Chinchilla.Logging;
+using Chinchilla.Logging.Configuration;
+using Chinchilla.StateManagement;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;
@@ -138,8 +138,8 @@ namespace Cqrs.Configuration
 
 			private MockDependencyResolver()
 			{
-				ContextFactory = new ThreadedContextItemCollectionFactory();
-				CorrelationIdHelper = new CorrelationIdHelper((ThreadedContextItemCollectionFactory)ContextFactory);
+				ContextFactory = new ContextItemCollectionFactory();
+				CorrelationIdHelper = new CorrelationIdHelper((ContextItemCollectionFactory)ContextFactory);
 				ConfigurationManager = new ConfigurationManager();
 				Logger = new TraceLogger(new LoggerSettings(), CorrelationIdHelper);
 				EventStore = EventStoreCreator(this);
@@ -162,6 +162,7 @@ namespace Cqrs.Configuration
 					CorrelationIdHelper,
 					ConfigurationManager
 				);
+#if NET40
 				SnapshotAggregateRepository = new SnapshotRepository<TAuthenticationToken>
 				(
 					new SqlSnapshotStore(ConfigurationManager, new SnapshotDeserialiser(), Logger, CorrelationIdHelper, new DefaultSnapshotBuilder()),
@@ -170,6 +171,7 @@ namespace Cqrs.Configuration
 					EventStore,
 					new AggregateFactory(this, Logger)
 				);
+#endif
 			}
 
 			#region Implementation of IDependencyResolver

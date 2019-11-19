@@ -80,7 +80,7 @@ namespace Cqrs.Repositories.Queries
 
 		/// <summary>
 		/// Builds an <see cref="IQueryable"/> from the <paramref name="queryPredicate"/> and an optional <paramref name="leftHandQueryable"/>.
-		/// This recursively calls itself and may call <see cref="GeneratePredicateIsNotLogicallyDeleted"/>.
+		/// This recursively calls itself and may call <see cref="GeneratePredicateIsNotDeleted"/>.
 		/// </summary>
 		protected virtual IQueryable<TData> GeneratePredicate(IQueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null)
 		{
@@ -99,28 +99,28 @@ namespace Cqrs.Repositories.Queries
 			var realQueryPredicate = queryPredicate as QueryPredicate;
 			if (realQueryPredicate != null)
 			{
-				IQueryable<TData> result = GeneratePredicateIsNotLogicallyDeleted(realQueryPredicate, leftHandQueryable);
+				IQueryable<TData> result = GeneratePredicateIsNotDeleted(realQueryPredicate, leftHandQueryable);
 				return result ?? GeneratePredicate(realQueryPredicate, leftHandQueryable);
 			}
 			throw new InvalidOperationException(string.Format("The query predicate '{0}' is unable to be processed.", queryPredicate == null ? typeof(void) : queryPredicate.GetType()));
 		}
 
 		/// <summary>
-		/// Builds the relevant <see cref="IQueryable"/> for <see cref="QueryStrategy.IsNotLogicallyDeleted"/>.
+		/// Builds the relevant <see cref="IQueryable"/> for <see cref="QueryStrategy.IsNotDeleted"/>.
 		/// </summary>
-		protected virtual IQueryable<TData> GeneratePredicateIsNotLogicallyDeleted(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null)
+		protected virtual IQueryable<TData> GeneratePredicateIsNotDeleted(QueryPredicate queryPredicate, IQueryable<TData> leftHandQueryable = null)
 		{
 			var queryStrategy = GetNullQueryStrategy() as QueryStrategy;
 
 			if (queryStrategy == null)
 				return null;
 
-			if (queryPredicate.Name != GetFunctionName(queryStrategy.IsNotLogicallyDeleted))
+			if (queryPredicate.Name != GetFunctionName(queryStrategy.IsNotDeleted))
 				return null;
 
 			return (leftHandQueryable ?? GetEmptyQueryPredicate()).Where
 			(
-				entity => !entity.IsLogicallyDeleted
+				entity => !entity.IsDeleted
 			);
 		}
 

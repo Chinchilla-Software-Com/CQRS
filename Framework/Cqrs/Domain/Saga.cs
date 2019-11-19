@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Domain.Exceptions;

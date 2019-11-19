@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Entities;
 using Cqrs.DataStores;
 using Cqrs.Repositories.Queries;

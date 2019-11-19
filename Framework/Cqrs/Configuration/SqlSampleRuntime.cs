@@ -1,4 +1,6 @@
-﻿#region Copyright
+﻿#if NET40
+
+#region Copyright
 // // -----------------------------------------------------------------------
 // // <copyright company="Chinchilla Software Limited">
 // // 	Copyright Chinchilla Software Limited. All rights reserved.
@@ -7,7 +9,7 @@
 #endregion
 
 using System;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Commands;
 using Cqrs.Events;
 
@@ -21,7 +23,7 @@ namespace Cqrs.Configuration
 	public class SqlSampleRuntime<TAuthenticationToken, TCommandHanderOrEventHandler>
 		: SampleRuntime<TAuthenticationToken, TCommandHanderOrEventHandler>
 	{
-		#region Overrides of SampleRuntime<TAuthenticationToken,TCommandHanderOrEventHandler>
+#region Overrides of SampleRuntime<TAuthenticationToken,TCommandHanderOrEventHandler>
 
 		/// <summary>
 		/// Sets the <see cref="SampleRuntime{TAuthenticationToken,TCommandHanderOrEventHandler}.EventStoreCreator"/> to use <see cref="InProcessEventStore{TAuthenticationToken}"/>
@@ -31,6 +33,7 @@ namespace Cqrs.Configuration
 			EventStoreCreator = dependencyResolver => new SqlEventStore<TAuthenticationToken>(dependencyResolver.Resolve<IEventBuilder<TAuthenticationToken>>(), dependencyResolver.Resolve<IEventDeserialiser<TAuthenticationToken>>(), dependencyResolver.Resolve<ILogger>(), dependencyResolver.Resolve<IConfigurationManager>());
 		}
 
-		#endregion
+#endregion
 	}
 }
+#endif

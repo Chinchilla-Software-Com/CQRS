@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Events;

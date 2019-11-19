@@ -126,11 +126,11 @@ namespace Cqrs.DataStores
 		}
 
 		/// <summary>
-		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsLogicallyDeleted"/> to true in the data store and persist the change.
+		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsDeleted"/> to true in the data store and persist the change.
 		/// </summary>
 		public void Remove(TData data)
 		{
-			InMemoryDatabase.Get<TData>()[data.Rsn].IsLogicallyDeleted = true;
+			InMemoryDatabase.Get<TData>()[data.Rsn].IsDeleted = true;
 		}
 
 		/// <summary>

@@ -1,339 +1,99 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DAFD2A8A-D6B0-4433-8DDF-B98460C64EC6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Cqrs</RootNamespace>
-    <AssemblyName>Cqrs</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <WarningLevel>4</WarningLevel>
-    <DebugSymbols>true</DebugSymbols>
-    <DocumentationFile>bin\Debug\Cqrs.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <WarningLevel>4</WarningLevel>
-    <DebugSymbols>true</DebugSymbols>
-    <DocumentationFile>bin\Release\Cqrs.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="cdmdotnet.Logging, Version=1.2.100.77, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\cdmdotnet.Logging.1.2.100.77\lib\net40\cdmdotnet.Logging.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="cdmdotnet.Performance, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\cdmdotnet.Performance.1.0.5.8\lib\net40\cdmdotnet.Performance.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="cdmdotnet.StateManagement, Version=3.0.13.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\cdmdotnet.StateManagement.3.0.13.9\lib\net40\cdmdotnet.StateManagement.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Web" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Authentication\AuthenticationTokenHelper.cs" />
-    <Compile Include="Authentication\DefaultAuthenticationTokenHelper.cs" />
-    <Compile Include="Authentication\DefaultSingleSignOnTokenFactory.cs" />
-    <Compile Include="Authentication\IDefaultSingleSignOnTokenFactory.cs" />
-    <Compile Include="Authentication\BasicTokenResolver.cs" />
-    <Compile Include="Authentication\SingleSignOnTokenWithUserRsnAndCompanyRsn.cs" />
-    <Compile Include="Authentication\SingleSignOnTokenWithCompanyRsn.cs" />
-    <Compile Include="Authentication\ISingleSignOnTokenWithUserRsnAndCompanyRsn.cs" />
-    <Compile Include="Authentication\ISingleSignOnTokenWithCompanyRsn.cs" />
-    <Compile Include="Authentication\SingleSignOnTokenWithUserRsn.cs" />
-    <Compile Include="Authentication\ISingleSignOnTokenWithUserRsn.cs" />
-    <Compile Include="Authentication\ISingleSignOnTokenFactory.cs" />
-    <Compile Include="Authentication\SingleSignOnTokenFactory.cs" />
-    <Compile Include="Authentication\SingleSignOnTokenResolver.cs" />
-    <Compile Include="Bus\BusHelper.cs" />
-    <Compile Include="Bus\BuiltInHashAlgorithmFactory.cs" />
-    <Compile Include="Bus\IHashAlgorithmFactory.cs" />
-    <Compile Include="Bus\IBusHelper.cs" />
-    <Compile Include="Commands\CommandExtensions.cs" />
-    <Compile Include="Commands\ICommandWithIdentity.cs" />
-    <Compile Include="Configuration\SqlSampleRuntime.cs" />
-    <Compile Include="Configuration\SampleRuntime.cs" />
-    <Compile Include="Domain\ISnapshotAggregateRepository.cs" />
-    <Compile Include="Events\DefaultSnapshotBuilder.cs" />
-    <Compile Include="Events\SnapshotBuilder.cs" />
-    <Compile Include="Events\ISnapshotBuilder.cs" />
-    <Compile Include="Events\SnapshotDeserialiser.cs" />
-    <Compile Include="Events\EventExtensions.cs" />
-    <Compile Include="Events\ISnapshotDeserialiser.cs" />
-    <Compile Include="Events\IEventWithIdentity.cs" />
-    <Compile Include="Events\SqlEventStoreDataContext.cs" />
-    <Compile Include="Events\SqlSnapshotStore.cs" />
-    <Compile Include="Exceptions\UnAuthorisedMessageReceivedException.cs" />
-    <Compile Include="Exceptions\NoHandlersRegisteredException.cs" />
-    <Compile Include="Exceptions\MultipleHandlersRegisteredException.cs" />
-    <Compile Include="Bus\QueuedCommandBusReceiver.cs" />
-    <Compile Include="Bus\ICommandHandlerRegistrar.cs" />
-    <Compile Include="Bus\IEventHandlerRegistrar.cs" />
-    <Compile Include="Bus\FileBasedLastEventProcessedStore.cs" />
-    <Compile Include="Bus\IStoreLastEventProcessed.cs" />
-    <Compile Include="Bus\Route.cs" />
-    <Compile Include="Bus\RouteHandlerDelegate.cs" />
-    <Compile Include="Bus\RouteManager.cs" />
-    <Compile Include="Cache\CacheRepository.cs" />
-    <Compile Include="Commands\DtoCommand.cs" />
-    <Compile Include="Commands\DtoCommandHandler.cs" />
-    <Compile Include="Commands\ICommandReceiver.cs" />
-    <Compile Include="Commands\ICommandPublisher.cs" />
-    <Compile Include="Commands\IPublishAndWaitCommandPublisher.cs" />
-    <Compile Include="Commands\ISendAndWaitCommandSender.cs" />
-    <Compile Include="Commands\ICommandValidator.cs" />
-    <Compile Include="Exceptions\MultipleCommandHandlersRegisteredException.cs" />
-    <Compile Include="Exceptions\NoHandlerRegisteredException.cs" />
-    <Compile Include="Exceptions\NoCommandHandlerRegisteredException.cs" />
-    <Compile Include="Configuration\ConfigurationExtensions.cs" />
-    <Compile Include="Configuration\ConfigurationManager.cs" />
-    <Compile Include="Configuration\DependencyResolver.cs" />
-    <Compile Include="Configuration\HandlerDelegate.cs" />
-    <Compile Include="Configuration\IConfigurationManager.cs" />
-    <Compile Include="Configuration\IDependencyResolver.cs" />
-    <Compile Include="Configuration\ITelemetryHelperExtensions.cs" />
-    <Compile Include="DataStores\SqlDataStoreExtension.cs" />
-    <Compile Include="DataStores\IDataStore.cs" />
-    <Compile Include="DataStores\InProcessDataStore.cs" />
-    <Compile Include="DataStores\SqlDataStore.cs" />
-    <Compile Include="Domain\Exceptions\EntityNotFoundException.cs" />
-    <Compile Include="Domain\Exceptions\DuplicateSagaEventException.cs" />
-    <Compile Include="Domain\Exceptions\SagaNotFoundException.cs" />
-    <Compile Include="Domain\IAggregateRepository.cs" />
-    <Compile Include="Domain\ISagaRepository.cs" />
-    <Compile Include="Domain\ISagaUnitOfWork.cs" />
-    <Compile Include="Domain\AggregateRepository.cs" />
-    <Compile Include="Domain\SagaEventHandler.cs" />
-    <Compile Include="Domain\SagaRepository.cs" />
-    <Compile Include="Domain\SagaDescriptor.cs" />
-    <Compile Include="Domain\AggregateDescriptor.cs" />
-    <Compile Include="Domain\ISagaDescriptor.cs" />
-    <Compile Include="Domain\ISaga.cs" />
-    <Compile Include="Domain\Saga.cs" />
-    <Compile Include="Domain\Exceptions\AggregateOrEventMissingIdException.cs" />
-    <Compile Include="Domain\AggregateRoot.cs" />
-    <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Commands\ICommandSender.cs" />
-    <Compile Include="Domain\Exceptions\DuplicateCreateCommandException.cs" />
-    <Compile Include="Domain\Exceptions\DuplicateEventException.cs" />
-    <Compile Include="Domain\Exceptions\EventsOutOfOrderException.cs" />
-    <Compile Include="Domain\Exceptions\MissingParameterLessConstructorException.cs" />
-    <Compile Include="Domain\Factories\IAggregateFactory.cs" />
-    <Compile Include="Domain\IAggregateDescriptor.cs" />
-    <Compile Include="Domain\IAggregateRoot.cs" />
-    <Compile Include="Domain\IDto.cs" />
-    <Compile Include="Domain\IUnitOfWork.cs" />
-    <Compile Include="Domain\SagaUnitOfWork.cs" />
-    <Compile Include="Domain\UnitOfWork.cs" />
-    <Compile Include="Domain\DtoAggregateRoot.cs" />
-    <Compile Include="Entities\IEntity.cs" />
-    <Compile Include="Entities\DecimalRange.cs" />
-    <Compile Include="Entities\IntegerRange.cs" />
-    <Compile Include="Entities\DateRange.cs" />
-    <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\Range.cs" />
-    <Compile Include="Events\DefaultJsonSerializerSettings.cs" />
-    <Compile Include="Events\InProcessEventStore.cs" />
-    <Compile Include="Events\ReplicatedSqlEventStore.cs" />
-    <Compile Include="Events\SagaEvent.cs" />
-    <Compile Include="Events\ISagaEvent.cs" />
-    <Compile Include="Events\NotifyEveryoneExceptCallerEventAttribute.cs" />
-    <Compile Include="Events\NotifyEveryoneEventAttribute.cs" />
-    <Compile Include="Events\NotifyCallerEventAttribute.cs" />
-    <Compile Include="Events\PrivateEventAttribute.cs" />
-    <Compile Include="Events\EventDataResolver.cs" />
-    <Compile Include="Events\EventStoreRetentionLevelAttribute.cs" />
-    <Compile Include="Events\MemoryCacheEventStore.cs" />
-    <Compile Include="Events\DefaultEventBuilder.cs" />
-    <Compile Include="Events\DtoAggregateEventType.cs" />
-    <Compile Include="Events\DuplicateCreateCommandEvent.cs" />
-    <Compile Include="Events\EventData.cs" />
-    <Compile Include="Events\EventBuilder.cs" />
-    <Compile Include="Events\EventDeserialiser.cs" />
-    <Compile Include="Events\EventStore.cs" />
-    <Compile Include="Events\IEventBuilder.cs" />
-    <Compile Include="Events\IEventDeserialiser.cs" />
-    <Compile Include="Events\IEventReceiver.cs" />
-    <Compile Include="Events\IEventPublisher.cs" />
-    <Compile Include="Events\IEventStore.cs" />
-    <Compile Include="Bus\IHandlerRegistrar.cs" />
-    <Compile Include="Commands\ICommandHandler.cs" />
-    <Compile Include="Events\IEventHandler.cs" />
-    <Compile Include="Events\DtoAggregateEvent.cs" />
-    <Compile Include="Exceptions\NoEventHandlerRegisteredException.cs" />
-    <Compile Include="Events\PublicEventAttribute.cs" />
-    <Compile Include="Events\SqlEventStore.cs" />
-    <Compile Include="Exceptions\InvalidConfigurationException.cs" />
-    <Compile Include="Exceptions\MissingApplicationSettingForConnectionStringException.cs" />
-    <Compile Include="Exceptions\MissingConnectionStringException.cs" />
-    <Compile Include="Exceptions\MissingApplicationSettingException.cs" />
-    <Compile Include="Hosts\CoreHost.cs" />
-    <Compile Include="Hosts\CqrsHttpApplication.cs" />
-    <Compile Include="Hosts\StartUp.cs" />
-    <Compile Include="Infrastructure\SpinWait.cs" />
-    <Compile Include="Messages\FrameworkType.cs" />
-    <Compile Include="Messages\IHandler.cs" />
-    <Compile Include="Messages\ITelemeteredMessage.cs" />
-    <Compile Include="Messages\IMessageWithAuthenticationToken.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Authentication\ISingleSignOnToken.cs" />
-    <Compile Include="Authentication\SingleSignOnToken.cs" />
-    <Compile Include="Repositories\InMemoryDatabase.cs" />
-    <Compile Include="Repositories\IRepository.cs" />
-    <Compile Include="Repositories\Queries\AndQueryPredicate.cs" />
-    <Compile Include="Repositories\Queries\CollectionResultQuery.cs" />
-    <Compile Include="Repositories\Queries\IAndQueryPredicate.cs" />
-    <Compile Include="Repositories\Queries\ICollectionResultQuery.cs" />
-    <Compile Include="Repositories\Queries\IOrQueryPredicate.cs" />
-    <Compile Include="Authentication\IAuthenticationTokenHelper.cs" />
-    <Compile Include="Repositories\Queries\IQueryBuilder.cs" />
-    <Compile Include="Repositories\Queries\IQueryFactory.cs" />
-    <Compile Include="Repositories\Queries\IQueryPredicate.cs" />
-    <Compile Include="Repositories\Queries\IQueryPredicateData.cs" />
-    <Compile Include="Repositories\Queries\IQueryStrategy.cs" />
-    <Compile Include="Repositories\Queries\IQueryWithResults.cs" />
-    <Compile Include="Repositories\Queries\IQueryWithStrategy.cs" />
-    <Compile Include="Repositories\Queries\ISingleResultQuery.cs" />
-    <Compile Include="Repositories\Queries\OrQueryPredicate.cs" />
-    <Compile Include="Repositories\Queries\QueryBuilder.cs" />
-    <Compile Include="Repositories\Queries\QueryFactory.cs" />
-    <Compile Include="Repositories\Queries\QueryParameter.cs" />
-    <Compile Include="Repositories\Queries\QueryPredicate.cs" />
-    <Compile Include="Repositories\Queries\QueryPredicateExtensions.cs" />
-    <Compile Include="Repositories\Queries\QueryStrategy.cs" />
-    <Compile Include="Repositories\Queries\ResultQuery.cs" />
-    <Compile Include="Repositories\Queries\SingleResultQuery.cs" />
-    <Compile Include="Repositories\Queries\SortParameter.cs" />
-    <Compile Include="Repositories\Repository.cs" />
-    <Compile Include="Services\BasicServiceParameterResolver.cs" />
-    <Compile Include="Services\IEventDataResolver.cs" />
-    <Compile Include="Services\EventService.cs" />
-    <Compile Include="Services\IEventService.cs" />
-    <Compile Include="Services\IServiceParameterResolver.cs" />
-    <Compile Include="Services\IServiceRequest.cs" />
-    <Compile Include="Services\IServiceRequestWithData.cs" />
-    <Compile Include="Services\IServiceResponse.cs" />
-    <Compile Include="Services\IServiceResponseWithResultData.cs" />
-    <Compile Include="Services\ISingleSignOnTokenResolver.cs" />
-    <Compile Include="Services\IUnitOfWorkService.cs" />
-    <Compile Include="Services\IVersionedServiceResponse.cs" />
-    <Compile Include="Services\ServiceChannelFactory.cs" />
-    <Compile Include="Services\ServiceParameterResolver.cs" />
-    <Compile Include="Services\ServiceRequest.cs" />
-    <Compile Include="Services\ServiceRequestWithData.cs" />
-    <Compile Include="Services\ServiceResponse.cs" />
-    <Compile Include="Services\ServiceResponseStateType.cs" />
-    <Compile Include="Services\ServiceResponseWithResultData.cs" />
-    <Compile Include="Services\UnitOfWorkService.cs" />
-    <Compile Include="Services\WcfDataContractResolverConfiguration.cs" />
-    <Compile Include="Snapshots\ISnapshotStore.cs" />
-    <Compile Include="Domain\Factories\AggregateFactory.cs" />
-    <Compile Include="Snapshots\Snapshot.cs" />
-    <Compile Include="Snapshots\SnapshotAggregateRoot.cs" />
-    <Compile Include="Messages\IMessageHandler.cs" />
-    <Compile Include="Domain\Exceptions\AggregateNotFoundException.cs" />
-    <Compile Include="Domain\Exceptions\ConcurrencyException.cs" />
-    <Compile Include="Bus\InProcessBus.cs" />
-    <Compile Include="Infrastructure\DelegateAdjuster.cs" />
-    <Compile Include="Events\IEvent.cs" />
-    <Compile Include="Snapshots\ISnapshotStrategy.cs" />
-    <Compile Include="Infrastructure\PrivateReflectionDynamicObject.cs" />
-    <Compile Include="Infrastructure\PrivateReflectionDynamicObjectExtensions.cs" />
-    <Compile Include="Snapshots\DefaultSnapshotStrategy.cs" />
-    <Compile Include="Messages\IMessage.cs" />
-    <Compile Include="Configuration\BusRegistrar.cs" />
-    <Compile Include="Snapshots\SnapshotRepository.cs" />
-    <Compile Include="Snapshots\SnapshotStore.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Cqrs.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Packaging\app.config.install.xdt">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Packaging\web.config.install.xdt">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="tools\install.ps1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Repositories\Authentication\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="tools\Create-Log-Table.sql" />
-    <Content Include="tools\EventStoreTable-SqlServer-Migration.sql" />
-    <Content Include="tools\EventStoreTable-SqlServer.sql" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netcoreapp3.0;net40</TargetFrameworks>
+		<title>CQRS.NET</title>
+		<Authors>Chinchilla Software</Authors>
+		<Company>Chinchilla Software</Company>
+		<Description>
+			A lightweight enterprise Function as a service (FaaS) framework to write function based serverless and micro-service applications in hybrid multi-datacentre, on-premise and Azure environments, offering modern patterns such as CQRS and event-sourcing. Offering a superior combination of serverless, micro-service and traditional deployments both in the cloud and on-premise to suit any business. Deployments can be inter-conntected with each other sharing data and resourcing or independant and issolated while providing a consistent framework and guideline for both development, deployment, DevOps and administration.
+
+			CQRS.NET has been designed with modularity in mind... see the number of technology packages below you can chose from. Modularity applies to both development concerns like storage as well as operational modularity such as serverless or micro-service deployment, PaaS, VMs or container packaging. Every package and design choice made should be interchangeable with custom code if needed.
+		</Description>
+		<Copyright>Copyright ©  2019</Copyright>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
+		<PackageReleaseNotes>
+			Version 4.0.0
+
+			* Added .NET Core 3.0 support.
+
+			Breaking Changes
+
+			* LinqToSQL support is removed for .NET Core, but remains for .NET Framework
+			* WebHost support is removed for .NET Core, but remains for .NET Framework
+
+			* Removed Performance Trackers
+		</PackageReleaseNotes>
+		<PackageIcon>images\icon.png</PackageIcon>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\icon.png" Link="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>images\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+		<None Include="tools\Create-Log-Table.sql">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+		<None Include="tools\EventStoreTable-SqlServer.sql">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+		<None Include="tools\EventStoreTable-SqlServer-Migration.sql">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+		<None Include="tools\SampleEntity-SqlServer.sql">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="tools\install.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<OutputType>library</OutputType>
+		<TargetFrameworks>net40;netcoreapp3.0</TargetFrameworks>
+		<DocumentationFile>Cqrs.xml</DocumentationFile>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="4.6.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="System" />
+		<Reference Include="System.ComponentModel.DataAnnotations" />
+		<Reference Include="System.Configuration" />
+		<Reference Include="System.Data.Linq" />
+		<Reference Include="System.ServiceModel" />
+		<Reference Include="System.Transactions" />
+		<Reference Include="System.Web" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Chinchilla.StateManagement" Version="4.0.33.18" />
+	  <PackageReference Include="Chinchilla.Logging" Version="4.0.111.92" />
+	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Remove="Properties\" />
+	</ItemGroup>
 </Project>

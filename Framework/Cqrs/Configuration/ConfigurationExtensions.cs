@@ -7,9 +7,9 @@
 #endregion
 
 using System;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using System.Reflection;
-using cdmdotnet.Logging.Configuration;
+using Chinchilla.Logging.Configuration;
 
 namespace Cqrs.Configuration
 {
@@ -40,11 +40,11 @@ namespace Cqrs.Configuration
 				ITelemetryHelper helper;
 				try
 				{
-					helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format("{0}\\cdmdotnet.Logging.Azure.ApplicationInsights.dll", AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), "cdmdotnet.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, DependencyResolver.Current.Resolve<ILoggerSettings>() }, null, null).Unwrap();
+					helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format("{0}\\Chinchilla.Logging.Azure.ApplicationInsights.dll", AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, DependencyResolver.Current.Resolve<ILoggerSettings>() }, null, null).Unwrap();
 				}
 				catch
 				{
-					helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format("{0}\\cdmdotnet.Logging.Azure.ApplicationInsights.dll", AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), "cdmdotnet.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper }, null, null).Unwrap();
+					helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format("{0}\\Chinchilla.Logging.Azure.ApplicationInsights.dll", AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper }, null, null).Unwrap();
 				}
 				return helper;
 			}

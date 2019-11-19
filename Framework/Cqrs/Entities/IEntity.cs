@@ -37,6 +37,6 @@ namespace Cqrs.Entities
 		/// </summary>
 		[Required]
 		[DataMember]
-		bool IsLogicallyDeleted { get; set; }
+		bool IsDeleted { get; set; }
 	}
 }

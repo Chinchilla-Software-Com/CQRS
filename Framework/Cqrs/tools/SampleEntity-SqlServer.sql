@@ -4,7 +4,7 @@ SET		@TableName = 'MyEntity';
 EXECUTE('CREATE TABLE [dbo].[' + @TableName + '](
 	[Rsn] [uniqueidentifier] NOT NULL,
 	[SortingOrder] [int] NOT NULL,
-	[IsLogicallyDeleted] [bit] NOT NULL
+	[IsDeleted] [bit] NOT NULL
 	CONSTRAINT [PK_' + @TableName + '] PRIMARY KEY CLUSTERED 
 	(
 		[Rsn] ASC
@@ -12,5 +12,5 @@ EXECUTE('CREATE TABLE [dbo].[' + @TableName + '](
 	WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 )
 
-ALTER TABLE [dbo].[' + @TableName + '] ADD  CONSTRAINT [DF_' + @TableName + '_IsLogicallyDeleted]  DEFAULT ((0)) FOR [IsLogicallyDeleted]
+ALTER TABLE [dbo].[' + @TableName + '] ADD  CONSTRAINT [DF_' + @TableName + '_IsDeleted]  DEFAULT ((0)) FOR [IsDeleted]
 ');

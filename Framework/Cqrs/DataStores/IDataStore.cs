@@ -29,7 +29,7 @@ namespace Cqrs.DataStores
 		void Add(IEnumerable<TData> data);
 
 		/// <summary>
-		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsLogicallyDeleted"/> to true in the data store and persist the change.
+		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsDeleted"/> to true in the data store and persist the change.
 		/// </summary>
 		void Remove(TData data);
 

@@ -1,3 +1,5 @@
+#if NET40
+
 #region Copyright
 // // -----------------------------------------------------------------------
 // // <copyright company="Chinchilla Software Limited">
@@ -169,7 +171,7 @@ namespace Cqrs.Events
 			return _orgmodel.GetTable(rowType);
 		}
 
-		#region MetaModel Forwards
+#region MetaModel Forwards
 
 		public override Type ContextType { get { return _orgmodel.ContextType; } }
 		public override string DatabaseName { get { return _orgmodel.DatabaseName; } }
@@ -179,7 +181,7 @@ namespace Cqrs.Events
 		public override IEnumerable<MetaFunction> GetFunctions() { return _orgmodel.GetFunctions(); }
 		public override IEnumerable<MetaTable> GetTables() { return _orgmodel.GetTables(); }
 
-		#endregion
+#endregion
 	}
 
 	internal class CustomMetaTable : MetaTable
@@ -201,13 +203,13 @@ namespace Cqrs.Events
 		public override MetaType RowType { get { return _rowtype; } }
 		public override string TableName { get { return _tableName; } }
 
-		#region MetaTable Forwards
+#region MetaTable Forwards
 
 		public override System.Reflection.MethodInfo DeleteMethod { get { return _orgtable.DeleteMethod; } }
 		public override System.Reflection.MethodInfo InsertMethod { get { return _orgtable.InsertMethod; } }
 		public override System.Reflection.MethodInfo UpdateMethod { get { return _orgtable.UpdateMethod; } }
 
-		#endregion
+#endregion
 	}
 
 	internal class CustomMetaType : MetaType
@@ -226,7 +228,7 @@ namespace Cqrs.Events
 		public override MetaTable Table { get { return MetaTable; } }
 		public override MetaModel Model { get { return _metamodel; } }
 
-		#region MetaType Forwards
+#region MetaType Forwards
 
 		public override System.Collections.ObjectModel.ReadOnlyCollection<MetaAssociation> Associations { get { return _orgtype.Associations; } }
 		public override bool CanInstantiate { get { return _orgtype.CanInstantiate; } }
@@ -257,7 +259,8 @@ namespace Cqrs.Events
 		public override MetaType GetInheritanceType(Type type) { return _orgtype.GetInheritanceType(type); }
 		public override MetaType GetTypeForInheritanceCode(object code) { return _orgtype.GetTypeForInheritanceCode(code); }
 
-		#endregion
+#endregion
 	}
 
 }
+#endif
