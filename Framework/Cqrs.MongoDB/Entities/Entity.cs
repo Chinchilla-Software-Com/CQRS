@@ -42,6 +42,6 @@ namespace Cqrs.MongoDB.Entities
 		/// </summary>
 		[Required]
 		[DataMember]
-		public override bool IsLogicallyDeleted { get; set; }
+		public override bool IsDeleted { get; set; }
 	}
 }

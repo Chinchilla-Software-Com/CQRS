@@ -13,7 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Entities;
 using Cqrs.Events;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;

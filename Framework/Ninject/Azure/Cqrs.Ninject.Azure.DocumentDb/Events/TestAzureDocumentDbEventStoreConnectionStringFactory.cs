@@ -7,9 +7,9 @@
 #endregion
 
 using Cqrs.Azure.DocumentDb.Events;
-using cdmdotnet.Logging;
-using cdmdotnet.StateManagement;
-using cdmdotnet.StateManagement.Threaded;
+using Chinchilla.Logging;
+using Chinchilla.StateManagement;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.Configuration;
 using Cqrs.DataStores;
 using Cqrs.Events;
@@ -31,7 +31,7 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Events
 
 		static TestAzureDocumentDbEventStoreConnectionStringFactory()
 		{
-			Query = new ThreadedContextItemCollection();
+			Query = new Chinchilla.StateManagement.Threaded.ContextItemCollection();
 		}
 
 		/// <summary>

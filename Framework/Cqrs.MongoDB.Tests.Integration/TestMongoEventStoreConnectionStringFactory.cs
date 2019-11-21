@@ -8,8 +8,8 @@
 
 using System.Configuration;
 using System.Runtime.Remoting.Messaging;
-using cdmdotnet.StateManagement;
-using cdmdotnet.StateManagement.Threaded;
+using Chinchilla.StateManagement;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.MongoDB.Events;
 
 namespace Cqrs.MongoDB.Tests.Integration
@@ -28,7 +28,7 @@ namespace Cqrs.MongoDB.Tests.Integration
 
 		static TestMongoEventStoreConnectionStringFactory()
 		{
-			Query = new ThreadedContextItemCollection();
+			Query = new Chinchilla.StateManagement.Threaded.ContextItemCollection();
 		}
 
 		/// <summary>

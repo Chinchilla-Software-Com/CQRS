@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
+using Chinchilla.Logging;
+using Chinchilla.Logging.Configuration;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;

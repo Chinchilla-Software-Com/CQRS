@@ -8,7 +8,7 @@
 
 using System;
 using System.Threading.Tasks;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Akka.Events;
 using Cqrs.Configuration;
 using Cqrs.Domain;

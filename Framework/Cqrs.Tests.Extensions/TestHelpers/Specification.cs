@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
-using cdmdotnet.StateManagement.Threaded;
+using Chinchilla.Logging;
+using Chinchilla.Logging.Configuration;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.Commands;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
@@ -38,7 +38,7 @@ namespace Cqrs.Tests.Extensions.TestHelpers
 			var eventstorage = new SpecEventStorage(Given().ToList());
 			var snapshotstorage = new SpecSnapShotStorage(Snapshot);
 			var eventpublisher = new SpecEventPublisher();
-			var aggregateFactory = new AggregateFactory(null, new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ThreadedContextItemCollectionFactory())));
+			var aggregateFactory = new AggregateFactory(null, new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ContextItemCollectionFactory())));
 
 			var snapshotStrategy = new DefaultSnapshotStrategy<ISingleSignOnToken>();
 			var repository = new SnapshotRepository<ISingleSignOnToken>(snapshotstorage, snapshotStrategy, new AggregateRepository<ISingleSignOnToken>(aggregateFactory, eventstorage, eventpublisher, new NullCorrelationIdHelper(), new ConfigurationManager()), eventstorage, aggregateFactory);

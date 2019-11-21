@@ -14,20 +14,20 @@ using Cqrs.Mongo.Entities;
 namespace Cqrs.Mongo.DataStores.Indexes
 {
 	/// <summary>
-	/// A <see cref="MongoIndex{TEntity}"/> for <see cref="IEntity.IsLogicallyDeleted"/> and <see cref="IEntity.Rsn"/>
+	/// A <see cref="MongoIndex{TEntity}"/> for <see cref="IEntity.IsDeleted"/> and <see cref="IEntity.Rsn"/>
 	/// </summary>
 	/// <typeparam name="TEntity">The <see cref="Type"/> of <see cref="IEntity"/> this index is for.</typeparam>
-	public abstract class ByIsLogicallyDeletedAndRsnMongoIndex<TEntity> : MongoIndex<TEntity>
+	public abstract class ByIsDeletedAndRsnMongoIndex<TEntity> : MongoIndex<TEntity>
 		where TEntity : MongoEntity
 	{
 		/// <summary>
-		/// Instantiate a new instance of <see cref="ByIsLogicallyDeletedAndRsnMongoIndex{TEntity}"/>.
+		/// Instantiate a new instance of <see cref="ByIsDeletedAndRsnMongoIndex{TEntity}"/>.
 		/// </summary>
-		protected ByIsLogicallyDeletedAndRsnMongoIndex()
+		protected ByIsDeletedAndRsnMongoIndex()
 		{
 			Selectors = new Expression<Func<TEntity, object>>[]
 			{
-				entity => entity.IsLogicallyDeleted,
+				entity => entity.IsDeleted,
 				entity => entity.Rsn
 			};
 

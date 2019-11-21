@@ -6,11 +6,11 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using cdmdotnet.Logging;
-using cdmdotnet.Logging.Azure.ApplicationInsights;
-using cdmdotnet.Logging.Azure.Configuration;
-using cdmdotnet.Logging.Configuration;
-using cdmdotnet.StateManagement;
+using Chinchilla.Logging;
+using Chinchilla.Logging.Azure.ApplicationInsights;
+using Chinchilla.Logging.Azure.Configuration;
+using Chinchilla.Logging.Configuration;
+using Chinchilla.StateManagement;
 using Cqrs.Azure.ConfigurationManager;
 using Cqrs.Configuration;
 using Ninject;
@@ -18,7 +18,7 @@ using Ninject.Modules;
 using Ninject.Web.Common;
 using System;
 using System.Web;
-using cdmdotnet.StateManagement.Web;
+using Chinchilla.StateManagement.Web;
 using Cqrs.Authentication;
 using Cqrs.Ninject.Configuration;
 using Cqrs.Services;

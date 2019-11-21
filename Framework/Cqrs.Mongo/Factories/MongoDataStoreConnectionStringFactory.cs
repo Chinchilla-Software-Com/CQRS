@@ -9,7 +9,7 @@
 using System;
 using System.Configuration;
 using Cqrs.Configuration;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Exceptions;
 
 namespace Cqrs.Mongo.Factories

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cqrs.Events;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Domain;
 using Cqrs.Messages;
 using Microsoft.Azure.Documents;

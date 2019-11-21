@@ -7,8 +7,8 @@
 #endregion
 
 using System.Configuration;
-using cdmdotnet.StateManagement;
-using cdmdotnet.StateManagement.Threaded;
+using Chinchilla.StateManagement;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.MongoDB.Events;
 
 namespace Cqrs.MongoDB.Tests.Integration
@@ -23,7 +23,7 @@ namespace Cqrs.MongoDB.Tests.Integration
 
 		static TestMongoDbSnapshotStoreConnectionStringFactory()
 		{
-			Query = new ThreadedContextItemCollection();
+			Query = new Chinchilla.StateManagement.Threaded.ContextItemCollection();
 		}
 
 		/// <summary>

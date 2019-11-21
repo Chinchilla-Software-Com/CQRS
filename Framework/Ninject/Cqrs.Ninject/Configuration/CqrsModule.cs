@@ -13,11 +13,11 @@ using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
-using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
-using cdmdotnet.StateManagement;
-using cdmdotnet.StateManagement.Threaded;
-using cdmdotnet.StateManagement.Web;
+using Chinchilla.Logging;
+using Chinchilla.Logging.Configuration;
+using Chinchilla.StateManagement;
+using Chinchilla.StateManagement.Threaded;
+using Chinchilla.StateManagement.Web;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Repositories.Queries;
@@ -255,10 +255,10 @@ namespace Cqrs.Ninject.Configuration
 			else
 			{
 				Bind<IContextItemCollectionFactory>()
-					.To<ThreadedContextItemCollectionFactory>()
+					.To<ContextItemCollectionFactory>()
 					.InSingletonScope();
 				Bind<IContextItemCollection>()
-					.To<ThreadedContextItemCollection>()
+					.To<Chinchilla.StateManagement.Threaded.ContextItemCollection>()
 					.InSingletonScope();
 			}
 		}

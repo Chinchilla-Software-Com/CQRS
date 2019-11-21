@@ -9,7 +9,7 @@
 using System;
 using System.IO;
 using System.Linq;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Snapshots;

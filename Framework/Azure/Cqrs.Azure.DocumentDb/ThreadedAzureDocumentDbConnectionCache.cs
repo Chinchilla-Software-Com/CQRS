@@ -6,7 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using cdmdotnet.StateManagement;
+using Chinchilla.StateManagement;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 

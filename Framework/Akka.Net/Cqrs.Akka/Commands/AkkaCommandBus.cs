@@ -10,7 +10,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;

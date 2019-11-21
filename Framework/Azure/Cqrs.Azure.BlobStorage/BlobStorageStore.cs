@@ -12,7 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Entities;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;

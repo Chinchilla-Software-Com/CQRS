@@ -10,9 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
-using cdmdotnet.StateManagement.Threaded;
+using Chinchilla.Logging;
+using Chinchilla.Logging.Configuration;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.Azure.BlobStorage.Events;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
 using Cqrs.Configuration;
@@ -41,7 +41,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 		public virtual void Save_ValidEvent_EventCanBeRetreived()
 		{
 			// Arrange
-			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
+			var correlationIdHelper = new CorrelationIdHelper(new ContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
 			var eventStore = CreateEventStore(new DefaultEventBuilder<Guid>(), new EventDeserialiser<Guid>(), logger, new TableStorageEventStoreConnectionStringFactory(new ConfigurationManager(), logger));

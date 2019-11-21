@@ -47,7 +47,7 @@ using Cqrs.Akka.Snapshots;
 }
 #>
 using Cqrs.Configuration;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Snapshots;
 using Cqrs.Authentication;
 using Cqrs.Domain;
@@ -71,7 +71,7 @@ IEnumerable<IAssociation> relationships = this.Element.GetRelatedLinks<IAssociat
 			private set { Id = value; }
 		}
 
-		public bool IsLogicallyDeleted {get; set;}
+		public bool IsDeleted {get; set;}
 
 		protected IDependencyResolver DependencyResolver { get; private set; }
 <#
@@ -731,7 +731,7 @@ switch(aggregateTechnology)
 
 		private void Apply(<#= className #>Deleted @event)
 		{
-			IsLogicallyDeleted = true;
+			IsDeleted = true;
 		}
 <#
 		}
@@ -942,7 +942,7 @@ switch(aggregateTechnology)
 				internal set { Id = value; }
 			}
 
-			public bool IsLogicallyDeleted {get; internal set;}
+			public bool IsDeleted {get; internal set;}
 <#
 		// Properties
 		foreach(IProperty collectionProperty in collectionProperties)
@@ -991,7 +991,7 @@ switch(aggregateTechnology)
 <#
 		}
 #>
-				IsLogicallyDeleted = aggregate.IsLogicallyDeleted,
+				IsDeleted = aggregate.IsDeleted,
 				Rsn = aggregate.Rsn
 			};
 		}
@@ -1046,7 +1046,7 @@ switch(aggregateTechnology)
 <#
 			}
 #>
-				IsLogicallyDeleted = snapshot.IsLogicallyDeleted;
+				IsDeleted = snapshot.IsDeleted;
 				Rsn = snapshot.Rsn;
 			}
 		}

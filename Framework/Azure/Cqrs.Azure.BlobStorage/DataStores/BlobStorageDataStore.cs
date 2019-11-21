@@ -9,7 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.DataStores;
 using Cqrs.Entities;
 
@@ -49,7 +49,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 		/// </summary>
 		public void Remove(TData data)
 		{
-			data.IsLogicallyDeleted = true;
+			data.IsDeleted = true;
 			Update(data);
 		}
 

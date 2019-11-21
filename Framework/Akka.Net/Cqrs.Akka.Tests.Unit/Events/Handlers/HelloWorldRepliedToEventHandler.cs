@@ -8,7 +8,7 @@
 
 using System;
 using Akka.Actor;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Akka.Domain;
 using Cqrs.Akka.Events;
 using Cqrs.Authentication;

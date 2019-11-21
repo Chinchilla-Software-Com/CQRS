@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.DataStores;
 using Cqrs.Mongo.DataStores.Indexes;
 using Cqrs.Mongo.Serialisers;

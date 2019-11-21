@@ -7,7 +7,7 @@
 #endregion
 
 using System;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Akka.Domain;
 using Cqrs.Akka.Tests.Unit.Commands;
 using Cqrs.Akka.Tests.Unit.Events;
@@ -34,7 +34,7 @@ namespace Cqrs.Akka.Tests.Unit.Aggregates
 		/// <summary>
 		/// Indicates if this <see cref="ISaga{TAuthenticationToken}"/> has been deleted.
 		/// </summary>
-		public bool IsLogicallyDeleted { get; set; }
+		public bool IsDeleted { get; set; }
 
 		/// <summary>
 		/// The <see cref="IDependencyResolver"/> that resolves things.

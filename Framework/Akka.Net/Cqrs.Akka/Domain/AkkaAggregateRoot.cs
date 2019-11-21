@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Akka.Actor;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Akka.Snapshots;
 using Cqrs.Authentication;
 using Cqrs.Commands;

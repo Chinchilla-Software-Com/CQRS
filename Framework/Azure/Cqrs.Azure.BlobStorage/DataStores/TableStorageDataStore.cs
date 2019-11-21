@@ -7,7 +7,7 @@
 #endregion
 
 using System;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Entities;
 using Microsoft.WindowsAzure.Storage.Table;
 
@@ -42,7 +42,7 @@ namespace Cqrs.Azure.BlobStorage.DataStores
 		/// </summary>
 		public override void Remove(TData data)
 		{
-			data.IsLogicallyDeleted = true;
+			data.IsDeleted = true;
 			Update(data);
 		}
 

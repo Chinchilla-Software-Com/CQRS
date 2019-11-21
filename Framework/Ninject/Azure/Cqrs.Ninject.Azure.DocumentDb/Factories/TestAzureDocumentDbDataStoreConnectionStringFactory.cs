@@ -7,9 +7,9 @@
 #endregion
 
 using Cqrs.Azure.DocumentDb.Factories;
-using cdmdotnet.Logging;
-using cdmdotnet.StateManagement;
-using cdmdotnet.StateManagement.Threaded;
+using Chinchilla.Logging;
+using Chinchilla.StateManagement;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.Configuration;
 using Cqrs.DataStores;
 using Cqrs.Entities;
@@ -28,7 +28,7 @@ namespace Cqrs.Ninject.Azure.DocumentDb.Factories
 
 		static TestAzureDocumentDbDataStoreConnectionStringFactory()
 		{
-			Query = new ThreadedContextItemCollection();
+			Query = new Chinchilla.StateManagement.Threaded.ContextItemCollection();
 		}
 
 		/// <summary>

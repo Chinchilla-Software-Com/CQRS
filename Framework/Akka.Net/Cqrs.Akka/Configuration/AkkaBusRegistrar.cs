@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Akka.Actor;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Akka.Events;
 using Cqrs.Bus;
 using Cqrs.Commands;

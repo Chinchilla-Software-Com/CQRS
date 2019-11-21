@@ -7,7 +7,7 @@
 #endregion
 
 using System;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Snapshots;
 using Microsoft.Azure.Documents.Client;

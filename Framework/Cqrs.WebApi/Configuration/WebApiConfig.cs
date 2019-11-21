@@ -50,7 +50,7 @@ namespace Cqrs.WebApi.Configuration
 				StringEscapeHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.StringEscapeHandling,
 				PreserveReferencesHandling = PreserveReferencesHandling.None,
 				MissingMemberHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.MissingMemberHandling,
-				Binder = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Binder,
+				SerializationBinder = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.SerializationBinder,
 				CheckAdditionalContent = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.CheckAdditionalContent,
 				ConstructorHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ConstructorHandling,
 				Context = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.Context,
@@ -70,9 +70,9 @@ namespace Cqrs.WebApi.Configuration
 				NullValueHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.NullValueHandling,
 				ObjectCreationHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ObjectCreationHandling,
 				ReferenceLoopHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ReferenceLoopHandling,
-				ReferenceResolver = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ReferenceResolver,
+				ReferenceResolverProvider = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.ReferenceResolverProvider,
 				TraceWriter = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.TraceWriter,
-				TypeNameAssemblyFormat = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.TypeNameAssemblyFormat,
+				TypeNameAssemblyFormatHandling = Cqrs.Events.DefaultJsonSerializerSettings.DefaultSettings.TypeNameAssemblyFormatHandling,
 				TypeNameHandling = TypeNameHandling.None
 			};
 		}

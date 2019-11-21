@@ -6,7 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
 using Cqrs.MongoDB.Factories;
 using MongoDB.Driver;

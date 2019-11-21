@@ -51,9 +51,11 @@ namespace Cqrs.EventStore
 			return Deserialise(notification.Event);
 		}
 
-		/// <summary>
-		/// Gets the <see cref="JsonSerializerSettings"/> used while Deserialising.
-		/// </summary>
+#pragma warning disable CS0419 // Ambiguous reference in cref attribute
+							  /// <summary>
+							  /// Gets the <see cref="JsonSerializerSettings"/> used while Deserialising.
+							  /// </summary>
+#pragma warning restore CS0419 // Ambiguous reference in cref attribute
 		public JsonSerializerSettings GetSerialisationSettings()
 		{
 			return new JsonSerializerSettings

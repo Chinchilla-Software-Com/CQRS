@@ -6,8 +6,8 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using cdmdotnet.StateManagement;
-using cdmdotnet.StateManagement.Threaded;
+using Chinchilla.StateManagement;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.Ninject.Azure.Wcf.Configuration;
 using Ninject.Modules;
 
@@ -25,7 +25,7 @@ namespace Cqrs.Ninject.Azure.WebJobs.Configuration
 		{
 			// We use console state as, even though a webjob runs in an azure website, it's technically loaded via something call the 'WindowsScriptHost', which is not web and IIS based so it's threading model is very different and more console based.
 			Bind<IContextItemCollectionFactory>()
-				.To<ThreadedContextItemCollectionFactory>()
+				.To<ContextItemCollectionFactory>()
 				.InSingletonScope();
 		}
 	}

@@ -7,7 +7,7 @@
 #endregion
 
 using System;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Azure.BlobStorage;
 using Cqrs.Azure.BlobStorage.Events;
 using Cqrs.Events;

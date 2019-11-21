@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Domain;
 using Cqrs.Events;
 using Cqrs.Messages;

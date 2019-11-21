@@ -8,7 +8,7 @@
 
 using System;
 using System.Collections.Generic;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Azure.BlobStorage;
 using Cqrs.Azure.BlobStorage.DataStores;
 using Cqrs.Entities;

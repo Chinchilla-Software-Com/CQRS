@@ -8,7 +8,7 @@
 
 using System;
 using System.Collections.Generic;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
 using Cqrs.Configuration;

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Cache;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;

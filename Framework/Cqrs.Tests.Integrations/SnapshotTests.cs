@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Cqrs.Domain;

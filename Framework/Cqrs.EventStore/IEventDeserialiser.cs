@@ -31,9 +31,11 @@ namespace Cqrs.EventStore
 		/// <param name="notification">The <see cref="ResolvedEvent"/> to Deserialise.</param>
 		IEvent<TAuthenticationToken> Deserialise(ResolvedEvent notification);
 
-		/// <summary>
-		/// Gets the <see cref="JsonSerializerSettings"/> used while Deserialising.
-		/// </summary>
+#pragma warning disable CS0419 // Ambiguous reference in cref attribute
+							  /// <summary>
+							  /// Gets the <see cref="JsonSerializerSettings"/> used while Deserialising.
+							  /// </summary>
 		JsonSerializerSettings GetSerialisationSettings();
+#pragma warning restore CS0419 // Ambiguous reference in cref attribute
 	}
 }

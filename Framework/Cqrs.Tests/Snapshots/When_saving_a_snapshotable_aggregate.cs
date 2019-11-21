@@ -1,4 +1,4 @@
-﻿using cdmdotnet.Logging;
+﻿using Chinchilla.Logging;
 using Cqrs.Domain;
 using Cqrs.Domain.Factories;
 using Cqrs.Authentication;

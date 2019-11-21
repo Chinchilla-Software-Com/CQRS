@@ -9,9 +9,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
-using cdmdotnet.StateManagement.Threaded;
+using Chinchilla.Logging;
+using Chinchilla.Logging.Configuration;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.Azure.BlobStorage.DataStores;
 using Cqrs.Azure.BlobStorage.Repositories;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
@@ -42,7 +42,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 		public virtual void Add_ValidProjectionView_ProjectionViewCanBeRetreived()
 		{
 			// Arrange
-			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
+			var correlationIdHelper = new CorrelationIdHelper(new ContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
 			TableStorageDataStore<TestEvent> dataStore = CreateDataStore<TestEvent>(logger, new ConfigurationManager());
@@ -79,7 +79,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 		public virtual void Add_ValidProjectionEntityView_ProjectionEntityViewCanBeRetreived()
 		{
 			// Arrange
-			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
+			var correlationIdHelper = new CorrelationIdHelper(new ContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
 			TableStorageDataStore<TestEntity> dataStore = CreateDataStore<TestEntity>(logger, new ConfigurationManager());
@@ -114,7 +114,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 		public virtual void Update_ValidProjectionEntityView_ProjectionEntityViewCanBeRetreived()
 		{
 			// Arrange
-			var correlationIdHelper = new CorrelationIdHelper(new ThreadedContextItemCollectionFactory());
+			var correlationIdHelper = new CorrelationIdHelper(new ContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
 			TableStorageDataStore<TestEntity> dataStore = CreateDataStore<TestEntity>(logger, new ConfigurationManager());

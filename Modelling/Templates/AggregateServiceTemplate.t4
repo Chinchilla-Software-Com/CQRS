@@ -32,7 +32,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Events;
@@ -216,7 +216,7 @@ namespace <#= classNamespace #>.Services
 			if (locatedItem == null)
 				return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = ServiceResponseStateType.FailedValidation });
 
-			if (locatedItem.IsLogicallyDeleted)
+			if (locatedItem.IsDeleted)
 				return CompleteResponse(new ServiceResponseWithResultData<Entities.<#= className #>Entity> { State = ServiceResponseStateType.FailedValidation });
 
 			var command = new Delete<#= className #>Command(item.Rsn);

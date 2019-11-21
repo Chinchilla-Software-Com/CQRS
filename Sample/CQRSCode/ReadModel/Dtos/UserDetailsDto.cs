@@ -18,7 +18,7 @@ namespace CQRSCode.ReadModel.Dtos
 
 		[DataMember]
 		[Column]
-		public override bool IsLogicallyDeleted { get; set; }
+		public override bool IsDeleted { get; set; }
 
 		public Guid Id
 		{

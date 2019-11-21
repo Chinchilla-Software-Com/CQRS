@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Akka.Actor;
 using Akka.Event;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 
 namespace Cqrs.Akka.Domain
 {

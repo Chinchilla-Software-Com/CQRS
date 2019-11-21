@@ -7,8 +7,8 @@
 #endregion
 
 using System.Configuration;
-using cdmdotnet.StateManagement;
-using cdmdotnet.StateManagement.Threaded;
+using Chinchilla.StateManagement;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.Mongo.Factories;
 
 namespace Cqrs.Ninject.Mongo
@@ -27,7 +27,7 @@ namespace Cqrs.Ninject.Mongo
 
 		static TestMongoDataStoreConnectionStringFactory()
 		{
-			Query = new ThreadedContextItemCollection();
+			Query = new Chinchilla.StateManagement.Threaded.ContextItemCollection();
 		}
 
 		/// <summary>

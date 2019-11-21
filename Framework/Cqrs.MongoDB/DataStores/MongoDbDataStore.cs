@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Cqrs.DataStores;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using MongoDB.Driver;
 using Cqrs.Entities;
 
@@ -148,14 +148,14 @@ namespace Cqrs.MongoDB.DataStores
 		}
 
 		/// <summary>
-		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsLogicallyDeleted"/> to true
+		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsDeleted"/> to true
 		/// </summary>
 		public virtual void Remove(TData data)
 		{
 			Logger.LogDebug("Removing data from the Mongo database", "MongoDbDataStore\\Remove");
 			try
 			{
-				data.IsLogicallyDeleted = true;
+				data.IsDeleted = true;
 				Update(data);
 			}
 			finally

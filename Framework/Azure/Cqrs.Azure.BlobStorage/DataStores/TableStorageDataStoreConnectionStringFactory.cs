@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Cqrs.Configuration;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.DataStores;
 using Cqrs.Exceptions;
 

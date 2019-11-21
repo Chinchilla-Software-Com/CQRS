@@ -1,5 +1,5 @@
-using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
+using Chinchilla.Logging;
+using Chinchilla.Logging.Configuration;
 using CQRSCode.ReadModel;
 using Cqrs.Bus;
 using Cqrs.Cache;

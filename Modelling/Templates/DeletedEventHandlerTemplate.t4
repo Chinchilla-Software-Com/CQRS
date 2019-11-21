@@ -23,8 +23,8 @@ string className = ClassifierName(this.Element);
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using cdmdotnet.AutoMapper;
-using cdmdotnet.Logging;
+using Chinchilla.AutoMapper;
+using Chinchilla.Logging;
 using Cqrs.Events;
 using Cqrs.Domain;
 using <#= classNamespace #>.Entities;
@@ -96,7 +96,7 @@ namespace <#= classNamespace #>.Handlers
 				else
 					Logger.LogDebug(string.Format("Event type '{0}' with Rsn '{1:N}': Is not auto-mapped.", eventTypeName, @event.Rsn));
 
-				entity.IsLogicallyDeleted = true;
+				entity.IsDeleted = true;
 
 				OnEntityDeleted(@event, ref entity);
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Domain;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Domain.Factories;

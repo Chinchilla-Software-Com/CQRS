@@ -13,7 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Cqrs.Azure.DocumentDb.Entities;
 using Cqrs.DataStores;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Entities;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
@@ -189,14 +189,14 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		}
 
 		/// <summary>
-		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsLogicallyDeleted"/> to true
+		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsDeleted"/> to true
 		/// </summary>
 		public void Remove(TData data)
 		{
 			Logger.LogDebug("Removing data from the Azure database", "AzureDocumentDbDataStore\\Remove");
 			try
 			{
-				data.IsLogicallyDeleted = true;
+				data.IsDeleted = true;
 				Update(data);
 			}
 			finally

@@ -6,7 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Azure.BlobStorage.DataStores;
 using Cqrs.Configuration;
 using TestClass = NUnit.Framework.TestFixtureAttribute;

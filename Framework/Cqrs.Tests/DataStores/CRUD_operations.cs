@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
-using cdmdotnet.StateManagement.Threaded;
+using Chinchilla.Logging;
+using Chinchilla.Logging.Configuration;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.Configuration;
 using Cqrs.DataStores;
 using Cqrs.Tests.Substitutes;
@@ -23,7 +23,7 @@ namespace Cqrs.Tests.DataStores
 		public void GetAllItems()
 		{
 			// Arrange
-			var sqlDataStore = new SqlDataStore<OrderEntity>(new ConfigurationManager(), new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ThreadedContextItemCollectionFactory())));
+			var sqlDataStore = new SqlDataStore<OrderEntity>(new ConfigurationManager(), new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ContextItemCollectionFactory())));
 
 			// Act
 			var actualData = sqlDataStore.ToList();
@@ -36,7 +36,7 @@ namespace Cqrs.Tests.DataStores
 		public void AddSingleItem()
 		{
 			// Arrange
-			var sqlDataStore = new SqlDataStore<OrderEntity>(new ConfigurationManager(), new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ThreadedContextItemCollectionFactory())));
+			var sqlDataStore = new SqlDataStore<OrderEntity>(new ConfigurationManager(), new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ContextItemCollectionFactory())));
 			var entityData = new OrderEntity
 			{
 				Rsn = Guid.NewGuid(),
@@ -71,7 +71,7 @@ namespace Cqrs.Tests.DataStores
 		public void AddTwoItems()
 		{
 			// Arrange
-			var sqlDataStore = new SqlDataStore<OrderEntity>(new ConfigurationManager(), new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ThreadedContextItemCollectionFactory())));
+			var sqlDataStore = new SqlDataStore<OrderEntity>(new ConfigurationManager(), new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ContextItemCollectionFactory())));
 			var entityData = new List<OrderEntity>
 			{
 				new OrderEntity
@@ -128,7 +128,7 @@ namespace Cqrs.Tests.DataStores
 		public void UpdateSingleItem()
 		{
 			// Arrange
-			var sqlDataStore = new SqlDataStore<OrderEntity>(new ConfigurationManager(), new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ThreadedContextItemCollectionFactory())));
+			var sqlDataStore = new SqlDataStore<OrderEntity>(new ConfigurationManager(), new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ContextItemCollectionFactory())));
 			var entityData = new OrderEntity
 			{
 				Rsn = Guid.NewGuid(),
@@ -167,7 +167,7 @@ namespace Cqrs.Tests.DataStores
 		public void RemoveSingleItem()
 		{
 			// Arrange
-			var sqlDataStore = new SqlDataStore<OrderEntity>(new ConfigurationManager(), new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ThreadedContextItemCollectionFactory())));
+			var sqlDataStore = new SqlDataStore<OrderEntity>(new ConfigurationManager(), new ConsoleLogger(new LoggerSettings(), new CorrelationIdHelper(new ContextItemCollectionFactory())));
 			var entityData = new OrderEntity
 			{
 				Rsn = Guid.NewGuid(),

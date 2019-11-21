@@ -7,7 +7,7 @@
 #endregion
 
 using System.Configuration;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Exceptions;
 
