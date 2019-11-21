@@ -9,7 +9,7 @@
 using System;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Bus;
 
 namespace Cqrs.Azure.ServiceBus

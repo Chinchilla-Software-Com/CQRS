@@ -12,15 +12,25 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Commands;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
+#if NET452
 using Microsoft.ServiceBus;
+using Microsoft.ServiceBus.Messaging;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling;
-using Microsoft.ServiceBus.Messaging;
 using RetryPolicy = Microsoft.Practices.TransientFaultHandling.RetryPolicy;
+using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
+#endif
+#if NETCOREAPP3_0
+using Microsoft.Azure.ServiceBus;
+using Microsoft.Azure.ServiceBus.Core;
+using Microsoft.Azure.ServiceBus.Management;
+using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
+using RetryPolicy = Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.RetryPolicy;
+#endif
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -28,6 +38,12 @@ namespace Cqrs.Azure.ServiceBus
 	/// An Azure Bus such as a Service Bus or Event Hub.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	/// <remarks>
+	/// https://markheath.net/post/migrating-to-new-servicebus-sdk
+	/// https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dotnet-how-to-use-topics-subscriptions#receive-messages-from-the-subscription
+	/// https://stackoverflow.com/questions/47427361/azure-service-bus-read-messages-sent-by-net-core-2-with-brokeredmessage-getbo
+	/// https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dotnet-get-started-with-queues
+	/// </remarks>
 	public abstract class AzureBus<TAuthenticationToken>
 	{
 		/// <summary>
@@ -81,9 +97,16 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected const int DefaultMaximumConcurrentReceiverProcessesCount = 1;
 
+#if NET452
 		/// <summary>
 		/// The <see cref="OnMessageOptions.MaxConcurrentCalls"/> value.
 		/// </summary>
+#endif
+#if NETCOREAPP3_0
+		/// <summary>
+		/// Used by .NET Framework, but not .Net Core
+		/// </summary>
+#endif
 		protected int MaximumConcurrentReceiverProcessesCount { get; set; }
 
 		/// <summary>
@@ -185,13 +208,23 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected abstract void InstantiateReceiving();
 
+#if NET452
 		/// <summary>
 		/// Creates a new instance of <see cref="NamespaceManager"/> with the <see cref="ConnectionString"/>.
 		/// </summary>
-		protected virtual NamespaceManager GetNamespaceManager()
+		protected virtual NamespaceManager GetManager()
 		{
-			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
-			return namespaceManager;
+			NamespaceManager manager = NamespaceManager.CreateFromConnectionString(ConnectionString);
+#endif
+#if NETCOREAPP3_0
+		/// <summary>
+		/// Creates a new instance of <see cref="ManagementClient"/> with the <see cref="ConnectionString"/>.
+		/// </summary>
+		protected virtual ManagementClient GetManager()
+		{
+			var manager = new ManagementClient(ConnectionString);
+#endif
+			return manager;
 		}
 
 		/// <summary>
@@ -201,7 +234,12 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			get
 			{
+#if NET452
 				RetryManager retryManager = EnterpriseLibraryContainer.Current.GetInstance<RetryManager>();
+#endif
+#if NETCOREAPP3_0
+				RetryManager retryManager = RetryManager.Instance;
+#endif
 				RetryPolicy retryPolicy = retryManager.GetDefaultAzureServiceBusRetryPolicy();
 				retryPolicy.Retrying += (sender, args) =>
 				{
@@ -263,9 +301,16 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected abstract void TriggerSettingsChecking();
 
+#if NET452
 		/// <summary>
-		/// Sets the handler on <see cref="SubscriptionClient.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage})"/>.
+		/// Sets the handler on <see cref="IMessageReceiver.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage})"/>.
 		/// </summary>
+#endif
+#if NETCOREAPP3_0
+		/// <summary>
+		/// Sets the handler on <see cref="IReceiverClient.RegisterMessageHandler(Func{Message, System.Threading.CancellationToken, Task}, MessageHandlerOptions)"/>.
+		/// </summary>
+#endif
 		protected abstract void ApplyReceiverMessageHandler();
 	}
 }

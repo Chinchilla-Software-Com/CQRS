@@ -14,12 +14,18 @@ using System.Linq;
 using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Bus;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
 using Cqrs.Messages;
+#if NET452
 using Microsoft.ServiceBus.Messaging;
+#endif
+#if NETCOREAPP3_0
+using Microsoft.Azure.ServiceBus;
+using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
+#endif
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -115,7 +121,12 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
+#if NET452
 								PublicServiceBusPublisher.Send(brokeredMessage);
+#endif
+#if NETCOREAPP3_0
+								PublicServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+#endif
 								break;
 							}
 							catch (TimeoutException)
@@ -143,7 +154,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Command", telemetryName, "Default Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
-					Logger.LogDebug(string.Format("An command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+					Logger.LogDebug(string.Format("A command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
 				}
 				if ((isPublicBusRequired != null && isPublicBusRequired.Value))
 				{
@@ -158,7 +169,12 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
+#if NET452
 								PublicServiceBusPublisher.Send(brokeredMessage);
+#endif
+#if NETCOREAPP3_0
+								PublicServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+#endif
 								break;
 							}
 							catch (TimeoutException)
@@ -186,7 +202,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Command", telemetryName, "Public Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
-					Logger.LogDebug(string.Format("An command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+					Logger.LogDebug(string.Format("A command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
 				}
 				if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
 				{
@@ -201,7 +217,12 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
+#if NET452
 								PrivateServiceBusPublisher.Send(brokeredMessage);
+#endif
+#if NETCOREAPP3_0
+								PrivateServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+#endif
 								break;
 							}
 							catch (TimeoutException)
@@ -288,11 +309,12 @@ namespace Cqrs.Azure.ServiceBus
 				IList<BrokeredMessage> publicBrokeredMessages = new List<BrokeredMessage>(sourceCommands.Count);
 				foreach (TCommand command in sourceCommands)
 				{
-					Type commandType = command.GetType();
 					if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
 						continue;
 
-					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, commandType, command);
+					Type commandType = command.GetType();
+
+					BrokeredMessage brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, commandType, command);
 
 					bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(commandType);
 					bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(commandType);
@@ -330,7 +352,14 @@ namespace Cqrs.Azure.ServiceBus
 						try
 						{
 							if (publicBrokeredMessages.Any())
+							{
+#if NET452
 								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
+#endif
+#if NETCOREAPP3_0
+								PublicServiceBusPublisher.SendAsync(publicBrokeredMessages).Wait();
+#endif
+							}
 							else
 								Logger.LogDebug("An empty collection of public commands to publish post validation.");
 							break;
@@ -372,7 +401,14 @@ namespace Cqrs.Azure.ServiceBus
 						try
 						{
 							if (privateBrokeredMessages.Any())
+							{
+#if NET452
 								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
+#endif
+#if NETCOREAPP3_0
+								PrivateServiceBusPublisher.SendAsync(privateBrokeredMessages).Wait();
+#endif
+							}
 							else
 								Logger.LogDebug("An empty collection of private commands to publish post validation.");
 							break;
@@ -513,7 +549,12 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						try
 						{
+#if NET452
 							PrivateServiceBusPublisher.Send(brokeredMessage);
+#endif
+#if NETCOREAPP3_0
+							PrivateServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+#endif
 							break;
 						}
 						catch (TimeoutException)

@@ -11,15 +11,23 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Exceptions;
 using Cqrs.Messages;
+#if NET452
 using Microsoft.ServiceBus.Messaging;
 using EventData = Microsoft.ServiceBus.Messaging.EventData;
+#endif
+#if NETCOREAPP3_0
+using Microsoft.Azure.EventHubs;
+using Microsoft.Azure.ServiceBus.Core;
+using Microsoft.Azure.EventHubs.Processor;
+using EventData = Microsoft.Azure.EventHubs.EventData;
+#endif
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -32,11 +40,20 @@ namespace Cqrs.Azure.ServiceBus
 		, IEventHandlerRegistrar
 		, IEventReceiver<TAuthenticationToken>
 	{
+#if NET452
 		/// <summary>
 		/// The configuration key for
 		/// the number of receiver <see cref="SubscriptionClient"/> instances to create
 		/// as used by <see cref="IConfigurationManager"/>.
 		/// </summary>
+#endif
+#if NETCOREAPP3_0
+		/// <summary>
+		/// The configuration key for
+		/// the number of receiver <see cref="IMessageReceiver"/> instances to create
+		/// as used by <see cref="IConfigurationManager"/>.
+		/// </summary>
+#endif
 		protected virtual string NumberOfReceiversCountConfigurationKey
 		{
 			get { return "Cqrs.Azure.EventHub.EventBus.NumberOfReceiversCount"; }
@@ -99,7 +116,7 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		/// <summary>
-		/// Receives a <see cref="BrokeredMessage"/> from the event bus.
+		/// Receives a <see cref="EventData"/> from the event bus.
 		/// </summary>
 		protected virtual void ReceiveEvent(PartitionContext context, EventData eventData)
 		{
@@ -108,7 +125,12 @@ namespace Cqrs.Azure.ServiceBus
 			string responseCode = "200";
 			// Null means it was skipped
 			bool? wasSuccessfull = true;
+#if NET452
 			string telemetryName = string.Format("Cqrs/Handle/Event/{0}", eventData.SequenceNumber);
+#endif
+#if NETCOREAPP3_0
+			string telemetryName = string.Format("Cqrs/Handle/Event/{0}", eventData.SystemProperties.SequenceNumber);
+#endif
 			ISingleSignOnToken authenticationToken = null;
 			Guid? guidAuthenticationToken = null;
 			string stringAuthenticationToken = null;
@@ -124,21 +146,46 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				try
 				{
+#if NET452
 					Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
+#endif
+#if NETCOREAPP3_0
+					Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
+#endif
+#if NET452
 					string messageBody = Encoding.UTF8.GetString(eventData.GetBytes());
+#endif
+#if NETCOREAPP3_0
+					string messageBody = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
+#endif
 
 					IEvent<TAuthenticationToken> @event = AzureBusHelper.ReceiveEvent(messageBody, ReceiveEvent,
-						string.Format("partition key '{0}', sequence number '{1}' and offset '{2}'", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset),
+#if NET452
+					string.Format("partition key '{0}', sequence number '{1}' and offset '{2}'", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset),
+#endif
+#if NETCOREAPP3_0
+					string.Format("partition key '{0}', sequence number '{1}' and offset '{2}'", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset),
+#endif
 						ExtractSignature(eventData),
 						SigningTokenConfigurationKey,
 						() =>
 						{
 							wasSuccessfull = null;
+#if NET452
 							telemetryName = string.Format("Cqrs/Handle/Event/Skipped/{0}", eventData.SequenceNumber);
+#endif
+#if NETCOREAPP3_0
+							telemetryName = string.Format("Cqrs/Handle/Event/Skipped/{0}", eventData.SystemProperties.SequenceNumber);
+#endif
 							responseCode = "204";
 							// Remove message from queue
 							context.CheckpointAsync(eventData);
+#if NET452
 							Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but processing was skipped due to event settings.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
+#endif
+#if NETCOREAPP3_0
+							Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but processing was skipped due to event settings.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
+#endif
 							TelemetryHelper.TrackEvent("Cqrs/Handle/Event/Skipped", telemetryProperties);
 						}
 					);
@@ -165,7 +212,12 @@ namespace Cqrs.Azure.ServiceBus
 						// Remove message from queue
 						context.CheckpointAsync(eventData);
 					}
+#if NET452
 					Logger.LogDebug(string.Format("An event message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
+#endif
+#if NETCOREAPP3_0
+					Logger.LogDebug(string.Format("An event message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
+#endif
 
 					IList<IEvent<TAuthenticationToken>> events;
 					if (EventWaits.TryGetValue(@event.CorrelationId, out events))
@@ -179,7 +231,12 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					TelemetryHelper.TrackException(exception, null, telemetryProperties);
 					// Indicates a problem, unlock message in queue
+#if NET452
 					Logger.LogError(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but was not authorised.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+#endif
+#if NETCOREAPP3_0
+					Logger.LogError(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but was not authorised.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset), exception: exception);
+#endif
 					wasSuccessfull = false;
 					responseCode = "401";
 					telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
@@ -189,7 +246,12 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					TelemetryHelper.TrackException(exception, null, telemetryProperties);
 					// Indicates a problem, unlock message in queue
+#if NET452
 					Logger.LogError(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but no handlers were found to process it.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+#endif
+#if NETCOREAPP3_0
+					Logger.LogError(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but no handlers were found to process it.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset), exception: exception);
+#endif
 					wasSuccessfull = false;
 					responseCode = "501";
 					telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
@@ -199,7 +261,12 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					TelemetryHelper.TrackException(exception, null, telemetryProperties);
 					// Indicates a problem, unlock message in queue
+#if NET452
 					Logger.LogError(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'s but no handler was found to process it.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+#endif
+#if NETCOREAPP3_0
+					Logger.LogError(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'s but no handler was found to process it.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset), exception: exception);
+#endif
 					wasSuccessfull = false;
 					responseCode = "501";
 					telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
@@ -208,7 +275,12 @@ namespace Cqrs.Azure.ServiceBus
 				catch (Exception exception)
 				{
 					// Indicates a problem, unlock message in queue
+#if NET452
 					Logger.LogError(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but failed to be process.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+#endif
+#if NETCOREAPP3_0
+					Logger.LogError(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but failed to be process.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset), exception: exception);
+#endif
 
 					switch (i)
 					{

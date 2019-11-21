@@ -9,8 +9,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
+#if NET452
 using Microsoft.ServiceBus.Messaging;
+#endif
+#if NETCOREAPP3_0
+using Microsoft.Azure.EventHubs;
+using Microsoft.Azure.EventHubs.Processor;
+#endif
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -76,6 +82,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// </returns>
 		public virtual Task CloseAsync(PartitionContext context, CloseReason reason)
 		{
+			Logger.LogInfo("Close Async");
+			return Task.FromResult<object>(null);
+		}
+
+		public Task ProcessErrorAsync(PartitionContext context, Exception error)
+		{
+			Logger.LogInfo("Process Error Async");
 			return Task.FromResult<object>(null);
 		}
 

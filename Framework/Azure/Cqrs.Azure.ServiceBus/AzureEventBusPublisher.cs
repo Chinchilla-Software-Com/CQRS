@@ -11,12 +11,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
+#if NET452
 using Microsoft.ServiceBus.Messaging;
+#endif
+#if NETCOREAPP3_0
+using Microsoft.Azure.ServiceBus;
+using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
+#endif
 using Cqrs.Messages;
 
 namespace Cqrs.Azure.ServiceBus
@@ -113,7 +119,12 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
+#if NET452
 								PublicServiceBusPublisher.Send(brokeredMessage);
+#endif
+#if NETCOREAPP3_0
+								PublicServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+#endif
 								break;
 							}
 							catch (TimeoutException)
@@ -156,7 +167,12 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
+#if NET452
 								PublicServiceBusPublisher.Send(brokeredMessage);
+#endif
+#if NETCOREAPP3_0
+								PublicServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+#endif
 								break;
 							}
 							catch (TimeoutException)
@@ -199,7 +215,12 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
+#if NET452
 								PrivateServiceBusPublisher.Send(brokeredMessage);
+#endif
+#if NETCOREAPP3_0
+								PrivateServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+#endif
 								break;
 							}
 							catch (TimeoutException)
@@ -291,7 +312,7 @@ namespace Cqrs.Azure.ServiceBus
 
 					Type eventType = @event.GetType();
 
-					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
+					BrokeredMessage brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
 
 					bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(eventType);
 					bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(eventType);
@@ -329,7 +350,14 @@ namespace Cqrs.Azure.ServiceBus
 						try
 						{
 							if (publicBrokeredMessages.Any())
+							{
+#if NET452
 								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
+#endif
+#if NETCOREAPP3_0
+								PublicServiceBusPublisher.SendAsync(publicBrokeredMessages).Wait();
+#endif
+							}
 							else
 								Logger.LogDebug("An empty collection of public events to publish post validation.");
 							break;
@@ -371,7 +399,14 @@ namespace Cqrs.Azure.ServiceBus
 						try
 						{
 							if (privateBrokeredMessages.Any())
+							{
+#if NET452
 								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
+#endif
+#if NETCOREAPP3_0
+								PrivateServiceBusPublisher.SendAsync(privateBrokeredMessages).Wait();
+#endif
+							}
 							else
 								Logger.LogDebug("An empty collection of private events to publish post validation.");
 							break;

@@ -194,7 +194,7 @@ namespace Cqrs.Tests.DataStores
 
 			// Assert
 			entityData = sqlDataStore.Single(e => e.Rsn.Equals(entityData.Rsn)); ;
-			Assert.IsTrue(entityData.IsLogicallyDeleted);
+			Assert.IsTrue(entityData.IsDeleted);
 
 			// Clean-up
 			sqlDataStore.Destroy(entityData);

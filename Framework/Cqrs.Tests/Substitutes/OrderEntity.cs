@@ -20,7 +20,7 @@ namespace Cqrs.Tests.Substitutes
 
 		[DataMember]
 		[Column]
-		public override bool IsLogicallyDeleted { get; set; }
+		public override bool IsDeleted { get; set; }
 
 		[DataMember]
 		[Column(Name = "OrderID", IsPrimaryKey = true, IsDbGenerated = true)]

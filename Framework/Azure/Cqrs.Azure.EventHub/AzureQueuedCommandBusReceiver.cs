@@ -11,12 +11,20 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Configuration;
+#if NET452
 using Microsoft.ServiceBus.Messaging;
+using EventData = Microsoft.ServiceBus.Messaging.EventData;
+#endif
+#if NETCOREAPP3_0
+using Microsoft.Azure.EventHubs;
+using Microsoft.Azure.EventHubs.Processor;
+using EventData = Microsoft.Azure.EventHubs.EventData;
+#endif
 using SpinWait = Cqrs.Infrastructure.SpinWait;
 
 namespace Cqrs.Azure.ServiceBus
@@ -48,7 +56,7 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		/// <summary>
-		/// Receives a <see cref="BrokeredMessage"/> from the command bus, identifies a key and queues it accordingly.
+		/// Receives a <see cref="EventData"/> from the command bus, identifies a key and queues it accordingly.
 		/// </summary>
 		protected override void ReceiveCommand(PartitionContext context, EventData eventData)
 		{
@@ -57,12 +65,27 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				try
 				{
+#if NET452
 					Logger.LogDebug(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
+#endif
+#if NETCOREAPP3_0
+					Logger.LogDebug(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
+#endif
+#if NET452
 					string messageBody = Encoding.UTF8.GetString(eventData.GetBytes());
+#endif
+#if NETCOREAPP3_0
+					string messageBody = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
+#endif
 					ICommand<TAuthenticationToken> command = MessageSerialiser.DeserialiseCommand(messageBody);
 
 					CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
+#if NET452
 					Logger.LogInfo(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3}.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset, command.GetType().FullName));
+#endif
+#if NETCOREAPP3_0
+					Logger.LogInfo(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3}.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset, command.GetType().FullName));
+#endif
 
 					Type commandType = command.GetType();
 
@@ -75,7 +98,12 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					catch
 					{
+#if NET452
 						Logger.LogDebug(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3} but with no Rsn property.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset, commandType));
+#endif
+#if NETCOREAPP3_0
+						Logger.LogDebug(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3} but with no Rsn property.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset, commandType));
+#endif
 						// Do nothing if there is no rsn. Just use command type name
 					}
 
@@ -85,13 +113,23 @@ namespace Cqrs.Azure.ServiceBus
 					// remove the original message from the incoming queue
 					context.CheckpointAsync(eventData);
 
+#if NET452
 					Logger.LogDebug(string.Format("A command message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
+#endif
+#if NETCOREAPP3_0
+					Logger.LogDebug(string.Format("A command message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
+#endif
 					return;
 				}
 				catch (Exception exception)
 				{
 					// Indicates a problem, unlock message in queue
+#if NET452
 					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but failed to be process.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+#endif
+#if NETCOREAPP3_0
+					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but failed to be process.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset), exception: exception);
+#endif
 
 					switch (i)
 					{

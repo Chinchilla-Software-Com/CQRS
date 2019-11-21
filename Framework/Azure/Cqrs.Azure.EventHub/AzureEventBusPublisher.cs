@@ -10,13 +10,21 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
+using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
-using cdmdotnet.Logging;
-using Cqrs.Bus;
 using Cqrs.Messages;
+#if NET452
 using Microsoft.ServiceBus.Messaging;
+using EventData = Microsoft.ServiceBus.Messaging.EventData;
+#endif
+#if NETCOREAPP3_0
+using Microsoft.Azure.EventHubs;
+using Microsoft.Azure.EventHubs.Processor;
+using EventData = Microsoft.Azure.EventHubs.EventData;
+#endif
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -71,7 +79,12 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, @event.GetType(), @event);
 
+#if NET452
 					EventHubPublisher.Send(brokeredMessage);
+#endif
+#if NETCOREAPP3_0
+					EventHubPublisher.SendAsync(brokeredMessage).Wait();
+#endif
 					wasSuccessfull = true;
 				}
 				catch (QuotaExceededException exception)
@@ -135,7 +148,7 @@ namespace Cqrs.Azure.ServiceBus
 			try
 			{
 				IList<string> sourceEventMessages = new List<string>();
-				IList<Microsoft.ServiceBus.Messaging.EventData> brokeredMessages = new List<Microsoft.ServiceBus.Messaging.EventData>(sourceEvents.Count);
+				IList<EventData> brokeredMessages = new List<EventData>(sourceEvents.Count);
 				foreach (TEvent @event in sourceEvents)
 				{
 					if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-EventHub"))
@@ -150,7 +163,14 @@ namespace Cqrs.Azure.ServiceBus
 				try
 				{
 					if (brokeredMessages.Any())
+					{
+#if NET452
 						EventHubPublisher.SendBatch(brokeredMessages);
+#endif
+#if NETCOREAPP3_0
+						EventHubPublisher.SendAsync(brokeredMessages).Wait();
+#endif
+					}
 					else
 						Logger.LogDebug("An empty collection of events to publish post validation.");
 					wasSuccessfull = true;

@@ -17,14 +17,27 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Exceptions;
 using Cqrs.Messages;
+#if NET452
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
+using Manager = Microsoft.ServiceBus.NamespaceManager;
+using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
+#endif
+#if NETCOREAPP3_0
+using System.Runtime.Serialization;
+using System.Xml;
+using Microsoft.Azure.ServiceBus;
+using Microsoft.Azure.ServiceBus.Core;
+using Microsoft.Azure.ServiceBus.Management;
+using Manager = Microsoft.Azure.ServiceBus.Management.ManagementClient;
+using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
+#endif
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -32,6 +45,12 @@ namespace Cqrs.Azure.ServiceBus
 	/// An <see cref="AzureBus{TAuthenticationToken}"/> that uses Azure Service Bus.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	/// <remarks>
+	/// https://markheath.net/post/migrating-to-new-servicebus-sdk
+	/// https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dotnet-how-to-use-topics-subscriptions#receive-messages-from-the-subscription
+	/// https://stackoverflow.com/questions/47427361/azure-service-bus-read-messages-sent-by-net-core-2-with-brokeredmessage-getbo
+	/// https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dotnet-get-started-with-queues
+	/// </remarks>
 	public abstract class AzureServiceBus<TAuthenticationToken>
 		: AzureBus<TAuthenticationToken>
 	{
@@ -46,14 +65,14 @@ namespace Cqrs.Azure.ServiceBus
 		protected TopicClient PublicServiceBusPublisher { get; private set; }
 
 		/// <summary>
-		/// Gets the private <see cref="SubscriptionClient"/> receivers.
+		/// Gets the private <see cref="IMessageReceiver"/> receivers.
 		/// </summary>
-		protected IDictionary<int, SubscriptionClient> PrivateServiceBusReceivers { get; private set; }
+		protected IDictionary<int, IMessageReceiver> PrivateServiceBusReceivers { get; private set; }
 
 		/// <summary>
-		/// Gets the public <see cref="SubscriptionClient"/> receivers.
+		/// Gets the public <see cref="IMessageReceiver"/> receivers.
 		/// </summary>
-		protected IDictionary<int, SubscriptionClient> PublicServiceBusReceivers { get; private set; }
+		protected IDictionary<int, IMessageReceiver> PublicServiceBusReceivers { get; private set; }
 
 		/// <summary>
 		/// The name of the private topic.
@@ -137,15 +156,31 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected const string DefaultPublicTopicSubscriptionName = "Root";
 
+#if NET452
 		/// <summary>
-		/// The <see cref="Action{TBrokeredMessage}">handler</see> used for <see cref="SubscriptionClient.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage}, OnMessageOptions)"/> on each receiver.
+		/// The <see cref="Action{TBrokeredMessage}">handler</see> used for <see cref="IMessageReceiver.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage}, OnMessageOptions)"/> on each receiver.
 		/// </summary>
 		protected Action<BrokeredMessage> ReceiverMessageHandler { get; set; }
-
+#endif
+#if NETCOREAPP3_0
 		/// <summary>
-		/// The <see cref="OnMessageOptions" /> used for <see cref="SubscriptionClient.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage}, OnMessageOptions)"/> on each receiver.
+		/// The <see cref="Action{IMessageReceiver, TBrokeredMessage}">handler</see> used for <see cref="MessageReceiver.RegisterMessageHandler(Func{BrokeredMessage, CancellationToken, Task}, MessageHandlerOptions)"/> on each receiver.
+		/// </summary>
+		protected Action<IMessageReceiver, BrokeredMessage> ReceiverMessageHandler { get; set; }
+#endif
+
+#if NET452
+		/// <summary>
+		/// The <see cref="OnMessageOptions" /> used for <see cref="IMessageReceiver.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage}, OnMessageOptions)"/> on each receiver.
 		/// </summary>
 		protected OnMessageOptions ReceiverMessageHandlerOptions { get; set; }
+#endif
+#if NETCOREAPP3_0
+		/// <summary>
+		/// The <see cref="MessageHandlerOptions" /> used for <see cref="MessageReceiver.RegisterMessageHandler(Func{BrokeredMessage, CancellationToken, Task}, MessageHandlerOptions)"/> on each receiver.
+		/// </summary>
+		protected MessageHandlerOptions ReceiverMessageHandlerOptions { get; set; }
+#endif
 
 		/// <summary>
 		/// Gets the <see cref="IBusHelper"/>.
@@ -186,8 +221,8 @@ namespace Cqrs.Azure.ServiceBus
 			AzureBusHelper = azureBusHelper;
 			BusHelper = busHelper;
 			TelemetryHelper = new NullTelemetryHelper();
-			PrivateServiceBusReceivers = new Dictionary<int, SubscriptionClient>();
-			PublicServiceBusReceivers = new Dictionary<int, SubscriptionClient>();
+			PrivateServiceBusReceivers = new Dictionary<int, IMessageReceiver>();
+			PublicServiceBusReceivers = new Dictionary<int, IMessageReceiver>();
 			TimeoutOnSendRetryMaximumCount = 1;
 			string timeoutOnSendRetryMaximumCountValue;
 			short timeoutOnSendRetryMaximumCount;
@@ -219,12 +254,23 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override void InstantiatePublishing()
 		{
-			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
-			CheckPrivateTopicExists(namespaceManager);
-			CheckPublicTopicExists(namespaceManager);
+#if NET452
+			Manager manager = Manager.CreateFromConnectionString(ConnectionString);
+#endif
+#if NETCOREAPP3_0
+			var manager = new Manager(ConnectionString);
+#endif
+			CheckPrivateTopicExists(manager);
+			CheckPublicTopicExists(manager);
 
+#if NET452
 			PrivateServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PrivateTopicName);
 			PublicServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PublicTopicName);
+#endif
+#if NETCOREAPP3_0
+			PrivateServiceBusPublisher = new TopicClient(ConnectionString, PrivateTopicName);
+			PublicServiceBusPublisher = new TopicClient(ConnectionString, PublicTopicName);
+#endif
 			StartSettingsChecking();
 		}
 
@@ -237,14 +283,19 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override void InstantiateReceiving()
 		{
-			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
+#if NET452
+			Manager manager = Manager.CreateFromConnectionString(ConnectionString);
+#endif
+#if NETCOREAPP3_0
+			var manager = new Manager(ConnectionString);
+#endif
 
-			CheckPrivateTopicExists(namespaceManager);
-			CheckPublicTopicExists(namespaceManager);
+			CheckPrivateTopicExists(manager);
+			CheckPublicTopicExists(manager);
 
 			try
 			{
-				InstantiateReceiving(namespaceManager, PrivateServiceBusReceivers, PrivateTopicName, PrivateTopicSubscriptionName);
+				InstantiateReceiving(manager, PrivateServiceBusReceivers, PrivateTopicName, PrivateTopicSubscriptionName);
 			}
 			catch (UriFormatException exception)
 			{
@@ -252,7 +303,7 @@ namespace Cqrs.Azure.ServiceBus
 			}
 			try
 			{
-				InstantiateReceiving(namespaceManager, PublicServiceBusReceivers, PublicTopicName, PublicTopicSubscriptionName);
+				InstantiateReceiving(manager, PublicServiceBusReceivers, PublicTopicName, PublicTopicSubscriptionName);
 			}
 			catch (UriFormatException exception)
 			{
@@ -275,19 +326,36 @@ namespace Cqrs.Azure.ServiceBus
 			StartSettingsChecking();
 		}
 
+#if NET452
 		/// <summary>
-		/// Creates <see cref="AzureBus{TAuthenticationToken}.NumberOfReceiversCount"/> <see cref="SubscriptionClient"/>.
-		/// If flushing is required, any flushed <see cref="SubscriptionClient"/> has <see cref="ClientEntity.Close()"/> called on it first.
+		/// Creates <see cref="AzureBus{TAuthenticationToken}.NumberOfReceiversCount"/> <see cref="IMessageReceiver"/>.
+		/// If flushing is required, any flushed <see cref="IMessageReceiver"/> has <see cref="ClientEntity.Close()"/> called on it first.
 		/// </summary>
-		/// <param name="namespaceManager">The <see cref="NamespaceManager"/>.</param>
-		/// <param name="serviceBusReceivers">The receivers collection to place <see cref="SubscriptionClient"/> instances into.</param>
+		/// <param name="manager">The <see cref="Manager"/>.</param>
+		/// <param name="serviceBusReceivers">The receivers collection to place <see cref="IMessageReceiver"/> instances into.</param>
 		/// <param name="topicName">The topic name.</param>
 		/// <param name="topicSubscriptionName">The topic subscription name.</param>
-		protected virtual void InstantiateReceiving(NamespaceManager namespaceManager, IDictionary<int, SubscriptionClient> serviceBusReceivers, string topicName, string topicSubscriptionName)
+#endif
+#if NETCOREAPP3_0
+		/// <summary>
+		/// Creates <see cref="AzureBus{TAuthenticationToken}.NumberOfReceiversCount"/> <see cref="IMessageReceiver"/>.
+		/// If flushing is required, any flushed <see cref="IMessageReceiver"/> has <see cref="ClientEntity.CloseAsync()"/> called on it first.
+		/// </summary>
+		/// <param name="manager">The <see cref="Manager"/>.</param>
+		/// <param name="serviceBusReceivers">The receivers collection to place <see cref="IMessageReceiver"/> instances into.</param>
+		/// <param name="topicName">The topic name.</param>
+		/// <param name="topicSubscriptionName">The topic subscription name.</param>
+#endif
+		protected virtual void InstantiateReceiving(Manager manager, IDictionary<int, IMessageReceiver> serviceBusReceivers, string topicName, string topicSubscriptionName)
 		{
 			for (int i = 0; i < NumberOfReceiversCount; i++)
 			{
-				SubscriptionClient serviceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, topicName, topicSubscriptionName);
+#if NET452
+				IMessageReceiver serviceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, topicName, topicSubscriptionName);
+#endif
+#if NETCOREAPP3_0
+				IMessageReceiver serviceBusReceiver = new MessageReceiver(ConnectionString, EntityNameHelper.FormatSubscriptionPath(topicName, topicSubscriptionName));
+#endif
 				if (serviceBusReceivers.ContainsKey(i))
 					serviceBusReceivers[i] = serviceBusReceiver;
 				else
@@ -296,9 +364,16 @@ namespace Cqrs.Azure.ServiceBus
 			// Remove any if the number has decreased
 			for (int i = NumberOfReceiversCount; i < serviceBusReceivers.Count; i++)
 			{
-				SubscriptionClient serviceBusReceiver;
+				IMessageReceiver serviceBusReceiver;
 				if (serviceBusReceivers.TryGetValue(i, out serviceBusReceiver))
+				{
+#if NET452
 					serviceBusReceiver.Close();
+#endif
+#if NETCOREAPP3_0
+					serviceBusReceiver.CloseAsync().Wait(1500);
+#endif
+				}
 				serviceBusReceivers.Remove(i);
 			}
 		}
@@ -306,41 +381,58 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Checks if the private topic and subscription name exists as per <see cref="PrivateTopicName"/> and <see cref="PrivateTopicSubscriptionName"/>.
 		/// </summary>
-		/// <param name="namespaceManager">The <see cref="NamespaceManager"/>.</param>
-		protected virtual void CheckPrivateTopicExists(NamespaceManager namespaceManager)
+		/// <param name="manager">The <see cref="Manager"/>.</param>
+		protected virtual void CheckPrivateTopicExists(Manager manager)
 		{
-			CheckTopicExists(namespaceManager, PrivateTopicName = ConfigurationManager.GetSetting(PrivateTopicNameConfigurationKey) ?? DefaultPrivateTopicName, PrivateTopicSubscriptionName = ConfigurationManager.GetSetting(PrivateTopicSubscriptionNameConfigurationKey) ?? DefaultPrivateTopicSubscriptionName);
+			CheckTopicExists(manager, PrivateTopicName = ConfigurationManager.GetSetting(PrivateTopicNameConfigurationKey) ?? DefaultPrivateTopicName, PrivateTopicSubscriptionName = ConfigurationManager.GetSetting(PrivateTopicSubscriptionNameConfigurationKey) ?? DefaultPrivateTopicSubscriptionName);
 		}
 
 		/// <summary>
 		/// Checks if the public topic and subscription name exists as per <see cref="PublicTopicName"/> and <see cref="PublicTopicSubscriptionName"/>.
 		/// </summary>
-		/// <param name="namespaceManager">The <see cref="NamespaceManager"/>.</param>
-		protected virtual void CheckPublicTopicExists(NamespaceManager namespaceManager)
+		/// <param name="manager">The <see cref="Manager"/>.</param>
+		protected virtual void CheckPublicTopicExists(Manager manager)
 		{
-			CheckTopicExists(namespaceManager, PublicTopicName = ConfigurationManager.GetSetting(PublicTopicNameConfigurationKey) ?? DefaultPublicTopicName, PublicTopicSubscriptionName = ConfigurationManager.GetSetting(PublicTopicSubscriptionNameConfigurationKey) ?? DefaultPublicTopicSubscriptionName);
+			CheckTopicExists(manager, PublicTopicName = ConfigurationManager.GetSetting(PublicTopicNameConfigurationKey) ?? DefaultPublicTopicName, PublicTopicSubscriptionName = ConfigurationManager.GetSetting(PublicTopicSubscriptionNameConfigurationKey) ?? DefaultPublicTopicSubscriptionName);
 		}
 
 		/// <summary>
 		/// Checks if a topic by the provided <paramref name="topicName"/> exists and
 		/// Checks if a subscription name by the provided <paramref name="subscriptionName"/> exists.
 		/// </summary>
-		protected virtual void CheckTopicExists(NamespaceManager namespaceManager, string topicName, string subscriptionName)
+		protected virtual void CheckTopicExists(Manager manager, string topicName, string subscriptionName)
 		{
 			// Configure Queue Settings
 			var eventTopicDescription = new TopicDescription(topicName)
 			{
+#if NET452
 				MaxSizeInMegabytes = 5120,
+#endif
+#if NETCOREAPP3_0
+				MaxSizeInMB = 5120,
+#endif
 				DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
 				EnablePartitioning = true,
-				EnableBatchedOperations = true
+				EnableBatchedOperations = true,
 			};
-			// Create the topic if it does not exist already
-			if (!namespaceManager.TopicExists(eventTopicDescription.Path))
-				namespaceManager.CreateTopic(eventTopicDescription);
 
-			if (!namespaceManager.SubscriptionExists(eventTopicDescription.Path, subscriptionName))
-				namespaceManager.CreateSubscription
+#if NETCOREAPP3_0
+			Task<bool> checkTask = manager.TopicExistsAsync(topicName);
+			checkTask.Wait(1500);
+			if (!checkTask.Result)
+			{
+				Task<TopicDescription> createTask = manager.CreateTopicAsync(eventTopicDescription);
+				createTask.Wait(1500);
+			}
+#endif
+
+#if NET452
+			// Create the topic if it does not exist already
+			if (!manager.TopicExists(eventTopicDescription.Path))
+				manager.CreateTopic(eventTopicDescription);
+
+			if (!manager.SubscriptionExists(eventTopicDescription.Path, subscriptionName))
+				manager.CreateSubscription
 				(
 					new SubscriptionDescription(eventTopicDescription.Path, subscriptionName)
 					{
@@ -349,6 +441,7 @@ namespace Cqrs.Azure.ServiceBus
 						EnableDeadLetteringOnFilterEvaluationExceptions = true
 					}
 				);
+#endif
 		}
 
 		/// <summary>
@@ -379,20 +472,30 @@ namespace Cqrs.Azure.ServiceBus
 		/// Triggers settings checking on the provided <paramref name="serviceBusPublisher"/> and <paramref name="serviceBusReceivers"/>,
 		/// then calls <see cref="InstantiateReceiving()"/>.
 		/// </summary>
-		protected virtual void TriggerSettingsChecking(TopicClient serviceBusPublisher, IDictionary<int, SubscriptionClient> serviceBusReceivers)
+		protected virtual void TriggerSettingsChecking(TopicClient serviceBusPublisher, IDictionary<int, IMessageReceiver> serviceBusReceivers)
 		{
 			// Let's wrap up using this message bus and start the switch
 			if (serviceBusPublisher != null)
 			{
+#if NET452
 				serviceBusPublisher.Close();
+#endif
+#if NETCOREAPP3_0
+				serviceBusPublisher.CloseAsync().Wait(1500);
+#endif
 				Logger.LogDebug("Publishing service bus closed.");
 			}
-			foreach (SubscriptionClient serviceBusReceiver in serviceBusReceivers.Values)
+			foreach (IMessageReceiver serviceBusReceiver in serviceBusReceivers.Values)
 			{
 				// Let's wrap up using this message bus and start the switch
 				if (serviceBusReceiver != null)
 				{
+#if NET452
 					serviceBusReceiver.Close();
+#endif
+#if NETCOREAPP3_0
+					serviceBusReceiver.CloseAsync().Wait(1500);
+#endif
 					Logger.LogDebug("Receiving service bus closed.");
 				}
 				// Restart configuration, we order this intentionally with the receiver first as if this triggers the cancellation we know this isn't a publisher as well
@@ -417,7 +520,12 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Registers the provided <paramref name="receiverMessageHandler"/> with the provided <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
+#if NET452
 		protected virtual void RegisterReceiverMessageHandler(Action<BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
+#endif
+#if NETCOREAPP3_0
+		protected virtual void RegisterReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, MessageHandlerOptions receiverMessageHandlerOptions)
+#endif
 		{
 			StoreReceiverMessageHandler(receiverMessageHandler, receiverMessageHandlerOptions);
 
@@ -427,7 +535,12 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Stores the provided <paramref name="receiverMessageHandler"/> and <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
+#if NET452
 		protected virtual void StoreReceiverMessageHandler(Action<BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
+#endif
+#if NETCOREAPP3_0
+		protected virtual void StoreReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, MessageHandlerOptions receiverMessageHandlerOptions)
+#endif
 		{
 			ReceiverMessageHandler = receiverMessageHandler;
 			ReceiverMessageHandlerOptions = receiverMessageHandlerOptions;
@@ -439,7 +552,9 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override void ApplyReceiverMessageHandler()
 		{
-			foreach (SubscriptionClient serviceBusReceiver in PrivateServiceBusReceivers.Values)
+			foreach (IMessageReceiver serviceBusReceiver in PrivateServiceBusReceivers.Values)
+			{
+#if NET452
 				serviceBusReceiver
 					.OnMessage
 					(
@@ -450,17 +565,51 @@ namespace Cqrs.Azure.ServiceBus
 						},
 						ReceiverMessageHandlerOptions
 					);
-			foreach (SubscriptionClient serviceBusReceiver in PublicServiceBusReceivers.Values)
+#endif
+#if NETCOREAPP3_0
 				serviceBusReceiver
-					.OnMessage
+					.RegisterMessageHandler
 					(
-						message =>
+						(message, cancellationToken) =>
 						{
-							BusHelper.SetWasPrivateBusUsed(false);
-							ReceiverMessageHandler(message);
+							return Task.Factory.StartNewSafely(() => {
+								BusHelper.SetWasPrivateBusUsed(true);
+								ReceiverMessageHandler(serviceBusReceiver, message);
+							});
 						},
 						ReceiverMessageHandlerOptions
 					);
+#endif
+			}
+			foreach (IMessageReceiver serviceBusReceiver in PublicServiceBusReceivers.Values)
+			{
+#if NET452
+				serviceBusReceiver
+					.OnMessage
+						(
+							message =>
+							{
+								BusHelper.SetWasPrivateBusUsed(false);
+								ReceiverMessageHandler(message);
+							},
+							ReceiverMessageHandlerOptions
+						);
+#endif
+#if NETCOREAPP3_0
+				serviceBusReceiver
+					.RegisterMessageHandler
+					(
+						(message, cancellationToken) =>
+						{
+							return Task.Factory.StartNewSafely(() => {
+								BusHelper.SetWasPrivateBusUsed(false);
+								ReceiverMessageHandler(serviceBusReceiver, message);
+							});
+						},
+						ReceiverMessageHandlerOptions
+					);
+#endif
+			}
 		}
 
 		/// <summary>
@@ -476,12 +625,22 @@ namespace Cqrs.Azure.ServiceBus
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
 			int lockIssues = 0;
 
+#if NET452
 			Action<BrokeredMessage, IMessage> leaveDeadlLetterInQueue = (deadLetterBrokeredMessage, deadLetterMessage) =>
+#endif
+#if NETCOREAPP3_0
+			Action<IMessageReceiver, BrokeredMessage, IMessage> leaveDeadlLetterInQueue = (client, deadLetterBrokeredMessage, deadLetterMessage) =>
+#endif
 			{
 				// Remove message from queue
 				try
 				{
+#if NET452
 					deadLetterBrokeredMessage.Abandon();
+#endif
+#if NETCOREAPP3_0
+					client.AbandonAsync(deadLetterBrokeredMessage.SystemProperties.LockToken).Wait(1500);
+#endif
 					lockIssues = 0;
 				}
 				catch (MessageLockLostException)
@@ -491,12 +650,22 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				Logger.LogDebug(string.Format("A dead-letter message of type {0} arrived with the id '{1}' but left in the queue due to settings.", deadLetterMessage.GetType().FullName, deadLetterBrokeredMessage.MessageId));
 			};
-			Action<BrokeredMessage> removeDeadlLetterFromQueue = deadLetterBrokeredMessage =>
+#if NET452
+			Action <BrokeredMessage> removeDeadlLetterFromQueue = (deadLetterBrokeredMessage) =>
+#endif
+#if NETCOREAPP3_0
+			Action<IMessageReceiver, BrokeredMessage> removeDeadlLetterFromQueue = (client, deadLetterBrokeredMessage) =>
+#endif
 			{
 				// Remove message from queue
 				try
 				{
+#if NET452
 					deadLetterBrokeredMessage.Complete();
+#endif
+#if NETCOREAPP3_0
+					client.CompleteAsync(deadLetterBrokeredMessage.SystemProperties.LockToken).Wait(1500);
+#endif
 					lockIssues = 0;
 				}
 				catch (MessageLockLostException)
@@ -513,11 +682,24 @@ namespace Cqrs.Azure.ServiceBus
 				while (!brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
 				{
 					lockIssues = 0;
+					IEnumerable<BrokeredMessage> brokeredMessages;
+
+#if NET452
 					MessagingFactory factory = MessagingFactory.CreateFromConnectionString(ConnectionString);
 					string deadLetterPath = SubscriptionClient.FormatDeadLetterPath(topicName, topicSubscriptionName);
 					MessageReceiver client = factory.CreateMessageReceiver(deadLetterPath, ReceiveMode.PeekLock);
-
-					IEnumerable<BrokeredMessage> brokeredMessages = client.ReceiveBatch(1000);
+					brokeredMessages = client.ReceiveBatch(1000);
+#endif
+#if NETCOREAPP3_0
+					string deadLetterPath = EntityNameHelper.FormatDeadLetterPath(EntityNameHelper.FormatSubscriptionPath(topicName, topicSubscriptionName));
+					MessageReceiver client = new MessageReceiver(ConnectionString, deadLetterPath, ReceiveMode.PeekLock);
+					Task<IList<BrokeredMessage>> receiveTask = client.ReceiveAsync(1000);
+					receiveTask.Wait(10000);
+					if (receiveTask.IsCompletedSuccessfully && receiveTask.Result != null)
+						brokeredMessages = receiveTask.Result;
+					else
+						brokeredMessages = Enumerable.Empty<BrokeredMessage>();
+#endif
 
 					foreach (BrokeredMessage brokeredMessage in brokeredMessages)
 					{
@@ -526,7 +708,7 @@ namespace Cqrs.Azure.ServiceBus
 						try
 						{
 							Logger.LogDebug(string.Format("A dead-letter message arrived with the id '{0}'.", brokeredMessage.MessageId));
-							string messageBody = brokeredMessage.GetBody<string>();
+							string messageBody = brokeredMessage.GetBodyAsString();
 
 							// Closure protection
 							BrokeredMessage message = brokeredMessage;
@@ -539,9 +721,23 @@ namespace Cqrs.Azure.ServiceBus
 									{
 										bool isRequired = BusHelper.IsEventRequired(@event.GetType());
 										if (!isRequired)
+										{
+#if NET452
 											removeDeadlLetterFromQueue(message);
+#endif
+#if NETCOREAPP3_0
+											removeDeadlLetterFromQueue(client, message);
+#endif
+										}
 										else
+										{
+#if NET452
 											leaveDeadlLetterInQueue(message, @event);
+#endif
+#if NETCOREAPP3_0
+											leaveDeadlLetterInQueue(client, message, @event);
+#endif
+										}
 										return true;
 									},
 									string.Format("id '{0}'", brokeredMessage.MessageId),
@@ -549,7 +745,12 @@ namespace Cqrs.Azure.ServiceBus
 									SigningTokenConfigurationKey,
 									() =>
 									{
+#if NET452
 										removeDeadlLetterFromQueue(message);
+#endif
+#if NETCOREAPP3_0
+										removeDeadlLetterFromQueue(client, message);
+#endif
 									},
 									() => { }
 								);
@@ -563,9 +764,23 @@ namespace Cqrs.Azure.ServiceBus
 									{
 										bool isRequired = BusHelper.IsEventRequired(command.GetType());
 										if (!isRequired)
+										{
+#if NET452
 											removeDeadlLetterFromQueue(message);
+#endif
+#if NETCOREAPP3_0
+											removeDeadlLetterFromQueue(client, message);
+#endif
+										}
 										else
+										{
+#if NET452
 											leaveDeadlLetterInQueue(message, command);
+#endif
+#if NETCOREAPP3_0
+											leaveDeadlLetterInQueue(client, message, command);
+#endif
+										}
 										return true;
 									},
 									string.Format("id '{0}'", brokeredMessage.MessageId),
@@ -573,7 +788,12 @@ namespace Cqrs.Azure.ServiceBus
 									SigningTokenConfigurationKey,
 									() =>
 									{
+#if NET452
 										removeDeadlLetterFromQueue(message);
+#endif
+#if NETCOREAPP3_0
+										removeDeadlLetterFromQueue(client, message);
+#endif
 									},
 									() => { }
 								);
@@ -586,7 +806,12 @@ namespace Cqrs.Azure.ServiceBus
 							Logger.LogError(string.Format("A dead-letter message arrived with the id '{0}' but failed to be process.", brokeredMessage.MessageId), exception: exception);
 							try
 							{
+#if NET452
 								brokeredMessage.Abandon();
+#endif
+#if NETCOREAPP3_0
+								client.AbandonAsync(brokeredMessage.SystemProperties.LockToken).Wait(1500);
+#endif
 							}
 							catch (MessageLockLostException)
 							{
@@ -595,8 +820,12 @@ namespace Cqrs.Azure.ServiceBus
 							}
 						}
 					}
-
+#if NET452
 					client.Close();
+#endif
+#if NETCOREAPP3_0
+					client.CloseAsync().Wait(1500);
+#endif
 
 					if (loop++ % 5 == 0)
 					{
@@ -616,19 +845,36 @@ namespace Cqrs.Azure.ServiceBus
 			return brokeredMessageRenewCancellationTokenSource;
 		}
 
+#if NETCOREAPP3_0
+		DataContractSerializer brokeredMessageSerialiser = new DataContractSerializer(typeof(string));
+#endif
 		/// <summary>
 		/// Create a <see cref="BrokeredMessage"/> with additional properties to aid routing and tracing
 		/// </summary>
 		protected virtual BrokeredMessage CreateBrokeredMessage<TMessage>(Func<TMessage, string> serialiserFunction, Type messageType, TMessage message)
 		{
 			string messageBody = serialiserFunction(message);
+#if NET452
 			var brokeredMessage = new BrokeredMessage(messageBody)
+#endif
+#if NETCOREAPP3_0
+			byte[] messageBodyData;
+			using (var stream = new MemoryStream())
+			{
+				XmlDictionaryWriter binaryDictionaryWriter = XmlDictionaryWriter.CreateBinaryWriter(stream);
+				brokeredMessageSerialiser.WriteObject(binaryDictionaryWriter, messageBody);
+				binaryDictionaryWriter.Flush();
+				messageBodyData = stream.ToArray();
+			}
+
+			var brokeredMessage = new BrokeredMessage(messageBodyData)
+#endif
 			{
 				CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 			};
-			brokeredMessage.Properties.Add("CorrelationId", brokeredMessage.CorrelationId);
-			brokeredMessage.Properties.Add("Type", messageType.FullName);
-			brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", Logger.LoggerSettings.ModuleName, Logger.LoggerSettings.Instance, Logger.LoggerSettings.Environment, Logger.LoggerSettings.EnvironmentInstance));
+			brokeredMessage.AddUserProperty("CorrelationId", brokeredMessage.CorrelationId);
+			brokeredMessage.AddUserProperty("Type", messageType.FullName);
+			brokeredMessage.AddUserProperty("Source", string.Format("{0}/{1}/{2}/{3}", Logger.LoggerSettings.ModuleName, Logger.LoggerSettings.Instance, Logger.LoggerSettings.Environment, Logger.LoggerSettings.EnvironmentInstance));
 
 			// see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security</remarks>
 			string configurationKey = string.Format("{0}.SigningToken", messageType.FullName);
@@ -639,7 +885,7 @@ namespace Cqrs.Azure.ServiceBus
 					signingToken = Guid.Empty.ToString("N");
 			if (!string.IsNullOrWhiteSpace(signingToken))
 				using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", signingToken, messageBody))))
-					brokeredMessage.Properties.Add("Signature", Convert.ToBase64String(signer.ComputeHash(hashStream)));
+					brokeredMessage.AddUserProperty("Signature", Convert.ToBase64String(signer.ComputeHash(hashStream)));
 
 			try
 			{
@@ -657,7 +903,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (ExclusionNamespaces.All(@namespace => !method.ReflectedType.FullName.StartsWith(@namespace)))
 							{
-								brokeredMessage.Properties.Add("Source-Method", string.Format("{0}.{1}", method.ReflectedType.FullName, method.Name));
+								brokeredMessage.AddUserProperty("Source-Method", string.Format("{0}.{1}", method.ReflectedType.FullName, method.Name));
 								break;
 							}
 						}
@@ -683,13 +929,13 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", baseCommunicationType } };
 			object value;
-			if (message.Properties.TryGetValue("Type", out value))
+			if (message.TryGetUserPropertyValue("Type", out value))
 				telemetryProperties.Add("MessageType", value.ToString());
-			if (message.Properties.TryGetValue("Source", out value))
+			if (message.TryGetUserPropertyValue("Source", out value))
 				telemetryProperties.Add("MessageSource", value.ToString());
-			if (message.Properties.TryGetValue("Source-Method", out value))
+			if (message.TryGetUserPropertyValue("Source-Method", out value))
 				telemetryProperties.Add("MessageSourceMethod", value.ToString());
-			if (message.Properties.TryGetValue("CorrelationId", out value) && !telemetryProperties.ContainsKey("CorrelationId"))
+			if (message.TryGetUserPropertyValue("CorrelationId", out value) && !telemetryProperties.ContainsKey("CorrelationId"))
 				telemetryProperties.Add("CorrelationId", value.ToString());
 
 			return telemetryProperties;
@@ -701,7 +947,7 @@ namespace Cqrs.Azure.ServiceBus
 		protected virtual string ExtractSignature(BrokeredMessage message)
 		{
 			object value;
-			if (message.Properties.TryGetValue("Signature", out value))
+			if (message.TryGetUserPropertyValue("Signature", out value))
 				return value.ToString();
 			return null;
 		}

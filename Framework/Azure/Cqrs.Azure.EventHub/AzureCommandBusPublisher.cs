@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;
@@ -18,7 +18,15 @@ using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
 using Cqrs.Messages;
+#if NET452
+using Microsoft.ServiceBus.Messaging;
 using EventData = Microsoft.ServiceBus.Messaging.EventData;
+#endif
+#if NETCOREAPP3_0
+using Microsoft.Azure.EventHubs;
+using Microsoft.Azure.EventHubs.Processor;
+using EventData = Microsoft.Azure.EventHubs.EventData;
+#endif
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -73,7 +81,12 @@ namespace Cqrs.Azure.ServiceBus
 
 				try
 				{
+#if NET452
 					EventHubPublisher.Send(brokeredMessage);
+#endif
+#if NETCOREAPP3_0
+					EventHubPublisher.SendAsync(brokeredMessage).Wait();
+#endif
 				}
 				catch (Exception exception)
 				{
@@ -147,7 +160,14 @@ namespace Cqrs.Azure.ServiceBus
 				try
 				{
 					if (brokeredMessages.Any())
+					{
+#if NET452
 						EventHubPublisher.SendBatch(brokeredMessages);
+#endif
+#if NETCOREAPP3_0
+						EventHubPublisher.SendAsync(brokeredMessages).Wait();
+#endif
+					}
 					else
 						Logger.LogDebug("An empty collection of commands to publish post validation.");
 				}
@@ -262,7 +282,12 @@ namespace Cqrs.Azure.ServiceBus
 				try
 				{
 					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, command.GetType(), command);
+#if NET452
 					EventHubPublisher.Send(brokeredMessage);
+#endif
+#if NETCOREAPP3_0
+					EventHubPublisher.SendAsync(brokeredMessage).Wait();
+#endif
 				}
 				catch (Exception exception)
 				{
@@ -308,6 +333,6 @@ namespace Cqrs.Azure.ServiceBus
 			return PublishAndWait(command, condition, (int)timeout.TotalMilliseconds, eventReceiver);
 		}
 
-		#endregion
+#endregion
 	}
 }

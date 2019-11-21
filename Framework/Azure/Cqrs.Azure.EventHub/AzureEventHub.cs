@@ -15,11 +15,19 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
+#if NET452
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
+using Manager = Microsoft.ServiceBus.NamespaceManager;
+#endif
+#if NETCOREAPP3_0
+using Microsoft.Azure.EventHubs;
+using Microsoft.Azure.EventHubs.Processor;
+using Manager = Microsoft.Azure.ServiceBus.Management.ManagementClient;
+#endif
 using System.Text;
 using Cqrs.Bus;
 
@@ -123,12 +131,12 @@ namespace Cqrs.Azure.ServiceBus
 		protected string StorageConnectionString { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Action{PartitionContext, EventData}">handler</see> used for <see cref="EventProcessorHost.RegisterEventProcessorFactoryAsync(Microsoft.ServiceBus.Messaging.IEventProcessorFactory)"/> on <see cref="EventHubReceiver"/>.
+		/// The <see cref="Action{PartitionContext, EventData}">handler</see> used for <see cref="EventProcessorHost.RegisterEventProcessorFactoryAsync(IEventProcessorFactory)"/> on <see cref="EventHubReceiver"/>.
 		/// </summary>
 		protected Action<PartitionContext, EventData> ReceiverMessageHandler { get; private set; }
 
 		/// <summary>
-		/// The <see cref="EventProcessorOptions" /> used for <see cref="EventProcessorHost.RegisterEventProcessorFactoryAsync(Microsoft.ServiceBus.Messaging.IEventProcessorFactory)"/> on <see cref="EventHubReceiver"/>.
+		/// The <see cref="EventProcessorOptions" /> used for <see cref="EventProcessorHost.RegisterEventProcessorFactoryAsync(IEventProcessorFactory)"/> on <see cref="EventHubReceiver"/>.
 		/// </summary>
 		protected EventProcessorOptions ReceiverMessageHandlerOptions { get; private set; }
 
@@ -158,7 +166,7 @@ namespace Cqrs.Azure.ServiceBus
 			Signer = hashAlgorithmFactory;
 		}
 
-		#region Overrides of AzureBus<TAuthenticationToken>
+#region Overrides of AzureBus<TAuthenticationToken>
 
 		/// <summary>
 		/// Gets the connection string for the bus from <see cref="AzureBus{TAuthenticationToken}.ConfigurationManager"/>
@@ -184,7 +192,7 @@ namespace Cqrs.Azure.ServiceBus
 			Logger.LogDebug(string.Format("Storage connection string settings set to {0}.", StorageConnectionString));
 		}
 
-		#endregion
+#endregion
 
 		/// <summary>
 		/// Instantiate publishing on this bus by
@@ -193,11 +201,25 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override void InstantiatePublishing()
 		{
-			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
-			CheckPrivateHubExists(namespaceManager);
-			CheckPublicHubExists(namespaceManager);
+#if NET452
+			Manager manager = Manager.CreateFromConnectionString(ConnectionString);
+#endif
+#if NETCOREAPP3_0
+			var manager = new Manager(ConnectionString);
+#endif
+			CheckPrivateHubExists(manager);
+			CheckPublicHubExists(manager);
 
+#if NET452
 			EventHubPublisher = EventHubClient.CreateFromConnectionString(ConnectionString, PublicEventHubName);
+#endif
+#if NETCOREAPP3_0
+			var connectionStringBuilder = new EventHubsConnectionStringBuilder(ConnectionString)
+			{
+				EntityPath = PublicEventHubName
+			};
+			EventHubPublisher = EventHubClient.Create(connectionStringBuilder);
+#endif
 			StartSettingsChecking();
 		}
 
@@ -209,12 +231,17 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override void InstantiateReceiving()
 		{
-			NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
+#if NET452
+			Manager manager = Manager.CreateFromConnectionString(ConnectionString);
+#endif
+#if NETCOREAPP3_0
+			var manager = new Manager(ConnectionString);
+#endif
 
-			CheckPrivateHubExists(namespaceManager);
-			CheckPublicHubExists(namespaceManager);
+			CheckPrivateHubExists(manager);
+			CheckPublicHubExists(manager);
 
-			EventHubReceiver = new EventProcessorHost(PublicEventHubName, PublicEventHubConsumerGroupName, ConnectionString, StorageConnectionString);
+			EventHubReceiver = new EventProcessorHost(PublicEventHubName, PublicEventHubConsumerGroupName, ConnectionString, StorageConnectionString, "Cqrs");
 
 			// If this is also a publisher, then it will the check over there and that will handle this
 			if (EventHubPublisher != null)
@@ -226,41 +253,60 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Checks if the private hub and consumer group name exists as per <see cref="PrivateEventHubName"/> and <see cref="PrivateEventHubConsumerGroupName"/>.
 		/// </summary>
-		/// <param name="namespaceManager">The <see cref="NamespaceManager"/>.</param>
-		protected virtual void CheckPrivateHubExists(NamespaceManager namespaceManager)
+		/// <param name="manager">The <see cref="Manager"/>.</param>
+		protected virtual void CheckPrivateHubExists(Manager manager)
 		{
-			CheckHubExists(namespaceManager, PrivateEventHubName = ConfigurationManager.GetSetting(PrivateEventHubNameConfigurationKey) ?? DefaultPrivateEventHubName, PrivateEventHubConsumerGroupName = ConfigurationManager.GetSetting(PrivateEventHubConsumerGroupNameConfigurationKey) ?? DefaultPrivateEventHubConsumerGroupName);
+			CheckHubExists(manager, PrivateEventHubName = ConfigurationManager.GetSetting(PrivateEventHubNameConfigurationKey) ?? DefaultPrivateEventHubName, PrivateEventHubConsumerGroupName = ConfigurationManager.GetSetting(PrivateEventHubConsumerGroupNameConfigurationKey) ?? DefaultPrivateEventHubConsumerGroupName);
 		}
 
 		/// <summary>
 		/// Checks if the public hub and consumer group name exists as per <see cref="PublicEventHubName"/> and <see cref="PublicEventHubConsumerGroupName"/>.
 		/// </summary>
-		/// <param name="namespaceManager">The <see cref="NamespaceManager"/>.</param>
-		protected virtual void CheckPublicHubExists(NamespaceManager namespaceManager)
+		/// <param name="manager">The <see cref="Manager"/>.</param>
+		protected virtual void CheckPublicHubExists(Manager manager)
 		{
-			CheckHubExists(namespaceManager, PublicEventHubName = ConfigurationManager.GetSetting(PublicEventHubNameConfigurationKey) ?? DefaultPublicEventHubName, PublicEventHubConsumerGroupName = ConfigurationManager.GetSetting(PublicEventHubConsumerGroupNameConfigurationKey) ?? DefaultPublicEventHubConsumerGroupName);
+			CheckHubExists(manager, PublicEventHubName = ConfigurationManager.GetSetting(PublicEventHubNameConfigurationKey) ?? DefaultPublicEventHubName, PublicEventHubConsumerGroupName = ConfigurationManager.GetSetting(PublicEventHubConsumerGroupNameConfigurationKey) ?? DefaultPublicEventHubConsumerGroupName);
 		}
 
 		/// <summary>
 		/// Checks if a event hub by the provided <paramref name="hubName"/> exists and
 		/// Checks if a consumer group by the provided <paramref name="consumerGroupNames"/> exists.
 		/// </summary>
-		protected virtual void CheckHubExists(NamespaceManager namespaceManager, string hubName, string consumerGroupNames)
+		protected virtual void CheckHubExists(Manager manager, string hubName, string consumerGroupNames)
 		{
+#if NET452
 			// Configure Queue Settings
 			var eventHubDescription = new EventHubDescription(hubName)
 			{
 				MessageRetentionInDays = long.MaxValue,
-				
 			};
 
 			// Create the topic if it does not exist already
-			namespaceManager.CreateEventHubIfNotExists(eventHubDescription);
+			manager.CreateEventHubIfNotExists(eventHubDescription);
 
 			var subscriptionDescription = new SubscriptionDescription(eventHubDescription.Path, consumerGroupNames);
 
-			if (!namespaceManager.SubscriptionExists(eventHubDescription.Path, consumerGroupNames))
-				namespaceManager.CreateSubscription(subscriptionDescription);
+			if (!manager.SubscriptionExists(eventHubDescription.Path, consumerGroupNames))
+				manager.CreateSubscription(subscriptionDescription);
+#endif
+#if NETCOREAPP3_0
+			/*
+			// Configure Queue Settings
+			var eventHubDescription = new EventHubDescription(hubName)
+			{
+				MessageRetentionInDays = long.MaxValue,
+			};
+
+			// Create the topic if it does not exist already
+			manager.CreateEventHubIfNotExists(eventHubDescription);
+
+			Task<bool> checkTask = manager.SubscriptionExistsAsync(eventHubDescription.Path, consumerGroupNames);
+			checkTask.Wait(1500);
+			if (!checkTask.Result)
+				manager.CreateSubscriptionAsync(subscriptionDescription).Wait(1500);
+			*/
+			Logger.LogWarning($"Checking EventHubs and subscriptions is not currently implemented until the Azure libraries provide management facilities. You will need to check these objects exist manually: EventHub {hubName}, Subscription/Consumer Group {consumerGroupNames}", "AzureEventHub");
+#endif
 		}
 
 		/// <summary>

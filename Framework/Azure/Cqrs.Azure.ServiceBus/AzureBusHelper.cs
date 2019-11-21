@@ -20,7 +20,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;
@@ -28,7 +28,14 @@ using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Exceptions;
 using Cqrs.Messages;
+#if NET452
 using Microsoft.ServiceBus.Messaging;
+#endif
+#if NETCOREAPP3_0
+using Microsoft.Azure.ServiceBus;
+using Microsoft.Azure.ServiceBus.Core;
+using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
+#endif
 using Newtonsoft.Json;
 
 namespace Cqrs.Azure.ServiceBus
@@ -431,7 +438,12 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Refreshes the network lock.
 		/// </summary>
+#if NET452
 		public virtual void RefreshLock(CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
+#endif
+#if NETCOREAPP3_0
+		public virtual void RefreshLock(IMessageReceiver client, CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
+#endif
 		{
 			Task.Factory.StartNewSafely(() =>
 			{
@@ -440,7 +452,7 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					object value;
 					string typeName = null;
-					if (message.Properties.TryGetValue("Type", out value))
+					if (message.TryGetUserPropertyValue("Type", out value))
 						typeName = value.ToString();
 
 					long loop = long.MinValue;
@@ -448,7 +460,12 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						// Based on LockedUntilUtc property to determine if the lock expires soon
 						// We lock for 45 seconds to ensure any thread based issues are mitigated.
+#if NET452
 						if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-45))
+#endif
+#if NETCOREAPP3_0
+						if (DateTime.UtcNow > message.ExpiresAtUtc.AddSeconds(-45))
+#endif
 						{
 							// If so, renew the lock
 							for (int i = 0; i < 10; i++)
@@ -457,7 +474,12 @@ namespace Cqrs.Azure.ServiceBus
 								{
 									if (brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
 										return;
+#if NET452
 									message.RenewLock();
+#endif
+#if NETCOREAPP3_0
+									client.RenewLockAsync(message).Wait(1500);
+#endif
 									try
 									{
 										Logger.LogDebug(string.Format("Renewed the {2} lock on {1} '{0}'.", message.MessageId, type, typeName));

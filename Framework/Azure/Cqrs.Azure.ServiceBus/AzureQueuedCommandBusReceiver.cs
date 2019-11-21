@@ -10,12 +10,19 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Configuration;
+#if NET452
 using Microsoft.ServiceBus.Messaging;
+#endif
+#if NETCOREAPP3_0
+using Microsoft.Azure.ServiceBus;
+using Microsoft.Azure.ServiceBus.Core;
+using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
+#endif
 using SpinWait = Cqrs.Infrastructure.SpinWait;
 
 namespace Cqrs.Azure.ServiceBus
@@ -49,12 +56,17 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Receives a <see cref="BrokeredMessage"/> from the command bus, identifies a key and queues it accordingly.
 		/// </summary>
+#if NET452
 		protected override void ReceiveCommand(BrokeredMessage message)
+#endif
+#if NETCOREAPP3_0
+		protected override void ReceiveCommand(IMessageReceiver client, BrokeredMessage message)
+#endif
 		{
 			try
 			{
 				Logger.LogDebug(string.Format("A command message arrived with the id '{0}'.", message.MessageId));
-				string messageBody = message.GetBody<string>();
+				string messageBody = message.GetBodyAsString();
 				ICommand<TAuthenticationToken> command = MessageSerialiser.DeserialiseCommand(messageBody);
 
 				CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
@@ -79,7 +91,12 @@ namespace Cqrs.Azure.ServiceBus
 				EnqueueCommand(targetQueueName, command);
 
 				// remove the original message from the incoming queue
+#if NET452
 				message.Complete();
+#endif
+#if NETCOREAPP3_0
+				client.CompleteAsync(message.SystemProperties.LockToken).Wait(1500);
+#endif
 
 				Logger.LogDebug(string.Format("A command message arrived and was processed with the id '{0}'.", message.MessageId));
 			}
@@ -87,7 +104,12 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				// Indicates a problem, unlock message in queue
 				Logger.LogError(string.Format("A command message arrived with the id '{0}' but failed to be process.", message.MessageId), exception: exception);
+#if NET452
 				message.Abandon();
+#endif
+#if NETCOREAPP3_0
+				client.AbandonAsync(message.SystemProperties.LockToken).Wait(1500);
+#endif
 			}
 		}
 
