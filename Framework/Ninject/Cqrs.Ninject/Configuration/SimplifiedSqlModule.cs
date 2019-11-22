@@ -1,4 +1,6 @@
-﻿#region Copyright
+﻿#if NET40
+
+#region Copyright
 // // -----------------------------------------------------------------------
 // // <copyright company="Chinchilla Software Limited">
 // // 	Copyright Chinchilla Software Limited. All rights reserved.
@@ -19,7 +21,7 @@ namespace Cqrs.Ninject.Configuration
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class SimplifiedSqlModule<TAuthenticationToken> : ResolvableModule
 	{
-		#region Overrides of NinjectModule
+#region Overrides of NinjectModule
 
 		/// <summary>
 		/// Loads the module into the kernel.
@@ -30,7 +32,7 @@ namespace Cqrs.Ninject.Configuration
 			RegisterEventStore();
 		}
 
-		#endregion
+#endregion
 
 		/// <summary>
 		/// Register the all event serialisation configurations
@@ -62,3 +64,4 @@ namespace Cqrs.Ninject.Configuration
 		}
 	}
 }
+#endif

@@ -14,7 +14,7 @@
 
 			Breaking Changes
 
-			* Removed Performance Trackers
+			* Automapper is only configured and support for .NET Framework, not .NET Core. It's only used by SQL elements like Linq2SQL which isn't supported in .NET Core anyway.
 		</PackageReleaseNotes>
 		<PackageIcon>images\icon.png</PackageIcon>
 	</PropertyGroup>
@@ -54,12 +54,18 @@
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+	  <PackageReference Include="cdmdotnet.AutoMapper" Version="1.0.16.9" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="Chinchilla.StateManagement" Version="4.0.43.24" />
 	  <PackageReference Include="Chinchilla.Logging" Version="4.0.113.94" />
 	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="Ninject" Version="3.2.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

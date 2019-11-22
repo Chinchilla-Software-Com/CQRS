@@ -8,7 +8,9 @@
 
 using System;
 using System.Linq;
+#if NET40
 using cdmdotnet.AutoMapper;
+#endif
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Domain;
@@ -78,27 +80,21 @@ namespace Cqrs.Ninject.Configuration
 		public CqrsModule(IConfigurationManager configurationManager = null)
 		{
 			configurationManager = configurationManager ?? new ConfigurationManager();
-			bool setupForWeb;
-			if (configurationManager.TryGetSetting("Cqrs.SetupForWeb", out setupForWeb))
+			if (configurationManager.TryGetSetting("Cqrs.SetupForWeb", out bool setupForWeb))
 				SetupForWeb = setupForWeb;
-			bool setupForSqlLogging;
-			if (configurationManager.TryGetSetting("Cqrs.SetupForSqlLogging", out setupForSqlLogging))
+			if (configurationManager.TryGetSetting("Cqrs.SetupForSqlLogging", out bool setupForSqlLogging))
 				SetupForSqlLogging = setupForSqlLogging;
-			bool registerDefaultConfigurationManager;
-			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultConfigurationManager", out registerDefaultConfigurationManager))
+			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultConfigurationManager", out bool registerDefaultConfigurationManager))
 				RegisterDefaultConfigurationManager = registerDefaultConfigurationManager;
-			bool registerDefaultSnapshotAggregateRepository;
-			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultSnapshotAggregateRepository", out registerDefaultSnapshotAggregateRepository))
+			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultSnapshotAggregateRepository", out bool registerDefaultSnapshotAggregateRepository))
 				RegisterDefaultSnapshotAggregateRepository = registerDefaultSnapshotAggregateRepository;
 			else
 				RegisterDefaultSnapshotAggregateRepository = true;
-			bool registerDefaultSnapshotStrategy;
-			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultSnapshotStrategy", out registerDefaultSnapshotStrategy))
+			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultSnapshotStrategy", out bool registerDefaultSnapshotStrategy))
 				RegisterDefaultSnapshotStrategy = registerDefaultSnapshotStrategy;
 			else
 				RegisterDefaultSnapshotStrategy = true;
-			bool registerDefaultSnapshotBuilder;
-			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultSnapshotBuilder", out registerDefaultSnapshotBuilder))
+			if (configurationManager.TryGetSetting("Cqrs.RegisterDefaultSnapshotBuilder", out bool registerDefaultSnapshotBuilder))
 				RegisterDefaultSnapshotBuilder = registerDefaultSnapshotBuilder;
 			else
 				RegisterDefaultSnapshotBuilder = true;
@@ -123,7 +119,7 @@ namespace Cqrs.Ninject.Configuration
 			RegisterDefaultSnapshotBuilder = registerDefaultSnapshotBuilder;
 		}
 
-		#region Overrides of NinjectModule
+#region Overrides of NinjectModule
 
 		/// <summary>
 		/// Loads the module into the kernel.
@@ -135,12 +131,14 @@ namespace Cqrs.Ninject.Configuration
 			RegisterQueryBuilders();
 			RegisterServices();
 			RegisterCqrsRequirements();
+#if NET40
 			RegisterAutomapperComponents();
+#endif
 			RegisterLoggerComponents();
 			RegisterCaching();
 		}
 
-		#endregion
+#endregion
 
 		/// <summary>
 		/// Register the all factories
@@ -203,6 +201,7 @@ namespace Cqrs.Ninject.Configuration
 			}
 		}
 
+#if NET40
 		/// <summary>
 		/// Register the all <see cref="IAutomapHelper"/>
 		/// </summary>
@@ -212,6 +211,7 @@ namespace Cqrs.Ninject.Configuration
 				.To<AutomapHelper>()
 				.InSingletonScope();
 		}
+#endif
 
 		/// <summary>
 		/// Register the all repositories
