@@ -22,6 +22,7 @@
 	  <Compile Remove="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 	<ItemGroup>
+	  <None Remove="Cqrs.Ninject.xml" />
 	  <None Remove="Tools\Create-Log-Table.sql" />
 	</ItemGroup>
 
@@ -46,22 +47,23 @@
 	<PropertyGroup>
 		<OutputType>library</OutputType>
 		<TargetFrameworks>net40;netcoreapp3.0</TargetFrameworks>
-		<DocumentationFile>Cqrs.xml</DocumentationFile>
+		<DocumentationFile>Cqrs.Ninject.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
+		<PackageReference Include="Ninject" Version="3.3.4" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
 	  <PackageReference Include="cdmdotnet.AutoMapper" Version="1.0.16.9" />
+		<PackageReference Include="Ninject" Version="3.2.2" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="Chinchilla.StateManagement" Version="4.0.43.24" />
 	  <PackageReference Include="Chinchilla.Logging" Version="4.0.113.94" />
 	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<PackageReference Include="Ninject" Version="3.2.2" />
 	</ItemGroup>
 
 	<ItemGroup>
