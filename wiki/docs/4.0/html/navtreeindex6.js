@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"classCqrs_1_1Events_1_1EventExtensions_a4d8611d80615275d1a7d0571bbee34cc.html#a4d8611d80615275d1a7d0571bbee34cc":[1,0,0,10,9,0],
 "classCqrs_1_1Events_1_1EventStore.html":[1,0,0,10,10],
 "classCqrs_1_1Events_1_1EventStoreRetentionLevelAttribute.html":[1,0,0,10,11],
 "classCqrs_1_1Events_1_1EventStoreRetentionLevelAttribute_a02b46ba8653da7c44e39be7ee151cb2b.html#a02b46ba8653da7c44e39be7ee151cb2b":[1,0,0,10,11,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "classCqrs_1_1MongoDB_1_1Repositories_1_1Authentication_1_1SingleSignOnToken_acf0a5524d873b709b3955374ec6cc76d.html#acf0a5524d873b709b3955374ec6cc76d":[1,0,0,17,4,0,0,1],
 "classCqrs_1_1MongoDB_1_1Serialisers_1_1BasicStructSerialiser.html":[1,0,0,17,5,0],
 "classCqrs_1_1MongoDB_1_1Serialisers_1_1BasicStructSerialiser_ad27304148a7a67b6c86c277254108c95.html#ad27304148a7a67b6c86c277254108c95":[1,0,0,17,5,0,0],
-"classCqrs_1_1MongoDB_1_1Serialisers_1_1BasicStructSerialiser_afeddf8cf8fa5a761f01504795adafa9b.html#afeddf8cf8fa5a761f01504795adafa9b":[1,0,0,17,5,0,1],
-"classCqrs_1_1MongoDB_1_1Serialisers_1_1MongoDbEventBuilder.html":[1,0,0,17,5,1]
+"classCqrs_1_1MongoDB_1_1Serialisers_1_1BasicStructSerialiser_afeddf8cf8fa5a761f01504795adafa9b.html#afeddf8cf8fa5a761f01504795adafa9b":[1,0,0,17,5,0,1]
 };

@@ -609,8 +609,8 @@ var hierarchy =
     [ "CqrsHttpApplicationWithSignalR< TAuthenticationToken, GlobalEventToHubProxy< TAuthenticationToken >>", null, [
       [ "Cqrs.WebApi.CqrsHttpApplicationWithSignalR< TAuthenticationToken >", "classCqrs_1_1WebApi_1_1CqrsHttpApplicationWithSignalR.html", null ]
     ] ],
-    [ "Cqrs.Ninject.Azure.WebJobs.CqrsNinjectJobHost< System.Guid, DefaultAuthenticationTokenHelper >", "classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost.html", [
-      [ "CqrsWebJobProgram", "classCqrsWebJobProgram.html", null ]
+    [ "Cqrs.Ninject.Azure.WebJobs.CqrsNinjectJobHost< Guid, DefaultAuthenticationTokenHelper >", "classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost.html", [
+      [ "CqrsWebJobProgram< TCoreHost >", "classCqrsWebJobProgram.html", null ]
     ] ],
     [ "Cqrs.Ninject.Azure.Wcf.CqrsWebHost< TAuthenticationToken, TAuthenticationTokenHelper, WebHostModule >", "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html", [
       [ "Cqrs.Ninject.Azure.Wcf.CqrsWebHost< TAuthenticationToken, TAuthenticationTokenHelper, TWebHostModule >", "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html", null ]

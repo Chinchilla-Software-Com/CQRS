@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory_a3dcbf8900e0d536da241e2e94f74cdd5.html#a3dcbf8900e0d536da241e2e94f74cdd5":[1,0,0,8,1,1,1],
 "interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory_ade388f0dfa9c42964392159a4f97fb1e.html#ade388f0dfa9c42964392159a4f97fb1e":[1,0,0,8,1,1,0],
 "interfaceCqrs_1_1Domain_1_1IAggregateRepository.html":[1,0,0,8,5],
 "interfaceCqrs_1_1Domain_1_1IAggregateRepository_a306baf8aa6faabe893f93e5db5d3517d.html#a306baf8aa6faabe893f93e5db5d3517d":[1,0,0,8,5,3],
@@ -216,8 +217,8 @@ var NAVTREEINDEX11 =
 "namespaceCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Aggregates.html":[0,0,0,0,5,0,0],
 "namespaceCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands.html":[1,0,0,0,5,0,1],
 "namespaceCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands.html":[0,0,0,0,5,0,1],
-"namespaceCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1Handlers.html":[1,0,0,0,5,0,1,0],
 "namespaceCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1Handlers.html":[0,0,0,0,5,0,1,0],
+"namespaceCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1Handlers.html":[1,0,0,0,5,0,1,0],
 "namespaceCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events.html":[0,0,0,0,5,0,2],
 "namespaceCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events.html":[1,0,0,0,5,0,2],
 "namespaceCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1Handlers.html":[0,0,0,0,5,0,2,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "namespaceCqrs_1_1Azure_1_1ConfigurationManager.html":[1,0,0,2,1],
 "namespaceCqrs_1_1Azure_1_1DocumentDb.html":[0,0,0,2,2],
 "namespaceCqrs_1_1Azure_1_1DocumentDb.html":[1,0,0,2,2],
-"namespaceCqrs_1_1Azure_1_1DocumentDb_1_1DataStores.html":[1,0,0,2,2,0],
-"namespaceCqrs_1_1Azure_1_1DocumentDb_1_1DataStores.html":[0,0,0,2,2,0]
+"namespaceCqrs_1_1Azure_1_1DocumentDb_1_1DataStores.html":[1,0,0,2,2,0]
 };

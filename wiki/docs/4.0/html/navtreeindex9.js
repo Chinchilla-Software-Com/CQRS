@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"classCqrs_1_1Snapshots_1_1SnapshotAggregateRoot.html":[1,0,0,21,4],
 "classCqrs_1_1Snapshots_1_1SnapshotAggregateRoot_a0b39f2941c828d987c84dc6cbb0a02be.html#a0b39f2941c828d987c84dc6cbb0a02be":[1,0,0,21,4,2],
 "classCqrs_1_1Snapshots_1_1SnapshotAggregateRoot_a2d8cd57c7b6c2696d286c6dc5e9f0479.html#a2d8cd57c7b6c2696d286c6dc5e9f0479":[1,0,0,21,4,0],
 "classCqrs_1_1Snapshots_1_1SnapshotAggregateRoot_a30ec8fe3a09fec8238c5921c629a5ac1.html#a30ec8fe3a09fec8238c5921c629a5ac1":[1,0,0,21,4,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX9 =
 "classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions.html":[1,0,2,0,0],
 "classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_a0db5f545a8b606324451bfec69db7862.html#a0db5f545a8b606324451bfec69db7862":[1,0,2,0,0,4],
 "classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_a37c11caa4a5e82f4761bf3b910ee0f15.html#a37c11caa4a5e82f4761bf3b910ee0f15":[1,0,2,0,0,7],
-"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_a5508e54e8c57884a4d220f6943dd356d.html#a5508e54e8c57884a4d220f6943dd356d":[1,0,2,0,0,2],
-"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_a88615fafe8c7bb0f9a0804eb4e4f0472.html#a88615fafe8c7bb0f9a0804eb4e4f0472":[1,0,2,0,0,5]
+"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_a5508e54e8c57884a4d220f6943dd356d.html#a5508e54e8c57884a4d220f6943dd356d":[1,0,2,0,0,2]
 };
