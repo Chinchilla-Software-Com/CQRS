@@ -8,7 +8,6 @@ var namespaceCqrs_1_1Commands =
     [ "ICommandHandler", "interfaceCqrs_1_1Commands_1_1ICommandHandler.html", null ],
     [ "ICommandPublisher", "interfaceCqrs_1_1Commands_1_1ICommandPublisher.html", "interfaceCqrs_1_1Commands_1_1ICommandPublisher" ],
     [ "ICommandReceiver", "interfaceCqrs_1_1Commands_1_1ICommandReceiver.html", null ],
-    [ "ICommandSender", "interfaceCqrs_1_1Commands_1_1ICommandSender.html", "interfaceCqrs_1_1Commands_1_1ICommandSender" ],
     [ "ICommandValidator", "interfaceCqrs_1_1Commands_1_1ICommandValidator.html", "interfaceCqrs_1_1Commands_1_1ICommandValidator" ],
     [ "ICommandWithIdentity", "interfaceCqrs_1_1Commands_1_1ICommandWithIdentity.html", "interfaceCqrs_1_1Commands_1_1ICommandWithIdentity" ],
     [ "IPublishAndWaitCommandPublisher", "interfaceCqrs_1_1Commands_1_1IPublishAndWaitCommandPublisher.html", "interfaceCqrs_1_1Commands_1_1IPublishAndWaitCommandPublisher" ],
